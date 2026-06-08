@@ -1,4 +1,4 @@
-use crate::application::ports::AppWindowPort;
+use crate::application::ports::{AppProcessPort, AppShellPort, AppSystemPort, AppWindowPort};
 use crate::application::service::{
     current_timestamp, pending_status, restored_status, unsupported_status,
 };
@@ -9,8 +9,8 @@ use crate::contracts::{
     AutoSwitchStatusPayload, BackendEffect, BootstrapStatePayload, CleanPayload,
     CoreSnapshotPayload, DaemonRunPayload, DiagnoseApiState, DiagnosePayload, DiagnosePlatform,
     DiagnoseRegistryState, DiagnoseSessionState, MysteryRouteGrant, NotificationClientStatePayload,
-    RebuildRegistryPayload, SystemActionPayload, SystemInfoPayload, UpdateInstallabilityPayload,
-    UsageSource,
+    PendingAutoSwitchStatePayload, RebuildRegistryPayload, SystemActionPayload, SystemInfoPayload,
+    UpdateInstallabilityPayload, UsageSource,
 };
 use crate::core::error::CoreError;
 use crate::repository::adapter::FileSystemAdapter;
@@ -190,6 +190,27 @@ pub fn run_daemon_once(repo: &Repository) -> Result<DaemonRunPayload, CoreError>
     })
 }
 
+pub fn load_pending_auto_switch() -> PendingAutoSwitchStatePayload {
+    PendingAutoSwitchStatePayload {
+        backend_status: pending_status(
+            "system",
+            "load_pending_auto_switch",
+            "自动切换待确认状态未在当前公开后端范围内恢复。",
+        ),
+        current_account_key: String::new(),
+        candidate_account_key: String::new(),
+        dismissed_at: None,
+    }
+}
+
+pub fn dismiss_pending_auto_switch() -> Option<String> {
+    None
+}
+
+pub fn confirm_pending_auto_switch() {}
+
+pub fn confirm_pending_auto_switch_and_restart_codex() {}
+
 pub fn get_usage_refresh_interval(repo: &Repository) -> Result<String, CoreError> {
     Ok(load_settings(repo)?.usage_refresh_interval)
 }
@@ -208,7 +229,7 @@ pub fn set_usage_refresh_interval(
     Ok(normalized)
 }
 
-pub fn check_update_installability() -> UpdateInstallabilityPayload {
+pub fn check_update_installability(system: &impl AppSystemPort) -> UpdateInstallabilityPayload {
     UpdateInstallabilityPayload {
         backend_status: unsupported_status(
             "system",
@@ -217,16 +238,15 @@ pub fn check_update_installability() -> UpdateInstallabilityPayload {
         ),
         can_install: false,
         code: "unsupported".to_string(),
-        executable_path: std::env::current_exe()
-            .ok()
-            .map(|path| path.display().to_string()),
+        executable_path: system.current_executable_path(),
         bundle_path: None,
         translocated: false,
         quarantined: false,
     }
 }
 
-pub fn graceful_restart_for_update() -> SystemActionPayload {
+pub fn graceful_restart_for_update(process: &impl AppProcessPort) -> SystemActionPayload {
+    let _ = process.graceful_restart_for_update();
     SystemActionPayload {
         backend_status: unsupported_status(
             "system",
@@ -236,8 +256,8 @@ pub fn graceful_restart_for_update() -> SystemActionPayload {
     }
 }
 
-pub fn restart_app() -> SystemActionPayload {
-    let _ = crate::platform::process::restart_app();
+pub fn restart_app(process: &impl AppProcessPort) -> SystemActionPayload {
+    let _ = process.restart_app();
     SystemActionPayload {
         backend_status: unsupported_status(
             "system",
@@ -247,8 +267,8 @@ pub fn restart_app() -> SystemActionPayload {
     }
 }
 
-pub fn force_kill_app() -> SystemActionPayload {
-    let _ = crate::platform::process::force_kill_app();
+pub fn force_kill_app(process: &impl AppProcessPort) -> SystemActionPayload {
+    let _ = process.force_kill_app();
     SystemActionPayload {
         backend_status: unsupported_status(
             "system",
@@ -258,7 +278,8 @@ pub fn force_kill_app() -> SystemActionPayload {
     }
 }
 
-pub fn reset_config() -> SystemActionPayload {
+pub fn reset_config(system: &impl AppSystemPort) -> SystemActionPayload {
+    let _ = system.reset_config();
     SystemActionPayload {
         backend_status: unsupported_status(
             "system",
@@ -268,15 +289,18 @@ pub fn reset_config() -> SystemActionPayload {
     }
 }
 
-pub fn open_path(path: String) -> Result<SystemActionPayload, CoreError> {
-    crate::platform::shell::open_path(&path)?;
+pub fn open_path(
+    shell: &impl AppShellPort,
+    path: String,
+) -> Result<SystemActionPayload, CoreError> {
+    shell.open_path(&path)?;
     Ok(SystemActionPayload {
         backend_status: restored_status("system", "open_path", BackendEffect::Platform),
     })
 }
 
-pub fn system_info() -> SystemInfoPayload {
-    let info = crate::platform::system::system_info();
+pub fn system_info(system: &impl AppSystemPort) -> SystemInfoPayload {
+    let info = system.system_info();
     SystemInfoPayload {
         backend_status: restored_status("system", "get_system_info", BackendEffect::Platform),
         os: info.os,

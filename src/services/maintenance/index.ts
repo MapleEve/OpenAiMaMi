@@ -18,6 +18,7 @@ export const maintenanceService = {
   diagnose: () => readEnvelopeData(systemService.diagnose()),
 
   restartCodex: systemService.restartCodex,
+  restartCodexApp: systemService.restartCodex,
 
   forceKillCodex: systemService.forceKillCodex,
 

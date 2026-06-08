@@ -169,6 +169,15 @@ pub struct BootstrapStatePayload {
 
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
+pub struct PendingAutoSwitchStatePayload {
+    pub backend_status: BackendSkeletonStatus,
+    pub current_account_key: String,
+    pub candidate_account_key: String,
+    pub dismissed_at: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CleanPayload {
     pub auth_backups_removed: i32,
     pub registry_backups_removed: i32,

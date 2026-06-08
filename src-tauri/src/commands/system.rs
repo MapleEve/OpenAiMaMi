@@ -3,9 +3,12 @@ use crate::contracts::{
     ApiModePayload, ApiProxyDetectPayload, ApiProxyMode, ApiProxyTestPayload,
     AutoSwitchConfigPayload, BootstrapStatePayload, CleanPayload, CoreEnvelope,
     CoreSnapshotPayload, DaemonRunPayload, DiagnosePayload, MysteryRouteGrant,
-    NotificationClientStatePayload, RebuildRegistryPayload, SystemActionPayload, SystemInfoPayload,
-    UpdateInstallabilityPayload,
+    NotificationClientStatePayload, PendingAutoSwitchStatePayload, RebuildRegistryPayload,
+    SystemActionPayload, SystemInfoPayload, UpdateInstallabilityPayload,
 };
+use crate::platform::process::ProcessPlatformAdapter;
+use crate::platform::shell::ShellPlatformAdapter;
+use crate::platform::system::SystemPlatformAdapter;
 use crate::repository::Repository;
 use std::sync::Mutex;
 use tauri::State;
@@ -153,43 +156,50 @@ pub fn set_usage_refresh_interval(
 
 #[tauri::command]
 pub fn check_update_installability() -> Result<CoreEnvelope<UpdateInstallabilityPayload>, String> {
+    let system = SystemPlatformAdapter;
     Ok(CoreEnvelope::ok(
-        usecase::system::check_update_installability(),
+        usecase::system::check_update_installability(&system),
     ))
 }
 
 #[tauri::command]
 pub fn graceful_restart_for_update() -> Result<CoreEnvelope<SystemActionPayload>, String> {
+    let process = ProcessPlatformAdapter;
     Ok(CoreEnvelope::ok(
-        usecase::system::graceful_restart_for_update(),
+        usecase::system::graceful_restart_for_update(&process),
     ))
 }
 
 #[tauri::command]
 pub fn restart_codex() -> Result<CoreEnvelope<SystemActionPayload>, String> {
-    Ok(CoreEnvelope::ok(usecase::system::restart_app()))
+    let process = ProcessPlatformAdapter;
+    Ok(CoreEnvelope::ok(usecase::system::restart_app(&process)))
 }
 
 #[tauri::command]
 pub fn force_kill_codex() -> Result<CoreEnvelope<SystemActionPayload>, String> {
-    Ok(CoreEnvelope::ok(usecase::system::force_kill_app()))
+    let process = ProcessPlatformAdapter;
+    Ok(CoreEnvelope::ok(usecase::system::force_kill_app(&process)))
 }
 
 #[tauri::command]
 pub fn reset_codex_config() -> Result<CoreEnvelope<SystemActionPayload>, String> {
-    Ok(CoreEnvelope::ok(usecase::system::reset_config()))
+    let system = SystemPlatformAdapter;
+    Ok(CoreEnvelope::ok(usecase::system::reset_config(&system)))
 }
 
 #[tauri::command]
 pub fn open_path(path: String) -> Result<CoreEnvelope<SystemActionPayload>, String> {
-    usecase::system::open_path(path)
+    let shell = ShellPlatformAdapter;
+    usecase::system::open_path(&shell, path)
         .map(CoreEnvelope::ok)
         .map_err(|error| error.to_string())
 }
 
 #[tauri::command]
 pub fn get_system_info() -> Result<CoreEnvelope<SystemInfoPayload>, String> {
-    Ok(CoreEnvelope::ok(usecase::system::system_info()))
+    let system = SystemPlatformAdapter;
+    Ok(CoreEnvelope::ok(usecase::system::system_info(&system)))
 }
 
 #[tauri::command]
@@ -251,23 +261,29 @@ pub fn import_remote_device_secret_if_empty(secret: String) -> Result<CoreEnvelo
 }
 
 #[tauri::command]
-pub fn load_pending_auto_switch() -> Result<CoreEnvelope<serde_json::Value>, String> {
-    Ok(CoreEnvelope::ok(serde_json::Value::Null))
+pub fn load_pending_auto_switch() -> Result<CoreEnvelope<PendingAutoSwitchStatePayload>, String> {
+    Ok(CoreEnvelope::ok(usecase::system::load_pending_auto_switch()))
 }
 
 #[tauri::command]
 pub fn dismiss_pending_auto_switch() -> Result<CoreEnvelope<Option<String>>, String> {
-    Ok(CoreEnvelope::ok(None))
+    Ok(CoreEnvelope::ok(
+        usecase::system::dismiss_pending_auto_switch(),
+    ))
 }
 
 #[tauri::command]
 pub fn confirm_pending_auto_switch() -> Result<CoreEnvelope<()>, String> {
-    Ok(CoreEnvelope::ok(()))
+    Ok(CoreEnvelope::ok(
+        usecase::system::confirm_pending_auto_switch(),
+    ))
 }
 
 #[tauri::command]
 pub fn confirm_pending_auto_switch_and_restart_codex() -> Result<CoreEnvelope<()>, String> {
-    Ok(CoreEnvelope::ok(()))
+    Ok(CoreEnvelope::ok(
+        usecase::system::confirm_pending_auto_switch_and_restart_codex(),
+    ))
 }
 
 #[tauri::command]

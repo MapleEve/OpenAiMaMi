@@ -14,29 +14,53 @@ pub mod sessions;
 pub mod skills;
 pub mod voice;
 
-use adapter::real_fs::RealFileSystem;
+use adapter::{
+    fake_fs::FakeFileSystem, real_fs::RealFileSystem, temp_fs::TempFileSystem, FileSystemAdapter,
+};
 use paths::RepositoryPaths;
+use std::sync::Arc;
 
 #[derive(Debug, Clone)]
 pub struct Repository {
     paths: RepositoryPaths,
-    fs: RealFileSystem,
+    fs: Arc<dyn FileSystemAdapter>,
 }
 
 impl Repository {
     pub fn new() -> Self {
+        Self::with_file_system(RealFileSystem)
+    }
+
+    pub fn with_file_system(file_system: impl FileSystemAdapter + 'static) -> Self {
+        Self::with_paths_and_file_system(RepositoryPaths::new(), file_system)
+    }
+
+    pub fn with_paths_and_file_system(
+        paths: RepositoryPaths,
+        file_system: impl FileSystemAdapter + 'static,
+    ) -> Self {
         Self {
-            paths: RepositoryPaths::new(),
-            fs: RealFileSystem,
+            paths,
+            fs: Arc::new(file_system),
         }
+    }
+
+    pub fn with_fake_file_system(file_system: FakeFileSystem) -> Self {
+        Self::with_file_system(file_system)
+    }
+
+    pub fn with_temp_file_system(label: &str) -> Self {
+        let file_system = TempFileSystem::new(label);
+        let paths = RepositoryPaths::from_codex_home(file_system.codex_home());
+        Self::with_paths_and_file_system(paths, file_system)
     }
 
     pub fn paths(&self) -> &RepositoryPaths {
         &self.paths
     }
 
-    pub fn fs(&self) -> &RealFileSystem {
-        &self.fs
+    pub fn fs(&self) -> &dyn FileSystemAdapter {
+        self.fs.as_ref()
     }
 }
 
