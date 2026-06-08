@@ -1,0 +1,24 @@
+{
+  "schema": "open-aimami.frontend_callchain_report.v1",
+  "bundle": "windows-1.0.9-maintenance",
+  "status": "current-source-frontend-chain-closed-non-gating",
+  "full_leaf": false,
+  "gate_report_fields_unchanged": true,
+  "backend_platform_evidence_required": true,
+  "gate_report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-maintenance/gate-report.json",
+  "closed_frontend_commands": [
+    "graceful_restart_for_update",
+    "restart_codex"
+  ],
+  "source_signals": {
+    "service": "src/services/system/index.ts",
+    "typed_mock": "src/mocks/fixtures/commands.ts",
+    "validator": "scripts/validate-e2e-mocks.mjs"
+  },
+  "non_claims": [
+    "不声明全量叶子验收完成",
+    "不修改 gate-report 字段",
+    "不补齐后端与平台侧 dim6 证据"
+  ],
+  "evidence_note": "当前源码只证明前端 service、typed mock 与 e2e validator 链路；完整叶子验收仍需要后端与平台侧证据。"
+}

@@ -33,6 +33,97 @@ function requireIncludes(file, snippets) {
   }
 }
 
+function getJsonPath(value, path) {
+  let current = value;
+  for (const part of path.split(".")) {
+    if (!current || typeof current !== "object" || !(part in current)) {
+      return { exists: false, value: undefined };
+    }
+    current = current[part];
+  }
+  return { exists: true, value: current };
+}
+
+function valuesEqual(actual, expected) {
+  return JSON.stringify(actual) === JSON.stringify(expected);
+}
+
+function validateClosedGateReportFailures(closeout) {
+  const entries = closeout.closedGateReportFailures ?? [];
+  const classifications = new Set(["non-recoverable", "scope-selection"]);
+  const seen = new Set();
+
+  for (const entry of entries) {
+    if (!entry || typeof entry !== "object") {
+      failures.push(`${closeout.id} closedGateReportFailures entry must be an object`);
+      continue;
+    }
+
+    const { report, path, value, classification, reason } = entry;
+    if (typeof report !== "string" || report.length === 0) {
+      failures.push(`${closeout.id} closedGateReportFailures missing report`);
+      continue;
+    }
+    if (report.includes("/accounts/") || report.includes("-accounts/") || report.includes("/plugins/") || report.includes("-plugins/")) {
+      failures.push(`${closeout.id} closedGateReportFailures disallows accounts/plugins report: ${report}`);
+    }
+    if (typeof path !== "string" || path.length === 0) {
+      failures.push(`${closeout.id} closedGateReportFailures missing path`);
+      continue;
+    }
+    if (path.endsWith("full_leaf_100")) {
+      failures.push(`${closeout.id} closedGateReportFailures disallows full_leaf_100 noise entry: ${report} ${path}`);
+    }
+    if (!classifications.has(classification)) {
+      failures.push(`${closeout.id} ${report} ${path} classification=${String(classification)}`);
+    }
+    if (typeof reason !== "string" || reason.trim().length === 0) {
+      failures.push(`${closeout.id} ${report} ${path} missing reason`);
+    }
+
+    const key = `${report}\u0000${path}\u0000${JSON.stringify(value)}`;
+    if (seen.has(key)) {
+      failures.push(`${closeout.id} duplicate closedGateReportFailures: ${report} ${path}`);
+    }
+    seen.add(key);
+
+    const reportPath = repoPath(report);
+    if (!existsSync(reportPath)) {
+      failures.push(`${closeout.id} missing gate-report: ${report}`);
+      continue;
+    }
+    const gate = readJson(reportPath);
+    const actual = getJsonPath(gate, path);
+    if (!actual.exists) {
+      failures.push(`${closeout.id} ${report} missing path: ${path}`);
+      continue;
+    }
+    if (!valuesEqual(actual.value, value)) {
+      failures.push(
+        `${closeout.id} ${report} ${path} value changed: expected ${JSON.stringify(value)}, actual ${JSON.stringify(actual.value)}. Delete stale closeout noise entry.`,
+      );
+    }
+  }
+}
+function validateSidecarReports(closeout) {
+  for (const report of closeout.sidecarReports ?? []) {
+    const path = repoPath(report);
+    if (!existsSync(path)) {
+      failures.push(`${closeout.id} missing sidecar report: ${report}`);
+      continue;
+    }
+    const sidecar = readJson(path);
+    if (sidecar.full_leaf !== false) {
+      failures.push(`${report} full_leaf=${String(sidecar.full_leaf)}`);
+    }
+    if (sidecar.gate_report_fields_unchanged !== true) {
+      failures.push(`${report} gate_report_fields_unchanged=${String(sidecar.gate_report_fields_unchanged)}`);
+    }
+    if (sidecar.backend_platform_evidence_required !== true) {
+      failures.push(`${report} backend_platform_evidence_required=${String(sidecar.backend_platform_evidence_required)}`);
+    }
+  }
+}
 function validateClosedDocs(moduleName, docs) {
   for (const doc of docs ?? []) {
     if (!existsSync(repoPath(doc))) {
@@ -338,6 +429,95 @@ function validateAppShellSourceOnlyCloseout(closeout) {
   validateRequiredSignals(closeout);
 }
 
+function validateSystemWindowMaintenanceCloseout(closeout) {
+  const expectedCommands = new Set([
+    "focus_main_window",
+    "open_path",
+    "clean",
+    "rebuild_registry",
+    "graceful_restart_for_update",
+    "restart_codex",
+  ]);
+  const actualCommands = new Set(closeout.closedCommands ?? []);
+  for (const command of expectedCommands) {
+    if (!actualCommands.has(command)) {
+      failures.push(`${closeout.id} missing closedCommands: ${command}`);
+    }
+  }
+  for (const command of actualCommands) {
+    if (!expectedCommands.has(command)) {
+      failures.push(`${closeout.id} disallows closed command: ${command}`);
+    }
+  }
+  if (!(closeout.notClosedCommands ?? []).includes("load_snapshot")) {
+    failures.push(`${closeout.id} must explicitly keep load_snapshot not closed`);
+  }
+
+  const requiredSidecars = new Set([
+    "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/frontend-callchain-report.json",
+    "evidence/full-chain/internal/audits/audits/macos-1.0.9-maintenance/frontend-callchain-report.json",
+    "evidence/full-chain/internal/audits/audits/windows-1.0.9-maintenance/frontend-callchain-report.json",
+  ]);
+  const actualSidecars = new Set(closeout.sidecarReports ?? []);
+  for (const sidecar of requiredSidecars) {
+    if (!actualSidecars.has(sidecar)) {
+      failures.push(`${closeout.id} missing sidecarReports: ${sidecar}`);
+    }
+  }
+  for (const sidecar of actualSidecars) {
+    if (!requiredSidecars.has(sidecar)) {
+      failures.push(`${closeout.id} disallows sidecar report: ${sidecar}`);
+    }
+  }
+
+  validateSidecarReports(closeout);
+  validateClosedGateReportFailures(closeout);
+
+  const expectedGateFailureKeys = new Set([
+    "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000gate_accepted\u0000false",
+    "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000implementation_use\u0000false",
+    "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000dim6_missing\u0000true",
+    "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000leaves.focus_main_window.gate_accepted\u0000false",
+    "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000leaves.focus_main_window.implementation_use\u0000false",
+    "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000leaves.open_path.gate_accepted\u0000false",
+    "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000leaves.open_path.implementation_use\u0000false",
+    "evidence/full-chain/internal/audits/audits/windows-1.0.9-maintenance/gate-report.json\u0000gate_accepted\u0000false",
+    "evidence/full-chain/internal/audits/audits/windows-1.0.9-maintenance/gate-report.json\u0000implementation_use\u0000false",
+    "evidence/full-chain/internal/audits/audits/windows-1.0.9-maintenance/gate-report.json\u0000dim6_missing\u0000true",
+  ]);
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  for (const expected of expectedGateFailureKeys) {
+    if (!actualGateFailureKeys.has(expected)) {
+      failures.push(`${closeout.id} missing allowed gate-report failure: ${expected}`);
+    }
+  }
+  for (const actual of actualGateFailureKeys) {
+    if (!expectedGateFailureKeys.has(actual)) {
+      failures.push(`${closeout.id} disallows gate-report failure: ${actual}`);
+    }
+  }
+
+  const nonClaims = closeout.nonClaims ?? [];
+  for (const required of [
+    "\u4e0d\u58f0\u660e\u5168\u91cf\u53f6\u5b50\u9a8c\u6536\u5b8c\u6210",
+    "\u4e0d\u542f\u7528\u540e\u7aef\u771f\u5b9e\u6062\u590d",
+    "\u4e0d\u4fee\u6539 gate-report",
+    "\u4e0d\u58f0\u660e MAC/WIN 100%",
+    "\u4e0d\u5173\u95ed load_snapshot",
+    "\u4e0d\u767b\u8bb0 accounts \u6216 plugins \u7684 gate-report \u5931\u8d25\u5b57\u6bb5",
+    "\u4e0d\u767b\u8bb0\u4efb\u4f55 full_leaf_100=false \u5b57\u6bb5",
+  ]) {
+    if (!nonClaims.includes(required)) {
+      failures.push(`${closeout.id} missing nonClaims: ${required}`);
+    }
+  }
+
+  validateRequiredSignals(closeout);
+}
 const closeouts = readJson(closeoutPath);
 if (closeouts.schema !== "open-aimami.frontend_current_source_closeouts.v1") {
   failures.push(`${toRepoPath(closeoutPath)} schema 不匹配`);
@@ -352,6 +532,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateAccountsAnalyticsCloseout(closeout);
   } else if (closeout.id === "app-shell-source-only-index-and-desktop-message-boundary") {
     validateAppShellSourceOnlyCloseout(closeout);
+  } else if (closeout.id === "system-window-maintenance-frontend-callchain-non-gating-closeout") {
+    validateSystemWindowMaintenanceCloseout(closeout);
   } else if (closeout.id === "relay-passthrough-audit-backend-skeleton-chain") {
     validateRelayCloseout(closeout);
   } else {
