@@ -55,6 +55,9 @@ const voiceBoundaryFiles = [
 
 const ipcCommandContractFile = join(repoRoot, "src", "contracts", "ipc", "commands.ts");
 const tauriLibFile = join(backendRoot, "lib.rs");
+const applicationUsecaseRoot = join(backendRoot, "application", "usecase");
+const repositoryModFile = join(backendRoot, "repository", "mod.rs");
+const expectedNonVoiceIpcCommandCount = 93;
 
 const ipcDomainModuleMap = new Map([
   ["accounts", "accounts"],
@@ -105,10 +108,15 @@ const forbiddenSideEffectRules = [
     allowedOwners: [/^src-tauri\/src\/repository\/adapter\/real_fs\.rs$/],
   },
   {
-    label: "std::process::Command::new",
-    patterns: [/\bstd\s*::\s*process\s*::\s*Command\s*::\s*new\s*\(/g, /\bCommand\s*::\s*new\s*\(/g],
+    label: "Command::new/.spawn/.output",
+    patterns: [
+      /\bstd\s*::\s*process\s*::\s*Command\s*::\s*new\s*\(/g,
+      /\bCommand\s*::\s*new\s*\(/g,
+      /\.\s*spawn\s*\(/g,
+      /\.\s*output\s*\(/g,
+    ],
     reason: "禁止启动真实外部进程",
-    allowedOwners: [/^src-tauri\/src\/platform\//],
+    allowedOwners: [/^src-tauri\/src\/platform\/process\.rs$/],
   },
   {
     label: "reqwest",
@@ -149,6 +157,18 @@ const forbiddenSideEffectRules = [
 ];
 
 const tauriBoundaryScanRoots = ["application", "core"];
+
+const forbiddenApplicationUsecasePlatformRules = [
+  {
+    label: "crate::platform::{shell,process,window,system,tray}",
+    patterns: [
+      /\bcrate\s*::\s*platform\s*::\s*(shell|process|window|system|tray)\s*::/g,
+      /\buse\s+crate\s*::\s*platform\s*::\s*(shell|process|window|system|tray)\b/g,
+      /\buse\s+crate\s*::\s*platform\s*::\s*\{[^}]*\b(shell|process|window|system|tray)\b[^}]*\}/g,
+    ],
+    reason: "application/usecase 必须通过 application port trait 表达平台能力",
+  },
+];
 
 const forbiddenApplicationCoreBoundaryRules = [
   {
@@ -572,6 +592,13 @@ function isAllowedExistingSystemCommand(module, command) {
 
 function validateIpcCommandRegistration() {
   const definitions = parseIpcCommandDefinitions();
+  const nonVoiceDefinitions = definitions.filter((definition) => definition.domain !== "voice");
+  if (nonVoiceDefinitions.length !== expectedNonVoiceIpcCommandCount) {
+    failures.push(
+      `${toRelative(ipcCommandContractFile)} 非 voice IPC command 数量应为 ${expectedNonVoiceIpcCommandCount}，当前为 ${nonVoiceDefinitions.length}`,
+    );
+  }
+
   const expectedPaths = expectedIpcCommandPaths(definitions);
   const registeredHandlers = parseGenerateHandlerEntries();
   const registeredPathSet = new Set(registeredHandlers.map((handler) => handler.key));
@@ -688,6 +715,82 @@ function validateNoApplicationCoreTauriBoundaryLeaks() {
   }
 }
 
+function validateNoApplicationUsecaseDirectPlatformCalls() {
+  const rustFiles = walkRustFiles(applicationUsecaseRoot);
+
+  for (const file of rustFiles) {
+    const original = readUtf8(file);
+    const content = stripRustComments(original);
+    const relativePath = toRelative(file);
+
+    for (const rule of forbiddenApplicationUsecasePlatformRules) {
+      const matchLines = [];
+      for (const pattern of rule.patterns) {
+        for (const index of findRuleMatches(content, pattern)) {
+          matchLines.push(lineNumberAt(original, index));
+        }
+      }
+
+      const uniqueLines = [...new Set(matchLines)].sort((left, right) => left - right);
+      for (const line of uniqueLines.slice(0, 3)) {
+        failures.push(`${relativePath}:${line} 违反 application/usecase 平台边界门禁：${rule.reason}：${rule.label}`);
+      }
+      if (uniqueLines.length > 3) {
+        failures.push(`${relativePath} 还有 ${uniqueLines.length - 3} 处 ${rule.label} 命中未展开`);
+      }
+    }
+  }
+}
+
+function hasReplaceableRepositoryFsEntry(content) {
+  return [
+    /\bpub(?:\([^)]*\))?\s+fn\s+(new_with_fs|with_fs|with_file_system|with_paths_and_file_system|from_fs|from_parts|new_for_test|for_test|new_temp|with_temp|temp)\s*(?:<[\s\S]*?>)?\s*\(/,
+    /\bpub(?:\([^)]*\))?\s+fn\s+new\s*<[\s\S]*?\bFileSystemAdapter\b[\s\S]*?>\s*\(/,
+    /\bpub(?:\([^)]*\))?\s+fn\s+new\s*\([^)]*(?:impl\s+FileSystemAdapter|dyn\s+FileSystemAdapter|Box\s*<\s*dyn\s+FileSystemAdapter|Arc\s*<\s*dyn\s+FileSystemAdapter)[^)]*\)/,
+    /\bpub(?:\([^)]*\))?\s+fn\s+new\s*\([^)]*\b(?:fake|temp)[A-Za-z0-9_]*\b[^)]*\)/i,
+    /\bpub(?:\([^)]*\))?\s+fn\s+[A-Za-z0-9_]*\b(?:fake|temp)[A-Za-z0-9_]*\s*\(/i,
+    /\bpub\s+struct\s+Repository\s*<[\s\S]*?\bFileSystemAdapter\b[\s\S]*?>/,
+  ].some((pattern) => pattern.test(content));
+}
+
+function validateRepositoryReplaceableFileSystem() {
+  const original = readRequiredUtf8(repositoryModFile, "Repository owner 文件");
+  if (original.length === 0) {
+    return;
+  }
+
+  const content = stripRustComments(original);
+  const relativePath = toRelative(repositoryModFile);
+  const repositoryStructMatch = content.match(/\bpub\s+struct\s+Repository\s*\{[\s\S]*?\n\}/);
+
+  if (repositoryStructMatch) {
+    const fixedFsFieldMatch = repositoryStructMatch[0].match(/\bfs\s*:\s*RealFileSystem\b/);
+    if (fixedFsFieldMatch) {
+      failures.push(
+        `${relativePath}:${lineNumberAt(original, repositoryStructMatch.index + fixedFsFieldMatch.index)} Repository 不得固定持有 RealFileSystem 字段，必须支持 fake/temp FS 替换`,
+      );
+    }
+  }
+
+  const realFsAccessorIndex = content.search(
+    /\bpub(?:\([^)]*\))?\s+fn\s+fs\s*\(\s*&self\s*\)\s*->\s*&\s*RealFileSystem\b/,
+  );
+  if (realFsAccessorIndex !== -1) {
+    failures.push(
+      `${relativePath}:${lineNumberAt(original, realFsAccessorIndex)} Repository 不得只向外暴露 RealFileSystem 访问入口，应通过可替换 FS 契约暴露能力`,
+    );
+  }
+
+  const realFsConstructorIndex = content.search(
+    /\bpub(?:\([^)]*\))?\s+fn\s+new\s*\([^)]*\)\s*->\s*Self\s*\{[\s\S]*?\bRealFileSystem\b/,
+  );
+  if (realFsConstructorIndex !== -1 && !hasReplaceableRepositoryFsEntry(content)) {
+    failures.push(
+      `${relativePath}:${lineNumberAt(original, realFsConstructorIndex)} Repository 只暴露 RealFileSystem 构造，缺少 fake/temp 或 adapter 注入入口`,
+    );
+  }
+}
+
 function validateVoiceSkeleton() {
   for (const file of voiceBoundaryFiles) {
     const absolute = join(backendRoot, file);
@@ -709,6 +812,8 @@ function validateVoiceSkeleton() {
 validateRequiredSkeleton();
 validateNoRealSideEffects();
 validateNoApplicationCoreTauriBoundaryLeaks();
+validateNoApplicationUsecaseDirectPlatformCalls();
+validateRepositoryReplaceableFileSystem();
 validateVoiceSkeleton();
 validateIpcCommandRegistration();
 
@@ -720,4 +825,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("后端六边形校验通过：目录、边界文件、副作用 owner、voice 空骨架和 IPC command 注册一致性门禁满足当前规则。");
+console.log("后端六边形校验通过：目录、边界文件、副作用 owner、application/usecase 平台边界、Repository FS 可替换性、voice 空骨架和 IPC command 注册一致性门禁满足当前规则。");

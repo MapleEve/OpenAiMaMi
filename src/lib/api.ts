@@ -141,6 +141,7 @@ export const api = {
   rebuildRegistry: maintenanceService.rebuildRegistry,
   diagnose: maintenanceService.diagnose,
   restartCodex: maintenanceService.restartCodex,
+  restartCodexApp: maintenanceService.restartCodexApp,
   forceKillCodex: maintenanceService.forceKillCodex,
   resetCodexConfig: maintenanceService.resetCodexConfig,
   openPath: maintenanceService.openPath,

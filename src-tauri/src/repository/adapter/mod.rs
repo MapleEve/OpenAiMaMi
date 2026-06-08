@@ -11,7 +11,8 @@ pub struct FileSystemEntry {
     pub is_dir: bool,
 }
 
-pub trait FileSystemAdapter {
+/// 文件系统适配器只暴露 repository 需要的窄读写能力。
+pub trait FileSystemAdapter: std::fmt::Debug + Send + Sync {
     fn exists(&self, path: &Path) -> bool;
     fn read_to_string(&self, path: &Path) -> Result<String, CoreError>;
     fn write_string(&self, path: &Path, content: &str) -> Result<(), CoreError>;
