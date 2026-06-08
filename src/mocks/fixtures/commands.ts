@@ -10,8 +10,11 @@ import type {
   AccountImportPreviewPayload,
   AccountMonitorPayload,
   AccountSessionImportPayload,
+  AppPathState,
   ChangeAnalyticsPayload,
+  CleanPayload,
   CoreSnapshotPayload,
+  DiagnosePayload,
   McpServerListPayload,
   McpServerMutationPayload,
   McpServerRemovePayload,
@@ -50,6 +53,8 @@ import type {
   SystemActionPayload,
   TokenAnalyticsPayload,
   ToolAnalyticsPayload,
+  RebuildRegistryPayload,
+  UpdateInstallabilityPayload,
   LogoutPayload,
   RemovePayload,
   SwitchPayload,
@@ -79,7 +84,9 @@ export type IpcCommandMockData =
   | AccountMonitorPayload
   | AccountSessionImportPayload
   | ChangeAnalyticsPayload
+  | CleanPayload
   | CoreSnapshotPayload
+  | DiagnosePayload
   | LogoutPayload
   | McpServerListPayload
   | McpServerMutationPayload
@@ -100,6 +107,7 @@ export type IpcCommandMockData =
   | RuntimeExtensionConfigPayload
   | RuntimeExtensionListPayload
   | RuntimeExtensionTogglePayload
+  | RebuildRegistryPayload
   | QuotaHistoryPayload
   | SessionAnalyticsPayload
   | SessionsDeletePayload
@@ -114,6 +122,7 @@ export type IpcCommandMockData =
   | SwitchPayload
   | TokenAnalyticsPayload
   | ToolAnalyticsPayload
+  | UpdateInstallabilityPayload
   | UsageAnalyticsPayload
   | null
   | unknown[]
@@ -206,6 +215,78 @@ const pendingAutoSwitchStateHandler: IpcCommandHandler = (context) => {
       dismissedAt: null,
     },
   };
+};
+
+function emptyAppPathState(): AppPathState {
+  return {
+    codexHome: "",
+    accountsPath: "",
+    authPath: "",
+    registryPath: "",
+    sessionsPath: "",
+    launchAgentPath: "",
+    autoSwitchLogPath: "",
+    authExists: false,
+    registryExists: false,
+    sessionsExists: false,
+  };
+}
+
+const cleanHandler: IpcCommandHandler = (context) => {
+  const data: CleanPayload = {
+    authBackupsRemoved: 0,
+    registryBackupsRemoved: 0,
+    staleEntriesRemoved: 0,
+  };
+  return withMockData(context, data);
+};
+
+const rebuildRegistryHandler: IpcCommandHandler = (context) => {
+  const data: RebuildRegistryPayload = {
+    accountCount: 0,
+    activeAccountKey: null,
+    registryUpdated: false,
+  };
+  return withMockData(context, data);
+};
+
+const diagnoseHandler: IpcCommandHandler = (context) => {
+  const data: DiagnosePayload = {
+    paths: emptyAppPathState(),
+    coreVersion: "",
+    platform: { os: "unknown", arch: "unknown" },
+    registryState: { accountCount: 0 },
+    sessionState: { latestRolloutFound: false },
+    apiState: {
+      usageAttemptCount: 0,
+      usageSuccessCount: 0,
+      nameAttemptCount: 0,
+      nameSuccessCount: 0,
+      lastUsageFailure: null,
+      lastUsageFailureAccount: null,
+      lastNameFailure: null,
+      lastNameFailureAccount: null,
+    },
+  };
+  return withMockData(context, data);
+};
+
+const updateInstallabilityHandler: IpcCommandHandler = (context) => {
+  const envelope = createEvidenceBackedIpcFixture(
+    context.command,
+    context.args,
+    context.steps,
+  );
+  const data: UpdateInstallabilityPayload = {
+    backendStatus: envelope.data.status,
+    canInstall: false,
+    code: "mock_pending",
+    executablePath: null,
+    bundlePath: null,
+    translocated: false,
+    quarantined: false,
+  };
+  return { ...envelope, data };
 };
 
 const accountMonitorHandler: IpcCommandHandler = (context) => {
@@ -881,18 +962,7 @@ const coreSnapshotHandler: IpcCommandHandler = (context) => {
   const data: CoreSnapshotPayload = {
     backendStatus: envelope.data.status,
     status: {
-      paths: {
-        codexHome: "",
-        accountsPath: "",
-        authPath: "",
-        registryPath: "",
-        sessionsPath: "",
-        launchAgentPath: "",
-        autoSwitchLogPath: "",
-        authExists: false,
-        registryExists: false,
-        sessionsExists: false,
-      },
+      paths: emptyAppPathState(),
       lastScanAt: 0,
       usageSource: "local",
       autoSwitch: {
@@ -1286,35 +1356,55 @@ const relayFixHandler: IpcCommandHandler = (context) => {
   return { ...envelope, data };
 };
 
-const systemCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {
+const daemonAutoSwitchCommandHandlers: Partial<
+  Record<IpcCommandName, IpcCommandHandler>
+> = {
   confirm_pending_auto_switch: unitHandler,
   confirm_pending_auto_switch_and_restart_codex: unitHandler,
   dismiss_pending_auto_switch: unitHandler,
+  load_bootstrap_state: bootstrapStateHandler,
+  load_pending_auto_switch: pendingAutoSwitchStateHandler,
+};
+
+const maintenanceCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {
+  clean: cleanHandler,
+  diagnose: diagnoseHandler,
+  force_kill_codex: systemActionHandler,
+  get_system_info: systemInfoHandler,
+  open_path: systemActionHandler,
+  rebuild_registry: rebuildRegistryHandler,
+  reset_codex_config: systemActionHandler,
+  restart_codex: systemActionHandler,
+};
+
+const settingsCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {
+  check_update_installability: updateInstallabilityHandler,
+  get_hotspot_enabled: readFalseHandler,
+  get_image_compat: readFalseHandler,
+  get_usage_refresh_interval: readManualIntervalHandler,
+  graceful_restart_for_update: systemActionHandler,
+  has_notch: readFalseHandler,
+  hotspot_ready: readFalseHandler,
+  set_hotspot_enabled: writeBooleanArgHandler,
+  set_image_compat: writeBooleanArgHandler,
+  set_usage_refresh_interval: writeIntervalArgHandler,
+};
+
+const systemCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {
   focus_main_window: systemActionHandler,
   force_kill_codex: systemActionHandler,
   get_device_id: deviceIdHandler,
   get_mystery_unlock_grants: mysteryUnlockGrantsHandler,
   get_notification_client_state: notificationClientStateHandler,
   get_or_create_remote_device_secret: remoteDeviceSecretHandler,
-  get_hotspot_enabled: readFalseHandler,
-  get_image_compat: readFalseHandler,
-  get_system_info: systemInfoHandler,
-  get_usage_refresh_interval: readManualIntervalHandler,
   graceful_restart_for_update: systemActionHandler,
-  has_notch: readFalseHandler,
-  hotspot_ready: readFalseHandler,
   import_remote_device_secret_if_empty: unitHandler,
-  load_bootstrap_state: bootstrapStateHandler,
-  load_pending_auto_switch: pendingAutoSwitchStateHandler,
   load_snapshot: coreSnapshotHandler,
   merge_mystery_unlock_grants: mysteryUnlockGrantsHandler,
   open_path: systemActionHandler,
   refresh_usage_snapshot: coreSnapshotHandler,
   reset_codex_config: systemActionHandler,
   restart_codex: systemActionHandler,
-  set_hotspot_enabled: writeBooleanArgHandler,
-  set_image_compat: writeBooleanArgHandler,
-  set_usage_refresh_interval: writeIntervalArgHandler,
 };
 
 const accountsCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {
@@ -1404,6 +1494,9 @@ export const ipcCommandFixtures = IPC_COMMAND_DEFINITIONS.reduce(
         relayCommandHandlers[definition.command] ??
         pluginsCommandHandlers[definition.command] ??
         skillsCommandHandlers[definition.command] ??
+        daemonAutoSwitchCommandHandlers[definition.command] ??
+        maintenanceCommandHandlers[definition.command] ??
+        settingsCommandHandlers[definition.command] ??
         systemCommandHandlers[definition.command] ??
         defaultHandler,
       source: definition.source,
