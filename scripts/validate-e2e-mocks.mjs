@@ -518,6 +518,132 @@ function validateSystemActionMockPayloadHandlers() {
   }
 }
 
+function validateMaintenanceSystemWindowEvidence() {
+  const commandFixturePath = path.join(
+    repoRoot,
+    "src",
+    "mocks",
+    "fixtures",
+    "commands.ts",
+  );
+  const systemServicePath = path.join(repoRoot, "src", "services", "system", "index.ts");
+  const maintenanceServicePath = path.join(
+    repoRoot,
+    "src",
+    "services",
+    "maintenance",
+    "index.ts",
+  );
+  const commandFixtureText = readRequired(commandFixturePath);
+  const systemServiceText = readRequired(systemServicePath);
+  const maintenanceServiceText = readRequired(maintenanceServicePath);
+  const requiredHandlers = [
+    ["clean", "cleanHandler"],
+    ["rebuild_registry", "rebuildRegistryHandler"],
+    ["diagnose", "diagnoseHandler"],
+    ["check_update_installability", "updateInstallabilityHandler"],
+    ["load_bootstrap_state", "bootstrapStateHandler"],
+    ["load_pending_auto_switch", "pendingAutoSwitchStateHandler"],
+    ["focus_main_window", "systemActionHandler"],
+    ["open_path", "systemActionHandler"],
+    ["restart_codex", "systemActionHandler"],
+    ["graceful_restart_for_update", "systemActionHandler"],
+    ["force_kill_codex", "systemActionHandler"],
+    ["reset_codex_config", "systemActionHandler"],
+  ];
+
+  assertIncludes("src/mocks/fixtures/commands.ts", commandFixtureText, [
+    "CleanPayload",
+    "RebuildRegistryPayload",
+    "DiagnosePayload",
+    "UpdateInstallabilityPayload",
+    "const cleanHandler",
+    "const rebuildRegistryHandler",
+    "const diagnoseHandler",
+    "const updateInstallabilityHandler",
+    "const daemonAutoSwitchCommandHandlers",
+    "const maintenanceCommandHandlers",
+    "const settingsCommandHandlers",
+    "daemonAutoSwitchCommandHandlers[definition.command] ??",
+    "maintenanceCommandHandlers[definition.command] ??",
+    "settingsCommandHandlers[definition.command] ??",
+  ]);
+
+  for (const [command, handler] of requiredHandlers) {
+    if (!commandFixtureText.includes(`${command}: ${handler}`)) {
+      failures.push(`src/mocks/fixtures/commands.ts 缺少 maintenance/system/window 专用 handler：${command}`);
+    }
+  }
+
+  assertIncludes("src/services/system/index.ts", systemServiceText, [
+    'invokeIpc<CoreEnvelope<BootstrapStatePayload>>("load_bootstrap_state")',
+    'invokeIpc<CoreEnvelope<CleanPayload>>("clean")',
+    'invokeIpc<CoreEnvelope<RebuildRegistryPayload>>("rebuild_registry")',
+    'invokeIpc<CoreEnvelope<DiagnosePayload>>("diagnose")',
+    '"load_pending_auto_switch"',
+    '"check_update_installability"',
+    '"graceful_restart_for_update"',
+    '"restart_codex"',
+    '"force_kill_codex"',
+    '"reset_codex_config"',
+    '"open_path"',
+    '"focus_main_window"',
+  ]);
+
+  assertIncludes("src/services/maintenance/index.ts", maintenanceServiceText, [
+    "clean: () => readEnvelopeData(systemService.clean())",
+    "rebuildRegistry: () => readEnvelopeData(systemService.rebuildRegistry())",
+    "diagnose: () => readEnvelopeData(systemService.diagnose())",
+    "restartCodex: systemService.restartCodex",
+    "forceKillCodex: systemService.forceKillCodex",
+    "resetCodexConfig: systemService.resetCodexConfig",
+    "openPath: systemService.openPath",
+  ]);
+}
+
+function validateMaintenanceSystemScenarioCoverage() {
+  const coverageScenarios = [
+    ["failure.ts", "reject"],
+    ["delayed.ts", "resolve"],
+    ["stale.ts", "resolve"],
+    ["replay.ts", "replay"],
+  ];
+
+  for (const [fileName, outcome] of coverageScenarios) {
+    const file = path.join(scenariosRoot, fileName);
+    const text = readRequired(file);
+    const label = repoPath(file);
+    assertIncludes(label, text, ['commands: ["all"]', `outcome: "${outcome}"`]);
+
+    const steps = parseScenarioSteps(file, text);
+    if (fileName === "delayed.ts" && Math.max(...steps.map((step) => step.delayMs)) < 500) {
+      failures.push(`${label} 不能证明 delayed 场景覆盖 maintenance/system/window 命令族`);
+    }
+
+    if (fileName === "stale.ts") {
+      const hasLateOlderStep = steps.some((candidate, candidateIndex) =>
+        steps.some(
+          (other, otherIndex) =>
+            otherIndex > candidateIndex &&
+            candidate.delayMs > other.delayMs &&
+            candidate.sequence < other.sequence,
+        ),
+      );
+      if (!hasLateOlderStep) {
+        failures.push(`${label} 不能证明 stale 场景覆盖 maintenance/system/window 命令族`);
+      }
+    }
+
+    if (fileName === "replay.ts") {
+      const mutation = steps.find((step) => step.name.includes("mutation"));
+      const replay = steps.find((step) => step.outcome === "replay");
+      if (!mutation || !replay || replay.sequence >= mutation.sequence) {
+        failures.push(`${label} 不能证明 replay 场景覆盖 maintenance/system/window 命令族`);
+      }
+    }
+  }
+}
+
 function validateOverviewMockPayloadHandlers() {
   const commandFixturePath = path.join(
     repoRoot,
@@ -606,6 +732,8 @@ validatePluginsMockPayloadHandlers();
 validateSessionsMockPayloadHandlers();
 validateRelayMockPayloadHandlers();
 validateSystemActionMockPayloadHandlers();
+validateMaintenanceSystemWindowEvidence();
+validateMaintenanceSystemScenarioCoverage();
 validateOverviewMockPayloadHandlers();
 validateIpcMockBridge();
 
