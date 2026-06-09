@@ -321,11 +321,20 @@ pub fn hotspot_ready() -> Result<CoreEnvelope<bool>, String> {
 }
 
 #[tauri::command]
-pub fn get_image_compat() -> Result<CoreEnvelope<bool>, String> {
-    Ok(CoreEnvelope::ok(usecase::system::get_image_compat()))
+pub fn get_image_compat(repo: State<'_, Mutex<Repository>>) -> Result<CoreEnvelope<bool>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::system::get_image_compat(&repo)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
 }
 
 #[tauri::command]
-pub fn set_image_compat(enabled: bool) -> Result<CoreEnvelope<bool>, String> {
-    Ok(CoreEnvelope::ok(usecase::system::set_image_compat(enabled)))
+pub fn set_image_compat(
+    repo: State<'_, Mutex<Repository>>,
+    enabled: bool,
+) -> Result<CoreEnvelope<bool>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::system::set_image_compat(&repo, enabled)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
 }

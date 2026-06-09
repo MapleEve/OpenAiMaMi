@@ -23,6 +23,7 @@ use crate::core::model::runtime::{RuntimeWatcherDecision, RuntimeWatcherSignal};
 use crate::core::model::settings::UsageRefreshInterval;
 use crate::core::runtime as runtime_core;
 use crate::platform::runtime::RuntimePlatformAdapter;
+use crate::repository::config as config_repository;
 use crate::repository::diagnostics::load_system_diagnostic_snapshot;
 use crate::repository::hotspot as hotspot_repository;
 use crate::repository::runtime as runtime_repository;
@@ -654,12 +655,12 @@ pub fn hotspot_ready(hotspot: &impl HotspotPlatformPort) -> bool {
     hotspot_core::hotspot_ready(capability).ready
 }
 
-pub fn get_image_compat() -> bool {
-    true
+pub fn get_image_compat(repo: &Repository) -> Result<bool, CoreError> {
+    config_repository::get_image_compat(repo)
 }
 
-pub fn set_image_compat(enabled: bool) -> bool {
-    enabled
+pub fn set_image_compat(repo: &Repository, enabled: bool) -> Result<bool, CoreError> {
+    config_repository::set_image_compat(repo, enabled)
 }
 
 fn make_status(repo: &Repository, settings: &AppSettingsFile) -> AppStatusPayload {
