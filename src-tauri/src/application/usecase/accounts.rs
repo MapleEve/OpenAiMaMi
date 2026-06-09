@@ -8,6 +8,7 @@ use crate::core::error::CoreError;
 use crate::core::model::accounts::AccountRegistryItem;
 use crate::repository::accounts as accounts_repository;
 use crate::repository::Repository;
+use std::collections::HashSet;
 
 const MODULE: &str = "accounts";
 const PENDING_NOTE: &str =
@@ -100,11 +101,61 @@ pub fn remove_accounts(
     repo: &Repository,
     account_keys: Vec<String>,
 ) -> Result<RemovePayload, CoreError> {
-    accounts_repository::remove_accounts(repo, restored("remove_accounts"), account_keys)
+    let mut registry = accounts_repository::load_registry(repo)?;
+    let previous_account_key = registry.active_key();
+    let requested = account_keys.into_iter().collect::<HashSet<_>>();
+    if requested.is_empty() {
+        return Ok(RemovePayload {
+            backend_status: restored("remove_accounts"),
+            removed_account_keys: Vec::new(),
+            removed_count: 0,
+            previous_account_key,
+        });
+    }
+    if let Some(active) = previous_account_key.as_ref() {
+        if requested.contains(active) {
+            return Err(CoreError::InvalidInput(
+                "不能删除当前激活账号，请先切换或登出。".to_string(),
+            ));
+        }
+    }
+
+    let mut removed_account_keys = Vec::new();
+    let mut retained = Vec::new();
+    for item in registry.items {
+        if requested.contains(&item.account_key) {
+            accounts_repository::remove_snapshot_if_present(repo, &item)?;
+            removed_account_keys.push(item.account_key);
+        } else {
+            retained.push(item);
+        }
+    }
+    registry.items = retained;
+    accounts_repository::save_registry(repo, &registry)?;
+
+    Ok(RemovePayload {
+        backend_status: restored("remove_accounts"),
+        removed_count: removed_account_keys.len() as i32,
+        removed_account_keys,
+        previous_account_key,
+    })
 }
 
 pub fn logout(repo: &Repository) -> Result<LogoutPayload, CoreError> {
-    accounts_repository::logout(repo, restored("logout"))
+    let auth_backed_up = accounts_repository::backup_auth_if_present(repo, None)?;
+    let auth_removed = accounts_repository::remove_auth_if_present(repo)?;
+    let mut registry = accounts_repository::load_registry(repo)?;
+    let had_active = registry.active_key().is_some();
+    registry.clear_active_account();
+    if had_active || accounts_repository::registry_exists(repo) {
+        accounts_repository::save_registry(repo, &registry)?;
+    }
+
+    Ok(LogoutPayload {
+        backend_status: restored("logout"),
+        auth_removed,
+        auth_backed_up,
+    })
 }
 
 pub fn export_accounts_to_file(

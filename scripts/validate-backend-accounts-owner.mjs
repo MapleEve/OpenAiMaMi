@@ -5,9 +5,24 @@ const repoRoot = process.cwd();
 const backendRoot = join(repoRoot, "src-tauri", "src");
 const repositoryAccountsFile = join(backendRoot, "repository", "accounts.rs");
 const usecaseAccountsFile = join(backendRoot, "application", "usecase", "accounts.rs");
-const failures = [];
+const ownerTransactions = [
+  {
+    functionName: "switch_account",
+    label: "账号切换",
+    sharedOwner: "switch_account_with_status",
+  },
+  {
+    functionName: "remove_accounts",
+    label: "账号删除",
+  },
+  {
+    functionName: "logout",
+    label: "账号登出",
+  },
+];
 
-let usecaseHelperEvidence = [];
+const failures = [];
+const helperEvidenceByFunction = new Map();
 
 function toRelative(path) {
   return relative(repoRoot, path).replaceAll("\\", "/");
@@ -181,7 +196,8 @@ function findFunctionBody(content, functionStart) {
 }
 
 function collectRepositoryHelperEvidence(functionBody) {
-  const helperName = "[A-Za-z0-9_]*(?:load|save|active|snapshot|restore|backup|mark)[A-Za-z0-9_]*";
+  const helperName =
+    "[A-Za-z0-9_]*(?:load|save|active|snapshot|restore|backup|mark|remove|registry)[A-Za-z0-9_]*";
   const patterns = [
     {
       label: "accounts_repository::",
@@ -215,52 +231,64 @@ function collectRepositoryHelperEvidence(functionBody) {
   return [...evidence].sort();
 }
 
-function validateRepositoryDoesNotOwnSwitch(repositoryContent) {
+function validateRepositoryDoesNotOwnTransactions(repositoryContent) {
   const stripped = stripRustComments(repositoryContent);
-  const switchFunction = findPublicFunction(stripped, "switch_account");
-  if (switchFunction) {
-    failures.push(
-      `${toRelative(repositoryAccountsFile)}:${switchFunction.line} 存在 pub fn switch_account(...)，账号切换事务不能由 repository owning`,
-    );
+  for (const transaction of ownerTransactions) {
+    const repositoryFunction = findPublicFunction(stripped, transaction.functionName);
+    if (repositoryFunction) {
+      failures.push(
+        `${toRelative(repositoryAccountsFile)}:${repositoryFunction.line} 存在 pub fn ${transaction.functionName}(...)，${transaction.label}事务不能由 repository owning`,
+      );
+    }
   }
 }
 
-function validateUsecaseOwnsSwitch(usecaseContent) {
+function validateUsecaseOwnsTransactions(usecaseContent) {
   const stripped = stripRustComments(usecaseContent);
-  const switchFunction = findPublicFunction(stripped, "switch_account");
-  if (!switchFunction) {
-    failures.push(`${toRelative(usecaseAccountsFile)} 缺少 pub fn switch_account(...)，账号切换事务应由 application/usecase owning`);
-    return;
-  }
+  for (const transaction of ownerTransactions) {
+    const usecaseFunction = findPublicFunction(stripped, transaction.functionName);
+    if (!usecaseFunction) {
+      failures.push(
+        `${toRelative(usecaseAccountsFile)} 缺少 pub fn ${transaction.functionName}(...)，${transaction.label}事务应由 application/usecase owning`,
+      );
+      continue;
+    }
 
-  const functionBody = findFunctionBody(stripped, switchFunction.index);
-  if (!functionBody) {
-    failures.push(`${toRelative(usecaseAccountsFile)}:${switchFunction.line} 无法解析 switch_account 函数体`);
-    return;
-  }
+    const functionBody = findFunctionBody(stripped, usecaseFunction.index);
+    if (!functionBody) {
+      failures.push(
+        `${toRelative(usecaseAccountsFile)}:${usecaseFunction.line} 无法解析 ${transaction.functionName} 函数体`,
+      );
+      continue;
+    }
 
-  if (/\baccounts_repository\s*::\s*switch_account\s*\(/.test(functionBody)) {
-    failures.push(
-      `${toRelative(usecaseAccountsFile)}:${switchFunction.line} switch_account 仍直接转发 accounts_repository::switch_account(...)，事务 owner 仍在 repository`,
+    const directForwardPattern = new RegExp(
+      `\\baccounts_repository\\s*::\\s*${transaction.functionName}\\s*\\(`,
     );
-  }
+    if (directForwardPattern.test(functionBody)) {
+      failures.push(
+        `${toRelative(usecaseAccountsFile)}:${usecaseFunction.line} ${transaction.functionName} 仍直接转发 accounts_repository::${transaction.functionName}(...)，事务 owner 仍在 repository`,
+      );
+    }
 
-  let ownerBody = functionBody;
-  if (/\bswitch_account_with_status\s*\(/.test(functionBody)) {
-    const sharedOwner = findPublicOrPrivateFunction(stripped, "switch_account_with_status");
-    if (sharedOwner) {
-      const sharedBody = findFunctionBody(stripped, sharedOwner.index);
-      if (sharedBody) {
-        ownerBody = `${functionBody}\n${sharedBody}`;
+    let ownerBody = functionBody;
+    if (transaction.sharedOwner && new RegExp(`\\b${transaction.sharedOwner}\\s*\\(`).test(functionBody)) {
+      const sharedOwner = findPublicOrPrivateFunction(stripped, transaction.sharedOwner);
+      if (sharedOwner) {
+        const sharedBody = findFunctionBody(stripped, sharedOwner.index);
+        if (sharedBody) {
+          ownerBody = `${functionBody}\n${sharedBody}`;
+        }
       }
     }
-  }
 
-  usecaseHelperEvidence = collectRepositoryHelperEvidence(ownerBody);
-  if (usecaseHelperEvidence.length === 0) {
-    failures.push(
-      `${toRelative(usecaseAccountsFile)}:${switchFunction.line} switch_account 函数体缺少 load/save/active/snapshot/restore/backup/mark 等 repository helper 调用证据`,
-    );
+    const helperEvidence = collectRepositoryHelperEvidence(ownerBody);
+    helperEvidenceByFunction.set(transaction.functionName, helperEvidence);
+    if (helperEvidence.length === 0) {
+      failures.push(
+        `${toRelative(usecaseAccountsFile)}:${usecaseFunction.line} ${transaction.functionName} 函数体缺少 load/save/active/snapshot/restore/backup/remove/registry 等 repository helper 调用证据`,
+      );
+    }
   }
 }
 
@@ -268,21 +296,23 @@ const repositoryContent = readRequiredUtf8(repositoryAccountsFile, "repository a
 const usecaseContent = readRequiredUtf8(usecaseAccountsFile, "application/usecase accounts owner 文件");
 
 if (repositoryContent.length > 0) {
-  validateRepositoryDoesNotOwnSwitch(repositoryContent);
+  validateRepositoryDoesNotOwnTransactions(repositoryContent);
 }
 
 if (usecaseContent.length > 0) {
-  validateUsecaseOwnsSwitch(usecaseContent);
+  validateUsecaseOwnsTransactions(usecaseContent);
 }
 
 if (failures.length > 0) {
-  console.error("FAIL 后端账号切换 owner 校验失败：");
+  console.error("FAIL 后端账号事务 owner 校验失败：");
   for (const failure of failures) {
     console.error(`- ${failure}`);
   }
   process.exit(1);
 }
 
-console.log(
-  `PASS 后端账号切换 owner 校验通过：repository 未暴露 switch_account 事务入口，application/usecase switch_account 已出现 repository helper 调用证据：${usecaseHelperEvidence.join(", ")}`,
-);
+console.log("PASS 后端账号事务 owner 校验通过：repository 未暴露 switch/remove/logout 用户动作事务入口。");
+for (const transaction of ownerTransactions) {
+  const evidence = helperEvidenceByFunction.get(transaction.functionName) ?? [];
+  console.log(`PASS ${transaction.label} usecase helper 证据：${evidence.join(", ")}`);
+}

@@ -1,7 +1,6 @@
 use crate::contracts::accounts::{
     AccountExportPayload, AccountImportPayload, AccountImportPreviewEntry,
-    AccountImportPreviewPayload, AccountSkippedPayload, AccountSummaryPayload, LogoutPayload,
-    RemovePayload,
+    AccountImportPreviewPayload, AccountSkippedPayload, AccountSummaryPayload,
 };
 use crate::contracts::BackendSkeletonStatus;
 use crate::core::error::CoreError;
@@ -54,83 +53,6 @@ pub fn load_account_summaries(repo: &Repository) -> Result<Vec<AccountSummaryPay
         .iter()
         .map(|item| summary_from_item(item, active.as_deref()))
         .collect())
-}
-
-pub fn remove_accounts(
-    repo: &Repository,
-    status: BackendSkeletonStatus,
-    account_keys: Vec<String>,
-) -> Result<RemovePayload, CoreError> {
-    let mut registry = load_registry(repo)?;
-    let previous_account_key = registry.active_key();
-    let requested = account_keys.into_iter().collect::<HashSet<_>>();
-    if requested.is_empty() {
-        return Ok(RemovePayload {
-            backend_status: status,
-            removed_account_keys: Vec::new(),
-            removed_count: 0,
-            previous_account_key,
-        });
-    }
-    if let Some(active) = previous_account_key.as_ref() {
-        if requested.contains(active) {
-            return Err(CoreError::InvalidInput(
-                "不能删除当前激活账号，请先切换或登出。".to_string(),
-            ));
-        }
-    }
-
-    let mut removed_account_keys = Vec::new();
-    let mut retained = Vec::new();
-    for item in registry.items {
-        if requested.contains(&item.account_key) {
-            let snapshot = snapshot_path(repo, &item);
-            if repo.fs().exists(&snapshot) {
-                repo.fs().remove_file(&snapshot)?;
-            }
-            removed_account_keys.push(item.account_key);
-        } else {
-            retained.push(item);
-        }
-    }
-    registry.items = retained;
-    save_registry(repo, &registry)?;
-
-    Ok(RemovePayload {
-        backend_status: status,
-        removed_count: removed_account_keys.len() as i32,
-        removed_account_keys,
-        previous_account_key,
-    })
-}
-
-pub fn logout(
-    repo: &Repository,
-    status: BackendSkeletonStatus,
-) -> Result<LogoutPayload, CoreError> {
-    let auth_backed_up = backup_auth_if_present(repo, None)?;
-    let auth_removed = if repo.fs().exists(&repo.paths().auth_path) {
-        repo.fs().remove_file(&repo.paths().auth_path)?;
-        true
-    } else {
-        false
-    };
-
-    let mut registry = load_registry(repo)?;
-    let had_active = registry.active_key().is_some();
-    registry.active_account_key = None;
-    for item in &mut registry.items {
-        item.active = false;
-    }
-    if had_active || repo.fs().exists(&repo.paths().registry_path) {
-        save_registry(repo, &registry)?;
-    }
-
-    Ok(LogoutPayload {
-        backend_status: status,
-        auth_removed,
-        auth_backed_up,
-    })
 }
 
 pub fn export_accounts_to_file(
@@ -376,6 +298,32 @@ pub(crate) fn ensure_snapshot_exists(repo: &Repository, path: &Path) -> Result<(
 
 pub(crate) fn copy_snapshot_to_auth(repo: &Repository, path: &Path) -> Result<(), CoreError> {
     repo.fs().copy_file(path, &repo.paths().auth_path)
+}
+
+pub(crate) fn remove_snapshot_if_present(
+    repo: &Repository,
+    item: &AccountRegistryItem,
+) -> Result<bool, CoreError> {
+    let snapshot = snapshot_path(repo, item);
+    if repo.fs().exists(&snapshot) {
+        repo.fs().remove_file(&snapshot)?;
+        Ok(true)
+    } else {
+        Ok(false)
+    }
+}
+
+pub(crate) fn registry_exists(repo: &Repository) -> bool {
+    repo.fs().exists(&repo.paths().registry_path)
+}
+
+pub(crate) fn remove_auth_if_present(repo: &Repository) -> Result<bool, CoreError> {
+    if repo.fs().exists(&repo.paths().auth_path) {
+        repo.fs().remove_file(&repo.paths().auth_path)?;
+        Ok(true)
+    } else {
+        Ok(false)
+    }
 }
 
 fn summary_from_item(

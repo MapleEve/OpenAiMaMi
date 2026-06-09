@@ -53,6 +53,13 @@ impl AccountRegistryDocument {
             item.active = item.account_key == account_key;
         }
     }
+
+    pub(crate) fn clear_active_account(&mut self) {
+        self.active_account_key = None;
+        for item in &mut self.items {
+            item.active = false;
+        }
+    }
 }
 
 // 单个账号条目只保存公开 registry 能还原出的字段，额外字段保持透传。
