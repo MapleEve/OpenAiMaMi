@@ -173,6 +173,32 @@ const SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECAR_NON_CLAIMS = [
   "不修改 gate-report 字段。",
   "不声明 implementation_use 或 full_leaf_100。",
 ];
+const MYSTERY_UNLOCK_GRANTS_CLOSEOUT_ID =
+  "mystery-unlock-grants-current-source-chain";
+const MYSTERY_UNLOCK_GRANTS_SIDECAR =
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/frontend-callchain-report.json";
+const MYSTERY_UNLOCK_GRANTS_GATE_REPORT =
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json";
+const MYSTERY_UNLOCK_GRANTS_COMMANDS = [
+  "get_mystery_unlock_grants",
+  "merge_mystery_unlock_grants",
+];
+const MYSTERY_UNLOCK_GRANTS_GATE_FAILURE_KEYS = [
+  `${MYSTERY_UNLOCK_GRANTS_GATE_REPORT}\u0000leaves.get_mystery_unlock_grants.gate_accepted\u0000false`,
+  `${MYSTERY_UNLOCK_GRANTS_GATE_REPORT}\u0000leaves.get_mystery_unlock_grants.implementation_use\u0000false`,
+  `${MYSTERY_UNLOCK_GRANTS_GATE_REPORT}\u0000leaves.merge_mystery_unlock_grants.gate_accepted\u0000false`,
+  `${MYSTERY_UNLOCK_GRANTS_GATE_REPORT}\u0000leaves.merge_mystery_unlock_grants.implementation_use\u0000false`,
+];
+const MYSTERY_UNLOCK_GRANTS_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "sidecarReports",
+  "requiredSourceSignals",
+  "closedGateReportFailures",
+  "nonClaims",
+  "reason",
+];
 const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID =
   "bootstrap-system-current-source-reconcile-sidecars";
 const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_SIDECARS = [
@@ -917,6 +943,87 @@ function validateSystemHotspotUsageMysteryCloseout(closeout) {
   validateRequiredSignals(closeout);
 }
 
+function validateMysteryUnlockGrantsCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, MYSTERY_UNLOCK_GRANTS_ALLOWED_FIELDS);
+  if (closeout.module !== "mystery-unlock-grants") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} sidecarReports`,
+    closeout.sidecarReports ?? [],
+    [MYSTERY_UNLOCK_GRANTS_SIDECAR],
+  );
+  validateSidecarReports(closeout);
+
+  const sidecar = readJson(repoPath(MYSTERY_UNLOCK_GRANTS_SIDECAR));
+  validateStringArraySet(
+    `${MYSTERY_UNLOCK_GRANTS_SIDECAR} current_source_ipc_commands`,
+    sidecar.current_source_ipc_commands ?? [],
+    MYSTERY_UNLOCK_GRANTS_COMMANDS,
+  );
+  validateStringArraySet(
+    `${MYSTERY_UNLOCK_GRANTS_SIDECAR} gate_report_helper_gaps`,
+    sidecar.gate_report_helper_gaps ?? [],
+    ["mystery_route_allowed"],
+  );
+
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  validateStringArraySet(
+    `${closeout.id} closedGateReportFailures`,
+    [...actualGateFailureKeys],
+    MYSTERY_UNLOCK_GRANTS_GATE_FAILURE_KEYS,
+  );
+  validateClosedGateReportFailures(closeout);
+
+  for (const entry of closeout.closedGateReportFailures ?? []) {
+    if (
+      entry.path.includes("mystery_route_allowed") ||
+      entry.path === "gate_accepted" ||
+      entry.path === "implementation_use" ||
+      entry.path === "dim6_missing" ||
+      entry.path.startsWith("cluster_gate_summary")
+    ) {
+      failures.push(`${closeout.id} 不允许登记 mystery 聚合或 helper gate：${entry.path}`);
+    }
+  }
+
+  const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
+  for (const required of [
+    "不修改 gate-report",
+    "不声明 raw/internal dim6 已补齐",
+    "不声明 implementation_use、gate_accepted 或 full_leaf_100 已恢复",
+    "不登记 mystery_route_allowed",
+    "不登记 top-level、cluster summary 或 dim6 gate 字段",
+  ]) {
+    if (!nonClaimsText.includes(required)) {
+      failures.push(`${closeout.id} nonClaims 缺少声明：${required}`);
+    }
+  }
+
+  const reason = closeout.reason ?? "";
+  for (const required of [
+    "current-source partial closeout",
+    "get_mystery_unlock_grants",
+    "merge_mystery_unlock_grants",
+    "mystery_route_allowed",
+    "full_leaf_100",
+  ]) {
+    if (!reason.includes(required)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${required}`);
+    }
+  }
+
+  validateRequiredSignals(closeout);
+}
+
 function validateBootstrapSystemCurrentSourceSidecar(report) {
   const path = repoPath(report);
   if (!existsSync(path)) {
@@ -1514,6 +1621,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateRelayCurrentSourceSkeletonCloseout(closeout);
   } else if (closeout.id === SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID) {
     validateSystemHotspotUsageMysteryCloseout(closeout);
+  } else if (closeout.id === MYSTERY_UNLOCK_GRANTS_CLOSEOUT_ID) {
+    validateMysteryUnlockGrantsCloseout(closeout);
   } else if (closeout.id === BOOTSTRAP_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateBootstrapSystemCurrentSourceCloseout(closeout);
   } else if (closeout.id === WINDOWS_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID) {
