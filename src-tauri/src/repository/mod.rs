@@ -3,6 +3,7 @@ pub mod adapter;
 pub mod analytics;
 pub mod config;
 pub mod custom_instructions;
+pub mod diagnostics;
 pub mod mcp;
 pub mod path_guard;
 pub mod paths;

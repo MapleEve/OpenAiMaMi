@@ -487,10 +487,46 @@ export interface DaemonRunPayload {
   serviceState: AutoSwitchRuntimeState;
 }
 
+export type DiagnosticSkeletonCheckState =
+  | "pending"
+  | "not_checked"
+  | "unsupported"
+  | "restored";
+
+export interface DiagnosticSkeletonStatePayload {
+  checked: boolean;
+  state: DiagnosticSkeletonCheckState;
+  detail: string | null;
+}
+
+export interface DiagnoseDiagnosticProbePayload {
+  path: string;
+  exists: boolean;
+  count: number | null;
+  statusCode: string;
+  message: string;
+}
+
+export interface DiagnoseDiagnosticSnapshotPayload {
+  rootPath: string;
+  sourcePath: string;
+  statusCode: string;
+  message: string;
+  probes: DiagnoseDiagnosticProbePayload[];
+}
+
+export interface DiagnoseDiagnosticFieldPayload {
+  field: string;
+  status: string;
+  detail: string | null;
+}
+
 export interface DiagnosePayload {
+  backendStatus: BackendSkeletonStatus;
+  checkedAt?: string | number | null;
   paths: AppPathState;
   coreVersion: string;
-  platform: { os: string; arch: string };
+  platform: { os: string; arch: string; infoSource: string };
   registryState: { accountCount: number };
   sessionState: { latestRolloutFound: boolean };
   apiState: {
@@ -503,6 +539,11 @@ export interface DiagnosePayload {
     lastNameFailure: string | null;
     lastNameFailureAccount: string | null;
   };
+  diagnosticSnapshot: DiagnoseDiagnosticSnapshotPayload;
+  pendingDiagnostics: DiagnoseDiagnosticFieldPayload[];
+  repositoryState?: DiagnosticSkeletonStatePayload;
+  platformState?: DiagnosticSkeletonStatePayload;
+  diagnosticBoundary?: string;
 }
 
 export interface CoreEnvelope<T> {
@@ -811,10 +852,15 @@ export interface RelayDiagnosticIssuePayload {
 }
 
 export interface RelayDiagnosticPayload {
-  backendStatus?: BackendSkeletonStatus;
+  backendStatus: BackendSkeletonStatus;
+  checkedAt: string | null;
   ok: boolean;
   codexProviderCount: number;
   catalogPath: string | null;
+  sourcePath: string;
+  catalogSourcePath: string | null;
+  diagnosticBoundary: string;
+  pending: boolean;
   catalogExists: boolean;
   configTomlHasRouter: boolean;
   configTomlHasCatalog: boolean;
@@ -828,6 +874,8 @@ export interface RelayDiagnosticPayload {
   issues: RelayDiagnosticIssuePayload[];
   items: RelayDiagnosticIssuePayload[];
   summary: string;
+  repositoryState?: DiagnosticSkeletonStatePayload;
+  platformState?: DiagnosticSkeletonStatePayload;
 }
 
 export interface RelayRouterIssueFixPayload {

@@ -381,8 +381,10 @@ function validateRelayMockPayloadHandlers() {
     "commands.ts",
   );
   const ipcCommandsPath = path.join(repoRoot, "src", "contracts", "ipc", "commands.ts");
+  const typesPath = path.join(repoRoot, "src", "types", "index.ts");
   const commandFixtureText = readRequired(commandFixturePath);
   const ipcCommandsText = readRequired(ipcCommandsPath);
+  const typesText = readRequired(typesPath);
   const relayCommands = [
     ...ipcCommandsText.matchAll(
       /\{\s*"domain":\s*"relay"[\s\S]*?"command":\s*"([^"]+)"/g,
@@ -402,6 +404,29 @@ function validateRelayMockPayloadHandlers() {
     "RelayExtraHeaders",
     "readRelayExtraHeaders(input.extraHeaders)",
     "relayDiagnosticFromStatus",
+    "ok: false",
+    "checkedAt: null",
+    "sourcePath: \"\"",
+    "catalogSourcePath: null",
+    "pending: true",
+    "summary: \"Skeleton diagnostic pending; no repository or platform checks were executed.\"",
+    "repositoryState: diagnosticSkeletonState()",
+    "platformState: diagnosticSkeletonState()",
+    "diagnosticBoundary: \"skeleton\"",
+  ]);
+
+  assertIncludes("src/types/index.ts", typesText, [
+    "export interface RelayDiagnosticPayload",
+    "backendStatus: BackendSkeletonStatus;",
+    "checkedAt: string | null;",
+    "sourcePath: string;",
+    "catalogSourcePath: string | null;",
+    "diagnosticBoundary: string;",
+    "pending: boolean;",
+    "config_toml_has_router?: boolean;",
+    "config_toml_has_catalog?: boolean;",
+    "repositoryState?: DiagnosticSkeletonStatePayload;",
+    "platformState?: DiagnosticSkeletonStatePayload;",
   ]);
 
   if (commandFixtureText.includes("input.extraHeaders as string | Record<string, string>")) {
@@ -622,6 +647,7 @@ function validateMaintenanceSystemWindowEvidence() {
     "commands.ts",
   );
   const systemServicePath = path.join(repoRoot, "src", "services", "system", "index.ts");
+  const typesPath = path.join(repoRoot, "src", "types", "index.ts");
   const maintenanceServicePath = path.join(
     repoRoot,
     "src",
@@ -631,6 +657,7 @@ function validateMaintenanceSystemWindowEvidence() {
   );
   const commandFixtureText = readRequired(commandFixturePath);
   const systemServiceText = readRequired(systemServicePath);
+  const typesText = readRequired(typesPath);
   const maintenanceServiceText = readRequired(maintenanceServicePath);
   const requiredHandlers = [
     ["clean", "cleanHandler"],
@@ -652,9 +679,18 @@ function validateMaintenanceSystemWindowEvidence() {
     "RebuildRegistryPayload",
     "DiagnosePayload",
     "UpdateInstallabilityPayload",
+    "function diagnosticSkeletonState",
     "const cleanHandler",
     "const rebuildRegistryHandler",
     "const diagnoseHandler",
+    "backendStatus: envelope.data.status",
+    "checkedAt: null",
+    "infoSource: \"mock\"",
+    "diagnosticSnapshot:",
+    "pendingDiagnostics:",
+    "repositoryState: diagnosticSkeletonState()",
+    "platformState: diagnosticSkeletonState()",
+    "diagnosticBoundary: \"skeleton\"",
     "const updateInstallabilityHandler",
     "const daemonAutoSwitchCommandHandlers",
     "const maintenanceCommandHandlers",
@@ -669,6 +705,18 @@ function validateMaintenanceSystemWindowEvidence() {
       failures.push(`src/mocks/fixtures/commands.ts 缺少 maintenance/system/window 专用 handler：${command}`);
     }
   }
+
+  assertIncludes("src/types/index.ts", typesText, [
+    "export interface DiagnosePayload",
+    "backendStatus: BackendSkeletonStatus;",
+    "checkedAt?: string | number | null;",
+    "platform: { os: string; arch: string; infoSource: string };",
+    "diagnosticSnapshot: DiagnoseDiagnosticSnapshotPayload;",
+    "pendingDiagnostics: DiagnoseDiagnosticFieldPayload[];",
+    "repositoryState?: DiagnosticSkeletonStatePayload;",
+    "platformState?: DiagnosticSkeletonStatePayload;",
+    "diagnosticBoundary?: string;",
+  ]);
 
   assertIncludes("src/services/system/index.ts", systemServiceText, [
     'invokeIpc<CoreEnvelope<BootstrapStatePayload>>("load_bootstrap_state")',
