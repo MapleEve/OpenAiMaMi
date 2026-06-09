@@ -85,8 +85,31 @@ const SYSTEM_HOTSPOT_USAGE_MYSTERY_ALLOWED_FIELDS = [
   "status",
   "sidecarReports",
   "requiredSourceSignals",
+  "closedGateReportFailures",
   "nonClaims",
   "reason",
+];
+const SYSTEM_HOTSPOT_USAGE_GATE_FAILURE_KEYS = [
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json\u0000gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json\u0000implementation_use\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json\u0000dim6_missing\u0000true",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json\u0000leaves.get_hotspot_enabled.gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json\u0000leaves.get_hotspot_enabled.implementation_use\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json\u0000leaves.set_hotspot_enabled.gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json\u0000leaves.set_hotspot_enabled.implementation_use\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json\u0000leaves.hotspot_ready.gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json\u0000leaves.hotspot_ready.implementation_use\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json\u0000cluster_gate_summary.readyToImplement\u00000",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json\u0000gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json\u0000implementation_use\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json\u0000dim6_missing\u0000true",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json\u0000leaves.get_usage_refresh_interval.gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json\u0000leaves.get_usage_refresh_interval.implementation_use\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json\u0000leaves.set_usage_refresh_interval.gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json\u0000leaves.set_usage_refresh_interval.implementation_use\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json\u0000leaves.refresh_usage_snapshot.gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json\u0000leaves.refresh_usage_snapshot.implementation_use\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json\u0000cluster_gate_summary.readyToImplement\u00000",
 ];
 const SYSTEM_HOTSPOT_USAGE_MYSTERY_REQUIRED_SIGNAL_FILES = [
   ...SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECARS,
@@ -114,10 +137,10 @@ const SYSTEM_HOTSPOT_USAGE_MYSTERY_NON_CLAIMS = [
   "不声明全量叶子验收完成。",
   "不声明后端平台实现、真实业务逻辑或 raw/internal dim6 已经恢复。",
   "不修改任何 gate-report 字段。",
-  "不新增 closedGateReportFailures 或 closedManifestStatuses 降噪。",
+  "只把 Windows system-hotspot 与 system-usage 两组真实 IPC 的 current-source 前端链路和已有后端骨架边界纳入 strict leaf-copy partial closeout。",
   "不声明 implementation_use 或 full_leaf_100。",
   "不把 mystery_route_allowed 当作当前公开源码 IPC 命令，也不声明其已关闭。",
-  "不修改 leaf-copy allowlist，remaining failures 必须保持 103。",
+  "不纳入 mystery-unlock 的 gate-report 失败字段，不处理 mystery_route_allowed。",
 ];
 const SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECAR_NON_CLAIMS = [
   "不声明全量叶子验收完成。",
@@ -315,11 +338,36 @@ function validateClosedGateReportFailures(closeout) {
     if (path.endsWith("full_leaf_100")) {
       failures.push(`${closeout.id} closedGateReportFailures 不允许登记 full_leaf_100 噪声条目：${report} ${path}`);
     }
-    if (!classifications.has(classification)) {
+    const allowedClassifications =
+      closeout.id === SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID
+        ? new Set([...classifications, "范围选择"])
+        : classifications;
+    if (!allowedClassifications.has(classification)) {
       failures.push(`${closeout.id} ${report} ${path} classification=${String(classification)}`);
     }
     if (typeof reason !== "string" || reason.trim().length === 0) {
       failures.push(`${closeout.id} ${report} ${path} 缺少 reason`);
+    }
+    if (
+      closeout.id === SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID &&
+      classification !== "范围选择"
+    ) {
+      failures.push(`${closeout.id} ${report} ${path} classification 必须使用中文范围选择`);
+    }
+    if (
+      closeout.id === SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID &&
+      (report.includes("mystery") || path.includes("mystery"))
+    ) {
+      failures.push(`${closeout.id} 不允许登记 mystery gate key：${report} ${path}`);
+    }
+    if (
+      closeout.id === SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID &&
+      (!reason.includes("current-source") ||
+        (!reason.includes("前端链路") && !reason.includes("前端调用链")) ||
+        !reason.includes("后端骨架") ||
+        reason.includes("full leaf"))
+    ) {
+      failures.push(`${closeout.id} ${report} ${path} reason 必须声明 current-source 前端链路、后端骨架和 partial closeout 边界`);
     }
 
     const key = `${report}\u0000${path}\u0000${JSON.stringify(value)}`;
@@ -754,6 +802,18 @@ function validateSystemHotspotUsageMysteryCloseout(closeout) {
     mysterySidecar.gate_report_helper_gaps,
     ["mystery_route_allowed"],
   );
+
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  validateStringArraySet(
+    `${closeout.id} closedGateReportFailures`,
+    [...actualGateFailureKeys],
+    SYSTEM_HOTSPOT_USAGE_GATE_FAILURE_KEYS,
+  );
+  validateClosedGateReportFailures(closeout);
 
   const nonClaims = closeout.nonClaims ?? [];
   for (const required of SYSTEM_HOTSPOT_USAGE_MYSTERY_NON_CLAIMS) {
