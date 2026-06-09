@@ -1,0 +1,67 @@
+{
+  "id": "windows-1.0.9-system-current-source-sidecar",
+  "module": "system",
+  "status": "current-source-frontend-chain-and-gaps-recorded-non-gating",
+  "full_leaf": false,
+  "gate_report_fields_unchanged": true,
+  "backend_platform_evidence_required": true,
+  "currentSourceSignals": {
+    "commands": [
+      "force_kill_codex",
+      "diagnose",
+      "diagnose_codex_router"
+    ],
+    "chains": [
+      {
+        "command": "force_kill_codex",
+        "files": [
+          "src/contracts/ipc/commands.ts",
+          "src/services/system/index.ts",
+          "src/services/maintenance/index.ts",
+          "src/features/maintenance/hooks/mutation.ts",
+          "src/features/maintenance/hooks/page.ts",
+          "src/mocks/fixtures/commands.ts",
+          "src-tauri/src/lib.rs",
+          "src-tauri/src/commands/system.rs",
+          "src-tauri/src/application/usecase/system.rs"
+        ],
+        "说明": "当前公开源码可见 force_kill_codex 的 IPC、system/maintenance service、mutation/page、mock、Rust command 和 usecase 骨架链路；usecase 仍返回未恢复语义。"
+      },
+      {
+        "command": "diagnose",
+        "files": [
+          "src/contracts/ipc/commands.ts",
+          "src/services/system/index.ts",
+          "src/services/maintenance/index.ts",
+          "src/features/maintenance/hooks/mutation.ts",
+          "src/mocks/fixtures/commands.ts",
+          "src-tauri/src/lib.rs",
+          "src-tauri/src/commands/system.rs",
+          "src-tauri/src/application/usecase/system.rs"
+        ],
+        "说明": "当前公开源码可见 diagnose 的 IPC、system/maintenance service、mutation、mock、Rust command 和 usecase 骨架链路；页面诊断入口仍以路由诊断弹窗为主。"
+      },
+      {
+        "command": "diagnose_codex_router",
+        "files": [
+          "src/contracts/ipc/commands.ts",
+          "src/services/relay/index.ts",
+          "src/lib/api.ts",
+          "src/mocks/fixtures/commands.ts",
+          "src-tauri/src/lib.rs",
+          "src-tauri/src/commands/relay.rs",
+          "src-tauri/src/application/usecase/relay.rs"
+        ],
+        "说明": "当前公开源码可见 diagnose_codex_router 的 IPC、relay service、API facade、mock、Rust relay command 和 usecase 骨架链路；本 sidecar 只记录当前源码链路与缺口。"
+      }
+    ]
+  },
+  "nonClaims": [
+    "不声明全量叶子验收完成。",
+    "不修改 gate-report 字段。",
+    "不新增 closedGateReportFailures 或 closedManifestStatuses。",
+    "不声明 implementation_use、gate_accepted 或 full_leaf_100。",
+    "不声明真实平台能力已经恢复。"
+  ],
+  "reason": "本 sidecar 只记录 windows system 相关 force_kill_codex、diagnose 和 diagnose_codex_router 的当前公开源码链路与缺口；它是非 gating evidence，不提升任何 gate 状态，也不声明真实平台能力已经恢复。"
+}

@@ -1,0 +1,65 @@
+{
+  "id": "macos-1.0.9-system-current-source-gap-sidecar",
+  "module": "system",
+  "status": "current-source-gap-recorded-non-gating",
+  "full_leaf": false,
+  "gate_report_fields_unchanged": true,
+  "backend_platform_evidence_required": true,
+  "currentSourceSignals": {
+    "missingWatcherScheduleSignals": [
+      {
+        "signal": "note_usage_refresh_activity",
+        "searchedScopes": [
+          "src",
+          "src-tauri",
+          "scripts"
+        ],
+        "说明": "当前公开源码未定位到该 watcher 或 schedule 信号；本 sidecar 只登记缺口。"
+      },
+      {
+        "signal": "schedule_full_runtime_refresh",
+        "searchedScopes": [
+          "src",
+          "src-tauri",
+          "scripts"
+        ],
+        "说明": "当前公开源码未定位到该 watcher 或 schedule 信号；本 sidecar 只登记缺口。"
+      },
+      {
+        "signal": "start_auto_switch_pending_watcher",
+        "searchedScopes": [
+          "src",
+          "src-tauri",
+          "scripts"
+        ],
+        "说明": "当前公开源码未定位到该 watcher 或 schedule 信号；本 sidecar 只登记缺口。"
+      },
+      {
+        "signal": "start_usage_refresh_watcher",
+        "searchedScopes": [
+          "src",
+          "src-tauri",
+          "scripts"
+        ],
+        "说明": "当前公开源码未定位到该 watcher 或 schedule 信号；本 sidecar 只登记缺口。"
+      },
+      {
+        "signal": "update_usage_refresh_schedule",
+        "searchedScopes": [
+          "src",
+          "src-tauri",
+          "scripts"
+        ],
+        "说明": "当前公开源码未定位到该 watcher 或 schedule 信号；本 sidecar 只登记缺口。"
+      }
+    ]
+  },
+  "nonClaims": [
+    "不声明全量叶子验收完成。",
+    "不修改 gate-report 字段。",
+    "不新增 closedGateReportFailures 或 closedManifestStatuses。",
+    "不声明 implementation_use、gate_accepted 或 full_leaf_100。",
+    "不声明 watcher 或 schedule 当前源码链路已经补齐。"
+  ],
+  "reason": "本 sidecar 只记录 macos system watcher 或 schedule 的当前公开源码缺口：note_usage_refresh_activity、schedule_full_runtime_refresh、start_auto_switch_pending_watcher、start_usage_refresh_watcher 和 update_usage_refresh_schedule；它是非 gating evidence，不提升任何 gate 状态。"
+}
