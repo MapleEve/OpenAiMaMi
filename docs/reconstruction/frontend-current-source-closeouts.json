@@ -2179,6 +2179,150 @@
       "reason": "current-source partial closeout 只把 macOS 与 Windows bootstrap 的 load_bootstrap_state、load_pending_auto_switch、pending confirm/dismiss 和 load_snapshot 当前源码链路登记进 strict leaf-copy 的已知残留；这解释为什么前端源码已经落地但 raw/internal gate 仍未闭合。它不声明 raw/internal gate 已通过，不登记 full_leaf_100，不处理 dim6、system watcher、system-shell-init、relay、mystery 或 voice。"
     },
     {
+      "id": "system-runtime-watcher-current-source-skeleton-chain",
+      "module": "system-runtime-watcher",
+      "status": "current-source-closed-partial",
+      "sidecarReports": [
+        "evidence/full-chain/internal/audits/audits/macos-1.0.9-system/frontend-callchain-report.json"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system/frontend-callchain-report.json",
+          "includes": [
+            "current-source-runtime-watcher-skeleton-recorded-non-gating",
+            "\"note_usage_refresh_activity\"",
+            "\"schedule_full_runtime_refresh\"",
+            "\"start_auto_switch_pending_watcher\"",
+            "\"start_usage_refresh_watcher\"",
+            "\"update_usage_refresh_schedule\"",
+            "不声明 watcher、schedule、condvar、后台线程、runtime event 或真实平台副作用已经恢复",
+            "不声明这 5 个 watcher / schedule 信号有直接前端 IPC 入口"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/system.rs",
+          "includes": [
+            "pub fn note_usage_refresh_activity",
+            "pub fn schedule_full_runtime_refresh",
+            "pub fn start_auto_switch_pending_watcher",
+            "pub fn start_usage_refresh_watcher",
+            "pub fn update_usage_refresh_schedule",
+            "runtime_watcher_decision(repo, RuntimeWatcherSignal::UpdateUsageRefreshSchedule).ok()",
+            "runtime_repository::load_runtime_watcher_snapshot(repo)?",
+            "RuntimePlatformAdapter",
+            "runtime_core::note_usage_refresh_activity",
+            "runtime_core::schedule_full_runtime_refresh",
+            "runtime_core::start_auto_switch_pending_watcher",
+            "runtime_core::start_usage_refresh_watcher",
+            "runtime_core::update_usage_refresh_schedule"
+          ]
+        },
+        {
+          "file": "src-tauri/src/core/runtime.rs",
+          "includes": [
+            "pub fn note_usage_refresh_activity",
+            "pub fn schedule_full_runtime_refresh",
+            "pub fn start_auto_switch_pending_watcher",
+            "pub fn start_usage_refresh_watcher",
+            "pub fn update_usage_refresh_schedule",
+            "RuntimeWatcherStatusCode::PendingSkeleton",
+            "RuntimeWatcherStatusCode::StartOnlySkeleton",
+            "RuntimeWatcherStatusCode::ScheduleUpdateSkeleton",
+            "RuntimeWatcherStartMode::ProductDecision"
+          ]
+        },
+        {
+          "file": "src-tauri/src/core/model/runtime.rs",
+          "includes": [
+            "pub enum RuntimeWatcherSignal",
+            "NoteUsageRefreshActivity",
+            "ScheduleFullRuntimeRefresh",
+            "StartAutoSwitchPendingWatcher",
+            "StartUsageRefreshWatcher",
+            "UpdateUsageRefreshSchedule",
+            "pub struct RuntimeWatcherDecision",
+            "pub struct RuntimeWatcherPlatformCapability"
+          ]
+        },
+        {
+          "file": "src-tauri/src/repository/runtime.rs",
+          "includes": [
+            "pub fn load_runtime_watcher_snapshot",
+            "settings_repository::load_app_settings(repo)?",
+            "UsageRefreshInterval::parse",
+            "RuntimeWatcherSnapshot"
+          ]
+        },
+        {
+          "file": "src-tauri/src/platform/runtime.rs",
+          "includes": [
+            "pub(crate) struct RuntimePlatformAdapter",
+            "runtime_watcher_capability",
+            "condvar_available: true",
+            "thread_watcher_available: true",
+            "schedule_notify_available: false",
+            "creates_thread: false",
+            "emits_event: false",
+            "touches_user_environment: false"
+          ]
+        },
+        {
+          "file": "docs/reconstruction/system-runtime-watchers-current-source-map.md",
+          "includes": [
+            "当前源码已经补齐后端六边形 watcher 骨架",
+            "不声明真实闭源行为已经恢复",
+            "不允许登记 `implementation_use`、`gate_accepted`、`full_leaf_100`、dim6 或聚合门"
+          ]
+        }
+      ],
+      "closedGateReportFailures": [
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system/gate-report.json",
+          "path": "per_command_gate.note_usage_refresh_activity.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "current-source partial closeout 只登记 note_usage_refresh_activity 已有后端六边形 watcher 骨架；raw/internal gate-report 保持原值，不声明 readyToImplement 已恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system/gate-report.json",
+          "path": "per_command_gate.schedule_full_runtime_refresh.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "current-source partial closeout 只登记 schedule_full_runtime_refresh 已有后端六边形 watcher 骨架；raw/internal gate-report 保持原值，不声明 readyToImplement 已恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system/gate-report.json",
+          "path": "per_command_gate.start_auto_switch_pending_watcher.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "current-source partial closeout 只登记 start_auto_switch_pending_watcher 已有后端六边形 watcher 骨架；raw/internal gate-report 保持原值，不声明 readyToImplement 已恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system/gate-report.json",
+          "path": "per_command_gate.start_usage_refresh_watcher.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "current-source partial closeout 只登记 start_usage_refresh_watcher 已有后端六边形 watcher 骨架；raw/internal gate-report 保持原值，不声明 readyToImplement 已恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system/gate-report.json",
+          "path": "per_command_gate.update_usage_refresh_schedule.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "current-source partial closeout 只登记 update_usage_refresh_schedule 已有后端六边形 watcher 骨架；raw/internal gate-report 保持原值，不声明 readyToImplement 已恢复。"
+        }
+      ],
+      "nonClaims": [
+        "不修改 gate-report 字段。",
+        "不声明 raw/internal gate 已通过。",
+        "不登记 implementation_use、gate_accepted、full_leaf_100、dim6 或聚合门。",
+        "不声明真实 watcher、condvar、后台线程、runtime event 或平台副作用已经恢复。",
+        "不声明这 5 个 watcher / schedule 信号有直接前端 IPC 入口。",
+        "不处理 system-shell-init、relay、mystery 或 voice。"
+      ],
+      "reason": "current-source partial closeout 只把 macOS system 的 note_usage_refresh_activity、schedule_full_runtime_refresh、start_auto_switch_pending_watcher、start_usage_refresh_watcher 和 update_usage_refresh_schedule 后端六边形 watcher 骨架登记进 strict leaf-copy 的已知 readyToImplement 残留；它不声明 raw/internal gate 已通过，不登记 implementation_use、gate_accepted、full_leaf_100、dim6 或聚合门。"
+    },
+    {
       "id": "windows-system-current-source-strict-chain",
       "module": "windows-system",
       "status": "current-source-closed-partial",

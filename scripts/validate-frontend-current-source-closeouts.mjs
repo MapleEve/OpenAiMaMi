@@ -266,6 +266,34 @@ const BOOTSTRAP_CURRENT_SOURCE_ALLOWED_FIELDS = [
   "nonClaims",
   "reason",
 ];
+const SYSTEM_WATCHER_CURRENT_SOURCE_CLOSEOUT_ID =
+  "system-runtime-watcher-current-source-skeleton-chain";
+const SYSTEM_WATCHER_CURRENT_SOURCE_SIDECAR =
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-system/frontend-callchain-report.json";
+const SYSTEM_WATCHER_CURRENT_SOURCE_GATE_REPORT =
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-system/gate-report.json";
+const SYSTEM_WATCHER_CURRENT_SOURCE_SIGNALS = [
+  "note_usage_refresh_activity",
+  "schedule_full_runtime_refresh",
+  "start_auto_switch_pending_watcher",
+  "start_usage_refresh_watcher",
+  "update_usage_refresh_schedule",
+];
+const SYSTEM_WATCHER_CURRENT_SOURCE_GATE_FAILURE_KEYS =
+  SYSTEM_WATCHER_CURRENT_SOURCE_SIGNALS.map(
+    (signal) =>
+      `${SYSTEM_WATCHER_CURRENT_SOURCE_GATE_REPORT}\u0000per_command_gate.${signal}.readyToImplement\u0000false`,
+  );
+const SYSTEM_WATCHER_CURRENT_SOURCE_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "sidecarReports",
+  "requiredSourceSignals",
+  "closedGateReportFailures",
+  "nonClaims",
+  "reason",
+];
 const WINDOWS_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID =
   "windows-system-current-source-strict-chain";
 const WINDOWS_SYSTEM_CURRENT_SOURCE_SIDECAR =
@@ -1206,6 +1234,120 @@ function validateBootstrapCurrentSourceGateCloseout(closeout) {
   validateRequiredSignals(closeout);
 }
 
+function validateSystemWatcherCurrentSourceCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, SYSTEM_WATCHER_CURRENT_SOURCE_ALLOWED_FIELDS);
+  if (closeout.module !== "system-runtime-watcher") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} sidecarReports`,
+    closeout.sidecarReports ?? [],
+    [SYSTEM_WATCHER_CURRENT_SOURCE_SIDECAR],
+  );
+  validateSidecarReports(closeout);
+
+  const sidecar = readJson(repoPath(SYSTEM_WATCHER_CURRENT_SOURCE_SIDECAR));
+  if (sidecar.status !== "current-source-runtime-watcher-skeleton-recorded-non-gating") {
+    failures.push(`${SYSTEM_WATCHER_CURRENT_SOURCE_SIDECAR} status=${String(sidecar.status)}`);
+  }
+  if (sidecar.full_leaf !== false) {
+    failures.push(`${SYSTEM_WATCHER_CURRENT_SOURCE_SIDECAR} full_leaf=${String(sidecar.full_leaf)}`);
+  }
+  if (sidecar.gate_report_fields_unchanged !== true) {
+    failures.push(
+      `${SYSTEM_WATCHER_CURRENT_SOURCE_SIDECAR} gate_report_fields_unchanged=${String(
+        sidecar.gate_report_fields_unchanged,
+      )}`,
+    );
+  }
+  if (sidecar.backend_platform_evidence_required !== true) {
+    failures.push(
+      `${SYSTEM_WATCHER_CURRENT_SOURCE_SIDECAR} backend_platform_evidence_required=${String(
+        sidecar.backend_platform_evidence_required,
+      )}`,
+    );
+  }
+
+  const sidecarText = JSON.stringify(sidecar);
+  for (const signal of SYSTEM_WATCHER_CURRENT_SOURCE_SIGNALS) {
+    if (!sidecarText.includes(signal)) {
+      failures.push(`${SYSTEM_WATCHER_CURRENT_SOURCE_SIDECAR} 缺少 watcher 信号：${signal}`);
+    }
+  }
+  for (const required of [
+    "src-tauri/src/application/usecase/system.rs",
+    "src-tauri/src/core/runtime.rs",
+    "src-tauri/src/core/model/runtime.rs",
+    "src-tauri/src/repository/runtime.rs",
+    "src-tauri/src/platform/runtime.rs",
+    "不声明 watcher、schedule、condvar、后台线程、runtime event 或真实平台副作用已经恢复",
+    "不声明这 5 个 watcher / schedule 信号有直接前端 IPC 入口",
+  ]) {
+    if (!sidecarText.includes(required)) {
+      failures.push(`${SYSTEM_WATCHER_CURRENT_SOURCE_SIDECAR} 缺少边界声明：${required}`);
+    }
+  }
+
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  validateStringArraySet(
+    `${closeout.id} closedGateReportFailures`,
+    [...actualGateFailureKeys],
+    SYSTEM_WATCHER_CURRENT_SOURCE_GATE_FAILURE_KEYS,
+  );
+  validateClosedGateReportFailures(closeout);
+
+  for (const entry of closeout.closedGateReportFailures ?? []) {
+    if (
+      entry.path.includes("implementation_use") ||
+      entry.path.includes("gate_accepted") ||
+      entry.path.includes("full_leaf_100") ||
+      entry.path.includes("dim6") ||
+      entry.path.includes("summary")
+    ) {
+      failures.push(`${closeout.id} 不允许登记非 readyToImplement watcher gate：${entry.path}`);
+    }
+  }
+
+  const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
+  for (const required of [
+    "不修改 gate-report",
+    "不声明 raw/internal gate 已通过",
+    "不登记 implementation_use、gate_accepted、full_leaf_100、dim6 或聚合门",
+    "不声明真实 watcher、condvar、后台线程、runtime event 或平台副作用已经恢复",
+    "不声明这 5 个 watcher / schedule 信号有直接前端 IPC 入口",
+  ]) {
+    if (!nonClaimsText.includes(required)) {
+      failures.push(`${closeout.id} nonClaims 缺少声明：${required}`);
+    }
+  }
+
+  const reason = closeout.reason ?? "";
+  for (const required of [
+    "current-source partial closeout",
+    "note_usage_refresh_activity",
+    "schedule_full_runtime_refresh",
+    "start_auto_switch_pending_watcher",
+    "start_usage_refresh_watcher",
+    "update_usage_refresh_schedule",
+    "readyToImplement",
+    "full_leaf_100",
+  ]) {
+    if (!reason.includes(required)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${required}`);
+    }
+  }
+
+  validateRequiredSignals(closeout);
+}
+
 function validateWindowsSystemCurrentSourceCloseout(closeout) {
   validateAllowedCloseoutFields(closeout, WINDOWS_SYSTEM_CURRENT_SOURCE_ALLOWED_FIELDS);
   if (closeout.module !== "windows-system") {
@@ -1747,6 +1889,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateBootstrapSystemCurrentSourceCloseout(closeout);
   } else if (closeout.id === BOOTSTRAP_CURRENT_SOURCE_GATE_CLOSEOUT_ID) {
     validateBootstrapCurrentSourceGateCloseout(closeout);
+  } else if (closeout.id === SYSTEM_WATCHER_CURRENT_SOURCE_CLOSEOUT_ID) {
+    validateSystemWatcherCurrentSourceCloseout(closeout);
   } else if (closeout.id === WINDOWS_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateWindowsSystemCurrentSourceCloseout(closeout);
   } else if (closeout.id === UI_THEME_CURRENT_SOURCE_CLOSEOUT_ID) {
