@@ -15,6 +15,30 @@ const RELAY_CURRENT_SOURCE_GATE_REPORTS = [
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay-core/gate-report.json",
   "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
 ];
+const RELAY_CURRENT_SOURCE_WINDOWS_CORE_GATE_REPORT =
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json";
+const RELAY_CURRENT_SOURCE_GATE_FAILURE_CLUSTERS = [
+  "relay_codex_writer",
+  "relay_diagnostic",
+  "relay_health_audit",
+  "bootstrap",
+  "relay_fetch_models",
+  "relay_translator",
+  "relay_proxy_config",
+  "relay_image_compat",
+  "relay_sse",
+];
+const RELAY_CURRENT_SOURCE_GATE_FAILURE_FIELDS = [
+  "readyToImplement",
+  "gate_accepted",
+  "implementation_use",
+];
+const RELAY_CURRENT_SOURCE_GATE_FAILURE_KEYS = RELAY_CURRENT_SOURCE_GATE_FAILURE_CLUSTERS.flatMap((cluster) =>
+  RELAY_CURRENT_SOURCE_GATE_FAILURE_FIELDS.map(
+    (field) =>
+      `${RELAY_CURRENT_SOURCE_WINDOWS_CORE_GATE_REPORT}\u0000clusters.${cluster}.${field}\u0000false`,
+  ),
+);
 const RELAY_CURRENT_SOURCE_COMMANDS = [
   "activate_relay_provider",
   "deactivate_relay_provider",
@@ -544,7 +568,6 @@ function requireNoRelaySkeletonGatePromotionFields(closeout) {
   for (const field of [
     "closedCommands",
     "closedManifestStatuses",
-    "closedGateReportFailures",
     "gateReports",
   ]) {
     const value = closeout[field];
@@ -628,6 +651,18 @@ function validateRelayCurrentSourceSkeletonCloseout(closeout) {
       failures.push(`${RELAY_CURRENT_SOURCE_SIDECAR} 缺少 gate-report：${report}`);
     }
   }
+
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  validateStringArraySet(
+    `${closeout.id} closedGateReportFailures`,
+    [...actualGateFailureKeys],
+    RELAY_CURRENT_SOURCE_GATE_FAILURE_KEYS,
+  );
+  validateClosedGateReportFailures(closeout);
 
   const sourceSignals = sidecar.source_signals ?? {};
   for (const file of Object.values(sourceSignals)) {

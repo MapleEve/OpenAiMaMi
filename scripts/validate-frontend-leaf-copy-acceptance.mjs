@@ -5,7 +5,33 @@ import { fileURLToPath } from "node:url";
 const repoRoot = join(fileURLToPath(import.meta.url), "..", "..");
 const failures = [];
 const notes = [];
+const relayCoreCurrentSourceCloseoutGateReport =
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json";
+const relayCoreCurrentSourceCloseoutGateFailureClusters = [
+  "relay_codex_writer",
+  "relay_diagnostic",
+  "relay_health_audit",
+  "bootstrap",
+  "relay_fetch_models",
+  "relay_translator",
+  "relay_proxy_config",
+  "relay_image_compat",
+  "relay_sse",
+];
+const relayCoreCurrentSourceCloseoutGateFailureFields = [
+  "readyToImplement",
+  "gate_accepted",
+  "implementation_use",
+];
+const relayCoreCurrentSourceCloseoutGateFailureKeys =
+  relayCoreCurrentSourceCloseoutGateFailureClusters.flatMap((cluster) =>
+    relayCoreCurrentSourceCloseoutGateFailureFields.map(
+      (field) =>
+        `${relayCoreCurrentSourceCloseoutGateReport}\u0000clusters.${cluster}.${field}\u0000false`,
+    ),
+  );
 const allowedCloseoutGateFailureKeys = new Set([
+  ...relayCoreCurrentSourceCloseoutGateFailureKeys,
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000gate_accepted\u0000false",
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000implementation_use\u0000false",
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000dim6_missing\u0000true",
