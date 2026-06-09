@@ -1,4 +1,5 @@
 pub mod diagnostics;
+pub mod relay;
 pub mod settings;
 
 // model 模块只保留领域模型和值对象的边界。
