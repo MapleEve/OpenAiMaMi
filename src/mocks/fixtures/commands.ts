@@ -155,8 +155,6 @@ function withMockData<T extends IpcCommandMockData>(
   return { ...envelope, data };
 }
 
-const readFalseHandler: IpcCommandHandler = (context) => withMockData(context, false);
-
 const writeBooleanArgHandler: IpcCommandHandler = (context) =>
   withMockData(context, context.args?.enabled === true);
 
@@ -164,6 +162,10 @@ const systemHotspotMockState = {
   enabled: false,
   hasNotch: true,
   ready: false,
+};
+
+const systemImageCompatMockState = {
+  enabled: true,
 };
 
 const hotspotEnabledHandler: IpcCommandHandler = (context) =>
@@ -185,6 +187,18 @@ const hotspotReadyHandler: IpcCommandHandler = (context) => {
 
 const hasNotchHandler: IpcCommandHandler = (context) =>
   withMockData(context, systemHotspotMockState.hasNotch);
+
+const imageCompatHandler: IpcCommandHandler = (context) =>
+  withMockData(context, systemImageCompatMockState.enabled);
+
+const setImageCompatHandler: IpcCommandHandler = (context) => {
+  systemImageCompatMockState.enabled = readArgBoolean(
+    context.args,
+    "enabled",
+    systemImageCompatMockState.enabled,
+  );
+  return withMockData(context, systemImageCompatMockState.enabled);
+};
 
 const systemUsageMockState = {
   lastScanAt: 1_700_000_000_000,
@@ -216,6 +230,9 @@ const systemActionHandler: IpcCommandHandler = (context) => {
   const data: SystemActionPayload = {
     backendStatus: envelope.data.status,
   };
+  if (context.command === "reset_codex_config") {
+    data.configCleared = true;
+  }
   return { ...envelope, data };
 };
 
@@ -1518,13 +1535,13 @@ const maintenanceCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandl
 const settingsCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {
   check_update_installability: updateInstallabilityHandler,
   get_hotspot_enabled: hotspotEnabledHandler,
-  get_image_compat: readFalseHandler,
+  get_image_compat: imageCompatHandler,
   get_usage_refresh_interval: usageRefreshIntervalHandler,
   graceful_restart_for_update: systemActionHandler,
   has_notch: hasNotchHandler,
   hotspot_ready: hotspotReadyHandler,
   set_hotspot_enabled: setHotspotEnabledHandler,
-  set_image_compat: writeBooleanArgHandler,
+  set_image_compat: setImageCompatHandler,
   set_usage_refresh_interval: setUsageRefreshIntervalHandler,
 };
 

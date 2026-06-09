@@ -334,6 +334,8 @@ pub struct SystemInfoPayload {
 #[serde(rename_all = "camelCase")]
 pub struct SystemActionPayload {
     pub backend_status: BackendSkeletonStatus,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub config_cleared: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize)]
