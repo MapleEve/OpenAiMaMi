@@ -56,6 +56,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - 已按 bootstrap 写回证据补回 `load_mcp_servers` 与 `load_installed_skills` 的 `bootstrap-cache.json` 生产侧更新：主读取成功后分别写入 `mcpServers` 与 `installedSkills` 缓存切片，写回失败不影响主 IPC 响应。
 - 已同步收紧 E2E mock 的 bootstrap 合同：`load_bootstrap_state` 不再固定返回空 `mcpServers` / `installedSkills`，而是读取共享 mock cache；`load_mcp_servers` 与 `load_installed_skills` 会在 mock 中写回对应缓存切片，并由 `validate:e2e-mocks` 禁止退回固定空 slice。
 - 已继续补回 `load_usage_analytics` 到 `bootstrap-cache.json` 的 `usageAnalytics` 缓存切片生产写回与 E2E mock 共享 cache 验证；当前仍不声明闭源统计规则已恢复，只声明现有公开用量 payload 会进入 bootstrap cache。
+- 已把 overview 已查询的 `get_mystery_unlock_grants` payload 接入 `mystery-grants` 数据面板，并通过页面 owner 验证防止再次丢弃该查询结果；该进度不声明 `mystery_route_allowed` helper、dim6 或 mystery gate 已闭合。
 - 已把后端公开能力拆到 `commands`、`application/usecase`、`repository`、`repository/adapter`、`platform`、`contracts` 和 `core/error` 边界：command 只接参数和状态，usecase 负责编排，repository/adapter 负责文件读写，platform 负责系统能力，contracts 负责前后端可序列化数据形状。
 - `scripts/validate-backend-hexagonal.mjs` 已从“全仓禁止真实副作用”改成“按 owner 限制副作用”：文件系统只允许仓储/适配器边界，进程、窗口、shell 只允许平台边界，voice 仍保持空骨架门禁。
 - 新增 `scripts/validate-frontend-leaf-copy-acceptance.mjs`，把前端 leaf 和全文案验收从静态覆盖扫描中分离出来；当前该严格 gate 应当失败，直到 internal gate 和逐条文案来源验收全部完成。
@@ -70,6 +71,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - Accounts、Relay、Analytics、Sessions、Daemon 自动切换、更新安装、外部进程重启、诊断修复等后端能力仍未完成真实业务闭环；其中部分前端 wrapper 和后端命令只返回明确的未恢复状态。
 - `remoteDeviceSecret` 当前已恢复 settings 读写和迁移语义，但尚未因此关闭前端全文案、渲染交互、双平台 leaf 或 internal gate 的剩余验收项。
 - `bootstrap-cache.json` 当前已恢复读取、解析失败返回空状态、DTO 字段承接、`usageAnalytics` / `mcpServers` / `installedSkills` 三个缓存切片生产写回，以及 E2E mock 共享 cache 验证；真实用量统计口径仍需按 raw/internal 证据继续补齐。
+- `mystery_route_allowed` 仍是 helper/gate 缺口；当前只恢复 get/merge grants 的公开调用链、cache 合同和 overview 面板消费，不把它用于导航显隐或 route guard。
 - MCP 写回当前使用结构化 TOML 保存，已在源码层面对接命令和数据，但还没有恢复原始实现中对注释和托管块位置的完整保留策略。
 - Rust 编译验收需要具备目标平台工具链；Windows 下缺少 MSVC `link.exe` 时，`cargo check` 会在第三方 crate build script 阶段失败。
 

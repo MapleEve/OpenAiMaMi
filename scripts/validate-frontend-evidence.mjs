@@ -1498,6 +1498,11 @@ function validateOverviewTypedPayloadGate() {
     pageHook.includes("envelopeData<SkillListPayload>") &&
     pageHook.includes("envelopeData<NotificationClientStatePayload>") &&
     pageHook.includes("envelopeData<MysteryRouteGrant[]>") &&
+    pageHook.includes('id: "mystery-grants"') &&
+    pageHook.includes('titleKey: "mysteryCode.success"') &&
+    pageHook.includes("payload: mysteryUnlockGrants") &&
+    pageHook.includes("module.mergeMysteryGrantsMutation.mutateAsync") &&
+    !pageHook.includes("void mysteryUnlockGrants") &&
     pageHook.includes("readArray<DailyActivity>") &&
     pageHook.includes("readArray<McpServerSummary>") &&
     pageHook.includes("readArray<InstalledSkillSummary>") &&

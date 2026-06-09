@@ -65,7 +65,6 @@ export function useOverviewPageController(): OverviewPageController {
     module.mysteryUnlockGrantsQuery.data,
   );
   void notificationState;
-  void mysteryUnlockGrants;
   const mcpItems = readArray<McpServerSummary>(mcp, ["items", "servers"]);
   const skillItems = readArray<InstalledSkillSummary>(skills, [
     "items",
@@ -176,6 +175,28 @@ export function useOverviewPageController(): OverviewPageController {
       kind: "skills",
       items: readOverviewSkillRecords(skillItems, localeLanguage),
       emptyKey: "skills.empty",
+    },
+    {
+      id: "mystery-grants",
+      titleKey: "mysteryCode.success",
+      state: module.mysteryUnlockGrantsQuery,
+      kind: "mystery",
+      payload: mysteryUnlockGrants,
+      remoteDeviceSecret: null,
+      remoteSecretLabelKey: "mysteryCode.successDesc",
+      boundaryActions: [
+        {
+          id: "merge-mystery-grants",
+          labelKey: "common.refresh",
+          icon: "merge",
+          disabled: !mysteryUnlockGrants || mysteryUnlockGrants.length === 0,
+          isPending: module.mergeMysteryGrantsMutation.isPending,
+          run: () =>
+            module.mergeMysteryGrantsMutation.mutateAsync(
+              mysteryUnlockGrants ?? [],
+            ),
+        },
+      ],
     },
   ];
 
