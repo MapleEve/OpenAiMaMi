@@ -1,3 +1,4 @@
+pub mod accounts;
 pub mod diagnostics;
 pub mod hotspot;
 pub mod relay;

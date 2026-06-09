@@ -1,14 +1,15 @@
 use crate::contracts::accounts::{
     AccountExportPayload, AccountImportPayload, AccountImportPreviewEntry,
     AccountImportPreviewPayload, AccountSkippedPayload, AccountSummaryPayload, LogoutPayload,
-    RemovePayload, SwitchPayload,
+    RemovePayload,
 };
 use crate::contracts::BackendSkeletonStatus;
 use crate::core::error::CoreError;
+use crate::core::model::accounts::{AccountRegistryDocument, AccountRegistryItem};
 use crate::repository::Repository;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
-use serde_json::{Map, Value};
+use serde_json::Value;
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
@@ -17,44 +18,6 @@ pub(crate) struct AccountsRepository;
 pub(crate) trait AccountsRepositoryBoundary {}
 
 impl AccountsRepositoryBoundary for AccountsRepository {}
-
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct AccountRegistryDocument {
-    #[serde(default)]
-    schema_version: i32,
-    #[serde(default, alias = "accounts")]
-    items: Vec<AccountRegistryItem>,
-    #[serde(default, alias = "active")]
-    active_account_key: Option<String>,
-    #[serde(flatten)]
-    extra: Map<String, Value>,
-}
-
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct AccountRegistryItem {
-    #[serde(default, alias = "key", alias = "id")]
-    account_key: String,
-    #[serde(default)]
-    email: Option<String>,
-    #[serde(default)]
-    alias: Option<String>,
-    #[serde(default)]
-    account_name: Option<String>,
-    #[serde(default)]
-    workspace_name: Option<String>,
-    #[serde(default)]
-    profile_name: Option<String>,
-    #[serde(default)]
-    plan: Option<String>,
-    #[serde(default, alias = "isActive")]
-    active: bool,
-    #[serde(default)]
-    snapshot_path: Option<String>,
-    #[serde(flatten)]
-    extra: Map<String, Value>,
-}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -85,45 +48,12 @@ struct AccountExportEntry {
 
 pub fn load_account_summaries(repo: &Repository) -> Result<Vec<AccountSummaryPayload>, CoreError> {
     let registry = load_registry(repo)?;
+    let active = registry.active_key();
     Ok(registry
         .items
         .iter()
-        .map(|item| summary_from_item(item, active_key(&registry).as_deref()))
+        .map(|item| summary_from_item(item, active.as_deref()))
         .collect())
-}
-
-pub fn switch_account(
-    repo: &Repository,
-    status: BackendSkeletonStatus,
-    account_key: String,
-) -> Result<SwitchPayload, CoreError> {
-    let mut registry = load_registry(repo)?;
-    let previous_account_key = active_key(&registry);
-    let index = registry
-        .items
-        .iter()
-        .position(|item| item.account_key == account_key)
-        .ok_or_else(|| CoreError::NotFound(format!("Account not found: {account_key}")))?;
-    let item = registry.items[index].clone();
-    let snapshot_path = snapshot_path(repo, &item);
-    if !repo.fs().exists(&snapshot_path) {
-        return Err(CoreError::NotFound(snapshot_path.display().to_string()));
-    }
-
-    backup_auth_if_present(repo, previous_account_key.as_deref())?;
-    repo.fs()
-        .copy_file(&snapshot_path, &repo.paths().auth_path)?;
-    set_active_account(&mut registry, &account_key);
-    save_registry(repo, &registry)?;
-
-    Ok(SwitchPayload {
-        backend_status: status,
-        previous_account_key,
-        active_account_key: Some(account_key.clone()),
-        active_account: Some(summary_from_item(&item, Some(&account_key))),
-        auth_updated: true,
-        registry_updated: true,
-    })
 }
 
 pub fn remove_accounts(
@@ -132,7 +62,7 @@ pub fn remove_accounts(
     account_keys: Vec<String>,
 ) -> Result<RemovePayload, CoreError> {
     let mut registry = load_registry(repo)?;
-    let previous_account_key = active_key(&registry);
+    let previous_account_key = registry.active_key();
     let requested = account_keys.into_iter().collect::<HashSet<_>>();
     if requested.is_empty() {
         return Ok(RemovePayload {
@@ -187,7 +117,7 @@ pub fn logout(
     };
 
     let mut registry = load_registry(repo)?;
-    let had_active = active_key(&registry).is_some();
+    let had_active = registry.active_key().is_some();
     registry.active_account_key = None;
     for item in &mut registry.items {
         item.active = false;
@@ -275,7 +205,7 @@ pub fn preview_account_import(
         .iter()
         .map(|item| item.account_key.clone())
         .collect::<HashSet<_>>();
-    let active = active_key(&local);
+    let active = local.active_key();
     let entries = document
         .accounts
         .iter()
@@ -385,7 +315,7 @@ pub fn import_accounts_from_file(
     }
 
     save_registry(repo, &registry)?;
-    let active_account_key = active_key(&registry);
+    let active_account_key = registry.active_key();
 
     Ok(AccountImportPayload {
         backend_status: status,
@@ -397,7 +327,7 @@ pub fn import_accounts_from_file(
     })
 }
 
-fn load_registry(repo: &Repository) -> Result<AccountRegistryDocument, CoreError> {
+pub(crate) fn load_registry(repo: &Repository) -> Result<AccountRegistryDocument, CoreError> {
     if !repo.fs().exists(&repo.paths().registry_path) {
         return Ok(AccountRegistryDocument {
             schema_version: 1,
@@ -409,11 +339,14 @@ fn load_registry(repo: &Repository) -> Result<AccountRegistryDocument, CoreError
     if document.schema_version == 0 {
         document.schema_version = 1;
     }
-    normalize_registry(&mut document);
+    document.normalize();
     Ok(document)
 }
 
-fn save_registry(repo: &Repository, document: &AccountRegistryDocument) -> Result<(), CoreError> {
+pub(crate) fn save_registry(
+    repo: &Repository,
+    document: &AccountRegistryDocument,
+) -> Result<(), CoreError> {
     repo.fs().create_dir_all(&repo.paths().accounts_dir)?;
     repo.fs().write_string(
         &repo.paths().registry_path,
@@ -421,44 +354,28 @@ fn save_registry(repo: &Repository, document: &AccountRegistryDocument) -> Resul
     )
 }
 
-fn normalize_registry(document: &mut AccountRegistryDocument) {
-    let active = document.active_account_key.clone();
-    for item in &mut document.items {
-        if item.account_key.is_empty() {
-            item.account_key = first_value_string(&item.extra, &["accountKey", "key", "id"]);
-        }
-        if active.as_deref() == Some(item.account_key.as_str()) {
-            item.active = true;
-        }
-    }
-    if document.active_account_key.is_none() {
-        document.active_account_key = document
-            .items
-            .iter()
-            .find(|item| item.active)
-            .map(|item| item.account_key.clone());
-    }
-}
-
-fn active_key(document: &AccountRegistryDocument) -> Option<String> {
-    document
-        .active_account_key
-        .clone()
-        .or_else(|| {
-            document
-                .items
-                .iter()
-                .find(|item| item.active)
-                .map(|item| item.account_key.clone())
+pub(crate) fn snapshot_path(repo: &Repository, item: &AccountRegistryItem) -> PathBuf {
+    item.snapshot_path
+        .as_ref()
+        .filter(|value| !value.trim().is_empty())
+        .map(PathBuf::from)
+        .unwrap_or_else(|| {
+            repo.paths()
+                .snapshots_dir
+                .join(format!("{}.json", item.account_key))
         })
-        .filter(|value| !value.is_empty())
 }
 
-fn set_active_account(document: &mut AccountRegistryDocument, account_key: &str) {
-    document.active_account_key = Some(account_key.to_string());
-    for item in &mut document.items {
-        item.active = item.account_key == account_key;
+pub(crate) fn ensure_snapshot_exists(repo: &Repository, path: &Path) -> Result<(), CoreError> {
+    if repo.fs().exists(path) {
+        Ok(())
+    } else {
+        Err(CoreError::NotFound(path.display().to_string()))
     }
+}
+
+pub(crate) fn copy_snapshot_to_auth(repo: &Repository, path: &Path) -> Result<(), CoreError> {
+    repo.fs().copy_file(path, &repo.paths().auth_path)
 }
 
 fn summary_from_item(
@@ -477,19 +394,7 @@ fn summary_from_item(
     }
 }
 
-fn snapshot_path(repo: &Repository, item: &AccountRegistryItem) -> PathBuf {
-    item.snapshot_path
-        .as_ref()
-        .filter(|value| !value.trim().is_empty())
-        .map(PathBuf::from)
-        .unwrap_or_else(|| {
-            repo.paths()
-                .snapshots_dir
-                .join(format!("{}.json", item.account_key))
-        })
-}
-
-fn backup_auth_if_present(
+pub(crate) fn backup_auth_if_present(
     repo: &Repository,
     previous_account_key: Option<&str>,
 ) -> Result<bool, CoreError> {
@@ -564,13 +469,6 @@ fn first_string<const N: usize>(values: [Option<&String>; N]) -> Option<String> 
         .flatten()
         .find(|value| !value.trim().is_empty())
         .cloned()
-}
-
-fn first_value_string(extra: &Map<String, Value>, keys: &[&str]) -> String {
-    keys.iter()
-        .find_map(|key| extra.get(*key).and_then(Value::as_str))
-        .unwrap_or_default()
-        .to_string()
 }
 
 fn skip(account_key: Option<String>, reason: &str, message: &str) -> AccountSkippedPayload {

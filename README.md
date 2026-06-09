@@ -67,6 +67,9 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - 已收紧 E2E mock 的状态竞态合同：mock helper 会为 delayed、stale、concurrency、event replay、cancel 和 abort 场景写入稳定 warning code，`validate:e2e-mocks` 会防止 handler 绕过该 helper，也防止 voice mock 进入 fixture 入口。
 - 已按“voice 不给入口、不调用”移除 voice route registry、App Route union、runtime reload map 和 `src/routes/desktop/main/voice` route shell；voice 仅在 `src/features/voice`、`src/services/voice` 和后端 voice 边界中保留空骨架、合同清单和中文说明。
 - 已把后端公开能力拆到 `commands`、`application/usecase`、`repository`、`repository/adapter`、`platform`、`contracts` 和 `core/error` 边界：command 只接参数和状态，usecase 负责编排，repository/adapter 负责文件读写，platform 负责系统能力，contracts 负责前后端可序列化数据形状。
+- 已把账号切换事务从 `repository/accounts.rs` 上移到 `application/usecase/accounts.rs`：usecase 负责读取 registry、校验目标账号、校验 snapshot、备份 auth、复制 snapshot、标记 active、保存 registry 和组装 `SwitchPayload`；repository 只暴露 registry 读写、snapshot 路径、auth 备份和复制等窄文件边界，账号 registry 领域模型已移动到 `core/model/accounts.rs`。
+- 新增 `scripts/validate-backend-accounts-owner.mjs` 与 `validate:backend-accounts-owner`，用于防止 `repository/accounts.rs` 重新暴露 `switch_account` 用户动作事务，并校验账号切换编排仍在 application/usecase 内通过窄 repository helper 完成。
+- 新增 `scripts/validate-frontend-relay-cache.mjs` 与 `validate:frontend-relay-cache`，并在 `src/features/relay/__tests__/README.md` 记录边界；该验证确认 relay mutation payload 先写 TanStack 权威 cache，再做已知 query 扇出或失效，并模拟 stale、delayed、event replay 的旧响应不能覆盖已接受的 mutation 结果。
 - `scripts/validate-backend-hexagonal.mjs` 已从“全仓禁止真实副作用”改成“按 owner 限制副作用”：文件系统只允许仓储/适配器边界，进程、窗口、shell 只允许平台边界，voice 仍保持空骨架门禁。
 - 新增 `scripts/validate-frontend-leaf-copy-acceptance.mjs`，把前端 leaf 和全文案验收从静态覆盖扫描中分离出来；当前该严格 gate 应当失败，直到 internal gate 和逐条文案来源验收全部完成。
 - `README.md` 与 `README-cn.md` 保持中文同步，记录当前已经做了什么、没有做什么，方便 PR 继续补齐。
@@ -77,6 +80,8 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - 全文案逐条验收尚未完成；当前没有 `evidence/full-chain/internal/frontend-copy-acceptance.json` 记录每个 locale key 对应的 raw/internal 中文来源、英文来源和验收状态。
 - 后端闭源业务不做全量还原；没有公开证据支撑的业务行为仍只能保留为合同、桩、待实现项或测试缺口。
 - voice 前后端不做真实功能还原，不注册路由入口、不进入 runtime reload map、不注册 IPC handler，只保留空骨架和说明；原始公开材料中与录音、语音运行时、快捷键、音频反馈、文本注入相关的内容不进入当前公开实现。
+- voice 当前仍保留前端类型层命令清单、feature/service 空骨架和窗口 surface 标签，用于说明公开合同边界；这些内容没有 route registry、navigation meta、`src/lib/api.ts` wrapper、runtime reload map 或 E2E mock handler 入口，不作为可触达功能。
+- Accounts 仍只完成 `switch_account` / `switch_account_and_restart_codex` 这条账号切换事务的 usecase owner 迁移；`remove_accounts`、`logout`、`export_accounts_to_file`、`preview_account_import` 和 `import_accounts_from_file` 仍需要继续从 repository-heavy 事务迁到 application/usecase。
 - Accounts、Relay 启停/会话/真实转发、Analytics、Sessions、Daemon 真实后台线程与自动切换、更新安装、外部进程重启、诊断修复等后端能力仍未完成真实业务闭环；Relay 当前只补回 model fetch 读取合同和 test provider/draft mock terminal 测试合同，runtime watcher 当前只补回进程内状态合同，其他部分前端 wrapper 和后端命令仍只返回明确的未恢复状态。
 - `remoteDeviceSecret` 当前已恢复 settings 读写和迁移语义，但尚未因此关闭前端全文案、渲染交互、双平台 leaf 或 internal gate 的剩余验收项。
 - `bootstrap-cache.json` 当前已恢复读取、解析失败返回空状态、DTO 字段承接、`usageAnalytics` / `mcpServers` / `installedSkills` 三个缓存切片生产写回，以及 E2E mock 共享 cache 验证；真实用量统计口径仍需按 raw/internal 证据继续补齐。

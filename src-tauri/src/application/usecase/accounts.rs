@@ -1,10 +1,11 @@
 use crate::application::service::{pending_status as make_pending_status, restored_status};
 use crate::contracts::accounts::{
     AccountExportPayload, AccountImportPayload, AccountImportPreviewPayload, AccountMonitorPayload,
-    LogoutPayload, RemovePayload, SwitchPayload,
+    AccountSummaryPayload, LogoutPayload, RemovePayload, SwitchPayload,
 };
 use crate::contracts::{BackendEffect, BackendSkeletonStatus};
 use crate::core::error::CoreError;
+use crate::core::model::accounts::AccountRegistryItem;
 use crate::repository::accounts as accounts_repository;
 use crate::repository::Repository;
 
@@ -22,14 +23,14 @@ pub fn begin_add_account_attach_monitor(
 }
 
 pub fn switch_account(repo: &Repository, account_key: String) -> Result<SwitchPayload, CoreError> {
-    accounts_repository::switch_account(repo, restored("switch_account"), account_key)
+    switch_account_with_status(repo, restored("switch_account"), account_key)
 }
 
 pub fn switch_account_and_restart_codex(
     repo: &Repository,
     account_key: String,
 ) -> Result<SwitchPayload, CoreError> {
-    let mut payload = accounts_repository::switch_account(
+    let mut payload = switch_account_with_status(
         repo,
         restored("switch_account_and_restart_codex"),
         account_key,
@@ -39,6 +40,60 @@ pub fn switch_account_and_restart_codex(
         .note
         .push_str(" 当前公开后端已恢复账号文件切换；外部程序重启仍由平台层后续补齐。");
     Ok(payload)
+}
+
+fn switch_account_with_status(
+    repo: &Repository,
+    status: BackendSkeletonStatus,
+    account_key: String,
+) -> Result<SwitchPayload, CoreError> {
+    let mut registry = accounts_repository::load_registry(repo)?;
+    let previous_account_key = registry.active_key();
+    let item = registry
+        .items
+        .iter()
+        .find(|item| item.account_key == account_key)
+        .cloned()
+        .ok_or_else(|| CoreError::NotFound(format!("Account not found: {account_key}")))?;
+    let snapshot_path = accounts_repository::snapshot_path(repo, &item);
+    accounts_repository::ensure_snapshot_exists(repo, &snapshot_path)?;
+    accounts_repository::backup_auth_if_present(repo, previous_account_key.as_deref())?;
+    accounts_repository::copy_snapshot_to_auth(repo, &snapshot_path)?;
+    registry.set_active_account(&account_key);
+    accounts_repository::save_registry(repo, &registry)?;
+
+    Ok(SwitchPayload {
+        backend_status: status,
+        previous_account_key,
+        active_account_key: Some(account_key.clone()),
+        active_account: Some(account_summary_from_item(&item, Some(&account_key))),
+        auth_updated: true,
+        registry_updated: true,
+    })
+}
+
+fn account_summary_from_item(
+    item: &AccountRegistryItem,
+    active_account_key: Option<&str>,
+) -> AccountSummaryPayload {
+    AccountSummaryPayload {
+        account_key: item.account_key.clone(),
+        email: first_string([item.email.as_ref(), item.account_name.as_ref()]),
+        alias: item.alias.clone(),
+        account_name: item.account_name.clone(),
+        workspace_name: item.workspace_name.clone(),
+        profile_name: item.profile_name.clone(),
+        plan: item.plan.clone(),
+        active: active_account_key == Some(item.account_key.as_str()) || item.active,
+    }
+}
+
+fn first_string<const N: usize>(values: [Option<&String>; N]) -> Option<String> {
+    values
+        .into_iter()
+        .flatten()
+        .find(|value| !value.trim().is_empty())
+        .cloned()
 }
 
 pub fn remove_accounts(
