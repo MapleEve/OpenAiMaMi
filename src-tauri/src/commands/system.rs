@@ -184,9 +184,13 @@ pub fn force_kill_codex() -> Result<CoreEnvelope<SystemActionPayload>, String> {
 }
 
 #[tauri::command]
-pub fn reset_codex_config() -> Result<CoreEnvelope<SystemActionPayload>, String> {
-    let system = SystemPlatformAdapter;
-    Ok(CoreEnvelope::ok(usecase::system::reset_config(&system)))
+pub fn reset_codex_config(
+    repo: State<'_, Mutex<Repository>>,
+) -> Result<CoreEnvelope<SystemActionPayload>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::system::reset_config(&repo)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
 }
 
 #[tauri::command]

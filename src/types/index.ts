@@ -74,6 +74,7 @@ export interface SystemInfoPayload {
 
 export interface SystemActionPayload {
   backendStatus: BackendSkeletonStatus;
+  configCleared?: boolean;
 }
 
 export interface NotificationClientStatePayload {

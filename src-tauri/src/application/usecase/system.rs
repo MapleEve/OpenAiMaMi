@@ -536,6 +536,7 @@ pub fn graceful_restart_for_update(process: &impl AppProcessPort) -> SystemActio
             "graceful_restart_for_update",
             "更新重启动作未在当前公开后端范围内恢复。",
         ),
+        config_cleared: None,
     }
 }
 
@@ -547,6 +548,7 @@ pub fn restart_app(process: &impl AppProcessPort) -> SystemActionPayload {
             "restart_codex",
             "重启外部程序能力未在当前公开后端范围内恢复。",
         ),
+        config_cleared: None,
     }
 }
 
@@ -558,18 +560,16 @@ pub fn force_kill_app(process: &impl AppProcessPort) -> SystemActionPayload {
             "force_kill_codex",
             "强制结束外部程序能力保持 unsupported/pending；强制结束外部程序能力未在当前公开后端范围内恢复。",
         ),
+        config_cleared: None,
     }
 }
 
-pub fn reset_config(system: &impl AppSystemPort) -> SystemActionPayload {
-    let _ = system.reset_config();
-    SystemActionPayload {
-        backend_status: unsupported_status(
-            "system",
-            "reset_codex_config",
-            "重置外部配置能力未在当前公开后端范围内恢复。",
-        ),
-    }
+pub fn reset_config(repo: &Repository) -> Result<SystemActionPayload, CoreError> {
+    let result = config_repository::reset_codex_config(repo)?;
+    Ok(SystemActionPayload {
+        backend_status: restored_status("system", "reset_codex_config", BackendEffect::NoOp),
+        config_cleared: Some(result.config_cleared),
+    })
 }
 
 pub fn open_path(
@@ -579,6 +579,7 @@ pub fn open_path(
     shell.open_path(&path)?;
     Ok(SystemActionPayload {
         backend_status: restored_status("system", "open_path", BackendEffect::Platform),
+        config_cleared: None,
     })
 }
 
@@ -597,6 +598,7 @@ pub fn focus_main_window(window: &impl AppWindowPort) -> Result<SystemActionPayl
     window.focus_main_window()?;
     Ok(SystemActionPayload {
         backend_status: restored_status("system", "focus_main_window", BackendEffect::Platform),
+        config_cleared: None,
     })
 }
 
