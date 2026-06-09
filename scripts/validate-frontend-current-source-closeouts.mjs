@@ -294,6 +294,27 @@ const SYSTEM_WATCHER_CURRENT_SOURCE_ALLOWED_FIELDS = [
   "nonClaims",
   "reason",
 ];
+const SYSTEM_SHELL_INIT_DUPLICATE_CLOSEOUT_ID =
+  "system-shell-init-duplicate-outtake-non-authoritative";
+const SYSTEM_SHELL_INIT_DUPLICATE_SIDECAR =
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/frontend-callchain-report.json";
+const SYSTEM_SHELL_INIT_DUPLICATE_GATE_REPORT =
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/gate-report.json";
+const SYSTEM_SHELL_INIT_DUPLICATE_GATE_FAILURE_KEYS = [
+  `${SYSTEM_SHELL_INIT_DUPLICATE_GATE_REPORT}\u0000readyToImplement\u0000false`,
+  `${SYSTEM_SHELL_INIT_DUPLICATE_GATE_REPORT}\u0000implementation_use\u0000false`,
+  `${SYSTEM_SHELL_INIT_DUPLICATE_GATE_REPORT}\u0000gate_accepted\u0000false`,
+];
+const SYSTEM_SHELL_INIT_DUPLICATE_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "sidecarReports",
+  "requiredSourceSignals",
+  "closedGateReportFailures",
+  "nonClaims",
+  "reason",
+];
 const WINDOWS_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID =
   "windows-system-current-source-strict-chain";
 const WINDOWS_SYSTEM_CURRENT_SOURCE_SIDECAR =
@@ -1348,6 +1369,92 @@ function validateSystemWatcherCurrentSourceCloseout(closeout) {
   validateRequiredSignals(closeout);
 }
 
+function validateSystemShellInitDuplicateCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, SYSTEM_SHELL_INIT_DUPLICATE_ALLOWED_FIELDS);
+  if (closeout.module !== "system-shell-init") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} sidecarReports`,
+    closeout.sidecarReports ?? [],
+    [SYSTEM_SHELL_INIT_DUPLICATE_SIDECAR],
+  );
+  validateSidecarReports(closeout);
+
+  const sidecar = readJson(repoPath(SYSTEM_SHELL_INIT_DUPLICATE_SIDECAR));
+  const sidecarText = JSON.stringify(sidecar);
+  if (sidecar.status !== "duplicate-local-outtake-non-authoritative-non-gating") {
+    failures.push(`${SYSTEM_SHELL_INIT_DUPLICATE_SIDECAR} status=${String(sidecar.status)}`);
+  }
+  for (const required of [
+    "duplicate_local_outtake_not_authoritative",
+    "不是 authoritative closeout",
+    "不把 duplicate_local_outtake_not_authoritative 当作 authoritative closeout",
+    "不声明 implementation_use、gate_accepted 或 full_leaf_100",
+  ]) {
+    if (!sidecarText.includes(required)) {
+      failures.push(`${SYSTEM_SHELL_INIT_DUPLICATE_SIDECAR} 缺少非权威声明：${required}`);
+    }
+  }
+
+  const gate = readJson(repoPath(SYSTEM_SHELL_INIT_DUPLICATE_GATE_REPORT));
+  if (gate.status !== "duplicate_local_outtake_not_authoritative") {
+    failures.push(`${SYSTEM_SHELL_INIT_DUPLICATE_GATE_REPORT} status=${String(gate.status)}`);
+  }
+  if (!JSON.stringify(gate).includes("authoritative_shared_bootstrap_work_exists")) {
+    failures.push(`${SYSTEM_SHELL_INIT_DUPLICATE_GATE_REPORT} 缺少 authoritative shared bootstrap work 标记`);
+  }
+
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  validateStringArraySet(
+    `${closeout.id} closedGateReportFailures`,
+    [...actualGateFailureKeys],
+    SYSTEM_SHELL_INIT_DUPLICATE_GATE_FAILURE_KEYS,
+  );
+  validateClosedGateReportFailures(closeout);
+
+  for (const entry of closeout.closedGateReportFailures ?? []) {
+    if (entry.path.includes("full_leaf_100") || entry.path.includes("moduleExitAllowed")) {
+      failures.push(`${closeout.id} 不允许登记 full leaf 或 module exit 字段：${entry.path}`);
+    }
+  }
+
+  const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
+  for (const required of [
+    "不修改 gate-report",
+    "不声明 authoritative closeout",
+    "不登记 full_leaf_100 或 moduleExitAllowed",
+    "不声明 implementation_use、gate_accepted 或 readyToImplement 已恢复",
+    "不处理 relay、mystery 或 voice",
+  ]) {
+    if (!nonClaimsText.includes(required)) {
+      failures.push(`${closeout.id} nonClaims 缺少声明：${required}`);
+    }
+  }
+
+  const reason = closeout.reason ?? "";
+  for (const required of [
+    "duplicate_local_outtake_not_authoritative",
+    "current-source partial closeout",
+    "non-authoritative",
+    "full_leaf_100",
+  ]) {
+    if (!reason.includes(required)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${required}`);
+    }
+  }
+
+  validateRequiredSignals(closeout);
+}
+
 function validateWindowsSystemCurrentSourceCloseout(closeout) {
   validateAllowedCloseoutFields(closeout, WINDOWS_SYSTEM_CURRENT_SOURCE_ALLOWED_FIELDS);
   if (closeout.module !== "windows-system") {
@@ -1891,6 +1998,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateBootstrapCurrentSourceGateCloseout(closeout);
   } else if (closeout.id === SYSTEM_WATCHER_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateSystemWatcherCurrentSourceCloseout(closeout);
+  } else if (closeout.id === SYSTEM_SHELL_INIT_DUPLICATE_CLOSEOUT_ID) {
+    validateSystemShellInitDuplicateCloseout(closeout);
   } else if (closeout.id === WINDOWS_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateWindowsSystemCurrentSourceCloseout(closeout);
   } else if (closeout.id === UI_THEME_CURRENT_SOURCE_CLOSEOUT_ID) {

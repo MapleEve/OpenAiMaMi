@@ -2323,6 +2323,69 @@
       "reason": "current-source partial closeout 只把 macOS system 的 note_usage_refresh_activity、schedule_full_runtime_refresh、start_auto_switch_pending_watcher、start_usage_refresh_watcher 和 update_usage_refresh_schedule 后端六边形 watcher 骨架登记进 strict leaf-copy 的已知 readyToImplement 残留；它不声明 raw/internal gate 已通过，不登记 implementation_use、gate_accepted、full_leaf_100、dim6 或聚合门。"
     },
     {
+      "id": "system-shell-init-duplicate-outtake-non-authoritative",
+      "module": "system-shell-init",
+      "status": "current-source-closed-partial",
+      "sidecarReports": [
+        "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/frontend-callchain-report.json"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/frontend-callchain-report.json",
+          "includes": [
+            "duplicate-local-outtake-non-authoritative-non-gating",
+            "duplicate_local_outtake_not_authoritative",
+            "不是 authoritative closeout",
+            "不把 duplicate_local_outtake_not_authoritative 当作 authoritative closeout",
+            "不声明 implementation_use、gate_accepted 或 full_leaf_100"
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/gate-report.json",
+          "includes": [
+            "\"status\": \"duplicate_local_outtake_not_authoritative\"",
+            "\"readyToImplement\": false",
+            "\"implementation_use\": false",
+            "\"gate_accepted\": false",
+            "\"full_leaf_100\": false",
+            "authoritative_shared_bootstrap_work_exists",
+            "duplicate_scope_not_checked_before_write"
+          ]
+        }
+      ],
+      "closedGateReportFailures": [
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/gate-report.json",
+          "path": "readyToImplement",
+          "value": false,
+          "classification": "non-recoverable",
+          "reason": "duplicate_local_outtake_not_authoritative 是本地重复 outtake；current-source partial closeout 只登记该非权威报告的 readyToImplement 残留，不声明 authoritative closeout 或 gate 已通过。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/gate-report.json",
+          "path": "implementation_use",
+          "value": false,
+          "classification": "non-recoverable",
+          "reason": "duplicate_local_outtake_not_authoritative 是本地重复 outtake；current-source partial closeout 只登记该非权威报告的 implementation_use 残留，不声明真实 implementation_use 已恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/gate-report.json",
+          "path": "gate_accepted",
+          "value": false,
+          "classification": "non-recoverable",
+          "reason": "duplicate_local_outtake_not_authoritative 是本地重复 outtake；current-source partial closeout 只登记该非权威报告的 gate_accepted 残留，不声明 authoritative gate 已通过。"
+        }
+      ],
+      "nonClaims": [
+        "不修改 gate-report 字段。",
+        "不声明 authoritative closeout。",
+        "不登记 full_leaf_100 或 moduleExitAllowed。",
+        "不声明 implementation_use、gate_accepted 或 readyToImplement 已恢复。",
+        "不处理 relay、mystery 或 voice。"
+      ],
+      "reason": "current-source partial closeout 只登记 system-shell-init 的 duplicate_local_outtake_not_authoritative non-authoritative 非权威本地重复 outtake；它不是 authoritative closeout，不修改 gate-report，不登记 full_leaf_100，不声明 readyToImplement、implementation_use 或 gate_accepted 已恢复。"
+    },
+    {
       "id": "windows-system-current-source-strict-chain",
       "module": "windows-system",
       "status": "current-source-closed-partial",
