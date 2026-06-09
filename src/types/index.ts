@@ -100,6 +100,7 @@ export interface AppStatusPayload {
 export interface CoreSnapshotPayload {
   backendStatus: BackendSkeletonStatus;
   status: AppStatusPayload;
+  accounts: AccountSummaryPayload[];
 }
 
 export interface CustomInstructionCurrentState {
