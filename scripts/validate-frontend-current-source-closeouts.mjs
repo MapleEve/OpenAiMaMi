@@ -126,6 +126,41 @@ const SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECAR_NON_CLAIMS = [
   "不修改 gate-report 字段。",
   "不声明 implementation_use 或 full_leaf_100。",
 ];
+const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID =
+  "bootstrap-system-current-source-reconcile-sidecars";
+const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_SIDECARS = [
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/frontend-callchain-report.json",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-bootstrap/frontend-callchain-report.json",
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-system/frontend-callchain-report.json",
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/frontend-callchain-report.json",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/frontend-callchain-report.json",
+];
+const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "sidecarReports",
+  "requiredSourceSignals",
+  "nonClaims",
+  "reason",
+];
+const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_FORBIDDEN_GATE_FIELDS = [
+  "closedGateReportFailures",
+  "closedManifestStatuses",
+  "closedFrontendDocs",
+  "closedCommands",
+  "notClosedCommands",
+  "gateReports",
+  "rawAcceptance",
+];
+const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_NON_CLAIM_SNIPPETS = [
+  "不声明全量叶子验收完成",
+  "不修改 gate-report 字段",
+  "不新增 closedGateReportFailures 或 closedManifestStatuses",
+  "implementation_use",
+  "gate_accepted",
+  "full_leaf_100",
+];
 
 function repoPath(path) {
   return join(repoRoot, ...path.split("/"));
@@ -664,6 +699,68 @@ function validateSystemHotspotUsageMysteryCloseout(closeout) {
   validateRequiredSignals(closeout);
 }
 
+function validateBootstrapSystemCurrentSourceSidecar(report) {
+  const path = repoPath(report);
+  if (!existsSync(path)) {
+    failures.push(`${BOOTSTRAP_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID} 缺少 sidecar report：${report}`);
+    return;
+  }
+
+  const sidecar = readJson(path);
+  if (sidecar.full_leaf !== false) {
+    failures.push(`${report} full_leaf 必须为 false，实际为 ${String(sidecar.full_leaf)}`);
+  }
+  if (sidecar.gate_report_fields_unchanged !== true) {
+    failures.push(
+      `${report} gate_report_fields_unchanged 必须为 true，实际为 ${String(sidecar.gate_report_fields_unchanged)}`,
+    );
+  }
+  if (sidecar.backend_platform_evidence_required !== true) {
+    failures.push(
+      `${report} backend_platform_evidence_required 必须为 true，实际为 ${String(sidecar.backend_platform_evidence_required)}`,
+    );
+  }
+
+  if (
+    report === BOOTSTRAP_SYSTEM_CURRENT_SOURCE_SIDECARS[3] &&
+    !JSON.stringify(sidecar).includes("duplicate_local_outtake_not_authoritative")
+  ) {
+    failures.push(
+      `${report} 必须包含 duplicate_local_outtake_not_authoritative，避免把本地重复 outtake 当作 authoritative closeout`,
+    );
+  }
+}
+
+function validateBootstrapSystemCurrentSourceCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, BOOTSTRAP_SYSTEM_CURRENT_SOURCE_ALLOWED_FIELDS);
+  for (const field of BOOTSTRAP_SYSTEM_CURRENT_SOURCE_FORBIDDEN_GATE_FIELDS) {
+    if (Object.prototype.hasOwnProperty.call(closeout, field)) {
+      failures.push(`${closeout.id} 不允许登记 gate closeout 字段：${field}`);
+    }
+  }
+
+  validateStringArraySet(
+    `${closeout.id} sidecarReports`,
+    closeout.sidecarReports ?? [],
+    BOOTSTRAP_SYSTEM_CURRENT_SOURCE_SIDECARS,
+  );
+  validateSidecarReports(closeout);
+
+  for (const report of BOOTSTRAP_SYSTEM_CURRENT_SOURCE_SIDECARS) {
+    validateBootstrapSystemCurrentSourceSidecar(report);
+  }
+
+  const nonClaims = closeout.nonClaims ?? [];
+  const nonClaimsText = nonClaims.join("\n");
+  for (const snippet of BOOTSTRAP_SYSTEM_CURRENT_SOURCE_NON_CLAIM_SNIPPETS) {
+    if (!nonClaimsText.includes(snippet)) {
+      failures.push(`${closeout.id} nonClaims 必须包含中文声明片段：${snippet}`);
+    }
+  }
+
+  validateRequiredSignals(closeout);
+}
+
 function manifestCloseoutKey(record) {
   return [
     record.arrayName ?? "",
@@ -972,6 +1069,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateRelayCurrentSourceSkeletonCloseout(closeout);
   } else if (closeout.id === SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID) {
     validateSystemHotspotUsageMysteryCloseout(closeout);
+  } else if (closeout.id === BOOTSTRAP_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID) {
+    validateBootstrapSystemCurrentSourceCloseout(closeout);
   } else {
     failures.push(`未知 closeout id：${closeout.id}`);
   }

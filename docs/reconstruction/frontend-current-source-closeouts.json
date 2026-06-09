@@ -1302,6 +1302,230 @@
         "不修改 leaf-copy allowlist，remaining failures 必须保持 103。"
       ],
       "reason": "当前公开源码已覆盖 system-hotspot、system-usage 与 mystery-unlock 的八个真实 IPC 命令在前端 contract/service/cache/hook/mock/validator 链路中的非 gating sidecar 证据；本 closeout 只登记当前公开源码前端链路，不声明后端平台实现、raw/internal dim6、真实 implementation_use 或 full_leaf_100。"
+    },
+    {
+      "id": "bootstrap-system-current-source-reconcile-sidecars",
+      "module": "bootstrap-system",
+      "status": "current-source-closed-partial",
+      "sidecarReports": [
+        "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/frontend-callchain-report.json",
+        "evidence/full-chain/internal/audits/audits/windows-1.0.9-bootstrap/frontend-callchain-report.json",
+        "evidence/full-chain/internal/audits/audits/macos-1.0.9-system/frontend-callchain-report.json",
+        "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/frontend-callchain-report.json",
+        "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/frontend-callchain-report.json"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/frontend-callchain-report.json",
+          "includes": [
+            "\"full_leaf\": false",
+            "\"gate_report_fields_unchanged\": true",
+            "\"backend_platform_evidence_required\": true",
+            "\"load_bootstrap_state\"",
+            "\"load_pending_auto_switch\"",
+            "\"dismiss_pending_auto_switch\"",
+            "\"confirm_pending_auto_switch\"",
+            "\"confirm_pending_auto_switch_and_restart_codex\"",
+            "\"load_snapshot\""
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/windows-1.0.9-bootstrap/frontend-callchain-report.json",
+          "includes": [
+            "\"full_leaf\": false",
+            "\"gate_report_fields_unchanged\": true",
+            "\"backend_platform_evidence_required\": true",
+            "\"load_bootstrap_state\"",
+            "\"load_pending_auto_switch\"",
+            "\"dismiss_pending_auto_switch\"",
+            "\"confirm_pending_auto_switch\"",
+            "\"confirm_pending_auto_switch_and_restart_codex\"",
+            "\"load_snapshot\""
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system/frontend-callchain-report.json",
+          "includes": [
+            "\"full_leaf\": false",
+            "\"gate_report_fields_unchanged\": true",
+            "\"backend_platform_evidence_required\": true",
+            "\"note_usage_refresh_activity\"",
+            "\"schedule_full_runtime_refresh\"",
+            "\"start_auto_switch_pending_watcher\"",
+            "\"start_usage_refresh_watcher\"",
+            "\"update_usage_refresh_schedule\""
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/frontend-callchain-report.json",
+          "includes": [
+            "\"full_leaf\": false",
+            "\"gate_report_fields_unchanged\": true",
+            "\"backend_platform_evidence_required\": true",
+            "\"duplicate_local_outtake_not_authoritative\"",
+            "不是 authoritative closeout"
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/frontend-callchain-report.json",
+          "includes": [
+            "\"full_leaf\": false",
+            "\"gate_report_fields_unchanged\": true",
+            "\"backend_platform_evidence_required\": true",
+            "\"force_kill_codex\"",
+            "\"diagnose\"",
+            "\"diagnose_codex_router\"",
+            "不声明真实平台能力已经恢复"
+          ]
+        },
+        {
+          "file": "src/contracts/ipc/commands.ts",
+          "includes": [
+            "\"command\": \"load_bootstrap_state\"",
+            "\"command\": \"load_pending_auto_switch\"",
+            "\"command\": \"dismiss_pending_auto_switch\"",
+            "\"command\": \"confirm_pending_auto_switch\"",
+            "\"command\": \"confirm_pending_auto_switch_and_restart_codex\"",
+            "\"command\": \"load_snapshot\"",
+            "\"command\": \"force_kill_codex\"",
+            "\"command\": \"diagnose\"",
+            "\"command\": \"diagnose_codex_router\""
+          ]
+        },
+        {
+          "file": "src/services/system/index.ts",
+          "includes": [
+            "invokeIpc<CoreEnvelope<BootstrapStatePayload>>(\"load_bootstrap_state\")",
+            "\"load_pending_auto_switch\"",
+            "invokeIpc<CoreEnvelope<string | null>>(\"dismiss_pending_auto_switch\")",
+            "invokeIpc<CoreEnvelope<null>>(\"confirm_pending_auto_switch\")",
+            "\"confirm_pending_auto_switch_and_restart_codex\"",
+            "invokeIpc<CoreEnvelope<CoreSnapshotPayload>>(\"load_snapshot\", { localOnly })",
+            "invokeIpc<CoreEnvelope<DiagnosePayload>>(\"diagnose\")",
+            "invokeIpc<CoreEnvelope<SystemActionPayload>>(\"force_kill_codex\")"
+          ]
+        },
+        {
+          "file": "src/services/daemon-autoswitch/index.ts",
+          "includes": [
+            "loadBootstrapState: systemService.loadBootstrapState",
+            "loadPendingAutoSwitch: systemService.loadPendingAutoSwitch",
+            "dismissPendingAutoSwitch: systemService.dismissPendingAutoSwitch",
+            "confirmPendingAutoSwitch: systemService.confirmPendingAutoSwitch",
+            "confirmPendingAutoSwitchAndRestartCodex:"
+          ]
+        },
+        {
+          "file": "src/features/daemon-autoswitch/hooks/query.ts",
+          "includes": [
+            "daemonAutoswitchService.loadBootstrapState()",
+            "daemonAutoswitchService.loadPendingAutoSwitch()",
+            "DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY",
+            "DAEMON_AUTOSWITCH_PENDING_QUERY_KEY"
+          ]
+        },
+        {
+          "file": "src/features/daemon-autoswitch/hooks/mutation.ts",
+          "includes": [
+            "daemonAutoswitchService.dismissPendingAutoSwitch()",
+            "daemonAutoswitchService.confirmPendingAutoSwitchAndRestartCodex()",
+            "writeDaemonAutoswitchMutationPayload(queryClient, payload)",
+            "reloadDaemonAutoswitchAfterMutation(queryClient)"
+          ]
+        },
+        {
+          "file": "src/features/daemon-autoswitch/cache/index.ts",
+          "includes": [
+            "DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY",
+            "DAEMON_AUTOSWITCH_PENDING_QUERY_KEY",
+            "writeDaemonAutoswitchMutationPayload",
+            "invalidateDaemonAutoswitchContractQueries"
+          ]
+        },
+        {
+          "file": "src/mocks/fixtures/commands.ts",
+          "includes": [
+            "load_bootstrap_state: bootstrapStateHandler",
+            "load_pending_auto_switch: pendingAutoSwitchStateHandler",
+            "dismiss_pending_auto_switch: unitHandler",
+            "confirm_pending_auto_switch: unitHandler",
+            "load_snapshot: coreSnapshotHandler",
+            "force_kill_codex: systemActionHandler",
+            "diagnose: diagnoseHandler",
+            "diagnose_codex_router: relayDiagnosticHandler"
+          ]
+        },
+        {
+          "file": "src-tauri/src/lib.rs",
+          "includes": [
+            "commands::system::load_snapshot",
+            "commands::system::load_bootstrap_state",
+            "commands::system::diagnose",
+            "commands::system::force_kill_codex",
+            "commands::system::load_pending_auto_switch",
+            "commands::system::dismiss_pending_auto_switch",
+            "commands::system::confirm_pending_auto_switch",
+            "commands::relay::diagnose_codex_router"
+          ]
+        },
+        {
+          "file": "src-tauri/src/commands/system.rs",
+          "includes": [
+            "pub fn load_snapshot",
+            "pub fn load_bootstrap_state",
+            "pub fn diagnose",
+            "pub fn force_kill_codex",
+            "pub fn load_pending_auto_switch",
+            "pub fn dismiss_pending_auto_switch",
+            "pub fn confirm_pending_auto_switch"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/system.rs",
+          "includes": [
+            "pub fn load_snapshot",
+            "pub fn load_bootstrap_state",
+            "pub fn diagnose",
+            "pub fn load_pending_auto_switch",
+            "pub fn dismiss_pending_auto_switch",
+            "pub fn confirm_pending_auto_switch",
+            "pub fn force_kill_app",
+            "强制结束外部程序能力未在当前公开后端范围内恢复。"
+          ]
+        },
+        {
+          "file": "src/services/relay/index.ts",
+          "includes": [
+            "diagnoseCodexRouter: () =>",
+            "invokeIpc<CoreEnvelope<RelayDiagnosticPayload>>(\"diagnose_codex_router\")"
+          ]
+        },
+        {
+          "file": "src-tauri/src/commands/relay.rs",
+          "includes": [
+            "pub fn diagnose_codex_router",
+            "usecase::relay::diagnose_codex_router(&repo)"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/relay.rs",
+          "includes": [
+            "pub fn diagnose_codex_router",
+            "let command = \"diagnose_codex_router\"",
+            "skeleton_warning(command)"
+          ]
+        }
+      ],
+      "nonClaims": [
+        "不声明全量叶子验收完成。",
+        "不修改 gate-report 字段。",
+        "不新增 closedGateReportFailures 或 closedManifestStatuses。",
+        "不声明 implementation_use、gate_accepted 或 full_leaf_100。",
+        "不声明 bootstrap 或 system 后端平台真实能力已经恢复。",
+        "不处理 voice 前后端，不新增 voice 入口，也不调用 voice 能力。",
+        "不把 duplicate_local_outtake_not_authoritative 当作 authoritative closeout。"
+      ],
+      "reason": "当前公开源码只足以登记 bootstrap/system 相关 current-source sidecar：bootstrap 记录 load_bootstrap_state、load_pending_auto_switch、pending confirm/dismiss 和 load_snapshot 链路；macos system 记录 watcher/schedule 缺口；system-shell-init 记录 duplicate_local_outtake_not_authoritative 非 authoritative 状态；windows system 记录 force_kill_codex、diagnose 和 diagnose_codex_router 链路与缺口。本 closeout 是非 gating evidence，不关闭 gate-report，不声明 implementation_use、gate_accepted 或 full_leaf_100。"
     }
   ]
 }

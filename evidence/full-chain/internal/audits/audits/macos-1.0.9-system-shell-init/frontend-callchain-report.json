@@ -1,0 +1,25 @@
+{
+  "id": "macos-1.0.9-system-shell-init-current-source-sidecar",
+  "module": "system-shell-init",
+  "status": "duplicate-local-outtake-non-authoritative-non-gating",
+  "full_leaf": false,
+  "gate_report_fields_unchanged": true,
+  "backend_platform_evidence_required": true,
+  "currentSourceSignals": {
+    "localOuttakeMarkers": [
+      {
+        "signal": "duplicate_local_outtake_not_authoritative",
+        "说明": "该标记只说明 macos-1.0.9-system-shell-init 存在本地重复 outtake；它不是 authoritative closeout，也不关闭任何 gate。"
+      }
+    ]
+  },
+  "nonClaims": [
+    "不声明全量叶子验收完成。",
+    "不修改 gate-report 字段。",
+    "不新增 closedGateReportFailures 或 closedManifestStatuses。",
+    "不声明 implementation_use、gate_accepted 或 full_leaf_100。",
+    "不把 duplicate_local_outtake_not_authoritative 当作 authoritative closeout。",
+    "不是 authoritative closeout。"
+  ],
+  "reason": "本 sidecar 只记录 duplicate_local_outtake_not_authoritative 的本地重复 outtake 标记，并明确它不是 authoritative closeout；它是非 gating evidence，不提升任何 gate 状态。"
+}

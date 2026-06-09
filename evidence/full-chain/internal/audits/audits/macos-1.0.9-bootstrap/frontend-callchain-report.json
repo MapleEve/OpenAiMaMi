@@ -1,0 +1,121 @@
+{
+  "id": "macos-1.0.9-bootstrap-current-source-sidecar",
+  "module": "bootstrap",
+  "status": "current-source-frontend-chain-recorded-non-gating",
+  "full_leaf": false,
+  "gate_report_fields_unchanged": true,
+  "backend_platform_evidence_required": true,
+  "currentSourceSignals": {
+    "commands": [
+      "load_bootstrap_state",
+      "load_pending_auto_switch",
+      "dismiss_pending_auto_switch",
+      "confirm_pending_auto_switch",
+      "confirm_pending_auto_switch_and_restart_codex",
+      "load_snapshot"
+    ],
+    "chains": [
+      {
+        "command": "load_bootstrap_state",
+        "files": [
+          "src/contracts/ipc/commands.ts",
+          "src/services/system/index.ts",
+          "src/services/daemon-autoswitch/index.ts",
+          "src/features/daemon-autoswitch/hooks/query.ts",
+          "src/features/daemon-autoswitch/cache/index.ts",
+          "src/mocks/fixtures/commands.ts",
+          "src-tauri/src/lib.rs",
+          "src-tauri/src/commands/system.rs",
+          "src-tauri/src/application/usecase/system.rs"
+        ],
+        "说明": "当前公开源码可见 bootstrap state 的 IPC、system service、daemon autoswitch service、query、cache、mock、Rust command 和 usecase 骨架链路。"
+      },
+      {
+        "command": "load_pending_auto_switch",
+        "files": [
+          "src/contracts/ipc/commands.ts",
+          "src/services/system/index.ts",
+          "src/services/daemon-autoswitch/index.ts",
+          "src/features/daemon-autoswitch/hooks/query.ts",
+          "src/features/daemon-autoswitch/hooks/runtime.ts",
+          "src/features/daemon-autoswitch/cache/index.ts",
+          "src/mocks/fixtures/commands.ts",
+          "src-tauri/src/lib.rs",
+          "src-tauri/src/commands/system.rs",
+          "src-tauri/src/application/usecase/system.rs"
+        ],
+        "说明": "当前公开源码可见 pending auto switch 的 IPC、service、query、runtime subscription、cache、mock、Rust command 和 usecase 骨架链路。"
+      },
+      {
+        "command": "dismiss_pending_auto_switch",
+        "files": [
+          "src/contracts/ipc/commands.ts",
+          "src/services/system/index.ts",
+          "src/services/daemon-autoswitch/index.ts",
+          "src/features/daemon-autoswitch/hooks/mutation.ts",
+          "src/features/daemon-autoswitch/cache/index.ts",
+          "src/mocks/fixtures/commands.ts",
+          "src-tauri/src/lib.rs",
+          "src-tauri/src/commands/system.rs",
+          "src-tauri/src/application/usecase/system.rs"
+        ],
+        "说明": "当前公开源码可见 pending dismiss 的 IPC、service、mutation、cache、mock、Rust command 和 usecase 骨架链路。"
+      },
+      {
+        "command": "confirm_pending_auto_switch",
+        "files": [
+          "src/contracts/ipc/commands.ts",
+          "src/services/system/index.ts",
+          "src/services/daemon-autoswitch/index.ts",
+          "src/features/daemon-autoswitch/hooks/mutation.ts",
+          "src/features/daemon-autoswitch/cache/index.ts",
+          "src/mocks/fixtures/commands.ts",
+          "src-tauri/src/lib.rs",
+          "src-tauri/src/commands/system.rs",
+          "src-tauri/src/application/usecase/system.rs"
+        ],
+        "说明": "当前公开源码可见 pending confirm 的 IPC、service、mutation、cache、mock、Rust command 和 usecase 骨架链路。"
+      },
+      {
+        "command": "confirm_pending_auto_switch_and_restart_codex",
+        "files": [
+          "src/contracts/ipc/commands.ts",
+          "src/services/system/index.ts",
+          "src/services/daemon-autoswitch/index.ts",
+          "src/features/daemon-autoswitch/hooks/mutation.ts",
+          "src/features/daemon-autoswitch/cache/index.ts",
+          "src/mocks/fixtures/commands.ts",
+          "src-tauri/src/lib.rs",
+          "src-tauri/src/commands/system.rs",
+          "src-tauri/src/application/usecase/system.rs"
+        ],
+        "说明": "当前公开源码可见 pending confirm and restart 的 IPC、service、mutation、cache、mock、Rust command 和 usecase 骨架链路。"
+      },
+      {
+        "command": "load_snapshot",
+        "files": [
+          "src/contracts/ipc/commands.ts",
+          "src/services/system/index.ts",
+          "src/services/settings/index.ts",
+          "src/services/accounts/index.ts",
+          "src/features/settings/hooks/query.ts",
+          "src/features/accounts/hooks/query.ts",
+          "src/features/overview/contract.ts",
+          "src/mocks/fixtures/commands.ts",
+          "src-tauri/src/lib.rs",
+          "src-tauri/src/commands/system.rs",
+          "src-tauri/src/application/usecase/system.rs"
+        ],
+        "说明": "当前公开源码可见 load_snapshot 的 IPC、system service、settings/accounts facade、query、mock、Rust command 和 usecase 骨架链路。"
+      }
+    ]
+  },
+  "nonClaims": [
+    "不声明全量叶子验收完成。",
+    "不修改 gate-report 字段。",
+    "不新增 closedGateReportFailures 或 closedManifestStatuses。",
+    "不声明 implementation_use、gate_accepted 或 full_leaf_100。",
+    "不声明 bootstrap 后端平台真实能力已经恢复。"
+  ],
+  "reason": "本 sidecar 只记录 macos bootstrap 相关 load_bootstrap_state、load_pending_auto_switch、dismiss_pending_auto_switch、confirm_pending_auto_switch、confirm_pending_auto_switch_and_restart_codex 和 load_snapshot 的当前公开源码链路；它是非 gating evidence，不提升任何 gate 状态。"
+}
