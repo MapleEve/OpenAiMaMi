@@ -1,4 +1,4 @@
-use crate::contracts::AppSettingsFile;
+use crate::contracts::{AppSettingsFile, MysteryRouteGrant};
 use crate::core::error::CoreError;
 use crate::core::model::settings::UsageRefreshInterval;
 use crate::repository::Repository;
@@ -45,4 +45,17 @@ pub fn set_hotspot_enabled(repo: &Repository, enabled: bool) -> Result<bool, Cor
     settings.hotspot_enabled = enabled;
     save_app_settings(repo, &settings)?;
     Ok(enabled)
+}
+
+pub fn load_mystery_unlock_grants(repo: &Repository) -> Result<Vec<MysteryRouteGrant>, CoreError> {
+    Ok(load_app_settings(repo)?.mystery_unlock_grants)
+}
+
+pub fn save_mystery_unlock_grants(
+    repo: &Repository,
+    grants: Vec<MysteryRouteGrant>,
+) -> Result<(), CoreError> {
+    let mut settings = load_app_settings(repo)?;
+    settings.mystery_unlock_grants = grants;
+    save_app_settings(repo, &settings)
 }

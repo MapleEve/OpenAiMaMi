@@ -1198,7 +1198,7 @@ const mysteryUnlockMockState = {
 };
 
 const getMysteryUnlockGrantsHandler: IpcCommandHandler = (context) =>
-  withMockData(context, [...mysteryUnlockMockState.grants]);
+  withMockData(context, pruneMysteryUnlockGrants());
 
 const mergeMysteryUnlockGrantsHandler: IpcCommandHandler = (context) => {
   const grants = context.args?.grants;
@@ -1209,7 +1209,13 @@ const mergeMysteryUnlockGrantsHandler: IpcCommandHandler = (context) => {
 };
 
 function mergeMysteryUnlockGrants(grants: MysteryRouteGrant[]) {
-  for (const grant of grants) {
+  mysteryUnlockMockState.grants = pruneMysteryUnlockGrants();
+  for (const incomingGrant of grants) {
+    const grant = {
+      ...incomingGrant,
+      route: normalizeMysteryRoute(incomingGrant.route),
+    };
+    if (!isMysteryRouteAllowed(grant.route)) continue;
     if (isMysteryRouteGranted(grant.route)) {
       mysteryUnlockMockState.grants = mysteryUnlockMockState.grants.map((item) =>
         item.route === grant.route && grant.epochMs >= item.epochMs ? grant : item,
@@ -1218,10 +1224,13 @@ function mergeMysteryUnlockGrants(grants: MysteryRouteGrant[]) {
     }
     mysteryUnlockMockState.grants = [...mysteryUnlockMockState.grants, grant];
   }
+  mysteryUnlockMockState.grants = sortMysteryUnlockGrants(mysteryUnlockMockState.grants);
 }
 
 function isMysteryRouteGranted(route: string) {
-  return mysteryUnlockMockState.grants.some((grant) => grant.route === route);
+  return mysteryUnlockMockState.grants.some(
+    (grant) => grant.route === normalizeMysteryRoute(route),
+  );
 }
 
 function normalizeMysteryRouteGrants(value: unknown[]): MysteryRouteGrant[] {
@@ -1236,6 +1245,36 @@ function normalizeMysteryRouteGrants(value: unknown[]): MysteryRouteGrant[] {
         : 0;
     return route ? [{ route, epochMs }] : [];
   });
+}
+
+function pruneMysteryUnlockGrants() {
+  const now = Date.now();
+  mysteryUnlockMockState.grants = sortMysteryUnlockGrants(
+    mysteryUnlockMockState.grants.filter((grant) => grant.epochMs >= now),
+  );
+  return [...mysteryUnlockMockState.grants];
+}
+
+function sortMysteryUnlockGrants(grants: MysteryRouteGrant[]) {
+  return [...grants].sort((left, right) => left.route.localeCompare(right.route));
+}
+
+function normalizeMysteryRoute(route: string) {
+  return route.trim().replace(/^\/+|\/+$/g, "");
+}
+
+function isMysteryRouteAllowed(route: string) {
+  return [
+    "mcp",
+    "skills",
+    "overview",
+    "accounts",
+    "sessions",
+    "settings",
+    "maintenance",
+    "subscription",
+    "customInstructions",
+  ].includes(normalizeMysteryRoute(route));
 }
 
 const remoteDeviceSecretHandler: IpcCommandHandler = (context) =>

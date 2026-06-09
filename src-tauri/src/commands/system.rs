@@ -238,17 +238,24 @@ pub fn get_notification_client_state(
 }
 
 #[tauri::command]
-pub fn get_mystery_unlock_grants() -> Result<CoreEnvelope<Vec<MysteryRouteGrant>>, String> {
-    Ok(CoreEnvelope::ok(usecase::system::mystery_unlock_grants()))
+pub fn get_mystery_unlock_grants(
+    repo: State<'_, Mutex<Repository>>,
+) -> Result<CoreEnvelope<Vec<MysteryRouteGrant>>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::system::mystery_unlock_grants(&repo)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
 }
 
 #[tauri::command]
 pub fn merge_mystery_unlock_grants(
+    repo: State<'_, Mutex<Repository>>,
     grants: Vec<MysteryRouteGrant>,
 ) -> Result<CoreEnvelope<Vec<MysteryRouteGrant>>, String> {
-    Ok(CoreEnvelope::ok(
-        usecase::system::merge_mystery_unlock_grants(grants),
-    ))
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::system::merge_mystery_unlock_grants(&repo, grants)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
 }
 
 #[tauri::command]

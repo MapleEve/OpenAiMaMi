@@ -87,6 +87,8 @@ pub struct AppSettingsFile {
     pub threshold_weekly_percent: i32,
     #[serde(default)]
     pub device_id: Option<String>,
+    #[serde(default, alias = "mysteryUnlockedRoutes")]
+    pub mystery_unlock_grants: Vec<MysteryRouteGrant>,
 }
 
 impl Default for AppSettingsFile {
@@ -99,6 +101,7 @@ impl Default for AppSettingsFile {
             threshold_5h_percent: default_threshold_5h(),
             threshold_weekly_percent: default_threshold_weekly(),
             device_id: None,
+            mystery_unlock_grants: Vec::new(),
         }
     }
 }
@@ -354,7 +357,7 @@ pub struct NotificationClientStatePayload {
     pub notifications_since: i64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct MysteryRouteGrant {
     pub route: String,

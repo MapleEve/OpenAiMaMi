@@ -31,6 +31,7 @@ use crate::repository::hotspot as hotspot_repository;
 use crate::repository::runtime as runtime_repository;
 use crate::repository::settings as settings_repository;
 use crate::repository::Repository;
+use std::collections::BTreeMap;
 
 pub fn load_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, CoreError> {
     let settings = settings_repository::load_app_settings(repo)?;
@@ -648,12 +649,77 @@ pub fn notification_client_state(
     })
 }
 
-pub fn mystery_unlock_grants() -> Vec<MysteryRouteGrant> {
-    Vec::new()
+pub fn mystery_unlock_grants(repo: &Repository) -> Result<Vec<MysteryRouteGrant>, CoreError> {
+    let now_ms = current_epoch_ms();
+    let mut grants = settings_repository::load_mystery_unlock_grants(repo)?;
+    let original_count = grants.len();
+    grants.retain(|grant| grant.epoch_ms >= now_ms);
+    if grants.len() != original_count {
+        settings_repository::save_mystery_unlock_grants(repo, grants.clone())?;
+    }
+    Ok(grants)
 }
 
-pub fn merge_mystery_unlock_grants(grants: Vec<MysteryRouteGrant>) -> Vec<MysteryRouteGrant> {
-    grants
+pub fn merge_mystery_unlock_grants(
+    repo: &Repository,
+    grants: Vec<MysteryRouteGrant>,
+) -> Result<Vec<MysteryRouteGrant>, CoreError> {
+    let now_ms = current_epoch_ms();
+    let existing = settings_repository::load_mystery_unlock_grants(repo)?;
+    let mut merged = BTreeMap::<String, MysteryRouteGrant>::new();
+
+    for grant in existing {
+        if grant.epoch_ms >= now_ms && is_mystery_route_allowed(&grant.route) {
+            let route = normalize_mystery_route(&grant.route);
+            merged.insert(route.clone(), MysteryRouteGrant { route, ..grant });
+        }
+    }
+
+    for grant in grants {
+        if !is_mystery_route_allowed(&grant.route) {
+            continue;
+        }
+        let route = normalize_mystery_route(&grant.route);
+        let normalized = MysteryRouteGrant {
+            route: route.clone(),
+            ..grant
+        };
+        merged
+            .entry(route)
+            .and_modify(|item| {
+                if normalized.epoch_ms >= item.epoch_ms {
+                    *item = normalized.clone();
+                }
+            })
+            .or_insert(normalized);
+    }
+
+    let output = merged.into_values().collect::<Vec<_>>();
+    settings_repository::save_mystery_unlock_grants(repo, output.clone())?;
+    Ok(output)
+}
+
+fn current_epoch_ms() -> i64 {
+    chrono::Utc::now().timestamp_millis()
+}
+
+fn normalize_mystery_route(route: &str) -> String {
+    route.trim().trim_matches('/').to_string()
+}
+
+fn is_mystery_route_allowed(route: &str) -> bool {
+    matches!(
+        normalize_mystery_route(route).as_str(),
+        "mcp"
+            | "skills"
+            | "overview"
+            | "accounts"
+            | "sessions"
+            | "settings"
+            | "maintenance"
+            | "subscription"
+            | "customInstructions"
+    )
 }
 
 pub fn import_remote_device_secret_if_empty(_secret: String) {}
@@ -752,6 +818,106 @@ fn registry_account_count(repo: &Repository) -> Result<i32, CoreError> {
         .and_then(serde_json::Value::as_array)
         .map(|items| items.len() as i32)
         .unwrap_or_default())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn mystery_unlock_grants_filters_expired_and_persists_cleanup() {
+        let repo = Repository::with_temp_file_system("mystery-grants-filter");
+        let now_ms = current_epoch_ms();
+        let settings = AppSettingsFile {
+            mystery_unlock_grants: vec![
+                MysteryRouteGrant {
+                    route: "overview".to_string(),
+                    epoch_ms: now_ms + 60_000,
+                },
+                MysteryRouteGrant {
+                    route: "skills".to_string(),
+                    epoch_ms: now_ms - 60_000,
+                },
+            ],
+            ..AppSettingsFile::default()
+        };
+        settings_repository::save_app_settings(&repo, &settings).expect("save settings");
+
+        let grants = mystery_unlock_grants(&repo).expect("load grants");
+
+        assert_eq!(
+            grants,
+            vec![MysteryRouteGrant {
+                route: "overview".to_string(),
+                epoch_ms: now_ms + 60_000,
+            }]
+        );
+        assert_eq!(
+            settings_repository::load_app_settings(&repo)
+                .expect("reload settings")
+                .mystery_unlock_grants,
+            grants
+        );
+    }
+
+    #[test]
+    fn merge_mystery_unlock_grants_filters_allowlist_and_persists_sorted() {
+        let repo = Repository::with_temp_file_system("mystery-grants-merge");
+        let now_ms = current_epoch_ms();
+        let settings = AppSettingsFile {
+            mystery_unlock_grants: vec![
+                MysteryRouteGrant {
+                    route: "overview".to_string(),
+                    epoch_ms: now_ms + 10_000,
+                },
+                MysteryRouteGrant {
+                    route: "notAllowed".to_string(),
+                    epoch_ms: now_ms + 10_000,
+                },
+            ],
+            ..AppSettingsFile::default()
+        };
+        settings_repository::save_app_settings(&repo, &settings).expect("save settings");
+
+        let grants = merge_mystery_unlock_grants(
+            &repo,
+            vec![
+                MysteryRouteGrant {
+                    route: "/skills/".to_string(),
+                    epoch_ms: now_ms + 20_000,
+                },
+                MysteryRouteGrant {
+                    route: "overview".to_string(),
+                    epoch_ms: now_ms + 30_000,
+                },
+                MysteryRouteGrant {
+                    route: "blocked".to_string(),
+                    epoch_ms: now_ms + 40_000,
+                },
+            ],
+        )
+        .expect("merge grants");
+
+        assert_eq!(
+            grants,
+            vec![
+                MysteryRouteGrant {
+                    route: "overview".to_string(),
+                    epoch_ms: now_ms + 30_000,
+                },
+                MysteryRouteGrant {
+                    route: "skills".to_string(),
+                    epoch_ms: now_ms + 20_000,
+                },
+            ]
+        );
+        assert_eq!(
+            settings_repository::load_app_settings(&repo)
+                .expect("reload settings")
+                .mystery_unlock_grants,
+            grants
+        );
+    }
 }
 
 fn normalize_proxy_url(url: Option<String>) -> Option<String> {
