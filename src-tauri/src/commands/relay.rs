@@ -218,9 +218,9 @@ pub fn fix_codex_router_issue(
     item_id: String,
 ) -> Result<CoreEnvelope<RelayRouterIssueFixPayload>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    Ok(with_warning(usecase::relay::fix_codex_router_issue(
-        &repo, item_id,
-    )))
+    usecase::relay::fix_codex_router_issue(&repo, item_id)
+        .map(with_warning)
+        .map_err(|error| error.to_string())
 }
 
 fn with_warning<T: Serialize>((payload, warning): (T, CoreWarning)) -> CoreEnvelope<T> {

@@ -229,6 +229,48 @@ pub fn import_config(
 }
 
 /// relay 官方直连审计路径只来自 RepositoryPaths，真实读写通过可替换 FS 边界补齐。
+pub fn inject_router_config(repo: &Repository) -> Result<Vec<String>, CoreError> {
+    let snapshot = load_relay_repository_snapshot(repo);
+    let config_path = Path::new(&snapshot.codex_config_path);
+    let current = if repo.fs().exists(config_path) {
+        repo.fs().read_to_string(config_path)?
+    } else {
+        String::new()
+    };
+    let next = append_managed_router_block(
+        &strip_managed_router_config(&current),
+        &snapshot.catalog_path,
+    );
+    repo.fs().write_string(config_path, &next)?;
+
+    let catalog_path = Path::new(&snapshot.catalog_path);
+    if !repo.fs().exists(catalog_path) {
+        repo.fs().write_string(catalog_path, "{}\n")?;
+    }
+
+    Ok(vec![
+        "config.toml managed router block written".to_string(),
+        "codex_router_catalog.json ensured".to_string(),
+    ])
+}
+
+pub fn remove_router_config(repo: &Repository) -> Result<Vec<String>, CoreError> {
+    let snapshot = load_relay_repository_snapshot(repo);
+    let config_path = Path::new(&snapshot.codex_config_path);
+    if !repo.fs().exists(config_path) {
+        return Ok(vec!["config.toml not present".to_string()]);
+    }
+
+    let current = repo.fs().read_to_string(config_path)?;
+    let next = strip_managed_router_config(&current);
+    if next != current {
+        repo.fs().write_string(config_path, &next)?;
+        return Ok(vec!["managed router config removed".to_string()]);
+    }
+
+    Ok(vec!["managed router config already absent".to_string()])
+}
+
 pub fn passthrough_audit_source_path(repo: &Repository) -> String {
     repo.paths()
         .codex_home
@@ -392,6 +434,85 @@ fn config_has_catalog(config: &str) -> bool {
 fn config_has_managed_block(config: &str) -> bool {
     config.contains("# >>> aimami-relay managed start")
         || config.contains("# >>> aimami-relay codex-router top start")
+}
+
+fn append_managed_router_block(content: &str, catalog_path: &str) -> String {
+    let line_ending = detect_line_ending(content);
+    let mut next = content.trim_end_matches(['\r', '\n']).to_string();
+    if !next.is_empty() {
+        next.push_str(line_ending);
+        next.push_str(line_ending);
+    }
+    next.push_str("# >>> aimami-relay codex-router top start (DO NOT EDIT MANUALLY)");
+    next.push_str(line_ending);
+    next.push_str("model_provider = \"aimami\"");
+    next.push_str(line_ending);
+    next.push_str(&format!(
+        "model_catalog_json = {}",
+        toml_string_literal(catalog_path)
+    ));
+    next.push_str(line_ending);
+    next.push_str("# <<< aimami-relay codex-router top end");
+    next.push_str(line_ending);
+    next
+}
+
+fn strip_managed_router_config(content: &str) -> String {
+    let line_ending = detect_line_ending(content);
+    let mut output = Vec::new();
+    let mut skipping_managed_block = false;
+
+    for raw_line in content.lines() {
+        let line = raw_line.trim();
+        if starts_managed_relay_block(line) {
+            skipping_managed_block = true;
+            continue;
+        }
+        if skipping_managed_block {
+            if ends_managed_relay_block(line) {
+                skipping_managed_block = false;
+            }
+            continue;
+        }
+        if is_router_top_level_key(line) {
+            continue;
+        }
+        output.push(raw_line.trim_end_matches('\r').to_string());
+    }
+
+    let mut next = output.join(line_ending);
+    if !next.is_empty() {
+        next.push_str(line_ending);
+    }
+    next
+}
+
+fn starts_managed_relay_block(line: &str) -> bool {
+    line.contains("# >>> aimami-relay") && line.contains("start")
+}
+
+fn ends_managed_relay_block(line: &str) -> bool {
+    line.contains("# <<< aimami-relay") && line.contains("end")
+}
+
+fn is_router_top_level_key(line: &str) -> bool {
+    ["model_provider", "model_catalog_json"].iter().any(|key| {
+        line.strip_prefix(key)
+            .map(|rest| rest.trim_start().starts_with('='))
+            .unwrap_or(false)
+    })
+}
+
+fn detect_line_ending(content: &str) -> &'static str {
+    if content.contains("\r\n") {
+        "\r\n"
+    } else {
+        "\n"
+    }
+}
+
+fn toml_string_literal(value: &str) -> String {
+    format!("\"{}\"", value.replace('\\', "\\\\").replace('"', "\\\""))
 }
 
 fn count_model_providers(config: &str) -> i32 {

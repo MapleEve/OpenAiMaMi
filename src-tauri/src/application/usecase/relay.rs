@@ -10,6 +10,7 @@ use crate::contracts::{
     RelayRouterTogglePayload, RelayStatePayload, RelayTestPayload,
 };
 use crate::core::{
+    error::CoreError,
     model::relay::{
         RelayCoreRepositoryView, RelayDiagnosticDomain, RelayDraftDomain, RelayProviderDomain,
         RelayProxyDomain, RelayStateDomain, RelayTestDomain, RELAY_DEFAULT_IDE,
@@ -362,30 +363,99 @@ fn router_diagnostic_payload(
 pub fn fix_codex_router_issue(
     repo: &Repository,
     item_id: String,
-) -> (RelayRouterIssueFixPayload, CoreWarning) {
+) -> Result<(RelayRouterIssueFixPayload, CoreWarning), CoreError> {
     let command = "fix_codex_router_issue";
-    let skeleton = relay_repository::load_router_diagnostic_skeleton(repo, command);
-    let diagnostic = relay_core::pending_diagnostic(
-        command,
-        skeleton.source_path.clone(),
-        skeleton.catalog_source_path.clone(),
-        skeleton.checked_at.clone(),
-        skeleton.diagnostic_boundary.clone(),
-    );
-    let message = relay_core::pending_fix_message(command, &item_id);
-    (
+    let fix = fix_router_issue(repo, &item_id)?;
+    let (diagnostics, _) = router_diagnostic_payload(repo, command);
+    Ok((
         RelayRouterIssueFixPayload {
-            backend_status: skeleton_status(command),
+            backend_status: repository_status(command),
             item_id: item_id.clone(),
             issue_id: item_id,
+            fixed: fix.fixed,
+            requires_restart: fix.requires_restart,
+            message: fix.message,
+            details: fix.details,
+            diagnostics,
+        },
+        repository_warning(command),
+    ))
+}
+
+struct RouterIssueFixResult {
+    fixed: bool,
+    requires_restart: bool,
+    message: String,
+    details: Vec<String>,
+}
+
+fn fix_router_issue(repo: &Repository, item_id: &str) -> Result<RouterIssueFixResult, CoreError> {
+    match item_id {
+        "missing_router_block"
+        | "missing_catalog_file"
+        | "config_stale"
+        | "catalog_path_validity"
+        | "config_toml_router"
+        | "config_toml_catalog" => {
+            let details = relay_repository::inject_router_config(repo)?;
+            Ok(router_issue_fixed(
+                "已重新写入 Codex Router 受管配置。",
+                details,
+                true,
+            ))
+        }
+        "stale_router_entries" => {
+            let details = relay_repository::remove_router_config(repo)?;
+            Ok(router_issue_fixed(
+                "已移除过期 Codex Router 配置。",
+                details,
+                true,
+            ))
+        }
+        "all" => {
+            let skeleton = relay_repository::load_router_diagnostic_skeleton(repo, "fix_all");
+            let details = if diagnostic_has_issues(&skeleton) {
+                relay_repository::inject_router_config(repo)?
+            } else {
+                vec!["没有需要自动修复的 Codex Router 诊断项。".to_string()]
+            };
+            Ok(router_issue_fixed(
+                "已处理所有可自动修复的诊断项。",
+                details,
+                true,
+            ))
+        }
+        "user_top_level_profile" | "config_profile_conflict" => Ok(RouterIssueFixResult {
             fixed: false,
             requires_restart: false,
-            message,
-            details: None,
-            diagnostics: diagnostic_payload_from_skeleton(command, diagnostic, skeleton),
-        },
-        skeleton_warning(command),
-    )
+            message: "该诊断项需要手动处理，不能自动改写用户 profile。".to_string(),
+            details: vec!["请手动确认 config.toml 顶层 profile 与路由配置的关系。".to_string()],
+        }),
+        "auth_integrity" | "config_third_party" | "config_omit_syntax" | "db_orphan_providers" => {
+            Ok(RouterIssueFixResult {
+                fixed: false,
+                requires_restart: false,
+                message: "该诊断项已确认，但当前公开实现不自动修改相关外部状态。".to_string(),
+                details: vec!["保留只读诊断结果，避免在证据不足时改写用户环境。".to_string()],
+            })
+        }
+        _ => Err(CoreError::InvalidInput(format!(
+            "unknown router issue id: {item_id}"
+        ))),
+    }
+}
+
+fn router_issue_fixed(
+    message: &str,
+    details: Vec<String>,
+    requires_restart: bool,
+) -> RouterIssueFixResult {
+    RouterIssueFixResult {
+        fixed: true,
+        requires_restart,
+        message: message.to_string(),
+        details,
+    }
 }
 
 fn provider_payload_from_domain(
@@ -801,6 +871,7 @@ fn repository_restored_command(command: &str) -> bool {
             | "get_passthrough_audit_log"
             | "run_codex_router_diagnostics"
             | "diagnose_codex_router"
+            | "fix_codex_router_issue"
             | "get_relay_proxy_status"
             | "set_codex_router_enabled"
             | "set_block_official_passthrough"
@@ -881,5 +952,56 @@ mod tests {
             .iter()
             .any(|item| item.id == "missing_router_block"
                 && item.status.as_deref() == Some("medium")));
+    }
+
+    #[test]
+    fn fix_codex_router_issue_missing_block_writes_router_config() {
+        let repo = Repository::with_temp_file_system("relay-fix-missing-block");
+        relay_repository::set_router_enabled(&repo, true).expect("enable router state");
+
+        let (payload, warning) = fix_codex_router_issue(&repo, "missing_router_block".to_string())
+            .expect("fix missing router block");
+
+        assert_eq!(
+            warning.code,
+            "relay.fix_codex_router_issue.repository_restored"
+        );
+        assert!(payload.fixed);
+        assert!(payload.requires_restart);
+        assert!(!payload.diagnostics.pending);
+        assert!(!payload.diagnostics.has_issues);
+
+        let config = repo
+            .fs()
+            .read_to_string(&repo.paths().config_path)
+            .expect("read config");
+        assert!(config.contains("# >>> aimami-relay codex-router top start"));
+        assert!(config.contains("model_provider = \"aimami\""));
+        assert!(config.contains("model_catalog_json"));
+        assert!(repo
+            .fs()
+            .exists(&repo.paths().codex_home.join("codex_router_catalog.json")));
+    }
+
+    #[test]
+    fn fix_codex_router_issue_user_profile_is_manual() {
+        let repo = Repository::with_temp_file_system("relay-fix-user-profile");
+
+        let (payload, _) = fix_codex_router_issue(&repo, "user_top_level_profile".to_string())
+            .expect("manual fix result");
+
+        assert!(!payload.fixed);
+        assert!(!payload.requires_restart);
+        assert!(payload.message.contains("手动"));
+    }
+
+    #[test]
+    fn fix_codex_router_issue_unknown_id_errors() {
+        let repo = Repository::with_temp_file_system("relay-fix-unknown");
+
+        assert!(matches!(
+            fix_codex_router_issue(&repo, "bogus_id".to_string()),
+            Err(CoreError::InvalidInput(_))
+        ));
     }
 }

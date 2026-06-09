@@ -1708,18 +1708,63 @@ const relayFixHandler: IpcCommandHandler = (context) => {
     context.steps,
   );
   const itemId = readArgString(context.args, "itemId", "");
+  const fixResult = relayRouterFixResult(itemId);
   const data: RelayRouterIssueFixPayload = {
     backendStatus: envelope.data.status,
     itemId,
     issueId: itemId,
-    fixed: false,
-    requiresRestart: false,
-    message: "",
-    details: null,
+    fixed: fixResult.fixed,
+    requiresRestart: fixResult.requiresRestart,
+    message: fixResult.message,
+    details: fixResult.details,
     diagnostics: relayDiagnosticFromStatus(envelope.data.status),
   };
   return { ...envelope, data };
 };
+
+function relayRouterFixResult(itemId: string) {
+  if (
+    itemId === "missing_router_block" ||
+    itemId === "missing_catalog_file" ||
+    itemId === "config_stale" ||
+    itemId === "catalog_path_validity" ||
+    itemId === "config_toml_router" ||
+    itemId === "config_toml_catalog" ||
+    itemId === "all"
+  ) {
+    return {
+      fixed: true,
+      requiresRestart: true,
+      message: "已处理可自动修复的 Codex Router 诊断项。",
+      details: [
+        "config.toml managed router block written",
+        "codex_router_catalog.json ensured",
+      ],
+    };
+  }
+  if (itemId === "stale_router_entries") {
+    return {
+      fixed: true,
+      requiresRestart: true,
+      message: "已移除过期 Codex Router 配置。",
+      details: ["managed router config removed"],
+    };
+  }
+  if (itemId === "user_top_level_profile" || itemId === "config_profile_conflict") {
+    return {
+      fixed: false,
+      requiresRestart: false,
+      message: "该诊断项需要手动处理，不能自动改写用户 profile。",
+      details: ["请手动确认 config.toml 顶层 profile 与路由配置的关系。"],
+    };
+  }
+  return {
+    fixed: false,
+    requiresRestart: false,
+    message: "该诊断项已确认，但当前 mock 不自动修改相关外部状态。",
+    details: ["保留只读诊断结果，避免在证据不足时改写用户环境。"],
+  };
+}
 
 const daemonAutoSwitchCommandHandlers: Partial<
   Record<IpcCommandName, IpcCommandHandler>

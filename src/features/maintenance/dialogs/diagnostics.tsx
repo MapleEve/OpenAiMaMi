@@ -258,7 +258,7 @@ function RouterFixLog({
   result: MaintenanceRouterFixPayload | null;
 }) {
   const { t } = useTranslation();
-  const details = result?.details ? [result.details] : [];
+  const details = result?.details ?? [];
 
   if (details.length === 0) {
     return null;

@@ -896,7 +896,7 @@ export interface RelayRouterIssueFixPayload {
   fixed: boolean;
   requiresRestart: boolean;
   message: string;
-  details: string | null;
+  details: string[];
   diagnostics: RelayDiagnosticPayload;
 }
 

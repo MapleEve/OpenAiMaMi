@@ -234,6 +234,6 @@ pub struct RelayRouterIssueFixPayload {
     pub fixed: bool,
     pub requires_restart: bool,
     pub message: String,
-    pub details: Option<String>,
+    pub details: Vec<String>,
     pub diagnostics: RelayDiagnosticPayload,
 }
