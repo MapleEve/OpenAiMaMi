@@ -43,6 +43,14 @@ pub enum RuntimeWatcherStatusCode {
     PendingSkeleton,
     ScheduleUpdateSkeleton,
     StartOnlySkeleton,
+    ActivityRecorded,
+    FullRefreshScheduled,
+    FullRefreshCoalesced,
+    AutoSwitchWatcherStarted,
+    AutoSwitchWatcherAlreadyStarted,
+    UsageWatcherStarted,
+    UsageWatcherAlreadyStarted,
+    ScheduleUpdated,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -73,6 +81,11 @@ pub struct RuntimeWatcherState {
     pub running: bool,
     pub last_notified: Option<i64>,
     pub schedule_interval: RuntimeWatcherSchedule,
+    pub last_activity_epoch_seconds: Option<i64>,
+    pub last_full_refresh_requested_at: Option<i64>,
+    pub usage_watcher_started: bool,
+    pub auto_switch_pending_watcher_started: bool,
+    pub notify_sequence: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]

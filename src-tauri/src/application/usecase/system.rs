@@ -20,7 +20,9 @@ use crate::contracts::{
 use crate::core::error::CoreError;
 use crate::core::hotspot as hotspot_core;
 use crate::core::model::diagnostics::{DiagnosticProbe, DiagnosticSnapshot};
-use crate::core::model::runtime::{RuntimeWatcherDecision, RuntimeWatcherSignal};
+use crate::core::model::runtime::{
+    RuntimeWatcherDecision, RuntimeWatcherSignal, RuntimeWatcherStatusCode,
+};
 use crate::core::model::settings::UsageRefreshInterval;
 use crate::core::runtime as runtime_core;
 use crate::platform::runtime::RuntimePlatformAdapter;
@@ -469,7 +471,7 @@ fn runtime_watcher_decision(
             runtime_core::note_usage_refresh_activity(snapshot, capability, now)
         }
         RuntimeWatcherSignal::ScheduleFullRuntimeRefresh => {
-            runtime_core::schedule_full_runtime_refresh(snapshot, capability)
+            runtime_core::schedule_full_runtime_refresh(snapshot, capability, now)
         }
         RuntimeWatcherSignal::StartAutoSwitchPendingWatcher => {
             runtime_core::start_auto_switch_pending_watcher(snapshot, capability)
@@ -496,14 +498,28 @@ fn runtime_watcher_backend_status(
     BackendSkeletonStatus {
         module: "system".to_string(),
         command: command.to_string(),
-        restored: false,
+        restored: !matches!(
+            decision.status_code,
+            RuntimeWatcherStatusCode::PendingSkeleton
+                | RuntimeWatcherStatusCode::ScheduleUpdateSkeleton
+                | RuntimeWatcherStatusCode::StartOnlySkeleton
+        ),
         note,
         boundary: BackendSkeletonBoundaryStatus {
             repository_checked: true,
             repository_path_known: decision.repository_path_known,
             platform_checked: true,
             core_checked: true,
-            effect: BackendEffect::Pending,
+            effect: if matches!(
+                decision.status_code,
+                RuntimeWatcherStatusCode::PendingSkeleton
+                    | RuntimeWatcherStatusCode::ScheduleUpdateSkeleton
+                    | RuntimeWatcherStatusCode::StartOnlySkeleton
+            ) {
+                BackendEffect::Pending
+            } else {
+                BackendEffect::NoOp
+            },
         },
     }
 }

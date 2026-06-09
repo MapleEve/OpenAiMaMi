@@ -58,6 +58,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - 已继续补回 `load_usage_analytics` 到 `bootstrap-cache.json` 的 `usageAnalytics` 缓存切片生产写回与 E2E mock 共享 cache 验证；当前仍不声明闭源统计规则已恢复，只声明现有公开用量 payload 会进入 bootstrap cache。
 - 已把 overview 已查询的 `get_mystery_unlock_grants` payload 接入 `mystery-grants` 数据面板，并通过页面 owner 验证防止再次丢弃该查询结果；该进度不声明 `mystery_route_allowed` helper、dim6 或 mystery gate 已闭合。
 - 已按 raw/internal 证据补回 Relay model fetch 的公开读取合同：前端 wrapper、E2E mock 与后端 command、usecase、core、platform、contracts 对齐模型列表 DTO、空状态和失败语义；该进度只声明模型列表获取链路恢复，不声明 Relay 启停、会话或真实转发闭环已完成。
+- 已按 macOS daemon/system 证据补回 runtime watcher 的进程内状态合同：`note_usage_refresh_activity`、`schedule_full_runtime_refresh`、`start_auto_switch_pending_watcher`、`start_usage_refresh_watcher` 和 `update_usage_refresh_schedule` 现在记录 activity、8 秒 debounce、once guard、interval 和 notify 序列，并同步 E2E mock；该进度不声明真实后台线程、事件广播、网络刷新或账号自动切换已恢复。
 - 已把后端公开能力拆到 `commands`、`application/usecase`、`repository`、`repository/adapter`、`platform`、`contracts` 和 `core/error` 边界：command 只接参数和状态，usecase 负责编排，repository/adapter 负责文件读写，platform 负责系统能力，contracts 负责前后端可序列化数据形状。
 - `scripts/validate-backend-hexagonal.mjs` 已从“全仓禁止真实副作用”改成“按 owner 限制副作用”：文件系统只允许仓储/适配器边界，进程、窗口、shell 只允许平台边界，voice 仍保持空骨架门禁。
 - 新增 `scripts/validate-frontend-leaf-copy-acceptance.mjs`，把前端 leaf 和全文案验收从静态覆盖扫描中分离出来；当前该严格 gate 应当失败，直到 internal gate 和逐条文案来源验收全部完成。
@@ -69,7 +70,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - 全文案逐条验收尚未完成；当前没有 `evidence/full-chain/internal/frontend-copy-acceptance.json` 记录每个 locale key 对应的 raw/internal 中文来源、英文来源和验收状态。
 - 后端闭源业务不做全量还原；没有公开证据支撑的业务行为仍只能保留为合同、桩、待实现项或测试缺口。
 - voice 前后端不做真实功能还原，只保留空骨架和说明；原始公开材料中与录音、语音运行时、快捷键、音频反馈、文本注入相关的内容不进入当前公开实现。
-- Accounts、Relay 启停/会话/真实转发、Analytics、Sessions、Daemon 自动切换、更新安装、外部进程重启、诊断修复等后端能力仍未完成真实业务闭环；Relay 当前只补回 model fetch 读取合同，其他部分前端 wrapper 和后端命令仍只返回明确的未恢复状态。
+- Accounts、Relay 启停/会话/真实转发、Analytics、Sessions、Daemon 真实后台线程与自动切换、更新安装、外部进程重启、诊断修复等后端能力仍未完成真实业务闭环；Relay 当前只补回 model fetch 读取合同，runtime watcher 当前只补回进程内状态合同，其他部分前端 wrapper 和后端命令仍只返回明确的未恢复状态。
 - `remoteDeviceSecret` 当前已恢复 settings 读写和迁移语义，但尚未因此关闭前端全文案、渲染交互、双平台 leaf 或 internal gate 的剩余验收项。
 - `bootstrap-cache.json` 当前已恢复读取、解析失败返回空状态、DTO 字段承接、`usageAnalytics` / `mcpServers` / `installedSkills` 三个缓存切片生产写回，以及 E2E mock 共享 cache 验证；真实用量统计口径仍需按 raw/internal 证据继续补齐。
 - `mystery_route_allowed` 仍是 helper/gate 缺口；当前只恢复 get/merge grants 的公开调用链、cache 合同和 overview 面板消费，不把它用于导航显隐或 route guard。

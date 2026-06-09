@@ -244,13 +244,72 @@ const systemActionHandler: IpcCommandHandler = (context) => {
   return { ...envelope, data };
 };
 
-const backendSkeletonStatusHandler: IpcCommandHandler = (context) => {
+const runtimeWatcherMockState = {
+  notifySequence: 0,
+  lastActivityAt: null as number | null,
+  lastFullRefreshRequestedAt: null as number | null,
+  usageWatcherStarted: false,
+  autoSwitchPendingWatcherStarted: false,
+};
+
+const runtimeWatcherStatusHandler: IpcCommandHandler = (context) => {
   const envelope = createEvidenceBackedIpcFixture(
     context.command,
     context.args,
     context.steps,
   );
-  return { ...envelope, data: envelope.data.status };
+  const now = Date.now();
+  let note = "system runtime watcher 已恢复进程内状态合同；mock 不创建真实线程、不发送事件。";
+
+  if (context.command === "note_usage_refresh_activity") {
+    runtimeWatcherMockState.lastActivityAt = now;
+    runtimeWatcherMockState.notifySequence += 1;
+    note = "使用量刷新活动已写入 mock watcher state，并递增 notify 序列。";
+  }
+  if (context.command === "schedule_full_runtime_refresh") {
+    const coalesced =
+      runtimeWatcherMockState.lastFullRefreshRequestedAt !== null &&
+      now - runtimeWatcherMockState.lastFullRefreshRequestedAt < 8_000;
+    if (!coalesced) {
+      runtimeWatcherMockState.lastFullRefreshRequestedAt = now;
+      runtimeWatcherMockState.notifySequence += 1;
+    }
+    note = coalesced
+      ? "全量运行时刷新请求命中 mock 8 秒 debounce。"
+      : "全量运行时刷新请求已写入 mock watcher state。";
+  }
+  if (context.command === "start_auto_switch_pending_watcher") {
+    const alreadyStarted = runtimeWatcherMockState.autoSwitchPendingWatcherStarted;
+    runtimeWatcherMockState.autoSwitchPendingWatcherStarted = true;
+    note = alreadyStarted
+      ? "自动切换 pending watcher mock once guard 已启动。"
+      : "自动切换 pending watcher mock once guard 已写入。";
+  }
+  if (context.command === "start_usage_refresh_watcher") {
+    const alreadyStarted = runtimeWatcherMockState.usageWatcherStarted;
+    runtimeWatcherMockState.usageWatcherStarted = true;
+    note = alreadyStarted
+      ? "使用量刷新 watcher mock once guard 已启动。"
+      : "使用量刷新 watcher mock once guard 已写入。";
+  }
+  if (context.command === "update_usage_refresh_schedule") {
+    runtimeWatcherMockState.notifySequence += 1;
+    note = `使用量刷新间隔 ${systemUsageMockState.refreshInterval} 已写入 mock watcher state。`;
+  }
+
+  const data: BackendSkeletonStatus = {
+    ...envelope.data.status,
+    restored: true,
+    note,
+    boundary: {
+      repositoryChecked: true,
+      repositoryPathKnown: true,
+      platformChecked: true,
+      coreChecked: true,
+      effect: "no_op",
+    },
+  };
+  return { ...envelope, data };
 };
 
 const bootstrapCacheMockState: {
@@ -1968,15 +2027,15 @@ const systemCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> 
   import_remote_device_secret_if_empty: importRemoteDeviceSecretIfEmptyHandler,
   load_snapshot: coreSnapshotHandler,
   merge_mystery_unlock_grants: mergeMysteryUnlockGrantsHandler,
-  note_usage_refresh_activity: backendSkeletonStatusHandler,
+  note_usage_refresh_activity: runtimeWatcherStatusHandler,
   open_path: systemActionHandler,
   refresh_usage_snapshot: refreshUsageSnapshotHandler,
   reset_codex_config: systemActionHandler,
   restart_codex: systemActionHandler,
-  schedule_full_runtime_refresh: backendSkeletonStatusHandler,
-  start_auto_switch_pending_watcher: backendSkeletonStatusHandler,
-  start_usage_refresh_watcher: backendSkeletonStatusHandler,
-  update_usage_refresh_schedule: backendSkeletonStatusHandler,
+  schedule_full_runtime_refresh: runtimeWatcherStatusHandler,
+  start_auto_switch_pending_watcher: runtimeWatcherStatusHandler,
+  start_usage_refresh_watcher: runtimeWatcherStatusHandler,
+  update_usage_refresh_schedule: runtimeWatcherStatusHandler,
 };
 
 const accountsCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {
