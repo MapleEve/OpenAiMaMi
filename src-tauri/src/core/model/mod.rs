@@ -1,4 +1,5 @@
 pub mod diagnostics;
+pub mod hotspot;
 pub mod relay;
 pub mod runtime;
 pub mod settings;
