@@ -53,10 +53,13 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - 后端不再只是空六边形目录；已把原始公开后端中可公开的 MCP、Skills、自定义指令、系统设置、系统信息、打开路径、热点开关状态、外部进程强制终止、插件合同空列表和 Tauri command 注册补入当前六边形骨架。
 - 已按 raw/internal 证据补回 `remoteDeviceSecret` 的后端 settings 持久化、首次生成、旧值导入、空值跳过、非空不覆盖和前端 E2E mock 状态合同；该能力仍只声明为本地 settings 链路恢复，不声明双平台 100% leaf 完成。
 - 已按 macOS / Windows bootstrap 证据补回 `load_bootstrap_state` 的 `bootstrap-cache.json` 读取合同，扩展 `writtenAt`、`snapshotProgressive`、`usageAnalytics`、`mcpServers`、`installedSkills` 五个缓存字段，并保留现有自动切换兼容字段。
+- 已补回启动链路的前后端 seed：前端 `RuntimeInitializer` 会在启动时读取 `load_bootstrap_state` 与 `load_snapshot(localOnly:true)`，写入 runtime bootstrap event、daemon-autoswitch bootstrap cache 和 overview snapshot cache；后端 Tauri setup 会通过 adapter 生命周期触发现有 usage watcher 与 auto-switch pending watcher once guard，不直接创建闭源后台线程。
+- 已补回 `snapshotProgressive` 的生产侧写回：`load_snapshot` 与 `refresh_usage_snapshot` 成功组装公开 `CoreSnapshotPayload` 后写入 `bootstrap-cache.json`，并保留 `usageAnalytics`、`mcpServers`、`installedSkills` 等已有缓存切片。
 - 已按 bootstrap 写回证据补回 `load_mcp_servers` 与 `load_installed_skills` 的 `bootstrap-cache.json` 生产侧更新：主读取成功后分别写入 `mcpServers` 与 `installedSkills` 缓存切片，写回失败不影响主 IPC 响应。
 - 已同步收紧 E2E mock 的 bootstrap 合同：`load_bootstrap_state` 不再固定返回空 `mcpServers` / `installedSkills`，而是读取共享 mock cache；`load_mcp_servers` 与 `load_installed_skills` 会在 mock 中写回对应缓存切片，并由 `validate:e2e-mocks` 禁止退回固定空 slice。
 - 已继续补回 `load_usage_analytics` 到 `bootstrap-cache.json` 的 `usageAnalytics` 缓存切片生产写回与 E2E mock 共享 cache 验证；当前仍不声明闭源统计规则已恢复，只声明现有公开用量 payload 会进入 bootstrap cache。
 - 已把 overview 已查询的 `get_mystery_unlock_grants` payload 接入 `mystery-grants` 数据面板，并通过页面 owner 验证防止再次丢弃该查询结果；该进度不声明 `mystery_route_allowed` helper、dim6 或 mystery gate 已闭合。
+- 已把 mystery grants 的私有 allowlist 与 raw 前端 helper 词表对齐到 `overview/accounts/sessions/mcp/skills/plugins/relayModel/maintenance/settings`，并同步 Rust usecase、E2E mock 与 mock validator；该进度只收紧 grants 过滤合同，不新增公开 IPC、不接入 route guard、不声明 `mystery_route_allowed` gate 已闭合。
 - 已按 raw/internal 证据补回 Relay model fetch 的公开读取合同：前端 wrapper、E2E mock 与后端 command、usecase、core、platform、contracts 对齐模型列表 DTO、空状态和失败语义；该进度只声明模型列表获取链路恢复，不声明 Relay 启停、会话或真实转发闭环已完成。
 - 已按 macOS / Windows relay 测试证据补回 `test_relay_provider` 与 `test_relay_draft` 的 mock terminal 后端闭环：core 负责 endpoint、header、body 构建和响应解析，platform 只返回可测试 mock 响应，provider 路径会把健康结果写回 repository，draft 路径不落盘；该进度不声明真实 HTTP、真实代理、真实 keychain 或会话转发已恢复。
 - 已按 macOS daemon/system 证据补回 runtime watcher 的进程内状态合同：`note_usage_refresh_activity`、`schedule_full_runtime_refresh`、`start_auto_switch_pending_watcher`、`start_usage_refresh_watcher` 和 `update_usage_refresh_schedule` 现在记录 activity、8 秒 debounce、once guard、interval 和 notify 序列，并同步 E2E mock；该进度不声明真实后台线程、事件广播、网络刷新或账号自动切换已恢复。
@@ -74,7 +77,9 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - Accounts、Relay 启停/会话/真实转发、Analytics、Sessions、Daemon 真实后台线程与自动切换、更新安装、外部进程重启、诊断修复等后端能力仍未完成真实业务闭环；Relay 当前只补回 model fetch 读取合同和 test provider/draft mock terminal 测试合同，runtime watcher 当前只补回进程内状态合同，其他部分前端 wrapper 和后端命令仍只返回明确的未恢复状态。
 - `remoteDeviceSecret` 当前已恢复 settings 读写和迁移语义，但尚未因此关闭前端全文案、渲染交互、双平台 leaf 或 internal gate 的剩余验收项。
 - `bootstrap-cache.json` 当前已恢复读取、解析失败返回空状态、DTO 字段承接、`usageAnalytics` / `mcpServers` / `installedSkills` 三个缓存切片生产写回，以及 E2E mock 共享 cache 验证；真实用量统计口径仍需按 raw/internal 证据继续补齐。
+- 启动链路当前只 seed 已有公开 cache owner，并触发进程内 watcher once guard；尚未恢复 Tauri runtime event 广播、真实后台线程、账号 attach monitor 循环或闭源自动切换动作。
 - `mystery_route_allowed` 仍是 helper/gate 缺口；当前只恢复 get/merge grants 的公开调用链、cache 合同和 overview 面板消费，不把它用于导航显隐或 route guard。
+- mystery grants allowlist 已按 raw 前端 helper 对齐，但仍只是私有过滤合同；没有把 `subscription` / `customInstructions` 写回 grants helper，也没有把 grants 用于导航显隐、redirect 或 route registry。
 - MCP 写回当前使用结构化 TOML 保存，已在源码层面对接命令和数据，但还没有恢复原始实现中对注释和托管块位置的完整保留策略。
 - Rust 编译验收需要具备目标平台工具链；Windows 下缺少 MSVC `link.exe` 时，`cargo check` 会在第三方 crate build script 阶段失败。
 

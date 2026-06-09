@@ -1472,10 +1472,10 @@ function isMysteryRouteAllowed(route: string) {
     "overview",
     "accounts",
     "sessions",
+    "plugins",
+    "relayModel",
     "settings",
     "maintenance",
-    "subscription",
-    "customInstructions",
   ].includes(normalizeMysteryRoute(route));
 }
 

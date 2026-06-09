@@ -112,7 +112,7 @@ export const api = {
 
   setAutoSwitch: daemonAutoswitchService.setAutoSwitch,
   configureAutoSwitch: daemonAutoswitchService.configureAutoSwitch,
-  loadBootstrapState: daemonAutoswitchService.loadBootstrapState,
+  loadBootstrapState: systemService.loadBootstrapState,
   loadPendingAutoSwitch: daemonAutoswitchService.loadPendingAutoSwitch,
   dismissPendingAutoSwitch: daemonAutoswitchService.dismissPendingAutoSwitch,
   confirmPendingAutoSwitch: daemonAutoswitchService.confirmPendingAutoSwitch,

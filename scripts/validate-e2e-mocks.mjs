@@ -963,6 +963,11 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     commandFixtureText,
     "function normalizeMysteryRouteGrants",
   );
+  const mysteryAllowedBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts isMysteryRouteAllowed",
+    commandFixtureText,
+    "function isMysteryRouteAllowed",
+  );
   const targetHandlers = [
     ["get_hotspot_enabled", "hotspotEnabledHandler"],
     ["set_hotspot_enabled", "setHotspotEnabledHandler"],
@@ -1102,6 +1107,21 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     "const epochValue = record.epochMs ?? record.epoch_ms;",
     "Number.isFinite(epochValue)",
     "route ? [{ route, epochMs }] : []",
+  ]);
+  assertIncludes("src/mocks/fixtures/commands.ts isMysteryRouteAllowed", mysteryAllowedBody, [
+    "\"overview\"",
+    "\"accounts\"",
+    "\"sessions\"",
+    "\"mcp\"",
+    "\"skills\"",
+    "\"plugins\"",
+    "\"relayModel\"",
+    "\"maintenance\"",
+    "\"settings\"",
+  ]);
+  assertNotIncludes("src/mocks/fixtures/commands.ts isMysteryRouteAllowed", mysteryAllowedBody, [
+    "\"subscription\"",
+    "\"customInstructions\"",
   ]);
   assertNotIncludes("src/mocks/fixtures/commands.ts", commandFixtureText, [
     "mystery_route_allowed",

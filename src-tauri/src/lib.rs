@@ -8,6 +8,7 @@ pub mod repository;
 
 use repository::Repository;
 use std::sync::Mutex;
+use tauri::Manager;
 
 pub fn run() {
     tauri::Builder::default()
@@ -17,6 +18,13 @@ pub fn run() {
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .manage(Mutex::new(Repository::new()))
+        .setup(|app| {
+            let repo = app.state::<Mutex<Repository>>();
+            if let Ok(repo) = repo.lock() {
+                let _ = adapters::tauri::bootstrap_runtime_watchers(&repo);
+            }
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             commands::accounts::begin_add_account_attach_monitor,
             commands::accounts::export_accounts_to_file,

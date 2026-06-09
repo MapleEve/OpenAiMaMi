@@ -39,11 +39,13 @@ use std::collections::BTreeMap;
 pub fn load_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, CoreError> {
     let settings = settings_repository::load_app_settings(repo)?;
     let accounts = accounts_repository::load_account_summaries(repo)?;
-    Ok(CoreSnapshotPayload {
+    let payload = CoreSnapshotPayload {
         backend_status: restored_status("system", "load_snapshot", BackendEffect::NoOp),
         status: make_status(repo, &settings),
         accounts,
-    })
+    };
+    store_bootstrap_snapshot_progressive(repo, &payload);
+    Ok(payload)
 }
 
 pub fn refresh_usage_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, CoreError> {
@@ -51,6 +53,7 @@ pub fn refresh_usage_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, 
     let decision =
         runtime_watcher_decision(repo, RuntimeWatcherSignal::ScheduleFullRuntimeRefresh)?;
     payload.backend_status = runtime_watcher_backend_status("refresh_usage_snapshot", &decision);
+    store_bootstrap_snapshot_progressive(repo, &payload);
     Ok(payload)
 }
 
@@ -738,6 +741,16 @@ fn current_epoch_ms() -> i64 {
     chrono::Utc::now().timestamp_millis()
 }
 
+fn store_bootstrap_snapshot_progressive(repo: &Repository, payload: &CoreSnapshotPayload) {
+    if let Ok(snapshot_progressive) = serde_json::to_value(payload) {
+        let _ = bootstrap_repository::store_bootstrap_snapshot_progressive(
+            repo,
+            current_timestamp(),
+            snapshot_progressive,
+        );
+    }
+}
+
 fn normalize_mystery_route(route: &str) -> String {
     route.trim().trim_matches('/').to_string()
 }
@@ -750,10 +763,10 @@ fn is_mystery_route_allowed(route: &str) -> bool {
             | "overview"
             | "accounts"
             | "sessions"
+            | "plugins"
+            | "relayModel"
             | "settings"
             | "maintenance"
-            | "subscription"
-            | "customInstructions"
     )
 }
 
@@ -950,11 +963,23 @@ mod tests {
                     epoch_ms: now_ms + 20_000,
                 },
                 MysteryRouteGrant {
+                    route: "plugins".to_string(),
+                    epoch_ms: now_ms + 25_000,
+                },
+                MysteryRouteGrant {
+                    route: "relayModel".to_string(),
+                    epoch_ms: now_ms + 26_000,
+                },
+                MysteryRouteGrant {
                     route: "overview".to_string(),
                     epoch_ms: now_ms + 30_000,
                 },
                 MysteryRouteGrant {
-                    route: "blocked".to_string(),
+                    route: "customInstructions".to_string(),
+                    epoch_ms: now_ms + 35_000,
+                },
+                MysteryRouteGrant {
+                    route: "subscription".to_string(),
                     epoch_ms: now_ms + 40_000,
                 },
             ],
@@ -967,6 +992,14 @@ mod tests {
                 MysteryRouteGrant {
                     route: "overview".to_string(),
                     epoch_ms: now_ms + 30_000,
+                },
+                MysteryRouteGrant {
+                    route: "plugins".to_string(),
+                    epoch_ms: now_ms + 25_000,
+                },
+                MysteryRouteGrant {
+                    route: "relayModel".to_string(),
+                    epoch_ms: now_ms + 26_000,
                 },
                 MysteryRouteGrant {
                     route: "skills".to_string(),

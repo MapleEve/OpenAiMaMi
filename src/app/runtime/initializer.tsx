@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { seedRuntimeBootstrap } from "@/app/runtime/bootstrap";
 import { seedDesktopMessageBoundary } from "@/app/runtime/message";
 import {
   applyRuntimeEventToQueryCache,
@@ -16,6 +17,10 @@ export function RuntimeInitializer() {
 
   useEffect(() => {
     void ensureRuntimeRemoteDeviceSecret(queryClient);
+  }, [queryClient]);
+
+  useEffect(() => {
+    void seedRuntimeBootstrap(queryClient);
   }, [queryClient]);
 
   useEffect(() => {

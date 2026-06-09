@@ -46,6 +46,17 @@ pub fn store_bootstrap_usage_analytics(
     save_bootstrap_cache(repo, &cache)
 }
 
+pub fn store_bootstrap_snapshot_progressive(
+    repo: &Repository,
+    written_at: i64,
+    snapshot_progressive: serde_json::Value,
+) -> Result<(), CoreError> {
+    let mut cache = load_bootstrap_cache(repo).unwrap_or_default();
+    cache.written_at = Some(serde_json::Value::Number(written_at.into()));
+    cache.snapshot_progressive = Some(snapshot_progressive);
+    save_bootstrap_cache(repo, &cache)
+}
+
 fn save_bootstrap_cache(repo: &Repository, cache: &BootstrapCacheFile) -> Result<(), CoreError> {
     repo.paths().ensure_app_directories()?;
     repo.fs().write_string(
@@ -180,6 +191,41 @@ mod tests {
             Some(serde_json::Value::Number(1710000003i64.into()))
         );
         assert_eq!(cache.usage_analytics, Some(usage));
+        assert_eq!(cache.mcp_servers, Some(Vec::new()));
+        assert_eq!(cache.installed_skills, Some(Vec::new()));
+    }
+
+    #[test]
+    fn store_bootstrap_snapshot_progressive_preserves_typed_cache_slices() {
+        let repo = Repository::with_temp_file_system("bootstrap-cache-store-snapshot");
+        repo.paths().ensure_app_directories().expect("create dirs");
+        repo.fs()
+            .write_string(
+                &repo.paths().bootstrap_cache_path,
+                r#"{
+  "usageAnalytics": {"dailyData": []},
+  "mcpServers": [],
+  "installedSkills": []
+}"#,
+            )
+            .expect("write cache");
+
+        let snapshot = serde_json::json!({
+            "status": {
+                "usageSource": "local"
+            },
+            "accounts": []
+        });
+        store_bootstrap_snapshot_progressive(&repo, 1710000004, snapshot.clone())
+            .expect("store snapshot cache");
+
+        let cache = load_bootstrap_cache(&repo).expect("reload cache");
+        assert_eq!(
+            cache.written_at,
+            Some(serde_json::Value::Number(1710000004i64.into()))
+        );
+        assert_eq!(cache.snapshot_progressive, Some(snapshot));
+        assert!(cache.usage_analytics.is_some());
         assert_eq!(cache.mcp_servers, Some(Vec::new()));
         assert_eq!(cache.installed_skills, Some(Vec::new()));
     }
