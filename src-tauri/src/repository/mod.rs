@@ -10,6 +10,7 @@ pub mod paths;
 pub mod quota;
 pub mod registry;
 pub mod relay;
+pub mod runtime;
 pub mod runtime_extensions;
 pub mod sessions;
 pub mod settings;

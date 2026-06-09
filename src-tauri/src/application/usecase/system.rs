@@ -18,8 +18,12 @@ use crate::contracts::{
 };
 use crate::core::error::CoreError;
 use crate::core::model::diagnostics::{DiagnosticProbe, DiagnosticSnapshot};
+use crate::core::model::runtime::{RuntimeWatcherDecision, RuntimeWatcherSignal};
 use crate::core::model::settings::UsageRefreshInterval;
+use crate::core::runtime as runtime_core;
+use crate::platform::runtime::RuntimePlatformAdapter;
 use crate::repository::diagnostics::load_system_diagnostic_snapshot;
+use crate::repository::runtime as runtime_repository;
 use crate::repository::settings as settings_repository;
 use crate::repository::Repository;
 
@@ -33,11 +37,9 @@ pub fn load_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, CoreError
 
 pub fn refresh_usage_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, CoreError> {
     let mut payload = load_snapshot(repo)?;
-    payload.backend_status = pending_status(
-        "system",
-        "refresh_usage_snapshot",
-        "用量刷新 API 未在当前公开后端范围内恢复。",
-    );
+    let decision =
+        runtime_watcher_decision(repo, RuntimeWatcherSignal::ScheduleFullRuntimeRefresh)?;
+    payload.backend_status = runtime_watcher_backend_status("refresh_usage_snapshot", &decision);
     Ok(payload)
 }
 
@@ -336,12 +338,10 @@ pub fn detect_api_proxy_config() -> ApiProxyDetectPayload {
 
 pub fn run_daemon_once(repo: &Repository) -> Result<DaemonRunPayload, CoreError> {
     let settings = settings_repository::load_app_settings(repo)?;
+    let decision =
+        runtime_watcher_decision(repo, RuntimeWatcherSignal::StartAutoSwitchPendingWatcher)?;
     Ok(DaemonRunPayload {
-        backend_status: pending_status(
-            "system",
-            "run_daemon_once",
-            "自动切换守护进程未在当前公开后端范围内恢复。",
-        ),
+        backend_status: runtime_watcher_backend_status("run_daemon_once", &decision),
         executed_at: current_timestamp(),
         run_once: true,
         auto_switch_enabled: settings.auto_switch_enabled,
@@ -351,10 +351,9 @@ pub fn run_daemon_once(repo: &Repository) -> Result<DaemonRunPayload, CoreError>
 
 pub fn load_pending_auto_switch() -> PendingAutoSwitchStatePayload {
     PendingAutoSwitchStatePayload {
-        backend_status: pending_status(
-            "system",
+        backend_status: runtime_watcher_status_without_repository(
             "load_pending_auto_switch",
-            "自动切换待确认状态未在当前公开后端范围内恢复。",
+            runtime_core::pending_auto_switch_note(),
         ),
         current_account_key: String::new(),
         candidate_account_key: String::new(),
@@ -381,8 +380,133 @@ pub fn set_usage_refresh_interval(
     interval: String,
 ) -> Result<String, CoreError> {
     let normalized = UsageRefreshInterval::parse(&interval)?;
-    settings_repository::set_usage_refresh_interval(repo, normalized.clone())?;
-    Ok(normalized.as_str().to_string())
+    let saved = settings_repository::set_usage_refresh_interval(repo, normalized)?;
+    let _schedule_update =
+        runtime_watcher_decision(repo, RuntimeWatcherSignal::UpdateUsageRefreshSchedule).ok();
+    Ok(saved.as_str().to_string())
+}
+
+pub fn note_usage_refresh_activity(repo: &Repository) -> Result<BackendSkeletonStatus, CoreError> {
+    runtime_watcher_status_for_signal(
+        repo,
+        "note_usage_refresh_activity",
+        RuntimeWatcherSignal::NoteUsageRefreshActivity,
+    )
+}
+
+pub fn schedule_full_runtime_refresh(
+    repo: &Repository,
+) -> Result<BackendSkeletonStatus, CoreError> {
+    runtime_watcher_status_for_signal(
+        repo,
+        "schedule_full_runtime_refresh",
+        RuntimeWatcherSignal::ScheduleFullRuntimeRefresh,
+    )
+}
+
+pub fn start_auto_switch_pending_watcher(
+    repo: &Repository,
+) -> Result<BackendSkeletonStatus, CoreError> {
+    runtime_watcher_status_for_signal(
+        repo,
+        "start_auto_switch_pending_watcher",
+        RuntimeWatcherSignal::StartAutoSwitchPendingWatcher,
+    )
+}
+
+pub fn start_usage_refresh_watcher(repo: &Repository) -> Result<BackendSkeletonStatus, CoreError> {
+    runtime_watcher_status_for_signal(
+        repo,
+        "start_usage_refresh_watcher",
+        RuntimeWatcherSignal::StartUsageRefreshWatcher,
+    )
+}
+
+pub fn update_usage_refresh_schedule(
+    repo: &Repository,
+) -> Result<BackendSkeletonStatus, CoreError> {
+    runtime_watcher_status_for_signal(
+        repo,
+        "update_usage_refresh_schedule",
+        RuntimeWatcherSignal::UpdateUsageRefreshSchedule,
+    )
+}
+
+fn runtime_watcher_status_for_signal(
+    repo: &Repository,
+    command: &str,
+    signal: RuntimeWatcherSignal,
+) -> Result<BackendSkeletonStatus, CoreError> {
+    let decision = runtime_watcher_decision(repo, signal)?;
+    Ok(runtime_watcher_backend_status(command, &decision))
+}
+
+fn runtime_watcher_decision(
+    repo: &Repository,
+    signal: RuntimeWatcherSignal,
+) -> Result<RuntimeWatcherDecision, CoreError> {
+    let snapshot = runtime_repository::load_runtime_watcher_snapshot(repo)?;
+    let platform = RuntimePlatformAdapter;
+    let capability = platform.runtime_watcher_capability();
+    let now = current_timestamp();
+    let decision = match signal {
+        RuntimeWatcherSignal::NoteUsageRefreshActivity => {
+            runtime_core::note_usage_refresh_activity(snapshot, capability, now)
+        }
+        RuntimeWatcherSignal::ScheduleFullRuntimeRefresh => {
+            runtime_core::schedule_full_runtime_refresh(snapshot, capability)
+        }
+        RuntimeWatcherSignal::StartAutoSwitchPendingWatcher => {
+            runtime_core::start_auto_switch_pending_watcher(snapshot, capability)
+        }
+        RuntimeWatcherSignal::StartUsageRefreshWatcher => {
+            runtime_core::start_usage_refresh_watcher(snapshot, capability)
+        }
+        RuntimeWatcherSignal::UpdateUsageRefreshSchedule => {
+            runtime_core::update_usage_refresh_schedule(snapshot, capability, now)
+        }
+    };
+    Ok(decision)
+}
+
+fn runtime_watcher_backend_status(
+    command: &str,
+    decision: &RuntimeWatcherDecision,
+) -> BackendSkeletonStatus {
+    let note = match &decision.warning {
+        Some(warning) => format!("{} {}", decision.note, warning),
+        None => decision.note.clone(),
+    };
+
+    BackendSkeletonStatus {
+        module: "system".to_string(),
+        command: command.to_string(),
+        restored: false,
+        note,
+        boundary: BackendSkeletonBoundaryStatus {
+            repository_checked: true,
+            repository_path_known: decision.repository_path_known,
+            platform_checked: true,
+            core_checked: true,
+            effect: BackendEffect::Pending,
+        },
+    }
+}
+
+fn runtime_watcher_status_without_repository(command: &str, note: String) -> BackendSkeletonStatus {
+    BackendSkeletonStatus {
+        module: "system".to_string(),
+        command: command.to_string(),
+        restored: false,
+        note,
+        boundary: BackendSkeletonBoundaryStatus {
+            repository_checked: false,
+            repository_path_known: false,
+            platform_checked: false,
+            core_checked: true,
+            effect: BackendEffect::Pending,
+        },
+    }
 }
 
 pub fn check_update_installability(system: &impl AppSystemPort) -> UpdateInstallabilityPayload {
