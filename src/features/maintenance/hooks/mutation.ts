@@ -55,7 +55,8 @@ export function useMaintenanceActionMutations(
 
   const forceKillMutation = useMutation({
     mutationFn: () => maintenanceService.forceKillCodex(),
-    onSuccess: async () => {
+    onSuccess: async (result) => {
+      await writeMaintenanceActionPayload(queryClient, result);
       await invalidateMaintenanceContractQueries(queryClient);
     },
   });

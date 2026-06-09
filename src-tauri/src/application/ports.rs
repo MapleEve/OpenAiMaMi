@@ -49,10 +49,22 @@ pub(crate) trait DiagnosticPlatformPort {
 }
 
 // 进程能力端口只表达应用层允许触发的外部进程动作。
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct ForceKillProcess {
+    pub pid: u32,
+    pub name: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct ForceKillOutcome {
+    pub killed_count: i32,
+    pub processes: Vec<ForceKillProcess>,
+}
+
 pub(crate) trait AppProcessPort {
     fn graceful_restart_for_update(&self) -> Result<(), CoreError>;
     fn restart_app(&self) -> Result<(), CoreError>;
-    fn force_kill_app(&self) -> Result<(), CoreError>;
+    fn force_kill_app(&self) -> Result<ForceKillOutcome, CoreError>;
 }
 
 // shell 能力端口只暴露路径打开，不泄露具体平台命令。

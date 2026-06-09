@@ -1931,7 +1931,7 @@
             "\"force_kill_codex\"",
             "\"diagnose\"",
             "\"diagnose_codex_router\"",
-            "不声明真实平台能力已经恢复"
+            "不声明 diagnose 和 diagnose_codex_router 真实平台能力已经恢复"
           ]
         },
         {
@@ -2046,7 +2046,7 @@
             "pub fn dismiss_pending_auto_switch",
             "pub fn confirm_pending_auto_switch",
             "pub fn force_kill_app",
-            "强制结束外部程序能力未在当前公开后端范围内恢复。"
+            "force_kill_payload"
           ]
         },
         {
@@ -2081,7 +2081,7 @@
         "不处理 voice 前后端，不新增 voice 入口，也不调用 voice 能力。",
         "不把 duplicate_local_outtake_not_authoritative 当作 authoritative closeout。"
       ],
-      "reason": "当前公开源码只足以登记 bootstrap/system 相关 current-source sidecar：bootstrap 记录 load_bootstrap_state、load_pending_auto_switch、pending confirm/dismiss 和 load_snapshot 链路；macos system 记录 watcher/schedule 缺口；system-shell-init 记录 duplicate_local_outtake_not_authoritative 非 authoritative 状态；windows system 记录 force_kill_codex、diagnose 和 diagnose_codex_router 链路与缺口。本 closeout 是非 gating evidence，不关闭 gate-report，不声明 implementation_use、gate_accepted 或 full_leaf_100。"
+      "reason": "当前公开源码只足以登记 bootstrap/system 相关 current-source sidecar：bootstrap 记录 load_bootstrap_state、load_pending_auto_switch、pending confirm/dismiss 和 load_snapshot 链路；macos system 记录 watcher/schedule 缺口；system-shell-init 记录 duplicate_local_outtake_not_authoritative 非 authoritative 状态；windows system 记录 force_kill_codex 平台进程终止链路、diagnose 和 diagnose_codex_router 链路与缺口。本 closeout 是非 gating evidence，不关闭 gate-report，不声明 implementation_use、gate_accepted 或 full_leaf_100。"
     },
     {
       "id": "bootstrap-current-source-chain-gate-failure-registration",
@@ -2467,7 +2467,7 @@
             "\"diagnose\"",
             "\"diagnose_codex_router\"",
             "不声明 implementation_use、gate_accepted 或 full_leaf_100。",
-            "不声明真实平台能力已经恢复。"
+            "不声明 diagnose 和 diagnose_codex_router 真实平台能力已经恢复。"
           ]
         },
         {
@@ -2539,7 +2539,7 @@
           "includes": [
             "pub fn diagnose",
             "\"force_kill_codex\"",
-            "强制结束外部程序能力保持 unsupported/pending"
+            "force_kill_payload"
           ]
         }
       ],
@@ -2549,21 +2549,21 @@
           "path": "per_command.force_kill_codex.readyToImplement",
           "value": false,
           "classification": "scope-selection",
-          "reason": "本条只登记 Windows system force_kill_codex 的 current-source partial closeout；当前公开前端/服务/mock/Rust command/usecase 骨架链路存在，但原始报告仍因产品决策和真实平台能力缺口保持失败，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
+          "reason": "本条只登记 Windows system force_kill_codex 的 current-source partial closeout；当前公开前端/服务/mock/Rust command/usecase/platform 进程扫描与强制终止链路、killedCount/processes DTO 可验证，但原始报告仍因产品决策、frontend CCF 和 acceptance scope 保持非绿，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
         },
         {
           "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json",
           "path": "per_command.force_kill_codex.implementation_use",
           "value": false,
           "classification": "scope-selection",
-          "reason": "本条只登记 Windows system force_kill_codex 的 current-source partial closeout；当前公开前端/服务/mock/Rust command/usecase 骨架链路存在，但原始报告仍因产品决策和真实平台能力缺口保持失败，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
+          "reason": "本条只登记 Windows system force_kill_codex 的 current-source partial closeout；当前公开前端/服务/mock/Rust command/usecase/platform 进程扫描与强制终止链路、killedCount/processes DTO 可验证，但原始报告仍因产品决策、frontend CCF 和 acceptance scope 保持非绿，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
         },
         {
           "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json",
           "path": "per_command.force_kill_codex.gate_accepted",
           "value": false,
           "classification": "scope-selection",
-          "reason": "本条只登记 Windows system force_kill_codex 的 current-source partial closeout；当前公开前端/服务/mock/Rust command/usecase 骨架链路存在，但原始报告仍因产品决策和真实平台能力缺口保持失败，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
+          "reason": "本条只登记 Windows system force_kill_codex 的 current-source partial closeout；当前公开前端/服务/mock/Rust command/usecase/platform 进程扫描与强制终止链路、killedCount/processes DTO 可验证，但原始报告仍因产品决策、frontend CCF 和 acceptance scope 保持非绿，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
         },
         {
           "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json",
@@ -2612,10 +2612,10 @@
         "不修改 gate-report",
         "不声明 raw/internal gate 已通过",
         "不声明 implementation_use、gate_accepted 或 full_leaf_100 已恢复",
-        "不声明真实平台能力已经恢复",
+        "不声明 diagnose 和 diagnose_codex_router 真实平台能力已经恢复",
         "不处理 macOS watcher、bootstrap、mystery 或 voice"
       ],
-      "reason": "本 closeout 只登记 Windows system 的 current-source partial closeout：force_kill_codex、diagnose_codex_router 和 diagnose 在当前公开前端/服务/mock/Rust command/usecase 骨架链路中可验证，但原始报告仍保持失败；不声明 raw/internal gate、真实平台能力、dim6、implementation_use、gate_accepted 或 full_leaf_100 已恢复。"
+      "reason": "本 closeout 只登记 Windows system 的 current-source partial closeout：force_kill_codex 在当前公开前端/服务/mock/Rust command/usecase/platform 进程终止链路中可验证，diagnose_codex_router 和 diagnose 在当前公开前端/服务/mock/Rust command/usecase 骨架链路中可验证，但原始报告仍保持失败；不声明 raw/internal gate、dim6、implementation_use、gate_accepted 或 full_leaf_100 已恢复，也不声明 diagnose/diagnose_codex_router 真实平台能力已恢复。"
     },
     {
       "id": "cross-home-usage-frontend-current-source-non-gating-closeout",

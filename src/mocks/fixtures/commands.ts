@@ -233,6 +233,11 @@ const systemActionHandler: IpcCommandHandler = (context) => {
   if (context.command === "reset_codex_config") {
     data.configCleared = true;
   }
+  if (context.command === "force_kill_codex") {
+    data.killedCount = 0;
+    data.terminatedProcessCount = 0;
+    data.processes = [];
+  }
   return { ...envelope, data };
 };
 

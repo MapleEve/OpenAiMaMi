@@ -50,7 +50,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 
 - 保留 Apache License 许可上下文、中文公开说明、raw/internal 主链路、前端 dumped 证据和匿名化规则。
 - 前端按当前公开证据恢复到主流模块化骨架，保留 route registry、entry/root、runtime initializer、深模块 Provider/StoreUpdater/Content、cache、hooks、dialogs、panels、components、types 和测试边界。
-- 后端不再只是空六边形目录；已把原始公开后端中可公开的 MCP、Skills、自定义指令、系统设置、系统信息、打开路径、热点开关状态、插件合同空列表和 Tauri command 注册补入当前六边形骨架。
+- 后端不再只是空六边形目录；已把原始公开后端中可公开的 MCP、Skills、自定义指令、系统设置、系统信息、打开路径、热点开关状态、外部进程强制终止、插件合同空列表和 Tauri command 注册补入当前六边形骨架。
 - 已把后端公开能力拆到 `commands`、`application/usecase`、`repository`、`repository/adapter`、`platform`、`contracts` 和 `core/error` 边界：command 只接参数和状态，usecase 负责编排，repository/adapter 负责文件读写，platform 负责系统能力，contracts 负责前后端可序列化数据形状。
 - `scripts/validate-backend-hexagonal.mjs` 已从“全仓禁止真实副作用”改成“按 owner 限制副作用”：文件系统只允许仓储/适配器边界，进程、窗口、shell 只允许平台边界，voice 仍保持空骨架门禁。
 - 新增 `scripts/validate-frontend-leaf-copy-acceptance.mjs`，把前端 leaf 和全文案验收从静态覆盖扫描中分离出来；当前该严格 gate 应当失败，直到 internal gate 和逐条文案来源验收全部完成。
@@ -62,7 +62,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - 全文案逐条验收尚未完成；当前没有 `evidence/full-chain/internal/frontend-copy-acceptance.json` 记录每个 locale key 对应的 raw/internal 中文来源、英文来源和验收状态。
 - 后端闭源业务不做全量还原；没有公开证据支撑的业务行为仍只能保留为合同、桩、待实现项或测试缺口。
 - voice 前后端不做真实功能还原，只保留空骨架和说明；原始公开材料中与录音、语音运行时、快捷键、音频反馈、文本注入相关的内容不进入当前公开实现。
-- Accounts、Relay、Analytics、Sessions、Daemon 自动切换、更新安装、外部进程重启/强杀等后端能力仍未完成真实业务闭环；其中部分前端 wrapper 和后端命令只返回明确的未恢复状态。
+- Accounts、Relay、Analytics、Sessions、Daemon 自动切换、更新安装、外部进程重启、诊断修复等后端能力仍未完成真实业务闭环；其中部分前端 wrapper 和后端命令只返回明确的未恢复状态。
 - MCP 写回当前使用结构化 TOML 保存，已在源码层面对接命令和数据，但还没有恢复原始实现中对注释和托管块位置的完整保留策略。
 - Rust 编译验收需要具备目标平台工具链；Windows 下缺少 MSVC `link.exe` 时，`cargo check` 会在第三方 crate build script 阶段失败。
 

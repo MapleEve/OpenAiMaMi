@@ -7,6 +7,7 @@ import type {
   RelayDiagnosticIssuePayload,
   RelayDiagnosticPayload,
   RelayRouterIssueFixPayload,
+  SystemActionPayload,
   SystemInfoPayload,
 } from "@/types";
 
@@ -39,6 +40,7 @@ export type MaintenanceActionPayload =
   | DiagnosePayload
   | CleanPayload
   | RebuildRegistryPayload
+  | SystemActionPayload
   | MaintenanceRouterDiagnosticsPayload
   | MaintenanceRouterFixPayload;
 export type MaintenanceCachePayload =

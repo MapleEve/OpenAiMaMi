@@ -75,6 +75,9 @@ export interface SystemInfoPayload {
 export interface SystemActionPayload {
   backendStatus: BackendSkeletonStatus;
   configCleared?: boolean;
+  killedCount?: number;
+  terminatedProcessCount?: number;
+  processes?: string[];
 }
 
 export interface NotificationClientStatePayload {

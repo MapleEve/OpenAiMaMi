@@ -23,9 +23,10 @@
           "src/mocks/fixtures/commands.ts",
           "src-tauri/src/lib.rs",
           "src-tauri/src/commands/system.rs",
-          "src-tauri/src/application/usecase/system.rs"
+          "src-tauri/src/application/usecase/system.rs",
+          "src-tauri/src/platform/process.rs"
         ],
-        "说明": "当前公开源码可见 force_kill_codex 的 IPC、system/maintenance service、mutation/page、mock、Rust command 和 usecase 骨架链路；usecase 仍返回未恢复语义。"
+        "说明": "当前公开源码可见 force_kill_codex 的 IPC、system/maintenance service、mutation/page、mock、Rust command、usecase 和 platform 进程终止链路；usecase 返回 killedCount/processes DTO，原始 gate 字段仍保持非绿。"
       },
       {
         "command": "diagnose",
@@ -61,7 +62,7 @@
     "不修改 gate-report 字段。",
     "不新增 closedGateReportFailures 或 closedManifestStatuses。",
     "不声明 implementation_use、gate_accepted 或 full_leaf_100。",
-    "不声明真实平台能力已经恢复。"
+    "不声明 diagnose 和 diagnose_codex_router 真实平台能力已经恢复。"
   ],
-  "reason": "本 sidecar 只记录 windows system 相关 force_kill_codex、diagnose 和 diagnose_codex_router 的当前公开源码链路与缺口；它是非 gating evidence，不提升任何 gate 状态，也不声明真实平台能力已经恢复。"
+  "reason": "本 sidecar 只记录 windows system 相关 force_kill_codex、diagnose 和 diagnose_codex_router 的当前公开源码链路与缺口；force_kill_codex 当前已有公开进程终止链路，但它是非 gating evidence，不提升任何 gate 状态，也不声明 diagnose/diagnose_codex_router 真实平台能力已经恢复。"
 }

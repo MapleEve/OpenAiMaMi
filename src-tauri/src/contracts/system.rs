@@ -338,6 +338,12 @@ pub struct SystemActionPayload {
     pub backend_status: BackendSkeletonStatus,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub config_cleared: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub killed_count: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub terminated_process_count: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub processes: Option<Vec<String>>,
 }
 
 #[derive(Debug, Clone, Serialize)]

@@ -1614,7 +1614,7 @@ function validateWindowsSystemCurrentSourceCloseout(closeout) {
     "当前公开源码可见 force_kill_codex",
     "当前公开源码可见 diagnose",
     "当前公开源码可见 diagnose_codex_router",
-    "不声明真实平台能力已经恢复",
+    "不声明 diagnose 和 diagnose_codex_router 真实平台能力已经恢复",
   ]) {
     if (!sidecarText.includes(required)) {
       failures.push(`${WINDOWS_SYSTEM_CURRENT_SOURCE_SIDECAR} 缺少边界声明：${required}`);
@@ -1638,7 +1638,7 @@ function validateWindowsSystemCurrentSourceCloseout(closeout) {
     "不修改 gate-report",
     "不声明 raw/internal gate 已通过",
     "不声明 implementation_use、gate_accepted 或 full_leaf_100 已恢复",
-    "不声明真实平台能力已经恢复",
+    "不声明 diagnose 和 diagnose_codex_router 真实平台能力已经恢复",
     "不处理 macOS watcher、bootstrap、mystery 或 voice",
   ]) {
     if (!nonClaimsText.includes(required)) {

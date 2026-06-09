@@ -180,7 +180,9 @@ pub fn restart_codex() -> Result<CoreEnvelope<SystemActionPayload>, String> {
 #[tauri::command]
 pub fn force_kill_codex() -> Result<CoreEnvelope<SystemActionPayload>, String> {
     let process = ProcessPlatformAdapter;
-    Ok(CoreEnvelope::ok(usecase::system::force_kill_app(&process)))
+    usecase::system::force_kill_app(&process)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
 }
 
 #[tauri::command]
