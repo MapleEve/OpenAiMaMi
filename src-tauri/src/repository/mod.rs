@@ -11,6 +11,7 @@ pub mod registry;
 pub mod relay;
 pub mod runtime_extensions;
 pub mod sessions;
+pub mod settings;
 pub mod skills;
 pub mod voice;
 

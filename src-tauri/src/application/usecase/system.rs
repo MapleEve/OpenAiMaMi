@@ -1,4 +1,6 @@
-use crate::application::ports::{AppProcessPort, AppShellPort, AppSystemPort, AppWindowPort};
+use crate::application::ports::{
+    AppProcessPort, AppShellPort, AppSystemPort, AppWindowPort, HotspotPlatformPort,
+};
 use crate::application::service::{
     current_timestamp, pending_status, restored_status, unsupported_status,
 };
@@ -13,11 +15,12 @@ use crate::contracts::{
     UpdateInstallabilityPayload, UsageSource,
 };
 use crate::core::error::CoreError;
-use crate::repository::adapter::FileSystemAdapter;
+use crate::core::model::settings::UsageRefreshInterval;
+use crate::repository::settings as settings_repository;
 use crate::repository::Repository;
 
 pub fn load_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, CoreError> {
-    let settings = load_settings(repo)?;
+    let settings = settings_repository::load_app_settings(repo)?;
     Ok(CoreSnapshotPayload {
         backend_status: restored_status("system", "load_snapshot", BackendEffect::NoOp),
         status: make_status(repo, &settings),
@@ -35,7 +38,7 @@ pub fn refresh_usage_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, 
 }
 
 pub fn load_bootstrap_state(repo: &Repository) -> Result<BootstrapStatePayload, CoreError> {
-    let settings = load_settings(repo)?;
+    let settings = settings_repository::load_app_settings(repo)?;
     Ok(BootstrapStatePayload {
         backend_status: restored_status("system", "load_bootstrap_state", BackendEffect::NoOp),
         executed_at: None,
@@ -96,9 +99,9 @@ pub fn set_auto_switch(
     repo: &Repository,
     enabled: bool,
 ) -> Result<AutoSwitchConfigPayload, CoreError> {
-    let mut settings = load_settings(repo)?;
+    let mut settings = settings_repository::load_app_settings(repo)?;
     settings.auto_switch_enabled = enabled;
-    save_settings(repo, &settings)?;
+    settings_repository::save_app_settings(repo, &settings)?;
     Ok(AutoSwitchConfigPayload {
         backend_status: restored_status("system", "set_auto_switch", BackendEffect::NoOp),
         auto_switch: make_auto_switch_status(&settings),
@@ -110,7 +113,7 @@ pub fn configure_auto_switch(
     threshold_5h_percent: Option<i32>,
     threshold_weekly_percent: Option<i32>,
 ) -> Result<AutoSwitchConfigPayload, CoreError> {
-    let mut settings = load_settings(repo)?;
+    let mut settings = settings_repository::load_app_settings(repo)?;
     if let Some(value) = threshold_5h_percent {
         validate_percent(value)?;
         settings.threshold_5h_percent = value;
@@ -119,7 +122,7 @@ pub fn configure_auto_switch(
         validate_percent(value)?;
         settings.threshold_weekly_percent = value;
     }
-    save_settings(repo, &settings)?;
+    settings_repository::save_app_settings(repo, &settings)?;
     Ok(AutoSwitchConfigPayload {
         backend_status: restored_status("system", "configure_auto_switch", BackendEffect::NoOp),
         auto_switch: make_auto_switch_status(&settings),
@@ -131,12 +134,12 @@ pub fn set_api_proxy_config(
     mode: ApiProxyMode,
     url: Option<String>,
 ) -> Result<ApiModePayload, CoreError> {
-    let mut settings = load_settings(repo)?;
+    let mut settings = settings_repository::load_app_settings(repo)?;
     settings.api_proxy = ApiProxyConfigPayload {
         mode,
         url: normalize_proxy_url(url),
     };
-    save_settings(repo, &settings)?;
+    settings_repository::save_app_settings(repo, &settings)?;
     Ok(ApiModePayload {
         api: ApiConfigPayload {
             proxy: settings.api_proxy,
@@ -176,7 +179,7 @@ pub fn detect_api_proxy_config() -> ApiProxyDetectPayload {
 }
 
 pub fn run_daemon_once(repo: &Repository) -> Result<DaemonRunPayload, CoreError> {
-    let settings = load_settings(repo)?;
+    let settings = settings_repository::load_app_settings(repo)?;
     Ok(DaemonRunPayload {
         backend_status: pending_status(
             "system",
@@ -212,21 +215,18 @@ pub fn confirm_pending_auto_switch() {}
 pub fn confirm_pending_auto_switch_and_restart_codex() {}
 
 pub fn get_usage_refresh_interval(repo: &Repository) -> Result<String, CoreError> {
-    Ok(load_settings(repo)?.usage_refresh_interval)
+    Ok(settings_repository::get_usage_refresh_interval(repo)?
+        .as_str()
+        .to_string())
 }
 
 pub fn set_usage_refresh_interval(
     repo: &Repository,
     interval: String,
 ) -> Result<String, CoreError> {
-    let normalized = match interval.as_str() {
-        "30s" | "1m" | "3m" | "5m" => interval,
-        _ => return Err(CoreError::InvalidInput("不支持的刷新间隔".to_string())),
-    };
-    let mut settings = load_settings(repo)?;
-    settings.usage_refresh_interval = normalized.clone();
-    save_settings(repo, &settings)?;
-    Ok(normalized)
+    let normalized = UsageRefreshInterval::parse(&interval)?;
+    settings_repository::set_usage_refresh_interval(repo, normalized.clone())?;
+    Ok(normalized.as_str().to_string())
 }
 
 pub fn check_update_installability(system: &impl AppSystemPort) -> UpdateInstallabilityPayload {
@@ -318,13 +318,13 @@ pub fn focus_main_window(window: &impl AppWindowPort) -> Result<SystemActionPayl
 }
 
 pub fn get_device_id(repo: &Repository) -> Result<String, CoreError> {
-    let mut settings = load_settings(repo)?;
+    let mut settings = settings_repository::load_app_settings(repo)?;
     if let Some(id) = settings.device_id.clone() {
         return Ok(id);
     }
     let id = uuid::Uuid::new_v4().to_string();
     settings.device_id = Some(id.clone());
-    save_settings(repo, &settings)?;
+    settings_repository::save_app_settings(repo, &settings)?;
     Ok(id)
 }
 
@@ -352,19 +352,21 @@ pub fn merge_mystery_unlock_grants(grants: Vec<MysteryRouteGrant>) -> Vec<Myster
 
 pub fn import_remote_device_secret_if_empty(_secret: String) {}
 
-pub fn has_notch() -> bool {
-    crate::platform::hotspot::has_notch()
+pub fn has_notch(hotspot: &impl HotspotPlatformPort) -> bool {
+    hotspot.has_notch()
 }
 
 pub fn get_hotspot_enabled(repo: &Repository) -> Result<bool, CoreError> {
-    Ok(load_settings(repo)?.hotspot_enabled)
+    settings_repository::get_hotspot_enabled(repo)
 }
 
 pub fn set_hotspot_enabled(repo: &Repository, enabled: bool) -> Result<bool, CoreError> {
-    let mut settings = load_settings(repo)?;
-    settings.hotspot_enabled = enabled;
-    save_settings(repo, &settings)?;
+    settings_repository::set_hotspot_enabled(repo, enabled)?;
     Ok(enabled)
+}
+
+pub fn hotspot_ready(hotspot: &impl HotspotPlatformPort) -> bool {
+    hotspot.is_hotspot_ready()
 }
 
 pub fn get_image_compat() -> bool {
@@ -415,22 +417,6 @@ fn make_auto_switch_status(settings: &AppSettingsFile) -> AutoSwitchStatusPayloa
         service_state: AutoSwitchRuntimeState::NotInstalled,
         service_label: "dev.aimami.auto-switch".to_string(),
     }
-}
-
-fn load_settings(repo: &Repository) -> Result<AppSettingsFile, CoreError> {
-    if !repo.fs().exists(&repo.paths().settings_path) {
-        return Ok(AppSettingsFile::default());
-    }
-    let raw = repo.fs().read_to_string(&repo.paths().settings_path)?;
-    Ok(serde_json::from_str(&raw).unwrap_or_default())
-}
-
-fn save_settings(repo: &Repository, settings: &AppSettingsFile) -> Result<(), CoreError> {
-    repo.paths().ensure_app_directories()?;
-    repo.fs().write_string(
-        &repo.paths().settings_path,
-        &serde_json::to_string_pretty(settings)?,
-    )
 }
 
 fn remove_children(repo: &Repository, path: &std::path::Path) -> Result<i32, CoreError> {
