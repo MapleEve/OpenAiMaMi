@@ -1269,6 +1269,72 @@
       "reason": "当前公开源码已经形成 relay IPC、前端 service/cache/query/mutation/runtime/mock 与 Rust command/usecase/contracts/repository 的可验证公开骨架链路；本 closeout 只登记非 gating 当前源码证据，不声明真实业务恢复、后端平台恢复或 full leaf。"
     },
     {
+      "id": "relay-proxy-config-dim6-stale-gate-registration",
+      "module": "relay-proxy-config",
+      "status": "current-source-closed-partial",
+      "sidecarReports": [
+        "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay-core/logic/RELAY-CORE-ACCEPTANCE-MAPPING-109.md",
+        "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay-core/logic/PROXY-CONFIG-DISTILLED-109.md"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay-core/gate-report.json",
+          "includes": [
+            "\"cluster\": \"relay_proxy_config\"",
+            "\"dim6_missing\": true",
+            "13 leaves",
+            "gate_change_integrity_update"
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay-core/logic/RELAY-CORE-ACCEPTANCE-MAPPING-109.md",
+          "includes": [
+            "### T5. relay_proxy_config",
+            "**dim6_status**: closed",
+            "relay_proxy_config | macOS sub-cluster",
+            "relay_proxy_config | Windows sub-cluster",
+            "Transport sub-clusters relay_forward_chain+relay_sse+relay_ws_handlers+relay_passthrough_helpers+relay_proxy_config dim6 closed"
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay-core/logic/PROXY-CONFIG-DISTILLED-109.md",
+          "includes": [
+            "Bundle**: macos-1.0.9-relay-core",
+            "relay_proxy_config",
+            "set_api_proxy_config",
+            "detect_api_proxy_config",
+            "test_api_proxy_config",
+            "sanitize_proxy_config"
+          ]
+        },
+        {
+          "file": "src/services/system/index.ts",
+          "includes": [
+            "invokeIpc<CoreEnvelope<ApiModePayload>>(\"set_api_proxy_config\"",
+            "invokeIpc<CoreEnvelope<ApiProxyTestPayload>>(\"test_api_proxy_config\"",
+            "invokeIpc<CoreEnvelope<ApiProxyDetectPayload>>(\"detect_api_proxy_config\")"
+          ]
+        }
+      ],
+      "closedGateReportFailures": [
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay-core/gate-report.json",
+          "path": "cluster_gates.18.dim6_missing",
+          "value": true,
+          "classification": "scope-selection",
+          "reason": "current-source partial closeout 只登记 relay_proxy_config 的 cluster_gates.18.dim6_missing stale 残留；RELAY-CORE-ACCEPTANCE-MAPPING-109 T5 已记录 relay_proxy_config dim6_status closed，但不修改 gate-report，不声明 relay-core full_leaf_100。"
+        }
+      ],
+      "nonClaims": [
+        "不修改 gate-report 字段。",
+        "不声明 full_leaf_100。",
+        "不声明 relay-core 全量 readyToImplement。",
+        "不登记 cross relay-core-bootstrap、relay、mystery 或 voice。",
+        "不声明真实代理网络、TLS、平台代理检测或 passthrough 行为已经恢复。"
+      ],
+      "reason": "current-source partial closeout 只把 relay_proxy_config 在 macOS relay-core gate-report 中的 cluster_gates.18.dim6_missing stale 残留与 RELAY-CORE-ACCEPTANCE-MAPPING-109 T5 对齐；mapping 已写明 dim6_status closed，PROXY-CONFIG-DISTILLED-109 提供 proxy config 证据入口。它不修改 gate-report，不登记 full_leaf_100，也不声明 relay-core 全量 readyToImplement。"
+    },
+    {
       "id": "system-hotspot-usage-mystery-frontend-callchain-non-gating-closeout",
       "module": "system-hotspot-usage-mystery",
       "status": "current-source-closed-partial",
