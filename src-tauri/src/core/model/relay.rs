@@ -1,10 +1,12 @@
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 pub const RELAY_DEFAULT_IDE: &str = "codex";
 pub const RELAY_SCHEMA_VERSION: i32 = 4;
 
 /// relay 领域模型只描述公开后端可承载的状态骨架，不保存 Tauri 或前端对象。
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
 pub struct RelayProviderDomain {
     pub id: String,
     pub ide: String,
@@ -32,13 +34,26 @@ pub struct RelayDraftDomain {
     pub network: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
 pub struct RelayProxyDomain {
     pub running: bool,
     pub port: i32,
     pub base_url: String,
     pub codex_base_url: String,
     pub last_error: Option<String>,
+}
+
+impl Default for RelayProxyDomain {
+    fn default() -> Self {
+        Self {
+            running: false,
+            port: 0,
+            base_url: String::new(),
+            codex_base_url: String::new(),
+            last_error: None,
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
