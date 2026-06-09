@@ -14,7 +14,7 @@ pub(crate) trait AppProcessPort {
     fn force_kill_app(&self) -> Result<(), CoreError>;
 }
 
-// shell 能力端口只暴露路径打开，不泄漏具体平台命令。
+// shell 能力端口只暴露路径打开，不泄露具体平台命令。
 pub(crate) trait AppShellPort {
     fn open_path(&self, path: &str) -> Result<(), CoreError>;
 }
@@ -34,7 +34,13 @@ pub(crate) trait AppSystemPort {
     fn reset_config(&self) -> Result<(), CoreError>;
 }
 
-// 窗口能力端口。
+// 窗口能力端口只封装应用层需要的窗口动作。
 pub(crate) trait AppWindowPort {
     fn focus_main_window(&self) -> Result<(), CoreError>;
+}
+
+// hotspot 能力端口只公开可替换的平台查询骨架，不声明 Windows/macOS 热点能力已恢复。
+pub(crate) trait HotspotPlatformPort {
+    fn has_notch(&self) -> bool;
+    fn is_hotspot_ready(&self) -> bool;
 }
