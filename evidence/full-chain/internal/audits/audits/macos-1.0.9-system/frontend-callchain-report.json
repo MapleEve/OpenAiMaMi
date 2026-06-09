@@ -1,65 +1,81 @@
 {
-  "id": "macos-1.0.9-system-current-source-gap-sidecar",
+  "id": "macos-1.0.9-system-current-source-runtime-watcher-sidecar",
   "module": "system",
-  "status": "current-source-gap-recorded-non-gating",
+  "status": "current-source-runtime-watcher-skeleton-recorded-non-gating",
   "full_leaf": false,
   "gate_report_fields_unchanged": true,
   "backend_platform_evidence_required": true,
   "currentSourceSignals": {
-    "missingWatcherScheduleSignals": [
+    "watcherScheduleSkeletonSignals": [
       {
         "signal": "note_usage_refresh_activity",
-        "searchedScopes": [
-          "src",
-          "src-tauri",
-          "scripts"
+        "files": [
+          "src-tauri/src/application/usecase/system.rs",
+          "src-tauri/src/core/runtime.rs",
+          "src-tauri/src/core/model/runtime.rs",
+          "src-tauri/src/repository/runtime.rs",
+          "src-tauri/src/platform/runtime.rs"
         ],
-        "说明": "当前公开源码未定位到该 watcher 或 schedule 信号；本 sidecar 只登记缺口。"
+        "说明": "当前公开源码可见后端六边形 watcher 骨架链路：usecase 读取 repository snapshot，调用 runtime core，读取 platform capability，返回 pending skeleton status；不声明真实 condvar wakeup 或后台线程已恢复。"
       },
       {
         "signal": "schedule_full_runtime_refresh",
-        "searchedScopes": [
-          "src",
-          "src-tauri",
-          "scripts"
+        "files": [
+          "src-tauri/src/application/usecase/system.rs",
+          "src-tauri/src/core/runtime.rs",
+          "src-tauri/src/core/model/runtime.rs",
+          "src-tauri/src/repository/runtime.rs",
+          "src-tauri/src/platform/runtime.rs"
         ],
-        "说明": "当前公开源码未定位到该 watcher 或 schedule 信号；本 sidecar 只登记缺口。"
+        "说明": "当前公开源码可见后端六边形调度骨架链路；不发起真实网络刷新、不写 runtime snapshot、不广播 runtime event。"
       },
       {
         "signal": "start_auto_switch_pending_watcher",
-        "searchedScopes": [
-          "src",
-          "src-tauri",
-          "scripts"
+        "files": [
+          "src-tauri/src/application/usecase/system.rs",
+          "src-tauri/src/core/runtime.rs",
+          "src-tauri/src/core/model/runtime.rs",
+          "src-tauri/src/repository/runtime.rs",
+          "src-tauri/src/platform/runtime.rs"
         ],
-        "说明": "当前公开源码未定位到该 watcher 或 schedule 信号；本 sidecar 只登记缺口。"
+        "说明": "当前公开源码可见 pending auto-switch watcher 启动骨架；不创建后台线程、不读取闭源队列、不触发账号切换。"
       },
       {
         "signal": "start_usage_refresh_watcher",
-        "searchedScopes": [
-          "src",
-          "src-tauri",
-          "scripts"
+        "files": [
+          "src-tauri/src/application/usecase/system.rs",
+          "src-tauri/src/core/runtime.rs",
+          "src-tauri/src/core/model/runtime.rs",
+          "src-tauri/src/repository/runtime.rs",
+          "src-tauri/src/platform/runtime.rs"
         ],
-        "说明": "当前公开源码未定位到该 watcher 或 schedule 信号；本 sidecar 只登记缺口。"
+        "说明": "当前公开源码可见 usage refresh watcher 启动骨架；不创建后台线程、不轮询接口、不写用户环境。"
       },
       {
         "signal": "update_usage_refresh_schedule",
-        "searchedScopes": [
-          "src",
-          "src-tauri",
-          "scripts"
+        "files": [
+          "src-tauri/src/application/usecase/system.rs",
+          "src-tauri/src/core/runtime.rs",
+          "src-tauri/src/core/model/runtime.rs",
+          "src-tauri/src/repository/runtime.rs",
+          "src-tauri/src/platform/runtime.rs"
         ],
-        "说明": "当前公开源码未定位到该 watcher 或 schedule 信号；本 sidecar 只登记缺口。"
+        "说明": "当前公开源码可见 usage interval 保存后的 schedule update 骨架；不通知真实条件变量。"
       }
+    ],
+    "indirectEntrypoints": [
+      "refresh_usage_snapshot",
+      "run_daemon_once",
+      "set_usage_refresh_interval"
     ]
   },
   "nonClaims": [
     "不声明全量叶子验收完成。",
     "不修改 gate-report 字段。",
-    "不新增 closedGateReportFailures 或 closedManifestStatuses。",
+    "不新增 closedManifestStatuses。",
     "不声明 implementation_use、gate_accepted 或 full_leaf_100。",
-    "不声明 watcher 或 schedule 当前源码链路已经补齐。"
+    "不声明 watcher、schedule、condvar、后台线程、runtime event 或真实平台副作用已经恢复。",
+    "不声明这 5 个 watcher / schedule 信号有直接前端 IPC 入口。"
   ],
-  "reason": "本 sidecar 只记录 macos system watcher 或 schedule 的当前公开源码缺口：note_usage_refresh_activity、schedule_full_runtime_refresh、start_auto_switch_pending_watcher、start_usage_refresh_watcher 和 update_usage_refresh_schedule；它是非 gating evidence，不提升任何 gate 状态。"
+  "reason": "本 sidecar 只记录 macOS system watcher / schedule 的当前公开源码后端六边形骨架：note_usage_refresh_activity、schedule_full_runtime_refresh、start_auto_switch_pending_watcher、start_usage_refresh_watcher 和 update_usage_refresh_schedule 已能在 usecase、runtime core、runtime model、repository snapshot 和 platform capability 中定位；它是非 gating evidence，不提升 gate_accepted、implementation_use 或 full_leaf_100。"
 }
