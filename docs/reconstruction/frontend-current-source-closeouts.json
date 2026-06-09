@@ -669,6 +669,13 @@
           "reason": "当前仅闭合该命令的前端调用链，不声明完整叶子门禁。"
         },
         {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json",
+          "path": "cluster_gate_summary.readyToImplement",
+          "value": 0,
+          "classification": "scope-selection",
+          "reason": "本条只登记 macOS window-path current-source partial closeout 下当前公开前端/服务/后端骨架链路的剩余 gate failure；不声明 raw/internal gate、真实平台 parity、dim6 或 full_leaf_100 恢复。"
+        },
+        {
           "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-maintenance/gate-report.json",
           "path": "gate_accepted",
           "value": false,
@@ -1880,6 +1887,94 @@
         "不把 duplicate_local_outtake_not_authoritative 当作 authoritative closeout。"
       ],
       "reason": "当前公开源码只足以登记 bootstrap/system 相关 current-source sidecar：bootstrap 记录 load_bootstrap_state、load_pending_auto_switch、pending confirm/dismiss 和 load_snapshot 链路；macos system 记录 watcher/schedule 缺口；system-shell-init 记录 duplicate_local_outtake_not_authoritative 非 authoritative 状态；windows system 记录 force_kill_codex、diagnose 和 diagnose_codex_router 链路与缺口。本 closeout 是非 gating evidence，不关闭 gate-report，不声明 implementation_use、gate_accepted 或 full_leaf_100。"
+    },
+    {
+      "id": "cross-home-usage-frontend-current-source-non-gating-closeout",
+      "module": "cross-home-usage-frontend",
+      "status": "current-source-closed-partial",
+      "gateReports": [
+        "evidence/full-chain/internal/audits/audits/cross-1.0.9-home-usage-frontend/gate-report.json"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "evidence/full-chain/internal/audits/audits/cross-1.0.9-home-usage-frontend/gate-report.json",
+          "includes": [
+            "\"gate_accepted\": false",
+            "\"implementation_use\": false",
+            "\"readyToImplement\": 0",
+            "Frontend-only bundle; backend verification delegated to per-command bundles"
+          ]
+        },
+        {
+          "file": "src/features/overview/hooks/query.ts",
+          "includes": [
+            "analyticsService.loadUsageAnalytics()",
+            "OVERVIEW_USAGE_QUERY_KEY"
+          ]
+        },
+        {
+          "file": "src/services/analytics/index.ts",
+          "includes": [
+            "loadUsageAnalytics: ()",
+            "invokeIpc<CoreEnvelope<UsageAnalyticsPayload>>(\"load_usage_analytics\")"
+          ]
+        },
+        {
+          "file": "src/services/system/index.ts",
+          "includes": [
+            "refreshUsageSnapshot: ()",
+            "invokeIpc<CoreEnvelope<CoreSnapshotPayload>>(\"refresh_usage_snapshot\")"
+          ]
+        },
+        {
+          "file": "src/mocks/fixtures/commands.ts",
+          "includes": [
+            "load_usage_analytics: loadUsageAnalyticsHandler",
+            "refresh_usage_snapshot: refreshUsageSnapshotHandler"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/system.rs",
+          "includes": [
+            "pub fn refresh_usage_snapshot",
+            "runtime_watcher_backend_status(\"refresh_usage_snapshot\""
+          ]
+        }
+      ],
+      "backendBoundaryNotes": [
+        "gate-report 原文标记为前端专属包；后端验证委托给每个命令证据包，本条只登记 current-source partial closeout。"
+      ],
+      "closedGateReportFailures": [
+        {
+          "report": "evidence/full-chain/internal/audits/audits/cross-1.0.9-home-usage-frontend/gate-report.json",
+          "path": "gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 cross home-usage frontend 的 current-source partial closeout；当前公开前端/服务/后端骨架链路存在，但后端验证仍委托给每个命令证据包，不声明 raw/internal gate、implementation_use、gate_accepted、dim6、真实平台 parity 或 full_leaf_100 恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/cross-1.0.9-home-usage-frontend/gate-report.json",
+          "path": "implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 cross home-usage frontend 的 current-source partial closeout；当前公开前端/服务/后端骨架链路存在，但后端验证仍委托给每个命令证据包，不声明 raw/internal gate、implementation_use、gate_accepted、dim6、真实平台 parity 或 full_leaf_100 恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/cross-1.0.9-home-usage-frontend/gate-report.json",
+          "path": "cluster_gate_summary.readyToImplement",
+          "value": 0,
+          "classification": "scope-selection",
+          "reason": "本条只登记 cross home-usage frontend 的 current-source partial closeout；当前公开前端/服务/后端骨架链路存在，但后端验证仍委托给每个命令证据包，不声明 raw/internal gate、implementation_use、gate_accepted、dim6、真实平台 parity 或 full_leaf_100 恢复。"
+        }
+      ],
+      "nonClaims": [
+        "不修改 gate-report",
+        "不声明 raw/internal gate 已通过",
+        "不声明真实平台 parity",
+        "不声明 dim6 已恢复",
+        "不声明 full_leaf_100 恢复"
+      ],
+      "reason": "本 closeout 只登记 cross home-usage frontend 的 current-source partial closeout：当前公开前端/服务/后端骨架链路可验证，但 gate-report 自身仍是前端专属包且后端验证委托给每个命令证据包；不声明 raw/internal gate、真实平台 parity、dim6 或 full_leaf_100 已恢复。"
     },
     {
       "id": "ui-theme-current-source-theme-chain",

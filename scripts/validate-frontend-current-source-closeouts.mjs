@@ -252,6 +252,26 @@ const UI_THEME_GATE_FAILURE_KEYS = [
   `${UI_THEME_GATE_REPORT}\u0000leaves.theme_platform_diff.implementation_use\u0000false`,
   `${UI_THEME_GATE_REPORT}\u0000cluster_gate_summary.readyToImplement\u00000`,
 ];
+const CROSS_HOME_USAGE_FRONTEND_CLOSEOUT_ID =
+  "cross-home-usage-frontend-current-source-non-gating-closeout";
+const CROSS_HOME_USAGE_FRONTEND_GATE_REPORT =
+  "evidence/full-chain/internal/audits/audits/cross-1.0.9-home-usage-frontend/gate-report.json";
+const CROSS_HOME_USAGE_FRONTEND_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "gateReports",
+  "requiredSourceSignals",
+  "backendBoundaryNotes",
+  "closedGateReportFailures",
+  "nonClaims",
+  "reason",
+];
+const CROSS_HOME_USAGE_FRONTEND_GATE_FAILURE_KEYS = [
+  `${CROSS_HOME_USAGE_FRONTEND_GATE_REPORT}\u0000gate_accepted\u0000false`,
+  `${CROSS_HOME_USAGE_FRONTEND_GATE_REPORT}\u0000implementation_use\u0000false`,
+  `${CROSS_HOME_USAGE_FRONTEND_GATE_REPORT}\u0000cluster_gate_summary.readyToImplement\u00000`,
+];
 const UI_THEME_MAP_SNIPPETS = [
   "不修改 raw/internal gate-report",
   "不声明 `gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成",
@@ -1244,6 +1264,7 @@ function validateSystemWindowMaintenanceCloseout(closeout) {
     "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000leaves.focus_main_window.implementation_use\u0000false",
     "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000leaves.open_path.gate_accepted\u0000false",
     "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000leaves.open_path.implementation_use\u0000false",
+    "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000cluster_gate_summary.readyToImplement\u00000",
     "evidence/full-chain/internal/audits/audits/macos-1.0.9-maintenance/gate-report.json\u0000gate_accepted\u0000false",
     "evidence/full-chain/internal/audits/audits/macos-1.0.9-maintenance/gate-report.json\u0000implementation_use\u0000false",
     "evidence/full-chain/internal/audits/audits/macos-1.0.9-maintenance/gate-report.json\u0000dim6_missing\u0000true",
@@ -1284,6 +1305,81 @@ function validateSystemWindowMaintenanceCloseout(closeout) {
 
   validateRequiredSignals(closeout);
 }
+
+function validateCrossHomeUsageFrontendCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, CROSS_HOME_USAGE_FRONTEND_ALLOWED_FIELDS);
+
+  if (closeout.module !== "cross-home-usage-frontend") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+
+  const gateReports = closeout.gateReports ?? [];
+  if (gateReports.length !== 1 || gateReports[0] !== CROSS_HOME_USAGE_FRONTEND_GATE_REPORT) {
+    failures.push(`${closeout.id} 必须只登记 cross home-usage frontend gate-report`);
+  }
+
+  const notes = closeout.backendBoundaryNotes ?? [];
+  if (
+    !notes.some(
+      (note) =>
+        note.includes("前端专属包") &&
+        note.includes("后端验证委托") &&
+        note.includes("每个命令证据包"),
+    )
+  ) {
+    failures.push(`${closeout.id} 必须声明前端专属包与后端验证委托边界`);
+  }
+
+  validateRequiredSignals(closeout);
+  validateClosedGateReportFailures(closeout);
+
+  const expectedGateFailureKeys = new Set(CROSS_HOME_USAGE_FRONTEND_GATE_FAILURE_KEYS);
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  for (const expected of expectedGateFailureKeys) {
+    if (!actualGateFailureKeys.has(expected)) {
+      failures.push(`${closeout.id} 缺少允许登记的 gate-report failure：${expected}`);
+    }
+  }
+  for (const actual of actualGateFailureKeys) {
+    if (!expectedGateFailureKeys.has(actual)) {
+      failures.push(`${closeout.id} 不允许登记 gate-report failure：${actual}`);
+    }
+  }
+
+  const nonClaims = closeout.nonClaims ?? [];
+  for (const required of [
+    "不修改 gate-report",
+    "不声明 raw/internal gate 已通过",
+    "不声明真实平台 parity",
+    "不声明 dim6 已恢复",
+    "不声明 full_leaf_100 恢复",
+  ]) {
+    if (!nonClaims.includes(required)) {
+      failures.push(`${closeout.id} 缺少 nonClaims：${required}`);
+    }
+  }
+
+  const reason = closeout.reason ?? "";
+  for (const snippet of [
+    "current-source partial closeout",
+    "当前公开前端/服务/后端骨架链路",
+    "不声明 raw/internal gate",
+    "真实平台 parity",
+    "dim6",
+    "full_leaf_100",
+  ]) {
+    if (!reason.includes(snippet)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${snippet}`);
+    }
+  }
+}
 const closeouts = readJson(closeoutPath);
 if (closeouts.schema !== "open-aimami.frontend_current_source_closeouts.v1") {
   failures.push(`${toRepoPath(closeoutPath)} schema 不匹配`);
@@ -1310,6 +1406,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateBootstrapSystemCurrentSourceCloseout(closeout);
   } else if (closeout.id === UI_THEME_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateUiThemeCurrentSourceCloseout(closeout);
+  } else if (closeout.id === CROSS_HOME_USAGE_FRONTEND_CLOSEOUT_ID) {
+    validateCrossHomeUsageFrontendCloseout(closeout);
   } else {
     failures.push(`未知 closeout id：${closeout.id}`);
   }
