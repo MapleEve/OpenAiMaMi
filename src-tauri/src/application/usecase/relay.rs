@@ -3,10 +3,11 @@ use crate::application::{
     service::{pending_status, restored_status},
 };
 use crate::contracts::{
-    BackendEffect, BackendSkeletonStatus, CoreWarning, RelayActivePayload, RelayDiagnosticPayload,
-    RelayExportPayload, RelayImportPayload, RelayPassthroughAuditEntryPayload,
-    RelayProviderDraftInput, RelayProviderPayload, RelayProxyPayload, RelayRouterIssueFixPayload,
-    RelayRouterMigrationPayload, RelayRouterTogglePayload, RelayStatePayload, RelayTestPayload,
+    BackendEffect, BackendSkeletonStatus, CoreWarning, RelayActivePayload,
+    RelayDiagnosticIssuePayload, RelayDiagnosticPayload, RelayExportPayload, RelayImportPayload,
+    RelayPassthroughAuditEntryPayload, RelayProviderDraftInput, RelayProviderPayload,
+    RelayProxyPayload, RelayRouterIssueFixPayload, RelayRouterMigrationPayload,
+    RelayRouterTogglePayload, RelayStatePayload, RelayTestPayload,
 };
 use crate::core::{
     model::relay::{
@@ -330,33 +331,31 @@ pub fn import_relay_config(
 
 pub fn run_codex_router_diagnostics(repo: &Repository) -> (RelayDiagnosticPayload, CoreWarning) {
     let command = "run_codex_router_diagnostics";
-    let skeleton = relay_repository::load_router_diagnostic_skeleton(repo, command);
-    let diagnostic = relay_core::pending_diagnostic(
-        command,
-        skeleton.source_path.clone(),
-        skeleton.catalog_source_path.clone(),
-        skeleton.checked_at.clone(),
-        skeleton.diagnostic_boundary.clone(),
-    );
-    (
-        diagnostic_payload_from_skeleton(command, diagnostic, skeleton),
-        skeleton_warning(command),
-    )
+    router_diagnostic_payload(repo, command)
 }
 
 pub fn diagnose_codex_router(repo: &Repository) -> (RelayDiagnosticPayload, CoreWarning) {
     let command = "diagnose_codex_router";
+    router_diagnostic_payload(repo, command)
+}
+
+fn router_diagnostic_payload(
+    repo: &Repository,
+    command: &str,
+) -> (RelayDiagnosticPayload, CoreWarning) {
     let skeleton = relay_repository::load_router_diagnostic_skeleton(repo, command);
-    let diagnostic = relay_core::pending_diagnostic(
+    let has_issues = diagnostic_has_issues(&skeleton);
+    let diagnostic = relay_core::router_diagnostic(
         command,
         skeleton.source_path.clone(),
         skeleton.catalog_source_path.clone(),
         skeleton.checked_at.clone(),
         skeleton.diagnostic_boundary.clone(),
+        has_issues,
     );
     (
         diagnostic_payload_from_skeleton(command, diagnostic, skeleton),
-        skeleton_warning(command),
+        repository_warning(command),
     )
 }
 
@@ -585,10 +584,16 @@ fn diagnostic_payload_from_parts(
     let config_stale_reason = skeleton
         .as_ref()
         .and_then(|item| item.config_stale_reason.clone());
+    let (issues, items) = skeleton
+        .as_ref()
+        .map(diagnostic_entries_from_skeleton)
+        .unwrap_or_default();
+    let has_issues = !issues.is_empty();
+    let ok = !diagnostic.pending && !has_issues;
 
     RelayDiagnosticPayload {
         backend_status: payload_status(command),
-        ok: false,
+        ok,
         codex_provider_count,
         catalog_path: catalog_source_path.clone(),
         source_path: diagnostic.source_path,
@@ -605,10 +610,164 @@ fn diagnostic_payload_from_parts(
         config_stale_reason,
         thread_migration_exists: false,
         router_enabled,
-        has_issues: false,
-        issues: Vec::new(),
-        items: Vec::new(),
+        has_issues,
+        issues,
+        items,
         summary: diagnostic.summary,
+    }
+}
+
+fn diagnostic_has_issues(skeleton: &relay_repository::RelayDiagnosticSkeleton) -> bool {
+    skeleton.router_enabled
+        && (!skeleton.managed_block_exists || skeleton.config_stale_reason.is_some())
+}
+
+fn diagnostic_entries_from_skeleton(
+    skeleton: &relay_repository::RelayDiagnosticSkeleton,
+) -> (
+    Vec<RelayDiagnosticIssuePayload>,
+    Vec<RelayDiagnosticIssuePayload>,
+) {
+    let mut issues = Vec::new();
+    if skeleton.router_enabled && !skeleton.managed_block_exists {
+        issues.push(diagnostic_issue(
+            "missing_router_block",
+            "缺少路由托管块",
+            "已启用 Codex Router，但 config.toml 中没有检测到受管路由配置块。",
+            Some("需要重新写入路由配置，避免前端状态和本地配置不一致。"),
+            "medium",
+            Some("medium"),
+            true,
+        ));
+    }
+    if skeleton.router_enabled {
+        if let Some(reason) = &skeleton.config_stale_reason {
+            issues.push(diagnostic_issue(
+                "config_stale",
+                "路由配置不完整",
+                "已启用 Codex Router，但本地配置状态不完整。",
+                Some(reason),
+                "medium",
+                Some("medium"),
+                true,
+            ));
+        }
+    }
+
+    let items = vec![
+        diagnostic_item(
+            "router_enabled",
+            "路由开关",
+            if skeleton.router_enabled { "ok" } else { "ok" },
+            if skeleton.router_enabled {
+                "relay 状态已启用 Codex Router。"
+            } else {
+                "relay 状态未启用 Codex Router。"
+            },
+            false,
+        ),
+        diagnostic_item(
+            "missing_router_block",
+            "受管路由配置块",
+            if !skeleton.router_enabled || skeleton.managed_block_exists {
+                "ok"
+            } else {
+                "medium"
+            },
+            if skeleton.managed_block_exists {
+                "config.toml 中已检测到受管路由配置块。"
+            } else {
+                "config.toml 中未检测到受管路由配置块。"
+            },
+            skeleton.router_enabled && !skeleton.managed_block_exists,
+        ),
+        diagnostic_item(
+            "catalog_path_validity",
+            "模型目录文件",
+            if skeleton.catalog_exists {
+                "ok"
+            } else {
+                "medium"
+            },
+            if skeleton.catalog_exists {
+                "模型目录文件存在。"
+            } else {
+                "模型目录文件不存在。"
+            },
+            skeleton.router_enabled && !skeleton.catalog_exists,
+        ),
+        diagnostic_item(
+            "config_toml_router",
+            "config.toml 路由字段",
+            if skeleton.config_toml_has_router {
+                "ok"
+            } else {
+                "medium"
+            },
+            if skeleton.config_toml_has_router {
+                "config.toml 已包含 model_provider 路由字段。"
+            } else {
+                "config.toml 未包含 model_provider 路由字段。"
+            },
+            skeleton.router_enabled && !skeleton.config_toml_has_router,
+        ),
+        diagnostic_item(
+            "config_toml_catalog",
+            "config.toml 模型目录字段",
+            if skeleton.config_toml_has_catalog {
+                "ok"
+            } else {
+                "medium"
+            },
+            if skeleton.config_toml_has_catalog {
+                "config.toml 已包含模型目录字段。"
+            } else {
+                "config.toml 未包含模型目录字段。"
+            },
+            skeleton.router_enabled && !skeleton.config_toml_has_catalog,
+        ),
+    ];
+
+    (issues, items)
+}
+
+fn diagnostic_issue(
+    id: &str,
+    title: &str,
+    message: &str,
+    detail: Option<&str>,
+    severity: &str,
+    status: Option<&str>,
+    fixable: bool,
+) -> RelayDiagnosticIssuePayload {
+    RelayDiagnosticIssuePayload {
+        id: id.to_string(),
+        title: Some(title.to_string()),
+        label: None,
+        message: message.to_string(),
+        detail: detail.map(ToString::to_string),
+        severity: severity.to_string(),
+        status: status.map(ToString::to_string),
+        fixable,
+    }
+}
+
+fn diagnostic_item(
+    id: &str,
+    label: &str,
+    status: &str,
+    detail: &str,
+    fixable: bool,
+) -> RelayDiagnosticIssuePayload {
+    RelayDiagnosticIssuePayload {
+        id: id.to_string(),
+        title: None,
+        label: Some(label.to_string()),
+        message: detail.to_string(),
+        detail: Some(detail.to_string()),
+        severity: status.to_string(),
+        status: Some(status.to_string()),
+        fixable,
     }
 }
 
@@ -640,6 +799,8 @@ fn repository_restored_command(command: &str) -> bool {
             | "set_relay_provider_network"
             | "get_relay_active"
             | "get_passthrough_audit_log"
+            | "run_codex_router_diagnostics"
+            | "diagnose_codex_router"
             | "get_relay_proxy_status"
             | "set_codex_router_enabled"
             | "set_block_official_passthrough"
@@ -671,5 +832,54 @@ fn repository_error_warning(command: &str) -> CoreWarning {
     CoreWarning {
         code: format!("relay.{command}.repository_error"),
         message: "relay 本地配置仓储操作失败，已返回不暴露本机路径的降级结果。".to_string(),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn diagnose_codex_router_returns_no_issues_on_clean_state() {
+        let repo = Repository::with_temp_file_system("relay-diagnostic-clean");
+
+        let (payload, warning) = diagnose_codex_router(&repo);
+
+        assert_eq!(
+            warning.code,
+            "relay.diagnose_codex_router.repository_restored"
+        );
+        assert!(!payload.pending);
+        assert!(payload.ok);
+        assert!(!payload.router_enabled);
+        assert!(!payload.has_issues);
+        assert!(payload.issues.is_empty());
+        assert!(!payload.items.is_empty());
+    }
+
+    #[test]
+    fn run_codex_router_diagnostics_detects_missing_router_block() {
+        let repo = Repository::with_temp_file_system("relay-diagnostic-missing-block");
+        relay_repository::set_router_enabled(&repo, true).expect("enable router state");
+
+        let (payload, warning) = run_codex_router_diagnostics(&repo);
+
+        assert_eq!(
+            warning.code,
+            "relay.run_codex_router_diagnostics.repository_restored"
+        );
+        assert!(!payload.pending);
+        assert!(payload.router_enabled);
+        assert!(payload.has_issues);
+        assert!(!payload.ok);
+        assert!(payload
+            .issues
+            .iter()
+            .any(|issue| issue.id == "missing_router_block"));
+        assert!(payload
+            .items
+            .iter()
+            .any(|item| item.id == "missing_router_block"
+                && item.status.as_deref() == Some("medium")));
     }
 }

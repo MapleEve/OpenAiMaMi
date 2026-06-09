@@ -1603,31 +1603,87 @@ const relayAuditHandler: IpcCommandHandler = (context) => {
 
 function relayDiagnosticFromStatus(
   backendStatus: RelayDiagnosticPayload["backendStatus"],
+  options: { missingRouterBlock?: boolean } = {},
 ): RelayDiagnosticPayload {
-  const items: RelayDiagnosticIssuePayload[] = [];
+  const restoredStatus = {
+    ...backendStatus,
+    restored: true,
+    boundary: {
+      ...backendStatus.boundary,
+      repositoryChecked: true,
+      repositoryPathKnown: true,
+      platformChecked: false,
+      coreChecked: true,
+      effect: "no_op",
+    },
+  } satisfies RelayDiagnosticPayload["backendStatus"];
+  const missingRouterBlock = options.missingRouterBlock === true;
+  const issues: RelayDiagnosticIssuePayload[] = missingRouterBlock
+    ? [
+        {
+          id: "missing_router_block",
+          title: "缺少路由托管块",
+          message: "已启用 Codex Router，但 config.toml 中没有检测到受管路由配置块。",
+          detail: "需要重新写入路由配置，避免前端状态和本地配置不一致。",
+          severity: "medium",
+          status: "medium",
+          fixable: true,
+        },
+      ]
+    : [];
+  const items: RelayDiagnosticIssuePayload[] = [
+    {
+      id: "router_enabled",
+      label: "路由开关",
+      message: missingRouterBlock
+        ? "relay 状态已启用 Codex Router。"
+        : "relay 状态未启用 Codex Router。",
+      detail: missingRouterBlock
+        ? "relay 状态已启用 Codex Router。"
+        : "relay 状态未启用 Codex Router。",
+      severity: "ok",
+      status: "ok",
+      fixable: false,
+    },
+    {
+      id: "missing_router_block",
+      label: "受管路由配置块",
+      message: missingRouterBlock
+        ? "config.toml 中未检测到受管路由配置块。"
+        : "当前不需要受管路由配置块。",
+      detail: missingRouterBlock
+        ? "config.toml 中未检测到受管路由配置块。"
+        : "当前不需要受管路由配置块。",
+      severity: missingRouterBlock ? "medium" : "ok",
+      status: missingRouterBlock ? "medium" : "ok",
+      fixable: missingRouterBlock,
+    },
+  ];
   return {
-    backendStatus,
+    backendStatus: restoredStatus,
     checkedAt: null,
-    ok: false,
+    ok: issues.length === 0,
     codexProviderCount: 0,
     catalogPath: null,
     sourcePath: "",
     catalogSourcePath: null,
-    diagnosticBoundary: "skeleton",
-    pending: true,
+    diagnosticBoundary: "relay.repository.diagnostic",
+    pending: false,
     catalogExists: false,
     configTomlHasRouter: false,
     configTomlHasCatalog: false,
     config_toml_has_router: false,
     config_toml_has_catalog: false,
     userTopLevelProfile: null,
-    configStaleReason: null,
+    configStaleReason: missingRouterBlock ? "missing_router_block" : null,
     threadMigrationExists: false,
-    routerEnabled: false,
-    hasIssues: false,
-    issues: items,
+    routerEnabled: missingRouterBlock,
+    hasIssues: issues.length > 0,
+    issues,
     items,
-    summary: "Skeleton diagnostic pending; no repository or platform checks were executed.",
+    summary: issues.length > 0
+      ? "relay 诊断已完成只读检查，发现需要处理的配置项。"
+      : "relay 诊断已完成只读检查，未发现需要处理的配置项。",
     repositoryState: diagnosticSkeletonState(),
     platformState: diagnosticSkeletonState(),
   };

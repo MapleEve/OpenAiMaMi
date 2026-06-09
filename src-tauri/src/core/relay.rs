@@ -116,6 +116,29 @@ pub fn pending_diagnostic(
     }
 }
 
+pub fn router_diagnostic(
+    command: &str,
+    source_path: String,
+    catalog_source_path: Option<String>,
+    checked_at: Option<String>,
+    boundary: String,
+    has_issues: bool,
+) -> RelayDiagnosticDomain {
+    let _operation = relay_operation_key(RelayOperationKind::DiagnosticRead, command, None);
+    RelayDiagnosticDomain {
+        source_path,
+        catalog_source_path,
+        checked_at,
+        boundary,
+        pending: false,
+        summary: if has_issues {
+            format!("relay 诊断命令 {command} 已完成只读检查，发现需要处理的配置项。")
+        } else {
+            format!("relay 诊断命令 {command} 已完成只读检查，未发现需要处理的配置项。")
+        },
+    }
+}
+
 pub fn pending_fix_message(command: &str, item_id: &str) -> String {
     let _operation = relay_operation_key(
         RelayOperationKind::DiagnosticFix,

@@ -27,6 +27,7 @@ pub struct RelayDiagnosticSkeleton {
     pub config_toml_has_router: bool,
     pub config_toml_has_catalog: bool,
     pub managed_block_exists: bool,
+    pub router_enabled: bool,
     pub user_top_level_profile: Option<String>,
     pub config_stale_reason: Option<String>,
 }
@@ -282,6 +283,9 @@ pub fn load_router_diagnostic_skeleton(
         .unwrap_or(false);
     let codex_provider_count = config.as_deref().map(count_model_providers).unwrap_or(0);
     let user_top_level_profile = config.as_deref().and_then(top_level_profile);
+    let router_enabled = load_relay_state(repo)
+        .map(|state| state.codex_router_enabled)
+        .unwrap_or(false);
     let config_stale_reason = config_stale_reason(
         snapshot.codex_config_exists,
         snapshot.catalog_exists,
@@ -300,6 +304,7 @@ pub fn load_router_diagnostic_skeleton(
         config_toml_has_router,
         config_toml_has_catalog,
         managed_block_exists,
+        router_enabled,
         user_top_level_profile,
         config_stale_reason,
     }
