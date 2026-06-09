@@ -1060,6 +1060,197 @@
           ]
         }
       ],
+      "closedGateReportFailures": [
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_codex_writer.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_codex_writer.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_codex_writer.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_diagnostic.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_diagnostic.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_diagnostic.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_health_audit.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_health_audit.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_health_audit.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.bootstrap.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；bootstrap 原始审计仍 partial，只登记当前源码骨架边界；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.bootstrap.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；bootstrap 原始审计仍 partial，只登记当前源码骨架边界；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.bootstrap.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；bootstrap 原始审计仍 partial，只登记当前源码骨架边界；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_fetch_models.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_fetch_models.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_fetch_models.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_translator.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_translator.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_translator.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_proxy_config.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_proxy_config.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_proxy_config.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_image_compat.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_image_compat.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_image_compat.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_sse.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_sse.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+          "path": "clusters.relay_sse.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只允许 current-source relay 前端链路与后端六边形骨架 partial closeout 下的 gate failure 保持失败登记；原始 gate、真实业务、dim6/test acceptance 和 full_leaf_100 均不声明恢复。"
+        }
+      ],
       "nonClaims": [
         "不声明真实代理业务已经恢复。",
         "不声明真实配置持久化已经恢复。",
