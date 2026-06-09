@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
+import { Globe, Puzzle } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import type {
@@ -9,6 +11,10 @@ import type {
   PluginsPluginRecord,
 } from "../types";
 import { readPluginDescription, readPluginTitle } from "../utils";
+
+const CATEGORY_ICONS = {
+  "proxy-tool": Globe,
+} as const;
 
 export function PluginsPagePanel({
   controller,
@@ -117,30 +123,55 @@ function PluginRows({
       {items.map((plugin, index) => {
         const id = plugin.id;
         const enabled = plugin.enabled;
-        const title = readPluginTitle(plugin, "");
+        const title = readPluginTitle(plugin, id);
+        const Icon = plugin.category
+          ? CATEGORY_ICONS[plugin.category as keyof typeof CATEGORY_ICONS] ?? Puzzle
+          : Puzzle;
         return (
           <div
             key={id || String(index)}
             className="px-4 py-3.5"
           >
-            <div className="flex min-w-0 items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Icon className="h-5 w-5" strokeWidth={1.75} />
+              </div>
               <div className="min-w-0 flex-1">
-                {title ? (
-                  <p className="truncate text-sm font-medium text-foreground">
-                    {title}
-                  </p>
-                ) : null}
+                <div className="flex min-w-0 items-center gap-2">
+                  {title ? (
+                    <p className="truncate text-sm font-medium text-foreground">
+                      {title}
+                    </p>
+                  ) : null}
+                  {plugin.version ? (
+                    <Badge
+                      variant="secondary"
+                      className="shrink-0 px-1.5 py-0 text-[10px]"
+                    >
+                      v{plugin.version}
+                    </Badge>
+                  ) : null}
+                  {enabled ? (
+                    <span className="flex shrink-0 items-center gap-1 text-[10px] text-emerald-600 dark:text-emerald-400">
+                      <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                      {t("plugins.running")}
+                    </span>
+                  ) : null}
+                </div>
                 <p className="mt-1 truncate text-xs text-muted-foreground">
                   {readPluginDescription(plugin)}
                 </p>
               </div>
-              <Switch
-                checked={enabled}
-                disabled={!id || controller.togglePlugin.isPending}
-                onCheckedChange={(checked) =>
-                  id ? controller.togglePlugin.run(id, checked) : undefined
-                }
-              />
+              {!plugin.builtin ? (
+                <Switch
+                  checked={enabled}
+                  disabled={!id || controller.togglePlugin.isPending}
+                  aria-label={title}
+                  onCheckedChange={(checked) =>
+                    id ? controller.togglePlugin.run(id, checked) : undefined
+                  }
+                />
+              ) : null}
             </div>
           </div>
         );

@@ -417,8 +417,14 @@ export interface RuntimeExtensionPluginPayload {
   name: string;
   title: string | null;
   description: string | null;
+  version: string | null;
+  author: string | null;
+  category: string | null;
+  capabilities: number[];
+  builtin: boolean;
   path: string | null;
   enabled: boolean;
+  settings: RuntimeExtensionSettingsValue;
 }
 
 export interface RuntimeExtensionListPayload {

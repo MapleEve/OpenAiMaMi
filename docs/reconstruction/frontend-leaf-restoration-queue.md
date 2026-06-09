@@ -5,7 +5,7 @@
 ## 队列原则
 
 - 队列只使用仓库内 raw/internal 证据和当前源码，不读取本机私有状态。
-- 队列不是验收通过声明；只要 strict gate 仍失败，`currentConclusion.fullLeaf100` 必须保持 `false`。
+- 队列不是验收通过声明；非绿 gate、`full_leaf_100`、dim6 或 `readyToImplement` 字段只阻塞“raw/internal gate 已通过”和“MAC/WIN 100% leaf 已完成”的声明，不阻塞基于仓库 raw/internal 证据、伪代码、owner/interface/DTO 和可测试边界继续做自主实现；任何实现完成度不得回写或伪造 `evidence/full-chain/internal` 下的 gate-report/audit JSON 为已完成。
 - 旧 internal frontend 文档里的缺口必须和当前源码对照；已经补入源码的 route、service、hooks 不能继续当作未开始，但没有 raw 可见 UI trigger 的 leaf 也不能编造。
 - `source-only`、`boundary-only`、`contract-service-only`、`owner-closed` 只能表示重建进度，不能计入 100% leaf。
 - 文案验收必须有逐条来源证明；仅 `zh/en` key 同步不能算全文案验收。

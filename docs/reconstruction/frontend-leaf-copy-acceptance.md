@@ -10,7 +10,7 @@
 
 `evidence/full-chain/internal/frontend-copy-acceptance.json` 当前已经存在，但状态是 `draft`。它列出 773 个 locale key 的逐条验收槽位，并从 raw dumped 主 bundle 中解析 i18n `zh/en translation` 对象。只有 raw translation 对象里的 key/value 与当前 locale 精确一致时，才把对应语言标成 accepted；不能把全 JS 字符串扫描命中当作文案来源。
 
-`npm run validate:frontend-dumped` 只证明 raw dumped 的 IPC、service wrapper、module contract、route、query 和 control-flow 已有静态覆盖；它不证明实际全 leaf，也不证明全文案已经逐条验收。当前严格验收以 `npm run validate:frontend-leaf-copy` 为准。
+`npm run validate:frontend-dumped` 只证明 raw dumped 的 IPC、service wrapper、module contract、route、query 和 control-flow 已有静态覆盖；它不证明实际全 leaf，也不证明全文案已经逐条验收。`npm run validate:frontend-leaf-copy` 是 MAC/WIN 100% leaf 与全文案完成声明的验收，不是实现启动门槛。
 
 ## 当前文案验收数字
 
@@ -37,17 +37,17 @@
 - `scripts/validate-frontend-evidence.mjs` 验证 raw control-flow 中出现的 locale key、route registry、page chunk、query key 和若干 owner gate。
 - `scripts/validate-i18n.mjs` 验证 `zh/en` key 同步、源码静态 `t("key")` 覆盖，以及明显乱码、问号和占位质量问题。
 - `scripts/generate-frontend-copy-acceptance.mjs` 生成全文案验收 draft；它解析 raw i18n translation 对象，不把普通字符串扫描命中当作 accepted。
-- `scripts/validate-frontend-leaf-copy-acceptance.mjs` 对应 `npm run validate:frontend-leaf-copy`，是当前严格验收 gate；在 `frontend-copy-acceptance.json` 仍为 draft 时应继续失败。
+- `scripts/validate-frontend-leaf-copy-acceptance.mjs` 对应 `npm run validate:frontend-leaf-copy`，用于验证 MAC/WIN 100% leaf 与全文案完成声明；在 `frontend-copy-acceptance.json` 仍为 draft 时应继续失败，但不阻塞基于 raw/internal 证据、伪代码、owner/interface/DTO 和可测试边界的自主实现。
 
 ## 明确缺口
 
 - `full-leaf-100-gap-audit.json` 顶层 `totals.full_leaf_100` 当前仍为 `false`。
-- internal gate-report 中仍存在严格 gate 失败字段。
+- internal gate-report 中仍存在非绿 gate 字段；这些字段只阻塞“raw/internal gate 已通过”“dim6 已恢复”“full_leaf_100 / 100% leaf 已完成”等完成声明。
 - Windows bootstrap frontend 文档仍包含 `partial/candidate` 信号，不能在 dim6 acceptance、managed state registry、bootstrap cache 等缺口关闭前移除。
 - `frontend-copy-acceptance.json` 仍是 draft，当前有 583 个 locale key 同时具备 raw translation 中文和英文 key/value 精确来源，剩余 190 个 locale key 仍缺少完整 raw/internal 文案来源。
 - `src/restoration/frontend-manifest/index.ts` 仍存在 `source-only`、`boundary-only`、`contract-service-only` 和 `owner-closed` 状态；这些是进度记录，不是 full leaf。
 
-## 严格 gate
+## 完成声明验收
 
 `npm run validate:frontend-leaf-copy` 只有在以下条件全部满足时才能通过：
 
@@ -59,3 +59,5 @@
 6. `evidence/full-chain/internal/frontend-copy-acceptance.json` 达到 `status: "accepted"`，并且每个 locale key 都有 `zhSource`、`enSource`、`zhAccepted: true` 和 `enAccepted: true`。
 
 在这些条件全部满足前，任何文档、提交说明或 PR 说明都不能写“前端 100% leaf 已完成”。
+
+非绿 gate、`full_leaf_100`、dim6 或 `readyToImplement` 字段不阻塞基于仓库 raw/internal 证据、伪代码、owner/interface/DTO 和可测试边界的自主实现；它们只阻塞“raw/internal gate 已通过”“dim6 已恢复”“full_leaf_100 / 100% leaf 已完成”等完成声明。不得伪造、回写或篡改 `evidence/full-chain/internal` 下的 gate-report 或 audit JSON 来制造已完成状态。

@@ -212,7 +212,7 @@ function checkGateSpecInputs() {
     repoPath("evidence", "full-chain", "internal", "root", "CONSUMER-GATE-SCHEMA.md"),
   ];
   for (const path of required) {
-    if (!existsSync(path)) failures.push(`缺少严格 gate 规范输入：${toRepoPath(path)}`);
+    if (!existsSync(path)) failures.push(`缺少完成声明验收输入：${toRepoPath(path)}`);
   }
 }
 
@@ -270,10 +270,10 @@ function checkGateReports() {
     failures.push(`${field.file} ${field.path}=${String(field.value)}`);
   }
   if (remainingFalseFields.length > 80) {
-    failures.push(`internal gate-report has ${remainingFalseFields.length - 80} additional strict gate fields still failing`);
+    failures.push(`internal gate-report 还有 ${remainingFalseFields.length - 80} 个额外完成声明非绿字段`);
   }
   notes.push(
-    `internal gate-report strict fields: ${reports.length} reports, allowed closeout failures ${allowedFalseFields.length}, remaining failures ${remainingFalseFields.length}`,
+    `internal gate-report 完成声明字段：${reports.length} reports, allowed closeout failures ${allowedFalseFields.length}, remaining failures ${remainingFalseFields.length}`,
   );
 }
 function checkLeafLedger() {
@@ -604,11 +604,13 @@ for (const note of notes) {
 }
 
 if (failures.length > 0) {
-  console.error("前端 leaf/全文案严格验收失败：");
+  console.error(
+    "前端 100% leaf/全文案完成声明验收失败：非绿 gate 字段只阻塞完成声明，不阻塞基于 raw/internal 证据、伪代码、owner/interface/DTO 和可测试边界的实现；禁止伪造或改写 evidence gate/audit JSON 为已完成。",
+  );
   for (const failure of failures) {
     console.error(`- ${failure}`);
   }
   process.exit(1);
 }
 
-console.log("前端 leaf/全文案严格验收通过。");
+console.log("前端 100% leaf/全文案完成声明验收通过。");

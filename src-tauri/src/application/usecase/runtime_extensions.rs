@@ -1,44 +1,60 @@
-use crate::application::service::{current_timestamp, pending_status};
+use crate::application::service::{current_timestamp, restored_status};
 use crate::contracts::{
-    RuntimeExtensionConfigPayload, RuntimeExtensionListPayload, RuntimeExtensionPluginPayload,
-    RuntimeExtensionSettingsValue, RuntimeExtensionTogglePayload,
+    BackendEffect, RuntimeExtensionConfigPayload, RuntimeExtensionListPayload,
+    RuntimeExtensionPluginPayload, RuntimeExtensionSettingsValue, RuntimeExtensionTogglePayload,
 };
-use crate::repository::Repository;
+use crate::core::error::CoreError;
+use crate::repository::{
+    runtime_extensions::{self, RuntimeExtensionRecord},
+    Repository,
+};
 
-pub fn list(repo: &Repository) -> RuntimeExtensionListPayload {
-    RuntimeExtensionListPayload {
-        backend_status: pending_status(
-            "runtime-extensions",
-            "list_plugins",
-            "插件运行时公开后端只保留空列表合同。",
-        ),
-        items: Vec::new(),
-        total: 0,
-        source_path: repo.paths().app_data_dir.display().to_string(),
+pub fn list(repo: &Repository) -> Result<RuntimeExtensionListPayload, CoreError> {
+    let items = runtime_extensions::list_plugins(repo)?
+        .into_iter()
+        .map(plugin_payload)
+        .collect::<Vec<_>>();
+    Ok(RuntimeExtensionListPayload {
+        backend_status: restored_status("runtime-extensions", "list_plugins", BackendEffect::NoOp),
+        total: items.len() as i32,
+        source_path: runtime_extensions::plugins_path(repo).display().to_string(),
         last_scan_at: current_timestamp(),
-    }
+        items,
+    })
 }
 
-pub fn toggle(repo: &Repository, id: String, enabled: bool) -> RuntimeExtensionTogglePayload {
-    let plugin = RuntimeExtensionPluginPayload {
-        id: id.clone(),
-        name: id,
-        title: None,
-        description: None,
-        path: None,
-        enabled,
-    };
-    RuntimeExtensionTogglePayload {
-        backend_status: pending_status(
-            "runtime-extensions",
-            "toggle_plugin",
-            "插件运行时启停未在当前公开后端范围内恢复。",
-        ),
+pub fn toggle(
+    repo: &Repository,
+    id: String,
+    enabled: bool,
+) -> Result<RuntimeExtensionTogglePayload, CoreError> {
+    let (plugin, items) = runtime_extensions::set_enabled(repo, &id, enabled)?;
+    let plugin = plugin_payload(plugin);
+    let items = items.into_iter().map(plugin_payload).collect::<Vec<_>>();
+    Ok(RuntimeExtensionTogglePayload {
+        backend_status: restored_status("runtime-extensions", "toggle_plugin", BackendEffect::NoOp),
         plugin,
-        items: Vec::new(),
-        total: 0,
-        source_path: repo.paths().app_data_dir.display().to_string(),
+        total: items.len() as i32,
+        source_path: runtime_extensions::plugins_path(repo).display().to_string(),
         last_scan_at: current_timestamp(),
+        items,
+    })
+}
+
+fn plugin_payload(record: RuntimeExtensionRecord) -> RuntimeExtensionPluginPayload {
+    RuntimeExtensionPluginPayload {
+        id: record.id,
+        name: record.name,
+        title: record.title,
+        description: record.description,
+        version: record.version,
+        author: record.author,
+        category: record.category,
+        capabilities: record.capabilities,
+        builtin: record.builtin,
+        path: record.path,
+        enabled: record.enabled,
+        settings: record.settings,
     }
 }
 
@@ -46,17 +62,26 @@ pub fn config(
     repo: &Repository,
     id: String,
     settings: Option<RuntimeExtensionSettingsValue>,
-) -> RuntimeExtensionConfigPayload {
-    let updated = settings.is_some();
-    RuntimeExtensionConfigPayload {
-        backend_status: pending_status(
-            "runtime-extensions",
-            "plugin_config",
-            "插件配置命令仅保留合同，不提升为真实 UI owner。",
-        ),
+) -> Result<RuntimeExtensionConfigPayload, CoreError> {
+    let (settings, updated, command) = if let Some(settings) = settings {
+        (
+            runtime_extensions::update_settings(repo, &id, settings)?,
+            true,
+            "update_plugin_config",
+        )
+    } else {
+        (
+            runtime_extensions::get_config(repo, &id)?,
+            false,
+            "get_plugin_config",
+        )
+    };
+
+    Ok(RuntimeExtensionConfigPayload {
+        backend_status: restored_status("runtime-extensions", command, BackendEffect::NoOp),
         id,
-        settings: settings.unwrap_or(serde_json::Value::Null),
-        source_path: repo.paths().app_data_dir.display().to_string(),
+        settings,
+        source_path: runtime_extensions::plugins_path(repo).display().to_string(),
         updated,
-    }
+    })
 }
