@@ -68,6 +68,27 @@ const RELAY_CURRENT_SOURCE_NON_CLAIMS = [
   "不声明真实 import/export IO 已经恢复。",
   "不声明 full_leaf_100，也不修改任何 gate-report 字段。",
 ];
+const RELAY_PROXY_CONFIG_DIM6_CLOSEOUT_ID =
+  "relay-proxy-config-dim6-stale-gate-registration";
+const RELAY_PROXY_CONFIG_DIM6_GATE_REPORT =
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay-core/gate-report.json";
+const RELAY_PROXY_CONFIG_DIM6_MAPPING =
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay-core/logic/RELAY-CORE-ACCEPTANCE-MAPPING-109.md";
+const RELAY_PROXY_CONFIG_DIM6_DISTILLED =
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay-core/logic/PROXY-CONFIG-DISTILLED-109.md";
+const RELAY_PROXY_CONFIG_DIM6_GATE_FAILURE_KEYS = [
+  `${RELAY_PROXY_CONFIG_DIM6_GATE_REPORT}\u0000cluster_gates.18.dim6_missing\u0000true`,
+];
+const RELAY_PROXY_CONFIG_DIM6_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "sidecarReports",
+  "requiredSourceSignals",
+  "closedGateReportFailures",
+  "nonClaims",
+  "reason",
+];
 const SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID =
   "system-hotspot-usage-mystery-frontend-callchain-non-gating-closeout";
 const SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECARS = [
@@ -449,6 +470,10 @@ function toRepoPath(file) {
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
+}
+
+function readText(path) {
+  return readFileSync(path, "utf8");
 }
 
 function requireIncludes(file, snippets) {
@@ -833,6 +858,110 @@ function validateRelayCurrentSourceSkeletonCloseout(closeout) {
 
   validateRelaySkeletonNonClaims(closeout, sidecar);
   validateRelayCurrentSourceCommandSignals();
+  validateRequiredSignals(closeout);
+}
+
+function validateRelayProxyConfigDim6Closeout(closeout) {
+  validateAllowedCloseoutFields(closeout, RELAY_PROXY_CONFIG_DIM6_ALLOWED_FIELDS);
+  if (closeout.module !== "relay-proxy-config") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} sidecarReports`,
+    closeout.sidecarReports ?? [],
+    [RELAY_PROXY_CONFIG_DIM6_MAPPING, RELAY_PROXY_CONFIG_DIM6_DISTILLED],
+  );
+  for (const report of closeout.sidecarReports ?? []) {
+    if (!existsSync(repoPath(report))) {
+      failures.push(`${closeout.id} 缺少 relay proxy config 证据文件：${report}`);
+    }
+  }
+
+  const gate = readJson(repoPath(RELAY_PROXY_CONFIG_DIM6_GATE_REPORT));
+  const cluster = gate.cluster_gates?.[18];
+  if (cluster?.cluster !== "relay_proxy_config") {
+    failures.push(`${RELAY_PROXY_CONFIG_DIM6_GATE_REPORT} cluster_gates.18.cluster=${String(cluster?.cluster)}`);
+  }
+  if (cluster?.dim6_missing !== true) {
+    failures.push(
+      `${RELAY_PROXY_CONFIG_DIM6_GATE_REPORT} cluster_gates.18.dim6_missing=${String(
+        cluster?.dim6_missing,
+      )}`,
+    );
+  }
+  if (!String(cluster?.notes ?? "").includes("13 leaves")) {
+    failures.push(`${RELAY_PROXY_CONFIG_DIM6_GATE_REPORT} cluster_gates.18 缺少 13 leaves 说明`);
+  }
+
+  const mappingText = readText(repoPath(RELAY_PROXY_CONFIG_DIM6_MAPPING));
+  for (const required of [
+    "### T5. relay_proxy_config",
+    "**dim6_status**: closed",
+    "relay_proxy_config | macOS sub-cluster",
+    "relay_proxy_config | Windows sub-cluster",
+    "relay-transport-closeout-109",
+    "Transport sub-clusters relay_forward_chain+relay_sse+relay_ws_handlers+relay_passthrough_helpers+relay_proxy_config dim6 closed",
+  ]) {
+    if (!mappingText.includes(required)) {
+      failures.push(`${RELAY_PROXY_CONFIG_DIM6_MAPPING} 缺少 dim6 证据片段：${required}`);
+    }
+  }
+
+  const distilledText = readText(repoPath(RELAY_PROXY_CONFIG_DIM6_DISTILLED));
+  for (const required of [
+    "Bundle**: macos-1.0.9-relay-core",
+    "relay_proxy_config",
+    "set_api_proxy_config",
+    "detect_api_proxy_config",
+    "test_api_proxy_config",
+    "sanitize_proxy_config",
+  ]) {
+    if (!distilledText.includes(required)) {
+      failures.push(`${RELAY_PROXY_CONFIG_DIM6_DISTILLED} 缺少 proxy config 证据片段：${required}`);
+    }
+  }
+
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  validateStringArraySet(
+    `${closeout.id} closedGateReportFailures`,
+    [...actualGateFailureKeys],
+    RELAY_PROXY_CONFIG_DIM6_GATE_FAILURE_KEYS,
+  );
+  validateClosedGateReportFailures(closeout);
+
+  const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
+  for (const required of [
+    "不修改 gate-report",
+    "不声明 full_leaf_100",
+    "不声明 relay-core 全量 readyToImplement",
+    "不登记 cross relay-core-bootstrap、relay、mystery 或 voice",
+  ]) {
+    if (!nonClaimsText.includes(required)) {
+      failures.push(`${closeout.id} nonClaims 缺少声明：${required}`);
+    }
+  }
+
+  const reason = closeout.reason ?? "";
+  for (const required of [
+    "relay_proxy_config",
+    "cluster_gates.18.dim6_missing",
+    "current-source partial closeout",
+    "RELAY-CORE-ACCEPTANCE-MAPPING-109",
+    "full_leaf_100",
+  ]) {
+    if (!reason.includes(required)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${required}`);
+    }
+  }
+
   validateRequiredSignals(closeout);
 }
 
@@ -1988,6 +2117,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateRelayCloseout(closeout);
   } else if (closeout.id === RELAY_CURRENT_SOURCE_SKELETON_ID) {
     validateRelayCurrentSourceSkeletonCloseout(closeout);
+  } else if (closeout.id === RELAY_PROXY_CONFIG_DIM6_CLOSEOUT_ID) {
+    validateRelayProxyConfigDim6Closeout(closeout);
   } else if (closeout.id === SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID) {
     validateSystemHotspotUsageMysteryCloseout(closeout);
   } else if (closeout.id === MYSTERY_UNLOCK_GRANTS_CLOSEOUT_ID) {

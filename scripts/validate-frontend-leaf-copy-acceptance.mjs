@@ -70,6 +70,7 @@ const allowedCloseoutGateFailureKeys = new Set([
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/gate-report.json\u0000readyToImplement\u0000false",
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/gate-report.json\u0000implementation_use\u0000false",
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/gate-report.json\u0000gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay-core/gate-report.json\u0000cluster_gates.18.dim6_missing\u0000true",
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-maintenance/gate-report.json\u0000gate_accepted\u0000false",
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-maintenance/gate-report.json\u0000implementation_use\u0000false",
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-maintenance/gate-report.json\u0000dim6_missing\u0000true",
