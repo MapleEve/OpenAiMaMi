@@ -21,12 +21,27 @@ pub struct BackendSkeletonBoundaryStatus {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
+pub struct RuntimeBridgeEventPayload {
+    #[serde(rename = "type")]
+    pub event_type: String,
+    pub module_id: String,
+    pub mode: String,
+    pub sequence: u64,
+    pub received_at: i64,
+    pub command: String,
+    pub status_code: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
 pub struct BackendSkeletonStatus {
     pub module: String,
     pub command: String,
     pub restored: bool,
     pub note: String,
     pub boundary: BackendSkeletonBoundaryStatus,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub runtime_event: Option<RuntimeBridgeEventPayload>,
 }
 
 impl BackendSkeletonStatus {
@@ -43,6 +58,7 @@ impl BackendSkeletonStatus {
                 core_checked: true,
                 effect,
             },
+            runtime_event: None,
         }
     }
 
@@ -59,6 +75,7 @@ impl BackendSkeletonStatus {
                 core_checked: false,
                 effect: BackendEffect::Pending,
             },
+            runtime_event: None,
         }
     }
 
@@ -75,6 +92,7 @@ impl BackendSkeletonStatus {
                 core_checked: true,
                 effect: BackendEffect::Unsupported,
             },
+            runtime_event: None,
         }
     }
 }

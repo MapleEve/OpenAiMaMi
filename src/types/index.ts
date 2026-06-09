@@ -567,7 +567,7 @@ export interface CoreEnvelope<T> {
 }
 
 export interface BackendSkeletonBoundaryStatus {
-  [key: string]: string | boolean;
+  [key: string]: string | boolean | undefined;
   repositoryChecked: boolean;
   repositoryPathKnown: boolean;
   platformChecked: boolean;
@@ -575,13 +575,31 @@ export interface BackendSkeletonBoundaryStatus {
   effect: "pending" | "no_op" | "platform" | "unsupported";
 }
 
+export interface BackendRuntimeEventPayload {
+  [key: string]: string | number | undefined;
+  type: "module:reload";
+  moduleId: string;
+  mode: "active-only" | "full";
+  sequence: number;
+  receivedAt: number;
+  command: string;
+  statusCode: string;
+}
+
 export interface BackendSkeletonStatus {
-  [key: string]: string | boolean | BackendSkeletonBoundaryStatus;
+  [key: string]:
+    | string
+    | boolean
+    | BackendSkeletonBoundaryStatus
+    | BackendRuntimeEventPayload
+    | null
+    | undefined;
   module: string;
   command: string;
   restored: boolean;
   note: string;
   boundary: BackendSkeletonBoundaryStatus;
+  runtimeEvent?: BackendRuntimeEventPayload | null;
 }
 
 export interface AccountSummaryPayload {

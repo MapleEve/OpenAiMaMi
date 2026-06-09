@@ -139,7 +139,10 @@ const forbiddenSideEffectRules = [
       /\.(get_window|get_webview_window|create_window|emit|emit_all)\s*\(/g,
     ],
     reason: "禁止执行真实 Tauri 窗口操作",
-    allowedOwners: [/^src-tauri\/src\/platform\/window\.rs$/],
+    allowedOwners: [
+      /^src-tauri\/src\/platform\/window\.rs$/,
+      /^src-tauri\/src\/adapters\/tauri\/lifecycle\.rs$/,
+    ],
   },
   {
     label: "Tauri tray 操作",

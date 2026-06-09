@@ -53,7 +53,6 @@ const strictFeaturePageShells = [
   "settings",
   "skills",
   "tray-shell",
-  "voice",
 ];
 
 const providerContentPageShells = [
@@ -2229,7 +2228,8 @@ function validateFeatureDeepOwners() {
 }
 
 function validateRouteShells() {
-  for (const moduleId of featureModules) {
+  const routeModules = featureModules.filter((moduleId) => moduleId !== "voice");
+  for (const moduleId of routeModules) {
     const routeFile = join(routesRoot, moduleId, "page.tsx");
     const text = readRequired(routeFile);
     assertIncludes(`src/routes/desktop/main/${moduleId}/page.tsx`, text, [
@@ -2243,7 +2243,7 @@ function validateRouteShells() {
     ]);
   }
 
-  console.log(`PASS route shell 纯度：${featureModules.length}/${featureModules.length}`);
+  console.log(`PASS route shell 纯度：${routeModules.length}/${routeModules.length}`);
 }
 
 function validateFeaturePageShells() {

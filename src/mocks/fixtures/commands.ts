@@ -3,7 +3,7 @@ import {
   type IpcArgs,
   type IpcCommandName,
 } from "@/contracts/ipc";
-import type { CoreEnvelope } from "@/types";
+import type { CoreEnvelope, CoreWarning } from "@/types";
 import type {
   AccountExportPayload,
   AccountImportPayload,
@@ -141,20 +141,113 @@ export type IpcCommandHandler = (context: {
 
 export function createDefaultIpcCommandHandler(): IpcCommandHandler {
   return ({ args, command, steps }) =>
-    createEvidenceBackedIpcFixture(command, args, steps);
+    createRaceAwareIpcEnvelope({ args, command, steps });
 }
 
 const defaultHandler = createDefaultIpcCommandHandler();
 
-function withMockData<T extends IpcCommandMockData>(
+function createRaceAwareIpcEnvelope(
   context: Parameters<IpcCommandHandler>[0],
-  data: T,
-): CoreEnvelope<T> {
+): CoreEnvelope<EvidenceBackedIpcFixture> {
   const envelope = createEvidenceBackedIpcFixture(
     context.command,
     context.args,
     context.steps,
   );
+  const raceWarnings = createStateRaceContractWarnings(context.steps);
+  if (raceWarnings.length === 0) return envelope;
+  return { ...envelope, warnings: [...envelope.warnings, ...raceWarnings] };
+}
+
+function createStateRaceContractWarnings(
+  steps: IpcMockStepResult[],
+): CoreWarning[] {
+  if (steps.length === 0) return [];
+
+  const scenario = steps[0]?.scenario;
+  const warnings: CoreWarning[] = [];
+
+  if (steps.some((step) => step.delayMs >= 500)) {
+    warnings.push({
+      code: "MOCK_DELAYED_RESPONSE",
+      message: "mock scenario includes a delayed IPC response",
+    });
+  }
+
+  if (scenario === "stale" && hasOutOfOrderSequence(steps)) {
+    warnings.push({
+      code: "MOCK_STALE_RESPONSE",
+      message: "mock scenario returns an older sequence after a newer result",
+    });
+  }
+
+  if (scenario === "concurrency" && hasOutOfOrderSequence(steps)) {
+    warnings.push({
+      code: "MOCK_CONCURRENT_RESPONSE",
+      message: "mock scenario exercises duplicate in-flight IPC responses",
+    });
+  }
+
+  if (hasReplayOlderThanMutation(steps)) {
+    warnings.push({
+      code: "MOCK_EVENT_REPLAY",
+      message: "mock scenario replays an event older than the mutation result",
+    });
+  }
+
+  if (hasReplacementAfterOutcome(steps, "cancel")) {
+    warnings.push({
+      code: "MOCK_CANCELLED_RESPONSE",
+      message: "mock scenario cancels a stale response before replacement data",
+    });
+  }
+
+  if (hasReplacementAfterOutcome(steps, "abort")) {
+    warnings.push({
+      code: "MOCK_ABORTED_RESPONSE",
+      message: "mock scenario aborts a stale response before replacement data",
+    });
+  }
+
+  return warnings;
+}
+
+function hasOutOfOrderSequence(steps: IpcMockStepResult[]) {
+  return steps.some((candidate, candidateIndex) =>
+    steps.some(
+      (other, otherIndex) =>
+        otherIndex > candidateIndex &&
+        candidate.delayMs > other.delayMs &&
+        candidate.sequence < other.sequence,
+    ),
+  );
+}
+
+function hasReplayOlderThanMutation(steps: IpcMockStepResult[]) {
+  const mutation = steps.find((step) => step.stepName.includes("mutation"));
+  const replay = steps.find((step) => step.outcome === "replay");
+  return Boolean(mutation && replay && replay.sequence < mutation.sequence);
+}
+
+function hasReplacementAfterOutcome(
+  steps: IpcMockStepResult[],
+  outcome: "abort" | "cancel",
+) {
+  const terminalSequences = steps
+    .filter((step) => step.outcome === outcome)
+    .map((step) => step.sequence);
+  if (terminalSequences.length === 0) return false;
+  const terminalSequence = Math.max(...terminalSequences);
+  return steps.some(
+    (step) => step.outcome === "resolve" && step.sequence > terminalSequence,
+  );
+}
+
+function withMockData<T extends IpcCommandMockData>(
+  context: Parameters<IpcCommandHandler>[0],
+  data: T,
+): CoreEnvelope<T> {
+  const envelope = createRaceAwareIpcEnvelope(context);
   return { ...envelope, data };
 }
 
@@ -225,11 +318,7 @@ const setUsageRefreshIntervalHandler: IpcCommandHandler = (context) => {
 };
 
 const systemActionHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: SystemActionPayload = {
     backendStatus: envelope.data.status,
   };
@@ -253,11 +342,7 @@ const runtimeWatcherMockState = {
 };
 
 const runtimeWatcherStatusHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const now = Date.now();
   let note = "system runtime watcher 已恢复进程内状态合同；mock 不创建真实线程、不发送事件。";
 
@@ -325,11 +410,7 @@ const bootstrapCacheMockState: {
 };
 
 const bootstrapStateHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   return {
     ...envelope,
     data: {
@@ -350,11 +431,7 @@ const bootstrapStateHandler: IpcCommandHandler = (context) => {
 };
 
 const pendingAutoSwitchStateHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   return {
     ...envelope,
     data: {
@@ -408,11 +485,7 @@ const rebuildRegistryHandler: IpcCommandHandler = (context) => {
 };
 
 const diagnoseHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: DiagnosePayload = {
     backendStatus: envelope.data.status,
     checkedAt: null,
@@ -450,11 +523,7 @@ const diagnoseHandler: IpcCommandHandler = (context) => {
 };
 
 const updateInstallabilityHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: UpdateInstallabilityPayload = {
     backendStatus: envelope.data.status,
     canInstall: false,
@@ -468,11 +537,7 @@ const updateInstallabilityHandler: IpcCommandHandler = (context) => {
 };
 
 const accountMonitorHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: AccountMonitorPayload = {
     backendStatus: envelope.data.status,
   };
@@ -480,11 +545,7 @@ const accountMonitorHandler: IpcCommandHandler = (context) => {
 };
 
 const accountSwitchHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: SwitchPayload = {
     backendStatus: envelope.data.status,
     previousAccountKey: null,
@@ -497,11 +558,7 @@ const accountSwitchHandler: IpcCommandHandler = (context) => {
 };
 
 const accountLogoutHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: LogoutPayload = {
     backendStatus: envelope.data.status,
     authRemoved: false,
@@ -511,11 +568,7 @@ const accountLogoutHandler: IpcCommandHandler = (context) => {
 };
 
 const accountRemoveHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const removedAccountKeys = readArgStringArray(context.args, "accountKeys");
   const data: RemovePayload = {
     backendStatus: envelope.data.status,
@@ -540,20 +593,12 @@ function emptyAccountImportPayload(
 }
 
 const accountImportHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   return { ...envelope, data: emptyAccountImportPayload(envelope.data.status) };
 };
 
 const accountSessionImportHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: AccountSessionImportPayload = {
     backendStatus: envelope.data.status,
     imported: false,
@@ -569,11 +614,7 @@ const accountSessionImportHandler: IpcCommandHandler = (context) => {
 };
 
 const accountExportHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: AccountExportPayload = {
     backendStatus: envelope.data.status,
     targetPath: readArgString(context.args, "targetPath", ""),
@@ -585,11 +626,7 @@ const accountExportHandler: IpcCommandHandler = (context) => {
 };
 
 const accountPreviewImportHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: AccountImportPreviewPayload = {
     backendStatus: envelope.data.status,
     filePath: readArgString(context.args, "filePath", ""),
@@ -606,11 +643,7 @@ const accountPreviewImportHandler: IpcCommandHandler = (context) => {
 };
 
 const loadSessionsHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: SessionsListPayload = {
     backendStatus: envelope.data.status,
     items: [],
@@ -622,11 +655,7 @@ const loadSessionsHandler: IpcCommandHandler = (context) => {
 };
 
 const deleteSessionsHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const ids = readArgStringArray(context.args, "ids");
   const data: SessionsDeletePayload = {
     backendStatus: envelope.data.status,
@@ -644,11 +673,7 @@ const mcpMockState: { servers: McpServerSummary[] } = {
 };
 
 const loadMcpServersHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const items = readMcpMockServers();
   syncBootstrapMcpServers();
   const data: McpServerListPayload = {
@@ -662,11 +687,7 @@ const loadMcpServersHandler: IpcCommandHandler = (context) => {
 };
 
 const upsertMcpServerHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const server = mcpServerFromArgs(context.args);
   upsertMcpMockServer(server);
   const data: McpServerMutationPayload = {
@@ -679,11 +700,7 @@ const upsertMcpServerHandler: IpcCommandHandler = (context) => {
 };
 
 const setMcpServerEnabledHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const server = mcpServerFromArgs(context.args, context.args?.enabled === true);
   upsertMcpMockServer(server);
   const data: McpServerMutationPayload = {
@@ -696,11 +713,7 @@ const setMcpServerEnabledHandler: IpcCommandHandler = (context) => {
 };
 
 const removeMcpServerHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const removedName = readArgString(context.args, "name", "");
   removeMcpMockServer(removedName);
   const data: McpServerRemovePayload = {
@@ -784,11 +797,7 @@ function cloneUsageAnalytics(payload: UsageAnalyticsPayload | null) {
 }
 
 const loadUsageAnalyticsHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: UsageAnalyticsPayload = {
     backendStatus: envelope.data.status,
     today: {
@@ -812,11 +821,7 @@ const loadUsageAnalyticsHandler: IpcCommandHandler = (context) => {
 };
 
 const loadQuotaHistoryHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: QuotaHistoryPayload = {
     backendStatus: envelope.data.status,
     accountKey: readArgOptionalString(context.args, "accountKey"),
@@ -826,11 +831,7 @@ const loadQuotaHistoryHandler: IpcCommandHandler = (context) => {
 };
 
 const loadSessionAnalyticsHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const range = readArgString(context.args, "range", "week");
   const data: SessionAnalyticsPayload = {
     backendStatus: envelope.data.status,
@@ -844,11 +845,7 @@ const loadSessionAnalyticsHandler: IpcCommandHandler = (context) => {
 };
 
 const loadTokenAnalyticsHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const range = readArgString(context.args, "range", "week");
   const data: TokenAnalyticsPayload = {
     backendStatus: envelope.data.status,
@@ -867,11 +864,7 @@ const loadTokenAnalyticsHandler: IpcCommandHandler = (context) => {
 };
 
 const loadToolAnalyticsHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const range = readArgString(context.args, "range", "week");
   const data: ToolAnalyticsPayload = {
     backendStatus: envelope.data.status,
@@ -886,11 +879,7 @@ const loadToolAnalyticsHandler: IpcCommandHandler = (context) => {
 };
 
 const loadChangeAnalyticsHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const range = readArgString(context.args, "range", "week");
   const data: ChangeAnalyticsPayload = {
     backendStatus: envelope.data.status,
@@ -957,11 +946,7 @@ function findPluginMock(id: string) {
 }
 
 const listPluginsHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const items = readPluginMockItems();
   const data: RuntimeExtensionListPayload = {
     backendStatus: envelope.data.status,
@@ -974,11 +959,7 @@ const listPluginsHandler: IpcCommandHandler = (context) => {
 };
 
 const togglePluginHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const id = readArgString(context.args, "id", "");
   const enabled = context.args?.enabled === true;
   const plugin = findPluginMock(id) ?? {
@@ -1009,11 +990,7 @@ const togglePluginHandler: IpcCommandHandler = (context) => {
 };
 
 const getPluginConfigHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const id = readArgString(context.args, "id", "");
   const data: RuntimeExtensionConfigPayload = {
     backendStatus: envelope.data.status,
@@ -1026,11 +1003,7 @@ const getPluginConfigHandler: IpcCommandHandler = (context) => {
 };
 
 const updatePluginConfigHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const id = readArgString(context.args, "id", "");
   const settings = normalizePluginSettingsValue(context.args?.settings);
   pluginsMockState.settings[id] = settings;
@@ -1153,11 +1126,7 @@ const skillsMockState: { installed: InstalledSkillSummary[] } = {
 };
 
 const loadInstalledSkillsHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const items = readInstalledSkillSummaries();
   syncBootstrapInstalledSkills();
   return {
@@ -1173,11 +1142,7 @@ const loadInstalledSkillsHandler: IpcCommandHandler = (context) => {
 };
 
 const loadSkillBackupsHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   return {
     ...envelope,
     data: {
@@ -1191,11 +1156,7 @@ const loadSkillBackupsHandler: IpcCommandHandler = (context) => {
 };
 
 const importSkillHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const id = readArgString(context.args, "path", "mock-skill");
   const skill = skillSummaryFromId(id);
   const replacedExisting = upsertInstalledSkill(skill);
@@ -1211,11 +1172,7 @@ const importSkillHandler: IpcCommandHandler = (context) => {
 };
 
 const removeSkillHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const id = readArgString(context.args, "id", "mock-skill");
   removeInstalledSkill(id);
   return {
@@ -1230,11 +1187,7 @@ const removeSkillHandler: IpcCommandHandler = (context) => {
 };
 
 const restoreSkillBackupHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const id = readArgString(context.args, "id", "mock-skill");
   const restoredSkill = skillSummaryFromId(id);
   upsertInstalledSkill(restoredSkill);
@@ -1250,11 +1203,7 @@ const restoreSkillBackupHandler: IpcCommandHandler = (context) => {
 };
 
 const deleteSkillBackupHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const id = readArgString(context.args, "id", "mock-skill");
   return {
     ...envelope,
@@ -1303,11 +1252,7 @@ function touchBootstrapCache() {
 }
 
 const systemInfoHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   return {
     ...envelope,
     data: {
@@ -1354,22 +1299,14 @@ function createCoreSnapshotPayload(
 }
 
 const coreSnapshotHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const localOnly = readArgBoolean(context.args, "localOnly", false);
   const data = createCoreSnapshotPayload(envelope.data.status, localOnly);
   return { ...envelope, data };
 };
 
 const refreshUsageSnapshotHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   systemUsageMockState.refreshCount += 1;
   systemUsageMockState.lastScanAt += 1_000;
   systemUsageMockState.usageSource = "api";
@@ -1380,11 +1317,7 @@ const refreshUsageSnapshotHandler: IpcCommandHandler = (context) => {
 };
 
 const notificationClientStateHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   return {
     ...envelope,
     data: {
@@ -1566,11 +1499,7 @@ function readRecordString(
 function relayProviderFromArgs(
   context: Parameters<IpcCommandHandler>[0],
 ): RelayProviderPayload {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const input = readArgRecord(context.args, "input");
   const providerId = readArgString(
     context.args,
@@ -1610,11 +1539,7 @@ function readRelayExtraHeaders(value: unknown): RelayExtraHeaders {
 }
 
 const loadRelayStateHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   return {
     ...envelope,
     data: relayStateFromStatus(envelope.data.status),
@@ -1622,11 +1547,7 @@ const loadRelayStateHandler: IpcCommandHandler = (context) => {
 };
 
 const relayProviderHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   return {
     ...envelope,
     data: relayProviderFromArgs(context),
@@ -1634,11 +1555,7 @@ const relayProviderHandler: IpcCommandHandler = (context) => {
 };
 
 const relayStateMutationHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const providerId = readArgString(context.args, "providerId", "");
   const ide = readArgString(context.args, "ide", "codex");
   const activeByIde =
@@ -1656,11 +1573,7 @@ const relayStateMutationHandler: IpcCommandHandler = (context) => {
 };
 
 const relayTestHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const input = readArgRecord(context.args, "input");
   const baseUrl = readRecordString(input, ["baseUrl", "url", "endpoint"], "");
   const providerId = readArgString(context.args, "providerId", "");
@@ -1687,20 +1600,12 @@ function relayModelsFromArgs(context: Parameters<IpcCommandHandler>[0]) {
 }
 
 const relayModelsHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   return { ...envelope, data: relayModelsFromArgs(context) };
 };
 
 const relayActiveHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   return {
     ...envelope,
     data: {
@@ -1714,11 +1619,7 @@ const relayActiveHandler: IpcCommandHandler = (context) => {
 };
 
 const relayProxyHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   return {
     ...envelope,
     data: relayProxyFromStatus(envelope.data.status),
@@ -1726,11 +1627,7 @@ const relayProxyHandler: IpcCommandHandler = (context) => {
 };
 
 const relayRouterToggleHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const enabled = context.args?.enabled === true;
   const data: RelayRouterTogglePayload = {
     backendStatus: envelope.data.status,
@@ -1753,11 +1650,7 @@ const relayRouterToggleHandler: IpcCommandHandler = (context) => {
 };
 
 const relayExportHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: RelayExportPayload = {
     backendStatus: envelope.data.status,
     schemaVersion: 4,
@@ -1772,11 +1665,7 @@ const relayExportHandler: IpcCommandHandler = (context) => {
 };
 
 const relayImportHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const data: RelayImportPayload = {
     backendStatus: envelope.data.status,
     filePath: readArgString(context.args, "filePath", ""),
@@ -1912,11 +1801,7 @@ function relayDiagnosticFromStatus(
 }
 
 const relayDiagnosticHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   return {
     ...envelope,
     data: relayDiagnosticFromStatus(envelope.data.status),
@@ -1924,11 +1809,7 @@ const relayDiagnosticHandler: IpcCommandHandler = (context) => {
 };
 
 const relayFixHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
+  const envelope = createRaceAwareIpcEnvelope(context);
   const itemId = readArgString(context.args, "itemId", "");
   const fixResult = relayRouterFixResult(itemId);
   const data: RelayRouterIssueFixPayload = {

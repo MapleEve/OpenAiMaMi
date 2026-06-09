@@ -14,8 +14,8 @@ use crate::contracts::{
     DiagnoseDiagnosticFieldPayload, DiagnoseDiagnosticProbePayload,
     DiagnoseDiagnosticSnapshotPayload, DiagnosePayload, DiagnosePlatform, DiagnoseRegistryState,
     DiagnoseSessionState, MysteryRouteGrant, NotificationClientStatePayload,
-    PendingAutoSwitchStatePayload, RebuildRegistryPayload, SystemActionPayload, SystemInfoPayload,
-    UpdateInstallabilityPayload, UsageSource,
+    PendingAutoSwitchStatePayload, RebuildRegistryPayload, RuntimeBridgeEventPayload,
+    SystemActionPayload, SystemInfoPayload, UpdateInstallabilityPayload, UsageSource,
 };
 use crate::core::error::CoreError;
 use crate::core::hotspot as hotspot_core;
@@ -145,6 +145,7 @@ fn diagnose_backend_status() -> BackendSkeletonStatus {
             core_checked: true,
             effect: BackendEffect::Pending,
         },
+        runtime_event: None,
     }
 }
 
@@ -524,6 +525,7 @@ fn runtime_watcher_backend_status(
                 BackendEffect::NoOp
             },
         },
+        runtime_event: Some(runtime_bridge_event(command, decision)),
     }
 }
 
@@ -540,6 +542,51 @@ fn runtime_watcher_status_without_repository(command: &str, note: String) -> Bac
             core_checked: true,
             effect: BackendEffect::Pending,
         },
+        runtime_event: None,
+    }
+}
+
+fn runtime_bridge_event(
+    command: &str,
+    decision: &RuntimeWatcherDecision,
+) -> RuntimeBridgeEventPayload {
+    let (module_id, mode) = runtime_event_target(decision.signal);
+    RuntimeBridgeEventPayload {
+        event_type: "module:reload".to_string(),
+        module_id: module_id.to_string(),
+        mode: mode.to_string(),
+        sequence: decision.state.notify_sequence,
+        received_at: current_epoch_ms(),
+        command: command.to_string(),
+        status_code: runtime_watcher_status_code(&decision.status_code).to_string(),
+    }
+}
+
+fn runtime_event_target(signal: RuntimeWatcherSignal) -> (&'static str, &'static str) {
+    match signal {
+        RuntimeWatcherSignal::NoteUsageRefreshActivity => ("overview", "active-only"),
+        RuntimeWatcherSignal::ScheduleFullRuntimeRefresh => ("overview", "full"),
+        RuntimeWatcherSignal::StartAutoSwitchPendingWatcher => ("daemon-autoswitch", "active-only"),
+        RuntimeWatcherSignal::StartUsageRefreshWatcher => ("overview", "active-only"),
+        RuntimeWatcherSignal::UpdateUsageRefreshSchedule => ("settings", "active-only"),
+    }
+}
+
+fn runtime_watcher_status_code(status_code: &RuntimeWatcherStatusCode) -> &'static str {
+    match status_code {
+        RuntimeWatcherStatusCode::PendingSkeleton => "pendingSkeleton",
+        RuntimeWatcherStatusCode::ScheduleUpdateSkeleton => "scheduleUpdateSkeleton",
+        RuntimeWatcherStatusCode::StartOnlySkeleton => "startOnlySkeleton",
+        RuntimeWatcherStatusCode::ActivityRecorded => "activityRecorded",
+        RuntimeWatcherStatusCode::FullRefreshScheduled => "fullRefreshScheduled",
+        RuntimeWatcherStatusCode::FullRefreshCoalesced => "fullRefreshCoalesced",
+        RuntimeWatcherStatusCode::AutoSwitchWatcherStarted => "autoSwitchWatcherStarted",
+        RuntimeWatcherStatusCode::AutoSwitchWatcherAlreadyStarted => {
+            "autoSwitchWatcherAlreadyStarted"
+        }
+        RuntimeWatcherStatusCode::UsageWatcherStarted => "usageWatcherStarted",
+        RuntimeWatcherStatusCode::UsageWatcherAlreadyStarted => "usageWatcherAlreadyStarted",
+        RuntimeWatcherStatusCode::ScheduleUpdated => "scheduleUpdated",
     }
 }
 

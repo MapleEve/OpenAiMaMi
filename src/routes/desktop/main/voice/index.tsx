@@ -1,1 +1,0 @@
-export { VoiceRoute } from "./page";

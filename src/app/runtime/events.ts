@@ -1,5 +1,6 @@
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
 import type { IpcJsonValue } from "@/contracts/ipc";
+import type { BackendRuntimeEventPayload } from "@/types";
 import { AccountsCache } from "@/features/accounts/cache";
 import { AnalyticsCache } from "@/features/analytics/cache";
 import { CustomInstructionsCache } from "@/features/custom-instructions/cache";
@@ -13,7 +14,6 @@ import { SessionsCache } from "@/features/sessions/cache";
 import { SettingsCache } from "@/features/settings/cache";
 import { SkillsCache } from "@/features/skills/cache";
 import { TrayShellCache } from "@/features/tray-shell/cache";
-import { VoiceCache } from "@/features/voice/cache";
 import type { Route } from "@/types/navigation";
 
 export type RuntimeQueryKey = QueryKey;
@@ -92,7 +92,6 @@ export const RUNTIME_QUERY_KEYS_BY_MODULE = {
   maintenance: runtimeModuleQueryKeys(MaintenanceCache.queryKeys.root),
   "daemon-autoswitch": runtimeModuleQueryKeys(DaemonAutoswitchCache.queryKeys.root),
   "tray-shell": runtimeModuleQueryKeys(TrayShellCache.queryKeys.root),
-  voice: runtimeModuleQueryKeys(VoiceCache.queryKeys.root),
 } satisfies Record<Route, readonly RuntimeQueryKey[]>;
 
 const listeners = new Set<RuntimeEventListener>();
@@ -105,6 +104,22 @@ export function subscribeRuntimeEvent(listener: RuntimeEventListener) {
   listeners.add(listener);
   return () => {
     listeners.delete(listener);
+  };
+}
+
+export function normalizeBackendRuntimeEvent(
+  payload: BackendRuntimeEventPayload,
+): RuntimeEvent | null {
+  if (payload.type !== "module:reload" || !isRuntimeModuleId(payload.moduleId)) {
+    return null;
+  }
+
+  return {
+    type: "module:reload",
+    moduleId: payload.moduleId,
+    mode: payload.mode === "active-only" ? "active-only" : "full",
+    sequence: payload.sequence,
+    receivedAt: payload.receivedAt,
   };
 }
 
@@ -193,4 +208,8 @@ function invalidateRuntimeTargets(
       type: target.mode === "active-only" ? "active" : "all",
     });
   });
+}
+
+function isRuntimeModuleId(value: string): value is Route {
+  return Object.prototype.hasOwnProperty.call(RUNTIME_QUERY_KEYS_BY_MODULE, value);
 }

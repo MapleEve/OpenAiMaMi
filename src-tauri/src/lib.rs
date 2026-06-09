@@ -21,7 +21,13 @@ pub fn run() {
         .setup(|app| {
             let repo = app.state::<Mutex<Repository>>();
             if let Ok(repo) = repo.lock() {
-                let _ = adapters::tauri::bootstrap_runtime_watchers(&repo);
+                let summary = adapters::tauri::bootstrap_runtime_watchers(&repo);
+                if let Some(status) = &summary.usage_refresh_watcher_status {
+                    adapters::tauri::emit_runtime_bridge_event(app.handle(), status);
+                }
+                if let Some(status) = &summary.auto_switch_pending_watcher_status {
+                    adapters::tauri::emit_runtime_bridge_event(app.handle(), status);
+                }
             }
             Ok(())
         })

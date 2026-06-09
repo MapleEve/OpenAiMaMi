@@ -11,8 +11,7 @@ export type Route =
   | "settings"
   | "maintenance"
   | "daemon-autoswitch"
-  | "tray-shell"
-  | "voice";
+  | "tray-shell";
 
 export const ALL_APP_ROUTES: Route[] = [
   "overview",
@@ -28,7 +27,6 @@ export const ALL_APP_ROUTES: Route[] = [
   "settings",
   "daemon-autoswitch",
   "tray-shell",
-  "voice",
 ];
 
 export function isAppRoute(value: string): value is Route {

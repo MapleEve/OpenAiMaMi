@@ -6,7 +6,6 @@ import {
   Headphones,
   LayoutDashboard,
   MessageSquareText,
-  Mic2,
   Puzzle,
   RadioTower,
   Server,
@@ -87,12 +86,6 @@ const TrayShellRoute = lazy(() =>
     default: module.TrayShellRoute,
   })),
 );
-const VoiceRoute = lazy(() =>
-  import("@/routes/desktop/main/voice/page").then((module) => ({
-    default: module.VoiceRoute,
-  })),
-);
-
 export interface RouteRenderContext {
   settings: SettingsRouteProps;
 }
@@ -292,17 +285,6 @@ export const routeDefinitions: RouteDefinition[] = ([
     skeleton: <RouteShellSkeleton />,
     HighIoFeedback: RouteHighIoFeedback,
     render: () => <TrayShellRoute />,
-  },
-  {
-    route: "voice",
-    titleKey: "nav.voice",
-    icon: Mic2,
-    visible: false,
-    highIo: true,
-    preload: () => import("@/routes/desktop/main/voice/page"),
-    skeleton: <RouteShellSkeleton />,
-    HighIoFeedback: RouteHighIoFeedback,
-    render: () => <VoiceRoute />,
   },
 ] satisfies RouteDefinitionInput[]).map(withRouteDefaults);
 

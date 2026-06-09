@@ -4,8 +4,10 @@ import { seedRuntimeBootstrap } from "@/app/runtime/bootstrap";
 import { seedDesktopMessageBoundary } from "@/app/runtime/message";
 import {
   applyRuntimeEventToQueryCache,
+  normalizeBackendRuntimeEvent,
   subscribeRuntimeEvent,
 } from "@/app/runtime/events";
+import { api } from "@/lib/api";
 import { ensureRuntimeRemoteDeviceSecret } from "@/app/runtime/secret";
 
 export function RuntimeInitializer() {
@@ -21,6 +23,15 @@ export function RuntimeInitializer() {
 
   useEffect(() => {
     void seedRuntimeBootstrap(queryClient);
+  }, [queryClient]);
+
+  useEffect(() => {
+    return api.subscribeRuntimeEvents((payload) => {
+      const event = normalizeBackendRuntimeEvent(payload);
+      if (event) {
+        applyRuntimeEventToQueryCache(queryClient, event);
+      }
+    });
   }, [queryClient]);
 
   useEffect(() => {

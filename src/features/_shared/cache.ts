@@ -1,6 +1,8 @@
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
 import type { Route } from "@/types/navigation";
 
+export type ModuleCacheModuleId = Route | "voice";
+
 export type ModuleCacheSource =
   | "full-refresh"
   | "active-only-refresh"
@@ -9,7 +11,7 @@ export type ModuleCacheSource =
   | "replay";
 
 export interface ModuleCacheEnvelope<TPayload> {
-  moduleId: Route;
+  moduleId: ModuleCacheModuleId;
   payload: TPayload;
   source: ModuleCacheSource;
   sequence: number;
@@ -29,7 +31,7 @@ export interface ModuleCacheOwnerOptions<TPayload> {
 }
 
 export interface ModuleCacheOwner<TPayload = unknown> {
-  moduleId: Route;
+  moduleId: ModuleCacheModuleId;
   queryKeys: {
     root: QueryKey;
     state: QueryKey;
@@ -45,7 +47,7 @@ export interface ModuleCacheOwner<TPayload = unknown> {
 }
 
 export function createModuleCacheOwner<TPayload = unknown>(
-  moduleId: Route,
+  moduleId: ModuleCacheModuleId,
   options: ModuleCacheOwnerOptions<TPayload> = {},
 ): ModuleCacheOwner<TPayload> {
   const queryKeys = {

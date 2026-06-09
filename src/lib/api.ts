@@ -80,6 +80,7 @@ function normalizeMcpServerInput(
 }
 
 export const api = {
+  subscribeRuntimeEvents: systemService.subscribeRuntimeEvents,
   loadSnapshot: systemService.loadSnapshot,
   refreshUsageSnapshot: systemService.refreshUsageSnapshot,
   focusMainWindow: systemService.focusMainWindow,

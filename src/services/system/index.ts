@@ -1,4 +1,5 @@
 import { invokeIpc } from "@/contracts/ipc";
+import { isTauriRuntime } from "@/lib/tauri";
 import type {
   ApiModePayload,
   ApiProxyDetectPayload,
@@ -16,10 +17,18 @@ import type {
   NotificationClientStatePayload,
   PendingAutoSwitchStatePayload,
   RebuildRegistryPayload,
+  BackendRuntimeEventPayload,
   SystemActionPayload,
   SystemInfoPayload,
   UpdateInstallabilityPayload,
 } from "@/types";
+import { listen, type UnlistenFn } from "@tauri-apps/api/event";
+
+export type BackendRuntimeEventHandler = (
+  payload: BackendRuntimeEventPayload,
+) => void;
+
+const RUNTIME_BRIDGE_EVENT = "aimami-runtime-event";
 
 async function ignoreEnvelope<T>(promise: Promise<CoreEnvelope<T>>): Promise<void> {
   await promise;
@@ -36,7 +45,44 @@ function toMysteryRouteGrantArgs(grants: MysteryRouteGrant[]) {
   }));
 }
 
+function subscribeRuntimeEvents(
+  handler: BackendRuntimeEventHandler,
+  onError?: (error: unknown) => void,
+) {
+  if (!isTauriRuntime()) {
+    return () => {};
+  }
+
+  let disposed = false;
+  let unlisten: UnlistenFn | null = null;
+
+  void listen<BackendRuntimeEventPayload>(RUNTIME_BRIDGE_EVENT, (event) => {
+    handler(event.payload);
+  })
+    .then((nextUnlisten) => {
+      if (disposed) {
+        nextUnlisten();
+        return;
+      }
+
+      unlisten = nextUnlisten;
+    })
+    .catch((error: unknown) => {
+      if (!disposed) {
+        onError?.(error);
+      }
+    });
+
+  return () => {
+    disposed = true;
+    unlisten?.();
+    unlisten = null;
+  };
+}
+
 export const systemService = {
+  subscribeRuntimeEvents,
+
   loadSnapshot: (localOnly = false) =>
     invokeIpc<CoreEnvelope<CoreSnapshotPayload>>("load_snapshot", { localOnly }),
 

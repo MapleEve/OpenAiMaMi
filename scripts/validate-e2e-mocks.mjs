@@ -341,6 +341,118 @@ function validateScenarioFiles() {
   }
 }
 
+function validateRaceContractMockHelpers() {
+  const commandFixturePath = path.join(
+    repoRoot,
+    "src",
+    "mocks",
+    "fixtures",
+    "commands.ts",
+  );
+  const commandFixtureText = readRequired(commandFixturePath);
+  const defaultHandlerBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts createDefaultIpcCommandHandler",
+    commandFixtureText,
+    "export function createDefaultIpcCommandHandler",
+  );
+  const withMockDataBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts withMockData",
+    commandFixtureText,
+    "function withMockData",
+  );
+  const raceEnvelopeBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts createRaceAwareIpcEnvelope",
+    commandFixtureText,
+    "function createRaceAwareIpcEnvelope",
+  );
+  const raceWarningsBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts createStateRaceContractWarnings",
+    commandFixtureText,
+    "function createStateRaceContractWarnings",
+  );
+  const replacementBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts hasReplacementAfterOutcome",
+    commandFixtureText,
+    "function hasReplacementAfterOutcome",
+  );
+  const factoryCallCount = [
+    ...commandFixtureText.matchAll(/\bcreateEvidenceBackedIpcFixture\(/g),
+  ].length;
+  const helperCallCount = [
+    ...commandFixtureText.matchAll(/\bcreateRaceAwareIpcEnvelope\(context\)/g),
+  ].length;
+
+  assertIncludes("src/mocks/fixtures/commands.ts", commandFixtureText, [
+    "CoreWarning",
+    "createRaceAwareIpcEnvelope",
+    "createStateRaceContractWarnings",
+    "hasOutOfOrderSequence",
+    "hasReplayOlderThanMutation",
+    "hasReplacementAfterOutcome",
+    "MOCK_DELAYED_RESPONSE",
+    "MOCK_STALE_RESPONSE",
+    "MOCK_CONCURRENT_RESPONSE",
+    "MOCK_EVENT_REPLAY",
+    "MOCK_CANCELLED_RESPONSE",
+    "MOCK_ABORTED_RESPONSE",
+  ]);
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts createDefaultIpcCommandHandler",
+    defaultHandlerBody,
+    ["createRaceAwareIpcEnvelope({ args, command, steps })"],
+  );
+  assertIncludes("src/mocks/fixtures/commands.ts withMockData", withMockDataBody, [
+    "createRaceAwareIpcEnvelope(context)",
+  ]);
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts createRaceAwareIpcEnvelope",
+    raceEnvelopeBody,
+    [
+      "createEvidenceBackedIpcFixture(",
+      "createStateRaceContractWarnings(context.steps)",
+      "warnings: [...envelope.warnings, ...raceWarnings]",
+    ],
+  );
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts createStateRaceContractWarnings",
+    raceWarningsBody,
+    [
+      "step.delayMs >= 500",
+      'scenario === "stale" && hasOutOfOrderSequence(steps)',
+      'scenario === "concurrency" && hasOutOfOrderSequence(steps)',
+      "hasReplayOlderThanMutation(steps)",
+      'hasReplacementAfterOutcome(steps, "cancel")',
+      'hasReplacementAfterOutcome(steps, "abort")',
+    ],
+  );
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts hasReplacementAfterOutcome",
+    replacementBody,
+    [
+      "terminalSequences.length === 0",
+      'step.outcome === "resolve" && step.sequence > terminalSequence',
+    ],
+  );
+
+  if (factoryCallCount !== 1) {
+    failures.push(
+      `src/mocks/fixtures/commands.ts must route direct envelope creation through createRaceAwareIpcEnvelope; found ${factoryCallCount} createEvidenceBackedIpcFixture calls`,
+    );
+  }
+
+  if (helperCallCount < 10) {
+    failures.push(
+      `src/mocks/fixtures/commands.ts createRaceAwareIpcEnvelope(context) is not used by specialized handlers; found ${helperCallCount} calls`,
+    );
+  }
+
+  if (/\bvoice\b|Voice/.test(commandFixtureText)) {
+    failures.push(
+      "src/mocks/fixtures/commands.ts must not register or call voice mocks from the E2E fixture entry",
+    );
+  }
+}
+
 function validateIpcMockBridge() {
   const ipcMockPath = path.join(repoRoot, "src", "mocks", "ipc", "index.ts");
   const fixturePath = path.join(repoRoot, "src", "mocks", "fixtures", "index.ts");
@@ -1246,6 +1358,7 @@ function validateSessionsMockPayloadHandlers() {
 validateScenarioRegistry();
 validateSkillsCommandMirror();
 validateScenarioFiles();
+validateRaceContractMockHelpers();
 validateAccountsMockPayloadHandlers();
 validateAnalyticsMockPayloadHandlers();
 validateMcpMockPayloadHandlers();

@@ -1,5 +1,3 @@
-import type { Route } from "@/types/navigation";
-
 export interface DumpedContractCommandBoundary {
   command: string;
   argKeys: readonly string[];
@@ -11,7 +9,7 @@ export function DumpedContractBoundary({
   moduleId,
   commands,
 }: {
-  moduleId: Route;
+  moduleId: string;
   commands: readonly DumpedContractCommandBoundary[];
 }) {
   void moduleId;
