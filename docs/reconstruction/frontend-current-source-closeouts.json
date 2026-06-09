@@ -388,7 +388,7 @@
           "file": "src/mocks/fixtures/commands.ts",
           "includes": [
             "load_snapshot: coreSnapshotHandler",
-            "refresh_usage_snapshot: coreSnapshotHandler",
+            "refresh_usage_snapshot: refreshUsageSnapshotHandler",
             "load_usage_analytics: loadUsageAnalyticsHandler"
           ]
         },
@@ -863,6 +863,191 @@
         }
       ],
       "reason": "macOS relay frontend 文档中的旧 source archive 实现 gap 已由当前公开源码补成前端 service/hook/mock 到后端 command/usecase/repository/contracts 的可调用六边形骨架；本 closeout 只关闭 passthrough/audit 入口链路缺口，不声明 relay 业务状态机或 MAC/WIN 100% leaf 已完成。"
+    },
+    {
+      "id": "relay-current-source-skeleton",
+      "module": "relay",
+      "status": "current-source-closed-partial",
+      "sidecarReports": [
+        "evidence/full-chain/internal/audits/audits/cross-1.0.9-relay-core-bootstrap/frontend-callchain-report.json"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "evidence/full-chain/internal/audits/audits/cross-1.0.9-relay-core-bootstrap/frontend-callchain-report.json",
+          "includes": [
+            "\"full_leaf\": false",
+            "\"gate_report_fields_unchanged\": true",
+            "\"backend_platform_evidence_required\": true",
+            "\"current_source_ipc_commands\"",
+            "\"activate_relay_provider\"",
+            "\"run_codex_router_diagnostics\"",
+            "\"diagnose_codex_router\"",
+            "\"upsert_relay_provider\""
+          ]
+        },
+        {
+          "file": "src/contracts/ipc/commands.ts",
+          "includes": [
+            "\"domain\": \"relay\"",
+            "\"command\": \"activate_relay_provider\"",
+            "\"command\": \"diagnose_codex_router\"",
+            "\"command\": \"upsert_relay_provider\""
+          ]
+        },
+        {
+          "file": "src/services/relay/index.ts",
+          "includes": [
+            "invokeIpc<CoreEnvelope<RelayStatePayload>>(\"load_relay_state\")",
+            "invokeIpc<CoreEnvelope<RelayRouterTogglePayload>>(\"set_codex_router_enabled\"",
+            "invokeIpc<CoreEnvelope<RelayDiagnosticPayload>>(",
+            "\"run_codex_router_diagnostics\"",
+            "\"diagnose_codex_router\""
+          ]
+        },
+        {
+          "file": "src/features/relay/contract.ts",
+          "includes": [
+            "DUMPED_RELAY_COMMANDS",
+            "\"fetch_relay_models_draft\"",
+            "\"run_codex_router_diagnostics\"",
+            "\"upsert_relay_provider\""
+          ]
+        },
+        {
+          "file": "src/features/relay/cache/index.ts",
+          "includes": [
+            "RelayCache = createModuleCacheOwner<RelayCachePayload>(\"relay\")",
+            "RELAY_STATE_QUERY_KEY = [\"relay-state\"]",
+            "writeRelayMutationPayload",
+            "invalidateRelayContractQueries"
+          ]
+        },
+        {
+          "file": "src/features/relay/hooks/query.ts",
+          "includes": [
+            "relayService.loadState()",
+            "relayService.getActive()",
+            "relayService.getProxyStatus()",
+            "relayService.getPassthroughAuditLog(50)"
+          ]
+        },
+        {
+          "file": "src/features/relay/hooks/mutation.ts",
+          "includes": [
+            "relayService.upsert(input)",
+            "relayService.setCodexRouterEnabled(enabled, relaunch)",
+            "relayService.fetchModelsDraft(input)",
+            "relayService.runCodexRouterDiagnostics()"
+          ]
+        },
+        {
+          "file": "src/features/relay/hooks/runtime.ts",
+          "includes": [
+            "relayService.subscribeRouterToggleProgress",
+            "writeRelayRouterToggleProgress"
+          ]
+        },
+        {
+          "file": "src/features/relay/Provider.tsx",
+          "includes": [
+            "RelayStoreUpdater",
+            "{children}"
+          ]
+        },
+        {
+          "file": "src/features/relay/StoreUpdater.tsx",
+          "includes": [
+            "ModuleStoreUpdaterBoundary",
+            "cacheOwner={RelayCache}"
+          ]
+        },
+        {
+          "file": "src/features/relay/Content.tsx",
+          "includes": [
+            "DumpedContractBoundary moduleId=\"relay\"",
+            "DUMPED_RELAY_COMMANDS",
+            "<RelayPage />"
+          ]
+        },
+        {
+          "file": "src/routes/desktop/main/relay/page.tsx",
+          "includes": [
+            "RelayFeature",
+            "RelayRoute"
+          ]
+        },
+        {
+          "file": "src/routes/registry/registry.tsx",
+          "includes": [
+            "route: \"relay\"",
+            "import(\"@/routes/desktop/main/relay/page\")",
+            "render: () => <RelayRoute />"
+          ]
+        },
+        {
+          "file": "src/mocks/fixtures/commands.ts",
+          "includes": [
+            "const relayCommandHandlers",
+            "load_relay_state: loadRelayStateHandler",
+            "run_codex_router_diagnostics: relayDiagnosticHandler",
+            "diagnose_codex_router: relayDiagnosticHandler",
+            "upsert_relay_provider: relayProviderHandler"
+          ]
+        },
+        {
+          "file": "src-tauri/src/lib.rs",
+          "includes": [
+            "commands::relay::load_relay_state",
+            "commands::relay::run_codex_router_diagnostics",
+            "commands::relay::diagnose_codex_router",
+            "commands::relay::upsert_relay_provider"
+          ]
+        },
+        {
+          "file": "src-tauri/src/commands/relay.rs",
+          "includes": [
+            "pub fn load_relay_state",
+            "pub fn run_codex_router_diagnostics",
+            "pub fn diagnose_codex_router",
+            "pub fn upsert_relay_provider"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/relay.rs",
+          "includes": [
+            "pub fn load_relay_state",
+            "pub fn fetch_relay_models_draft",
+            "pub fn run_codex_router_diagnostics",
+            "skeleton_warning(command)"
+          ]
+        },
+        {
+          "file": "src-tauri/src/contracts/relay.rs",
+          "includes": [
+            "pub struct RelayProviderDraftInput",
+            "pub struct RelayStatePayload",
+            "pub struct RelayRouterTogglePayload",
+            "pub struct RelayDiagnosticPayload"
+          ]
+        },
+        {
+          "file": "src-tauri/src/repository/relay.rs",
+          "includes": [
+            "pub fn passthrough_audit_source_path",
+            "pub fn load_passthrough_audit_log",
+            "pub fn record_passthrough_policy_intent"
+          ]
+        }
+      ],
+      "nonClaims": [
+        "不声明真实代理业务已经恢复。",
+        "不声明真实配置持久化已经恢复。",
+        "不声明真实 daemon 或 proxy runner 已经恢复。",
+        "不声明真实 HTTP、model fetch 或 SSE 行为已经恢复。",
+        "不声明真实 import/export IO 已经恢复。",
+        "不声明 full_leaf_100，也不修改任何 gate-report 字段。"
+      ],
+      "reason": "当前公开源码已经形成 relay IPC、前端 service/cache/query/mutation/runtime/mock 与 Rust command/usecase/contracts/repository 的可验证公开骨架链路；本 closeout 只登记非 gating 当前源码证据，不声明真实业务恢复、后端平台恢复或 full leaf。"
     }
   ]
 }
