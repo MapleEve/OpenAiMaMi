@@ -35,6 +35,17 @@ pub fn store_bootstrap_installed_skills(
     save_bootstrap_cache(repo, &cache)
 }
 
+pub fn store_bootstrap_usage_analytics(
+    repo: &Repository,
+    written_at: i64,
+    usage_analytics: serde_json::Value,
+) -> Result<(), CoreError> {
+    let mut cache = load_bootstrap_cache(repo).unwrap_or_default();
+    cache.written_at = Some(serde_json::Value::Number(written_at.into()));
+    cache.usage_analytics = Some(usage_analytics);
+    save_bootstrap_cache(repo, &cache)
+}
+
 fn save_bootstrap_cache(repo: &Repository, cache: &BootstrapCacheFile) -> Result<(), CoreError> {
     repo.paths().ensure_app_directories()?;
     repo.fs().write_string(
@@ -136,6 +147,41 @@ mod tests {
         );
         assert_eq!(cache.installed_skills, Some(vec![sample_installed_skill()]));
         assert!(cache.mcp_servers.is_none());
+    }
+
+    #[test]
+    fn store_bootstrap_usage_analytics_preserves_typed_cache_slices() {
+        let repo = Repository::with_temp_file_system("bootstrap-cache-store-usage");
+        repo.paths().ensure_app_directories().expect("create dirs");
+        repo.fs()
+            .write_string(
+                &repo.paths().bootstrap_cache_path,
+                r#"{
+  "mcpServers": [],
+  "installedSkills": []
+}"#,
+            )
+            .expect("write cache");
+
+        let usage = serde_json::json!({
+            "today": {
+                "sessionCount": 0,
+                "totalFileSize": 0,
+                "activeMinutesEstimate": 0
+            },
+            "dailyActivity": []
+        });
+        store_bootstrap_usage_analytics(&repo, 1710000003, usage.clone())
+            .expect("store usage cache");
+
+        let cache = load_bootstrap_cache(&repo).expect("reload cache");
+        assert_eq!(
+            cache.written_at,
+            Some(serde_json::Value::Number(1710000003i64.into()))
+        );
+        assert_eq!(cache.usage_analytics, Some(usage));
+        assert_eq!(cache.mcp_servers, Some(Vec::new()));
+        assert_eq!(cache.installed_skills, Some(Vec::new()));
     }
 
     fn sample_mcp_server() -> McpServerSummary {

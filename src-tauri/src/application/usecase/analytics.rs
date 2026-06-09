@@ -1,17 +1,17 @@
-use crate::application::service::pending_status;
+use crate::application::service::{current_timestamp, pending_status};
 use crate::contracts::analytics::{
     AnalyticsRange, ChangeAnalyticsPayload, QuotaHistoryPayload, SessionStatsPayload,
     TodaySummaryPayload, TokenAnalyticsPayload, ToolAnalyticsPayload, UsageAnalyticsPayload,
 };
-use crate::repository::Repository;
+use crate::repository::{bootstrap, Repository};
 
 pub(crate) struct AnalyticsUseCaseBoundary;
 
 pub(crate) trait AnalyticsUseCaseBoundaryPort {}
 
 /// 读取整体用量分析的用户动作边界；当前只返回空统计合同。
-pub fn load_usage_analytics(_repo: &Repository) -> UsageAnalyticsPayload {
-    UsageAnalyticsPayload {
+pub fn load_usage_analytics(repo: &Repository) -> UsageAnalyticsPayload {
+    let payload = UsageAnalyticsPayload {
         backend_status: pending_status(
             "analytics",
             "load_usage_analytics",
@@ -31,7 +31,12 @@ pub fn load_usage_analytics(_repo: &Repository) -> UsageAnalyticsPayload {
             most_active_count: 0,
         },
         daily_activity: Vec::new(),
+    };
+    if let Ok(usage_analytics) = serde_json::to_value(&payload) {
+        let _ =
+            bootstrap::store_bootstrap_usage_analytics(repo, current_timestamp(), usage_analytics);
     }
+    payload
 }
 
 /// 读取配额历史的用户动作边界；真实账户来源等待仓储证据补齐。

@@ -516,6 +516,8 @@ function validateAnalyticsMockPayloadHandlers() {
     "const analyticsCommandHandlers",
     "analyticsCommandHandlers[definition.command] ??",
     "loadUsageAnalyticsHandler",
+    "bootstrapCacheMockState.usageAnalytics",
+    "cloneUsageAnalytics(data)",
     "loadQuotaHistoryHandler",
     "loadSessionAnalyticsHandler",
     "loadTokenAnalyticsHandler",
@@ -712,6 +714,7 @@ function validateMaintenanceSystemWindowEvidence() {
     "mcpServers",
     "installedSkills",
     "bootstrapCacheMockState",
+    "cloneUsageAnalytics(bootstrapCacheMockState.usageAnalytics)",
     "cloneMcpServers(bootstrapCacheMockState.mcpServers)",
     "cloneInstalledSkills(bootstrapCacheMockState.installedSkills)",
     "const updateInstallabilityHandler",
@@ -730,7 +733,7 @@ function validateMaintenanceSystemWindowEvidence() {
   assertNotIncludes(
     "src/mocks/fixtures/commands.ts bootstrapStateHandler",
     bootstrapStateBody,
-    ["writtenAt: null", "mcpServers: []", "installedSkills: []"],
+    ["writtenAt: null", "usageAnalytics: null", "mcpServers: []", "installedSkills: []"],
   );
 
   for (const [command, handler] of requiredHandlers) {

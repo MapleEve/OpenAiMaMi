@@ -255,10 +255,12 @@ const backendSkeletonStatusHandler: IpcCommandHandler = (context) => {
 
 const bootstrapCacheMockState: {
   writtenAt: number | null;
+  usageAnalytics: UsageAnalyticsPayload | null;
   mcpServers: McpServerSummary[];
   installedSkills: InstalledSkillSummary[];
 } = {
   writtenAt: null,
+  usageAnalytics: null,
   mcpServers: [],
   installedSkills: [],
 };
@@ -275,7 +277,7 @@ const bootstrapStateHandler: IpcCommandHandler = (context) => {
       backendStatus: envelope.data.status,
       writtenAt: bootstrapCacheMockState.writtenAt,
       snapshotProgressive: null,
-      usageAnalytics: null,
+      usageAnalytics: cloneUsageAnalytics(bootstrapCacheMockState.usageAnalytics),
       mcpServers: cloneMcpServers(bootstrapCacheMockState.mcpServers),
       installedSkills: cloneInstalledSkills(bootstrapCacheMockState.installedSkills),
       executedAt: null,
@@ -712,6 +714,16 @@ function syncBootstrapMcpServers() {
   touchBootstrapCache();
 }
 
+function cloneUsageAnalytics(payload: UsageAnalyticsPayload | null) {
+  if (!payload) return null;
+  return {
+    ...payload,
+    today: { ...payload.today },
+    sessionStats: { ...payload.sessionStats },
+    dailyActivity: payload.dailyActivity.map((item) => ({ ...item })),
+  };
+}
+
 const loadUsageAnalyticsHandler: IpcCommandHandler = (context) => {
   const envelope = createEvidenceBackedIpcFixture(
     context.command,
@@ -735,6 +747,8 @@ const loadUsageAnalyticsHandler: IpcCommandHandler = (context) => {
     },
     dailyActivity: [],
   };
+  bootstrapCacheMockState.usageAnalytics = cloneUsageAnalytics(data);
+  touchBootstrapCache();
   return { ...envelope, data };
 };
 
