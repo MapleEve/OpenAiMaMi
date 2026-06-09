@@ -1526,6 +1526,196 @@
         "不把 duplicate_local_outtake_not_authoritative 当作 authoritative closeout。"
       ],
       "reason": "当前公开源码只足以登记 bootstrap/system 相关 current-source sidecar：bootstrap 记录 load_bootstrap_state、load_pending_auto_switch、pending confirm/dismiss 和 load_snapshot 链路；macos system 记录 watcher/schedule 缺口；system-shell-init 记录 duplicate_local_outtake_not_authoritative 非 authoritative 状态；windows system 记录 force_kill_codex、diagnose 和 diagnose_codex_router 链路与缺口。本 closeout 是非 gating evidence，不关闭 gate-report，不声明 implementation_use、gate_accepted 或 full_leaf_100。"
+    },
+    {
+      "id": "ui-theme-current-source-theme-chain",
+      "module": "ui-theme",
+      "status": "current-source-closed-partial",
+      "currentSourceMap": "docs/reconstruction/ui-theme-current-source-map.md",
+      "gateReports": [
+        "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json"
+      ],
+      "rawImplementationTargets": [
+        "evidence/full-chain/raw/aimami/1.0.9/windows-x64/ui/cmd_set_app_theme_coroutine/implementation-targets.txt"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "docs/reconstruction/ui-theme-current-source-map.md",
+          "includes": [
+            "当前源码调用链",
+            "不修改 raw/internal gate-report",
+            "不声明 `gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成",
+            "当前源码因此不应新增 OS theme 读取或 DWM material API 来伪造 parity"
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json",
+          "includes": [
+            "\"gate_accepted\": false",
+            "\"implementation_use\": false",
+            "\"dim6_missing\": true",
+            "\"set_app_theme\"",
+            "\"theme_platform_diff\"",
+            "\"readyToImplement\": 0",
+            "WIN backend does NOT read OS theme",
+            "NOT wired to any DWM material API in 1.0.9"
+          ]
+        },
+        {
+          "file": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/ui/cmd_set_app_theme_coroutine/implementation-targets.txt",
+          "includes": [
+            "set_app_theme"
+          ]
+        },
+        {
+          "file": "src/lib/api.ts",
+          "includes": [
+            "setAppTheme: (theme: AppTheme) => themeService.setTheme(theme)"
+          ]
+        },
+        {
+          "file": "src/services/theme/index.ts",
+          "includes": [
+            "export const themeService",
+            "setTheme: async (theme: AppTheme): Promise<void>",
+            "const { setTheme } = await import(\"@tauri-apps/api/app\")",
+            "await setTheme(theme === \"system\" ? null : theme)"
+          ]
+        },
+        {
+          "file": "src/hooks/theme.ts",
+          "includes": [
+            "export function useTheme()",
+            "localStorage.getItem(\"theme\")",
+            "localStorage.setItem(\"theme\", theme)",
+            "document.documentElement",
+            "root.classList.toggle(\"dark\", resolveTheme(t) === \"dark\")",
+            "window.matchMedia(\"(prefers-color-scheme: dark)\")",
+            "void api.setAppTheme(theme).catch(() => undefined)"
+          ]
+        },
+        {
+          "file": "src/app/providers/settings.tsx",
+          "includes": [
+            "const { theme, setTheme } = useTheme()",
+            "onThemeChange: handleThemeChange"
+          ]
+        },
+        {
+          "file": "src/components/layout/sidebar.tsx",
+          "includes": [
+            "useThemeValue",
+            "onThemeChange(resolvedTheme === \"dark\" ? \"light\" : \"dark\")",
+            "lightLabel={t(\"settings.light\")}",
+            "darkLabel={t(\"settings.dark\")}",
+            "t(\"nav.sidebarLightTheme\")",
+            "t(\"nav.sidebarDarkTheme\")"
+          ]
+        },
+        {
+          "file": "src/features/settings/panels/appearance.tsx",
+          "includes": [
+            "SettingsSection title={t(\"settings.appearance\")}",
+            "SettingsRow label={t(\"settings.theme\")}",
+            "value: \"light\", icon: Sun, label: t(\"settings.light\")",
+            "value: \"dark\", icon: Moon, label: t(\"settings.dark\")",
+            "value: \"system\", icon: Monitor, label: t(\"settings.system\")",
+            "appearance.onThemeChange(nextTheme as typeof appearance.theme)"
+          ]
+        },
+        {
+          "file": "src/locales/zh.json",
+          "includes": [
+            "\"sidebarLightTheme\": \"浅色主题\"",
+            "\"sidebarDarkTheme\": \"深色主题\"",
+            "\"appearance\": \"外观\"",
+            "\"theme\": \"主题\"",
+            "\"light\": \"浅色\"",
+            "\"dark\": \"深色\"",
+            "\"system\": \"跟随系统\""
+          ]
+        },
+        {
+          "file": "src/locales/en.json",
+          "includes": [
+            "\"sidebarLightTheme\": \"Light theme\"",
+            "\"sidebarDarkTheme\": \"Dark theme\"",
+            "\"appearance\": \"Appearance\"",
+            "\"theme\": \"Theme\"",
+            "\"light\": \"Light\"",
+            "\"dark\": \"Dark\"",
+            "\"system\": \"System\""
+          ]
+        }
+      ],
+      "closedGateReportFailures": [
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json",
+          "path": "gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "当前公开源码只闭合 UI theme 前端调用链证据，不修改 gate-report，也不声明 gate_accepted 已完成。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json",
+          "path": "implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "当前公开源码只能登记 source chain partial closeout，不声明真实 implementation_use 已完成。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json",
+          "path": "dim6_missing",
+          "value": true,
+          "classification": "scope-selection",
+          "reason": "Windows 1.0.9 UI theme 的 dim6 仍按 raw/internal gate-report 保留缺口，本 closeout 不补写 raw/internal 证据。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json",
+          "path": "leaves.set_app_theme.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "set_app_theme 只登记当前源码里的主题 UI 到 Tauri setTheme 调用链，不声明 leaf gate 已接受。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json",
+          "path": "leaves.set_app_theme.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "set_app_theme 的 implementation_use 仍按 gate-report 保持 false，本 closeout 只允许当前源码 partial 证据降噪。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json",
+          "path": "leaves.theme_platform_diff.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "theme_platform_diff 仍是平台差异证据，不被提升为完整 leaf gate accepted。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json",
+          "path": "leaves.theme_platform_diff.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "theme_platform_diff 不声明 implementation_use 已完成；Windows 1.0.9 不需要新增 OS theme 读取或 DWM material API。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json",
+          "path": "cluster_gate_summary.readyToImplement",
+          "value": 0,
+          "classification": "scope-selection",
+          "reason": "cluster 仍不可按完整 leaf 实现验收，本 closeout 只把 UI theme 当前源码证据计入 partial closeout。"
+        }
+      ],
+      "nonClaims": [
+        "不修改 raw/internal gate-report。",
+        "不声明 gate_accepted 已完成。",
+        "不声明 implementation_use 已完成。",
+        "不声明 full_leaf 或 full_leaf_100 已完成。",
+        "不新增 OS theme 读取。",
+        "不新增 DWM material API。",
+        "不把 Windows 1.0.9 theme parity 扩大成系统主题读取、系统主题订阅或窗口材质实现。"
+      ],
+      "reason": "当前公开源码已经存在设置面板、侧边栏、设置 Provider、useTheme、api.setAppTheme、themeService.setTheme、Tauri app setTheme 与 zh/en locale key 的 UI theme 调用链；该链路足以登记 windows-1.0.9-ui/theme 的 current-source partial closeout，但不伪造 raw/internal gate，也不声明 full leaf 100。"
     }
   ]
 }

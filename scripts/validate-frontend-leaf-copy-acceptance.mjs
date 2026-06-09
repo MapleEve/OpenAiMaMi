@@ -16,6 +16,14 @@ const allowedCloseoutGateFailureKeys = new Set([
   "evidence/full-chain/internal/audits/audits/windows-1.0.9-maintenance/gate-report.json\u0000gate_accepted\u0000false",
   "evidence/full-chain/internal/audits/audits/windows-1.0.9-maintenance/gate-report.json\u0000implementation_use\u0000false",
   "evidence/full-chain/internal/audits/audits/windows-1.0.9-maintenance/gate-report.json\u0000dim6_missing\u0000true",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json\u0000gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json\u0000implementation_use\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json\u0000dim6_missing\u0000true",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json\u0000leaves.set_app_theme.gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json\u0000leaves.set_app_theme.implementation_use\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json\u0000leaves.theme_platform_diff.gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json\u0000leaves.theme_platform_diff.implementation_use\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json\u0000cluster_gate_summary.readyToImplement\u00000",
 ]);
 
 function repoPath(...parts) {

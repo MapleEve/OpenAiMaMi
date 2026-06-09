@@ -162,6 +162,76 @@ const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_NON_CLAIM_SNIPPETS = [
   "full_leaf_100",
 ];
 
+const UI_THEME_CURRENT_SOURCE_CLOSEOUT_ID =
+  "ui-theme-current-source-theme-chain";
+const UI_THEME_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/ui-theme-current-source-map.md";
+const UI_THEME_GATE_REPORT =
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json";
+const UI_THEME_RAW_IMPLEMENTATION_TARGET =
+  "evidence/full-chain/raw/aimami/1.0.9/windows-x64/ui/cmd_set_app_theme_coroutine/implementation-targets.txt";
+const UI_THEME_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "currentSourceMap",
+  "gateReports",
+  "rawImplementationTargets",
+  "requiredSourceSignals",
+  "closedGateReportFailures",
+  "nonClaims",
+  "reason",
+];
+const UI_THEME_REQUIRED_SIGNAL_FILES = [
+  UI_THEME_CURRENT_SOURCE_MAP,
+  UI_THEME_GATE_REPORT,
+  UI_THEME_RAW_IMPLEMENTATION_TARGET,
+  "src/lib/api.ts",
+  "src/services/theme/index.ts",
+  "src/hooks/theme.ts",
+  "src/app/providers/settings.tsx",
+  "src/components/layout/sidebar.tsx",
+  "src/features/settings/panels/appearance.tsx",
+  "src/locales/zh.json",
+  "src/locales/en.json",
+];
+const UI_THEME_GATE_FAILURE_KEYS = [
+  `${UI_THEME_GATE_REPORT}\u0000gate_accepted\u0000false`,
+  `${UI_THEME_GATE_REPORT}\u0000implementation_use\u0000false`,
+  `${UI_THEME_GATE_REPORT}\u0000dim6_missing\u0000true`,
+  `${UI_THEME_GATE_REPORT}\u0000leaves.set_app_theme.gate_accepted\u0000false`,
+  `${UI_THEME_GATE_REPORT}\u0000leaves.set_app_theme.implementation_use\u0000false`,
+  `${UI_THEME_GATE_REPORT}\u0000leaves.theme_platform_diff.gate_accepted\u0000false`,
+  `${UI_THEME_GATE_REPORT}\u0000leaves.theme_platform_diff.implementation_use\u0000false`,
+  `${UI_THEME_GATE_REPORT}\u0000cluster_gate_summary.readyToImplement\u00000`,
+];
+const UI_THEME_MAP_SNIPPETS = [
+  "不修改 raw/internal gate-report",
+  "不声明 `gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成",
+  "src/features/settings/panels/appearance.tsx",
+  "src/components/layout/sidebar.tsx",
+  "src/app/providers/settings.tsx",
+  "src/hooks/theme.ts",
+  "api.setAppTheme",
+  "themeService.setTheme",
+  "@tauri-apps/api/app",
+  "setTheme",
+  "localStorage",
+  "matchMedia",
+  "dark",
+  "src/locales/zh.json",
+  "src/locales/en.json",
+  "不应新增 OS theme 读取或 DWM material API",
+];
+const UI_THEME_NON_CLAIM_SNIPPETS = [
+  "不修改 raw/internal gate-report",
+  "不声明 gate_accepted",
+  "不声明 implementation_use",
+  "不声明 full_leaf 或 full_leaf_100",
+  "不新增 OS theme 读取",
+  "不新增 DWM material API",
+];
+
 function repoPath(path) {
   return join(repoRoot, ...path.split("/"));
 }
@@ -761,6 +831,75 @@ function validateBootstrapSystemCurrentSourceCloseout(closeout) {
   validateRequiredSignals(closeout);
 }
 
+function validateUiThemeCurrentSourceCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, UI_THEME_ALLOWED_FIELDS);
+  if (closeout.module !== "ui-theme") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+  if (closeout.currentSourceMap !== UI_THEME_CURRENT_SOURCE_MAP) {
+    failures.push(`${closeout.id} currentSourceMap=${String(closeout.currentSourceMap)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} gateReports`,
+    closeout.gateReports ?? [],
+    [UI_THEME_GATE_REPORT],
+  );
+  validateStringArraySet(
+    `${closeout.id} rawImplementationTargets`,
+    closeout.rawImplementationTargets ?? [],
+    [UI_THEME_RAW_IMPLEMENTATION_TARGET],
+  );
+  validateStringArraySet(
+    `${closeout.id} requiredSourceSignals files`,
+    (closeout.requiredSourceSignals ?? []).map((signal) => signal.file),
+    UI_THEME_REQUIRED_SIGNAL_FILES,
+  );
+
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  validateStringArraySet(
+    `${closeout.id} closedGateReportFailures`,
+    [...actualGateFailureKeys],
+    UI_THEME_GATE_FAILURE_KEYS,
+  );
+  validateClosedGateReportFailures(closeout);
+
+  const mapPath = repoPath(UI_THEME_CURRENT_SOURCE_MAP);
+  if (!existsSync(mapPath)) {
+    failures.push(`${closeout.id} 缺少当前源码说明文档：${UI_THEME_CURRENT_SOURCE_MAP}`);
+  } else {
+    const mapText = readFileSync(mapPath, "utf8");
+    for (const snippet of UI_THEME_MAP_SNIPPETS) {
+      if (!mapText.includes(snippet)) {
+        failures.push(`${UI_THEME_CURRENT_SOURCE_MAP} 缺少说明片段：${snippet}`);
+      }
+    }
+  }
+
+  const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
+  for (const snippet of UI_THEME_NON_CLAIM_SNIPPETS) {
+    if (!nonClaimsText.includes(snippet)) {
+      failures.push(`${closeout.id} nonClaims 缺少边界片段：${snippet}`);
+    }
+  }
+  if (
+    typeof closeout.reason !== "string" ||
+    !closeout.reason.includes("current-source partial closeout") ||
+    !closeout.reason.includes("不声明 full leaf 100")
+  ) {
+    failures.push(`${closeout.id} reason 必须声明 current-source partial closeout，且不声明 full leaf 100`);
+  }
+
+  validateRequiredSignals(closeout);
+}
+
 function manifestCloseoutKey(record) {
   return [
     record.arrayName ?? "",
@@ -1071,6 +1210,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateSystemHotspotUsageMysteryCloseout(closeout);
   } else if (closeout.id === BOOTSTRAP_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateBootstrapSystemCurrentSourceCloseout(closeout);
+  } else if (closeout.id === UI_THEME_CURRENT_SOURCE_CLOSEOUT_ID) {
+    validateUiThemeCurrentSourceCloseout(closeout);
   } else {
     failures.push(`未知 closeout id：${closeout.id}`);
   }
