@@ -2018,6 +2018,167 @@
       "reason": "当前公开源码只足以登记 bootstrap/system 相关 current-source sidecar：bootstrap 记录 load_bootstrap_state、load_pending_auto_switch、pending confirm/dismiss 和 load_snapshot 链路；macos system 记录 watcher/schedule 缺口；system-shell-init 记录 duplicate_local_outtake_not_authoritative 非 authoritative 状态；windows system 记录 force_kill_codex、diagnose 和 diagnose_codex_router 链路与缺口。本 closeout 是非 gating evidence，不关闭 gate-report，不声明 implementation_use、gate_accepted 或 full_leaf_100。"
     },
     {
+      "id": "bootstrap-current-source-chain-gate-failure-registration",
+      "module": "bootstrap",
+      "status": "current-source-closed-partial",
+      "sidecarReports": [
+        "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/frontend-callchain-report.json",
+        "evidence/full-chain/internal/audits/audits/windows-1.0.9-bootstrap/frontend-callchain-report.json"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/frontend-callchain-report.json",
+          "includes": [
+            "current-source-frontend-chain-recorded-non-gating",
+            "\"load_bootstrap_state\"",
+            "\"load_pending_auto_switch\"",
+            "\"dismiss_pending_auto_switch\"",
+            "\"confirm_pending_auto_switch\"",
+            "\"confirm_pending_auto_switch_and_restart_codex\"",
+            "\"load_snapshot\"",
+            "不修改 gate-report 字段",
+            "不声明 implementation_use、gate_accepted 或 full_leaf_100"
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/windows-1.0.9-bootstrap/frontend-callchain-report.json",
+          "includes": [
+            "current-source-frontend-chain-recorded-non-gating",
+            "\"load_bootstrap_state\"",
+            "\"load_pending_auto_switch\"",
+            "\"dismiss_pending_auto_switch\"",
+            "\"confirm_pending_auto_switch\"",
+            "\"confirm_pending_auto_switch_and_restart_codex\"",
+            "\"load_snapshot\"",
+            "不修改 gate-report 字段",
+            "不声明 implementation_use、gate_accepted 或 full_leaf_100"
+          ]
+        },
+        {
+          "file": "src/contracts/ipc/commands.ts",
+          "includes": [
+            "\"command\": \"load_bootstrap_state\"",
+            "\"command\": \"load_pending_auto_switch\"",
+            "\"command\": \"dismiss_pending_auto_switch\"",
+            "\"command\": \"confirm_pending_auto_switch\"",
+            "\"command\": \"confirm_pending_auto_switch_and_restart_codex\"",
+            "\"command\": \"load_snapshot\""
+          ]
+        },
+        {
+          "file": "src/services/system/index.ts",
+          "includes": [
+            "invokeIpc<CoreEnvelope<BootstrapStatePayload>>(\"load_bootstrap_state\")",
+            "\"load_pending_auto_switch\"",
+            "invokeIpc<CoreEnvelope<string | null>>(\"dismiss_pending_auto_switch\")",
+            "invokeIpc<CoreEnvelope<null>>(\"confirm_pending_auto_switch\")",
+            "\"confirm_pending_auto_switch_and_restart_codex\"",
+            "invokeIpc<CoreEnvelope<CoreSnapshotPayload>>(\"load_snapshot\", { localOnly })"
+          ]
+        },
+        {
+          "file": "src/features/daemon-autoswitch/hooks/query.ts",
+          "includes": [
+            "daemonAutoswitchService.loadBootstrapState()",
+            "daemonAutoswitchService.loadPendingAutoSwitch()",
+            "DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY",
+            "DAEMON_AUTOSWITCH_PENDING_QUERY_KEY"
+          ]
+        },
+        {
+          "file": "src/features/daemon-autoswitch/hooks/mutation.ts",
+          "includes": [
+            "daemonAutoswitchService.dismissPendingAutoSwitch()",
+            "daemonAutoswitchService.confirmPendingAutoSwitchAndRestartCodex()",
+            "writeDaemonAutoswitchMutationPayload(queryClient, payload)",
+            "reloadDaemonAutoswitchAfterMutation(queryClient)"
+          ]
+        },
+        {
+          "file": "src/features/daemon-autoswitch/cache/index.ts",
+          "includes": [
+            "DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY",
+            "DAEMON_AUTOSWITCH_PENDING_QUERY_KEY",
+            "writeDaemonAutoswitchMutationPayload",
+            "invalidateDaemonAutoswitchContractQueries"
+          ]
+        },
+        {
+          "file": "src/mocks/fixtures/commands.ts",
+          "includes": [
+            "load_bootstrap_state: bootstrapStateHandler",
+            "load_pending_auto_switch: pendingAutoSwitchStateHandler",
+            "dismiss_pending_auto_switch: unitHandler",
+            "confirm_pending_auto_switch: unitHandler",
+            "load_snapshot: coreSnapshotHandler"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/system.rs",
+          "includes": [
+            "pub fn load_snapshot",
+            "pub fn load_bootstrap_state",
+            "pub fn load_pending_auto_switch",
+            "pub fn dismiss_pending_auto_switch",
+            "pub fn confirm_pending_auto_switch"
+          ]
+        }
+      ],
+      "closedGateReportFailures": [
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/gate-report.json",
+          "path": "readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "current-source partial closeout 只登记 load_bootstrap_state、load_pending_auto_switch、pending confirm/dismiss、load_snapshot 的前端、服务门面、缓存、mock 和后端六边形骨架链路；raw/internal gate-report 保持原值，不声明 gate 已通过。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/gate-report.json",
+          "path": "implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "current-source partial closeout 只登记 load_bootstrap_state、load_pending_auto_switch、pending confirm/dismiss、load_snapshot 的前端、服务门面、缓存、mock 和后端六边形骨架链路；raw/internal gate-report 保持原值，不声明 implementation_use 已恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/gate-report.json",
+          "path": "gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "current-source partial closeout 只登记 load_bootstrap_state、load_pending_auto_switch、pending confirm/dismiss、load_snapshot 的前端、服务门面、缓存、mock 和后端六边形骨架链路；raw/internal gate-report 保持原值，不声明 gate_accepted 已恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-bootstrap/gate-report.json",
+          "path": "gate_summary.readyToImplement",
+          "value": 0,
+          "classification": "scope-selection",
+          "reason": "current-source partial closeout 只登记 Windows bootstrap 当前源码链路已经落到前端、服务门面、缓存、mock 和后端六边形骨架；raw/internal gate_summary 保持原值，不声明 readyToImplement 已恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-bootstrap/gate-report.json",
+          "path": "gate_summary.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "current-source partial closeout 只登记 Windows bootstrap 当前源码链路已经落到前端、服务门面、缓存、mock 和后端六边形骨架；raw/internal gate_summary 保持原值，不声明 gate_accepted 已恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-bootstrap/gate-report.json",
+          "path": "gate_summary.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "current-source partial closeout 只登记 Windows bootstrap 当前源码链路已经落到前端、服务门面、缓存、mock 和后端六边形骨架；raw/internal gate_summary 保持原值，不声明 implementation_use 已恢复。"
+        }
+      ],
+      "nonClaims": [
+        "不修改 gate-report 字段。",
+        "不声明 raw/internal gate 已通过。",
+        "不声明 implementation_use、gate_accepted 或 full_leaf_100 已恢复。",
+        "不登记 full_leaf_100。",
+        "不声明 bootstrap 后端平台真实能力已经恢复。",
+        "不处理 system watcher、system-shell-init、relay、mystery 或 voice。"
+      ],
+      "reason": "current-source partial closeout 只把 macOS 与 Windows bootstrap 的 load_bootstrap_state、load_pending_auto_switch、pending confirm/dismiss 和 load_snapshot 当前源码链路登记进 strict leaf-copy 的已知残留；这解释为什么前端源码已经落地但 raw/internal gate 仍未闭合。它不声明 raw/internal gate 已通过，不登记 full_leaf_100，不处理 dim6、system watcher、system-shell-init、relay、mystery 或 voice。"
+    },
+    {
       "id": "windows-system-current-source-strict-chain",
       "module": "windows-system",
       "status": "current-source-closed-partial",
