@@ -11,11 +11,13 @@ import {
   settingsService,
   skillsService,
   systemService,
+  themeService,
+  type AppTheme,
   type ApplyCustomInstructionParams,
   type UpsertMcpServerInput,
 } from "@/services";
 
-export type { UpsertMcpServerInput } from "@/services";
+export type { AppTheme, UpsertMcpServerInput } from "@/services";
 
 function normalizeCustomInstructionApply(
   input: ApplyCustomInstructionParams | string,
@@ -136,6 +138,7 @@ export const api = {
   hotspotReady: settingsService.hotspotReady,
   getImageCompat: settingsService.getImageCompat,
   setImageCompat: settingsService.setImageCompat,
+  setAppTheme: (theme: AppTheme) => themeService.setTheme(theme),
 
   clean: maintenanceService.clean,
   rebuildRegistry: maintenanceService.rebuildRegistry,

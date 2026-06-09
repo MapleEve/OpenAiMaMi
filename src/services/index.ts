@@ -11,4 +11,5 @@ export { sessionsService } from "./sessions";
 export { settingsService } from "./settings";
 export { skillsService } from "./skills";
 export { systemService } from "./system";
+export { themeService, type AppTheme } from "./theme";
 export { voiceService } from "./voice";

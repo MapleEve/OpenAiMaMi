@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { api } from "@/lib/api";
+
 export type Theme = "light" | "dark" | "system";
 
 function resolveTheme(theme: Theme): "light" | "dark" {
@@ -22,6 +24,7 @@ export function useTheme() {
 
     apply(theme);
     localStorage.setItem("theme", theme);
+    void api.setAppTheme(theme).catch(() => undefined);
 
     if (theme === "system") {
       const mq = window.matchMedia("(prefers-color-scheme: dark)");
