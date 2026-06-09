@@ -12,7 +12,9 @@ pub fn list_plugins(
     repo: State<'_, Mutex<Repository>>,
 ) -> Result<CoreEnvelope<RuntimeExtensionListPayload>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    Ok(CoreEnvelope::ok(usecase::runtime_extensions::list(&repo)))
+    usecase::runtime_extensions::list(&repo)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
 }
 
 #[tauri::command]
@@ -22,9 +24,9 @@ pub fn toggle_plugin(
     enabled: bool,
 ) -> Result<CoreEnvelope<RuntimeExtensionTogglePayload>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    Ok(CoreEnvelope::ok(usecase::runtime_extensions::toggle(
-        &repo, id, enabled,
-    )))
+    usecase::runtime_extensions::toggle(&repo, id, enabled)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
 }
 
 #[tauri::command]
@@ -33,9 +35,9 @@ pub fn get_plugin_config(
     id: String,
 ) -> Result<CoreEnvelope<RuntimeExtensionConfigPayload>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    Ok(CoreEnvelope::ok(usecase::runtime_extensions::config(
-        &repo, id, None,
-    )))
+    usecase::runtime_extensions::config(&repo, id, None)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
 }
 
 #[tauri::command]
@@ -45,9 +47,7 @@ pub fn update_plugin_config(
     settings: RuntimeExtensionSettingsValue,
 ) -> Result<CoreEnvelope<RuntimeExtensionConfigPayload>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    Ok(CoreEnvelope::ok(usecase::runtime_extensions::config(
-        &repo,
-        id,
-        Some(settings),
-    )))
+    usecase::runtime_extensions::config(&repo, id, Some(settings))
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
 }

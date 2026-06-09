@@ -10,8 +10,14 @@ pub struct RuntimeExtensionPluginPayload {
     pub name: String,
     pub title: Option<String>,
     pub description: Option<String>,
+    pub version: Option<String>,
+    pub author: Option<String>,
+    pub category: Option<String>,
+    pub capabilities: Vec<i32>,
+    pub builtin: bool,
     pub path: Option<String>,
     pub enabled: bool,
+    pub settings: RuntimeExtensionSettingsValue,
 }
 
 #[derive(Debug, Clone, Serialize)]

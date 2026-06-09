@@ -339,7 +339,8 @@ function buildQueue() {
 
   return {
     schema: "open-aimami.frontend_leaf_restoration_queue.v1",
-    purpose: "记录 MAC/WIN 100% leaf 目标下，当前仓库仍不能通过的前端 leaf、文案和证据闭合缺口。",
+    purpose:
+      "记录 MAC/WIN 100% leaf 完成声明仍不能通过的前端 leaf、文案和证据闭合缺口；非绿字段不阻塞基于仓库 raw/internal 证据、伪代码、owner/interface/DTO 和可测试边界继续实现，但不得伪造 evidence gate、full_leaf_100、dim6 或 readyToImplement 为已完成。",
     sourceOfTruth: {
       gapAudit: toRepoPath(gapAuditPath),
       gateReports: "evidence/full-chain/internal/audits/audits/**/gate-report.json",
@@ -350,7 +351,8 @@ function buildQueue() {
     },
     currentConclusion: {
       fullLeaf100: false,
-      reason: "strict gate 仍有失败项；本文件是重建队列，不是验收通过声明。",
+      reason:
+        "非绿 gate、full_leaf_100、dim6 或 readyToImplement 字段仍阻塞完成声明；本文件是重建队列，不是验收通过声明，也不是实现启动门槛。",
     },
     gapAuditTotals: gapAudit.totals,
     gapAuditModules: gapAudit.modules,
@@ -383,7 +385,7 @@ function buildQueue() {
         id: "gate-report-strict-failures",
         area: "internal-gate",
         status: "open",
-        blocker: `当前 internal gate-report 还有 ${gateReportFailures.length} 个严格字段失败。`,
+        blocker: `当前 internal gate-report 还有 ${gateReportFailures.length} 个完成声明非绿字段；这些字段不阻塞基于证据和可测试边界继续实现。`,
       },
     ],
   };

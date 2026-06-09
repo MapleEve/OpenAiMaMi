@@ -755,18 +755,52 @@ function normalizeAnalyticsRange(value: string) {
   return value === "today" || value === "month" ? value : "week";
 }
 
-function pluginSummaryFromId(
-  id: string,
-  enabled: boolean,
-): RuntimeExtensionPluginPayload {
-  return {
-    id,
-    name: id,
-    title: null,
-    description: null,
-    path: null,
-    enabled,
-  };
+const pluginsMockState: {
+  items: RuntimeExtensionPluginPayload[];
+  settings: Record<string, RuntimeExtensionSettingsValue>;
+} = {
+  items: [
+    {
+      id: "web-tools",
+      name: "Web Tools",
+      title: "Web Tools",
+      description: null,
+      version: "1.0.0",
+      author: "AiMaMi",
+      category: "proxy-tool",
+      capabilities: [0],
+      builtin: true,
+      path: null,
+      enabled: false,
+      settings: {},
+    },
+    {
+      id: "image-support",
+      name: "Image Support",
+      title: "Image Support",
+      description: null,
+      version: "1.0.0",
+      author: "AiMaMi",
+      category: "proxy-tool",
+      capabilities: [1],
+      builtin: true,
+      path: null,
+      enabled: false,
+      settings: {},
+    },
+  ],
+  settings: {
+    "web-tools": {} as RuntimeExtensionSettingsValue,
+    "image-support": {} as RuntimeExtensionSettingsValue,
+  } as Record<string, RuntimeExtensionSettingsValue>,
+};
+
+function readPluginMockItems() {
+  return pluginsMockState.items.map((plugin) => ({ ...plugin }));
+}
+
+function findPluginMock(id: string) {
+  return pluginsMockState.items.find((plugin) => plugin.id === id) ?? null;
 }
 
 const listPluginsHandler: IpcCommandHandler = (context) => {
@@ -775,11 +809,12 @@ const listPluginsHandler: IpcCommandHandler = (context) => {
     context.args,
     context.steps,
   );
+  const items = readPluginMockItems();
   const data: RuntimeExtensionListPayload = {
     backendStatus: envelope.data.status,
-    items: [],
-    total: 0,
-    sourcePath: "",
+    items,
+    total: items.length,
+    sourcePath: "open-aimami/plugins.json",
     lastScanAt: 0,
   };
   return { ...envelope, data };
@@ -792,13 +827,29 @@ const togglePluginHandler: IpcCommandHandler = (context) => {
     context.steps,
   );
   const id = readArgString(context.args, "id", "");
-  const plugin = pluginSummaryFromId(id, context.args?.enabled === true);
+  const enabled = context.args?.enabled === true;
+  const plugin = findPluginMock(id) ?? {
+    id,
+    name: id,
+    title: null,
+    description: null,
+    version: null,
+    author: null,
+    category: null,
+    capabilities: [],
+    builtin: false,
+    path: null,
+    enabled,
+    settings: pluginsMockState.settings[id] ?? {},
+  };
+  plugin.enabled = enabled;
+  const items = readPluginMockItems();
   const data: RuntimeExtensionTogglePayload = {
     backendStatus: envelope.data.status,
-    plugin,
-    items: plugin.id ? [plugin] : [],
-    total: plugin.id ? 1 : 0,
-    sourcePath: "",
+    plugin: { ...plugin },
+    items,
+    total: items.length,
+    sourcePath: "open-aimami/plugins.json",
     lastScanAt: 0,
   };
   return { ...envelope, data };
@@ -810,11 +861,12 @@ const getPluginConfigHandler: IpcCommandHandler = (context) => {
     context.args,
     context.steps,
   );
+  const id = readArgString(context.args, "id", "");
   const data: RuntimeExtensionConfigPayload = {
     backendStatus: envelope.data.status,
-    id: readArgString(context.args, "id", ""),
-    settings: {},
-    sourcePath: "",
+    id,
+    settings: pluginsMockState.settings[id] ?? {},
+    sourcePath: "open-aimami/plugins.json",
     updated: false,
   };
   return { ...envelope, data };
@@ -826,12 +878,19 @@ const updatePluginConfigHandler: IpcCommandHandler = (context) => {
     context.args,
     context.steps,
   );
+  const id = readArgString(context.args, "id", "");
+  const settings = normalizePluginSettingsValue(context.args?.settings);
+  pluginsMockState.settings[id] = settings;
+  const plugin = findPluginMock(id);
+  if (plugin) {
+    plugin.settings = settings;
+  }
   const data: RuntimeExtensionConfigPayload = {
     backendStatus: envelope.data.status,
-    id: readArgString(context.args, "id", ""),
-    settings: normalizePluginSettingsValue(context.args?.settings),
-    sourcePath: "",
-    updated: false,
+    id,
+    settings,
+    sourcePath: "open-aimami/plugins.json",
+    updated: true,
   };
   return { ...envelope, data };
 };
