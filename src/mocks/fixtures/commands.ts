@@ -946,6 +946,13 @@ function readArgBoolean(args: IpcArgs | undefined, key: string, fallback: boolea
   return typeof value === "boolean" ? value : fallback;
 }
 
+function readArgPositiveInteger(args: IpcArgs | undefined, key: string, fallback: number) {
+  const value = args?.[key];
+  return typeof value === "number" && Number.isInteger(value) && value > 0
+    ? value
+    : fallback;
+}
+
 function readRefreshIntervalArg(
   args: IpcArgs | undefined,
   key: string,
@@ -1559,8 +1566,40 @@ const relayImportHandler: IpcCommandHandler = (context) => {
   return { ...envelope, data };
 };
 
-const relayAuditHandler: IpcCommandHandler = (context) =>
-  withMockData(context, [] as RelayPassthroughAuditEntry[]);
+const relayAuditFixture: RelayPassthroughAuditEntry[] = [
+  {
+    timestamp: "2026-06-01T08:00:00.000Z",
+    event: "request",
+    direction: "outbound",
+    providerId: "openai",
+    model: "gpt-4.1",
+    blocked: false,
+    message: null,
+  },
+  {
+    timestamp: "2026-06-01T08:00:01.000Z",
+    event: "response",
+    direction: "inbound",
+    providerId: "openai",
+    model: "gpt-4.1",
+    blocked: false,
+    message: "ok",
+  },
+  {
+    timestamp: "2026-06-01T08:00:02.000Z",
+    event: "blocked",
+    direction: "outbound",
+    providerId: null,
+    model: null,
+    blocked: true,
+    message: "official passthrough blocked",
+  },
+];
+
+const relayAuditHandler: IpcCommandHandler = (context) => {
+  const limit = readArgPositiveInteger(context.args, "limit", 50);
+  return withMockData(context, relayAuditFixture.slice(-limit));
+};
 
 function relayDiagnosticFromStatus(
   backendStatus: RelayDiagnosticPayload["backendStatus"],

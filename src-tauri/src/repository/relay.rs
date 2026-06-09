@@ -230,8 +230,8 @@ pub fn import_config(
 /// relay 官方直连审计路径只来自 RepositoryPaths，真实读写通过可替换 FS 边界补齐。
 pub fn passthrough_audit_source_path(repo: &Repository) -> String {
     repo.paths()
-        .app_data_dir
-        .join("relay-passthrough-audit.jsonl")
+        .codex_home
+        .join("passthrough-audit.jsonl")
         .display()
         .to_string()
 }
@@ -239,10 +239,23 @@ pub fn passthrough_audit_source_path(repo: &Repository) -> String {
 /// 当前公开范围没有审计日志原始恢复证据，仓储层返回空集合并保留来源路径边界。
 pub fn load_passthrough_audit_log(
     repo: &Repository,
-    _limit: u32,
-) -> Vec<RelayPassthroughAuditEntryPayload> {
-    let _source_path = passthrough_audit_source_path(repo);
-    Vec::new()
+    limit: u32,
+) -> Result<Vec<RelayPassthroughAuditEntryPayload>, CoreError> {
+    let source_path = passthrough_audit_source_path(repo);
+    let path = Path::new(&source_path);
+    if !repo.fs().exists(path) {
+        return Ok(Vec::new());
+    }
+
+    let content = repo.fs().read_to_string(path)?;
+    let entries = content
+        .lines()
+        .map(str::trim)
+        .filter(|line| !line.is_empty())
+        .map(serde_json::from_str::<RelayPassthroughAuditEntryPayload>)
+        .collect::<Result<Vec<_>, _>>()?;
+    let start = entries.len().saturating_sub(limit as usize);
+    Ok(entries[start..].to_vec())
 }
 
 /// 当前公开范围只记录调用意图边界，不写入未恢复的 relay 配置状态。
@@ -414,4 +427,54 @@ fn config_stale_reason(
         return Some("catalog_file_missing".to_string());
     }
     None
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn passthrough_audit_path_uses_codex_home() {
+        let repo = Repository::with_temp_file_system("relay-audit-path");
+
+        assert_eq!(
+            passthrough_audit_source_path(&repo),
+            repo.paths()
+                .codex_home
+                .join("passthrough-audit.jsonl")
+                .display()
+                .to_string()
+        );
+    }
+
+    #[test]
+    fn load_passthrough_audit_log_returns_empty_when_missing() {
+        let repo = Repository::with_temp_file_system("relay-audit-missing");
+
+        assert_eq!(
+            load_passthrough_audit_log(&repo, 50).expect("load missing audit"),
+            Vec::<RelayPassthroughAuditEntryPayload>::new()
+        );
+    }
+
+    #[test]
+    fn load_passthrough_audit_log_reads_jsonl_tail() {
+        let repo = Repository::with_temp_file_system("relay-audit-jsonl");
+        let path = passthrough_audit_source_path(&repo);
+        repo.fs()
+            .write_string(
+                Path::new(&path),
+                r#"{"timestamp":"2026-06-01T08:00:00.000Z","event":"request","direction":"outbound","providerId":"openai","model":"gpt-4.1","blocked":false,"message":null}
+{"timestamp":"2026-06-01T08:00:01.000Z","event":"response","direction":"inbound","providerId":"openai","model":"gpt-4.1","blocked":false,"message":"ok"}
+{"timestamp":"2026-06-01T08:00:02.000Z","event":"blocked","direction":"outbound","providerId":null,"model":null,"blocked":true,"message":"official passthrough blocked"}"#,
+            )
+            .expect("write audit fixture");
+
+        let entries = load_passthrough_audit_log(&repo, 2).expect("load audit log");
+
+        assert_eq!(entries.len(), 2);
+        assert_eq!(entries[0].event, "response");
+        assert_eq!(entries[1].event, "blocked");
+        assert!(entries[1].blocked);
+    }
 }

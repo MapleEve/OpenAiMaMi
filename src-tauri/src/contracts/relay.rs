@@ -55,7 +55,7 @@ pub struct RelayProviderPayload {
 }
 
 /// relay 本地代理状态 DTO 只描述公开 IPC 形状，不承诺进程真实运行状态。
-#[derive(Debug, Clone, Serialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct RelayProxyPayload {
     pub backend_status: BackendSkeletonStatus,

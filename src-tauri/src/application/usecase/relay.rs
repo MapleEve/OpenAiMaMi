@@ -45,13 +45,13 @@ pub fn get_passthrough_audit_log(
     limit: Option<u32>,
 ) -> (Vec<RelayPassthroughAuditEntryPayload>, CoreWarning) {
     let normalized_limit = limit.unwrap_or(50).min(200);
-    (
-        relay_repository::load_passthrough_audit_log(repo, normalized_limit),
-        pending_warning(
-            "get_passthrough_audit_log",
-            "relay 官方直连审计日志只完成公开骨架，当前返回空集合等待证据补齐。",
+    match relay_repository::load_passthrough_audit_log(repo, normalized_limit) {
+        Ok(entries) => (entries, repository_warning("get_passthrough_audit_log")),
+        Err(_) => (
+            Vec::new(),
+            repository_error_warning("get_passthrough_audit_log"),
         ),
-    )
+    }
 }
 
 pub fn load_relay_state(repo: &Repository) -> (RelayStatePayload, CoreWarning) {
@@ -639,6 +639,7 @@ fn repository_restored_command(command: &str) -> bool {
             | "deactivate_relay_provider"
             | "set_relay_provider_network"
             | "get_relay_active"
+            | "get_passthrough_audit_log"
             | "get_relay_proxy_status"
             | "set_codex_router_enabled"
             | "set_block_official_passthrough"
