@@ -280,13 +280,13 @@ const pendingAutoSwitchStateHandler: IpcCommandHandler = (context) => {
 
 function emptyAppPathState(): AppPathState {
   return {
-    codexHome: "",
-    accountsPath: "",
-    authPath: "",
-    registryPath: "",
-    sessionsPath: "",
-    launchAgentPath: "",
-    autoSwitchLogPath: "",
+    codexHome: "<codex-home>",
+    accountsPath: "<codex-home>/accounts",
+    authPath: "<codex-home>/auth.json",
+    registryPath: "<codex-home>/registry.json",
+    sessionsPath: "<codex-home>/sessions",
+    launchAgentPath: "<codex-home>/launch-agent",
+    autoSwitchLogPath: "<codex-home>/logs/auto-switch.log",
     authExists: false,
     registryExists: false,
     sessionsExists: false,

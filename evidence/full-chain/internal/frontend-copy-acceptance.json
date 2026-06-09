@@ -32,21 +32,21 @@
     "internalRoot": "evidence/full-chain/internal"
   },
   "totals": {
-    "zhLocaleKeys": 611,
-    "enLocaleKeys": 611,
-    "entries": 611,
+    "zhLocaleKeys": 613,
+    "enLocaleKeys": 613,
+    "entries": 613,
     "rawControlFlowKeyBacked": 40,
     "internalKeyBacked": 12,
     "rawOrInternalKeyBacked": 47,
-    "sourceSyncOnly": 564,
-    "rawTranslationZhKeyBacked": 611,
-    "rawTranslationEnKeyBacked": 611,
-    "rawTranslationZhExact": 611,
-    "rawTranslationEnExact": 611,
-    "rawTranslationBothExact": 611,
+    "sourceSyncOnly": 566,
+    "rawTranslationZhKeyBacked": 613,
+    "rawTranslationEnKeyBacked": 613,
+    "rawTranslationZhExact": 613,
+    "rawTranslationEnExact": 613,
+    "rawTranslationBothExact": 613,
     "rawTranslationValueMismatch": 0,
-    "acceptedZh": 611,
-    "acceptedEn": 611,
+    "acceptedZh": 613,
+    "acceptedEn": 613,
     "missingRawOrInternalCopySource": 0
   },
   "entries": [
@@ -15869,6 +15869,73 @@
       ]
     },
     {
+      "key": "maintenance.forceKillNone",
+      "zhValue": "未检测到任何 Codex 相关进程",
+      "enValue": "No Codex processes detected",
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:17287",
+      "enSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:73016",
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "raw-translation-object-key-value",
+      "status": "raw-translation-object-copy-accepted",
+      "blocker": null,
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "maintenance.forceKillNone",
+          "rawValue": "未检测到任何 Codex 相关进程",
+          "evidenceKind": "raw-translation-object-key-value"
+        },
+        {
+          "locale": "zh",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "maintenance.forceKillNone",
+          "rawValue": "未检测到任何 Codex 相关进程",
+          "evidenceKind": "raw-translation-object-key-value"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "maintenance.forceKillNone",
+          "rawValue": "No Codex processes detected",
+          "evidenceKind": "raw-translation-object-key-value"
+        },
+        {
+          "locale": "en",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "maintenance.forceKillNone",
+          "rawValue": "No Codex processes detected",
+          "evidenceKind": "raw-translation-object-key-value"
+        }
+      ]
+    },
+    {
       "key": "maintenance.forceKillResult",
       "zhValue": "已强制终止 {{count}} 个进程: {{processes}}",
       "enValue": "Terminated {{count}} processes: {{processes}}",
@@ -23913,6 +23980,73 @@
           "root": "FR",
           "key": "plugins.empty",
           "rawValue": "No plugins available",
+          "evidenceKind": "raw-translation-object-key-value"
+        }
+      ]
+    },
+    {
+      "key": "plugins.running",
+      "zhValue": "运行中",
+      "enValue": "Running",
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:17287",
+      "enSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:73016",
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "raw-translation-object-key-value",
+      "status": "raw-translation-object-copy-accepted",
+      "blocker": null,
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "plugins.running",
+          "rawValue": "运行中",
+          "evidenceKind": "raw-translation-object-key-value"
+        },
+        {
+          "locale": "zh",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "plugins.running",
+          "rawValue": "运行中",
+          "evidenceKind": "raw-translation-object-key-value"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "plugins.running",
+          "rawValue": "Running",
+          "evidenceKind": "raw-translation-object-key-value"
+        },
+        {
+          "locale": "en",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "plugins.running",
+          "rawValue": "Running",
           "evidenceKind": "raw-translation-object-key-value"
         }
       ]

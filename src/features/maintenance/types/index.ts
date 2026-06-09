@@ -2,6 +2,7 @@ import type { LucideIcon } from "lucide-react";
 import type { ModuleCacheEnvelope } from "@/features/_shared/cache";
 import type {
   CleanPayload,
+  CoreSnapshotPayload,
   DiagnosePayload,
   RebuildRegistryPayload,
   RelayDiagnosticIssuePayload,
@@ -17,13 +18,20 @@ export type MaintenanceSystemInfoQueryKey = readonly [
   "maintenance",
   "system-info",
 ];
+export type MaintenanceSnapshotQueryKey = readonly ["maintenance", "snapshot"];
 export type MaintenanceWritableQueryKey =
   | MaintenanceImageCompatQueryKey
-  | MaintenanceSystemInfoQueryKey;
+  | MaintenanceSystemInfoQueryKey
+  | MaintenanceSnapshotQueryKey;
 export type MaintenanceQueryPayloadForKey<
   TKey extends MaintenanceWritableQueryKey,
-> = TKey extends MaintenanceSystemInfoQueryKey ? SystemInfoPayload : boolean;
+> = TKey extends MaintenanceSystemInfoQueryKey
+  ? SystemInfoPayload
+  : TKey extends MaintenanceSnapshotQueryKey
+    ? CoreSnapshotPayload
+    : boolean;
 export type MaintenanceSystemInfoPayload = SystemInfoPayload;
+export type MaintenanceSnapshotPayload = CoreSnapshotPayload;
 export type MaintenanceQueryCachePayload =
   | {
       queryKey: MaintenanceImageCompatQueryKey;
@@ -32,6 +40,10 @@ export type MaintenanceQueryCachePayload =
   | {
       queryKey: MaintenanceSystemInfoQueryKey;
       value: SystemInfoPayload;
+    }
+  | {
+      queryKey: MaintenanceSnapshotQueryKey;
+      value: CoreSnapshotPayload;
     };
 export type MaintenanceRouterDiagnosticItem = RelayDiagnosticIssuePayload;
 export type MaintenanceRouterDiagnosticsPayload = RelayDiagnosticPayload;
@@ -101,6 +113,23 @@ export interface MaintenanceSystemInfoQuery {
   error: unknown;
 }
 
+export interface MaintenancePathEntry {
+  id: string;
+  label: string;
+  value: string;
+  exists?: boolean;
+  busy: boolean;
+  disabled: boolean;
+  result?: MaintenanceActionResult;
+  onOpen: () => void;
+}
+
+export interface MaintenancePathPanel {
+  entries: MaintenancePathEntry[];
+  loading: boolean;
+  error: unknown;
+}
+
 export interface MaintenanceRestartDialogController {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -121,6 +150,7 @@ export interface MaintenanceRouterDiagnosticsDialogController {
 
 export interface MaintenancePageController {
   systemInfo: MaintenanceSystemInfoQuery;
+  pathPanel: MaintenancePathPanel;
   actions: MaintenanceActionView[];
   restartDialog: MaintenanceRestartDialogController;
   routerDiagnosticsDialog: MaintenanceRouterDiagnosticsDialogController;

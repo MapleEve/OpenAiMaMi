@@ -44,5 +44,8 @@ export const maintenanceService = {
 
   openPath: systemService.openPath,
 
+  loadSnapshot: (localOnly = true) =>
+    readEnvelopeData(systemService.loadSnapshot(localOnly)),
+
   getSystemInfo: systemService.getSystemInfo,
 };

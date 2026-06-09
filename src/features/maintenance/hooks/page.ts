@@ -15,6 +15,7 @@ import type {
   MaintenanceActionDefinition,
   MaintenanceActionResult,
   MaintenanceActionView,
+  MaintenancePathEntry,
   MaintenancePageController,
   MaintenanceSystemInfoField,
 } from "../types";
@@ -28,7 +29,7 @@ export function useMaintenancePageController(): MaintenancePageController {
   const runningKeysRef = useRef<Record<string, boolean>>({});
   const [restartConfirmOpen, setRestartConfirmOpen] = useState(false);
   const [routerDiagnosticsOpen, setRouterDiagnosticsOpen] = useState(false);
-  const { systemInfoQuery, imageCompatQuery } = useMaintenanceQueries();
+  const { systemInfoQuery, imageCompatQuery, snapshotQuery } = useMaintenanceQueries();
 
   const setActionResult = useCallback((key: string, result: MaintenanceActionResult) => {
     setResults((prev) => ({ ...prev, [key]: result }));
@@ -49,6 +50,7 @@ export function useMaintenancePageController(): MaintenancePageController {
     forceKillMutation,
     resetConfigMutation,
     setImageCompatMutation,
+    openPathMutation,
     runRouterDiagnostics,
     fixRouterIssueAndRefresh,
   } = useMaintenanceActionMutations({
@@ -245,11 +247,74 @@ export function useMaintenancePageController(): MaintenancePageController {
     },
   ];
 
+  const snapshotPaths = snapshotQuery.data?.status.paths;
+  const pathEntries: MaintenancePathEntry[] = [
+    {
+      id: "codexHome",
+      label: "codexHome",
+      value: snapshotPaths?.codexHome ?? "",
+    },
+    {
+      id: "accounts",
+      label: "accountsPath",
+      value: snapshotPaths?.accountsPath ?? "",
+    },
+    {
+      id: "auth",
+      label: "authPath",
+      value: snapshotPaths?.authPath ?? "",
+      exists: snapshotPaths?.authExists,
+    },
+    {
+      id: "registry",
+      label: "registryPath",
+      value: snapshotPaths?.registryPath ?? "",
+      exists: snapshotPaths?.registryExists,
+    },
+    {
+      id: "sessions",
+      label: "sessionsPath",
+      value: snapshotPaths?.sessionsPath ?? "",
+      exists: snapshotPaths?.sessionsExists,
+    },
+    {
+      id: "launchAgent",
+      label: "launchAgentPath",
+      value: snapshotPaths?.launchAgentPath ?? "",
+    },
+    {
+      id: "autoSwitchLog",
+      label: "autoSwitchLogPath",
+      value: snapshotPaths?.autoSwitchLogPath ?? "",
+    },
+  ].map((entry) => {
+    const key = `openPath:${entry.id}`;
+    return {
+      ...entry,
+      busy: Boolean(runningKeys[key]),
+      disabled: !entry.value,
+      result: results[key],
+      onOpen: () =>
+        void runAction(key, async () => {
+          await openPathMutation.mutateAsync({ path: entry.value });
+          setActionResult(key, {
+            type: "success",
+            message: t("common.success"),
+          });
+        }),
+    };
+  });
+
   return {
     systemInfo: {
       fields: systemInfoFields,
       loading: systemInfoQuery.isLoading,
       error: systemInfoQuery.error,
+    },
+    pathPanel: {
+      entries: pathEntries,
+      loading: snapshotQuery.isLoading,
+      error: snapshotQuery.error,
     },
     actions,
     restartDialog: {

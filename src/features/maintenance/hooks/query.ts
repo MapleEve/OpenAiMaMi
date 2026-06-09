@@ -4,6 +4,7 @@ import { maintenanceService } from "@/services/maintenance";
 import {
   MaintenanceCache,
   MAINTENANCE_IMAGE_COMPAT_QUERY_KEY,
+  MAINTENANCE_SNAPSHOT_QUERY_KEY,
   MAINTENANCE_SYSTEM_INFO_QUERY_KEY,
   runMaintenanceQuery,
 } from "../cache";
@@ -37,8 +38,20 @@ export function useMaintenanceQueries() {
     staleTime: 30_000,
   });
 
+  const snapshotQuery = useQuery({
+    queryKey: MAINTENANCE_SNAPSHOT_QUERY_KEY,
+    queryFn: () =>
+      runMaintenanceQuery(
+        queryClient,
+        MAINTENANCE_SNAPSHOT_QUERY_KEY,
+        () => maintenanceService.loadSnapshot(true),
+      ),
+    staleTime: 30_000,
+  });
+
   return {
     systemInfoQuery,
     imageCompatQuery,
+    snapshotQuery,
   };
 }

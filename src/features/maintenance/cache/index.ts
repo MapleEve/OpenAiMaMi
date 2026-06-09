@@ -9,6 +9,7 @@ import type {
   MaintenanceCachePayload,
   MaintenanceImageCompatQueryKey,
   MaintenanceQueryPayloadForKey,
+  MaintenanceSnapshotQueryKey,
   MaintenanceSystemInfoQueryKey,
   MaintenanceWritableQueryKey,
 } from "../types";
@@ -22,6 +23,10 @@ export const MAINTENANCE_IMAGE_COMPAT_QUERY_KEY: MaintenanceImageCompatQueryKey 
 export const MAINTENANCE_SYSTEM_INFO_QUERY_KEY: MaintenanceSystemInfoQueryKey = [
   "maintenance",
   "system-info",
+] as const;
+export const MAINTENANCE_SNAPSHOT_QUERY_KEY: MaintenanceSnapshotQueryKey = [
+  "maintenance",
+  "snapshot",
 ] as const;
 export const writeMaintenanceAuthoritativePayload = <
   TPayload extends MaintenanceCachePayload,
@@ -176,6 +181,13 @@ function toMaintenanceCachePayload<TKey extends MaintenanceWritableQueryKey>(
     };
   }
 
+  if (queryKey === MAINTENANCE_SNAPSHOT_QUERY_KEY) {
+    return {
+      queryKey: MAINTENANCE_SNAPSHOT_QUERY_KEY,
+      value: value as MaintenanceQueryPayloadForKey<MaintenanceSnapshotQueryKey>,
+    };
+  }
+
   return {
     queryKey: MAINTENANCE_IMAGE_COMPAT_QUERY_KEY,
     value: value as MaintenanceQueryPayloadForKey<MaintenanceImageCompatQueryKey>,
@@ -190,6 +202,9 @@ export async function invalidateMaintenanceContractQueries(queryClient: QueryCli
     }),
     queryClient.invalidateQueries({
       queryKey: MAINTENANCE_SYSTEM_INFO_QUERY_KEY,
+    }),
+    queryClient.invalidateQueries({
+      queryKey: MAINTENANCE_SNAPSHOT_QUERY_KEY,
     }),
   ]);
 }
