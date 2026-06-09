@@ -5,20 +5,8 @@ const repoRoot = process.cwd();
 const backendRoot = join(repoRoot, "src-tauri", "src");
 const repositoryAccountsFile = join(backendRoot, "repository", "accounts.rs");
 const usecaseAccountsFile = join(backendRoot, "application", "usecase", "accounts.rs");
-const ownerTransactions = [
-  {
-    functionName: "switch_account",
-    label: "账号切换",
-    sharedOwner: "switch_account_with_status",
-  },
-  {
-    functionName: "remove_accounts",
-    label: "账号删除",
-  },
-  {
-    functionName: "logout",
-    label: "账号登出",
-  },
+
+const transferTransactions = [
   {
     functionName: "export_accounts_to_file",
     label: "账号导出",
@@ -32,6 +20,9 @@ const ownerTransactions = [
     label: "账号导入",
   },
 ];
+
+const helperKeywordPattern =
+  "[A-Za-z0-9_]*(?:load|read|write|save|snapshot|import|export|json)[A-Za-z0-9_]*";
 
 const failures = [];
 const helperEvidenceByFunction = new Map();
@@ -172,19 +163,6 @@ function findPublicFunction(content, functionName) {
   };
 }
 
-function findPublicOrPrivateFunction(content, functionName) {
-  const pattern = new RegExp(`\\b(?:pub\\s+)?fn\\s+${functionName}\\s*\\(`, "g");
-  const match = pattern.exec(content);
-  if (!match) {
-    return null;
-  }
-
-  return {
-    index: match.index,
-    line: lineNumberAt(content, match.index),
-  };
-}
-
 function findFunctionBody(content, functionStart) {
   const openBrace = content.indexOf("{", functionStart);
   if (openBrace === -1) {
@@ -207,25 +185,26 @@ function findFunctionBody(content, functionStart) {
   return null;
 }
 
-function collectRepositoryHelperEvidence(functionBody) {
-  const helperName =
-    "[A-Za-z0-9_]*(?:load|save|active|snapshot|restore|backup|mark|remove|registry|read|write|import|export|json)[A-Za-z0-9_]*";
+function collectRepositoryHelperEvidence(functionBody, transactionName) {
   const patterns = [
     {
       label: "accounts_repository::",
-      pattern: new RegExp(`\\baccounts_repository\\s*::\\s*(${helperName})\\s*\\(`, "g"),
+      pattern: new RegExp(`\\baccounts_repository\\s*::\\s*(${helperKeywordPattern})\\s*\\(`, "g"),
     },
     {
       label: "AccountsRepository::",
-      pattern: new RegExp(`\\bAccountsRepository\\s*::\\s*(${helperName})\\s*\\(`, "g"),
+      pattern: new RegExp(`\\bAccountsRepository\\s*::\\s*(${helperKeywordPattern})\\s*\\(`, "g"),
     },
     {
       label: "repo.",
-      pattern: new RegExp(`\\brepo\\s*\\.\\s*(${helperName})\\s*\\(`, "g"),
+      pattern: new RegExp(`\\brepo\\s*\\.\\s*(${helperKeywordPattern})\\s*\\(`, "g"),
     },
     {
       label: "repo.accounts().",
-      pattern: new RegExp(`\\brepo\\s*\\.\\s*accounts\\s*\\(\\s*\\)\\s*\\.\\s*(${helperName})\\s*\\(`, "g"),
+      pattern: new RegExp(
+        `\\brepo\\s*\\.\\s*accounts\\s*\\(\\s*\\)\\s*\\.\\s*(${helperKeywordPattern})\\s*\\(`,
+        "g",
+      ),
     },
   ];
 
@@ -233,7 +212,10 @@ function collectRepositoryHelperEvidence(functionBody) {
   for (const { label, pattern } of patterns) {
     let match;
     while ((match = pattern.exec(functionBody)) !== null) {
-      evidence.add(`${label}${match[1]}(`);
+      const helperName = match[1];
+      if (helperName !== transactionName) {
+        evidence.add(`${label}${helperName}(`);
+      }
       if (match[0].length === 0) {
         pattern.lastIndex += 1;
       }
@@ -243,25 +225,25 @@ function collectRepositoryHelperEvidence(functionBody) {
   return [...evidence].sort();
 }
 
-function validateRepositoryDoesNotOwnTransactions(repositoryContent) {
+function validateRepositoryDoesNotOwnTransfers(repositoryContent) {
   const stripped = stripRustComments(repositoryContent);
-  for (const transaction of ownerTransactions) {
+  for (const transaction of transferTransactions) {
     const repositoryFunction = findPublicFunction(stripped, transaction.functionName);
     if (repositoryFunction) {
       failures.push(
-        `${toRelative(repositoryAccountsFile)}:${repositoryFunction.line} 存在 pub fn ${transaction.functionName}(...)，${transaction.label}事务不能由 repository owning`,
+        `${toRelative(repositoryAccountsFile)}:${repositoryFunction.line} 存在 pub fn ${transaction.functionName}(...)，${transaction.label}入口不能由 repository owning`,
       );
     }
   }
 }
 
-function validateUsecaseOwnsTransactions(usecaseContent) {
+function validateUsecaseOwnsTransfers(usecaseContent) {
   const stripped = stripRustComments(usecaseContent);
-  for (const transaction of ownerTransactions) {
+  for (const transaction of transferTransactions) {
     const usecaseFunction = findPublicFunction(stripped, transaction.functionName);
     if (!usecaseFunction) {
       failures.push(
-        `${toRelative(usecaseAccountsFile)} 缺少 pub fn ${transaction.functionName}(...)，${transaction.label}事务应由 application/usecase owning`,
+        `${toRelative(usecaseAccountsFile)} 缺少 pub fn ${transaction.functionName}(...)，${transaction.label}应由 application/usecase owning`,
       );
       continue;
     }
@@ -279,52 +261,43 @@ function validateUsecaseOwnsTransactions(usecaseContent) {
     );
     if (directForwardPattern.test(functionBody)) {
       failures.push(
-        `${toRelative(usecaseAccountsFile)}:${usecaseFunction.line} ${transaction.functionName} 仍直接转发 accounts_repository::${transaction.functionName}(...)，事务 owner 仍在 repository`,
+        `${toRelative(usecaseAccountsFile)}:${usecaseFunction.line} ${transaction.functionName} 仍直接转发 accounts_repository::${transaction.functionName}(...)，导入导出事务 owner 仍在 repository`,
       );
     }
 
-    let ownerBody = functionBody;
-    if (transaction.sharedOwner && new RegExp(`\\b${transaction.sharedOwner}\\s*\\(`).test(functionBody)) {
-      const sharedOwner = findPublicOrPrivateFunction(stripped, transaction.sharedOwner);
-      if (sharedOwner) {
-        const sharedBody = findFunctionBody(stripped, sharedOwner.index);
-        if (sharedBody) {
-          ownerBody = `${functionBody}\n${sharedBody}`;
-        }
-      }
-    }
-
-    const helperEvidence = collectRepositoryHelperEvidence(ownerBody);
+    const helperEvidence = collectRepositoryHelperEvidence(functionBody, transaction.functionName);
     helperEvidenceByFunction.set(transaction.functionName, helperEvidence);
     if (helperEvidence.length === 0) {
       failures.push(
-        `${toRelative(usecaseAccountsFile)}:${usecaseFunction.line} ${transaction.functionName} 函数体缺少 load/save/active/snapshot/restore/backup/remove/registry 等 repository helper 调用证据`,
+        `${toRelative(usecaseAccountsFile)}:${usecaseFunction.line} ${transaction.functionName} 函数体缺少 load/read/write/save/snapshot/import/export/json 等 repository helper 调用证据`,
       );
     }
   }
 }
 
-const repositoryContent = readRequiredUtf8(repositoryAccountsFile, "repository accounts owner 文件");
-const usecaseContent = readRequiredUtf8(usecaseAccountsFile, "application/usecase accounts owner 文件");
+const repositoryContent = readRequiredUtf8(repositoryAccountsFile, "repository accounts 文件");
+const usecaseContent = readRequiredUtf8(usecaseAccountsFile, "application/usecase accounts 文件");
 
 if (repositoryContent.length > 0) {
-  validateRepositoryDoesNotOwnTransactions(repositoryContent);
+  validateRepositoryDoesNotOwnTransfers(repositoryContent);
 }
 
 if (usecaseContent.length > 0) {
-  validateUsecaseOwnsTransactions(usecaseContent);
+  validateUsecaseOwnsTransfers(usecaseContent);
 }
 
 if (failures.length > 0) {
-  console.error("FAIL 后端账号事务 owner 校验失败：");
+  console.error("FAIL 后端账号导入导出 owner 校验失败：");
   for (const failure of failures) {
     console.error(`- ${failure}`);
   }
   process.exit(1);
 }
 
-console.log("PASS 后端账号事务 owner 校验通过：repository 未暴露账号用户动作事务入口。");
-for (const transaction of ownerTransactions) {
+console.log(
+  "PASS 后端账号导入导出 owner 校验通过：repository 未暴露 export/preview/import 用户动作入口。",
+);
+for (const transaction of transferTransactions) {
   const evidence = helperEvidenceByFunction.get(transaction.functionName) ?? [];
   console.log(`PASS ${transaction.label} usecase helper 证据：${evidence.join(", ")}`);
 }

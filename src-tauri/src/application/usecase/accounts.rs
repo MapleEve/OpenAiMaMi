@@ -1,14 +1,20 @@
 use crate::application::service::{pending_status as make_pending_status, restored_status};
 use crate::contracts::accounts::{
-    AccountExportPayload, AccountImportPayload, AccountImportPreviewPayload, AccountMonitorPayload,
+    AccountExportPayload, AccountImportPayload, AccountImportPreviewEntry,
+    AccountImportPreviewPayload, AccountMonitorPayload, AccountSkippedPayload,
     AccountSummaryPayload, LogoutPayload, RemovePayload, SwitchPayload,
 };
 use crate::contracts::{BackendEffect, BackendSkeletonStatus};
 use crate::core::error::CoreError;
-use crate::core::model::accounts::AccountRegistryItem;
+use crate::core::model::accounts::{
+    AccountExportDocument, AccountExportEntry, AccountRegistryItem,
+};
 use crate::repository::accounts as accounts_repository;
 use crate::repository::Repository;
+use chrono::Utc;
+use serde_json::Value;
 use std::collections::HashSet;
+use std::path::Path;
 
 const MODULE: &str = "accounts";
 const PENDING_NOTE: &str =
@@ -163,19 +169,108 @@ pub fn export_accounts_to_file(
     target_path: String,
     account_keys: Option<Vec<String>>,
 ) -> Result<AccountExportPayload, CoreError> {
-    accounts_repository::export_accounts_to_file(
-        repo,
-        restored("export_accounts_to_file"),
-        target_path,
-        account_keys,
-    )
+    let registry = accounts_repository::load_registry(repo)?;
+    if registry.items.is_empty() {
+        return Err(CoreError::InvalidInput("没有可导出的账号。".to_string()));
+    }
+    let selected = account_keys
+        .unwrap_or_default()
+        .into_iter()
+        .collect::<HashSet<_>>();
+    let target_items = registry
+        .items
+        .iter()
+        .filter(|item| selected.is_empty() || selected.contains(&item.account_key))
+        .cloned()
+        .collect::<Vec<_>>();
+    if target_items.is_empty() {
+        return Err(CoreError::InvalidInput("未找到要导出的账号。".to_string()));
+    }
+
+    let exported_at = Utc::now().to_rfc3339();
+    let exported_hostname = hostname::get()
+        .ok()
+        .map(|value| value.to_string_lossy().to_string());
+    let accounts = target_items
+        .iter()
+        .map(|item| {
+            let snapshot_path = accounts_repository::snapshot_path(repo, item);
+            AccountExportEntry {
+                account_key: item.account_key.clone(),
+                summary: item.clone(),
+                auth: accounts_repository::read_json_optional(repo, &snapshot_path),
+                snapshot: accounts_repository::read_json_optional(repo, &snapshot_path),
+            }
+        })
+        .collect::<Vec<_>>();
+    let document = AccountExportDocument {
+        kind: "account-export".to_string(),
+        schema_version: 1,
+        app_version: Some(env!("CARGO_PKG_VERSION").to_string()),
+        exported_at: Some(exported_at.clone()),
+        exported_hostname,
+        accounts,
+    };
+    let normalized_target = normalize_json_target(target_path);
+    accounts_repository::write_json_pretty(repo, Path::new(&normalized_target), &document)?;
+
+    Ok(AccountExportPayload {
+        backend_status: restored("export_accounts_to_file"),
+        target_path: normalized_target,
+        account_count: target_items.len() as i32,
+        exported_at: Some(exported_at),
+        skipped: Vec::new(),
+    })
 }
 
 pub fn preview_account_import(
     repo: &Repository,
     file_path: String,
 ) -> Result<AccountImportPreviewPayload, CoreError> {
-    accounts_repository::preview_account_import(repo, restored("preview_account_import"), file_path)
+    let document = accounts_repository::read_export_document(repo, &file_path)?;
+    let local = accounts_repository::load_registry(repo)?;
+    let local_keys = local
+        .items
+        .iter()
+        .map(|item| item.account_key.clone())
+        .collect::<HashSet<_>>();
+    let active = local.active_key();
+    let entries = document
+        .accounts
+        .iter()
+        .map(|entry| AccountImportPreviewEntry {
+            account_key: entry.account_key.clone(),
+            email: first_string([
+                entry.summary.email.as_ref(),
+                entry.summary.account_name.as_ref(),
+            ]),
+            plan: entry.summary.plan.clone(),
+            auth_mode: entry
+                .summary
+                .extra
+                .get("authMode")
+                .and_then(Value::as_str)
+                .map(ToString::to_string),
+            workspace_name: entry.summary.workspace_name.clone(),
+            profile_name: entry.summary.profile_name.clone(),
+            conflict: local_keys.contains(&entry.account_key),
+            is_active_locally: active.as_deref() == Some(entry.account_key.as_str()),
+        })
+        .collect::<Vec<_>>();
+    let conflict_count = entries.iter().filter(|entry| entry.conflict).count() as i32;
+
+    Ok(AccountImportPreviewPayload {
+        backend_status: restored("preview_account_import"),
+        file_path,
+        schema_version: document.schema_version,
+        kind: document.kind,
+        app_version: document.app_version,
+        exported_at: document.exported_at,
+        exported_hostname: document.exported_hostname,
+        account_count: entries.len() as i32,
+        conflict_count,
+        entries,
+    })
 }
 
 pub fn import_accounts_from_file(
@@ -184,13 +279,101 @@ pub fn import_accounts_from_file(
     overwrite_existing: bool,
     selected_keys: Option<Vec<String>>,
 ) -> Result<AccountImportPayload, CoreError> {
-    accounts_repository::import_accounts_from_file(
-        repo,
-        restored("import_accounts_from_file"),
-        file_path,
-        overwrite_existing,
-        selected_keys,
-    )
+    let document = accounts_repository::read_export_document(repo, &file_path)?;
+    let selected = selected_keys
+        .unwrap_or_default()
+        .into_iter()
+        .collect::<HashSet<_>>();
+    let mut registry = accounts_repository::load_registry(repo)?;
+    let mut skipped = Vec::new();
+    let mut imported_account_keys = Vec::new();
+
+    for entry in document.accounts {
+        if !selected.is_empty() && !selected.contains(&entry.account_key) {
+            skipped.push(skip(Some(entry.account_key), "notSelected", "未选择导入。"));
+            continue;
+        }
+        if entry.account_key.trim().is_empty() {
+            skipped.push(skip(None, "invalidField", "账号 key 为空。"));
+            continue;
+        }
+        let existing_index = registry
+            .items
+            .iter()
+            .position(|item| item.account_key == entry.account_key);
+        if existing_index.is_some() && !overwrite_existing {
+            skipped.push(skip(
+                Some(entry.account_key),
+                "conflict",
+                "本地已存在同名账号。",
+            ));
+            continue;
+        }
+        if existing_index
+            .and_then(|index| registry.items.get(index))
+            .map(|item| item.active)
+            .unwrap_or(false)
+            && !overwrite_existing
+        {
+            skipped.push(skip(
+                Some(entry.account_key),
+                "activeProtected",
+                "当前激活账号不能被覆盖。",
+            ));
+            continue;
+        }
+
+        let mut item = entry.summary.clone();
+        item.account_key = entry.account_key.clone();
+        item.snapshot_path = Some(
+            accounts_repository::snapshot_path(repo, &item)
+                .display()
+                .to_string(),
+        );
+        let snapshot_value = entry
+            .snapshot
+            .or(entry.auth)
+            .unwrap_or_else(|| registry_item_to_value(&item));
+        accounts_repository::write_snapshot_json(repo, &item, &snapshot_value)?;
+        if let Some(index) = existing_index {
+            registry.items[index] = item;
+        } else {
+            registry.items.push(item);
+        }
+        imported_account_keys.push(entry.account_key);
+    }
+
+    accounts_repository::save_registry(repo, &registry)?;
+    let active_account_key = registry.active_key();
+
+    Ok(AccountImportPayload {
+        backend_status: restored("import_accounts_from_file"),
+        imported_count: imported_account_keys.len() as i32,
+        imported_account_keys,
+        skipped,
+        registry_account_count: registry.items.len() as i32,
+        active_account_key,
+    })
+}
+
+fn registry_item_to_value(item: &AccountRegistryItem) -> Value {
+    serde_json::to_value(item).unwrap_or(Value::Null)
+}
+
+fn normalize_json_target(target_path: String) -> String {
+    if target_path.to_ascii_lowercase().ends_with(".json") {
+        target_path
+    } else {
+        format!("{target_path}.json")
+    }
+}
+
+fn skip(account_key: Option<String>, reason: &str, message: &str) -> AccountSkippedPayload {
+    AccountSkippedPayload {
+        account_key,
+        reason: reason.to_string(),
+        message: Some(message.to_string()),
+    }
 }
 
 fn restored(command: &str) -> BackendSkeletonStatus {

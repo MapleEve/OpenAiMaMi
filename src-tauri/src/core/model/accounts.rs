@@ -88,6 +88,34 @@ pub(crate) struct AccountRegistryItem {
     pub(crate) extra: Map<String, Value>,
 }
 
+// 账号导入导出文件模型属于可重建文件格式，不属于 IPC DTO。
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct AccountExportDocument {
+    pub(crate) kind: String,
+    pub(crate) schema_version: i32,
+    #[serde(default)]
+    pub(crate) app_version: Option<String>,
+    #[serde(default)]
+    pub(crate) exported_at: Option<String>,
+    #[serde(default)]
+    pub(crate) exported_hostname: Option<String>,
+    #[serde(default)]
+    pub(crate) accounts: Vec<AccountExportEntry>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct AccountExportEntry {
+    pub(crate) account_key: String,
+    #[serde(default)]
+    pub(crate) summary: AccountRegistryItem,
+    #[serde(default)]
+    pub(crate) auth: Option<Value>,
+    #[serde(default)]
+    pub(crate) snapshot: Option<Value>,
+}
+
 fn first_value_string(extra: &Map<String, Value>, keys: &[&str]) -> String {
     keys.iter()
         .find_map(|key| extra.get(*key).and_then(Value::as_str))

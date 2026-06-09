@@ -1,15 +1,12 @@
-use crate::contracts::accounts::{
-    AccountExportPayload, AccountImportPayload, AccountImportPreviewEntry,
-    AccountImportPreviewPayload, AccountSkippedPayload, AccountSummaryPayload,
-};
-use crate::contracts::BackendSkeletonStatus;
+use crate::contracts::accounts::AccountSummaryPayload;
 use crate::core::error::CoreError;
-use crate::core::model::accounts::{AccountRegistryDocument, AccountRegistryItem};
+use crate::core::model::accounts::{
+    AccountExportDocument, AccountRegistryDocument, AccountRegistryItem,
+};
 use crate::repository::Repository;
 use chrono::Utc;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use serde_json::Value;
-use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
 pub(crate) struct AccountsRepository;
@@ -17,33 +14,6 @@ pub(crate) struct AccountsRepository;
 pub(crate) trait AccountsRepositoryBoundary {}
 
 impl AccountsRepositoryBoundary for AccountsRepository {}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct AccountExportDocument {
-    kind: String,
-    schema_version: i32,
-    #[serde(default)]
-    app_version: Option<String>,
-    #[serde(default)]
-    exported_at: Option<String>,
-    #[serde(default)]
-    exported_hostname: Option<String>,
-    #[serde(default)]
-    accounts: Vec<AccountExportEntry>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct AccountExportEntry {
-    account_key: String,
-    #[serde(default)]
-    summary: AccountRegistryItem,
-    #[serde(default)]
-    auth: Option<Value>,
-    #[serde(default)]
-    snapshot: Option<Value>,
-}
 
 pub fn load_account_summaries(repo: &Repository) -> Result<Vec<AccountSummaryPayload>, CoreError> {
     let registry = load_registry(repo)?;
@@ -53,200 +23,6 @@ pub fn load_account_summaries(repo: &Repository) -> Result<Vec<AccountSummaryPay
         .iter()
         .map(|item| summary_from_item(item, active.as_deref()))
         .collect())
-}
-
-pub fn export_accounts_to_file(
-    repo: &Repository,
-    status: BackendSkeletonStatus,
-    target_path: String,
-    account_keys: Option<Vec<String>>,
-) -> Result<AccountExportPayload, CoreError> {
-    let registry = load_registry(repo)?;
-    if registry.items.is_empty() {
-        return Err(CoreError::InvalidInput("没有可导出的账号。".to_string()));
-    }
-    let selected = account_keys
-        .unwrap_or_default()
-        .into_iter()
-        .collect::<HashSet<_>>();
-    let target_items = registry
-        .items
-        .iter()
-        .filter(|item| selected.is_empty() || selected.contains(&item.account_key))
-        .cloned()
-        .collect::<Vec<_>>();
-    if target_items.is_empty() {
-        return Err(CoreError::InvalidInput("未找到要导出的账号。".to_string()));
-    }
-
-    let exported_at = Utc::now().to_rfc3339();
-    let exported_hostname = hostname::get()
-        .ok()
-        .map(|value| value.to_string_lossy().to_string());
-    let accounts = target_items
-        .iter()
-        .map(|item| AccountExportEntry {
-            account_key: item.account_key.clone(),
-            summary: item.clone(),
-            auth: read_json_optional(repo, &snapshot_path(repo, item)),
-            snapshot: read_json_optional(repo, &snapshot_path(repo, item)),
-        })
-        .collect::<Vec<_>>();
-    let document = AccountExportDocument {
-        kind: "account-export".to_string(),
-        schema_version: 1,
-        app_version: Some(env!("CARGO_PKG_VERSION").to_string()),
-        exported_at: Some(exported_at.clone()),
-        exported_hostname,
-        accounts,
-    };
-    let normalized_target = normalize_json_target(target_path);
-    repo.fs().write_string(
-        Path::new(&normalized_target),
-        &serde_json::to_string_pretty(&document)?,
-    )?;
-
-    Ok(AccountExportPayload {
-        backend_status: status,
-        target_path: normalized_target,
-        account_count: target_items.len() as i32,
-        exported_at: Some(exported_at),
-        skipped: Vec::new(),
-    })
-}
-
-pub fn preview_account_import(
-    repo: &Repository,
-    status: BackendSkeletonStatus,
-    file_path: String,
-) -> Result<AccountImportPreviewPayload, CoreError> {
-    let document = read_export_document(repo, &file_path)?;
-    let local = load_registry(repo)?;
-    let local_keys = local
-        .items
-        .iter()
-        .map(|item| item.account_key.clone())
-        .collect::<HashSet<_>>();
-    let active = local.active_key();
-    let entries = document
-        .accounts
-        .iter()
-        .map(|entry| AccountImportPreviewEntry {
-            account_key: entry.account_key.clone(),
-            email: first_string([
-                entry.summary.email.as_ref(),
-                entry.summary.account_name.as_ref(),
-            ]),
-            plan: entry.summary.plan.clone(),
-            auth_mode: entry
-                .summary
-                .extra
-                .get("authMode")
-                .and_then(Value::as_str)
-                .map(ToString::to_string),
-            workspace_name: entry.summary.workspace_name.clone(),
-            profile_name: entry.summary.profile_name.clone(),
-            conflict: local_keys.contains(&entry.account_key),
-            is_active_locally: active.as_deref() == Some(entry.account_key.as_str()),
-        })
-        .collect::<Vec<_>>();
-    let conflict_count = entries.iter().filter(|entry| entry.conflict).count() as i32;
-
-    Ok(AccountImportPreviewPayload {
-        backend_status: status,
-        file_path,
-        schema_version: document.schema_version,
-        kind: document.kind,
-        app_version: document.app_version,
-        exported_at: document.exported_at,
-        exported_hostname: document.exported_hostname,
-        account_count: entries.len() as i32,
-        conflict_count,
-        entries,
-    })
-}
-
-pub fn import_accounts_from_file(
-    repo: &Repository,
-    status: BackendSkeletonStatus,
-    file_path: String,
-    overwrite_existing: bool,
-    selected_keys: Option<Vec<String>>,
-) -> Result<AccountImportPayload, CoreError> {
-    let document = read_export_document(repo, &file_path)?;
-    let selected = selected_keys
-        .unwrap_or_default()
-        .into_iter()
-        .collect::<HashSet<_>>();
-    let mut registry = load_registry(repo)?;
-    let mut skipped = Vec::new();
-    let mut imported_account_keys = Vec::new();
-
-    for entry in document.accounts {
-        if !selected.is_empty() && !selected.contains(&entry.account_key) {
-            skipped.push(skip(Some(entry.account_key), "notSelected", "未选择导入。"));
-            continue;
-        }
-        if entry.account_key.trim().is_empty() {
-            skipped.push(skip(None, "invalidField", "账号 key 为空。"));
-            continue;
-        }
-        let existing_index = registry
-            .items
-            .iter()
-            .position(|item| item.account_key == entry.account_key);
-        if existing_index.is_some() && !overwrite_existing {
-            skipped.push(skip(
-                Some(entry.account_key),
-                "conflict",
-                "本地已存在同名账号。",
-            ));
-            continue;
-        }
-        if existing_index
-            .and_then(|index| registry.items.get(index))
-            .map(|item| item.active)
-            .unwrap_or(false)
-            && !overwrite_existing
-        {
-            skipped.push(skip(
-                Some(entry.account_key),
-                "activeProtected",
-                "当前激活账号不能被覆盖。",
-            ));
-            continue;
-        }
-
-        let mut item = entry.summary.clone();
-        item.account_key = entry.account_key.clone();
-        item.snapshot_path = Some(snapshot_path(repo, &item).display().to_string());
-        let snapshot_value = entry
-            .snapshot
-            .or(entry.auth)
-            .unwrap_or_else(|| registry_item_to_value(&item));
-        repo.fs().write_string(
-            &snapshot_path(repo, &item),
-            &serde_json::to_string_pretty(&snapshot_value)?,
-        )?;
-        if let Some(index) = existing_index {
-            registry.items[index] = item;
-        } else {
-            registry.items.push(item);
-        }
-        imported_account_keys.push(entry.account_key);
-    }
-
-    save_registry(repo, &registry)?;
-    let active_account_key = registry.active_key();
-
-    Ok(AccountImportPayload {
-        backend_status: status,
-        imported_count: imported_account_keys.len() as i32,
-        imported_account_keys,
-        skipped,
-        registry_account_count: registry.items.len() as i32,
-        active_account_key,
-    })
 }
 
 pub(crate) fn load_registry(repo: &Repository) -> Result<AccountRegistryDocument, CoreError> {
@@ -359,7 +135,7 @@ pub(crate) fn backup_auth_if_present(
     Ok(true)
 }
 
-fn read_export_document(
+pub(crate) fn read_export_document(
     repo: &Repository,
     file_path: &str,
 ) -> Result<AccountExportDocument, CoreError> {
@@ -392,23 +168,11 @@ fn read_export_document(
     Ok(document)
 }
 
-fn read_json_optional(repo: &Repository, path: &Path) -> Option<Value> {
+pub(crate) fn read_json_optional(repo: &Repository, path: &Path) -> Option<Value> {
     repo.fs()
         .read_to_string(path)
         .ok()
         .and_then(|raw| serde_json::from_str(&raw).ok())
-}
-
-fn registry_item_to_value(item: &AccountRegistryItem) -> Value {
-    serde_json::to_value(item).unwrap_or(Value::Null)
-}
-
-fn normalize_json_target(target_path: String) -> String {
-    if target_path.to_ascii_lowercase().ends_with(".json") {
-        target_path
-    } else {
-        format!("{target_path}.json")
-    }
 }
 
 fn first_string<const N: usize>(values: [Option<&String>; N]) -> Option<String> {
@@ -419,10 +183,22 @@ fn first_string<const N: usize>(values: [Option<&String>; N]) -> Option<String> 
         .cloned()
 }
 
-fn skip(account_key: Option<String>, reason: &str, message: &str) -> AccountSkippedPayload {
-    AccountSkippedPayload {
-        account_key,
-        reason: reason.to_string(),
-        message: Some(message.to_string()),
-    }
+pub(crate) fn write_json_pretty<T: Serialize>(
+    repo: &Repository,
+    path: &Path,
+    document: &T,
+) -> Result<(), CoreError> {
+    repo.fs()
+        .write_string(path, &serde_json::to_string_pretty(document)?)
+}
+
+pub(crate) fn write_snapshot_json(
+    repo: &Repository,
+    item: &AccountRegistryItem,
+    value: &Value,
+) -> Result<(), CoreError> {
+    repo.fs().write_string(
+        &snapshot_path(repo, item),
+        &serde_json::to_string_pretty(value)?,
+    )
 }
