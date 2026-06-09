@@ -1,6 +1,7 @@
 pub mod accounts;
 pub mod adapter;
 pub mod analytics;
+pub mod bootstrap;
 pub mod config;
 pub mod custom_instructions;
 pub mod diagnostics;

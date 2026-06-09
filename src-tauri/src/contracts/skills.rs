@@ -1,7 +1,7 @@
 use crate::contracts::BackendSkeletonStatus;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct InstalledSkillSummary {
     pub id: String,

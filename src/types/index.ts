@@ -714,6 +714,11 @@ export interface SessionsDeletePayload {
 
 export interface BootstrapStatePayload {
   backendStatus: BackendSkeletonStatus;
+  writtenAt: unknown | null;
+  snapshotProgressive: unknown | null;
+  usageAnalytics: unknown | null;
+  mcpServers: McpServerSummary[] | null;
+  installedSkills: InstalledSkillSummary[] | null;
   executedAt: string | null;
   runOnce: boolean;
   autoSwitchEnabled: boolean;

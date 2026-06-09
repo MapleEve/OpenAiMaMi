@@ -262,6 +262,11 @@ const bootstrapStateHandler: IpcCommandHandler = (context) => {
     ...envelope,
     data: {
       backendStatus: envelope.data.status,
+      writtenAt: null,
+      snapshotProgressive: null,
+      usageAnalytics: null,
+      mcpServers: [],
+      installedSkills: [],
       executedAt: null,
       runOnce: false,
       autoSwitchEnabled: false,

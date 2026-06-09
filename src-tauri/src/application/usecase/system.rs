@@ -25,6 +25,7 @@ use crate::core::model::settings::UsageRefreshInterval;
 use crate::core::runtime as runtime_core;
 use crate::platform::runtime::RuntimePlatformAdapter;
 use crate::repository::accounts as accounts_repository;
+use crate::repository::bootstrap as bootstrap_repository;
 use crate::repository::config as config_repository;
 use crate::repository::diagnostics::load_system_diagnostic_snapshot;
 use crate::repository::hotspot as hotspot_repository;
@@ -53,8 +54,14 @@ pub fn refresh_usage_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, 
 
 pub fn load_bootstrap_state(repo: &Repository) -> Result<BootstrapStatePayload, CoreError> {
     let settings = settings_repository::load_app_settings(repo)?;
+    let cache = bootstrap_repository::load_bootstrap_cache(repo).unwrap_or_default();
     Ok(BootstrapStatePayload {
         backend_status: restored_status("system", "load_bootstrap_state", BackendEffect::NoOp),
+        written_at: cache.written_at,
+        snapshot_progressive: cache.snapshot_progressive,
+        usage_analytics: cache.usage_analytics,
+        mcp_servers: cache.mcp_servers,
+        installed_skills: cache.installed_skills,
         executed_at: None,
         run_once: false,
         auto_switch_enabled: settings.auto_switch_enabled,
@@ -1009,6 +1016,61 @@ mod tests {
         import_remote_device_secret_if_empty(&repo, "   ".to_string()).expect("ignore blank");
 
         assert!(!repo.fs().exists(&repo.paths().settings_path));
+    }
+
+    #[test]
+    fn load_bootstrap_state_reads_cache_slices_without_losing_compat_fields() {
+        let repo = Repository::with_temp_file_system("bootstrap-state-cache");
+        repo.paths().ensure_app_directories().expect("create dirs");
+        settings_repository::save_app_settings(
+            &repo,
+            &AppSettingsFile {
+                auto_switch_enabled: true,
+                ..AppSettingsFile::default()
+            },
+        )
+        .expect("save settings");
+        repo.fs()
+            .write_string(
+                &repo.paths().bootstrap_cache_path,
+                r#"{
+  "writtenAt": "2026-06-09T00:00:00Z",
+  "snapshotProgressive": {"stage": "boot"},
+  "mcpServers": [],
+  "installedSkills": []
+}"#,
+            )
+            .expect("write cache");
+
+        let payload = load_bootstrap_state(&repo).expect("load bootstrap");
+
+        assert_eq!(
+            payload.written_at,
+            Some(serde_json::Value::String(
+                "2026-06-09T00:00:00Z".to_string()
+            ))
+        );
+        assert!(payload.snapshot_progressive.is_some());
+        assert_eq!(payload.mcp_servers, Some(Vec::new()));
+        assert_eq!(payload.installed_skills, Some(Vec::new()));
+        assert!(payload.auto_switch_enabled);
+    }
+
+    #[test]
+    fn load_bootstrap_state_hides_cache_parse_errors_from_frontend() {
+        let repo = Repository::with_temp_file_system("bootstrap-state-bad-json");
+        repo.paths().ensure_app_directories().expect("create dirs");
+        repo.fs()
+            .write_string(&repo.paths().bootstrap_cache_path, "{")
+            .expect("write cache");
+
+        let payload = load_bootstrap_state(&repo).expect("load bootstrap");
+
+        assert!(payload.written_at.is_none());
+        assert!(payload.snapshot_progressive.is_none());
+        assert!(payload.usage_analytics.is_none());
+        assert!(payload.mcp_servers.is_none());
+        assert!(payload.installed_skills.is_none());
     }
 }
 
