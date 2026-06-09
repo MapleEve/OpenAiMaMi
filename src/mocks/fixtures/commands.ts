@@ -16,6 +16,7 @@ import type {
   CleanPayload,
   CoreSnapshotPayload,
   DiagnosePayload,
+  InstalledSkillSummary,
   McpServerListPayload,
   McpServerMutationPayload,
   McpServerRemovePayload,
@@ -252,6 +253,16 @@ const backendSkeletonStatusHandler: IpcCommandHandler = (context) => {
   return { ...envelope, data: envelope.data.status };
 };
 
+const bootstrapCacheMockState: {
+  writtenAt: number | null;
+  mcpServers: McpServerSummary[];
+  installedSkills: InstalledSkillSummary[];
+} = {
+  writtenAt: null,
+  mcpServers: [],
+  installedSkills: [],
+};
+
 const bootstrapStateHandler: IpcCommandHandler = (context) => {
   const envelope = createEvidenceBackedIpcFixture(
     context.command,
@@ -262,11 +273,11 @@ const bootstrapStateHandler: IpcCommandHandler = (context) => {
     ...envelope,
     data: {
       backendStatus: envelope.data.status,
-      writtenAt: null,
+      writtenAt: bootstrapCacheMockState.writtenAt,
       snapshotProgressive: null,
       usageAnalytics: null,
-      mcpServers: [],
-      installedSkills: [],
+      mcpServers: cloneMcpServers(bootstrapCacheMockState.mcpServers),
+      installedSkills: cloneInstalledSkills(bootstrapCacheMockState.installedSkills),
       executedAt: null,
       runOnce: false,
       autoSwitchEnabled: false,
@@ -567,18 +578,24 @@ const deleteSessionsHandler: IpcCommandHandler = (context) => {
   return { ...envelope, data };
 };
 
+const mcpMockState: { servers: McpServerSummary[] } = {
+  servers: [],
+};
+
 const loadMcpServersHandler: IpcCommandHandler = (context) => {
   const envelope = createEvidenceBackedIpcFixture(
     context.command,
     context.args,
     context.steps,
   );
+  const items = readMcpMockServers();
+  syncBootstrapMcpServers();
   const data: McpServerListPayload = {
     status: envelope.data.status,
-    items: [],
-    total: 0,
+    items,
+    total: items.length,
     sourcePath: "",
-    lastScanAt: 0,
+    lastScanAt: bootstrapCacheMockState.writtenAt ?? 0,
   };
   return { ...envelope, data };
 };
@@ -590,10 +607,11 @@ const upsertMcpServerHandler: IpcCommandHandler = (context) => {
     context.steps,
   );
   const server = mcpServerFromArgs(context.args);
+  upsertMcpMockServer(server);
   const data: McpServerMutationPayload = {
     status: envelope.data.status,
     server,
-    total: server.name ? 1 : 0,
+    total: readMcpMockServers().length,
     sourcePath: "",
   };
   return { ...envelope, data };
@@ -606,10 +624,11 @@ const setMcpServerEnabledHandler: IpcCommandHandler = (context) => {
     context.steps,
   );
   const server = mcpServerFromArgs(context.args, context.args?.enabled === true);
+  upsertMcpMockServer(server);
   const data: McpServerMutationPayload = {
     status: envelope.data.status,
     server,
-    total: server.name ? 1 : 0,
+    total: readMcpMockServers().length,
     sourcePath: "",
   };
   return { ...envelope, data };
@@ -621,10 +640,12 @@ const removeMcpServerHandler: IpcCommandHandler = (context) => {
     context.args,
     context.steps,
   );
+  const removedName = readArgString(context.args, "name", "");
+  removeMcpMockServer(removedName);
   const data: McpServerRemovePayload = {
     status: envelope.data.status,
-    removedName: readArgString(context.args, "name", ""),
-    total: 0,
+    removedName,
+    total: readMcpMockServers().length,
     sourcePath: "",
   };
   return { ...envelope, data };
@@ -651,6 +672,44 @@ function normalizeMcpTransport(value: string): McpTransport {
   return value === "stdio" || value === "http" || value === "sse"
     ? value
     : "unknown";
+}
+
+function cloneMcpServer(server: McpServerSummary): McpServerSummary {
+  return {
+    ...server,
+    args: [...server.args],
+    headers: { ...server.headers },
+    environment: { ...server.environment },
+  };
+}
+
+function cloneMcpServers(servers: McpServerSummary[]) {
+  return servers.map(cloneMcpServer);
+}
+
+function readMcpMockServers() {
+  return cloneMcpServers(mcpMockState.servers);
+}
+
+function upsertMcpMockServer(server: McpServerSummary) {
+  if (!server.name) return;
+  const next = cloneMcpServer(server);
+  const index = mcpMockState.servers.findIndex((item) => item.name === server.name);
+  if (index >= 0) {
+    mcpMockState.servers[index] = next;
+    return;
+  }
+  mcpMockState.servers.push(next);
+}
+
+function removeMcpMockServer(name: string) {
+  if (!name) return;
+  mcpMockState.servers = mcpMockState.servers.filter((item) => item.name !== name);
+}
+
+function syncBootstrapMcpServers() {
+  bootstrapCacheMockState.mcpServers = readMcpMockServers();
+  touchBootstrapCache();
 }
 
 const loadUsageAnalyticsHandler: IpcCommandHandler = (context) => {
@@ -991,7 +1050,7 @@ function readArgStringRecord(args: IpcArgs | undefined, key: string) {
   );
 }
 
-function skillSummaryFromId(id: string) {
+function skillSummaryFromId(id: string): InstalledSkillSummary {
   return {
     id,
     name: id,
@@ -1016,20 +1075,26 @@ function skillBackupFromId(id: string) {
   };
 }
 
+const skillsMockState: { installed: InstalledSkillSummary[] } = {
+  installed: [],
+};
+
 const loadInstalledSkillsHandler: IpcCommandHandler = (context) => {
   const envelope = createEvidenceBackedIpcFixture(
     context.command,
     context.args,
     context.steps,
   );
+  const items = readInstalledSkillSummaries();
+  syncBootstrapInstalledSkills();
   return {
     ...envelope,
     data: {
       status: envelope.data.status,
-      items: [],
-      total: 0,
+      items,
+      total: items.length,
       rootPath: "",
-      lastScanAt: 0,
+      lastScanAt: bootstrapCacheMockState.writtenAt ?? 0,
     },
   };
 };
@@ -1059,12 +1124,14 @@ const importSkillHandler: IpcCommandHandler = (context) => {
     context.steps,
   );
   const id = readArgString(context.args, "path", "mock-skill");
+  const skill = skillSummaryFromId(id);
+  const replacedExisting = upsertInstalledSkill(skill);
   return {
     ...envelope,
     data: {
       status: envelope.data.status,
-      skill: skillSummaryFromId(id),
-      replacedExisting: false,
+      skill,
+      replacedExisting,
       backup: null,
     },
   };
@@ -1077,13 +1144,14 @@ const removeSkillHandler: IpcCommandHandler = (context) => {
     context.steps,
   );
   const id = readArgString(context.args, "id", "mock-skill");
+  removeInstalledSkill(id);
   return {
     ...envelope,
     data: {
       status: envelope.data.status,
       removedSkillID: id,
       backup: skillBackupFromId(id),
-      remainingInstalledCount: 0,
+      remainingInstalledCount: readInstalledSkillSummaries().length,
     },
   };
 };
@@ -1095,11 +1163,13 @@ const restoreSkillBackupHandler: IpcCommandHandler = (context) => {
     context.steps,
   );
   const id = readArgString(context.args, "id", "mock-skill");
+  const restoredSkill = skillSummaryFromId(id);
+  upsertInstalledSkill(restoredSkill);
   return {
     ...envelope,
     data: {
       status: envelope.data.status,
-      restoredSkill: skillSummaryFromId(id),
+      restoredSkill,
       backup: skillBackupFromId(id),
       rollbackBackup: null,
     },
@@ -1122,6 +1192,42 @@ const deleteSkillBackupHandler: IpcCommandHandler = (context) => {
     },
   };
 };
+
+function cloneInstalledSkill(skill: InstalledSkillSummary): InstalledSkillSummary {
+  return { ...skill };
+}
+
+function cloneInstalledSkills(skills: InstalledSkillSummary[]) {
+  return skills.map(cloneInstalledSkill);
+}
+
+function readInstalledSkillSummaries() {
+  return cloneInstalledSkills(skillsMockState.installed);
+}
+
+function upsertInstalledSkill(skill: InstalledSkillSummary) {
+  const next = cloneInstalledSkill(skill);
+  const index = skillsMockState.installed.findIndex((item) => item.id === skill.id);
+  if (index >= 0) {
+    skillsMockState.installed[index] = next;
+    return true;
+  }
+  skillsMockState.installed.push(next);
+  return false;
+}
+
+function removeInstalledSkill(id: string) {
+  skillsMockState.installed = skillsMockState.installed.filter((item) => item.id !== id);
+}
+
+function syncBootstrapInstalledSkills() {
+  bootstrapCacheMockState.installedSkills = readInstalledSkillSummaries();
+  touchBootstrapCache();
+}
+
+function touchBootstrapCache() {
+  bootstrapCacheMockState.writtenAt = Date.now();
+}
 
 const systemInfoHandler: IpcCommandHandler = (context) => {
   const envelope = createEvidenceBackedIpcFixture(

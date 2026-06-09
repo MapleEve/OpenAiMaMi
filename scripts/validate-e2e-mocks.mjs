@@ -251,6 +251,10 @@ function validateSkillsCommandMirror() {
   ]);
   assertIncludes("src/mocks/fixtures/commands.ts", commandFixtureText, [
     "skillsCommandHandlers",
+    "skillsMockState",
+    "readInstalledSkillSummaries",
+    "syncBootstrapInstalledSkills",
+    "bootstrapCacheMockState.installedSkills",
     "loadInstalledSkillsHandler",
     "loadSkillBackupsHandler",
     "importSkillHandler",
@@ -272,10 +276,11 @@ function validateSkillsCommandMirror() {
 
   for (const field of [
     "items: []",
+    "items,",
     "total: 0",
     "rootPath: \"\"",
     "lastScanAt: 0",
-    "replacedExisting: false",
+    "replacedExisting",
     "removedSkillID",
     "remainingInstalledCount",
     "restoredSkill",
@@ -591,6 +596,10 @@ function validateMcpMockPayloadHandlers() {
   assertIncludes("src/mocks/fixtures/commands.ts", commandFixtureText, [
     "const mcpCommandHandlers",
     "mcpCommandHandlers[definition.command] ??",
+    "mcpMockState",
+    "readMcpMockServers",
+    "syncBootstrapMcpServers",
+    "bootstrapCacheMockState.mcpServers",
     "loadMcpServersHandler",
     "upsertMcpServerHandler",
     "setMcpServerEnabledHandler",
@@ -702,6 +711,9 @@ function validateMaintenanceSystemWindowEvidence() {
     "usageAnalytics",
     "mcpServers",
     "installedSkills",
+    "bootstrapCacheMockState",
+    "cloneMcpServers(bootstrapCacheMockState.mcpServers)",
+    "cloneInstalledSkills(bootstrapCacheMockState.installedSkills)",
     "const updateInstallabilityHandler",
     "const daemonAutoSwitchCommandHandlers",
     "const maintenanceCommandHandlers",
@@ -710,6 +722,16 @@ function validateMaintenanceSystemWindowEvidence() {
     "maintenanceCommandHandlers[definition.command] ??",
     "settingsCommandHandlers[definition.command] ??",
   ]);
+
+  const bootstrapStateBody =
+    commandFixtureText.match(
+      /const bootstrapStateHandler[\s\S]*?const pendingAutoSwitchStateHandler/,
+    )?.[0] ?? "";
+  assertNotIncludes(
+    "src/mocks/fixtures/commands.ts bootstrapStateHandler",
+    bootstrapStateBody,
+    ["writtenAt: null", "mcpServers: []", "installedSkills: []"],
+  );
 
   for (const [command, handler] of requiredHandlers) {
     if (!commandFixtureText.includes(`${command}: ${handler}`)) {

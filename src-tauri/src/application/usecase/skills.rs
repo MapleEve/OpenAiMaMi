@@ -4,15 +4,17 @@ use crate::contracts::{
     SkillListPayload, SkillRemovePayload, SkillRestorePayload,
 };
 use crate::core::error::CoreError;
-use crate::repository::{skills, Repository};
+use crate::repository::{bootstrap, skills, Repository};
 
 pub fn load_installed(repo: &Repository) -> Result<SkillListPayload, CoreError> {
     let items = skills::load_installed(repo.fs(), &repo.paths().skills_dir)?;
+    let last_scan_at = current_timestamp();
+    let _ = bootstrap::store_bootstrap_installed_skills(repo, last_scan_at, items.clone());
     Ok(SkillListPayload {
         status: restored_status("skills", "load_installed_skills", BackendEffect::NoOp),
         total: items.len() as i32,
         root_path: repo.paths().skills_dir.display().to_string(),
-        last_scan_at: current_timestamp(),
+        last_scan_at,
         items,
     })
 }

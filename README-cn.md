@@ -53,6 +53,8 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - 后端不再只是空六边形目录；已把原始公开后端中可公开的 MCP、Skills、自定义指令、系统设置、系统信息、打开路径、热点开关状态、外部进程强制终止、插件合同空列表和 Tauri command 注册补入当前六边形骨架。
 - 已按 raw/internal 证据补回 `remoteDeviceSecret` 的后端 settings 持久化、首次生成、旧值导入、空值跳过、非空不覆盖和前端 E2E mock 状态合同；该能力仍只声明为本地 settings 链路恢复，不声明双平台 100% leaf 完成。
 - 已按 macOS / Windows bootstrap 证据补回 `load_bootstrap_state` 的 `bootstrap-cache.json` 读取合同，扩展 `writtenAt`、`snapshotProgressive`、`usageAnalytics`、`mcpServers`、`installedSkills` 五个缓存字段，并保留现有自动切换兼容字段。
+- 已按 bootstrap 写回证据补回 `load_mcp_servers` 与 `load_installed_skills` 的 `bootstrap-cache.json` 生产侧更新：主读取成功后分别写入 `mcpServers` 与 `installedSkills` 缓存切片，写回失败不影响主 IPC 响应。
+- 已同步收紧 E2E mock 的 bootstrap 合同：`load_bootstrap_state` 不再固定返回空 `mcpServers` / `installedSkills`，而是读取共享 mock cache；`load_mcp_servers` 与 `load_installed_skills` 会在 mock 中写回对应缓存切片，并由 `validate:e2e-mocks` 禁止退回固定空 slice。
 - 已把后端公开能力拆到 `commands`、`application/usecase`、`repository`、`repository/adapter`、`platform`、`contracts` 和 `core/error` 边界：command 只接参数和状态，usecase 负责编排，repository/adapter 负责文件读写，platform 负责系统能力，contracts 负责前后端可序列化数据形状。
 - `scripts/validate-backend-hexagonal.mjs` 已从“全仓禁止真实副作用”改成“按 owner 限制副作用”：文件系统只允许仓储/适配器边界，进程、窗口、shell 只允许平台边界，voice 仍保持空骨架门禁。
 - 新增 `scripts/validate-frontend-leaf-copy-acceptance.mjs`，把前端 leaf 和全文案验收从静态覆盖扫描中分离出来；当前该严格 gate 应当失败，直到 internal gate 和逐条文案来源验收全部完成。
@@ -66,7 +68,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - voice 前后端不做真实功能还原，只保留空骨架和说明；原始公开材料中与录音、语音运行时、快捷键、音频反馈、文本注入相关的内容不进入当前公开实现。
 - Accounts、Relay、Analytics、Sessions、Daemon 自动切换、更新安装、外部进程重启、诊断修复等后端能力仍未完成真实业务闭环；其中部分前端 wrapper 和后端命令只返回明确的未恢复状态。
 - `remoteDeviceSecret` 当前已恢复 settings 读写和迁移语义，但尚未因此关闭前端全文案、渲染交互、双平台 leaf 或 internal gate 的剩余验收项。
-- `bootstrap-cache.json` 当前只恢复读取、解析失败返回空状态和 DTO 字段承接；`load_usage_analytics`、`load_mcp_servers`、`load_installed_skills` 写回 bootstrap cache 的生产链路仍需按各自证据继续补齐。
+- `bootstrap-cache.json` 当前已恢复读取、解析失败返回空状态、DTO 字段承接、MCP/Skills 两个缓存切片生产写回，以及 E2E mock 共享 cache 验证；`load_usage_analytics` 写回 `usageAnalytics` 的生产链路仍需按证据继续补齐。
 - MCP 写回当前使用结构化 TOML 保存，已在源码层面对接命令和数据，但还没有恢复原始实现中对注释和托管块位置的完整保留策略。
 - Rust 编译验收需要具备目标平台工具链；Windows 下缺少 MSVC `link.exe` 时，`cargo check` 会在第三方 crate build script 阶段失败。
 

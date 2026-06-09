@@ -4,16 +4,18 @@ use crate::contracts::{
     McpServerRemovePayload, McpServerSummary, McpTransport,
 };
 use crate::core::error::CoreError;
-use crate::repository::{mcp, Repository};
+use crate::repository::{bootstrap, mcp, Repository};
 use std::collections::HashMap;
 
 pub fn load_servers(repo: &Repository) -> Result<McpServerListPayload, CoreError> {
     let items = mcp::load_servers(repo.fs(), &repo.paths().config_path)?;
+    let last_scan_at = current_timestamp();
+    let _ = bootstrap::store_bootstrap_mcp_servers(repo, last_scan_at, items.clone());
     Ok(McpServerListPayload {
         status: restored_status("mcp", "load_mcp_servers", BackendEffect::NoOp),
         total: items.len() as i32,
         source_path: repo.paths().config_path.display().to_string(),
-        last_scan_at: current_timestamp(),
+        last_scan_at,
         items,
     })
 }
