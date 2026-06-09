@@ -1889,6 +1889,172 @@
       "reason": "当前公开源码只足以登记 bootstrap/system 相关 current-source sidecar：bootstrap 记录 load_bootstrap_state、load_pending_auto_switch、pending confirm/dismiss 和 load_snapshot 链路；macos system 记录 watcher/schedule 缺口；system-shell-init 记录 duplicate_local_outtake_not_authoritative 非 authoritative 状态；windows system 记录 force_kill_codex、diagnose 和 diagnose_codex_router 链路与缺口。本 closeout 是非 gating evidence，不关闭 gate-report，不声明 implementation_use、gate_accepted 或 full_leaf_100。"
     },
     {
+      "id": "windows-system-current-source-strict-chain",
+      "module": "windows-system",
+      "status": "current-source-closed-partial",
+      "sidecarReports": [
+        "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/frontend-callchain-report.json"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/frontend-callchain-report.json",
+          "includes": [
+            "current-source-frontend-chain-and-gaps-recorded-non-gating",
+            "\"force_kill_codex\"",
+            "\"diagnose\"",
+            "\"diagnose_codex_router\"",
+            "不声明 implementation_use、gate_accepted 或 full_leaf_100。",
+            "不声明真实平台能力已经恢复。"
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json",
+          "includes": [
+            "\"force_kill_codex\"",
+            "\"diagnose_codex_router\"",
+            "\"diagnose\"",
+            "\"strictImplementationUse\": true",
+            "\"readyToImplement\": false",
+            "\"implementation_use\": false",
+            "\"gate_accepted\": false"
+          ]
+        },
+        {
+          "file": "src/contracts/ipc/commands.ts",
+          "includes": [
+            "\"command\": \"force_kill_codex\"",
+            "\"command\": \"diagnose\"",
+            "\"command\": \"diagnose_codex_router\""
+          ]
+        },
+        {
+          "file": "src/services/system/index.ts",
+          "includes": [
+            "diagnose: () => invokeIpc<CoreEnvelope<DiagnosePayload>>(\"diagnose\")",
+            "forceKillCodex: () =>",
+            "invokeIpc<CoreEnvelope<SystemActionPayload>>(\"force_kill_codex\")"
+          ]
+        },
+        {
+          "file": "src/services/maintenance/index.ts",
+          "includes": [
+            "diagnose: () => readEnvelopeData(systemService.diagnose())",
+            "forceKillCodex: systemService.forceKillCodex",
+            "\"run_codex_router_diagnostics\""
+          ]
+        },
+        {
+          "file": "src/services/relay/index.ts",
+          "includes": [
+            "diagnoseCodexRouter: () =>",
+            "invokeIpc<CoreEnvelope<RelayDiagnosticPayload>>(\"diagnose_codex_router\")"
+          ]
+        },
+        {
+          "file": "src/mocks/fixtures/commands.ts",
+          "includes": [
+            "force_kill_codex: systemActionHandler",
+            "diagnose: diagnoseHandler",
+            "diagnose_codex_router: relayDiagnosticHandler"
+          ]
+        },
+        {
+          "file": "src-tauri/src/commands/system.rs",
+          "includes": [
+            "pub fn force_kill_codex",
+            "pub fn diagnose"
+          ]
+        },
+        {
+          "file": "src-tauri/src/commands/relay.rs",
+          "includes": [
+            "pub fn diagnose_codex_router"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/system.rs",
+          "includes": [
+            "pub fn diagnose",
+            "\"force_kill_codex\"",
+            "强制结束外部程序能力保持 unsupported/pending"
+          ]
+        }
+      ],
+      "closedGateReportFailures": [
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json",
+          "path": "per_command.force_kill_codex.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 Windows system force_kill_codex 的 current-source partial closeout；当前公开前端/服务/mock/Rust command/usecase 骨架链路存在，但原始报告仍因产品决策和真实平台能力缺口保持失败，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json",
+          "path": "per_command.force_kill_codex.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 Windows system force_kill_codex 的 current-source partial closeout；当前公开前端/服务/mock/Rust command/usecase 骨架链路存在，但原始报告仍因产品决策和真实平台能力缺口保持失败，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json",
+          "path": "per_command.force_kill_codex.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 Windows system force_kill_codex 的 current-source partial closeout；当前公开前端/服务/mock/Rust command/usecase 骨架链路存在，但原始报告仍因产品决策和真实平台能力缺口保持失败，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json",
+          "path": "per_command.diagnose_codex_router.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 Windows system diagnose_codex_router 的 current-source partial closeout；当前公开 relay/system 前端服务、mock、Rust command/usecase 骨架链路存在，但原始报告仍因 dim6/source archive consumer scope 和真实平台能力缺口保持失败，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json",
+          "path": "per_command.diagnose_codex_router.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 Windows system diagnose_codex_router 的 current-source partial closeout；当前公开 relay/system 前端服务、mock、Rust command/usecase 骨架链路存在，但原始报告仍因 dim6/source archive consumer scope 和真实平台能力缺口保持失败，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json",
+          "path": "per_command.diagnose_codex_router.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 Windows system diagnose_codex_router 的 current-source partial closeout；当前公开 relay/system 前端服务、mock、Rust command/usecase 骨架链路存在，但原始报告仍因 dim6/source archive consumer scope 和真实平台能力缺口保持失败，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json",
+          "path": "per_command.diagnose.readyToImplement",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 Windows system diagnose 的 current-source partial closeout；当前公开前端 service/mock/Rust command/usecase 骨架链路存在，但原始报告仍因 dim6/source archive consumer scope 和真实平台能力缺口保持失败，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json",
+          "path": "per_command.diagnose.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 Windows system diagnose 的 current-source partial closeout；当前公开前端 service/mock/Rust command/usecase 骨架链路存在，但原始报告仍因 dim6/source archive consumer scope 和真实平台能力缺口保持失败，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json",
+          "path": "per_command.diagnose.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 Windows system diagnose 的 current-source partial closeout；当前公开前端 service/mock/Rust command/usecase 骨架链路存在，但原始报告仍因 dim6/source archive consumer scope 和真实平台能力缺口保持失败，不声明 raw/internal gate、implementation_use、gate_accepted、dim6 或 full_leaf_100 恢复。"
+        }
+      ],
+      "nonClaims": [
+        "不修改 gate-report",
+        "不声明 raw/internal gate 已通过",
+        "不声明 implementation_use、gate_accepted 或 full_leaf_100 已恢复",
+        "不声明真实平台能力已经恢复",
+        "不处理 macOS watcher、bootstrap、mystery 或 voice"
+      ],
+      "reason": "本 closeout 只登记 Windows system 的 current-source partial closeout：force_kill_codex、diagnose_codex_router 和 diagnose 在当前公开前端/服务/mock/Rust command/usecase 骨架链路中可验证，但原始报告仍保持失败；不声明 raw/internal gate、真实平台能力、dim6、implementation_use、gate_accepted 或 full_leaf_100 已恢复。"
+    },
+    {
       "id": "cross-home-usage-frontend-current-source-non-gating-closeout",
       "module": "cross-home-usage-frontend",
       "status": "current-source-closed-partial",
