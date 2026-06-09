@@ -142,6 +142,28 @@ function assertNotIncludes(label, text, snippets) {
   }
 }
 
+function assertMatches(label, text, checks) {
+  for (const [pattern, description] of checks) {
+    if (!pattern.test(text)) {
+      failures.push(`${label} 缺少结构模式：${description}`);
+    }
+  }
+}
+
+function readDeclarationHeader(label, text, startToken) {
+  const start = text.indexOf(startToken);
+  if (start < 0) {
+    failures.push(`${label} 缺少声明：${startToken}`);
+    return "";
+  }
+  const open = text.indexOf("{", start);
+  if (open < 0) {
+    failures.push(`${label} 缺少可解析的声明头`);
+    return "";
+  }
+  return text.slice(start, open);
+}
+
 function readDelimitedBody(label, text, startToken) {
   const start = text.indexOf(startToken);
   if (start < 0) {
@@ -811,6 +833,16 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     commandFixtureText,
     "function createCoreSnapshotPayload",
   );
+  const coreSnapshotSignature = readDeclarationHeader(
+    "src/mocks/fixtures/commands.ts createCoreSnapshotPayload",
+    commandFixtureText,
+    "function createCoreSnapshotPayload",
+  );
+  const coreSnapshotPayloadBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts createCoreSnapshotPayload return payload",
+    coreSnapshotBody,
+    "return",
+  );
   const refreshUsageBody = readDelimitedBody(
     "src/mocks/fixtures/commands.ts refreshUsageSnapshotHandler",
     commandFixtureText,
@@ -880,7 +912,6 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     "withMockData(context, systemHotspotMockState.enabled)",
     "withMockData(context, systemHotspotMockState.hasNotch)",
     "withMockData(context, systemUsageMockState.refreshInterval)",
-    "function createCoreSnapshotPayload(\n  backendStatus: CoreSnapshotPayload[\"backendStatus\"],",
     "const mysteryUnlockMockState",
     "withMockData(context, [...mysteryUnlockMockState.grants])",
   ]);
@@ -919,9 +950,23 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     "value === \"30s\" || value === \"1m\" || value === \"3m\" || value === \"5m\"",
     ": fallback",
   ]);
+  assertMatches(
+    "src/mocks/fixtures/commands.ts createCoreSnapshotPayload signature",
+    coreSnapshotSignature,
+    [
+      [
+        /\bfunction\s+createCoreSnapshotPayload\s*\(\s*backendStatus\s*:\s*CoreSnapshotPayload\["backendStatus"\]\s*,\s*localOnly\s*:\s*boolean\s*,?\s*\)\s*:\s*CoreSnapshotPayload\s*$/,
+        'function createCoreSnapshotPayload(backendStatus: CoreSnapshotPayload["backendStatus"], localOnly: boolean): CoreSnapshotPayload',
+      ],
+    ],
+  );
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts createCoreSnapshotPayload return payload",
+    coreSnapshotPayloadBody,
+    ["backendStatus,"],
+  );
   assertIncludes("src/mocks/fixtures/commands.ts createCoreSnapshotPayload", coreSnapshotBody, [
     "const usageSource = localOnly ? \"local\" : systemUsageMockState.usageSource;",
-    "backendStatus,",
     "lastScanAt: systemUsageMockState.lastScanAt",
     "usageSource,",
     "usageStatus: systemUsageMockState.usageStatus",

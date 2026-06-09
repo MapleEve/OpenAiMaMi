@@ -5,6 +5,45 @@ import { fileURLToPath } from "node:url";
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const closeoutPath = join(repoRoot, "docs", "reconstruction", "frontend-current-source-closeouts.json");
 const failures = [];
+const RELAY_CURRENT_SOURCE_SKELETON_ID = "relay-current-source-skeleton";
+const RELAY_CURRENT_SOURCE_SIDECAR =
+  "evidence/full-chain/internal/audits/audits/cross-1.0.9-relay-core-bootstrap/frontend-callchain-report.json";
+const RELAY_CURRENT_SOURCE_GATE_REPORTS = [
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay/gate-report.json",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/gate-report.json",
+  "evidence/full-chain/internal/audits/audits/cross-1.0.9-relay-core-bootstrap/gate-report.json",
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay-core/gate-report.json",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json",
+];
+const RELAY_CURRENT_SOURCE_COMMANDS = [
+  "activate_relay_provider",
+  "deactivate_relay_provider",
+  "delete_relay_provider",
+  "diagnose_codex_router",
+  "export_relay_config",
+  "fetch_relay_models_draft",
+  "fix_codex_router_issue",
+  "get_passthrough_audit_log",
+  "get_relay_active",
+  "get_relay_proxy_status",
+  "import_relay_config",
+  "load_relay_state",
+  "run_codex_router_diagnostics",
+  "set_block_official_passthrough",
+  "set_codex_router_enabled",
+  "set_relay_provider_network",
+  "test_relay_draft",
+  "test_relay_provider",
+  "upsert_relay_provider",
+];
+const RELAY_CURRENT_SOURCE_NON_CLAIMS = [
+  "不声明真实代理业务已经恢复。",
+  "不声明真实配置持久化已经恢复。",
+  "不声明真实 daemon 或 proxy runner 已经恢复。",
+  "不声明真实 HTTP、model fetch 或 SSE 行为已经恢复。",
+  "不声明真实 import/export IO 已经恢复。",
+  "不声明 full_leaf_100，也不修改任何 gate-report 字段。",
+];
 
 function repoPath(path) {
   return join(repoRoot, ...path.split("/"));
@@ -55,52 +94,52 @@ function validateClosedGateReportFailures(closeout) {
 
   for (const entry of entries) {
     if (!entry || typeof entry !== "object") {
-      failures.push(`${closeout.id} closedGateReportFailures entry must be an object`);
+      failures.push(`${closeout.id} closedGateReportFailures 条目必须是对象`);
       continue;
     }
 
     const { report, path, value, classification, reason } = entry;
     if (typeof report !== "string" || report.length === 0) {
-      failures.push(`${closeout.id} closedGateReportFailures missing report`);
+      failures.push(`${closeout.id} closedGateReportFailures 缺少 report`);
       continue;
     }
     if (report.includes("/accounts/") || report.includes("-accounts/") || report.includes("/plugins/") || report.includes("-plugins/")) {
-      failures.push(`${closeout.id} closedGateReportFailures disallows accounts/plugins report: ${report}`);
+      failures.push(`${closeout.id} closedGateReportFailures 不允许登记 accounts/plugins report：${report}`);
     }
     if (typeof path !== "string" || path.length === 0) {
-      failures.push(`${closeout.id} closedGateReportFailures missing path`);
+      failures.push(`${closeout.id} closedGateReportFailures 缺少 path`);
       continue;
     }
     if (path.endsWith("full_leaf_100")) {
-      failures.push(`${closeout.id} closedGateReportFailures disallows full_leaf_100 noise entry: ${report} ${path}`);
+      failures.push(`${closeout.id} closedGateReportFailures 不允许登记 full_leaf_100 噪声条目：${report} ${path}`);
     }
     if (!classifications.has(classification)) {
       failures.push(`${closeout.id} ${report} ${path} classification=${String(classification)}`);
     }
     if (typeof reason !== "string" || reason.trim().length === 0) {
-      failures.push(`${closeout.id} ${report} ${path} missing reason`);
+      failures.push(`${closeout.id} ${report} ${path} 缺少 reason`);
     }
 
     const key = `${report}\u0000${path}\u0000${JSON.stringify(value)}`;
     if (seen.has(key)) {
-      failures.push(`${closeout.id} duplicate closedGateReportFailures: ${report} ${path}`);
+      failures.push(`${closeout.id} closedGateReportFailures 存在重复条目：${report} ${path}`);
     }
     seen.add(key);
 
     const reportPath = repoPath(report);
     if (!existsSync(reportPath)) {
-      failures.push(`${closeout.id} missing gate-report: ${report}`);
+      failures.push(`${closeout.id} 缺少 gate-report：${report}`);
       continue;
     }
     const gate = readJson(reportPath);
     const actual = getJsonPath(gate, path);
     if (!actual.exists) {
-      failures.push(`${closeout.id} ${report} missing path: ${path}`);
+      failures.push(`${closeout.id} ${report} 缺少 path：${path}`);
       continue;
     }
     if (!valuesEqual(actual.value, value)) {
       failures.push(
-        `${closeout.id} ${report} ${path} value changed: expected ${JSON.stringify(value)}, actual ${JSON.stringify(actual.value)}. Delete stale closeout noise entry.`,
+        `${closeout.id} ${report} ${path} value 已变化：期望 ${JSON.stringify(value)}，实际 ${JSON.stringify(actual.value)}。请删除过期 closeout 噪声条目。`,
       );
     }
   }
@@ -109,7 +148,7 @@ function validateSidecarReports(closeout) {
   for (const report of closeout.sidecarReports ?? []) {
     const path = repoPath(report);
     if (!existsSync(path)) {
-      failures.push(`${closeout.id} missing sidecar report: ${report}`);
+      failures.push(`${closeout.id} 缺少 sidecar report：${report}`);
       continue;
     }
     const sidecar = readJson(path);
@@ -229,6 +268,126 @@ function validateRelayCloseout(closeout) {
     }
   }
 
+  validateRequiredSignals(closeout);
+}
+
+function validateStringArraySet(label, actual, expected) {
+  if (!Array.isArray(actual)) {
+    failures.push(`${label} 必须是数组`);
+    return;
+  }
+
+  const actualSet = new Set(actual);
+  const expectedSet = new Set(expected);
+  for (const value of expectedSet) {
+    if (!actualSet.has(value)) failures.push(`${label} 缺少：${value}`);
+  }
+  for (const value of actualSet) {
+    if (!expectedSet.has(value)) failures.push(`${label} 不允许：${String(value)}`);
+  }
+  if (actual.length !== actualSet.size) {
+    failures.push(`${label} 存在重复条目`);
+  }
+}
+
+function requireNoRelaySkeletonGatePromotionFields(closeout) {
+  for (const field of [
+    "closedCommands",
+    "closedManifestStatuses",
+    "closedGateReportFailures",
+    "gateReports",
+  ]) {
+    const value = closeout[field];
+    if (Array.isArray(value) && value.length > 0) {
+      failures.push(`${closeout.id} 不得登记 ${field}；本 closeout 只能登记非 gating 当前源码骨架证据`);
+    }
+  }
+}
+
+function validateRelaySkeletonNonClaims(closeout, sidecar) {
+  const closeoutNonClaims = closeout.nonClaims ?? [];
+  const sidecarNonClaims = sidecar.non_claims ?? [];
+  for (const required of RELAY_CURRENT_SOURCE_NON_CLAIMS) {
+    if (!closeoutNonClaims.includes(required)) {
+      failures.push(`${closeout.id} 缺少 nonClaims：${required}`);
+    }
+    if (!sidecarNonClaims.includes(required)) {
+      failures.push(`${RELAY_CURRENT_SOURCE_SIDECAR} 缺少 non_claims：${required}`);
+    }
+  }
+}
+
+function validateRelayCurrentSourceCommandSignals() {
+  const commandStringFiles = [
+    "src/contracts/ipc/commands.ts",
+    "src/services/relay/index.ts",
+    "src/features/relay/contract.ts",
+  ];
+  for (const command of RELAY_CURRENT_SOURCE_COMMANDS) {
+    for (const file of commandStringFiles) {
+      requireIncludes(file, [`"${command}"`]);
+    }
+    requireIncludes("src/mocks/fixtures/commands.ts", [`${command}:`]);
+    requireIncludes("src-tauri/src/lib.rs", [`commands::relay::${command}`]);
+    requireIncludes("src-tauri/src/commands/relay.rs", [`pub fn ${command}`]);
+    requireIncludes("src-tauri/src/application/usecase/relay.rs", [`pub fn ${command}`]);
+  }
+}
+
+function validateRelayCurrentSourceSkeletonCloseout(closeout) {
+  requireNoRelaySkeletonGatePromotionFields(closeout);
+
+  const expectedSidecars = [RELAY_CURRENT_SOURCE_SIDECAR];
+  validateStringArraySet(
+    `${closeout.id} sidecarReports`,
+    closeout.sidecarReports ?? [],
+    expectedSidecars,
+  );
+  validateSidecarReports(closeout);
+
+  const sidecarPath = repoPath(RELAY_CURRENT_SOURCE_SIDECAR);
+  if (!existsSync(sidecarPath)) {
+    failures.push(`${closeout.id} 缺少 sidecar report：${RELAY_CURRENT_SOURCE_SIDECAR}`);
+    validateRequiredSignals(closeout);
+    return;
+  }
+
+  const sidecar = readJson(sidecarPath);
+  if (sidecar.schema !== "open-aimami.frontend_callchain_report.v1") {
+    failures.push(`${RELAY_CURRENT_SOURCE_SIDECAR} schema=${String(sidecar.schema)}`);
+  }
+  if (sidecar.status !== "current-source-relay-skeleton-non-gating") {
+    failures.push(`${RELAY_CURRENT_SOURCE_SIDECAR} status=${String(sidecar.status)}`);
+  }
+  if (Array.isArray(sidecar.closed_frontend_commands) && sidecar.closed_frontend_commands.length > 0) {
+    failures.push(`${RELAY_CURRENT_SOURCE_SIDECAR} 不得登记 closed_frontend_commands`);
+  }
+
+  validateStringArraySet(
+    `${RELAY_CURRENT_SOURCE_SIDECAR} current_source_ipc_commands`,
+    sidecar.current_source_ipc_commands,
+    RELAY_CURRENT_SOURCE_COMMANDS,
+  );
+  validateStringArraySet(
+    `${RELAY_CURRENT_SOURCE_SIDECAR} gate_reports`,
+    sidecar.gate_reports,
+    RELAY_CURRENT_SOURCE_GATE_REPORTS,
+  );
+  for (const report of sidecar.gate_reports ?? []) {
+    if (!existsSync(repoPath(report))) {
+      failures.push(`${RELAY_CURRENT_SOURCE_SIDECAR} 缺少 gate-report：${report}`);
+    }
+  }
+
+  const sourceSignals = sidecar.source_signals ?? {};
+  for (const file of Object.values(sourceSignals)) {
+    if (typeof file !== "string" || !existsSync(repoPath(file))) {
+      failures.push(`${RELAY_CURRENT_SOURCE_SIDECAR} source_signals 缺少文件：${String(file)}`);
+    }
+  }
+
+  validateRelaySkeletonNonClaims(closeout, sidecar);
+  validateRelayCurrentSourceCommandSignals();
   validateRequiredSignals(closeout);
 }
 
@@ -441,16 +600,16 @@ function validateSystemWindowMaintenanceCloseout(closeout) {
   const actualCommands = new Set(closeout.closedCommands ?? []);
   for (const command of expectedCommands) {
     if (!actualCommands.has(command)) {
-      failures.push(`${closeout.id} missing closedCommands: ${command}`);
+      failures.push(`${closeout.id} 缺少 closedCommands：${command}`);
     }
   }
   for (const command of actualCommands) {
     if (!expectedCommands.has(command)) {
-      failures.push(`${closeout.id} disallows closed command: ${command}`);
+      failures.push(`${closeout.id} 不允许关闭命令：${command}`);
     }
   }
   if (!(closeout.notClosedCommands ?? []).includes("load_snapshot")) {
-    failures.push(`${closeout.id} must explicitly keep load_snapshot not closed`);
+    failures.push(`${closeout.id} 必须显式保留 load_snapshot 为未关闭状态`);
   }
 
   const requiredSidecars = new Set([
@@ -461,12 +620,12 @@ function validateSystemWindowMaintenanceCloseout(closeout) {
   const actualSidecars = new Set(closeout.sidecarReports ?? []);
   for (const sidecar of requiredSidecars) {
     if (!actualSidecars.has(sidecar)) {
-      failures.push(`${closeout.id} missing sidecarReports: ${sidecar}`);
+      failures.push(`${closeout.id} 缺少 sidecarReports：${sidecar}`);
     }
   }
   for (const sidecar of actualSidecars) {
     if (!requiredSidecars.has(sidecar)) {
-      failures.push(`${closeout.id} disallows sidecar report: ${sidecar}`);
+      failures.push(`${closeout.id} 不允许登记 sidecar report：${sidecar}`);
     }
   }
 
@@ -492,12 +651,12 @@ function validateSystemWindowMaintenanceCloseout(closeout) {
   );
   for (const expected of expectedGateFailureKeys) {
     if (!actualGateFailureKeys.has(expected)) {
-      failures.push(`${closeout.id} missing allowed gate-report failure: ${expected}`);
+      failures.push(`${closeout.id} 缺少允许登记的 gate-report failure：${expected}`);
     }
   }
   for (const actual of actualGateFailureKeys) {
     if (!expectedGateFailureKeys.has(actual)) {
-      failures.push(`${closeout.id} disallows gate-report failure: ${actual}`);
+      failures.push(`${closeout.id} 不允许登记 gate-report failure：${actual}`);
     }
   }
 
@@ -512,7 +671,7 @@ function validateSystemWindowMaintenanceCloseout(closeout) {
     "\u4e0d\u767b\u8bb0\u4efb\u4f55 full_leaf_100=false \u5b57\u6bb5",
   ]) {
     if (!nonClaims.includes(required)) {
-      failures.push(`${closeout.id} missing nonClaims: ${required}`);
+      failures.push(`${closeout.id} 缺少 nonClaims：${required}`);
     }
   }
 
@@ -536,6 +695,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateSystemWindowMaintenanceCloseout(closeout);
   } else if (closeout.id === "relay-passthrough-audit-backend-skeleton-chain") {
     validateRelayCloseout(closeout);
+  } else if (closeout.id === RELAY_CURRENT_SOURCE_SKELETON_ID) {
+    validateRelayCurrentSourceSkeletonCloseout(closeout);
   } else {
     failures.push(`未知 closeout id：${closeout.id}`);
   }
