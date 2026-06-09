@@ -5,6 +5,7 @@ import type {
   ApiProxyMode,
   ApiProxyTestPayload,
   AutoSwitchConfigPayload,
+  BackendSkeletonStatus,
   BootstrapStatePayload,
   CleanPayload,
   CoreEnvelope,
@@ -108,6 +109,41 @@ export const systemService = {
   setUsageRefreshInterval: (interval: string) =>
     readEnvelopeData(
       invokeIpc<CoreEnvelope<string>>("set_usage_refresh_interval", { interval }),
+    ),
+
+  noteUsageRefreshActivity: () =>
+    readEnvelopeData(
+      invokeIpc<CoreEnvelope<BackendSkeletonStatus>>(
+        "note_usage_refresh_activity",
+      ),
+    ),
+
+  scheduleFullRuntimeRefresh: () =>
+    readEnvelopeData(
+      invokeIpc<CoreEnvelope<BackendSkeletonStatus>>(
+        "schedule_full_runtime_refresh",
+      ),
+    ),
+
+  startAutoSwitchPendingWatcher: () =>
+    readEnvelopeData(
+      invokeIpc<CoreEnvelope<BackendSkeletonStatus>>(
+        "start_auto_switch_pending_watcher",
+      ),
+    ),
+
+  startUsageRefreshWatcher: () =>
+    readEnvelopeData(
+      invokeIpc<CoreEnvelope<BackendSkeletonStatus>>(
+        "start_usage_refresh_watcher",
+      ),
+    ),
+
+  updateUsageRefreshSchedule: () =>
+    readEnvelopeData(
+      invokeIpc<CoreEnvelope<BackendSkeletonStatus>>(
+        "update_usage_refresh_schedule",
+      ),
     ),
 
   checkUpdateInstallability: () =>

@@ -36,6 +36,19 @@ const internalGapFiles = {
   ),
 };
 
+const sourceSidecarFiles = {
+  systemManifest: join(
+    repoRoot,
+    "evidence",
+    "full-chain",
+    "internal",
+    "audits",
+    "audits",
+    "macos-1.0.9-system",
+    "manifest.json",
+  ),
+};
+
 const ipcContractPath = join(repoRoot, "src", "contracts", "ipc", "commands.ts");
 const servicesRoot = join(repoRoot, "src", "services");
 const featuresRoot = join(repoRoot, "src", "features");
@@ -209,6 +222,11 @@ function logFail(name, detail) {
 
 function extractRawCommands(contractReport) {
   return unique([...contractReport.matchAll(/^### `([^`]+)`/gm)].map((match) => match[1]));
+}
+
+function extractSourceSidecarCommands() {
+  const systemManifest = parseJsonFile(sourceSidecarFiles.systemManifest);
+  return unique(systemManifest?.helper_watchers ?? []);
 }
 
 function extractContractCommands(ipcContract) {
@@ -1686,18 +1704,20 @@ assertEvidenceInputs(raw);
 const frontendManifest = readRequired(frontendManifestPath);
 const contractReport = readRequired(evidenceFiles.contractReport);
 const rawCommands = extractRawCommands(contractReport);
+const sourceSidecarCommands = extractSourceSidecarCommands();
+const contractRequiredCommands = unique([...rawCommands, ...sourceSidecarCommands]);
 const contractCommands = extractContractCommands(readRequired(ipcContractPath));
 const serviceFiles = walkFiles(servicesRoot, (file) => /\.(ts|tsx)$/.test(file));
 const serviceText = readTextFromFiles(serviceFiles);
 const rawModules = collectRawPageModules(raw.frontendFiles, raw.controlFlow);
 const commandsByModule = controlFlowCommandsByModule(raw.controlFlow, rawModules);
 const voiceSkeletonCommands = extractVoiceGapCommands();
-const serviceRequiredCommands = rawCommands.filter(
+const serviceRequiredCommands = contractRequiredCommands.filter(
   (command) => !voiceSkeletonCommands.includes(command),
 );
 
-assertExactSet("IPC 合同覆盖 raw dumped 命令", rawCommands, contractCommands);
-assertCommandsMentioned("service wrapper 覆盖 raw dumped 命令", serviceRequiredCommands, serviceText);
+assertExactSet("IPC 合同覆盖 raw dumped 和 source sidecar 命令", contractRequiredCommands, contractCommands);
+assertCommandsMentioned("service wrapper 覆盖 raw dumped 和 source sidecar 命令", serviceRequiredCommands, serviceText);
 assertFeatureContracts(rawCommands);
 validatePluginsDumpedContract();
 validatePluginsRestorationMatrix(frontendManifest);

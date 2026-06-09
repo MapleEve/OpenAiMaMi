@@ -1,8 +1,8 @@
 use crate::application::usecase;
 use crate::contracts::{
     ApiModePayload, ApiProxyDetectPayload, ApiProxyMode, ApiProxyTestPayload,
-    AutoSwitchConfigPayload, BootstrapStatePayload, CleanPayload, CoreEnvelope,
-    CoreSnapshotPayload, DaemonRunPayload, DiagnosePayload, MysteryRouteGrant,
+    AutoSwitchConfigPayload, BackendSkeletonStatus, BootstrapStatePayload, CleanPayload,
+    CoreEnvelope, CoreSnapshotPayload, DaemonRunPayload, DiagnosePayload, MysteryRouteGrant,
     NotificationClientStatePayload, PendingAutoSwitchStatePayload, RebuildRegistryPayload,
     SystemActionPayload, SystemInfoPayload, UpdateInstallabilityPayload,
 };
@@ -151,6 +151,56 @@ pub fn set_usage_refresh_interval(
 ) -> Result<CoreEnvelope<String>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
     usecase::system::set_usage_refresh_interval(&repo, interval)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
+}
+
+#[tauri::command]
+pub fn note_usage_refresh_activity(
+    repo: State<'_, Mutex<Repository>>,
+) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::system::note_usage_refresh_activity(&repo)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
+}
+
+#[tauri::command]
+pub fn schedule_full_runtime_refresh(
+    repo: State<'_, Mutex<Repository>>,
+) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::system::schedule_full_runtime_refresh(&repo)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
+}
+
+#[tauri::command]
+pub fn start_auto_switch_pending_watcher(
+    repo: State<'_, Mutex<Repository>>,
+) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::system::start_auto_switch_pending_watcher(&repo)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
+}
+
+#[tauri::command]
+pub fn start_usage_refresh_watcher(
+    repo: State<'_, Mutex<Repository>>,
+) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::system::start_usage_refresh_watcher(&repo)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
+}
+
+#[tauri::command]
+pub fn update_usage_refresh_schedule(
+    repo: State<'_, Mutex<Repository>>,
+) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::system::update_usage_refresh_schedule(&repo)
         .map(CoreEnvelope::ok)
         .map_err(|error| error.to_string())
 }

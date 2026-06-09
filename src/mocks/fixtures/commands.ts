@@ -11,6 +11,7 @@ import type {
   AccountMonitorPayload,
   AccountSessionImportPayload,
   AppPathState,
+  BackendSkeletonStatus,
   ChangeAnalyticsPayload,
   CleanPayload,
   CoreSnapshotPayload,
@@ -83,6 +84,7 @@ export type IpcCommandMockData =
   | AccountImportPreviewPayload
   | AccountMonitorPayload
   | AccountSessionImportPayload
+  | BackendSkeletonStatus
   | ChangeAnalyticsPayload
   | CleanPayload
   | CoreSnapshotPayload
@@ -239,6 +241,15 @@ const systemActionHandler: IpcCommandHandler = (context) => {
     data.processes = [];
   }
   return { ...envelope, data };
+};
+
+const backendSkeletonStatusHandler: IpcCommandHandler = (context) => {
+  const envelope = createEvidenceBackedIpcFixture(
+    context.command,
+    context.args,
+    context.steps,
+  );
+  return { ...envelope, data: envelope.data.status };
 };
 
 const bootstrapStateHandler: IpcCommandHandler = (context) => {
@@ -1660,10 +1671,15 @@ const systemCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> 
   import_remote_device_secret_if_empty: unitHandler,
   load_snapshot: coreSnapshotHandler,
   merge_mystery_unlock_grants: mergeMysteryUnlockGrantsHandler,
+  note_usage_refresh_activity: backendSkeletonStatusHandler,
   open_path: systemActionHandler,
   refresh_usage_snapshot: refreshUsageSnapshotHandler,
   reset_codex_config: systemActionHandler,
   restart_codex: systemActionHandler,
+  schedule_full_runtime_refresh: backendSkeletonStatusHandler,
+  start_auto_switch_pending_watcher: backendSkeletonStatusHandler,
+  start_usage_refresh_watcher: backendSkeletonStatusHandler,
+  update_usage_refresh_schedule: backendSkeletonStatusHandler,
 };
 
 const accountsCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {

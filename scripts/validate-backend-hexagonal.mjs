@@ -57,7 +57,14 @@ const ipcCommandContractFile = join(repoRoot, "src", "contracts", "ipc", "comman
 const tauriLibFile = join(backendRoot, "lib.rs");
 const applicationUsecaseRoot = join(backendRoot, "application", "usecase");
 const repositoryModFile = join(backendRoot, "repository", "mod.rs");
-const expectedNonVoiceIpcCommandCount = 93;
+const sourceSidecarSystemCommands = [
+  "note_usage_refresh_activity",
+  "schedule_full_runtime_refresh",
+  "start_auto_switch_pending_watcher",
+  "start_usage_refresh_watcher",
+  "update_usage_refresh_schedule",
+];
+const expectedNonVoiceIpcCommandCount = 93 + sourceSidecarSystemCommands.length;
 
 const ipcDomainModuleMap = new Map([
   ["accounts", "accounts"],
@@ -76,8 +83,8 @@ const ipcDomainModuleMap = new Map([
 
 const ipcCommandModuleOverrides = new Map([["load_session_analytics", "sessions"]]);
 
-// 当前没有无 TS 合同的系统命令；迁移期如需豁免必须显式加入这里。
-const allowedExistingSystemCommands = new Set([]);
+// 当前只允许 evidence 明确登记的 system source-sidecar 命令超过 raw dumped 合同。
+const allowedExistingSystemCommands = new Set(sourceSidecarSystemCommands);
 
 const forbiddenSideEffectRules = [
   {

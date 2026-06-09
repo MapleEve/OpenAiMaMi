@@ -1056,9 +1056,59 @@ export const IPC_COMMAND_DEFINITIONS = [
   },
   {
     "domain": "system",
+    "command": "note_usage_refresh_activity",
+    "wrapperNames": [
+      "noteUsageRefreshActivity"
+    ],
+    "argKeys": [],
+    "source": "minified",
+    "tier": "P1"
+  },
+  {
+    "domain": "system",
     "command": "refresh_usage_snapshot",
     "wrapperNames": [
       "refreshUsageSnapshot"
+    ],
+    "argKeys": [],
+    "source": "minified",
+    "tier": "P1"
+  },
+  {
+    "domain": "system",
+    "command": "schedule_full_runtime_refresh",
+    "wrapperNames": [
+      "scheduleFullRuntimeRefresh"
+    ],
+    "argKeys": [],
+    "source": "minified",
+    "tier": "P1"
+  },
+  {
+    "domain": "system",
+    "command": "start_auto_switch_pending_watcher",
+    "wrapperNames": [
+      "startAutoSwitchPendingWatcher"
+    ],
+    "argKeys": [],
+    "source": "minified",
+    "tier": "P1"
+  },
+  {
+    "domain": "system",
+    "command": "start_usage_refresh_watcher",
+    "wrapperNames": [
+      "startUsageRefreshWatcher"
+    ],
+    "argKeys": [],
+    "source": "minified",
+    "tier": "P1"
+  },
+  {
+    "domain": "system",
+    "command": "update_usage_refresh_schedule",
+    "wrapperNames": [
+      "updateUsageRefreshSchedule"
     ],
     "argKeys": [],
     "source": "minified",
