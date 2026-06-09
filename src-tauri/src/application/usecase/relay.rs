@@ -1,6 +1,6 @@
 use crate::application::{
     ports::RelayPlatformPort,
-    service::{pending_status, restored_status},
+    service::{current_timestamp, pending_status, restored_status},
 };
 use crate::contracts::{
     BackendEffect, BackendSkeletonStatus, CoreWarning, RelayActivePayload,
@@ -179,25 +179,62 @@ pub fn set_relay_provider_network(
 }
 
 pub fn test_relay_provider(
-    _repo: &Repository,
-    _provider_id: String,
+    repo: &Repository,
+    provider_id: String,
 ) -> (RelayTestPayload, CoreWarning) {
     let command = "test_relay_provider";
-    (
-        test_payload_from_domain(command, relay_core::pending_test_result(command)),
-        skeleton_warning(command),
-    )
+    let provider = load_provider_for_test(repo, &provider_id);
+    let result = provider
+        .as_ref()
+        .ok_or_else(|| CoreError::InvalidInput("relay provider 不存在".to_string()))
+        .and_then(|provider| {
+            let draft = draft_from_provider(provider);
+            relay_core::prepare_health_check_request(command, &draft, Some(provider.id.clone()))
+        })
+        .and_then(|request| RelayPlatformAdapter.test_relay_mock_terminal(&request))
+        .and_then(|response_body| relay_core::parse_health_check_result(&response_body));
+
+    match result {
+        Ok(test) => {
+            let _ = relay_repository::record_provider_health(
+                repo,
+                &provider_id,
+                &test,
+                current_timestamp(),
+            );
+            (
+                test_payload_from_domain(command, test),
+                relay_test_warning(command),
+            )
+        }
+        Err(error) => (
+            test_payload_from_domain(command, relay_test_error(&error)),
+            relay_test_error_warning(command, &error),
+        ),
+    }
 }
 
 pub fn test_relay_draft(
     _repo: &Repository,
-    _input: RelayProviderDraftInput,
+    input: RelayProviderDraftInput,
 ) -> (RelayTestPayload, CoreWarning) {
     let command = "test_relay_draft";
-    (
-        test_payload_from_domain(command, relay_core::pending_test_result(command)),
-        skeleton_warning(command),
-    )
+    let draft = draft_from_input(&input);
+    let result =
+        relay_core::prepare_health_check_request(command, &draft, Some("__draft__".to_string()))
+            .and_then(|request| RelayPlatformAdapter.test_relay_mock_terminal(&request))
+            .and_then(|response_body| relay_core::parse_health_check_result(&response_body));
+
+    match result {
+        Ok(test) => (
+            test_payload_from_domain(command, test),
+            relay_test_warning(command),
+        ),
+        Err(error) => (
+            test_payload_from_domain(command, relay_test_error(&error)),
+            relay_test_error_warning(command, &error),
+        ),
+    }
 }
 
 pub fn fetch_relay_models_draft(
@@ -490,13 +527,13 @@ fn provider_payload_from_domain(
         extra_headers,
         network: provider.network.clone(),
         active,
-        health_score: None,
-        latency_ms: None,
-        last_tested_at: None,
+        health_score: provider.health_score,
+        latency_ms: provider.latency_ms,
+        last_tested_at: provider.last_tested_at,
         updated_at: None,
-        last_error: None,
-        error_message: None,
-        models_sample: Vec::new(),
+        last_error: provider.last_error.clone(),
+        error_message: provider.last_error.clone(),
+        models_sample: provider.models_sample.clone(),
     }
 }
 
@@ -517,6 +554,36 @@ fn draft_from_input(input: &RelayProviderDraftInput) -> RelayDraftDomain {
         extra_headers: input.extra_headers.clone(),
         network: input.network.clone(),
     }
+}
+
+fn draft_from_provider(provider: &RelayProviderDomain) -> RelayDraftDomain {
+    RelayDraftDomain {
+        id: Some(provider.id.clone()),
+        provider_id: Some(provider.id.clone()),
+        ide: Some(provider.ide.clone()),
+        name: Some(provider.name.clone()),
+        base_url: Some(provider.base_url.clone()),
+        url: None,
+        endpoint: None,
+        api_key: None,
+        api_key_stored: Some(provider.api_key_stored),
+        model: Some(provider.model.clone()),
+        default_model: None,
+        wire_api: Some(provider.wire_api.clone()),
+        extra_headers: None,
+        network: Some(provider.network.clone()),
+    }
+}
+
+fn load_provider_for_test(repo: &Repository, provider_id: &str) -> Option<RelayProviderDomain> {
+    relay_repository::load_relay_state(repo)
+        .ok()
+        .and_then(|state| {
+            state
+                .providers
+                .into_iter()
+                .find(|provider| provider.id == provider_id)
+        })
 }
 
 fn state_payload_from_repo(repo: &Repository, command: &str) -> RelayStatePayload {
@@ -613,7 +680,7 @@ fn test_payload_from_domain(command: &str, test: RelayTestDomain) -> RelayTestPa
     RelayTestPayload {
         backend_status: payload_status(command),
         ok: test.ok,
-        health: None,
+        health: Some(if test.ok { 100 } else { 0 }),
         latency_ms: test.latency_ms,
         status_code: test.status_code,
         message: test.message,
@@ -890,6 +957,8 @@ fn repository_restored_command(command: &str) -> bool {
             | "get_relay_proxy_status"
             | "set_codex_router_enabled"
             | "set_block_official_passthrough"
+            | "test_relay_provider"
+            | "test_relay_draft"
             | "export_relay_config"
             | "import_relay_config"
     )
@@ -912,6 +981,32 @@ fn model_fetch_warning(command: &str) -> CoreWarning {
         code: format!("relay.{command}.mock_terminal_restored"),
         message: "Relay model fetch 已恢复请求归一化、认证头、extraHeaders 和模型 ID 解析；当前公开实现只使用 mock HTTP terminal，不发起真实外部联网。"
             .to_string(),
+    }
+}
+
+fn relay_test_warning(command: &str) -> CoreWarning {
+    CoreWarning {
+        code: format!("relay.{command}.mock_terminal_restored"),
+        message: "Relay 测试命令已恢复 endpoint、header、body 和响应 DTO 的 mock terminal 链路；当前公开实现不发起真实 HTTP，不启动真实代理。"
+            .to_string(),
+    }
+}
+
+fn relay_test_error_warning(command: &str, error: &CoreError) -> CoreWarning {
+    CoreWarning {
+        code: format!("relay.{command}.mock_terminal_error"),
+        message: error.sanitized_message(),
+    }
+}
+
+fn relay_test_error(error: &CoreError) -> RelayTestDomain {
+    RelayTestDomain {
+        ok: false,
+        latency_ms: 0,
+        status_code: None,
+        message: None,
+        error_message: Some(error.sanitized_message()),
+        models: Vec::new(),
     }
 }
 
@@ -1050,5 +1145,85 @@ mod tests {
             "relay.fetch_relay_models_draft.mock_terminal_restored"
         );
         assert!(!repo.fs().exists(&relay_config_path));
+    }
+
+    #[test]
+    fn test_relay_draft_uses_mock_terminal_without_state_write() {
+        let repo = Repository::with_temp_file_system("relay-test-draft");
+        let relay_config_path = repo.paths().app_data_dir.join("relay-config.json");
+
+        let (payload, warning) = test_relay_draft(
+            &repo,
+            RelayProviderDraftInput {
+                base_url: Some("https://relay.example/v1".to_string()),
+                api_key: Some("secret".to_string()),
+                model: Some("model-a".to_string()),
+                wire_api: Some("openai-chat".to_string()),
+                extra_headers: Some(serde_json::json!({ "x-custom": "one" })),
+                ..RelayProviderDraftInput::default()
+            },
+        );
+
+        assert!(payload.ok);
+        assert_eq!(payload.status_code, Some(200));
+        assert_eq!(payload.health, Some(100));
+        assert_eq!(
+            payload.models,
+            vec!["model-a".to_string(), "model-b".to_string()]
+        );
+        assert_eq!(
+            warning.code,
+            "relay.test_relay_draft.mock_terminal_restored"
+        );
+        assert!(!repo.fs().exists(&relay_config_path));
+    }
+
+    #[test]
+    fn test_relay_provider_writes_health_result_to_repository() {
+        let repo = Repository::with_temp_file_system("relay-test-provider");
+        let provider = relay_core::provider_from_draft(
+            "upsert_relay_provider",
+            &RelayDraftDomain {
+                id: Some("provider-a".to_string()),
+                provider_id: None,
+                ide: Some("codex".to_string()),
+                name: Some("Provider A".to_string()),
+                base_url: Some("https://relay.example/v1".to_string()),
+                url: None,
+                endpoint: None,
+                api_key: None,
+                api_key_stored: Some(false),
+                model: Some("model-a".to_string()),
+                default_model: None,
+                wire_api: Some("openai-chat".to_string()),
+                extra_headers: None,
+                network: Some("system".to_string()),
+            },
+            None,
+            None,
+        );
+        relay_repository::upsert_provider(&repo, provider).expect("save provider");
+
+        let (payload, warning) = test_relay_provider(&repo, "provider-a".to_string());
+
+        assert!(payload.ok);
+        assert_eq!(payload.status_code, Some(200));
+        assert_eq!(
+            warning.code,
+            "relay.test_relay_provider.mock_terminal_restored"
+        );
+
+        let state = relay_repository::load_relay_state(&repo).expect("load relay state");
+        let stored = state
+            .providers
+            .iter()
+            .find(|item| item.id == "provider-a")
+            .expect("stored provider");
+        assert_eq!(stored.health_score, Some(100));
+        assert_eq!(stored.latency_ms, Some(24));
+        assert_eq!(
+            stored.models_sample,
+            vec!["model-a".to_string(), "model-b".to_string()]
+        );
     }
 }

@@ -17,6 +17,16 @@ pub struct RelayProviderDomain {
     pub model: String,
     pub wire_api: String,
     pub network: String,
+    #[serde(default)]
+    pub health_score: Option<i32>,
+    #[serde(default)]
+    pub latency_ms: Option<i32>,
+    #[serde(default)]
+    pub last_tested_at: Option<i64>,
+    #[serde(default)]
+    pub last_error: Option<String>,
+    #[serde(default)]
+    pub models_sample: Vec<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -42,6 +52,15 @@ pub struct RelayFetchModelsRequest {
     pub url: String,
     pub headers: Vec<(String, String)>,
     pub network: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RelayHealthCheckRequest {
+    pub url: String,
+    pub headers: Vec<(String, String)>,
+    pub body: String,
+    pub network: String,
+    pub subject: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

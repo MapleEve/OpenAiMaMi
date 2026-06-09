@@ -1,7 +1,7 @@
 use crate::contracts::RelayPassthroughAuditEntryPayload;
 use crate::core::error::CoreError;
 use crate::core::model::relay::{
-    RelayProviderDomain, RelayProxyDomain, RelayStateDomain, RELAY_DEFAULT_IDE,
+    RelayProviderDomain, RelayProxyDomain, RelayStateDomain, RelayTestDomain, RELAY_DEFAULT_IDE,
     RELAY_SCHEMA_VERSION,
 };
 use crate::repository::Repository;
@@ -181,6 +181,29 @@ pub fn set_provider_network(
         .find(|item| item.id == provider_id)
         .map(|item| {
             item.network = normalize_network(network);
+            item.clone()
+        });
+    save_relay_state(repo, &state)?;
+    Ok(provider)
+}
+
+pub fn record_provider_health(
+    repo: &Repository,
+    provider_id: &str,
+    test: &RelayTestDomain,
+    tested_at: i64,
+) -> Result<Option<RelayProviderDomain>, CoreError> {
+    let mut state = load_relay_state(repo)?;
+    let provider = state
+        .providers
+        .iter_mut()
+        .find(|item| item.id == provider_id)
+        .map(|item| {
+            item.health_score = Some(if test.ok { 100 } else { 0 });
+            item.latency_ms = Some(test.latency_ms);
+            item.last_tested_at = Some(tested_at);
+            item.last_error = test.error_message.clone();
+            item.models_sample = test.models.iter().take(5).cloned().collect();
             item.clone()
         });
     save_relay_state(repo, &state)?;

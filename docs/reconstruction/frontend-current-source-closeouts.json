@@ -2291,9 +2291,12 @@
             "pub fn start_auto_switch_pending_watcher",
             "pub fn start_usage_refresh_watcher",
             "pub fn update_usage_refresh_schedule",
-            "RuntimeWatcherStatusCode::PendingSkeleton",
-            "RuntimeWatcherStatusCode::StartOnlySkeleton",
-            "RuntimeWatcherStatusCode::ScheduleUpdateSkeleton",
+            "RuntimeWatcherStatusCode::ActivityRecorded",
+            "RuntimeWatcherStatusCode::FullRefreshScheduled",
+            "RuntimeWatcherStatusCode::FullRefreshCoalesced",
+            "RuntimeWatcherStatusCode::AutoSwitchWatcherStarted",
+            "RuntimeWatcherStatusCode::UsageWatcherStarted",
+            "RuntimeWatcherStatusCode::ScheduleUpdated",
             "RuntimeWatcherStartMode::ProductDecision"
           ]
         },
@@ -2326,7 +2329,7 @@
             "runtime_watcher_capability",
             "condvar_available: true",
             "thread_watcher_available: true",
-            "schedule_notify_available: false",
+            "schedule_notify_available: true",
             "creates_thread: false",
             "emits_event: false",
             "touches_user_environment: false"

@@ -1,7 +1,10 @@
 use crate::application::ports::{
     RelayPlatformCapability, RelayPlatformPort, RelayProxyEnvironment,
 };
-use crate::core::{error::CoreError, model::relay::RelayFetchModelsRequest};
+use crate::core::{
+    error::CoreError,
+    model::relay::{RelayFetchModelsRequest, RelayHealthCheckRequest},
+};
 
 pub(crate) struct RelayPlatformAdapter;
 
@@ -58,6 +61,32 @@ impl RelayPlatformPort for RelayPlatformAdapter {
             ));
         }
         Ok(r#"{"data":[{"id":"model-a"},{"id":"model-b"}]}"#.to_string())
+    }
+
+    fn test_relay_mock_terminal(
+        &self,
+        request: &RelayHealthCheckRequest,
+    ) -> Result<String, CoreError> {
+        if request.url.trim().is_empty() {
+            return Err(CoreError::InvalidInput(
+                "relay test mock terminal 缺少 URL".to_string(),
+            ));
+        }
+        if request.body.trim().is_empty() {
+            return Err(CoreError::InvalidInput(
+                "relay test mock terminal 缺少 body".to_string(),
+            ));
+        }
+        if !request
+            .headers
+            .iter()
+            .any(|(key, _)| key.eq_ignore_ascii_case("content-type"))
+        {
+            return Err(CoreError::InvalidInput(
+                "relay test mock terminal 缺少 Content-Type".to_string(),
+            ));
+        }
+        Ok(r#"{"ok":true,"latencyMs":24,"statusCode":200,"message":"Relay mock terminal probe succeeded","errorMessage":null,"models":["model-a","model-b"]}"#.to_string())
     }
 }
 

@@ -1661,15 +1661,21 @@ const relayTestHandler: IpcCommandHandler = (context) => {
     context.args,
     context.steps,
   );
+  const input = readArgRecord(context.args, "input");
+  const baseUrl = readRecordString(input, ["baseUrl", "url", "endpoint"], "");
+  const providerId = readArgString(context.args, "providerId", "");
+  const missingTarget =
+    context.command === "test_relay_draft" ? !baseUrl : !providerId;
+  const models = relayModelsFromArgs(context);
   const data: RelayTestPayload = {
     backendStatus: envelope.data.status,
-    ok: true,
-    health: 100,
-    latencyMs: 0,
-    statusCode: 200,
-    message: null,
-    errorMessage: null,
-    models: [],
+    ok: !missingTarget,
+    health: missingTarget ? 0 : 100,
+    latencyMs: missingTarget ? 0 : 24,
+    statusCode: missingTarget ? null : 200,
+    message: missingTarget ? null : "Relay mock terminal probe succeeded",
+    errorMessage: missingTarget ? "relay test mock terminal 缺少目标" : null,
+    models: missingTarget ? [] : models,
   };
   return { ...envelope, data };
 };

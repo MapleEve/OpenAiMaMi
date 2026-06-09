@@ -2,9 +2,10 @@ use crate::core::{
     error::CoreError,
     model::relay::{
         RelayCoreCluster, RelayCoreClusterBoundary, RelayCoreRepositoryView, RelayCoreSnapshot,
-        RelayDiagnosticDomain, RelayDraftDomain, RelayFetchModelsRequest, RelayOperationKey,
-        RelayOperationKind, RelayOwnerLayer, RelayProviderDomain, RelayProxyDomain,
-        RelayStateDomain, RelayTestDomain, RELAY_DEFAULT_IDE, RELAY_SCHEMA_VERSION,
+        RelayDiagnosticDomain, RelayDraftDomain, RelayFetchModelsRequest, RelayHealthCheckRequest,
+        RelayOperationKey, RelayOperationKind, RelayOwnerLayer, RelayProviderDomain,
+        RelayProxyDomain, RelayStateDomain, RelayTestDomain, RELAY_DEFAULT_IDE,
+        RELAY_SCHEMA_VERSION,
     },
 };
 use serde_json::Value;
@@ -75,6 +76,11 @@ pub fn provider_from_draft(
         model,
         wire_api: draft.wire_api.clone().unwrap_or_default(),
         network,
+        health_score: None,
+        latency_ms: None,
+        last_tested_at: None,
+        last_error: None,
+        models_sample: Vec::new(),
     }
 }
 
@@ -130,6 +136,56 @@ pub fn prepare_fetch_models_request(
             .network
             .clone()
             .unwrap_or_else(|| "system".to_string()),
+    })
+}
+
+pub fn prepare_health_check_request(
+    command: &str,
+    draft: &RelayDraftDomain,
+    subject: Option<String>,
+) -> Result<RelayHealthCheckRequest, CoreError> {
+    let _operation =
+        relay_operation_key(RelayOperationKind::NetworkProbe, command, subject.clone());
+    let base_url = draft
+        .base_url
+        .as_deref()
+        .or(draft.url.as_deref())
+        .or(draft.endpoint.as_deref())
+        .map(str::trim)
+        .filter(|value| !value.is_empty())
+        .ok_or_else(|| CoreError::InvalidInput("relay health check 缺少 baseUrl".to_string()))?;
+    let url = build_models_url_candidates(base_url)
+        .into_iter()
+        .next()
+        .ok_or_else(|| CoreError::InvalidInput("relay health check 缺少可用 URL".to_string()))?;
+    let headers = build_fetch_models_headers(
+        draft.api_key.as_deref(),
+        draft.wire_api.as_deref(),
+        draft.extra_headers.as_ref(),
+    )?;
+    let model = draft
+        .model
+        .as_deref()
+        .or(draft.default_model.as_deref())
+        .map(str::trim)
+        .filter(|value| !value.is_empty())
+        .unwrap_or("model-a");
+    let body = serde_json::json!({
+        "model": model,
+        "wireApi": draft.wire_api.as_deref().unwrap_or(""),
+        "mode": "mock-terminal-health-check",
+    })
+    .to_string();
+
+    Ok(RelayHealthCheckRequest {
+        url,
+        headers,
+        body,
+        network: draft
+            .network
+            .clone()
+            .unwrap_or_else(|| "system".to_string()),
+        subject,
     })
 }
 
@@ -232,6 +288,58 @@ pub fn parse_model_ids(response_body: &str) -> Result<Vec<String>, CoreError> {
     }
 
     Ok(models)
+}
+
+pub fn parse_health_check_result(response_body: &str) -> Result<RelayTestDomain, CoreError> {
+    let value: Value = serde_json::from_str(response_body)?;
+    let ok = value.get("ok").and_then(Value::as_bool).unwrap_or(false);
+    let latency_ms = value
+        .get("latencyMs")
+        .or_else(|| value.get("latency_ms"))
+        .and_then(Value::as_i64)
+        .unwrap_or(0)
+        .clamp(0, i32::MAX as i64) as i32;
+    let status_code = value
+        .get("statusCode")
+        .or_else(|| value.get("status_code"))
+        .and_then(Value::as_i64)
+        .map(|item| item.clamp(100, 599) as i32);
+    let message = value
+        .get("message")
+        .and_then(Value::as_str)
+        .map(str::trim)
+        .filter(|item| !item.is_empty())
+        .map(ToString::to_string);
+    let error_message = value
+        .get("errorMessage")
+        .or_else(|| value.get("error_message"))
+        .and_then(Value::as_str)
+        .map(str::trim)
+        .filter(|item| !item.is_empty())
+        .map(ToString::to_string);
+    let models = value
+        .get("models")
+        .and_then(Value::as_array)
+        .map(|items| {
+            items
+                .iter()
+                .filter_map(Value::as_str)
+                .map(str::trim)
+                .filter(|item| !item.is_empty())
+                .map(ToString::to_string)
+                .take(10)
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+
+    Ok(RelayTestDomain {
+        ok,
+        latency_ms,
+        status_code,
+        message,
+        error_message,
+        models,
+    })
 }
 
 fn trim_url(value: &str) -> String {

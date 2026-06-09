@@ -3,7 +3,7 @@
 
 use crate::core::error::CoreError;
 use crate::core::model::hotspot::HotspotPlatformCapability;
-use crate::core::model::relay::RelayFetchModelsRequest;
+use crate::core::model::relay::{RelayFetchModelsRequest, RelayHealthCheckRequest};
 
 pub(crate) trait RepositoryPort {}
 
@@ -28,6 +28,10 @@ pub(crate) trait RelayPlatformPort {
     fn fetch_models_mock_terminal(
         &self,
         request: &RelayFetchModelsRequest,
+    ) -> Result<String, CoreError>;
+    fn test_relay_mock_terminal(
+        &self,
+        request: &RelayHealthCheckRequest,
     ) -> Result<String, CoreError>;
 }
 
