@@ -1665,6 +1665,135 @@
       "reason": "当前公开源码已覆盖 system-hotspot、system-usage 与 mystery-unlock 的八个真实 IPC 命令在前端 contract/service/cache/hook/mock/validator 链路中的非 gating sidecar 证据；本 closeout 只登记当前公开源码前端链路，不声明后端平台实现、raw/internal dim6、真实 implementation_use 或 full_leaf_100。"
     },
     {
+      "id": "mystery-unlock-grants-current-source-chain",
+      "module": "mystery-unlock-grants",
+      "status": "current-source-closed-partial",
+      "sidecarReports": [
+        "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/frontend-callchain-report.json"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/frontend-callchain-report.json",
+          "includes": [
+            "\"current_source_ipc_commands\"",
+            "\"get_mystery_unlock_grants\"",
+            "\"merge_mystery_unlock_grants\"",
+            "\"gate_report_helper_gaps\"",
+            "\"mystery_route_allowed\"",
+            "不覆盖 mystery_route_allowed，因为当前公开源码没有真实 IPC 命令。"
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json",
+          "includes": [
+            "\"get_mystery_unlock_grants\"",
+            "\"merge_mystery_unlock_grants\"",
+            "\"mystery_route_allowed\"",
+            "\"dim6\": \"missing\"",
+            "\"gate_accepted\": false",
+            "\"implementation_use\": false"
+          ]
+        },
+        {
+          "file": "src/contracts/ipc/commands.ts",
+          "includes": [
+            "\"command\": \"get_mystery_unlock_grants\"",
+            "\"command\": \"merge_mystery_unlock_grants\""
+          ]
+        },
+        {
+          "file": "src/services/system/index.ts",
+          "includes": [
+            "invokeIpc<CoreEnvelope<MysteryRouteGrant[]>>(\"get_mystery_unlock_grants\")",
+            "invokeIpc<CoreEnvelope<MysteryRouteGrant[]>>(\"merge_mystery_unlock_grants\", {",
+            "grants: toMysteryRouteGrantArgs(grants)"
+          ]
+        },
+        {
+          "file": "src/features/overview/hooks/query.ts",
+          "includes": [
+            "systemService.getMysteryUnlockGrants()",
+            "OVERVIEW_MYSTERY_GRANTS_QUERY_KEY"
+          ]
+        },
+        {
+          "file": "src/features/overview/hooks/mutation.ts",
+          "includes": [
+            "systemService.mergeMysteryUnlockGrants(grants)",
+            "writeOverviewMysteryGrantsPayload("
+          ]
+        },
+        {
+          "file": "src/features/overview/cache/index.ts",
+          "includes": [
+            "OVERVIEW_MYSTERY_GRANTS_QUERY_KEY",
+            "writeOverviewMysteryGrantsPayload",
+            "invalidateOverviewMysteryGrantsQueries"
+          ]
+        },
+        {
+          "file": "src/mocks/fixtures/commands.ts",
+          "includes": [
+            "get_mystery_unlock_grants: getMysteryUnlockGrantsHandler",
+            "merge_mystery_unlock_grants: mergeMysteryUnlockGrantsHandler",
+            "const mysteryUnlockMockState"
+          ]
+        },
+        {
+          "file": "src-tauri/src/commands/system.rs",
+          "includes": [
+            "pub fn get_mystery_unlock_grants",
+            "pub fn merge_mystery_unlock_grants"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/system.rs",
+          "includes": [
+            "pub fn mystery_unlock_grants",
+            "pub fn merge_mystery_unlock_grants"
+          ]
+        }
+      ],
+      "closedGateReportFailures": [
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json",
+          "path": "leaves.get_mystery_unlock_grants.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 get_mystery_unlock_grants 的 current-source partial closeout；当前公开 IPC/service/overview/cache/mock/Rust 骨架链路存在，但 raw/internal dim6、implementation_use、gate_accepted 与 full_leaf_100 均不声明恢复，也不登记 mystery_route_allowed。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json",
+          "path": "leaves.get_mystery_unlock_grants.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 get_mystery_unlock_grants 的 current-source partial closeout；当前公开 IPC/service/overview/cache/mock/Rust 骨架链路存在，但 raw/internal dim6、implementation_use、gate_accepted 与 full_leaf_100 均不声明恢复，也不登记 mystery_route_allowed。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json",
+          "path": "leaves.merge_mystery_unlock_grants.gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 merge_mystery_unlock_grants 的 current-source partial closeout；当前公开 IPC/service/overview/cache/mock/Rust 骨架链路存在，但 raw/internal dim6、implementation_use、gate_accepted 与 full_leaf_100 均不声明恢复，也不登记 mystery_route_allowed。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json",
+          "path": "leaves.merge_mystery_unlock_grants.implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 merge_mystery_unlock_grants 的 current-source partial closeout；当前公开 IPC/service/overview/cache/mock/Rust 骨架链路存在，但 raw/internal dim6、implementation_use、gate_accepted 与 full_leaf_100 均不声明恢复，也不登记 mystery_route_allowed。"
+        }
+      ],
+      "nonClaims": [
+        "不修改 gate-report",
+        "不声明 raw/internal dim6 已补齐",
+        "不声明 implementation_use、gate_accepted 或 full_leaf_100 已恢复",
+        "不登记 mystery_route_allowed",
+        "不登记 top-level、cluster summary 或 dim6 gate 字段"
+      ],
+      "reason": "本 closeout 只登记 mystery unlock grants 的 current-source partial closeout：get_mystery_unlock_grants 与 merge_mystery_unlock_grants 在当前公开 IPC/service/overview/cache/mock/Rust 骨架链路中可验证；mystery_route_allowed 仍是 helper gap，不登记 top-level、cluster summary、dim6 或 full_leaf_100。"
+    },
+    {
       "id": "bootstrap-system-current-source-reconcile-sidecars",
       "module": "bootstrap-system",
       "status": "current-source-closed-partial",
