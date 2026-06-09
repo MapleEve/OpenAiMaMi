@@ -688,6 +688,27 @@
           "value": true,
           "classification": "scope-selection",
           "reason": "后端与平台侧 dim6 证据仍缺失，原 gate-report 字段保持不变。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-maintenance/gate-report.json",
+          "path": "gate_accepted",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 macOS maintenance 前端 current-source callchain partial closeout；不修改 gate-report，不关闭 load_snapshot，不补后端平台 dim6，也不声明 full leaf。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-maintenance/gate-report.json",
+          "path": "implementation_use",
+          "value": false,
+          "classification": "scope-selection",
+          "reason": "本条只登记 macOS maintenance 前端 current-source callchain partial closeout；不把当前源码前端链路提升为严格 implementation_use，不关闭 load_snapshot，不补后端平台 dim6，也不声明 full leaf。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-maintenance/gate-report.json",
+          "path": "dim6_missing",
+          "value": true,
+          "classification": "scope-selection",
+          "reason": "本条只登记 macOS maintenance 前端 current-source callchain partial closeout；后端平台 dim6 仍按原 gate-report 保持缺失，不关闭 load_snapshot，也不声明 full leaf。"
         }
       ],
       "requiredSourceSignals": [
