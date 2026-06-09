@@ -95,6 +95,79 @@ function assertIncludes(label, text, snippets) {
   }
 }
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function readCommandHandlerName(commandFixtureText, command) {
+  const match = commandFixtureText.match(
+    new RegExp(`\\b${escapeRegExp(command)}\\s*:\\s*([A-Za-z0-9_]+)`),
+  );
+  return match?.[1] ?? null;
+}
+
+function assertCommandHandler(commandFixtureText, command, expectedHandler) {
+  const handler = readCommandHandlerName(commandFixtureText, command);
+  if (!handler) {
+    failures.push(`src/mocks/fixtures/commands.ts 缺少 ${command} 的专用处理器映射`);
+    return;
+  }
+  if (handler !== expectedHandler) {
+    failures.push(
+      `src/mocks/fixtures/commands.ts 中 ${command} 必须绑定 ${expectedHandler}，当前为 ${handler}`,
+    );
+  }
+}
+
+function assertNotGenericHandler(commandFixtureText, command) {
+  const genericHandlers = new Set([
+    "defaultHandler",
+    "readFalseHandler",
+    "writeBooleanArgHandler",
+    "unitHandler",
+  ]);
+  const handler = readCommandHandlerName(commandFixtureText, command);
+  if (handler && genericHandlers.has(handler)) {
+    failures.push(
+      `src/mocks/fixtures/commands.ts 中 ${command} 仍绑定泛型或固定占位处理器：${handler}`,
+    );
+  }
+}
+
+function assertNotIncludes(label, text, snippets) {
+  for (const snippet of snippets) {
+    if (text.includes(snippet)) {
+      failures.push(`${label} 不得包含结构片段：${snippet}`);
+    }
+  }
+}
+
+function readDelimitedBody(label, text, startToken) {
+  const start = text.indexOf(startToken);
+  if (start < 0) {
+    failures.push(`${label} 缺少声明：${startToken}`);
+    return "";
+  }
+  const open = text.indexOf("{", start);
+  if (open < 0) {
+    failures.push(`${label} 缺少可解析的函数体或对象体`);
+    return "";
+  }
+
+  let depth = 0;
+  for (let index = open; index < text.length; index += 1) {
+    const char = text[index];
+    if (char === "{") depth += 1;
+    if (char === "}") {
+      depth -= 1;
+      if (depth === 0) return text.slice(open + 1, index);
+    }
+  }
+
+  failures.push(`${label} 函数体或对象体没有闭合`);
+  return "";
+}
+
 function parseScenarioSteps(file, text) {
   const stepMatches = [
     ...text.matchAll(
@@ -504,7 +577,7 @@ function validateSystemActionMockPayloadHandlers() {
     "const systemActionHandler",
     "const systemCommandHandlers",
     "systemCommandHandlers[definition.command] ??",
-    "hotspot_ready: readFalseHandler",
+    "hotspot_ready: hotspotReadyHandler",
   ]);
 
   for (const command of actionCommands) {
@@ -655,13 +728,13 @@ function validateOverviewMockPayloadHandlers() {
   const commandFixtureText = readRequired(commandFixturePath);
   const overviewHandlers = [
     ["get_device_id", "deviceIdHandler"],
-    ["get_mystery_unlock_grants", "mysteryUnlockGrantsHandler"],
+    ["get_mystery_unlock_grants", "getMysteryUnlockGrantsHandler"],
     ["get_notification_client_state", "notificationClientStateHandler"],
     ["get_or_create_remote_device_secret", "remoteDeviceSecretHandler"],
     ["import_remote_device_secret_if_empty", "unitHandler"],
     ["load_snapshot", "coreSnapshotHandler"],
-    ["merge_mystery_unlock_grants", "mysteryUnlockGrantsHandler"],
-    ["refresh_usage_snapshot", "coreSnapshotHandler"],
+    ["merge_mystery_unlock_grants", "mergeMysteryUnlockGrantsHandler"],
+    ["refresh_usage_snapshot", "refreshUsageSnapshotHandler"],
   ];
 
   assertIncludes("src/mocks/fixtures/commands.ts", commandFixtureText, [
@@ -678,6 +751,289 @@ function validateOverviewMockPayloadHandlers() {
   for (const [command, handler] of overviewHandlers) {
     if (!commandFixtureText.includes(`${command}: ${handler}`)) {
       failures.push(`src/mocks/fixtures/commands.ts 缺少 overview 专用 handler：${command}`);
+    }
+  }
+}
+
+function validateStatefulSystemHotspotUsageMysteryMocks() {
+  const commandFixturePath = path.join(
+    repoRoot,
+    "src",
+    "mocks",
+    "fixtures",
+    "commands.ts",
+  );
+  const ipcCommandsPath = path.join(repoRoot, "src", "contracts", "ipc", "commands.ts");
+  const systemServicePath = path.join(repoRoot, "src", "services", "system", "index.ts");
+  const settingsServicePath = path.join(
+    repoRoot,
+    "src",
+    "services",
+    "settings",
+    "index.ts",
+  );
+  const commandFixtureText = readRequired(commandFixturePath);
+  const ipcCommandsText = readRequired(ipcCommandsPath);
+  const systemServiceText = readRequired(systemServicePath);
+  const settingsServiceText = readRequired(settingsServicePath);
+  const hotspotStateBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts systemHotspotMockState",
+    commandFixtureText,
+    "const systemHotspotMockState",
+  );
+  const usageStateBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts systemUsageMockState",
+    commandFixtureText,
+    "const systemUsageMockState",
+  );
+  const setHotspotBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts setHotspotEnabledHandler",
+    commandFixtureText,
+    "const setHotspotEnabledHandler",
+  );
+  const hotspotReadyBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts hotspotReadyHandler",
+    commandFixtureText,
+    "const hotspotReadyHandler",
+  );
+  const setUsageIntervalBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts setUsageRefreshIntervalHandler",
+    commandFixtureText,
+    "const setUsageRefreshIntervalHandler",
+  );
+  const readRefreshIntervalBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts readRefreshIntervalArg",
+    commandFixtureText,
+    "function readRefreshIntervalArg",
+  );
+  const coreSnapshotBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts createCoreSnapshotPayload",
+    commandFixtureText,
+    "function createCoreSnapshotPayload",
+  );
+  const refreshUsageBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts refreshUsageSnapshotHandler",
+    commandFixtureText,
+    "const refreshUsageSnapshotHandler",
+  );
+  const mergeMysteryHandlerBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts mergeMysteryUnlockGrantsHandler",
+    commandFixtureText,
+    "const mergeMysteryUnlockGrantsHandler",
+  );
+  const mergeMysteryBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts mergeMysteryUnlockGrants",
+    commandFixtureText,
+    "function mergeMysteryUnlockGrants",
+  );
+  const normalizeMysteryBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts normalizeMysteryRouteGrants",
+    commandFixtureText,
+    "function normalizeMysteryRouteGrants",
+  );
+  const targetHandlers = [
+    ["get_hotspot_enabled", "hotspotEnabledHandler"],
+    ["set_hotspot_enabled", "setHotspotEnabledHandler"],
+    ["hotspot_ready", "hotspotReadyHandler"],
+    ["has_notch", "hasNotchHandler"],
+    ["get_usage_refresh_interval", "usageRefreshIntervalHandler"],
+    ["set_usage_refresh_interval", "setUsageRefreshIntervalHandler"],
+    ["load_snapshot", "coreSnapshotHandler"],
+    ["refresh_usage_snapshot", "refreshUsageSnapshotHandler"],
+    ["get_mystery_unlock_grants", "getMysteryUnlockGrantsHandler"],
+    ["merge_mystery_unlock_grants", "mergeMysteryUnlockGrantsHandler"],
+  ];
+
+  for (const [command, handler] of targetHandlers) {
+    assertIncludes("src/contracts/ipc/commands.ts", ipcCommandsText, [
+      `"command": "${command}"`,
+    ]);
+    assertCommandHandler(commandFixtureText, command, handler);
+    assertNotGenericHandler(commandFixtureText, command);
+  }
+
+  assertIncludes("src/services/system/index.ts", systemServiceText, [
+    'invokeIpc<CoreEnvelope<boolean>>("get_hotspot_enabled")',
+    'invokeIpc<CoreEnvelope<boolean>>("set_hotspot_enabled", { enabled })',
+    'invokeIpc<CoreEnvelope<boolean>>("hotspot_ready")',
+    'invokeIpc<CoreEnvelope<string>>("get_usage_refresh_interval")',
+    'invokeIpc<CoreEnvelope<string>>("set_usage_refresh_interval", { interval })',
+    'invokeIpc<CoreEnvelope<CoreSnapshotPayload>>("load_snapshot", { localOnly })',
+    'invokeIpc<CoreEnvelope<CoreSnapshotPayload>>("refresh_usage_snapshot")',
+    'invokeIpc<CoreEnvelope<MysteryRouteGrant[]>>("get_mystery_unlock_grants")',
+    'invokeIpc<CoreEnvelope<MysteryRouteGrant[]>>("merge_mystery_unlock_grants", {',
+    "grants: toMysteryRouteGrantArgs(grants)",
+  ]);
+  assertIncludes("src/services/settings/index.ts", settingsServiceText, [
+    "getUsageRefreshInterval: systemService.getUsageRefreshInterval",
+    "setUsageRefreshInterval: systemService.setUsageRefreshInterval",
+    "getHotspotEnabled: systemService.getHotspotEnabled",
+    "setHotspotEnabled: systemService.setHotspotEnabled",
+    "hotspotReady: systemService.hotspotReady",
+  ]);
+
+  assertIncludes("src/mocks/fixtures/commands.ts", commandFixtureText, [
+    "const settingsCommandHandlers",
+    "const systemCommandHandlers",
+    "settingsCommandHandlers[definition.command] ??",
+    "systemCommandHandlers[definition.command] ??",
+    "withMockData(context, systemHotspotMockState.enabled)",
+    "withMockData(context, systemHotspotMockState.hasNotch)",
+    "withMockData(context, systemUsageMockState.refreshInterval)",
+    "function createCoreSnapshotPayload(\n  backendStatus: CoreSnapshotPayload[\"backendStatus\"],",
+    "const mysteryUnlockMockState",
+    "withMockData(context, [...mysteryUnlockMockState.grants])",
+  ]);
+
+  assertIncludes("src/mocks/fixtures/commands.ts systemHotspotMockState", hotspotStateBody, [
+    "enabled: false",
+    "hasNotch: true",
+    "ready: false",
+  ]);
+  assertIncludes("src/mocks/fixtures/commands.ts systemUsageMockState", usageStateBody, [
+    "lastScanAt: 1_700_000_000_000",
+    "refreshCount: 0",
+    "refreshInterval: \"1m\"",
+    "usageSource: \"local\"",
+    "usageStatus: \"unknown\"",
+  ]);
+  assertIncludes("src/mocks/fixtures/commands.ts setHotspotEnabledHandler", setHotspotBody, [
+    "systemHotspotMockState.enabled = readArgBoolean(",
+    "systemHotspotMockState.enabled,",
+    "return withMockData(context, systemHotspotMockState.enabled);",
+  ]);
+  assertIncludes("src/mocks/fixtures/commands.ts hotspotReadyHandler", hotspotReadyBody, [
+    "systemHotspotMockState.ready = true;",
+    "return withMockData(context, systemHotspotMockState.ready);",
+  ]);
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts setUsageRefreshIntervalHandler",
+    setUsageIntervalBody,
+    [
+      "systemUsageMockState.refreshInterval = readRefreshIntervalArg(",
+      "systemUsageMockState.refreshInterval,",
+      "return withMockData(context, systemUsageMockState.refreshInterval);",
+    ],
+  );
+  assertIncludes("src/mocks/fixtures/commands.ts readRefreshIntervalArg", readRefreshIntervalBody, [
+    "value === \"30s\" || value === \"1m\" || value === \"3m\" || value === \"5m\"",
+    ": fallback",
+  ]);
+  assertIncludes("src/mocks/fixtures/commands.ts createCoreSnapshotPayload", coreSnapshotBody, [
+    "const usageSource = localOnly ? \"local\" : systemUsageMockState.usageSource;",
+    "backendStatus,",
+    "lastScanAt: systemUsageMockState.lastScanAt",
+    "usageSource,",
+    "usageStatus: systemUsageMockState.usageStatus",
+    "usageLastError: systemUsageMockState.usageLastError",
+  ]);
+  assertNotIncludes("src/mocks/fixtures/commands.ts createCoreSnapshotPayload", coreSnapshotBody, [
+    "envelope",
+  ]);
+  assertIncludes("src/mocks/fixtures/commands.ts refreshUsageSnapshotHandler", refreshUsageBody, [
+    "systemUsageMockState.refreshCount += 1;",
+    "systemUsageMockState.lastScanAt += 1_000;",
+    "systemUsageMockState.usageSource = \"api\";",
+    "systemUsageMockState.usageStatus = \"reachable\";",
+    "systemUsageMockState.usageLastError = null;",
+    "const data = createCoreSnapshotPayload(envelope.data.status, false);",
+  ]);
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts mergeMysteryUnlockGrantsHandler",
+    mergeMysteryHandlerBody,
+    [
+      "const grants = context.args?.grants;",
+      "if (Array.isArray(grants))",
+      "mergeMysteryUnlockGrants(normalizeMysteryRouteGrants(grants));",
+      "return withMockData(context, [...mysteryUnlockMockState.grants]);",
+    ],
+  );
+  assertIncludes("src/mocks/fixtures/commands.ts mergeMysteryUnlockGrants", mergeMysteryBody, [
+    "isMysteryRouteGranted(grant.route)",
+    "item.route === grant.route && grant.epochMs >= item.epochMs ? grant : item",
+    "mysteryUnlockMockState.grants = [...mysteryUnlockMockState.grants, grant];",
+  ]);
+  assertIncludes("src/mocks/fixtures/commands.ts normalizeMysteryRouteGrants", normalizeMysteryBody, [
+    "const epochValue = record.epochMs ?? record.epoch_ms;",
+    "Number.isFinite(epochValue)",
+    "route ? [{ route, epochMs }] : []",
+  ]);
+  assertNotIncludes("src/mocks/fixtures/commands.ts", commandFixtureText, [
+    "mystery_route_allowed",
+    "route_allowed",
+  ]);
+
+  assertIncludes("src/mocks/fixtures/commands.ts", commandFixtureText, [
+    "const systemHotspotMockState",
+    "withMockData(context, systemHotspotMockState.enabled)",
+    "systemHotspotMockState.enabled = readArgBoolean(",
+    "systemHotspotMockState.ready = true",
+    "withMockData(context, systemHotspotMockState.ready)",
+    "withMockData(context, systemHotspotMockState.hasNotch)",
+    "const systemUsageMockState",
+    "withMockData(context, systemUsageMockState.refreshInterval)",
+    "systemUsageMockState.refreshInterval = readRefreshIntervalArg(",
+    "value === \"30s\" || value === \"1m\" || value === \"3m\" || value === \"5m\"",
+    "function createCoreSnapshotPayload(",
+    "backendStatus,",
+    "lastScanAt: systemUsageMockState.lastScanAt",
+    "systemUsageMockState.usageSource",
+    "usageSource,",
+    "usageStatus: systemUsageMockState.usageStatus",
+    "systemUsageMockState.refreshCount += 1",
+    "systemUsageMockState.lastScanAt += 1_000",
+    "systemUsageMockState.usageSource = \"api\"",
+    "const mysteryUnlockMockState",
+    "withMockData(context, [...mysteryUnlockMockState.grants])",
+    "mergeMysteryUnlockGrants(normalizeMysteryRouteGrants(grants))",
+    "function isMysteryRouteGranted(route: string)",
+    "record.epoch_ms",
+    "route ? [{ route, epochMs }] : []",
+  ]);
+}
+
+function validateStatefulSystemScenarioCoverage() {
+  const coverageScenarios = [
+    ["failure.ts", "reject"],
+    ["delayed.ts", "resolve"],
+    ["stale.ts", "resolve"],
+    ["concurrency.ts", "resolve"],
+    ["cancel.ts", "cancel"],
+    ["abort.ts", "abort"],
+    ["replay.ts", "replay"],
+  ];
+
+  for (const [fileName, outcome] of coverageScenarios) {
+    const file = path.join(scenariosRoot, fileName);
+    const text = readRequired(file);
+    const label = repoPath(file);
+    assertIncludes(label, text, ['commands: ["all"]', `outcome: "${outcome}"`]);
+    const steps = parseScenarioSteps(file, text);
+
+    if (fileName === "delayed.ts" && Math.max(...steps.map((step) => step.delayMs)) < 500) {
+      failures.push(`${label} 不能证明 hotspot、usage、mystery 覆盖延迟响应`);
+    }
+
+    if (fileName === "stale.ts" || fileName === "concurrency.ts") {
+      const hasLateOlderStep = steps.some((candidate, candidateIndex) =>
+        steps.some(
+          (other, otherIndex) =>
+            otherIndex > candidateIndex &&
+            candidate.delayMs > other.delayMs &&
+            candidate.sequence < other.sequence,
+        ),
+      );
+      if (!hasLateOlderStep) {
+        failures.push(`${label} 不能证明 hotspot、usage、mystery 覆盖陈旧响应或并发晚返回`);
+      }
+    }
+
+    if (fileName === "replay.ts") {
+      const mutation = steps.find((step) => step.name.includes("mutation"));
+      const replay = steps.find((step) => step.outcome === "replay");
+      if (!mutation || !replay || replay.sequence >= mutation.sequence) {
+        failures.push(`${label} 不能证明 hotspot、usage、mystery 覆盖事件重放`);
+      }
     }
   }
 }
@@ -735,6 +1091,8 @@ validateSystemActionMockPayloadHandlers();
 validateMaintenanceSystemWindowEvidence();
 validateMaintenanceSystemScenarioCoverage();
 validateOverviewMockPayloadHandlers();
+validateStatefulSystemHotspotUsageMysteryMocks();
+validateStatefulSystemScenarioCoverage();
 validateIpcMockBridge();
 
 if (failures.length > 0) {
