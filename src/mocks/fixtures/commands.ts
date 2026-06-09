@@ -271,6 +271,14 @@ function emptyAppPathState(): AppPathState {
   };
 }
 
+function diagnosticSkeletonState(): NonNullable<DiagnosePayload["repositoryState"]> {
+  return {
+    checked: false,
+    state: "pending",
+    detail: null,
+  };
+}
+
 const cleanHandler: IpcCommandHandler = (context) => {
   const data: CleanPayload = {
     authBackupsRemoved: 0,
@@ -290,10 +298,17 @@ const rebuildRegistryHandler: IpcCommandHandler = (context) => {
 };
 
 const diagnoseHandler: IpcCommandHandler = (context) => {
+  const envelope = createEvidenceBackedIpcFixture(
+    context.command,
+    context.args,
+    context.steps,
+  );
   const data: DiagnosePayload = {
+    backendStatus: envelope.data.status,
+    checkedAt: null,
     paths: emptyAppPathState(),
     coreVersion: "",
-    platform: { os: "unknown", arch: "unknown" },
+    platform: { os: "unknown", arch: "unknown", infoSource: "mock" },
     registryState: { accountCount: 0 },
     sessionState: { latestRolloutFound: false },
     apiState: {
@@ -306,8 +321,22 @@ const diagnoseHandler: IpcCommandHandler = (context) => {
       lastNameFailure: null,
       lastNameFailureAccount: null,
     },
+    diagnosticSnapshot: {
+      rootPath: "",
+      sourcePath: "",
+      statusCode: "pending",
+      message: "Skeleton diagnostic pending; no repository checks were executed.",
+      probes: [],
+    },
+    pendingDiagnostics: [
+      { field: "repository", status: "pending", detail: null },
+      { field: "platform", status: "pending", detail: null },
+    ],
+    repositoryState: diagnosticSkeletonState(),
+    platformState: diagnosticSkeletonState(),
+    diagnosticBoundary: "skeleton",
   };
-  return withMockData(context, data);
+  return { ...envelope, data };
 };
 
 const updateInstallabilityHandler: IpcCommandHandler = (context) => {
@@ -1407,9 +1436,14 @@ function relayDiagnosticFromStatus(
   const items: RelayDiagnosticIssuePayload[] = [];
   return {
     backendStatus,
-    ok: true,
+    checkedAt: null,
+    ok: false,
     codexProviderCount: 0,
     catalogPath: null,
+    sourcePath: "",
+    catalogSourcePath: null,
+    diagnosticBoundary: "skeleton",
+    pending: true,
     catalogExists: false,
     configTomlHasRouter: false,
     configTomlHasCatalog: false,
@@ -1422,7 +1456,9 @@ function relayDiagnosticFromStatus(
     hasIssues: false,
     issues: items,
     items,
-    summary: "",
+    summary: "Skeleton diagnostic pending; no repository or platform checks were executed.",
+    repositoryState: diagnosticSkeletonState(),
+    platformState: diagnosticSkeletonState(),
   };
 }
 

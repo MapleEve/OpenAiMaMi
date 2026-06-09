@@ -23,7 +23,7 @@ pub fn set_block_official_passthrough(repo: &Repository, blocked: bool) -> (bool
         value,
         pending_warning(
             "set_block_official_passthrough",
-            "relay 官方直连拦截开关只完成公开六边形骨架；未写入未恢复的代理配置。",
+            "relay 官方直连拦截开关只完成公开骨架，尚未写入未恢复的代理配置。",
         ),
     )
 }
@@ -38,7 +38,7 @@ pub fn get_passthrough_audit_log(
         relay_repository::load_passthrough_audit_log(repo, normalized_limit),
         pending_warning(
             "get_passthrough_audit_log",
-            "relay 官方直连审计日志只完成公开六边形骨架；当前返回空集合等待证据补齐。",
+            "relay 官方直连审计日志只完成公开骨架，当前返回空集合等待证据补齐。",
         ),
     )
 }
@@ -209,21 +209,30 @@ pub fn import_relay_config(
     )
 }
 
-pub fn run_codex_router_diagnostics(_repo: &Repository) -> (RelayDiagnosticPayload, CoreWarning) {
+pub fn run_codex_router_diagnostics(repo: &Repository) -> (RelayDiagnosticPayload, CoreWarning) {
     let command = "run_codex_router_diagnostics";
-    (empty_diagnostic(command), skeleton_warning(command))
+    let skeleton = relay_repository::load_router_diagnostic_skeleton(repo, command);
+    (
+        empty_diagnostic(command, skeleton),
+        skeleton_warning(command),
+    )
 }
 
-pub fn diagnose_codex_router(_repo: &Repository) -> (RelayDiagnosticPayload, CoreWarning) {
+pub fn diagnose_codex_router(repo: &Repository) -> (RelayDiagnosticPayload, CoreWarning) {
     let command = "diagnose_codex_router";
-    (empty_diagnostic(command), skeleton_warning(command))
+    let skeleton = relay_repository::load_router_diagnostic_skeleton(repo, command);
+    (
+        empty_diagnostic(command, skeleton),
+        skeleton_warning(command),
+    )
 }
 
 pub fn fix_codex_router_issue(
-    _repo: &Repository,
+    repo: &Repository,
     item_id: String,
 ) -> (RelayRouterIssueFixPayload, CoreWarning) {
     let command = "fix_codex_router_issue";
+    let skeleton = relay_repository::load_router_diagnostic_skeleton(repo, command);
     (
         RelayRouterIssueFixPayload {
             backend_status: skeleton_status(command),
@@ -231,9 +240,10 @@ pub fn fix_codex_router_issue(
             issue_id: item_id,
             fixed: false,
             requires_restart: false,
-            message: "修复未执行，当前只返回 relay 空骨架。".to_string(),
+            message: "修复未执行：当前仅返回 relay 诊断 pending 骨架，真实修复逻辑等待证据补齐。"
+                .to_string(),
             details: None,
-            diagnostics: empty_diagnostic(command),
+            diagnostics: empty_diagnostic(command, skeleton),
         },
         skeleton_warning(command),
     )
@@ -290,7 +300,7 @@ fn provider_from_input(
 }
 
 fn empty_state(repo: &Repository, command: &str) -> RelayStatePayload {
-    let _ = repo.paths();
+    let source_path = repo.paths().app_data_dir.display().to_string();
     let proxy = empty_proxy(command);
     let mut active_by_ide = HashMap::new();
     active_by_ide.insert(DEFAULT_IDE.to_string(), Vec::new());
@@ -307,7 +317,7 @@ fn empty_state(repo: &Repository, command: &str) -> RelayStatePayload {
         enabled: false,
         active_provider_id: None,
         proxy_status: proxy,
-        source_path: String::new(),
+        source_path,
     }
 }
 
@@ -330,17 +340,26 @@ fn empty_test(command: &str) -> RelayTestPayload {
         latency_ms: 0,
         status_code: None,
         message: None,
-        error_message: Some("relay 测试未执行，当前只返回空骨架。".to_string()),
+        error_message: Some("relay 测试未执行，当前仅返回空骨架。".to_string()),
         models: Vec::new(),
     }
 }
 
-fn empty_diagnostic(command: &str) -> RelayDiagnosticPayload {
+fn empty_diagnostic(
+    command: &str,
+    skeleton: relay_repository::RelayDiagnosticSkeleton,
+) -> RelayDiagnosticPayload {
+    let catalog_source_path = skeleton.catalog_source_path;
     RelayDiagnosticPayload {
         backend_status: skeleton_status(command),
         ok: false,
         codex_provider_count: 0,
-        catalog_path: None,
+        catalog_path: catalog_source_path.clone(),
+        source_path: skeleton.source_path,
+        catalog_source_path,
+        checked_at: skeleton.checked_at,
+        diagnostic_boundary: skeleton.diagnostic_boundary,
+        pending: skeleton.pending,
         catalog_exists: false,
         config_toml_has_router: false,
         config_toml_has_catalog: false,
@@ -353,8 +372,12 @@ fn empty_diagnostic(command: &str) -> RelayDiagnosticPayload {
         has_issues: false,
         issues: Vec::new(),
         items: Vec::new(),
-        summary: "relay 诊断未执行，当前只返回空骨架。".to_string(),
+        summary: pending_router_diagnostic_summary(command),
     }
+}
+
+fn pending_router_diagnostic_summary(command: &str) -> String {
+    format!("relay 诊断命令 {command} 未执行：当前仅返回 pending 骨架，真实 router 诊断引擎等待证据补齐。")
 }
 
 fn skeleton_status(command: &str) -> BackendSkeletonStatus {
@@ -368,7 +391,7 @@ fn skeleton_warning(command: &str) -> CoreWarning {
 }
 
 fn skeleton_note(command: &str) -> String {
-    format!("relay 命令 {command} 当前只补齐公开 IPC 空骨架，真实代理业务等待 raw/internal 证据。")
+    format!("relay 命令 {command} 当前仅补齐公开 IPC 空骨架，真实代理业务等待 raw/internal 证据。")
 }
 
 fn pending_warning(command: &str, message: &str) -> CoreWarning {

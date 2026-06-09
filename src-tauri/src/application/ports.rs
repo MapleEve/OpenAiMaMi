@@ -7,6 +7,28 @@ pub(crate) trait RepositoryPort {}
 
 pub(crate) trait PlatformPort {}
 
+#[derive(Debug, Clone)]
+pub(crate) struct DiagnosticPlatformInfo {
+    pub os: String,
+    pub os_version: String,
+    pub arch: String,
+    pub hostname: String,
+}
+
+#[derive(Debug, Clone)]
+pub(crate) struct DiagnosticCapabilityProbe {
+    pub code: String,
+    pub available: bool,
+    pub status_code: String,
+    pub message: String,
+}
+
+// 诊断平台端口只暴露结构化平台信息和能力探针结果，不实现注册表、钥匙串、sqlite 或 TOML 修复逻辑。
+pub(crate) trait DiagnosticPlatformPort {
+    fn platform_info(&self) -> DiagnosticPlatformInfo;
+    fn capability_probes(&self) -> Vec<DiagnosticCapabilityProbe>;
+}
+
 // 进程能力端口只表达应用层允许触发的外部进程动作。
 pub(crate) trait AppProcessPort {
     fn graceful_restart_for_update(&self) -> Result<(), CoreError>;
