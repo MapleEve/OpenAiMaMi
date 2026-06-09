@@ -23,6 +23,7 @@ use crate::core::model::runtime::{RuntimeWatcherDecision, RuntimeWatcherSignal};
 use crate::core::model::settings::UsageRefreshInterval;
 use crate::core::runtime as runtime_core;
 use crate::platform::runtime::RuntimePlatformAdapter;
+use crate::repository::accounts as accounts_repository;
 use crate::repository::config as config_repository;
 use crate::repository::diagnostics::load_system_diagnostic_snapshot;
 use crate::repository::hotspot as hotspot_repository;
@@ -32,9 +33,11 @@ use crate::repository::Repository;
 
 pub fn load_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, CoreError> {
     let settings = settings_repository::load_app_settings(repo)?;
+    let accounts = accounts_repository::load_account_summaries(repo)?;
     Ok(CoreSnapshotPayload {
         backend_status: restored_status("system", "load_snapshot", BackendEffect::NoOp),
         status: make_status(repo, &settings),
+        accounts,
     })
 }
 

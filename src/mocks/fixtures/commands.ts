@@ -1061,6 +1061,7 @@ function createCoreSnapshotPayload(
   const usageSource = localOnly ? "local" : systemUsageMockState.usageSource;
   return {
     backendStatus,
+    accounts: [],
     status: {
       paths: emptyAppPathState(),
       lastScanAt: systemUsageMockState.lastScanAt,

@@ -1,3 +1,4 @@
+use crate::contracts::accounts::AccountSummaryPayload;
 use crate::contracts::BackendSkeletonStatus;
 use serde::{Deserialize, Serialize};
 
@@ -153,6 +154,7 @@ pub struct AppStatusPayload {
 pub struct CoreSnapshotPayload {
     pub backend_status: BackendSkeletonStatus,
     pub status: AppStatusPayload,
+    pub accounts: Vec<AccountSummaryPayload>,
 }
 
 #[derive(Debug, Clone, Serialize)]
