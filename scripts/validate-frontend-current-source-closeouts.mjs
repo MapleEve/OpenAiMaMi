@@ -44,6 +44,88 @@ const RELAY_CURRENT_SOURCE_NON_CLAIMS = [
   "不声明真实 import/export IO 已经恢复。",
   "不声明 full_leaf_100，也不修改任何 gate-report 字段。",
 ];
+const SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID =
+  "system-hotspot-usage-mystery-frontend-callchain-non-gating-closeout";
+const SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECARS = [
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/frontend-callchain-report.json",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/frontend-callchain-report.json",
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/frontend-callchain-report.json",
+];
+const SYSTEM_HOTSPOT_USAGE_MYSTERY_COMMANDS = [
+  "get_hotspot_enabled",
+  "set_hotspot_enabled",
+  "hotspot_ready",
+  "get_usage_refresh_interval",
+  "set_usage_refresh_interval",
+  "refresh_usage_snapshot",
+  "get_mystery_unlock_grants",
+  "merge_mystery_unlock_grants",
+];
+const SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECAR_COMMANDS = new Map([
+  [
+    SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECARS[0],
+    ["get_hotspot_enabled", "set_hotspot_enabled", "hotspot_ready"],
+  ],
+  [
+    SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECARS[1],
+    [
+      "get_usage_refresh_interval",
+      "set_usage_refresh_interval",
+      "refresh_usage_snapshot",
+    ],
+  ],
+  [
+    SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECARS[2],
+    ["get_mystery_unlock_grants", "merge_mystery_unlock_grants"],
+  ],
+]);
+const SYSTEM_HOTSPOT_USAGE_MYSTERY_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "sidecarReports",
+  "requiredSourceSignals",
+  "nonClaims",
+  "reason",
+];
+const SYSTEM_HOTSPOT_USAGE_MYSTERY_REQUIRED_SIGNAL_FILES = [
+  ...SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECARS,
+  "src/contracts/ipc/commands.ts",
+  "src/services/system/index.ts",
+  "src/services/settings/index.ts",
+  "src/services/accounts/index.ts",
+  "src/services/analytics/index.ts",
+  "src/features/settings/hooks/query.ts",
+  "src/features/settings/hooks/mutation.ts",
+  "src/features/settings/cache/index.ts",
+  "src/features/settings/hooks/page.ts",
+  "src/features/settings/panels/appearance.tsx",
+  "src/features/settings/panels/mode.tsx",
+  "src/features/overview/hooks/query.ts",
+  "src/features/overview/hooks/mutation.ts",
+  "src/features/overview/cache/index.ts",
+  "src/features/overview/hooks/page.ts",
+  "src/features/overview/panels/data.tsx",
+  "src/features/accounts/hooks/mutation.ts",
+  "src/mocks/fixtures/commands.ts",
+  "scripts/validate-e2e-mocks.mjs",
+];
+const SYSTEM_HOTSPOT_USAGE_MYSTERY_NON_CLAIMS = [
+  "不声明全量叶子验收完成。",
+  "不声明后端平台实现、真实业务逻辑或 raw/internal dim6 已经恢复。",
+  "不修改任何 gate-report 字段。",
+  "不新增 closedGateReportFailures 或 closedManifestStatuses 降噪。",
+  "不声明 implementation_use 或 full_leaf_100。",
+  "不把 mystery_route_allowed 当作当前公开源码 IPC 命令，也不声明其已关闭。",
+  "不修改 leaf-copy allowlist，remaining failures 必须保持 103。",
+];
+const SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECAR_NON_CLAIMS = [
+  "不声明全量叶子验收完成。",
+  "不声明后端平台实现已经恢复。",
+  "不声明 raw/internal dim6 已经补齐。",
+  "不修改 gate-report 字段。",
+  "不声明 implementation_use 或 full_leaf_100。",
+];
 
 function repoPath(path) {
   return join(repoRoot, ...path.split("/"));
@@ -68,6 +150,21 @@ function requireIncludes(file, snippets) {
   for (const snippet of snippets) {
     if (!text.includes(snippet)) {
       failures.push(`${file} 缺少 closeout 片段：${snippet}`);
+    }
+  }
+}
+
+function requireExcludes(file, snippets) {
+  const path = repoPath(file);
+  if (!existsSync(path)) {
+    failures.push(`缺少 closeout 源码文件：${file}`);
+    return;
+  }
+
+  const text = readFileSync(path, "utf8");
+  for (const snippet of snippets) {
+    if (text.includes(snippet)) {
+      failures.push(`${file} 不允许出现 closeout 片段：${snippet}`);
     }
   }
 }
@@ -391,6 +488,182 @@ function validateRelayCurrentSourceSkeletonCloseout(closeout) {
   validateRequiredSignals(closeout);
 }
 
+function validateAllowedCloseoutFields(closeout, allowedFields) {
+  const expected = new Set(allowedFields);
+  const actual = Object.keys(closeout);
+  for (const field of actual) {
+    if (!expected.has(field)) {
+      failures.push(`${closeout.id} 不允许顶层字段：${field}`);
+    }
+  }
+  for (const field of expected) {
+    if (!Object.prototype.hasOwnProperty.call(closeout, field)) {
+      failures.push(`${closeout.id} 缺少顶层字段：${field}`);
+    }
+  }
+}
+
+function validateSystemHotspotUsageMysterySidecar(report, expectedCommands) {
+  const path = repoPath(report);
+  if (!existsSync(path)) {
+    failures.push(`${SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID} 缺少 sidecar report：${report}`);
+    return null;
+  }
+
+  const sidecar = readJson(path);
+  if (sidecar.schema !== "open-aimami.frontend_callchain_report.v1") {
+    failures.push(`${report} schema=${String(sidecar.schema)}`);
+  }
+  if (sidecar.status !== "current-source-frontend-chain-closed-non-gating") {
+    failures.push(`${report} status=${String(sidecar.status)}`);
+  }
+  if (sidecar.full_leaf !== false) {
+    failures.push(`${report} full_leaf=${String(sidecar.full_leaf)}`);
+  }
+  if (sidecar.gate_report_fields_unchanged !== true) {
+    failures.push(`${report} gate_report_fields_unchanged=${String(sidecar.gate_report_fields_unchanged)}`);
+  }
+  if (sidecar.backend_platform_evidence_required !== true) {
+    failures.push(`${report} backend_platform_evidence_required=${String(sidecar.backend_platform_evidence_required)}`);
+  }
+  for (const field of [
+    "closed_frontend_commands",
+    "closedCommands",
+    "not_closed_commands",
+    "notClosedCommands",
+  ]) {
+    if (Object.prototype.hasOwnProperty.call(sidecar, field)) {
+      failures.push(`${report} 不允许声明 ${field}；本 sidecar 只能记录当前源码 IPC 信号`);
+    }
+  }
+
+  validateStringArraySet(
+    `${report} current_source_ipc_commands`,
+    sidecar.current_source_ipc_commands,
+    expectedCommands,
+  );
+  if ((sidecar.current_source_ipc_commands ?? []).includes("mystery_route_allowed")) {
+    failures.push(`${report} 不得把 mystery_route_allowed 当作 current_source_ipc_commands`);
+  }
+
+  const nonClaims = sidecar.non_claims ?? [];
+  for (const required of SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECAR_NON_CLAIMS) {
+    if (!nonClaims.includes(required)) {
+      failures.push(`${report} 缺少 non_claims：${required}`);
+    }
+  }
+  if (typeof sidecar.evidence_note !== "string" || sidecar.evidence_note.trim().length === 0) {
+    failures.push(`${report} 缺少中文 evidence_note`);
+  }
+
+  const sourceSignals = sidecar.source_signals ?? {};
+  for (const file of Object.values(sourceSignals)) {
+    if (typeof file !== "string" || !existsSync(repoPath(file))) {
+      failures.push(`${report} source_signals 缺少文件：${String(file)}`);
+    }
+  }
+
+  return sidecar;
+}
+
+function validateSystemHotspotUsageMysterySourceSignals() {
+  for (const command of SYSTEM_HOTSPOT_USAGE_MYSTERY_COMMANDS) {
+    requireIncludes("src/contracts/ipc/commands.ts", [`"command": "${command}"`]);
+    requireIncludes("src/mocks/fixtures/commands.ts", [`${command}:`]);
+  }
+
+  requireIncludes("src/services/system/index.ts", [
+    'invokeIpc<CoreEnvelope<boolean>>("get_hotspot_enabled")',
+    'invokeIpc<CoreEnvelope<boolean>>("set_hotspot_enabled", { enabled })',
+    'invokeIpc<CoreEnvelope<boolean>>("hotspot_ready")',
+    'invokeIpc<CoreEnvelope<string>>("get_usage_refresh_interval")',
+    'invokeIpc<CoreEnvelope<string>>("set_usage_refresh_interval", { interval })',
+    'invokeIpc<CoreEnvelope<CoreSnapshotPayload>>("refresh_usage_snapshot")',
+    'invokeIpc<CoreEnvelope<MysteryRouteGrant[]>>("get_mystery_unlock_grants")',
+    'invokeIpc<CoreEnvelope<MysteryRouteGrant[]>>("merge_mystery_unlock_grants", {',
+  ]);
+  requireIncludes("src/services/settings/index.ts", [
+    "getUsageRefreshInterval: systemService.getUsageRefreshInterval",
+    "setUsageRefreshInterval: systemService.setUsageRefreshInterval",
+    "getHotspotEnabled: systemService.getHotspotEnabled",
+    "setHotspotEnabled: systemService.setHotspotEnabled",
+    "hotspotReady: systemService.hotspotReady",
+  ]);
+  requireIncludes("scripts/validate-e2e-mocks.mjs", [
+    '["get_hotspot_enabled", "hotspotEnabledHandler"]',
+    '["set_hotspot_enabled", "setHotspotEnabledHandler"]',
+    '["hotspot_ready", "hotspotReadyHandler"]',
+    '["get_usage_refresh_interval", "usageRefreshIntervalHandler"]',
+    '["set_usage_refresh_interval", "setUsageRefreshIntervalHandler"]',
+    '["refresh_usage_snapshot", "refreshUsageSnapshotHandler"]',
+    '["get_mystery_unlock_grants", "getMysteryUnlockGrantsHandler"]',
+    '["merge_mystery_unlock_grants", "mergeMysteryUnlockGrantsHandler"]',
+    '"mystery_route_allowed"',
+  ]);
+  for (const file of [
+    "src/contracts/ipc/commands.ts",
+    "src/services/system/index.ts",
+    "src/mocks/fixtures/commands.ts",
+  ]) {
+    requireExcludes(file, ["mystery_route_allowed", "route_allowed"]);
+  }
+}
+
+function validateSystemHotspotUsageMysteryCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, SYSTEM_HOTSPOT_USAGE_MYSTERY_ALLOWED_FIELDS);
+  if (closeout.module !== "system-hotspot-usage-mystery") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} sidecarReports`,
+    closeout.sidecarReports ?? [],
+    SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECARS,
+  );
+  validateStringArraySet(
+    `${closeout.id} requiredSourceSignals files`,
+    (closeout.requiredSourceSignals ?? []).map((signal) => signal.file),
+    SYSTEM_HOTSPOT_USAGE_MYSTERY_REQUIRED_SIGNAL_FILES,
+  );
+  validateSidecarReports(closeout);
+
+  const currentSourceCommands = new Set();
+  for (const [report, commands] of SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECAR_COMMANDS) {
+    const sidecar = validateSystemHotspotUsageMysterySidecar(report, commands);
+    for (const command of sidecar?.current_source_ipc_commands ?? []) {
+      currentSourceCommands.add(command);
+    }
+  }
+  validateStringArraySet(
+    `${closeout.id} current_source_ipc_commands`,
+    [...currentSourceCommands],
+    SYSTEM_HOTSPOT_USAGE_MYSTERY_COMMANDS,
+  );
+
+  const mysterySidecar = readJson(repoPath(SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECARS[2]));
+  validateStringArraySet(
+    `${SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECARS[2]} gate_report_helper_gaps`,
+    mysterySidecar.gate_report_helper_gaps,
+    ["mystery_route_allowed"],
+  );
+
+  const nonClaims = closeout.nonClaims ?? [];
+  for (const required of SYSTEM_HOTSPOT_USAGE_MYSTERY_NON_CLAIMS) {
+    if (!nonClaims.includes(required)) {
+      failures.push(`${closeout.id} 缺少 nonClaims：${required}`);
+    }
+  }
+  if (typeof closeout.reason !== "string" || !closeout.reason.includes("非 gating")) {
+    failures.push(`${closeout.id} reason 必须声明非 gating 当前源码链路边界`);
+  }
+
+  validateSystemHotspotUsageMysterySourceSignals();
+  validateRequiredSignals(closeout);
+}
+
 function manifestCloseoutKey(record) {
   return [
     record.arrayName ?? "",
@@ -697,6 +970,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateRelayCloseout(closeout);
   } else if (closeout.id === RELAY_CURRENT_SOURCE_SKELETON_ID) {
     validateRelayCurrentSourceSkeletonCloseout(closeout);
+  } else if (closeout.id === SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID) {
+    validateSystemHotspotUsageMysteryCloseout(closeout);
   } else {
     failures.push(`未知 closeout id：${closeout.id}`);
   }

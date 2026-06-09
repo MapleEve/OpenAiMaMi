@@ -1048,6 +1048,260 @@
         "不声明 full_leaf_100，也不修改任何 gate-report 字段。"
       ],
       "reason": "当前公开源码已经形成 relay IPC、前端 service/cache/query/mutation/runtime/mock 与 Rust command/usecase/contracts/repository 的可验证公开骨架链路；本 closeout 只登记非 gating 当前源码证据，不声明真实业务恢复、后端平台恢复或 full leaf。"
+    },
+    {
+      "id": "system-hotspot-usage-mystery-frontend-callchain-non-gating-closeout",
+      "module": "system-hotspot-usage-mystery",
+      "status": "current-source-closed-partial",
+      "sidecarReports": [
+        "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/frontend-callchain-report.json",
+        "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/frontend-callchain-report.json",
+        "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/frontend-callchain-report.json"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/frontend-callchain-report.json",
+          "includes": [
+            "\"full_leaf\": false",
+            "\"gate_report_fields_unchanged\": true",
+            "\"backend_platform_evidence_required\": true",
+            "\"current_source_ipc_commands\"",
+            "\"get_hotspot_enabled\"",
+            "\"set_hotspot_enabled\"",
+            "\"hotspot_ready\""
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/frontend-callchain-report.json",
+          "includes": [
+            "\"full_leaf\": false",
+            "\"gate_report_fields_unchanged\": true",
+            "\"backend_platform_evidence_required\": true",
+            "\"current_source_ipc_commands\"",
+            "\"get_usage_refresh_interval\"",
+            "\"set_usage_refresh_interval\"",
+            "\"refresh_usage_snapshot\""
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/frontend-callchain-report.json",
+          "includes": [
+            "\"full_leaf\": false",
+            "\"gate_report_fields_unchanged\": true",
+            "\"backend_platform_evidence_required\": true",
+            "\"current_source_ipc_commands\"",
+            "\"get_mystery_unlock_grants\"",
+            "\"merge_mystery_unlock_grants\"",
+            "\"gate_report_helper_gaps\"",
+            "\"mystery_route_allowed\""
+          ]
+        },
+        {
+          "file": "src/contracts/ipc/commands.ts",
+          "includes": [
+            "\"command\": \"get_hotspot_enabled\"",
+            "\"command\": \"set_hotspot_enabled\"",
+            "\"command\": \"hotspot_ready\"",
+            "\"command\": \"get_usage_refresh_interval\"",
+            "\"command\": \"set_usage_refresh_interval\"",
+            "\"command\": \"refresh_usage_snapshot\"",
+            "\"command\": \"get_mystery_unlock_grants\"",
+            "\"command\": \"merge_mystery_unlock_grants\""
+          ]
+        },
+        {
+          "file": "src/services/system/index.ts",
+          "includes": [
+            "invokeIpc<CoreEnvelope<boolean>>(\"get_hotspot_enabled\")",
+            "invokeIpc<CoreEnvelope<boolean>>(\"set_hotspot_enabled\", { enabled })",
+            "invokeIpc<CoreEnvelope<boolean>>(\"hotspot_ready\")",
+            "invokeIpc<CoreEnvelope<string>>(\"get_usage_refresh_interval\")",
+            "invokeIpc<CoreEnvelope<string>>(\"set_usage_refresh_interval\", { interval })",
+            "invokeIpc<CoreEnvelope<CoreSnapshotPayload>>(\"refresh_usage_snapshot\")",
+            "invokeIpc<CoreEnvelope<MysteryRouteGrant[]>>(\"get_mystery_unlock_grants\")",
+            "invokeIpc<CoreEnvelope<MysteryRouteGrant[]>>(\"merge_mystery_unlock_grants\", {",
+            "grants: toMysteryRouteGrantArgs(grants)"
+          ]
+        },
+        {
+          "file": "src/services/settings/index.ts",
+          "includes": [
+            "getUsageRefreshInterval: systemService.getUsageRefreshInterval",
+            "setUsageRefreshInterval: systemService.setUsageRefreshInterval",
+            "getHotspotEnabled: systemService.getHotspotEnabled",
+            "setHotspotEnabled: systemService.setHotspotEnabled",
+            "hotspotReady: systemService.hotspotReady"
+          ]
+        },
+        {
+          "file": "src/services/accounts/index.ts",
+          "includes": [
+            "refreshUsageSnapshot: () => systemService.refreshUsageSnapshot()"
+          ]
+        },
+        {
+          "file": "src/services/analytics/index.ts",
+          "includes": [
+            "loadUsageAnalytics: () =>",
+            "invokeIpc<CoreEnvelope<UsageAnalyticsPayload>>(\"load_usage_analytics\")"
+          ]
+        },
+        {
+          "file": "src/features/settings/hooks/query.ts",
+          "includes": [
+            "SETTINGS_HOTSPOT_ENABLED_QUERY_KEY",
+            "settingsService.getHotspotEnabled()",
+            "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
+            "settingsService.getUsageRefreshInterval()"
+          ]
+        },
+        {
+          "file": "src/features/settings/hooks/mutation.ts",
+          "includes": [
+            "settingsService.setHotspotEnabled(enabled)",
+            "settingsService.hotspotReady()",
+            ".setUsageRefreshInterval(interval)",
+            "writeSettingsMutationPayload(",
+            "SETTINGS_HOTSPOT_ENABLED_QUERY_KEY",
+            "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY"
+          ]
+        },
+        {
+          "file": "src/features/settings/cache/index.ts",
+          "includes": [
+            "SETTINGS_HOTSPOT_ENABLED_QUERY_KEY",
+            "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
+            "beginSettingsMutation",
+            "runSettingsQuery",
+            "writeSettingsMutationPayload",
+            "invalidateSettingsContractQueries"
+          ]
+        },
+        {
+          "file": "src/features/settings/hooks/page.ts",
+          "includes": [
+            "useSettingsHotspotMutation",
+            "useSettingsHotspotReadyMutation",
+            "useSettingsRefreshIntervalMutation",
+            "hotspotMutation.mutate(enabled)",
+            "hotspotReadyMutation.mutate()",
+            "saveRefreshIntervalMutation.mutate(value"
+          ]
+        },
+        {
+          "file": "src/features/settings/panels/appearance.tsx",
+          "includes": [
+            "appearance.supportsHotspot",
+            "appearance.hotspotEnabled",
+            "controller.actions.setHotspotEnabled"
+          ]
+        },
+        {
+          "file": "src/features/settings/panels/mode.tsx",
+          "includes": [
+            "REFRESH_OPTIONS.map",
+            "value={modeSwitch.refreshInterval}",
+            "onChange={controller.actions.setRefreshInterval}"
+          ]
+        },
+        {
+          "file": "src/features/overview/hooks/query.ts",
+          "includes": [
+            "accountsService.loadSnapshot(true)",
+            "analyticsService.loadUsageAnalytics()",
+            "systemService.getMysteryUnlockGrants()",
+            "OVERVIEW_MYSTERY_GRANTS_QUERY_KEY"
+          ]
+        },
+        {
+          "file": "src/features/overview/hooks/mutation.ts",
+          "includes": [
+            "accountsService.refreshUsageSnapshot()",
+            "writeOverviewMutationPayload(",
+            "invalidateOverviewUsageMutationQueries(queryClient)",
+            "systemService.mergeMysteryUnlockGrants(grants)",
+            "writeOverviewMysteryGrantsPayload("
+          ]
+        },
+        {
+          "file": "src/features/overview/cache/index.ts",
+          "includes": [
+            "OVERVIEW_MYSTERY_GRANTS_QUERY_KEY",
+            "writeOverviewMutationPayload",
+            "writeOverviewMysteryGrantsPayload",
+            "invalidateOverviewUsageMutationQueries",
+            "queryClient.invalidateQueries({ queryKey: [\"usage-analytics\"] })",
+            "invalidateOverviewMysteryGrantsQueries"
+          ]
+        },
+        {
+          "file": "src/features/overview/hooks/page.ts",
+          "includes": [
+            "refreshUsageAction",
+            "mutations.refreshUsageMutation.mutateAsync()",
+            "envelopeData<MysteryRouteGrant[]>",
+            "module.mysteryUnlockGrantsQuery.data"
+          ]
+        },
+        {
+          "file": "src/features/overview/panels/data.tsx",
+          "includes": [
+            "RefreshCw",
+            "state.refetch",
+            "aria-label={t(\"common.refresh\")}"
+          ]
+        },
+        {
+          "file": "src/features/accounts/hooks/mutation.ts",
+          "includes": [
+            "refreshUsageSnapshotMutation",
+            "accountsService.refreshUsageSnapshot()",
+            "writeSnapshotPayload(queryClient, payload, \"active-only-refresh\", context)",
+            "invalidateAccountsDumpedQueries(queryClient)"
+          ]
+        },
+        {
+          "file": "src/mocks/fixtures/commands.ts",
+          "includes": [
+            "get_hotspot_enabled: hotspotEnabledHandler",
+            "set_hotspot_enabled: setHotspotEnabledHandler",
+            "hotspot_ready: hotspotReadyHandler",
+            "get_usage_refresh_interval: usageRefreshIntervalHandler",
+            "set_usage_refresh_interval: setUsageRefreshIntervalHandler",
+            "refresh_usage_snapshot: refreshUsageSnapshotHandler",
+            "get_mystery_unlock_grants: getMysteryUnlockGrantsHandler",
+            "merge_mystery_unlock_grants: mergeMysteryUnlockGrantsHandler",
+            "const systemHotspotMockState",
+            "const systemUsageMockState",
+            "const mysteryUnlockMockState"
+          ]
+        },
+        {
+          "file": "scripts/validate-e2e-mocks.mjs",
+          "includes": [
+            "[\"get_hotspot_enabled\", \"hotspotEnabledHandler\"]",
+            "[\"set_hotspot_enabled\", \"setHotspotEnabledHandler\"]",
+            "[\"hotspot_ready\", \"hotspotReadyHandler\"]",
+            "[\"get_usage_refresh_interval\", \"usageRefreshIntervalHandler\"]",
+            "[\"set_usage_refresh_interval\", \"setUsageRefreshIntervalHandler\"]",
+            "[\"refresh_usage_snapshot\", \"refreshUsageSnapshotHandler\"]",
+            "[\"get_mystery_unlock_grants\", \"getMysteryUnlockGrantsHandler\"]",
+            "[\"merge_mystery_unlock_grants\", \"mergeMysteryUnlockGrantsHandler\"]",
+            "assertNotIncludes(\"src/mocks/fixtures/commands.ts\", commandFixtureText, [",
+            "\"mystery_route_allowed\""
+          ]
+        }
+      ],
+      "nonClaims": [
+        "不声明全量叶子验收完成。",
+        "不声明后端平台实现、真实业务逻辑或 raw/internal dim6 已经恢复。",
+        "不修改任何 gate-report 字段。",
+        "不新增 closedGateReportFailures 或 closedManifestStatuses 降噪。",
+        "不声明 implementation_use 或 full_leaf_100。",
+        "不把 mystery_route_allowed 当作当前公开源码 IPC 命令，也不声明其已关闭。",
+        "不修改 leaf-copy allowlist，remaining failures 必须保持 103。"
+      ],
+      "reason": "当前公开源码已覆盖 system-hotspot、system-usage 与 mystery-unlock 的八个真实 IPC 命令在前端 contract/service/cache/hook/mock/validator 链路中的非 gating sidecar 证据；本 closeout 只登记当前公开源码前端链路，不声明后端平台实现、raw/internal dim6、真实 implementation_use 或 full_leaf_100。"
     }
   ]
 }

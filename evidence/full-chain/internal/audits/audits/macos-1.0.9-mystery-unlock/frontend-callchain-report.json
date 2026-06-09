@@ -1,0 +1,35 @@
+{
+  "schema": "open-aimami.frontend_callchain_report.v1",
+  "bundle": "macos-1.0.9-mystery-unlock",
+  "status": "current-source-frontend-chain-closed-non-gating",
+  "full_leaf": false,
+  "gate_report_fields_unchanged": true,
+  "backend_platform_evidence_required": true,
+  "gate_report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json",
+  "current_source_ipc_commands": [
+    "get_mystery_unlock_grants",
+    "merge_mystery_unlock_grants"
+  ],
+  "gate_report_helper_gaps": [
+    "mystery_route_allowed"
+  ],
+  "source_signals": {
+    "ipc_contract": "src/contracts/ipc/commands.ts",
+    "ts_service": "src/services/system/index.ts",
+    "overview_query_hook": "src/features/overview/hooks/query.ts",
+    "overview_mutation_hook": "src/features/overview/hooks/mutation.ts",
+    "overview_cache": "src/features/overview/cache/index.ts",
+    "overview_page_hook": "src/features/overview/hooks/page.ts",
+    "typed_mock": "src/mocks/fixtures/commands.ts",
+    "mock_validator": "scripts/validate-e2e-mocks.mjs"
+  },
+  "non_claims": [
+    "不声明全量叶子验收完成。",
+    "不声明后端平台实现已经恢复。",
+    "不声明 raw/internal dim6 已经补齐。",
+    "不修改 gate-report 字段。",
+    "不声明 implementation_use 或 full_leaf_100。",
+    "不覆盖 mystery_route_allowed，因为当前公开源码没有真实 IPC 命令。"
+  ],
+  "evidence_note": "当前公开源码只证明 mystery unlock grants 的读取与合并命令在 IPC contract、system service、overview query/mutation/cache/page、typed mock 与 e2e mock validator 中存在前端调用链；不覆盖 mystery_route_allowed，完整叶子验收仍需要后端平台和 raw/internal dim6 证据。"
+}
