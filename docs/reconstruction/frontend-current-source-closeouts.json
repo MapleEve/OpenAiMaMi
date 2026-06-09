@@ -1313,14 +1313,156 @@
           ]
         }
       ],
+      "closedGateReportFailures": [
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json",
+          "path": "gate_accepted",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "本条仅把 Windows system-hotspot current-source 当前源码前端调用链与已有后端骨架边界纳入 partial closeout；不修改 gate-report，不补 raw/internal dim6，不声明 implementation_use 或 full_leaf_100。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json",
+          "path": "implementation_use",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "本条仅把 Windows system-hotspot current-source 当前源码前端调用链与已有后端骨架边界纳入 partial closeout；不修改 gate-report，不补 raw/internal dim6，不声明真实 implementation_use。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json",
+          "path": "dim6_missing",
+          "value": true,
+          "classification": "范围选择",
+          "reason": "本条仅把 Windows system-hotspot current-source 当前源码前端调用链与已有后端骨架边界纳入 partial closeout；raw/internal dim6 仍缺失，不在本次补证。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json",
+          "path": "leaves.get_hotspot_enabled.gate_accepted",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "get_hotspot_enabled 只登记 current-source 前端链路和后端骨架边界的 partial closeout；不修改 gate-report，不声明 gate_accepted。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json",
+          "path": "leaves.get_hotspot_enabled.implementation_use",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "get_hotspot_enabled 只登记 current-source 前端链路和后端骨架边界的 partial closeout；不补 raw/internal dim6，不声明真实 implementation_use。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json",
+          "path": "leaves.set_hotspot_enabled.gate_accepted",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "set_hotspot_enabled 只登记 current-source 前端链路和后端骨架边界的 partial closeout；不修改 gate-report，不声明 gate_accepted。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json",
+          "path": "leaves.set_hotspot_enabled.implementation_use",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "set_hotspot_enabled 只登记 current-source 前端链路和后端骨架边界的 partial closeout；不补 raw/internal dim6，不声明真实 implementation_use。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json",
+          "path": "leaves.hotspot_ready.gate_accepted",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "hotspot_ready 只登记 current-source 前端链路和后端骨架边界的 partial closeout；不修改 gate-report，不声明 gate_accepted。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json",
+          "path": "leaves.hotspot_ready.implementation_use",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "hotspot_ready 只登记 current-source 前端链路和后端骨架边界的 partial closeout；不补 raw/internal dim6，不声明真实 implementation_use。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-hotspot/gate-report.json",
+          "path": "cluster_gate_summary.readyToImplement",
+          "value": 0,
+          "classification": "范围选择",
+          "reason": "Windows system-hotspot cluster 仍不是完整 leaf 验收，本条只纳入 current-source 前端链路和已有后端骨架边界的 partial closeout。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json",
+          "path": "gate_accepted",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "本条仅把 Windows system-usage current-source 当前源码前端调用链与已有后端骨架边界纳入 partial closeout；不修改 gate-report，不补 raw/internal dim6，不声明 implementation_use 或 full_leaf_100。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json",
+          "path": "implementation_use",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "本条仅把 Windows system-usage current-source 当前源码前端调用链与已有后端骨架边界纳入 partial closeout；不修改 gate-report，不补 raw/internal dim6，不声明真实 implementation_use。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json",
+          "path": "dim6_missing",
+          "value": true,
+          "classification": "范围选择",
+          "reason": "本条仅把 Windows system-usage current-source 当前源码前端调用链与已有后端骨架边界纳入 partial closeout；raw/internal dim6 仍缺失，不在本次补证。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json",
+          "path": "leaves.get_usage_refresh_interval.gate_accepted",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "get_usage_refresh_interval 只登记 current-source 前端链路和后端骨架边界的 partial closeout；不修改 gate-report，不声明 gate_accepted。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json",
+          "path": "leaves.get_usage_refresh_interval.implementation_use",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "get_usage_refresh_interval 只登记 current-source 前端链路和后端骨架边界的 partial closeout；不补 raw/internal dim6，不声明真实 implementation_use。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json",
+          "path": "leaves.set_usage_refresh_interval.gate_accepted",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "set_usage_refresh_interval 只登记 current-source 前端链路和后端骨架边界的 partial closeout；不修改 gate-report，不声明 gate_accepted。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json",
+          "path": "leaves.set_usage_refresh_interval.implementation_use",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "set_usage_refresh_interval 只登记 current-source 前端链路和后端骨架边界的 partial closeout；不补 raw/internal dim6，不声明真实 implementation_use。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json",
+          "path": "leaves.refresh_usage_snapshot.gate_accepted",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "refresh_usage_snapshot 只登记 current-source 前端链路和后端骨架边界的 partial closeout；不修改 gate-report，不声明 gate_accepted。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json",
+          "path": "leaves.refresh_usage_snapshot.implementation_use",
+          "value": false,
+          "classification": "范围选择",
+          "reason": "refresh_usage_snapshot 只登记 current-source 前端链路和后端骨架边界的 partial closeout；不补 raw/internal dim6，不声明真实 implementation_use。"
+        },
+        {
+          "report": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json",
+          "path": "cluster_gate_summary.readyToImplement",
+          "value": 0,
+          "classification": "范围选择",
+          "reason": "Windows system-usage cluster 仍不是完整 leaf 验收，本条只纳入 current-source 前端链路和已有后端骨架边界的 partial closeout。"
+        }
+      ],
       "nonClaims": [
         "不声明全量叶子验收完成。",
         "不声明后端平台实现、真实业务逻辑或 raw/internal dim6 已经恢复。",
         "不修改任何 gate-report 字段。",
-        "不新增 closedGateReportFailures 或 closedManifestStatuses 降噪。",
+        "只把 Windows system-hotspot 与 system-usage 两组真实 IPC 的 current-source 前端链路和已有后端骨架边界纳入 strict leaf-copy partial closeout。",
         "不声明 implementation_use 或 full_leaf_100。",
         "不把 mystery_route_allowed 当作当前公开源码 IPC 命令，也不声明其已关闭。",
-        "不修改 leaf-copy allowlist，remaining failures 必须保持 103。"
+        "不纳入 mystery-unlock 的 gate-report 失败字段，不处理 mystery_route_allowed。"
       ],
       "reason": "当前公开源码已覆盖 system-hotspot、system-usage 与 mystery-unlock 的八个真实 IPC 命令在前端 contract/service/cache/hook/mock/validator 链路中的非 gating sidecar 证据；本 closeout 只登记当前公开源码前端链路，不声明后端平台实现、raw/internal dim6、真实 implementation_use 或 full_leaf_100。"
     },
