@@ -234,6 +234,38 @@ const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_NON_CLAIM_SNIPPETS = [
   "gate_accepted",
   "full_leaf_100",
 ];
+const BOOTSTRAP_CURRENT_SOURCE_GATE_CLOSEOUT_ID =
+  "bootstrap-current-source-chain-gate-failure-registration";
+const BOOTSTRAP_CURRENT_SOURCE_SIDECARS = [
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/frontend-callchain-report.json",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-bootstrap/frontend-callchain-report.json",
+];
+const BOOTSTRAP_CURRENT_SOURCE_COMMANDS = [
+  "load_bootstrap_state",
+  "load_pending_auto_switch",
+  "dismiss_pending_auto_switch",
+  "confirm_pending_auto_switch",
+  "confirm_pending_auto_switch_and_restart_codex",
+  "load_snapshot",
+];
+const BOOTSTRAP_CURRENT_SOURCE_GATE_FAILURE_KEYS = [
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/gate-report.json\u0000readyToImplement\u0000false",
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/gate-report.json\u0000implementation_use\u0000false",
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/gate-report.json\u0000gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-bootstrap/gate-report.json\u0000gate_summary.readyToImplement\u00000",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-bootstrap/gate-report.json\u0000gate_summary.gate_accepted\u0000false",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-bootstrap/gate-report.json\u0000gate_summary.implementation_use\u0000false",
+];
+const BOOTSTRAP_CURRENT_SOURCE_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "sidecarReports",
+  "requiredSourceSignals",
+  "closedGateReportFailures",
+  "nonClaims",
+  "reason",
+];
 const WINDOWS_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID =
   "windows-system-current-source-strict-chain";
 const WINDOWS_SYSTEM_CURRENT_SOURCE_SIDECAR =
@@ -1086,6 +1118,94 @@ function validateBootstrapSystemCurrentSourceCloseout(closeout) {
   validateRequiredSignals(closeout);
 }
 
+function validateBootstrapCurrentSourceGateCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, BOOTSTRAP_CURRENT_SOURCE_ALLOWED_FIELDS);
+  if (closeout.module !== "bootstrap") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} sidecarReports`,
+    closeout.sidecarReports ?? [],
+    BOOTSTRAP_CURRENT_SOURCE_SIDECARS,
+  );
+  validateSidecarReports(closeout);
+
+  for (const report of BOOTSTRAP_CURRENT_SOURCE_SIDECARS) {
+    validateBootstrapSystemCurrentSourceSidecar(report);
+    const sidecar = readJson(repoPath(report));
+    if (sidecar.status !== "current-source-frontend-chain-recorded-non-gating") {
+      failures.push(`${report} status=${String(sidecar.status)}`);
+    }
+    validateStringArraySet(
+      `${report} currentSourceSignals.commands`,
+      sidecar.currentSourceSignals?.commands ?? [],
+      BOOTSTRAP_CURRENT_SOURCE_COMMANDS,
+    );
+    const sidecarText = JSON.stringify(sidecar);
+    for (const required of [
+      "不声明全量叶子验收完成",
+      "不修改 gate-report 字段",
+      "不声明 implementation_use、gate_accepted 或 full_leaf_100",
+      "不声明 bootstrap 后端平台真实能力已经恢复",
+    ]) {
+      if (!sidecarText.includes(required)) {
+        failures.push(`${report} 缺少边界声明：${required}`);
+      }
+    }
+  }
+
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  validateStringArraySet(
+    `${closeout.id} closedGateReportFailures`,
+    [...actualGateFailureKeys],
+    BOOTSTRAP_CURRENT_SOURCE_GATE_FAILURE_KEYS,
+  );
+  validateClosedGateReportFailures(closeout);
+
+  for (const entry of closeout.closedGateReportFailures ?? []) {
+    if (entry.path.includes("full_leaf_100")) {
+      failures.push(`${closeout.id} 不允许登记 full_leaf_100：${entry.report} ${entry.path}`);
+    }
+  }
+
+  const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
+  for (const required of [
+    "不修改 gate-report",
+    "不声明 raw/internal gate 已通过",
+    "不声明 implementation_use、gate_accepted 或 full_leaf_100 已恢复",
+    "不登记 full_leaf_100",
+    "不处理 system watcher、system-shell-init、relay、mystery 或 voice",
+  ]) {
+    if (!nonClaimsText.includes(required)) {
+      failures.push(`${closeout.id} nonClaims 缺少声明：${required}`);
+    }
+  }
+
+  const reason = closeout.reason ?? "";
+  for (const required of [
+    "current-source partial closeout",
+    "load_bootstrap_state",
+    "load_pending_auto_switch",
+    "load_snapshot",
+    "不声明 raw/internal gate",
+    "full_leaf_100",
+  ]) {
+    if (!reason.includes(required)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${required}`);
+    }
+  }
+
+  validateRequiredSignals(closeout);
+}
+
 function validateWindowsSystemCurrentSourceCloseout(closeout) {
   validateAllowedCloseoutFields(closeout, WINDOWS_SYSTEM_CURRENT_SOURCE_ALLOWED_FIELDS);
   if (closeout.module !== "windows-system") {
@@ -1625,6 +1745,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateMysteryUnlockGrantsCloseout(closeout);
   } else if (closeout.id === BOOTSTRAP_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateBootstrapSystemCurrentSourceCloseout(closeout);
+  } else if (closeout.id === BOOTSTRAP_CURRENT_SOURCE_GATE_CLOSEOUT_ID) {
+    validateBootstrapCurrentSourceGateCloseout(closeout);
   } else if (closeout.id === WINDOWS_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateWindowsSystemCurrentSourceCloseout(closeout);
   } else if (closeout.id === UI_THEME_CURRENT_SOURCE_CLOSEOUT_ID) {
