@@ -208,6 +208,39 @@ const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_NON_CLAIM_SNIPPETS = [
   "gate_accepted",
   "full_leaf_100",
 ];
+const WINDOWS_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID =
+  "windows-system-current-source-strict-chain";
+const WINDOWS_SYSTEM_CURRENT_SOURCE_SIDECAR =
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/frontend-callchain-report.json";
+const WINDOWS_SYSTEM_CURRENT_SOURCE_GATE_REPORT =
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system/gate-report.json";
+const WINDOWS_SYSTEM_CURRENT_SOURCE_COMMANDS = [
+  "force_kill_codex",
+  "diagnose_codex_router",
+  "diagnose",
+];
+const WINDOWS_SYSTEM_CURRENT_SOURCE_GATE_FAILURE_FIELDS = [
+  "readyToImplement",
+  "implementation_use",
+  "gate_accepted",
+];
+const WINDOWS_SYSTEM_CURRENT_SOURCE_GATE_FAILURE_KEYS =
+  WINDOWS_SYSTEM_CURRENT_SOURCE_COMMANDS.flatMap((command) =>
+    WINDOWS_SYSTEM_CURRENT_SOURCE_GATE_FAILURE_FIELDS.map(
+      (field) =>
+        `${WINDOWS_SYSTEM_CURRENT_SOURCE_GATE_REPORT}\u0000per_command.${command}.${field}\u0000false`,
+    ),
+  );
+const WINDOWS_SYSTEM_CURRENT_SOURCE_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "sidecarReports",
+  "requiredSourceSignals",
+  "closedGateReportFailures",
+  "nonClaims",
+  "reason",
+];
 
 const UI_THEME_CURRENT_SOURCE_CLOSEOUT_ID =
   "ui-theme-current-source-theme-chain";
@@ -946,6 +979,85 @@ function validateBootstrapSystemCurrentSourceCloseout(closeout) {
   validateRequiredSignals(closeout);
 }
 
+function validateWindowsSystemCurrentSourceCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, WINDOWS_SYSTEM_CURRENT_SOURCE_ALLOWED_FIELDS);
+  if (closeout.module !== "windows-system") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} sidecarReports`,
+    closeout.sidecarReports ?? [],
+    [WINDOWS_SYSTEM_CURRENT_SOURCE_SIDECAR],
+  );
+  validateSidecarReports(closeout);
+
+  const sidecar = readJson(repoPath(WINDOWS_SYSTEM_CURRENT_SOURCE_SIDECAR));
+  if (sidecar.status !== "current-source-frontend-chain-and-gaps-recorded-non-gating") {
+    failures.push(`${WINDOWS_SYSTEM_CURRENT_SOURCE_SIDECAR} status=${String(sidecar.status)}`);
+  }
+  validateStringArraySet(
+    `${WINDOWS_SYSTEM_CURRENT_SOURCE_SIDECAR} currentSourceSignals.commands`,
+    sidecar.currentSourceSignals?.commands ?? [],
+    WINDOWS_SYSTEM_CURRENT_SOURCE_COMMANDS,
+  );
+  const sidecarText = JSON.stringify(sidecar);
+  for (const required of [
+    "当前公开源码可见 force_kill_codex",
+    "当前公开源码可见 diagnose",
+    "当前公开源码可见 diagnose_codex_router",
+    "不声明真实平台能力已经恢复",
+  ]) {
+    if (!sidecarText.includes(required)) {
+      failures.push(`${WINDOWS_SYSTEM_CURRENT_SOURCE_SIDECAR} 缺少边界声明：${required}`);
+    }
+  }
+
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  validateStringArraySet(
+    `${closeout.id} closedGateReportFailures`,
+    [...actualGateFailureKeys],
+    WINDOWS_SYSTEM_CURRENT_SOURCE_GATE_FAILURE_KEYS,
+  );
+  validateClosedGateReportFailures(closeout);
+
+  const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
+  for (const required of [
+    "不修改 gate-report",
+    "不声明 raw/internal gate 已通过",
+    "不声明 implementation_use、gate_accepted 或 full_leaf_100 已恢复",
+    "不声明真实平台能力已经恢复",
+    "不处理 macOS watcher、bootstrap、mystery 或 voice",
+  ]) {
+    if (!nonClaimsText.includes(required)) {
+      failures.push(`${closeout.id} nonClaims 缺少声明：${required}`);
+    }
+  }
+
+  const reason = closeout.reason ?? "";
+  for (const required of [
+    "current-source partial closeout",
+    "force_kill_codex",
+    "diagnose_codex_router",
+    "diagnose",
+    "不声明 raw/internal gate",
+    "full_leaf_100",
+  ]) {
+    if (!reason.includes(required)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${required}`);
+    }
+  }
+
+  validateRequiredSignals(closeout);
+}
+
 function validateUiThemeCurrentSourceCloseout(closeout) {
   validateAllowedCloseoutFields(closeout, UI_THEME_ALLOWED_FIELDS);
   if (closeout.module !== "ui-theme") {
@@ -1404,6 +1516,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateSystemHotspotUsageMysteryCloseout(closeout);
   } else if (closeout.id === BOOTSTRAP_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateBootstrapSystemCurrentSourceCloseout(closeout);
+  } else if (closeout.id === WINDOWS_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID) {
+    validateWindowsSystemCurrentSourceCloseout(closeout);
   } else if (closeout.id === UI_THEME_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateUiThemeCurrentSourceCloseout(closeout);
   } else if (closeout.id === CROSS_HOME_USAGE_FRONTEND_CLOSEOUT_ID) {
