@@ -157,15 +157,54 @@ function withMockData<T extends IpcCommandMockData>(
 
 const readFalseHandler: IpcCommandHandler = (context) => withMockData(context, false);
 
-const readManualIntervalHandler: IpcCommandHandler = (context) =>
-  withMockData(context, "manual");
-
 const writeBooleanArgHandler: IpcCommandHandler = (context) =>
   withMockData(context, context.args?.enabled === true);
 
-const writeIntervalArgHandler: IpcCommandHandler = (context) => {
-  const interval = context.args?.interval;
-  return withMockData(context, typeof interval === "string" ? interval : "manual");
+const systemHotspotMockState = {
+  enabled: false,
+  hasNotch: true,
+  ready: false,
+};
+
+const hotspotEnabledHandler: IpcCommandHandler = (context) =>
+  withMockData(context, systemHotspotMockState.enabled);
+
+const setHotspotEnabledHandler: IpcCommandHandler = (context) => {
+  systemHotspotMockState.enabled = readArgBoolean(
+    context.args,
+    "enabled",
+    systemHotspotMockState.enabled,
+  );
+  return withMockData(context, systemHotspotMockState.enabled);
+};
+
+const hotspotReadyHandler: IpcCommandHandler = (context) => {
+  systemHotspotMockState.ready = true;
+  return withMockData(context, systemHotspotMockState.ready);
+};
+
+const hasNotchHandler: IpcCommandHandler = (context) =>
+  withMockData(context, systemHotspotMockState.hasNotch);
+
+const systemUsageMockState = {
+  lastScanAt: 1_700_000_000_000,
+  refreshCount: 0,
+  refreshInterval: "1m",
+  usageLastError: null as string | null,
+  usageSource: "local" as CoreSnapshotPayload["status"]["usageSource"],
+  usageStatus: "unknown" as CoreSnapshotPayload["status"]["apiConnectivity"]["usageStatus"],
+};
+
+const usageRefreshIntervalHandler: IpcCommandHandler = (context) =>
+  withMockData(context, systemUsageMockState.refreshInterval);
+
+const setUsageRefreshIntervalHandler: IpcCommandHandler = (context) => {
+  systemUsageMockState.refreshInterval = readRefreshIntervalArg(
+    context.args,
+    "interval",
+    systemUsageMockState.refreshInterval,
+  );
+  return withMockData(context, systemUsageMockState.refreshInterval);
 };
 
 const systemActionHandler: IpcCommandHandler = (context) => {
@@ -781,6 +820,22 @@ function readArgString(args: IpcArgs | undefined, key: string, fallback: string)
   return typeof value === "string" && value.trim() ? value : fallback;
 }
 
+function readArgBoolean(args: IpcArgs | undefined, key: string, fallback: boolean) {
+  const value = args?.[key];
+  return typeof value === "boolean" ? value : fallback;
+}
+
+function readRefreshIntervalArg(
+  args: IpcArgs | undefined,
+  key: string,
+  fallback: string,
+) {
+  const value = args?.[key];
+  return value === "30s" || value === "1m" || value === "3m" || value === "5m"
+    ? value
+    : fallback;
+}
+
 function readArgOptionalString(args: IpcArgs | undefined, key: string) {
   const value = args?.[key];
   return typeof value === "string" && value.trim() ? value : null;
@@ -953,18 +1008,17 @@ const systemInfoHandler: IpcCommandHandler = (context) => {
   };
 };
 
-const coreSnapshotHandler: IpcCommandHandler = (context) => {
-  const envelope = createEvidenceBackedIpcFixture(
-    context.command,
-    context.args,
-    context.steps,
-  );
-  const data: CoreSnapshotPayload = {
-    backendStatus: envelope.data.status,
+function createCoreSnapshotPayload(
+  backendStatus: CoreSnapshotPayload["backendStatus"],
+  localOnly: boolean,
+): CoreSnapshotPayload {
+  const usageSource = localOnly ? "local" : systemUsageMockState.usageSource;
+  return {
+    backendStatus,
     status: {
       paths: emptyAppPathState(),
-      lastScanAt: 0,
-      usageSource: "local",
+      lastScanAt: systemUsageMockState.lastScanAt,
+      usageSource,
       autoSwitch: {
         enabled: false,
         threshold5hPercent: 80,
@@ -979,11 +1033,36 @@ const coreSnapshotHandler: IpcCommandHandler = (context) => {
         },
       },
       apiConnectivity: {
-        usageStatus: "unknown",
-        usageLastError: null,
+        usageStatus: systemUsageMockState.usageStatus,
+        usageLastError: systemUsageMockState.usageLastError,
       },
     },
   };
+}
+
+const coreSnapshotHandler: IpcCommandHandler = (context) => {
+  const envelope = createEvidenceBackedIpcFixture(
+    context.command,
+    context.args,
+    context.steps,
+  );
+  const localOnly = readArgBoolean(context.args, "localOnly", false);
+  const data = createCoreSnapshotPayload(envelope.data.status, localOnly);
+  return { ...envelope, data };
+};
+
+const refreshUsageSnapshotHandler: IpcCommandHandler = (context) => {
+  const envelope = createEvidenceBackedIpcFixture(
+    context.command,
+    context.args,
+    context.steps,
+  );
+  systemUsageMockState.refreshCount += 1;
+  systemUsageMockState.lastScanAt += 1_000;
+  systemUsageMockState.usageSource = "api";
+  systemUsageMockState.usageStatus = "reachable";
+  systemUsageMockState.usageLastError = null;
+  const data = createCoreSnapshotPayload(envelope.data.status, false);
   return { ...envelope, data };
 };
 
@@ -1003,13 +1082,36 @@ const notificationClientStateHandler: IpcCommandHandler = (context) => {
   };
 };
 
-const mysteryUnlockGrantsHandler: IpcCommandHandler = (context) => {
-  const grants = context.args?.grants;
-  return withMockData(
-    context,
-    Array.isArray(grants) ? normalizeMysteryRouteGrants(grants) : [],
-  );
+const mysteryUnlockMockState = {
+  grants: [] as MysteryRouteGrant[],
 };
+
+const getMysteryUnlockGrantsHandler: IpcCommandHandler = (context) =>
+  withMockData(context, [...mysteryUnlockMockState.grants]);
+
+const mergeMysteryUnlockGrantsHandler: IpcCommandHandler = (context) => {
+  const grants = context.args?.grants;
+  if (Array.isArray(grants)) {
+    mergeMysteryUnlockGrants(normalizeMysteryRouteGrants(grants));
+  }
+  return withMockData(context, [...mysteryUnlockMockState.grants]);
+};
+
+function mergeMysteryUnlockGrants(grants: MysteryRouteGrant[]) {
+  for (const grant of grants) {
+    if (isMysteryRouteGranted(grant.route)) {
+      mysteryUnlockMockState.grants = mysteryUnlockMockState.grants.map((item) =>
+        item.route === grant.route && grant.epochMs >= item.epochMs ? grant : item,
+      );
+      continue;
+    }
+    mysteryUnlockMockState.grants = [...mysteryUnlockMockState.grants, grant];
+  }
+}
+
+function isMysteryRouteGranted(route: string) {
+  return mysteryUnlockMockState.grants.some((grant) => grant.route === route);
+}
 
 function normalizeMysteryRouteGrants(value: unknown[]): MysteryRouteGrant[] {
   return value.flatMap((item) => {
@@ -1379,30 +1481,30 @@ const maintenanceCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandl
 
 const settingsCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {
   check_update_installability: updateInstallabilityHandler,
-  get_hotspot_enabled: readFalseHandler,
+  get_hotspot_enabled: hotspotEnabledHandler,
   get_image_compat: readFalseHandler,
-  get_usage_refresh_interval: readManualIntervalHandler,
+  get_usage_refresh_interval: usageRefreshIntervalHandler,
   graceful_restart_for_update: systemActionHandler,
-  has_notch: readFalseHandler,
-  hotspot_ready: readFalseHandler,
-  set_hotspot_enabled: writeBooleanArgHandler,
+  has_notch: hasNotchHandler,
+  hotspot_ready: hotspotReadyHandler,
+  set_hotspot_enabled: setHotspotEnabledHandler,
   set_image_compat: writeBooleanArgHandler,
-  set_usage_refresh_interval: writeIntervalArgHandler,
+  set_usage_refresh_interval: setUsageRefreshIntervalHandler,
 };
 
 const systemCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {
   focus_main_window: systemActionHandler,
   force_kill_codex: systemActionHandler,
   get_device_id: deviceIdHandler,
-  get_mystery_unlock_grants: mysteryUnlockGrantsHandler,
+  get_mystery_unlock_grants: getMysteryUnlockGrantsHandler,
   get_notification_client_state: notificationClientStateHandler,
   get_or_create_remote_device_secret: remoteDeviceSecretHandler,
   graceful_restart_for_update: systemActionHandler,
   import_remote_device_secret_if_empty: unitHandler,
   load_snapshot: coreSnapshotHandler,
-  merge_mystery_unlock_grants: mysteryUnlockGrantsHandler,
+  merge_mystery_unlock_grants: mergeMysteryUnlockGrantsHandler,
   open_path: systemActionHandler,
-  refresh_usage_snapshot: coreSnapshotHandler,
+  refresh_usage_snapshot: refreshUsageSnapshotHandler,
   reset_codex_config: systemActionHandler,
   restart_codex: systemActionHandler,
 };
