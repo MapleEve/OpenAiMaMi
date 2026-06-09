@@ -126,7 +126,9 @@ export const systemService = {
     ignoreEnvelope(invokeIpc<CoreEnvelope<SystemActionPayload>>("restart_codex")),
 
   forceKillCodex: () =>
-    ignoreEnvelope(invokeIpc<CoreEnvelope<SystemActionPayload>>("force_kill_codex")),
+    readEnvelopeData(
+      invokeIpc<CoreEnvelope<SystemActionPayload>>("force_kill_codex"),
+    ),
 
   resetCodexConfig: () =>
     ignoreEnvelope(invokeIpc<CoreEnvelope<SystemActionPayload>>("reset_codex_config")),

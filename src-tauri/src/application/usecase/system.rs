@@ -1,5 +1,6 @@
 use crate::application::ports::{
-    AppProcessPort, AppShellPort, AppSystemPort, AppWindowPort, HotspotPlatformPort,
+    AppProcessPort, AppShellPort, AppSystemPort, AppWindowPort, ForceKillOutcome,
+    HotspotPlatformPort,
 };
 use crate::application::service::{
     current_timestamp, pending_status, restored_status, unsupported_status,
@@ -533,46 +534,36 @@ pub fn check_update_installability(system: &impl AppSystemPort) -> UpdateInstall
 
 pub fn graceful_restart_for_update(process: &impl AppProcessPort) -> SystemActionPayload {
     let _ = process.graceful_restart_for_update();
-    SystemActionPayload {
-        backend_status: unsupported_status(
-            "system",
-            "graceful_restart_for_update",
-            "更新重启动作未在当前公开后端范围内恢复。",
-        ),
-        config_cleared: None,
-    }
+    system_action_payload(unsupported_status(
+        "system",
+        "graceful_restart_for_update",
+        "更新重启动作未在当前公开后端范围内恢复。",
+    ))
 }
 
 pub fn restart_app(process: &impl AppProcessPort) -> SystemActionPayload {
     let _ = process.restart_app();
-    SystemActionPayload {
-        backend_status: unsupported_status(
-            "system",
-            "restart_codex",
-            "重启外部程序能力未在当前公开后端范围内恢复。",
-        ),
-        config_cleared: None,
-    }
+    system_action_payload(unsupported_status(
+        "system",
+        "restart_codex",
+        "重启外部程序能力未在当前公开后端范围内恢复。",
+    ))
 }
 
-pub fn force_kill_app(process: &impl AppProcessPort) -> SystemActionPayload {
-    let _ = process.force_kill_app();
-    SystemActionPayload {
-        backend_status: unsupported_status(
-            "system",
-            "force_kill_codex",
-            "强制结束外部程序能力保持 unsupported/pending；强制结束外部程序能力未在当前公开后端范围内恢复。",
-        ),
-        config_cleared: None,
-    }
+pub fn force_kill_app(process: &impl AppProcessPort) -> Result<SystemActionPayload, CoreError> {
+    let outcome = process.force_kill_app()?;
+    Ok(force_kill_payload(outcome))
 }
 
 pub fn reset_config(repo: &Repository) -> Result<SystemActionPayload, CoreError> {
     let result = config_repository::reset_codex_config(repo)?;
-    Ok(SystemActionPayload {
-        backend_status: restored_status("system", "reset_codex_config", BackendEffect::NoOp),
-        config_cleared: Some(result.config_cleared),
-    })
+    let mut payload = system_action_payload(restored_status(
+        "system",
+        "reset_codex_config",
+        BackendEffect::NoOp,
+    ));
+    payload.config_cleared = Some(result.config_cleared);
+    Ok(payload)
 }
 
 pub fn open_path(
@@ -580,10 +571,36 @@ pub fn open_path(
     path: String,
 ) -> Result<SystemActionPayload, CoreError> {
     shell.open_path(&path)?;
-    Ok(SystemActionPayload {
-        backend_status: restored_status("system", "open_path", BackendEffect::Platform),
+    Ok(system_action_payload(restored_status(
+        "system",
+        "open_path",
+        BackendEffect::Platform,
+    )))
+}
+
+fn force_kill_payload(outcome: ForceKillOutcome) -> SystemActionPayload {
+    let processes = outcome
+        .processes
+        .iter()
+        .map(|process| format!("{} ({})", process.name, process.pid))
+        .collect::<Vec<_>>();
+    SystemActionPayload {
+        backend_status: restored_status("system", "force_kill_codex", BackendEffect::Platform),
         config_cleared: None,
-    })
+        killed_count: Some(outcome.killed_count),
+        terminated_process_count: Some(outcome.killed_count),
+        processes: Some(processes),
+    }
+}
+
+fn system_action_payload(backend_status: BackendSkeletonStatus) -> SystemActionPayload {
+    SystemActionPayload {
+        backend_status,
+        config_cleared: None,
+        killed_count: None,
+        terminated_process_count: None,
+        processes: None,
+    }
 }
 
 pub fn system_info(system: &impl AppSystemPort) -> SystemInfoPayload {
@@ -599,10 +616,11 @@ pub fn system_info(system: &impl AppSystemPort) -> SystemInfoPayload {
 
 pub fn focus_main_window(window: &impl AppWindowPort) -> Result<SystemActionPayload, CoreError> {
     window.focus_main_window()?;
-    Ok(SystemActionPayload {
-        backend_status: restored_status("system", "focus_main_window", BackendEffect::Platform),
-        config_cleared: None,
-    })
+    Ok(system_action_payload(restored_status(
+        "system",
+        "focus_main_window",
+        BackendEffect::Platform,
+    )))
 }
 
 pub fn get_device_id(repo: &Repository) -> Result<String, CoreError> {

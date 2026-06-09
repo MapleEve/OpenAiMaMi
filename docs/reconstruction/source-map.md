@@ -107,10 +107,10 @@ OpenAiMami 1.0.9 前端覆盖面：
 | 模块 | 命令 |
 | --- | --- |
 | `custom_instructions.rs` | `load_custom_instruction_state`、`preview_custom_instruction_apply`、`apply_custom_instruction`、`clear_custom_instruction_block`、`rollback_custom_instruction` |
-| `hotspot.rs` | `has_notch`、`get_hotspot_enabled`、`set_hotspot_enabled`、`focus_main_window`、`hotspot_ready` |
+| `hotspot.rs` | 保留模块边界；当前公开 IPC 注册表中热点相关命令由 `system.rs` 暴露。 |
 | `mcp.rs` | `load_mcp_servers`、`upsert_mcp_server`、`set_mcp_server_enabled`、`remove_mcp_server` |
 | `skills.rs` | `load_installed_skills`、`load_skill_backups`、`import_skill`、`remove_skill`、`restore_skill_backup`、`delete_skill_backup` |
-| `system.rs` | `clean`、`rebuild_registry`、`set_auto_switch`、`configure_auto_switch`、`set_api_proxy_config`、`get_usage_refresh_interval`、`set_usage_refresh_interval`、`test_api_proxy_config`、`detect_api_proxy_config`、`run_daemon_once`、`diagnose`、`restart_codex`、`load_bootstrap_state`、`get_system_info`、`graceful_restart_for_update`、`check_update_installability`、`open_path` |
+| `system.rs` | `load_snapshot`、`refresh_usage_snapshot`、`load_bootstrap_state`、`clean`、`rebuild_registry`、`diagnose`、`set_auto_switch`、`configure_auto_switch`、`set_api_proxy_config`、`test_api_proxy_config`、`detect_api_proxy_config`、`run_daemon_once`、`get_usage_refresh_interval`、`set_usage_refresh_interval`、`check_update_installability`、`graceful_restart_for_update`、`restart_codex`、`force_kill_codex`、`reset_codex_config`、`open_path`、`get_system_info`、`focus_main_window`、`get_device_id`、`get_notification_client_state`、`get_mystery_unlock_grants`、`merge_mystery_unlock_grants`、`get_or_create_remote_device_secret`、`import_remote_device_secret_if_empty`、`load_pending_auto_switch`、`dismiss_pending_auto_switch`、`confirm_pending_auto_switch`、`confirm_pending_auto_switch_and_restart_codex`、`has_notch`、`get_hotspot_enabled`、`set_hotspot_enabled`、`hotspot_ready`、`get_image_compat`、`set_image_compat` |
 
 只有通过 `tauri::generate_handler!` 注册的命令属于前端 IPC 表面。模块内辅助函数不应被当成 IPC 入口，除非它被注册。
 

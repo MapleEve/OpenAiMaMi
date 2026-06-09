@@ -161,10 +161,15 @@ export function useMaintenancePageController(): MaintenancePageController {
       loadingLabel: t("maintenance.forceKilling"),
       onAction: () =>
         void runAction("forceKill", async () => {
-          await forceKillMutation.mutateAsync();
+          const result = await forceKillMutation.mutateAsync();
+          const count = result.killedCount ?? result.terminatedProcessCount ?? 0;
+          const processes = result.processes?.join(", ") || "-";
           setActionResult("forceKill", {
             type: "success",
-            message: t("maintenance.forceKillResult"),
+            message:
+              count > 0
+                ? t("maintenance.forceKillResult", { count, processes })
+                : t("maintenance.forceKillNone"),
           });
         }),
       variant: "destructive",
