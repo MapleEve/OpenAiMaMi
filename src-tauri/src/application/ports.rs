@@ -2,6 +2,7 @@
 // 仓储和平台能力需要先形成可替换契约，再由用例通过这里协作。
 
 use crate::core::error::CoreError;
+use crate::core::model::hotspot::HotspotPlatformCapability;
 
 pub(crate) trait RepositoryPort {}
 
@@ -81,6 +82,13 @@ pub(crate) trait AppWindowPort {
 
 // hotspot 能力端口只公开可替换的平台查询骨架，不声明 Windows/macOS 热点能力已恢复。
 pub(crate) trait HotspotPlatformPort {
-    fn has_notch(&self) -> bool;
-    fn is_hotspot_ready(&self) -> bool;
+    fn hotspot_capability(&self) -> HotspotPlatformCapability;
+
+    fn has_notch(&self) -> bool {
+        self.hotspot_capability().has_notch
+    }
+
+    fn is_hotspot_ready(&self) -> bool {
+        self.hotspot_capability().ready
+    }
 }

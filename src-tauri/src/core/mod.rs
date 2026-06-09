@@ -1,5 +1,6 @@
 pub mod dto;
 pub mod error;
+pub mod hotspot;
 pub mod migration;
 pub mod model;
 pub mod parser;
