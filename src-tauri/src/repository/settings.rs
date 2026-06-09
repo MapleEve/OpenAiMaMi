@@ -15,10 +15,11 @@ pub fn load_app_settings(repo: &Repository) -> Result<AppSettingsFile, CoreError
 
 pub fn save_app_settings(repo: &Repository, settings: &AppSettingsFile) -> Result<(), CoreError> {
     repo.paths().ensure_app_directories()?;
-    repo.fs().write_string(
-        &repo.paths().settings_path,
-        &serde_json::to_string_pretty(settings)?,
-    )
+    let path = &repo.paths().settings_path;
+    let tmp_path = path.with_extension("json.tmp");
+    repo.fs()
+        .write_string(&tmp_path, &serde_json::to_string_pretty(settings)?)?;
+    repo.fs().rename(&tmp_path, path)
 }
 
 pub fn get_usage_refresh_interval(repo: &Repository) -> Result<UsageRefreshInterval, CoreError> {
@@ -58,4 +59,40 @@ pub fn save_mystery_unlock_grants(
     let mut settings = load_app_settings(repo)?;
     settings.mystery_unlock_grants = grants;
     save_app_settings(repo, &settings)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn usage_refresh_interval_save_uses_atomic_temp_replace() {
+        let repo = Repository::with_temp_file_system("settings-usage-atomic");
+
+        let saved =
+            set_usage_refresh_interval(&repo, UsageRefreshInterval::ThreeMinutes).expect("save");
+
+        assert_eq!(saved, UsageRefreshInterval::ThreeMinutes);
+        assert_eq!(
+            get_usage_refresh_interval(&repo).expect("read interval"),
+            UsageRefreshInterval::ThreeMinutes
+        );
+        assert!(repo.fs().exists(&repo.paths().settings_path));
+        assert!(!repo
+            .fs()
+            .exists(&repo.paths().settings_path.with_extension("json.tmp")));
+    }
+
+    #[test]
+    fn hotspot_save_preserves_usage_refresh_interval() {
+        let repo = Repository::with_temp_file_system("settings-hotspot-preserve");
+        set_usage_refresh_interval(&repo, UsageRefreshInterval::FiveMinutes)
+            .expect("save interval");
+
+        assert!(set_hotspot_enabled(&repo, true).expect("save hotspot"));
+
+        let settings = load_app_settings(&repo).expect("read settings");
+        assert!(settings.hotspot_enabled);
+        assert_eq!(settings.usage_refresh_interval, "5m");
+    }
 }

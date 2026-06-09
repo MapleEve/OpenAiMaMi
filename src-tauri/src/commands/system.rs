@@ -313,15 +313,20 @@ pub fn get_or_create_remote_device_secret(
     repo: State<'_, Mutex<Repository>>,
 ) -> Result<CoreEnvelope<String>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::system::get_device_id(&repo)
+    usecase::system::get_or_create_remote_device_secret(&repo)
         .map(CoreEnvelope::ok)
         .map_err(|error| error.to_string())
 }
 
 #[tauri::command]
-pub fn import_remote_device_secret_if_empty(secret: String) -> Result<CoreEnvelope<()>, String> {
-    usecase::system::import_remote_device_secret_if_empty(secret);
-    Ok(CoreEnvelope::ok(()))
+pub fn import_remote_device_secret_if_empty(
+    repo: State<'_, Mutex<Repository>>,
+    secret: String,
+) -> Result<CoreEnvelope<()>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::system::import_remote_device_secret_if_empty(&repo, secret)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
 }
 
 #[tauri::command]

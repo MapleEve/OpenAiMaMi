@@ -87,6 +87,8 @@ pub struct AppSettingsFile {
     pub threshold_weekly_percent: i32,
     #[serde(default)]
     pub device_id: Option<String>,
+    #[serde(default)]
+    pub remote_device_secret: Option<String>,
     #[serde(default, alias = "mysteryUnlockedRoutes")]
     pub mystery_unlock_grants: Vec<MysteryRouteGrant>,
 }
@@ -101,6 +103,7 @@ impl Default for AppSettingsFile {
             threshold_5h_percent: default_threshold_5h(),
             threshold_weekly_percent: default_threshold_weekly(),
             device_id: None,
+            remote_device_secret: None,
             mystery_unlock_grants: Vec::new(),
         }
     }

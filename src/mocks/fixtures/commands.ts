@@ -1295,11 +1295,30 @@ function isMysteryRouteAllowed(route: string) {
   ].includes(normalizeMysteryRoute(route));
 }
 
-const remoteDeviceSecretHandler: IpcCommandHandler = (context) =>
-  withMockData(
-    context,
-    "00000000-0000-4000-8000-000000000000-00000000-0000-4000-8000-000000000001",
-  );
+const REMOTE_DEVICE_SECRET_FIXTURE =
+  "00000000-0000-4000-8000-000000000000-00000000-0000-4000-8000-000000000001";
+
+const remoteDeviceSecretMockState = {
+  secret: "",
+};
+
+const remoteDeviceSecretHandler: IpcCommandHandler = (context) => {
+  if (!remoteDeviceSecretMockState.secret.trim()) {
+    remoteDeviceSecretMockState.secret = REMOTE_DEVICE_SECRET_FIXTURE;
+  }
+  return withMockData(context, remoteDeviceSecretMockState.secret);
+};
+
+const importRemoteDeviceSecretIfEmptyHandler: IpcCommandHandler = (context) => {
+  const secret = (
+    readArgString(context.args, "secret", "") ||
+    readArgString(context.args, "sensitive-field", "")
+  ).trim();
+  if (secret && !remoteDeviceSecretMockState.secret.trim()) {
+    remoteDeviceSecretMockState.secret = secret;
+  }
+  return withMockData(context, null);
+};
 
 const deviceIdHandler: IpcCommandHandler = (context) =>
   withMockData(context, "00000000-0000-4000-8000-000000000000");
@@ -1808,7 +1827,7 @@ const systemCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> 
   get_notification_client_state: notificationClientStateHandler,
   get_or_create_remote_device_secret: remoteDeviceSecretHandler,
   graceful_restart_for_update: systemActionHandler,
-  import_remote_device_secret_if_empty: unitHandler,
+  import_remote_device_secret_if_empty: importRemoteDeviceSecretIfEmptyHandler,
   load_snapshot: coreSnapshotHandler,
   merge_mystery_unlock_grants: mergeMysteryUnlockGrantsHandler,
   note_usage_refresh_activity: backendSkeletonStatusHandler,
