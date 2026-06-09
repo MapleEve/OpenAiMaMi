@@ -1,31 +1,32 @@
-use crate::application::service::pending_status;
+use crate::application::{ports::RelayPlatformPort, service::pending_status};
 use crate::contracts::{
     BackendSkeletonStatus, CoreWarning, RelayActivePayload, RelayDiagnosticPayload,
     RelayExportPayload, RelayImportPayload, RelayPassthroughAuditEntryPayload,
     RelayProviderDraftInput, RelayProviderPayload, RelayProxyPayload, RelayRouterIssueFixPayload,
     RelayRouterMigrationPayload, RelayRouterTogglePayload, RelayStatePayload, RelayTestPayload,
 };
+use crate::core::{
+    model::relay::{
+        RelayCoreRepositoryView, RelayDiagnosticDomain, RelayDraftDomain, RelayProviderDomain,
+        RelayProxyDomain, RelayStateDomain, RelayTestDomain, RELAY_DEFAULT_IDE,
+        RELAY_SCHEMA_VERSION,
+    },
+    relay as relay_core,
+};
+use crate::platform::relay::RelayPlatformAdapter;
 use crate::repository::{relay as relay_repository, Repository};
 use serde_json::Value;
-use std::collections::HashMap;
 
 pub(crate) struct RelayUseCaseBoundary;
 
 pub(crate) trait RelayUseCaseBoundaryPort {}
 
-const DEFAULT_IDE: &str = "codex";
-const RELAY_SCHEMA_VERSION: i32 = 4;
-
 /// 设置官方直连拦截开关的用户动作边界；真实持久化等待 raw/internal 证据补齐。
 pub fn set_block_official_passthrough(repo: &Repository, blocked: bool) -> (bool, CoreWarning) {
+    let command = "set_block_official_passthrough";
     let value = relay_repository::record_passthrough_policy_intent(repo, blocked);
-    (
-        value,
-        pending_warning(
-            "set_block_official_passthrough",
-            "relay 官方直连拦截开关只完成公开骨架，尚未写入未恢复的代理配置。",
-        ),
-    )
+    let note = relay_core::skeleton_note(command);
+    (value, pending_warning(command, &note))
 }
 
 /// 读取官方直连审计日志的用户动作边界；当前公开仓库没有可证明的日志来源。
@@ -45,7 +46,10 @@ pub fn get_passthrough_audit_log(
 
 pub fn load_relay_state(repo: &Repository) -> (RelayStatePayload, CoreWarning) {
     let command = "load_relay_state";
-    (empty_state(repo, command), skeleton_warning(command))
+    (
+        state_payload_from_repo(repo, command),
+        skeleton_warning(command),
+    )
 }
 
 pub fn upsert_relay_provider(
@@ -53,8 +57,15 @@ pub fn upsert_relay_provider(
     input: RelayProviderDraftInput,
 ) -> (RelayProviderPayload, CoreWarning) {
     let command = "upsert_relay_provider";
+    let draft = draft_from_input(&input);
+    let provider = relay_core::provider_from_draft(command, &draft, None, None);
     (
-        provider_from_input(command, &input, None, None),
+        provider_payload_from_domain(
+            command,
+            &provider,
+            false,
+            input.extra_headers.clone().unwrap_or(Value::Null),
+        ),
         skeleton_warning(command),
     )
 }
@@ -64,7 +75,10 @@ pub fn delete_relay_provider(
     _provider_id: String,
 ) -> (RelayStatePayload, CoreWarning) {
     let command = "delete_relay_provider";
-    (empty_state(repo, command), skeleton_warning(command))
+    (
+        state_payload_from_repo(repo, command),
+        skeleton_warning(command),
+    )
 }
 
 pub fn activate_relay_provider(
@@ -73,7 +87,10 @@ pub fn activate_relay_provider(
     _ide: String,
 ) -> (RelayStatePayload, CoreWarning) {
     let command = "activate_relay_provider";
-    (empty_state(repo, command), skeleton_warning(command))
+    (
+        state_payload_from_repo(repo, command),
+        skeleton_warning(command),
+    )
 }
 
 pub fn deactivate_relay_provider(
@@ -82,7 +99,10 @@ pub fn deactivate_relay_provider(
     _ide: String,
 ) -> (RelayStatePayload, CoreWarning) {
     let command = "deactivate_relay_provider";
-    (empty_state(repo, command), skeleton_warning(command))
+    (
+        state_payload_from_repo(repo, command),
+        skeleton_warning(command),
+    )
 }
 
 pub fn set_relay_provider_network(
@@ -96,8 +116,10 @@ pub fn set_relay_provider_network(
         network: Some(network),
         ..RelayProviderDraftInput::default()
     };
+    let draft = draft_from_input(&input);
+    let provider = relay_core::provider_from_draft(command, &draft, None, None);
     (
-        provider_from_input(command, &input, None, None),
+        provider_payload_from_domain(command, &provider, false, Value::Null),
         skeleton_warning(command),
     )
 }
@@ -107,7 +129,10 @@ pub fn test_relay_provider(
     _provider_id: String,
 ) -> (RelayTestPayload, CoreWarning) {
     let command = "test_relay_provider";
-    (empty_test(command), skeleton_warning(command))
+    (
+        test_payload_from_domain(command, relay_core::pending_test_result(command)),
+        skeleton_warning(command),
+    )
 }
 
 pub fn test_relay_draft(
@@ -115,7 +140,10 @@ pub fn test_relay_draft(
     _input: RelayProviderDraftInput,
 ) -> (RelayTestPayload, CoreWarning) {
     let command = "test_relay_draft";
-    (empty_test(command), skeleton_warning(command))
+    (
+        test_payload_from_domain(command, relay_core::pending_test_result(command)),
+        skeleton_warning(command),
+    )
 }
 
 pub fn fetch_relay_models_draft(
@@ -123,26 +151,24 @@ pub fn fetch_relay_models_draft(
     _input: RelayProviderDraftInput,
 ) -> (Vec<String>, CoreWarning) {
     let command = "fetch_relay_models_draft";
-    (Vec::new(), skeleton_warning(command))
+    let (models, message) = relay_core::pending_model_fetch(command);
+    (models, pending_warning(command, &message))
 }
 
-pub fn get_relay_active(_repo: &Repository) -> (RelayActivePayload, CoreWarning) {
+pub fn get_relay_active(repo: &Repository) -> (RelayActivePayload, CoreWarning) {
     let command = "get_relay_active";
     (
-        RelayActivePayload {
-            backend_status: skeleton_status(command),
-            enabled: false,
-            active_provider: None,
-            active_provider_id: None,
-            ide: DEFAULT_IDE.to_string(),
-        },
+        active_payload_from_state(command, core_state_from_repo(repo)),
         skeleton_warning(command),
     )
 }
 
-pub fn get_relay_proxy_status(_repo: &Repository) -> (RelayProxyPayload, CoreWarning) {
+pub fn get_relay_proxy_status(repo: &Repository) -> (RelayProxyPayload, CoreWarning) {
     let command = "get_relay_proxy_status";
-    (empty_proxy(command), skeleton_warning(command))
+    (
+        proxy_payload_from_domain(command, core_state_from_repo(repo).proxy),
+        skeleton_warning(command),
+    )
 }
 
 pub fn set_codex_router_enabled(
@@ -154,7 +180,7 @@ pub fn set_codex_router_enabled(
     (
         RelayRouterTogglePayload {
             backend_status: skeleton_status(command),
-            state: empty_state(repo, command),
+            state: state_payload_from_repo(repo, command),
             migration: RelayRouterMigrationPayload {
                 action: "pending".to_string(),
                 migrated_count: 0,
@@ -166,7 +192,7 @@ pub fn set_codex_router_enabled(
             },
             codex_launch_error: None,
         },
-        skeleton_warning(command),
+        router_toggle_warning(command),
     )
 }
 
@@ -212,8 +238,15 @@ pub fn import_relay_config(
 pub fn run_codex_router_diagnostics(repo: &Repository) -> (RelayDiagnosticPayload, CoreWarning) {
     let command = "run_codex_router_diagnostics";
     let skeleton = relay_repository::load_router_diagnostic_skeleton(repo, command);
+    let diagnostic = relay_core::pending_diagnostic(
+        command,
+        skeleton.source_path,
+        skeleton.catalog_source_path,
+        skeleton.checked_at,
+        skeleton.diagnostic_boundary,
+    );
     (
-        empty_diagnostic(command, skeleton),
+        diagnostic_payload_from_domain(command, diagnostic),
         skeleton_warning(command),
     )
 }
@@ -221,8 +254,15 @@ pub fn run_codex_router_diagnostics(repo: &Repository) -> (RelayDiagnosticPayloa
 pub fn diagnose_codex_router(repo: &Repository) -> (RelayDiagnosticPayload, CoreWarning) {
     let command = "diagnose_codex_router";
     let skeleton = relay_repository::load_router_diagnostic_skeleton(repo, command);
+    let diagnostic = relay_core::pending_diagnostic(
+        command,
+        skeleton.source_path,
+        skeleton.catalog_source_path,
+        skeleton.checked_at,
+        skeleton.diagnostic_boundary,
+    );
     (
-        empty_diagnostic(command, skeleton),
+        diagnostic_payload_from_domain(command, diagnostic),
         skeleton_warning(command),
     )
 }
@@ -233,6 +273,14 @@ pub fn fix_codex_router_issue(
 ) -> (RelayRouterIssueFixPayload, CoreWarning) {
     let command = "fix_codex_router_issue";
     let skeleton = relay_repository::load_router_diagnostic_skeleton(repo, command);
+    let diagnostic = relay_core::pending_diagnostic(
+        command,
+        skeleton.source_path,
+        skeleton.catalog_source_path,
+        skeleton.checked_at,
+        skeleton.diagnostic_boundary,
+    );
+    let message = relay_core::pending_fix_message(command, &item_id);
     (
         RelayRouterIssueFixPayload {
             backend_status: skeleton_status(command),
@@ -240,55 +288,33 @@ pub fn fix_codex_router_issue(
             issue_id: item_id,
             fixed: false,
             requires_restart: false,
-            message: "修复未执行：当前仅返回 relay 诊断 pending 骨架，真实修复逻辑等待证据补齐。"
-                .to_string(),
+            message,
             details: None,
-            diagnostics: empty_diagnostic(command, skeleton),
+            diagnostics: diagnostic_payload_from_domain(command, diagnostic),
         },
         skeleton_warning(command),
     )
 }
 
-fn provider_from_input(
+fn provider_payload_from_domain(
     command: &str,
-    input: &RelayProviderDraftInput,
-    provider_id_override: Option<&str>,
-    network_override: Option<&str>,
+    provider: &RelayProviderDomain,
+    active: bool,
+    extra_headers: Value,
 ) -> RelayProviderPayload {
-    let provider_id = provider_id_override
-        .map(ToString::to_string)
-        .or_else(|| input.provider_id.clone())
-        .or_else(|| input.id.clone())
-        .unwrap_or_else(|| "pending-relay-provider".to_string());
-    let base_url = input
-        .base_url
-        .clone()
-        .or_else(|| input.url.clone())
-        .or_else(|| input.endpoint.clone())
-        .unwrap_or_default();
-    let model = input
-        .model
-        .clone()
-        .or_else(|| input.default_model.clone())
-        .unwrap_or_default();
-    let network = network_override
-        .map(ToString::to_string)
-        .or_else(|| input.network.clone())
-        .unwrap_or_else(|| "system".to_string());
-
     RelayProviderPayload {
         backend_status: skeleton_status(command),
-        id: provider_id.clone(),
-        ide: input.ide.clone().unwrap_or_else(|| DEFAULT_IDE.to_string()),
-        name: input.name.clone().unwrap_or(provider_id),
-        base_url,
+        id: provider.id.clone(),
+        ide: provider.ide.clone(),
+        name: provider.name.clone(),
+        base_url: provider.base_url.clone(),
         api_key: None,
-        api_key_stored: input.api_key_stored.unwrap_or(false),
-        model,
-        wire_api: input.wire_api.clone().unwrap_or_default(),
-        extra_headers: input.extra_headers.clone().unwrap_or(Value::Null),
-        network,
-        active: false,
+        api_key_stored: provider.api_key_stored,
+        model: provider.model.clone(),
+        wire_api: provider.wire_api.clone(),
+        extra_headers,
+        network: provider.network.clone(),
+        active,
         health_score: None,
         latency_ms: None,
         last_tested_at: None,
@@ -299,67 +325,137 @@ fn provider_from_input(
     }
 }
 
-fn empty_state(repo: &Repository, command: &str) -> RelayStatePayload {
-    let source_path = repo.paths().app_data_dir.display().to_string();
-    let proxy = empty_proxy(command);
-    let mut active_by_ide = HashMap::new();
-    active_by_ide.insert(DEFAULT_IDE.to_string(), Vec::new());
+fn draft_from_input(input: &RelayProviderDraftInput) -> RelayDraftDomain {
+    RelayDraftDomain {
+        id: input.id.clone(),
+        provider_id: input.provider_id.clone(),
+        ide: input.ide.clone(),
+        name: input.name.clone(),
+        base_url: input.base_url.clone(),
+        url: input.url.clone(),
+        endpoint: input.endpoint.clone(),
+        api_key_stored: input.api_key_stored,
+        model: input.model.clone(),
+        default_model: input.default_model.clone(),
+        wire_api: input.wire_api.clone(),
+        network: input.network.clone(),
+    }
+}
+
+fn state_payload_from_repo(repo: &Repository, command: &str) -> RelayStatePayload {
+    state_payload_from_domain(command, core_state_from_repo(repo))
+}
+
+fn core_state_from_repo(repo: &Repository) -> RelayStateDomain {
+    let repository_snapshot = relay_repository::load_relay_repository_snapshot(repo);
+    let repo_view = RelayCoreRepositoryView {
+        relay_config_path: repository_snapshot.relay_config_path,
+    };
+    relay_core::build_core_snapshot(&repo_view, relay_platform_capability_codes()).state
+}
+
+fn relay_platform_capability_codes() -> Vec<String> {
+    RelayPlatformAdapter
+        .capabilities()
+        .into_iter()
+        .map(|capability| capability.code)
+        .collect()
+}
+
+fn state_payload_from_domain(command: &str, state: RelayStateDomain) -> RelayStatePayload {
+    let active_provider_id = active_provider_id(&state);
+    let proxy = proxy_payload_from_domain(command, state.proxy);
+    let providers = state
+        .providers
+        .iter()
+        .map(|provider| {
+            let active = active_provider_id.as_ref() == Some(&provider.id);
+            provider_payload_from_domain(command, provider, active, Value::Null)
+        })
+        .collect();
 
     RelayStatePayload {
         backend_status: skeleton_status(command),
-        schema_version: RELAY_SCHEMA_VERSION,
-        providers: Vec::new(),
-        active_by_ide,
+        schema_version: state.schema_version,
+        providers,
+        active_by_ide: state.active_by_ide,
         proxy: proxy.clone(),
-        codex_router_enabled: false,
-        block_official_passthrough: false,
+        codex_router_enabled: state.codex_router_enabled,
+        block_official_passthrough: state.block_official_passthrough,
         last_codex_route: None,
-        enabled: false,
-        active_provider_id: None,
+        enabled: active_provider_id.is_some(),
+        active_provider_id,
         proxy_status: proxy,
-        source_path,
+        source_path: state.source_path,
     }
 }
 
-fn empty_proxy(command: &str) -> RelayProxyPayload {
+fn active_payload_from_state(command: &str, state: RelayStateDomain) -> RelayActivePayload {
+    let active_provider_id = active_provider_id(&state);
+    let active_provider = active_provider_id.as_ref().and_then(|id| {
+        state
+            .providers
+            .iter()
+            .find(|provider| &provider.id == id)
+            .map(|provider| provider.name.clone())
+    });
+
+    RelayActivePayload {
+        backend_status: skeleton_status(command),
+        enabled: active_provider_id.is_some(),
+        active_provider,
+        active_provider_id,
+        ide: RELAY_DEFAULT_IDE.to_string(),
+    }
+}
+
+fn active_provider_id(state: &RelayStateDomain) -> Option<String> {
+    state
+        .active_by_ide
+        .get(RELAY_DEFAULT_IDE)
+        .and_then(|providers| providers.first())
+        .cloned()
+}
+
+fn proxy_payload_from_domain(command: &str, proxy: RelayProxyDomain) -> RelayProxyPayload {
     RelayProxyPayload {
         backend_status: skeleton_status(command),
-        running: false,
-        port: 0,
-        base_url: String::new(),
-        codex_base_url: String::new(),
-        last_error: None,
+        running: proxy.running,
+        port: proxy.port,
+        base_url: proxy.base_url,
+        codex_base_url: proxy.codex_base_url,
+        last_error: proxy.last_error,
     }
 }
 
-fn empty_test(command: &str) -> RelayTestPayload {
+fn test_payload_from_domain(command: &str, test: RelayTestDomain) -> RelayTestPayload {
     RelayTestPayload {
         backend_status: skeleton_status(command),
-        ok: false,
+        ok: test.ok,
         health: None,
-        latency_ms: 0,
-        status_code: None,
-        message: None,
-        error_message: Some("relay 测试未执行，当前仅返回空骨架。".to_string()),
-        models: Vec::new(),
+        latency_ms: test.latency_ms,
+        status_code: test.status_code,
+        message: test.message,
+        error_message: test.error_message,
+        models: test.models,
     }
 }
 
-fn empty_diagnostic(
+fn diagnostic_payload_from_domain(
     command: &str,
-    skeleton: relay_repository::RelayDiagnosticSkeleton,
+    diagnostic: RelayDiagnosticDomain,
 ) -> RelayDiagnosticPayload {
-    let catalog_source_path = skeleton.catalog_source_path;
+    let catalog_source_path = diagnostic.catalog_source_path;
     RelayDiagnosticPayload {
         backend_status: skeleton_status(command),
         ok: false,
         codex_provider_count: 0,
         catalog_path: catalog_source_path.clone(),
-        source_path: skeleton.source_path,
+        source_path: diagnostic.source_path,
         catalog_source_path,
-        checked_at: skeleton.checked_at,
-        diagnostic_boundary: skeleton.diagnostic_boundary,
-        pending: skeleton.pending,
+        checked_at: diagnostic.checked_at,
+        diagnostic_boundary: diagnostic.boundary,
+        pending: diagnostic.pending,
         catalog_exists: false,
         config_toml_has_router: false,
         config_toml_has_catalog: false,
@@ -372,26 +468,23 @@ fn empty_diagnostic(
         has_issues: false,
         issues: Vec::new(),
         items: Vec::new(),
-        summary: pending_router_diagnostic_summary(command),
+        summary: diagnostic.summary,
     }
 }
 
-fn pending_router_diagnostic_summary(command: &str) -> String {
-    format!("relay 诊断命令 {command} 未执行：当前仅返回 pending 骨架，真实 router 诊断引擎等待证据补齐。")
-}
-
 fn skeleton_status(command: &str) -> BackendSkeletonStatus {
-    let note = skeleton_note(command);
+    let note = relay_core::skeleton_note(command);
     pending_status("relay", command, &note)
 }
 
 fn skeleton_warning(command: &str) -> CoreWarning {
-    let note = skeleton_note(command);
+    let note = relay_core::skeleton_note(command);
     pending_warning(command, &note)
 }
 
-fn skeleton_note(command: &str) -> String {
-    format!("relay 命令 {command} 当前仅补齐公开 IPC 空骨架，真实代理业务等待 raw/internal 证据。")
+fn router_toggle_warning(command: &str) -> CoreWarning {
+    let note = relay_core::router_toggle_note(command);
+    pending_warning(command, &note)
 }
 
 fn pending_warning(command: &str, message: &str) -> CoreWarning {

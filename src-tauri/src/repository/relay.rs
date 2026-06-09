@@ -1,5 +1,6 @@
 use crate::contracts::RelayPassthroughAuditEntryPayload;
 use crate::repository::Repository;
+use std::path::Path;
 
 pub(crate) struct RelayRepository;
 
@@ -16,7 +17,40 @@ pub struct RelayDiagnosticSkeleton {
     pub pending: bool,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RelayRepositorySnapshot {
+    pub source_path: String,
+    pub relay_config_path: String,
+    pub codex_config_path: String,
+    pub catalog_path: String,
+    pub passthrough_audit_path: String,
+    pub relay_config_exists: bool,
+    pub codex_config_exists: bool,
+    pub catalog_exists: bool,
+    pub passthrough_audit_exists: bool,
+}
+
 /// relay 仓储只暴露可替换的文件来源边界，不在这里实现代理状态机。
+pub fn load_relay_repository_snapshot(repo: &Repository) -> RelayRepositorySnapshot {
+    let paths = repo.paths();
+    let relay_config_path = paths.app_data_dir.join("relay-config.json");
+    let catalog_path = paths.codex_home.join("codex_router_catalog.json");
+    let passthrough_audit_path = passthrough_audit_source_path(repo);
+
+    RelayRepositorySnapshot {
+        source_path: paths.app_data_dir.display().to_string(),
+        relay_config_path: relay_config_path.display().to_string(),
+        codex_config_path: paths.config_path.display().to_string(),
+        catalog_path: catalog_path.display().to_string(),
+        passthrough_audit_path: passthrough_audit_path.clone(),
+        relay_config_exists: repo.fs().exists(&relay_config_path),
+        codex_config_exists: repo.fs().exists(&paths.config_path),
+        catalog_exists: repo.fs().exists(&catalog_path),
+        passthrough_audit_exists: repo.fs().exists(Path::new(&passthrough_audit_path)),
+    }
+}
+
+/// relay 官方直连审计路径只来自 RepositoryPaths，真实读写通过可替换 FS 边界补齐。
 pub fn passthrough_audit_source_path(repo: &Repository) -> String {
     repo.paths()
         .app_data_dir
@@ -45,16 +79,10 @@ pub fn load_router_diagnostic_skeleton(
     repo: &Repository,
     command: &str,
 ) -> RelayDiagnosticSkeleton {
-    let paths = repo.paths();
+    let snapshot = load_relay_repository_snapshot(repo);
     RelayDiagnosticSkeleton {
-        source_path: paths.config_path.display().to_string(),
-        catalog_source_path: Some(
-            paths
-                .codex_home
-                .join("codex_router_catalog.json")
-                .display()
-                .to_string(),
-        ),
+        source_path: snapshot.codex_config_path,
+        catalog_source_path: Some(snapshot.catalog_path),
         checked_at: None,
         diagnostic_boundary: format!("relay.repository.{command}.pending"),
         pending: true,

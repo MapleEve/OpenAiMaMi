@@ -2,6 +2,7 @@ pub mod daemon;
 pub mod hotspot;
 pub mod permissions;
 pub mod process;
+pub mod relay;
 pub mod shell;
 pub mod system;
 pub mod task;

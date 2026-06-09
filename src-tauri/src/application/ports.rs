@@ -7,6 +7,24 @@ pub(crate) trait RepositoryPort {}
 
 pub(crate) trait PlatformPort {}
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct RelayPlatformCapability {
+    pub code: String,
+    pub available: bool,
+    pub detail: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct RelayProxyEnvironment {
+    pub candidates: Vec<String>,
+}
+
+// relay 平台端口只暴露结构化能力和环境代理候选；真实 HTTP、进程和流式转发由 platform owner 承载。
+pub(crate) trait RelayPlatformPort {
+    fn capabilities(&self) -> Vec<RelayPlatformCapability>;
+    fn proxy_environment(&self) -> RelayProxyEnvironment;
+}
+
 #[derive(Debug, Clone)]
 pub(crate) struct DiagnosticPlatformInfo {
     pub os: String,
