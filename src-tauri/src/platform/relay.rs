@@ -1,6 +1,7 @@
 use crate::application::ports::{
     RelayPlatformCapability, RelayPlatformPort, RelayProxyEnvironment,
 };
+use crate::core::{error::CoreError, model::relay::RelayFetchModelsRequest};
 
 pub(crate) struct RelayPlatformAdapter;
 
@@ -12,6 +13,11 @@ impl RelayPlatformPort for RelayPlatformAdapter {
                 "relay.platform.http_client",
                 false,
                 "HTTP 客户端端口已预留；当前 usecase 不发起真实联网请求。",
+            ),
+            capability(
+                "relay.platform.http_mock_terminal",
+                true,
+                "Relay model fetch mock HTTP terminal 已接入；只返回可测试响应，不发起真实外部联网。",
             ),
             capability(
                 "relay.platform.sse_bridge",
@@ -40,6 +46,18 @@ impl RelayPlatformPort for RelayPlatformAdapter {
                 .filter(|value| !value.is_empty())
                 .collect(),
         }
+    }
+
+    fn fetch_models_mock_terminal(
+        &self,
+        request: &RelayFetchModelsRequest,
+    ) -> Result<String, CoreError> {
+        if request.url.trim().is_empty() {
+            return Err(CoreError::InvalidInput(
+                "relay model fetch mock terminal 缺少 URL".to_string(),
+            ));
+        }
+        Ok(r#"{"data":[{"id":"model-a"},{"id":"model-b"}]}"#.to_string())
     }
 }
 

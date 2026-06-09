@@ -1615,7 +1615,20 @@ const relayTestHandler: IpcCommandHandler = (context) => {
   return { ...envelope, data };
 };
 
-const relayModelsHandler: IpcCommandHandler = (context) => withMockData(context, []);
+function relayModelsFromArgs(context: Parameters<IpcCommandHandler>[0]) {
+  const input = readArgRecord(context.args, "input");
+  const preferred = readRecordString(input, ["model", "defaultModel"], "");
+  return preferred ? [preferred, "model-a", "model-b"] : ["model-a", "model-b"];
+}
+
+const relayModelsHandler: IpcCommandHandler = (context) => {
+  const envelope = createEvidenceBackedIpcFixture(
+    context.command,
+    context.args,
+    context.steps,
+  );
+  return { ...envelope, data: relayModelsFromArgs(context) };
+};
 
 const relayActiveHandler: IpcCommandHandler = (context) => {
   const envelope = createEvidenceBackedIpcFixture(

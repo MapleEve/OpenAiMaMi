@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use std::collections::HashMap;
 
 pub const RELAY_DEFAULT_IDE: &str = "codex";
@@ -27,11 +28,20 @@ pub struct RelayDraftDomain {
     pub base_url: Option<String>,
     pub url: Option<String>,
     pub endpoint: Option<String>,
+    pub api_key: Option<String>,
     pub api_key_stored: Option<bool>,
     pub model: Option<String>,
     pub default_model: Option<String>,
     pub wire_api: Option<String>,
+    pub extra_headers: Option<Value>,
     pub network: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RelayFetchModelsRequest {
+    pub url: String,
+    pub headers: Vec<(String, String)>,
+    pub network: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

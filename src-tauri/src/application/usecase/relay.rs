@@ -202,11 +202,24 @@ pub fn test_relay_draft(
 
 pub fn fetch_relay_models_draft(
     _repo: &Repository,
-    _input: RelayProviderDraftInput,
+    input: RelayProviderDraftInput,
 ) -> (Vec<String>, CoreWarning) {
     let command = "fetch_relay_models_draft";
-    let (models, message) = relay_core::pending_model_fetch(command);
-    (models, pending_warning(command, &message))
+    let draft = draft_from_input(&input);
+    let result = relay_core::prepare_fetch_models_request(command, &draft)
+        .and_then(|request| RelayPlatformAdapter.fetch_models_mock_terminal(&request))
+        .and_then(|response_body| relay_core::parse_model_ids(&response_body));
+
+    match result {
+        Ok(models) => (models, model_fetch_warning(command)),
+        Err(error) => (
+            Vec::new(),
+            CoreWarning {
+                code: format!("relay.{command}.mock_terminal_error"),
+                message: error.sanitized_message(),
+            },
+        ),
+    }
 }
 
 pub fn get_relay_active(repo: &Repository) -> (RelayActivePayload, CoreWarning) {
@@ -496,10 +509,12 @@ fn draft_from_input(input: &RelayProviderDraftInput) -> RelayDraftDomain {
         base_url: input.base_url.clone(),
         url: input.url.clone(),
         endpoint: input.endpoint.clone(),
+        api_key: input.api_key.clone(),
         api_key_stored: input.api_key_stored,
         model: input.model.clone(),
         default_model: input.default_model.clone(),
         wire_api: input.wire_api.clone(),
+        extra_headers: input.extra_headers.clone(),
         network: input.network.clone(),
     }
 }
@@ -892,6 +907,14 @@ fn pending_warning(command: &str, message: &str) -> CoreWarning {
     }
 }
 
+fn model_fetch_warning(command: &str) -> CoreWarning {
+    CoreWarning {
+        code: format!("relay.{command}.mock_terminal_restored"),
+        message: "Relay model fetch 已恢复请求归一化、认证头、extraHeaders 和模型 ID 解析；当前公开实现只使用 mock HTTP terminal，不发起真实外部联网。"
+            .to_string(),
+    }
+}
+
 fn repository_warning(command: &str) -> CoreWarning {
     CoreWarning {
         code: format!("relay.{command}.repository_restored"),
@@ -1003,5 +1026,29 @@ mod tests {
             fix_codex_router_issue(&repo, "bogus_id".to_string()),
             Err(CoreError::InvalidInput(_))
         ));
+    }
+
+    #[test]
+    fn fetch_relay_models_draft_uses_mock_terminal_without_state_write() {
+        let repo = Repository::with_temp_file_system("relay-fetch-models-draft");
+        let relay_config_path = repo.paths().app_data_dir.join("relay-config.json");
+
+        let (models, warning) = fetch_relay_models_draft(
+            &repo,
+            RelayProviderDraftInput {
+                base_url: Some("https://relay.example/v1".to_string()),
+                api_key: Some("secret".to_string()),
+                wire_api: Some("openai-chat".to_string()),
+                extra_headers: Some(serde_json::json!({ "x-custom": "one" })),
+                ..RelayProviderDraftInput::default()
+            },
+        );
+
+        assert_eq!(models, vec!["model-a".to_string(), "model-b".to_string()]);
+        assert_eq!(
+            warning.code,
+            "relay.fetch_relay_models_draft.mock_terminal_restored"
+        );
+        assert!(!repo.fs().exists(&relay_config_path));
     }
 }
