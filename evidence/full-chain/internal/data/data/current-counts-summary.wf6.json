@@ -1,0 +1,85 @@
+{
+  "schema": "c5cm.reverse.current_counts_summary.wf6.v1",
+  "generated_at_utc": "2026-06-11T00:00:00Z",
+  "source": "computed from INDEX.jsonl post WF6-append (107 rows); includes WF3-D1 evidenced rows + WF6 new bundles",
+  "supersedes": [
+    "data/current-counts-summary.wf3-D1.json (2026-06-10)",
+    "data/current-counts-summary.regenerated.json (2026-06-01)"
+  ],
+  "index_state": {
+    "lines_before_wf6": 84,
+    "lines_appended_wf6": 23,
+    "lines_after_wf6": 107,
+    "skipped_duplicates": 0
+  },
+  "method": "two-column: evidenced_full_leaf_100 (full_leaf_100=true in INDEX row) vs achievable_full_leaf_100_pending (full_leaf_100=false/null but achievable_full_leaf_100=true). relay rows flagged achievable_full_leaf_100=true are NOT excluded. 'other' rows carry neither flag.",
+  "evidenced_full_leaf_100": {
+    "total": 60,
+    "delta_from_wf3_D1": "+11",
+    "wf3_D1_base": 49,
+    "wf6_new": 11,
+    "wf6_new_keys": [
+      "aimami/1.0.9/macos-arm64/custom-instructions/wf6-bundle",
+      "aimami/1.0.9/windows-x64/custom-instructions/wf6-bundle",
+      "aimami/1.0.9/macos-arm64/daemon-autoswitch/wf6-bundle",
+      "aimami/1.0.9/macos-arm64/mcp/wf6-bundle",
+      "aimami/1.0.9/windows-x64/mcp/wf6-bundle",
+      "aimami/1.0.9/macos-arm64/sessions-analytics/wf6-bundle",
+      "aimami/1.0.9/windows-x64/sessions-analytics/wf6-bundle",
+      "aimami/1.0.9/macos-arm64/skills/wf6-bundle",
+      "aimami/1.0.9/windows-x64/skills/wf6-bundle",
+      "aimami/1.0.9/macos-arm64/voice/wf6-bundle",
+      "aimami/1.0.9/windows-x64/voice/wf6-bundle"
+    ],
+    "note_voice": "voice 34 cmds accepted_substitute (backend absent); evidenced at module level via accepted_substitute_ida_backend_command_absence — product decision boundary: do_not_restore_voice_without_Product_decision",
+    "index_lines": [10,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,85,86,87,89,90,91,92,93,94,95,96]
+  },
+  "achievable_full_leaf_100_pending": {
+    "total": 19,
+    "delta_from_wf3_D1": "+12",
+    "wf3_D1_base": 7,
+    "wf6_new": 12,
+    "wf6_new_keys": [
+      "aimami/1.0.9/windows-x64/daemon-autoswitch/wf6-bundle",
+      "aimami/1.0.9/macos-arm64/system/wf6-bundle",
+      "aimami/1.0.9/windows-x64/system/wf6-bundle",
+      "aimami/1.0.9/macos-arm64/system-hotspot/wf6-bundle",
+      "aimami/1.0.9/windows-x64/system-hotspot/wf6-bundle",
+      "aimami/1.0.9/windows-x64/system-usage/wf6-bundle",
+      "aimami/1.0.9/macos-arm64/maintenance/wf6-bundle",
+      "aimami/1.0.9/macos-arm64/window-path/wf6-bundle",
+      "aimami/1.0.9/macos-arm64/mystery-unlock/wf6-bundle",
+      "aimami/1.0.9/macos-arm64/api-proxy-config/wf6-bundle",
+      "aimami/1.0.9/macos-arm64/ui-theme/wf6-bundle",
+      "aimami/1.0.9/macos-arm64/system-usage/wf6-bundle"
+    ],
+    "wf3_D1_carried": [
+      "aimami/1.0.9/windows-x64/mystery-unlock/get_mystery_unlock_grants/wf3-d2pkg-109",
+      "aimami/1.0.9/windows-x64/mystery-unlock/merge_mystery_unlock_grants/wf3-d2pkg-109",
+      "aimami/1.0.9/windows-x64/relay-core/relay_translator/wf3-d2pkg-109",
+      "aimami/1.0.9/windows-x64/relay-core/relay_translator_stream/wf3-d2pkg-109",
+      "aimami/1.0.9/windows-x64/relay-core/relay_health_audit/wf3-d2pkg-109",
+      "aimami/1.0.9/macos-arm64/relay-core/relay_fetch_models/wf3-d2pkg-109",
+      "aimami/1.0.9/frontend/ccf-dim1-uplink-from-mami"
+    ],
+    "blocker_classes": {
+      "dim6_C5_acceptance_test_not_written": "system-hotspot(mac+win), system-usage(mac+win), maintenance(mac), window-path(mac), mystery-unlock(mac), api-proxy-config(mac), ui-theme(mac)",
+      "dim6_pending_partial_commands": "daemon-autoswitch(win: 4 absent cmds), system(mac: 5 product-decision cmds), system(win: 4 strictImpl cmds)",
+      "relay_dim6_pending": "relay_translator, relay_translator_stream, relay_health_audit, relay_fetch_models"
+    }
+  },
+  "other_rows_neither_flag": {
+    "total": 28,
+    "note": "Legacy single-command distilled rows, pre-v2 schema rows, rows with fl100=null and achievable_full_leaf_100 absent or false. These are pre-WF6 rows not yet migrated to wf6-bundle schema. Not counted in either column.",
+    "index_lines": [1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+  },
+  "honesty_boundary": "evidenced_full_leaf_100 != achievable. Only rows with full_leaf_100=true in INDEX count as evidenced. Achievable rows carry full_leaf_100=false/null + achievable_full_leaf_100=true + residual_steps. No empty 'done' on un-evidenced items. G2-LOCK §3 applies.",
+  "nonActions": [
+    "no rule/spec edit",
+    "no gate promotion",
+    "no product code execution",
+    "no deletion of prior counts files",
+    "relay NOT excluded — reframed as dim6_pending achievable",
+    "old counts files marked STALE (not deleted)"
+  ]
+}
