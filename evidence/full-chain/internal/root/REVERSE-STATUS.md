@@ -2569,3 +2569,28 @@ ALLOW — <workstation> is authoritative consumer+producer machine. All bundles 
 - plugins x2: task-plan.json retains old `restoration.cm.task_plan.v1` schema (empty/stale pre-consumer-gate artifact). The authoritative consumer-gate document is consumer-gate.json with correct schema. task-plan.json is not the gate document for this bundle family and need not be corrected unless a consumer-gate schema migration is run across all bundles.
 - mcp x2 + sessions-analytics x2: task-plan.json uses `restoration.cm.reverse.module_task_plan.v1` (module-level legacy schema with full `restoration.cm.reverse.` prefix). This is not one of the wrong strings targeted by l2 schema correction (`module_task_plan.v1` bare / `task_plan.v1` bare / `audit.task_plan.v1`). Content is correct; schema label is a legacy variant, not a defect.
 
+
+## WF3-D2pkg Completed (session <audit-session>)
+
+| field | value |
+|---|---|
+| session | <audit-session> |
+| machine | <workstation> |
+| started_at | 2026-06-10T11:27:09Z |
+| completed_at | 2026-06-10T12:00:00Z |
+| status | complete |
+| targets | mystery-unlock-win · relay_translator-win · relay_translator_stream-win · relay_health_audit-win · relay_fetch_models-mac |
+| sha12_win | a5822387fa3f |
+| sha12_mac | 1db044e8efab |
+| scope | D2pkg reverse-package v2: new bundle + gate_tier align + achievable-100 dual-column + dim1 mami + dim6 test plan |
+| index_lines_appended | 6 (lines 78-83 of INDEX.jsonl, total 83) |
+| evidenced_100 | false (all items: dim6 pending C5 side) |
+| achievable_full_leaf_100 | true (all items: reverse_capped + dim1 mami + dim6 test plan listed) |
+
+| target | platform | sha12 | status | gate | gate_tier | evidence_path |
+|---|---|---|---|---|---|---|
+| mystery-unlock-win (get_mystery_unlock_grants + merge_mystery_unlock_grants) | windows-x64 | a5822387fa3f | complete | strictImplementationUse | strictImplementationUse | audits/windows-1.0.9-mystery-unlock/ |
+| relay_translator | windows-x64 | a5822387fa3f | complete | strictImplementationUse | strictImplementationUse | audits/windows-1.0.9-relay-core/clusters/relay_translator |
+| relay_translator_stream | windows-x64 | a5822387fa3f | complete | readyToImplement | readyToImplement | audits/windows-1.0.9-relay-core/clusters/relay_translator_stream |
+| relay_health_audit | windows-x64 | a5822387fa3f | complete | strictImplementationUse | strictImplementationUse | audits/windows-1.0.9-relay-core/clusters/relay_health_audit (11 leaf; 9 decompiled+2 accepted_unknown recovery_tried) |
+| relay_fetch_models | macos-arm64 | 1db044e8efab | complete | strictImplementationUse | strictImplementationUse | audits/macos-1.0.9-relay-core/cluster_gates/relay_fetch_models (ICF-fold 0x100114ab0; stale timeout removed; non-OpenAI schema accepted_unknown not-caps) |

@@ -1,0 +1,115 @@
+{
+  "schema": "c5cm.reverse.gate_report.v1",
+  "bundle": "windows-1.0.9-mystery-unlock",
+  "product": "aimami",
+  "version": "1.0.9",
+  "platform": "windows-x64",
+  "binary_sha256": "a5822387fa3f56dc03893111f4ffdd074daa882e8887ec4e7c394879c0e9fe0b",
+  "binary_sha12": "a5822387fa3f",
+  "produced_at": "2026-06-10T11:32:00Z",
+  "gate_report_session": "<audit-session>",
+  "gate_report_machine": "<workstation>",
+  "gate_report_model": "claude-sonnet-4-6",
+  "prewrite_gate_decision": "ALLOW",
+  "prewrite_gate_write_mode": "first-write",
+  "platform_policy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true,
+    "note": "All Windows dims must be from Windows IDA; macOS macos-1.0.9-mystery-unlock is cross-check only"
+  },
+  "clusters": {
+    "get_mystery_unlock_grants": {
+      "leaf_count": 1,
+      "addr": "0x14027e640",
+      "size": "0x37f",
+      "ipc_command": "get_mystery_unlock_grants",
+      "dim1_frontend_ccf": "closed_via_mami_frontend",
+      "dim1_source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/frontend/ipc-contracts.jsonl#L86:31666 getMysteryUnlockGrants:()=>G(\"get_mystery_unlock_grants\")",
+      "dim2_backend_owner_pseudocode": "closed",
+      "dim2_notes": "IPC cmd get_mystery_unlock_grants; param: repo(str); calls sub_1400A8B70(query by repo); Ok discriminant==3 returns Vec<MysteryUnlockGrant>; Err discriminant==6; cleanup 96B per entry; tauri_ipc_resolve_sys; sha a5822387fa3f",
+      "dim3_call_tree": "closed",
+      "dim3_notes": "get_mystery_unlock_grants → sub_1400A8B70(query by repo) → storage read path; depth≥5; call-trees/get_mystery_unlock_grants.jsonl",
+      "dim4_interface_error_side_effect": "closed",
+      "dim4_notes": "MysteryUnlockGrant struct Windows self-tested: 96B/entry cleanup loop in get_mystery_unlock_grants body; discriminant offset-0 tag; repo(str) param; Ok==3/Err==6 discriminants confirmed; IPC response pattern tauri_ipc_resolve_sys",
+      "dim5_platform_gate": "windows_independent_closed",
+      "dim5_notes": "Windows-only IDA evidence; SYSTEM-DIFF.md has vs-macOS comparison",
+      "dim6_test_acceptance": "pending",
+      "dim6_test_plan": {
+        "unit": [
+          "get_mystery_unlock_grants(repo: str) -> Vec<MysteryUnlockGrant> Ok path (discriminant==3)",
+          "get_mystery_unlock_grants(repo: str) -> Err path (discriminant==6)",
+          "MysteryUnlockGrant struct Windows stride (96B/entry) round-trip"
+        ],
+        "e2e_mock": [
+          "IPC invoke get_mystery_unlock_grants stale/delayed/failure/concurrency mock"
+        ],
+        "dim6_status": "pending"
+      },
+      "consumerStartReady": true,
+      "strictImplementationUse": true,
+      "readyToImplement": false,
+      "gate": "strictImplementationUse",
+      "gate_tier": "strictImplementationUse",
+      "gate_accepted": false,
+      "implementation_use": false,
+      "evidenced_100": false,
+      "achievable_full_leaf_100": true,
+      "reverse_capped": false,
+      "real_body_found": true,
+      "genuine_ceiling": false,
+      "accepted_unknown": false,
+      "block_decomposed": false,
+      "recovery_attempts": "none",
+      "idb_save_ok": true,
+      "blocker": "dim6 only (test/acceptance mapping)",
+      "session": "<audit-session>"
+    },
+    "merge_mystery_unlock_grants": {
+      "leaf_count": 1,
+      "addr": "0x1402719b0",
+      "size": "0x4b1",
+      "ipc_command": "merge_mystery_unlock_grants",
+      "dim1_frontend_ccf": "closed_via_mami_frontend",
+      "dim1_source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/frontend/ipc-contracts.jsonl#snippet mergeMysteryUnlockGrants:t=>G(\"merge_mystery_unlock_grants\",{grants:t})",
+      "dim2_backend_owner_pseudocode": "closed",
+      "dim2_notes": "IPC cmd merge_mystery_unlock_grants; params: repo(str) + grants(Vec<MysteryUnlockGrant>); calls sub_1411CE640(parse) / sub_1400F0C60(merge) / sub_1400AA720 / tauri_ipc_resolve_sys; Ok==3 copies owned grant vec; Err==6; cleanup 96B/entry",
+      "dim3_call_tree": "closed",
+      "dim3_notes": "merge_mystery_unlock_grants → sub_1411CE640(parse grants) → sub_1400F0C60(merge by repo key) → sub_1400AA720 → tauri_ipc_resolve_sys; depth≥5; call-trees/merge_mystery_unlock_grants.jsonl",
+      "dim4_interface_error_side_effect": "closed",
+      "dim4_notes": "MysteryUnlockGrant: 96B stride Windows; input grants Vec parsed via sub_1411CE640; merge semantics: grants merged by repo key in sub_1400F0C60; Ok==3/Err==6; side-effect: persistent storage write (merge operation)",
+      "dim5_platform_gate": "windows_independent_closed",
+      "dim5_notes": "Windows IDA; SYSTEM-DIFF.md has vs-macOS comparison",
+      "dim6_test_acceptance": "pending",
+      "dim6_test_plan": {
+        "unit": [
+          "merge_mystery_unlock_grants(repo, grants) -> Ok path: merged Vec written to storage",
+          "merge_mystery_unlock_grants(repo, grants) -> Err path (discriminant==6)",
+          "MysteryUnlockGrant merge semantics: grants merged by repo key (no duplicate repos)",
+          "MysteryUnlockGrant struct Windows 96B stride DTO round-trip"
+        ],
+        "e2e_mock": [
+          "IPC merge_mystery_unlock_grants stale/delayed/failure/concurrency mock per mami E2E contracts"
+        ],
+        "dim6_status": "pending"
+      },
+      "consumerStartReady": true,
+      "strictImplementationUse": true,
+      "readyToImplement": false,
+      "gate": "strictImplementationUse",
+      "gate_tier": "strictImplementationUse",
+      "gate_accepted": false,
+      "implementation_use": false,
+      "evidenced_100": false,
+      "achievable_full_leaf_100": true,
+      "reverse_capped": false,
+      "real_body_found": true,
+      "genuine_ceiling": false,
+      "accepted_unknown": false,
+      "block_decomposed": false,
+      "recovery_attempts": "none",
+      "idb_save_ok": true,
+      "blocker": "dim6 only (test/acceptance mapping)",
+      "session": "<audit-session>"
+    }
+  }
+}

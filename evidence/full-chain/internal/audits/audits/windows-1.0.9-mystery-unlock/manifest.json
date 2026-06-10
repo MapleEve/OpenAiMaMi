@@ -1,0 +1,29 @@
+{
+  "schema": "c5cm.reverse.bundle_manifest.v1",
+  "bundle": "windows-1.0.9-mystery-unlock",
+  "product": "aimami",
+  "version": "1.0.9",
+  "platform": "windows-x64",
+  "binary": "AiMaM 1.0.9 win64.exe",
+  "binary_format": "pe",
+  "pe_machine": "x86_64",
+  "binary_sha256": "a5822387fa3f56dc03893111f4ffdd074daa882e8887ec4e7c394879c0e9fe0b",
+  "binary_sha12": "a5822387fa3f",
+  "imagebase": "0x140000000",
+  "scope": "mystery_unlock cluster (IPC get_mystery_unlock_grants + merge_mystery_unlock_grants)",
+  "covered_commands": [
+    "get_mystery_unlock_grants",
+    "merge_mystery_unlock_grants"
+  ],
+  "implementation_use": false,
+  "gate_summary": "strictImplementationUse (dim2-5 closed Windows-independent; dim1 closed_via_mami_frontend; dim6 pending C5 test)",
+  "platform_policy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true,
+    "crossCheckOnly": "macos-1.0.9-mystery-unlock"
+  },
+  "produced_at": "2026-06-10T11:32:00Z",
+  "session": "<audit-session>",
+  "machine": "<workstation>",
+  "model": "claude-sonnet-4-6"
+}
