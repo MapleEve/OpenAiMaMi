@@ -1,0 +1,2087 @@
+{
+ "total_index_rows": 304,
+ "action_counts": {
+  "implement_against_contract": 23,
+  "implement_now": 218,
+  "implement_now_dim6_test_pending": 46,
+  "evidence_pointer": 8,
+  "platform_absent": 4,
+  "c5_local": 5
+ },
+ "blocked": 0,
+ "implementable": 296,
+ "table": [
+  {
+   "command": "deep-recovery-wf-surface-p2-internal",
+   "module": "relay_translator",
+   "platform": "macos",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "deep-internal-wf-surface-p2-internal",
+   "module": "relay_translator",
+   "platform": "macos",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "deep-internal-wf-surface-p2-internal",
+   "module": "relay_translator_s",
+   "platform": "macos",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "?",
+   "module": "?",
+   "platform": "?",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "dim6-close-readyToImplement",
+   "module": "relay_diagnostic",
+   "platform": "macos",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "internal-wf-surface-p2-internal",
+   "module": "strip_all_managed_",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "rollback_threads_for_router",
+   "module": "rollback_threads_f",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "wf-aimami109-surface-p2-internal",
+   "module": "capture_switch_rol",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "wf-aimami109-surface-p2-internal",
+   "module": "create_bootstrap_t",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "canonical-reduce-20260604",
+   "module": "canonical-reduce-2",
+   "platform": "macos",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "distilled-wf-closeout",
+   "module": "reset_codex_config",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "hotspot_ready",
+   "module": "windows-x64",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "consumerStartReady",
+   "module": "sse_translate_stre",
+   "platform": "macos-arm64",
+   "gate_tier": "consumerStartReady",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "distilled-wf-closeout",
+   "module": "load_bootstrap_sta",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "run_daemon_once-DISTILLED",
+   "module": "router-lifecycle",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "strictImplementationUse",
+   "module": "strictImplementati",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "?",
+   "module": "?",
+   "platform": "?",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "canonical-distilled",
+   "module": "rebuild_registry",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "canonical-distilled",
+   "module": "apply_codex_state_",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "canonical",
+   "module": "relay_image_compat",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "canonical-distilled",
+   "module": "cmd_set_theme",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "canonical-distilled",
+   "module": "cmd_detect_api_pro",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "distilled-consumer-reduction",
+   "module": "distilled-consumer",
+   "platform": "windows-x64",
+   "gate_tier": "strict",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "?",
+   "module": "?",
+   "platform": "?",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "distilled",
+   "module": "distilled",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "distilled-canonical",
+   "module": "restart_codex_cmd_",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "wf-aimami109-surface-p2-internal",
+   "module": "append_codex_route",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "begin_add_account_",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "preview_account_im",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "logout",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "import_chatgpt_ses",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "switch_account_and",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "export_accounts_to",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "import_accounts_fr",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "remove_accounts",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "switch_account",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "begin_add_account_",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "preview_account_im",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "logout",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "import_chatgpt_ses",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "switch_account_and",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "export_accounts_to",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "import_accounts_fr",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "remove_accounts",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "switch_account",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "list_plugins",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "toggle_plugin",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "get_plugin_config",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "update_plugin_conf",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "PluginRegistry__li",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "PluginRegistry__se",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "PluginRegistry__ge",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "PluginRegistry__up",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "PluginRegistry__sa",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "PluginStoreSchema_",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "builtin__all_built",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "builtin__web_tools",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "builtin__image_sup",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "list_plugins",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "toggle_plugin",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "get_plugin_config",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "update_plugin_conf",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "PluginRegistry__li",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "PluginRegistry__se",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "PluginRegistry__ge",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "PluginRegistry__up",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "PluginRegistry__sa",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "PluginStoreSchema_",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "builtin__all_built",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "builtin__web_tools",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "builtin__image_sup",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "create_tray_icon_w",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "create_or_refresh_",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "handle_tray_menu_e",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "desync-writeback-wf3-D1",
+   "module": "tray_relay_usage_q",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "wf3-d2pkg-109",
+   "module": "get_mystery_unlock",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "wf3-d2pkg-109",
+   "module": "merge_mystery_unlo",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "wf3-d2pkg-109",
+   "module": "relay_translator",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "wf3-d2pkg-109",
+   "module": "relay_translator_s",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "wf3-d2pkg-109",
+   "module": "relay_health_audit",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "wf3-d2pkg-109",
+   "module": "relay_fetch_models",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "custom-instructions",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "custom-instructions",
+   "module": "wf6-bundle",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "daemon-autoswitch",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "daemon-autoswitch",
+   "module": "wf6-bundle",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "mcp",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "mcp",
+   "module": "wf6-bundle",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "sessions-analytics",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "sessions-analytics",
+   "module": "wf6-bundle",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "skills",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "skills",
+   "module": "wf6-bundle",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "voice",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "voice",
+   "module": "wf6-bundle",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "system",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "system",
+   "module": "wf6-bundle",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "system-hotspot",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "system-hotspot",
+   "module": "wf6-bundle",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "system-usage",
+   "module": "wf6-bundle",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "maintenance",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "window-path",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "mystery-unlock",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "api-proxy-config",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "ui-theme",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "system-usage",
+   "module": "wf6-bundle",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "load_custom_instruction_state",
+   "module": "load_custom_instru",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "preview_custom_instruction_apply",
+   "module": "preview_custom_ins",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "apply_custom_instruction",
+   "module": "apply_custom_instr",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "clear_custom_instruction_block",
+   "module": "clear_custom_instr",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "rollback_custom_instruction",
+   "module": "rollback_custom_in",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_custom_instruction_state",
+   "module": "load_custom_instru",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "preview_custom_instruction_apply",
+   "module": "preview_custom_ins",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "apply_custom_instruction",
+   "module": "apply_custom_instr",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "clear_custom_instruction_block",
+   "module": "clear_custom_instr",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "rollback_custom_instruction",
+   "module": "rollback_custom_in",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_mcp_servers",
+   "module": "load_mcp_servers",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "upsert_mcp_server",
+   "module": "upsert_mcp_server",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_mcp_server_enabled",
+   "module": "set_mcp_server_ena",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_mcp_server",
+   "module": "remove_mcp_server",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_mcp_servers",
+   "module": "load_mcp_servers",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "upsert_mcp_server",
+   "module": "upsert_mcp_server",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_mcp_server_enabled",
+   "module": "set_mcp_server_ena",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_mcp_server",
+   "module": "remove_mcp_server",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_installed_skills",
+   "module": "load_installed_ski",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_skill_backups",
+   "module": "load_skill_backups",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "import_skill",
+   "module": "import_skill",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_skill",
+   "module": "remove_skill",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "restore_skill_backup",
+   "module": "restore_skill_back",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "delete_skill_backup",
+   "module": "delete_skill_backu",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_installed_skills",
+   "module": "load_installed_ski",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_skill_backups",
+   "module": "load_skill_backups",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "import_skill",
+   "module": "import_skill",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_skill",
+   "module": "remove_skill",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "restore_skill_backup",
+   "module": "restore_skill_back",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "delete_skill_backup",
+   "module": "delete_skill_backu",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_sessions",
+   "module": "load_sessions",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "delete_sessions",
+   "module": "delete_sessions",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_usage_analytics",
+   "module": "load_usage_analyti",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_session_analytics",
+   "module": "load_session_analy",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_token_analytics",
+   "module": "load_token_analyti",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_tool_analytics",
+   "module": "load_tool_analytic",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_change_analytics",
+   "module": "load_change_analyt",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_quota_history",
+   "module": "load_quota_history",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_sessions",
+   "module": "load_sessions",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "delete_sessions",
+   "module": "delete_sessions",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_usage_analytics",
+   "module": "load_usage_analyti",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_session_analytics",
+   "module": "load_session_analy",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_token_analytics",
+   "module": "load_token_analyti",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_tool_analytics",
+   "module": "load_tool_analytic",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_change_analytics",
+   "module": "load_change_analyt",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_quota_history",
+   "module": "load_quota_history",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "run_daemon_once",
+   "module": "run_daemon_once",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_bootstrap_state",
+   "module": "load_bootstrap_sta",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "note_usage_refresh_activity",
+   "module": "note_usage_refresh",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "schedule_full_runtime_refresh",
+   "module": "schedule_full_runt",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "start_usage_refresh_watcher",
+   "module": "start_usage_refres",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "update_usage_refresh_schedule",
+   "module": "update_usage_refre",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "start_auto_switch_pending_watcher",
+   "module": "start_auto_switch_",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_pending_auto_switch",
+   "module": "load_pending_auto_",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "confirm_pending_auto_switch",
+   "module": "confirm_pending_au",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "dismiss_pending_auto_switch",
+   "module": "dismiss_pending_au",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "confirm_pending_auto_switch_and_restart_",
+   "module": "confirm_pending_au",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "configure_auto_switch",
+   "module": "configure_auto_swi",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_auto_switch",
+   "module": "set_auto_switch",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "run_daemon_once",
+   "module": "run_daemon_once",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_bootstrap_state",
+   "module": "load_bootstrap_sta",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "start_auto_switch_pending_watcher",
+   "module": "start_auto_switch_",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_pending_auto_switch",
+   "module": "load_pending_auto_",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "confirm_pending_auto_switch",
+   "module": "confirm_pending_au",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "dismiss_pending_auto_switch",
+   "module": "dismiss_pending_au",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "confirm_pending_auto_switch_and_restart_",
+   "module": "confirm_pending_au",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "configure_auto_switch",
+   "module": "configure_auto_swi",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_auto_switch",
+   "module": "set_auto_switch",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "note_usage_refresh_activity",
+   "module": "note_usage_refresh",
+   "platform": "windows-x64",
+   "gate_tier": "consumerStartReady",
+   "consumer_action": "platform_absent"
+  },
+  {
+   "command": "schedule_full_runtime_refresh",
+   "module": "schedule_full_runt",
+   "platform": "windows-x64",
+   "gate_tier": "consumerStartReady",
+   "consumer_action": "platform_absent"
+  },
+  {
+   "command": "start_usage_refresh_watcher",
+   "module": "start_usage_refres",
+   "platform": "windows-x64",
+   "gate_tier": "consumerStartReady",
+   "consumer_action": "platform_absent"
+  },
+  {
+   "command": "update_usage_refresh_schedule",
+   "module": "update_usage_refre",
+   "platform": "windows-x64",
+   "gate_tier": "consumerStartReady",
+   "consumer_action": "platform_absent"
+  },
+  {
+   "command": "load_voice_workspace",
+   "module": "load_voice_workspa",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_voice_runtime_status",
+   "module": "load_voice_runtime",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_voice_llm_config",
+   "module": "load_voice_llm_con",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "save_voice_llm_config",
+   "module": "save_voice_llm_con",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "test_voice_llm_config",
+   "module": "test_voice_llm_con",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_voice_asr_config",
+   "module": "load_voice_asr_con",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "save_voice_asr_config",
+   "module": "save_voice_asr_con",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "test_voice_asr_config",
+   "module": "test_voice_asr_con",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "upsert_voice_template",
+   "module": "upsert_voice_templ",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_voice_template",
+   "module": "remove_voice_templ",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "upsert_voice_vocabulary",
+   "module": "upsert_voice_vocab",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_voice_vocabulary",
+   "module": "remove_voice_vocab",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "replace_voice_vocabulary_kind",
+   "module": "replace_voice_voca",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "upsert_voice_vocabulary_app_scope",
+   "module": "upsert_voice_vocab",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_voice_vocabulary_app_scope",
+   "module": "remove_voice_vocab",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "resolve_voice_vocabulary_app_info",
+   "module": "resolve_voice_voca",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "generate_voice_prompt",
+   "module": "generate_voice_pro",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_voice_history_entry",
+   "module": "remove_voice_histo",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "request_voice_permissions",
+   "module": "request_voice_perm",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "request_accessibility_permission",
+   "module": "request_accessibil",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_voice_global_shortcut",
+   "module": "set_voice_global_s",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "capture_voice_trigger_key",
+   "module": "capture_voice_trig",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "cancel_voice_trigger_capture",
+   "module": "cancel_voice_trigg",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_voice_trigger_listener_suppressed",
+   "module": "set_voice_trigger_",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_voice_trigger_key",
+   "module": "set_voice_trigger_",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_voice_trigger_bindings",
+   "module": "set_voice_trigger_",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "update_voice_runtime_settings",
+   "module": "update_voice_runti",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_voice_processing_mode_id",
+   "module": "set_voice_processi",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "start_voice_capture",
+   "module": "start_voice_captur",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "stop_voice_capture",
+   "module": "stop_voice_capture",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "inject_voice_text",
+   "module": "inject_voice_text",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "show_voice_search_overlay",
+   "module": "show_voice_search_",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_voice_mode_shortcut",
+   "module": "set_voice_mode_sho",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_voice_mode_shortcut",
+   "module": "remove_voice_mode_",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_voice_workspace",
+   "module": "load_voice_workspa",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_voice_runtime_status",
+   "module": "load_voice_runtime",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_voice_llm_config",
+   "module": "load_voice_llm_con",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "save_voice_llm_config",
+   "module": "save_voice_llm_con",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "test_voice_llm_config",
+   "module": "test_voice_llm_con",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "load_voice_asr_config",
+   "module": "load_voice_asr_con",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "save_voice_asr_config",
+   "module": "save_voice_asr_con",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "test_voice_asr_config",
+   "module": "test_voice_asr_con",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "upsert_voice_template",
+   "module": "upsert_voice_templ",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_voice_template",
+   "module": "remove_voice_templ",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "upsert_voice_vocabulary",
+   "module": "upsert_voice_vocab",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_voice_vocabulary",
+   "module": "remove_voice_vocab",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "replace_voice_vocabulary_kind",
+   "module": "replace_voice_voca",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "upsert_voice_vocabulary_app_scope",
+   "module": "upsert_voice_vocab",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_voice_vocabulary_app_scope",
+   "module": "remove_voice_vocab",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "resolve_voice_vocabulary_app_info",
+   "module": "resolve_voice_voca",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "generate_voice_prompt",
+   "module": "generate_voice_pro",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_voice_history_entry",
+   "module": "remove_voice_histo",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "request_voice_permissions",
+   "module": "request_voice_perm",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "request_accessibility_permission",
+   "module": "request_accessibil",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_voice_global_shortcut",
+   "module": "set_voice_global_s",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "capture_voice_trigger_key",
+   "module": "capture_voice_trig",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "cancel_voice_trigger_capture",
+   "module": "cancel_voice_trigg",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_voice_trigger_listener_suppressed",
+   "module": "set_voice_trigger_",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_voice_trigger_key",
+   "module": "set_voice_trigger_",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_voice_trigger_bindings",
+   "module": "set_voice_trigger_",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "update_voice_runtime_settings",
+   "module": "update_voice_runti",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_voice_processing_mode_id",
+   "module": "set_voice_processi",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "start_voice_capture",
+   "module": "start_voice_captur",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "stop_voice_capture",
+   "module": "stop_voice_capture",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "inject_voice_text",
+   "module": "inject_voice_text",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "show_voice_search_overlay",
+   "module": "show_voice_search_",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_voice_mode_shortcut",
+   "module": "set_voice_mode_sho",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "remove_voice_mode_shortcut",
+   "module": "remove_voice_mode_",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "get_mystery_unlock_grants",
+   "module": "get_mystery_unlock",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "merge_mystery_unlock_grants",
+   "module": "merge_mystery_unlo",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "mystery_route_allowed",
+   "module": "mystery_route_allo",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "force_kill_codex",
+   "module": "force_kill_codex",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "reset_codex_config",
+   "module": "reset_codex_config",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "get_image_compat",
+   "module": "get_image_compat",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_image_compat",
+   "module": "set_image_compat",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "get_system_info",
+   "module": "get_system_info",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "check_update_installability",
+   "module": "check_update_insta",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "note_usage_refresh_activity",
+   "module": "note_usage_refresh",
+   "platform": "macos-arm64",
+   "gate_tier": "consumerStartReady",
+   "consumer_action": "c5_local"
+  },
+  {
+   "command": "schedule_full_runtime_refresh",
+   "module": "schedule_full_runt",
+   "platform": "macos-arm64",
+   "gate_tier": "consumerStartReady",
+   "consumer_action": "c5_local"
+  },
+  {
+   "command": "start_auto_switch_pending_watcher",
+   "module": "start_auto_switch_",
+   "platform": "macos-arm64",
+   "gate_tier": "consumerStartReady",
+   "consumer_action": "c5_local"
+  },
+  {
+   "command": "start_usage_refresh_watcher",
+   "module": "start_usage_refres",
+   "platform": "macos-arm64",
+   "gate_tier": "consumerStartReady",
+   "consumer_action": "c5_local"
+  },
+  {
+   "command": "update_usage_refresh_schedule",
+   "module": "update_usage_refre",
+   "platform": "macos-arm64",
+   "gate_tier": "consumerStartReady",
+   "consumer_action": "c5_local"
+  },
+  {
+   "command": "reset_codex_config",
+   "module": "reset_codex_config",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "get_image_compat",
+   "module": "get_image_compat",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "set_image_compat",
+   "module": "set_image_compat",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "get_system_info",
+   "module": "get_system_info",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "check_update_installability",
+   "module": "check_update_insta",
+   "platform": "windows-x64",
+   "gate_tier": "readyToImplement",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "force_kill_codex",
+   "module": "force_kill_codex",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "diagnose_codex_router",
+   "module": "diagnose_codex_rou",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "diagnose",
+   "module": "diagnose",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "run_codex_router_diagnostics",
+   "module": "run_codex_router_d",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "get_hotspot_enabled",
+   "module": "get_hotspot_enable",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "set_hotspot_enabled",
+   "module": "set_hotspot_enable",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "hotspot_ready",
+   "module": "hotspot_ready",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "get_hotspot_enabled",
+   "module": "get_hotspot_enable",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "set_hotspot_enabled",
+   "module": "set_hotspot_enable",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "hotspot_ready",
+   "module": "hotspot_ready",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "get_usage_refresh_interval",
+   "module": "get_usage_refresh_",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "set_usage_refresh_interval",
+   "module": "set_usage_refresh_",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "refresh_usage_snapshot",
+   "module": "refresh_usage_snap",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "get_usage_refresh_interval",
+   "module": "get_usage_refresh_",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "set_usage_refresh_interval",
+   "module": "set_usage_refresh_",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "refresh_usage_snapshot",
+   "module": "refresh_usage_snap",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_against_contract"
+  },
+  {
+   "command": "clean",
+   "module": "clean",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "rebuild_registry",
+   "module": "rebuild_registry",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "load_snapshot",
+   "module": "load_snapshot",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "graceful_restart_for_update",
+   "module": "graceful_restart_f",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "restart_codex",
+   "module": "restart_codex",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "focus_main_window",
+   "module": "focus_main_window",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "open_path",
+   "module": "open_path",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "detect_api_proxy_config",
+   "module": "detect_api_proxy_c",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "set_api_proxy_config",
+   "module": "set_api_proxy_conf",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "test_api_proxy_config",
+   "module": "test_api_proxy_con",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "set_app_theme",
+   "module": "set_app_theme",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "wf11-6-omitted-functions",
+   "module": "calltree-depth-com",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement_full_",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "wf11-va-corrections",
+   "module": "evidence-quality-v",
+   "platform": "macos-arm64",
+   "gate_tier": "readyToImplement_full_",
+   "consumer_action": "implement_now"
+  },
+  {
+   "command": "wf11-missing-leaf-closure",
+   "module": "graceful_restart_f",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "wf12-gap-win-1-tls-accessor",
+   "module": "dim3-callee-addend",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "wf12-gap-mac-1",
+   "module": "cmd-discriminant-c",
+   "platform": "macos-arm64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  },
+  {
+   "command": "wf12-gap-win-2",
+   "module": "idb-rename-hygiene",
+   "platform": "windows-x64",
+   "gate_tier": "strictImplementationUs",
+   "consumer_action": "implement_now_dim6_test_pending"
+  }
+ ]
+}
