@@ -251,15 +251,20 @@ expectNotIncludes("src/routes/registry/objects.tsx", routeObjects, [
 const routeMeta = readRequiredFile("src/routes/registry/meta.ts");
 expectIncludes("src/routes/registry/meta.ts", routeMeta, [
   "export interface RouteMeta",
-  "getRouteMeta(route: Route)",
-  "getVisibleRouteMeta()",
-  "routeDefinitions.filter((definition) => definition.visible).map(toRouteMeta)",
+  "MysteryRouteGateContext",
+  "resolveRouteVisibility",
+  "getRouteMeta(route: Route, context?: MysteryRouteGateContext)",
+  "getVisibleRouteMeta(context?: MysteryRouteGateContext)",
+  "routeDefinitions",
+  "toRouteMeta(definition, context)",
 ]);
 
 const routePreload = readRequiredFile("src/routes/registry/preload.ts");
 expectIncludes("src/routes/registry/preload.ts", routePreload, [
   "resolveRouteDefinition(route).preload()",
-  "preloadVisibleRoutes()",
+  "MysteryRouteGateContext",
+  "resolveRouteVisibility",
+  "preloadVisibleRoutes(context?: MysteryRouteGateContext)",
 ]);
 
 const runtimeInitializer = readRequiredFile("src/app/runtime/initializer.tsx");

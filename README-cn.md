@@ -58,8 +58,8 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - 已按 bootstrap 写回证据补回 `load_mcp_servers` 与 `load_installed_skills` 的 `bootstrap-cache.json` 生产侧更新：主读取成功后分别写入 `mcpServers` 与 `installedSkills` 缓存切片，写回失败不影响主 IPC 响应。
 - 已同步收紧 E2E mock 的 bootstrap 合同：`load_bootstrap_state` 不再固定返回空 `mcpServers` / `installedSkills`，而是读取共享 mock cache；`load_mcp_servers` 与 `load_installed_skills` 会在 mock 中写回对应缓存切片，并由 `validate:e2e-mocks` 禁止退回固定空 slice。
 - 已继续补回 `load_usage_analytics` 到 `bootstrap-cache.json` 的 `usageAnalytics` 缓存切片生产写回与 E2E mock 共享 cache 验证；当前仍不声明闭源统计规则已恢复，只声明现有公开用量 payload 会进入 bootstrap cache。
-- 已把 overview 已查询的 `get_mystery_unlock_grants` payload 接入 `mystery-grants` 数据面板，并通过页面 owner 验证防止再次丢弃该查询结果；该进度不声明 `mystery_route_allowed` helper、dim6 或 mystery gate 已闭合。
-- 已把 mystery grants 的私有 allowlist 与 raw 前端 helper 词表对齐到 `overview/accounts/sessions/mcp/skills/plugins/relayModel/maintenance/settings`，并同步 Rust usecase、E2E mock 与 mock validator；该进度只收紧 grants 过滤合同，不新增公开 IPC、不接入 route guard、不声明 `mystery_route_allowed` gate 已闭合。
+- 已把 overview 已查询的 `get_mystery_unlock_grants` payload 接入 `mystery-grants` 数据面板，并通过页面 owner 验证防止再次丢弃该查询结果；mystery grants 当前恢复的是 get/merge grants、allowlist 链路和 route registry meta/preload 显隐 helper，不声明 shell 运行时接入、route guard、dim6 或 mystery gate 已闭合。
+- 已把 mystery grants 的私有 allowlist 与 raw 前端 helper 词表对齐到 `overview/accounts/sessions/mcp/skills/plugins/relayModel/maintenance/settings`，并同步 Rust usecase、E2E mock、mock validator 与前端 route helper；该进度只收紧 grants 过滤合同，不新增公开 IPC、不宣称 redirect 或 route guard 完成。
 - 已按 raw/internal 证据补回 Relay model fetch 的公开读取合同：前端 wrapper、E2E mock 与后端 command、usecase、core、platform、contracts 对齐模型列表 DTO、空状态和失败语义；该进度只声明模型列表获取链路恢复，不声明 Relay 启停、会话或真实转发闭环已完成。
 - 已按 macOS / Windows relay 测试证据补回 `test_relay_provider` 与 `test_relay_draft` 的 mock terminal 后端闭环：core 负责 endpoint、header、body 构建和响应解析，platform 只返回可测试 mock 响应，provider 路径会把健康结果写回 repository，draft 路径不落盘；该进度不声明真实 HTTP、真实代理、真实 keychain 或会话转发已恢复。
 - 已按 macOS daemon/system 证据补回 runtime watcher 的进程内状态合同：`note_usage_refresh_activity`、`schedule_full_runtime_refresh`、`start_auto_switch_pending_watcher`、`start_usage_refresh_watcher` 和 `update_usage_refresh_schedule` 现在记录 activity、8 秒 debounce、once guard、interval 和 notify 序列，并同步 E2E mock；该进度不声明真实后台线程、事件广播、网络刷新或账号自动切换已恢复。
@@ -72,14 +72,16 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - `scripts/validate-backend-accounts-owner.mjs` 与 `validate:backend-accounts-owner` 已扩展为账号事务 owner 门禁，用于防止 `repository/accounts.rs` 重新暴露 `switch_account`、`remove_accounts`、`logout`、`export_accounts_to_file`、`preview_account_import` 和 `import_accounts_from_file` 用户动作事务，并校验这些编排仍在 application/usecase 内通过窄 repository helper 完成。
 - 新增 `scripts/validate-backend-accounts-transfer-owner.mjs` 与 `validate:backend-accounts-transfer-owner`，作为账号导入/导出专项门禁，单独防止 export、preview import 和 import 事务回退到 repository。
 - 新增 `scripts/validate-frontend-relay-cache.mjs` 与 `validate:frontend-relay-cache`，并在 `src/features/relay/__tests__/README.md` 记录边界；该验证确认 relay mutation payload 先写 TanStack 权威 cache，再做已知 query 扇出或失效，并模拟 stale、delayed、event replay 的旧响应不能覆盖已接受的 mutation 结果。
+- 新增 `scripts/validate-frontend-mystery-gates.mjs` 与 `validate:frontend-mystery-gates`，确认 `relayModel` grant 只映射到前端 `relay` route、meta/preload 统一使用 route registry 显隐 helper，并禁止 voice route 或外部参考项目名回流。
 - `scripts/validate-backend-hexagonal.mjs` 已从“全仓禁止真实副作用”改成“按 owner 限制副作用”：文件系统只允许仓储/适配器边界，进程、窗口、shell 只允许平台边界，voice 仍保持空骨架门禁。
-- 新增 `scripts/validate-frontend-leaf-copy-acceptance.mjs`，把前端 leaf 和全文案验收从静态覆盖扫描中分离出来；当前该严格 gate 应当失败，直到 internal gate 和逐条文案来源验收全部完成。
-- `README.md` 与 `README-cn.md` 保持中文同步，记录当前已经做了什么、没有做什么，方便 PR 继续补齐。
+- `scripts/validate-frontend-entry-architecture.mjs` 已同步 route grants context 合同：允许 `getRouteMeta`、`getVisibleRouteMeta` 和 `preloadVisibleRoutes` 保持无参兼容的同时接收可选 context，并继续确认 route registry 是 meta/preload owner。
+- 新增 `scripts/validate-frontend-leaf-copy-acceptance.mjs`，把前端 leaf 和全文案验收从静态覆盖扫描中分离出来；全文案验收清单 `evidence/full-chain/internal/frontend-copy-acceptance.json` 已存在且 `status=accepted`，记录 `entries=613`、`acceptedZh=613`、`acceptedEn=613`、`missingRawOrInternalCopySource=0`，说明 locale 文案可回指 raw/internal 来源。
+- `README.md` 与 `README-cn.md` 保持中文同步，记录当前已经做了什么、没有做什么；本轮进度服务于 main 直接开发，每次提交都应同步更新 README，避免进度说明再次落后于证据和代码状态。
 
 ### 未做
 
-- 前端 macOS / Windows 双平台 100% leaf 尚未完成验收；现有 `validate-frontend-dumped`、`validate-frontend-evidence` 和 `validate-i18n` 只能证明静态覆盖、owner 边界和 locale key 同步，不能证明所有 leaf、渲染、交互和文案语义已逐条还原。
-- 全文案逐条验收尚未完成；当前没有 `evidence/full-chain/internal/frontend-copy-acceptance.json` 记录每个 locale key 对应的 raw/internal 中文来源、英文来源和验收状态。
+- 前端 macOS / Windows 双平台 100% leaf 尚未完成验收；现有 `validate-frontend-dumped`、`validate-frontend-evidence`、`validate-i18n` 和全文案 accepted 清单只能证明静态覆盖、owner 边界、locale key 同步和文案来源验收，不能证明所有 leaf、渲染、交互和状态语义已逐条还原。
+- 严格 full leaf / gate 仍未闭合；internal gate/audit 中 `full_leaf_100`、`gate_accepted`、`readyToImplement`、`dim6` 等字段仍未全绿，不能宣称前端 100%、mystery gate 完成或已经可按完整闭环实现。
 - 后端闭源业务不做全量还原；没有公开证据支撑的业务行为仍只能保留为合同、桩、待实现项或测试缺口。
 - voice 前后端不做真实功能还原，不注册路由入口、不进入 runtime reload map、不注册 IPC handler，只保留空骨架和说明；原始公开材料中与录音、语音运行时、快捷键、音频反馈、文本注入相关的内容不进入当前公开实现。
 - voice 当前仍保留前端类型层命令清单、feature/service 空骨架和窗口 surface 标签，用于说明公开合同边界；这些内容没有 route registry、navigation meta、`src/lib/api.ts` wrapper、runtime reload map 或 E2E mock handler 入口，不作为可触达功能。
@@ -88,8 +90,8 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - `remoteDeviceSecret` 当前已恢复 settings 读写和迁移语义，但尚未因此关闭前端全文案、渲染交互、双平台 leaf 或 internal gate 的剩余验收项。
 - `bootstrap-cache.json` 当前已恢复读取、解析失败返回空状态、DTO 字段承接、`usageAnalytics` / `mcpServers` / `installedSkills` 三个缓存切片生产写回，以及 E2E mock 共享 cache 验证；真实用量统计口径仍需按 raw/internal 证据继续补齐。
 - 启动链路当前只 seed 已有公开 cache owner、触发进程内 watcher once guard，并广播脱敏 runtime bridge event；尚未恢复真实后台线程、账号 attach monitor 循环、网络刷新或闭源自动切换动作。
-- `mystery_route_allowed` 仍是 helper/gate 缺口；当前只恢复 get/merge grants 的公开调用链、cache 合同和 overview 面板消费，不把它用于导航显隐或 route guard。
-- mystery grants allowlist 已按 raw 前端 helper 对齐，但仍只是私有过滤合同；没有把 `subscription` / `customInstructions` 写回 grants helper，也没有把 grants 用于导航显隐、redirect 或 route registry。
+- `mystery_route_allowed` 仍是 helper/gate 缺口；当前只恢复 get/merge grants 的公开调用链、cache 合同、overview 面板消费、allowlist 过滤和 route registry meta/preload 显隐 helper，尚未接入 shell 运行时 grants 查询，也不把它描述为已完成 route guard。
+- mystery grants allowlist 已按 raw 前端 helper 对齐，但仍只是私有过滤合同；当前 helper 能让 route registry 在传入 grants context 时计算显隐和 preload，尚未把 grants 查询正式接入导航 shell、redirect 或 route guard，也不因此关闭 dim6 或 full leaf gate。
 - MCP 写回当前使用结构化 TOML 保存，已在源码层面对接命令和数据，但还没有恢复原始实现中对注释和托管块位置的完整保留策略。
 - Rust 编译验收需要具备目标平台工具链；Windows 下缺少 MSVC `link.exe` 时，`cargo check` 会在第三方 crate build script 阶段失败。
 
