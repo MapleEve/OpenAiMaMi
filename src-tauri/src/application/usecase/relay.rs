@@ -1,6 +1,6 @@
 use crate::application::{
     ports::RelayPlatformPort,
-    service::{current_timestamp, pending_status, restored_status},
+    service::{current_timestamp, default_relay_platform, pending_status, restored_status},
 };
 use crate::contracts::{
     BackendEffect, BackendSkeletonStatus, CoreWarning, RelayActivePayload,
@@ -18,7 +18,6 @@ use crate::core::{
     },
     relay as relay_core,
 };
-use crate::platform::relay::RelayPlatformAdapter;
 use crate::repository::{relay as relay_repository, Repository};
 use serde_json::Value;
 
@@ -182,6 +181,15 @@ pub fn test_relay_provider(
     repo: &Repository,
     provider_id: String,
 ) -> (RelayTestPayload, CoreWarning) {
+    let platform = default_relay_platform();
+    test_relay_provider_with_platform(repo, provider_id, &platform)
+}
+
+fn test_relay_provider_with_platform(
+    repo: &Repository,
+    provider_id: String,
+    platform: &impl RelayPlatformPort,
+) -> (RelayTestPayload, CoreWarning) {
     let command = "test_relay_provider";
     let provider = load_provider_for_test(repo, &provider_id);
     let result = provider
@@ -191,7 +199,7 @@ pub fn test_relay_provider(
             let draft = draft_from_provider(provider);
             relay_core::prepare_health_check_request(command, &draft, Some(provider.id.clone()))
         })
-        .and_then(|request| RelayPlatformAdapter.test_relay_mock_terminal(&request))
+        .and_then(|request| platform.test_relay_mock_terminal(&request))
         .and_then(|response_body| relay_core::parse_health_check_result(&response_body));
 
     match result {
@@ -218,11 +226,19 @@ pub fn test_relay_draft(
     _repo: &Repository,
     input: RelayProviderDraftInput,
 ) -> (RelayTestPayload, CoreWarning) {
+    let platform = default_relay_platform();
+    test_relay_draft_with_platform(input, &platform)
+}
+
+fn test_relay_draft_with_platform(
+    input: RelayProviderDraftInput,
+    platform: &impl RelayPlatformPort,
+) -> (RelayTestPayload, CoreWarning) {
     let command = "test_relay_draft";
     let draft = draft_from_input(&input);
     let result =
         relay_core::prepare_health_check_request(command, &draft, Some("__draft__".to_string()))
-            .and_then(|request| RelayPlatformAdapter.test_relay_mock_terminal(&request))
+            .and_then(|request| platform.test_relay_mock_terminal(&request))
             .and_then(|response_body| relay_core::parse_health_check_result(&response_body));
 
     match result {
@@ -241,10 +257,18 @@ pub fn fetch_relay_models_draft(
     _repo: &Repository,
     input: RelayProviderDraftInput,
 ) -> (Vec<String>, CoreWarning) {
+    let platform = default_relay_platform();
+    fetch_relay_models_draft_with_platform(input, &platform)
+}
+
+fn fetch_relay_models_draft_with_platform(
+    input: RelayProviderDraftInput,
+    platform: &impl RelayPlatformPort,
+) -> (Vec<String>, CoreWarning) {
     let command = "fetch_relay_models_draft";
     let draft = draft_from_input(&input);
     let result = relay_core::prepare_fetch_models_request(command, &draft)
-        .and_then(|request| RelayPlatformAdapter.fetch_models_mock_terminal(&request))
+        .and_then(|request| platform.fetch_models_mock_terminal(&request))
         .and_then(|response_body| relay_core::parse_model_ids(&response_body));
 
     match result {
@@ -603,7 +627,8 @@ fn core_state_from_repo(repo: &Repository) -> RelayStateDomain {
 }
 
 fn relay_platform_capability_codes() -> Vec<String> {
-    RelayPlatformAdapter
+    let platform = default_relay_platform();
+    platform
         .capabilities()
         .into_iter()
         .map(|capability| capability.code)
@@ -1089,16 +1114,11 @@ mod tests {
         assert!(!payload.diagnostics.pending);
         assert!(!payload.diagnostics.has_issues);
 
-        let config = repo
-            .fs()
-            .read_to_string(&repo.paths().config_path)
-            .expect("read config");
-        assert!(config.contains("# >>> aimami-relay codex-router top start"));
-        assert!(config.contains("model_provider = \"aimami\""));
-        assert!(config.contains("model_catalog_json"));
-        assert!(repo
-            .fs()
-            .exists(&repo.paths().codex_home.join("codex_router_catalog.json")));
+        let skeleton = relay_repository::load_router_diagnostic_skeleton(&repo, "assert_fix");
+        assert!(skeleton.managed_block_exists);
+        assert!(skeleton.config_toml_has_router);
+        assert!(skeleton.config_toml_has_catalog);
+        assert!(skeleton.catalog_exists);
     }
 
     #[test]
@@ -1126,7 +1146,6 @@ mod tests {
     #[test]
     fn fetch_relay_models_draft_uses_mock_terminal_without_state_write() {
         let repo = Repository::with_temp_file_system("relay-fetch-models-draft");
-        let relay_config_path = repo.paths().app_data_dir.join("relay-config.json");
 
         let (models, warning) = fetch_relay_models_draft(
             &repo,
@@ -1144,13 +1163,13 @@ mod tests {
             warning.code,
             "relay.fetch_relay_models_draft.mock_terminal_restored"
         );
-        assert!(!repo.fs().exists(&relay_config_path));
+        let snapshot = relay_repository::load_relay_repository_snapshot(&repo);
+        assert!(!snapshot.relay_config_exists);
     }
 
     #[test]
     fn test_relay_draft_uses_mock_terminal_without_state_write() {
         let repo = Repository::with_temp_file_system("relay-test-draft");
-        let relay_config_path = repo.paths().app_data_dir.join("relay-config.json");
 
         let (payload, warning) = test_relay_draft(
             &repo,
@@ -1175,7 +1194,8 @@ mod tests {
             warning.code,
             "relay.test_relay_draft.mock_terminal_restored"
         );
-        assert!(!repo.fs().exists(&relay_config_path));
+        let snapshot = relay_repository::load_relay_repository_snapshot(&repo);
+        assert!(!snapshot.relay_config_exists);
     }
 
     #[test]

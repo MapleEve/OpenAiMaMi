@@ -1,6 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { systemService } from "@/services/system";
-import { invalidateTrayShellContractQueries } from "../cache";
+import {
+  invalidateTrayShellCommandAckFence,
+  prepareTrayShellCommandAckFence,
+} from "../cache";
 import type { TrayShellActionModel } from "../types";
 
 export function useTrayShellFocusMainWindowMutation() {
@@ -8,8 +11,9 @@ export function useTrayShellFocusMainWindowMutation() {
 
   return useMutation({
     mutationFn: () => systemService.focusMainWindow(),
-    onSuccess: () => {
-      void invalidateTrayShellContractQueries(queryClient);
+    onMutate: () => prepareTrayShellCommandAckFence(queryClient),
+    onSuccess: async () => {
+      await invalidateTrayShellCommandAckFence(queryClient);
     },
   });
 }

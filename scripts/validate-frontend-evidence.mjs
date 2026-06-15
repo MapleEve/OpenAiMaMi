@@ -1585,6 +1585,10 @@ function validateTrayShellTypedPayloadGate() {
   const cacheOk =
     cache.includes("createModuleCacheOwner<TrayShellCachePayload>(\"tray-shell\")") &&
     cache.includes("Omit<TrayShellCacheEnvelope<TPayload>, \"moduleId\">") &&
+    cache.includes("runTrayShellQuery") &&
+    cache.includes("prepareTrayShellCommandAckFence") &&
+    cache.includes("invalidateTrayShellCommandAckFence") &&
+    cache.includes("canAcceptTrayShellPayload") &&
     !cache.includes("createModuleCacheOwner(\"tray-shell\")") &&
     !cache.includes("ModuleCacheEnvelope<unknown>");
   const hooksIndexOk =
@@ -1609,7 +1613,8 @@ function validateTrayShellTypedPayloadGate() {
     mutation.includes("useMutation") &&
     mutation.includes("useQueryClient") &&
     mutation.includes("systemService.focusMainWindow()") &&
-    mutation.includes("invalidateTrayShellContractQueries(queryClient)") &&
+    mutation.includes("prepareTrayShellCommandAckFence(queryClient)") &&
+    mutation.includes("invalidateTrayShellCommandAckFence(queryClient)") &&
     mutation.includes("focusMutation.mutateAsync()") &&
     mutation.includes("isPending: focusMutation.isPending") &&
     !mutation.includes("useQuery<") &&
@@ -2102,6 +2107,9 @@ function validateDaemonAutoswitchTypedPayloadGate() {
     cache.includes("Omit<DaemonAutoswitchCacheEnvelope<TPayload>, \"moduleId\">") &&
     cache.includes("writeDaemonAutoswitchAuthoritativePayload") &&
     cache.includes("invalidateDaemonAutoswitchContractQueries") &&
+    cache.includes("DAEMON_AUTOSWITCH_RUNTIME_EVENT_CACHE_TARGETS") &&
+    cache.includes("applyDaemonAutoswitchRuntimeEventToCache") &&
+    cache.includes("invalidateAccountsDumpedQueries") &&
     queryHook.includes("useDaemonAutoswitchCacheController") &&
     queryHook.includes("useDaemonAutoswitchBootstrapQuery") &&
     queryHook.includes("useDaemonAutoswitchPendingQuery") &&
@@ -2120,7 +2128,9 @@ function validateDaemonAutoswitchTypedPayloadGate() {
     mutationHook.includes("cancelDaemonAutoswitchQueries") &&
     runtimeHook.includes("useDaemonAutoswitchRuntimeSubscriptions") &&
     runtimeHook.includes("daemonAutoswitchService.subscribePendingAutoSwitch") &&
-    runtimeHook.includes("invalidateQueries") &&
+    runtimeHook.includes("applyDaemonAutoswitchRuntimeEventToCache") &&
+    runtimeHook.includes("\"auto-switch-pending\"") &&
+    !runtimeHook.includes("invalidateQueries") &&
     pageHook.includes("useDaemonAutoswitchPendingPrompt") &&
     pageHook.includes("useDaemonAutoswitchModule") &&
     pageHook.includes("useDaemonAutoswitchPageController") &&

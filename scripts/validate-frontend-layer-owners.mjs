@@ -1288,11 +1288,19 @@ function validateTrayShellDeepOwnerBoundaries() {
     "useModuleCacheController(TrayShellCache)",
     "useTrayShellNotificationQuery",
     "useQuery<TrayShellNotificationEnvelope>",
+    "useQueryClient",
     "TRAY_SHELL_NOTIFICATION_CLIENT_QUERY_KEY",
+    "runTrayShellQuery(",
     "systemService.getNotificationClientState()",
   ]);
+  if (
+    /const\s+TRAY_SHELL_NOTIFICATION_CLIENT_QUERY_KEY/.test(query) ||
+    query.includes("TrayShellQueryKeys")
+  ) {
+    failures.push("src/features/tray-shell/hooks/query.ts 不得重复声明 tray-shell query key，必须消费 cache owner 导出的 key");
+  }
   assertNotMatches("src/features/tray-shell/hooks/query.ts", query, [
-    [/\buse(QueryClient|Mutation)\b/, "tray-shell query owner 只能 owning cache controller 和 notification query"],
+    [/\buseMutation\b/, "tray-shell query owner 只能 owning cache controller 和 notification query"],
     [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "tray-shell query owner 不得 owning mutation cache 写入、失效或取消"],
     [/systemService\.focusMainWindow|focus-main-window|TrayShellActionModel/, "tray-shell query owner 不得 owning focus main window action"],
     [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "tray-shell query owner 必须经 system service wrapper，不得直接拼 IPC"],
@@ -1305,7 +1313,8 @@ function validateTrayShellDeepOwnerBoundaries() {
     "useMutation",
     "useQueryClient",
     "systemService.focusMainWindow()",
-    "invalidateTrayShellContractQueries(queryClient)",
+    "prepareTrayShellCommandAckFence(queryClient)",
+    "invalidateTrayShellCommandAckFence(queryClient)",
   ]);
   assertNotMatches("src/features/tray-shell/hooks/mutation.ts", mutation, [
     [/\buseQuery\b/, "tray-shell mutation owner 不得 owning notification query"],
@@ -1346,6 +1355,15 @@ function validateTrayShellDeepOwnerBoundaries() {
     "createModuleCacheOwner<TrayShellCachePayload>(\"tray-shell\")",
     "Omit<TrayShellCacheEnvelope<TPayload>, \"moduleId\">",
     "TRAY_SHELL_NOTIFICATION_CLIENT_QUERY_KEY",
+    "writeTrayShellQueryPayload",
+    "runTrayShellQuery",
+    "prepareTrayShellCommandAckFence",
+    "beginTrayShellCommandFence",
+    "trayShellMutationFences",
+    "canAcceptTrayShellPayload",
+    "queryClient.cancelQueries({ queryKey })",
+    "source === \"mutation-payload\"",
+    "sequence >= mutationFence",
     "invalidateTrayShellContractQueries",
   ]);
   assertNotMatches("src/features/tray-shell/cache/index.ts", cache, [
@@ -2073,13 +2091,15 @@ function validateDaemonAutoswitchDeepOwnerBoundaries() {
     "useEffect",
     "useQueryClient",
     "daemonAutoswitchService.subscribePendingAutoSwitch",
-    "invalidateQueries",
-    "DAEMON_AUTOSWITCH_PENDING_QUERY_KEY",
+    "applyDaemonAutoswitchRuntimeEventToCache",
+    "\"auto-switch-pending\"",
   ]);
   assertNotMatches("src/features/daemon-autoswitch/hooks/runtime.ts", runtime, [
     [/\buse(Query|Mutation)\b/, "daemon-autoswitch runtime owner must not own query or mutation"],
     [/\buse(State|Reducer|Memo|Callback)\b/, "daemon-autoswitch runtime owner must not own page/controller UI state"],
     [/\bsetQueryData\b/, "daemon-autoswitch runtime owner must invalidate through cache/query helper only"],
+    [/\binvalidateQueries\b/, "daemon-autoswitch runtime owner must call cache helper, not invalidate queries directly"],
+    [/\bDAEMON_AUTOSWITCH_[A-Z0-9_]+_QUERY_KEY\b/, "daemon-autoswitch runtime owner must not consume query keys directly"],
     [/useTranslation|DaemonAutoswitchPageController|useDaemonAutoswitchModule|useDaemonAutoswitchPendingPrompt|metrics|panels|labelKey|envelopeData|readBoolean|readString/, "daemon-autoswitch runtime owner must not own page controller, locale, or view model parsing"],
     [/daemonAutoswitchService\.(?!subscribePendingAutoSwitch\b)\w+/, "daemon-autoswitch runtime owner must not call daemon-autoswitch service commands beyond pending subscription"],
     [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "daemon-autoswitch runtime owner must use service event facade, not IPC/API transport"],
@@ -2122,11 +2142,17 @@ function validateDaemonAutoswitchDeepOwnerBoundaries() {
     "Omit<DaemonAutoswitchCacheEnvelope<TPayload>, \"moduleId\">",
     "writeDaemonAutoswitchAuthoritativePayload",
     "invalidateDaemonAutoswitchContractQueries",
+    "invalidateAccountsDumpedQueries",
+    "DAEMON_AUTOSWITCH_RUNTIME_EVENT_CACHE_TARGETS",
+    "applyDaemonAutoswitchRuntimeEventToCache",
   ]);
   assertNotMatches("src/features/daemon-autoswitch/cache/index.ts", cache, [
     [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "daemon-autoswitch cache owner must not own React hooks"],
     [/@\/services\/daemon-autoswitch|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|daemonAutoswitchService\.|systemService\.|invokeIpc|invoke\(/, "daemon-autoswitch cache owner must not access service/API/IPC"],
     [/createModuleCacheOwner\("daemon-autoswitch"\)|DaemonAutoswitchCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "daemon-autoswitch cache owner must keep typed payloads"],
+    [/queryKey:\s*\[\s*["']accounts["']\s*\]/, "daemon-autoswitch cache owner must reference accounts cache helper instead of bare accounts key"],
+    [/queryKey:\s*\[\s*["']runtime-state["']\s*,\s*["']display["']\s*\]/, "daemon-autoswitch cache owner must reference module cache helper instead of bare runtime display key"],
+    [/queryKey:\s*\[\s*["']quota-history["']\s*\]/, "daemon-autoswitch cache owner must reference module cache helper instead of bare quota key"],
   ]);
 
   if (controllerConsumerText.includes("ReturnType<typeof useDaemonAutoswitchPageController>")) {

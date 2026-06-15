@@ -1,5 +1,7 @@
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
+import { invalidateAccountsDumpedQueries } from "@/features/accounts/cache";
 import { createModuleCacheOwner } from "@/features/_shared/cache";
+import type { PendingAutoSwitchStatePayload } from "@/types";
 import type {
   DaemonAutoswitchCacheEnvelope,
   DaemonAutoswitchCachePayload,
@@ -17,6 +19,37 @@ export const DAEMON_AUTOSWITCH_PENDING_QUERY_KEY = [
   ...DaemonAutoswitchCache.queryKeys.root,
   "pending",
 ] as const;
+
+type DaemonAutoswitchQueryInvalidationType = "active" | "all";
+
+interface DaemonAutoswitchQueryInvalidationTarget {
+  queryKey: QueryKey;
+  type?: DaemonAutoswitchQueryInvalidationType;
+}
+
+export type DaemonAutoswitchRuntimeEventName = "auto-switch-pending";
+
+export interface DaemonAutoswitchRuntimeEventPayloads {
+  "auto-switch-pending": PendingAutoSwitchStatePayload;
+}
+
+export const DAEMON_AUTOSWITCH_CONTRACT_QUERY_TARGETS = [
+  { queryKey: DaemonAutoswitchCache.queryKeys.root },
+  { queryKey: DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY },
+  { queryKey: DAEMON_AUTOSWITCH_PENDING_QUERY_KEY },
+] as const satisfies readonly DaemonAutoswitchQueryInvalidationTarget[];
+
+// runtime 事件只声明 payload 到模块 cache target 的映射，避免 hook 散落裸 key。
+export const DAEMON_AUTOSWITCH_RUNTIME_EVENT_CACHE_TARGETS = {
+  "auto-switch-pending": [
+    ...DAEMON_AUTOSWITCH_CONTRACT_QUERY_TARGETS,
+    { queryKey: DAEMON_AUTOSWITCH_PENDING_QUERY_KEY, type: "active" },
+  ],
+} as const satisfies Record<
+  DaemonAutoswitchRuntimeEventName,
+  readonly DaemonAutoswitchQueryInvalidationTarget[]
+>;
+
 export const writeDaemonAutoswitchAuthoritativePayload = <
   TPayload extends DaemonAutoswitchCachePayload,
 >(
@@ -88,23 +121,47 @@ export async function writeDaemonAutoswitchMutationPayload(
   if (!accepted) return;
 
   await invalidateDaemonAutoswitchContractQueries(queryClient);
-  await Promise.all([
-    queryClient.invalidateQueries({ queryKey: ["accounts"] }),
-    queryClient.invalidateQueries({ queryKey: ["runtime-state", "display"] }),
-    queryClient.invalidateQueries({ queryKey: ["quota-history"] }),
-  ]);
+  await invalidateDaemonAutoswitchCrossModuleQueries(queryClient);
 }
 
 export async function invalidateDaemonAutoswitchContractQueries(
   queryClient: QueryClient,
 ) {
-  await Promise.all([
-    DaemonAutoswitchCache.invalidateContractQueries(queryClient),
-    queryClient.invalidateQueries({
-      queryKey: DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY,
-    }),
-    queryClient.invalidateQueries({
-      queryKey: DAEMON_AUTOSWITCH_PENDING_QUERY_KEY,
-    }),
-  ]);
+  await invalidateDaemonAutoswitchQueryTargets(
+    queryClient,
+    DAEMON_AUTOSWITCH_CONTRACT_QUERY_TARGETS,
+  );
+}
+
+export async function invalidateDaemonAutoswitchCrossModuleQueries(
+  queryClient: QueryClient,
+) {
+  await invalidateAccountsDumpedQueries(queryClient);
+}
+
+export async function applyDaemonAutoswitchRuntimeEventToCache<
+  TEventName extends DaemonAutoswitchRuntimeEventName,
+>(
+  queryClient: QueryClient,
+  eventName: TEventName,
+  _payload: DaemonAutoswitchRuntimeEventPayloads[TEventName],
+) {
+  await invalidateDaemonAutoswitchQueryTargets(
+    queryClient,
+    DAEMON_AUTOSWITCH_RUNTIME_EVENT_CACHE_TARGETS[eventName],
+  );
+}
+
+async function invalidateDaemonAutoswitchQueryTargets(
+  queryClient: QueryClient,
+  targets: readonly DaemonAutoswitchQueryInvalidationTarget[],
+) {
+  await Promise.all(
+    targets.map((target) =>
+      queryClient.invalidateQueries({
+        queryKey: target.queryKey,
+        type: target.type ?? "all",
+      }),
+    ),
+  );
 }
