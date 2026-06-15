@@ -59,10 +59,11 @@
         {
           "file": "src/services/plugins/index.ts",
           "includes": [
-            "invokeIpc<PluginsListEnvelope>(\"list_plugins\")",
-            "invokeIpc<PluginsToggleEnvelope>(\"toggle_plugin\"",
-            "invokeIpc<PluginsConfigEnvelope>(\"get_plugin_config\"",
-            "invokeIpc<PluginsConfigEnvelope>(\"update_plugin_config\""
+            "runtimeExtensionsService",
+            "list: () => runtimeExtensionsService.listPlugins()",
+            "runtimeExtensionsService.togglePlugin(id, enabled)",
+            "runtimeExtensionsService.getPluginConfig(id)",
+            "runtimeExtensionsService.updatePluginConfig(id, settings)"
           ]
         },
         {
@@ -235,7 +236,7 @@
         {
           "file": "src-tauri/src/repository/mcp.rs",
           "includes": [
-            "pub fn load_servers",
+            "pub fn load_server_snapshot",
             "fs.read_to_string"
           ]
         },
@@ -366,15 +367,16 @@
           "includes": [
             "createModuleCacheOwner<AnalyticsCachePayload>(\"analytics\")",
             "AnalyticsDumpedQueryKeys",
-            "usage: [\"usage-analytics\"]"
+            "usage: [\"usage-analytics\"]",
+            "writeAnalyticsPanelPayload"
           ]
         },
         {
           "file": "src/features/analytics/hooks/query.ts",
           "includes": [
-            "AnalyticsDumpedQueryKeys.usage",
+            "AnalyticsPanelQueryDescriptors.usage",
             "analyticsService.loadUsageAnalytics()",
-            "writeAnalyticsPanelPayload"
+            "runAnalyticsPanelQuery"
           ]
         },
         {
@@ -416,10 +418,16 @@
         {
           "file": "src-tauri/src/application/usecase/system.rs",
           "includes": [
-            "pub fn load_snapshot",
+            "pub use self::snapshot_bootstrap::{load_bootstrap_state, load_snapshot};",
             "pub fn refresh_usage_snapshot",
-            "restored_status(\"system\", \"load_snapshot\"",
             "\"refresh_usage_snapshot\""
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/system/snapshot_bootstrap.rs",
+          "includes": [
+            "pub fn load_snapshot",
+            "restored_status(\"system\", \"load_snapshot\""
           ]
         },
         {
@@ -448,7 +456,8 @@
         {
           "file": "src-tauri/src/repository/analytics.rs",
           "includes": [
-            "这个文件只保留分析数据仓储边界，当前骨架不读取任何本地内容"
+            "pub fn load_public_session_facts",
+            "sessions::load_session_file_metadata"
           ]
         },
         {
@@ -567,6 +576,15 @@
         },
         {
           "file": "src-tauri/src/application/usecase/system.rs",
+          "includes": [
+            "pub use self::platform_actions::",
+            "check_update_installability",
+            "graceful_restart_for_update",
+            "open_path"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/system/platform_actions.rs",
           "includes": [
             "pub fn check_update_installability",
             "pub fn graceful_restart_for_update",
@@ -1044,9 +1062,35 @@
           "file": "src-tauri/src/application/usecase/relay.rs",
           "includes": [
             "pub fn load_relay_state",
-            "pub fn fetch_relay_models_draft",
-            "pub fn run_codex_router_diagnostics",
+            "pub use self::diagnostics::",
+            "pub use self::models::fetch_relay_models_draft",
+            "pub use self::provider::",
             "skeleton_warning(command)"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/relay/models.rs",
+          "includes": [
+            "pub fn fetch_relay_models_draft",
+            "fetch_models_mock_terminal"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/relay/diagnostics.rs",
+          "includes": [
+            "pub fn run_codex_router_diagnostics",
+            "pub fn diagnose_codex_router",
+            "pub fn fix_codex_router_issue"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/relay/provider.rs",
+          "includes": [
+            "pub fn upsert_relay_provider",
+            "pub fn activate_relay_provider",
+            "pub fn deactivate_relay_provider",
+            "pub fn delete_relay_provider",
+            "pub fn set_relay_provider_network"
           ]
         },
         {
@@ -2039,12 +2083,31 @@
         {
           "file": "src-tauri/src/application/usecase/system.rs",
           "includes": [
-            "pub fn load_snapshot",
-            "pub fn load_bootstrap_state",
-            "pub fn diagnose",
+            "pub use self::diagnostics::diagnose",
+            "pub use self::platform_actions::",
+            "pub use self::snapshot_bootstrap::{load_bootstrap_state, load_snapshot};",
             "pub fn load_pending_auto_switch",
             "pub fn dismiss_pending_auto_switch",
             "pub fn confirm_pending_auto_switch",
+            "daemon_usecase::load_pending_auto_switch()"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/system/snapshot_bootstrap.rs",
+          "includes": [
+            "pub fn load_snapshot",
+            "pub fn load_bootstrap_state"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/system/diagnostics.rs",
+          "includes": [
+            "pub fn diagnose"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/system/platform_actions.rs",
+          "includes": [
             "pub fn force_kill_app",
             "force_kill_payload"
           ]
@@ -2064,11 +2127,11 @@
           ]
         },
         {
-          "file": "src-tauri/src/application/usecase/relay.rs",
+          "file": "src-tauri/src/application/usecase/relay/diagnostics.rs",
           "includes": [
             "pub fn diagnose_codex_router",
             "let command = \"diagnose_codex_router\"",
-            "skeleton_warning(command)"
+            "router_diagnostic_payload(repo, command)"
           ]
         }
       ],
@@ -2182,11 +2245,17 @@
         {
           "file": "src-tauri/src/application/usecase/system.rs",
           "includes": [
-            "pub fn load_snapshot",
-            "pub fn load_bootstrap_state",
+            "pub use self::snapshot_bootstrap::{load_bootstrap_state, load_snapshot};",
             "pub fn load_pending_auto_switch",
             "pub fn dismiss_pending_auto_switch",
             "pub fn confirm_pending_auto_switch"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/system/snapshot_bootstrap.rs",
+          "includes": [
+            "pub fn load_snapshot",
+            "pub fn load_bootstrap_state"
           ]
         }
       ],
@@ -2273,7 +2342,17 @@
             "pub fn start_auto_switch_pending_watcher",
             "pub fn start_usage_refresh_watcher",
             "pub fn update_usage_refresh_schedule",
-            "runtime_watcher_decision(repo, RuntimeWatcherSignal::UpdateUsageRefreshSchedule).ok()",
+            "daemon_usecase::note_usage_refresh_activity(repo)",
+            "daemon_usecase::schedule_full_runtime_refresh(repo)",
+            "daemon_usecase::start_auto_switch_pending_watcher(repo)",
+            "daemon_usecase::start_usage_refresh_watcher(repo)",
+            "daemon_usecase::update_usage_refresh_schedule(repo)"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/daemon.rs",
+          "includes": [
+            "fn runtime_watcher_decision",
             "runtime_repository::load_runtime_watcher_snapshot(repo)?",
             "RuntimePlatformAdapter",
             "runtime_core::note_usage_refresh_activity",
@@ -2540,7 +2619,15 @@
         {
           "file": "src-tauri/src/application/usecase/system.rs",
           "includes": [
-            "pub fn diagnose",
+            "pub use self::diagnostics::diagnose",
+            "pub use self::platform_actions::",
+            "force_kill_app"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/system/platform_actions.rs",
+          "includes": [
+            "pub fn force_kill_app",
             "\"force_kill_codex\"",
             "force_kill_payload"
           ]
@@ -2669,7 +2756,14 @@
           "file": "src-tauri/src/application/usecase/system.rs",
           "includes": [
             "pub fn refresh_usage_snapshot",
-            "runtime_watcher_backend_status(\"refresh_usage_snapshot\""
+            "daemon_usecase::schedule_full_runtime_refresh_for_command"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/daemon.rs",
+          "includes": [
+            "fn runtime_watcher_backend_status",
+            "runtime_watcher_backend_status(command, &decision)"
           ]
         }
       ],

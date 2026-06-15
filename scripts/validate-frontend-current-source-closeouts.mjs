@@ -60,6 +60,17 @@ const RELAY_CURRENT_SOURCE_COMMANDS = [
   "test_relay_provider",
   "upsert_relay_provider",
 ];
+const RELAY_CURRENT_SOURCE_USECASE_FILES = new Map([
+  ["activate_relay_provider", "src-tauri/src/application/usecase/relay/provider.rs"],
+  ["deactivate_relay_provider", "src-tauri/src/application/usecase/relay/provider.rs"],
+  ["delete_relay_provider", "src-tauri/src/application/usecase/relay/provider.rs"],
+  ["set_relay_provider_network", "src-tauri/src/application/usecase/relay/provider.rs"],
+  ["upsert_relay_provider", "src-tauri/src/application/usecase/relay/provider.rs"],
+  ["diagnose_codex_router", "src-tauri/src/application/usecase/relay/diagnostics.rs"],
+  ["fix_codex_router_issue", "src-tauri/src/application/usecase/relay/diagnostics.rs"],
+  ["run_codex_router_diagnostics", "src-tauri/src/application/usecase/relay/diagnostics.rs"],
+  ["fetch_relay_models_draft", "src-tauri/src/application/usecase/relay/models.rs"],
+]);
 const RELAY_CURRENT_SOURCE_NON_CLAIMS = [
   "不声明真实代理业务已经恢复。",
   "不声明真实配置持久化已经恢复。",
@@ -788,7 +799,10 @@ function validateRelayCurrentSourceCommandSignals() {
     requireIncludes("src/mocks/fixtures/commands.ts", [`${command}:`]);
     requireIncludes("src-tauri/src/lib.rs", [`commands::relay::${command}`]);
     requireIncludes("src-tauri/src/commands/relay.rs", [`pub fn ${command}`]);
-    requireIncludes("src-tauri/src/application/usecase/relay.rs", [`pub fn ${command}`]);
+    requireIncludes(
+      RELAY_CURRENT_SOURCE_USECASE_FILES.get(command) ?? "src-tauri/src/application/usecase/relay.rs",
+      [`pub fn ${command}`],
+    );
   }
 }
 

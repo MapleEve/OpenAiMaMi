@@ -1310,24 +1310,24 @@
   "copyAcceptance": {
     "file": "evidence/full-chain/internal/frontend-copy-acceptance.json",
     "exists": true,
-    "status": "accepted",
+    "status": "draft",
     "totals": {
-      "zhLocaleKeys": 613,
-      "enLocaleKeys": 613,
-      "entries": 613,
+      "zhLocaleKeys": 660,
+      "enLocaleKeys": 660,
+      "entries": 660,
       "rawControlFlowKeyBacked": 40,
       "internalKeyBacked": 12,
       "rawOrInternalKeyBacked": 47,
-      "sourceSyncOnly": 566,
-      "rawTranslationZhKeyBacked": 613,
-      "rawTranslationEnKeyBacked": 613,
-      "rawTranslationZhExact": 613,
-      "rawTranslationEnExact": 613,
-      "rawTranslationBothExact": 613,
+      "sourceSyncOnly": 613,
+      "rawTranslationZhKeyBacked": 621,
+      "rawTranslationEnKeyBacked": 621,
+      "rawTranslationZhExact": 621,
+      "rawTranslationEnExact": 621,
+      "rawTranslationBothExact": 621,
       "rawTranslationValueMismatch": 0,
-      "acceptedZh": 613,
-      "acceptedEn": 613,
-      "missingRawOrInternalCopySource": 0
+      "acceptedZh": 621,
+      "acceptedEn": 621,
+      "missingRawOrInternalCopySource": 39
     },
     "requiredForFullCopyAcceptance": true
   },
@@ -1367,7 +1367,7 @@
     {
       "id": "frontend-copy-acceptance-proof",
       "area": "copy",
-      "status": "needs-verification",
+      "status": "draft-or-missing",
       "blocker": "逐条 locale key 到 raw/internal 文案来源的验收文件尚未 accepted。"
     },
     {

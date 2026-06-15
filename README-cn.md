@@ -91,12 +91,12 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - 新增 `scripts/validate-frontend-mystery-gates.mjs` 与 `validate:frontend-mystery-gates`，确认 `relayModel` grant 只映射到前端 `relay` route、meta/preload 统一使用 route registry 显隐 helper，并禁止 voice route 或外部参考项目名回流。
 - `scripts/validate-backend-hexagonal.mjs` 已从“全仓禁止真实副作用”改成“按 owner 限制副作用”：文件系统只允许仓储/适配器边界，进程、窗口、shell 只允许平台边界，voice 仍保持空骨架门禁。
 - `scripts/validate-frontend-entry-architecture.mjs` 已同步 route grants context 合同：允许 `getRouteMeta`、`getVisibleRouteMeta` 和 `preloadVisibleRoutes` 保持无参兼容的同时接收可选 context，并继续确认 route registry 是 meta/preload owner。
-- 新增 `scripts/validate-frontend-leaf-copy-acceptance.mjs`，把前端 leaf 和全文案验收从静态覆盖扫描中分离出来；全文案验收清单 `evidence/full-chain/internal/frontend-copy-acceptance.json` 已同步当前 locale，现为 `status=draft`，记录 `entries=660`、`acceptedZh=638`、`acceptedEn=638`、`missingRawOrInternalCopySource=22`，说明剩余 time minutes、relay test missing target、router error 和 custom-instruction templates 文案仍需补 raw/internal 文案来源后才能关闭全文案验收。
-- `README.md` 与 `README-cn.md` 保持中文同步，记录当前已经做了什么、没有做什么；本轮进度服务于 main 直接开发，每次提交都应同步更新 README，避免进度说明再次落后于证据和代码状态。
+- 新增 `scripts/validate-frontend-leaf-copy-acceptance.mjs`，把前端 leaf 和全文案验收从静态覆盖扫描中分离出来；全文案验收清单 `evidence/full-chain/internal/frontend-copy-acceptance.json` 已按当前 locale 和生成规则重新同步，现为 `status=draft`，记录 `entries=660`、`acceptedZh=621`、`acceptedEn=621`、`missingRawOrInternalCopySource=39`，说明剩余 time duration、relay mock diagnostic/fix/audit/test、router error 和 custom-instruction templates 文案仍需补 raw/internal 文案来源后才能关闭全文案验收。
+- `README.md` 与 `README-cn.md` 保持中文同步，记录当前已经做了什么、没有做什么；本轮已把 current-source closeout 信号同步到 runtime-extensions、analytics cache、Relay/System 深模块和 daemon owner，并重新生成全文案验收清单与 leaf restoration queue。
 
 ### 未做
 
-- 前端 macOS / Windows 双平台 100% leaf 尚未完成验收；现有 `validate-frontend-dumped`、`validate-frontend-evidence` 和 `validate-i18n` 只能证明静态覆盖、owner 边界和 locale key 同步；全文案清单当前是 draft，剩余 22 个 time minutes、relay test missing target、router error 和 custom-instruction templates 文案缺 raw/internal 来源，不能证明所有 leaf、渲染、交互和文案语义已逐条还原。
+- 前端 macOS / Windows 双平台 100% leaf 尚未完成验收；现有 `validate-frontend-dumped`、`validate-frontend-evidence` 和 `validate-i18n` 只能证明静态覆盖、owner 边界和 locale key 同步；全文案清单当前是 draft，剩余 39 个 time duration、relay mock diagnostic/fix/audit/test、router error 和 custom-instruction templates 文案缺 raw/internal 来源，不能证明所有 leaf、渲染、交互和文案语义已逐条还原。
 - 严格 full leaf / gate 仍未闭合；internal gate/audit 中 `full_leaf_100`、`gate_accepted`、`readyToImplement`、`dim6` 等字段仍未全绿，不能宣称前端 100%、mystery gate 完成或已经可按完整闭环实现。
 - 后端闭源业务不做全量还原；没有公开证据支撑的业务行为仍只能保留为合同、桩、待实现项或测试缺口。
 - voice 前后端不做真实功能还原，不注册路由入口、不进入 runtime reload map、不注册 IPC handler，只保留空骨架和说明；原始公开材料中与录音、语音运行时、快捷键、音频反馈、文本注入相关的内容不进入当前公开实现。
