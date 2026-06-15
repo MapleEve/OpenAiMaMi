@@ -90,8 +90,20 @@ for (const [name, content] of [
 
 requirePattern("调用 skills usecase", files.command, command, /usecase\s*::\s*skills\s*::/g, "command 必须保持薄 IPC adapter");
 requirePattern("调用 repository load_installed", files.usecase, usecase, /skills\s*::\s*load_installed\s*\(/g, "usecase 必须通过 repository 读取技能");
-requirePattern("调用 repository import_skill", files.usecase, usecase, /skills\s*::\s*import_skill\s*\(/g, "usecase 必须通过 repository 导入技能");
-requirePattern("调用 repository restore_backup", files.usecase, usecase, /skills\s*::\s*restore_backup\s*\(/g, "usecase 必须通过 repository 恢复备份");
+requirePattern("import_skill 解析导入目标", files.usecase, usecase, /skills\s*::\s*resolve_skill_import_target\s*\(/g, "import_skill 用户动作事务必须由 usecase 编排 repository 路径解析");
+requirePattern("import_skill 判断同源目标", files.usecase, usecase, /paths_equal\s*\(\s*&target\.source\s*,\s*&target\.target\s*\)/g, "import_skill 必须由 usecase owning 同源导入语义");
+requirePattern("import_skill 检查替换目标", files.usecase, usecase, /replaced_existing[\s\S]*installed_skill_dir_exists\s*\(/g, "import_skill 必须由 usecase owning 替换判断");
+requirePattern("import_skill 备份替换目标", files.usecase, usecase, /backup_skill_directory[\s\S]*"replace"/g, "替换导入前备份必须由 usecase 编排 repository 窄文件操作");
+requirePattern("import_skill 删除替换目标", files.usecase, usecase, /delete_installed_skill_path\s*\(/g, "替换导入删除目录只能通过 repository 窄文件操作完成");
+requirePattern("import_skill 复制导入内容", files.usecase, usecase, /copy_skill_directory\s*\(/g, "导入复制只能通过 repository 窄文件操作完成");
+requirePattern("import_skill 读取导入结果", files.usecase, usecase, /导入后的技能无效|load_skill_from_dir[\s\S]*target\.target/g, "导入后的 DTO 必须由 usecase 读取文件状态组装");
+requirePattern("restore_backup 解析备份目标", files.usecase, usecase, /skills\s*::\s*resolve_backup_restore_target\s*\(/g, "restore_backup 用户动作事务必须由 usecase 编排 repository 备份解析");
+requirePattern("restore_backup 准备目标父目录", files.usecase, usecase, /skills\s*::\s*ensure_installed_skill_parent\s*\(/g, "恢复目标父目录只能通过 repository 窄文件操作完成");
+requirePattern("restore_backup 判断回滚目标", files.usecase, usecase, /rollback_backup[\s\S]*installed_skill_dir_exists\s*\(/g, "restore_backup 必须由 usecase owning 回滚备份判断");
+requirePattern("restore_backup 备份回滚目标", files.usecase, usecase, /backup_skill_directory[\s\S]*"restore-rollback"/g, "恢复覆盖前回滚备份必须由 usecase 编排 repository 窄文件操作");
+requirePattern("restore_backup 删除覆盖目标", files.usecase, usecase, /delete_installed_skill_path\s*\(/g, "恢复覆盖删除目录只能通过 repository 窄文件操作完成");
+requirePattern("restore_backup 复制备份内容", files.usecase, usecase, /copy_skill_directory\s*\(/g, "恢复复制只能通过 repository 窄文件操作完成");
+requirePattern("restore_backup 读取恢复结果", files.usecase, usecase, /恢复后的技能无效|load_skill_from_dir[\s\S]*restore\.target/g, "恢复后的 DTO 必须由 usecase 读取文件状态组装");
 requirePattern("remove_skill 读取安装快照", files.usecase, usecase, /load_installed\s*\(\s*repo\.fs\(\)\s*,\s*&repo\.paths\(\)\.skills_dir\s*\)/g, "remove_skill 用户动作事务必须由 usecase 读取当前安装快照");
 requirePattern("remove_skill 选择目标技能", files.usecase, usecase, /\.find\s*\(\s*\|skill\|\s*skill\.id\s*==\s*id\s*\)/g, "usecase 必须 owning 删除目标选择和 NotFound 语义");
 requirePattern("remove_skill 备份目标技能", files.usecase, usecase, /skills\s*::\s*backup_installed_skill\s*\(/g, "删除前备份必须由 usecase 编排 repository 窄文件操作");
@@ -145,8 +157,15 @@ for (const helper of [
 for (const helper of [
   "load_installed",
   "load_backups",
-  "import_skill",
-  "restore_backup",
+  "ensure_skill_install_root",
+  "ensure_skill_backup_root",
+  "resolve_skill_import_target",
+  "load_skill_from_dir",
+  "installed_skill_dir_exists",
+  "delete_installed_skill_path",
+  "resolve_backup_restore_target",
+  "ensure_installed_skill_parent",
+  "copy_skill_directory",
   "backup_installed_skill",
   "delete_installed_skill_dir",
   "delete_backup_dir",
@@ -163,6 +182,20 @@ for (const helper of [
   );
 }
 
+rejectPattern(
+  "repository import_skill 用户动作事务",
+  files.repository,
+  repository,
+  /\bpub\s+fn\s+import_skill\s*\(/g,
+  "import_skill 必须由 application/usecase owning，repository 只能暴露路径解析、备份、复制和删除窄操作",
+);
+rejectPattern(
+  "repository restore_backup 用户动作事务",
+  files.repository,
+  repository,
+  /\bpub\s+fn\s+restore_backup\s*\(/g,
+  "restore_backup 必须由 application/usecase owning，repository 只能暴露备份解析、回滚备份、复制和删除窄操作",
+);
 rejectPattern(
   "repository remove_skill 用户动作事务",
   files.repository,
@@ -220,4 +253,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("后端 Skills owner 校验通过：remove/delete backup 动作事务由 usecase owning，repository 保持路径安全和窄文件操作边界。");
+console.log("后端 Skills owner 校验通过：import/restore/remove/delete backup 动作事务由 usecase owning，repository 保持路径安全和窄文件操作边界。");

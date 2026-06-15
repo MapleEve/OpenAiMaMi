@@ -31,12 +31,42 @@ pub fn load_backups(repo: &Repository) -> Result<SkillBackupListPayload, CoreErr
 }
 
 pub fn import_skill(repo: &Repository, path: String) -> Result<SkillImportPayload, CoreError> {
-    let (skill, replaced_existing, backup) = skills::import_skill(
-        repo.fs(),
-        &repo.paths().skills_dir,
-        &repo.paths().app_data_dir,
-        &path,
-    )?;
+    skills::ensure_skill_install_root(repo.fs(), &repo.paths().skills_dir)?;
+    skills::ensure_skill_backup_root(repo.fs(), &repo.paths().skill_backups_dir)?;
+
+    let target = skills::resolve_skill_import_target(repo.fs(), &repo.paths().skills_dir, &path)?;
+
+    if skills::paths_equal(&target.source, &target.target) {
+        let skill =
+            skills::load_skill_from_dir(repo.fs(), &repo.paths().skills_dir, &target.target)
+                .ok_or_else(|| CoreError::InvalidInput("技能源无效".to_string()))?;
+        return Ok(SkillImportPayload {
+            status: restored_status("skills", "import_skill", BackendEffect::NoOp),
+            skill,
+            replaced_existing: false,
+            backup: None,
+        });
+    }
+
+    let replaced_existing =
+        skills::installed_skill_dir_exists(repo.fs(), &repo.paths().skills_dir, &target.target)?;
+    let backup = if replaced_existing {
+        let backup = skills::backup_skill_directory(
+            repo.fs(),
+            &target.target,
+            &repo.paths().skills_dir,
+            &repo.paths().skill_backups_dir,
+            "replace",
+        )?;
+        skills::delete_installed_skill_path(repo.fs(), &repo.paths().skills_dir, &target.target)?;
+        Some(backup)
+    } else {
+        None
+    };
+
+    skills::copy_skill_directory(repo.fs(), &target.source, &target.target)?;
+    let skill = skills::load_skill_from_dir(repo.fs(), &repo.paths().skills_dir, &target.target)
+        .ok_or_else(|| CoreError::InvalidInput("导入后的技能无效".to_string()))?;
     Ok(SkillImportPayload {
         status: restored_status("skills", "import_skill", BackendEffect::NoOp),
         skill,
@@ -70,16 +100,43 @@ pub fn remove_skill(repo: &Repository, id: String) -> Result<SkillRemovePayload,
 }
 
 pub fn restore_backup(repo: &Repository, id: String) -> Result<SkillRestorePayload, CoreError> {
-    let (restored_skill, backup, rollback_backup) = skills::restore_backup(
+    skills::ensure_skill_install_root(repo.fs(), &repo.paths().skills_dir)?;
+    skills::ensure_skill_backup_root(repo.fs(), &repo.paths().skill_backups_dir)?;
+
+    let restore = skills::resolve_backup_restore_target(
         repo.fs(),
         &repo.paths().skills_dir,
-        &repo.paths().app_data_dir,
+        &repo.paths().skill_backups_dir,
         &id,
     )?;
+    skills::ensure_installed_skill_parent(repo.fs(), &repo.paths().skills_dir, &restore.target)?;
+
+    let rollback_backup = if skills::installed_skill_dir_exists(
+        repo.fs(),
+        &repo.paths().skills_dir,
+        &restore.target,
+    )? {
+        let backup = skills::backup_skill_directory(
+            repo.fs(),
+            &restore.target,
+            &repo.paths().skills_dir,
+            &repo.paths().skill_backups_dir,
+            "restore-rollback",
+        )?;
+        skills::delete_installed_skill_path(repo.fs(), &repo.paths().skills_dir, &restore.target)?;
+        Some(backup)
+    } else {
+        None
+    };
+
+    skills::copy_skill_directory(repo.fs(), &restore.staged, &restore.target)?;
+    let restored_skill =
+        skills::load_skill_from_dir(repo.fs(), &repo.paths().skills_dir, &restore.target)
+            .ok_or_else(|| CoreError::InvalidInput("恢复后的技能无效".to_string()))?;
     Ok(SkillRestorePayload {
         status: restored_status("skills", "restore_skill_backup", BackendEffect::NoOp),
         restored_skill,
-        backup,
+        backup: restore.backup,
         rollback_backup,
     })
 }

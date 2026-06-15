@@ -5,6 +5,19 @@ use crate::repository::path_guard::PathGuard;
 use serde::{Deserialize, Serialize};
 use std::path::{Path, PathBuf};
 
+#[derive(Debug, Clone)]
+pub(crate) struct SkillImportTarget {
+    pub source: PathBuf,
+    pub target: PathBuf,
+}
+
+#[derive(Debug, Clone)]
+pub(crate) struct SkillBackupRestoreTarget {
+    pub backup: SkillBackupSummary,
+    pub staged: PathBuf,
+    pub target: PathBuf,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct SkillBackupMetadata {
@@ -82,44 +95,56 @@ pub fn load_backups(
     Ok(items)
 }
 
-pub fn import_skill(
+pub fn ensure_skill_install_root(
     fs: &dyn FileSystemAdapter,
     skills_dir: &Path,
-    app_data_dir: &Path,
-    source_path: &str,
-) -> Result<(InstalledSkillSummary, bool, Option<SkillBackupSummary>), CoreError> {
+) -> Result<PathBuf, CoreError> {
     let skills_dir = PathGuard::normalize_trusted(skills_dir, "技能根目录")?;
-    let app_data_dir = PathGuard::normalize_trusted(app_data_dir, "应用数据根目录")?;
-
     fs.create_dir_all(&skills_dir)?;
-    let backup_dir = PathGuard::safe_child(app_data_dir, "skill-backups", "技能备份根目录")?;
-    fs.create_dir_all(&backup_dir)?;
+    Ok(skills_dir)
+}
 
+pub fn ensure_skill_backup_root(
+    fs: &dyn FileSystemAdapter,
+    backup_dir: &Path,
+) -> Result<PathBuf, CoreError> {
+    let backup_dir = PathGuard::normalize_trusted(backup_dir, "技能备份根目录")?;
+    fs.create_dir_all(&backup_dir)?;
+    Ok(backup_dir)
+}
+
+pub(crate) fn resolve_skill_import_target(
+    fs: &dyn FileSystemAdapter,
+    skills_dir: &Path,
+    source_path: &str,
+) -> Result<SkillImportTarget, CoreError> {
+    let skills_dir = PathGuard::normalize_trusted(skills_dir, "技能根目录")?;
     let source = resolve_skill_source(fs, Path::new(source_path))?;
     let file_name = source
         .file_name()
         .ok_or_else(|| CoreError::InvalidInput("技能目录缺少名称".to_string()))?;
     let target = PathGuard::safe_child(&skills_dir, Path::new(file_name), "技能安装目标")?;
+    Ok(SkillImportTarget { source, target })
+}
 
-    if paths_equal(&source, &target) {
-        let skill = load_skill_summary(fs, &target.join("SKILL.md"), &skills_dir)
-            .ok_or_else(|| CoreError::InvalidInput("技能源无效".to_string()))?;
-        return Ok((skill, false, None));
-    }
+pub fn load_skill_from_dir(
+    fs: &dyn FileSystemAdapter,
+    skills_dir: &Path,
+    dir: &Path,
+) -> Option<InstalledSkillSummary> {
+    let skills_dir = PathGuard::normalize_trusted(skills_dir, "技能根目录").ok()?;
+    let dir = PathGuard::ensure_descendant(&skills_dir, dir, "技能目录").ok()?;
+    load_skill_summary(fs, &dir.join("SKILL.md"), &skills_dir)
+}
 
-    let replaced = fs.exists(&target);
-    let backup = if replaced {
-        let backup = backup_skill_directory(fs, &target, &skills_dir, &backup_dir, "replace")?;
-        fs.remove_dir_all(&target)?;
-        Some(backup)
-    } else {
-        None
-    };
-
-    copy_dir_all(fs, &source, &target)?;
-    let skill = load_skill_summary(fs, &target.join("SKILL.md"), &skills_dir)
-        .ok_or_else(|| CoreError::InvalidInput("导入后的技能无效".to_string()))?;
-    Ok((skill, replaced, backup))
+pub fn installed_skill_dir_exists(
+    fs: &dyn FileSystemAdapter,
+    skills_dir: &Path,
+    dir: &Path,
+) -> Result<bool, CoreError> {
+    let skills_dir = PathGuard::normalize_trusted(skills_dir, "技能根目录")?;
+    let dir = PathGuard::ensure_descendant(&skills_dir, dir, "技能目录")?;
+    Ok(fs.exists(&dir))
 }
 
 pub fn backup_installed_skill(
@@ -134,6 +159,17 @@ pub fn backup_installed_skill(
     let backup_dir = PathGuard::safe_child(&app_data_dir, "skill-backups", "技能备份根目录")?;
     let dir = resolve_installed_skill_dir(&skills_dir, skill, "技能备份源目录")?;
     backup_skill_directory(fs, &dir, &skills_dir, &backup_dir, reason)
+}
+
+pub fn delete_installed_skill_path(
+    fs: &dyn FileSystemAdapter,
+    skills_dir: &Path,
+    dir: &Path,
+) -> Result<(), CoreError> {
+    let skills_dir = PathGuard::normalize_trusted(skills_dir, "技能根目录")?;
+    let dir = PathGuard::ensure_descendant(&skills_dir, dir, "技能删除目标")?;
+    fs.remove_dir_all(&dir)?;
+    Ok(())
 }
 
 pub fn delete_installed_skill_dir(
@@ -151,22 +187,14 @@ pub fn delete_installed_skill_dir(
     Ok(())
 }
 
-pub fn restore_backup(
+pub(crate) fn resolve_backup_restore_target(
     fs: &dyn FileSystemAdapter,
     skills_dir: &Path,
-    app_data_dir: &Path,
+    backup_dir: &Path,
     backup_id: &str,
-) -> Result<
-    (
-        InstalledSkillSummary,
-        SkillBackupSummary,
-        Option<SkillBackupSummary>,
-    ),
-    CoreError,
-> {
+) -> Result<SkillBackupRestoreTarget, CoreError> {
     let skills_dir = PathGuard::normalize_trusted(skills_dir, "技能根目录")?;
-    let app_data_dir = PathGuard::normalize_trusted(app_data_dir, "应用数据根目录")?;
-    let backup_dir = PathGuard::safe_child(&app_data_dir, "skill-backups", "技能备份根目录")?;
+    let backup_dir = PathGuard::normalize_trusted(backup_dir, "技能备份根目录")?;
     let backup_name = PathGuard::safe_single_component(backup_id, "技能备份 ID")?;
     let backup_path = PathGuard::safe_child(&backup_dir, &backup_name, "技能备份目录")?;
     let backup_id = backup_name.display().to_string();
@@ -184,22 +212,6 @@ pub fn restore_backup(
     let relative_path =
         PathGuard::safe_relative(&meta.relative_path, "技能备份 metadata relativePath")?;
     let target = PathGuard::safe_child(&skills_dir, &relative_path, "技能恢复目标")?;
-    if let Some(parent) = target.parent() {
-        fs.create_dir_all(parent)?;
-    }
-
-    let rollback_backup = if fs.exists(&target) {
-        let backup =
-            backup_skill_directory(fs, &target, &skills_dir, &backup_dir, "restore-rollback")?;
-        fs.remove_dir_all(&target)?;
-        Some(backup)
-    } else {
-        None
-    };
-
-    copy_dir_all(fs, &staged, &target)?;
-    let restored = load_skill_summary(fs, &target.join("SKILL.md"), &skills_dir)
-        .ok_or_else(|| CoreError::InvalidInput("恢复后的技能无效".to_string()))?;
     let backup_summary = SkillBackupSummary {
         id: backup_id,
         skill_id: meta.skill_id,
@@ -209,7 +221,25 @@ pub fn restore_backup(
         backup_path: staged.display().to_string(),
         created_at: meta.created_at,
     };
-    Ok((restored, backup_summary, rollback_backup))
+    Ok(SkillBackupRestoreTarget {
+        backup: backup_summary,
+        staged,
+        target,
+    })
+}
+
+pub fn ensure_installed_skill_parent(
+    fs: &dyn FileSystemAdapter,
+    skills_dir: &Path,
+    dir: &Path,
+) -> Result<(), CoreError> {
+    let skills_dir = PathGuard::normalize_trusted(skills_dir, "技能根目录")?;
+    let dir = PathGuard::ensure_descendant(&skills_dir, dir, "技能目标目录")?;
+    if let Some(parent) = dir.parent() {
+        let parent = PathGuard::ensure_descendant(&skills_dir, parent, "技能目标父目录")?;
+        fs.create_dir_all(&parent)?;
+    }
+    Ok(())
 }
 
 pub fn delete_backup_dir(
@@ -295,7 +325,7 @@ fn resolve_installed_skill_dir(
     PathGuard::ensure_descendant(skills_dir, Path::new(&skill.directory_path), label)
 }
 
-fn backup_skill_directory(
+pub fn backup_skill_directory(
     fs: &dyn FileSystemAdapter,
     dir: &Path,
     skills_root: &Path,
@@ -369,6 +399,14 @@ fn resolve_skill_source(fs: &dyn FileSystemAdapter, path: &Path) -> Result<PathB
     Err(CoreError::InvalidInput(
         "技能源必须是包含 SKILL.md 的目录，或 SKILL.md 文件".to_string(),
     ))
+}
+
+pub fn copy_skill_directory(
+    fs: &dyn FileSystemAdapter,
+    source: &Path,
+    target: &Path,
+) -> Result<(), CoreError> {
+    copy_dir_all(fs, source, target)
 }
 
 fn copy_dir_all(fs: &dyn FileSystemAdapter, source: &Path, target: &Path) -> Result<(), CoreError> {
@@ -450,6 +488,6 @@ fn first_skill_summary_line(text: &str) -> Option<String> {
     None
 }
 
-fn paths_equal(left: &Path, right: &Path) -> bool {
+pub fn paths_equal(left: &Path, right: &Path) -> bool {
     left == right
 }

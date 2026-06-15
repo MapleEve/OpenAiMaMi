@@ -31,7 +31,8 @@
       "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/README.md",
       "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/evidence/builtin-web-tools-defaults-settings.md",
       "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/README.md",
-      "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/evidence/builtin-web-tools-defaults-settings.md"
+      "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/evidence/builtin-web-tools-defaults-settings.md",
+      "evidence/full-chain/raw/aimami/1.0.9/windows/relay/set_block_official_passthrough/SYSTEM-DIFF.md"
     ],
     "internalRoot": "evidence/full-chain/internal"
   },
@@ -49,9 +50,9 @@
     "rawTranslationEnExact": 621,
     "rawTranslationBothExact": 621,
     "rawTranslationValueMismatch": 0,
-    "acceptedZh": 621,
-    "acceptedEn": 621,
-    "missingRawOrInternalCopySource": 39
+    "acceptedZh": 638,
+    "acceptedEn": 638,
+    "missingRawOrInternalCopySource": 22
   },
   "entries": [
     {
@@ -10324,19 +10325,46 @@
       "key": "common.time.durationHours",
       "zhValue": "{{hours}} 小时",
       "enValue": "{{hours}}h",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:282:51329",
+      "enSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:22024",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "raw-literal-substring-equivalent",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 282,
+          "column": 51329,
+          "offset": 513288,
+          "root": null,
+          "key": "common.time.durationHours",
+          "rawValue": "{{hours}} 小时",
+          "evidenceKind": "raw-literal-substring-equivalent",
+          "sourceKey": "accounts.expiresInHours substring"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 22024,
+          "offset": 548345,
+          "root": null,
+          "key": "common.time.durationHours",
+          "rawValue": "{{hours}}h",
+          "evidenceKind": "raw-literal-substring-equivalent",
+          "sourceKey": "accounts.expiresInHours substring"
+        }
+      ]
     },
     {
       "key": "common.time.durationHoursMinutes",
@@ -31419,19 +31447,46 @@
       "key": "relay.mock.audit.officialPassthroughBlocked",
       "zhValue": "官方透传已拦截",
       "enValue": "Official passthrough blocked",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/raw/aimami/1.0.9/windows/relay/set_block_official_passthrough/SYSTEM-DIFF.md:47:1",
+      "enSource": "evidence/full-chain/raw/aimami/1.0.9/windows/relay/set_block_official_passthrough/SYSTEM-DIFF.md:47:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "raw-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows/relay/set_block_official_passthrough/SYSTEM-DIFF.md",
+          "line": 47,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.audit.officialPassthroughBlocked",
+          "rawValue": "String \"passthrough blocked but no active relay provider\" (router rejection string, in relay strings pool)",
+          "evidenceKind": "raw-equivalent-copy-source",
+          "sourceKey": "blockOfficialPassthrough / router rejection string"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows/relay/set_block_official_passthrough/SYSTEM-DIFF.md",
+          "line": 47,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.audit.officialPassthroughBlocked",
+          "rawValue": "String \"passthrough blocked but no active relay provider\" (router rejection string, in relay strings pool)",
+          "evidenceKind": "raw-equivalent-copy-source",
+          "sourceKey": "blockOfficialPassthrough / router rejection string"
+        }
+      ]
     },
     {
       "key": "relay.mock.audit.ok",
@@ -31508,271 +31563,676 @@
       "key": "relay.mock.diagnostic.managedRouterBlock.label",
       "zhValue": "受管路由配置块",
       "enValue": "Managed router block",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1468:1",
+      "enSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1468:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1468,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.managedRouterBlock.label",
+          "rawValue": "configTomlHasRouter: bool // whether config.toml contains managed router block",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "configTomlHasRouter managed router block"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1468,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.managedRouterBlock.label",
+          "rawValue": "configTomlHasRouter: bool // whether config.toml contains managed router block",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "configTomlHasRouter managed router block"
+        }
+      ]
     },
     {
       "key": "relay.mock.diagnostic.managedRouterBlock.missing",
       "zhValue": "config.toml 中未检测到受管路由配置块。",
       "enValue": "config.toml does not contain a managed router block.",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1510:1",
+      "enSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1510:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1510,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.managedRouterBlock.missing",
+          "rawValue": "diag.issues.iter().any(|i| i.id == \"missing_router_block\") == true",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "missing_router_block diagnostic issue"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1510,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.managedRouterBlock.missing",
+          "rawValue": "diag.issues.iter().any(|i| i.id == \"missing_router_block\") == true",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "missing_router_block diagnostic issue"
+        }
+      ]
     },
     {
       "key": "relay.mock.diagnostic.managedRouterBlock.notRequired",
       "zhValue": "当前不需要受管路由配置块。",
       "enValue": "A managed router block is not required right now.",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1505:1",
+      "enSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1505:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1505,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.managedRouterBlock.notRequired",
+          "rawValue": "diag.issues.is_empty() == true (when no providers, no router block - fresh state)",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "fresh state no router block required"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1505,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.managedRouterBlock.notRequired",
+          "rawValue": "diag.issues.is_empty() == true (when no providers, no router block - fresh state)",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "fresh state no router block required"
+        }
+      ]
     },
     {
       "key": "relay.mock.diagnostic.missingRouterBlock.detail",
       "zhValue": "需要重新写入路由配置，避免前端状态和本地配置不一致。",
       "enValue": "Rewrite the router config so the frontend state stays aligned with local config.",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1071:1",
+      "enSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1071:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1071,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.missingRouterBlock.detail",
+          "rawValue": "\"missing_router_block\"/\"missing_catalog_file\": write_router_config (config.toml router block re-injection)",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "missing_router_block repair writes router config"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1071,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.missingRouterBlock.detail",
+          "rawValue": "\"missing_router_block\"/\"missing_catalog_file\": write_router_config (config.toml router block re-injection)",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "missing_router_block repair writes router config"
+        }
+      ]
     },
     {
       "key": "relay.mock.diagnostic.missingRouterBlock.message",
       "zhValue": "已启用 Codex Router，但 config.toml 中没有检测到受管路由配置块。",
       "enValue": "Codex Router is enabled, but config.toml does not contain a managed router block.",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/logic/logic/relay-load-chains-109.md:132:1",
+      "enSource": "evidence/full-chain/internal/logic/logic/relay-load-chains-109.md:132:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/logic/logic/relay-load-chains-109.md",
+          "line": 132,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.missingRouterBlock.message",
+          "rawValue": "enabled=true checks configTomlHasRouter; if false, shows destructive toast about profile conflict",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "router enabled and configTomlHasRouter false"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/logic/logic/relay-load-chains-109.md",
+          "line": 132,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.missingRouterBlock.message",
+          "rawValue": "enabled=true checks configTomlHasRouter; if false, shows destructive toast about profile conflict",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "router enabled and configTomlHasRouter false"
+        }
+      ]
     },
     {
       "key": "relay.mock.diagnostic.missingRouterBlock.title",
       "zhValue": "缺少路由托管块",
       "enValue": "Missing managed router block",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1041:1",
+      "enSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1041:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1041,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.missingRouterBlock.title",
+          "rawValue": "\"missing_router_block\" -> re-injects managed router block + catalog (fixed=true)",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "missing_router_block diagnostic title"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1041,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.missingRouterBlock.title",
+          "rawValue": "\"missing_router_block\" -> re-injects managed router block + catalog (fixed=true)",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "missing_router_block diagnostic title"
+        }
+      ]
     },
     {
       "key": "relay.mock.diagnostic.routerEnabled.disabled",
       "zhValue": "relay 状态未启用 Codex Router。",
       "enValue": "Relay state has Codex Router disabled.",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1473:1",
+      "enSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1473:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1473,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.routerEnabled.disabled",
+          "rawValue": "routerEnabled: bool // relay::load_relay_state.codexRouterEnabled",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "routerEnabled false state"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1473,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.routerEnabled.disabled",
+          "rawValue": "routerEnabled: bool // relay::load_relay_state.codexRouterEnabled",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "routerEnabled false state"
+        }
+      ]
     },
     {
       "key": "relay.mock.diagnostic.routerEnabled.enabled",
       "zhValue": "relay 状态已启用 Codex Router。",
       "enValue": "Relay state has Codex Router enabled.",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1473:1",
+      "enSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1473:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1473,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.routerEnabled.enabled",
+          "rawValue": "routerEnabled: bool // relay::load_relay_state.codexRouterEnabled",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "routerEnabled true state"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1473,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.routerEnabled.enabled",
+          "rawValue": "routerEnabled: bool // relay::load_relay_state.codexRouterEnabled",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "routerEnabled true state"
+        }
+      ]
     },
     {
       "key": "relay.mock.diagnostic.routerEnabled.label",
       "zhValue": "路由开关",
       "enValue": "Router switch",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/logic/logic/relay-load-chains-109.md:111:1",
+      "enSource": "evidence/full-chain/internal/logic/logic/relay-load-chains-109.md:111:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/logic/logic/relay-load-chains-109.md",
+          "line": 111,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.routerEnabled.label",
+          "rawValue": "Switch checked={routerEnabled} onCheckedChange={requestRouterToggle}",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "routerEnabled switch"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/logic/logic/relay-load-chains-109.md",
+          "line": 111,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.diagnostic.routerEnabled.label",
+          "rawValue": "Switch checked={routerEnabled} onCheckedChange={requestRouterToggle}",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "routerEnabled switch"
+        }
+      ]
     },
     {
       "key": "relay.mock.fix.autoFixed",
       "zhValue": "已处理可自动修复的 Codex Router 诊断项。",
       "enValue": "Fixed Codex Router diagnostic items that can be repaired automatically.",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1074:1",
+      "enSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1074:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1074,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.fix.autoFixed",
+          "rawValue": "\"all\": iterates fixable issues and applies fix; save_state_file on completion",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "fix all fixable router issues"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1074,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.fix.autoFixed",
+          "rawValue": "\"all\": iterates fixable issues and applies fix; save_state_file on completion",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "fix all fixable router issues"
+        }
+      ]
     },
     {
       "key": "relay.mock.fix.manualProfileRequired",
       "zhValue": "该诊断项需要手动处理，不能自动改写用户 profile。",
       "enValue": "This diagnostic item requires manual handling; the mock cannot rewrite the user profile automatically.",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1044:1",
+      "enSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1044:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1044,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.fix.manualProfileRequired",
+          "rawValue": "\"user_top_level_profile\" -> not auto-fixable (fixed=false); message: \"must be resolved manually\"",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "user_top_level_profile manual diagnostic"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1044,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.fix.manualProfileRequired",
+          "rawValue": "\"user_top_level_profile\" -> not auto-fixable (fixed=false); message: \"must be resolved manually\"",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "user_top_level_profile manual diagnostic"
+        }
+      ]
     },
     {
       "key": "relay.mock.fix.manualProfileRequiredDetail",
       "zhValue": "请手动确认 config.toml 顶层 profile 与路由配置的关系。",
       "enValue": "Manually confirm how the top-level config.toml profile relates to router config.",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1073:1",
+      "enSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1073:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1073,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.fix.manualProfileRequiredDetail",
+          "rawValue": "\"user_top_level_profile\": no file mutation (manual-only)",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "user_top_level_profile manual-only config relationship"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1073,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.fix.manualProfileRequiredDetail",
+          "rawValue": "\"user_top_level_profile\": no file mutation (manual-only)",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "user_top_level_profile manual-only config relationship"
+        }
+      ]
     },
     {
       "key": "relay.mock.fix.readOnlyAcknowledged",
       "zhValue": "该诊断项已确认，但当前 mock 不自动修改相关外部状态。",
       "enValue": "This diagnostic item is acknowledged, but the mock does not automatically change external state.",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1424:1",
+      "enSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1424:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1424,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.fix.readOnlyAcknowledged",
+          "rawValue": "Side effects: READ-ONLY; no state mutation; no config.toml write",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "read-only diagnostic acknowledgement"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1424,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.fix.readOnlyAcknowledged",
+          "rawValue": "Side effects: READ-ONLY; no state mutation; no config.toml write",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "read-only diagnostic acknowledgement"
+        }
+      ]
     },
     {
       "key": "relay.mock.fix.readOnlyAcknowledgedDetail",
       "zhValue": "保留只读诊断结果，避免在证据不足时改写用户环境。",
       "enValue": "Keeping the read-only diagnostic result to avoid changing the user environment without enough evidence.",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1513:1",
+      "enSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1513:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1513,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.fix.readOnlyAcknowledgedDetail",
+          "rawValue": "Side effects: READ-ONLY; reads .source archive-relay.json, config.toml, catalog JSON, manifest",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "read-only diagnostic avoids external mutation"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1513,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.fix.readOnlyAcknowledgedDetail",
+          "rawValue": "Side effects: READ-ONLY; reads .source archive-relay.json, config.toml, catalog JSON, manifest",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "read-only diagnostic avoids external mutation"
+        }
+      ]
     },
     {
       "key": "relay.mock.fix.staleRouterEntriesRemoved",
       "zhValue": "已移除过期 Codex Router 配置。",
       "enValue": "Removed stale Codex Router config.",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1072:1",
+      "enSource": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md:1072:1",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "internal-equivalent-copy-source",
+      "status": "equivalent-copy-source-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1072,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.fix.staleRouterEntriesRemoved",
+          "rawValue": "\"stale_router_entries\": remove_router_config (remove [model_providers.*]/[profiles.*] blocks)",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "stale_router_entries remove router config"
+        },
+        {
+          "locale": "en",
+          "platform": "internal",
+          "source": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/logic/ACCEPTANCE-MAPPING-109.md",
+          "line": 1072,
+          "column": 1,
+          "offset": null,
+          "root": null,
+          "key": "relay.mock.fix.staleRouterEntriesRemoved",
+          "rawValue": "\"stale_router_entries\": remove_router_config (remove [model_providers.*]/[profiles.*] blocks)",
+          "evidenceKind": "internal-equivalent-copy-source",
+          "sourceKey": "stale_router_entries remove router config"
+        }
+      ]
     },
     {
       "key": "relay.mock.test.missingTarget",
