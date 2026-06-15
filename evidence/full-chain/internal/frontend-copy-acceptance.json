@@ -27,7 +27,11 @@
       "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/settings-page-CHeElwco.js",
       "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/settings-page-CHeElwco.js",
       "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/settings-page-CHeElwco.js",
-      "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/settings-page-CHeElwco.js"
+      "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/settings-page-CHeElwco.js",
+      "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/README.md",
+      "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/evidence/builtin-web-tools-defaults-settings.md",
+      "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/README.md",
+      "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/evidence/builtin-web-tools-defaults-settings.md"
     ],
     "internalRoot": "evidence/full-chain/internal"
   },
@@ -39,15 +43,15 @@
     "internalKeyBacked": 12,
     "rawOrInternalKeyBacked": 47,
     "sourceSyncOnly": 613,
-    "rawTranslationZhKeyBacked": 613,
-    "rawTranslationEnKeyBacked": 613,
-    "rawTranslationZhExact": 613,
-    "rawTranslationEnExact": 613,
-    "rawTranslationBothExact": 613,
+    "rawTranslationZhKeyBacked": 621,
+    "rawTranslationEnKeyBacked": 621,
+    "rawTranslationZhExact": 621,
+    "rawTranslationEnExact": 621,
+    "rawTranslationBothExact": 621,
     "rawTranslationValueMismatch": 0,
-    "acceptedZh": 613,
-    "acceptedEn": 613,
-    "missingRawOrInternalCopySource": 47
+    "acceptedZh": 621,
+    "acceptedEn": 621,
+    "missingRawOrInternalCopySource": 39
   },
   "entries": [
     {
@@ -10249,19 +10253,72 @@
       "key": "common.time.daysAgo",
       "zhValue": "{{count}} 天前",
       "enValue": "{{count}}d ago",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:17287",
+      "enSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:73016",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "raw-translation-alias-key-value",
+      "status": "raw-translation-object-copy-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "common.time.daysAgo",
+          "rawValue": "{{count}} 天前",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.daysAgo"
+        },
+        {
+          "locale": "zh",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "common.time.daysAgo",
+          "rawValue": "{{count}} 天前",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.daysAgo"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "common.time.daysAgo",
+          "rawValue": "{{count}}d ago",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.daysAgo"
+        },
+        {
+          "locale": "en",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "common.time.daysAgo",
+          "rawValue": "{{count}}d ago",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.daysAgo"
+        }
+      ]
     },
     {
       "key": "common.time.durationHours",
@@ -10321,55 +10378,214 @@
       "key": "common.time.hoursAgo",
       "zhValue": "{{count}} 小时前",
       "enValue": "{{count}}h ago",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:17287",
+      "enSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:73016",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "raw-translation-alias-key-value",
+      "status": "raw-translation-object-copy-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "common.time.hoursAgo",
+          "rawValue": "{{count}} 小时前",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.hoursAgo"
+        },
+        {
+          "locale": "zh",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "common.time.hoursAgo",
+          "rawValue": "{{count}} 小时前",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.hoursAgo"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "common.time.hoursAgo",
+          "rawValue": "{{count}}h ago",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.hoursAgo"
+        },
+        {
+          "locale": "en",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "common.time.hoursAgo",
+          "rawValue": "{{count}}h ago",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.hoursAgo"
+        }
+      ]
     },
     {
       "key": "common.time.justNow",
       "zhValue": "刚刚",
-      "enValue": "just now",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "enValue": "Just now",
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:17287",
+      "enSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:73016",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "raw-translation-alias-key-value",
+      "status": "raw-translation-object-copy-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "common.time.justNow",
+          "rawValue": "刚刚",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.justNow"
+        },
+        {
+          "locale": "zh",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "common.time.justNow",
+          "rawValue": "刚刚",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.justNow"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "common.time.justNow",
+          "rawValue": "Just now",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.justNow"
+        },
+        {
+          "locale": "en",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "common.time.justNow",
+          "rawValue": "Just now",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.justNow"
+        }
+      ]
     },
     {
       "key": "common.time.minutesAgo",
       "zhValue": "{{count}} 分钟前",
       "enValue": "{{count}}m ago",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:17287",
+      "enSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:73016",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "raw-translation-alias-key-value",
+      "status": "raw-translation-object-copy-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "common.time.minutesAgo",
+          "rawValue": "{{count}} 分钟前",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.minutesAgo"
+        },
+        {
+          "locale": "zh",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "common.time.minutesAgo",
+          "rawValue": "{{count}} 分钟前",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.minutesAgo"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "common.time.minutesAgo",
+          "rawValue": "{{count}}m ago",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.minutesAgo"
+        },
+        {
+          "locale": "en",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "common.time.minutesAgo",
+          "rawValue": "{{count}}m ago",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "notifications.minutesAgo"
+        }
+      ]
     },
     {
       "key": "common.time.remainingHoursMinutes",
@@ -10410,20 +10626,73 @@
     {
       "key": "common.time.reset",
       "zhValue": "重置",
-      "enValue": "reset",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "enValue": "Reset",
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:17287",
+      "enSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:73016",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "raw-translation-alias-key-value",
+      "status": "raw-translation-object-copy-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "common.time.reset",
+          "rawValue": "重置",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "tray.resetLabel"
+        },
+        {
+          "locale": "zh",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "common.time.reset",
+          "rawValue": "重置",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "tray.resetLabel"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "common.time.reset",
+          "rawValue": "Reset",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "tray.resetLabel"
+        },
+        {
+          "locale": "en",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "common.time.reset",
+          "rawValue": "Reset",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "tray.resetLabel"
+        }
+      ]
     },
     {
       "key": "common.toastCopiedDesc",
@@ -24166,39 +24435,137 @@
     },
     {
       "key": "plugins.mock.imageSupport.title",
-      "zhValue": "图片支持",
+      "zhValue": "Image Support",
       "enValue": "Image Support",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/README.md:18:26",
+      "enSource": "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/README.md:18:26",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "raw-literal-key-value",
+      "status": "raw-translation-object-copy-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/README.md",
+          "line": 18,
+          "column": 26,
+          "offset": 730,
+          "root": null,
+          "key": "plugins.mock.imageSupport.title",
+          "rawValue": "Image Support",
+          "evidenceKind": "raw-literal-key-value"
+        },
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/evidence/builtin-web-tools-defaults-settings.md",
+          "line": 52,
+          "column": 9,
+          "offset": 2087,
+          "root": null,
+          "key": "plugins.mock.imageSupport.title",
+          "rawValue": "Image Support",
+          "evidenceKind": "raw-literal-key-value"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/README.md",
+          "line": 18,
+          "column": 26,
+          "offset": 730,
+          "root": null,
+          "key": "plugins.mock.imageSupport.title",
+          "rawValue": "Image Support",
+          "evidenceKind": "raw-literal-key-value"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/evidence/builtin-web-tools-defaults-settings.md",
+          "line": 52,
+          "column": 9,
+          "offset": 2087,
+          "root": null,
+          "key": "plugins.mock.imageSupport.title",
+          "rawValue": "Image Support",
+          "evidenceKind": "raw-literal-key-value"
+        }
+      ]
     },
     {
       "key": "plugins.mock.webTools.title",
-      "zhValue": "网页工具",
+      "zhValue": "Web Tools",
       "enValue": "Web Tools",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/README.md:17:22",
+      "enSource": "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/README.md:17:22",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "raw-literal-key-value",
+      "status": "raw-translation-object-copy-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/README.md",
+          "line": 17,
+          "column": 22,
+          "offset": 596,
+          "root": null,
+          "key": "plugins.mock.webTools.title",
+          "rawValue": "Web Tools",
+          "evidenceKind": "raw-literal-key-value"
+        },
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/evidence/builtin-web-tools-defaults-settings.md",
+          "line": 40,
+          "column": 9,
+          "offset": 1498,
+          "root": null,
+          "key": "plugins.mock.webTools.title",
+          "rawValue": "Web Tools",
+          "evidenceKind": "raw-literal-key-value"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/README.md",
+          "line": 17,
+          "column": 22,
+          "offset": 596,
+          "root": null,
+          "key": "plugins.mock.webTools.title",
+          "rawValue": "Web Tools",
+          "evidenceKind": "raw-literal-key-value"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows/plugins_builtin_web_tools_defaults_settings/evidence/builtin-web-tools-defaults-settings.md",
+          "line": 40,
+          "column": 9,
+          "offset": 1498,
+          "root": null,
+          "key": "plugins.mock.webTools.title",
+          "rawValue": "Web Tools",
+          "evidenceKind": "raw-literal-key-value"
+        }
+      ]
     },
     {
       "key": "plugins.running",
@@ -31069,20 +31436,73 @@
     {
       "key": "relay.mock.audit.ok",
       "zhValue": "正常",
-      "enValue": "OK",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "enValue": "Normal",
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:17287",
+      "enSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:73016",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "raw-translation-alias-key-value",
+      "status": "raw-translation-object-copy-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "relay.mock.audit.ok",
+          "rawValue": "正常",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "overview.healthOk"
+        },
+        {
+          "locale": "zh",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 17287,
+          "offset": 543608,
+          "root": "mR",
+          "key": "relay.mock.audit.ok",
+          "rawValue": "正常",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "overview.healthOk"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "relay.mock.audit.ok",
+          "rawValue": "Normal",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "overview.healthOk"
+        },
+        {
+          "locale": "en",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 73016,
+          "offset": 599337,
+          "root": "FR",
+          "key": "relay.mock.audit.ok",
+          "rawValue": "Normal",
+          "evidenceKind": "raw-translation-alias-key-value",
+          "sourceKey": "overview.healthOk"
+        }
+      ]
     },
     {
       "key": "relay.mock.diagnostic.managedRouterBlock.label",

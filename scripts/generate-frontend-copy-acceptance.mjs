@@ -351,6 +351,107 @@ const rawLiteralCopySources = [
       },
     ],
   },
+  {
+    key: "plugins.mock.webTools.title",
+    rawValue: "Web Tools",
+    locales: ["zh", "en"],
+    sources: [
+      {
+        platform: "windows-x64",
+        path: repoPath(
+          "evidence",
+          "full-chain",
+          "raw",
+          "aimami",
+          "1.0.9",
+          "windows",
+          "plugins_builtin_web_tools_defaults_settings",
+          "README.md",
+        ),
+      },
+      {
+        platform: "windows-x64",
+        path: repoPath(
+          "evidence",
+          "full-chain",
+          "raw",
+          "aimami",
+          "1.0.9",
+          "windows",
+          "plugins_builtin_web_tools_defaults_settings",
+          "evidence",
+          "builtin-web-tools-defaults-settings.md",
+        ),
+      },
+    ],
+  },
+  {
+    key: "plugins.mock.imageSupport.title",
+    rawValue: "Image Support",
+    locales: ["zh", "en"],
+    sources: [
+      {
+        platform: "windows-x64",
+        path: repoPath(
+          "evidence",
+          "full-chain",
+          "raw",
+          "aimami",
+          "1.0.9",
+          "windows",
+          "plugins_builtin_web_tools_defaults_settings",
+          "README.md",
+        ),
+      },
+      {
+        platform: "windows-x64",
+        path: repoPath(
+          "evidence",
+          "full-chain",
+          "raw",
+          "aimami",
+          "1.0.9",
+          "windows",
+          "plugins_builtin_web_tools_defaults_settings",
+          "evidence",
+          "builtin-web-tools-defaults-settings.md",
+        ),
+      },
+    ],
+  },
+];
+
+const rawTranslationAliasSources = [
+  {
+    key: "common.time.justNow",
+    rawKey: "notifications.justNow",
+    locales: ["zh", "en"],
+  },
+  {
+    key: "common.time.minutesAgo",
+    rawKey: "notifications.minutesAgo",
+    locales: ["zh", "en"],
+  },
+  {
+    key: "common.time.hoursAgo",
+    rawKey: "notifications.hoursAgo",
+    locales: ["zh", "en"],
+  },
+  {
+    key: "common.time.daysAgo",
+    rawKey: "notifications.daysAgo",
+    locales: ["zh", "en"],
+  },
+  {
+    key: "common.time.reset",
+    rawKey: "tray.resetLabel",
+    locales: ["zh", "en"],
+  },
+  {
+    key: "relay.mock.audit.ok",
+    rawKey: "overview.healthOk",
+    locales: ["zh", "en"],
+  },
 ];
 
 function collectRawKeyEvidence() {
@@ -668,12 +769,46 @@ function addRawLiteralCopyEvidence(evidenceByLocale) {
   }
 }
 
+function addRawTranslationAliasEvidence(evidenceByLocale) {
+  for (const aliasSource of rawTranslationAliasSources) {
+    for (const locale of aliasSource.locales) {
+      const sourceEvidence =
+        evidenceByLocale[locale].get(aliasSource.rawKey) ?? [];
+      if (sourceEvidence.length === 0) {
+        throw new Error(
+          `Missing raw translation alias ${aliasSource.rawKey} for ${aliasSource.key} (${locale})`,
+        );
+      }
+
+      if (!evidenceByLocale[locale].has(aliasSource.key)) {
+        evidenceByLocale[locale].set(aliasSource.key, []);
+      }
+      for (const evidence of sourceEvidence) {
+        evidenceByLocale[locale].get(aliasSource.key).push({
+          ...evidence,
+          key: aliasSource.key,
+          sourceKey: aliasSource.rawKey,
+          evidenceKind: "raw-translation-alias-key-value",
+        });
+      }
+    }
+  }
+}
+
 function acceptedCopyEvidenceTier(evidence) {
-  return evidence.some(
-    (entry) => entry.evidenceKind === "raw-literal-key-value",
-  )
-    ? "raw-literal-key-value"
-    : "raw-translation-object-key-value";
+  if (
+    evidence.some((entry) => entry.evidenceKind === "raw-literal-key-value")
+  ) {
+    return "raw-literal-key-value";
+  }
+  if (
+    evidence.some(
+      (entry) => entry.evidenceKind === "raw-translation-alias-key-value",
+    )
+  ) {
+    return "raw-translation-alias-key-value";
+  }
+  return "raw-translation-object-key-value";
 }
 
 function buildAcceptanceDraft() {
@@ -685,6 +820,7 @@ function buildAcceptanceDraft() {
   const rawKeyEvidence = collectRawKeyEvidence();
   const internalKeyEvidence = collectInternalKeyEvidence(allKeys);
   const rawTranslationEvidence = collectRawTranslationEvidence();
+  addRawTranslationAliasEvidence(rawTranslationEvidence);
   addRawLiteralCopyEvidence(rawTranslationEvidence);
 
   const entries = allKeys.map((key) => {

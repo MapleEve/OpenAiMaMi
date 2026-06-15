@@ -46,12 +46,21 @@ pub fn import_skill(repo: &Repository, path: String) -> Result<SkillImportPayloa
 }
 
 pub fn remove_skill(repo: &Repository, id: String) -> Result<SkillRemovePayload, CoreError> {
-    let (backup, remaining_installed_count) = skills::remove_skill(
+    let installed = skills::load_installed(repo.fs(), &repo.paths().skills_dir)?;
+    let skill = installed
+        .iter()
+        .find(|skill| skill.id == id)
+        .ok_or_else(|| CoreError::NotFound(format!("技能不存在：{id}")))?;
+    let backup = skills::backup_installed_skill(
         repo.fs(),
         &repo.paths().skills_dir,
         &repo.paths().app_data_dir,
-        &id,
+        skill,
+        "remove",
     )?;
+    skills::delete_installed_skill_dir(repo.fs(), &repo.paths().skills_dir, skill)?;
+    let remaining_installed_count =
+        skills::load_installed(repo.fs(), &repo.paths().skills_dir)?.len() as i32;
     Ok(SkillRemovePayload {
         status: restored_status("skills", "remove_skill", BackendEffect::NoOp),
         removed_skill_id: id,
@@ -76,7 +85,9 @@ pub fn restore_backup(repo: &Repository, id: String) -> Result<SkillRestorePaylo
 }
 
 pub fn delete_backup(repo: &Repository, id: String) -> Result<SkillDeleteBackupPayload, CoreError> {
-    let remaining_backup_count = skills::delete_backup(repo.fs(), &repo.paths().app_data_dir, &id)?;
+    skills::delete_backup_dir(repo.fs(), &repo.paths().skill_backups_dir, &id)?;
+    let remaining_backup_count =
+        skills::load_backups(repo.fs(), &repo.paths().skill_backups_dir)?.len() as i32;
     Ok(SkillDeleteBackupPayload {
         status: restored_status("skills", "delete_skill_backup", BackendEffect::NoOp),
         deleted_backup_id: id,

@@ -8,44 +8,44 @@
 
 当前仓库不能证明 macOS / Windows 双平台前端已经达到 100% leaf，也不能证明 `src/locales/zh.json` 和 `src/locales/en.json` 的所有用户可见文案已经逐条对照 raw/internal 原文验收。
 
-`evidence/full-chain/internal/frontend-copy-acceptance.json` 当前已经存在，但状态是 `draft`。它列出 773 个 locale key 的逐条验收槽位，并从 raw dumped 主 bundle 中解析 i18n `zh/en translation` 对象。只有 raw translation 对象里的 key/value 与当前 locale 精确一致时，才把对应语言标成 accepted；不能把全 JS 字符串扫描命中当作文案来源。
+`evidence/full-chain/internal/frontend-copy-acceptance.json` 当前已经存在，但状态是 `draft`。它列出 660 个 locale key 的逐条验收槽位，并从 raw dumped 主 bundle 中解析 i18n `zh/en translation` 对象。只有 raw translation 对象里的 key/value、显式登记的 raw translation alias，或 raw 默认配置文档中的明确 literal 与当前 locale 精确一致时，才把对应语言标成 accepted；不能把全 JS 字符串扫描命中当作文案来源。
 
 `npm run validate:frontend-dumped` 只证明 raw dumped 的 IPC、service wrapper、module contract、route、query 和 control-flow 已有静态覆盖；它不证明实际全 leaf，也不证明全文案已经逐条验收。`npm run validate:frontend-leaf-copy` 是 MAC/WIN 100% leaf 与全文案完成声明的验收，不是实现启动门槛。
 
 ## 当前文案验收数字
 
-- `zh` locale key：773
-- `en` locale key：773
-- draft entries：773
+- `zh` locale key：660
+- `en` locale key：660
+- draft entries：660
 - raw control-flow key 证据：40
-- internal key 提及证据：9
-- raw 或 internal key 证据：44
-- source-sync-only：729
-- raw translation 中文 key 证据：583
-- raw translation 英文 key 证据：583
-- raw translation 中文 key/value 精确一致：583
-- raw translation 英文 key/value 精确一致：583
-- raw translation 双语 key/value 同时精确一致：583
+- internal key 提及证据：12
+- raw 或 internal key 证据：47
+- source-sync-only：613
+- raw translation 中文 key 证据：621
+- raw translation 英文 key 证据：621
+- raw translation 中文 key/value 精确一致：621
+- raw translation 英文 key/value 精确一致：621
+- raw translation 双语 key/value 同时精确一致：621
 - raw translation key 存在但当前文案不一致：0
-- zhAccepted：583
-- enAccepted：583
-- 缺少 raw/internal 文案来源：190
+- zhAccepted：621
+- enAccepted：621
+- 缺少 raw/internal 文案来源：39
 
 ## 已有验证
 
 - `scripts/validate-frontend-dumped.mjs` 验证 raw dumped 的 IPC、service wrapper、module contract、route、query 和 control-flow 静态覆盖；它不是实际全 leaf 或全文案逐条验收的通过证明。
 - `scripts/validate-frontend-evidence.mjs` 验证 raw control-flow 中出现的 locale key、route registry、page chunk、query key 和若干 owner gate。
 - `scripts/validate-i18n.mjs` 验证 `zh/en` key 同步、源码静态 `t("key")` 覆盖，以及明显乱码、问号和占位质量问题。
-- `scripts/generate-frontend-copy-acceptance.mjs` 生成全文案验收 draft；它解析 raw i18n translation 对象，不把普通字符串扫描命中当作 accepted。
+- `scripts/generate-frontend-copy-acceptance.mjs` 生成全文案验收 draft；它解析 raw i18n translation 对象，并只接受显式登记的 raw translation alias 与 raw 默认配置 literal，不把普通字符串扫描命中当作 accepted。
 - `scripts/validate-frontend-leaf-copy-acceptance.mjs` 对应 `npm run validate:frontend-leaf-copy`，用于验证 MAC/WIN 100% leaf 与全文案完成声明；在 `frontend-copy-acceptance.json` 仍为 draft 时应继续失败，但不阻塞基于 raw/internal 证据、伪代码、owner/interface/DTO 和可测试边界的自主实现。
 
 ## 明确缺口
 
 - `full-leaf-100-gap-audit.json` 顶层 `totals.full_leaf_100` 当前仍为 `false`。
 - internal gate-report 中仍存在非绿 gate 字段；这些字段只阻塞“raw/internal gate 已通过”“dim6 已恢复”“full_leaf_100 / 100% leaf 已完成”等完成声明。
-- Windows bootstrap frontend 文档仍包含 `partial/candidate` 信号，不能在 dim6 acceptance、managed state registry、bootstrap cache 等缺口关闭前移除。
-- `frontend-copy-acceptance.json` 仍是 draft，当前有 583 个 locale key 同时具备 raw translation 中文和英文 key/value 精确来源，剩余 190 个 locale key 仍缺少完整 raw/internal 文案来源。
-- `src/restoration/frontend-manifest/index.ts` 仍存在 `source-only`、`boundary-only`、`contract-service-only` 和 `owner-closed` 状态；这些是进度记录，不是 full leaf。
+- 当前 internal frontend 文档缺口信号为 0，但完成声明仍受 gate/audit 非绿字段阻塞。
+- `frontend-copy-acceptance.json` 仍是 draft，当前有 621 个 locale key 同时具备 raw translation、raw translation alias 或 raw 默认配置 literal 的中文和英文精确来源，剩余 39 个 locale key 仍缺少完整 raw/internal 文案来源。
+- `src/restoration/frontend-manifest/index.ts` 当前未检出非 full leaf 状态；后续如新增 `source-only`、`boundary-only`、`contract-service-only` 或 `owner-closed` 状态，仍不能把它们当作 full leaf 完成声明。
 
 ## 完成声明验收
 

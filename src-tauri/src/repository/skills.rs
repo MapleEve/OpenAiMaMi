@@ -122,30 +122,33 @@ pub fn import_skill(
     Ok((skill, replaced, backup))
 }
 
-pub fn remove_skill(
+pub fn backup_installed_skill(
     fs: &dyn FileSystemAdapter,
     skills_dir: &Path,
     app_data_dir: &Path,
-    id: &str,
-) -> Result<(SkillBackupSummary, i32), CoreError> {
+    skill: &InstalledSkillSummary,
+    reason: &str,
+) -> Result<SkillBackupSummary, CoreError> {
     let skills_dir = PathGuard::normalize_trusted(skills_dir, "技能根目录")?;
     let app_data_dir = PathGuard::normalize_trusted(app_data_dir, "应用数据根目录")?;
-    let installed = load_installed(fs, &skills_dir)?;
-    let skill = installed
-        .iter()
-        .find(|skill| skill.id == id)
-        .ok_or_else(|| CoreError::NotFound(format!("技能不存在：{id}")))?;
-
     let backup_dir = PathGuard::safe_child(&app_data_dir, "skill-backups", "技能备份根目录")?;
+    let dir = resolve_installed_skill_dir(&skills_dir, skill, "技能备份源目录")?;
+    backup_skill_directory(fs, &dir, &skills_dir, &backup_dir, reason)
+}
+
+pub fn delete_installed_skill_dir(
+    fs: &dyn FileSystemAdapter,
+    skills_dir: &Path,
+    skill: &InstalledSkillSummary,
+) -> Result<(), CoreError> {
+    let skills_dir = PathGuard::normalize_trusted(skills_dir, "技能根目录")?;
     let dir = PathGuard::ensure_descendant(
         &skills_dir,
         Path::new(&skill.directory_path),
         "技能删除目标",
     )?;
-    let backup = backup_skill_directory(fs, &dir, &skills_dir, &backup_dir, "remove")?;
     fs.remove_dir_all(&dir)?;
-    let remaining = load_installed(fs, &skills_dir)?.len() as i32;
-    Ok((backup, remaining))
+    Ok(())
 }
 
 pub fn restore_backup(
@@ -209,13 +212,12 @@ pub fn restore_backup(
     Ok((restored, backup_summary, rollback_backup))
 }
 
-pub fn delete_backup(
+pub fn delete_backup_dir(
     fs: &dyn FileSystemAdapter,
-    app_data_dir: &Path,
+    backup_dir: &Path,
     backup_id: &str,
-) -> Result<i32, CoreError> {
-    let app_data_dir = PathGuard::normalize_trusted(app_data_dir, "应用数据根目录")?;
-    let backup_dir = PathGuard::safe_child(&app_data_dir, "skill-backups", "技能备份根目录")?;
+) -> Result<(), CoreError> {
+    let backup_dir = PathGuard::normalize_trusted(backup_dir, "技能备份根目录")?;
     let backup_name = PathGuard::safe_single_component(backup_id, "技能备份 ID")?;
     let path = PathGuard::safe_child(&backup_dir, &backup_name, "技能备份目录")?;
     let backup_id = backup_name.display().to_string();
@@ -223,7 +225,7 @@ pub fn delete_backup(
         return Err(CoreError::NotFound(format!("备份不存在：{backup_id}")));
     }
     fs.remove_dir_all(&path)?;
-    Ok(load_backups(fs, &backup_dir)?.len() as i32)
+    Ok(())
 }
 
 fn scan_skills_recursive(
@@ -283,6 +285,14 @@ fn load_skill_summary(
         skill_file_path: skill_file.display().to_string(),
         updated_at: fs.modified_unix_seconds(skill_file),
     })
+}
+
+fn resolve_installed_skill_dir(
+    skills_dir: &Path,
+    skill: &InstalledSkillSummary,
+    label: &str,
+) -> Result<PathBuf, CoreError> {
+    PathGuard::ensure_descendant(skills_dir, Path::new(&skill.directory_path), label)
 }
 
 fn backup_skill_directory(
