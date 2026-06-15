@@ -28,7 +28,7 @@ pub fn load_session_file_metadata(repo: &Repository) -> Vec<SessionFileMetadata>
             Some(SessionFileMetadata {
                 updated_at: repo.fs().modified_unix_seconds(&entry.path).unwrap_or(0),
                 created_at: None,
-                file_size: 0,
+                file_size: repo.fs().file_size_bytes(&entry.path).unwrap_or(0) as i64,
                 path: entry.path,
                 id,
             })

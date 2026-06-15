@@ -77,4 +77,8 @@ impl FileSystemAdapter for RealFileSystem {
             .and_then(|time| time.duration_since(std::time::UNIX_EPOCH).ok())
             .map(|duration| duration.as_secs() as i64)
     }
+
+    fn file_size_bytes(&self, path: &Path) -> Result<u64, CoreError> {
+        Ok(std::fs::metadata(path)?.len())
+    }
 }

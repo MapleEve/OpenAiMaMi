@@ -32,13 +32,13 @@
     "internalRoot": "evidence/full-chain/internal"
   },
   "totals": {
-    "zhLocaleKeys": 640,
-    "enLocaleKeys": 640,
-    "entries": 640,
+    "zhLocaleKeys": 645,
+    "enLocaleKeys": 645,
+    "entries": 645,
     "rawControlFlowKeyBacked": 40,
     "internalKeyBacked": 12,
     "rawOrInternalKeyBacked": 47,
-    "sourceSyncOnly": 593,
+    "sourceSyncOnly": 598,
     "rawTranslationZhKeyBacked": 613,
     "rawTranslationEnKeyBacked": 613,
     "rawTranslationZhExact": 613,
@@ -47,7 +47,7 @@
     "rawTranslationValueMismatch": 0,
     "acceptedZh": 613,
     "acceptedEn": 613,
-    "missingRawOrInternalCopySource": 27
+    "missingRawOrInternalCopySource": 32
   },
   "entries": [
     {
@@ -24165,6 +24165,42 @@
       ]
     },
     {
+      "key": "plugins.mock.imageSupport.title",
+      "zhValue": "图片支持",
+      "enValue": "Image Support",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "plugins.mock.webTools.title",
+      "zhValue": "网页工具",
+      "enValue": "Web Tools",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
       "key": "plugins.running",
       "zhValue": "运行中",
       "enValue": "Running",
@@ -31011,6 +31047,60 @@
           "evidenceKind": "raw-translation-object-key-value"
         }
       ]
+    },
+    {
+      "key": "relay.mock.audit.officialPassthroughBlocked",
+      "zhValue": "官方透传已拦截",
+      "enValue": "Official passthrough blocked",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.audit.ok",
+      "zhValue": "正常",
+      "enValue": "OK",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.test.missingTarget",
+      "zhValue": "中转测试 mock 缺少目标",
+      "enValue": "Relay test mock is missing a target",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
     },
     {
       "key": "relay.network.button",

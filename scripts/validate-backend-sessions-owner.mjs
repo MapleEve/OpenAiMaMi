@@ -128,6 +128,12 @@ if (!/repo\.paths\(\)\.sessions_dir/.test(repositoryLoadBody)) {
 if (!/\.read_dir\s*\(\s*&repo\.paths\(\)\.sessions_dir\s*\)/.test(repositoryLoadBody)) {
   failures.push("repository/sessions.rs load_session_file_metadata 必须通过 repository fs read_dir 读取目录清单");
 }
+if (/file_size\s*:\s*0\b/.test(repositoryLoadBody)) {
+  failures.push("repository/sessions.rs load_session_file_metadata 不得将 file_size 固定为 0");
+}
+if (!/repo\.fs\(\)\.file_size_bytes\s*\(\s*&entry\.path\s*\)/.test(repositoryLoadBody)) {
+  failures.push("repository/sessions.rs load_session_file_metadata 必须通过 FS adapter 读取 file_size");
+}
 assertNoPattern("repository/sessions.rs load_session_file_metadata", repositoryLoadBody, [
   /\bread_to_string\s*\(/,
   /\bwrite_string\s*\(/,

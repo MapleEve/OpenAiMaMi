@@ -543,6 +543,15 @@
   "relay": {
     "title": "Relay Models",
     "description": "Configure relay models for Codex; switch freely from the menu when smart router is on.",
+    "mock": {
+      "audit": {
+        "ok": "OK",
+        "officialPassthroughBlocked": "Official passthrough blocked"
+      },
+      "test": {
+        "missingTarget": "Relay test mock is missing a target"
+      }
+    },
     "codexRouter": {
       "blockPassthroughSaveFailed": "Failed to save intercept setting",
       "codexRunningTitle": "Could not quit Codex automatically",
@@ -710,6 +719,14 @@
   "plugins": {
     "description": "Manage AiMaMi's built-in plugins and extensions. Enable or disable as needed.",
     "empty": "No plugins available",
+    "mock": {
+      "webTools": {
+        "title": "Web Tools"
+      },
+      "imageSupport": {
+        "title": "Image Support"
+      }
+    },
     "running": "Running"
   },
   "voice": {

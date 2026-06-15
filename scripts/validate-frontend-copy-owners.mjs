@@ -39,6 +39,18 @@ const checks = [
       "Use Simplified Chinese by default",
     ],
   },
+  {
+    file: "src/mocks/fixtures/commands.ts",
+    forbidden: [
+      'name: "Web Tools"',
+      'title: "Web Tools"',
+      'name: "Image Support"',
+      'title: "Image Support"',
+      'message: "ok"',
+      'message: "official passthrough blocked"',
+      'errorMessage: missingTarget ? "relay test mock terminal 缺少目标"',
+    ],
+  },
 ];
 
 const failures = [];

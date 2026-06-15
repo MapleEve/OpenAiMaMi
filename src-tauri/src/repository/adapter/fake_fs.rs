@@ -151,6 +151,15 @@ impl FileSystemAdapter for FakeFileSystem {
     fn modified_unix_seconds(&self, path: &Path) -> Option<i64> {
         self.exists(path).then_some(0)
     }
+
+    fn file_size_bytes(&self, path: &Path) -> Result<u64, CoreError> {
+        self.files
+            .read()
+            .map_err(lock_error)?
+            .get(path)
+            .map(|content| content.len() as u64)
+            .ok_or_else(|| CoreError::NotFound(path.display().to_string()))
+    }
 }
 
 fn lock_error<T>(_: std::sync::PoisonError<T>) -> CoreError {

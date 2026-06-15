@@ -3,6 +3,7 @@ import {
   type IpcArgs,
   type IpcCommandName,
 } from "@/contracts/ipc";
+import i18n from "@/lib/i18n";
 import type { CoreEnvelope, CoreWarning } from "@/types";
 import type {
   AccountExportPayload,
@@ -145,6 +146,10 @@ export function createDefaultIpcCommandHandler(): IpcCommandHandler {
 }
 
 const defaultHandler = createDefaultIpcCommandHandler();
+
+function mockCopy(key: string): string {
+  return i18n.t(key);
+}
 
 function createRaceAwareIpcEnvelope(
   context: Parameters<IpcCommandHandler>[0],
@@ -904,8 +909,8 @@ const pluginsMockState: {
   items: [
     {
       id: "web-tools",
-      name: "Web Tools",
-      title: "Web Tools",
+      name: "",
+      title: null,
       description: null,
       version: "1.0.0",
       author: "AiMaMi",
@@ -918,8 +923,8 @@ const pluginsMockState: {
     },
     {
       id: "image-support",
-      name: "Image Support",
-      title: "Image Support",
+      name: "",
+      title: null,
       description: null,
       version: "1.0.0",
       author: "AiMaMi",
@@ -938,7 +943,26 @@ const pluginsMockState: {
 };
 
 function readPluginMockItems() {
-  return pluginsMockState.items.map((plugin) => ({ ...plugin }));
+  return pluginsMockState.items.map(readPluginMockPayload);
+}
+
+function readPluginMockPayload(plugin: RuntimeExtensionPluginPayload) {
+  return {
+    ...plugin,
+    ...readPluginMockCopy(plugin.id),
+  };
+}
+
+function readPluginMockCopy(id: string) {
+  if (id === "web-tools") {
+    const title = mockCopy("plugins.mock.webTools.title");
+    return { name: title, title };
+  }
+  if (id === "image-support") {
+    const title = mockCopy("plugins.mock.imageSupport.title");
+    return { name: title, title };
+  }
+  return {};
 }
 
 function findPluginMock(id: string) {
@@ -980,7 +1004,7 @@ const togglePluginHandler: IpcCommandHandler = (context) => {
   const items = readPluginMockItems();
   const data: RuntimeExtensionTogglePayload = {
     backendStatus: envelope.data.status,
-    plugin: { ...plugin },
+    plugin: readPluginMockPayload(plugin),
     items,
     total: items.length,
     sourcePath: "open-aimami/plugins.json",
@@ -1587,7 +1611,7 @@ const relayTestHandler: IpcCommandHandler = (context) => {
     latencyMs: missingTarget ? 0 : 24,
     statusCode: missingTarget ? null : 200,
     message: missingTarget ? null : "Relay mock terminal probe succeeded",
-    errorMessage: missingTarget ? "relay test mock terminal 缺少目标" : null,
+    errorMessage: missingTarget ? mockCopy("relay.mock.test.missingTarget") : null,
     models: missingTarget ? [] : models,
   };
   return { ...envelope, data };
@@ -1677,39 +1701,41 @@ const relayImportHandler: IpcCommandHandler = (context) => {
   return { ...envelope, data };
 };
 
-const relayAuditFixture: RelayPassthroughAuditEntry[] = [
-  {
-    timestamp: "2026-06-01T08:00:00.000Z",
-    event: "request",
-    direction: "outbound",
-    providerId: "openai",
-    model: "gpt-4.1",
-    blocked: false,
-    message: null,
-  },
-  {
-    timestamp: "2026-06-01T08:00:01.000Z",
-    event: "response",
-    direction: "inbound",
-    providerId: "openai",
-    model: "gpt-4.1",
-    blocked: false,
-    message: "ok",
-  },
-  {
-    timestamp: "2026-06-01T08:00:02.000Z",
-    event: "blocked",
-    direction: "outbound",
-    providerId: null,
-    model: null,
-    blocked: true,
-    message: "official passthrough blocked",
-  },
-];
+function readRelayAuditFixture(): RelayPassthroughAuditEntry[] {
+  return [
+    {
+      timestamp: "2026-06-01T08:00:00.000Z",
+      event: "request",
+      direction: "outbound",
+      providerId: "openai",
+      model: "gpt-4.1",
+      blocked: false,
+      message: null,
+    },
+    {
+      timestamp: "2026-06-01T08:00:01.000Z",
+      event: "response",
+      direction: "inbound",
+      providerId: "openai",
+      model: "gpt-4.1",
+      blocked: false,
+      message: mockCopy("relay.mock.audit.ok"),
+    },
+    {
+      timestamp: "2026-06-01T08:00:02.000Z",
+      event: "blocked",
+      direction: "outbound",
+      providerId: null,
+      model: null,
+      blocked: true,
+      message: mockCopy("relay.mock.audit.officialPassthroughBlocked"),
+    },
+  ];
+}
 
 const relayAuditHandler: IpcCommandHandler = (context) => {
   const limit = readArgPositiveInteger(context.args, "limit", 50);
-  return withMockData(context, relayAuditFixture.slice(-limit));
+  return withMockData(context, readRelayAuditFixture().slice(-limit));
 };
 
 function relayDiagnosticFromStatus(

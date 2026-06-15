@@ -23,4 +23,5 @@ pub trait FileSystemAdapter: std::fmt::Debug + Send + Sync {
     fn rename(&self, from: &Path, to: &Path) -> Result<(), CoreError>;
     fn read_dir(&self, path: &Path) -> Result<Vec<FileSystemEntry>, CoreError>;
     fn modified_unix_seconds(&self, path: &Path) -> Option<i64>;
+    fn file_size_bytes(&self, path: &Path) -> Result<u64, CoreError>;
 }

@@ -543,6 +543,15 @@
   "relay": {
     "title": "中转模型",
     "description": "为 Codex 配置中转模型，启用智能路由后菜单可自由切换。",
+    "mock": {
+      "audit": {
+        "ok": "正常",
+        "officialPassthroughBlocked": "官方透传已拦截"
+      },
+      "test": {
+        "missingTarget": "中转测试 mock 缺少目标"
+      }
+    },
     "codexRouter": {
       "blockPassthroughSaveFailed": "接管开关保存失败",
       "codexRunningTitle": "无法自动退出 Codex",
@@ -710,6 +719,14 @@
   "plugins": {
     "description": "管理 AiMaMi 的内置插件和扩展功能，可按需启用或禁用。",
     "empty": "暂无可用插件",
+    "mock": {
+      "webTools": {
+        "title": "网页工具"
+      },
+      "imageSupport": {
+        "title": "图片支持"
+      }
+    },
     "running": "运行中"
   },
   "voice": {
