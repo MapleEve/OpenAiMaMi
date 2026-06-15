@@ -1,25 +1,27 @@
-use crate::application::ports::{
-    AppProcessPort, AppShellPort, AppSystemPort, AppWindowPort, ForceKillOutcome,
-    HotspotPlatformPort,
-};
+use crate::application::ports::HotspotPlatformPort;
 mod diagnostics;
+mod platform_actions;
 mod settings_secret;
 mod snapshot_bootstrap;
 
 pub use self::diagnostics::diagnose;
+pub use self::platform_actions::{
+    check_update_installability, focus_main_window, force_kill_app, graceful_restart_for_update,
+    open_path, restart_app, system_info,
+};
 pub use self::settings_secret::{
     get_device_id, get_or_create_remote_device_secret, import_remote_device_secret_if_empty,
 };
 pub use self::snapshot_bootstrap::{load_bootstrap_state, load_snapshot};
 
-use crate::application::service::{pending_status, restored_status, unsupported_status};
+use crate::application::service::{pending_status, restored_status};
 use crate::application::usecase::daemon as daemon_usecase;
 use crate::contracts::{
     ApiConfigPayload, ApiModePayload, ApiProxyConfigPayload, ApiProxyDetectPayload, ApiProxyMode,
     ApiProxyTestPayload, AutoSwitchConfigPayload, BackendEffect, BackendSkeletonStatus,
     CleanPayload, CoreSnapshotPayload, DaemonRunPayload, MysteryRouteGrant,
     NotificationClientStatePayload, PendingAutoSwitchStatePayload, RebuildRegistryPayload,
-    SystemActionPayload, SystemInfoPayload, UpdateInstallabilityPayload,
+    SystemActionPayload,
 };
 use crate::core::error::CoreError;
 use crate::core::hotspot as hotspot_core;
@@ -201,111 +203,15 @@ pub fn update_usage_refresh_schedule(
     daemon_usecase::update_usage_refresh_schedule(repo)
 }
 
-pub fn check_update_installability(system: &impl AppSystemPort) -> UpdateInstallabilityPayload {
-    UpdateInstallabilityPayload {
-        backend_status: unsupported_status(
-            "system",
-            "check_update_installability",
-            "更新安装环境检测未在当前公开后端范围内恢复。",
-        ),
-        can_install: false,
-        code: "unsupported".to_string(),
-        executable_path: system.current_executable_path(),
-        bundle_path: None,
-        translocated: false,
-        quarantined: false,
-    }
-}
-
-pub fn graceful_restart_for_update(process: &impl AppProcessPort) -> SystemActionPayload {
-    let _ = process.graceful_restart_for_update();
-    system_action_payload(unsupported_status(
-        "system",
-        "graceful_restart_for_update",
-        "更新重启动作未在当前公开后端范围内恢复。",
-    ))
-}
-
-pub fn restart_app(process: &impl AppProcessPort) -> SystemActionPayload {
-    let _ = process.restart_app();
-    system_action_payload(unsupported_status(
-        "system",
-        "restart_codex",
-        "重启外部程序能力未在当前公开后端范围内恢复。",
-    ))
-}
-
-pub fn force_kill_app(process: &impl AppProcessPort) -> Result<SystemActionPayload, CoreError> {
-    let outcome = process.force_kill_app()?;
-    Ok(force_kill_payload(outcome))
-}
-
 pub fn reset_config(repo: &Repository) -> Result<SystemActionPayload, CoreError> {
     let result = config_repository::reset_codex_config(repo)?;
-    let mut payload = system_action_payload(restored_status(
-        "system",
-        "reset_codex_config",
-        BackendEffect::NoOp,
-    ));
-    payload.config_cleared = Some(result.config_cleared);
-    Ok(payload)
-}
-
-pub fn open_path(
-    shell: &impl AppShellPort,
-    path: String,
-) -> Result<SystemActionPayload, CoreError> {
-    shell.open_path(&path)?;
-    Ok(system_action_payload(restored_status(
-        "system",
-        "open_path",
-        BackendEffect::Platform,
-    )))
-}
-
-fn force_kill_payload(outcome: ForceKillOutcome) -> SystemActionPayload {
-    let processes = outcome
-        .processes
-        .iter()
-        .map(|process| format!("{} ({})", process.name, process.pid))
-        .collect::<Vec<_>>();
-    SystemActionPayload {
-        backend_status: restored_status("system", "force_kill_codex", BackendEffect::Platform),
-        config_cleared: None,
-        killed_count: Some(outcome.killed_count),
-        terminated_process_count: Some(outcome.killed_count),
-        processes: Some(processes),
-    }
-}
-
-fn system_action_payload(backend_status: BackendSkeletonStatus) -> SystemActionPayload {
-    SystemActionPayload {
-        backend_status,
-        config_cleared: None,
+    Ok(SystemActionPayload {
+        backend_status: restored_status("system", "reset_codex_config", BackendEffect::NoOp),
+        config_cleared: Some(result.config_cleared),
         killed_count: None,
         terminated_process_count: None,
         processes: None,
-    }
-}
-
-pub fn system_info(system: &impl AppSystemPort) -> SystemInfoPayload {
-    let info = system.system_info();
-    SystemInfoPayload {
-        backend_status: restored_status("system", "get_system_info", BackendEffect::Platform),
-        os: info.os,
-        os_version: info.os_version,
-        arch: info.arch,
-        hostname: info.hostname,
-    }
-}
-
-pub fn focus_main_window(window: &impl AppWindowPort) -> Result<SystemActionPayload, CoreError> {
-    window.focus_main_window()?;
-    Ok(system_action_payload(restored_status(
-        "system",
-        "focus_main_window",
-        BackendEffect::Platform,
-    )))
+    })
 }
 
 pub fn notification_client_state(

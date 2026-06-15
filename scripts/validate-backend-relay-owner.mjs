@@ -7,6 +7,18 @@ const failures = [];
 const files = {
   commands: join(repoRoot, "src-tauri", "src", "commands", "relay.rs"),
   usecase: join(repoRoot, "src-tauri", "src", "application", "usecase", "relay.rs"),
+  usecasePayload: join(repoRoot, "src-tauri", "src", "application", "usecase", "relay", "payload.rs"),
+  usecaseProvider: join(repoRoot, "src-tauri", "src", "application", "usecase", "relay", "provider.rs"),
+  usecaseModels: join(repoRoot, "src-tauri", "src", "application", "usecase", "relay", "models.rs"),
+  usecaseDiagnostics: join(
+    repoRoot,
+    "src-tauri",
+    "src",
+    "application",
+    "usecase",
+    "relay",
+    "diagnostics.rs",
+  ),
   core: join(repoRoot, "src-tauri", "src", "core", "relay.rs"),
   coreRequestBuilder: join(repoRoot, "src-tauri", "src", "core", "relay", "request_builder.rs"),
   repository: join(repoRoot, "src-tauri", "src", "repository", "relay.rs"),
@@ -175,6 +187,21 @@ function assertContains(path, content, pattern, message) {
 
 const commandContent = readRequired(files.commands, "relay command 文件");
 const usecaseContent = readRequired(files.usecase, "relay usecase 文件");
+const usecasePayloadContent = readRequired(files.usecasePayload, "relay usecase payload owner file");
+const usecaseProviderContent = readRequired(files.usecaseProvider, "relay usecase provider owner file");
+const usecaseModelsContent = readRequired(files.usecaseModels, "relay usecase model fetch owner file");
+const usecaseDiagnosticsContent = readRequired(
+  files.usecaseDiagnostics,
+  "relay usecase diagnostics owner file",
+);
+const usecaseOwnerContents = [
+  [files.usecase, usecaseContent],
+  [files.usecasePayload, usecasePayloadContent],
+  [files.usecaseProvider, usecaseProviderContent],
+  [files.usecaseModels, usecaseModelsContent],
+  [files.usecaseDiagnostics, usecaseDiagnosticsContent],
+];
+const usecaseCombinedContent = usecaseOwnerContents.map(([, content]) => content).join("\n");
 const coreContent = readRequired(files.core, "relay core 文件");
 const coreRequestBuilderContent = readRequired(
   files.coreRequestBuilder,
@@ -207,7 +234,7 @@ assertContains(
   "必须通过 application/usecase 调度 relay 用户动作",
 );
 
-assertNoPatterns(files.usecase, usecaseContent, [
+const usecaseNoPatternRules = [
   {
     label: "直接文件 IO",
     message: "relay usecase 不得直接读写文件系统",
@@ -224,10 +251,61 @@ assertNoPatterns(files.usecase, usecaseContent, [
     message: "relay usecase 不得直接依赖或构造具体 platform adapter",
     patterns: [/\bRelayPlatformAdapter\b/, /\bcrate\s*::\s*platform\s*::/, /\bstd\s*::\s*env\b/],
   },
-]);
+];
+for (const [path, content] of usecaseOwnerContents) {
+  assertNoPatterns(path, content, usecaseNoPatternRules);
+}
 assertContains(
   files.usecase,
   usecaseContent,
+  /\bmod\s+payload\s*;/,
+  "必须把 relay payload mapper 拆入 application/usecase/relay/payload.rs",
+);
+assertContains(
+  files.usecase,
+  usecaseContent,
+  /\bmod\s+provider\s*;/,
+  "必须把 provider CRUD 拆入 application/usecase/relay/provider.rs",
+);
+assertContains(
+  files.usecase,
+  usecaseContent,
+  /\bmod\s+models\s*;/,
+  "必须把 model fetch 拆入 application/usecase/relay/models.rs",
+);
+assertContains(
+  files.usecase,
+  usecaseContent,
+  /\bmod\s+diagnostics\s*;/,
+  "必须把 router diagnostics/fix 拆入 application/usecase/relay/diagnostics.rs",
+);
+assertContains(
+  files.usecasePayload,
+  usecasePayloadContent,
+  /\bpub\s*\(\s*super\s*\)\s+fn\s+provider_payload_from_domain\s*\(/,
+  "payload owner 必须 owning provider payload mapper",
+);
+assertContains(
+  files.usecaseProvider,
+  usecaseProviderContent,
+  /\bpub\s+fn\s+upsert_relay_provider\s*\(/,
+  "provider owner 必须 owning provider CRUD usecase",
+);
+assertContains(
+  files.usecaseModels,
+  usecaseModelsContent,
+  /\bpub\s+fn\s+fetch_relay_models_draft\s*\(/,
+  "model fetch owner 必须 owning fetch_relay_models_draft usecase",
+);
+assertContains(
+  files.usecaseDiagnostics,
+  usecaseDiagnosticsContent,
+  /\bpub\s+fn\s+fix_codex_router_issue\s*\(/,
+  "diagnostics owner 必须 owning router diagnostics/fix usecase",
+);
+assertContains(
+  files.usecase,
+  usecaseCombinedContent,
   /\bRelayPlatformPort\b/,
   "必须通过 RelayPlatformPort 表达平台 mock terminal 边界",
 );
