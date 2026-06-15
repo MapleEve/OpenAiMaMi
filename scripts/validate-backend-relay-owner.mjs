@@ -8,6 +8,7 @@ const files = {
   commands: join(repoRoot, "src-tauri", "src", "commands", "relay.rs"),
   usecase: join(repoRoot, "src-tauri", "src", "application", "usecase", "relay.rs"),
   core: join(repoRoot, "src-tauri", "src", "core", "relay.rs"),
+  coreRequestBuilder: join(repoRoot, "src-tauri", "src", "core", "relay", "request_builder.rs"),
   repository: join(repoRoot, "src-tauri", "src", "repository", "relay.rs"),
   platform: join(repoRoot, "src-tauri", "src", "platform", "relay.rs"),
 };
@@ -175,6 +176,10 @@ function assertContains(path, content, pattern, message) {
 const commandContent = readRequired(files.commands, "relay command 文件");
 const usecaseContent = readRequired(files.usecase, "relay usecase 文件");
 const coreContent = readRequired(files.core, "relay core 文件");
+const coreRequestBuilderContent = readRequired(
+  files.coreRequestBuilder,
+  "relay core request builder 文件",
+);
 const repositoryContent = readRequired(files.repository, "relay repository 文件");
 const platformContent = readRequired(files.platform, "relay platform 文件");
 
@@ -226,6 +231,91 @@ assertContains(
   /\bRelayPlatformPort\b/,
   "必须通过 RelayPlatformPort 表达平台 mock terminal 边界",
 );
+
+assertContains(
+  files.core,
+  coreContent,
+  /\bmod\s+request_builder\s*;/,
+  "必须把 provider request builder 拆入 core/relay/request_builder.rs",
+);
+assertContains(
+  files.core,
+  coreContent,
+  /\bpub\s+use\s+self\s*::\s*request_builder\s*::/,
+  "必须通过 core relay 根模块重新暴露 provider request builder 公开 API",
+);
+assertNoPatterns(files.core, coreContent, [
+  {
+    label: "request builder 私有实现",
+    message: "relay core 根文件只聚合 request builder，不得继续 owning provider request builder 实现",
+    patterns: [
+      /\bpub\s+fn\s+prepare_fetch_models_request\s*\(/,
+      /\bpub\s+fn\s+prepare_health_check_request\s*\(/,
+      /\bfn\s+trim_url\s*\(/,
+      /\bfn\s+strip_compat_suffix\s*\(/,
+      /\bfn\s+is_anthropic_wire_api\s*\(/,
+      /\bfn\s+normalize_header_pair\s*\(/,
+      /\bfn\s+dedupe\s*\(/,
+    ],
+  },
+]);
+assertContains(
+  files.coreRequestBuilder,
+  coreRequestBuilderContent,
+  /\bpub\s+fn\s+prepare_fetch_models_request\s*\(/,
+  "core/relay/request_builder.rs 必须 owning model fetch 请求构建",
+);
+assertContains(
+  files.coreRequestBuilder,
+  coreRequestBuilderContent,
+  /\bpub\s+fn\s+prepare_health_check_request\s*\(/,
+  "core/relay/request_builder.rs 必须 owning health check 请求构建",
+);
+assertContains(
+  files.coreRequestBuilder,
+  coreRequestBuilderContent,
+  /\bpub\s+fn\s+build_models_url_candidates\s*\(/,
+  "core/relay/request_builder.rs 必须 owning model URL 归一化",
+);
+assertContains(
+  files.coreRequestBuilder,
+  coreRequestBuilderContent,
+  /\bpub\s+fn\s+build_fetch_models_headers\s*\(/,
+  "core/relay/request_builder.rs 必须 owning provider header 构建",
+);
+assertContains(
+  files.coreRequestBuilder,
+  coreRequestBuilderContent,
+  /\bpub\s+fn\s+parse_extra_headers\s*\(/,
+  "core/relay/request_builder.rs 必须 owning extraHeaders 解析",
+);
+assertNoPatterns(files.coreRequestBuilder, coreRequestBuilderContent, [
+  {
+    label: "真实 IO/network/process 副作用",
+    message: "relay request builder 只能构建 mock terminal 请求，不得读写文件、启动进程或发起真实网络",
+    patterns: [
+      /\bstd\s*::\s*fs\b/,
+      /\bstd\s*::\s*process\b/,
+      /\bCommand\s*::\s*new\s*\(/,
+      /\breqwest\b/,
+      /\.fs\s*\(/,
+      /\.spawn\s*\(/,
+    ],
+  },
+  {
+    label: "router parser/render 私有实现",
+    message: "relay request builder 不得 owning router config parser/render",
+    patterns: [
+      /\bfn\s+config_has_router\s*\(/,
+      /\bfn\s+config_has_catalog\s*\(/,
+      /\bfn\s+append_managed_router_block\s*\(/,
+      /\bfn\s+toml_string_literal\s*\(/,
+      /\bfn\s+count_model_providers\s*\(/,
+      /\bfn\s+top_level_profile\s*\(/,
+      /\bfn\s+config_stale_reason\s*\(/,
+    ],
+  },
+]);
 
 assertContains(
   files.core,

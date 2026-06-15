@@ -3,6 +3,7 @@ pub mod analytics;
 pub mod custom_instructions;
 pub mod diagnostics;
 pub mod hotspot;
+pub mod mcp;
 pub mod relay;
 pub mod runtime;
 pub mod settings;

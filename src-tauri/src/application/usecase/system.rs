@@ -2,73 +2,33 @@ use crate::application::ports::{
     AppProcessPort, AppShellPort, AppSystemPort, AppWindowPort, ForceKillOutcome,
     HotspotPlatformPort,
 };
-use crate::application::service::{
-    current_timestamp, pending_status, restored_status, unsupported_status,
+mod diagnostics;
+mod settings_secret;
+mod snapshot_bootstrap;
+
+pub use self::diagnostics::diagnose;
+pub use self::settings_secret::{
+    get_device_id, get_or_create_remote_device_secret, import_remote_device_secret_if_empty,
 };
+pub use self::snapshot_bootstrap::{load_bootstrap_state, load_snapshot};
+
+use crate::application::service::{pending_status, restored_status, unsupported_status};
 use crate::application::usecase::daemon as daemon_usecase;
 use crate::contracts::{
-    ApiConfigPayload, ApiConnectivityPayload, ApiModePayload, ApiProxyConfigPayload,
-    ApiProxyDetectPayload, ApiProxyMode, ApiProxyTestPayload, ApiReachabilityStatus, AppPathState,
-    AppSettingsFile, AppStatusPayload, AutoSwitchConfigPayload, AutoSwitchRuntimeState,
-    AutoSwitchStatusPayload, BackendEffect, BackendSkeletonBoundaryStatus, BackendSkeletonStatus,
-    BootstrapStatePayload, CleanPayload, CoreSnapshotPayload, DaemonRunPayload, DiagnoseApiState,
-    DiagnoseDiagnosticFieldPayload, DiagnoseDiagnosticProbePayload,
-    DiagnoseDiagnosticSnapshotPayload, DiagnosePayload, DiagnosePlatform, DiagnoseRegistryState,
-    DiagnoseSessionState, MysteryRouteGrant, NotificationClientStatePayload,
-    PendingAutoSwitchStatePayload, RebuildRegistryPayload, SystemActionPayload, SystemInfoPayload,
-    UpdateInstallabilityPayload, UsageSource,
+    ApiConfigPayload, ApiModePayload, ApiProxyConfigPayload, ApiProxyDetectPayload, ApiProxyMode,
+    ApiProxyTestPayload, AutoSwitchConfigPayload, BackendEffect, BackendSkeletonStatus,
+    CleanPayload, CoreSnapshotPayload, DaemonRunPayload, MysteryRouteGrant,
+    NotificationClientStatePayload, PendingAutoSwitchStatePayload, RebuildRegistryPayload,
+    SystemActionPayload, SystemInfoPayload, UpdateInstallabilityPayload,
 };
 use crate::core::error::CoreError;
 use crate::core::hotspot as hotspot_core;
-use crate::core::model::diagnostics::{DiagnosticProbe, DiagnosticSnapshot};
 use crate::core::model::settings::UsageRefreshInterval;
-use crate::repository::accounts as accounts_repository;
-use crate::repository::bootstrap as bootstrap_repository;
 use crate::repository::config as config_repository;
-use crate::repository::diagnostics::load_system_diagnostic_snapshot;
 use crate::repository::hotspot as hotspot_repository;
 use crate::repository::settings as settings_repository;
 use crate::repository::Repository;
 use std::collections::BTreeMap;
-
-pub fn load_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, CoreError> {
-    let settings = settings_repository::load_app_settings(repo)?;
-    let accounts = accounts_repository::load_account_summaries(repo)?;
-    let payload = CoreSnapshotPayload {
-        backend_status: restored_status("system", "load_snapshot", BackendEffect::NoOp),
-        status: make_status(repo, &settings),
-        accounts,
-    };
-    store_bootstrap_snapshot_progressive(repo, &payload);
-    Ok(payload)
-}
-
-pub fn refresh_usage_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, CoreError> {
-    let mut payload = load_snapshot(repo)?;
-    payload.backend_status =
-        daemon_usecase::schedule_full_runtime_refresh_for_command(repo, "refresh_usage_snapshot")?;
-    store_bootstrap_snapshot_progressive(repo, &payload);
-    Ok(payload)
-}
-
-pub fn load_bootstrap_state(repo: &Repository) -> Result<BootstrapStatePayload, CoreError> {
-    let settings = settings_repository::load_app_settings(repo)?;
-    let cache = bootstrap_repository::load_bootstrap_cache(repo).unwrap_or_default();
-    Ok(BootstrapStatePayload {
-        backend_status: restored_status("system", "load_bootstrap_state", BackendEffect::NoOp),
-        written_at: cache.written_at,
-        snapshot_progressive: cache.snapshot_progressive,
-        usage_analytics: cache.usage_analytics,
-        mcp_servers: cache.mcp_servers,
-        installed_skills: cache.installed_skills,
-        executed_at: None,
-        run_once: false,
-        auto_switch_enabled: settings.auto_switch_enabled,
-        active_account_key: None,
-        switched_account_key: None,
-        pending_switch_account_key: None,
-    })
-}
 
 pub fn clean(repo: &Repository) -> Result<CleanPayload, CoreError> {
     Ok(CleanPayload {
@@ -76,6 +36,14 @@ pub fn clean(repo: &Repository) -> Result<CleanPayload, CoreError> {
         registry_backups_removed: remove_children(repo, &repo.paths().registry_backups_dir)?,
         stale_entries_removed: 0,
     })
+}
+
+pub fn refresh_usage_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, CoreError> {
+    let mut payload = load_snapshot(repo)?;
+    payload.backend_status =
+        daemon_usecase::schedule_full_runtime_refresh_for_command(repo, "refresh_usage_snapshot")?;
+    snapshot_bootstrap::store_bootstrap_snapshot_progressive(repo, &payload);
+    Ok(payload)
 }
 
 pub fn rebuild_registry(repo: &Repository) -> Result<RebuildRegistryPayload, CoreError> {
@@ -88,186 +56,6 @@ pub fn rebuild_registry(repo: &Repository) -> Result<RebuildRegistryPayload, Cor
     })
 }
 
-pub fn diagnose(repo: &Repository) -> Result<DiagnosePayload, CoreError> {
-    let diagnostic_snapshot = load_system_diagnostic_snapshot(repo)?;
-    let paths = make_path_state_from_diagnostic_snapshot(repo, &diagnostic_snapshot);
-    Ok(DiagnosePayload {
-        backend_status: diagnose_backend_status(),
-        paths,
-        core_version: env!("CARGO_PKG_VERSION").to_string(),
-        platform: make_diagnose_platform(),
-        registry_state: DiagnoseRegistryState {
-            account_count: diagnostic_probe_count(
-                &diagnostic_snapshot,
-                "diagnostics.path.registry",
-            )
-            .unwrap_or_default(),
-        },
-        session_state: DiagnoseSessionState {
-            latest_rollout_found: diagnostic_probe_exists(
-                &diagnostic_snapshot,
-                "diagnostics.path.sessions",
-            )
-            .unwrap_or(false),
-        },
-        api_state: DiagnoseApiState {
-            usage_attempt_count: 0,
-            usage_success_count: 0,
-            name_attempt_count: 0,
-            name_success_count: 0,
-            last_usage_failure: None,
-            last_usage_failure_account: None,
-            last_name_failure: None,
-            last_name_failure_account: None,
-        },
-        diagnostic_snapshot: make_diagnostic_snapshot_payload(&diagnostic_snapshot),
-        pending_diagnostics: make_pending_diagnostic_fields(),
-    })
-}
-
-fn diagnose_backend_status() -> BackendSkeletonStatus {
-    BackendSkeletonStatus {
-        module: "system".to_string(),
-        command: "diagnose".to_string(),
-        restored: false,
-        note: "系统诊断已接入 diagnostics repository 只读快照骨架；registry/keychain/sqlite/TOML 诊断引擎和修复逻辑未在当前公开后端恢复。"
-            .to_string(),
-        boundary: BackendSkeletonBoundaryStatus {
-            repository_checked: true,
-            repository_path_known: true,
-            platform_checked: true,
-            core_checked: true,
-            effect: BackendEffect::Pending,
-        },
-        runtime_event: None,
-    }
-}
-
-fn make_diagnose_platform() -> DiagnosePlatform {
-    DiagnosePlatform {
-        os: std::env::consts::OS.to_string(),
-        arch: std::env::consts::ARCH.to_string(),
-        info_source: "std::env::consts".to_string(),
-    }
-}
-
-fn make_path_state_from_diagnostic_snapshot(
-    repo: &Repository,
-    snapshot: &DiagnosticSnapshot,
-) -> AppPathState {
-    let mut state = make_path_state(repo);
-    if let Some(exists) = diagnostic_probe_exists(snapshot, "diagnostics.path.auth") {
-        state.auth_exists = exists;
-    }
-    if let Some(exists) = diagnostic_probe_exists(snapshot, "diagnostics.path.registry") {
-        state.registry_exists = exists;
-    }
-    if let Some(exists) = diagnostic_probe_exists(snapshot, "diagnostics.path.sessions") {
-        state.sessions_exists = exists;
-    }
-    state
-}
-
-fn make_diagnostic_snapshot_payload(
-    snapshot: &DiagnosticSnapshot,
-) -> DiagnoseDiagnosticSnapshotPayload {
-    DiagnoseDiagnosticSnapshotPayload {
-        root_path: snapshot.root_path.clone(),
-        source_path: snapshot.source_path.clone(),
-        status_code: snapshot.status_code.clone(),
-        message: diagnostic_snapshot_message(&snapshot.status_code),
-        probes: snapshot
-            .probes
-            .iter()
-            .map(make_diagnostic_probe_payload)
-            .collect(),
-    }
-}
-
-fn make_diagnostic_probe_payload(probe: &DiagnosticProbe) -> DiagnoseDiagnosticProbePayload {
-    DiagnoseDiagnosticProbePayload {
-        path: probe.path.clone(),
-        exists: probe.exists,
-        count: probe.count,
-        status_code: probe.status_code.clone(),
-        message: diagnostic_probe_message(&probe.status_code),
-    }
-}
-
-fn diagnostic_snapshot_message(status_code: &str) -> String {
-    match status_code {
-        "diagnostics.snapshot.ready" => {
-            "系统诊断只读快照已从 diagnostics repository 生成。".to_string()
-        }
-        _ => "系统诊断只读快照已生成；未知状态码保留在 statusCode 中。".to_string(),
-    }
-}
-
-fn diagnostic_probe_message(status_code: &str) -> String {
-    match status_code {
-        "diagnostics.path.codex_home" => "Codex 根目录路径探针。",
-        "diagnostics.path.accounts" => "账号目录路径探针。",
-        "diagnostics.path.auth" => "认证文件路径探针。",
-        "diagnostics.path.registry" => "账号注册表路径探针。",
-        "diagnostics.path.sessions" => "会话目录路径探针。",
-        "diagnostics.path.config" => "配置文件路径探针。",
-        _ => "diagnostics repository 只读路径探针。",
-    }
-    .to_string()
-}
-
-fn diagnostic_probe_exists(snapshot: &DiagnosticSnapshot, status_code: &str) -> Option<bool> {
-    diagnostic_probe(snapshot, status_code).map(|probe| probe.exists)
-}
-
-fn diagnostic_probe_count(snapshot: &DiagnosticSnapshot, status_code: &str) -> Option<i32> {
-    diagnostic_probe(snapshot, status_code).and_then(|probe| probe.count)
-}
-
-fn diagnostic_probe<'a>(
-    snapshot: &'a DiagnosticSnapshot,
-    status_code: &str,
-) -> Option<&'a DiagnosticProbe> {
-    snapshot
-        .probes
-        .iter()
-        .find(|probe| probe.status_code == status_code)
-}
-
-fn make_pending_diagnostic_fields() -> Vec<DiagnoseDiagnosticFieldPayload> {
-    vec![
-        pending_diagnostic_field(
-            "auth_integrity",
-            "认证文件与平台密钥或注册表的一致性诊断引擎未在当前公开后端恢复。",
-        ),
-        pending_diagnostic_field(
-            "catalog_integrity",
-            "路由模型目录与 config.toml 托管区块诊断引擎未在当前公开后端恢复。",
-        ),
-        pending_diagnostic_field(
-            "api_key_integrity",
-            "API key 与平台凭据存储一致性诊断引擎未在当前公开后端恢复。",
-        ),
-        pending_diagnostic_field(
-            "db_orphan_providers",
-            "SQLite 中转 Provider 孤儿记录诊断引擎未在当前公开后端恢复。",
-        ),
-        pending_diagnostic_field(
-            "rollout_orphan_providers",
-            "rollout 线程孤儿 Provider 诊断引擎未在当前公开后端恢复。",
-        ),
-        pending_diagnostic_field("repair_logic", "诊断修复逻辑未在当前公开后端恢复。"),
-    ]
-}
-
-fn pending_diagnostic_field(field: &str, detail: &str) -> DiagnoseDiagnosticFieldPayload {
-    DiagnoseDiagnosticFieldPayload {
-        field: field.to_string(),
-        status: "pending".to_string(),
-        detail: Some(detail.to_string()),
-    }
-}
-
 pub fn set_auto_switch(
     repo: &Repository,
     enabled: bool,
@@ -277,7 +65,7 @@ pub fn set_auto_switch(
     settings_repository::save_app_settings(repo, &settings)?;
     Ok(AutoSwitchConfigPayload {
         backend_status: restored_status("system", "set_auto_switch", BackendEffect::NoOp),
-        auto_switch: make_auto_switch_status(&settings),
+        auto_switch: snapshot_bootstrap::make_auto_switch_status(&settings),
     })
 }
 
@@ -298,7 +86,7 @@ pub fn configure_auto_switch(
     settings_repository::save_app_settings(repo, &settings)?;
     Ok(AutoSwitchConfigPayload {
         backend_status: restored_status("system", "configure_auto_switch", BackendEffect::NoOp),
-        auto_switch: make_auto_switch_status(&settings),
+        auto_switch: snapshot_bootstrap::make_auto_switch_status(&settings),
     })
 }
 
@@ -520,29 +308,6 @@ pub fn focus_main_window(window: &impl AppWindowPort) -> Result<SystemActionPayl
     )))
 }
 
-pub fn get_device_id(repo: &Repository) -> Result<String, CoreError> {
-    let mut settings = settings_repository::load_app_settings(repo)?;
-    if let Some(id) = settings.device_id.clone() {
-        return Ok(id);
-    }
-    let id = uuid::Uuid::new_v4().to_string();
-    settings.device_id = Some(id.clone());
-    settings_repository::save_app_settings(repo, &settings)?;
-    Ok(id)
-}
-
-pub fn get_or_create_remote_device_secret(repo: &Repository) -> Result<String, CoreError> {
-    let mut settings = settings_repository::load_app_settings(repo)?;
-    if let Some(secret) = current_remote_device_secret(&settings.remote_device_secret) {
-        return Ok(secret);
-    }
-
-    let secret = format!("{}-{}", uuid::Uuid::new_v4(), uuid::Uuid::new_v4());
-    settings.remote_device_secret = Some(secret.clone());
-    settings_repository::save_app_settings(repo, &settings)?;
-    Ok(secret)
-}
-
 pub fn notification_client_state(
     repo: &Repository,
 ) -> Result<NotificationClientStatePayload, CoreError> {
@@ -611,16 +376,6 @@ fn current_epoch_ms() -> i64 {
     chrono::Utc::now().timestamp_millis()
 }
 
-fn store_bootstrap_snapshot_progressive(repo: &Repository, payload: &CoreSnapshotPayload) {
-    if let Ok(snapshot_progressive) = serde_json::to_value(payload) {
-        let _ = bootstrap_repository::store_bootstrap_snapshot_progressive(
-            repo,
-            current_timestamp(),
-            snapshot_progressive,
-        );
-    }
-}
-
 fn normalize_mystery_route(route: &str) -> String {
     route.trim().trim_matches('/').to_string()
 }
@@ -638,36 +393,6 @@ fn is_mystery_route_allowed(route: &str) -> bool {
             | "settings"
             | "maintenance"
     )
-}
-
-pub fn import_remote_device_secret_if_empty(
-    repo: &Repository,
-    secret: String,
-) -> Result<(), CoreError> {
-    let Some(secret) = normalize_remote_device_secret(&secret) else {
-        return Ok(());
-    };
-
-    let mut settings = settings_repository::load_app_settings(repo)?;
-    if current_remote_device_secret(&settings.remote_device_secret).is_some() {
-        return Ok(());
-    }
-
-    settings.remote_device_secret = Some(secret);
-    settings_repository::save_app_settings(repo, &settings)
-}
-
-fn normalize_remote_device_secret(secret: &str) -> Option<String> {
-    let trimmed = secret.trim();
-    if trimmed.is_empty() {
-        None
-    } else {
-        Some(trimmed.to_string())
-    }
-}
-
-fn current_remote_device_secret(secret: &Option<String>) -> Option<String> {
-    secret.as_deref().and_then(normalize_remote_device_secret)
 }
 
 pub fn has_notch(hotspot: &impl HotspotPlatformPort) -> bool {
@@ -696,48 +421,6 @@ pub fn get_image_compat(repo: &Repository) -> Result<bool, CoreError> {
 
 pub fn set_image_compat(repo: &Repository, enabled: bool) -> Result<bool, CoreError> {
     config_repository::set_image_compat(repo, enabled)
-}
-
-fn make_status(repo: &Repository, settings: &AppSettingsFile) -> AppStatusPayload {
-    AppStatusPayload {
-        paths: make_path_state(repo),
-        last_scan_at: current_timestamp(),
-        usage_source: UsageSource::Local,
-        auto_switch: make_auto_switch_status(settings),
-        api: ApiConfigPayload {
-            proxy: settings.api_proxy.clone(),
-        },
-        api_connectivity: ApiConnectivityPayload {
-            usage_status: ApiReachabilityStatus::Unknown,
-            usage_last_error: None,
-        },
-    }
-}
-
-fn make_path_state(repo: &Repository) -> AppPathState {
-    let paths = repo.paths();
-    AppPathState {
-        codex_home: paths.codex_home.display().to_string(),
-        accounts_path: paths.accounts_dir.display().to_string(),
-        auth_path: paths.auth_path.display().to_string(),
-        registry_path: paths.registry_path.display().to_string(),
-        sessions_path: paths.sessions_dir.display().to_string(),
-        launch_agent_path: paths.launch_agent_path.display().to_string(),
-        auto_switch_log_path: paths.auto_switch_log_path.display().to_string(),
-        auth_exists: repo.fs().exists(&paths.auth_path),
-        registry_exists: repo.fs().exists(&paths.registry_path),
-        sessions_exists: repo.fs().exists(&paths.sessions_dir),
-    }
-}
-
-fn make_auto_switch_status(settings: &AppSettingsFile) -> AutoSwitchStatusPayload {
-    AutoSwitchStatusPayload {
-        enabled: settings.auto_switch_enabled,
-        threshold_5h_percent: settings.threshold_5h_percent,
-        threshold_weekly_percent: settings.threshold_weekly_percent,
-        service_state: AutoSwitchRuntimeState::NotInstalled,
-        service_label: "dev.aimami.auto-switch".to_string(),
-    }
 }
 
 fn remove_children(repo: &Repository, path: &std::path::Path) -> Result<i32, CoreError> {
@@ -769,6 +452,7 @@ fn registry_account_count(repo: &Repository) -> Result<i32, CoreError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::contracts::AppSettingsFile;
 
     #[test]
     fn mystery_unlock_grants_filters_expired_and_persists_cleanup() {
@@ -883,113 +567,6 @@ mod tests {
                 .mystery_unlock_grants,
             grants
         );
-    }
-
-    #[test]
-    fn remote_device_secret_creates_persists_and_reuses_uuid_pair() {
-        let repo = Repository::with_temp_file_system("remote-secret-create");
-
-        let secret = get_or_create_remote_device_secret(&repo).expect("create remote secret");
-
-        assert_eq!(secret.len(), 73);
-        assert_eq!(secret.chars().filter(|value| *value == '-').count(), 9);
-        assert_eq!(
-            settings_repository::load_app_settings(&repo)
-                .expect("reload settings")
-                .remote_device_secret,
-            Some(secret.clone())
-        );
-        assert_eq!(
-            get_or_create_remote_device_secret(&repo).expect("reuse remote secret"),
-            secret
-        );
-    }
-
-    #[test]
-    fn remote_device_secret_imports_only_when_empty() {
-        let repo = Repository::with_temp_file_system("remote-secret-import");
-
-        import_remote_device_secret_if_empty(&repo, "  imported-secret  ".to_string())
-            .expect("import secret");
-        assert_eq!(
-            settings_repository::load_app_settings(&repo)
-                .expect("reload settings")
-                .remote_device_secret,
-            Some("imported-secret".to_string())
-        );
-
-        import_remote_device_secret_if_empty(&repo, "replacement-secret".to_string())
-            .expect("skip overwrite");
-        assert_eq!(
-            settings_repository::load_app_settings(&repo)
-                .expect("reload settings")
-                .remote_device_secret,
-            Some("imported-secret".to_string())
-        );
-    }
-
-    #[test]
-    fn remote_device_secret_import_ignores_blank_without_creating_settings() {
-        let repo = Repository::with_temp_file_system("remote-secret-blank");
-
-        import_remote_device_secret_if_empty(&repo, "   ".to_string()).expect("ignore blank");
-
-        assert!(!repo.fs().exists(&repo.paths().settings_path));
-    }
-
-    #[test]
-    fn load_bootstrap_state_reads_cache_slices_without_losing_compat_fields() {
-        let repo = Repository::with_temp_file_system("bootstrap-state-cache");
-        repo.paths().ensure_app_directories().expect("create dirs");
-        settings_repository::save_app_settings(
-            &repo,
-            &AppSettingsFile {
-                auto_switch_enabled: true,
-                ..AppSettingsFile::default()
-            },
-        )
-        .expect("save settings");
-        repo.fs()
-            .write_string(
-                &repo.paths().bootstrap_cache_path,
-                r#"{
-  "writtenAt": "2026-06-09T00:00:00Z",
-  "snapshotProgressive": {"stage": "boot"},
-  "mcpServers": [],
-  "installedSkills": []
-}"#,
-            )
-            .expect("write cache");
-
-        let payload = load_bootstrap_state(&repo).expect("load bootstrap");
-
-        assert_eq!(
-            payload.written_at,
-            Some(serde_json::Value::String(
-                "2026-06-09T00:00:00Z".to_string()
-            ))
-        );
-        assert!(payload.snapshot_progressive.is_some());
-        assert_eq!(payload.mcp_servers, Some(Vec::new()));
-        assert_eq!(payload.installed_skills, Some(Vec::new()));
-        assert!(payload.auto_switch_enabled);
-    }
-
-    #[test]
-    fn load_bootstrap_state_hides_cache_parse_errors_from_frontend() {
-        let repo = Repository::with_temp_file_system("bootstrap-state-bad-json");
-        repo.paths().ensure_app_directories().expect("create dirs");
-        repo.fs()
-            .write_string(&repo.paths().bootstrap_cache_path, "{")
-            .expect("write cache");
-
-        let payload = load_bootstrap_state(&repo).expect("load bootstrap");
-
-        assert!(payload.written_at.is_none());
-        assert!(payload.snapshot_progressive.is_none());
-        assert!(payload.usage_analytics.is_none());
-        assert!(payload.mcp_servers.is_none());
-        assert!(payload.installed_skills.is_none());
     }
 }
 
