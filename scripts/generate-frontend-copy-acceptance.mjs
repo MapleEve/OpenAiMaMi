@@ -124,6 +124,82 @@ const rawTranslationAssetSources = [
 
 const rawLiteralCopySources = [
   {
+    key: "common.time.durationHours",
+    rawValue: "{{hours}} 小时",
+    locales: ["zh"],
+    sources: [
+      {
+        platform: "windows-x64",
+        path: repoPath(
+          "evidence",
+          "full-chain",
+          "raw",
+          "aimami",
+          "1.0.9",
+          "windows-x64",
+          "frontend",
+          "tauri-dumped",
+          "assets",
+          "index-CL22l5v8.js",
+        ),
+      },
+      {
+        platform: "macos",
+        path: repoPath(
+          "evidence",
+          "full-chain",
+          "raw",
+          "aimami",
+          "1.0.9",
+          "macos",
+          "frontend",
+          "macos-109-frontend-ccf-found-app",
+          "dumped",
+          "assets",
+          "index-CL22l5v8.js",
+        ),
+      },
+    ],
+  },
+  {
+    key: "common.time.durationHours",
+    rawValue: "{{hours}}h",
+    locales: ["en"],
+    sources: [
+      {
+        platform: "windows-x64",
+        path: repoPath(
+          "evidence",
+          "full-chain",
+          "raw",
+          "aimami",
+          "1.0.9",
+          "windows-x64",
+          "frontend",
+          "tauri-dumped",
+          "assets",
+          "index-CL22l5v8.js",
+        ),
+      },
+      {
+        platform: "macos",
+        path: repoPath(
+          "evidence",
+          "full-chain",
+          "raw",
+          "aimami",
+          "1.0.9",
+          "macos",
+          "frontend",
+          "macos-109-frontend-ccf-found-app",
+          "dumped",
+          "assets",
+          "index-CL22l5v8.js",
+        ),
+      },
+    ],
+  },
+  {
     key: "accounts.io.filterName",
     rawValue: "AiMaMi Accounts Backup",
     locales: ["zh", "en"],

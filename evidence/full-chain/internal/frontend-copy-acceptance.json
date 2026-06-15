@@ -16,6 +16,10 @@
       "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js"
     ],
     "rawLiteralCopyAssets": [
+      "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+      "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+      "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+      "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
       "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/accounts-page-CJFT2P5o.js",
       "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/accounts-page-CJFT2P5o.js",
       "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/analytics-panel-D01GGJ7u.js",
@@ -43,15 +47,15 @@
     "internalKeyBacked": 12,
     "rawOrInternalKeyBacked": 47,
     "sourceSyncOnly": 613,
-    "rawTranslationZhKeyBacked": 621,
-    "rawTranslationEnKeyBacked": 621,
-    "rawTranslationZhExact": 621,
-    "rawTranslationEnExact": 621,
-    "rawTranslationBothExact": 621,
+    "rawTranslationZhKeyBacked": 622,
+    "rawTranslationEnKeyBacked": 622,
+    "rawTranslationZhExact": 622,
+    "rawTranslationEnExact": 622,
+    "rawTranslationBothExact": 622,
     "rawTranslationValueMismatch": 0,
-    "acceptedZh": 621,
-    "acceptedEn": 621,
-    "missingRawOrInternalCopySource": 39
+    "acceptedZh": 622,
+    "acceptedEn": 622,
+    "missingRawOrInternalCopySource": 38
   },
   "entries": [
     {
@@ -10324,19 +10328,68 @@
       "key": "common.time.durationHours",
       "zhValue": "{{hours}} 小时",
       "enValue": "{{hours}}h",
-      "zhAccepted": false,
-      "enAccepted": false,
-      "zhSource": null,
-      "enSource": null,
+      "zhAccepted": true,
+      "enAccepted": true,
+      "zhSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:282:51329",
+      "enSource": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js:284:22024",
       "evidenceTier": "source-sync-only",
-      "copyEvidenceTier": "source-sync-only",
-      "status": "source-sync-only-copy-unaccepted",
-      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "copyEvidenceTier": "raw-literal-key-value",
+      "status": "raw-translation-object-copy-accepted",
+      "blocker": null,
       "keyEvidence": {
         "rawControlFlow": [],
         "internalMentions": []
       },
-      "translationEvidence": []
+      "translationEvidence": [
+        {
+          "locale": "zh",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 282,
+          "column": 51329,
+          "offset": 513288,
+          "root": null,
+          "key": "common.time.durationHours",
+          "rawValue": "{{hours}} 小时",
+          "evidenceKind": "raw-literal-key-value"
+        },
+        {
+          "locale": "zh",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 282,
+          "column": 51329,
+          "offset": 513288,
+          "root": null,
+          "key": "common.time.durationHours",
+          "rawValue": "{{hours}} 小时",
+          "evidenceKind": "raw-literal-key-value"
+        },
+        {
+          "locale": "en",
+          "platform": "windows-x64",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 22024,
+          "offset": 548345,
+          "root": null,
+          "key": "common.time.durationHours",
+          "rawValue": "{{hours}}h",
+          "evidenceKind": "raw-literal-key-value"
+        },
+        {
+          "locale": "en",
+          "platform": "macos",
+          "source": "evidence/full-chain/raw/aimami/1.0.9/macos/frontend/macos-109-frontend-ccf-found-app/dumped/assets/index-CL22l5v8.js",
+          "line": 284,
+          "column": 22024,
+          "offset": 548345,
+          "root": null,
+          "key": "common.time.durationHours",
+          "rawValue": "{{hours}}h",
+          "evidenceKind": "raw-literal-key-value"
+        }
+      ]
     },
     {
       "key": "common.time.durationHoursMinutes",
