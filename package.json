@@ -22,10 +22,12 @@
     "validate:frontend-evidence": "node scripts/validate-frontend-evidence.mjs",
     "validate:frontend-leaf-copy": "node scripts/validate-frontend-leaf-copy-acceptance.mjs",
     "validate:frontend-layer-owners": "node scripts/validate-frontend-layer-owners.mjs",
+    "validate:frontend-copy-owners": "node scripts/validate-frontend-copy-owners.mjs",
     "validate:frontend-entry": "node scripts/validate-frontend-entry-architecture.mjs",
     "validate:backend-hexagonal": "node scripts/validate-backend-hexagonal.mjs",
     "validate:backend-accounts-owner": "node scripts/validate-backend-accounts-owner.mjs",
     "validate:backend-accounts-transfer-owner": "node scripts/validate-backend-accounts-transfer-owner.mjs",
+    "validate:backend-sessions-owner": "node scripts/validate-backend-sessions-owner.mjs",
     "validate:i18n": "node scripts/validate-i18n.mjs",
     "validate:e2e-mocks": "node scripts/validate-e2e-mocks.mjs"
   },

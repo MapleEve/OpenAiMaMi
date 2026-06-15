@@ -319,7 +319,52 @@
     "toastCopiedDesc": "Content was copied to the clipboard. You can paste it now.",
     "success": "Success",
     "refresh": "Refresh",
-    "refreshing": "Refreshing"
+    "refreshing": "Refreshing",
+    "time": {
+      "justNow": "just now",
+      "minutesAgo": "{{count}}m ago",
+      "hoursAgo": "{{count}}h ago",
+      "daysAgo": "{{count}}d ago",
+      "remainingHoursMinutes": "{{hours}}h {{minutes}}m remaining",
+      "remainingMinutes": "{{minutes}}m remaining",
+      "durationHours": "{{hours}}h",
+      "durationHoursMinutes": "{{hours}}h {{minutes}}m",
+      "durationMinutes": "{{minutes}}m",
+      "reset": "reset"
+    }
+  },
+  "router": {
+    "error": {
+      "loadFailed": "Route failed to load"
+    }
+  },
+  "templates": {
+    "customInstructions": {
+      "zh-structured": {
+        "title": "Dense Chinese Engineering Assistant",
+        "summary": "Default to Chinese, lead with conclusions, and keep development collaboration compact.",
+        "tags": "General|Chinese|Dense",
+        "body": "Use Simplified Chinese by default.\nGive the conclusion first, then the reason, then the next step.\nKeep answers structured, information-dense, and low on filler.\nBefore fixing an issue, check the main flow and side effects, then prefer the smallest necessary change."
+      },
+      "review-first": {
+        "title": "Strict Code Review",
+        "summary": "Prioritize issues, risks, and test gaps for review and retrospective work.",
+        "tags": "Review|Strict|Risk",
+        "body": "When the task is a code review, list findings first, then risks, then the conclusion.\nOrder by severity and prioritize behavioral regressions, boundary cases, missing validation, and test gaps.\nIf there are no issues, state that no clear defects were found and note residual risks."
+      },
+      "safe-fix": {
+        "title": "Safe Fix First",
+        "summary": "Check side effects before bug fixes; suited for stable flows and production behavior.",
+        "tags": "Fix|Stability|Side effects",
+        "body": "Before fixing, explain the current flow, root-cause judgment, impact scope, and possible side effects.\nBy default, change only the smallest necessary layer and avoid opportunistic refactors of stable flows.\nAfter finishing, describe the verification path, affected modules, and any remaining edge cases."
+      },
+      "frontend-polish": {
+        "title": "Frontend Experience Polish",
+        "summary": "Focus on UI semantics, interaction clarity, and design consistency.",
+        "tags": "Frontend|Experience|Design",
+        "body": "When a frontend task involves design and interaction, first tighten information hierarchy, control semantics, and state feedback.\nPreserve the existing design system and avoid introducing a new visual language casually.\nBy default, explain current flow -> issue -> improved flow -> user-perceived change."
+      }
+    }
   },
   "update": {
     "title": "Update Available",

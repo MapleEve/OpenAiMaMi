@@ -69,24 +69,28 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - 新增 `scripts/validate-frontend-voice-boundary.mjs` 与 `validate:frontend-voice-boundary`，用于防止 voice 重新进入 route registry、navigation type、runtime initializer、`src/lib/api.ts` 或 E2E mock handler；该门禁允许 `src/features/voice` 和 `src/services/voice` 继续作为公开空骨架存在。
 - 已把后端公开能力拆到 `commands`、`application/usecase`、`repository`、`repository/adapter`、`platform`、`contracts` 和 `core/error` 边界：command 只接参数和状态，usecase 负责编排，repository/adapter 负责文件读写，platform 负责系统能力，contracts 负责前后端可序列化数据形状。
 - 已把账号切换、账号删除、登出、导出、导入预览和导入事务从 `repository/accounts.rs` 上移到 `application/usecase/accounts.rs`：usecase 负责读取 registry、选择账号、校验目标账号、校验 snapshot、备份 auth、复制 snapshot、删除 snapshot、删除 auth、标记或清空 active、生成导出文件模型、计算导入冲突、写入导入 snapshot、保存 registry 和组装 `SwitchPayload` / `RemovePayload` / `LogoutPayload` / `AccountExportPayload` / `AccountImportPreviewPayload` / `AccountImportPayload`；repository 只暴露 registry 读写、导入文件读取、JSON 写入、snapshot 路径、auth 备份、auth 删除和 snapshot 删除等窄文件边界，账号 registry 与导入导出文件模型已移动到 `core/model/accounts.rs`。
+- 已补回 `sessions.load_sessions` 的公开只读文件清单切片：usecase 只编排 repository helper 和 DTO 映射，repository 只读取 `sessions_dir` 的一层文件元数据，目录不存在返回空列表，不解析闭源会话内容、不删除、不写入；无法从当前 FS adapter 证明的 `file_size` / `created_at` 保守返回 `0` / `None`。
+- 已把前端 `src/lib/time.ts`、`src/utils/router.tsx` 和 `src/lib/templates.ts` 的已知用户可见硬编码文案收敛到 locale owner：相对时间、倒计时、时长、重置文案、路由加载失败文案和内置自定义指令模板 title/summary/tags/body 都从 `src/locales/zh.json` 与 `src/locales/en.json` 读取。
 - `scripts/validate-backend-accounts-owner.mjs` 与 `validate:backend-accounts-owner` 已扩展为账号事务 owner 门禁，用于防止 `repository/accounts.rs` 重新暴露 `switch_account`、`remove_accounts`、`logout`、`export_accounts_to_file`、`preview_account_import` 和 `import_accounts_from_file` 用户动作事务，并校验这些编排仍在 application/usecase 内通过窄 repository helper 完成。
 - 新增 `scripts/validate-backend-accounts-transfer-owner.mjs` 与 `validate:backend-accounts-transfer-owner`，作为账号导入/导出专项门禁，单独防止 export、preview import 和 import 事务回退到 repository。
+- 新增 `scripts/validate-backend-sessions-owner.mjs` 与 `validate:backend-sessions-owner`，用于防止 sessions command 或 usecase 重新承担文件系统副作用，并确认 `load_sessions` 只通过 repository 读取 sessions 文件元数据。
 - 新增 `scripts/validate-frontend-relay-cache.mjs` 与 `validate:frontend-relay-cache`，并在 `src/features/relay/__tests__/README.md` 记录边界；该验证确认 relay mutation payload 先写 TanStack 权威 cache，再做已知 query 扇出或失效，并模拟 stale、delayed、event replay 的旧响应不能覆盖已接受的 mutation 结果。
+- 新增 `scripts/validate-frontend-copy-owners.mjs` 与 `validate:frontend-copy-owners`，覆盖 time/router/templates 三类动态用户可见文案，防止它们绕过 locale owner 回退到硬编码。
 - 新增 `scripts/validate-frontend-mystery-gates.mjs` 与 `validate:frontend-mystery-gates`，确认 `relayModel` grant 只映射到前端 `relay` route、meta/preload 统一使用 route registry 显隐 helper，并禁止 voice route 或外部参考项目名回流。
 - `scripts/validate-backend-hexagonal.mjs` 已从“全仓禁止真实副作用”改成“按 owner 限制副作用”：文件系统只允许仓储/适配器边界，进程、窗口、shell 只允许平台边界，voice 仍保持空骨架门禁。
 - `scripts/validate-frontend-entry-architecture.mjs` 已同步 route grants context 合同：允许 `getRouteMeta`、`getVisibleRouteMeta` 和 `preloadVisibleRoutes` 保持无参兼容的同时接收可选 context，并继续确认 route registry 是 meta/preload owner。
-- 新增 `scripts/validate-frontend-leaf-copy-acceptance.mjs`，把前端 leaf 和全文案验收从静态覆盖扫描中分离出来；全文案验收清单 `evidence/full-chain/internal/frontend-copy-acceptance.json` 已存在且 `status=accepted`，记录 `entries=613`、`acceptedZh=613`、`acceptedEn=613`、`missingRawOrInternalCopySource=0`，说明 locale 文案可回指 raw/internal 来源。
+- 新增 `scripts/validate-frontend-leaf-copy-acceptance.mjs`，把前端 leaf 和全文案验收从静态覆盖扫描中分离出来；全文案验收清单 `evidence/full-chain/internal/frontend-copy-acceptance.json` 已同步当前 locale，现为 `status=draft`，记录 `entries=640`、`acceptedZh=613`、`acceptedEn=613`、`missingRawOrInternalCopySource=27`，说明新增 time/router/templates 文案仍需补 raw/internal 文案来源后才能关闭全文案验收。
 - `README.md` 与 `README-cn.md` 保持中文同步，记录当前已经做了什么、没有做什么；本轮进度服务于 main 直接开发，每次提交都应同步更新 README，避免进度说明再次落后于证据和代码状态。
 
 ### 未做
 
-- 前端 macOS / Windows 双平台 100% leaf 尚未完成验收；现有 `validate-frontend-dumped`、`validate-frontend-evidence`、`validate-i18n` 和全文案 accepted 清单只能证明静态覆盖、owner 边界、locale key 同步和文案来源验收，不能证明所有 leaf、渲染、交互和状态语义已逐条还原。
+- 前端 macOS / Windows 双平台 100% leaf 尚未完成验收；现有 `validate-frontend-dumped`、`validate-frontend-evidence` 和 `validate-i18n` 只能证明静态覆盖、owner 边界和 locale key 同步；全文案清单当前是 draft，新增 27 个 time/router/templates 文案缺 raw/internal 来源，不能证明所有 leaf、渲染、交互和文案语义已逐条还原。
 - 严格 full leaf / gate 仍未闭合；internal gate/audit 中 `full_leaf_100`、`gate_accepted`、`readyToImplement`、`dim6` 等字段仍未全绿，不能宣称前端 100%、mystery gate 完成或已经可按完整闭环实现。
 - 后端闭源业务不做全量还原；没有公开证据支撑的业务行为仍只能保留为合同、桩、待实现项或测试缺口。
 - voice 前后端不做真实功能还原，不注册路由入口、不进入 runtime reload map、不注册 IPC handler，只保留空骨架和说明；原始公开材料中与录音、语音运行时、快捷键、音频反馈、文本注入相关的内容不进入当前公开实现。
 - voice 当前仍保留前端类型层命令清单、feature/service 空骨架和窗口 surface 标签，用于说明公开合同边界；这些内容没有 route registry、navigation meta、`src/lib/api.ts` wrapper、runtime reload map 或 E2E mock handler 入口，不作为可触达功能。
 - Accounts 已完成 `switch_account` / `switch_account_and_restart_codex`、`remove_accounts`、`logout`、`export_accounts_to_file`、`preview_account_import` 和 `import_accounts_from_file` 的 usecase owner 迁移；账号 attach monitor、外部程序重启、跨进程会话恢复和未公开闭源业务仍不声明真实闭环。
-- Accounts、Relay 启停/会话/真实转发、Analytics、Sessions、Daemon 真实后台线程与自动切换、更新安装、外部进程重启、诊断修复等后端能力仍未完成真实业务闭环；Relay 当前只补回 model fetch 读取合同和 test provider/draft mock terminal 测试合同，runtime watcher 当前只补回进程内状态合同，其他部分前端 wrapper 和后端命令仍只返回明确的未恢复状态。
+- Accounts、Relay 启停/会话/真实转发、Analytics、Sessions、Daemon 真实后台线程与自动切换、更新安装、外部进程重启、诊断修复等后端能力仍未完成真实业务闭环；Relay 当前只补回 model fetch 读取合同和 test provider/draft mock terminal 测试合同，Sessions 当前只补回 `load_sessions` 的目录文件元数据清单，runtime watcher 当前只补回进程内状态合同，其他部分前端 wrapper 和后端命令仍只返回明确的未恢复状态。
 - `remoteDeviceSecret` 当前已恢复 settings 读写和迁移语义，但尚未因此关闭前端全文案、渲染交互、双平台 leaf 或 internal gate 的剩余验收项。
 - `bootstrap-cache.json` 当前已恢复读取、解析失败返回空状态、DTO 字段承接、`usageAnalytics` / `mcpServers` / `installedSkills` 三个缓存切片生产写回，以及 E2E mock 共享 cache 验证；真实用量统计口径仍需按 raw/internal 证据继续补齐。
 - 启动链路当前只 seed 已有公开 cache owner、触发进程内 watcher once guard，并广播脱敏 runtime bridge event；尚未恢复真实后台线程、账号 attach monitor 循环、网络刷新或闭源自动切换动作。

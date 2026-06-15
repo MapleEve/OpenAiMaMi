@@ -6,6 +6,7 @@ import {
   type RouteObject,
 } from "react-router-dom";
 import { ErrorBoundary } from "@/components/boundary";
+import i18n from "@/lib/i18n";
 import { RouteShellSkeleton } from "@/routes/registry/skeletons";
 
 export function createAppRouter(routes: RouteObject[]) {
@@ -29,7 +30,7 @@ export function RouterErrorBoundary() {
   return (
     <ErrorBoundary fallback={<RouteShellSkeleton />}>
       <div className="p-6 text-sm text-destructive">
-        {message ?? "路由加载失败"}
+        {message ?? i18n.t("router.error.loadFailed")}
       </div>
     </ErrorBoundary>
   );
