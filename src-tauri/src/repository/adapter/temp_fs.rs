@@ -109,6 +109,10 @@ impl FileSystemAdapter for TempFileSystem {
         self.inner.modified_unix_seconds(&self.storage_path(path))
     }
 
+    fn created_unix_seconds(&self, path: &Path) -> Option<i64> {
+        self.inner.created_unix_seconds(&self.storage_path(path))
+    }
+
     fn file_size_bytes(&self, path: &Path) -> Result<u64, CoreError> {
         self.inner.file_size_bytes(&self.storage_path(path))
     }

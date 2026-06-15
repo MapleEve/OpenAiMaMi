@@ -550,6 +550,31 @@
       },
       "test": {
         "missingTarget": "Relay test mock is missing a target"
+      },
+      "diagnostic": {
+        "missingRouterBlock": {
+          "title": "Missing managed router block",
+          "message": "Codex Router is enabled, but config.toml does not contain a managed router block.",
+          "detail": "Rewrite the router config so the frontend state stays aligned with local config."
+        },
+        "routerEnabled": {
+          "label": "Router switch",
+          "enabled": "Relay state has Codex Router enabled.",
+          "disabled": "Relay state has Codex Router disabled."
+        },
+        "managedRouterBlock": {
+          "label": "Managed router block",
+          "missing": "config.toml does not contain a managed router block.",
+          "notRequired": "A managed router block is not required right now."
+        }
+      },
+      "fix": {
+        "autoFixed": "Fixed Codex Router diagnostic items that can be repaired automatically.",
+        "staleRouterEntriesRemoved": "Removed stale Codex Router config.",
+        "manualProfileRequired": "This diagnostic item requires manual handling; the mock cannot rewrite the user profile automatically.",
+        "manualProfileRequiredDetail": "Manually confirm how the top-level config.toml profile relates to router config.",
+        "readOnlyAcknowledged": "This diagnostic item is acknowledged, but the mock does not automatically change external state.",
+        "readOnlyAcknowledgedDetail": "Keeping the read-only diagnostic result to avoid changing the user environment without enough evidence."
       }
     },
     "codexRouter": {

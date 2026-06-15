@@ -1759,38 +1759,40 @@ function relayDiagnosticFromStatus(
     ? [
         {
           id: "missing_router_block",
-          title: "缺少路由托管块",
-          message: "已启用 Codex Router，但 config.toml 中没有检测到受管路由配置块。",
-          detail: "需要重新写入路由配置，避免前端状态和本地配置不一致。",
+          title: mockCopy("relay.mock.diagnostic.missingRouterBlock.title"),
+          message: mockCopy("relay.mock.diagnostic.missingRouterBlock.message"),
+          detail: mockCopy("relay.mock.diagnostic.missingRouterBlock.detail"),
           severity: "medium",
           status: "medium",
           fixable: true,
         },
       ]
     : [];
+  const routerEnabledMessage = mockCopy(
+    missingRouterBlock
+      ? "relay.mock.diagnostic.routerEnabled.enabled"
+      : "relay.mock.diagnostic.routerEnabled.disabled",
+  );
+  const managedRouterBlockMessage = mockCopy(
+    missingRouterBlock
+      ? "relay.mock.diagnostic.managedRouterBlock.missing"
+      : "relay.mock.diagnostic.managedRouterBlock.notRequired",
+  );
   const items: RelayDiagnosticIssuePayload[] = [
     {
       id: "router_enabled",
-      label: "路由开关",
-      message: missingRouterBlock
-        ? "relay 状态已启用 Codex Router。"
-        : "relay 状态未启用 Codex Router。",
-      detail: missingRouterBlock
-        ? "relay 状态已启用 Codex Router。"
-        : "relay 状态未启用 Codex Router。",
+      label: mockCopy("relay.mock.diagnostic.routerEnabled.label"),
+      message: routerEnabledMessage,
+      detail: routerEnabledMessage,
       severity: "ok",
       status: "ok",
       fixable: false,
     },
     {
       id: "missing_router_block",
-      label: "受管路由配置块",
-      message: missingRouterBlock
-        ? "config.toml 中未检测到受管路由配置块。"
-        : "当前不需要受管路由配置块。",
-      detail: missingRouterBlock
-        ? "config.toml 中未检测到受管路由配置块。"
-        : "当前不需要受管路由配置块。",
+      label: mockCopy("relay.mock.diagnostic.managedRouterBlock.label"),
+      message: managedRouterBlockMessage,
+      detail: managedRouterBlockMessage,
       severity: missingRouterBlock ? "medium" : "ok",
       status: missingRouterBlock ? "medium" : "ok",
       fixable: missingRouterBlock,
@@ -1864,7 +1866,7 @@ function relayRouterFixResult(itemId: string) {
     return {
       fixed: true,
       requiresRestart: true,
-      message: "已处理可自动修复的 Codex Router 诊断项。",
+      message: mockCopy("relay.mock.fix.autoFixed"),
       details: [
         "config.toml managed router block written",
         "codex_router_catalog.json ensured",
@@ -1875,7 +1877,7 @@ function relayRouterFixResult(itemId: string) {
     return {
       fixed: true,
       requiresRestart: true,
-      message: "已移除过期 Codex Router 配置。",
+      message: mockCopy("relay.mock.fix.staleRouterEntriesRemoved"),
       details: ["managed router config removed"],
     };
   }
@@ -1883,15 +1885,15 @@ function relayRouterFixResult(itemId: string) {
     return {
       fixed: false,
       requiresRestart: false,
-      message: "该诊断项需要手动处理，不能自动改写用户 profile。",
-      details: ["请手动确认 config.toml 顶层 profile 与路由配置的关系。"],
+      message: mockCopy("relay.mock.fix.manualProfileRequired"),
+      details: [mockCopy("relay.mock.fix.manualProfileRequiredDetail")],
     };
   }
   return {
     fixed: false,
     requiresRestart: false,
-    message: "该诊断项已确认，但当前 mock 不自动修改相关外部状态。",
-    details: ["保留只读诊断结果，避免在证据不足时改写用户环境。"],
+    message: mockCopy("relay.mock.fix.readOnlyAcknowledged"),
+    details: [mockCopy("relay.mock.fix.readOnlyAcknowledgedDetail")],
   };
 }
 

@@ -152,6 +152,10 @@ impl FileSystemAdapter for FakeFileSystem {
         self.exists(path).then_some(0)
     }
 
+    fn created_unix_seconds(&self, path: &Path) -> Option<i64> {
+        self.exists(path).then_some(0)
+    }
+
     fn file_size_bytes(&self, path: &Path) -> Result<u64, CoreError> {
         self.files
             .read()

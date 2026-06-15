@@ -32,13 +32,13 @@
     "internalRoot": "evidence/full-chain/internal"
   },
   "totals": {
-    "zhLocaleKeys": 645,
-    "enLocaleKeys": 645,
-    "entries": 645,
+    "zhLocaleKeys": 660,
+    "enLocaleKeys": 660,
+    "entries": 660,
     "rawControlFlowKeyBacked": 40,
     "internalKeyBacked": 12,
     "rawOrInternalKeyBacked": 47,
-    "sourceSyncOnly": 598,
+    "sourceSyncOnly": 613,
     "rawTranslationZhKeyBacked": 613,
     "rawTranslationEnKeyBacked": 613,
     "rawTranslationZhExact": 613,
@@ -47,7 +47,7 @@
     "rawTranslationValueMismatch": 0,
     "acceptedZh": 613,
     "acceptedEn": 613,
-    "missingRawOrInternalCopySource": 32
+    "missingRawOrInternalCopySource": 47
   },
   "entries": [
     {
@@ -31070,6 +31070,276 @@
       "key": "relay.mock.audit.ok",
       "zhValue": "正常",
       "enValue": "OK",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.diagnostic.managedRouterBlock.label",
+      "zhValue": "受管路由配置块",
+      "enValue": "Managed router block",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.diagnostic.managedRouterBlock.missing",
+      "zhValue": "config.toml 中未检测到受管路由配置块。",
+      "enValue": "config.toml does not contain a managed router block.",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.diagnostic.managedRouterBlock.notRequired",
+      "zhValue": "当前不需要受管路由配置块。",
+      "enValue": "A managed router block is not required right now.",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.diagnostic.missingRouterBlock.detail",
+      "zhValue": "需要重新写入路由配置，避免前端状态和本地配置不一致。",
+      "enValue": "Rewrite the router config so the frontend state stays aligned with local config.",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.diagnostic.missingRouterBlock.message",
+      "zhValue": "已启用 Codex Router，但 config.toml 中没有检测到受管路由配置块。",
+      "enValue": "Codex Router is enabled, but config.toml does not contain a managed router block.",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.diagnostic.missingRouterBlock.title",
+      "zhValue": "缺少路由托管块",
+      "enValue": "Missing managed router block",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.diagnostic.routerEnabled.disabled",
+      "zhValue": "relay 状态未启用 Codex Router。",
+      "enValue": "Relay state has Codex Router disabled.",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.diagnostic.routerEnabled.enabled",
+      "zhValue": "relay 状态已启用 Codex Router。",
+      "enValue": "Relay state has Codex Router enabled.",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.diagnostic.routerEnabled.label",
+      "zhValue": "路由开关",
+      "enValue": "Router switch",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.fix.autoFixed",
+      "zhValue": "已处理可自动修复的 Codex Router 诊断项。",
+      "enValue": "Fixed Codex Router diagnostic items that can be repaired automatically.",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.fix.manualProfileRequired",
+      "zhValue": "该诊断项需要手动处理，不能自动改写用户 profile。",
+      "enValue": "This diagnostic item requires manual handling; the mock cannot rewrite the user profile automatically.",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.fix.manualProfileRequiredDetail",
+      "zhValue": "请手动确认 config.toml 顶层 profile 与路由配置的关系。",
+      "enValue": "Manually confirm how the top-level config.toml profile relates to router config.",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.fix.readOnlyAcknowledged",
+      "zhValue": "该诊断项已确认，但当前 mock 不自动修改相关外部状态。",
+      "enValue": "This diagnostic item is acknowledged, but the mock does not automatically change external state.",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.fix.readOnlyAcknowledgedDetail",
+      "zhValue": "保留只读诊断结果，避免在证据不足时改写用户环境。",
+      "enValue": "Keeping the read-only diagnostic result to avoid changing the user environment without enough evidence.",
+      "zhAccepted": false,
+      "enAccepted": false,
+      "zhSource": null,
+      "enSource": null,
+      "evidenceTier": "source-sync-only",
+      "copyEvidenceTier": "source-sync-only",
+      "status": "source-sync-only-copy-unaccepted",
+      "blocker": "当前未找到 raw/internal key 或原始文案来源。需要补齐来源后才能验收。",
+      "keyEvidence": {
+        "rawControlFlow": [],
+        "internalMentions": []
+      },
+      "translationEvidence": []
+    },
+    {
+      "key": "relay.mock.fix.staleRouterEntriesRemoved",
+      "zhValue": "已移除过期 Codex Router 配置。",
+      "enValue": "Removed stale Codex Router config.",
       "zhAccepted": false,
       "enAccepted": false,
       "zhSource": null,

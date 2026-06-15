@@ -6,6 +6,10 @@ const backendRoot = join(repoRoot, "src-tauri", "src");
 const commandFile = join(backendRoot, "commands", "sessions.rs");
 const usecaseFile = join(backendRoot, "application", "usecase", "sessions.rs");
 const repositoryFile = join(backendRoot, "repository", "sessions.rs");
+const adapterModFile = join(backendRoot, "repository", "adapter", "mod.rs");
+const realFsFile = join(backendRoot, "repository", "adapter", "real_fs.rs");
+const fakeFsFile = join(backendRoot, "repository", "adapter", "fake_fs.rs");
+const tempFsFile = join(backendRoot, "repository", "adapter", "temp_fs.rs");
 const packageFile = join(repoRoot, "package.json");
 const failures = [];
 
@@ -85,6 +89,10 @@ function assertNoPattern(label, body, patterns) {
 const commandContent = readRequired(commandFile, "sessions command");
 const usecaseContent = readRequired(usecaseFile, "sessions usecase");
 const repositoryContent = readRequired(repositoryFile, "sessions repository");
+const adapterModContent = readRequired(adapterModFile, "repository fs adapter trait");
+const realFsContent = readRequired(realFsFile, "real filesystem adapter");
+const fakeFsContent = readRequired(fakeFsFile, "fake filesystem adapter");
+const tempFsContent = readRequired(tempFsFile, "temp filesystem adapter");
 const packageContent = readRequired(packageFile, "package.json");
 
 const commandLoadBody = requireFunctionBody(commandContent, commandFile, "load_sessions");
@@ -134,6 +142,12 @@ if (/file_size\s*:\s*0\b/.test(repositoryLoadBody)) {
 if (!/repo\.fs\(\)\.file_size_bytes\s*\(\s*&entry\.path\s*\)/.test(repositoryLoadBody)) {
   failures.push("repository/sessions.rs load_session_file_metadata 必须通过 FS adapter 读取 file_size");
 }
+if (/created_at\s*:\s*None\b/.test(repositoryLoadBody)) {
+  failures.push("repository/sessions.rs load_session_file_metadata 不得将 created_at 固定为 None");
+}
+if (!/created_at\s*:\s*repo\.fs\(\)\.created_unix_seconds\s*\(\s*&entry\.path\s*\)/.test(repositoryLoadBody)) {
+  failures.push("repository/sessions.rs load_session_file_metadata 必须通过 FS adapter 读取 created_at");
+}
 assertNoPattern("repository/sessions.rs load_session_file_metadata", repositoryLoadBody, [
   /\bread_to_string\s*\(/,
   /\bwrite_string\s*\(/,
@@ -143,6 +157,25 @@ assertNoPattern("repository/sessions.rs load_session_file_metadata", repositoryL
   /\bcopy_file\s*\(/,
   /\brename\s*\(/,
 ]);
+
+if (!/fn\s+created_unix_seconds\s*\(\s*&self\s*,\s*path\s*:\s*&Path\s*\)\s*->\s*Option\s*<\s*i64\s*>/.test(adapterModContent)) {
+  failures.push("repository/adapter/mod.rs FileSystemAdapter 缺少 created_unix_seconds");
+}
+
+const realCreatedBody = requireFunctionBody(realFsContent, realFsFile, "created_unix_seconds");
+if (!/std::fs::metadata\s*\(\s*path\s*\)/.test(realCreatedBody) || !/\.created\s*\(\s*\)/.test(realCreatedBody)) {
+  failures.push("repository/adapter/real_fs.rs created_unix_seconds 必须使用 std::fs::metadata(path).created()");
+}
+
+const fakeCreatedBody = requireFunctionBody(fakeFsContent, fakeFsFile, "created_unix_seconds");
+if (!fakeCreatedBody.trim()) {
+  failures.push("repository/adapter/fake_fs.rs 缺少可替换的 created_unix_seconds 实现");
+}
+
+const tempCreatedBody = requireFunctionBody(tempFsContent, tempFsFile, "created_unix_seconds");
+if (!/self\.inner\.created_unix_seconds\s*\(\s*&self\.storage_path\s*\(\s*path\s*\)\s*\)/.test(tempCreatedBody)) {
+  failures.push("repository/adapter/temp_fs.rs created_unix_seconds 必须通过 storage_path 委托");
+}
 
 for (const name of ["delete_sessions", "import_chatgpt_session_account", "load_session_analytics"]) {
   const body = requireFunctionBody(usecaseContent, usecaseFile, name);
