@@ -8,10 +8,10 @@
 - 本目录和下级目录禁止写入共享盘地址、本机用户名、机器名、内部历史标识和外部参考仓库名称。
 
 
-## runtime-extensions feature owner
+## runtime-extensions feature 边界
 
-- 本目录是 runtime-extensions 复杂模块的唯一 feature owner。
-- Provider 只建立模块上下文；StoreUpdater 只同步外部 props/event/query cache；Content 只渲染并发出用户意图。
-- cache/hooks 负责 query key、single-flight、mutation payload、stale/delayed response、abort 和 event replay 防护。
-- dialogs/panels/components 只消费模块状态和发出意图，不直接拼 IPC transport。
-- 无 raw/internal 证据支撑的 runtime-extensions 行为只能保留边界类型、测试占位和待补证据位置。
+- runtime-extensions 是 IPC domain 和 service 能力边界，不作为可见 feature owner。
+- plugins 是当前 runtime extension 可见页面、Provider、StoreUpdater、Content、hooks、cache、dialogs、panels、components、types 和贴近测试的单一模块归属方。
+- 本目录不得新增 Provider、StoreUpdater、Content、hooks、cache、dialogs、panels、components、store、types 或页面入口。
+- 需要访问 runtime-extensions 后端能力时，只能经 src/services/runtime-extensions 和 src/services/plugins 的窄 wrapper，再由可见 plugins owner 消费。
+- 无 raw/internal 证据支撑的 runtime-extensions 行为只能保留 IPC/service 边界类型、错误语义、测试占位和待补证据位置。

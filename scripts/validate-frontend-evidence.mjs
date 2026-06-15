@@ -949,7 +949,10 @@ function validateKnownInternalFrontendGates() {
     analyticsQuery.includes("AnalyticsCacheEnvelope<AnalyticsChangeEnvelope>") &&
     analyticsQuery.includes("AnalyticsCacheEnvelope<AnalyticsQuotaEnvelope>") &&
     analyticsQuery.includes("useAnalyticsModule") &&
-    analyticsQuery.includes("writeAnalyticsPanelPayload") &&
+    analyticsQuery.includes("AnalyticsPanelQueryDescriptors") &&
+    analyticsQuery.includes("readAnalyticsPanelEnvelope") &&
+    analyticsQuery.includes("runAnalyticsPanelQuery") &&
+    !analyticsQuery.includes("writeAnalyticsPanelPayload") &&
     analyticsPageHook.includes("useAnalyticsPageController") &&
     analyticsPageHook.includes("AnalyticsPageController") &&
     analyticsPageHook.includes("PANELS") &&
@@ -964,6 +967,9 @@ function validateKnownInternalFrontendGates() {
     !analyticsPageHook.match(/\buse(Query|Mutation|QueryClient)\b/) &&
     !analyticsPageHook.match(/@\/services\/analytics|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|analyticsService\.|invokeIpc|invoke\(/) &&
     analyticsCache.includes("AnalyticsCachePayload") &&
+    analyticsCache.includes("writeAnalyticsPanelPayload") &&
+    analyticsCache.includes("analyticsLatestReservedSequenceByKey") &&
+    analyticsCache.includes("isReservedAnalyticsPanelResponseStale") &&
     !analyticsCache.includes("ModuleCacheEnvelope<unknown>") &&
     !analyticsQuery.includes("payload: unknown") &&
     !analyticsPageHook.includes("payload: unknown");
@@ -2235,14 +2241,23 @@ function validatePluginsFrontendNoPromotionGate() {
   }
 
   const serviceWrappersOk =
-    service.includes('"list_plugins"') &&
-    service.includes('"toggle_plugin"') &&
-    service.includes('"get_plugin_config"') &&
-    service.includes('"update_plugin_config"') &&
-    service.includes("{ id, enabled }") &&
-    service.includes("{ id, settings }");
+    runtimeService.includes('"list_plugins"') &&
+    runtimeService.includes('"toggle_plugin"') &&
+    runtimeService.includes('"get_plugin_config"') &&
+    runtimeService.includes('"update_plugin_config"') &&
+    /togglePlugin[\s\S]*\{\s*id\s*,\s*enabled\s*\}/.test(runtimeService) &&
+    /updatePluginConfig[\s\S]*id\s*,[\s\S]*settings/.test(runtimeService) &&
+    service.includes("runtimeExtensionsService.listPlugins()") &&
+    service.includes("runtimeExtensionsService.togglePlugin(id, enabled)") &&
+    service.includes("runtimeExtensionsService.getPluginConfig(id)") &&
+    service.includes("runtimeExtensionsService.updatePluginConfig(id, settings)") &&
+    !service.includes("invokeIpc") &&
+    !service.includes('"list_plugins"') &&
+    !service.includes('"toggle_plugin"') &&
+    !service.includes('"get_plugin_config"') &&
+    !service.includes('"update_plugin_config"');
   if (!serviceWrappersOk) {
-    failures.push("plugins service 必须保留四个 raw wrapper 和参数边界");
+    failures.push("plugins service 必须委托 runtime-extensions raw wrapper，并保留参数边界");
   }
 
   const contractOk =
@@ -2320,12 +2335,18 @@ function validatePluginsTypedPayloadGate() {
   const panel = readRequired(pluginsPanelPath);
 
   const typedPayloadOk =
-    service.includes("CoreEnvelope<RuntimeExtensionListPayload>") &&
-    service.includes("CoreEnvelope<RuntimeExtensionTogglePayload>") &&
-    service.includes("CoreEnvelope<RuntimeExtensionConfigPayload>") &&
+    service.includes("RuntimeExtensionListEnvelope") &&
+    service.includes("RuntimeExtensionToggleEnvelope") &&
+    service.includes("RuntimeExtensionConfigEnvelope") &&
+    service.includes("runtimeExtensionsService") &&
     runtimeService.includes("CoreEnvelope<RuntimeExtensionListPayload>") &&
     runtimeService.includes("CoreEnvelope<RuntimeExtensionTogglePayload>") &&
     runtimeService.includes("CoreEnvelope<RuntimeExtensionConfigPayload>") &&
+    !service.includes("invokeIpc") &&
+    !service.includes('"list_plugins"') &&
+    !service.includes('"toggle_plugin"') &&
+    !service.includes('"get_plugin_config"') &&
+    !service.includes('"update_plugin_config"') &&
     !service.includes("IpcEvidencePayload") &&
     !runtimeService.includes("IpcEvidencePayload") &&
     types.includes("export type PluginsCachePayload") &&

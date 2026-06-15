@@ -1,29 +1,28 @@
-import { invokeIpc } from "@/contracts/ipc";
-import type {
-  CoreEnvelope,
-  RuntimeExtensionConfigPayload,
-  RuntimeExtensionListPayload,
-  RuntimeExtensionSettingsValue,
-  RuntimeExtensionTogglePayload,
-} from "@/types";
+import {
+  runtimeExtensionsService,
+  type RuntimeExtensionConfigEnvelope,
+  type RuntimeExtensionListEnvelope,
+  type RuntimeExtensionSettings,
+  type RuntimeExtensionToggleEnvelope,
+} from "@/services/runtime-extensions";
 
-export type PluginSettingsPayload = RuntimeExtensionSettingsValue;
-export type PluginsListEnvelope = CoreEnvelope<RuntimeExtensionListPayload>;
-export type PluginsToggleEnvelope = CoreEnvelope<RuntimeExtensionTogglePayload>;
-export type PluginsConfigEnvelope = CoreEnvelope<RuntimeExtensionConfigPayload>;
+export type PluginSettingsPayload = RuntimeExtensionSettings;
+export type PluginsListEnvelope = RuntimeExtensionListEnvelope;
+export type PluginsToggleEnvelope = RuntimeExtensionToggleEnvelope;
+export type PluginsConfigEnvelope = RuntimeExtensionConfigEnvelope;
 export type PluginsMutationEnvelope =
   | PluginsToggleEnvelope
   | PluginsConfigEnvelope;
 
 export const pluginsService = {
-  list: () => invokeIpc<PluginsListEnvelope>("list_plugins"),
+  list: () => runtimeExtensionsService.listPlugins(),
 
   toggle: (id: string, enabled: boolean) =>
-    invokeIpc<PluginsToggleEnvelope>("toggle_plugin", { id, enabled }),
+    runtimeExtensionsService.togglePlugin(id, enabled),
 
   getConfig: (id: string) =>
-    invokeIpc<PluginsConfigEnvelope>("get_plugin_config", { id }),
+    runtimeExtensionsService.getPluginConfig(id),
 
   updateConfig: (id: string, settings: PluginSettingsPayload) =>
-    invokeIpc<PluginsConfigEnvelope>("update_plugin_config", { id, settings }),
+    runtimeExtensionsService.updatePluginConfig(id, settings),
 };

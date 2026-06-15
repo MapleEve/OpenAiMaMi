@@ -546,9 +546,9 @@ function validateAnalyticsDeepOwnerBoundaries() {
     "analyticsService.loadToolAnalytics",
     "analyticsService.loadChangeAnalytics",
     "analyticsService.loadQuotaHistory",
-    "AnalyticsAuthoritativeQueryKeys",
-    "AnalyticsDumpedQueryKeys",
-    "writeAnalyticsPanelPayload",
+    "AnalyticsPanelQueryDescriptors",
+    "readAnalyticsPanelEnvelope",
+    "runAnalyticsPanelQuery",
     "AnalyticsCacheEnvelope<AnalyticsUsageEnvelope>",
     "AnalyticsCacheEnvelope<AnalyticsSessionEnvelope>",
     "AnalyticsCacheEnvelope<AnalyticsTokenEnvelope>",
@@ -560,6 +560,7 @@ function validateAnalyticsDeepOwnerBoundaries() {
     [/\buseMutation\b/, "analytics query owner must not own mutation"],
     [/\buse(State|Reducer|Memo)\b/, "analytics query owner must not own page/controller UI state or view models"],
     [/useTranslation|formatInvokeError|build[A-Za-z]*(Panel|Model)|AnalyticsPageController|setActivePanel|setRange|setActivityRange|setQuotaAccountKey/, "analytics query owner must not own page controller, locale formatting, or panel view models"],
+    [/\b(useRef|sequenceRef|nextSequence|writeAnalyticsPanelPayload)\b/, "analytics query owner must delegate sequence allocation and cache writes to cache helper"],
     [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "analytics query owner must use analytics service wrapper, not IPC/API transport"],
     [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "analytics query owner must keep typed authoritative payloads"],
   ]);
@@ -607,7 +608,13 @@ function validateAnalyticsDeepOwnerBoundaries() {
     "createModuleCacheOwner<AnalyticsCachePayload>(\"analytics\")",
     "AnalyticsDumpedQueryKeys",
     "AnalyticsAuthoritativeQueryKeys",
+    "AnalyticsPanelQueryDescriptors",
+    "readAnalyticsPanelEnvelope",
+    "runAnalyticsPanelQuery",
     "writeAnalyticsPanelPayload",
+    "analyticsCacheSequence",
+    "reserveAnalyticsPanelSequence",
+    "isReservedAnalyticsPanelResponseStale",
     "setQueryData<ModuleCacheEnvelope<AnalyticsCachePayload>>",
     "mutationFenceAt",
     "isStaleEnvelope",
@@ -1164,6 +1171,83 @@ function validatePluginsDeepOwnerBoundaries() {
   ]);
 
   console.log("PASS plugins 深层 owner 边界门禁已执行：list/toggle/refresh owner 保留，config UI owner 未提升");
+}
+
+function validateRuntimeExtensionsPluginsOwnerMerge() {
+  const runtimeExtensionsFeatureRoot = join(featuresRoot, "runtime-extensions");
+  const runtimeExtensionsServicePath = join(servicesRoot, "runtime-extensions", "index.ts");
+  const pluginsServicePath = join(servicesRoot, "plugins", "index.ts");
+  const runtimeFeatureFiles = walkFiles(runtimeExtensionsFeatureRoot, (file) =>
+    /\.(ts|tsx)$/.test(file),
+  );
+  const forbiddenFeatureOwnerEntries = [
+    "Provider.tsx",
+    "StoreUpdater.tsx",
+    "Content.tsx",
+    "cache",
+    "hooks",
+    "dialogs",
+    "panels",
+    "components",
+    "store",
+    "types",
+  ];
+  const forbiddenPluginServiceSignals = [
+    "@/contracts/ipc",
+    "invokeIpc",
+    '"list_plugins"',
+    '"toggle_plugin"',
+    '"get_plugin_config"',
+    '"update_plugin_config"',
+  ];
+
+  if (runtimeFeatureFiles.length > 0) {
+    failures.push(
+      `src/features/runtime-extensions 不得新增 TS/TSX 可见 feature owner 文件：${runtimeFeatureFiles.map(repoPath).join(", ")}`,
+    );
+  }
+
+  for (const entry of forbiddenFeatureOwnerEntries) {
+    if (existsSync(join(runtimeExtensionsFeatureRoot, entry))) {
+      failures.push(`src/features/runtime-extensions/${entry} 会形成重复 feature owner，当前可见 owner 只能是 plugins`);
+    }
+  }
+
+  const runtimeAgents = readRequired(join(runtimeExtensionsFeatureRoot, "AGENTS.md"));
+  assertIncludes("src/features/runtime-extensions/AGENTS.md", runtimeAgents, [
+    "runtime-extensions 是 IPC domain 和 service 能力边界",
+    "不作为可见 feature owner",
+    "plugins 是当前 runtime extension 可见页面",
+  ]);
+  assertNotMatches("src/features/runtime-extensions/AGENTS.md", runtimeAgents, [
+    [/唯一 feature owner/, "runtime-extensions feature 规则不得再声明自己是可见 feature owner"],
+  ]);
+
+  const runtimeService = readRequired(runtimeExtensionsServicePath);
+  assertIncludes("src/services/runtime-extensions/index.ts", runtimeService, [
+    "invokeIpc",
+    '"list_plugins"',
+    '"toggle_plugin"',
+    '"get_plugin_config"',
+    '"update_plugin_config"',
+    "runtimeExtensionsService",
+  ]);
+
+  const pluginsService = readRequired(pluginsServicePath);
+  assertIncludes("src/services/plugins/index.ts", pluginsService, [
+    "@/services/runtime-extensions",
+    "runtimeExtensionsService.listPlugins",
+    "runtimeExtensionsService.togglePlugin",
+    "runtimeExtensionsService.getPluginConfig",
+    "runtimeExtensionsService.updatePluginConfig",
+  ]);
+  for (const signal of forbiddenPluginServiceSignals) {
+    if (pluginsService.includes(signal)) {
+      failures.push(`src/services/plugins/index.ts 只能作为 visible wrapper，不得重复拼 runtime-extensions IPC：${signal}`);
+    }
+  }
+
+  console.log("PASS runtime-extensions/plugins owner 合并门禁已执行：runtime-extensions 只保留 IPC/service 能力边界");
 }
 
 function validateTrayShellDeepOwnerBoundaries() {
@@ -2476,6 +2560,7 @@ validateAnalyticsDeepOwnerBoundaries();
 validateCustomInstructionsDeepOwnerBoundaries();
 validateMcpDeepOwnerBoundaries();
 validatePluginsDeepOwnerBoundaries();
+validateRuntimeExtensionsPluginsOwnerMerge();
 validateTrayShellDeepOwnerBoundaries();
 validateSettingsDeepOwnerBoundaries();
 validateSkillsDeepOwnerBoundaries();

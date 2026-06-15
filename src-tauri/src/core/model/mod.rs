@@ -1,4 +1,6 @@
 pub mod accounts;
+pub mod analytics;
+pub mod custom_instructions;
 pub mod diagnostics;
 pub mod hotspot;
 pub mod relay;

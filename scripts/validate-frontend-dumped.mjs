@@ -91,7 +91,7 @@ const appShellIndexQueryContracts = [
     consumerPath: "src/features/overview/hooks/query.ts",
     commands: ["load_usage_analytics"],
     ownerFragments: ["AnalyticsDumpedQueryKeys", "usage"],
-    hookFragments: ["AnalyticsDumpedQueryKeys.usage", "loadUsageAnalytics"],
+    hookFragments: ["AnalyticsPanelQueryDescriptors.usage", "loadUsageAnalytics"],
     consumerFragments: ["usageQuery", "loadUsageAnalytics"],
   },
   {
@@ -547,30 +547,41 @@ function validatePluginsDumpedContract() {
   const before = failures.length;
   const pluginsContractPath = join(featuresRoot, "plugins", "contract.ts");
   const pluginsServicePath = join(servicesRoot, "plugins", "index.ts");
+  const runtimeExtensionsServicePath = join(servicesRoot, "runtime-extensions", "index.ts");
   const pluginsContentPath = join(featuresRoot, "plugins", "Content.tsx");
   const contract = readRequired(pluginsContractPath);
   const service = readRequired(pluginsServicePath);
+  const runtimeService = readRequired(runtimeExtensionsServicePath);
   const content = readRequired(pluginsContentPath);
   const commandBlocks = extractCommandBlocks(contract);
   const expected = [
-    { command: "list_plugins", argKeys: [], controlFlowCount: 1, serviceArgs: [] },
+    {
+      command: "list_plugins",
+      argKeys: [],
+      controlFlowCount: 1,
+      serviceArgs: [],
+      visibleWrapper: "runtimeExtensionsService.listPlugins",
+    },
     {
       command: "toggle_plugin",
       argKeys: ["enabled", "id"],
       controlFlowCount: 1,
       serviceArgs: ["id", "enabled"],
+      visibleWrapper: "runtimeExtensionsService.togglePlugin",
     },
     {
       command: "get_plugin_config",
       argKeys: ["id"],
       controlFlowCount: 0,
       serviceArgs: ["id"],
+      visibleWrapper: "runtimeExtensionsService.getPluginConfig",
     },
     {
       command: "update_plugin_config",
       argKeys: ["id", "settings"],
       controlFlowCount: 0,
       serviceArgs: ["id", "settings"],
+      visibleWrapper: "runtimeExtensionsService.updatePluginConfig",
     },
   ];
 
@@ -595,8 +606,14 @@ function validatePluginsDumpedContract() {
     if (!block.includes(`"controlFlowCount": ${item.controlFlowCount}`)) {
       failures.push(`plugins ${item.command} controlFlowCount 必须为 ${item.controlFlowCount}`);
     }
-    if (!service.includes(`"${item.command}"`)) {
-      failures.push(`plugins service 缺少 raw wrapper：${item.command}`);
+    if (!service.includes(item.visibleWrapper)) {
+      failures.push(`plugins service 缺少 visible wrapper 委托：${item.visibleWrapper}`);
+    }
+    if (service.includes(`"${item.command}"`)) {
+      failures.push(`plugins service 不得重复拼 runtime-extensions raw command：${item.command}`);
+    }
+    if (!runtimeService.includes(`"${item.command}"`)) {
+      failures.push(`runtime-extensions service 缺少 raw wrapper：${item.command}`);
     }
     for (const arg of item.serviceArgs) {
       if (!service.includes(arg)) {
@@ -745,7 +762,12 @@ function validatePluginsRestorationMatrix(manifest) {
       service: "src/services/plugins/index.ts",
       contract: "src/features/plugins/contract.ts",
       types: "src/features/plugins/types/index.ts",
-      serviceFragments: ['"get_plugin_config"', "PluginsConfigEnvelope", "{ id }"],
+      serviceFragments: [
+        "runtimeExtensionsService.getPluginConfig",
+        "PluginsConfigEnvelope",
+        "(id)",
+      ],
+      ipcServiceFragments: ['"get_plugin_config"', "RuntimeExtensionConfigEnvelope", "{ id }"],
       contractFragments: ['"command": "get_plugin_config"', '"controlFlowCount": 0'],
     },
     {
@@ -756,9 +778,15 @@ function validatePluginsRestorationMatrix(manifest) {
       contract: "src/features/plugins/contract.ts",
       types: "src/features/plugins/types/index.ts",
       serviceFragments: [
-        '"update_plugin_config"',
+        "runtimeExtensionsService.updatePluginConfig",
         "PluginsConfigEnvelope",
-        "{ id, settings }",
+        "(id, settings)",
+      ],
+      ipcServiceFragments: [
+        '"update_plugin_config"',
+        "RuntimeExtensionConfigEnvelope",
+        "id,",
+        "settings,",
       ],
       contractFragments: ['"command": "update_plugin_config"', '"controlFlowCount": 0'],
     },
@@ -810,12 +838,21 @@ function validatePluginsRestorationMatrix(manifest) {
     }
 
     const service = readRequired(resolveRepoPath(rule.service));
+    const ipcService = readRequired(resolveRepoPath("src/services/runtime-extensions/index.ts"));
     const contract = readRequired(resolveRepoPath(rule.contract));
     const types = readRequired(resolveRepoPath(rule.types));
 
     for (const fragment of rule.serviceFragments) {
       if (!service.includes(fragment)) {
         failures.push(`plugins ${rule.command} service wrapper 缺少：${fragment}`);
+      }
+    }
+    if (service.includes(`"${rule.command}"`)) {
+      failures.push(`plugins ${rule.command} service wrapper 不得重复拼 runtime-extensions raw command`);
+    }
+    for (const fragment of rule.ipcServiceFragments) {
+      if (!ipcService.includes(fragment)) {
+        failures.push(`runtime-extensions ${rule.command} IPC/service wrapper 缺少：${fragment}`);
       }
     }
     for (const fragment of rule.contractFragments) {

@@ -1,13 +1,12 @@
-import { useRef } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useModuleCacheController } from "@/features/_shared/controller";
 import { analyticsService } from "@/services/analytics";
 import type { AnalyticsRange } from "@/types";
 import {
-  AnalyticsAuthoritativeQueryKeys,
   AnalyticsCache,
-  AnalyticsDumpedQueryKeys,
-  writeAnalyticsPanelPayload,
+  AnalyticsPanelQueryDescriptors,
+  readAnalyticsPanelEnvelope,
+  runAnalyticsPanelQuery,
 } from "../cache";
 import type {
   AnalyticsCacheEnvelope,
@@ -35,169 +34,110 @@ export function useAnalyticsModule(
   options: AnalyticsModuleOptions = {},
 ) {
   const queryClient = useQueryClient();
-  const sequenceRef = useRef(0);
-  const nextSequence = () => ++sequenceRef.current;
   const activePanel = options.activePanel ?? "activity";
   const quotaAccountKey = options.quotaAccountKey?.trim() ?? "";
   const queriesEnabled = options.queriesEnabled ?? true;
-  const sessionStateKey = AnalyticsAuthoritativeQueryKeys.sessions(range);
-  const tokenStateKey = AnalyticsAuthoritativeQueryKeys.tokens(range);
-  const toolStateKey = AnalyticsAuthoritativeQueryKeys.tools(range);
-  const changeStateKey = AnalyticsAuthoritativeQueryKeys.changes(range);
-  const quotaStateKey = AnalyticsAuthoritativeQueryKeys.quota(quotaAccountKey);
+  const usagePanelQuery = AnalyticsPanelQueryDescriptors.usage();
+  const sessionPanelQuery = AnalyticsPanelQueryDescriptors.sessions(range);
+  const tokenPanelQuery = AnalyticsPanelQueryDescriptors.tokens(range);
+  const toolPanelQuery = AnalyticsPanelQueryDescriptors.tools(range);
+  const changePanelQuery = AnalyticsPanelQueryDescriptors.changes(range);
+  const quotaPanelQuery = AnalyticsPanelQueryDescriptors.quota(quotaAccountKey);
 
   const usageEnvelopeQuery = useQuery<AnalyticsCacheEnvelope<AnalyticsUsageEnvelope> | null>({
-    queryKey: AnalyticsAuthoritativeQueryKeys.usage,
-    queryFn: async () =>
-      queryClient.getQueryData<AnalyticsCacheEnvelope<AnalyticsUsageEnvelope>>(
-        AnalyticsAuthoritativeQueryKeys.usage,
-      ) ?? null,
+    queryKey: usagePanelQuery.authoritativeQueryKey,
+    queryFn: () => readAnalyticsPanelEnvelope(queryClient, usagePanelQuery),
     enabled: false,
     staleTime: Infinity,
     gcTime: Infinity,
   });
   const sessionEnvelopeQuery = useQuery<AnalyticsCacheEnvelope<AnalyticsSessionEnvelope> | null>({
-    queryKey: sessionStateKey,
-    queryFn: async () =>
-      queryClient.getQueryData<AnalyticsCacheEnvelope<AnalyticsSessionEnvelope>>(
-        sessionStateKey,
-      ) ?? null,
+    queryKey: sessionPanelQuery.authoritativeQueryKey,
+    queryFn: () => readAnalyticsPanelEnvelope(queryClient, sessionPanelQuery),
     enabled: false,
     staleTime: Infinity,
     gcTime: Infinity,
   });
   const tokenEnvelopeQuery = useQuery<AnalyticsCacheEnvelope<AnalyticsTokenEnvelope> | null>({
-    queryKey: tokenStateKey,
-    queryFn: async () =>
-      queryClient.getQueryData<AnalyticsCacheEnvelope<AnalyticsTokenEnvelope>>(
-        tokenStateKey,
-      ) ?? null,
+    queryKey: tokenPanelQuery.authoritativeQueryKey,
+    queryFn: () => readAnalyticsPanelEnvelope(queryClient, tokenPanelQuery),
     enabled: false,
     staleTime: Infinity,
     gcTime: Infinity,
   });
   const toolEnvelopeQuery = useQuery<AnalyticsCacheEnvelope<AnalyticsToolEnvelope> | null>({
-    queryKey: toolStateKey,
-    queryFn: async () =>
-      queryClient.getQueryData<AnalyticsCacheEnvelope<AnalyticsToolEnvelope>>(toolStateKey) ??
-      null,
+    queryKey: toolPanelQuery.authoritativeQueryKey,
+    queryFn: () => readAnalyticsPanelEnvelope(queryClient, toolPanelQuery),
     enabled: false,
     staleTime: Infinity,
     gcTime: Infinity,
   });
   const changeEnvelopeQuery = useQuery<AnalyticsCacheEnvelope<AnalyticsChangeEnvelope> | null>({
-    queryKey: changeStateKey,
-    queryFn: async () =>
-      queryClient.getQueryData<AnalyticsCacheEnvelope<AnalyticsChangeEnvelope>>(
-        changeStateKey,
-      ) ?? null,
+    queryKey: changePanelQuery.authoritativeQueryKey,
+    queryFn: () => readAnalyticsPanelEnvelope(queryClient, changePanelQuery),
     enabled: false,
     staleTime: Infinity,
     gcTime: Infinity,
   });
   const quotaEnvelopeQuery = useQuery<AnalyticsCacheEnvelope<AnalyticsQuotaEnvelope> | null>({
-    queryKey: quotaStateKey,
-    queryFn: async () =>
-      queryClient.getQueryData<AnalyticsCacheEnvelope<AnalyticsQuotaEnvelope>>(quotaStateKey) ??
-      null,
+    queryKey: quotaPanelQuery.authoritativeQueryKey,
+    queryFn: () => readAnalyticsPanelEnvelope(queryClient, quotaPanelQuery),
     enabled: false,
     staleTime: Infinity,
     gcTime: Infinity,
   });
 
   const usageQuery = useQuery({
-    queryKey: AnalyticsDumpedQueryKeys.usage,
-    queryFn: async () => {
-      const sequence = nextSequence();
-      const payload = await analyticsService.loadUsageAnalytics();
-      writeAnalyticsPanelPayload(queryClient, AnalyticsAuthoritativeQueryKeys.usage, {
-        payload,
-        source: "full-refresh",
-        sequence,
-        receivedAt: Date.now(),
-      });
-      return payload;
-    },
+    queryKey: usagePanelQuery.dumpedQueryKey,
+    queryFn: () =>
+      runAnalyticsPanelQuery(queryClient, usagePanelQuery, () =>
+        analyticsService.loadUsageAnalytics(),
+      ),
     enabled: queriesEnabled && activePanel === "activity",
     staleTime: Infinity,
   });
   const sessionQuery = useQuery({
-    queryKey: AnalyticsDumpedQueryKeys.sessions(range),
-    queryFn: async () => {
-      const sequence = nextSequence();
-      const payload = await analyticsService.loadSessionAnalytics(range);
-      writeAnalyticsPanelPayload(queryClient, sessionStateKey, {
-        payload,
-        source: "full-refresh",
-        sequence,
-        receivedAt: Date.now(),
-      });
-      return payload;
-    },
+    queryKey: sessionPanelQuery.dumpedQueryKey,
+    queryFn: () =>
+      runAnalyticsPanelQuery(queryClient, sessionPanelQuery, () =>
+        analyticsService.loadSessionAnalytics(range),
+      ),
     enabled: queriesEnabled && activePanel === "sessions",
     ...ANALYTICS_QUERY_POLICY,
   });
   const tokenQuery = useQuery({
-    queryKey: AnalyticsDumpedQueryKeys.tokens(range),
-    queryFn: async () => {
-      const sequence = nextSequence();
-      const payload = await analyticsService.loadTokenAnalytics(range);
-      writeAnalyticsPanelPayload(queryClient, tokenStateKey, {
-        payload,
-        source: "full-refresh",
-        sequence,
-        receivedAt: Date.now(),
-      });
-      return payload;
-    },
+    queryKey: tokenPanelQuery.dumpedQueryKey,
+    queryFn: () =>
+      runAnalyticsPanelQuery(queryClient, tokenPanelQuery, () =>
+        analyticsService.loadTokenAnalytics(range),
+      ),
     enabled: queriesEnabled && activePanel === "token",
     ...ANALYTICS_QUERY_POLICY,
   });
   const toolQuery = useQuery({
-    queryKey: AnalyticsDumpedQueryKeys.tools(range),
-    queryFn: async () => {
-      const sequence = nextSequence();
-      const payload = await analyticsService.loadToolAnalytics(range);
-      writeAnalyticsPanelPayload(queryClient, toolStateKey, {
-        payload,
-        source: "full-refresh",
-        sequence,
-        receivedAt: Date.now(),
-      });
-      return payload;
-    },
+    queryKey: toolPanelQuery.dumpedQueryKey,
+    queryFn: () =>
+      runAnalyticsPanelQuery(queryClient, toolPanelQuery, () =>
+        analyticsService.loadToolAnalytics(range),
+      ),
     enabled: queriesEnabled && activePanel === "tools",
     ...ANALYTICS_QUERY_POLICY,
   });
   const changeQuery = useQuery({
-    queryKey: AnalyticsDumpedQueryKeys.changes(range),
-    queryFn: async () => {
-      const sequence = nextSequence();
-      const payload = await analyticsService.loadChangeAnalytics(range);
-      writeAnalyticsPanelPayload(queryClient, changeStateKey, {
-        payload,
-        source: "full-refresh",
-        sequence,
-        receivedAt: Date.now(),
-      });
-      return payload;
-    },
+    queryKey: changePanelQuery.dumpedQueryKey,
+    queryFn: () =>
+      runAnalyticsPanelQuery(queryClient, changePanelQuery, () =>
+        analyticsService.loadChangeAnalytics(range),
+      ),
     enabled: queriesEnabled && activePanel === "changes",
     ...ANALYTICS_QUERY_POLICY,
   });
   const quotaQuery = useQuery({
-    queryKey: AnalyticsDumpedQueryKeys.quota(quotaAccountKey),
-    queryFn: async () => {
-      const sequence = nextSequence();
-      const payload = await analyticsService.loadQuotaHistory(quotaAccountKey);
-      writeAnalyticsPanelPayload(queryClient, quotaStateKey, {
-        payload,
-        source: "full-refresh",
-        sequence,
-        receivedAt: Date.now(),
-      });
-      return payload;
-    },
+    queryKey: quotaPanelQuery.dumpedQueryKey,
+    queryFn: () =>
+      runAnalyticsPanelQuery(queryClient, quotaPanelQuery, () =>
+        analyticsService.loadQuotaHistory(quotaAccountKey),
+      ),
     enabled: queriesEnabled && activePanel === "quota" && quotaAccountKey.length > 0,
     staleTime: 60_000,
     refetchOnMount: false,

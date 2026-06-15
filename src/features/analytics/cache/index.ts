@@ -2,7 +2,15 @@ import type { QueryClient, QueryKey } from "@tanstack/react-query";
 import { createModuleCacheOwner } from "@/features/_shared/cache";
 import type { ModuleCacheEnvelope, ModuleCacheSource } from "@/features/_shared/cache";
 import type { AnalyticsRange } from "@/types";
-import type { AnalyticsCachePayload } from "../types";
+import type {
+  AnalyticsCachePayload,
+  AnalyticsChangeEnvelope,
+  AnalyticsQuotaEnvelope,
+  AnalyticsSessionEnvelope,
+  AnalyticsTokenEnvelope,
+  AnalyticsToolEnvelope,
+  AnalyticsUsageEnvelope,
+} from "../types";
 
 export const AnalyticsCache = createModuleCacheOwner<AnalyticsCachePayload>("analytics");
 export const AnalyticsQueryKeys = AnalyticsCache.queryKeys;
@@ -33,11 +41,108 @@ export const AnalyticsAuthoritativeQueryKeys = {
     ["analytics", "quota-history", accountKey?.trim() || "none", "authoritative"] as const,
 };
 
+export interface AnalyticsPanelQueryDescriptor<TPayload extends AnalyticsCachePayload> {
+  dumpedQueryKey: QueryKey;
+  authoritativeQueryKey: QueryKey;
+  payloadType?: TPayload;
+}
+
+export const AnalyticsPanelQueryDescriptors = {
+  usage: (): AnalyticsPanelQueryDescriptor<AnalyticsUsageEnvelope> => ({
+    dumpedQueryKey: AnalyticsDumpedQueryKeys.usage,
+    authoritativeQueryKey: AnalyticsAuthoritativeQueryKeys.usage,
+  }),
+  sessions: (range: AnalyticsRange): AnalyticsPanelQueryDescriptor<AnalyticsSessionEnvelope> => ({
+    dumpedQueryKey: AnalyticsDumpedQueryKeys.sessions(range),
+    authoritativeQueryKey: AnalyticsAuthoritativeQueryKeys.sessions(range),
+  }),
+  tokens: (range: AnalyticsRange): AnalyticsPanelQueryDescriptor<AnalyticsTokenEnvelope> => ({
+    dumpedQueryKey: AnalyticsDumpedQueryKeys.tokens(range),
+    authoritativeQueryKey: AnalyticsAuthoritativeQueryKeys.tokens(range),
+  }),
+  tools: (range: AnalyticsRange): AnalyticsPanelQueryDescriptor<AnalyticsToolEnvelope> => ({
+    dumpedQueryKey: AnalyticsDumpedQueryKeys.tools(range),
+    authoritativeQueryKey: AnalyticsAuthoritativeQueryKeys.tools(range),
+  }),
+  changes: (range: AnalyticsRange): AnalyticsPanelQueryDescriptor<AnalyticsChangeEnvelope> => ({
+    dumpedQueryKey: AnalyticsDumpedQueryKeys.changes(range),
+    authoritativeQueryKey: AnalyticsAuthoritativeQueryKeys.changes(range),
+  }),
+  quota: (
+    accountKey: string | null | undefined,
+  ): AnalyticsPanelQueryDescriptor<AnalyticsQuotaEnvelope> => ({
+    dumpedQueryKey: AnalyticsDumpedQueryKeys.quota(accountKey),
+    authoritativeQueryKey: AnalyticsAuthoritativeQueryKeys.quota(accountKey),
+  }),
+};
+
 export interface AnalyticsPanelCacheWrite<TPayload> {
   payload: TPayload;
   source: ModuleCacheSource;
-  sequence: number;
-  receivedAt: number;
+  sequence?: number;
+  receivedAt?: number;
+}
+
+export type AnalyticsPanelQuerySource = Exclude<ModuleCacheSource, "mutation-payload">;
+
+let analyticsCacheSequence = 0;
+const analyticsLatestReservedSequenceByKey = new Map<string, number>();
+
+function nextAnalyticsCacheSequence() {
+  analyticsCacheSequence += 1;
+  return analyticsCacheSequence;
+}
+
+function reserveAnalyticsPanelSequence(queryKey: QueryKey) {
+  const sequence = nextAnalyticsCacheSequence();
+  const keyId = getAnalyticsQueryKeyId(queryKey);
+  const latestReservedSequence = analyticsLatestReservedSequenceByKey.get(keyId) ?? 0;
+  analyticsLatestReservedSequenceByKey.set(
+    keyId,
+    Math.max(latestReservedSequence, sequence),
+  );
+  return sequence;
+}
+
+function isReservedAnalyticsPanelResponseStale(queryKey: QueryKey, sequence: number) {
+  const latestReservedSequence =
+    analyticsLatestReservedSequenceByKey.get(getAnalyticsQueryKeyId(queryKey)) ?? 0;
+  return sequence < latestReservedSequence;
+}
+
+function getAnalyticsQueryKeyId(queryKey: QueryKey) {
+  return JSON.stringify(queryKey);
+}
+
+export function readAnalyticsPanelEnvelope<TPayload extends AnalyticsCachePayload>(
+  queryClient: QueryClient,
+  descriptor: AnalyticsPanelQueryDescriptor<TPayload>,
+) {
+  return (
+    queryClient.getQueryData<ModuleCacheEnvelope<TPayload>>(
+      descriptor.authoritativeQueryKey,
+    ) ?? null
+  );
+}
+
+export async function runAnalyticsPanelQuery<TPayload extends AnalyticsCachePayload>(
+  queryClient: QueryClient,
+  descriptor: AnalyticsPanelQueryDescriptor<TPayload>,
+  load: () => Promise<TPayload>,
+  source: AnalyticsPanelQuerySource = "full-refresh",
+) {
+  const sequence = reserveAnalyticsPanelSequence(descriptor.authoritativeQueryKey);
+  const payload = await load();
+  if (isReservedAnalyticsPanelResponseStale(descriptor.authoritativeQueryKey, sequence)) {
+    return readAnalyticsPanelEnvelope(queryClient, descriptor)?.payload ?? payload;
+  }
+  writeAnalyticsPanelPayload(queryClient, descriptor.authoritativeQueryKey, {
+    payload,
+    source,
+    sequence,
+    receivedAt: Date.now(),
+  });
+  return payload;
 }
 
 export function writeAnalyticsPanelPayload<TPayload extends AnalyticsCachePayload>(
@@ -45,10 +150,14 @@ export function writeAnalyticsPanelPayload<TPayload extends AnalyticsCachePayloa
   queryKey: QueryKey,
   write: AnalyticsPanelCacheWrite<TPayload>,
 ) {
+  const sequence = write.sequence ?? reserveAnalyticsPanelSequence(queryKey);
+  const receivedAt = write.receivedAt ?? Date.now();
   const next: ModuleCacheEnvelope<TPayload> = {
     moduleId: "analytics",
     ...write,
-    mutationFenceAt: write.source === "mutation-payload" ? write.receivedAt : undefined,
+    sequence,
+    receivedAt,
+    mutationFenceAt: write.source === "mutation-payload" ? receivedAt : undefined,
   };
 
   queryClient.setQueryData<ModuleCacheEnvelope<AnalyticsCachePayload>>(
