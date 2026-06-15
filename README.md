@@ -75,6 +75,9 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - `scripts/validate-backend-accounts-owner.mjs` 与 `validate:backend-accounts-owner` 已扩展为账号事务 owner 门禁，用于防止 `repository/accounts.rs` 重新暴露 `switch_account`、`remove_accounts`、`logout`、`export_accounts_to_file`、`preview_account_import` 和 `import_accounts_from_file` 用户动作事务，并校验这些编排仍在 application/usecase 内通过窄 repository helper 完成。
 - 新增 `scripts/validate-backend-accounts-transfer-owner.mjs` 与 `validate:backend-accounts-transfer-owner`，作为账号导入/导出专项门禁，单独防止 export、preview import 和 import 事务回退到 repository。
 - 新增 `scripts/validate-backend-sessions-owner.mjs` 与 `validate:backend-sessions-owner`，用于防止 sessions command 或 usecase 重新承担文件系统副作用，并确认 `load_sessions` 只通过 repository 读取 sessions 文件元数据。
+- 新增 `scripts/validate-backend-mcp-owner.mjs` 与 `validate:backend-mcp-owner`，用于确认 MCP command 只做 IPC adapter，usecase owning 输入校验、配置归一化和 bootstrap cache 写回，repository 只 owning `config.toml` 的 `mcp_servers` 读写和托管块替换；当前只声明公开配置持久化边界，不声明 MCP server 启动、网络探测或运行时行为已恢复。
+- 新增 `scripts/validate-backend-skills-owner.mjs` 与 `validate:backend-skills-owner`，用于防止 Skills command/usecase 直接承担文件系统事务，并确认导入、删除、恢复、备份删除、递归复制和 metadata relativePath 都经过 repository/path guard 的路径安全边界；当前不执行 skill，也不解释业务 SOP。
+- 新增 `scripts/validate-backend-runtime-extensions-owner.mjs` 与 `validate:backend-runtime-extensions-owner`，用于确认 Runtime extensions 只读写可重建的 `plugins.json` 与内置 registry，不加载或执行插件代码，不接入 voice，并由 usecase 负责 repository record 到 IPC payload 的转换。
 - 新增 `scripts/validate-frontend-relay-cache.mjs` 与 `validate:frontend-relay-cache`，并在 `src/features/relay/__tests__/README.md` 记录边界；该验证确认 relay mutation payload 先写 TanStack 权威 cache，再做已知 query 扇出或失效，并模拟 stale、delayed、event replay 的旧响应不能覆盖已接受的 mutation 结果。
 - 新增 `scripts/validate-frontend-copy-owners.mjs` 与 `validate:frontend-copy-owners`，覆盖 time/router/templates 和 mock payload 的动态用户可见文案，防止它们绕过 locale owner 回退到硬编码。
 - 新增 `scripts/validate-frontend-mystery-gates.mjs` 与 `validate:frontend-mystery-gates`，确认 `relayModel` grant 只映射到前端 `relay` route、meta/preload 统一使用 route registry 显隐 helper，并禁止 voice route 或外部参考项目名回流。
@@ -91,13 +94,13 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 - voice 前后端不做真实功能还原，不注册路由入口、不进入 runtime reload map、不注册 IPC handler，只保留空骨架和说明；原始公开材料中与录音、语音运行时、快捷键、音频反馈、文本注入相关的内容不进入当前公开实现。
 - voice 当前仍保留前端类型层命令清单、feature/service 空骨架和窗口 surface 标签，用于说明公开合同边界；这些内容没有 route registry、navigation meta、`src/lib/api.ts` wrapper、runtime reload map 或 E2E mock handler 入口，不作为可触达功能。
 - Accounts 已完成 `switch_account` / `switch_account_and_restart_codex`、`remove_accounts`、`logout`、`export_accounts_to_file`、`preview_account_import` 和 `import_accounts_from_file` 的 usecase owner 迁移；账号 attach monitor、外部程序重启、跨进程会话恢复和未公开闭源业务仍不声明真实闭环。
-- Accounts、Relay 启停/会话/真实转发、Analytics、Sessions、Daemon 真实后台线程与自动切换、更新安装、外部进程重启、诊断修复等后端能力仍未完成真实业务闭环；Relay 当前只补回 model fetch 读取合同和 test provider/draft mock terminal 测试合同，Sessions 当前只补回 `load_sessions` 的目录文件元数据清单并包含 `updated_at`、`created_at`、`file_size`，runtime watcher 当前只补回进程内状态合同，其他部分前端 wrapper 和后端命令仍只返回明确的未恢复状态。
+- Accounts、Relay 启停/会话/真实转发、Analytics、Sessions、Daemon 真实后台线程与自动切换、更新安装、外部进程重启、诊断修复等后端能力仍未完成真实业务闭环；Relay 当前只补回 model fetch 读取合同和 test provider/draft mock terminal 测试合同，Sessions 当前只补回 `load_sessions` 的目录文件元数据清单并包含 `updated_at`、`created_at`、`file_size`，MCP 当前只补回 `config.toml` 的 `mcp_servers` 读写边界，Skills 当前只补回路径安全文件事务边界，Runtime extensions 当前只补回 `plugins.json` registry/store 边界，runtime watcher 当前只补回进程内状态合同，其他部分前端 wrapper 和后端命令仍只返回明确的未恢复状态。
 - `remoteDeviceSecret` 当前已恢复 settings 读写和迁移语义，但尚未因此关闭前端全文案、渲染交互、双平台 leaf 或 internal gate 的剩余验收项。
 - `bootstrap-cache.json` 当前已恢复读取、解析失败返回空状态、DTO 字段承接、`usageAnalytics` / `mcpServers` / `installedSkills` 三个缓存切片生产写回，以及 E2E mock 共享 cache 验证；真实用量统计口径仍需按 raw/internal 证据继续补齐。
 - 启动链路当前只 seed 已有公开 cache owner、触发进程内 watcher once guard，并广播脱敏 runtime bridge event；尚未恢复真实后台线程、账号 attach monitor 循环、网络刷新或闭源自动切换动作。
 - `mystery_route_allowed` 仍是 helper/gate 缺口；当前只恢复 get/merge grants 的公开调用链、cache 合同、overview 面板消费、allowlist 过滤和 route registry meta/preload 显隐 helper，尚未接入 shell 运行时 grants 查询，也不把它描述为已完成 route guard。
 - mystery grants allowlist 已按 raw 前端 helper 对齐，但仍只是私有过滤合同；当前 helper 能让 route registry 在传入 grants context 时计算显隐和 preload，尚未把 grants 查询正式接入导航 shell、redirect 或 route guard，也不因此关闭 dim6 或 full leaf gate。
-- MCP 写回当前使用结构化 TOML 保存，已在源码层面对接命令和数据，但还没有恢复原始实现中对注释和托管块位置的完整保留策略。
+- MCP 写回当前已从结构化 TOML 整文件保存收紧为单服务托管块替换/删除，并尽量保留其它 `config.toml` 注释和表块；该进度仍只声明公开配置持久化边界，不声明 MCP server 启动或网络探测。
 - Rust 编译验收需要具备目标平台工具链；Windows 下缺少 MSVC `link.exe` 时，`cargo check` 会在第三方 crate build script 阶段失败。
 
 ## 可直接给 AI 的重建提示

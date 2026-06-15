@@ -7,6 +7,7 @@ use std::path::PathBuf;
 
 const WEB_TOOLS_ID: &str = "web-tools";
 const IMAGE_SUPPORT_ID: &str = "image-support";
+const STORE_SCHEMA_VERSION: i32 = 1;
 
 pub(crate) struct RuntimeExtensionsRepository;
 
@@ -15,7 +16,7 @@ pub(crate) trait RuntimeExtensionsRepositoryBoundary {}
 
 impl RuntimeExtensionsRepositoryBoundary for RuntimeExtensionsRepository {}
 
-/// repository 层记录插件状态，不直接暴露 IPC DTO。
+/// repository 层记录插件 registry/store 状态，不直接暴露 IPC payload。
 #[derive(Debug, Clone, PartialEq)]
 pub struct RuntimeExtensionRecord {
     pub id: String,
@@ -32,6 +33,7 @@ pub struct RuntimeExtensionRecord {
     pub settings: Value,
 }
 
+// plugins.json 的内部持久化文档，只能由 repository 层反序列化和写回。
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct PluginStoreDocument {
@@ -43,6 +45,7 @@ struct PluginStoreDocument {
     extra: Map<String, Value>,
 }
 
+// plugins.json 的内部条目结构保留未知字段，避免持久化边界误删未闭合证据字段。
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct PluginStoreEntry {
@@ -99,10 +102,9 @@ pub fn plugins_path(repo: &Repository) -> PathBuf {
 }
 
 pub fn list_plugins(repo: &Repository) -> Result<Vec<RuntimeExtensionRecord>, CoreError> {
-    Ok(load_merged_store(repo)?
-        .into_iter()
-        .map(record_from_entry)
-        .collect())
+    let store = load_merged_store(repo)?;
+    save_store(repo, &store)?;
+    Ok(store.into_iter().map(record_from_entry).collect())
 }
 
 pub fn set_enabled(
@@ -263,7 +265,7 @@ fn normalize_entries(entries: Vec<PluginStoreEntry>) -> Result<Vec<PluginStoreEn
 fn save_store(repo: &Repository, plugins: &[PluginStoreEntry]) -> Result<(), CoreError> {
     repo.fs().create_dir_all(&repo.paths().app_data_dir)?;
     let document = PluginStoreDocument {
-        schema_version: 1,
+        schema_version: STORE_SCHEMA_VERSION,
         plugins: plugins.to_vec(),
         extra: Map::new(),
     };
@@ -275,6 +277,7 @@ fn save_store(repo: &Repository, plugins: &[PluginStoreEntry]) -> Result<(), Cor
 }
 
 fn builtin_plugins() -> Vec<PluginStoreEntry> {
+    // 证据闭合内建 registry 字段；enabled/settings 的新建默认仍只是可序列化占位。
     vec![
         PluginStoreEntry {
             id: WEB_TOOLS_ID.to_string(),
@@ -282,7 +285,7 @@ fn builtin_plugins() -> Vec<PluginStoreEntry> {
             title: Some("Web Tools".to_string()),
             version: Some("1.0.0".to_string()),
             author: Some("AiMaMi".to_string()),
-            category: Some("proxy-tool".to_string()),
+            category: Some("0".to_string()),
             capabilities: vec![0],
             builtin: true,
             ..PluginStoreEntry::default()
@@ -293,7 +296,7 @@ fn builtin_plugins() -> Vec<PluginStoreEntry> {
             title: Some("Image Support".to_string()),
             version: Some("1.0.0".to_string()),
             author: Some("AiMaMi".to_string()),
-            category: Some("proxy-tool".to_string()),
+            category: Some("0".to_string()),
             capabilities: vec![1],
             builtin: true,
             ..PluginStoreEntry::default()
@@ -307,15 +310,15 @@ fn merge_builtin_with_stored(
 ) -> PluginStoreEntry {
     PluginStoreEntry {
         id: builtin.id,
-        name: non_empty_string(stored.name).unwrap_or(builtin.name),
-        title: stored.title.or(builtin.title),
-        description: stored.description.or(builtin.description),
+        name: builtin.name,
+        title: builtin.title,
+        description: builtin.description,
         version: builtin.version,
         author: builtin.author,
         category: builtin.category,
         capabilities: builtin.capabilities,
         builtin: builtin.builtin,
-        path: stored.path.or(builtin.path),
+        path: builtin.path,
         enabled: stored.enabled,
         settings: stored.settings,
         extra: stored.extra,
@@ -388,7 +391,9 @@ mod tests {
         assert_eq!(items.len(), 2);
         assert_eq!(items[0].id, WEB_TOOLS_ID);
         assert_eq!(items[1].id, IMAGE_SUPPORT_ID);
+        assert_eq!(items[0].category.as_deref(), Some("0"));
         assert!(!items[0].enabled);
+        assert!(repo.fs().exists(&plugins_path(&repo)));
     }
 
     #[test]
@@ -501,7 +506,7 @@ mod tests {
     }
 
     #[test]
-    fn toggle_preserves_settings_and_display_fields() {
+    fn toggle_preserves_settings_and_builtin_registry_fields() {
         let repo = Repository::with_temp_file_system("runtime-extensions-preserve");
         repo.fs()
             .write_string(
@@ -529,9 +534,11 @@ mod tests {
             .find(|item| item.id == WEB_TOOLS_ID)
             .expect("web tools");
 
-        assert_eq!(web_tools.title.as_deref(), Some("Custom Title"));
-        assert_eq!(web_tools.path.as_deref(), Some("../display-only"));
         assert_eq!(web_tools.settings, json!({"keep": true}));
+        assert_eq!(web_tools.name, "Web Tools");
+        assert_eq!(web_tools.title.as_deref(), Some("Web Tools"));
+        assert_eq!(web_tools.path, None);
+        assert_eq!(web_tools.category.as_deref(), Some("0"));
         assert!(web_tools.enabled);
     }
 

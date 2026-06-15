@@ -1,8 +1,10 @@
 use crate::contracts::BackendSkeletonStatus;
 use serde::Serialize;
 
+// settings 透传插件 registry 的 JSON 设置值，contracts 不解释 store 事务。
 pub type RuntimeExtensionSettingsValue = serde_json::Value;
 
+/// Runtime extensions 的插件响应条目，只承载前端可见 payload。
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RuntimeExtensionPluginPayload {
@@ -20,6 +22,7 @@ pub struct RuntimeExtensionPluginPayload {
     pub settings: RuntimeExtensionSettingsValue,
 }
 
+/// list_plugins 的响应 payload，store merge 和保存由 repository owning。
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RuntimeExtensionListPayload {
@@ -30,6 +33,7 @@ pub struct RuntimeExtensionListPayload {
     pub last_scan_at: i64,
 }
 
+/// toggle_plugin 的响应 payload，不包含 plugins.json 事务细节。
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RuntimeExtensionTogglePayload {
@@ -41,6 +45,7 @@ pub struct RuntimeExtensionTogglePayload {
     pub last_scan_at: i64,
 }
 
+/// get/update plugin config 的响应 payload，settings 内容保持 JSON 原样。
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RuntimeExtensionConfigPayload {

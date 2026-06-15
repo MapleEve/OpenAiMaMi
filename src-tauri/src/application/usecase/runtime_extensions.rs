@@ -9,6 +9,7 @@ use crate::repository::{
     Repository,
 };
 
+// usecase 只编排 list/toggle/config 用户动作；plugins.json 结构和保存事务归 repository。
 pub fn list(repo: &Repository) -> Result<RuntimeExtensionListPayload, CoreError> {
     let items = runtime_extensions::list_plugins(repo)?
         .into_iter()

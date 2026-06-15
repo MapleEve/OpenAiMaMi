@@ -8,15 +8,15 @@ use crate::repository::{bootstrap, mcp, Repository};
 use std::collections::HashMap;
 
 pub fn load_servers(repo: &Repository) -> Result<McpServerListPayload, CoreError> {
-    let items = mcp::load_servers(repo.fs(), &repo.paths().config_path)?;
+    let snapshot = mcp::load_server_snapshot(repo)?;
     let last_scan_at = current_timestamp();
-    let _ = bootstrap::store_bootstrap_mcp_servers(repo, last_scan_at, items.clone());
+    let _ = bootstrap::store_bootstrap_mcp_servers(repo, last_scan_at, snapshot.items.clone());
     Ok(McpServerListPayload {
         status: restored_status("mcp", "load_mcp_servers", BackendEffect::NoOp),
-        total: items.len() as i32,
-        source_path: repo.paths().config_path.display().to_string(),
+        total: snapshot.items.len() as i32,
+        source_path: snapshot.source_path,
         last_scan_at,
-        items,
+        items: snapshot.items,
     })
 }
 
@@ -51,7 +51,7 @@ pub fn upsert_server(
             .and_then(|config| config.enabled)
             .or(enabled)
             .unwrap_or(true),
-        source_path: repo.paths().config_path.display().to_string(),
+        source_path: String::new(),
         command: config
             .as_ref()
             .and_then(|config| config.command.clone())
@@ -80,13 +80,12 @@ pub fn upsert_server(
         },
     };
 
-    let saved = mcp::upsert_server(repo.fs(), &repo.paths().config_path, &server)?;
-    let all = mcp::load_servers(repo.fs(), &repo.paths().config_path)?;
+    let saved = mcp::upsert_server(repo, &server)?;
     Ok(McpServerMutationPayload {
         status: restored_status("mcp", "upsert_mcp_server", BackendEffect::NoOp),
-        server: saved,
-        total: all.len() as i32,
-        source_path: repo.paths().config_path.display().to_string(),
+        server: saved.server,
+        total: saved.total,
+        source_path: saved.source_path,
     })
 }
 
@@ -96,25 +95,23 @@ pub fn set_enabled(
     enabled: bool,
 ) -> Result<McpServerMutationPayload, CoreError> {
     validate_name(&name)?;
-    let saved = mcp::set_enabled(repo.fs(), &repo.paths().config_path, &name, enabled)?;
-    let all = mcp::load_servers(repo.fs(), &repo.paths().config_path)?;
+    let saved = mcp::set_enabled(repo, &name, enabled)?;
     Ok(McpServerMutationPayload {
         status: restored_status("mcp", "set_mcp_server_enabled", BackendEffect::NoOp),
-        server: saved,
-        total: all.len() as i32,
-        source_path: repo.paths().config_path.display().to_string(),
+        server: saved.server,
+        total: saved.total,
+        source_path: saved.source_path,
     })
 }
 
 pub fn remove_server(repo: &Repository, name: String) -> Result<McpServerRemovePayload, CoreError> {
     validate_name(&name)?;
-    mcp::remove_server(repo.fs(), &repo.paths().config_path, &name)?;
-    let all = mcp::load_servers(repo.fs(), &repo.paths().config_path)?;
+    let removed = mcp::remove_server(repo, &name)?;
     Ok(McpServerRemovePayload {
         status: restored_status("mcp", "remove_mcp_server", BackendEffect::NoOp),
-        removed_name: name,
-        total: all.len() as i32,
-        source_path: repo.paths().config_path.display().to_string(),
+        removed_name: removed.removed_name,
+        total: removed.total,
+        source_path: removed.source_path,
     })
 }
 
