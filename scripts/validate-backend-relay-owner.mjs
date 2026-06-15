@@ -21,6 +21,7 @@ const files = {
   ),
   core: join(repoRoot, "src-tauri", "src", "core", "relay.rs"),
   coreRequestBuilder: join(repoRoot, "src-tauri", "src", "core", "relay", "request_builder.rs"),
+  coreRouterConfig: join(repoRoot, "src-tauri", "src", "core", "relay", "router_config.rs"),
   repository: join(repoRoot, "src-tauri", "src", "repository", "relay.rs"),
   platform: join(repoRoot, "src-tauri", "src", "platform", "relay.rs"),
 };
@@ -207,6 +208,10 @@ const coreRequestBuilderContent = readRequired(
   files.coreRequestBuilder,
   "relay core request builder 文件",
 );
+const coreRouterConfigContent = readRequired(
+  files.coreRouterConfig,
+  "relay core router config 文件",
+);
 const repositoryContent = readRequired(files.repository, "relay repository 文件");
 const platformContent = readRequired(files.platform, "relay platform 文件");
 
@@ -322,6 +327,18 @@ assertContains(
   /\bpub\s+use\s+self\s*::\s*request_builder\s*::/,
   "必须通过 core relay 根模块重新暴露 provider request builder 公开 API",
 );
+assertContains(
+  files.core,
+  coreContent,
+  /\bmod\s+router_config\s*;/,
+  "必须把 router config parser/render 拆入 core/relay/router_config.rs",
+);
+assertContains(
+  files.core,
+  coreContent,
+  /\bpub\s+use\s+self\s*::\s*router_config\s*::/,
+  "必须通过 core relay 根模块重新暴露 router config 公开 API",
+);
 assertNoPatterns(files.core, coreContent, [
   {
     label: "request builder 私有实现",
@@ -334,6 +351,19 @@ assertNoPatterns(files.core, coreContent, [
       /\bfn\s+is_anthropic_wire_api\s*\(/,
       /\bfn\s+normalize_header_pair\s*\(/,
       /\bfn\s+dedupe\s*\(/,
+    ],
+  },
+  {
+    label: "router parser/render 私有实现",
+    message: "relay core 根文件只聚合 router_config，不得继续 owning router parser/render 实现",
+    patterns: [
+      /\bfn\s+config_has_router\s*\(/,
+      /\bfn\s+config_has_catalog\s*\(/,
+      /\bfn\s+append_managed_router_block\s*\(/,
+      /\bfn\s+toml_string_literal\s*\(/,
+      /\bfn\s+count_model_providers\s*\(/,
+      /\bfn\s+top_level_profile\s*\(/,
+      /\bfn\s+config_stale_reason\s*\(/,
     ],
   },
 ]);
@@ -396,22 +426,22 @@ assertNoPatterns(files.coreRequestBuilder, coreRequestBuilderContent, [
 ]);
 
 assertContains(
-  files.core,
-  coreContent,
+  files.coreRouterConfig,
+  coreRouterConfigContent,
   /\bpub\s+fn\s+analyze_router_config\s*\(/,
-  "必须 owning router config block 解析",
+  "core/relay/router_config.rs 必须 owning router config block 解析",
 );
 assertContains(
-  files.core,
-  coreContent,
+  files.coreRouterConfig,
+  coreRouterConfigContent,
   /\bpub\s+fn\s+render_managed_router_config\s*\(/,
-  "必须 owning router config block 渲染",
+  "core/relay/router_config.rs 必须 owning router config block 渲染",
 );
 assertContains(
-  files.core,
-  coreContent,
+  files.coreRouterConfig,
+  coreRouterConfigContent,
   /\bpub\s+fn\s+strip_managed_router_config\s*\(/,
-  "必须 owning router config block 清理",
+  "core/relay/router_config.rs 必须 owning router config block 清理",
 );
 
 assertContains(
