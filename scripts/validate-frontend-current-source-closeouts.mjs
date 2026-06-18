@@ -2170,15 +2170,18 @@ function validateAccountsAnalyticsCloseout(closeout) {
   }
 
   const boundaryNotes = closeout.backendBoundaryNotes ?? [];
-  if (!boundaryNotes.some((note) => note.includes("Rust analytics 后端仍是边界占位"))) {
-    failures.push(`${closeout.id} 必须声明 analytics Rust 后端仍是边界占位`);
+  if (!boundaryNotes.some((note) => note.includes("Rust analytics 后端已恢复公开 session/rollout 文件事实聚合"))) {
+    failures.push(`${closeout.id} 必须声明 analytics Rust 后端已恢复公开 session/rollout 文件事实聚合`);
+  }
+  if (!boundaryNotes.some((note) => note.includes("闭源 token 与严格运行时统计口径仍不声明恢复"))) {
+    failures.push(`${closeout.id} 必须声明 analytics 闭源 token 与严格运行时统计口径仍不声明恢复`);
   }
   const nonClaims = closeout.nonClaims ?? [];
   for (const required of [
     "不把 accounts 或 analytics 的 manifest 状态改成 covered。",
     "不声明全文案验收完成。",
     "不声明 MAC/WIN 100% leaf 已完成。",
-    "不声明 analytics Rust command/usecase/repository 已可调用闭合。",
+    "不声明 analytics 闭源 token、真实运行时统计或严格平台 parity 已完成。",
   ]) {
     if (!nonClaims.includes(required)) {
       failures.push(`${closeout.id} 缺少 nonClaims：${required}`);

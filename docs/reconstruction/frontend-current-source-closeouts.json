@@ -474,13 +474,13 @@
       ],
       "backendBoundaryNotes": [
         "accounts 的 index query 命令经 system 后端入口闭合。",
-        "analytics 的当前 closeout 只关闭前端 app-shell index query owner-closed 队列项；Rust analytics 后端仍是边界占位，不作为可调用后端链路闭合声明。"
+        "analytics 的当前 closeout 只关闭前端 app-shell index query owner-closed 队列项；Rust analytics 后端已恢复公开 session/rollout 文件事实聚合，闭源 token 与严格运行时统计口径仍不声明恢复。"
       ],
       "nonClaims": [
         "不把 accounts 或 analytics 的 manifest 状态改成 covered。",
         "不声明全文案验收完成。",
         "不声明 MAC/WIN 100% leaf 已完成。",
-        "不声明 analytics Rust command/usecase/repository 已可调用闭合。"
+        "不声明 analytics 闭源 token、真实运行时统计或严格平台 parity 已完成。"
       ],
       "reason": "accounts 与 sessions-analytics 的双平台 gate-report 已达到 readyToImplement、implementation_use、gate_accepted、full_leaf_100 全 true；当前源码已经证明 app-shell index query 命中分别归属 accounts mutation/cache 与 analytics query/cache，overview 只是 consumer。本 closeout 只关闭这两个 owner-closed 队列项，不修改 manifest 状态，不关闭 plugins 或 voice，不声明全文案验收，也不声明 MAC/WIN 100% leaf 已完成。"
     },
