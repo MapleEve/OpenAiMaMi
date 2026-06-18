@@ -1,8 +1,6 @@
-mod diagnostics;
 mod settings_secret;
 mod snapshot_bootstrap;
 
-pub use self::diagnostics::diagnose;
 pub use self::settings_secret::{
     get_device_id, get_or_create_remote_device_secret, import_remote_device_secret_if_empty,
 };

@@ -5,7 +5,6 @@ const repoRoot = process.cwd();
 const backendRoot = join(repoRoot, "src-tauri", "src");
 const files = {
   root: join(backendRoot, "application", "usecase", "system.rs"),
-  diagnostics: join(backendRoot, "application", "usecase", "system", "diagnostics.rs"),
   snapshotBootstrap: join(backendRoot, "application", "usecase", "system", "snapshot_bootstrap.rs"),
   settingsSecret: join(backendRoot, "application", "usecase", "system", "settings_secret.rs"),
   commands: join(backendRoot, "commands", "system.rs"),
@@ -156,10 +155,8 @@ function validateForbiddenNames(contents) {
 
 function validateRoot(path, original, content) {
   for (const [label, pattern] of [
-    ["diagnostics 模块声明", /\bmod\s+diagnostics\s*;/],
     ["snapshot-bootstrap 模块声明", /\bmod\s+snapshot_bootstrap\s*;/],
     ["settings-secret 模块声明", /\bmod\s+settings_secret\s*;/],
-    ["diagnose 兼容导出", /\bpub\s+use\s+self\s*::\s*diagnostics\s*::\s*diagnose\s*;/],
     ["snapshot/bootstrap 兼容导出", /\bpub\s+use\s+self\s*::\s*snapshot_bootstrap\s*::\s*\{[\s\S]*\}\s*;/],
     ["load_snapshot 兼容导出", /\bpub\s+use\s+self\s*::\s*snapshot_bootstrap\s*::\s*\{[\s\S]*\bload_snapshot\b[\s\S]*\}\s*;/],
     ["load_bootstrap_state 兼容导出", /\bpub\s+use\s+self\s*::\s*snapshot_bootstrap\s*::\s*\{[\s\S]*\bload_bootstrap_state\b[\s\S]*\}\s*;/],
@@ -279,26 +276,6 @@ function validateConfigRepositoryOwner(path, original, content) {
   }
 }
 
-function validateDiagnosticsOwner(path, original, content) {
-  for (const [label, pattern] of [
-    ["diagnose action", /\bpub\s+fn\s+diagnose\s*\(\s*repo\s*:\s*&Repository\s*\)/],
-    ["diagnostics repository snapshot", /\bload_system_diagnostic_snapshot\s*\(\s*repo\s*\)/],
-    ["diagnostics backend status", /\bfn\s+diagnose_backend_status\s*\(/],
-    ["pending diagnostics fields", /\bfn\s+make_pending_diagnostic_fields\s*\(/],
-    ["diagnostic snapshot payload", /\bfn\s+make_diagnostic_snapshot_payload\s*\(/],
-  ]) {
-    requirePattern(label, path, content, pattern, "diagnostics owner 必须承载只读诊断 payload 组装");
-  }
-
-  for (const [label, pattern] of [
-    ["bootstrap cache owner", /\bbootstrap_repository\b/g],
-    ["settings secret owner", /\bremote_device_secret\b/g],
-    ["daemon owner", /\bdaemon_usecase\b/g],
-  ]) {
-    rejectPattern(label, path, original, content, pattern, "diagnostics owner 必须保持只读诊断范围");
-  }
-}
-
 function validateSnapshotBootstrapOwner(path, original, content) {
   for (const [label, pattern] of [
     ["load snapshot", /\bpub\s+fn\s+load_snapshot\s*\(\s*repo\s*:\s*&Repository\s*\)/],
@@ -375,11 +352,6 @@ const stripped = new Map(
 validateForbiddenNames([...raw.values()].map((file) => [file.path, file.content]));
 
 validateRoot(files.root, raw.get("root").content, stripped.get("root").content);
-validateDiagnosticsOwner(
-  files.diagnostics,
-  raw.get("diagnostics").content,
-  stripped.get("diagnostics").content,
-);
 validateSnapshotBootstrapOwner(
   files.snapshotBootstrap,
   raw.get("snapshotBootstrap").content,
@@ -406,5 +378,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  "PASS 后端 system owner 校验通过：diagnostics、snapshot-bootstrap、settings-secret 和配置仓库边界已归位，settings/maintenance/平台动作命令未回流。",
+  "PASS 后端 system owner 校验通过：snapshot-bootstrap、settings-secret 和配置仓库边界已归位，settings/maintenance/diagnostics/平台动作命令未回流。",
 );

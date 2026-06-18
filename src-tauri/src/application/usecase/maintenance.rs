@@ -1,7 +1,7 @@
 use crate::application::ports::{AppProcessPort, AppShellPort, AppSystemPort};
 use crate::application::service::{restored_status, BackendEffect};
+use crate::application::usecase::diagnostics;
 use crate::application::usecase::platform_actions;
-use crate::application::usecase::system;
 use crate::contracts::{
     BackendSkeletonStatus, CleanPayload, DiagnosePayload, RebuildRegistryPayload,
     SystemActionPayload, SystemInfoPayload,
@@ -20,7 +20,7 @@ pub fn clean(repo: &Repository) -> Result<CleanPayload, CoreError> {
 }
 
 pub fn diagnose(repo: &Repository) -> Result<DiagnosePayload, CoreError> {
-    let mut payload = system::diagnose(repo)?;
+    let mut payload = diagnostics::diagnose(repo)?;
     mark_maintenance_status(&mut payload.backend_status);
     Ok(payload)
 }

@@ -137,8 +137,8 @@ function validateMaintenanceUsecase(path, content) {
   for (const [label, pattern, reason] of [
     [
       "诊断窄 owner 复用",
-      /\bsystem\s*::\s*diagnose\s*\(\s*repo\s*\)\s*\?/,
-      "diagnose 继续复用 diagnostics 窄 owner，不把诊断细节复制进 maintenance",
+      /\bdiagnostics\s*::\s*diagnose\s*\(\s*repo\s*\)\s*\?/,
+      "diagnose 必须复用独立 diagnostics owner，不把诊断细节复制进 maintenance",
     ],
     [
       "进程动作窄 owner 复用",

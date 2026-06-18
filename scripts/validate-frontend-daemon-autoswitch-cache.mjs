@@ -9,6 +9,7 @@ const files = {
   query: join(repoRoot, "src", "features", "daemon-autoswitch", "hooks", "query.ts"),
   mutation: join(repoRoot, "src", "features", "daemon-autoswitch", "hooks", "mutation.ts"),
   runtime: join(repoRoot, "src", "features", "daemon-autoswitch", "hooks", "runtime.ts"),
+  runtimeBootstrap: join(repoRoot, "src", "app", "runtime", "bootstrap.ts"),
   service: join(repoRoot, "src", "services", "daemon-autoswitch", "index.ts"),
   mocks: join(repoRoot, "src", "mocks", "fixtures", "commands.ts"),
   packageJson: join(repoRoot, "package.json"),
@@ -185,6 +186,7 @@ function assertStaticDaemonAutoswitchContract(
   query,
   mutation,
   runtime,
+  runtimeBootstrap,
   service,
   mocks,
   packageJson,
@@ -202,6 +204,14 @@ function assertStaticDaemonAutoswitchContract(
     "export async function invalidateDaemonAutoswitchContractQueries",
     "export async function invalidateDaemonAutoswitchCrossModuleQueries",
     "export async function applyDaemonAutoswitchRuntimeEventToCache",
+  ]);
+  assertIncludes("runtime bootstrap 通过 daemon cache helper 写 seed", runtimeBootstrap, [
+    "runDaemonAutoswitchQuery(",
+    "DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY",
+    "() => api.loadBootstrapState()",
+  ]);
+  assertNotMatches("runtime bootstrap 不绕过 daemon cache helper 直写 query cache", runtimeBootstrap, [
+    [/setQueryData\s*\(\s*DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY/, "runtime bootstrap 不得直接写 daemon bootstrap query key"],
   ]);
   assertIncludes("daemon-autoswitch cache 持有 query sequence 与 mutation fence", cache, [
     "const daemonAutoswitchQuerySequences = new Map<string, number>();",
@@ -408,6 +418,7 @@ const cache = readRequired(files.cache);
 const query = readRequired(files.query);
 const mutation = readRequired(files.mutation);
 const runtime = readRequired(files.runtime);
+const runtimeBootstrap = readRequired(files.runtimeBootstrap);
 const service = readRequired(files.service);
 const mocks = readRequired(files.mocks);
 const packageJson = parseJson(files.packageJson);
@@ -417,6 +428,7 @@ assertStaticDaemonAutoswitchContract(
   query,
   mutation,
   runtime,
+  runtimeBootstrap,
   service,
   mocks,
   packageJson,

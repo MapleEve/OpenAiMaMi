@@ -37,10 +37,6 @@ export async function seedRuntimeBootstrap(queryClient: QueryClient) {
   const bootstrap = fulfilledValue(bootstrapResult);
   const snapshot = fulfilledValue(snapshotResult);
 
-  if (bootstrap) {
-    queryClient.setQueryData(DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY, bootstrap);
-  }
-
   if (snapshot) {
     writeOverviewQueryPayload(queryClient, OVERVIEW_SNAPSHOT_QUERY_KEY, snapshot, {
       source: "full-refresh",
