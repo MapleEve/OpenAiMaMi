@@ -231,10 +231,10 @@ function validateReadmeStatusStructure(path) {
     .map((line) => line.trim());
   const requiredStatusHeadings = [
     "## 当前状态",
-    "### 已经归档",
-    "### 已恢复能力",
-    "### 暂不声明完成",
-    "### 验收入口",
+    "### 已经做了什么",
+    "### 还没有做什么",
+    "### 怎么验收",
+    "### 当前边界",
   ];
   const missing = requiredStatusHeadings.filter(
     (heading) => !headings.includes(heading),

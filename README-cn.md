@@ -41,45 +41,44 @@ OpenAiMami 是一个面向个人本地工作流的桌面应用。本仓库公开
 
 ## 当前状态
 
-本节按仓库现状归纳，不按提交顺序追加流水账；没有公开证据支撑的内容不写成真实实现。
+本节只归纳仓库现状，不记录提交流水。判断完成度时以公开证据链、源码和验证脚本为准；没有公开证据支撑的内容不写成真实实现。
 
-### 已经归档
+### 已经做了什么
 
 | 范围 | 当前状态 |
 | --- | --- |
 | 公开材料 | 已纳入 Apache License、中文公开说明、匿名化 raw/internal 主链路、前端 dumped 证据、二进制清单、重建文档和独立资产说明。 |
-| 前端基础 | `src/` 已形成公开前端源码入口，主入口、路由注册、运行期初始化、全局 Provider 和复杂模块 owner 边界已按当前架构目标归位。 |
-| 前端状态合同 | TanStack cache、mutation payload、运行期事件刷新、stale/delayed response、event replay、cancel、abort 和 E2E mock 竞态场景已归入验收范围。 |
-| 后端骨架 | `src-tauri/` 已建立 commands、application、core、platform、repository、adapters、contracts 的六边形边界，并由后端 owner 校验约束。 |
+| 前端还原基础 | `src/` 已形成公开前端源码入口，入口、路由、运行期初始化、全局 Provider 和模块 owner 边界按当前规则持续收敛。 |
+| 后端六边形骨架 | `src-tauri/` 已建立 commands、application、core、platform、repository、adapters、contracts 的六边形边界；后端 owner 拆分和六边形边界持续收敛。 |
+| 验证与匿名化 | 公开边界、前端证据、状态合同、后端 owner、i18n、E2E mock 和 README 一致性已纳入验证入口。 |
 
-### 已恢复能力
-
-| 范围 | 当前状态 |
-| --- | --- |
-| 已开源后端能力 | 已公开过或可由仓库证据支撑的后端能力，已按六边形边界补回骨架；system、hotspot、relay image compatibility 等 owner 已拆到独立命令、用例、核心、平台和仓储边界，没有证据支撑的闭源业务不写成真实逻辑。 |
-| 文件事实能力 | sessions、analytics、quota history、system 检测等能力只按公开文件事实和可审计合同恢复，不声明隐藏运行态或外部系统闭环。 |
-| 入口边界 | voice 只保留空骨架、合同清单和中文边界说明；不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。 |
-
-### 暂不声明完成
+### 还没有做什么
 
 | 范围 | 当前边界 |
 | --- | --- |
-| 前端完整度 | 不声明前端已经 100% 完成，也不声明 macOS / Windows 双平台 leaf 已全部闭合；完成度只能以当前源码、raw/internal 证据和验收结果为准。 |
-| 后端业务范围 | 不还原闭源后端业务全量实现；未公开或未选择还原的行为只能保留为契约、桩、待实现项、测试缺口或可替换接口。 |
-| 运行闭环 | Relay、daemon、sessions、analytics、MCP、system 等能力不声明真实网络、后台线程、全局状态、真实 token 统计口径、更新安装执行、诊断修复、外部进程重启或 shell 闭环。 |
-| 编译环境 | Rust 编译验收依赖目标平台工具链；如果 Windows 环境缺少 MSVC `link.exe`，`cargo check` 可能在第三方构建脚本阶段失败。 |
+| 前端完整度 | 不声明前端已经 100% 完成，也不声明 macOS / Windows 双平台 leaf 已全部闭合；完成度以源码、raw/internal 证据和验证结果为准。 |
+| 后端业务范围 | 不做闭源后端业务全量还原；未公开、未选择还原或无证据支撑的行为只保留为契约、桩、待实现项、测试缺口或可替换接口。 |
+| voice 边界 | voice 只保留空骨架、合同清单和中文边界说明；不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。 |
+| 运行闭环 | 不声明真实网络、后台线程、全局状态、真实 token 统计口径、更新安装执行、诊断修复、外部进程重启或 shell 闭环已经完成。 |
 
-### 验收入口
-
-README 只提供对外状态总结，不替代脚本验收。当前验收以 `package.json` 中的 `validate:*` 脚本和仓库证据为准：
+### 怎么验收
 
 | 验收范围 | 使用方式 |
 | --- | --- |
-| 公开边界 | 执行公开边界校验，确认 README、文档和公开材料不包含禁用公开标记、内部路径、凭据或未匿名化内容。 |
-| 前端证据与还原 | 执行前端 dumped、证据链、leaf、copy owner、入口架构和 i18n 相关校验，确认前端还原能回指 raw/internal 证据。 |
-| 前端状态与竞态 | 执行缓存、事件刷新、序列、voice 边界、E2E mock 等校验，确认 mutation、旧响应、事件重放、取消和失败态不会破坏状态合同。 |
-| 后端边界 | 执行后端六边形和各 owner 校验，确认 command、usecase、core、platform、repository、adapter、contract 不互相越界；hotspot、relay image compatibility 等后端切片不得回流到 system owner。 |
+| 公开边界 | 运行 `validate:public-boundary`，确认公开材料不包含禁用公开标记、内部路径、凭据或未匿名化内容。 |
+| 前端证据与状态合同 | 运行前端 dumped、证据链、leaf、copy owner、入口架构、缓存、事件刷新、序列、voice 边界、i18n 和 E2E mock 相关 `validate:*` 脚本。 |
+| 后端边界 | 运行 `validate:backend-hexagonal` 和各后端 owner `validate:*` 脚本，确认 command、usecase、core、platform、repository、adapter、contract 不互相越界。 |
 | README 一致性 | `README.md` 与 `README-cn.md` 必须保持同内容、同字节；修改其中一个时必须同步另一个。 |
+| 编译/构建环境 | Rust 与前端构建验收依赖目标平台工具链；工具链缺失时，应在验证结果中说明环境限制。 |
+
+### 当前边界
+
+| 边界 | 说明 |
+| --- | --- |
+| 证据优先 | 实现和说明必须能回指公开 raw/internal 证据链；没有证据支撑的业务行为不能写成真实逻辑。 |
+| 隐私匿名 | 公开材料、提交说明和 PR 说明不得包含内部路径、机器名、用户名、凭据、令牌、会话、密钥或未脱敏日志。 |
+| 后端范围 | 后端以可审计骨架、接口、DTO、错误语义、测试占位和可替换适配为主，不声明闭源业务全量还原。 |
+| 工具链限制 | 编译和构建结果受本机目标平台工具链影响；环境问题不能替代源码和证据边界判断。 |
 
 ## 可直接给 AI 的重建提示
 
