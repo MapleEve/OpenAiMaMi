@@ -35,7 +35,7 @@ export function writePluginsCachePayload<TPayload extends PluginsCachePayload>(
   source: PluginsCachePayloadSource,
   sequence: number,
 ) {
-  if (source !== "mutation-payload" && sequence < pluginsMutationFenceSequence) {
+  if (sequence < pluginsMutationFenceSequence) {
     return false;
   }
   if (sequence < pluginsLatestAcceptedSequence) {
@@ -121,6 +121,9 @@ export function rollbackPluginsToggle(
   queryClient: QueryClient,
   context: PluginsToggleCacheContext | undefined,
 ) {
+  if (context && context.sequence < pluginsMutationFenceSequence) {
+    return;
+  }
   if (context?.previousList) {
     queryClient.setQueryData(PLUGINS_LIST_QUERY_KEY, context.previousList);
   }

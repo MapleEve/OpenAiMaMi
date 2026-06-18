@@ -176,12 +176,12 @@ function assertStaticPluginsContract(cache, query, refresh, mutation, packageJso
   assertIncludes("plugins cache 持有 latest accepted 与 mutation fence", cache, [
     "let pluginsLatestAcceptedSequence = 0;",
     "let pluginsMutationFenceSequence = 0;",
-    "source !== \"mutation-payload\" && sequence < pluginsMutationFenceSequence",
+    "sequence < pluginsMutationFenceSequence",
   ]);
 
   const writerBody = extractFunctionBody(cache, "writePluginsCachePayload");
   assertOrder("plugins writer 先检查 mutation fence 再写 authoritative payload", writerBody, [
-    "source !== \"mutation-payload\" && sequence < pluginsMutationFenceSequence",
+    "sequence < pluginsMutationFenceSequence",
     "return false",
     "sequence < pluginsLatestAcceptedSequence",
     "return false",
@@ -202,6 +202,13 @@ function assertStaticPluginsContract(cache, query, refresh, mutation, packageJso
     "queryClient.setQueryData",
     "previousList,",
     "sequence,",
+  ]);
+
+  assertOrder("plugins rollback 不能覆盖更新的 optimistic mutation", extractFunctionBody(cache, "rollbackPluginsToggle"), [
+    "context && context.sequence < pluginsMutationFenceSequence",
+    "return;",
+    "context?.previousList",
+    "queryClient.setQueryData",
   ]);
 
   assertOrder("plugins refresh payload 走 active-only-refresh gate 后再写 query", extractFunctionBody(cache, "writePluginsRefreshPayload"), [
@@ -267,15 +274,16 @@ function assertStaticPluginsContract(cache, query, refresh, mutation, packageJso
   }
 }
 
-function runRaceSimulation() {
+function createPluginsRaceHarness() {
   let latestAcceptedSequence = 0;
   let mutationFenceSequence = 0;
   let value = "empty";
+  let listValue = "empty";
   const trace = [];
 
   function write(source, sequence, nextValue) {
     trace.push(`尝试:${source}:${sequence}:${nextValue}`);
-    if (source !== "mutation-payload" && sequence < mutationFenceSequence) {
+    if (sequence < mutationFenceSequence) {
       trace.push(`拒绝:fence:${nextValue}`);
       return false;
     }
@@ -289,23 +297,120 @@ function runRaceSimulation() {
     return true;
   }
 
-  write("full-refresh", 1, "baseline");
-  mutationFenceSequence = 3;
-  write("mutation-payload", 3, "toggle-enabled");
-  const staleRefreshAccepted = write("full-refresh", 2, "stale-list");
-  const delayedRefreshAccepted = write("active-only-refresh", 1, "delayed-list");
-  const freshRefreshAccepted = write("active-only-refresh", 4, "fresh-list");
+  function beginMutation(sequence, optimisticValue) {
+    mutationFenceSequence = Math.max(mutationFenceSequence, sequence);
+    const previousList = listValue;
+    listValue = optimisticValue;
+    trace.push(`optimistic:${sequence}:${optimisticValue}`);
+    return { sequence, previousList };
+  }
+
+  function rollback(context) {
+    if (!context) {
+      trace.push("rollback:cancelled");
+      return false;
+    }
+    if (context.sequence < mutationFenceSequence) {
+      trace.push(`rollback:stale:${context.sequence}`);
+      return false;
+    }
+    listValue = context.previousList;
+    trace.push(`rollback:${context.sequence}:${context.previousList}`);
+    return true;
+  }
+
+  function abort(context) {
+    trace.push(`abort:${context?.sequence ?? "none"}`);
+    return rollback(context);
+  }
+
+  function cancelBeforeMutate() {
+    trace.push("cancel:before-mutate");
+    return rollback(undefined);
+  }
+
+  return {
+    trace,
+    write,
+    beginMutation,
+    rollback,
+    abort,
+    cancelBeforeMutate,
+    value: () => value,
+    listValue: () => listValue,
+    fence: (sequence) => {
+      mutationFenceSequence = Math.max(mutationFenceSequence, sequence);
+      trace.push(`fence:${sequence}`);
+    },
+  };
+}
+
+function runRefreshRaceSimulation() {
+  const harness = createPluginsRaceHarness();
+  harness.write("full-refresh", 1, "baseline");
+  harness.beginMutation(3, "toggle-enabled-optimistic");
+  harness.write("mutation-payload", 3, "toggle-enabled");
+  const staleRefreshAccepted = harness.write("full-refresh", 2, "stale-list");
+  const delayedRefreshAccepted = harness.write("active-only-refresh", 1, "delayed-list");
+  const replayAccepted = harness.write("active-only-refresh", 2, "event-replay-list");
+  const freshRefreshAccepted = harness.write("active-only-refresh", 4, "fresh-list");
 
   if (
     !staleRefreshAccepted &&
     !delayedRefreshAccepted &&
+    !replayAccepted &&
     freshRefreshAccepted &&
-    value === "fresh-list"
+    harness.value() === "fresh-list"
   ) {
-    pass(`竞态模拟：plugins 旧 refresh 不覆盖 toggle mutation（${trace.join(" | ")}）`);
+    pass(`竞态模拟：plugins 旧 refresh / event replay 不覆盖 toggle mutation（${harness.trace.join(" | ")}）`);
     return;
   }
-  fail("竞态模拟：plugins 旧 refresh 不覆盖 toggle mutation", trace.join(" | "));
+  fail("竞态模拟：plugins 旧 refresh / event replay 不覆盖 toggle mutation", harness.trace.join(" | "));
+}
+
+function runConcurrentMutationSimulation() {
+  const harness = createPluginsRaceHarness();
+  harness.write("full-refresh", 1, "baseline");
+  harness.beginMutation(2, "plugin-enabled");
+  harness.beginMutation(3, "plugin-disabled");
+  const oldMutationAccepted = harness.write("mutation-payload", 2, "old-enabled-payload");
+  const latestMutationAccepted = harness.write("mutation-payload", 3, "latest-disabled-payload");
+
+  if (!oldMutationAccepted && latestMutationAccepted && harness.value() === "latest-disabled-payload") {
+    pass(`竞态模拟：plugins 并发 mutation 只接受最新 payload（${harness.trace.join(" | ")}）`);
+    return;
+  }
+  fail("竞态模拟：plugins 并发 mutation 只接受最新 payload", harness.trace.join(" | "));
+}
+
+function runFailureRollbackSimulation() {
+  const harness = createPluginsRaceHarness();
+  harness.write("full-refresh", 1, "baseline");
+  const first = harness.beginMutation(2, "first-optimistic");
+  const second = harness.beginMutation(3, "second-optimistic");
+  const staleRollback = harness.rollback(first);
+  const currentRollback = harness.rollback(second);
+
+  if (!staleRollback && currentRollback && harness.listValue() === "first-optimistic") {
+    pass(`竞态模拟：plugins failure rollback 不覆盖更新 optimistic，当前失败才回滚（${harness.trace.join(" | ")}）`);
+    return;
+  }
+  fail("竞态模拟：plugins failure rollback 不覆盖更新 optimistic", harness.trace.join(" | "));
+}
+
+function runCancelAbortSimulation() {
+  const harness = createPluginsRaceHarness();
+  harness.write("full-refresh", 1, "baseline");
+  const cancelled = harness.cancelBeforeMutate();
+  const context = harness.beginMutation(2, "pending-optimistic");
+  const aborted = harness.abort(context);
+  const delayedAfterAbort = harness.write("active-only-refresh", 1, "delayed-after-abort");
+
+  if (!cancelled && aborted && !delayedAfterAbort && harness.listValue() === "empty") {
+    pass(`竞态模拟：plugins cancel/abort 不写入 stale payload（${harness.trace.join(" | ")}）`);
+    return;
+  }
+  fail("竞态模拟：plugins cancel/abort 不写入 stale payload", harness.trace.join(" | "));
 }
 
 const cache = readRequired(files.cache);
@@ -315,7 +420,10 @@ const mutation = readRequired(files.mutation);
 const packageJson = parseJson(files.packageJson);
 
 assertStaticPluginsContract(cache, query, refresh, mutation, packageJson);
-runRaceSimulation();
+runRefreshRaceSimulation();
+runConcurrentMutationSimulation();
+runFailureRollbackSimulation();
+runCancelAbortSimulation();
 
 if (failures.length > 0) {
   console.error("FAIL plugins 前端 cache/sequence validator");
