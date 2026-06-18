@@ -81,7 +81,13 @@ const ipcDomainModuleMap = new Map([
   ["system", "system"],
 ]);
 
-const ipcCommandModuleOverrides = new Map([["load_session_analytics", "sessions"]]);
+const ipcCommandModuleOverrides = new Map([
+  ["load_session_analytics", "sessions"],
+  ["get_hotspot_enabled", "hotspot"],
+  ["set_hotspot_enabled", "hotspot"],
+  ["has_notch", "hotspot"],
+  ["hotspot_ready", "hotspot"],
+]);
 
 // 当前只允许 evidence 明确登记的 system source-sidecar 命令超过 raw dumped 合同。
 const allowedExistingSystemCommands = new Set(sourceSidecarSystemCommands);

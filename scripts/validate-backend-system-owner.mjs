@@ -190,6 +190,8 @@ function validateRoot(path, original, content) {
     ["platform action payload 依赖", /\b(UpdateInstallabilityPayload|SystemInfoPayload)\b/g],
     ["platform action 实现", /\bpub\s+fn\s+(check_update_installability|graceful_restart_for_update|restart_app|force_kill_app|open_path|system_info|focus_main_window)\s*\(/g],
     ["platform action helper", /\bfn\s+(force_kill_payload|system_action_payload)\s*\(/g],
+    ["hotspot owner 依赖", /\bHotspotPlatformPort\b|\bhotspot_core\b|\bhotspot_repository\b/g],
+    ["hotspot owner 实现", /\bpub\s+fn\s+(has_notch|get_hotspot_enabled|set_hotspot_enabled|hotspot_ready)\s*\(/g],
   ]) {
     rejectPattern(label, path, original, content, pattern, "实现必须归属更窄的 system owner");
   }
@@ -358,6 +360,14 @@ function validateCommandCompatibility(path, content) {
     ["focus main window command adapter", /\busecase\s*::\s*system\s*::\s*focus_main_window\s*\(\s*&window\s*\)/],
   ]) {
     requirePattern(label, path, content, pattern, "commands/system.rs 必须保持兼容 IPC adapter");
+  }
+
+  for (const [label, pattern] of [
+    ["HotspotPlatformAdapter", /\bHotspotPlatformAdapter\b/g],
+    ["hotspot command 函数", /\bpub\s+fn\s+(has_notch|get_hotspot_enabled|set_hotspot_enabled|hotspot_ready)\s*\(/g],
+    ["system hotspot usecase", /\busecase\s*::\s*system\s*::\s*(has_notch|get_hotspot_enabled|set_hotspot_enabled|hotspot_ready)\b/g],
+  ]) {
+    rejectPattern(label, path, content, content, pattern, "hotspot IPC adapter 必须归属 commands/hotspot.rs");
   }
 }
 

@@ -7,7 +7,6 @@ use crate::contracts::{
     NotificationClientStatePayload, PendingAutoSwitchStatePayload, RebuildRegistryPayload,
     SystemActionPayload, SystemInfoPayload, UpdateInstallabilityPayload,
 };
-use crate::platform::hotspot::HotspotPlatformAdapter;
 use crate::platform::process::ProcessPlatformAdapter;
 use crate::platform::shell::ShellPlatformAdapter;
 use crate::platform::system::SystemPlatformAdapter;
@@ -367,39 +366,6 @@ pub fn confirm_pending_auto_switch_and_restart_codex() -> Result<CoreEnvelope<()
     Ok(CoreEnvelope::ok(
         usecase::system::confirm_pending_auto_switch_and_restart_codex(),
     ))
-}
-
-#[tauri::command]
-pub fn has_notch() -> Result<CoreEnvelope<bool>, String> {
-    let hotspot = HotspotPlatformAdapter;
-    Ok(CoreEnvelope::ok(usecase::system::has_notch(&hotspot)))
-}
-
-#[tauri::command]
-pub fn get_hotspot_enabled(
-    repo: State<'_, Mutex<Repository>>,
-) -> Result<CoreEnvelope<bool>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::system::get_hotspot_enabled(&repo)
-        .map(CoreEnvelope::ok)
-        .map_err(|error| error.to_string())
-}
-
-#[tauri::command]
-pub fn set_hotspot_enabled(
-    repo: State<'_, Mutex<Repository>>,
-    enabled: bool,
-) -> Result<CoreEnvelope<bool>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::system::set_hotspot_enabled(&repo, enabled)
-        .map(CoreEnvelope::ok)
-        .map_err(|error| error.to_string())
-}
-
-#[tauri::command]
-pub fn hotspot_ready() -> Result<CoreEnvelope<bool>, String> {
-    let hotspot = HotspotPlatformAdapter;
-    Ok(CoreEnvelope::ok(usecase::system::hotspot_ready(&hotspot)))
 }
 
 #[tauri::command]

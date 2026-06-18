@@ -56,7 +56,7 @@ OpenAiMami 是一个面向个人本地工作流的桌面应用。本仓库公开
 
 | 范围 | 当前状态 |
 | --- | --- |
-| 已开源后端能力 | 已公开过或可由仓库证据支撑的后端能力，已按六边形边界补回骨架；没有证据支撑的闭源业务不写成真实逻辑。 |
+| 已开源后端能力 | 已公开过或可由仓库证据支撑的后端能力，已按六边形边界补回骨架；system 与 hotspot 等 owner 已拆到独立命令、用例、核心、平台和仓储边界，没有证据支撑的闭源业务不写成真实逻辑。 |
 | 文件事实能力 | sessions、analytics、quota history、system 检测等能力只按公开文件事实和可审计合同恢复，不声明隐藏运行态或外部系统闭环。 |
 | 入口边界 | voice 只保留空骨架、合同清单和中文边界说明；不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。 |
 
@@ -78,7 +78,7 @@ README 只提供对外状态总结，不替代脚本验收。当前验收以 `pa
 | 公开边界 | 执行公开边界校验，确认 README、文档和公开材料不包含禁用公开标记、内部路径、凭据或未匿名化内容。 |
 | 前端证据与还原 | 执行前端 dumped、证据链、leaf、copy owner、入口架构和 i18n 相关校验，确认前端还原能回指 raw/internal 证据。 |
 | 前端状态与竞态 | 执行缓存、事件刷新、序列、voice 边界、E2E mock 等校验，确认 mutation、旧响应、事件重放、取消和失败态不会破坏状态合同。 |
-| 后端边界 | 执行后端六边形和各 owner 校验，确认 command、usecase、core、platform、repository、adapter、contract 不互相越界。 |
+| 后端边界 | 执行后端六边形和各 owner 校验，确认 command、usecase、core、platform、repository、adapter、contract 不互相越界；hotspot 等后端切片不得回流到 system owner。 |
 | README 一致性 | `README.md` 与 `README-cn.md` 必须保持同内容、同字节；修改其中一个时必须同步另一个。 |
 
 ## 可直接给 AI 的重建提示

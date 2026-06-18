@@ -13,11 +13,3 @@ impl HotspotPlatformPort for HotspotPlatformAdapter {
         )
     }
 }
-
-pub fn has_notch() -> bool {
-    HotspotPlatformAdapter.hotspot_capability().has_notch
-}
-
-pub fn hotspot_ready() -> bool {
-    HotspotPlatformAdapter.hotspot_capability().ready
-}
