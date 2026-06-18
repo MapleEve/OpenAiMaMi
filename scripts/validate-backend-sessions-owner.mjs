@@ -3,6 +3,12 @@ import { join, relative } from "node:path";
 
 const repoRoot = process.cwd();
 const backendRoot = join(repoRoot, "src-tauri", "src");
+const evidenceMapFile = join(
+  repoRoot,
+  "docs",
+  "reconstruction",
+  "sessions-analytics-current-source-evidence-map.md",
+);
 const commandFile = join(backendRoot, "commands", "sessions.rs");
 const usecaseFile = join(backendRoot, "application", "usecase", "sessions.rs");
 const repositoryFile = join(backendRoot, "repository", "sessions.rs");
@@ -86,14 +92,70 @@ function assertNoPattern(label, body, patterns) {
   }
 }
 
+function requireTextIncludes(label, file, content, snippets) {
+  for (const snippet of snippets) {
+    if (!content.includes(snippet)) {
+      failures.push(`${toRelative(file)} 缺少 ${label}：${snippet}`);
+    }
+  }
+}
+
+function rejectTextIncludes(label, file, content, snippets, reason) {
+  for (const snippet of snippets) {
+    if (content.includes(snippet)) {
+      failures.push(`${toRelative(file)} 禁止 ${label}：${snippet}，${reason}`);
+    }
+  }
+}
+
 const commandContent = readRequired(commandFile, "sessions command");
 const usecaseContent = readRequired(usecaseFile, "sessions usecase");
 const repositoryContent = readRequired(repositoryFile, "sessions repository");
+const evidenceMapContent = readRequired(evidenceMapFile, "sessions/analytics current-source evidence map");
 const adapterModContent = readRequired(adapterModFile, "repository fs adapter trait");
 const realFsContent = readRequired(realFsFile, "real filesystem adapter");
 const fakeFsContent = readRequired(fakeFsFile, "fake filesystem adapter");
 const tempFsContent = readRequired(tempFsFile, "temp filesystem adapter");
 const packageContent = readRequired(packageFile, "package.json");
+
+requireTextIncludes(
+  "sessions/analytics current-source evidence map",
+  evidenceMapFile,
+  evidenceMapContent,
+  [
+    "# sessions/analytics current-source 证据映射",
+    "`load_sessions`",
+    "`delete_sessions`",
+    "`load_session_analytics`",
+    "`import_chatgpt_session_account`",
+    "公开 session 文件事实",
+    "payload/cwd",
+    "parent_thread_id",
+    "agent_nickname",
+    "agent_role",
+    "payload/role",
+    "turn_count",
+    "FileSystemAdapter",
+    "不恢复 SQLite/rusqlite 索引事务",
+    "不声明 ChatGPT session account 导入",
+    "不声明跨平台手工验收",
+    "scripts/validate-backend-sessions-owner.mjs",
+  ],
+);
+rejectTextIncludes(
+  "越界完成声明",
+  evidenceMapFile,
+  evidenceMapContent,
+  [
+    "闭源 token analytics 已恢复",
+    "真实运行时统计口径已恢复",
+    "SQLite/rusqlite 索引事务已恢复",
+    "ChatGPT session account 导入已恢复",
+    "跨平台手工验收已完成",
+    "整仓 100% leaf 完成",
+  ],
+  "current-source evidence map 只能记录公开文件事实和 pending 边界",
+);
 
 const commandLoadBody = requireFunctionBody(commandContent, commandFile, "load_sessions");
 assertNoPattern("commands/sessions.rs load_sessions", commandLoadBody, [

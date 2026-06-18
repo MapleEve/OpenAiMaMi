@@ -11,6 +11,7 @@ const validators = [
   ["validate-frontend-dumped.mjs"],
   ["validate-frontend-evidence.mjs"],
   ["validate-frontend-current-source-closeouts.mjs"],
+  ["validate-frontend-ui-theme-current-source.mjs"],
   ["validate-frontend-layer-owners.mjs"],
   ["validate-frontend-entry-architecture.mjs"],
   ["validate-frontend-accounts-sessions-cache.mjs"],

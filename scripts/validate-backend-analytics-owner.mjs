@@ -3,6 +3,12 @@ import { join, relative } from "node:path";
 
 const repoRoot = process.cwd();
 const backendRoot = join(repoRoot, "src-tauri", "src");
+const evidenceMapFile = join(
+  repoRoot,
+  "docs",
+  "reconstruction",
+  "sessions-analytics-current-source-evidence-map.md",
+);
 const files = {
   commands: join(backendRoot, "commands", "analytics.rs"),
   usecase: join(backendRoot, "application", "usecase", "analytics.rs"),
@@ -102,11 +108,71 @@ function requirePattern(label, file, content, pattern, reason) {
   }
 }
 
+function requireTextIncludes(label, file, content, snippets) {
+  for (const snippet of snippets) {
+    if (!content.includes(snippet)) {
+      failures.push(`${toRelative(file)} 缺少 ${label}：${snippet}`);
+    }
+  }
+}
+
+function rejectTextIncludes(label, file, content, snippets, reason) {
+  for (const snippet of snippets) {
+    if (content.includes(snippet)) {
+      failures.push(`${toRelative(file)} 禁止 ${label}：${snippet}，${reason}`);
+    }
+  }
+}
+
 const raw = Object.fromEntries(
   Object.entries(files).map(([key, path]) => [key, { path, content: readRequired(path, key) }]),
 );
 const code = Object.fromEntries(
   Object.entries(raw).map(([key, file]) => [key, { ...file, content: stripRustComments(file.content) }]),
+);
+const evidenceMapContent = readRequired(evidenceMapFile, "sessions/analytics current-source evidence map");
+
+requireTextIncludes(
+  "sessions/analytics current-source evidence map",
+  evidenceMapFile,
+  evidenceMapContent,
+  [
+    "# sessions/analytics current-source 证据映射",
+    "公开 session/rollout/quota-history 文件事实聚合",
+    "`load_usage_analytics`",
+    "`load_session_analytics`",
+    "`load_tool_analytics`",
+    "`load_change_analytics`",
+    "`load_quota_history`",
+    "`load_token_analytics`",
+    "pending status",
+    "accounts/quota-history.jsonl",
+    "`rollout-*.jsonl`",
+    "response_item/function_call",
+    "exec_command",
+    "topTools path/count",
+    "7 天窗口",
+    "compaction write",
+    "不声明闭源 token analytics",
+    "不声明真实运行时统计口径",
+    "不声明 Windows/macOS 手工验收",
+    "不声明整仓 100% leaf",
+    "scripts/validate-backend-analytics-owner.mjs",
+  ],
+);
+rejectTextIncludes(
+  "越界完成声明",
+  evidenceMapFile,
+  evidenceMapContent,
+  [
+    "闭源 token analytics 已恢复",
+    "真实运行时统计口径已恢复",
+    "SQLite/rusqlite 索引事务已恢复",
+    "ChatGPT session account 导入已恢复",
+    "跨平台手工验收已完成",
+    "整仓 100% leaf 完成",
+  ],
+  "current-source evidence map 只能记录公开文件事实和 pending 边界",
 );
 
 const usecaseForbiddenIo = [

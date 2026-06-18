@@ -121,8 +121,14 @@ const allowedSensitivePathPatterns = [
 
 const mojibakePatterns = [
   /\uFFFD/,
-  /(?:Ã|Â|â€|鈥|鍖|鏄|绋|涓轰粈)/,
+  /[\u00C3\u00C2\u9225\u951B\u9428\u9345\u6960\u7487\u4E63]/,
+  /(?:\u00E2\u20AC|\u7F02\u54C4|\u934F\u30E5|\u701B\u6A3A|\u6D93\u8F70\u7C88|涓轰粈)/,
 ];
+
+const mojibakeSelfCheckFiles = new Set([
+  "scripts/validate-public-boundary.mjs",
+  "scripts/validate-i18n.mjs",
+]);
 
 function toRepoPath(path) {
   return relative(repoRoot, path).replaceAll("\\", "/");
@@ -145,6 +151,28 @@ function findForbiddenTermHits(content) {
 
 function isAllowedSensitiveHit(hit) {
   return allowedSensitivePathPatterns.some((pattern) => pattern.test(hit));
+}
+
+function shouldSkipMojibakeCheck(file) {
+  return mojibakeSelfCheckFiles.has(file.replaceAll("\\", "/"));
+}
+
+function findMojibakeHits(content) {
+  return mojibakePatterns
+    .filter((pattern) => pattern.test(content))
+    .map((pattern) => pattern.toString());
+}
+
+function findMojibakeMatches(content) {
+  const hits = [];
+  for (const pattern of mojibakePatterns) {
+    pattern.lastIndex = 0;
+    const match = pattern.exec(content);
+    if (match) {
+      hits.push({ pattern: pattern.toString(), index: match.index });
+    }
+  }
+  return hits;
 }
 
 function readUtf8(path) {
@@ -452,9 +480,7 @@ function validateReadmeTextQuality(path) {
   if (!existsSync(join(repoRoot, path))) return;
 
   const content = readUtf8(path);
-  const hits = mojibakePatterns
-    .filter((pattern) => pattern.test(content))
-    .map((pattern) => pattern.toString());
+  const hits = findMojibakeHits(content);
 
   addCheck(
     `${path} 不包含明显乱码中文`,
@@ -538,6 +564,7 @@ function validateRepositoryTextBoundary() {
   );
   const forbiddenHits = [];
   const sensitiveHits = [];
+  const mojibakeHits = [];
 
   for (const file of trackedTextFiles) {
     const absolute = join(repoRoot, file);
@@ -547,6 +574,13 @@ function validateRepositoryTextBoundary() {
     const content = buffer.toString("utf8");
     for (const term of findForbiddenTermHits(content)) {
       forbiddenHits.push(`${file} 命中 ${term}`);
+    }
+
+    if (!shouldSkipMojibakeCheck(file)) {
+      for (const { pattern, index } of findMojibakeMatches(content)) {
+        const line = content.slice(0, index).split(/\r?\n/).length;
+        mojibakeHits.push(`${file}:${line} 命中 ${pattern}`);
+      }
     }
 
     if (file.replaceAll("\\", "/") === "scripts/validate-public-boundary.mjs") {
@@ -580,6 +614,13 @@ function validateRepositoryTextBoundary() {
     sensitiveHits.length === 0
       ? "未发现本机路径、共享路径、私钥或长 token 形态"
       : sensitiveHits.slice(0, 20).join("；"),
+  );
+  addCheck(
+    "公开文本不存在明显乱码中文",
+    mojibakeHits.length === 0,
+    mojibakeHits.length === 0
+      ? "所有 tracked 公开文本未发现常见 mojibake 特征"
+      : mojibakeHits.slice(0, 20).join("；"),
   );
 }
 
