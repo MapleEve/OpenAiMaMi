@@ -373,7 +373,7 @@ function validateReadmeStatusStructure(path) {
   const content = readUtf8(path);
   const requiredStatusParts = [
     "## 当前状态",
-    "| 领域 | 已完成 | 未完成或边界 |",
+    "| 领域 | 已做 | 没做或边界 | 怎么验收 |",
     "| 公开材料 |",
     "| 前端 |",
     "| 后端 |",
