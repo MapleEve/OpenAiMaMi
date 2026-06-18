@@ -1,4 +1,5 @@
 import { lazy, type ComponentType, type ReactElement, type ReactNode } from "react";
+import type { QueryKey } from "@tanstack/react-query";
 import {
   Activity,
   BarChart3,
@@ -18,7 +19,10 @@ import {
 import type { SettingsRouteProps } from "@/routes/desktop/main/settings/page";
 import type { Route } from "@/types/navigation";
 import type { MysteryRouteGateContext } from "@/routes/registry/gates";
-import { RouteHighIoFeedback } from "@/routes/registry/feedback";
+import {
+  RouteHighIoFeedback,
+  type RouteHighIoFeedbackProps,
+} from "@/routes/registry/feedback";
 import { RouteShellSkeleton } from "@/routes/registry/skeletons";
 import { ErrorBoundary } from "@/components/boundary";
 
@@ -116,17 +120,23 @@ export interface RouteDefinition {
   redirect: Route | null;
   fillHeight: boolean;
   highIo: boolean;
+  highIoQueryKeys: QueryKey[];
   preload: () => Promise<unknown>;
   skeleton: ReactNode;
-  HighIoFeedback: ComponentType<{ route: Route }>;
+  HighIoFeedback: ComponentType<RouteHighIoFeedbackProps>;
   render: (context: RouteRenderContext) => ReactElement;
 }
 
 type RouteDefinitionInput = Omit<
   RouteDefinition,
-  "path" | "layout" | "ErrorBoundary" | "redirect" | "fillHeight"
+  "path" | "layout" | "ErrorBoundary" | "redirect" | "fillHeight" | "highIoQueryKeys"
 > &
-  Partial<Pick<RouteDefinition, "layout" | "ErrorBoundary" | "redirect" | "fillHeight">>;
+  Partial<
+    Pick<
+      RouteDefinition,
+      "layout" | "ErrorBoundary" | "redirect" | "fillHeight" | "highIoQueryKeys"
+    >
+  >;
 
 function RouteRegistryLayout({ children }: RouteLayoutProps) {
   return <>{children}</>;
@@ -134,6 +144,10 @@ function RouteRegistryLayout({ children }: RouteLayoutProps) {
 
 function RouteRegistryErrorBoundary({ children }: RouteErrorBoundaryProps) {
   return <ErrorBoundary fallback={<RouteShellSkeleton />}>{children}</ErrorBoundary>;
+}
+
+function routeHighIoQueryKeys(route: Route, extra: QueryKey[] = []): QueryKey[] {
+  return [[route], ...extra];
 }
 
 function withRouteDefaults(definition: RouteDefinitionInput): RouteDefinition {
@@ -144,6 +158,8 @@ function withRouteDefaults(definition: RouteDefinitionInput): RouteDefinition {
     redirect: null,
     fillHeight: true,
     ...definition,
+    highIoQueryKeys:
+      definition.highIoQueryKeys ?? routeHighIoQueryKeys(definition.route),
   };
 }
 
@@ -165,6 +181,11 @@ export const routeDefinitions: RouteDefinition[] = ([
     icon: Users,
     visible: true,
     highIo: true,
+    highIoQueryKeys: routeHighIoQueryKeys("accounts", [
+      ["runtime-state", "display"],
+      ["quota-history"],
+      ["accounts", "snapshot", "authoritative"],
+    ]),
     preload: () => import("@/routes/desktop/main/accounts/page"),
     skeleton: <RouteShellSkeleton />,
     HighIoFeedback: RouteHighIoFeedback,
@@ -176,6 +197,12 @@ export const routeDefinitions: RouteDefinition[] = ([
     icon: MessageSquareText,
     visible: true,
     highIo: true,
+    highIoQueryKeys: routeHighIoQueryKeys("sessions", [
+      ["usage-analytics"],
+      ["session-analytics"],
+      ["sessions", "authoritative"],
+      ["analytics", "usage-analytics", "authoritative"],
+    ]),
     preload: () => import("@/routes/desktop/main/sessions/page"),
     skeleton: <RouteShellSkeleton />,
     HighIoFeedback: RouteHighIoFeedback,
@@ -187,6 +214,14 @@ export const routeDefinitions: RouteDefinition[] = ([
     icon: BarChart3,
     visible: false,
     highIo: true,
+    highIoQueryKeys: routeHighIoQueryKeys("analytics", [
+      ["usage-analytics"],
+      ["session-analytics"],
+      ["token-analytics"],
+      ["tool-analytics"],
+      ["change-analytics"],
+      ["quota-history"],
+    ]),
     preload: () => import("@/routes/desktop/main/analytics/page"),
     skeleton: <RouteShellSkeleton />,
     HighIoFeedback: RouteHighIoFeedback,
@@ -198,6 +233,10 @@ export const routeDefinitions: RouteDefinition[] = ([
     icon: FileCode2,
     visible: false,
     highIo: true,
+    highIoQueryKeys: routeHighIoQueryKeys("custom-instructions", [
+      ["custom-instructions", "state"],
+      ["custom-instructions", "templates"],
+    ]),
     preload: () => import("@/routes/desktop/main/custom-instructions/page"),
     skeleton: <RouteShellSkeleton />,
     HighIoFeedback: RouteHighIoFeedback,
@@ -209,6 +248,7 @@ export const routeDefinitions: RouteDefinition[] = ([
     icon: Server,
     visible: true,
     highIo: true,
+    highIoQueryKeys: routeHighIoQueryKeys("mcp", [["mcp-servers"]]),
     preload: () => import("@/routes/desktop/main/mcp/page"),
     skeleton: <RouteShellSkeleton />,
     HighIoFeedback: RouteHighIoFeedback,
@@ -220,6 +260,10 @@ export const routeDefinitions: RouteDefinition[] = ([
     icon: Sparkles,
     visible: true,
     highIo: true,
+    highIoQueryKeys: routeHighIoQueryKeys("skills", [
+      ["installed-skills"],
+      ["skill-backups"],
+    ]),
     preload: () => import("@/routes/desktop/main/skills/page"),
     skeleton: <RouteShellSkeleton />,
     HighIoFeedback: RouteHighIoFeedback,
@@ -231,6 +275,7 @@ export const routeDefinitions: RouteDefinition[] = ([
     icon: Puzzle,
     visible: true,
     highIo: true,
+    highIoQueryKeys: routeHighIoQueryKeys("plugins", [["plugins-list"]]),
     preload: () => import("@/routes/desktop/main/plugins/page"),
     skeleton: <RouteShellSkeleton />,
     HighIoFeedback: RouteHighIoFeedback,
@@ -242,6 +287,13 @@ export const routeDefinitions: RouteDefinition[] = ([
     icon: RadioTower,
     visible: true,
     highIo: true,
+    highIoQueryKeys: routeHighIoQueryKeys("relay", [
+      ["relay-state"],
+      ["relay", "active-state"],
+      ["relay", "proxy-status"],
+      ["relay", "audit-log"],
+      ["relay", "router-toggle-progress"],
+    ]),
     preload: () => import("@/routes/desktop/main/relay/page"),
     skeleton: <RouteShellSkeleton />,
     HighIoFeedback: RouteHighIoFeedback,
@@ -253,6 +305,11 @@ export const routeDefinitions: RouteDefinition[] = ([
     icon: Wrench,
     visible: true,
     highIo: true,
+    highIoQueryKeys: routeHighIoQueryKeys("maintenance", [
+      ["imageCompat"],
+      ["maintenance", "system-info"],
+      ["maintenance", "snapshot"],
+    ]),
     preload: () => import("@/routes/desktop/main/maintenance/page"),
     skeleton: <RouteShellSkeleton />,
     HighIoFeedback: RouteHighIoFeedback,
@@ -275,6 +332,10 @@ export const routeDefinitions: RouteDefinition[] = ([
     icon: Activity,
     visible: false,
     highIo: true,
+    highIoQueryKeys: routeHighIoQueryKeys("daemon-autoswitch", [
+      ["daemon-autoswitch", "bootstrap"],
+      ["daemon-autoswitch", "pending"],
+    ]),
     preload: () => import("@/routes/desktop/main/daemon-autoswitch/page"),
     skeleton: <RouteShellSkeleton />,
     HighIoFeedback: RouteHighIoFeedback,

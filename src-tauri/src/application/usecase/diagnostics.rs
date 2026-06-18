@@ -1,3 +1,4 @@
+use crate::application::ports::DiagnosticPlatformPort;
 use crate::application::usecase::path_state::app_path_state_from_repository;
 use crate::contracts::{
     AppPathState, BackendEffect, BackendSkeletonBoundaryStatus, BackendSkeletonStatus,
@@ -12,14 +13,17 @@ use crate::repository::path_state::{load_app_path_state, RepositoryPathState};
 use crate::repository::Repository;
 
 // diagnostics usecase 只负责公开只读诊断快照合同，不恢复诊断修复闭环。
-pub fn diagnose(repo: &Repository) -> Result<DiagnosePayload, CoreError> {
+pub fn diagnose(
+    repo: &Repository,
+    platform: &impl DiagnosticPlatformPort,
+) -> Result<DiagnosePayload, CoreError> {
     let diagnostic_snapshot = load_system_diagnostic_snapshot(repo)?;
     let paths = make_path_state_from_diagnostic_snapshot(repo, &diagnostic_snapshot);
     Ok(DiagnosePayload {
         backend_status: diagnose_backend_status(),
         paths,
         core_version: env!("CARGO_PKG_VERSION").to_string(),
-        platform: make_diagnose_platform(),
+        platform: make_diagnose_platform(platform),
         registry_state: DiagnoseRegistryState {
             account_count: diagnostic_probe_count(
                 &diagnostic_snapshot,
@@ -67,11 +71,12 @@ fn diagnose_backend_status() -> BackendSkeletonStatus {
     }
 }
 
-fn make_diagnose_platform() -> DiagnosePlatform {
+fn make_diagnose_platform(platform: &impl DiagnosticPlatformPort) -> DiagnosePlatform {
+    let info = platform.platform_info();
     DiagnosePlatform {
-        os: std::env::consts::OS.to_string(),
-        arch: std::env::consts::ARCH.to_string(),
-        info_source: "std::env::consts".to_string(),
+        os: info.os,
+        arch: info.arch,
+        info_source: "platform.system".to_string(),
     }
 }
 

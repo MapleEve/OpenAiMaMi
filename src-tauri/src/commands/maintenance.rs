@@ -33,7 +33,8 @@ pub fn diagnose(
     repo: State<'_, Mutex<Repository>>,
 ) -> Result<CoreEnvelope<DiagnosePayload>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::maintenance::diagnose(&repo)
+    let system = SystemPlatformAdapter;
+    usecase::maintenance::diagnose(&repo, &system)
         .map(CoreEnvelope::ok)
         .map_err(|error| error.to_string())
 }

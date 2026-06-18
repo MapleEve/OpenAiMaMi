@@ -222,6 +222,72 @@ function validateGitAttributes() {
   );
 }
 
+function validatePackageValidateScripts() {
+  const packagePath = join(repoRoot, "package.json");
+  if (!existsSync(packagePath)) {
+    addCheck("package.json 验证入口", false, "缺少 package.json");
+    return;
+  }
+
+  let packageJson;
+  try {
+    packageJson = JSON.parse(readUtf8("package.json"));
+  } catch (error) {
+    addCheck("package.json 验证入口", false, `package.json 无法解析：${error.message}`);
+    return;
+  }
+
+  const scripts = packageJson.scripts ?? {};
+  const validateEntries = Object.entries(scripts).filter(([name]) =>
+    name.startsWith("validate:"),
+  );
+  const validateTargets = new Set();
+  const missingTargets = [];
+  const invalidCommands = [];
+
+  for (const [name, command] of validateEntries) {
+    const match = /\bnode\s+([^\s]+\.mjs)\b/.exec(command);
+    if (!match) {
+      invalidCommands.push(name);
+      continue;
+    }
+
+    const target = match[1].replaceAll("\\", "/");
+    validateTargets.add(target);
+    if (!existsSync(join(repoRoot, target))) {
+      missingTargets.push(`${name} -> ${target}`);
+    }
+  }
+
+  addCheck(
+    "package.json validate 入口目标存在",
+    missingTargets.length === 0 && invalidCommands.length === 0,
+    missingTargets.length === 0 && invalidCommands.length === 0
+      ? `${validateEntries.length} 个 validate 入口均指向存在脚本`
+      : [
+          missingTargets.length > 0 ? `缺少脚本：${missingTargets.join(", ")}` : "",
+          invalidCommands.length > 0
+            ? `不是 node .mjs 命令：${invalidCommands.join(", ")}`
+            : "",
+        ]
+          .filter(Boolean)
+          .join("；"),
+  );
+
+  const validateScriptFiles = walkFiles(join(repoRoot, "scripts"))
+    .map(toRepoPath)
+    .filter((path) => /^scripts\/validate.*\.mjs$/.test(path));
+  const unregistered = validateScriptFiles.filter((path) => !validateTargets.has(path));
+
+  addCheck(
+    "scripts validate 文件均有 npm 入口",
+    unregistered.length === 0,
+    unregistered.length === 0
+      ? `${validateScriptFiles.length} 个 validate 脚本均已登记`
+      : `未登记脚本：${unregistered.join(", ")}`,
+  );
+}
+
 function validateReadmeFile(path) {
   if (!existsSync(join(repoRoot, path))) {
     addCheck(`${path} 存在`, false, "文件不存在");
@@ -518,6 +584,7 @@ function validateRepositoryTextBoundary() {
 }
 
 validateGitAttributes();
+validatePackageValidateScripts();
 validateReadmePairConsistency();
 validateReadmeFile("README.md");
 validateReadmeFile("README-cn.md");

@@ -50,7 +50,9 @@ function RegistryRouteElement({ route }: { route: Route }) {
     <PageStage state="active" fillHeight={definition.fillHeight}>
       <Layout route={route}>
         <RouteErrorBoundary route={route}>
-          {definition.highIo && <HighIoFeedback route={route} />}
+          {definition.highIo && (
+            <HighIoFeedback route={route} queryKeys={definition.highIoQueryKeys} />
+          )}
           <Suspense fallback={definition.skeleton}>
             {definition.render(context)}
           </Suspense>

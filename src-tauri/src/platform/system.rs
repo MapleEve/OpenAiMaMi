@@ -1,4 +1,7 @@
-use crate::application::ports::{AppSystemInfo, AppSystemPort, AppUpdateInstallability};
+use crate::application::ports::{
+    AppSystemInfo, AppSystemPort, AppUpdateInstallability, DiagnosticCapabilityProbe,
+    DiagnosticPlatformInfo, DiagnosticPlatformPort,
+};
 use crate::core::error::CoreError;
 use std::path::{Path, PathBuf};
 
@@ -34,6 +37,22 @@ impl AppSystemPort for SystemPlatformAdapter {
 
     fn reset_config(&self) -> Result<(), CoreError> {
         reset_config()
+    }
+}
+
+impl DiagnosticPlatformPort for SystemPlatformAdapter {
+    fn platform_info(&self) -> DiagnosticPlatformInfo {
+        let info = system_info();
+        DiagnosticPlatformInfo {
+            os: info.os,
+            os_version: info.os_version,
+            arch: info.arch,
+            hostname: info.hostname,
+        }
+    }
+
+    fn capability_probes(&self) -> Vec<DiagnosticCapabilityProbe> {
+        Vec::new()
     }
 }
 

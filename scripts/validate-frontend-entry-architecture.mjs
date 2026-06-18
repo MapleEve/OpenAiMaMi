@@ -228,10 +228,28 @@ expectIncludes("src/routes/registry/registry.tsx", routeRegistry, [
   "redirect: Route | null;",
   "fillHeight: boolean;",
   "highIo: boolean;",
+  "highIoQueryKeys: QueryKey[];",
   "preload: () => Promise<unknown>;",
   "skeleton: ReactNode;",
-  "HighIoFeedback: ComponentType<{ route: Route }>",
+  "HighIoFeedback: ComponentType<RouteHighIoFeedbackProps>",
   "export const routeDefinitions",
+  "routeHighIoQueryKeys",
+  "[\"plugins-list\"]",
+  "[\"mcp-servers\"]",
+  "[\"installed-skills\"]",
+  "[\"relay-state\"]",
+]);
+
+const routeFeedback = readRequiredFile("src/routes/registry/feedback.tsx");
+expectIncludes("src/routes/registry/feedback.tsx", routeFeedback, [
+  "export interface RouteHighIoFeedbackProps",
+  "queryKeys: QueryKey[];",
+  "useIsFetching({",
+  "predicate: (query)",
+  "isQueryKeyPrefix(query.queryKey, queryKey)",
+]);
+expectNotIncludes("src/routes/registry/feedback.tsx", routeFeedback, [
+  "useIsFetching({ queryKey: [route] })",
 ]);
 
 const routeObjects = readRequiredFile("src/routes/registry/objects.tsx");
@@ -242,6 +260,7 @@ expectIncludes("src/routes/registry/objects.tsx", routeObjects, [
   "routeDefinitions.map",
   "handle: {",
   "meta: getRouteMeta(definition.route)",
+  "queryKeys={definition.highIoQueryKeys}",
   "<Suspense fallback={definition.skeleton}>",
   "<PageStage state=\"active\" fillHeight={definition.fillHeight}>",
 ]);

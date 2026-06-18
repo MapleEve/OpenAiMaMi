@@ -1,4 +1,6 @@
-use crate::application::ports::{AppProcessPort, AppShellPort, AppSystemPort};
+use crate::application::ports::{
+    AppProcessPort, AppShellPort, AppSystemPort, DiagnosticPlatformPort,
+};
 use crate::application::service::{restored_status, BackendEffect};
 use crate::application::usecase::diagnostics;
 use crate::application::usecase::platform_actions;
@@ -21,8 +23,11 @@ pub fn clean(repo: &Repository) -> Result<CleanPayload, CoreError> {
     })
 }
 
-pub fn diagnose(repo: &Repository) -> Result<DiagnosePayload, CoreError> {
-    let mut payload = diagnostics::diagnose(repo)?;
+pub fn diagnose(
+    repo: &Repository,
+    platform: &impl DiagnosticPlatformPort,
+) -> Result<DiagnosePayload, CoreError> {
+    let mut payload = diagnostics::diagnose(repo, platform)?;
     mark_maintenance_status(&mut payload.backend_status);
     Ok(payload)
 }

@@ -4,9 +4,12 @@ import { join, relative } from "node:path";
 const repoRoot = process.cwd();
 const backendRoot = join(repoRoot, "src-tauri", "src");
 const files = {
+  applicationPorts: join(backendRoot, "application", "ports.rs"),
+  maintenanceCommand: join(backendRoot, "commands", "maintenance.rs"),
   usecaseMod: join(backendRoot, "application", "usecase", "mod.rs"),
   diagnosticsUsecase: join(backendRoot, "application", "usecase", "diagnostics.rs"),
   pathStateUsecase: join(backendRoot, "application", "usecase", "path_state.rs"),
+  systemPlatform: join(backendRoot, "platform", "system.rs"),
   repositoryPathState: join(backendRoot, "repository", "path_state.rs"),
   systemRoot: join(backendRoot, "application", "usecase", "system.rs"),
   maintenanceUsecase: join(backendRoot, "application", "usecase", "maintenance.rs"),
@@ -54,8 +57,10 @@ requirePattern(
 
 const diagnosticsUsecase = raw.get("diagnosticsUsecase");
 for (const [label, pattern] of [
-  ["diagnose action", /\bpub\s+fn\s+diagnose\s*\(\s*repo\s*:\s*&Repository\s*\)/],
+  ["diagnose action", /\bpub\s+fn\s+diagnose\s*\(\s*repo\s*:\s*&Repository\s*,\s*platform\s*:\s*&impl\s+DiagnosticPlatformPort\s*,?\s*\)/],
   ["diagnostics repository snapshot", /\bload_system_diagnostic_snapshot\s*\(\s*repo\s*\)/],
+  ["diagnostics platform port", /\bDiagnosticPlatformPort\b/],
+  ["diagnostics platform payload", /\bmake_diagnose_platform\s*\(\s*platform\s*\)/],
   ["diagnostics backend status", /\bfn\s+diagnose_backend_status\s*\(/],
   ["diagnostics module status", /module\s*:\s*"diagnostics"\s*\.to_string\s*\(\s*\)/],
   ["pending diagnostics fields", /\bfn\s+make_pending_diagnostic_fields\s*\(/],
@@ -69,6 +74,7 @@ for (const [label, pattern] of [
 
 for (const [label, pattern] of [
   ["直接 FS 路径探测", /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(/g],
+  ["直接平台常量读取", /\bstd\s*::\s*env\s*::\s*consts\b/g],
   ["system 私有模块依赖", /\bsuper\s*::\s*snapshot_bootstrap\b|\bsystem\s*::/g],
   ["bootstrap cache owner", /\bbootstrap_repository\b/g],
   ["settings secret owner", /\bremote_device_secret\b/g],
@@ -105,6 +111,32 @@ for (const [label, pattern] of [
   requirePattern(label, repositoryPathState.path, repositoryPathState.content, pattern, "路径存在性事实必须归属 repository/path_state.rs");
 }
 
+const applicationPorts = raw.get("applicationPorts");
+requirePattern(
+  "诊断平台端口声明",
+  applicationPorts.path,
+  applicationPorts.content,
+  /\bpub\(crate\)\s+trait\s+DiagnosticPlatformPort\b/,
+  "diagnostics 用例必须通过应用层平台端口消费系统能力",
+);
+
+const systemPlatform = raw.get("systemPlatform");
+for (const [label, pattern] of [
+  ["系统平台实现诊断端口", /\bimpl\s+DiagnosticPlatformPort\s+for\s+SystemPlatformAdapter\b/],
+  ["诊断平台信息转换", /\bDiagnosticPlatformInfo\s*\{/],
+  ["诊断能力探针边界", /\bfn\s+capability_probes\s*\(&self\)\s*->\s*Vec\s*<\s*DiagnosticCapabilityProbe\s*>/],
+]) {
+  requirePattern(label, systemPlatform.path, systemPlatform.content, pattern, "平台能力必须归属 platform/system.rs");
+}
+
+const maintenanceCommand = raw.get("maintenanceCommand");
+for (const [label, pattern] of [
+  ["diagnose command 创建系统平台适配器", /\blet\s+system\s*=\s*SystemPlatformAdapter\s*;/],
+  ["diagnose command 传入系统平台适配器", /\busecase\s*::\s*maintenance\s*::\s*diagnose\s*\(\s*&repo\s*,\s*&system\s*\)/],
+]) {
+  requirePattern(label, maintenanceCommand.path, maintenanceCommand.content, pattern, "Tauri command 必须只装配平台 adapter 并交给 usecase");
+}
+
 const systemRoot = raw.get("systemRoot");
 for (const [label, pattern] of [
   ["system diagnostics 子模块", /\bmod\s+diagnostics\s*;/],
@@ -119,8 +151,15 @@ requirePattern(
   "maintenance diagnose 调用 diagnostics owner",
   maintenanceUsecase.path,
   maintenanceUsecase.content,
-  /\bdiagnostics\s*::\s*diagnose\s*\(\s*repo\s*\)\s*\?/,
+  /\bdiagnostics\s*::\s*diagnose\s*\(\s*repo\s*,\s*platform\s*\)\s*\?/,
   "maintenance diagnose 必须调用独立 diagnostics owner",
+);
+requirePattern(
+  "maintenance diagnose 接收诊断平台端口",
+  maintenanceUsecase.path,
+  maintenanceUsecase.content,
+  /\bpub\s+fn\s+diagnose\s*\(\s*repo\s*:\s*&Repository\s*,\s*platform\s*:\s*&impl\s+DiagnosticPlatformPort\s*,?\s*\)/,
+  "maintenance diagnose 必须转传 DiagnosticPlatformPort",
 );
 rejectPattern(
   "maintenance system diagnose 中转",
