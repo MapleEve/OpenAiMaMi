@@ -1,16 +1,14 @@
 # OpenAiMami
 
-OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开的是匿名化后的 `raw/internal` 证据链、重建文档、当前前端恢复代码，以及后端六边形骨架；它用于说明哪些能力已经进入公开源码，哪些仍只是边界、合同、占位或待补证据位置。
+OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开匿名化后的 `raw/internal` 证据链、重建文档、当前前端恢复代码，以及后端六边形骨架，用来说明哪些内容已经进入公开源码，哪些内容仍然只是边界、合同、占位或待补证据位置。
 
 项目使用 [Apache License](LICENSE) 许可。公开仓库的目标不是发布一次性快照，也不是复刻未公开材料，而是在可审计、可匿名化、可持续还原的范围内，让实现链路、数据读写边界和本地集成方式能够被检查。
 
 ## 为什么公开
 
-公开 OpenAiMami 的原因有三点：
-
 1. 支持个人持续迭代，让公开源码、证据材料和验证脚本保持可追踪状态。
 2. 使用 Apache License 明确后续使用、审查和二次开发的许可边界。
-3. 让使用者可以检查公开实现是否来自仓库内 `raw/internal` 证据链，降低隐私泄露、越界还原和无证据实现的风险。
+3. 让使用者可以检查公开实现是否来自仓库内 `raw/internal` 证据链，用得更放心，并降低隐私泄露、越界还原和无证据实现的风险。
 
 公开内容只覆盖已经匿名化且适合进入仓库的材料。未审查 dump、个人路径、机器名、账号私密值、凭据、令牌、会话、密钥和外部参考仓库名都不属于公开范围。
 
@@ -18,7 +16,7 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开的是
 
 | 路径或材料 | 说明 |
 | --- | --- |
-| `docs/reconstruction/` | 重建规则、证据入口、发布规则、架构说明和大文件策略。 |
+| `docs/reconstruction/` | 重建规则、原文决策、证据入口、发布规则、架构说明和大文件策略。 |
 | `evidence/full-chain/raw/` | 匿名化 `raw` 链条，包含 dumped 文件、IPC、CCF、manifest、校验摘要和命令索引。 |
 | `evidence/full-chain/internal/` | 匿名化 `internal` 链条，包含 audit map、frontend map、distilled logic、raw leaf 和索引。 |
 | `evidence/binary-manifests/` | 外部大文件的大小、状态和哈希清单。 |
@@ -40,12 +38,12 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开的是
 
 | 领域 | 已做 | 没做或边界 | 怎么验收 |
 | --- | --- | --- | --- |
-| 公开材料 | Apache License、中文说明、匿名化 `raw/internal` 主链路、前端 dumped 证据、二进制清单和重建文档已经进入仓库；公开文本会检查禁词、敏感路径、凭据形态和明显乱码中文。 | 不公开机器名、用户路径、会话、令牌、账号私密值、未审查 dump 或未匿名化内容。 | 运行 `npm run validate:public-boundary`。 |
-| 前端 | 主流模块化 owner 边界已经落位：入口只装配全局能力，路由、运行时、服务门面、缓存、深模块、i18n 和 E2E mock 各自有稳定归属；系统类 cache 竞态和 UI theme current-source 链路已有专用验收入口。 | 不声明前端已经 100% 双平台全 leaf 完成；完整度继续由 `raw/internal`、leaf 队列、current-source closeout 和验证脚本确认。 | 运行 `npm run validate:frontend` 和必要的 `validate:frontend-*` 单项验证；生产构建用 `npm run build`。 |
-| 后端 | 六边形分层已经落位：Tauri command、usecase、core、repository、platform、adapter 和 contract 有明确 owner；原始公开能力、公开证据支撑的事实聚合、tray 边界和 sessions/analytics current-source 映射已归入对应层。 | 不做闭源后端业务全量真实还原；未公开、未选择还原或无公开证据支撑的行为只保留为合同、骨架、待实现项、测试缺口或待补证据位置。 | 运行 `npm run validate:backend` 和必要的 `validate:backend-*` owner 验证。 |
+| 公开材料 | Apache License、中文说明、匿名化 `raw/internal` 主链路、前端 dumped 证据、二进制清单和重建文档已经进入仓库；公开文本有禁词、敏感路径、凭据形态和乱码检查。 | 不公开机器名、用户路径、会话、令牌、账号私密值、未审查 dump、未匿名化内容、IDB 或压缩包。 | 运行 `npm run validate:public-boundary`。 |
+| 前端 | 主流模块化 owner 边界已经落位；入口、全局 Provider、路由、运行时、服务门面、缓存、深模块、i18n、E2E mock 和部分 current-source 链路已有验证入口。 | 不声明已经 100% 双平台全 leaf 完成；完整度继续由 `raw/internal`、leaf 队列、closeout 和验证脚本确认。 | 运行 `npm run validate:frontend`、相关 `validate:frontend-*`，生产构建运行 `npm run build`。 |
+| 后端 | 六边形分层已经落位；Tauri command、usecase、core、repository、platform、adapter 和 contract 有明确 owner；已补回公开或证据支撑能力。 | 不做闭源后端业务全量真实还原；未公开、未选择还原或无公开证据支撑的行为只保留为合同、骨架、待实现项、测试缺口或待补证据位置。 | 运行 `npm run validate:backend` 和相关 `validate:backend-*` owner 验证。 |
 | voice | 只保留空骨架、合同清单和中文边界说明。 | 不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。 | 确认路由、启动链路、IPC mock 和后端命令没有接入 voice。 |
 | 验收 | 已提供公开边界、README 同步、前端、后端、i18n、E2E mock、cache 竞态和 owner 边界的聚合验证入口。 | 构建、编译和平台运行验收仍依赖本机 Rust、前端和目标平台工具链；Windows MSVC target 需要 C++ Build Tools 提供 `link.exe`。 | 一次性检查运行 `npm run validate:all`；平台工具链问题只记录为环境限制。 |
-| 运行闭环 | README 只记录长期有效的源码状态、范围边界和验收入口。 | 不按提交、日期、局部补丁或临时进度追加内容；不声明真实网络、后台线程、全局状态、真实 token 统计口径、更新安装、诊断修复、外部进程重启或 shell 闭环已经完成。 | 只能在对应源码、证据和验证脚本补齐后更新本表。 |
+| 运行闭环 | README 只记录长期有效的源码状态、范围边界和验收入口。 | 不按提交、日期、局部补丁或临时进度追加内容；只有能力、边界或验证入口变化时才更新归纳状态。 | 每次提交同步 README，但只更新本表和相关稳定说明。 |
 
 文档口径固定为“已做 / 没做或边界 / 怎么验收”。每次提交都必须同步 README，但只能更新归纳状态，不再追加流水账。
 
@@ -56,10 +54,10 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开的是
 - 顶层聚合验证：`npm run validate:all`
 - 公开边界与 README 同步：`npm run validate:public-boundary`
 - 前端聚合验证：`npm run validate:frontend`
-- 前端单项验证：可按范围运行 `package.json` 中的 `validate:frontend-*`、`validate:i18n` 和 `validate:e2e-mocks` 验证入口。
+- 前端单项验证：按范围运行 `package.json` 中的 `validate:frontend-*`、`validate:i18n` 和 `validate:e2e-mocks`
 - 前端生产构建：`npm run build`
 - 后端聚合验证：`npm run validate:backend`
-- 后端单项验证：可按范围运行 `package.json` 中的 `validate:backend-*` owner 验证入口。
+- 后端单项验证：按范围运行 `package.json` 中的 `validate:backend-*` owner 验证入口
 
 单个 PR 只需要运行与修改范围相关的验证；涉及公开边界、README、匿名化或证据路径时，必须运行 `npm run validate:public-boundary`。需要一次性验收公开边界、前端聚合和后端聚合时，运行 `npm run validate:all`。
 
