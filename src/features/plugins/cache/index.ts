@@ -22,6 +22,7 @@ export type PluginsCachePayloadSource =
 
 let pluginsCacheSequence = 0;
 let pluginsLatestAcceptedSequence = 0;
+let pluginsMutationFenceSequence = 0;
 
 export function nextPluginsCacheSequence() {
   pluginsCacheSequence += 1;
@@ -34,6 +35,9 @@ export function writePluginsCachePayload<TPayload extends PluginsCachePayload>(
   source: PluginsCachePayloadSource,
   sequence: number,
 ) {
+  if (source !== "mutation-payload" && sequence < pluginsMutationFenceSequence) {
+    return false;
+  }
   if (sequence < pluginsLatestAcceptedSequence) {
     return false;
   }
@@ -75,7 +79,7 @@ export async function writePluginsRefreshPayload(
   const accepted = writePluginsCachePayload(
     queryClient,
     payload,
-    "full-refresh",
+    "active-only-refresh",
     sequence,
   );
   if (!accepted) return;
@@ -89,11 +93,18 @@ export interface PluginsToggleCacheContext {
   sequence: number;
 }
 
+export function beginPluginsMutationSequence() {
+  const sequence = nextPluginsCacheSequence();
+  pluginsMutationFenceSequence = Math.max(pluginsMutationFenceSequence, sequence);
+  return sequence;
+}
+
 export async function optimisticallyUpdatePluginsToggle(
   queryClient: QueryClient,
   id: string,
   enabled: boolean,
 ): Promise<PluginsToggleCacheContext> {
+  const sequence = beginPluginsMutationSequence();
   await queryClient.cancelQueries({ queryKey: PLUGINS_LIST_QUERY_KEY });
   const previousList = queryClient.getQueryData<PluginsListEnvelope>(PLUGINS_LIST_QUERY_KEY);
   queryClient.setQueryData<PluginsListEnvelope>(
@@ -102,7 +113,7 @@ export async function optimisticallyUpdatePluginsToggle(
   );
   return {
     previousList,
-    sequence: nextPluginsCacheSequence(),
+    sequence,
   };
 }
 

@@ -2026,13 +2026,15 @@
         },
         {
           "file": "src/features/daemon-autoswitch/hooks/mutation.ts",
-          "includes": [
-            "daemonAutoswitchService.dismissPendingAutoSwitch()",
-            "daemonAutoswitchService.confirmPendingAutoSwitchAndRestartCodex()",
-            "writeDaemonAutoswitchMutationPayload(queryClient, payload)",
-            "reloadDaemonAutoswitchAfterMutation(queryClient)"
-          ]
-        },
+            "includes": [
+              "daemonAutoswitchService.dismissPendingAutoSwitch()",
+              "daemonAutoswitchService.confirmPendingAutoSwitchAndRestartCodex()",
+              "cancelDaemonAutoswitchQueries(queryClient)",
+              "writeDaemonAutoswitchMutationPayload(",
+              "context?.sequence",
+              "reloadDaemonAutoswitchAfterMutation(queryClient)"
+            ]
+          },
         {
           "file": "src/features/daemon-autoswitch/cache/index.ts",
           "includes": [
@@ -2044,14 +2046,15 @@
         },
         {
           "file": "src/mocks/fixtures/commands.ts",
-          "includes": [
-            "load_bootstrap_state: bootstrapStateHandler",
-            "load_pending_auto_switch: pendingAutoSwitchStateHandler",
-            "dismiss_pending_auto_switch: unitHandler",
-            "confirm_pending_auto_switch: unitHandler",
-            "load_snapshot: coreSnapshotHandler",
-            "force_kill_codex: systemActionHandler",
-            "diagnose: diagnoseHandler",
+            "includes": [
+              "load_bootstrap_state: bootstrapStateHandler",
+              "load_pending_auto_switch: pendingAutoSwitchStateHandler",
+              "dismiss_pending_auto_switch: dismissPendingAutoSwitchHandler",
+              "confirm_pending_auto_switch: confirmPendingAutoSwitchHandler",
+              "confirm_pending_auto_switch_and_restart_codex: confirmPendingAutoSwitchHandler",
+              "load_snapshot: coreSnapshotHandler",
+              "force_kill_codex: systemActionHandler",
+              "diagnose: diagnoseHandler",
             "diagnose_codex_router: relayDiagnosticHandler"
           ]
         },
@@ -2216,13 +2219,15 @@
         },
         {
           "file": "src/features/daemon-autoswitch/hooks/mutation.ts",
-          "includes": [
-            "daemonAutoswitchService.dismissPendingAutoSwitch()",
-            "daemonAutoswitchService.confirmPendingAutoSwitchAndRestartCodex()",
-            "writeDaemonAutoswitchMutationPayload(queryClient, payload)",
-            "reloadDaemonAutoswitchAfterMutation(queryClient)"
-          ]
-        },
+            "includes": [
+              "daemonAutoswitchService.dismissPendingAutoSwitch()",
+              "daemonAutoswitchService.confirmPendingAutoSwitchAndRestartCodex()",
+              "cancelDaemonAutoswitchQueries(queryClient)",
+              "writeDaemonAutoswitchMutationPayload(",
+              "context?.sequence",
+              "reloadDaemonAutoswitchAfterMutation(queryClient)"
+            ]
+          },
         {
           "file": "src/features/daemon-autoswitch/cache/index.ts",
           "includes": [
@@ -2234,14 +2239,15 @@
         },
         {
           "file": "src/mocks/fixtures/commands.ts",
-          "includes": [
-            "load_bootstrap_state: bootstrapStateHandler",
-            "load_pending_auto_switch: pendingAutoSwitchStateHandler",
-            "dismiss_pending_auto_switch: unitHandler",
-            "confirm_pending_auto_switch: unitHandler",
-            "load_snapshot: coreSnapshotHandler"
-          ]
-        },
+            "includes": [
+              "load_bootstrap_state: bootstrapStateHandler",
+              "load_pending_auto_switch: pendingAutoSwitchStateHandler",
+              "dismiss_pending_auto_switch: dismissPendingAutoSwitchHandler",
+              "confirm_pending_auto_switch: confirmPendingAutoSwitchHandler",
+              "confirm_pending_auto_switch_and_restart_codex: confirmPendingAutoSwitchHandler",
+              "load_snapshot: coreSnapshotHandler"
+            ]
+          },
         {
           "file": "src-tauri/src/application/usecase/system.rs",
           "includes": [
