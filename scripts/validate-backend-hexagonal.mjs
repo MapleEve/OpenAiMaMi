@@ -71,7 +71,7 @@ const ipcDomainModuleMap = new Map([
   ["analytics", "analytics"],
   ["custom-instructions", "custom_instructions"],
   ["daemon-autoswitch", "system"],
-  ["maintenance", "system"],
+  ["maintenance", "maintenance"],
   ["mcp", "mcp"],
   ["relay", "relay"],
   ["runtime-extensions", "runtime_extensions"],

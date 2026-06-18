@@ -2,12 +2,11 @@ use crate::adapters::tauri as tauri_adapter;
 use crate::application::usecase;
 use crate::contracts::{
     ApiModePayload, ApiProxyDetectPayload, ApiProxyMode, ApiProxyTestPayload,
-    AutoSwitchConfigPayload, BootstrapStatePayload, CleanPayload, CoreEnvelope,
-    CoreSnapshotPayload, DiagnosePayload, MysteryRouteGrant, NotificationClientStatePayload,
-    RebuildRegistryPayload, SystemActionPayload, SystemInfoPayload, UpdateInstallabilityPayload,
+    AutoSwitchConfigPayload, BootstrapStatePayload, CoreEnvelope, CoreSnapshotPayload,
+    MysteryRouteGrant, NotificationClientStatePayload, SystemActionPayload,
+    UpdateInstallabilityPayload,
 };
 use crate::platform::process::ProcessPlatformAdapter;
-use crate::platform::shell::ShellPlatformAdapter;
 use crate::platform::system::SystemPlatformAdapter;
 use crate::repository::Repository;
 use std::sync::Mutex;
@@ -43,34 +42,6 @@ pub fn load_bootstrap_state(
 ) -> Result<CoreEnvelope<BootstrapStatePayload>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
     usecase::system::load_bootstrap_state(&repo)
-        .map(CoreEnvelope::ok)
-        .map_err(|error| error.to_string())
-}
-
-#[tauri::command]
-pub fn clean(repo: State<'_, Mutex<Repository>>) -> Result<CoreEnvelope<CleanPayload>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::system::clean(&repo)
-        .map(CoreEnvelope::ok)
-        .map_err(|error| error.to_string())
-}
-
-#[tauri::command]
-pub fn rebuild_registry(
-    repo: State<'_, Mutex<Repository>>,
-) -> Result<CoreEnvelope<RebuildRegistryPayload>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::system::rebuild_registry(&repo)
-        .map(CoreEnvelope::ok)
-        .map_err(|error| error.to_string())
-}
-
-#[tauri::command]
-pub fn diagnose(
-    repo: State<'_, Mutex<Repository>>,
-) -> Result<CoreEnvelope<DiagnosePayload>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::system::diagnose(&repo)
         .map(CoreEnvelope::ok)
         .map_err(|error| error.to_string())
 }
@@ -160,44 +131,6 @@ pub fn graceful_restart_for_update() -> Result<CoreEnvelope<SystemActionPayload>
     Ok(CoreEnvelope::ok(
         usecase::system::graceful_restart_for_update(&process),
     ))
-}
-
-#[tauri::command]
-pub fn restart_codex() -> Result<CoreEnvelope<SystemActionPayload>, String> {
-    let process = ProcessPlatformAdapter;
-    Ok(CoreEnvelope::ok(usecase::system::restart_app(&process)))
-}
-
-#[tauri::command]
-pub fn force_kill_codex() -> Result<CoreEnvelope<SystemActionPayload>, String> {
-    let process = ProcessPlatformAdapter;
-    usecase::system::force_kill_app(&process)
-        .map(CoreEnvelope::ok)
-        .map_err(|error| error.to_string())
-}
-
-#[tauri::command]
-pub fn reset_codex_config(
-    repo: State<'_, Mutex<Repository>>,
-) -> Result<CoreEnvelope<SystemActionPayload>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::system::reset_config(&repo)
-        .map(CoreEnvelope::ok)
-        .map_err(|error| error.to_string())
-}
-
-#[tauri::command]
-pub fn open_path(path: String) -> Result<CoreEnvelope<SystemActionPayload>, String> {
-    let shell = ShellPlatformAdapter;
-    usecase::system::open_path(&shell, path)
-        .map(CoreEnvelope::ok)
-        .map_err(|error| error.to_string())
-}
-
-#[tauri::command]
-pub fn get_system_info() -> Result<CoreEnvelope<SystemInfoPayload>, String> {
-    let system = SystemPlatformAdapter;
-    Ok(CoreEnvelope::ok(usecase::system::system_info(&system)))
 }
 
 #[tauri::command]

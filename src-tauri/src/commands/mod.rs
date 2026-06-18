@@ -3,6 +3,7 @@ pub mod analytics;
 pub mod custom_instructions;
 pub mod daemon;
 pub mod hotspot;
+pub mod maintenance;
 pub mod mcp;
 pub mod relay;
 pub mod runtime_extensions;

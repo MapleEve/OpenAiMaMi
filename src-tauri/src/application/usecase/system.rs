@@ -18,23 +18,13 @@ use crate::application::usecase::daemon as daemon_usecase;
 use crate::contracts::{
     ApiConfigPayload, ApiModePayload, ApiProxyConfigPayload, ApiProxyDetectPayload, ApiProxyMode,
     ApiProxyTestPayload, AutoSwitchConfigPayload, BackendEffect, BackendSkeletonStatus,
-    CleanPayload, CoreSnapshotPayload, MysteryRouteGrant, NotificationClientStatePayload,
-    RebuildRegistryPayload, SystemActionPayload,
+    CoreSnapshotPayload, MysteryRouteGrant, NotificationClientStatePayload, SystemActionPayload,
 };
 use crate::core::error::CoreError;
 use crate::core::model::settings::UsageRefreshInterval;
-use crate::repository::config as config_repository;
 use crate::repository::settings as settings_repository;
 use crate::repository::Repository;
 use std::collections::BTreeMap;
-
-pub fn clean(repo: &Repository) -> Result<CleanPayload, CoreError> {
-    Ok(CleanPayload {
-        auth_backups_removed: remove_children(repo, &repo.paths().auth_backups_dir)?,
-        registry_backups_removed: remove_children(repo, &repo.paths().registry_backups_dir)?,
-        stale_entries_removed: 0,
-    })
-}
 
 pub fn refresh_usage_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, CoreError> {
     let mut payload = load_snapshot(repo)?;
@@ -42,16 +32,6 @@ pub fn refresh_usage_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, 
         daemon_usecase::schedule_full_runtime_refresh_for_command(repo, "refresh_usage_snapshot")?;
     snapshot_bootstrap::store_bootstrap_snapshot_progressive(repo, &payload);
     Ok(payload)
-}
-
-pub fn rebuild_registry(repo: &Repository) -> Result<RebuildRegistryPayload, CoreError> {
-    repo.paths().ensure_app_directories()?;
-    let account_count = registry_account_count(repo).unwrap_or_default();
-    Ok(RebuildRegistryPayload {
-        account_count,
-        active_account_key: None,
-        registry_updated: false,
-    })
 }
 
 pub fn set_auto_switch(
@@ -153,17 +133,6 @@ pub fn set_usage_refresh_interval(
     Ok(saved.as_str().to_string())
 }
 
-pub fn reset_config(repo: &Repository) -> Result<SystemActionPayload, CoreError> {
-    let result = config_repository::reset_codex_config(repo)?;
-    Ok(SystemActionPayload {
-        backend_status: restored_status("system", "reset_codex_config", BackendEffect::NoOp),
-        config_cleared: Some(result.config_cleared),
-        killed_count: None,
-        terminated_process_count: None,
-        processes: None,
-    })
-}
-
 pub fn notification_client_state(
     repo: &Repository,
 ) -> Result<NotificationClientStatePayload, CoreError> {
@@ -249,32 +218,6 @@ fn is_mystery_route_allowed(route: &str) -> bool {
             | "settings"
             | "maintenance"
     )
-}
-
-fn remove_children(repo: &Repository, path: &std::path::Path) -> Result<i32, CoreError> {
-    let mut removed = 0;
-    for entry in repo.fs().read_dir(path)? {
-        if entry.is_dir {
-            repo.fs().remove_dir_all(&entry.path)?;
-        } else {
-            repo.fs().remove_file(&entry.path)?;
-        }
-        removed += 1;
-    }
-    Ok(removed)
-}
-
-fn registry_account_count(repo: &Repository) -> Result<i32, CoreError> {
-    if !repo.fs().exists(&repo.paths().registry_path) {
-        return Ok(0);
-    }
-    let raw = repo.fs().read_to_string(&repo.paths().registry_path)?;
-    let value: serde_json::Value = serde_json::from_str(&raw)?;
-    Ok(value
-        .get("items")
-        .and_then(serde_json::Value::as_array)
-        .map(|items| items.len() as i32)
-        .unwrap_or_default())
 }
 
 #[cfg(test)]

@@ -232,27 +232,25 @@ function validateRoot(path, original, content) {
       "daemon/autoswitch 命令不得回流到 system usecase",
     );
   }
-  requirePattern(
-    "reset config repository transaction",
-    path,
-    content,
-    /\bconfig_repository\s*::\s*reset_codex_config\s*\(\s*repo\s*\)\s*\?/,
-    "reset_codex_config 必须由 repository/config owner 承载文件事务",
-  );
-  requirePattern(
-    "reset config restored status",
-    path,
-    content,
-    /\brestored_status\s*\(\s*"system"\s*,\s*"reset_codex_config"\s*,\s*BackendEffect::NoOp\s*\)/,
-    "reset_codex_config 成功路径必须声明已恢复的无平台副作用事务",
-  );
-  requirePattern(
-    "reset config payload",
-    path,
-    content,
-    /\bconfig_cleared\s*:\s*Some\s*\(\s*result\.config_cleared\s*\)/,
-    "reset_codex_config 必须把 repository 结果映射到 SystemActionPayload.config_cleared",
-  );
+  for (const command of [
+    "clean",
+    "rebuild_registry",
+    "diagnose",
+    "force_kill_codex",
+    "restart_codex",
+    "reset_config",
+    "open_path",
+    "system_info",
+  ]) {
+    rejectPattern(
+      `${command} maintenance wrapper`,
+      path,
+      original,
+      content,
+      new RegExp(`\\bpub\\s+fn\\s+${command}\\s*\\(`, "g"),
+      "maintenance 用户动作不得回流到 system 根 usecase",
+    );
+  }
 }
 
 function validateConfigRepositoryOwner(path, original, content) {
@@ -367,18 +365,12 @@ function validatePlatformActionsOwner(path, original, content) {
 
 function validateCommandCompatibility(path, content) {
   for (const [label, pattern] of [
-    ["diagnose command adapter", /\busecase\s*::\s*system\s*::\s*diagnose\s*\(\s*&repo\s*\)/],
     ["load snapshot command adapter", /\busecase\s*::\s*system\s*::\s*load_snapshot\s*\(\s*&repo\s*\)/],
     ["load bootstrap command adapter", /\busecase\s*::\s*system\s*::\s*load_bootstrap_state\s*\(\s*&repo\s*\)/],
     ["remote secret create command adapter", /\busecase\s*::\s*system\s*::\s*get_or_create_remote_device_secret\s*\(\s*&repo\s*\)/],
     ["remote secret import command adapter", /\busecase\s*::\s*system\s*::\s*import_remote_device_secret_if_empty\s*\(\s*&repo\s*,\s*secret\s*\)/],
     ["update installability command adapter", /\busecase\s*::\s*system\s*::\s*check_update_installability\s*\(\s*&system\s*\)/],
     ["graceful restart command adapter", /\busecase\s*::\s*system\s*::\s*graceful_restart_for_update\s*\(\s*&process\s*\)/],
-    ["restart app command adapter", /\busecase\s*::\s*system\s*::\s*restart_app\s*\(\s*&process\s*\)/],
-    ["force kill command adapter", /\busecase\s*::\s*system\s*::\s*force_kill_app\s*\(\s*&process\s*\)/],
-    ["reset config command adapter", /\busecase\s*::\s*system\s*::\s*reset_config\s*\(\s*&repo\s*\)/],
-    ["open path command adapter", /\busecase\s*::\s*system\s*::\s*open_path\s*\(\s*&shell\s*,\s*path\s*\)/],
-    ["system info command adapter", /\busecase\s*::\s*system\s*::\s*system_info\s*\(\s*&system\s*\)/],
     ["focus main window command adapter", /\busecase\s*::\s*system\s*::\s*focus_main_window\s*\(\s*&window\s*\)/],
   ]) {
     requirePattern(label, path, content, pattern, "commands/system.rs 必须保持兼容 IPC adapter");
@@ -390,8 +382,10 @@ function validateCommandCompatibility(path, content) {
     ["system hotspot usecase", /\busecase\s*::\s*system\s*::\s*(has_notch|get_hotspot_enabled|set_hotspot_enabled|hotspot_ready)\b/g],
     ["relay image compatibility command 函数", /\bpub\s+fn\s+(get_image_compat|set_image_compat)\s*\(/g],
     ["system relay image compatibility usecase", /\busecase\s*::\s*system\s*::\s*(get_image_compat|set_image_compat)\b/g],
+    ["maintenance command 函数", /\bpub\s+fn\s+(clean|rebuild_registry|diagnose|force_kill_codex|restart_codex|reset_codex_config|open_path|get_system_info)\s*\(/g],
+    ["system maintenance usecase", /\busecase\s*::\s*system\s*::\s*(clean|rebuild_registry|diagnose|force_kill_app|restart_app|reset_config|open_path|system_info)\b/g],
   ]) {
-    rejectPattern(label, path, content, content, pattern, "hotspot 与 relay image compatibility IPC adapter 必须归属各自 owner");
+    rejectPattern(label, path, content, content, pattern, "非 system IPC adapter 必须归属各自 owner");
   }
 }
 
@@ -441,5 +435,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  "PASS 后端 system owner 校验通过：diagnostics、platform-actions、snapshot-bootstrap、settings-secret 和配置仓库边界已归位，并保留 command 兼容入口。",
+  "PASS 后端 system owner 校验通过：diagnostics、platform-actions、snapshot-bootstrap、settings-secret 和配置仓库边界已归位，maintenance 命令未回流。",
 );
