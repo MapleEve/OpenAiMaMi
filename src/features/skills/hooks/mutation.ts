@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { skillsService } from "@/services/skills";
 import {
-  SKILLS_BACKUPS_QUERY_KEY,
-  SKILLS_INSTALLED_QUERY_KEY,
+  prepareSkillsMutation,
   writeSkillsMutationPayload,
 } from "../cache";
 
@@ -22,45 +21,35 @@ export function useSkillsPageMutations(
       if (path) return skillsService.importSkill(path);
       return null;
     },
-    onMutate: () =>
-      Promise.all([
-        queryClient.cancelQueries({ queryKey: SKILLS_INSTALLED_QUERY_KEY }),
-        queryClient.cancelQueries({ queryKey: SKILLS_BACKUPS_QUERY_KEY }),
-      ]),
-    onSuccess: (payload) => {
-      if (payload) return writeSkillsMutationPayload(queryClient, payload);
+    onMutate: () => prepareSkillsMutation(queryClient),
+    onSuccess: (payload, _variables, context) => {
+      if (payload) {
+        return writeSkillsMutationPayload(queryClient, payload, context);
+      }
     },
   });
 
   const removeMutation = useMutation({
     mutationFn: (id: string) => skillsService.removeSkill(id),
-    onMutate: () =>
-      Promise.all([
-        queryClient.cancelQueries({ queryKey: SKILLS_INSTALLED_QUERY_KEY }),
-        queryClient.cancelQueries({ queryKey: SKILLS_BACKUPS_QUERY_KEY }),
-      ]),
-    onSuccess: async (payload) => {
-      await writeSkillsMutationPayload(queryClient, payload);
+    onMutate: () => prepareSkillsMutation(queryClient),
+    onSuccess: async (payload, _variables, context) => {
+      await writeSkillsMutationPayload(queryClient, payload, context);
       options?.onRemoved?.();
     },
   });
 
   const restoreMutation = useMutation({
     mutationFn: (id: string) => skillsService.restoreBackup(id),
-    onMutate: () =>
-      Promise.all([
-        queryClient.cancelQueries({ queryKey: SKILLS_INSTALLED_QUERY_KEY }),
-        queryClient.cancelQueries({ queryKey: SKILLS_BACKUPS_QUERY_KEY }),
-      ]),
-    onSuccess: (payload) => writeSkillsMutationPayload(queryClient, payload),
+    onMutate: () => prepareSkillsMutation(queryClient),
+    onSuccess: (payload, _variables, context) =>
+      writeSkillsMutationPayload(queryClient, payload, context),
   });
 
   const deleteBackupMutation = useMutation({
     mutationFn: (id: string) => skillsService.deleteBackup(id),
-    onMutate: () =>
-      queryClient.cancelQueries({ queryKey: SKILLS_BACKUPS_QUERY_KEY }),
-    onSuccess: async (payload) => {
-      await writeSkillsMutationPayload(queryClient, payload);
+    onMutate: () => prepareSkillsMutation(queryClient),
+    onSuccess: async (payload, _variables, context) => {
+      await writeSkillsMutationPayload(queryClient, payload, context);
       options?.onBackupDeleted?.();
     },
   });

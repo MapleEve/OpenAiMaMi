@@ -1615,16 +1615,16 @@ function validateSkillsDeepOwnerBoundaries() {
     "skillsService.removeSkill",
     "skillsService.restoreBackup",
     "skillsService.deleteBackup",
+    "prepareSkillsMutation",
     "writeSkillsMutationPayload",
-    "cancelQueries",
   ]);
-  if (!/skillsService\.pickSkillDirectory\(\)[\s\S]*return null;[\s\S]*if \(payload\) return writeSkillsMutationPayload\(queryClient, payload\)/.test(mutation)) {
+  if (!/skillsService\.pickSkillDirectory\(\)[\s\S]*return null;[\s\S]*if \(payload\)[\s\S]*writeSkillsMutationPayload\(queryClient, payload, context\)/.test(mutation)) {
     failures.push("src/features/skills/hooks/mutation.ts must keep import cancel as silent null no-op before writeSkillsMutationPayload");
   }
   assertNotMatches("src/features/skills/hooks/mutation.ts", mutation, [
     [/\buseQuery\b/, "skills mutation owner must not own query"],
     [/\buse(State|Reducer|Effect|Memo)\b/, "skills mutation owner must not own page/controller UI state"],
-    [/\b(setQueryData|invalidateQueries)\b/, "skills mutation owner must delegate cache writes and invalidation to cache helper"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "skills mutation owner must delegate mutation fence, cache writes, query cancellation, and invalidation to cache helper"],
     [/toast\(|navigator\.clipboard/, "skills mutation owner must not own toast or clipboard UI"],
     [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "skills mutation owner must use skills service wrapper, not IPC/API transport"],
     [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "skills mutation owner must keep typed mutation payloads"],
@@ -1672,7 +1672,9 @@ function validateSkillsDeepOwnerBoundaries() {
     "SKILLS_BACKUPS_QUERY_KEY",
     "writeSkillsAuthoritativePayload",
     "writeSkillsCachePayload",
+    "prepareSkillsMutation",
     "writeSkillsMutationPayload",
+    "beginSkillsMutationSequence",
     "invalidateSkillsContractQueries",
     "setQueryData<CoreEnvelope<SkillListPayload>>",
     "setQueryData<CoreEnvelope<SkillBackupListPayload>>",

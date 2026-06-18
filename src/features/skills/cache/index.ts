@@ -21,6 +21,7 @@ export const SKILLS_BACKUPS_QUERY_KEY = ["skill-backups"] as const;
 
 let skillsCacheSequence = 0;
 let skillsLatestAcceptedSequence = 0;
+let skillsMutationFenceSequence = 0;
 
 function nextSkillsCacheSequence() {
   skillsCacheSequence += 1;
@@ -38,6 +39,9 @@ export function writeSkillsCachePayload<TPayload extends SkillsCachePayload>(
   source: "full-refresh" | "mutation-payload",
   sequence = nextSkillsCacheSequence(),
 ) {
+  if (source !== "mutation-payload" && sequence < skillsMutationFenceSequence) {
+    return false;
+  }
   if (sequence < skillsLatestAcceptedSequence) {
     return false;
   }
@@ -56,14 +60,37 @@ export function nextSkillsQuerySequence() {
   return nextSkillsCacheSequence();
 }
 
+export interface SkillsMutationCacheContext {
+  sequence: number;
+}
+
+export function beginSkillsMutationSequence() {
+  const sequence = nextSkillsCacheSequence();
+  skillsMutationFenceSequence = Math.max(skillsMutationFenceSequence, sequence);
+  return sequence;
+}
+
+export async function prepareSkillsMutation(
+  queryClient: QueryClient,
+): Promise<SkillsMutationCacheContext> {
+  const sequence = beginSkillsMutationSequence();
+  await Promise.all([
+    queryClient.cancelQueries({ queryKey: SKILLS_INSTALLED_QUERY_KEY }),
+    queryClient.cancelQueries({ queryKey: SKILLS_BACKUPS_QUERY_KEY }),
+  ]);
+  return { sequence };
+}
+
 export async function writeSkillsMutationPayload(
   queryClient: QueryClient,
   payload: SkillsMutationEnvelope,
+  context?: SkillsMutationCacheContext,
 ) {
   const accepted = writeSkillsCachePayload(
     queryClient,
     payload,
     "mutation-payload",
+    context?.sequence ?? beginSkillsMutationSequence(),
   );
   if (!accepted) return;
 
