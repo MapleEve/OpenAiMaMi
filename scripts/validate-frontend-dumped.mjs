@@ -47,6 +47,27 @@ const sourceSidecarFiles = {
     "macos-1.0.9-system",
     "manifest.json",
   ),
+  trayGateReport: join(
+    repoRoot,
+    "evidence",
+    "full-chain",
+    "internal",
+    "audits",
+    "audits",
+    "windows-1.0.9-tray",
+    "gate-report.json",
+  ),
+  trayFrontendChain: join(
+    repoRoot,
+    "evidence",
+    "full-chain",
+    "internal",
+    "audits",
+    "audits",
+    "windows-1.0.9-tray",
+    "frontend",
+    "FRONTEND-FULL-CHAIN-109.md",
+  ),
 };
 
 const ipcContractPath = join(repoRoot, "src", "contracts", "ipc", "commands.ts");
@@ -226,7 +247,17 @@ function extractRawCommands(contractReport) {
 
 function extractSourceSidecarCommands() {
   const systemManifest = parseJsonFile(sourceSidecarFiles.systemManifest);
-  return unique(systemManifest?.helper_watchers ?? []);
+  const trayGateReport = parseJsonFile(sourceSidecarFiles.trayGateReport);
+  const trayFrontendChain = readRequired(sourceSidecarFiles.trayFrontendChain);
+  const trayFrontendCommands = [
+    ...trayFrontendChain.matchAll(/invoke\("([^"]+)"\)/g),
+  ].map((match) => match[1]);
+
+  return unique([
+    ...(systemManifest?.helper_watchers ?? []),
+    ...(trayGateReport?.acceptedTargets ?? []),
+    ...trayFrontendCommands,
+  ]);
 }
 
 function extractContractCommands(ipcContract) {

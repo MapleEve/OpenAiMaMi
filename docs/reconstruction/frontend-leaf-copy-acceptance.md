@@ -6,34 +6,34 @@
 
 ## 当前结论
 
-当前仓库仍不能证明 macOS / Windows 双平台前端已经达到 100% leaf，因为 internal gate/audit 中仍存在非绿完成声明字段。但 `src/locales/zh.json` 和 `src/locales/en.json` 的用户可见文案已经进入逐条验收清单，当前清单可证明 660 个 locale key 都有可追踪来源或实现可重建来源。
+当前仓库仍不能证明 macOS / Windows 双平台前端已经达到 100% leaf，因为 internal gate/audit 中仍存在非绿完成声明字段。但 `src/locales/zh.json` 和 `src/locales/en.json` 的用户可见文案已经进入逐条验收清单，当前清单可证明 666 个 locale key 都有可追踪来源或实现可重建来源。
 
-`evidence/full-chain/internal/frontend-copy-acceptance.json` 当前已经存在，状态是 `accepted`。它列出 660 个 locale key 的逐条验收槽位，并区分四类来源：raw translation object、raw literal、raw translation alias、implementation-reconstructable。implementation-reconstructable 只用于 time formatter、relay mock、router error 和 custom-instruction templates 这类已经收口到当前 owner、验证脚本和 raw/internal 模块证据的文案；它不是把 raw 翻译对象伪装成存在。
+`evidence/full-chain/internal/frontend-copy-acceptance.json` 当前已经存在，状态是 `accepted`。它列出 666 个 locale key 的逐条验收槽位，并区分四类来源：raw translation object、raw literal、raw translation alias、implementation-reconstructable。implementation-reconstructable 只用于 time formatter、relay mock、router error、custom-instruction templates、tray current-source 边界等已经收口到当前 owner、验证脚本和 raw/internal 模块证据的文案；它不是把 raw 翻译对象伪装成存在。
 
 `npm run validate:frontend-dumped` 只证明 raw dumped 的 IPC、service wrapper、module contract、route、query 和 control-flow 已有静态覆盖；它不证明实际全 leaf。`npm run validate:frontend-leaf-copy` 现在验证 locale/copy owner/manifest/docs 侧的可实现验收，并把历史 gate/audit 非绿字段输出为 INFO；它不再阻塞基于 raw/internal 证据、伪代码、owner/interface/DTO 和可测试边界的自主实现。
 
 ## 当前文案验收数字
 
-- `zh` locale key：660
-- `en` locale key：660
-- acceptance entries：660
+- `zh` locale key：666
+- `en` locale key：666
+- acceptance entries：666
 - raw control-flow key 证据：40
 - internal key 提及证据：12
 - raw 或 internal key 证据：47
-- source-sync-only：613
-- copy evidence 中文 key 证据：660
-- copy evidence 英文 key 证据：660
-- copy evidence 中文 key/value 精确一致：660
-- copy evidence 英文 key/value 精确一致：660
-- copy evidence 双语 key/value 同时精确一致：660
+- source-sync-only：619
+- copy evidence 中文 key 证据：666
+- copy evidence 英文 key 证据：666
+- copy evidence 中文 key/value 精确一致：666
+- copy evidence 英文 key/value 精确一致：666
+- copy evidence 双语 key/value 同时精确一致：666
 - copy evidence key 存在但当前文案不一致：0
-- zhAccepted：660
-- enAccepted：660
+- zhAccepted：666
+- enAccepted：666
 - 缺少文案来源：0
 - raw translation object：607
 - raw literal：9
 - raw translation alias：6
-- implementation-reconstructable：38
+- implementation-reconstructable：44
 
 ## 已有验证
 
@@ -48,7 +48,7 @@
 - `full-leaf-100-gap-audit.json` 顶层 `totals.full_leaf_100` 当前仍为 `false`。
 - internal gate-report 中仍存在非绿 gate 字段；这些字段只阻塞“raw/internal gate 已通过”“dim6 已恢复”“full_leaf_100 / 100% leaf 已完成”等完成声明。
 - 当前 internal frontend 文档缺口信号为 0，但完成声明仍受 gate/audit 非绿字段阻塞。
-- `frontend-copy-acceptance.json` 已达到 `status: "accepted"`，当前 660 个 locale key 都有 `zhSource`、`enSource`、`zhAccepted: true` 和 `enAccepted: true`。
+- `frontend-copy-acceptance.json` 已达到 `status: "accepted"`，当前 666 个 locale key 都有 `zhSource`、`enSource`、`zhAccepted: true` 和 `enAccepted: true`。
 - `src/restoration/frontend-manifest/index.ts` 当前未检出非 full leaf 状态；后续如新增 `source-only`、`boundary-only`、`contract-service-only` 或 `owner-closed` 状态，仍不能把它们当作 full leaf 完成声明。
 
 ## 完成声明验收

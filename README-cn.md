@@ -37,7 +37,7 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开的是
 | 领域 | 已完成 | 未完成或边界 |
 | --- | --- | --- |
 | 公开材料 | Apache License、中文说明、匿名化 raw/internal 主链路、前端 dumped 证据、二进制清单和重建文档已经进入仓库。 | 不公开机器名、用户路径、会话、令牌、账号私密值、未审查 dump 或未匿名化内容。 |
-| 前端 | 已按 `entry/root`、全局 Provider、route registry、runtime initializer、服务/API 门面、模块 cache owner、深模块 owner、i18n 和 E2E mock 建立可继续还原的主流模块化结构；accounts、sessions、analytics、mcp、skills、plugins、relay、settings、system、maintenance、tray-shell、tray 等当前源码链路已纳入验证。 | 不声明前端已经 100% 双平台全 leaf 完成；完整度继续由 raw/internal、leaf 队列、current-source closeout 和验证脚本确认。 |
+| 前端 | 已按 `entry/root`、全局 Provider、route registry、runtime initializer、服务/API 门面、模块 cache owner、深模块 owner、i18n 和 E2E mock 建立可继续还原的主流模块化结构；accounts、sessions、analytics、mcp、skills、plugins、relay、settings、system、maintenance、tray-shell、tray 等当前源码链路已纳入验证；666 个 locale key 已进入 accepted copy 验收。 | 不声明前端已经 100% 双平台全 leaf 完成；完整度继续由 raw/internal、leaf 队列、current-source closeout 和验证脚本确认。 |
 | 后端 | 已建立 `commands`、`application/usecase`、`core`、`platform`、`repository`、`adapters`、`contracts` 六边形骨架；已补回原始公开或公开证据支撑的后端能力边界，包括账号、会话、分析、MCP、skills、plugins、relay、daemon、maintenance、settings、system、tray 等 owner。 | 不做闭源后端业务全量真实还原；未公开、未选择还原或无公开证据支撑的行为只能保留为合同、骨架、待实现项、测试缺口或待补证据位置。 |
 | 托盘 | 已登记 Windows 1.0.9 tray 证据中的 accepted targets，补入前端 `tray:navigate` 桥、`set_tray_locale` 同步、IPC service/API/mock 链和后端六边形骨架。 | 不声明真实 OS tray、原生菜单、图标窗口、退出动作或平台事件已经完整恢复；不新增可见页面入口；`tray_router_open` 只作为当前源码归档额外路径登记。 |
 | voice | 保留空骨架、合同清单和中文边界说明。 | 不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。 |
@@ -52,7 +52,8 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开的是
 
 - 公开边界：`npm run validate:public-boundary`
 - README 同步：`npm run validate:public-boundary`
-- 前端证据与结构：`npm run validate:frontend-evidence`、`npm run validate:frontend-closeouts`、`npm run validate:frontend-layer-owners`
+- 前端证据与结构：`npm run validate:frontend-dumped`、`npm run validate:frontend-evidence`、`npm run validate:frontend-closeouts`、`npm run validate:frontend-layer-owners`
+- 前端 leaf / 文案：`npm run validate:frontend-leaf-queue`、`npm run validate:frontend-leaf-copy`
 - 托盘前端链路：`npm run validate:frontend-tray-current-source`
 - 前端 mock / i18n：`npm run validate:e2e-mocks`、`npm run validate:i18n`
 - 后端骨架：`npm run validate:backend-hexagonal`、`npm run validate:backend-contract-owners`
