@@ -10,6 +10,7 @@ const files = {
   snapshotBootstrap: join(backendRoot, "application", "usecase", "system", "snapshot_bootstrap.rs"),
   settingsSecret: join(backendRoot, "application", "usecase", "system", "settings_secret.rs"),
   commands: join(backendRoot, "commands", "system.rs"),
+  configRepository: join(backendRoot, "repository", "config.rs"),
 };
 const failures = [];
 
@@ -207,6 +208,51 @@ function validateRoot(path, original, content) {
     /\bdaemon_usecase\s*::\s*schedule_full_runtime_refresh_for_command\s*\(\s*repo\s*,\s*"refresh_usage_snapshot"\s*\)/,
     "refresh_usage_snapshot 跨 snapshot-bootstrap 与 daemon，兼容层必须继续调用 daemon owner",
   );
+  requirePattern(
+    "reset config repository transaction",
+    path,
+    content,
+    /\bconfig_repository\s*::\s*reset_codex_config\s*\(\s*repo\s*\)\s*\?/,
+    "reset_codex_config 必须由 repository/config owner 承载文件事务",
+  );
+  requirePattern(
+    "reset config restored status",
+    path,
+    content,
+    /\brestored_status\s*\(\s*"system"\s*,\s*"reset_codex_config"\s*,\s*BackendEffect::NoOp\s*\)/,
+    "reset_codex_config 成功路径必须声明已恢复的无平台副作用事务",
+  );
+  requirePattern(
+    "reset config payload",
+    path,
+    content,
+    /\bconfig_cleared\s*:\s*Some\s*\(\s*result\.config_cleared\s*\)/,
+    "reset_codex_config 必须把 repository 结果映射到 SystemActionPayload.config_cleared",
+  );
+}
+
+function validateConfigRepositoryOwner(path, original, content) {
+  for (const [label, pattern] of [
+    ["reset config repository action", /\bpub\s+fn\s+reset_codex_config\s*\(\s*repo\s*:\s*&Repository\s*\)/],
+    ["config path owner", /\brepo\s*\.\s*paths\s*\(\s*\)\s*\.config_path\b/],
+    ["catalog path owner", /\bcodex_router_catalog\.json\b/],
+    ["read config through fs adapter", /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.read_to_string\s*\(\s*config_path\s*\)/],
+    ["write config through fs adapter", /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.write_string\s*\(\s*config_path\s*,\s*&next\s*\)/],
+    ["remove catalog through fs adapter", /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.remove_file\s*\(\s*&catalog_path\s*\)/],
+    ["managed block stripper", /\bfn\s+strip_codex_config\s*\(/],
+    ["reset key stripper", /\bfn\s+is_codex_reset_key\s*\(/],
+    ["reset test", /\bfn\s+reset_codex_config_strips_managed_blocks_and_catalog\s*\(/],
+  ]) {
+    requirePattern(label, path, content, pattern, "repository/config.rs 必须 owning reset_codex_config 文件事务");
+  }
+
+  for (const [label, pattern] of [
+    ["真实文件系统直连", /\bstd\s*::\s*fs\b|\btokio\s*::\s*fs\b/g],
+    ["平台/进程能力", /\bApp(Process|Shell|System|Window)Port\b|\bcrate\s*::\s*platform\b|\brestart\b|\bforce_kill\b/g],
+    ["Tauri 依赖", /\btauri\s*::|State\s*</g],
+  ]) {
+    rejectPattern(label, path, original, content, pattern, "reset_codex_config 必须只通过 Repository/FileSystemAdapter 边界表达文件事务");
+  }
 }
 
 function validateDiagnosticsOwner(path, original, content) {
@@ -306,6 +352,7 @@ function validateCommandCompatibility(path, content) {
     ["graceful restart command adapter", /\busecase\s*::\s*system\s*::\s*graceful_restart_for_update\s*\(\s*&process\s*\)/],
     ["restart app command adapter", /\busecase\s*::\s*system\s*::\s*restart_app\s*\(\s*&process\s*\)/],
     ["force kill command adapter", /\busecase\s*::\s*system\s*::\s*force_kill_app\s*\(\s*&process\s*\)/],
+    ["reset config command adapter", /\busecase\s*::\s*system\s*::\s*reset_config\s*\(\s*&repo\s*\)/],
     ["open path command adapter", /\busecase\s*::\s*system\s*::\s*open_path\s*\(\s*&shell\s*,\s*path\s*\)/],
     ["system info command adapter", /\busecase\s*::\s*system\s*::\s*system_info\s*\(\s*&system\s*\)/],
     ["focus main window command adapter", /\busecase\s*::\s*system\s*::\s*focus_main_window\s*\(\s*&window\s*\)/],
@@ -344,6 +391,11 @@ validateSettingsSecretOwner(
   raw.get("settingsSecret").content,
   stripped.get("settingsSecret").content,
 );
+validateConfigRepositoryOwner(
+  files.configRepository,
+  raw.get("configRepository").content,
+  stripped.get("configRepository").content,
+);
 validateCommandCompatibility(files.commands, stripped.get("commands").content);
 
 if (failures.length > 0) {
@@ -355,5 +407,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  "PASS 后端 system owner 校验通过：diagnostics、platform-actions、snapshot-bootstrap 和 settings-secret 已从 system.rs 拆分，并保留 command 兼容入口。",
+  "PASS 后端 system owner 校验通过：diagnostics、platform-actions、snapshot-bootstrap、settings-secret 和配置仓库边界已归位，并保留 command 兼容入口。",
 );

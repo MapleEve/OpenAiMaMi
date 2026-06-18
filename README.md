@@ -44,28 +44,36 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 7. 未公开或未选择还原的后端业务行为只能保留为契约、桩或待实现项，不能写成真实闭源业务实现。
 8. 所有新增注释和文档使用中文，所有路径使用仓库相对路径。
 
-## 当前补回状态
+## 当前状态
 
-本节只记录当前仓库状态，不按提交流水追加。
+本节只按仓库现状归纳，不按提交顺序追加流水账。
 
-| 分类 | 当前结论 |
+### 已经归档
+
+| 范围 | 当前结论 |
 | --- | --- |
 | 公开材料 | Apache License、中文公开说明、匿名化 raw/internal 主链路、前端 dumped 证据、二进制清单和 `OpenAiMami IDB` 独立资产说明已纳入；主仓库不直接保存大体积 IDB 文件。 |
-| 前端还原 | 主入口、路由表、runtime initializer、全局 Provider、深模块 Provider/StoreUpdater/Content、cache、hooks、dialogs、panels、components、types 和 tests 已按 owner 边界重构。 |
-| 前端文案 | `evidence/full-chain/internal/frontend-copy-acceptance.json` 为 `status=accepted`；660 个 zh/en locale key 全部有 copy owner 验收来源，frontend manifest 当前没有非 full leaf 状态。 |
-| 前端状态竞争 | TanStack cache、mutation payload、runtime event reload、stale/delayed response、event replay、cancel、abort 和 E2E mock 竞态场景已纳入验收。 |
-| 后端骨架 | `commands`、`application/usecase`、`core`、`platform`、`repository`、`repository/adapter`、`contracts`、`adapters` 六边形边界已建立，并由 `validate:backend-hexagonal` 约束。 |
-| 已补后端能力 | 已补回公开过或可由证据支撑的 Accounts、MCP、Skills、Custom Instructions、Sessions、System、Analytics、Runtime extensions、Relay 和 daemon/runtime watcher 骨架切片；Sessions 已补 `delete_sessions` 已扫描文件删除，Analytics 已补 `load_session_analytics` 公开文件事实聚合，System 已补 `check_update_installability` 只读环境检测。 |
-| Voice | 前后端都不作为可用功能入口；只保留空骨架、合同清单和中文边界说明。 |
+| 前端架构 | 主入口、路由表、runtime initializer、全局 Provider、深模块 Provider/StoreUpdater/Content、cache、hooks、dialogs、panels、components、types 和 tests 已按 owner 边界重构。 |
+| 前端证据 | 前端文案验收文件为 `status=accepted`；660 个 zh/en locale key 均有文案 owner 验收来源；前端清单当前没有非 full leaf 状态。 |
+| 前端竞态 | TanStack cache、mutation payload、runtime event reload、stale/delayed response、event replay、cancel、abort 和 E2E mock 竞态场景已纳入验收。 |
+| 后端架构 | `commands`、`application/usecase`、`core`、`platform`、`repository`、`repository/adapter`、`contracts`、`adapters` 六边形边界已建立，并由后端 owner 校验约束。 |
 
-### 仍未完成
+### 已恢复能力
 
-| 分类 | 不声明完成的内容 |
+| 范围 | 当前结论 |
 | --- | --- |
-| 前端完成声明 | 不能声明 macOS / Windows 双平台 100% leaf 全闭合；internal 历史 gate/audit 仍保留 `full_leaf_100`、`gate_accepted`、`readyToImplement`、`dim6` 等非阻塞完成声明信号。 |
+| 原始公开后端 | Accounts、MCP、Skills、Custom Instructions、Runtime extensions、Relay、daemon/runtime watcher 等公开过或可由证据支撑的能力已归入六边形骨架。 |
+| 文件事实能力 | Sessions 已补已扫描文件删除；Analytics 已补公开会话文件事实聚合；System 已补配置清理和更新可安装性只读检测。 |
+| 入口边界 | Voice 前后端都不作为可用功能入口；只保留空骨架、合同清单和中文边界说明。 |
+
+### 暂不声明完成
+
+| 范围 | 当前结论 |
+| --- | --- |
+| 前端完成声明 | 不声明 macOS / Windows 双平台 100% leaf 全闭合；internal 历史 gate/audit 仍保留 `full_leaf_100`、`gate_accepted`、`readyToImplement`、`dim6` 等非阻塞完成声明信号。 |
 | Mystery grants | `mystery_route_allowed` 已接入导航 shell、visible meta、preload 和 route guard；仍不声明 raw/internal `gate_accepted`、`implementation_use`、`dim6` 或 `full_leaf_100` 恢复。 |
 | 后端范围 | 闭源后端业务不做全量还原；没有公开证据支撑的行为只能保留为合同、桩、待实现项、测试缺口或可替换接口。 |
-| 后端闭环 | Relay 仍不声明真实 HTTP/SSE/转发闭环；Daemon 仍不声明真实后台线程或账号自动切换闭环；Sessions 仍不声明 sqlite/global-state 删除事务闭环；Analytics 仍不声明真实 token、工具、变更或配额统计口径；MCP 仍不声明 server 启动或网络探测；System 仍不声明更新安装执行、诊断修复、外部进程重启或 shell 闭环。 |
+| 后端闭环 | Relay、Daemon、Sessions、Analytics、MCP、System 等后端能力不声明真实网络、后台线程、全局状态、配额统计、server 启动、更新安装执行、诊断修复、外部进程重启或 shell 闭环。 |
 | 编译环境 | Rust 编译验收需要目标平台工具链；Windows 缺少 MSVC `link.exe` 时，`cargo check` 会在第三方 crate build script 阶段失败。 |
 
 ### 验收入口
