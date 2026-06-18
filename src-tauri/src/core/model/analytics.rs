@@ -105,6 +105,45 @@ pub struct PublicQuotaHistoryPoint {
     pub secondary_used_percent: Option<f64>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PublicCommandFact {
+    pub timestamp: i64,
+    pub command: String,
+}
+
+impl PublicCommandFact {
+    pub fn new(timestamp: i64, command: String) -> Self {
+        Self {
+            timestamp,
+            command: command.trim().to_string(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PublicCommandKind {
+    Write,
+    Read,
+    Other,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PublicChangeDay {
+    pub date: String,
+    pub commands: i32,
+    pub write_ops: i32,
+    pub read_ops: i32,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PublicChangeAggregate {
+    pub total_commands: i32,
+    pub write_commands: i32,
+    pub read_commands: i32,
+    pub other_commands: i32,
+    pub series: Vec<PublicChangeDay>,
+}
+
 pub fn aggregate_public_usage(
     facts: Vec<PublicSessionFileFact>,
     now_epoch_seconds: i64,
@@ -196,6 +235,89 @@ pub fn aggregate_public_usage_for_range(
     aggregate_public_usage(filtered, now_epoch_seconds)
 }
 
+pub fn aggregate_public_change_analytics(
+    facts: Vec<PublicCommandFact>,
+    now_epoch_seconds: i64,
+    range: PublicAnalyticsRange,
+) -> PublicChangeAggregate {
+    let earliest = now_epoch_seconds.saturating_sub(
+        range
+            .day_span()
+            .saturating_sub(1)
+            .saturating_mul(24 * 60 * 60),
+    );
+    let mut by_day = BTreeMap::<String, (i32, i32, i32)>::new();
+    let mut total_commands = 0i32;
+    let mut write_commands = 0i32;
+    let mut read_commands = 0i32;
+
+    for fact in facts
+        .into_iter()
+        .filter(|fact| fact.timestamp >= earliest && fact.timestamp <= now_epoch_seconds)
+    {
+        total_commands = total_commands.saturating_add(1);
+        let day = date_key(fact.timestamp);
+        let entry = by_day.entry(day).or_insert((0, 0, 0));
+        entry.0 = entry.0.saturating_add(1);
+
+        match classify_public_command(&fact.command) {
+            PublicCommandKind::Write => {
+                write_commands = write_commands.saturating_add(1);
+                entry.1 = entry.1.saturating_add(1);
+            }
+            PublicCommandKind::Read => {
+                read_commands = read_commands.saturating_add(1);
+                entry.2 = entry.2.saturating_add(1);
+            }
+            PublicCommandKind::Other => {}
+        }
+    }
+
+    let mut series = Vec::new();
+    for offset in 0..range.day_span() {
+        let timestamp = earliest.saturating_add(offset.saturating_mul(24 * 60 * 60));
+        let date = date_key(timestamp);
+        let bucket = by_day.get(&date).copied().unwrap_or((0, 0, 0));
+        series.push(PublicChangeDay {
+            date,
+            commands: bucket.0,
+            write_ops: bucket.1,
+            read_ops: bucket.2,
+        });
+    }
+
+    PublicChangeAggregate {
+        total_commands,
+        write_commands,
+        read_commands,
+        other_commands: total_commands.saturating_sub(write_commands.saturating_add(read_commands)),
+        series,
+    }
+}
+
+pub fn classify_public_command(command: &str) -> PublicCommandKind {
+    let normalized = command.trim().to_lowercase();
+    if normalized.is_empty() {
+        return PublicCommandKind::Other;
+    }
+
+    if WRITE_COMMAND_PATTERNS
+        .iter()
+        .any(|pattern| normalized.contains(pattern))
+    {
+        return PublicCommandKind::Write;
+    }
+
+    if READ_COMMAND_PATTERNS
+        .iter()
+        .any(|pattern| normalized.contains(pattern))
+    {
+        return PublicCommandKind::Read;
+    }
+
+    PublicCommandKind::Other
+}
+
 fn date_key(epoch_seconds: i64) -> String {
     Utc.timestamp_opt(epoch_seconds.max(0), 0)
         .single()
@@ -203,6 +325,54 @@ fn date_key(epoch_seconds: i64) -> String {
         .format("%Y-%m-%d")
         .to_string()
 }
+
+const WRITE_COMMAND_PATTERNS: &[&str] = &[
+    "sed ",
+    "sed\t",
+    "echo >",
+    "echo >>",
+    "cat >",
+    "cat >>",
+    "tee ",
+    "cp ",
+    "mv ",
+    "mkdir ",
+    "rm ",
+    "touch ",
+    "chmod ",
+    "chown ",
+    "write",
+    "patch ",
+    "git commit",
+    "git add",
+    "npm install",
+    "pip install",
+    "cargo add",
+];
+
+const READ_COMMAND_PATTERNS: &[&str] = &[
+    "cat ",
+    "head ",
+    "tail ",
+    "less ",
+    "more ",
+    "grep ",
+    "rg ",
+    "find ",
+    "ls ",
+    "pwd",
+    "wc ",
+    "file ",
+    "stat ",
+    "du ",
+    "df ",
+    "git status",
+    "git log",
+    "git diff",
+    "git show",
+    "npm list",
+    "cargo check",
+];
 
 #[cfg(test)]
 mod tests {
@@ -256,5 +426,39 @@ mod tests {
         assert_eq!(aggregate.avg_turns, 2.0);
         assert_eq!(aggregate.active_days, 1);
         assert_eq!(aggregate.daily_activity.len(), 1);
+    }
+
+    #[test]
+    fn aggregate_public_change_analytics_classifies_and_zero_fills_window() {
+        let facts = vec![
+            PublicCommandFact::new(1_710_000_000, "git status".to_string()),
+            PublicCommandFact::new(1_710_000_100, "cat > notes.txt".to_string()),
+            PublicCommandFact::new(1_710_086_400, "python script.py".to_string()),
+        ];
+
+        let aggregate =
+            aggregate_public_change_analytics(facts, 1_710_000_000, PublicAnalyticsRange::Today);
+
+        assert_eq!(aggregate.total_commands, 2);
+        assert_eq!(aggregate.write_commands, 1);
+        assert_eq!(aggregate.read_commands, 1);
+        assert_eq!(aggregate.other_commands, 0);
+        assert_eq!(aggregate.series.len(), 1);
+        assert_eq!(aggregate.series[0].commands, 2);
+        assert_eq!(aggregate.series[0].write_ops, 1);
+        assert_eq!(aggregate.series[0].read_ops, 1);
+    }
+
+    #[test]
+    fn classify_public_command_uses_write_table_before_read_table() {
+        assert_eq!(
+            classify_public_command("cat > output.txt"),
+            PublicCommandKind::Write
+        );
+        assert_eq!(classify_public_command("git diff"), PublicCommandKind::Read);
+        assert_eq!(
+            classify_public_command("python run.py"),
+            PublicCommandKind::Other
+        );
     }
 }

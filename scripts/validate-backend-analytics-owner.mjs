@@ -170,6 +170,29 @@ requirePattern(
   "配额历史公开来源探测必须由 repository owner 提供",
 );
 
+const changeBody = requireFunctionBody(code.usecase.content, files.usecase, "load_change_analytics");
+requirePattern(
+  "change usecase 调用 analytics repository",
+  files.usecase,
+  changeBody,
+  /analytics_repository\s*::\s*load_public_change_command_facts\s*\(\s*repo\s*\)/,
+  "变更分析命令事实必须由 repository owner 提供",
+);
+requirePattern(
+  "change usecase 调用 core aggregate",
+  files.usecase,
+  changeBody,
+  /aggregate_public_change_analytics\s*\(/,
+  "变更分析 range、分类和日序列必须由 core/model/analytics.rs owning",
+);
+requirePattern(
+  "change analytics restored status",
+  files.usecase,
+  changeBody,
+  /restored_status\s*\(\s*"analytics"\s*,\s*"load_change_analytics"\s*,\s*BackendEffect::NoOp\s*\)/,
+  "load_change_analytics 已恢复公开 rollout JSONL 命令事实聚合",
+);
+
 requirePattern(
   "core analytics 模块导出",
   files.coreModelMod,
@@ -180,11 +203,21 @@ requirePattern(
 for (const [label, pattern] of [
   ["PublicAnalyticsRange", /\benum\s+PublicAnalyticsRange\b/],
   ["PublicSessionFileFact", /\bstruct\s+PublicSessionFileFact\b/],
+  ["PublicCommandFact", /\bstruct\s+PublicCommandFact\b/],
+  ["PublicChangeAggregate", /\bstruct\s+PublicChangeAggregate\b/],
   ["PublicUsageAggregate", /\bstruct\s+PublicUsageAggregate\b/],
   ["PublicQuotaHistory", /\bstruct\s+PublicQuotaHistory\b/],
   ["aggregate_public_usage", /\bfn\s+aggregate_public_usage\s*\(/],
+  ["aggregate_public_change_analytics", /\bfn\s+aggregate_public_change_analytics\s*\(/],
+  ["classify_public_command", /\bfn\s+classify_public_command\s*\(/],
 ]) {
   requirePattern(label, files.coreModel, code.coreModel.content, pattern, "core 必须 owning analytics/quota range 与聚合模型");
+}
+for (const [label, pattern] of [
+  ["write classifier table", /\bWRITE_COMMAND_PATTERNS\b[\s\S]*git commit[\s\S]*cargo add/],
+  ["read classifier table", /\bREAD_COMMAND_PATTERNS\b[\s\S]*git status[\s\S]*cargo check/],
+]) {
+  requirePattern(label, files.coreModel, code.coreModel.content, pattern, "core 必须 owning 公开命令分类表");
 }
 requirePattern(
   "core 模型公开事实注释",
@@ -210,6 +243,23 @@ requirePattern(
   "analytics repository 必须从可替换 FS 下的 session 元数据构造公开事实",
 );
 requirePattern(
+  "analytics repository 读取 change command facts",
+  files.analyticsRepository,
+  code.analyticsRepository.content,
+  /\bpub\s+fn\s+load_public_change_command_facts\s*\(\s*repo\s*:\s*&Repository\s*\)/,
+  "analytics repository 必须提供公开 rollout JSONL 命令事实",
+);
+for (const [label, pattern] of [
+  ["rollout JSONL recursive visitor", /\bfn\s+visit_public_rollout_dir\s*\(/],
+  ["rollout filename filter", /\bfile_name\.starts_with\(\s*"rollout-"\s*\)[\s\S]*file_name\.ends_with\(\s*"\.jsonl"\s*\)/],
+  ["JSONL read through FS adapter", /repo\s*\.\s*fs\s*\(\s*\)\s*\.read_to_string\s*\(\s*&entry\.path\s*\)/],
+  ["serde JSONL parser", /serde_json::from_str\s*::<\s*Value\s*>/],
+  ["exec_command filter", /"exec_command"/],
+  ["function_call filter", /"function_call"/],
+]) {
+  requirePattern(label, files.analyticsRepository, code.analyticsRepository.content, pattern, "repository 必须 owning 公开 JSONL 命令事实解析");
+}
+requirePattern(
   "sessions repository 使用 FS adapter read_dir",
   files.sessionsRepository,
   code.sessionsRepository.content,
@@ -234,7 +284,7 @@ for (const file of [raw.analyticsRepository, raw.quotaRepository]) {
   );
 }
 
-for (const name of ["load_token_analytics", "load_tool_analytics", "load_change_analytics"]) {
+for (const name of ["load_token_analytics", "load_tool_analytics"]) {
   const body = requireFunctionBody(code.usecase.content, files.usecase, name);
   rejectPattern(
     `${name} 声明真实统计闭环`,
@@ -242,7 +292,7 @@ for (const name of ["load_token_analytics", "load_tool_analytics", "load_change_
     raw.usecase.content,
     body,
     /\brestored_status\s*\(|BackendEffect\s*::\s*NoOp/g,
-    "token/tool/change 仍缺少闭源口径证据，不得标记 restored",
+    "token/tool 仍缺少闭源口径证据，不得标记 restored",
   );
 }
 
@@ -263,4 +313,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("PASS 后端 analytics owner 校验通过：usecase 无直接文件 IO，repository 通过可替换 FS 来源提供公开事实，core owning range/aggregate 模型，未声明真实 token 统计闭环。");
+console.log("PASS 后端 analytics owner 校验通过：usecase 无直接文件 IO，repository 通过可替换 FS 来源提供公开事实，core owning usage/change range 与聚合模型，未声明真实 token/tool 统计闭环。");

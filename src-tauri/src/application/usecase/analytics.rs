@@ -1,11 +1,13 @@
 use crate::application::service::{current_timestamp, pending_status, restored_status};
 use crate::contracts::analytics::{
-    AnalyticsRange, ChangeAnalyticsPayload, DailyActivityPayload, QuotaHistoryPayload,
-    QuotaHistoryPointPayload, SessionStatsPayload, TodaySummaryPayload, TokenAnalyticsPayload,
-    ToolAnalyticsPayload, UsageAnalyticsPayload,
+    AnalyticsRange, ChangeAnalyticsPayload, ChangeDaySeriesPayload, DailyActivityPayload,
+    QuotaHistoryPayload, QuotaHistoryPointPayload, SessionStatsPayload, TodaySummaryPayload,
+    TokenAnalyticsPayload, ToolAnalyticsPayload, UsageAnalyticsPayload,
 };
 use crate::contracts::BackendEffect;
-use crate::core::model::analytics::{aggregate_public_usage, PublicAnalyticsRange};
+use crate::core::model::analytics::{
+    aggregate_public_change_analytics, aggregate_public_usage, PublicAnalyticsRange,
+};
 use crate::repository::{
     analytics as analytics_repository, bootstrap, quota as quota_repository, Repository,
 };
@@ -124,22 +126,31 @@ pub fn load_tool_analytics(_repo: &Repository, range: Option<String>) -> ToolAna
     }
 }
 
-/// 读取变更分析的用户动作边界；真实命令分类等待证据补齐。
-pub fn load_change_analytics(_repo: &Repository, range: Option<String>) -> ChangeAnalyticsPayload {
+/// 读取变更分析的用户动作边界，只聚合公开 rollout JSONL 命令事实。
+pub fn load_change_analytics(repo: &Repository, range: Option<String>) -> ChangeAnalyticsPayload {
     let normalized_range = AnalyticsRange::from_input(range);
-    let _range_day_span = public_range_from_contract(normalized_range).day_span();
+    let aggregate = aggregate_public_change_analytics(
+        analytics_repository::load_public_change_command_facts(repo),
+        current_timestamp(),
+        public_range_from_contract(normalized_range),
+    );
     ChangeAnalyticsPayload {
-        backend_status: pending_status(
-            "analytics",
-            "load_change_analytics",
-            "变更分析只完成公开 IPC 骨架；当前不推断闭源命令分类规则。",
-        ),
+        backend_status: restored_status("analytics", "load_change_analytics", BackendEffect::NoOp),
         range: normalized_range,
-        total_commands: 0,
-        write_commands: 0,
-        read_commands: 0,
-        other_commands: 0,
-        series: Vec::new(),
+        total_commands: aggregate.total_commands,
+        write_commands: aggregate.write_commands,
+        read_commands: aggregate.read_commands,
+        other_commands: aggregate.other_commands,
+        series: aggregate
+            .series
+            .into_iter()
+            .map(|day| ChangeDaySeriesPayload {
+                date: day.date,
+                commands: day.commands,
+                write_ops: day.write_ops,
+                read_ops: day.read_ops,
+            })
+            .collect(),
     }
 }
 
