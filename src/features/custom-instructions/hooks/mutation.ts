@@ -8,7 +8,7 @@ import type {
   CustomInstructionStatePayload,
 } from "@/types";
 import {
-  CUSTOM_INSTRUCTION_STATE_QUERY_KEY,
+  prepareCustomInstructionsMutation,
   writeCustomInstructionsStateMutationPayload,
 } from "../cache";
 
@@ -41,10 +41,13 @@ export function useCustomInstructionMutations(
   const applyMutation = useMutation({
     mutationFn: (params: CustomInstructionApplyInput) =>
       customInstructionsService.apply(params),
-    onMutate: () =>
-      queryClient.cancelQueries({ queryKey: CUSTOM_INSTRUCTION_STATE_QUERY_KEY }),
-    onSuccess: async (payload) => {
-      await writeCustomInstructionsStateMutationPayload(queryClient, payload);
+    onMutate: () => prepareCustomInstructionsMutation(queryClient),
+    onSuccess: async (payload, _variables, context) => {
+      await writeCustomInstructionsStateMutationPayload(
+        queryClient,
+        payload,
+        context,
+      );
       options.onApplied(payload);
     },
     onError: options.onApplyError,
@@ -52,10 +55,13 @@ export function useCustomInstructionMutations(
 
   const clearMutation = useMutation({
     mutationFn: () => customInstructionsService.clearBlock(),
-    onMutate: () =>
-      queryClient.cancelQueries({ queryKey: CUSTOM_INSTRUCTION_STATE_QUERY_KEY }),
-    onSuccess: async (payload) => {
-      await writeCustomInstructionsStateMutationPayload(queryClient, payload);
+    onMutate: () => prepareCustomInstructionsMutation(queryClient),
+    onSuccess: async (payload, _variables, context) => {
+      await writeCustomInstructionsStateMutationPayload(
+        queryClient,
+        payload,
+        context,
+      );
       options.onCleared(payload);
     },
     onError: options.onClearError,
@@ -64,10 +70,13 @@ export function useCustomInstructionMutations(
   const rollbackMutation = useMutation({
     mutationFn: (historyId: string) =>
       customInstructionsService.rollback(historyId),
-    onMutate: () =>
-      queryClient.cancelQueries({ queryKey: CUSTOM_INSTRUCTION_STATE_QUERY_KEY }),
-    onSuccess: async (payload) => {
-      await writeCustomInstructionsStateMutationPayload(queryClient, payload);
+    onMutate: () => prepareCustomInstructionsMutation(queryClient),
+    onSuccess: async (payload, _variables, context) => {
+      await writeCustomInstructionsStateMutationPayload(
+        queryClient,
+        payload,
+        context,
+      );
       options.onRolledBack(payload);
     },
     onError: options.onRollbackError,

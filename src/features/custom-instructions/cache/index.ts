@@ -31,6 +31,7 @@ export const writeCustomInstructionsAuthoritativePayload = <
 
 let customInstructionsCacheSequence = 0;
 let customInstructionsLatestAcceptedSequence = 0;
+let customInstructionsMutationFenceSequence = 0;
 
 function nextCustomInstructionsCacheSequence() {
   customInstructionsCacheSequence += 1;
@@ -55,6 +56,12 @@ export function writeCustomInstructionsStatePayload(
   },
 ) {
   const sequence = options.sequence ?? nextCustomInstructionsCacheSequence();
+  if (
+    options.source !== "mutation-payload" &&
+    sequence < customInstructionsMutationFenceSequence
+  ) {
+    return false;
+  }
   if (sequence < customInstructionsLatestAcceptedSequence) {
     return false;
   }
@@ -96,12 +103,37 @@ export async function runCustomInstructionsStateQuery(
   return payload;
 }
 
+export interface CustomInstructionsMutationCacheContext {
+  sequence: number;
+}
+
+export function beginCustomInstructionsMutationSequence() {
+  const sequence = nextCustomInstructionsCacheSequence();
+  customInstructionsMutationFenceSequence = Math.max(
+    customInstructionsMutationFenceSequence,
+    sequence,
+  );
+  return sequence;
+}
+
+export async function prepareCustomInstructionsMutation(
+  queryClient: QueryClient,
+): Promise<CustomInstructionsMutationCacheContext> {
+  const sequence = beginCustomInstructionsMutationSequence();
+  await queryClient.cancelQueries({
+    queryKey: CUSTOM_INSTRUCTION_STATE_QUERY_KEY,
+  });
+  return { sequence };
+}
+
 export async function writeCustomInstructionsStateMutationPayload(
   queryClient: QueryClient,
   payload: CustomInstructionStatePayload,
+  context?: CustomInstructionsMutationCacheContext,
 ) {
   const accepted = writeCustomInstructionsStatePayload(queryClient, payload, {
     source: "mutation-payload",
+    sequence: context?.sequence ?? beginCustomInstructionsMutationSequence(),
   });
   if (!accepted) return;
 

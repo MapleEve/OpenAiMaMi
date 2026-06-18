@@ -733,13 +733,13 @@ function validateCustomInstructionsDeepOwnerBoundaries() {
     "customInstructionsService.apply",
     "customInstructionsService.clearBlock",
     "customInstructionsService.rollback",
+    "prepareCustomInstructionsMutation",
     "writeCustomInstructionsStateMutationPayload",
-    "cancelQueries",
   ]);
   assertNotMatches("src/features/custom-instructions/hooks/mutation.ts", mutation, [
     [/\buseQuery\b/, "custom-instructions mutation owner must not own query"],
     [/\buse(State|Reducer|Effect|Memo|Callback)\b/, "custom-instructions mutation owner must not own page/controller UI state"],
-    [/\b(setQueryData|invalidateQueries)\b/, "custom-instructions mutation owner must delegate cache writes and invalidation to cache helper"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "custom-instructions mutation owner must delegate mutation fence, cache writes, query cancellation, and invalidation to cache helper"],
     [/toast\(|useTranslation|useBusyAction|CustomInstructionsPageController|setDraftContent|setPreview|setPendingApply|previewOpen|clearOpen/, "custom-instructions mutation owner must not own page controller, locale formatting, busy actions, or dialog state"],
     [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "custom-instructions mutation owner must use module service wrapper, not IPC/API transport"],
     [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|useMutation<unknown|Promise<unknown>/, "custom-instructions mutation owner must keep typed mutation payloads"],
@@ -806,7 +806,9 @@ function validateCustomInstructionsDeepOwnerBoundaries() {
     "writeCustomInstructionsAuthoritativePayload",
     "writeCustomInstructionsStatePayload",
     "runCustomInstructionsStateQuery",
+    "prepareCustomInstructionsMutation",
     "writeCustomInstructionsStateMutationPayload",
+    "beginCustomInstructionsMutationSequence",
     "invalidateCustomInstructionsContractQueries",
     "setQueryData<CustomInstructionStatePayload>",
   ]);
