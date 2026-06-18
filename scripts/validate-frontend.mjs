@@ -16,6 +16,7 @@ const validators = [
   ["validate-frontend-accounts-sessions-cache.mjs"],
   ["validate-frontend-relay-cache.mjs"],
   ["validate-frontend-maintenance-cache.mjs"],
+  ["validate-frontend-system-usage-hotspot-mystery-cache.mjs"],
   ["validate-frontend-daemon-autoswitch-cache.mjs"],
   ["validate-frontend-plugins-cache.mjs"],
   ["validate-frontend-mcp-cache.mjs"],
