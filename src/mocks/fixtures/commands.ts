@@ -60,6 +60,11 @@ import type {
   SystemActionPayload,
   TokenAnalyticsPayload,
   ToolAnalyticsPayload,
+  TrayIconWindowPayload,
+  TrayLocalePayload,
+  TrayMenuEventPayload,
+  TrayMenuSnapshotPayload,
+  TrayRelayUsageQuotaModelPayload,
   RebuildRegistryPayload,
   UpdateInstallabilityPayload,
   LogoutPayload,
@@ -133,6 +138,11 @@ export type IpcCommandMockData =
   | SwitchPayload
   | TokenAnalyticsPayload
   | ToolAnalyticsPayload
+  | TrayIconWindowPayload
+  | TrayLocalePayload
+  | TrayMenuEventPayload
+  | TrayMenuSnapshotPayload
+  | TrayRelayUsageQuotaModelPayload
   | UpdateInstallabilityPayload
   | UsageAnalyticsPayload
   | null
@@ -343,6 +353,169 @@ const systemActionHandler: IpcCommandHandler = (context) => {
     data.processes = [];
   }
   return { ...envelope, data };
+};
+
+function trayBackendStatus(
+  context: Parameters<IpcCommandHandler>[0],
+  note: string,
+): BackendSkeletonStatus {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  return {
+    ...envelope.data.status,
+    module: "tray",
+    command: context.command,
+    restored: false,
+    note,
+    boundary: {
+      repositoryChecked: false,
+      repositoryPathKnown: false,
+      platformChecked: true,
+      coreChecked: true,
+      effect: "pending",
+    },
+  };
+}
+
+const trayQuotaModel = (
+  backendStatus: BackendSkeletonStatus,
+): TrayRelayUsageQuotaModelPayload => ({
+  backendStatus,
+  activeProviderLabel: null,
+  quotaPercent: null,
+  modelLabel: null,
+});
+
+const createTrayIconWindowHandler: IpcCommandHandler = (context) => {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  const backendStatus = trayBackendStatus(
+    context,
+    "托盘图标窗口已接入 IPC/mock 合同；mock 不创建真实系统托盘窗口。",
+  );
+  const data: TrayIconWindowPayload = {
+    backendStatus,
+    trayId: "main",
+    created: false,
+  };
+  return { ...envelope, data };
+};
+
+const createOrRefreshTrayMenuHandler: IpcCommandHandler = (context) => {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  const backendStatus = trayBackendStatus(
+    context,
+    "托盘菜单刷新已接入 IPC/mock 合同；mock 只返回菜单形状，不注册原生菜单。",
+  );
+  const items = [
+    { id: "tray_open_main", labelKey: "tray.openMain", enabled: true },
+    { id: "tray_quit", labelKey: "tray.quit", enabled: true },
+  ];
+  const data: TrayMenuSnapshotPayload = {
+    backendStatus,
+    itemCount: items.length,
+    items,
+    quotaModel: trayQuotaModel(backendStatus),
+  };
+  return { ...envelope, data };
+};
+
+function classifyTrayMenuEvent(eventId: string): Omit<TrayMenuEventPayload, "backendStatus"> {
+  if (eventId.startsWith("tray_account:")) {
+    const accountKey = eventId.slice("tray_account:".length) || null;
+    return {
+      eventId,
+      action: "switch_account",
+      route: null,
+      accountKey,
+      shouldFocusMain: false,
+      shouldQuit: false,
+      sourceArchiveExtra: false,
+    };
+  }
+
+  if (eventId === "tray_quit") {
+    return {
+      eventId,
+      action: "quit",
+      route: null,
+      accountKey: null,
+      shouldFocusMain: false,
+      shouldQuit: true,
+      sourceArchiveExtra: false,
+    };
+  }
+
+  if (eventId === "tray_router_open") {
+    return {
+      eventId,
+      action: "navigate",
+      route: "relayModel",
+      accountKey: null,
+      shouldFocusMain: true,
+      shouldQuit: false,
+      sourceArchiveExtra: true,
+    };
+  }
+
+  if (
+    eventId === "tray_open_main" ||
+    eventId === "tray_active_title" ||
+    eventId === "tray_active_subtitle"
+  ) {
+    return {
+      eventId,
+      action: "focus_main",
+      route: "overview",
+      accountKey: null,
+      shouldFocusMain: true,
+      shouldQuit: false,
+      sourceArchiveExtra: false,
+    };
+  }
+
+  return {
+    eventId,
+    action: "unknown",
+    route: null,
+    accountKey: null,
+    shouldFocusMain: false,
+    shouldQuit: false,
+    sourceArchiveExtra: false,
+  };
+}
+
+const handleTrayMenuEventHandler: IpcCommandHandler = (context) => {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  const eventId = readArgString(context.args, "eventId", "");
+  const data: TrayMenuEventPayload = {
+    backendStatus: trayBackendStatus(
+      context,
+      "托盘菜单事件已接入 IPC/mock 合同；mock 只做事件分类，不执行窗口、账号或退出副作用。",
+    ),
+    ...classifyTrayMenuEvent(eventId),
+  };
+  return { ...envelope, data };
+};
+
+const setTrayLocaleHandler: IpcCommandHandler = (context) => {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  const data: TrayLocalePayload = {
+    backendStatus: trayBackendStatus(
+      context,
+      "托盘语言刷新已接入 IPC/mock 合同；mock 不重建真实原生菜单。",
+    ),
+    language: readArgString(context.args, "language", "zh"),
+    refreshed: false,
+  };
+  return { ...envelope, data };
+};
+
+const trayRelayUsageQuotaModelHandler: IpcCommandHandler = (context) => {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  const backendStatus = trayBackendStatus(
+    context,
+    "托盘 relay 使用量模型已接入 IPC/mock 合同；mock 不读取真实账号或配额状态。",
+  );
+  return { ...envelope, data: trayQuotaModel(backendStatus) };
 };
 
 const runtimeWatcherMockState = {
@@ -2137,6 +2310,14 @@ const relayCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> =
   upsert_relay_provider: relayProviderHandler,
 };
 
+const trayCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {
+  create_or_refresh_tray_menu: createOrRefreshTrayMenuHandler,
+  create_tray_icon_window: createTrayIconWindowHandler,
+  handle_tray_menu_event: handleTrayMenuEventHandler,
+  set_tray_locale: setTrayLocaleHandler,
+  tray_relay_usage_quota_model: trayRelayUsageQuotaModelHandler,
+};
+
 export const ipcCommandFixtures = IPC_COMMAND_DEFINITIONS.reduce(
   (fixtures, definition) => {
     fixtures[definition.command] = {
@@ -2149,6 +2330,7 @@ export const ipcCommandFixtures = IPC_COMMAND_DEFINITIONS.reduce(
         analyticsCommandHandlers[definition.command] ??
         mcpCommandHandlers[definition.command] ??
         relayCommandHandlers[definition.command] ??
+        trayCommandHandlers[definition.command] ??
         pluginsCommandHandlers[definition.command] ??
         skillsCommandHandlers[definition.command] ??
         daemonAutoSwitchCommandHandlers[definition.command] ??

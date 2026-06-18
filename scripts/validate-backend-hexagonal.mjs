@@ -80,7 +80,7 @@ const sourceSidecarDaemonCommands = [
   "start_usage_refresh_watcher",
   "update_usage_refresh_schedule",
 ];
-const expectedNonVoiceIpcCommandCount = 93 + sourceSidecarDaemonCommands.length;
+const expectedNonVoiceIpcCommandCount = 98 + sourceSidecarDaemonCommands.length;
 
 const ipcDomainModuleMap = new Map([
   ["accounts", "accounts"],
@@ -95,6 +95,7 @@ const ipcDomainModuleMap = new Map([
   ["settings", "settings"],
   ["skills", "skills"],
   ["system", "system"],
+  ["tray", "tray"],
 ]);
 
 const ipcCommandModuleOverrides = new Map([

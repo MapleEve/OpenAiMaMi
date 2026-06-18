@@ -63,6 +63,22 @@ pub(crate) trait RuntimePlatformPort {
     fn runtime_watcher_capability(&self) -> RuntimeWatcherPlatformCapability;
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct TrayPlatformCapability {
+    pub icon_window_available: bool,
+    pub menu_refresh_available: bool,
+    pub menu_event_available: bool,
+    pub locale_refresh_available: bool,
+    pub emits_navigation_event: bool,
+    pub creates_native_icon: bool,
+    pub detail: String,
+}
+
+// tray 平台端口只返回托盘能力描述；真实图标、菜单、窗口事件和退出动作只能在平台层恢复。
+pub(crate) trait TrayPlatformPort {
+    fn tray_capability(&self) -> TrayPlatformCapability;
+}
+
 // 进程能力端口只表达应用层允许触发的外部进程动作。
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct ForceKillProcess {

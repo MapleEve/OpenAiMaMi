@@ -10,6 +10,7 @@ import { usePromptHostActions } from "@/app/providers/prompt";
 import { useAccentColor } from "@/hooks/accent";
 import { useAutoRefresh } from "@/hooks/refresh";
 import { useTheme } from "@/hooks/theme";
+import { api } from "@/lib/api";
 import type { RouteRenderContext } from "@/routes/registry/registry";
 
 type RouteSettings = RouteRenderContext["settings"];
@@ -34,6 +35,7 @@ export function RouteSettingsProvider({ children }: { children: ReactNode }) {
     (lang: string) => {
       void i18n.changeLanguage(lang);
       localStorage.setItem("app_language", lang);
+      void api.setTrayLocale(lang).catch(() => undefined);
     },
     [i18n],
   );

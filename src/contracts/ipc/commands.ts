@@ -11,6 +11,7 @@ export const IPC_COMMAND_DOMAINS = [
   "settings",
   "skills",
   "system",
+  "tray",
   "voice"
 ] as const;
 
@@ -970,6 +971,60 @@ export const IPC_COMMAND_DEFINITIONS = [
       "id"
     ],
     "source": "minified",
+    "tier": "P1"
+  },
+  {
+    "domain": "tray",
+    "command": "create_or_refresh_tray_menu",
+    "wrapperNames": [
+      "createOrRefreshTrayMenu"
+    ],
+    "argKeys": [],
+    "source": "current-source",
+    "tier": "P1"
+  },
+  {
+    "domain": "tray",
+    "command": "create_tray_icon_window",
+    "wrapperNames": [
+      "createTrayIconWindow"
+    ],
+    "argKeys": [],
+    "source": "current-source",
+    "tier": "P1"
+  },
+  {
+    "domain": "tray",
+    "command": "handle_tray_menu_event",
+    "wrapperNames": [
+      "handleTrayMenuEvent"
+    ],
+    "argKeys": [
+      "eventId"
+    ],
+    "source": "current-source",
+    "tier": "P1"
+  },
+  {
+    "domain": "tray",
+    "command": "set_tray_locale",
+    "wrapperNames": [
+      "setTrayLocale"
+    ],
+    "argKeys": [
+      "language"
+    ],
+    "source": "current-source",
+    "tier": "P1"
+  },
+  {
+    "domain": "tray",
+    "command": "tray_relay_usage_quota_model",
+    "wrapperNames": [
+      "loadTrayRelayUsageQuotaModel"
+    ],
+    "argKeys": [],
+    "source": "current-source",
     "tier": "P1"
   },
   {

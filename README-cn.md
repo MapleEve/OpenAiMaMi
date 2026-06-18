@@ -1,87 +1,88 @@
 # OpenAiMami
 
-OpenAiMami 是一个面向个人本地工作流的桌面应用。本仓库公开的是可审计、可复核、可继续还原的材料与当前开源实现，用来说明这个项目已经做了什么、还没有做什么，以及后续还原应如何协作。
-
-项目使用 [Apache License](LICENSE) 许可。公开这些材料的目的，是支持个人持续迭代，也让使用者能够在运行前检查实现链路、数据处理边界和隐私风险，从而用得更放心，避免依赖不透明本地包。
+OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开的是匿名化后的 raw/internal 证据链、重建文档、当前前端恢复代码和后端六边形骨架，用来说明哪些实现已经进入公开源码，哪些仍然只是边界、合同或待补证据。
 
 ## 为什么公开
 
-- 支持个人持续迭代 OpenAiMami，而不是只发布一次性快照。
-- 让使用者能检查实现链路、证据来源和本地数据处理边界。
-- 用公开的 raw、internal、前端 dumped 文件和架构骨架减少对不透明本地包的依赖。
-- 让隐私相关行为可以被审查，避免公开材料写入用户数据、机器状态、内部路径或未匿名化内容。
-- 欢迎基于仓库内 raw/internal 主链路补齐完整还原代码的 PR；如使用 `OpenAiMami IDB` 辅助核对，需要说明核对范围和证据路径。
+项目使用 [Apache License](LICENSE) 许可。开源这部分内容的核心目的只有三点：
+
+1. 支持个人持续迭代，而不是只发布一次性快照。
+2. 沿用 Apache License，让后续使用、审查和二次开发有清楚许可边界。
+3. 让实现链路、数据读写和本地集成可以被检查，用得更放心，避免隐私泄露。
 
 ## 仓库内容
 
 | 路径或材料 | 说明 |
 | --- | --- |
-| `README.md`、`README-cn.md` | 中文公开说明、当前状态摘要和 AI 重建提示。 |
 | `docs/reconstruction/` | 重建规则、证据入口、发布规则、架构说明和大文件策略。 |
-| `evidence/full-chain/raw/` | 匿名化 raw 链条，包含前端 dumped 文件、IPC、CCF、manifest、校验摘要和命令索引。 |
+| `evidence/full-chain/raw/` | 匿名化 raw 链条，包含 dumped 文件、IPC、CCF、manifest、校验摘要和命令索引。 |
 | `evidence/full-chain/internal/` | 匿名化 internal 链条，包含 audit map、frontend map、distilled logic、raw leaf 和索引。 |
 | `evidence/binary-manifests/` | 外部大文件的大小、状态和哈希清单。 |
-| `src/` | 当前公开前端源码和主流前端模块化重构入口。 |
-| `src-tauri/` | 当前公开 Tauri 与 Rust 后端六边形骨架，以及已补回的原始公开后端能力。 |
+| `src/` | 当前公开前端源码和主流模块化前端骨架。 |
+| `src-tauri/` | 当前公开 Tauri / Rust 后端六边形骨架，以及已补回的公开或证据支撑能力。 |
 | `LICENSE` | Apache License 许可文本。 |
 
-`OpenAiMami IDB` 是独立参考资产。主仓库不直接保存大体积 IDB 文件，还原主线应以 `evidence/full-chain/raw` 和 `evidence/full-chain/internal` 为准，IDB 只能作为可选辅助核对材料，不能替代公开证据链。
+`OpenAiMami IDB` 是独立参考资产，不混入主仓库。还原主线以 `evidence/full-chain/raw` 和 `evidence/full-chain/internal` 为准，IDB 只能作为可选辅助核对材料，不能替代公开证据链。
 
 ## 重建流程
 
-1. 先校验 raw/internal 索引、manifest、校验摘要、前端 dumped 校验材料和命令索引。
-2. 再用 raw 链条确认 macOS/Windows dumped 文件、IPC、CCF、manifest 和命令级证据。
-3. 再用 internal 链条解释 audit map、frontend map、distilled logic、raw leaf、页面结构和数据流。
-4. 前端以全量还原为目标，按 route registry、entry/root、runtime initializer 和深模块 owner 边界补齐。
-5. 后端按 commands、application、core、platform、repository、adapters、contracts 六边形骨架补齐已经开源过或有公开证据支撑的能力。
-6. 未公开或未选择还原的后端业务行为只保留为契约、桩、待实现项、测试缺口或可替换接口。
-7. voice 只保留空骨架、合同清单和中文边界说明；它不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。
-
-详细架构决策、owner 边界、重构门禁和执行顺序以仓库内 `AGENTS.md` 及同级规则文件为准；README 只保留范围说明、状态摘要和验收入口。
+1. 先校验 `evidence/full-chain/raw` 和 `evidence/full-chain/internal` 的索引、manifest、校验摘要、前端 dumped 材料、IPC、CCF、audit map、frontend map、distilled logic 和 raw leaf。
+2. 再确认每个新增实现能回指公开证据，不能用未公开材料、未匿名化内容或外部参考仓库替代仓库内证据链。
+3. 前端按全量还原目标推进，使用主流模块化前端结构承载 route registry、entry/root、runtime initializer、模块 Provider、StoreUpdater、Content、cache、hooks、dialogs、panels、components、types、测试和文档。
+4. 后端按六边形架构补齐已经开源过或可由公开证据支撑的能力；无证据或不选择还原的闭源行为只写合同、骨架、待实现项、测试缺口或可替换接口。
+5. voice 只保留空骨架和边界说明，不作为入口，不调用后端，不参与启动流程，也不能阻塞其它验收。
 
 ## 当前状态
 
-本节只写状态摘要，不记录逐次提交、拆分过程或临时排队。后续更新只改表格结论，不追加流水账。
-
 | 领域 | 已完成 | 未完成或边界 |
 | --- | --- | --- |
-| 公开材料 | Apache License、中文说明、匿名化 raw/internal 主链路、前端 dumped 证据、二进制清单和重建文档已经进入仓库。 | `OpenAiMami IDB` 仍是独立参考资产，不混入主仓库；还原主线以 raw/internal 为准。 |
-| 前端 | `src/` 已按入口、路由、全局 Provider、runtime initializer、模块 owner、缓存 owner、路由高 IO 反馈查询映射、relay 专属加载骨架、relay 供应商测试与模型拉取触发链登记、i18n 和 E2E mock 建立可继续还原的主流模块化结构。 | 不声明前端已经 100% 完成，不声明 macOS / Windows 双平台 leaf 已全部闭合；完整度继续由 raw/internal、leaf 队列、源码 closeout 和验证脚本确认。 |
-| 后端 | `src-tauri/` 已建立 commands、application、core、platform、repository、adapters、contracts 六边形骨架，并补回已有公开证据支撑的后端能力；maintenance 文件事务、应用目录创建和路径状态事实已收口到 repository owner，诊断平台信息和守护进程运行期监听能力已通过平台端口接入。 | 不做闭源后端业务全量还原；未公开、未选择还原或无公开证据支撑的行为只能保留为契约、桩、待实现项、测试缺口或待补证据位置。 |
+| 公开材料 | Apache License、中文说明、匿名化 raw/internal 主链路、前端 dumped 证据、二进制清单和重建文档已经进入仓库。 | 不公开机器名、用户路径、会话、令牌、账号私密值、未审查 dump 或未匿名化内容。 |
+| 前端 | 已按 `entry/root`、全局 Provider、route registry、runtime initializer、服务/API 门面、模块 cache owner、深模块 owner、i18n 和 E2E mock 建立可继续还原的主流模块化结构；accounts、sessions、analytics、mcp、skills、plugins、relay、settings、system、maintenance、tray-shell、tray 等当前源码链路已纳入验证。 | 不声明前端已经 100% 双平台全 leaf 完成；完整度继续由 raw/internal、leaf 队列、current-source closeout 和验证脚本确认。 |
+| 后端 | 已建立 `commands`、`application/usecase`、`core`、`platform`、`repository`、`adapters`、`contracts` 六边形骨架；已补回原始公开或公开证据支撑的后端能力边界，包括账号、会话、分析、MCP、skills、plugins、relay、daemon、maintenance、settings、system、tray 等 owner。 | 不做闭源后端业务全量真实还原；未公开、未选择还原或无公开证据支撑的行为只能保留为合同、骨架、待实现项、测试缺口或待补证据位置。 |
+| 托盘 | 已登记 Windows 1.0.9 tray 证据中的 accepted targets，补入前端 `tray:navigate` 桥、`set_tray_locale` 同步、IPC service/API/mock 链和后端六边形骨架。 | 不声明真实 OS tray、原生菜单、图标窗口、退出动作或平台事件已经完整恢复；不新增可见页面入口；`tray_router_open` 只作为当前源码归档额外路径登记。 |
 | voice | 保留空骨架、合同清单和中文边界说明。 | 不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。 |
-| 验收 | 已有公开边界、README 同步、验证入口覆盖、前端证据、前端 leaf 队列、前端分层、账号/线程缓存竞态、状态合同、可见文案、后端六边形、后端 owner、合同 owner、i18n 和 E2E mock 检查入口。 | 构建、编译和平台运行验收依赖本机 Rust、前端和目标平台工具链；工具链缺失只能记录环境限制，不能替代源码状态判断。 |
-| 运行闭环 | README 只承认已经有证据和脚本支撑的公开源码状态。 | 不声明真实网络、后台线程、全局状态、真实 token 统计口径、更新安装、诊断修复、外部进程重启或 shell 闭环已经完成。 |
+| 验收 | 已提供公开边界、README 同步、前端证据、leaf 队列、前端分层、cache owner、事件刷新、i18n、E2E mock、后端六边形、后端 owner 和合同 owner 等验证入口。 | 构建、编译和平台运行验收依赖本机 Rust、前端和目标平台工具链；工具链缺失只能记录环境限制，不能替代源码状态判断。 |
+| 运行闭环 | README 只承认已经有公开证据和脚本支撑的源码状态。 | 不声明真实网络、后台线程、全局状态、真实 token 统计口径、更新安装、诊断修复、外部进程重启或 shell 闭环已经完成。 |
 
-验收入口按范围运行：公开边界用 `validate:public-boundary`；前端用前端证据、leaf、入口、缓存、cache helper owner、事件刷新、i18n 和 E2E mock 相关 `validate:*` 脚本；后端用 `validate:backend-hexagonal`、`validate:backend-contract-owners` 和后端 owner 类 `validate:*` 脚本。
+文档口径固定为“已完成 / 未完成或边界 / 怎么验收”。每次提交都必须同步 README，但只能归纳状态变化，不能按提交逐条追加流水账。
 
-文档口径固定为“已完成 / 未完成或边界 / 怎么验收”。过程记录、逐项拆分和临时进度应进入提交、issue 或专门重建文档，不写进 README 状态段。每次提交仍必须同步更新 README，但只能归纳状态变化，不能按提交逐条追加。
+## 验收入口
+
+按范围运行验证：
+
+- 公开边界：`npm run validate:public-boundary`
+- README 同步：`npm run validate:public-boundary`
+- 前端证据与结构：`npm run validate:frontend-evidence`、`npm run validate:frontend-closeouts`、`npm run validate:frontend-layer-owners`
+- 托盘前端链路：`npm run validate:frontend-tray-current-source`
+- 前端 mock / i18n：`npm run validate:e2e-mocks`、`npm run validate:i18n`
+- 后端骨架：`npm run validate:backend-hexagonal`、`npm run validate:backend-contract-owners`
+- 托盘后端 owner：`npm run validate:backend-tray-owner`
 
 ## 可直接给 AI 的重建提示
 
 ```text
-请只使用当前公开仓库，按可审计方式继续还原 OpenAiMami。所有新增文档、注释和说明使用中文；不得写入内部路径、机器名、用户名、共享盘、内部项目名、凭据、令牌、会话、密钥或外部参考仓库名。
+请只使用当前公开仓库，按可审计方式继续还原 OpenAiMami。所有新增文档、注释和说明必须使用中文；不得写入机器名、用户名、共享盘、绝对本地路径、内部项目名、凭据、令牌、会话、密钥或外部参考仓库名。
 
-先校验 `evidence/full-chain/raw` 和 `evidence/full-chain/internal`：读取索引、manifest、校验摘要、前端 dumped 校验材料、IPC、CCF、audit map、frontend map、distilled logic 和 raw leaf，并确认后续实现都能回指公开证据。
+先校验 evidence/full-chain/raw 和 evidence/full-chain/internal：读取索引、manifest、校验摘要、前端 dumped 校验材料、IPC、CCF、audit map、frontend map、distilled logic 和 raw leaf，并确认后续实现都能回指公开证据。
 
-前端以全量还原为目标，按 raw/internal 证据补齐路由、入口、运行期初始化、模块 Provider、StoreUpdater、Content、cache、hooks、dialogs、panels、components、types、测试和文档；状态、缓存、事件刷新、旧响应、取消、失败态和事件重放都必须经过验收。
+前端以全量还原为目标，按 raw/internal 证据补齐路由、入口、运行时初始化、模块 Provider、StoreUpdater、Content、cache、hooks、dialogs、panels、components、types、测试和文档；状态、缓存、事件刷新、旧响应、取消、失败态和事件重放都必须经过验证。
 
-后端按 commands、application、core、platform、repository、adapters、contracts 六边形边界补齐已经开源过或可由公开证据支撑的能力；不还原闭源后端业务全量实现，未公开或无证据支撑的行为只能写成契约、桩、待实现项、测试缺口或可替换接口。
+后端按 commands、application/usecase、core、platform、repository、adapters、contracts 六边形边界补齐已经开源过或可由公开证据支撑的能力；不还原闭源后端业务全量实现。未公开或无证据支撑的行为只能写成合同、骨架、待实现项、测试缺口或可替换接口。
 
 voice 只保留空骨架、合同清单和中文边界说明；它不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。
 
-提交 PR 时必须说明使用了哪些 raw/internal 证据、做了哪些校验、哪些行为已经还原、哪些仍未覆盖或仍是桩；如果核对了 `OpenAiMami IDB`，也必须说明核对范围和未覆盖项。
+提交 PR 时必须说明使用了哪些 raw/internal 证据、做了哪些校验、哪些行为已经还原、哪些仍未覆盖或仍是骨架；如果核对了 OpenAiMami IDB，也必须说明核对范围和未覆盖项。
 ```
 
 ## PR 规则
 
-欢迎提交完整还原代码或证据修正 PR，但 PR 必须回答“做了什么、没做什么、依据是什么”：
+欢迎提交完整还原代码或证据修正 PR。PR 必须回答“做了什么、没做什么、依据是什么”：
 
 - 基于 `evidence/full-chain/raw` 和 `evidence/full-chain/internal` 补齐前端路由、模块、状态、IPC 包装、缓存、对话框、面板、组件、类型和测试。
-- 按六边形架构补齐后端端口、用例、适配器、存储边界和可序列化契约。
-- 补入已经开源过或可由公开证据支撑的后端功能；不能把未公开或无证据支撑的闭源行为写成真实实现。
+- 按六边形架构补齐后端端口、用例、适配器、存储边界和可序列化合同。
+- 只补入已经开源过或可由公开证据支撑的后端功能；不能把未公开或无证据支撑的闭源行为写成真实实现。
 - 改进隐私审查、匿名化规则、校验脚本、重建文档、证据路径、哈希或 manifest 说明。
 - 如果使用 `OpenAiMami IDB` 辅助核对，需要在 PR 中说明核对范围、证据路径、校验结果和未覆盖项。
-- 如果修改用户数据读写、缓存、导入导出、清理、恢复或本地集成逻辑，需要在 PR 中单独说明行为变化和验证结果。
 
 ## 匿名化规则
 
@@ -90,7 +91,7 @@ voice 只保留空骨架、合同清单和中文边界说明；它不作为前�
 - 内部项目名。
 - 本机用户名、机器名、共享盘路径或绝对本地路径。
 - 凭据、令牌、会话、密钥、账号私密值或未脱敏日志。
-- 个人数据、客户数据、运行期缓存或未审查 dump。
+- 个人数据、客户数据、运行时缓存或未审查 dump。
 - 外部参考仓库名称。
 
 请只使用仓库相对路径描述证据和实现。发现未脱敏材料时，应先改成占位说明，再提交 PR。

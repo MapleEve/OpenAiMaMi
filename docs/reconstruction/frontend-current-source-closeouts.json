@@ -3001,6 +3001,167 @@
       "reason": "本 closeout 只登记 cross home-usage frontend 的 current-source partial closeout：当前公开前端/服务/后端骨架链路可验证，但 gate-report 自身仍是前端专属包且后端验证委托给每个命令证据包；不声明 raw/internal gate、真实平台 parity、dim6 或 full_leaf_100 已恢复。"
     },
     {
+      "id": "tray-windows-current-source-native-event-frontend-chain",
+      "module": "tray",
+      "status": "current-source-closed-partial",
+      "currentSourceCommands": [
+        "create_tray_icon_window",
+        "create_or_refresh_tray_menu",
+        "handle_tray_menu_event",
+        "set_tray_locale",
+        "tray_relay_usage_quota_model"
+      ],
+      "gateReports": [
+        "evidence/full-chain/internal/audits/audits/windows-1.0.9-tray/gate-report.json"
+      ],
+      "frontendChainDocs": [
+        "evidence/full-chain/internal/audits/audits/windows-1.0.9-tray/frontend/FRONTEND-FULL-CHAIN-109.md"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "evidence/full-chain/internal/audits/audits/windows-1.0.9-tray/gate-report.json",
+          "includes": [
+            "\"status\": \"accepted_full_leaf_100_windows_ida\"",
+            "\"create_tray_icon_window\"",
+            "\"create_or_refresh_tray_menu\"",
+            "\"handle_tray_menu_event\"",
+            "\"tray_relay_usage_quota_model\"",
+            "\"tray_router_open\"",
+            "source archive_extra_classifier_not_upstream_windows_menu_item"
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/windows-1.0.9-tray/frontend/FRONTEND-FULL-CHAIN-109.md",
+          "includes": [
+            "tray:navigate",
+            "invoke(\"handle_tray_menu_event\")",
+            "invoke(\"set_tray_locale\")",
+            "tray_router_open"
+          ]
+        },
+        {
+          "file": "src/services/tray/index.ts",
+          "includes": [
+            "handle_tray_menu_event",
+            "set_tray_locale",
+            "tray_relay_usage_quota_model"
+          ]
+        },
+        {
+          "file": "src/services/index.ts",
+          "includes": [
+            "trayService"
+          ]
+        },
+        {
+          "file": "src/lib/api.ts",
+          "includes": [
+            "handleTrayMenuEvent: trayService.handleMenuEvent",
+            "setTrayLocale: trayService.setLocale",
+            "loadTrayRelayUsageQuotaModel: trayService.loadRelayUsageQuotaModel"
+          ]
+        },
+        {
+          "file": "src/contracts/ipc/commands.ts",
+          "includes": [
+            "\"domain\": \"tray\"",
+            "\"command\": \"handle_tray_menu_event\"",
+            "\"command\": \"set_tray_locale\"",
+            "\"command\": \"tray_relay_usage_quota_model\""
+          ]
+        },
+        {
+          "file": "src/mocks/fixtures/commands.ts",
+          "includes": [
+            "const trayCommandHandlers",
+            "handle_tray_menu_event: handleTrayMenuEventHandler",
+            "set_tray_locale: setTrayLocaleHandler",
+            "tray_relay_usage_quota_model: trayRelayUsageQuotaModelHandler",
+            "tray_router_open"
+          ]
+        },
+        {
+          "file": "src/app/runtime/tray.tsx",
+          "includes": [
+            "listen<TrayNavigationPayload>(\"tray:navigate\"",
+            "relayModel",
+            "navigateHashRoute"
+          ]
+        },
+        {
+          "file": "src/app/providers/settings.tsx",
+          "includes": [
+            "api.setTrayLocale(lang)"
+          ]
+        },
+        {
+          "file": "src/entry/root.tsx",
+          "includes": [
+            "<TrayNavigationInitializer />"
+          ]
+        },
+        {
+          "file": "src-tauri/src/contracts/tray.rs",
+          "includes": [
+            "pub struct TrayMenuEventInput",
+            "pub struct TrayMenuSnapshotPayload",
+            "pub struct TrayMenuEventPayload",
+            "pub struct TrayLocalePayload"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/tray.rs",
+          "includes": [
+            "tray_core::classify_tray_menu_event",
+            "tray_status(platform, \"handle_tray_menu_event\")",
+            "BackendEffect::Pending"
+          ]
+        },
+        {
+          "file": "src-tauri/src/core/tray.rs",
+          "includes": [
+            "classify_tray_menu_event",
+            "tray_router_open",
+            "empty_tray_quota_model"
+          ]
+        },
+        {
+          "file": "src-tauri/src/platform/tray.rs",
+          "includes": [
+            "TrayPlatformAdapter",
+            "creates_native_icon: false",
+            "emits_navigation_event: false"
+          ]
+        },
+        {
+          "file": "src-tauri/src/commands/tray.rs",
+          "includes": [
+            "pub fn handle_tray_menu_event",
+            "pub fn set_tray_locale",
+            "CoreEnvelope::ok"
+          ]
+        },
+        {
+          "file": "src-tauri/src/lib.rs",
+          "includes": [
+            "commands::tray::handle_tray_menu_event",
+            "commands::tray::set_tray_locale",
+            "commands::tray::tray_relay_usage_quota_model"
+          ]
+        }
+      ],
+      "nonClaims": [
+        "不修改 gate-report 字段。",
+        "不声明新增 Windows 1.0.9 上游菜单项。",
+        "不声明 tray_router_open 是 Windows 1.0.9 原始菜单项；它只能作为当前源码归档额外路径登记。",
+        "不新增可见 route、sidebar、header、页面入口或菜单入口。",
+        "不处理 voice。",
+        "不声明当前前端 mock 等同真实 OS tray 行为。",
+        "不声明后端真实 tray native 实现已完整恢复。"
+      ],
+      "reason": "本 closeout 是 tray current-source partial closeout：登记 Windows 1.0.9 tray 证据中的 accepted targets、当前源码里的 tray:navigate 前端桥、set_tray_locale 同步、IPC service/API/mock 链和后端六边形骨架。它不修改 gate-report，不新增可见入口，不处理 voice，不声明真实原生托盘实现已恢复，也不声明 tray_router_open 是 Windows 1.0.9 原始菜单项。"
+    },
+    {
       "id": "ui-theme-current-source-theme-chain",
       "module": "ui-theme",
       "status": "current-source-closed-partial",

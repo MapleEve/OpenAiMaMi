@@ -8,3 +8,4 @@ pub mod relay;
 pub mod runtime;
 pub mod single_flight;
 pub mod state_machine;
+pub mod tray;

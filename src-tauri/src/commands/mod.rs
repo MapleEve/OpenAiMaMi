@@ -12,4 +12,5 @@ pub mod sessions;
 pub mod settings;
 pub mod skills;
 pub mod system;
+pub mod tray;
 pub mod voice;

@@ -12,4 +12,5 @@ export { settingsService } from "./settings";
 export { skillsService } from "./skills";
 export { systemService } from "./system";
 export { themeService, type AppTheme } from "./theme";
+export { trayService } from "./tray";
 export { voiceService } from "./voice";

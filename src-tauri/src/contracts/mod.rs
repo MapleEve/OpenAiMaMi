@@ -16,6 +16,7 @@ pub mod sessions;
 pub mod settings;
 pub mod skills;
 pub mod system;
+pub mod tray;
 pub mod voice;
 
 pub use backend_skeleton::*;
@@ -33,3 +34,4 @@ pub use runtime_extensions::*;
 pub use settings::*;
 pub use skills::*;
 pub use system::*;
+pub use tray::*;

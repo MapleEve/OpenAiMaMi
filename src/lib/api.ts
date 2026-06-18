@@ -12,6 +12,7 @@ import {
   skillsService,
   systemService,
   themeService,
+  trayService,
   type AppTheme,
   type ApplyCustomInstructionParams,
   type UpsertMcpServerInput,
@@ -200,6 +201,12 @@ export const api = {
   runCodexRouterDiagnostics: relayService.runCodexRouterDiagnostics,
   diagnoseCodexRouter: relayService.diagnoseCodexRouter,
   fixCodexRouterIssue: relayService.fixCodexRouterIssue,
+
+  createTrayIconWindow: trayService.createIconWindow,
+  createOrRefreshTrayMenu: trayService.createOrRefreshMenu,
+  handleTrayMenuEvent: trayService.handleMenuEvent,
+  setTrayLocale: trayService.setLocale,
+  loadTrayRelayUsageQuotaModel: trayService.loadRelayUsageQuotaModel,
 
   listPlugins: pluginsService.list,
   togglePlugin: pluginsService.toggle,

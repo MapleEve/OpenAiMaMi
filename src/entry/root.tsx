@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { AppProviders } from "@/app/providers/app";
 import { RuntimeInitializer } from "@/app/runtime/initializer";
+import { TrayNavigationInitializer } from "@/app/runtime/tray";
 import { AppRouter } from "@/app/router/router";
 import { ErrorBoundary } from "@/components/boundary";
 
@@ -9,6 +10,7 @@ export function Root() {
     <AppProviders>
       <ErrorBoundary fallback={<RootErrorFallback />}>
         <RuntimeInitializer />
+        <TrayNavigationInitializer />
         <AppRouter />
       </ErrorBoundary>
     </AppProviders>

@@ -95,6 +95,36 @@ const RELAY_HTTP_TERMINAL_CCF_ALLOWED_FIELDS = [
   "nonClaims",
   "reason",
 ];
+const TRAY_CURRENT_SOURCE_CLOSEOUT_ID =
+  "tray-windows-current-source-native-event-frontend-chain";
+const TRAY_CURRENT_SOURCE_GATE_REPORT =
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-tray/gate-report.json";
+const TRAY_CURRENT_SOURCE_FRONTEND_DOC =
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-tray/frontend/FRONTEND-FULL-CHAIN-109.md";
+const TRAY_CURRENT_SOURCE_COMMANDS = [
+  "create_tray_icon_window",
+  "create_or_refresh_tray_menu",
+  "handle_tray_menu_event",
+  "set_tray_locale",
+  "tray_relay_usage_quota_model",
+];
+const TRAY_CURRENT_SOURCE_ACCEPTED_TARGETS = [
+  "create_tray_icon_window",
+  "create_or_refresh_tray_menu",
+  "handle_tray_menu_event",
+  "tray_relay_usage_quota_model",
+];
+const TRAY_CURRENT_SOURCE_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "currentSourceCommands",
+  "gateReports",
+  "frontendChainDocs",
+  "requiredSourceSignals",
+  "nonClaims",
+  "reason",
+];
 const RELAY_CURRENT_SOURCE_USECASE_FILES = new Map([
   ["activate_relay_provider", "src-tauri/src/application/usecase/relay/provider.rs"],
   ["deactivate_relay_provider", "src-tauri/src/application/usecase/relay/provider.rs"],
@@ -996,6 +1026,93 @@ function validateRelayHttpTerminalCcfCloseout(closeout) {
       failures.push(`${closeout.id} reason 缺少边界声明：${snippet}`);
     }
   }
+}
+
+function validateTrayCurrentSourceCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, TRAY_CURRENT_SOURCE_ALLOWED_FIELDS);
+  if (closeout.module !== "tray") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} currentSourceCommands`,
+    closeout.currentSourceCommands ?? [],
+    TRAY_CURRENT_SOURCE_COMMANDS,
+  );
+  validateStringArraySet(
+    `${closeout.id} gateReports`,
+    closeout.gateReports ?? [],
+    [TRAY_CURRENT_SOURCE_GATE_REPORT],
+  );
+  validateStringArraySet(
+    `${closeout.id} frontendChainDocs`,
+    closeout.frontendChainDocs ?? [],
+    [TRAY_CURRENT_SOURCE_FRONTEND_DOC],
+  );
+  validateRequiredSignals(closeout);
+
+  const gate = readJson(repoPath(TRAY_CURRENT_SOURCE_GATE_REPORT));
+  if (gate.status !== "accepted_full_leaf_100_windows_ida") {
+    failures.push(`${TRAY_CURRENT_SOURCE_GATE_REPORT} status=${String(gate.status)}`);
+  }
+  validateStringArraySet(
+    `${TRAY_CURRENT_SOURCE_GATE_REPORT} acceptedTargets`,
+    gate.acceptedTargets ?? [],
+    TRAY_CURRENT_SOURCE_ACCEPTED_TARGETS,
+  );
+  const routerDelta = gate.productDelta?.find?.(
+    (entry) => entry.id === "tray_router_open",
+  );
+  if (
+    routerDelta?.status !==
+    "source archive_extra_classifier_not_upstream_windows_menu_item"
+  ) {
+    failures.push(`${TRAY_CURRENT_SOURCE_GATE_REPORT} 缺少 tray_router_open 当前源码额外路径边界`);
+  }
+
+  const nonClaims = closeout.nonClaims ?? [];
+  for (const required of [
+    "不修改 gate-report 字段。",
+    "不声明新增 Windows 1.0.9 上游菜单项。",
+    "不声明 tray_router_open 是 Windows 1.0.9 原始菜单项；它只能作为当前源码归档额外路径登记。",
+    "不新增可见 route、sidebar、header、页面入口或菜单入口。",
+    "不处理 voice。",
+    "不声明当前前端 mock 等同真实 OS tray 行为。",
+    "不声明后端真实 tray native 实现已完整恢复。",
+  ]) {
+    if (!nonClaims.includes(required)) {
+      failures.push(`${closeout.id} nonClaims 缺少声明：${required}`);
+    }
+  }
+
+  for (const snippet of [
+    "current-source partial closeout",
+    "tray:navigate",
+    "不声明真实原生托盘实现已恢复",
+  ]) {
+    if (!String(closeout.reason ?? "").includes(snippet)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${snippet}`);
+    }
+  }
+
+  for (const command of TRAY_CURRENT_SOURCE_COMMANDS) {
+    requireIncludes("src-tauri/src/lib.rs", [`commands::tray::${command}`]);
+    requireIncludes("src-tauri/src/commands/tray.rs", [`pub fn ${command}`]);
+  }
+  requireIncludes("src/app/runtime/tray.tsx", [
+    "listen<TrayNavigationPayload>(\"tray:navigate\"",
+    "relayModel",
+    "navigateHashRoute",
+  ]);
+  requireIncludes("src/app/providers/settings.tsx", ["api.setTrayLocale(lang)"]);
+  requireIncludes("src/entry/root.tsx", ["<TrayNavigationInitializer />"]);
+  requireIncludes("src/mocks/fixtures/commands.ts", [
+    "const trayCommandHandlers",
+    "tray_router_open",
+  ]);
 }
 
 function validateRelayProxyConfigDim6Closeout(closeout) {
@@ -2337,6 +2454,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateRelayCurrentSourceSkeletonCloseout(closeout);
   } else if (closeout.id === RELAY_HTTP_TERMINAL_CCF_CLOSEOUT_ID) {
     validateRelayHttpTerminalCcfCloseout(closeout);
+  } else if (closeout.id === TRAY_CURRENT_SOURCE_CLOSEOUT_ID) {
+    validateTrayCurrentSourceCloseout(closeout);
   } else if (closeout.id === RELAY_PROXY_CONFIG_DIM6_CLOSEOUT_ID) {
     validateRelayProxyConfigDim6Closeout(closeout);
   } else if (closeout.id === SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID) {

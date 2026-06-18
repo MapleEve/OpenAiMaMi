@@ -86,6 +86,49 @@ export interface NotificationClientStatePayload {
   notificationsSince: number;
 }
 
+export interface TrayIconWindowPayload {
+  backendStatus: BackendSkeletonStatus;
+  trayId: string;
+  created: boolean;
+}
+
+export interface TrayMenuItemPayload {
+  id: string;
+  labelKey: string;
+  enabled: boolean;
+}
+
+export interface TrayRelayUsageQuotaModelPayload {
+  backendStatus: BackendSkeletonStatus;
+  activeProviderLabel: string | null;
+  quotaPercent: number | null;
+  modelLabel: string | null;
+}
+
+export interface TrayMenuSnapshotPayload {
+  backendStatus: BackendSkeletonStatus;
+  itemCount: number;
+  items: TrayMenuItemPayload[];
+  quotaModel: TrayRelayUsageQuotaModelPayload;
+}
+
+export interface TrayMenuEventPayload {
+  backendStatus: BackendSkeletonStatus;
+  eventId: string;
+  action: string;
+  route: string | null;
+  accountKey: string | null;
+  shouldFocusMain: boolean;
+  shouldQuit: boolean;
+  sourceArchiveExtra: boolean;
+}
+
+export interface TrayLocalePayload {
+  backendStatus: BackendSkeletonStatus;
+  language: string;
+  refreshed: boolean;
+}
+
 export interface MysteryRouteGrant {
   route: string;
   epochMs: number;
