@@ -1,9 +1,10 @@
+use crate::application::ports::RuntimePlatformPort;
 use crate::core::model::runtime::RuntimeWatcherPlatformCapability;
 
 pub(crate) struct RuntimePlatformAdapter;
 
-impl RuntimePlatformAdapter {
-    pub fn runtime_watcher_capability(&self) -> RuntimeWatcherPlatformCapability {
+impl RuntimePlatformPort for RuntimePlatformAdapter {
+    fn runtime_watcher_capability(&self) -> RuntimeWatcherPlatformCapability {
         runtime_watcher_capability()
     }
 }

@@ -1,3 +1,4 @@
+use crate::application::ports::RuntimePlatformPort;
 use crate::application::service::current_timestamp;
 use crate::contracts::{
     AutoSwitchRuntimeState, BackendEffect, BackendSkeletonBoundaryStatus, BackendSkeletonStatus,
@@ -8,7 +9,6 @@ use crate::core::model::runtime::{
     RuntimeWatcherDecision, RuntimeWatcherSignal, RuntimeWatcherStatusCode,
 };
 use crate::core::runtime as runtime_core;
-use crate::platform::runtime::RuntimePlatformAdapter;
 use crate::repository::runtime as runtime_repository;
 use crate::repository::settings as settings_repository;
 use crate::repository::Repository;
@@ -18,10 +18,16 @@ pub(crate) struct DaemonUseCaseBoundary;
 
 pub(crate) trait DaemonUseCaseBoundaryPort {}
 
-pub fn run_daemon_once(repo: &Repository) -> Result<DaemonRunPayload, CoreError> {
+pub fn run_daemon_once(
+    repo: &Repository,
+    platform: &impl RuntimePlatformPort,
+) -> Result<DaemonRunPayload, CoreError> {
     let settings = settings_repository::load_app_settings(repo)?;
-    let decision =
-        runtime_watcher_decision(repo, RuntimeWatcherSignal::StartAutoSwitchPendingWatcher)?;
+    let decision = runtime_watcher_decision(
+        repo,
+        platform,
+        RuntimeWatcherSignal::StartAutoSwitchPendingWatcher,
+    )?;
     Ok(DaemonRunPayload {
         backend_status: runtime_watcher_backend_status("run_daemon_once", &decision),
         executed_at: current_timestamp(),
@@ -51,9 +57,13 @@ pub fn confirm_pending_auto_switch() {}
 
 pub fn confirm_pending_auto_switch_and_restart_codex() {}
 
-pub fn note_usage_refresh_activity(repo: &Repository) -> Result<BackendSkeletonStatus, CoreError> {
+pub fn note_usage_refresh_activity(
+    repo: &Repository,
+    platform: &impl RuntimePlatformPort,
+) -> Result<BackendSkeletonStatus, CoreError> {
     runtime_watcher_status_for_signal(
         repo,
+        platform,
         "note_usage_refresh_activity",
         RuntimeWatcherSignal::NoteUsageRefreshActivity,
     )
@@ -61,16 +71,19 @@ pub fn note_usage_refresh_activity(repo: &Repository) -> Result<BackendSkeletonS
 
 pub fn schedule_full_runtime_refresh(
     repo: &Repository,
+    platform: &impl RuntimePlatformPort,
 ) -> Result<BackendSkeletonStatus, CoreError> {
-    schedule_full_runtime_refresh_for_command(repo, "schedule_full_runtime_refresh")
+    schedule_full_runtime_refresh_for_command(repo, platform, "schedule_full_runtime_refresh")
 }
 
 pub fn schedule_full_runtime_refresh_for_command(
     repo: &Repository,
+    platform: &impl RuntimePlatformPort,
     command: &str,
 ) -> Result<BackendSkeletonStatus, CoreError> {
     runtime_watcher_status_for_signal(
         repo,
+        platform,
         command,
         RuntimeWatcherSignal::ScheduleFullRuntimeRefresh,
     )
@@ -78,17 +91,23 @@ pub fn schedule_full_runtime_refresh_for_command(
 
 pub fn start_auto_switch_pending_watcher(
     repo: &Repository,
+    platform: &impl RuntimePlatformPort,
 ) -> Result<BackendSkeletonStatus, CoreError> {
     runtime_watcher_status_for_signal(
         repo,
+        platform,
         "start_auto_switch_pending_watcher",
         RuntimeWatcherSignal::StartAutoSwitchPendingWatcher,
     )
 }
 
-pub fn start_usage_refresh_watcher(repo: &Repository) -> Result<BackendSkeletonStatus, CoreError> {
+pub fn start_usage_refresh_watcher(
+    repo: &Repository,
+    platform: &impl RuntimePlatformPort,
+) -> Result<BackendSkeletonStatus, CoreError> {
     runtime_watcher_status_for_signal(
         repo,
+        platform,
         "start_usage_refresh_watcher",
         RuntimeWatcherSignal::StartUsageRefreshWatcher,
     )
@@ -96,9 +115,11 @@ pub fn start_usage_refresh_watcher(repo: &Repository) -> Result<BackendSkeletonS
 
 pub fn update_usage_refresh_schedule(
     repo: &Repository,
+    platform: &impl RuntimePlatformPort,
 ) -> Result<BackendSkeletonStatus, CoreError> {
     runtime_watcher_status_for_signal(
         repo,
+        platform,
         "update_usage_refresh_schedule",
         RuntimeWatcherSignal::UpdateUsageRefreshSchedule,
     )
@@ -106,19 +127,20 @@ pub fn update_usage_refresh_schedule(
 
 fn runtime_watcher_status_for_signal(
     repo: &Repository,
+    platform: &impl RuntimePlatformPort,
     command: &str,
     signal: RuntimeWatcherSignal,
 ) -> Result<BackendSkeletonStatus, CoreError> {
-    let decision = runtime_watcher_decision(repo, signal)?;
+    let decision = runtime_watcher_decision(repo, platform, signal)?;
     Ok(runtime_watcher_backend_status(command, &decision))
 }
 
 fn runtime_watcher_decision(
     repo: &Repository,
+    platform: &impl RuntimePlatformPort,
     signal: RuntimeWatcherSignal,
 ) -> Result<RuntimeWatcherDecision, CoreError> {
     let snapshot = runtime_repository::load_runtime_watcher_snapshot(repo)?;
-    let platform = RuntimePlatformAdapter;
     let capability = platform.runtime_watcher_capability();
     let now = current_timestamp();
     let decision = match signal {

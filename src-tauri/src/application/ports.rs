@@ -4,6 +4,7 @@
 use crate::core::error::CoreError;
 use crate::core::model::hotspot::HotspotPlatformCapability;
 use crate::core::model::relay::{RelayFetchModelsRequest, RelayHealthCheckRequest};
+use crate::core::model::runtime::RuntimeWatcherPlatformCapability;
 
 pub(crate) trait RepositoryPort {}
 
@@ -55,6 +56,11 @@ pub(crate) struct DiagnosticCapabilityProbe {
 pub(crate) trait DiagnosticPlatformPort {
     fn platform_info(&self) -> DiagnosticPlatformInfo;
     fn capability_probes(&self) -> Vec<DiagnosticCapabilityProbe>;
+}
+
+// runtime 平台端口只暴露 watcher 能力，不创建后台线程、不发送窗口事件、不操作用户环境。
+pub(crate) trait RuntimePlatformPort {
+    fn runtime_watcher_capability(&self) -> RuntimeWatcherPlatformCapability;
 }
 
 // 进程能力端口只表达应用层允许触发的外部进程动作。

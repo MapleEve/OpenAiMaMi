@@ -4,6 +4,7 @@ import { join, relative } from "node:path";
 const repoRoot = process.cwd();
 const backendRoot = join(repoRoot, "src-tauri", "src");
 const files = {
+  applicationPorts: join(backendRoot, "application", "ports.rs"),
   daemonCommands: join(backendRoot, "commands", "daemon.rs"),
   systemCommands: join(backendRoot, "commands", "system.rs"),
   daemonUsecase: join(backendRoot, "application", "usecase", "daemon.rs"),
@@ -11,6 +12,7 @@ const files = {
   settingsUsecase: join(backendRoot, "application", "usecase", "settings.rs"),
   tauriLib: join(backendRoot, "lib.rs"),
   coreRuntime: join(backendRoot, "core", "runtime.rs"),
+  platformRuntime: join(backendRoot, "platform", "runtime.rs"),
   repositoryRuntime: join(backendRoot, "repository", "runtime.rs"),
 };
 const failures = [];
@@ -175,7 +177,7 @@ function validateDaemonUsecase(path, content) {
     "daemon 用户动作 owner",
     path,
     content,
-    /\bpub\s+fn\s+run_daemon_once\s*\(\s*repo\s*:\s*&Repository\s*\)/,
+    /\bpub\s+fn\s+run_daemon_once\s*\(\s*repo\s*:\s*&Repository\s*,\s*platform\s*:\s*&impl\s+RuntimePlatformPort\s*,?\s*\)/,
     "daemon.rs 必须 owning run_daemon_once 用户动作事务",
   );
   requirePattern(
@@ -203,8 +205,8 @@ function validateDaemonUsecase(path, content) {
     "platform capability 读取",
     path,
     content,
-    /\bRuntimePlatformAdapter\b[\s\S]*?\bruntime_watcher_capability\s*\(\s*\)/,
-    "daemon usecase 只读取平台 watcher 能力，不创建真实后台线程",
+    /\bRuntimePlatformPort\b[\s\S]*?\bplatform\s*\.\s*runtime_watcher_capability\s*\(\s*\)/,
+    "daemon usecase 只通过 runtime 平台端口读取 watcher 能力，不创建真实后台线程",
   );
   requirePattern(
     "runtime event payload 封装",
@@ -277,7 +279,7 @@ function validateSystemUsecase(path, original, content) {
   for (const [label, pattern] of [
     [
       "refresh_usage_snapshot 调用 daemon helper",
-      /\bdaemon_usecase\s*::\s*schedule_full_runtime_refresh_for_command\s*\(\s*repo\s*,\s*"refresh_usage_snapshot"\s*\)/,
+      /\bdaemon_usecase\s*::\s*schedule_full_runtime_refresh_for_command\s*\(\s*repo\s*,\s*platform\s*,\s*"refresh_usage_snapshot"\s*,?\s*\)/,
     ],
   ]) {
     requirePattern(label, path, content, pattern, "system usecase 必须调用 daemon usecase 窄入口");
@@ -311,8 +313,25 @@ function validateSettingsUsecase(path, content) {
     "set_usage_refresh_interval 调用 daemon schedule update",
     path,
     content,
-    /\bdaemon_usecase\s*::\s*update_usage_refresh_schedule\s*\(\s*repo\s*\)\s*\.ok\s*\(\s*\)/,
+    /\bdaemon_usecase\s*::\s*update_usage_refresh_schedule\s*\(\s*repo\s*,\s*platform\s*\)\s*\.ok\s*\(\s*\)/,
     "settings usecase 保存使用量刷新间隔后必须继续调度 daemon owner",
+  );
+}
+
+function validateRuntimePort(applicationPortsPath, applicationPortsContent, platformRuntimePath, platformRuntimeContent) {
+  requirePattern(
+    "RuntimePlatformPort 声明",
+    applicationPortsPath,
+    applicationPortsContent,
+    /\bpub\(crate\)\s+trait\s+RuntimePlatformPort\b[\s\S]*?\bfn\s+runtime_watcher_capability\s*\(&self\)\s*->\s*RuntimeWatcherPlatformCapability\s*;/,
+    "application/ports.rs 必须声明 daemon runtime watcher 平台端口",
+  );
+  requirePattern(
+    "RuntimePlatformAdapter 实现端口",
+    platformRuntimePath,
+    platformRuntimeContent,
+    /\bimpl\s+RuntimePlatformPort\s+for\s+RuntimePlatformAdapter\b/,
+    "platform/runtime.rs 必须实现 RuntimePlatformPort",
   );
 }
 
@@ -402,6 +421,12 @@ const stripped = new Map(
 
 validateForbiddenNames([...raw.values()].map((file) => [file.path, file.content]));
 
+validateRuntimePort(
+  files.applicationPorts,
+  stripped.get("applicationPorts").content,
+  files.platformRuntime,
+  stripped.get("platformRuntime").content,
+);
 validateDaemonUsecase(files.daemonUsecase, stripped.get("daemonUsecase").content);
 validateSystemUsecase(
   files.systemUsecase,

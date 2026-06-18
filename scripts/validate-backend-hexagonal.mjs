@@ -203,11 +203,11 @@ const tauriBoundaryScanRoots = ["application", "core"];
 
 const forbiddenApplicationUsecasePlatformRules = [
   {
-    label: "crate::platform::{shell,process,window,system,tray}",
+    label: "crate::platform::{shell,process,window,system,tray,runtime}",
     patterns: [
-      /\bcrate\s*::\s*platform\s*::\s*(shell|process|window|system|tray)\s*::/g,
-      /\buse\s+crate\s*::\s*platform\s*::\s*(shell|process|window|system|tray)\b/g,
-      /\buse\s+crate\s*::\s*platform\s*::\s*\{[^}]*\b(shell|process|window|system|tray)\b[^}]*\}/g,
+      /\bcrate\s*::\s*platform\s*::\s*(shell|process|window|system|tray|runtime)\s*::/g,
+      /\buse\s+crate\s*::\s*platform\s*::\s*(shell|process|window|system|tray|runtime)\b/g,
+      /\buse\s+crate\s*::\s*platform\s*::\s*\{[^}]*\b(shell|process|window|system|tray|runtime)\b[^}]*\}/g,
     ],
     reason: "application/usecase 必须通过 application port trait 表达平台能力",
   },

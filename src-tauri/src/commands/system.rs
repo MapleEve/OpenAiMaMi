@@ -4,6 +4,7 @@ use crate::contracts::{
     AutoSwitchConfigPayload, BootstrapStatePayload, CoreEnvelope, CoreSnapshotPayload,
     NotificationClientStatePayload, SystemActionPayload,
 };
+use crate::platform::runtime::RuntimePlatformAdapter;
 use crate::repository::Repository;
 use std::sync::Mutex;
 use tauri::{AppHandle, State};
@@ -26,8 +27,9 @@ pub fn refresh_usage_snapshot(
     repo: State<'_, Mutex<Repository>>,
 ) -> Result<CoreEnvelope<CoreSnapshotPayload>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    let payload =
-        usecase::system::refresh_usage_snapshot(&repo).map_err(|error| error.to_string())?;
+    let runtime = RuntimePlatformAdapter;
+    let payload = usecase::system::refresh_usage_snapshot(&repo, &runtime)
+        .map_err(|error| error.to_string())?;
     tauri_adapter::emit_runtime_bridge_event(&app, &payload.backend_status);
     Ok(CoreEnvelope::ok(payload))
 }

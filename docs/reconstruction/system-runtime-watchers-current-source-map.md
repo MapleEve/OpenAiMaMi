@@ -16,7 +16,7 @@
 | `evidence/full-chain/internal/audits/audits/macos-1.0.9-system/frontend-callchain-report.json` | 记录当前源码后端 watcher 骨架 sidecar，并保持 gate-report 字段不变。 |
 | `evidence/full-chain/internal/audits/audits/macos-1.0.9-system/logic/USAGE-CLUSTER-DISTILLED-109.md` | 确认真实行为涉及 usage API、fs 持久化、runtime event、interval 校验和 watcher wakeup 差异。 |
 | `evidence/full-chain/internal/audits/audits/macos-1.0.9-system/logic/SYSTEM-FULLCHAIN-109.md` | 确认 5 个 watcher / schedule 信号只是产品决策本地边界，不宣称 upstream strict parity。 |
-| `src-tauri/src/application/usecase/system.rs` | 当前 usecase 组织 repository snapshot、runtime core 和 platform capability。 |
+| `src-tauri/src/application/usecase/daemon.rs` | 当前 watcher usecase 组织 repository snapshot、runtime core 和 runtime platform port；system/settings 只通过命令用例转入该边界。 |
 | `src-tauri/src/core/runtime.rs` | 当前 runtime core owning 5 个 watcher / schedule 信号的 pending skeleton 决策。 |
 | `src-tauri/src/core/model/runtime.rs` | 当前 runtime model owning signal、operation key、status code、snapshot、platform capability 和 decision。 |
 | `src-tauri/src/repository/runtime.rs` | 当前 repository 只从 settings 文件重建 watcher snapshot，不保存跨命令业务状态。 |
@@ -26,7 +26,7 @@
 
 | 信号 | 当前源码状态 | 仍未恢复内容 |
 | --- | --- | --- |
-| `note_usage_refresh_activity` | `application/usecase/system.rs` 调用 `runtime_core::note_usage_refresh_activity`，返回 pending skeleton status。 | 不记录真实活跃时间，不通知真实 condvar，不触发 runtime refresh。 |
+| `note_usage_refresh_activity` | `application/usecase/daemon.rs` 调用 `runtime_core::note_usage_refresh_activity`，返回 pending skeleton status。 | 不记录真实活跃时间，不通知真实 condvar，不触发 runtime refresh。 |
 | `schedule_full_runtime_refresh` | `refresh_usage_snapshot` 和 usecase helper 能进入 `runtime_core::schedule_full_runtime_refresh`。 | 不发起真实网络刷新，不写 runtime snapshot，不广播 runtime event。 |
 | `start_auto_switch_pending_watcher` | `run_daemon_once` 和 usecase helper 能进入 `runtime_core::start_auto_switch_pending_watcher`。 | 不创建后台线程，不读取闭源队列，不触发账号切换。 |
 | `start_usage_refresh_watcher` | usecase helper 能进入 `runtime_core::start_usage_refresh_watcher`。 | 不创建后台线程，不轮询接口，不写用户环境。 |
@@ -36,7 +36,7 @@
 
 | owner | 当前可验证内容 | watcher 结论 |
 | --- | --- | --- |
-| `src-tauri/src/application/usecase/system.rs` | 组织 `runtime_repository::load_runtime_watcher_snapshot`、`RuntimePlatformAdapter` 和 `runtime_core::*`。 | usecase 边界存在，但只返回 pending skeleton status。 |
+| `src-tauri/src/application/usecase/daemon.rs` | 组织 `runtime_repository::load_runtime_watcher_snapshot`、`RuntimePlatformPort` 和 `runtime_core::*`。 | usecase 边界存在，但只返回 pending skeleton status。 |
 | `src-tauri/src/core/model/runtime.rs` | 定义 `RuntimeWatcherSignal`、`RuntimeWatcherOperationKey`、`RuntimeWatcherStatusCode`、`RuntimeWatcherSnapshot`、`RuntimeWatcherDecision`。 | 领域模型存在，但不持有线程或平台对象。 |
 | `src-tauri/src/core/runtime.rs` | 为 5 个信号生成结构化 decision 和中文 pending note。 | core 只表达状态机语义，不启动真实 watcher。 |
 | `src-tauri/src/repository/runtime.rs` | 从 settings repository 重建 interval、auto-switch enabled 和 settings path。 | repository 只持有可重建文件事实，不保存跨命令业务状态。 |
@@ -71,7 +71,7 @@
 
 - 允许更新 current-source sidecar 和 closeout JSON，登记 5 个 `readyToImplement=false` 残留。
 - 不允许登记 `implementation_use`、`gate_accepted`、`full_leaf_100`、dim6 或聚合门。
-- 不修改 README、voice、gate-report 或 raw 审计事实。
+- README 只保持归纳状态摘要；不修改 voice、gate-report 或 raw 审计事实。
 - Rust 只做 pending skeleton，不启动真实 watcher、线程、condvar、网络或外部进程。
 - 需要通过 `npm run validate:frontend-closeouts`、`npm run validate:backend-hexagonal`、`npm run validate:public-boundary`。
 - strict leaf-copy 仍按剩余 gate 失败，不作为本分支伪关闭依据。

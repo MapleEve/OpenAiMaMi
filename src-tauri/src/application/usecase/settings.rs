@@ -1,4 +1,4 @@
-use crate::application::ports::{AppProcessPort, AppSystemPort};
+use crate::application::ports::{AppProcessPort, AppSystemPort, RuntimePlatformPort};
 use crate::application::usecase::daemon as daemon_usecase;
 use crate::application::usecase::platform_actions;
 use crate::contracts::{
@@ -69,10 +69,11 @@ pub fn get_usage_refresh_interval(repo: &Repository) -> Result<String, CoreError
 pub fn set_usage_refresh_interval(
     repo: &Repository,
     interval: String,
+    platform: &impl RuntimePlatformPort,
 ) -> Result<String, CoreError> {
     let normalized = UsageRefreshInterval::parse(&interval)?;
     let saved = settings_repository::set_usage_refresh_interval(repo, normalized)?;
-    let _schedule_update = daemon_usecase::update_usage_refresh_schedule(repo).ok();
+    let _schedule_update = daemon_usecase::update_usage_refresh_schedule(repo, platform).ok();
     Ok(saved.as_str().to_string())
 }
 

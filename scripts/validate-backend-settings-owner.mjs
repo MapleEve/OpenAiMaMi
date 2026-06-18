@@ -155,8 +155,8 @@ function validateSettingsUsecase(path, content) {
     ],
     [
       "daemon schedule update",
-      /\bdaemon_usecase\s*::\s*update_usage_refresh_schedule\s*\(\s*repo\s*\)\s*\.ok\s*\(\s*\)/,
-      "set_usage_refresh_interval 必须继续调度 daemon schedule update",
+      /\bdaemon_usecase\s*::\s*update_usage_refresh_schedule\s*\(\s*repo\s*,\s*platform\s*\)\s*\.ok\s*\(\s*\)/,
+      "set_usage_refresh_interval 必须继续通过 runtime 平台端口调度 daemon schedule update",
     ],
     [
       "update installability platform owner",

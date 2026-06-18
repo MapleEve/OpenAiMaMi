@@ -6,6 +6,7 @@ pub use self::settings_secret::{
 };
 pub use self::snapshot_bootstrap::{load_bootstrap_state, load_snapshot};
 
+use crate::application::ports::RuntimePlatformPort;
 use crate::application::service::{pending_status, restored_status};
 use crate::application::usecase::daemon as daemon_usecase;
 use crate::contracts::{
@@ -16,10 +17,16 @@ use crate::core::error::CoreError;
 use crate::repository::settings as settings_repository;
 use crate::repository::Repository;
 
-pub fn refresh_usage_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, CoreError> {
+pub fn refresh_usage_snapshot(
+    repo: &Repository,
+    platform: &impl RuntimePlatformPort,
+) -> Result<CoreSnapshotPayload, CoreError> {
     let mut payload = load_snapshot(repo)?;
-    payload.backend_status =
-        daemon_usecase::schedule_full_runtime_refresh_for_command(repo, "refresh_usage_snapshot")?;
+    payload.backend_status = daemon_usecase::schedule_full_runtime_refresh_for_command(
+        repo,
+        platform,
+        "refresh_usage_snapshot",
+    )?;
     snapshot_bootstrap::store_bootstrap_snapshot_progressive(repo, &payload);
     Ok(payload)
 }

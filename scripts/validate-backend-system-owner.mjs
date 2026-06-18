@@ -192,8 +192,8 @@ function validateRoot(path, original, content) {
     "refresh_usage_snapshot daemon scheduling compatibility",
     path,
     content,
-    /\bdaemon_usecase\s*::\s*schedule_full_runtime_refresh_for_command\s*\(\s*repo\s*,\s*"refresh_usage_snapshot"\s*\)/,
-    "refresh_usage_snapshot 跨 snapshot-bootstrap 与 daemon，兼容层必须继续调用 daemon owner",
+    /\bdaemon_usecase\s*::\s*schedule_full_runtime_refresh_for_command\s*\(\s*repo\s*,\s*platform\s*,\s*"refresh_usage_snapshot"\s*,?\s*\)/,
+    "refresh_usage_snapshot 跨 snapshot-bootstrap 与 daemon，兼容层必须继续通过 runtime 平台端口调用 daemon owner",
   );
   for (const command of [
     "run_daemon_once",

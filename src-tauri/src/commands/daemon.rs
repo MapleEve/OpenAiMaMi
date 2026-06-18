@@ -3,6 +3,7 @@ use crate::application::usecase;
 use crate::contracts::{
     BackendSkeletonStatus, CoreEnvelope, DaemonRunPayload, PendingAutoSwitchStatePayload,
 };
+use crate::platform::runtime::RuntimePlatformAdapter;
 use crate::repository::Repository;
 use std::sync::Mutex;
 use tauri::{AppHandle, State};
@@ -14,7 +15,9 @@ pub fn run_daemon_once(
     repo: State<'_, Mutex<Repository>>,
 ) -> Result<CoreEnvelope<DaemonRunPayload>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    let payload = usecase::daemon::run_daemon_once(&repo).map_err(|error| error.to_string())?;
+    let runtime = RuntimePlatformAdapter;
+    let payload =
+        usecase::daemon::run_daemon_once(&repo, &runtime).map_err(|error| error.to_string())?;
     tauri_adapter::emit_runtime_bridge_event(&app, &payload.backend_status);
     Ok(CoreEnvelope::ok(payload))
 }
@@ -25,8 +28,9 @@ pub fn note_usage_refresh_activity(
     repo: State<'_, Mutex<Repository>>,
 ) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    let status =
-        usecase::daemon::note_usage_refresh_activity(&repo).map_err(|error| error.to_string())?;
+    let runtime = RuntimePlatformAdapter;
+    let status = usecase::daemon::note_usage_refresh_activity(&repo, &runtime)
+        .map_err(|error| error.to_string())?;
     tauri_adapter::emit_runtime_bridge_event(&app, &status);
     Ok(CoreEnvelope::ok(status))
 }
@@ -37,8 +41,9 @@ pub fn schedule_full_runtime_refresh(
     repo: State<'_, Mutex<Repository>>,
 ) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    let status =
-        usecase::daemon::schedule_full_runtime_refresh(&repo).map_err(|error| error.to_string())?;
+    let runtime = RuntimePlatformAdapter;
+    let status = usecase::daemon::schedule_full_runtime_refresh(&repo, &runtime)
+        .map_err(|error| error.to_string())?;
     tauri_adapter::emit_runtime_bridge_event(&app, &status);
     Ok(CoreEnvelope::ok(status))
 }
@@ -49,7 +54,8 @@ pub fn start_auto_switch_pending_watcher(
     repo: State<'_, Mutex<Repository>>,
 ) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    let status = usecase::daemon::start_auto_switch_pending_watcher(&repo)
+    let runtime = RuntimePlatformAdapter;
+    let status = usecase::daemon::start_auto_switch_pending_watcher(&repo, &runtime)
         .map_err(|error| error.to_string())?;
     tauri_adapter::emit_runtime_bridge_event(&app, &status);
     Ok(CoreEnvelope::ok(status))
@@ -61,8 +67,9 @@ pub fn start_usage_refresh_watcher(
     repo: State<'_, Mutex<Repository>>,
 ) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    let status =
-        usecase::daemon::start_usage_refresh_watcher(&repo).map_err(|error| error.to_string())?;
+    let runtime = RuntimePlatformAdapter;
+    let status = usecase::daemon::start_usage_refresh_watcher(&repo, &runtime)
+        .map_err(|error| error.to_string())?;
     tauri_adapter::emit_runtime_bridge_event(&app, &status);
     Ok(CoreEnvelope::ok(status))
 }
@@ -73,8 +80,9 @@ pub fn update_usage_refresh_schedule(
     repo: State<'_, Mutex<Repository>>,
 ) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    let status =
-        usecase::daemon::update_usage_refresh_schedule(&repo).map_err(|error| error.to_string())?;
+    let runtime = RuntimePlatformAdapter;
+    let status = usecase::daemon::update_usage_refresh_schedule(&repo, &runtime)
+        .map_err(|error| error.to_string())?;
     tauri_adapter::emit_runtime_bridge_event(&app, &status);
     Ok(CoreEnvelope::ok(status))
 }

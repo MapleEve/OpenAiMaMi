@@ -4,6 +4,7 @@ use crate::contracts::{
     SystemActionPayload, UpdateInstallabilityPayload,
 };
 use crate::platform::process::ProcessPlatformAdapter;
+use crate::platform::runtime::RuntimePlatformAdapter;
 use crate::platform::system::SystemPlatformAdapter;
 use crate::repository::Repository;
 use std::sync::Mutex;
@@ -55,7 +56,8 @@ pub fn set_usage_refresh_interval(
     interval: String,
 ) -> Result<CoreEnvelope<String>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::settings::set_usage_refresh_interval(&repo, interval)
+    let runtime = RuntimePlatformAdapter;
+    usecase::settings::set_usage_refresh_interval(&repo, interval, &runtime)
         .map(CoreEnvelope::ok)
         .map_err(|error| error.to_string())
 }
