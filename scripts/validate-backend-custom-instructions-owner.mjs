@@ -5,6 +5,9 @@ const repoRoot = process.cwd();
 const failures = [];
 
 const files = {
+  evidenceMap: join(repoRoot, "docs", "reconstruction", "custom-instructions-current-source-evidence-map.md"),
+  sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
+  reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
   command: join(repoRoot, "src-tauri", "src", "commands", "custom_instructions.rs"),
   usecase: join(repoRoot, "src-tauri", "src", "application", "usecase", "custom_instructions.rs"),
   repository: join(repoRoot, "src-tauri", "src", "repository", "custom_instructions.rs"),
@@ -12,7 +15,111 @@ const files = {
   coreModelMod: join(repoRoot, "src-tauri", "src", "core", "model", "mod.rs"),
   coreParser: join(repoRoot, "src-tauri", "src", "core", "parser", "custom_instructions.rs"),
   coreParserMod: join(repoRoot, "src-tauri", "src", "core", "parser", "mod.rs"),
+  contracts: join(repoRoot, "src-tauri", "src", "contracts", "custom_instructions.rs"),
+  windowsGate: join(
+    repoRoot,
+    "evidence",
+    "full-chain",
+    "internal",
+    "audits",
+    "audits",
+    "windows-1.0.9-custom-instructions",
+    "gate-report.json",
+  ),
+  macosGate: join(
+    repoRoot,
+    "evidence",
+    "full-chain",
+    "internal",
+    "audits",
+    "audits",
+    "macos-1.0.9-custom-instructions",
+    "gate-report.json",
+  ),
+  loadManifest: join(
+    repoRoot,
+    "evidence",
+    "full-chain",
+    "raw",
+    "aimami",
+    "1.0.9",
+    "windows",
+    "custom-instructions",
+    "load_custom_instruction_state",
+    "manifest.json",
+  ),
+  previewManifest: join(
+    repoRoot,
+    "evidence",
+    "full-chain",
+    "raw",
+    "aimami",
+    "1.0.9",
+    "windows",
+    "custom-instructions",
+    "preview_custom_instruction_apply",
+    "manifest.json",
+  ),
+  applyManifest: join(
+    repoRoot,
+    "evidence",
+    "full-chain",
+    "raw",
+    "aimami",
+    "1.0.9",
+    "windows",
+    "custom-instructions",
+    "apply_custom_instruction",
+    "manifest.json",
+  ),
+  clearManifest: join(
+    repoRoot,
+    "evidence",
+    "full-chain",
+    "raw",
+    "aimami",
+    "1.0.9",
+    "windows",
+    "custom-instructions",
+    "clear_custom_instruction_block",
+    "manifest.json",
+  ),
+  rollbackManifest: join(
+    repoRoot,
+    "evidence",
+    "full-chain",
+    "raw",
+    "aimami",
+    "1.0.9",
+    "windows",
+    "custom-instructions",
+    "rollback_custom_instruction",
+    "manifest.json",
+  ),
 };
+
+const rustOwnerFiles = [
+  files.command,
+  files.usecase,
+  files.repository,
+  files.coreModel,
+  files.coreModelMod,
+  files.coreParser,
+  files.coreParserMod,
+  files.contracts,
+];
+
+const documentationFiles = [files.evidenceMap, files.sourceMap, files.reconstructionReadme];
+
+const evidenceFiles = [
+  files.windowsGate,
+  files.macosGate,
+  files.loadManifest,
+  files.previewManifest,
+  files.applyManifest,
+  files.clearManifest,
+  files.rollbackManifest,
+];
 
 const forbiddenNames = [
   new RegExp(`${["Codex", "Manager"].join("")}|\\b${["C", "5"].join("")}\\b`, "g"),
@@ -50,7 +157,121 @@ function rejectPattern(label, path, content, pattern, reason) {
   }
 }
 
-for (const [label, path] of Object.entries(files)) {
+function requireFile(path, label) {
+  if (!existsSync(path)) {
+    failures.push(`缺少 ${label}: ${toRelative(path)}`);
+  }
+}
+
+function requireText(label, path, content, expected) {
+  if (!content.includes(expected)) {
+    failures.push(`${toRelative(path)} 缺少 ${label}: ${expected}`);
+  }
+}
+
+function rejectForbiddenPublicationText(path, content) {
+  const windowsSeparator = String.raw`\\`;
+  const userDirectory = ["Users"].join("");
+  const windowsUserPathPattern =
+    String.raw`\b[A-Z]:` +
+    windowsSeparator +
+    userDirectory +
+    windowsSeparator +
+    "[^" +
+    windowsSeparator +
+    String.raw`\r\n]+`;
+  const forbiddenText = [
+    new RegExp(`${["Codex", "Manager"].join("")}|\\b${["C", "5"].join("")}\\b`, "g"),
+    new RegExp(["lobe", "hub"].join(""), "gi"),
+    new RegExp(windowsUserPathPattern, "g"),
+    new RegExp(String.raw`/` + userDirectory + String.raw`/[^/\r\n]+`, "g"),
+  ];
+
+  for (const pattern of forbiddenText) {
+    rejectPattern(
+      "禁止公开标识、用户名或绝对路径",
+      path,
+      content,
+      pattern,
+      "文档和 validator 不得写入禁止公开标识、本机用户名或绝对路径",
+    );
+  }
+}
+
+for (const [label, path] of [
+  ["custom-instructions evidence map", files.evidenceMap],
+  ["source-map", files.sourceMap],
+  ["reconstruction README", files.reconstructionReadme],
+  ["Windows custom-instructions gate-report", files.windowsGate],
+  ["macOS custom-instructions gate-report", files.macosGate],
+  ["load_custom_instruction_state manifest", files.loadManifest],
+  ["preview_custom_instruction_apply manifest", files.previewManifest],
+  ["apply_custom_instruction manifest", files.applyManifest],
+  ["clear_custom_instruction_block manifest", files.clearManifest],
+  ["rollback_custom_instruction manifest", files.rollbackManifest],
+  ["custom_instructions contracts", files.contracts],
+]) {
+  requireFile(path, label);
+}
+
+for (const path of [...documentationFiles, ...rustOwnerFiles]) {
+  const content = readRequired(path, toRelative(path));
+  rejectForbiddenPublicationText(path, content);
+}
+
+const evidenceMap = readRequired(files.evidenceMap, "custom-instructions current-source evidence map");
+const sourceMap = readRequired(files.sourceMap, "source-map");
+const reconstructionReadme = readRequired(files.reconstructionReadme, "reconstruction README");
+
+for (const item of [
+  "Custom Instructions 后端 current-source 证据映射",
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-custom-instructions/gate-report.json",
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-custom-instructions/gate-report.json",
+  "evidence/full-chain/raw/aimami/1.0.9/windows/custom-instructions/load_custom_instruction_state/manifest.json",
+  "evidence/full-chain/raw/aimami/1.0.9/windows/custom-instructions/preview_custom_instruction_apply/manifest.json",
+  "evidence/full-chain/raw/aimami/1.0.9/windows/custom-instructions/apply_custom_instruction/manifest.json",
+  "evidence/full-chain/raw/aimami/1.0.9/windows/custom-instructions/clear_custom_instruction_block/manifest.json",
+  "evidence/full-chain/raw/aimami/1.0.9/windows/custom-instructions/rollback_custom_instruction/manifest.json",
+  "src-tauri/src/commands/custom_instructions.rs",
+  "src-tauri/src/application/usecase/custom_instructions.rs",
+  "src-tauri/src/repository/custom_instructions.rs",
+  "src-tauri/src/core/parser/custom_instructions.rs",
+  "src-tauri/src/core/model/custom_instructions.rs",
+  "src-tauri/src/contracts/custom_instructions.rs",
+  "不声明闭源后端已经全量还原",
+  "不处理 voice 边界",
+  "npm run validate:backend-custom-instructions-owner",
+  "npm run validate:backend",
+]) {
+  requireText("evidence map 内容", files.evidenceMap, evidenceMap, item);
+}
+
+for (const [label, content] of [
+  ["source-map", sourceMap],
+  ["reconstruction README", reconstructionReadme],
+]) {
+  if (!content.includes("docs/reconstruction/custom-instructions-current-source-evidence-map.md")) {
+    failures.push(`${label} 必须注册 custom-instructions current-source evidence map`);
+  }
+  if (label === "source-map" && !content.includes("scripts/validate-backend-custom-instructions-owner.mjs")) {
+    failures.push(`${label} 必须注册 custom-instructions owner validator`);
+  }
+}
+
+for (const path of evidenceFiles) {
+  requireFile(path, "custom-instructions raw/internal 证据");
+}
+
+for (const [label, path] of Object.entries({
+  command: files.command,
+  usecase: files.usecase,
+  repository: files.repository,
+  coreModel: files.coreModel,
+  coreModelMod: files.coreModelMod,
+  coreParser: files.coreParser,
+  coreParserMod: files.coreParserMod,
+  contracts: files.contracts,
+})) {
   const content = readRequired(path, label);
   for (const pattern of forbiddenNames) {
     rejectPattern("禁止公开标识", path, content, pattern, "custom_instructions owner 切片不得写入禁止公开标识");
@@ -64,6 +285,7 @@ const coreModel = stripRustComments(readRequired(files.coreModel, "custom_instru
 const coreModelMod = stripRustComments(readRequired(files.coreModelMod, "core model mod"));
 const coreParser = stripRustComments(readRequired(files.coreParser, "custom_instructions core parser"));
 const coreParserMod = stripRustComments(readRequired(files.coreParserMod, "core parser mod"));
+const contracts = stripRustComments(readRequired(files.contracts, "custom_instructions contracts"));
 
 rejectPattern(
   "command 文件或 history 事务",
@@ -293,6 +515,30 @@ requirePattern(
   repository,
   /\bserde_json\s*::\s*from_str\s*::\s*</g,
   "history JSON 读取必须由 repository owning",
+);
+
+for (const item of [
+  "enum CustomInstructionProtectionState",
+  "enum CustomInstructionHistoryAction",
+  "struct CustomInstructionCurrentState",
+  "struct CustomInstructionHistoryEntry",
+  "struct CustomInstructionStatePayload",
+  "struct CustomInstructionPreviewPayload",
+]) {
+  requirePattern(
+    `contracts ${item}`,
+    files.contracts,
+    contracts,
+    new RegExp(item.replaceAll(" ", "\\s+")),
+    "contracts 必须 owning custom-instructions IPC DTO",
+  );
+}
+rejectPattern(
+  "contracts 文件系统、repository 或 Tauri 依赖",
+  files.contracts,
+  contracts,
+  /\b(FileSystemAdapter|Repository|std\s*::\s*fs|read_to_string|write_string|remove_file|read_dir|create_dir_all|tauri\s*::|State\s*<)\b/g,
+  "contracts 只声明可序列化 DTO，不得读取文件或依赖 Tauri UI",
 );
 
 if (failures.length > 0) {
