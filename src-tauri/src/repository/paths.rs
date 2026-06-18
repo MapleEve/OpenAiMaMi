@@ -66,18 +66,6 @@ impl RepositoryPaths {
             codex_home,
         }
     }
-
-    pub fn ensure_app_directories(&self) -> std::io::Result<()> {
-        std::fs::create_dir_all(&self.accounts_dir)?;
-        std::fs::create_dir_all(&self.snapshots_dir)?;
-        std::fs::create_dir_all(&self.auth_backups_dir)?;
-        std::fs::create_dir_all(&self.registry_backups_dir)?;
-        std::fs::create_dir_all(&self.app_data_dir)?;
-        std::fs::create_dir_all(&self.skill_backups_dir)?;
-        std::fs::create_dir_all(&self.custom_instructions_dir)?;
-        std::fs::create_dir_all(&self.custom_instruction_history_dir)?;
-        Ok(())
-    }
 }
 
 #[cfg(target_os = "macos")]

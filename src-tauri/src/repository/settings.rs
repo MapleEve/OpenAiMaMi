@@ -1,6 +1,7 @@
 use crate::contracts::{AppSettingsFile, MysteryRouteGrant};
 use crate::core::error::CoreError;
 use crate::core::model::settings::UsageRefreshInterval;
+use crate::repository::directories;
 use crate::repository::Repository;
 
 // settings 仓储 owning settings.json 的读取、写入和字段级持久化更新。
@@ -14,7 +15,7 @@ pub fn load_app_settings(repo: &Repository) -> Result<AppSettingsFile, CoreError
 }
 
 pub fn save_app_settings(repo: &Repository, settings: &AppSettingsFile) -> Result<(), CoreError> {
-    repo.paths().ensure_app_directories()?;
+    directories::ensure_app_directories(repo)?;
     let path = &repo.paths().settings_path;
     let tmp_path = path.with_extension("json.tmp");
     repo.fs()

@@ -1,10 +1,10 @@
 use crate::core::error::CoreError;
 use crate::core::model::custom_instructions::CustomInstructionHistorySnapshot;
+use crate::repository::directories;
 use crate::repository::Repository;
 
 pub(crate) fn ensure_storage(repo: &Repository) -> Result<(), CoreError> {
-    repo.paths().ensure_app_directories()?;
-    Ok(())
+    directories::ensure_app_directories(repo)
 }
 
 pub(crate) fn global_path(repo: &Repository) -> String {

@@ -7,6 +7,7 @@ use crate::contracts::{
 use crate::core::error::CoreError;
 use crate::repository::accounts as accounts_repository;
 use crate::repository::bootstrap as bootstrap_repository;
+use crate::repository::directories;
 use crate::repository::settings as settings_repository;
 use crate::repository::Repository;
 
@@ -104,7 +105,7 @@ mod tests {
     #[test]
     fn load_bootstrap_state_reads_cache_slices_without_losing_compat_fields() {
         let repo = Repository::with_temp_file_system("bootstrap-state-cache");
-        repo.paths().ensure_app_directories().expect("create dirs");
+        directories::ensure_app_directories(&repo).expect("create dirs");
         settings_repository::save_app_settings(
             &repo,
             &AppSettingsFile {
@@ -142,7 +143,7 @@ mod tests {
     #[test]
     fn load_bootstrap_state_hides_cache_parse_errors_from_frontend() {
         let repo = Repository::with_temp_file_system("bootstrap-state-bad-json");
-        repo.paths().ensure_app_directories().expect("create dirs");
+        directories::ensure_app_directories(&repo).expect("create dirs");
         repo.fs()
             .write_string(&repo.paths().bootstrap_cache_path, "{")
             .expect("write cache");

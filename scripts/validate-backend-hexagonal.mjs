@@ -39,6 +39,7 @@ const requiredFiles = [
   "platform/mod.rs",
   "repository/mod.rs",
   "repository/adapter/mod.rs",
+  "repository/directories.rs",
   "repository/maintenance.rs",
   "contracts/mod.rs",
   "contracts/envelope.rs",
@@ -58,6 +59,8 @@ const ipcCommandContractFile = join(repoRoot, "src", "contracts", "ipc", "comman
 const tauriLibFile = join(backendRoot, "lib.rs");
 const applicationUsecaseRoot = join(backendRoot, "application", "usecase");
 const repositoryModFile = join(backendRoot, "repository", "mod.rs");
+const repositoryPathsFile = join(backendRoot, "repository", "paths.rs");
+const repositoryDirectoriesFile = join(backendRoot, "repository", "directories.rs");
 const sourceSidecarDaemonCommands = [
   "note_usage_refresh_activity",
   "schedule_full_runtime_refresh",
@@ -112,10 +115,7 @@ const forbiddenSideEffectRules = [
     label: "std::fs",
     patterns: [/\bstd::fs\b/g, /\bstd\s*::\s*\{\s*fs\b/g],
     reason: "禁止直接使用真实文件系统",
-    allowedOwners: [
-      /^src-tauri\/src\/repository\/adapter\/real_fs\.rs$/,
-      /^src-tauri\/src\/repository\/paths\.rs$/,
-    ],
+    allowedOwners: [/^src-tauri\/src\/repository\/adapter\/real_fs\.rs$/],
   },
   {
     label: "tokio::fs",
@@ -822,6 +822,76 @@ function validateRepositoryReplaceableFileSystem() {
   }
 }
 
+function validateRepositoryDirectoriesOwner() {
+  const pathsOriginal = readRequiredUtf8(repositoryPathsFile, "Repository paths 文件");
+  const directoriesOriginal = readRequiredUtf8(
+    repositoryDirectoriesFile,
+    "Repository directories owner 文件",
+  );
+  const repositoryModOriginal = readRequiredUtf8(repositoryModFile, "Repository owner 文件");
+
+  if (pathsOriginal.length > 0) {
+    const pathsContent = stripRustComments(pathsOriginal);
+    for (const [label, pattern] of [
+      ["ensure_app_directories", /\bensure_app_directories\s*\(/g],
+      ["create_dir_all", /\bcreate_dir_all\s*\(/g],
+      ["std::fs", /\bstd\s*::\s*fs\b/g],
+    ]) {
+      for (const index of findRuleMatches(pathsContent, pattern)) {
+        failures.push(
+          `${toRelative(repositoryPathsFile)}:${lineNumberAt(pathsOriginal, index)} RepositoryPaths 只负责路径推导，不得包含 ${label}`,
+        );
+      }
+    }
+  }
+
+  for (const file of walkRustFiles(backendRoot)) {
+    const original = readUtf8(file);
+    const content = stripRustComments(original);
+    for (const index of findRuleMatches(content, /\bpaths\s*\(\s*\)\s*\.\s*ensure_app_directories\s*\(/g)) {
+      failures.push(
+        `${toRelative(file)}:${lineNumberAt(original, index)} 不得通过 paths().ensure_app_directories 创建目录，必须调用 repository::directories owner`,
+      );
+    }
+  }
+
+  if (directoriesOriginal.length > 0) {
+    const directoriesContent = stripRustComments(directoriesOriginal);
+    const requiredFragments = [
+      "pub fn ensure_app_directories(repo: &Repository) -> Result<(), CoreError>",
+      "repo.fs().create_dir_all(path)?",
+      "accounts_dir",
+      "snapshots_dir",
+      "auth_backups_dir",
+      "registry_backups_dir",
+      "app_data_dir",
+      "skill_backups_dir",
+      "custom_instructions_dir",
+      "custom_instruction_history_dir",
+    ];
+    for (const fragment of requiredFragments) {
+      if (!directoriesContent.includes(fragment)) {
+        failures.push(
+          `${toRelative(repositoryDirectoriesFile)} 缺少 directories owner 片段：${fragment}`,
+        );
+      }
+    }
+
+    for (const index of findRuleMatches(directoriesContent, /\bstd\s*::\s*fs\b/g)) {
+      failures.push(
+        `${toRelative(repositoryDirectoriesFile)}:${lineNumberAt(directoriesOriginal, index)} directories owner 必须通过 FileSystemAdapter，不得直接使用 std::fs`,
+      );
+    }
+  }
+
+  if (
+    repositoryModOriginal.length > 0 &&
+    !stripRustComments(repositoryModOriginal).includes("pub mod directories;")
+  ) {
+    failures.push(`${toRelative(repositoryModFile)} 缺少 pub mod directories;`);
+  }
+}
+
 function validateVoiceSkeleton() {
   for (const file of voiceBoundaryFiles) {
     const absolute = join(backendRoot, file);
@@ -845,6 +915,7 @@ validateNoRealSideEffects();
 validateNoApplicationCoreTauriBoundaryLeaks();
 validateNoApplicationUsecaseDirectPlatformCalls();
 validateRepositoryReplaceableFileSystem();
+validateRepositoryDirectoriesOwner();
 validateVoiceSkeleton();
 validateIpcCommandRegistration();
 

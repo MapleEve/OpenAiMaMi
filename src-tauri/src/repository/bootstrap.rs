@@ -1,5 +1,6 @@
 use crate::contracts::{BootstrapCacheFile, InstalledSkillSummary, McpServerSummary};
 use crate::core::error::CoreError;
+use crate::repository::directories;
 use crate::repository::Repository;
 
 // bootstrap 仓储只读取启动缓存文件，不解释缓存内容的业务含义。
@@ -58,7 +59,7 @@ pub fn store_bootstrap_snapshot_progressive(
 }
 
 fn save_bootstrap_cache(repo: &Repository, cache: &BootstrapCacheFile) -> Result<(), CoreError> {
-    repo.paths().ensure_app_directories()?;
+    directories::ensure_app_directories(repo)?;
     repo.fs().write_string(
         &repo.paths().bootstrap_cache_path,
         &serde_json::to_string_pretty(cache)?,
@@ -87,7 +88,7 @@ mod tests {
     #[test]
     fn load_bootstrap_cache_reads_known_slices() {
         let repo = Repository::with_temp_file_system("bootstrap-cache-read");
-        repo.paths().ensure_app_directories().expect("create dirs");
+        directories::ensure_app_directories(&repo).expect("create dirs");
         repo.fs()
             .write_string(
                 &repo.paths().bootstrap_cache_path,
@@ -116,7 +117,7 @@ mod tests {
     #[test]
     fn store_bootstrap_mcp_servers_preserves_other_cache_slices() {
         let repo = Repository::with_temp_file_system("bootstrap-cache-store-mcp");
-        repo.paths().ensure_app_directories().expect("create dirs");
+        directories::ensure_app_directories(&repo).expect("create dirs");
         repo.fs()
             .write_string(
                 &repo.paths().bootstrap_cache_path,
@@ -143,7 +144,7 @@ mod tests {
     #[test]
     fn store_bootstrap_installed_skills_recovers_from_bad_cache_json() {
         let repo = Repository::with_temp_file_system("bootstrap-cache-store-skills");
-        repo.paths().ensure_app_directories().expect("create dirs");
+        directories::ensure_app_directories(&repo).expect("create dirs");
         repo.fs()
             .write_string(&repo.paths().bootstrap_cache_path, "{")
             .expect("write bad cache");
@@ -163,7 +164,7 @@ mod tests {
     #[test]
     fn store_bootstrap_usage_analytics_preserves_typed_cache_slices() {
         let repo = Repository::with_temp_file_system("bootstrap-cache-store-usage");
-        repo.paths().ensure_app_directories().expect("create dirs");
+        directories::ensure_app_directories(&repo).expect("create dirs");
         repo.fs()
             .write_string(
                 &repo.paths().bootstrap_cache_path,
@@ -198,7 +199,7 @@ mod tests {
     #[test]
     fn store_bootstrap_snapshot_progressive_preserves_typed_cache_slices() {
         let repo = Repository::with_temp_file_system("bootstrap-cache-store-snapshot");
-        repo.paths().ensure_app_directories().expect("create dirs");
+        directories::ensure_app_directories(&repo).expect("create dirs");
         repo.fs()
             .write_string(
                 &repo.paths().bootstrap_cache_path,
