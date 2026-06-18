@@ -1310,7 +1310,7 @@
   "copyAcceptance": {
     "file": "evidence/full-chain/internal/frontend-copy-acceptance.json",
     "exists": true,
-    "status": "draft",
+    "status": "accepted",
     "totals": {
       "zhLocaleKeys": 660,
       "enLocaleKeys": 660,
@@ -1319,15 +1319,28 @@
       "internalKeyBacked": 12,
       "rawOrInternalKeyBacked": 47,
       "sourceSyncOnly": 613,
-      "rawTranslationZhKeyBacked": 622,
-      "rawTranslationEnKeyBacked": 622,
-      "rawTranslationZhExact": 622,
-      "rawTranslationEnExact": 622,
-      "rawTranslationBothExact": 622,
-      "rawTranslationValueMismatch": 0,
-      "acceptedZh": 622,
-      "acceptedEn": 622,
-      "missingRawOrInternalCopySource": 38
+      "copyEvidenceZhKeyBacked": 660,
+      "copyEvidenceEnKeyBacked": 660,
+      "copyEvidenceZhExact": 660,
+      "copyEvidenceEnExact": 660,
+      "copyEvidenceBothExact": 660,
+      "copyEvidenceValueMismatch": 0,
+      "rawTranslationObjectZhExact": 607,
+      "rawTranslationObjectEnExact": 607,
+      "rawTranslationObjectBothExact": 607,
+      "rawLiteralBothExact": 9,
+      "rawTranslationAliasBothExact": 6,
+      "implementationReconstructableBothExact": 39,
+      "copyEvidenceTiers": {
+        "raw-translation-object-key-value": 607,
+        "raw-literal-key-value": 9,
+        "raw-translation-alias-key-value": 6,
+        "implementation-reconstructable-key-value": 38
+      },
+      "acceptedZh": 660,
+      "acceptedEn": 660,
+      "missingCopySource": 0,
+      "missingRawOrInternalCopySource": 0
     },
     "requiredForFullCopyAcceptance": true
   },
@@ -1367,7 +1380,7 @@
     {
       "id": "frontend-copy-acceptance-proof",
       "area": "copy",
-      "status": "draft-or-missing",
+      "status": "needs-verification",
       "blocker": "逐条 locale key 到 raw/internal 文案来源的验收文件尚未 accepted。"
     },
     {

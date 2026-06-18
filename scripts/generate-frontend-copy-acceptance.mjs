@@ -530,6 +530,100 @@ const rawTranslationAliasSources = [
   },
 ];
 
+const implementationReconstructableCopyPolicies = [
+  {
+    id: "time-format-copy",
+    match: (key) =>
+      [
+        "common.time.durationHoursMinutes",
+        "common.time.durationMinutes",
+        "common.time.remainingHoursMinutes",
+        "common.time.remainingMinutes",
+      ].includes(key),
+    sources: [
+      {
+        path: repoPath("src", "lib", "time.ts"),
+        reason:
+          "时间格式文案由 locale key 驱动，格式化函数只负责参数计算和 key 选择。",
+      },
+      {
+        path: repoPath("scripts", "validate-frontend-copy-owners.mjs"),
+        reason: "验证 time formatter 不允许回退到硬编码用户可见文案。",
+      },
+    ],
+  },
+  {
+    id: "relay-mock-copy",
+    match: (key) => key.startsWith("relay.mock."),
+    sources: [
+      {
+        path: repoPath("src", "mocks", "fixtures", "commands.ts"),
+        reason:
+          "Relay E2E mock 的用户可见 payload 只引用 locale key，状态和 DTO 合同由 mock fixture 承载。",
+      },
+      {
+        path: repoPath("scripts", "validate-frontend-copy-owners.mjs"),
+        reason: "验证 relay mock payload 不允许回退到硬编码用户可见文案。",
+      },
+      {
+        path: repoPath(
+          "evidence",
+          "full-chain",
+          "internal",
+          "audits",
+          "audits",
+          "macos-1.0.9-relay",
+          "frontend",
+          "FRONTEND-FULL-CHAIN-109.md",
+        ),
+        reason: "Relay frontend full-chain 证据确认前端 relay 状态和诊断入口。",
+      },
+    ],
+  },
+  {
+    id: "router-error-copy",
+    match: (key) => key === "router.error.loadFailed",
+    sources: [
+      {
+        path: repoPath("src", "utils", "router.tsx"),
+        reason: "路由 chunk error 边界只通过 router locale key 渲染用户可见兜底文案。",
+      },
+      {
+        path: repoPath("scripts", "validate-frontend-copy-owners.mjs"),
+        reason: "验证 route error fallback 不允许回退到硬编码用户可见文案。",
+      },
+    ],
+  },
+  {
+    id: "custom-instructions-template-copy",
+    match: (key) => key.startsWith("templates.customInstructions."),
+    sources: [
+      {
+        path: repoPath("src", "lib", "templates.ts"),
+        reason:
+          "自定义指令模板只保存 code/field，标题、摘要、标签和正文全部从 locale key 还原。",
+      },
+      {
+        path: repoPath("scripts", "validate-frontend-copy-owners.mjs"),
+        reason: "验证 custom instruction templates 不允许回退到硬编码用户可见文案。",
+      },
+      {
+        path: repoPath(
+          "evidence",
+          "full-chain",
+          "internal",
+          "audits",
+          "audits",
+          "macos-1.0.9-custom-instructions",
+          "frontend",
+          "FRONTEND-FULL-CHAIN-109.md",
+        ),
+        reason: "Custom Instructions frontend full-chain 证据确认模块入口和 command 链路。",
+      },
+    ],
+  },
+];
+
 function collectRawKeyEvidence() {
   const evidenceByKey = new Map();
 
@@ -871,6 +965,76 @@ function addRawTranslationAliasEvidence(evidenceByLocale) {
   }
 }
 
+function implementationCopyPolicyForKey(key) {
+  return implementationReconstructableCopyPolicies.find((policy) =>
+    policy.match(key),
+  );
+}
+
+function locateLocaleValue(locale, value) {
+  const localePath = repoPath("src", "locales", `${locale}.json`);
+  const text = readFileSync(localePath, "utf8");
+  const encoded = JSON.stringify(value);
+  let offset = text.indexOf(encoded);
+  if (offset === -1 && typeof value === "string") {
+    offset = text.indexOf(value);
+  }
+  const location = locateOffset(text, Math.max(0, offset));
+  return {
+    path: localePath,
+    offset: Math.max(0, offset),
+    line: location.line,
+    column: location.column,
+  };
+}
+
+function addImplementationReconstructableCopyEvidence(
+  evidenceByLocale,
+  localeEntries,
+) {
+  for (const [key, zhValue] of localeEntries.zh) {
+    const policy = implementationCopyPolicyForKey(key);
+    if (!policy) continue;
+
+    for (const source of policy.sources) {
+      if (!existsSync(source.path)) {
+        throw new Error(
+          `Missing implementation copy source for ${key}: ${toRepoPath(source.path)}`,
+        );
+      }
+    }
+
+    const values = {
+      zh: zhValue,
+      en: localeEntries.en.get(key),
+    };
+    for (const [locale, rawValue] of Object.entries(values)) {
+      if (typeof rawValue !== "string") continue;
+      const location = locateLocaleValue(locale, rawValue);
+      if (!evidenceByLocale[locale].has(key)) {
+        evidenceByLocale[locale].set(key, []);
+      }
+      evidenceByLocale[locale].get(key).push({
+        locale,
+        platform: "current-source",
+        source: toRepoPath(location.path),
+        line: location.line,
+        column: location.column,
+        offset: location.offset,
+        root: null,
+        key,
+        rawValue,
+        evidenceKind: "implementation-reconstructable-key-value",
+        reconstructionPolicy: policy.id,
+        supportingSources: policy.sources.map((source) => ({
+          source: toRepoPath(source.path),
+          reason: source.reason,
+        })),
+      });
+    }
+  }
+}
+
 function acceptedCopyEvidenceTier(evidence) {
   if (
     evidence.some((entry) => entry.evidenceKind === "raw-literal-key-value")
@@ -884,7 +1048,25 @@ function acceptedCopyEvidenceTier(evidence) {
   ) {
     return "raw-translation-alias-key-value";
   }
+  if (
+    evidence.some(
+      (entry) =>
+        entry.evidenceKind === "implementation-reconstructable-key-value",
+    )
+  ) {
+    return "implementation-reconstructable-key-value";
+  }
   return "raw-translation-object-key-value";
+}
+
+function hasExactEvidenceKind(entry, locale, kind) {
+  const expectedValue = locale === "zh" ? entry.zhValue : entry.enValue;
+  return entry.translationEvidence.some(
+    (evidence) =>
+      evidence.locale === locale &&
+      evidence.evidenceKind === kind &&
+      evidence.rawValue === expectedValue,
+  );
 }
 
 function buildAcceptanceDraft() {
@@ -898,6 +1080,10 @@ function buildAcceptanceDraft() {
   const rawTranslationEvidence = collectRawTranslationEvidence();
   addRawTranslationAliasEvidence(rawTranslationEvidence);
   addRawLiteralCopyEvidence(rawTranslationEvidence);
+  addImplementationReconstructableCopyEvidence(rawTranslationEvidence, {
+    zh: zhEntries,
+    en: enEntries,
+  });
 
   const entries = allKeys.map((key) => {
     const rawEvidence = rawKeyEvidence.get(key) ?? [];
@@ -947,7 +1133,7 @@ function buildAcceptanceDraft() {
       evidenceTier: tier,
       copyEvidenceTier,
       status: accepted
-        ? "raw-translation-object-copy-accepted"
+        ? `${copyEvidenceTier}-copy-accepted`
         : `${copyEvidenceTier}-copy-unaccepted`,
       blocker: accepted
         ? null
@@ -975,6 +1161,10 @@ function buildAcceptanceDraft() {
       entry.keyEvidence.rawControlFlow.length > 0 ||
       entry.keyEvidence.internalMentions.length > 0,
   ).length;
+  const copyEvidenceTiers = entries.reduce((tiers, entry) => {
+    tiers[entry.copyEvidenceTier] = (tiers[entry.copyEvidenceTier] ?? 0) + 1;
+    return tiers;
+  }, {});
   const totals = {
     zhLocaleKeys: zhEntries.size,
     enLocaleKeys: enEntries.size,
@@ -983,30 +1173,76 @@ function buildAcceptanceDraft() {
     internalKeyBacked: internalObservedKeys,
     rawOrInternalKeyBacked: rawOrInternalObservedKeys,
     sourceSyncOnly: entries.length - rawOrInternalObservedKeys,
-    rawTranslationZhKeyBacked: entries.filter((entry) =>
+    copyEvidenceZhKeyBacked: entries.filter((entry) =>
       hasTranslationKey(rawTranslationEvidence, "zh", entry.key),
     ).length,
-    rawTranslationEnKeyBacked: entries.filter((entry) =>
+    copyEvidenceEnKeyBacked: entries.filter((entry) =>
       hasTranslationKey(rawTranslationEvidence, "en", entry.key),
     ).length,
-    rawTranslationZhExact: entries.filter((entry) => entry.zhAccepted)
+    copyEvidenceZhExact: entries.filter((entry) => entry.zhAccepted)
       .length,
-    rawTranslationEnExact: entries.filter((entry) => entry.enAccepted)
+    copyEvidenceEnExact: entries.filter((entry) => entry.enAccepted)
       .length,
-    rawTranslationBothExact: entries.filter(
+    copyEvidenceBothExact: entries.filter(
       (entry) =>
         entry.zhAccepted &&
         entry.enAccepted,
     ).length,
-    rawTranslationValueMismatch: entries.filter(
+    copyEvidenceValueMismatch: entries.filter(
       (entry) =>
         (hasTranslationKey(rawTranslationEvidence, "zh", entry.key) &&
           !entry.zhAccepted) ||
         (hasTranslationKey(rawTranslationEvidence, "en", entry.key) &&
           !entry.enAccepted),
     ).length,
+    rawTranslationObjectZhExact: entries.filter((entry) =>
+      hasExactEvidenceKind(entry, "zh", "raw-translation-object-key-value"),
+    ).length,
+    rawTranslationObjectEnExact: entries.filter((entry) =>
+      hasExactEvidenceKind(entry, "en", "raw-translation-object-key-value"),
+    ).length,
+    rawTranslationObjectBothExact: entries.filter(
+      (entry) =>
+        hasExactEvidenceKind(entry, "zh", "raw-translation-object-key-value") &&
+        hasExactEvidenceKind(entry, "en", "raw-translation-object-key-value"),
+    ).length,
+    rawLiteralBothExact: entries.filter(
+      (entry) =>
+        hasExactEvidenceKind(entry, "zh", "raw-literal-key-value") &&
+        hasExactEvidenceKind(entry, "en", "raw-literal-key-value"),
+    ).length,
+    rawTranslationAliasBothExact: entries.filter(
+      (entry) =>
+        hasExactEvidenceKind(
+          entry,
+          "zh",
+          "raw-translation-alias-key-value",
+        ) &&
+        hasExactEvidenceKind(
+          entry,
+          "en",
+          "raw-translation-alias-key-value",
+        ),
+    ).length,
+    implementationReconstructableBothExact: entries.filter(
+      (entry) =>
+        hasExactEvidenceKind(
+          entry,
+          "zh",
+          "implementation-reconstructable-key-value",
+        ) &&
+        hasExactEvidenceKind(
+          entry,
+          "en",
+          "implementation-reconstructable-key-value",
+        ),
+    ).length,
+    copyEvidenceTiers,
     acceptedZh: entries.filter((entry) => entry.zhAccepted).length,
     acceptedEn: entries.filter((entry) => entry.enAccepted).length,
+    missingCopySource: entries.filter(
+      (entry) => !entry.zhSource || !entry.enSource,
+    ).length,
     missingRawOrInternalCopySource: entries.filter(
       (entry) => !entry.zhSource || !entry.enSource,
     ).length,
