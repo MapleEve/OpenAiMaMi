@@ -305,27 +305,25 @@ function validateReadmeStatusStructure(path) {
   if (!existsSync(join(repoRoot, path))) return;
 
   const content = readUtf8(path);
-  const headings = content
-    .split(/\r?\n/)
-    .filter((line) => /^#{1,6}\s+/.test(line))
-    .map((line) => line.trim());
-  const requiredStatusHeadings = [
+  const requiredStatusParts = [
     "## 当前状态",
-    "### 已经做了什么",
-    "### 还没有做什么",
-    "### 怎么验收",
-    "### 当前边界",
+    "| 领域 | 已完成 | 未完成或边界 |",
+    "| 公开材料 |",
+    "| 前端 |",
+    "| 后端 |",
+    "| voice |",
+    "| 验收 |",
+    "| 运行闭环 |",
+    "文档口径固定为",
   ];
-  const missing = requiredStatusHeadings.filter(
-    (heading) => !headings.includes(heading),
-  );
+  const missing = requiredStatusParts.filter((part) => !content.includes(part));
 
   addCheck(
-    `${path} 保留归纳状态结构`,
+    `${path} 保留归纳状态摘要`,
     missing.length === 0,
     missing.length === 0
-      ? "README 状态标题齐全"
-      : `缺少状态标题：${missing.join(", ")}`,
+      ? "README 状态摘要表齐全"
+      : `缺少状态摘要内容：${missing.join(", ")}`,
   );
 }
 
@@ -349,7 +347,13 @@ function validateReadmeNoProgressChangelog(path) {
   lines.forEach((line, index) => {
     const trimmed = line.trim();
     if (/^##\s+PR\b/i.test(trimmed) || /^#+\s+/.test(trimmed)) return;
-    if (/不写|不包含|不能|禁止|不得|只能|只做|归纳/.test(trimmed)) return;
+    if (
+      /不写|不包含|不能|禁止|不得|只能|只做|归纳|不记录|不追加|不再/.test(
+        trimmed,
+      )
+    ) {
+      return;
+    }
     if (progressPatterns.some((pattern) => pattern.test(trimmed))) {
       hits.push(`${path}:${index + 1}`);
     }
