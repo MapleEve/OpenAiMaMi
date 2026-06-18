@@ -49,7 +49,7 @@ OpenAiMami 是一个面向个人本地工作流的桌面应用。本仓库公开
 | --- | --- |
 | 公开材料 | 已纳入 Apache License、中文公开说明、匿名化 raw/internal 主链路、前端 dumped 证据、二进制清单、重建文档和独立资产说明。 |
 | 前端还原基础 | `src/` 已形成公开前端源码入口，入口、路由、运行期初始化、全局 Provider 和模块 owner 边界按当前规则持续收敛。 |
-| 后端六边形骨架 | `src-tauri/` 已建立 commands、application、core、platform、repository、adapters、contracts 的六边形边界；system、daemon/autoswitch、maintenance 等后端 owner 按命令适配、用例事务、核心状态、平台端口和仓储事实持续收敛。 |
+| 后端六边形骨架 | `src-tauri/` 已建立 commands、application、core、platform、repository、adapters、contracts 的六边形边界；system、settings、daemon/autoswitch、maintenance 等后端 owner 按命令适配、用例事务、核心状态、平台端口和仓储事实持续收敛。 |
 | 验证与匿名化 | 公开边界、前端证据、状态合同、后端 owner、i18n、E2E mock 和 README 一致性已纳入验证入口。 |
 
 ### 还没有做什么

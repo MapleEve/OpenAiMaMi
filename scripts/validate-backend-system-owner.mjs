@@ -204,13 +204,6 @@ function validateRoot(path, original, content) {
     /\bdaemon_usecase\s*::\s*schedule_full_runtime_refresh_for_command\s*\(\s*repo\s*,\s*"refresh_usage_snapshot"\s*\)/,
     "refresh_usage_snapshot 跨 snapshot-bootstrap 与 daemon，兼容层必须继续调用 daemon owner",
   );
-  requirePattern(
-    "set_usage_refresh_interval daemon scheduling compatibility",
-    path,
-    content,
-    /\bdaemon_usecase\s*::\s*update_usage_refresh_schedule\s*\(\s*repo\s*\)\s*\.ok\s*\(\s*\)/,
-    "set_usage_refresh_interval 跨 settings 与 daemon，兼容层必须继续调度 daemon owner",
-  );
   for (const command of [
     "run_daemon_once",
     "load_pending_auto_switch",
@@ -230,6 +223,24 @@ function validateRoot(path, original, content) {
       content,
       new RegExp(`\\bpub\\s+fn\\s+${command}\\s*\\(`, "g"),
       "daemon/autoswitch 命令不得回流到 system usecase",
+    );
+  }
+  for (const command of [
+    "set_api_proxy_config",
+    "test_api_proxy_config",
+    "detect_api_proxy_config",
+    "get_usage_refresh_interval",
+    "set_usage_refresh_interval",
+    "check_update_installability",
+    "graceful_restart_for_update",
+  ]) {
+    rejectPattern(
+      `${command} settings wrapper`,
+      path,
+      original,
+      content,
+      new RegExp(`\\bpub\\s+fn\\s+${command}\\s*\\(`, "g"),
+      "settings 用户动作不得回流到 system 根 usecase",
     );
   }
   for (const command of [
@@ -369,8 +380,6 @@ function validateCommandCompatibility(path, content) {
     ["load bootstrap command adapter", /\busecase\s*::\s*system\s*::\s*load_bootstrap_state\s*\(\s*&repo\s*\)/],
     ["remote secret create command adapter", /\busecase\s*::\s*system\s*::\s*get_or_create_remote_device_secret\s*\(\s*&repo\s*\)/],
     ["remote secret import command adapter", /\busecase\s*::\s*system\s*::\s*import_remote_device_secret_if_empty\s*\(\s*&repo\s*,\s*secret\s*\)/],
-    ["update installability command adapter", /\busecase\s*::\s*system\s*::\s*check_update_installability\s*\(\s*&system\s*\)/],
-    ["graceful restart command adapter", /\busecase\s*::\s*system\s*::\s*graceful_restart_for_update\s*\(\s*&process\s*\)/],
     ["focus main window command adapter", /\busecase\s*::\s*system\s*::\s*focus_main_window\s*\(\s*&window\s*\)/],
   ]) {
     requirePattern(label, path, content, pattern, "commands/system.rs 必须保持兼容 IPC adapter");
@@ -384,6 +393,8 @@ function validateCommandCompatibility(path, content) {
     ["system relay image compatibility usecase", /\busecase\s*::\s*system\s*::\s*(get_image_compat|set_image_compat)\b/g],
     ["maintenance command 函数", /\bpub\s+fn\s+(clean|rebuild_registry|diagnose|force_kill_codex|restart_codex|reset_codex_config|open_path|get_system_info)\s*\(/g],
     ["system maintenance usecase", /\busecase\s*::\s*system\s*::\s*(clean|rebuild_registry|diagnose|force_kill_app|restart_app|reset_config|open_path|system_info)\b/g],
+    ["settings command 函数", /\bpub\s+fn\s+(set_api_proxy_config|test_api_proxy_config|detect_api_proxy_config|get_usage_refresh_interval|set_usage_refresh_interval|check_update_installability|graceful_restart_for_update)\s*\(/g],
+    ["system settings usecase", /\busecase\s*::\s*system\s*::\s*(set_api_proxy_config|test_api_proxy_config|detect_api_proxy_config|get_usage_refresh_interval|set_usage_refresh_interval|check_update_installability|graceful_restart_for_update)\b/g],
   ]) {
     rejectPattern(label, path, content, content, pattern, "非 system IPC adapter 必须归属各自 owner");
   }
@@ -435,5 +446,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  "PASS 后端 system owner 校验通过：diagnostics、platform-actions、snapshot-bootstrap、settings-secret 和配置仓库边界已归位，maintenance 命令未回流。",
+  "PASS 后端 system owner 校验通过：diagnostics、platform-actions、snapshot-bootstrap、settings-secret 和配置仓库边界已归位，settings/maintenance 命令未回流。",
 );

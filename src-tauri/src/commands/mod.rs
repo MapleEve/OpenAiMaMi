@@ -8,6 +8,7 @@ pub mod mcp;
 pub mod relay;
 pub mod runtime_extensions;
 pub mod sessions;
+pub mod settings;
 pub mod skills;
 pub mod system;
 pub mod voice;

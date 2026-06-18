@@ -8,6 +8,7 @@ const files = {
   systemCommands: join(backendRoot, "commands", "system.rs"),
   daemonUsecase: join(backendRoot, "application", "usecase", "daemon.rs"),
   systemUsecase: join(backendRoot, "application", "usecase", "system.rs"),
+  settingsUsecase: join(backendRoot, "application", "usecase", "settings.rs"),
   tauriLib: join(backendRoot, "lib.rs"),
   coreRuntime: join(backendRoot, "core", "runtime.rs"),
   repositoryRuntime: join(backendRoot, "repository", "runtime.rs"),
@@ -278,10 +279,6 @@ function validateSystemUsecase(path, original, content) {
       "refresh_usage_snapshot 调用 daemon helper",
       /\bdaemon_usecase\s*::\s*schedule_full_runtime_refresh_for_command\s*\(\s*repo\s*,\s*"refresh_usage_snapshot"\s*\)/,
     ],
-    [
-      "set_usage_refresh_interval 转发 schedule update",
-      /\bdaemon_usecase\s*::\s*update_usage_refresh_schedule\s*\(\s*repo\s*\)\s*\.ok\s*\(\s*\)/,
-    ],
   ]) {
     requirePattern(label, path, content, pattern, "system usecase 必须调用 daemon usecase 窄入口");
   }
@@ -307,6 +304,16 @@ function validateSystemUsecase(path, original, content) {
       "system usecase 只允许跨 snapshot/settings 的兼容调用，不得保留 daemon command wrapper",
     );
   }
+}
+
+function validateSettingsUsecase(path, content) {
+  requirePattern(
+    "set_usage_refresh_interval 调用 daemon schedule update",
+    path,
+    content,
+    /\bdaemon_usecase\s*::\s*update_usage_refresh_schedule\s*\(\s*repo\s*\)\s*\.ok\s*\(\s*\)/,
+    "settings usecase 保存使用量刷新间隔后必须继续调度 daemon owner",
+  );
 }
 
 function validateCoreRuntime(path, original, content) {
@@ -401,6 +408,7 @@ validateSystemUsecase(
   raw.get("systemUsecase").content,
   stripped.get("systemUsecase").content,
 );
+validateSettingsUsecase(files.settingsUsecase, stripped.get("settingsUsecase").content);
 validateCoreRuntime(
   files.coreRuntime,
   raw.get("coreRuntime").content,

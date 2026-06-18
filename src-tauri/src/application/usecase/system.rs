@@ -16,12 +16,10 @@ pub use self::snapshot_bootstrap::{load_bootstrap_state, load_snapshot};
 use crate::application::service::{pending_status, restored_status};
 use crate::application::usecase::daemon as daemon_usecase;
 use crate::contracts::{
-    ApiConfigPayload, ApiModePayload, ApiProxyConfigPayload, ApiProxyDetectPayload, ApiProxyMode,
-    ApiProxyTestPayload, AutoSwitchConfigPayload, BackendEffect, BackendSkeletonStatus,
-    CoreSnapshotPayload, MysteryRouteGrant, NotificationClientStatePayload, SystemActionPayload,
+    AutoSwitchConfigPayload, BackendEffect, BackendSkeletonStatus, CoreSnapshotPayload,
+    MysteryRouteGrant, NotificationClientStatePayload, SystemActionPayload,
 };
 use crate::core::error::CoreError;
-use crate::core::model::settings::UsageRefreshInterval;
 use crate::repository::settings as settings_repository;
 use crate::repository::Repository;
 use std::collections::BTreeMap;
@@ -66,71 +64,6 @@ pub fn configure_auto_switch(
         backend_status: restored_status("system", "configure_auto_switch", BackendEffect::NoOp),
         auto_switch: snapshot_bootstrap::make_auto_switch_status(&settings),
     })
-}
-
-pub fn set_api_proxy_config(
-    repo: &Repository,
-    mode: ApiProxyMode,
-    url: Option<String>,
-) -> Result<ApiModePayload, CoreError> {
-    let mut settings = settings_repository::load_app_settings(repo)?;
-    settings.api_proxy = ApiProxyConfigPayload {
-        mode,
-        url: normalize_proxy_url(url),
-    };
-    settings_repository::save_app_settings(repo, &settings)?;
-    Ok(ApiModePayload {
-        api: ApiConfigPayload {
-            proxy: settings.api_proxy,
-        },
-    })
-}
-
-pub fn test_api_proxy_config(mode: ApiProxyMode, url: Option<String>) -> ApiProxyTestPayload {
-    let reachable = matches!(mode, ApiProxyMode::Direct)
-        || normalize_proxy_url(url.clone()).is_some_and(|value| value.contains("://"));
-    ApiProxyTestPayload {
-        code: if reachable {
-            "proxy.accepted"
-        } else {
-            "proxy.invalid"
-        }
-        .to_string(),
-        reachable,
-        status_code: None,
-        message: if reachable {
-            "代理配置格式可用；当前公开后端不主动发起外部联网探测。"
-        } else {
-            "代理地址格式不可用。"
-        }
-        .to_string(),
-    }
-}
-
-pub fn detect_api_proxy_config() -> ApiProxyDetectPayload {
-    let probe = test_api_proxy_config(ApiProxyMode::Direct, None);
-    ApiProxyDetectPayload {
-        found: false,
-        mode: None,
-        url: None,
-        probe,
-    }
-}
-
-pub fn get_usage_refresh_interval(repo: &Repository) -> Result<String, CoreError> {
-    Ok(settings_repository::get_usage_refresh_interval(repo)?
-        .as_str()
-        .to_string())
-}
-
-pub fn set_usage_refresh_interval(
-    repo: &Repository,
-    interval: String,
-) -> Result<String, CoreError> {
-    let normalized = UsageRefreshInterval::parse(&interval)?;
-    let saved = settings_repository::set_usage_refresh_interval(repo, normalized)?;
-    let _schedule_update = daemon_usecase::update_usage_refresh_schedule(repo).ok();
-    Ok(saved.as_str().to_string())
 }
 
 pub fn notification_client_state(
@@ -339,11 +272,6 @@ mod tests {
             grants
         );
     }
-}
-
-fn normalize_proxy_url(url: Option<String>) -> Option<String> {
-    url.map(|value| value.trim().to_string())
-        .filter(|value| !value.is_empty())
 }
 
 fn validate_percent(value: i32) -> Result<(), CoreError> {

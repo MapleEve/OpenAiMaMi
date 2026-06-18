@@ -76,7 +76,7 @@ const ipcDomainModuleMap = new Map([
   ["relay", "relay"],
   ["runtime-extensions", "runtime_extensions"],
   ["sessions", "sessions"],
-  ["settings", "system"],
+  ["settings", "settings"],
   ["skills", "skills"],
   ["system", "system"],
 ]);
