@@ -1,9 +1,13 @@
 use crate::application::service::{current_timestamp, pending_status, restored_status};
-use crate::contracts::analytics::{AnalyticsRange, SessionAnalyticsPayload};
+use crate::contracts::analytics::{
+    AnalyticsRange, SessionAnalyticsPayload, SessionAnalyticsSeriesPointPayload,
+};
 use crate::contracts::sessions::{
     AccountSessionImportPayload, SessionRecordPayload, SessionsDeletePayload, SessionsListPayload,
 };
 use crate::contracts::BackendEffect;
+use crate::core::model::analytics::{aggregate_public_usage_for_range, PublicAnalyticsRange};
+use crate::repository::analytics as analytics_repository;
 use crate::repository::sessions as sessions_repository;
 use crate::repository::Repository;
 
@@ -100,26 +104,40 @@ pub fn import_chatgpt_session_account(
     }
 }
 
-/// 会话分析的 sessions 模块入口，统计来源与解析规则等待证据补齐。
-pub fn load_session_analytics(
-    _repo: &Repository,
-    range: Option<String>,
-) -> SessionAnalyticsPayload {
+/// 会话分析的 sessions 模块入口，只聚合公开 sessions 文件事实。
+pub fn load_session_analytics(repo: &Repository, range: Option<String>) -> SessionAnalyticsPayload {
     let normalized_range = AnalyticsRange::from_input(range);
+    let aggregate = aggregate_public_usage_for_range(
+        analytics_repository::load_public_session_facts(repo),
+        current_timestamp(),
+        public_range_from_contract(normalized_range),
+    );
+
     SessionAnalyticsPayload {
-        backend_status: pending_status(
-            "sessions",
-            "load_session_analytics",
-            "会话分析只完成公开 IPC 骨架；当前不推断闭源统计规则。",
-        ),
+        backend_status: restored_status("sessions", "load_session_analytics", BackendEffect::NoOp),
         range: normalized_range,
-        total_sessions: 0,
+        total_sessions: aggregate.total_sessions,
         avg_turns: 0.0,
-        active_days: 0,
-        series: Vec::new(),
+        active_days: aggregate.active_days,
+        series: aggregate
+            .daily_activity
+            .into_iter()
+            .map(|day| SessionAnalyticsSeriesPointPayload {
+                date: day.date,
+                count: day.session_count,
+            })
+            .collect(),
     }
 }
 
 fn sessions_source_path(repo: &Repository) -> String {
     repo.paths().sessions_dir.display().to_string()
+}
+
+fn public_range_from_contract(range: AnalyticsRange) -> PublicAnalyticsRange {
+    match range {
+        AnalyticsRange::Today => PublicAnalyticsRange::Today,
+        AnalyticsRange::Week => PublicAnalyticsRange::Week,
+        AnalyticsRange::Month => PublicAnalyticsRange::Month,
+    }
 }

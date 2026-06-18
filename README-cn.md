@@ -55,7 +55,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 | 前端文案 | `evidence/full-chain/internal/frontend-copy-acceptance.json` 为 `status=accepted`；660 个 zh/en locale key 全部有 copy owner 验收来源，frontend manifest 当前没有非 full leaf 状态。 |
 | 前端状态竞争 | TanStack cache、mutation payload、runtime event reload、stale/delayed response、event replay、cancel、abort 和 E2E mock 竞态场景已纳入验收。 |
 | 后端骨架 | `commands`、`application/usecase`、`core`、`platform`、`repository`、`repository/adapter`、`contracts`、`adapters` 六边形边界已建立，并由 `validate:backend-hexagonal` 约束。 |
-| 已补后端能力 | 已补回公开过或可由证据支撑的 Accounts、MCP、Skills、Custom Instructions、Sessions、System、Analytics、Runtime extensions、Relay 和 daemon/runtime watcher 骨架切片；Sessions 已补 `delete_sessions` 已扫描文件删除，System 已补 `check_update_installability` 只读环境检测。 |
+| 已补后端能力 | 已补回公开过或可由证据支撑的 Accounts、MCP、Skills、Custom Instructions、Sessions、System、Analytics、Runtime extensions、Relay 和 daemon/runtime watcher 骨架切片；Sessions 已补 `delete_sessions` 已扫描文件删除，Analytics 已补 `load_session_analytics` 公开文件事实聚合，System 已补 `check_update_installability` 只读环境检测。 |
 | Voice | 前后端都不作为可用功能入口；只保留空骨架、合同清单和中文边界说明。 |
 
 ### 仍未完成

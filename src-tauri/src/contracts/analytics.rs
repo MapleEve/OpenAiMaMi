@@ -95,7 +95,7 @@ pub struct SessionAnalyticsSeriesPointPayload {
     pub count: i32,
 }
 
-/// 会话分析 IPC DTO。
+/// 会话分析 IPC DTO，只表达公开 session 文件事实聚合，不表达闭源 turn 解析。
 #[derive(Debug, Clone, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct SessionAnalyticsPayload {

@@ -161,6 +161,24 @@ pub fn aggregate_public_usage(
     }
 }
 
+pub fn aggregate_public_usage_for_range(
+    facts: Vec<PublicSessionFileFact>,
+    now_epoch_seconds: i64,
+    range: PublicAnalyticsRange,
+) -> PublicUsageAggregate {
+    let earliest = now_epoch_seconds.saturating_sub(
+        range
+            .day_span()
+            .saturating_sub(1)
+            .saturating_mul(24 * 60 * 60),
+    );
+    let filtered = facts
+        .into_iter()
+        .filter(|fact| fact.updated_at >= earliest && fact.updated_at <= now_epoch_seconds)
+        .collect::<Vec<_>>();
+    aggregate_public_usage(filtered, now_epoch_seconds)
+}
+
 fn date_key(epoch_seconds: i64) -> String {
     Utc.timestamp_opt(epoch_seconds.max(0), 0)
         .single()
@@ -203,5 +221,21 @@ mod tests {
         assert_eq!(PublicAnalyticsRange::Today.day_span(), 1);
         assert_eq!(PublicAnalyticsRange::Week.day_span(), 7);
         assert_eq!(PublicAnalyticsRange::Month.day_span(), 30);
+    }
+
+    #[test]
+    fn aggregate_public_usage_for_range_filters_old_session_file_facts() {
+        let facts = vec![
+            PublicSessionFileFact::new("old".to_string(), 1_709_913_600, None, 100),
+            PublicSessionFileFact::new("today".to_string(), 1_710_000_000, None, 50),
+        ];
+
+        let aggregate =
+            aggregate_public_usage_for_range(facts, 1_710_000_000, PublicAnalyticsRange::Today);
+
+        assert_eq!(aggregate.total_sessions, 1);
+        assert_eq!(aggregate.total_size_bytes, 50);
+        assert_eq!(aggregate.active_days, 1);
+        assert_eq!(aggregate.daily_activity.len(), 1);
     }
 }

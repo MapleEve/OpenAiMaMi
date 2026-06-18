@@ -216,7 +216,33 @@ assertNoPattern("application/usecase/sessions.rs delete_sessions", usecaseDelete
   /\bread_to_string\s*\(/,
 ]);
 
-for (const name of ["import_chatgpt_session_account", "load_session_analytics"]) {
+const usecaseSessionAnalyticsBody = requireFunctionBody(usecaseContent, usecaseFile, "load_session_analytics");
+if (!/\banalytics_repository::load_public_session_facts\s*\(\s*repo\s*\)/.test(usecaseSessionAnalyticsBody)) {
+  failures.push("application/usecase/sessions.rs load_session_analytics 必须通过 analytics repository 读取公开 session 文件事实");
+}
+if (!/\baggregate_public_usage_for_range\s*\(/.test(usecaseSessionAnalyticsBody)) {
+  failures.push("application/usecase/sessions.rs load_session_analytics 必须通过 core analytics range aggregate 聚合公开事实");
+}
+if (!/\brestored_status\s*\(\s*"sessions"\s*,\s*"load_session_analytics"\s*,\s*BackendEffect::NoOp\s*\)/.test(usecaseSessionAnalyticsBody)) {
+  failures.push("application/usecase/sessions.rs load_session_analytics 成功路径必须返回 restored_status");
+}
+if (!/avg_turns\s*:\s*0\.0/.test(usecaseSessionAnalyticsBody)) {
+  failures.push("application/usecase/sessions.rs load_session_analytics 不得从公开文件事实推断 avg_turns");
+}
+assertNoPattern("application/usecase/sessions.rs load_session_analytics", usecaseSessionAnalyticsBody, [
+  /\bstd::fs\b/,
+  /\brepo\s*\.\s*fs\s*\(/,
+  /\bsessions_repository::/ ,
+  /\bwrite_string\s*\(/,
+  /\bcreate_dir_all\s*\(/,
+  /\bremove_file\s*\(/,
+  /\bremove_dir_all\s*\(/,
+  /\bcopy_file\s*\(/,
+  /\brename\s*\(/,
+  /\bread_to_string\s*\(/,
+]);
+
+for (const name of ["import_chatgpt_session_account"]) {
   const body = requireFunctionBody(usecaseContent, usecaseFile, name);
   assertNoPattern(`application/usecase/sessions.rs ${name}`, body, [
     /\bstd::fs\b/,
@@ -243,4 +269,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("PASS 后端 sessions owner 校验通过：load_sessions 只读 sessions 文件元数据，delete_sessions 只通过 repository helper 删除已扫描会话文件，其他 sessions 动作保持无真实副作用。");
+console.log("PASS 后端 sessions owner 校验通过：load_sessions 只读 sessions 文件元数据，delete_sessions 只通过 repository helper 删除已扫描会话文件，load_session_analytics 只聚合公开 session 文件事实，其他 sessions 动作保持无真实副作用。");
