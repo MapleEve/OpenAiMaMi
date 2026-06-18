@@ -41,27 +41,27 @@ OpenAiMami 是一个面向个人本地工作流的桌面应用。本仓库公开
 
 ## 当前状态
 
-本节只说明当前公开仓库的整体状态，不记录提交流水，也不把近期拆分过程当作完成度。判断项目状态时，以公开证据链、源码边界和验证脚本为准。
+本节只归纳当前公开仓库状态，不记录逐次提交或拆分过程。判断项目状态时，只以公开证据链、源码边界和验证脚本为准。
 
 ### 已经做了什么
 
-- **公开材料**：仓库已公开 Apache License、中文说明、匿名化 raw/internal 主链路、前端 dumped 证据、二进制清单和重建文档。
-- **前端还原基础**：`src/` 已作为公开前端源码入口，承载入口、路由、运行期初始化、全局 Provider、模块 owner 和 cache helper owner 形态的持续还原。
-- **后端骨架与公开能力**：`src-tauri/` 已建立 commands、application、core、platform、repository、adapters、contracts 六边形骨架，并补回已有公开证据支撑的后端能力；contracts 已按 settings、bootstrap、daemon、maintenance、diagnostics、mystery、system owner 拆分，system 合同只保留系统快照、平台动作和通知状态，不再聚合跨域 DTO。
-- **验证与匿名化入口**：公开边界、README 同步、前端证据、状态合同、后端 owner、i18n 和 E2E mock 已有脚本化检查入口；后端合同 owner 新增独立验证入口，用于约束合同模块、serde 兼容、voice 边界和 system 跨域 DTO 迁出。
+- **公开材料**：Apache License、中文说明、匿名化 raw/internal 主链路、前端 dumped 证据、二进制清单和重建文档已经进入仓库；`OpenAiMami IDB` 保持为独立参考资产，不混入主仓库。
+- **前端还原基础**：`src/` 已承载公开前端源码、入口、路由、运行期初始化、全局 Provider、模块 owner、cache helper owner、E2E mock 和 i18n 验证入口，后续继续按 raw/internal 证据补齐完整 leaf。
+- **后端公开范围**：`src-tauri/` 已建立 commands、application、core、platform、repository、adapters、contracts 六边形骨架，并补回已有公开证据支撑的后端能力；后端以可审计接口、DTO、错误语义、仓储边界和可替换适配为主。
+- **验收入口**：公开边界、README 同步、前端证据、状态合同、后端 owner、合同 owner、i18n 和 E2E mock 已有脚本化检查入口，可用于判断当前源码是否仍守住公开范围。
 
 ### 还没有做什么
 
-- **前端完整度**：不声明前端已经 100% 完成，也不声明 macOS / Windows 双平台 leaf 已全部闭合。
-- **后端业务范围**：不做闭源后端业务全量还原；未公开、未选择还原或无公开证据支撑的行为只保留为契约、桩或待补证据位置。
+- **前端完整度**：不声明前端已经 100% 完成，也不声明 macOS / Windows 双平台 leaf 已全部闭合；完整度必须继续由 raw/internal 证据、leaf 队列、源码 closeout 和验证脚本共同确认。
+- **后端业务范围**：不做闭源后端业务全量还原；未公开、未选择还原或无公开证据支撑的行为只保留为契约、桩、待实现项、测试缺口或待补证据位置。
 - **voice 边界**：voice 只保留空骨架、合同清单和中文边界说明，不作为前端入口，不调用后端能力，不参与启动流程。
-- **运行闭环**：不声明真实网络、后台线程、全局状态、真实 token 统计口径、更新安装、诊断修复、外部进程重启或 shell 闭环已经完成。
+- **运行闭环**：不声明真实网络、后台线程、全局状态、真实 token 统计口径、更新安装、诊断修复、外部进程重启或 shell 闭环已经完成；这些能力必须在对应证据和工具链下单独补齐。
 
 ### 怎么验收
 
 - **公开边界**：运行 `validate:public-boundary`，确认 README、公开文本、tracked 文件和 raw 前端资产没有越过匿名化与发布边界。
-- **前端证据与状态合同**：运行前端证据、leaf、入口、缓存、cache helper owner、事件刷新、i18n 和 E2E mock 相关 `validate:*` 脚本，确认还原逻辑仍能回指公开证据；current-source closeout 验证会检查 mystery、daemon、maintenance owner 归属，并阻止旧 system source signal 回流。
-- **后端 owner**：运行 `validate:backend-hexagonal`、`validate:backend-contract-owners` 和后端 owner 类 `validate:*` 脚本，确认命令、用例、核心、平台、仓储、适配器、契约、合同 owner 和 mystery grants 边界没有互相侵入。
+- **前端证据**：运行前端证据、leaf、入口、缓存、cache helper owner、事件刷新、i18n 和 E2E mock 相关 `validate:*` 脚本，确认还原逻辑仍能回指公开 raw/internal 证据。
+- **后端 owner**：运行 `validate:backend-hexagonal`、`validate:backend-contract-owners` 和后端 owner 类 `validate:*` 脚本，确认命令、用例、核心、平台、仓储、适配器、契约和合同 owner 边界没有互相侵入。
 - **README 同步**：`README.md` 与 `README-cn.md` 必须保持同内容、同字节；公开边界校验会检查这一点。
 - **工具链限制**：编译、构建和平台运行验收依赖本机 Rust、前端和目标平台工具链；工具链缺失时只记录环境限制，不能替代源码状态判断。
 
@@ -70,7 +70,7 @@ OpenAiMami 是一个面向个人本地工作流的桌面应用。本仓库公开
 - **证据优先**：实现和说明必须能回指公开 raw/internal 证据链；没有证据支撑的业务行为不能写成真实逻辑。
 - **隐私匿名**：公开材料、提交说明和 PR 说明不得包含内部路径、机器名、用户名、凭据、令牌、会话、密钥或未脱敏日志。
 - **后端范围**：后端以可审计骨架、接口、DTO、错误语义、测试占位和可替换适配为主，不声明闭源业务全量还原。
-- **工具链限制**：环境问题不能替代源码和证据边界判断，跨平台能力必须在对应工具链下单独验证。
+- **文档口径**：README 只写当前做了什么、没做什么、怎么验收和边界是什么；过程记录、逐项拆分和临时进度应进入提交、issue 或专门重建文档，不写进 README 状态段。
 
 ## 可直接给 AI 的重建提示
 
