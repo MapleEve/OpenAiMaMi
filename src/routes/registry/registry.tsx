@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import type { SettingsRouteProps } from "@/routes/desktop/main/settings/page";
 import type { Route } from "@/types/navigation";
+import type { MysteryRouteGateContext } from "@/routes/registry/gates";
 import { RouteHighIoFeedback } from "@/routes/registry/feedback";
 import { RouteShellSkeleton } from "@/routes/registry/skeletons";
 import { ErrorBoundary } from "@/components/boundary";
@@ -88,6 +89,10 @@ const TrayShellRoute = lazy(() =>
 );
 export interface RouteRenderContext {
   settings: SettingsRouteProps;
+  mysteryRouteGate: {
+    context: MysteryRouteGateContext;
+    pending: boolean;
+  };
 }
 
 export interface RouteLayoutProps {

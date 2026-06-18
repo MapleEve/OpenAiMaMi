@@ -12,13 +12,17 @@ import {
 import { SiteHeader } from "@/components/header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useRouteRenderSettings } from "@/app/providers/settings";
+import { envelopeData } from "@/features/_shared/data";
+import { useOverviewMysteryUnlockGrantsQuery } from "@/features/overview/hooks/query";
 import { isMacPlatform } from "@/lib/platform";
+import type { MysteryRouteGateContext } from "@/routes/registry/gates";
 import { getRouteMeta, getVisibleRouteMeta } from "@/routes/registry/meta";
 import {
   resolveRouteFromPath,
   resolveRoutePath,
   type RouteRenderContext,
 } from "@/routes/registry/registry";
+import type { MysteryRouteGrant } from "@/types";
 import type { Route } from "@/types/navigation";
 import { useRoutePrewarm } from "./prewarm";
 import { useSidebarOpenState } from "./sidebar";
@@ -31,9 +35,27 @@ export function AppRouterShell() {
   const { sidebarOpen, setSidebarOpen } = useSidebarOpenState();
   const settings = useRouteRenderSettings();
   const activeRoute = resolveRouteFromPath(location.pathname);
-  const activeRouteMeta = getRouteMeta(activeRoute);
-  const visibleRouteMeta = useMemo(() => getVisibleRouteMeta(), []);
-  useRoutePrewarm();
+  const mysteryUnlockGrantsQuery = useOverviewMysteryUnlockGrantsQuery();
+  const mysteryRouteGrants = envelopeData<MysteryRouteGrant[]>(
+    mysteryUnlockGrantsQuery.data,
+  );
+  const mysteryRouteGateContext = useMemo<MysteryRouteGateContext>(
+    () => ({
+      grants: mysteryRouteGrants,
+    }),
+    [mysteryRouteGrants],
+  );
+  const mysteryRouteGatePending =
+    !mysteryUnlockGrantsQuery.data && mysteryUnlockGrantsQuery.isFetching;
+  const activeRouteMeta = useMemo(
+    () => getRouteMeta(activeRoute, mysteryRouteGateContext),
+    [activeRoute, mysteryRouteGateContext],
+  );
+  const visibleRouteMeta = useMemo(
+    () => getVisibleRouteMeta(mysteryRouteGateContext),
+    [mysteryRouteGateContext],
+  );
+  useRoutePrewarm(mysteryRouteGateContext);
 
   const handleNavigate = useCallback(
     (nextRoute: Route) => {
@@ -45,8 +67,12 @@ export function AppRouterShell() {
   const routeContext = useMemo<RouteRenderContext>(
     () => ({
       settings,
+      mysteryRouteGate: {
+        context: mysteryRouteGateContext,
+        pending: mysteryRouteGatePending,
+      },
     }),
-    [settings],
+    [mysteryRouteGateContext, mysteryRouteGatePending, settings],
   );
 
   return (

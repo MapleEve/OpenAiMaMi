@@ -23,7 +23,7 @@ pub struct SessionRecordPayload {
     pub agent_role: Option<String>,
 }
 
-/// 会话列表 IPC DTO，当前只允许返回空骨架与边界状态。
+/// 会话列表 IPC DTO，只表达 sessions 目录公开文件元数据。
 #[derive(Debug, Clone, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct SessionsListPayload {
@@ -34,7 +34,7 @@ pub struct SessionsListPayload {
     pub last_scan_at: i64,
 }
 
-/// 会话删除 IPC DTO，真实删除事务等待 raw/internal 证据补齐。
+/// 会话删除 IPC DTO，只返回按已扫描 session id 删除文件后的结果。
 #[derive(Debug, Clone, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct SessionsDeletePayload {

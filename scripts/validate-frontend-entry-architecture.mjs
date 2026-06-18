@@ -184,9 +184,11 @@ expectNotIncludes("src/app/router/router.tsx", appRouter, [
 
 const appShell = readRequiredFile("src/app/router/shell.tsx");
 expectIncludes("src/app/router/shell.tsx", appShell, [
-  "getRouteMeta(activeRoute)",
-  "getVisibleRouteMeta()",
-  "useRoutePrewarm();",
+  "useOverviewMysteryUnlockGrantsQuery()",
+  "getRouteMeta(activeRoute, mysteryRouteGateContext)",
+  "getVisibleRouteMeta(mysteryRouteGateContext)",
+  "useRoutePrewarm(mysteryRouteGateContext);",
+  "mysteryRouteGate:",
   "useSidebarOpenState()",
   "resolveRouteFromPath(location.pathname)",
   "resolveRoutePath(nextRoute)",
@@ -203,7 +205,7 @@ expectNotIncludes("src/app/router/shell.tsx", appShell, [
 const routePrewarm = readRequiredFile("src/app/router/prewarm.ts");
 expectIncludes("src/app/router/prewarm.ts", routePrewarm, [
   "useDeferredReady(900)",
-  "preloadVisibleRoutes()",
+  "preloadVisibleRoutes(context)",
 ]);
 
 const sidebarOpenState = readRequiredFile("src/app/router/sidebar.ts");

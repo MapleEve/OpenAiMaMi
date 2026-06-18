@@ -47,18 +47,32 @@ pub fn load_sessions(repo: &Repository) -> SessionsListPayload {
     }
 }
 
-/// 删除会话的用户动作边界，当前不执行文件删除。
+/// 删除会话的用户动作边界，只按 repository 已扫描到的 session id 删除对应文件。
 pub fn delete_sessions(repo: &Repository, ids: Vec<String>) -> SessionsDeletePayload {
-    SessionsDeletePayload {
-        backend_status: pending_status(
-            "sessions",
-            "delete_sessions",
-            "会话删除只完成公开 IPC 骨架；真实删除事务等待证据补齐。",
+    let delete_result = sessions_repository::delete_session_files(repo, &ids);
+    let (backend_status, deleted_ids, skipped_ids) = match delete_result {
+        Ok(result) => (
+            restored_status("sessions", "delete_sessions", BackendEffect::NoOp),
+            result.deleted_ids,
+            result.skipped_ids,
         ),
+        Err(error) => (
+            pending_status(
+                "sessions",
+                "delete_sessions",
+                &format!("会话文件删除失败，当前未恢复 sqlite/global-state 事务：{error}"),
+            ),
+            Vec::new(),
+            ids.clone(),
+        ),
+    };
+
+    SessionsDeletePayload {
+        backend_status,
         requested_ids: ids.clone(),
-        deleted_ids: Vec::new(),
-        skipped_ids: ids,
-        deleted_count: 0,
+        deleted_count: deleted_ids.len() as i32,
+        deleted_ids,
+        skipped_ids,
         source_path: sessions_source_path(repo),
     }
 }

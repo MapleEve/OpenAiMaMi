@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
 import { useModuleCacheController } from "@/features/_shared/controller";
 import { accountsService } from "@/services/accounts";
 import { analyticsService } from "@/services/analytics";
@@ -20,6 +20,23 @@ import type { OverviewQueryController } from "../types";
 
 export function useOverviewCacheController() {
   return useModuleCacheController(OverviewCache);
+}
+
+function overviewMysteryUnlockGrantsQueryOptions(queryClient: QueryClient) {
+  return {
+    queryKey: OVERVIEW_MYSTERY_GRANTS_QUERY_KEY,
+    queryFn: () =>
+      runOverviewQuery(queryClient, OVERVIEW_MYSTERY_GRANTS_QUERY_KEY, () =>
+        systemService.getMysteryUnlockGrants(),
+      ),
+    staleTime: 30_000,
+  };
+}
+
+export function useOverviewMysteryUnlockGrantsQuery() {
+  const queryClient = useQueryClient();
+
+  return useQuery(overviewMysteryUnlockGrantsQueryOptions(queryClient));
 }
 
 export function useOverviewPageQueries(): OverviewQueryController {
@@ -72,14 +89,9 @@ export function useOverviewPageQueries(): OverviewQueryController {
       ),
     staleTime: 30_000,
   });
-  const mysteryUnlockGrantsQuery = useQuery({
-    queryKey: OVERVIEW_MYSTERY_GRANTS_QUERY_KEY,
-    queryFn: () =>
-      runOverviewQuery(queryClient, OVERVIEW_MYSTERY_GRANTS_QUERY_KEY, () =>
-        systemService.getMysteryUnlockGrants(),
-      ),
-    staleTime: 30_000,
-  });
+  const mysteryUnlockGrantsQuery = useQuery(
+    overviewMysteryUnlockGrantsQueryOptions(queryClient),
+  );
 
   return {
     snapshotQuery,

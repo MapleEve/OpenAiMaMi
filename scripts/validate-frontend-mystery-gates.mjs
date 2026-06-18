@@ -30,6 +30,10 @@ const gates = existsSync(path.join(root, gatesPath)) ? read(gatesPath) : "";
 const meta = read("src/routes/registry/meta.ts");
 const preload = read("src/routes/registry/preload.ts");
 const registry = read("src/routes/registry/registry.tsx");
+const objects = read("src/routes/registry/objects.tsx");
+const shell = read("src/app/router/shell.tsx");
+const routerPrewarm = read("src/app/router/prewarm.ts");
+const overviewQuery = read("src/features/overview/hooks/query.ts");
 
 assert(
   /relayModel/.test(gates) && /relay["']/.test(gates),
@@ -42,6 +46,39 @@ assert(
 assert(
   /resolveRouteVisibility/.test(preload) && /MysteryRouteGateContext/.test(preload),
   "preload.ts 未使用 mystery gates helper 或上下文类型",
+);
+assert(
+  shell.includes("useOverviewMysteryUnlockGrantsQuery()") &&
+    shell.includes("getRouteMeta(activeRoute, mysteryRouteGateContext)") &&
+    shell.includes("getVisibleRouteMeta(mysteryRouteGateContext)") &&
+    shell.includes("useRoutePrewarm(mysteryRouteGateContext)") &&
+    shell.includes("mysteryRouteGate:"),
+  "shell.tsx 未将 mystery grants 查询结果接入 route meta、visible routes、prewarm 和 Outlet context",
+);
+assert(
+  routerPrewarm.includes("context?: MysteryRouteGateContext") &&
+    routerPrewarm.includes("preloadVisibleRoutes(context)"),
+  "prewarm.ts 未使用 shell 传入的 mystery grants context",
+);
+assert(
+  objects.includes("resolveRouteVisibility(") &&
+    objects.includes("context.mysteryRouteGate.context") &&
+    objects.includes("context.mysteryRouteGate.pending") &&
+    objects.includes('return <Navigate to={resolveRoutePath("overview")} replace />;'),
+  "objects.tsx 未基于 mystery grants context 做 route guard / redirect",
+);
+assert(
+  registry.includes("mysteryRouteGate:") &&
+    registry.includes("context: MysteryRouteGateContext") &&
+    registry.includes("pending: boolean"),
+  "registry.tsx 的 RouteRenderContext 未携带 mystery grants context",
+);
+assert(
+  overviewQuery.includes("overviewMysteryUnlockGrantsQueryOptions") &&
+    overviewQuery.includes("OVERVIEW_MYSTERY_GRANTS_QUERY_KEY") &&
+    overviewQuery.includes("systemService.getMysteryUnlockGrants()") &&
+    overviewQuery.includes("export function useOverviewMysteryUnlockGrantsQuery"),
+  "overview query owner 未暴露 shell 可复用的 mystery grants 查询",
 );
 assert(!/route:\s*["']voice["']/.test(registry), "registry.tsx 不应出现 voice route");
 

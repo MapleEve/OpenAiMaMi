@@ -158,6 +158,27 @@ assertNoPattern("repository/sessions.rs load_session_file_metadata", repositoryL
   /\brename\s*\(/,
 ]);
 
+const repositoryDeleteBody = requireFunctionBody(
+  repositoryContent,
+  repositoryFile,
+  "delete_session_files",
+);
+if (!/\bload_session_file_metadata\s*\(\s*repo\s*\)/.test(repositoryDeleteBody)) {
+  failures.push("repository/sessions.rs delete_session_files 必须先通过 load_session_file_metadata 获取可删除文件");
+}
+if (!/repo\.fs\(\)\.remove_file\s*\(\s*&metadata\.path\s*\)/.test(repositoryDeleteBody)) {
+  failures.push("repository/sessions.rs delete_session_files 必须通过 FS adapter 删除已扫描到的 metadata.path");
+}
+assertNoPattern("repository/sessions.rs delete_session_files", repositoryDeleteBody, [
+  /\bstd::fs\b/,
+  /\bread_to_string\s*\(/,
+  /\bwrite_string\s*\(/,
+  /\bcreate_dir_all\s*\(/,
+  /\bremove_dir_all\s*\(/,
+  /\bcopy_file\s*\(/,
+  /\brename\s*\(/,
+]);
+
 if (!/fn\s+created_unix_seconds\s*\(\s*&self\s*,\s*path\s*:\s*&Path\s*\)\s*->\s*Option\s*<\s*i64\s*>/.test(adapterModContent)) {
   failures.push("repository/adapter/mod.rs FileSystemAdapter 缺少 created_unix_seconds");
 }
@@ -177,7 +198,25 @@ if (!/self\.inner\.created_unix_seconds\s*\(\s*&self\.storage_path\s*\(\s*path\s
   failures.push("repository/adapter/temp_fs.rs created_unix_seconds 必须通过 storage_path 委托");
 }
 
-for (const name of ["delete_sessions", "import_chatgpt_session_account", "load_session_analytics"]) {
+const usecaseDeleteBody = requireFunctionBody(usecaseContent, usecaseFile, "delete_sessions");
+if (!/\bsessions_repository::delete_session_files\s*\(\s*repo\s*,\s*&ids\s*\)/.test(usecaseDeleteBody)) {
+  failures.push("application/usecase/sessions.rs delete_sessions 必须通过 repository delete_session_files 删除会话文件");
+}
+if (!/\brestored_status\s*\(\s*"sessions"\s*,\s*"delete_sessions"\s*,\s*BackendEffect::NoOp\s*\)/.test(usecaseDeleteBody)) {
+  failures.push("application/usecase/sessions.rs delete_sessions 成功路径必须返回 restored_status");
+}
+assertNoPattern("application/usecase/sessions.rs delete_sessions", usecaseDeleteBody, [
+  /\bstd::fs\b/,
+  /\bwrite_string\s*\(/,
+  /\bcreate_dir_all\s*\(/,
+  /\bremove_file\s*\(/,
+  /\bremove_dir_all\s*\(/,
+  /\bcopy_file\s*\(/,
+  /\brename\s*\(/,
+  /\bread_to_string\s*\(/,
+]);
+
+for (const name of ["import_chatgpt_session_account", "load_session_analytics"]) {
   const body = requireFunctionBody(usecaseContent, usecaseFile, name);
   assertNoPattern(`application/usecase/sessions.rs ${name}`, body, [
     /\bstd::fs\b/,
@@ -204,4 +243,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("PASS 后端 sessions owner 校验通过：load_sessions 只读 sessions 文件元数据，其他 sessions 动作保持无真实副作用。");
+console.log("PASS 后端 sessions owner 校验通过：load_sessions 只读 sessions 文件元数据，delete_sessions 只通过 repository helper 删除已扫描会话文件，其他 sessions 动作保持无真实副作用。");

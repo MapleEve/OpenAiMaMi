@@ -8,6 +8,7 @@ import {
 import { PageStage } from "@/components/layout/stage";
 import { AppRouterShell } from "@/app/router/shell";
 import type { Route } from "@/types/navigation";
+import { resolveRouteVisibility } from "@/routes/registry/gates";
 import { getRouteMeta } from "@/routes/registry/meta";
 import {
   resolveRouteDefinition,
@@ -23,9 +24,26 @@ function RegistryRouteElement({ route }: { route: Route }) {
   const HighIoFeedback = definition.HighIoFeedback;
   const Layout = definition.layout;
   const RouteErrorBoundary = definition.ErrorBoundary;
+  const routeVisible = resolveRouteVisibility(
+    definition.route,
+    definition.visible,
+    context.mysteryRouteGate.context,
+  );
 
   if (definition.redirect) {
     return <Navigate to={resolveRoutePath(definition.redirect)} replace />;
+  }
+
+  if (!routeVisible) {
+    if (context.mysteryRouteGate.pending && !definition.visible) {
+      return (
+        <PageStage state="active" fillHeight={definition.fillHeight}>
+          {definition.skeleton}
+        </PageStage>
+      );
+    }
+
+    return <Navigate to={resolveRoutePath("overview")} replace />;
   }
 
   return (
