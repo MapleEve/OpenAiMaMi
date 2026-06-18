@@ -39,6 +39,7 @@ const requiredFiles = [
   "platform/mod.rs",
   "repository/mod.rs",
   "repository/adapter/mod.rs",
+  "repository/maintenance.rs",
   "contracts/mod.rs",
   "contracts/envelope.rs",
   "adapters/mod.rs",

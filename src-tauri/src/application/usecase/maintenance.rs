@@ -8,13 +8,15 @@ use crate::contracts::{
 };
 use crate::core::error::CoreError;
 use crate::repository::config as config_repository;
+use crate::repository::maintenance as maintenance_repository;
 use crate::repository::Repository;
 
 // maintenance usecase 只编排维护类用户动作，具体文件和平台能力仍由窄 owner 承载。
 pub fn clean(repo: &Repository) -> Result<CleanPayload, CoreError> {
+    let result = maintenance_repository::clean_backup_children(repo)?;
     Ok(CleanPayload {
-        auth_backups_removed: remove_children(repo, &repo.paths().auth_backups_dir)?,
-        registry_backups_removed: remove_children(repo, &repo.paths().registry_backups_dir)?,
+        auth_backups_removed: result.auth_backups_removed,
+        registry_backups_removed: result.registry_backups_removed,
         stale_entries_removed: 0,
     })
 }
@@ -45,10 +47,9 @@ pub fn open_path(
 }
 
 pub fn rebuild_registry(repo: &Repository) -> Result<RebuildRegistryPayload, CoreError> {
-    repo.paths().ensure_app_directories()?;
-    let account_count = registry_account_count(repo).unwrap_or_default();
+    let summary = maintenance_repository::rebuild_registry_summary(repo)?;
     Ok(RebuildRegistryPayload {
-        account_count,
+        account_count: summary.account_count,
         active_account_key: None,
         registry_updated: false,
     })
@@ -67,30 +68,4 @@ pub fn reset_codex_config(repo: &Repository) -> Result<SystemActionPayload, Core
 
 fn mark_maintenance_status(status: &mut BackendSkeletonStatus) {
     status.module = "maintenance".to_string();
-}
-
-fn remove_children(repo: &Repository, path: &std::path::Path) -> Result<i32, CoreError> {
-    let mut removed = 0;
-    for entry in repo.fs().read_dir(path)? {
-        if entry.is_dir {
-            repo.fs().remove_dir_all(&entry.path)?;
-        } else {
-            repo.fs().remove_file(&entry.path)?;
-        }
-        removed += 1;
-    }
-    Ok(removed)
-}
-
-fn registry_account_count(repo: &Repository) -> Result<i32, CoreError> {
-    if !repo.fs().exists(&repo.paths().registry_path) {
-        return Ok(0);
-    }
-    let raw = repo.fs().read_to_string(&repo.paths().registry_path)?;
-    let value: serde_json::Value = serde_json::from_str(&raw)?;
-    Ok(value
-        .get("items")
-        .and_then(serde_json::Value::as_array)
-        .map(|items| items.len() as i32)
-        .unwrap_or_default())
 }

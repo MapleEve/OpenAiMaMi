@@ -7,6 +7,8 @@ const files = {
   maintenanceCommands: join(backendRoot, "commands", "maintenance.rs"),
   systemCommands: join(backendRoot, "commands", "system.rs"),
   maintenanceUsecase: join(backendRoot, "application", "usecase", "maintenance.rs"),
+  repositoryMaintenance: join(backendRoot, "repository", "maintenance.rs"),
+  repositoryMod: join(backendRoot, "repository", "mod.rs"),
   systemUsecase: join(backendRoot, "application", "usecase", "system.rs"),
   tauriLib: join(backendRoot, "lib.rs"),
   hexagonalValidator: join(repoRoot, "scripts", "validate-backend-hexagonal.mjs"),
@@ -136,6 +138,16 @@ function validateMaintenanceUsecase(path, content) {
 
   for (const [label, pattern, reason] of [
     [
+      "清理仓储事务",
+      /\bmaintenance_repository\s*::\s*clean_backup_children\s*\(\s*repo\s*\)\s*\?/,
+      "clean 文件事务必须由 repository/maintenance owner 承载",
+    ],
+    [
+      "重建注册表仓储事务",
+      /\bmaintenance_repository\s*::\s*rebuild_registry_summary\s*\(\s*repo\s*\)\s*\?/,
+      "rebuild_registry 文件事务必须由 repository/maintenance owner 承载",
+    ],
+    [
       "诊断窄 owner 复用",
       /\bdiagnostics\s*::\s*diagnose\s*\(\s*repo\s*\)\s*\?/,
       "diagnose 必须复用独立 diagnostics owner，不把诊断细节复制进 maintenance",
@@ -168,6 +180,81 @@ function validateMaintenanceUsecase(path, content) {
   ]) {
     requirePattern(label, path, content, pattern, reason);
   }
+
+  for (const [label, pattern, reason] of [
+    [
+      "repo.fs 直接文件事务",
+      /\brepo\s*\.\s*fs\s*\(\s*\)/g,
+      "maintenance usecase 不得直接碰文件系统适配器",
+    ],
+    [
+      "ensure_app_directories 路径事务",
+      /\bensure_app_directories\s*\(/g,
+      "maintenance usecase 不得通过路径对象直接创建目录",
+    ],
+    [
+      "usecase 私有 remove_children",
+      /\bfn\s+remove_children\s*\(/g,
+      "备份清理必须归属 repository/maintenance",
+    ],
+    [
+      "usecase 私有 registry_account_count",
+      /\bfn\s+registry_account_count\s*\(/g,
+      "registry 读取必须归属 repository/maintenance",
+    ],
+  ]) {
+    rejectPattern(label, path, content, pattern, reason);
+  }
+}
+
+function validateMaintenanceRepository(path, content) {
+  for (const [label, pattern, reason] of [
+    [
+      "maintenance repository clean owner",
+      /\bpub\s+fn\s+clean_backup_children\s*\(\s*repo:\s*&Repository\s*\)\s*->\s*Result\s*<\s*MaintenanceCleanResult\s*,\s*CoreError\s*>/,
+      "repository/maintenance.rs 必须 owning 备份清理文件事务",
+    ],
+    [
+      "maintenance repository rebuild owner",
+      /\bpub\s+fn\s+rebuild_registry_summary\s*\(\s*repo:\s*&Repository\s*,?\s*\)\s*->\s*Result\s*<\s*MaintenanceRegistrySummary\s*,\s*CoreError\s*>/,
+      "repository/maintenance.rs 必须 owning registry 重建摘要文件事务",
+    ],
+    [
+      "maintenance directory creation uses FS adapter",
+      /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.\s*create_dir_all\s*\(/,
+      "maintenance 目录创建必须通过可替换 FileSystemAdapter",
+    ],
+    [
+      "maintenance cleanup uses FS adapter",
+      /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.\s*(read_dir|remove_dir_all|remove_file)\s*\(/,
+      "maintenance 清理必须通过可替换 FileSystemAdapter",
+    ],
+    [
+      "maintenance registry count uses FS adapter",
+      /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.\s*(exists|read_to_string)\s*\(/,
+      "maintenance registry 读取必须通过可替换 FileSystemAdapter",
+    ],
+  ]) {
+    requirePattern(label, path, content, pattern, reason);
+  }
+
+  rejectPattern(
+    "std::fs 直接文件事务",
+    path,
+    content,
+    /\bstd\s*::\s*fs\b/g,
+    "repository/maintenance.rs 也必须通过 FileSystemAdapter，不得直接使用 std::fs",
+  );
+}
+
+function validateRepositoryMod(path, content) {
+  requirePattern(
+    "repository maintenance module registration",
+    path,
+    content,
+    /\bpub\s+mod\s+maintenance\s*;/,
+    "repository/mod.rs 必须注册 maintenance repository owner",
+  );
 }
 
 function validateSystemNoMaintenance(path, content) {
@@ -255,6 +342,11 @@ const raw = new Map(
 validateForbiddenNames([...raw.values()].map((file) => [file.path, file.content]));
 validateMaintenanceCommands(files.maintenanceCommands, raw.get("maintenanceCommands").content);
 validateMaintenanceUsecase(files.maintenanceUsecase, raw.get("maintenanceUsecase").content);
+validateMaintenanceRepository(
+  files.repositoryMaintenance,
+  raw.get("repositoryMaintenance").content,
+);
+validateRepositoryMod(files.repositoryMod, raw.get("repositoryMod").content);
 validateSystemNoMaintenance(files.systemCommands, raw.get("systemCommands").content);
 validateSystemUsecaseNoMaintenance(files.systemUsecase, raw.get("systemUsecase").content);
 validateLibRegistration(files.tauriLib, raw.get("tauriLib").content);

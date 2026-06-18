@@ -6,6 +6,7 @@ pub mod config;
 pub mod custom_instructions;
 pub mod diagnostics;
 pub mod hotspot;
+pub mod maintenance;
 pub mod mcp;
 pub mod path_guard;
 pub mod paths;
