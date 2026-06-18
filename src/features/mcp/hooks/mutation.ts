@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mcpService, type UpsertMcpServerInput } from "@/services/mcp";
 import {
-  MCP_SERVERS_QUERY_KEY,
+  prepareMcpMutation,
   writeMcpMutationPayload,
 } from "../cache";
 
@@ -13,17 +13,16 @@ export function useMcpServerMutations(options?: { onRemoved?: () => void }) {
   const toggleMutation = useMutation({
     mutationFn: ({ name, enabled }: { name: string; enabled: boolean }) =>
       mcpService.setServerEnabled(name, enabled),
-    onMutate: () =>
-      queryClient.cancelQueries({ queryKey: MCP_SERVERS_QUERY_KEY }),
-    onSuccess: (payload) => writeMcpMutationPayload(queryClient, payload),
+    onMutate: () => prepareMcpMutation(queryClient),
+    onSuccess: (payload, _variables, context) =>
+      writeMcpMutationPayload(queryClient, payload, context),
   });
 
   const removeMutation = useMutation({
     mutationFn: (name: string) => mcpService.removeServer(name),
-    onMutate: () =>
-      queryClient.cancelQueries({ queryKey: MCP_SERVERS_QUERY_KEY }),
-    onSuccess: async (payload) => {
-      await writeMcpMutationPayload(queryClient, payload);
+    onMutate: () => prepareMcpMutation(queryClient),
+    onSuccess: async (payload, _variables, context) => {
+      await writeMcpMutationPayload(queryClient, payload, context);
       options?.onRemoved?.();
     },
   });
@@ -39,10 +38,9 @@ export function useUpsertMcpServerMutation(options?: { onSaved?: () => void }) {
 
   return useMutation({
     mutationFn: (input: UpsertMcpServerInput) => mcpService.upsertServer(input),
-    onMutate: () =>
-      queryClient.cancelQueries({ queryKey: MCP_SERVERS_QUERY_KEY }),
-    onSuccess: async (payload) => {
-      await writeMcpMutationPayload(queryClient, payload);
+    onMutate: () => prepareMcpMutation(queryClient),
+    onSuccess: async (payload, _variables, context) => {
+      await writeMcpMutationPayload(queryClient, payload, context);
       options?.onSaved?.();
     },
   });

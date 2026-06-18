@@ -904,13 +904,13 @@ function validateMcpDeepOwnerBoundaries() {
     "mcpService.setServerEnabled",
     "mcpService.removeServer",
     "mcpService.upsertServer",
+    "prepareMcpMutation",
     "writeMcpMutationPayload",
-    "cancelQueries",
   ]);
   assertNotMatches("src/features/mcp/hooks/mutation.ts", mutation, [
     [/\buseQuery\b/, "mcp mutation owner 不得 owning query"],
     [/\buse(State|Reducer|Effect|Memo)\b/, "mcp mutation owner 不得 owning page/controller UI state"],
-    [/\b(setQueryData|invalidateQueries)\b/, "mcp mutation owner 必须把 cache 写入和失效交给 cache helper"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "mcp mutation owner 必须把 mutation fence、cache 写入、失效和取消交给 cache helper"],
     [/toast\(|navigator\.clipboard/, "mcp mutation owner 不得 owning toast 或剪贴板 UI 组合"],
     [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "mcp mutation owner 必须经 mcp service wrapper，不得直接拼 IPC"],
   ]);
@@ -948,7 +948,9 @@ function validateMcpDeepOwnerBoundaries() {
     "MCP_SERVERS_QUERY_KEY",
     "writeMcpAuthoritativePayload",
     "writeMcpCachePayload",
+    "prepareMcpMutation",
     "writeMcpMutationPayload",
+    "beginMcpMutationSequence",
     "setQueryData<McpListEnvelope>",
     "invalidateMcpContractQueries",
     "invalidateQueries({ queryKey: MCP_SERVERS_QUERY_KEY })",

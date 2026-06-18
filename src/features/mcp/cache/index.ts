@@ -10,7 +10,7 @@ import type {
 } from "../types";
 import {
   acceptMcpCacheSequence,
-  nextMcpCacheSequence,
+  beginMcpMutationSequence,
   type McpCachePayloadSource,
 } from "./sequence";
 
@@ -23,7 +23,7 @@ export const writeMcpAuthoritativePayload = (
   envelope: Omit<McpCacheEnvelope, "moduleId">,
 ) => McpCache.writeAuthoritativePayload(queryClient, envelope);
 
-export { nextMcpCacheSequence } from "./sequence";
+export { beginMcpMutationSequence, nextMcpCacheSequence } from "./sequence";
 
 // Cache owner 统一拦截乱序刷新，避免 delayed refresh 覆盖更新后的 mutation payload。
 export function writeMcpCachePayload<TPayload extends McpCachePayload>(
@@ -32,7 +32,7 @@ export function writeMcpCachePayload<TPayload extends McpCachePayload>(
   source: McpCachePayloadSource,
   sequence: number,
 ) {
-  if (!acceptMcpCacheSequence(sequence)) {
+  if (!acceptMcpCacheSequence(source, sequence)) {
     return false;
   }
 
@@ -45,17 +45,30 @@ export function writeMcpCachePayload<TPayload extends McpCachePayload>(
   return true;
 }
 
+export interface McpMutationCacheContext {
+  sequence: number;
+}
+
+export async function prepareMcpMutation(
+  queryClient: QueryClient,
+): Promise<McpMutationCacheContext> {
+  const sequence = beginMcpMutationSequence();
+  await queryClient.cancelQueries({ queryKey: MCP_SERVERS_QUERY_KEY });
+  return { sequence };
+}
+
 export async function writeMcpMutationPayload<
   TPayload extends McpMutationEnvelope | McpRemoveEnvelope,
 >(
   queryClient: QueryClient,
   payload: TPayload,
+  context?: McpMutationCacheContext,
 ) {
   const accepted = writeMcpCachePayload(
     queryClient,
     payload,
     "mutation-payload",
-    nextMcpCacheSequence(),
+    context?.sequence ?? beginMcpMutationSequence(),
   );
   if (!accepted) return;
 
