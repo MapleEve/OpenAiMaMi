@@ -29,6 +29,7 @@ const requiredFiles = [
   "application/service.rs",
   "application/ports.rs",
   "application/usecase/mod.rs",
+  "application/usecase/path_state.rs",
   "core/mod.rs",
   "core/error.rs",
   "core/dto/mod.rs",
@@ -41,6 +42,7 @@ const requiredFiles = [
   "repository/adapter/mod.rs",
   "repository/directories.rs",
   "repository/maintenance.rs",
+  "repository/path_state.rs",
   "contracts/mod.rs",
   "contracts/envelope.rs",
   "adapters/mod.rs",
@@ -58,7 +60,17 @@ const voiceBoundaryFiles = [
 const ipcCommandContractFile = join(repoRoot, "src", "contracts", "ipc", "commands.ts");
 const tauriLibFile = join(backendRoot, "lib.rs");
 const applicationUsecaseRoot = join(backendRoot, "application", "usecase");
+const applicationUsecasePathStateFile = join(backendRoot, "application", "usecase", "path_state.rs");
+const diagnosticsUsecaseFile = join(backendRoot, "application", "usecase", "diagnostics.rs");
+const snapshotBootstrapUsecaseFile = join(
+  backendRoot,
+  "application",
+  "usecase",
+  "system",
+  "snapshot_bootstrap.rs",
+);
 const repositoryModFile = join(backendRoot, "repository", "mod.rs");
+const repositoryPathStateFile = join(backendRoot, "repository", "path_state.rs");
 const repositoryPathsFile = join(backendRoot, "repository", "paths.rs");
 const repositoryDirectoriesFile = join(backendRoot, "repository", "directories.rs");
 const sourceSidecarDaemonCommands = [
@@ -892,6 +904,66 @@ function validateRepositoryDirectoriesOwner() {
   }
 }
 
+function validatePathStateOwner() {
+  const repositoryOriginal = readRequiredUtf8(repositoryPathStateFile, "Repository 路径状态 owner 文件");
+  const usecaseOriginal = readRequiredUtf8(applicationUsecasePathStateFile, "Application 路径状态 DTO 辅助文件");
+  const diagnosticsOriginal = readRequiredUtf8(diagnosticsUsecaseFile, "Diagnostics usecase 文件");
+  const snapshotOriginal = readRequiredUtf8(snapshotBootstrapUsecaseFile, "Snapshot bootstrap usecase 文件");
+
+  if (repositoryOriginal.length > 0) {
+    const content = stripRustComments(repositoryOriginal);
+    const requiredFragments = [
+      "pub struct RepositoryPathState",
+      "pub fn load_app_path_state(repo: &Repository) -> RepositoryPathState",
+      "auth_exists: repo.fs().exists(&paths.auth_path)",
+      "registry_exists: repo.fs().exists(&paths.registry_path)",
+      "sessions_exists: repo.fs().exists(&paths.sessions_dir)",
+    ];
+    for (const fragment of requiredFragments) {
+      if (!content.includes(fragment)) {
+        failures.push(`${toRelative(repositoryPathStateFile)} 缺少路径事实归口片段：${fragment}`);
+      }
+    }
+  }
+
+  if (usecaseOriginal.length > 0) {
+    const content = stripRustComments(usecaseOriginal);
+    const requiredFragments = [
+      "pub fn make_app_path_state(repo: &Repository) -> AppPathState",
+      "load_app_path_state(repo)",
+      "pub fn app_path_state_from_repository(state: RepositoryPathState) -> AppPathState",
+    ];
+    for (const fragment of requiredFragments) {
+      if (!content.includes(fragment)) {
+        failures.push(`${toRelative(applicationUsecasePathStateFile)} 缺少路径 DTO 转换片段：${fragment}`);
+      }
+    }
+    for (const index of findRuleMatches(content, /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(/g)) {
+      failures.push(
+        `${toRelative(applicationUsecasePathStateFile)}:${lineNumberAt(usecaseOriginal, index)} 路径状态 usecase 辅助层不得直接读取 FS`,
+      );
+    }
+  }
+
+  for (const [file, original] of [
+    [diagnosticsUsecaseFile, diagnosticsOriginal],
+    [snapshotBootstrapUsecaseFile, snapshotOriginal],
+  ]) {
+    if (original.length === 0) continue;
+    const content = stripRustComments(original);
+    for (const index of findRuleMatches(content, /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(/g)) {
+      failures.push(
+        `${toRelative(file)}:${lineNumberAt(original, index)} usecase 不得直接做路径存在性探测，必须经路径状态 owner`,
+      );
+    }
+    for (const index of findRuleMatches(content, /\bfn\s+make_path_state\s*\(\s*repo\s*:\s*&Repository\s*\)\s*->\s*AppPathState/g)) {
+      failures.push(
+        `${toRelative(file)}:${lineNumberAt(original, index)} usecase 不得重新拥有 AppPathState 路径事实组装`,
+      );
+    }
+  }
+}
+
 function validateVoiceSkeleton() {
   for (const file of voiceBoundaryFiles) {
     const absolute = join(backendRoot, file);
@@ -916,6 +988,7 @@ validateNoApplicationCoreTauriBoundaryLeaks();
 validateNoApplicationUsecaseDirectPlatformCalls();
 validateRepositoryReplaceableFileSystem();
 validateRepositoryDirectoriesOwner();
+validatePathStateOwner();
 validateVoiceSkeleton();
 validateIpcCommandRegistration();
 

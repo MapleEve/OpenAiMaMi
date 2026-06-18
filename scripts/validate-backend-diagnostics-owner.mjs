@@ -6,6 +6,8 @@ const backendRoot = join(repoRoot, "src-tauri", "src");
 const files = {
   usecaseMod: join(backendRoot, "application", "usecase", "mod.rs"),
   diagnosticsUsecase: join(backendRoot, "application", "usecase", "diagnostics.rs"),
+  pathStateUsecase: join(backendRoot, "application", "usecase", "path_state.rs"),
+  repositoryPathState: join(backendRoot, "repository", "path_state.rs"),
   systemRoot: join(backendRoot, "application", "usecase", "system.rs"),
   maintenanceUsecase: join(backendRoot, "application", "usecase", "maintenance.rs"),
   contractsDiagnostics: join(backendRoot, "contracts", "diagnostics.rs"),
@@ -58,12 +60,15 @@ for (const [label, pattern] of [
   ["diagnostics module status", /module\s*:\s*"diagnostics"\s*\.to_string\s*\(\s*\)/],
   ["pending diagnostics fields", /\bfn\s+make_pending_diagnostic_fields\s*\(/],
   ["diagnostic snapshot payload", /\bfn\s+make_diagnostic_snapshot_payload\s*\(/],
-  ["diagnostic path state", /\bfn\s+make_path_state\s*\(\s*repo\s*:\s*&Repository\s*\)\s*->\s*AppPathState/],
+  ["diagnostic repository path state", /\bload_app_path_state\s*\(\s*repo\s*\)/],
+  ["diagnostic path state merge", /\bfn\s+make_path_state\s*\(\s*state\s*:\s*RepositoryPathState\s*\)\s*->\s*AppPathState/],
+  ["diagnostic path DTO conversion", /\bapp_path_state_from_repository\s*\(\s*state\s*\)/],
 ]) {
   requirePattern(label, diagnosticsUsecase.path, diagnosticsUsecase.content, pattern, "diagnostics owner 必须承载只读诊断 payload 组装");
 }
 
 for (const [label, pattern] of [
+  ["直接 FS 路径探测", /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(/g],
   ["system 私有模块依赖", /\bsuper\s*::\s*snapshot_bootstrap\b|\bsystem\s*::/g],
   ["bootstrap cache owner", /\bbootstrap_repository\b/g],
   ["settings secret owner", /\bremote_device_secret\b/g],
@@ -71,6 +76,33 @@ for (const [label, pattern] of [
   ["平台动作 owner", /\bApp(Process|Shell|System|Window)Port\b|\bplatform_actions\b/g],
 ]) {
   rejectPattern(label, diagnosticsUsecase.path, diagnosticsUsecase.content, pattern, "diagnostics owner 必须保持只读诊断范围");
+}
+
+const pathStateUsecase = raw.get("pathStateUsecase");
+for (const [label, pattern] of [
+  ["路径状态 DTO 转换层", /\bpub\s+fn\s+make_app_path_state\s*\(\s*repo\s*:\s*&Repository\s*\)\s*->\s*AppPathState/],
+  ["repository fact loader", /\bload_app_path_state\s*\(\s*repo\s*\)/],
+  ["repository fact conversion", /\bpub\s+fn\s+app_path_state_from_repository\s*\(\s*state\s*:\s*RepositoryPathState\s*\)\s*->\s*AppPathState/],
+]) {
+  requirePattern(label, pathStateUsecase.path, pathStateUsecase.content, pattern, "路径状态 DTO 转换必须归属 application/usecase/path_state.rs");
+}
+rejectPattern(
+  "路径状态辅助层直接 FS 探测",
+  pathStateUsecase.path,
+  pathStateUsecase.content,
+  /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(/g,
+  "path_state usecase 辅助层只能转换仓储事实，不得直接读取 FS",
+);
+
+const repositoryPathState = raw.get("repositoryPathState");
+for (const [label, pattern] of [
+  ["repository path state fact", /\bpub\s+struct\s+RepositoryPathState\b/],
+  ["repository path state loader", /\bpub\s+fn\s+load_app_path_state\s*\(\s*repo\s*:\s*&Repository\s*\)\s*->\s*RepositoryPathState/],
+  ["auth 存在性事实", /\bauth_exists\s*:\s*repo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(\s*&paths\.auth_path\s*\)/],
+  ["registry 存在性事实", /\bregistry_exists\s*:\s*repo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(\s*&paths\.registry_path\s*\)/],
+  ["sessions 存在性事实", /\bsessions_exists\s*:\s*repo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(\s*&paths\.sessions_dir\s*\)/],
+]) {
+  requirePattern(label, repositoryPathState.path, repositoryPathState.content, pattern, "路径存在性事实必须归属 repository/path_state.rs");
 }
 
 const systemRoot = raw.get("systemRoot");

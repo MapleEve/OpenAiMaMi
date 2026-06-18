@@ -6,6 +6,8 @@ const backendRoot = join(repoRoot, "src-tauri", "src");
 const files = {
   root: join(backendRoot, "application", "usecase", "system.rs"),
   snapshotBootstrap: join(backendRoot, "application", "usecase", "system", "snapshot_bootstrap.rs"),
+  pathStateUsecase: join(backendRoot, "application", "usecase", "path_state.rs"),
+  repositoryPathState: join(backendRoot, "repository", "path_state.rs"),
   settingsSecret: join(backendRoot, "application", "usecase", "system", "settings_secret.rs"),
   commands: join(backendRoot, "commands", "system.rs"),
   configRepository: join(backendRoot, "repository", "config.rs"),
@@ -280,6 +282,7 @@ function validateSnapshotBootstrapOwner(path, original, content) {
   for (const [label, pattern] of [
     ["load snapshot", /\bpub\s+fn\s+load_snapshot\s*\(\s*repo\s*:\s*&Repository\s*\)/],
     ["load bootstrap state", /\bpub\s+fn\s+load_bootstrap_state\s*\(\s*repo\s*:\s*&Repository\s*\)/],
+    ["path state helper", /\bpath_state\s*::\s*make_app_path_state\s*\(\s*repo\s*\)/],
     ["bootstrap cache read", /\bbootstrap_repository\s*::\s*load_bootstrap_cache\s*\(\s*repo\s*\)/],
     ["bootstrap cache write", /\bbootstrap_repository\s*::\s*store_bootstrap_snapshot_progressive\s*\(/],
   ]) {
@@ -287,10 +290,42 @@ function validateSnapshotBootstrapOwner(path, original, content) {
   }
 
   for (const [label, pattern] of [
+    ["直接 FS 路径探测", /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(/g],
+    ["私有路径状态 DTO helper", /\bfn\s+make_path_state\s*\(/g],
     ["diagnostics owner", /\bload_system_diagnostic_snapshot\b|\bDiagnostic(Probe|Snapshot)\b/g],
     ["settings secret owner", /\bremote_device_secret\b/g],
   ]) {
     rejectPattern(label, path, original, content, pattern, "snapshot-bootstrap owner 不得吸收无关 system 切片");
+  }
+}
+
+function validatePathStateOwner(path, original, content) {
+  for (const [label, pattern] of [
+    ["make_app_path_state", /\bpub\s+fn\s+make_app_path_state\s*\(\s*repo\s*:\s*&Repository\s*\)\s*->\s*AppPathState/],
+    ["repository fact loader", /\bload_app_path_state\s*\(\s*repo\s*\)/],
+    ["DTO converter", /\bpub\s+fn\s+app_path_state_from_repository\s*\(\s*state\s*:\s*RepositoryPathState\s*\)\s*->\s*AppPathState/],
+  ]) {
+    requirePattern(label, path, content, pattern, "application/usecase/path_state.rs 必须负责路径事实到 AppPathState DTO 的转换");
+  }
+  rejectPattern(
+    "直接 FS 路径探测",
+    path,
+    original,
+    content,
+    /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(/g,
+    "path_state usecase 辅助层不得直接读取 FS",
+  );
+}
+
+function validateRepositoryPathStateOwner(path, content) {
+  for (const [label, pattern] of [
+    ["RepositoryPathState fact", /\bpub\s+struct\s+RepositoryPathState\b/],
+    ["path state fact loader", /\bpub\s+fn\s+load_app_path_state\s*\(\s*repo\s*:\s*&Repository\s*\)\s*->\s*RepositoryPathState/],
+    ["auth 存在性事实", /\bauth_exists\s*:\s*repo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(\s*&paths\.auth_path\s*\)/],
+    ["registry 存在性事实", /\bregistry_exists\s*:\s*repo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(\s*&paths\.registry_path\s*\)/],
+    ["sessions 存在性事实", /\bsessions_exists\s*:\s*repo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(\s*&paths\.sessions_dir\s*\)/],
+  ]) {
+    requirePattern(label, path, content, pattern, "repository/path_state.rs 必须归口路径展示和存在性事实");
   }
 }
 
@@ -361,6 +396,15 @@ validateSettingsSecretOwner(
   files.settingsSecret,
   raw.get("settingsSecret").content,
   stripped.get("settingsSecret").content,
+);
+validatePathStateOwner(
+  files.pathStateUsecase,
+  raw.get("pathStateUsecase").content,
+  stripped.get("pathStateUsecase").content,
+);
+validateRepositoryPathStateOwner(
+  files.repositoryPathState,
+  stripped.get("repositoryPathState").content,
 );
 validateConfigRepositoryOwner(
   files.configRepository,

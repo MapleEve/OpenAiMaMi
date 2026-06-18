@@ -10,6 +10,7 @@ pub mod hotspot;
 pub mod maintenance;
 pub mod mcp;
 pub mod path_guard;
+pub mod path_state;
 pub mod paths;
 pub mod quota;
 pub mod registry;

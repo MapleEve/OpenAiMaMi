@@ -47,7 +47,7 @@ OpenAiMami 是一个面向个人本地工作流的桌面应用。本仓库公开
 | --- | --- | --- |
 | 公开材料 | Apache License、中文说明、匿名化 raw/internal 主链路、前端 dumped 证据、二进制清单和重建文档已经进入仓库。 | `OpenAiMami IDB` 仍是独立参考资产，不混入主仓库；还原主线以 raw/internal 为准。 |
 | 前端 | `src/` 已按入口、路由、全局 Provider、runtime initializer、模块 owner、缓存 owner、i18n 和 E2E mock 建立可继续还原的主流模块化结构。 | 不声明前端已经 100% 完成，不声明 macOS / Windows 双平台 leaf 已全部闭合；完整度继续由 raw/internal、leaf 队列、源码 closeout 和验证脚本确认。 |
-| 后端 | `src-tauri/` 已建立 commands、application、core、platform、repository、adapters、contracts 六边形骨架，并补回已有公开证据支撑的后端能力；maintenance 文件事务和应用目录创建已收口到 repository owner。 | 不做闭源后端业务全量还原；未公开、未选择还原或无公开证据支撑的行为只能保留为契约、桩、待实现项、测试缺口或待补证据位置。 |
+| 后端 | `src-tauri/` 已建立 commands、application、core、platform、repository、adapters、contracts 六边形骨架，并补回已有公开证据支撑的后端能力；maintenance 文件事务、应用目录创建和路径状态事实已收口到 repository owner。 | 不做闭源后端业务全量还原；未公开、未选择还原或无公开证据支撑的行为只能保留为契约、桩、待实现项、测试缺口或待补证据位置。 |
 | voice | 保留空骨架、合同清单和中文边界说明。 | 不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。 |
 | 验收 | 已有公开边界、README 同步、前端证据、前端分层、账号/线程缓存竞态、状态合同、可见文案、后端六边形、后端 owner、合同 owner、i18n 和 E2E mock 检查入口。 | 构建、编译和平台运行验收依赖本机 Rust、前端和目标平台工具链；工具链缺失只能记录环境限制，不能替代源码状态判断。 |
 | 运行闭环 | README 只承认已经有证据和脚本支撑的公开源码状态。 | 不声明真实网络、后台线程、全局状态、真实 token 统计口径、更新安装、诊断修复、外部进程重启或 shell 闭环已经完成。 |

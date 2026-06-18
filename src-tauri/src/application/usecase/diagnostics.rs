@@ -1,3 +1,4 @@
+use crate::application::usecase::path_state::app_path_state_from_repository;
 use crate::contracts::{
     AppPathState, BackendEffect, BackendSkeletonBoundaryStatus, BackendSkeletonStatus,
     DiagnoseApiState, DiagnoseDiagnosticFieldPayload, DiagnoseDiagnosticProbePayload,
@@ -7,6 +8,7 @@ use crate::contracts::{
 use crate::core::error::CoreError;
 use crate::core::model::diagnostics::{DiagnosticProbe, DiagnosticSnapshot};
 use crate::repository::diagnostics::load_system_diagnostic_snapshot;
+use crate::repository::path_state::{load_app_path_state, RepositoryPathState};
 use crate::repository::Repository;
 
 // diagnostics usecase 只负责公开只读诊断快照合同，不恢复诊断修复闭环。
@@ -77,7 +79,7 @@ fn make_path_state_from_diagnostic_snapshot(
     repo: &Repository,
     snapshot: &DiagnosticSnapshot,
 ) -> AppPathState {
-    let mut state = make_path_state(repo);
+    let mut state = load_app_path_state(repo);
     if let Some(exists) = diagnostic_probe_exists(snapshot, "diagnostics.path.auth") {
         state.auth_exists = exists;
     }
@@ -87,23 +89,11 @@ fn make_path_state_from_diagnostic_snapshot(
     if let Some(exists) = diagnostic_probe_exists(snapshot, "diagnostics.path.sessions") {
         state.sessions_exists = exists;
     }
-    state
+    make_path_state(state)
 }
 
-fn make_path_state(repo: &Repository) -> AppPathState {
-    let paths = repo.paths();
-    AppPathState {
-        codex_home: paths.codex_home.display().to_string(),
-        accounts_path: paths.accounts_dir.display().to_string(),
-        auth_path: paths.auth_path.display().to_string(),
-        registry_path: paths.registry_path.display().to_string(),
-        sessions_path: paths.sessions_dir.display().to_string(),
-        launch_agent_path: paths.launch_agent_path.display().to_string(),
-        auto_switch_log_path: paths.auto_switch_log_path.display().to_string(),
-        auth_exists: repo.fs().exists(&paths.auth_path),
-        registry_exists: repo.fs().exists(&paths.registry_path),
-        sessions_exists: repo.fs().exists(&paths.sessions_dir),
-    }
+fn make_path_state(state: RepositoryPathState) -> AppPathState {
+    app_path_state_from_repository(state)
 }
 
 fn make_diagnostic_snapshot_payload(
