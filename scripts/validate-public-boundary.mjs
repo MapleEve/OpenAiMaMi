@@ -69,6 +69,10 @@ function readUtf8(path) {
   return readFileSync(join(repoRoot, path), "utf8");
 }
 
+function readBytes(path) {
+  return readFileSync(join(repoRoot, path));
+}
+
 function isBinaryLike(buffer) {
   return buffer.includes(0);
 }
@@ -194,6 +198,86 @@ function validateReadmeFile(path) {
   );
 }
 
+function validateReadmePairConsistency() {
+  const readmePath = join(repoRoot, "README.md");
+  const readmeCnPath = join(repoRoot, "README-cn.md");
+  if (!existsSync(readmePath) || !existsSync(readmeCnPath)) {
+    addCheck(
+      "README.md 与 README-cn.md 内容完全一致",
+      false,
+      "两个 README 文件都必须存在后才能比较内容",
+    );
+    return;
+  }
+
+  const readme = readBytes("README.md");
+  const readmeCn = readBytes("README-cn.md");
+  addCheck(
+    "README.md 与 README-cn.md 内容完全一致",
+    readme.equals(readmeCn),
+    readme.equals(readmeCn)
+      ? "两个 README 文件的 UTF-8 内容完全一致"
+      : "README.md 与 README-cn.md 必须保持完全一致",
+  );
+}
+
+function validateReadmeStatusStructure(path) {
+  if (!existsSync(join(repoRoot, path))) return;
+
+  const content = readUtf8(path);
+  const headings = content
+    .split(/\r?\n/)
+    .filter((line) => /^#{1,6}\s+/.test(line))
+    .map((line) => line.trim());
+  const requiredStatusHeadings = [
+    "## 当前状态",
+    "### 已经归档",
+    "### 已恢复能力",
+    "### 暂不声明完成",
+    "### 验收入口",
+  ];
+  const missing = requiredStatusHeadings.filter(
+    (heading) => !headings.includes(heading),
+  );
+
+  addCheck(
+    `${path} 保留归纳状态结构`,
+    missing.length === 0,
+    missing.length === 0
+      ? "README 状态标题齐全"
+      : `缺少状态标题：${missing.join(", ")}`,
+  );
+}
+
+function validateReadmeNoProgressChangelog(path) {
+  if (!existsSync(join(repoRoot, path))) return;
+
+  const progressPatterns = [
+    /本次提交/,
+    /这次提交/,
+    /提交号/,
+    /第\s*(?:[0-9]+|[一二三四五六七八九十百千万]+)\s*次/,
+  ];
+  const hits = [];
+  const lines = readUtf8(path).split(/\r?\n/);
+
+  lines.forEach((line, index) => {
+    const trimmed = line.trim();
+    if (/^##\s+PR\b/i.test(trimmed) || /^#+\s+/.test(trimmed)) return;
+    if (progressPatterns.some((pattern) => pattern.test(trimmed))) {
+      hits.push(`${path}:${index + 1}`);
+    }
+  });
+
+  addCheck(
+    `${path} 不包含流水账式进度用语`,
+    hits.length === 0,
+    hits.length === 0
+      ? "未发现按提交逐条追加的进度用语"
+      : `发现流水账式进度用语：${hits.join(", ")}`,
+  );
+}
+
 function validateTrackedAssets() {
   const trackedFiles = listTrackedFiles();
   const forbiddenAssets = [];
@@ -292,8 +376,13 @@ function validateRepositoryTextBoundary() {
 }
 
 validateGitAttributes();
+validateReadmePairConsistency();
 validateReadmeFile("README.md");
 validateReadmeFile("README-cn.md");
+validateReadmeStatusStructure("README.md");
+validateReadmeStatusStructure("README-cn.md");
+validateReadmeNoProgressChangelog("README.md");
+validateReadmeNoProgressChangelog("README-cn.md");
 validateTrackedAssets();
 validateRawFrontendAssets();
 validateRepositoryTextBoundary();

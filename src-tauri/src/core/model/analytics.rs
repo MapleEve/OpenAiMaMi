@@ -25,15 +25,23 @@ pub struct PublicSessionFileFact {
     pub updated_at: i64,
     pub created_at: Option<i64>,
     pub file_size: i64,
+    pub turn_count: i32,
 }
 
 impl PublicSessionFileFact {
-    pub fn new(id: String, updated_at: i64, created_at: Option<i64>, file_size: i64) -> Self {
+    pub fn new(
+        id: String,
+        updated_at: i64,
+        created_at: Option<i64>,
+        file_size: i64,
+        turn_count: i32,
+    ) -> Self {
         Self {
             id,
             updated_at,
             created_at,
             file_size: file_size.max(0),
+            turn_count: turn_count.max(0),
         }
     }
 }
@@ -66,6 +74,7 @@ pub struct PublicUsageAggregate {
     pub total_size_bytes: i64,
     pub active_days: i32,
     pub avg_sessions_per_active_day: f64,
+    pub avg_turns: f64,
     pub most_active_date: Option<String>,
     pub most_active_count: i32,
     pub daily_activity: Vec<PublicDailyActivity>,
@@ -103,6 +112,7 @@ pub fn aggregate_public_usage(
     let today = date_key(now_epoch_seconds);
     let mut by_day = BTreeMap::<String, (i32, i64)>::new();
     let mut total_size_bytes = 0i64;
+    let mut total_turns = 0i32;
 
     for fact in facts {
         let date = date_key(fact.updated_at);
@@ -110,6 +120,7 @@ pub fn aggregate_public_usage(
         entry.0 = entry.0.saturating_add(1);
         entry.1 = entry.1.saturating_add(fact.file_size.max(0));
         total_size_bytes = total_size_bytes.saturating_add(fact.file_size.max(0));
+        total_turns = total_turns.saturating_add(fact.turn_count.max(0));
     }
 
     let mut daily_activity = by_day
@@ -135,6 +146,11 @@ pub fn aggregate_public_usage(
     } else {
         total_sessions as f64 / active_days as f64
     };
+    let avg_turns = if total_sessions == 0 {
+        0.0
+    } else {
+        total_turns as f64 / total_sessions as f64
+    };
     let (most_active_date, most_active_count) = daily_activity
         .iter()
         .max_by(|left, right| {
@@ -155,6 +171,7 @@ pub fn aggregate_public_usage(
         total_size_bytes,
         active_days,
         avg_sessions_per_active_day,
+        avg_turns,
         most_active_date,
         most_active_count,
         daily_activity,
@@ -194,9 +211,9 @@ mod tests {
     #[test]
     fn aggregate_public_usage_counts_session_file_facts_by_day() {
         let facts = vec![
-            PublicSessionFileFact::new("a".to_string(), 1_710_000_000, None, 100),
-            PublicSessionFileFact::new("b".to_string(), 1_710_000_100, None, 50),
-            PublicSessionFileFact::new("c".to_string(), 1_710_086_400, None, 25),
+            PublicSessionFileFact::new("a".to_string(), 1_710_000_000, None, 100, 2),
+            PublicSessionFileFact::new("b".to_string(), 1_710_000_100, None, 50, 4),
+            PublicSessionFileFact::new("c".to_string(), 1_710_086_400, None, 25, 0),
         ];
 
         let aggregate = aggregate_public_usage(facts, 1_710_000_000);
@@ -209,6 +226,7 @@ mod tests {
         assert_eq!(aggregate.today_session_count, 2);
         assert_eq!(aggregate.today_total_file_size, 150);
         assert_eq!(aggregate.active_minutes_estimate, 0);
+        assert_eq!(aggregate.avg_turns, 2.0);
         assert_eq!(aggregate.daily_activity.len(), 2);
         assert!(aggregate
             .daily_activity
@@ -226,8 +244,8 @@ mod tests {
     #[test]
     fn aggregate_public_usage_for_range_filters_old_session_file_facts() {
         let facts = vec![
-            PublicSessionFileFact::new("old".to_string(), 1_709_913_600, None, 100),
-            PublicSessionFileFact::new("today".to_string(), 1_710_000_000, None, 50),
+            PublicSessionFileFact::new("old".to_string(), 1_709_913_600, None, 100, 10),
+            PublicSessionFileFact::new("today".to_string(), 1_710_000_000, None, 50, 2),
         ];
 
         let aggregate =
@@ -235,6 +253,7 @@ mod tests {
 
         assert_eq!(aggregate.total_sessions, 1);
         assert_eq!(aggregate.total_size_bytes, 50);
+        assert_eq!(aggregate.avg_turns, 2.0);
         assert_eq!(aggregate.active_days, 1);
         assert_eq!(aggregate.daily_activity.len(), 1);
     }

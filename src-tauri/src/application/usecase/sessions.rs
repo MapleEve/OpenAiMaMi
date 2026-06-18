@@ -22,16 +22,16 @@ pub fn load_sessions(repo: &Repository) -> SessionsListPayload {
         .map(|metadata| SessionRecordPayload {
             id: metadata.id.clone(),
             thread_name: metadata.id,
-            project_path: None,
-            project_name: None,
-            parent_session_id: None,
+            project_path: metadata.project_path,
+            project_name: metadata.project_name,
+            parent_session_id: metadata.parent_session_id,
             updated_at: metadata.updated_at,
             created_at: metadata.created_at,
             file_size: metadata.file_size,
-            is_conversation_thread: false,
-            project_path_missing: false,
-            agent_nickname: None,
-            agent_role: None,
+            is_conversation_thread: metadata.turn_count > 0,
+            project_path_missing: metadata.project_path_missing,
+            agent_nickname: metadata.agent_nickname,
+            agent_role: metadata.agent_role,
         })
         .collect::<Vec<_>>();
 
@@ -117,7 +117,7 @@ pub fn load_session_analytics(repo: &Repository, range: Option<String>) -> Sessi
         backend_status: restored_status("sessions", "load_session_analytics", BackendEffect::NoOp),
         range: normalized_range,
         total_sessions: aggregate.total_sessions,
-        avg_turns: 0.0,
+        avg_turns: aggregate.avg_turns,
         active_days: aggregate.active_days,
         series: aggregate
             .daily_activity

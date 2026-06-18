@@ -148,15 +148,56 @@ if (/created_at\s*:\s*None\b/.test(repositoryLoadBody)) {
 if (!/created_at\s*:\s*repo\.fs\(\)\.created_unix_seconds\s*\(\s*&entry\.path\s*\)/.test(repositoryLoadBody)) {
   failures.push("repository/sessions.rs load_session_file_metadata 必须通过 FS adapter 读取 created_at");
 }
+if (!/load_session_jsonl_facts\s*\(\s*repo\s*,\s*&entry\.path\s*\)/.test(repositoryLoadBody)) {
+  failures.push("repository/sessions.rs load_session_file_metadata 必须聚合 rollout/session JSONL 公开文件事实");
+}
 assertNoPattern("repository/sessions.rs load_session_file_metadata", repositoryLoadBody, [
-  /\bread_to_string\s*\(/,
   /\bwrite_string\s*\(/,
   /\bcreate_dir_all\s*\(/,
   /\bremove_file\s*\(/,
   /\bremove_dir_all\s*\(/,
   /\bcopy_file\s*\(/,
   /\brename\s*\(/,
+  /\brusqlite\b/,
+  /\bsqlite\b/,
+  /\bcodex-global-state\.json\b/,
 ]);
+
+const repositoryJsonlBody = requireFunctionBody(
+  repositoryContent,
+  repositoryFile,
+  "load_session_jsonl_facts",
+);
+if (!/repo\.fs\(\)\.read_to_string\s*\(\s*path\s*\)/.test(repositoryJsonlBody)) {
+  failures.push("repository/sessions.rs load_session_jsonl_facts 必须通过 FS adapter 只读 JSONL");
+}
+if (!/serde_json::from_str\s*::<\s*Value\s*>/.test(repositoryJsonlBody)) {
+  failures.push("repository/sessions.rs load_session_jsonl_facts 必须按 JSONL 解析公开 payload 字段");
+}
+assertNoPattern("repository/sessions.rs load_session_jsonl_facts", repositoryJsonlBody, [
+  /\bwrite_string\s*\(/,
+  /\bcreate_dir_all\s*\(/,
+  /\bremove_file\s*\(/,
+  /\bremove_dir_all\s*\(/,
+  /\bcopy_file\s*\(/,
+  /\brename\s*\(/,
+  /\brusqlite\b/,
+  /\bsqlite\b/,
+  /\bcodex-global-state\.json\b/,
+]);
+
+if (!/\/payload\/cwd/.test(repositoryContent)) {
+  failures.push("repository/sessions.rs 缺少 /payload/cwd 项目路径读取证据");
+}
+if (!/\/payload\/source\/subagent\/thread_spawn\/parent_thread_id/.test(repositoryContent)) {
+  failures.push("repository/sessions.rs 缺少 subagent parent_thread_id 读取证据");
+}
+if (!/\/payload\/agent_nickname/.test(repositoryContent) || !/\/payload\/agent_role/.test(repositoryContent)) {
+  failures.push("repository/sessions.rs 缺少 agent_nickname / agent_role 读取证据");
+}
+if (!/turn_count/.test(repositoryContent) || !/\/payload\/role/.test(repositoryContent)) {
+  failures.push("repository/sessions.rs 缺少基于 JSONL role 行的 turn_count 读取证据");
+}
 
 const repositoryDeleteBody = requireFunctionBody(
   repositoryContent,
@@ -226,8 +267,8 @@ if (!/\baggregate_public_usage_for_range\s*\(/.test(usecaseSessionAnalyticsBody)
 if (!/\brestored_status\s*\(\s*"sessions"\s*,\s*"load_session_analytics"\s*,\s*BackendEffect::NoOp\s*\)/.test(usecaseSessionAnalyticsBody)) {
   failures.push("application/usecase/sessions.rs load_session_analytics 成功路径必须返回 restored_status");
 }
-if (!/avg_turns\s*:\s*0\.0/.test(usecaseSessionAnalyticsBody)) {
-  failures.push("application/usecase/sessions.rs load_session_analytics 不得从公开文件事实推断 avg_turns");
+if (!/avg_turns\s*:\s*aggregate\.avg_turns/.test(usecaseSessionAnalyticsBody)) {
+  failures.push("application/usecase/sessions.rs load_session_analytics 必须从 core 聚合的 JSONL turn_count 映射 avg_turns");
 }
 assertNoPattern("application/usecase/sessions.rs load_session_analytics", usecaseSessionAnalyticsBody, [
   /\bstd::fs\b/,
@@ -269,4 +310,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("PASS 后端 sessions owner 校验通过：load_sessions 只读 sessions 文件元数据，delete_sessions 只通过 repository helper 删除已扫描会话文件，load_session_analytics 只聚合公开 session 文件事实，其他 sessions 动作保持无真实副作用。");
+console.log("PASS 后端 sessions owner 校验通过：load_sessions 只读 sessions 文件元数据和 rollout/session JSONL 公开字段，delete_sessions 只通过 repository helper 删除已扫描会话文件，load_session_analytics 只聚合公开 session 文件事实，其他 sessions 动作保持无真实副作用。");
