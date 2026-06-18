@@ -558,6 +558,191 @@ function validateRawFrontendAssets() {
   );
 }
 
+function normalizeMarkdownContent(content) {
+  return content.replace(/\r\n/g, "\n").replace(/\r/g, "\n").trim();
+}
+
+function findMarkdownLine(content, needle) {
+  return normalizeMarkdownContent(content)
+    .split("\n")
+    .some((line) => line.trim() === needle);
+}
+
+function sliceFromMarker(content, marker) {
+  const normalized = normalizeMarkdownContent(content);
+  const markerIndex = normalized.indexOf(marker);
+  if (markerIndex < 0) return null;
+  return normalized.slice(markerIndex).trim();
+}
+
+function validateInstructionAndReconstructionDocs() {
+  const instructionRules = [
+    {
+      path: "AGENTS.md",
+      titlePattern: /^#\s+OpenAiMami\s+执行规则\s*$/m,
+      requiredHeadings: [
+        "# OpenAiMami 执行规则",
+        "## 执行顺序",
+        "## 原文一：架构决策",
+        "## 原文二：重构门禁",
+      ],
+    },
+    {
+      path: "CLAUDE.md",
+      titlePattern: /^#\s+OpenAiMami\s+Claude\s+执行规则\s*$/m,
+      requiredHeadings: [
+        "# OpenAiMami Claude 执行规则",
+        "## 工作顺序",
+        "## 原文一：架构决策",
+        "## 原文二：重构门禁",
+      ],
+    },
+  ];
+  const instructionContents = new Map();
+
+  for (const rule of instructionRules) {
+    const exists = existsSync(join(repoRoot, rule.path));
+    addCheck(`${rule.path} 存在`, exists, exists ? "规则文件存在" : "规则文件缺失");
+    if (!exists) continue;
+
+    const content = readUtf8(rule.path);
+    instructionContents.set(rule.path, normalizeMarkdownContent(content));
+    const missingHeadings = rule.requiredHeadings.filter(
+      (heading) => !findMarkdownLine(content, heading),
+    );
+    const hasChineseTitle = rule.titlePattern.test(content);
+    addCheck(
+      `${rule.path} 保留中文标题和必须 heading`,
+      hasChineseTitle && missingHeadings.length === 0,
+      hasChineseTitle && missingHeadings.length === 0
+        ? "中文标题、执行顺序和两段原文 heading 均存在"
+        : [
+            hasChineseTitle ? "" : "缺少预期中文标题",
+            missingHeadings.length > 0
+              ? `缺少 heading：${missingHeadings.join(", ")}`
+              : "",
+          ]
+            .filter(Boolean)
+            .join("；"),
+    );
+  }
+
+  const agents = instructionContents.get("AGENTS.md");
+  const claude = instructionContents.get("CLAUDE.md");
+  const coreMarker = "## 原文一：架构决策";
+  const agentsCore = agents ? sliceFromMarker(agents, coreMarker) : null;
+  const claudeCore = claude ? sliceFromMarker(claude, coreMarker) : null;
+  addCheck(
+    "CLAUDE.md 原文核心内容与 AGENTS.md 对齐",
+    Boolean(agentsCore && claudeCore && agentsCore === claudeCore),
+    agentsCore && claudeCore && agentsCore === claudeCore
+      ? "允许前言差异，从“原文一：架构决策”起完全一致"
+      : "AGENTS.md 或 CLAUDE.md 缺少原文核心段，或核心段已漂移",
+  );
+
+  const originalBodies = [
+    {
+      path: "docs/reconstruction/architecture-decision-original.md",
+      marker: "## 决策",
+      label: "架构决策原文主体",
+    },
+    {
+      path: "docs/reconstruction/refactor-gates-original.md",
+      marker: "后端架构重构必须先满足以下规则，再移动代码或调整目录：",
+      label: "重构门禁原文主体",
+    },
+  ];
+
+  for (const original of originalBodies) {
+    const exists = existsSync(join(repoRoot, original.path));
+    addCheck(
+      `${original.path} 存在`,
+      exists,
+      exists ? "原文封存文件存在" : "原文封存文件缺失",
+    );
+    if (!exists) continue;
+
+    const body = sliceFromMarker(readUtf8(original.path), original.marker);
+    const hasBody = Boolean(body);
+    addCheck(
+      `${original.path} 可提取${original.label}`,
+      hasBody,
+      hasBody ? `已从标记“${original.marker}”提取原文主体` : "缺少原文主体起始标记",
+    );
+    if (!body) continue;
+
+    for (const target of ["AGENTS.md", "CLAUDE.md"]) {
+      const targetContent = instructionContents.get(target);
+      addCheck(
+        `${target} 包含${original.label}`,
+        Boolean(targetContent && targetContent.includes(body)),
+        targetContent && targetContent.includes(body)
+          ? "封存原文主体可在规则文件中逐字找到"
+          : `${target} 未逐字包含 ${original.path} 的原文主体`,
+      );
+    }
+  }
+
+  const reconstructionRoot = join(repoRoot, "docs", "reconstruction");
+  const reconstructionMarkdownFiles = walkFiles(reconstructionRoot)
+    .filter((path) => extname(path).toLowerCase() === ".md")
+    .sort((a, b) => toRepoPath(a).localeCompare(toRepoPath(b)));
+  const emptyFiles = [];
+  const mojibakeHits = [];
+  const missingChineseSignal = [];
+
+  for (const file of reconstructionMarkdownFiles) {
+    const repoPath = toRepoPath(file);
+    const content = readFileSync(file, "utf8");
+    const trimmed = content.trim();
+
+    if (trimmed.length === 0) {
+      emptyFiles.push(repoPath);
+      continue;
+    }
+
+    for (const { pattern, index } of findMojibakeMatches(content)) {
+      const line = content.slice(0, index).split(/\r?\n/).length;
+      mojibakeHits.push(`${repoPath}:${line} 命中 ${pattern}`);
+    }
+
+    const hasMarkdownHeading = /^#{1,6}\s+\S/m.test(content);
+    const hasChineseBody = /[\u4E00-\u9FFF]/.test(content);
+    if (!hasMarkdownHeading && !hasChineseBody) {
+      missingChineseSignal.push(repoPath);
+    }
+  }
+
+  addCheck(
+    "docs/reconstruction Markdown 文件存在",
+    reconstructionMarkdownFiles.length > 0,
+    reconstructionMarkdownFiles.length > 0
+      ? `发现 ${reconstructionMarkdownFiles.length} 个 Markdown 文件`
+      : "docs/reconstruction 下未发现 Markdown 文件",
+  );
+  addCheck(
+    "docs/reconstruction Markdown 非空",
+    emptyFiles.length === 0,
+    emptyFiles.length === 0
+      ? "所有 reconstruction Markdown 均非空"
+      : `空文件：${emptyFiles.join("；")}`,
+  );
+  addCheck(
+    "docs/reconstruction Markdown 不含明显乱码中文",
+    mojibakeHits.length === 0,
+    mojibakeHits.length === 0
+      ? "未发现常见 mojibake 特征"
+      : mojibakeHits.slice(0, 20).join("；"),
+  );
+  addCheck(
+    "docs/reconstruction Markdown 含标题或中文正文",
+    missingChineseSignal.length === 0,
+    missingChineseSignal.length === 0
+      ? "所有 reconstruction Markdown 均含 Markdown 标题或中文正文"
+      : `缺少标题或中文正文信号：${missingChineseSignal.join("；")}`,
+  );
+}
+
 function validateRepositoryTextBoundary() {
   const trackedTextFiles = listTrackedFiles().filter((file) =>
     repositoryTextExtensions.has(extname(file).toLowerCase()),
@@ -639,6 +824,7 @@ validateReadmeTextQuality("README.md");
 validateReadmeTextQuality("README-cn.md");
 validateTrackedAssets();
 validateRawFrontendAssets();
+validateInstructionAndReconstructionDocs();
 validateRepositoryTextBoundary();
 
 let failed = false;

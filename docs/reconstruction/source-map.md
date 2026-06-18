@@ -125,3 +125,9 @@ OpenAiMami 1.0.9 前端覆盖面：
 ## 资产
 
 `assets/` 中保存公开应用资产。`OpenAiMami IDB` 是独立参考资产，主仓库只保存它的 manifest、大小和哈希信息。需要还原完整实现时，应先使用 raw/internal，再按需要核对 IDB 清单。
+
+## 后端 current-source evidence map
+
+| 路径 | 说明 |
+| --- | --- |
+| `docs/reconstruction/runtime-extensions-current-source-evidence-map.md` | runtime-extensions 后端四个 plugins 命令的公开证据、当前源码 owner、已覆盖边界和未声明边界。 |

@@ -6,6 +6,7 @@
       "id": "plugins-current-route-api-command-mock-chain",
       "module": "plugins",
       "status": "current-source-closed-partial",
+      "currentSourceMap": "docs/reconstruction/plugins-current-source-evidence-map.md",
       "closedFrontendDocs": [
         "evidence/full-chain/internal/audits/audits/macos-1.0.9-plugins/frontend/FRONTEND-FULL-CHAIN-109.md",
         "evidence/full-chain/internal/audits/audits/windows-1.0.9-plugins/frontend/FRONTEND-FULL-CHAIN-109.md"
@@ -37,6 +38,15 @@
       ],
       "requiredSourceSignals": [
         {
+          "file": "docs/reconstruction/plugins-current-source-evidence-map.md",
+          "includes": [
+            "plugins current-source 证据映射",
+            "current-source partial closeout",
+            "不把 `get_plugin_config` / `update_plugin_config` 写成有可见配置 UI leaf",
+            "不声明前端已达到双平台全 leaf 完成状态"
+          ]
+        },
+        {
           "file": "src/routes/registry/registry.tsx",
           "includes": [
             "route: \"plugins\"",
@@ -67,10 +77,26 @@
           ]
         },
         {
+          "file": "src/services/runtime-extensions/index.ts",
+          "includes": [
+            "invokeIpc<RuntimeExtensionListEnvelope>(\"list_plugins\")",
+            "invokeIpc<RuntimeExtensionToggleEnvelope>(\"toggle_plugin\"",
+            "invokeIpc<RuntimeExtensionConfigEnvelope>(\"get_plugin_config\"",
+            "invokeIpc<RuntimeExtensionConfigEnvelope>(\"update_plugin_config\""
+          ]
+        },
+        {
           "file": "src/features/plugins/hooks/query.ts",
           "includes": [
             "pluginsService.list()",
             "writePluginsListQueryPayload"
+          ]
+        },
+        {
+          "file": "src/features/plugins/hooks/refresh.ts",
+          "includes": [
+            "pluginsService.list()",
+            "writePluginsRefreshPayload"
           ]
         },
         {
