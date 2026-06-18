@@ -99,6 +99,8 @@ const ipcCommandModuleOverrides = new Map([
   ["hotspot_ready", "hotspot"],
   ["get_image_compat", "relay"],
   ["set_image_compat", "relay"],
+  ["get_mystery_unlock_grants", "mystery"],
+  ["merge_mystery_unlock_grants", "mystery"],
 ]);
 
 // 当前只允许 evidence 明确登记的 daemon source-sidecar 命令超过 raw dumped 合同。

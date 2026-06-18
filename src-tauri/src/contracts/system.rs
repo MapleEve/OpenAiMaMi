@@ -380,6 +380,8 @@ pub struct NotificationClientStatePayload {
     pub notifications_since: i64,
 }
 
+// 兼容说明：MysteryRouteGrant 暂留在 system 合同文件，只为保持 settings.json 字段兼容；
+// 真实 owner 已迁出到 application/usecase/mystery.rs 和 commands/mystery.rs。
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct MysteryRouteGrant {

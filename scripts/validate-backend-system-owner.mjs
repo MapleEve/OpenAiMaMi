@@ -193,6 +193,8 @@ function validateRoot(path, original, content) {
     ["hotspot owner 依赖", /\bHotspotPlatformPort\b|\bhotspot_core\b|\bhotspot_repository\b/g],
     ["hotspot owner 实现", /\bpub\s+fn\s+(has_notch|get_hotspot_enabled|set_hotspot_enabled|hotspot_ready)\s*\(/g],
     ["relay image compatibility 实现", /\bpub\s+fn\s+(get_image_compat|set_image_compat)\s*\(/g],
+    ["mystery grants owner", /\b(get_mystery_unlock_grants|merge_mystery_unlock_grants|mystery_unlock_grants|MysteryRouteGrant|is_mystery_route_allowed)\b/g],
+    ["mystery route literal allowlist", /\b"(?:(?:mcp)|(?:skills)|(?:overview)|(?:accounts)|(?:sessions)|(?:plugins)|(?:relayModel)|(?:settings)|(?:maintenance))"\b/g],
   ]) {
     rejectPattern(label, path, original, content, pattern, "实现必须归属更窄的 system owner");
   }
@@ -395,6 +397,8 @@ function validateCommandCompatibility(path, content) {
     ["system maintenance usecase", /\busecase\s*::\s*system\s*::\s*(clean|rebuild_registry|diagnose|force_kill_app|restart_app|reset_config|open_path|system_info)\b/g],
     ["settings command 函数", /\bpub\s+fn\s+(set_api_proxy_config|test_api_proxy_config|detect_api_proxy_config|get_usage_refresh_interval|set_usage_refresh_interval|check_update_installability|graceful_restart_for_update)\s*\(/g],
     ["system settings usecase", /\busecase\s*::\s*system\s*::\s*(set_api_proxy_config|test_api_proxy_config|detect_api_proxy_config|get_usage_refresh_interval|set_usage_refresh_interval|check_update_installability|graceful_restart_for_update)\b/g],
+    ["mystery command 函数", /\bpub\s+fn\s+(get_mystery_unlock_grants|merge_mystery_unlock_grants)\s*\(/g],
+    ["system mystery usecase", /\busecase\s*::\s*system\s*::\s*(get_mystery_unlock_grants|merge_mystery_unlock_grants|mystery_unlock_grants)\b/g],
   ]) {
     rejectPattern(label, path, content, content, pattern, "非 system IPC adapter 必须归属各自 owner");
   }

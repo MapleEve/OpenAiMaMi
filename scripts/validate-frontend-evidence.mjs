@@ -207,6 +207,34 @@ function hasLocaleKey(locale, key) {
   return true;
 }
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function validateSkillsImportCancelPath(source) {
+  const pickMatch = source.match(
+    /(?:const|let)\s+([A-Za-z_$][\w$]*)\s*=\s*await\s+skillsService\.pickSkillDirectory\(\)\s*;/,
+  );
+  if (!pickMatch) return false;
+
+  const pathVariable = pickMatch[1];
+  const pathPattern = escapeRegExp(pathVariable);
+  const mutationBody = source.slice(pickMatch.index);
+  const guardedImportPatterns = [
+    new RegExp(
+      `if\\s*\\(\\s*${pathPattern}\\s*\\)\\s*(?:\\{\\s*)?return\\s+skillsService\\.importSkill\\(\\s*${pathPattern}\\s*\\)`,
+    ),
+    new RegExp(
+      `return\\s+${pathPattern}\\s*\\?\\s*skillsService\\.importSkill\\(\\s*${pathPattern}\\s*\\)\\s*:\\s*null\\s*;`,
+    ),
+  ];
+
+  return (
+    /\breturn\s+null\s*;/.test(mutationBody) &&
+    guardedImportPatterns.some((pattern) => pattern.test(mutationBody))
+  );
+}
+
 function parseStringArrayConst(source, constName, fileLabel) {
   const match = source.match(
     new RegExp(`export\\s+const\\s+${constName}[^=]*=\\s*\\[([\\s\\S]*?)\\];`),
@@ -1133,10 +1161,10 @@ function validateKnownInternalFrontendGates() {
 
   const skillsImportCancelOk =
     skillsMutation.includes("skillsService.pickSkillDirectory()") &&
-    skillsMutation.includes("return null;") &&
-    skillsMutation.includes("if (payload) return writeSkillsMutationPayload(queryClient, payload)");
+    validateSkillsImportCancelPath(skillsMutation) &&
+    skillsMutation.includes("writeSkillsMutationPayload(queryClient, payload, context)");
   if (!skillsImportCancelOk) {
-    failures.push("skills import 取消必须保持静默 no-op，不得进入 mutation error");
+    failures.push("skills import 取消路径必须 return null，且 import service 只能在已选择路径后调用");
   } else {
     console.log("PASS skills import 取消语义：silent no-op");
   }
@@ -1985,9 +2013,12 @@ function validateCustomInstructionsTypedPayloadGate() {
     cache.includes("Omit<CustomInstructionsCacheEnvelope<TPayload>, \"moduleId\">") &&
     cache.includes("writeCustomInstructionsStatePayload") &&
     cache.includes("runCustomInstructionsStateQuery") &&
+    cache.includes("prepareCustomInstructionsMutation") &&
     cache.includes("writeCustomInstructionsStateMutationPayload") &&
     cache.includes("setQueryData<CustomInstructionStatePayload>") &&
+    cache.includes("cancelQueries") &&
     cache.includes("invalidateCustomInstructionsContractQueries") &&
+    cache.includes("customInstructionsMutationFenceSequence") &&
     cache.includes("nextCustomInstructionsCacheSequence") &&
     (cache.includes("customInstructionsLatestAcceptedSequence") ||
       cache.includes("sequence <")) &&
@@ -2016,10 +2047,11 @@ function validateCustomInstructionsTypedPayloadGate() {
     mutationHook.includes("customInstructionsService.apply") &&
     mutationHook.includes("customInstructionsService.clearBlock") &&
     mutationHook.includes("customInstructionsService.rollback") &&
+    mutationHook.includes("prepareCustomInstructionsMutation") &&
     mutationHook.includes("writeCustomInstructionsStateMutationPayload") &&
-    mutationHook.includes("cancelQueries") &&
     !mutationHook.includes("useQuery(") &&
     !mutationHook.includes("useMutation<unknown") &&
+    !/\b(setQueryData|cancelQueries|invalidateQueries|CUSTOM_INSTRUCTION_[A-Z0-9_]+_QUERY_KEY)\b/.test(mutationHook) &&
     !mutationHook.includes("payload: unknown") &&
     actionHook.includes("useCustomInstructionPathActions") &&
     actionHook.includes("customInstructionsService.openPath") &&
@@ -2041,7 +2073,7 @@ function validateCustomInstructionsTypedPayloadGate() {
     !types.includes("ReturnType<typeof useCustomInstructionsPageController>");
 
   if (!typedPayloadOk) {
-    failures.push("custom-instructions IPC payload owner 必须收口到 typed data payload、模块 types 和 cache helper");
+    failures.push("custom-instructions IPC payload owner 必须收口到 typed data payload、模块 types 和 cache helper；mutation hook 不得绕过 helper 自行写 cache/cancel/fence");
   } else {
     console.log("PASS custom-instructions typed IPC payload owner：service/hook/cache");
   }

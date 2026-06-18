@@ -46,9 +46,9 @@ OpenAiMami 是一个面向个人本地工作流的桌面应用。本仓库公开
 ### 已经做了什么
 
 - **公开材料**：仓库已公开 Apache License、中文说明、匿名化 raw/internal 主链路、前端 dumped 证据、二进制清单和重建文档。
-- **前端还原基础**：`src/` 已作为公开前端源码入口，承载入口、路由、运行期初始化、全局 Provider 和模块 owner 边界的持续还原。
-- **后端骨架与公开能力**：`src-tauri/` 已建立 commands、application、core、platform、repository、adapters、contracts 六边形骨架，并补回已有公开证据支撑的后端能力。
-- **验证与匿名化入口**：公开边界、README 同步、前端证据、状态合同、后端 owner、i18n 和 E2E mock 已有脚本化检查入口。
+- **前端还原基础**：`src/` 已作为公开前端源码入口，承载入口、路由、运行期初始化、全局 Provider、模块 owner 和 cache helper owner 形态的持续还原。
+- **后端骨架与公开能力**：`src-tauri/` 已建立 commands、application、core、platform、repository、adapters、contracts 六边形骨架，并补回已有公开证据支撑的后端能力；mystery grants 已形成独立 owner，system 不 owning 前端 route gate。
+- **验证与匿名化入口**：公开边界、README 同步、前端证据、状态合同、后端 owner、i18n 和 E2E mock 已有脚本化检查入口；前端 evidence 验证已覆盖 cache helper owner 形态。
 
 ### 还没有做什么
 
@@ -60,8 +60,8 @@ OpenAiMami 是一个面向个人本地工作流的桌面应用。本仓库公开
 ### 怎么验收
 
 - **公开边界**：运行 `validate:public-boundary`，确认 README、公开文本、tracked 文件和 raw 前端资产没有越过匿名化与发布边界。
-- **前端证据与状态合同**：运行前端证据、leaf、入口、缓存、事件刷新、i18n 和 E2E mock 相关 `validate:*` 脚本，确认还原逻辑仍能回指公开证据。
-- **后端 owner**：运行 `validate:backend-hexagonal` 和后端 owner 类 `validate:*` 脚本，确认命令、用例、核心、平台、仓储、适配器和契约边界没有互相侵入。
+- **前端证据与状态合同**：运行前端证据、leaf、入口、缓存、cache helper owner、事件刷新、i18n 和 E2E mock 相关 `validate:*` 脚本，确认还原逻辑仍能回指公开证据。
+- **后端 owner**：运行 `validate:backend-hexagonal` 和后端 owner 类 `validate:*` 脚本，确认命令、用例、核心、平台、仓储、适配器、契约和 mystery grants 边界没有互相侵入。
 - **README 同步**：`README.md` 与 `README-cn.md` 必须保持同内容、同字节；公开边界校验会检查这一点。
 - **工具链限制**：编译、构建和平台运行验收依赖本机 Rust、前端和目标平台工具链；工具链缺失时只记录环境限制，不能替代源码状态判断。
 

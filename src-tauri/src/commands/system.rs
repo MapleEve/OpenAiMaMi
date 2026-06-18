@@ -2,7 +2,7 @@ use crate::adapters::tauri as tauri_adapter;
 use crate::application::usecase;
 use crate::contracts::{
     AutoSwitchConfigPayload, BootstrapStatePayload, CoreEnvelope, CoreSnapshotPayload,
-    MysteryRouteGrant, NotificationClientStatePayload, SystemActionPayload,
+    NotificationClientStatePayload, SystemActionPayload,
 };
 use crate::repository::Repository;
 use std::sync::Mutex;
@@ -89,27 +89,6 @@ pub fn get_notification_client_state(
 ) -> Result<CoreEnvelope<NotificationClientStatePayload>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
     usecase::system::notification_client_state(&repo)
-        .map(CoreEnvelope::ok)
-        .map_err(|error| error.to_string())
-}
-
-#[tauri::command]
-pub fn get_mystery_unlock_grants(
-    repo: State<'_, Mutex<Repository>>,
-) -> Result<CoreEnvelope<Vec<MysteryRouteGrant>>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::system::mystery_unlock_grants(&repo)
-        .map(CoreEnvelope::ok)
-        .map_err(|error| error.to_string())
-}
-
-#[tauri::command]
-pub fn merge_mystery_unlock_grants(
-    repo: State<'_, Mutex<Repository>>,
-    grants: Vec<MysteryRouteGrant>,
-) -> Result<CoreEnvelope<Vec<MysteryRouteGrant>>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::system::merge_mystery_unlock_grants(&repo, grants)
         .map(CoreEnvelope::ok)
         .map_err(|error| error.to_string())
 }
