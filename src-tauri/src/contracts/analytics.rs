@@ -140,7 +140,7 @@ pub struct TokenAnalyticsPayload {
 #[derive(Debug, Clone, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ToolRankItemPayload {
-    pub name: String,
+    pub path: String,
     pub count: i32,
 }
 

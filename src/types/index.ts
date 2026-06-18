@@ -1015,7 +1015,7 @@ export interface TokenAnalyticsPayload {
 }
 
 export interface ToolRankItem {
-  name: string;
+  path: string;
   count: number;
 }
 

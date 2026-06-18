@@ -207,7 +207,7 @@ function ToolsPanel({ model }: { model: AnalyticsPageController["tools"] }) {
             if (!item) return null;
             return (
               <>
-                <div className="font-semibold text-foreground">{item.name}</div>
+                <div className="font-semibold text-foreground">{item.path}</div>
                 <div className="text-muted-foreground">
                   {item.count} {t("analytics.totalCalls")}
                 </div>

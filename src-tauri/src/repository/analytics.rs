@@ -1,4 +1,4 @@
-use crate::core::model::analytics::{PublicCommandFact, PublicSessionFileFact};
+use crate::core::model::analytics::{PublicCommandFact, PublicSessionFileFact, PublicToolCallFact};
 use crate::repository::{sessions, Repository};
 use chrono::{DateTime, Utc};
 use serde_json::Value;
@@ -35,6 +35,15 @@ pub fn load_public_change_command_facts(repo: &Repository) -> Vec<PublicCommandF
     facts
 }
 
+/// 递归读取公开 rollout JSONL，只抽取 response_item/function_call 工具 path 事实供 core 聚合。
+pub fn load_public_tool_call_facts(repo: &Repository) -> Vec<PublicToolCallFact> {
+    let mut facts = Vec::new();
+    for root in public_session_roots(repo) {
+        visit_public_tool_call_rollout_dir(repo, &root, &mut facts);
+    }
+    facts
+}
+
 fn public_session_roots(repo: &Repository) -> Vec<PathBuf> {
     vec![
         repo.paths().sessions_dir.clone(),
@@ -64,6 +73,36 @@ fn visit_public_rollout_dir(repo: &Repository, root: &Path, facts: &mut Vec<Publ
             raw.lines()
                 .filter_map(|line| serde_json::from_str::<Value>(line).ok())
                 .filter_map(|value| public_command_fact_from_value(&value, fallback_timestamp)),
+        );
+    }
+}
+
+fn visit_public_tool_call_rollout_dir(
+    repo: &Repository,
+    root: &Path,
+    facts: &mut Vec<PublicToolCallFact>,
+) {
+    let Ok(entries) = repo.fs().read_dir(root) else {
+        return;
+    };
+
+    for entry in entries {
+        if entry.is_dir {
+            visit_public_tool_call_rollout_dir(repo, &entry.path, facts);
+            continue;
+        }
+        if !is_rollout_jsonl(&entry.path) {
+            continue;
+        }
+
+        let fallback_timestamp = repo.fs().modified_unix_seconds(&entry.path).unwrap_or(0);
+        let Ok(raw) = repo.fs().read_to_string(&entry.path) else {
+            continue;
+        };
+        facts.extend(
+            raw.lines()
+                .filter_map(|line| serde_json::from_str::<Value>(line).ok())
+                .filter_map(|value| public_tool_call_fact_from_value(&value, fallback_timestamp)),
         );
     }
 }
@@ -108,6 +147,37 @@ fn public_command_fact_from_value(
         json_timestamp(value, &["/payload/timestamp", "/timestamp"]).unwrap_or(fallback_timestamp);
 
     Some(PublicCommandFact::new(timestamp, command))
+}
+
+fn public_tool_call_fact_from_value(
+    value: &Value,
+    fallback_timestamp: i64,
+) -> Option<PublicToolCallFact> {
+    if json_string(value, &["/type"]).as_deref() != Some("response_item") {
+        return None;
+    }
+    if json_string(value, &["/payload/type"]).as_deref() != Some("function_call") {
+        return None;
+    }
+
+    let path = json_string(
+        value,
+        &[
+            "/payload/path",
+            "/payload/name",
+            "/payload/function/path",
+            "/payload/function/name",
+            "/payload/call/path",
+            "/payload/call/name",
+            "/path",
+            "/name",
+        ],
+    )
+    .unwrap_or_else(|| "unknown".to_string());
+    let timestamp =
+        json_timestamp(value, &["/payload/timestamp", "/timestamp"]).unwrap_or(fallback_timestamp);
+
+    Some(PublicToolCallFact::new(timestamp, path))
 }
 
 fn command_from_arguments(value: &Value) -> Option<String> {
@@ -219,5 +289,31 @@ mod tests {
         assert_eq!(facts.len(), 1);
         assert_eq!(facts[0].timestamp, 1_710_000_000);
         assert_eq!(facts[0].command, "git status");
+    }
+
+    #[test]
+    fn load_public_tool_call_facts_reads_all_function_calls() {
+        let codex_home = PathBuf::from("/codex");
+        let paths = RepositoryPaths::from_codex_home(codex_home.clone());
+        let rollout = codex_home.join("sessions/project/rollout-tools.jsonl");
+        let fs = FakeFileSystem::default().with_file(
+            rollout,
+            [
+                r#"{"type":"response_item","payload":{"type":"function_call","name":"exec_command","timestamp":"2024-03-09T16:00:00.000000Z","arguments":"{\"payload\":{\"command\":\"git status\"}}"}}"#,
+                r#"{"type":"response_item","payload":{"type":"function_call","name":"web_search"}}"#,
+                r#"{"type":"response_item","payload":{"type":"function_call","path":"tools/edit"}}"#,
+                r#"{"type":"response_item","payload":{"type":"message","name":"ignored"}}"#,
+            ]
+            .join("\n"),
+        );
+        let repo = Repository::with_paths_and_file_system(paths, fs);
+
+        let facts = load_public_tool_call_facts(&repo);
+
+        assert_eq!(facts.len(), 3);
+        assert_eq!(facts[0].timestamp, 1_710_000_000);
+        assert_eq!(facts[0].path, "exec_command");
+        assert_eq!(facts[1].path, "web_search");
+        assert_eq!(facts[2].path, "tools/edit");
     }
 }

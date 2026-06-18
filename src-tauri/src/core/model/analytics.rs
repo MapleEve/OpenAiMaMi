@@ -1,7 +1,7 @@
 use chrono::{TimeZone, Utc};
 use std::collections::BTreeMap;
 
-// analytics 模型只聚合公开可重建的本地文件事实，不表达闭源 token、工具或配额统计口径。
+// analytics 模型只聚合公开可重建的本地文件事实，不表达闭源 token、严格运行时工具或配额统计口径。
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PublicAnalyticsRange {
     Today,
@@ -118,6 +118,42 @@ impl PublicCommandFact {
             command: command.trim().to_string(),
         }
     }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PublicToolCallFact {
+    pub timestamp: i64,
+    pub path: String,
+}
+
+impl PublicToolCallFact {
+    pub fn new(timestamp: i64, path: String) -> Self {
+        Self {
+            timestamp,
+            path: path.trim().to_string(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PublicToolCallKind {
+    Search,
+    Edit,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PublicToolRankItem {
+    pub path: String,
+    pub count: i32,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PublicToolAggregate {
+    pub total_calls: i32,
+    pub distinct_count: i32,
+    pub search_count: i32,
+    pub edit_count: i32,
+    pub top_tools: Vec<PublicToolRankItem>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -295,6 +331,76 @@ pub fn aggregate_public_change_analytics(
     }
 }
 
+pub fn aggregate_public_tool_analytics(
+    facts: Vec<PublicToolCallFact>,
+    now_epoch_seconds: i64,
+    range: PublicAnalyticsRange,
+) -> PublicToolAggregate {
+    let earliest = now_epoch_seconds.saturating_sub(
+        range
+            .day_span()
+            .saturating_sub(1)
+            .saturating_mul(24 * 60 * 60),
+    );
+    let mut by_path = BTreeMap::<String, i32>::new();
+    let mut total_calls = 0i32;
+    let mut search_count = 0i32;
+    let mut edit_count = 0i32;
+
+    for fact in facts
+        .into_iter()
+        .filter(|fact| fact.timestamp >= earliest && fact.timestamp <= now_epoch_seconds)
+    {
+        let path = if fact.path.trim().is_empty() {
+            "unknown".to_string()
+        } else {
+            fact.path
+        };
+        total_calls = total_calls.saturating_add(1);
+        let count = by_path.entry(path.clone()).or_insert(0);
+        *count = count.saturating_add(1);
+        match classify_public_tool_call(&path) {
+            PublicToolCallKind::Search => search_count = search_count.saturating_add(1),
+            PublicToolCallKind::Edit => edit_count = edit_count.saturating_add(1),
+        }
+    }
+
+    let mut top_tools = by_path
+        .iter()
+        .map(|(path, count)| PublicToolRankItem {
+            path: path.clone(),
+            count: *count,
+        })
+        .collect::<Vec<_>>();
+    top_tools.sort_by(|left, right| {
+        right
+            .count
+            .cmp(&left.count)
+            .then_with(|| left.path.cmp(&right.path))
+    });
+    top_tools.truncate(10);
+
+    PublicToolAggregate {
+        total_calls,
+        distinct_count: by_path.len() as i32,
+        search_count,
+        edit_count,
+        top_tools,
+    }
+}
+
+pub fn classify_public_tool_call(path: &str) -> PublicToolCallKind {
+    let normalized = path.trim().to_lowercase();
+    if SEARCH_TOOL_PATTERNS
+        .iter()
+        .any(|pattern| normalized.contains(pattern))
+    {
+        PublicToolCallKind::Search
+    } else {
+        PublicToolCallKind::Edit
+    }
+}
+
 pub fn classify_public_command(command: &str) -> PublicCommandKind {
     let normalized = command.trim().to_lowercase();
     if normalized.is_empty() {
@@ -372,6 +478,10 @@ const READ_COMMAND_PATTERNS: &[&str] = &[
     "git show",
     "npm list",
     "cargo check",
+];
+
+const SEARCH_TOOL_PATTERNS: &[&str] = &[
+    "search", "query", "list", "read", "view", "resolve", "fetch",
 ];
 
 #[cfg(test)]
@@ -459,6 +569,45 @@ mod tests {
         assert_eq!(
             classify_public_command("python run.py"),
             PublicCommandKind::Other
+        );
+    }
+
+    #[test]
+    fn aggregate_public_tool_analytics_groups_paths_and_truncates_top_tools() {
+        let mut facts = vec![
+            PublicToolCallFact::new(1_710_000_000, "web_search".to_string()),
+            PublicToolCallFact::new(1_710_000_100, "web_search".to_string()),
+            PublicToolCallFact::new(1_710_000_200, "apply_patch".to_string()),
+            PublicToolCallFact::new(1_709_913_600, "old_read".to_string()),
+        ];
+        for index in 0..12 {
+            facts.push(PublicToolCallFact::new(
+                1_710_000_300 + index,
+                format!("tool_{index}"),
+            ));
+        }
+
+        let aggregate =
+            aggregate_public_tool_analytics(facts, 1_710_000_500, PublicAnalyticsRange::Today);
+
+        assert_eq!(aggregate.total_calls, 15);
+        assert_eq!(aggregate.distinct_count, 14);
+        assert_eq!(aggregate.search_count, 2);
+        assert_eq!(aggregate.edit_count, 13);
+        assert_eq!(aggregate.top_tools.len(), 10);
+        assert_eq!(aggregate.top_tools[0].path, "web_search");
+        assert_eq!(aggregate.top_tools[0].count, 2);
+    }
+
+    #[test]
+    fn classify_public_tool_call_uses_search_terms_with_edit_fallback() {
+        assert_eq!(
+            classify_public_tool_call("tools/list_projects"),
+            PublicToolCallKind::Search
+        );
+        assert_eq!(
+            classify_public_tool_call("apply_patch"),
+            PublicToolCallKind::Edit
         );
     }
 }

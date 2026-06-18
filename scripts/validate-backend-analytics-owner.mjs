@@ -6,6 +6,7 @@ const backendRoot = join(repoRoot, "src-tauri", "src");
 const files = {
   usecase: join(backendRoot, "application", "usecase", "analytics.rs"),
   analyticsRepository: join(backendRoot, "repository", "analytics.rs"),
+  analyticsContract: join(backendRoot, "contracts", "analytics.rs"),
   quotaRepository: join(backendRoot, "repository", "quota.rs"),
   sessionsRepository: join(backendRoot, "repository", "sessions.rs"),
   coreModel: join(backendRoot, "core", "model", "analytics.rs"),
@@ -151,7 +152,7 @@ requirePattern(
   files.usecase,
   usageBody,
   /aggregate_public_usage\s*\(/,
-  "聚合模型必须由 core/model/analytics.rs owning",
+  "usage 聚合必须由 core/model/analytics.rs owning",
 );
 requirePattern(
   "usage bootstrap cache 写回",
@@ -170,27 +171,57 @@ requirePattern(
   "配额历史公开来源探测必须由 repository owner 提供",
 );
 
+const toolBody = requireFunctionBody(code.usecase.content, files.usecase, "load_tool_analytics");
+requirePattern(
+  "tool usecase 调用 analytics repository",
+  files.usecase,
+  toolBody,
+  /analytics_repository\s*::\s*load_public_tool_call_facts\s*\(\s*repo\s*\)/,
+  "公开 function_call 事实必须由 repository owner 提供",
+);
+requirePattern(
+  "tool usecase 调用 core aggregate",
+  files.usecase,
+  toolBody,
+  /aggregate_public_tool_analytics\s*\(/,
+  "工具 range、分类和 topTools 聚合必须由 core/model/analytics.rs owning",
+);
+requirePattern(
+  "tool analytics restored 状态",
+  files.usecase,
+  toolBody,
+  /restored_status\s*\(\s*"analytics"\s*,\s*"load_tool_analytics"\s*,\s*BackendEffect::NoOp\s*\)/,
+  "load_tool_analytics 只恢复公开 rollout JSONL function_call 事实",
+);
+requirePattern(
+  "tool usecase 映射 topTools path",
+  files.usecase,
+  toolBody,
+  /ToolRankItemPayload\s*\{[\s\S]*path\s*:\s*item\.path[\s\S]*count\s*:\s*item\.count/,
+  "topTools 行必须暴露证据字段 path/count",
+);
+
 const changeBody = requireFunctionBody(code.usecase.content, files.usecase, "load_change_analytics");
 requirePattern(
   "change usecase 调用 analytics repository",
   files.usecase,
   changeBody,
   /analytics_repository\s*::\s*load_public_change_command_facts\s*\(\s*repo\s*\)/,
-  "变更分析命令事实必须由 repository owner 提供",
+  "公开 command 事实必须由 repository owner 提供",
 );
 requirePattern(
   "change usecase 调用 core aggregate",
   files.usecase,
   changeBody,
   /aggregate_public_change_analytics\s*\(/,
-  "变更分析 range、分类和日序列必须由 core/model/analytics.rs owning",
+  "变更分析 range 和命令分类必须由 core/model/analytics.rs owning",
 );
 requirePattern(
   "change analytics restored status",
   files.usecase,
   changeBody,
   /restored_status\s*\(\s*"analytics"\s*,\s*"load_change_analytics"\s*,\s*BackendEffect::NoOp\s*\)/,
-  "load_change_analytics 已恢复公开 rollout JSONL 命令事实聚合",
+  "load_change_analytics 必须保持为公开 rollout JSONL command 事实恢复",
 );
 
 requirePattern(
@@ -204,20 +235,25 @@ for (const [label, pattern] of [
   ["PublicAnalyticsRange", /\benum\s+PublicAnalyticsRange\b/],
   ["PublicSessionFileFact", /\bstruct\s+PublicSessionFileFact\b/],
   ["PublicCommandFact", /\bstruct\s+PublicCommandFact\b/],
+  ["PublicToolCallFact", /\bstruct\s+PublicToolCallFact\b/],
+  ["PublicToolAggregate", /\bstruct\s+PublicToolAggregate\b/],
   ["PublicChangeAggregate", /\bstruct\s+PublicChangeAggregate\b/],
   ["PublicUsageAggregate", /\bstruct\s+PublicUsageAggregate\b/],
   ["PublicQuotaHistory", /\bstruct\s+PublicQuotaHistory\b/],
   ["aggregate_public_usage", /\bfn\s+aggregate_public_usage\s*\(/],
+  ["aggregate_public_tool_analytics", /\bfn\s+aggregate_public_tool_analytics\s*\(/],
+  ["classify_public_tool_call", /\bfn\s+classify_public_tool_call\s*\(/],
   ["aggregate_public_change_analytics", /\bfn\s+aggregate_public_change_analytics\s*\(/],
   ["classify_public_command", /\bfn\s+classify_public_command\s*\(/],
 ]) {
-  requirePattern(label, files.coreModel, code.coreModel.content, pattern, "core 必须 owning analytics/quota range 与聚合模型");
+  requirePattern(label, files.coreModel, code.coreModel.content, pattern, "core 必须 owning analytics 事实和聚合模型");
 }
 for (const [label, pattern] of [
   ["write classifier table", /\bWRITE_COMMAND_PATTERNS\b[\s\S]*git commit[\s\S]*cargo add/],
   ["read classifier table", /\bREAD_COMMAND_PATTERNS\b[\s\S]*git status[\s\S]*cargo check/],
+  ["tool search classifier table", /\bSEARCH_TOOL_PATTERNS\b[\s\S]*search[\s\S]*query[\s\S]*list[\s\S]*read[\s\S]*view[\s\S]*resolve[\s\S]*fetch/],
 ]) {
-  requirePattern(label, files.coreModel, code.coreModel.content, pattern, "core 必须 owning 公开命令分类表");
+  requirePattern(label, files.coreModel, code.coreModel.content, pattern, "core 必须 owning 公开分类表");
 }
 requirePattern(
   "core 模型公开事实注释",
@@ -232,7 +268,23 @@ rejectPattern(
   raw.coreModel.content,
   code.coreModel.content,
   /\b(tauri\s*::|Repository\b|FileSystemAdapter\b|std\s*::\s*fs|tokio\s*::\s*fs)\b/g,
-  "domain model 不得依赖 Tauri、repository 或真实文件系统",
+  "domain model 不得依赖 Tauri、Repository 或真实文件系统",
+);
+
+requirePattern(
+  "tool rank 合同 path 字段",
+  files.analyticsContract,
+  code.analyticsContract.content,
+  /\bstruct\s+ToolRankItemPayload\b[\s\S]*\bpub\s+path\s*:\s*String\b[\s\S]*\bpub\s+count\s*:\s*i32\b/,
+  "ToolRankItemPayload 必须暴露公开证据字段 path/count",
+);
+rejectPattern(
+  "tool rank 合同 name 字段",
+  files.analyticsContract,
+  raw.analyticsContract.content,
+  code.analyticsContract.content,
+  /\bstruct\s+ToolRankItemPayload\b[\s\S]*\bpub\s+name\s*:\s*String\b/g,
+  "ToolRankItemPayload 不得保留无证据支撑的 name/count 形状",
 );
 
 requirePattern(
@@ -240,24 +292,32 @@ requirePattern(
   files.analyticsRepository,
   code.analyticsRepository.content,
   /sessions\s*::\s*load_session_file_metadata\s*\(\s*repo\s*\)/,
-  "analytics repository 必须从可替换 FS 下的 session 元数据构造公开事实",
+  "analytics repository 必须从可替换 FS 元数据构造公开 session 事实",
 );
 requirePattern(
   "analytics repository 读取 change command facts",
   files.analyticsRepository,
   code.analyticsRepository.content,
   /\bpub\s+fn\s+load_public_change_command_facts\s*\(\s*repo\s*:\s*&Repository\s*\)/,
-  "analytics repository 必须提供公开 rollout JSONL 命令事实",
+  "analytics repository 必须提供公开 rollout JSONL command 事实",
+);
+requirePattern(
+  "analytics repository 读取 tool call facts",
+  files.analyticsRepository,
+  code.analyticsRepository.content,
+  /\bpub\s+fn\s+load_public_tool_call_facts\s*\(\s*repo\s*:\s*&Repository\s*\)/,
+  "analytics repository 必须提供公开 rollout JSONL function_call 事实",
 );
 for (const [label, pattern] of [
   ["rollout JSONL recursive visitor", /\bfn\s+visit_public_rollout_dir\s*\(/],
+  ["tool rollout JSONL recursive visitor", /\bfn\s+visit_public_tool_call_rollout_dir\s*\(/],
   ["rollout filename filter", /\bfile_name\.starts_with\(\s*"rollout-"\s*\)[\s\S]*file_name\.ends_with\(\s*"\.jsonl"\s*\)/],
   ["JSONL read through FS adapter", /repo\s*\.\s*fs\s*\(\s*\)\s*\.read_to_string\s*\(\s*&entry\.path\s*\)/],
   ["serde JSONL parser", /serde_json::from_str\s*::<\s*Value\s*>/],
   ["exec_command filter", /"exec_command"/],
   ["function_call filter", /"function_call"/],
 ]) {
-  requirePattern(label, files.analyticsRepository, code.analyticsRepository.content, pattern, "repository 必须 owning 公开 JSONL 命令事实解析");
+  requirePattern(label, files.analyticsRepository, code.analyticsRepository.content, pattern, "repository 必须 owning 公开 JSONL 事实解析");
 }
 requirePattern(
   "sessions repository 使用 FS adapter read_dir",
@@ -271,7 +331,7 @@ requirePattern(
   files.quotaRepository,
   code.quotaRepository.content,
   /bootstrap\s*::\s*load_bootstrap_cache\s*\(\s*repo\s*\)/,
-  "quota repository 只能探测可替换 FS 下的 bootstrap cache 来源",
+  "quota repository 只能探测可替换 FS bootstrap cache 来源",
 );
 for (const file of [raw.analyticsRepository, raw.quotaRepository]) {
   rejectPattern(
@@ -284,25 +344,22 @@ for (const file of [raw.analyticsRepository, raw.quotaRepository]) {
   );
 }
 
-for (const name of ["load_token_analytics", "load_tool_analytics"]) {
-  const body = requireFunctionBody(code.usecase.content, files.usecase, name);
-  rejectPattern(
-    `${name} 声明真实统计闭环`,
-    files.usecase,
-    raw.usecase.content,
-    body,
-    /\brestored_status\s*\(|BackendEffect\s*::\s*NoOp/g,
-    "token/tool 仍缺少闭源口径证据，不得标记 restored",
-  );
-}
-
+const tokenBody = requireFunctionBody(code.usecase.content, files.usecase, "load_token_analytics");
 rejectPattern(
-  "真实 token 统计闭环声明",
+  "token analytics restored 状态",
+  files.usecase,
+  raw.usecase.content,
+  tokenBody,
+  /\brestored_status\s*\(|BackendEffect\s*::\s*NoOp/g,
+  "token analytics 仍缺少闭源 token 路径证据，不得标记 restored",
+);
+rejectPattern(
+  "token restored 闭环声明",
   files.usecase,
   raw.usecase.content,
   raw.usecase.content,
   /真实\s*token\s*统计闭环|token\s*统计闭环已恢复|restored_status\s*\(\s*"analytics"\s*,\s*"load_token_analytics"/g,
-  "本切片不能声明真实 token 统计闭环",
+  "本切片不得声明真实 token analytics 闭环",
 );
 
 if (failures.length > 0) {
@@ -313,4 +370,6 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("PASS 后端 analytics owner 校验通过：usecase 无直接文件 IO，repository 通过可替换 FS 来源提供公开事实，core owning usage/change range 与聚合模型，未声明真实 token/tool 统计闭环。");
+console.log(
+  "PASS 后端 analytics owner 校验通过：usecase 无直接文件 IO，repository 通过可替换 FS 提供公开事实，core owning usage/tool/change 聚合；工具分析只恢复公开 function_call 事实，token analytics 未标记 restored。",
+);

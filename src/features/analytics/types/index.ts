@@ -120,7 +120,7 @@ export interface AnalyticsTokenPanelModel extends AnalyticsPanelState {
 }
 
 export interface AnalyticsToolPoint extends AnalyticsDataPoint {
-  name: string;
+  path: string;
   count: number;
   percentage: number;
 }

@@ -2,11 +2,12 @@ use crate::application::service::{current_timestamp, pending_status, restored_st
 use crate::contracts::analytics::{
     AnalyticsRange, ChangeAnalyticsPayload, ChangeDaySeriesPayload, DailyActivityPayload,
     QuotaHistoryPayload, QuotaHistoryPointPayload, SessionStatsPayload, TodaySummaryPayload,
-    TokenAnalyticsPayload, ToolAnalyticsPayload, UsageAnalyticsPayload,
+    TokenAnalyticsPayload, ToolAnalyticsPayload, ToolRankItemPayload, UsageAnalyticsPayload,
 };
 use crate::contracts::BackendEffect;
 use crate::core::model::analytics::{
-    aggregate_public_change_analytics, aggregate_public_usage, PublicAnalyticsRange,
+    aggregate_public_change_analytics, aggregate_public_tool_analytics, aggregate_public_usage,
+    PublicAnalyticsRange,
 };
 use crate::repository::{
     analytics as analytics_repository, bootstrap, quota as quota_repository, Repository,
@@ -107,22 +108,29 @@ pub fn load_token_analytics(_repo: &Repository, range: Option<String>) -> TokenA
     }
 }
 
-/// 读取工具分析的用户动作边界；真实工具分类等待证据补齐。
-pub fn load_tool_analytics(_repo: &Repository, range: Option<String>) -> ToolAnalyticsPayload {
+/// 读取工具分析的用户动作边界，只聚合公开 rollout JSONL function_call 事实。
+pub fn load_tool_analytics(repo: &Repository, range: Option<String>) -> ToolAnalyticsPayload {
     let normalized_range = AnalyticsRange::from_input(range);
-    let _range_day_span = public_range_from_contract(normalized_range).day_span();
+    let aggregate = aggregate_public_tool_analytics(
+        analytics_repository::load_public_tool_call_facts(repo),
+        current_timestamp(),
+        public_range_from_contract(normalized_range),
+    );
     ToolAnalyticsPayload {
-        backend_status: pending_status(
-            "analytics",
-            "load_tool_analytics",
-            "工具分析只完成公开 IPC 骨架；当前不推断闭源工具分类规则。",
-        ),
+        backend_status: restored_status("analytics", "load_tool_analytics", BackendEffect::NoOp),
         range: normalized_range,
-        total_calls: 0,
-        distinct_count: 0,
-        search_count: 0,
-        edit_count: 0,
-        top_tools: Vec::new(),
+        total_calls: aggregate.total_calls,
+        distinct_count: aggregate.distinct_count,
+        search_count: aggregate.search_count,
+        edit_count: aggregate.edit_count,
+        top_tools: aggregate
+            .top_tools
+            .into_iter()
+            .map(|item| ToolRankItemPayload {
+                path: item.path,
+                count: item.count,
+            })
+            .collect(),
     }
 }
 

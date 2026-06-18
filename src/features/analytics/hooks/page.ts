@@ -409,13 +409,13 @@ function buildToolsPanel(
   const totalCalls = readNumber(payload, ["totalCalls"]);
   const tooltipPoints = topTools
     .map<AnalyticsToolPoint | null>((item) => {
-      const name = readString(item, ["name"], "").trim();
-      if (!name) return null;
+      const path = readString(item, ["path"], "").trim();
+      if (!path) return null;
       const count = readNumber(item, ["count"]);
       return {
-        name,
+        path,
         count,
-        label: name,
+        label: path,
         value: count,
         percentage: totalCalls > 0 ? Math.round((count / totalCalls) * 100) : 0,
       };
