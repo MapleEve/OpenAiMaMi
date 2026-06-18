@@ -51,10 +51,77 @@ const publishForbiddenTerms = [
   "QRCode",
 ];
 
-const repositoryForbiddenTerms = [
-  ["lobe", "hub"].join(""),
-  ["C", "5"].join(""),
-  ["Codex", "Manager"].join(""),
+const repositoryForbiddenPatterns = [
+  { label: ["lobe", "hub"].join(""), pattern: new RegExp(["lobe", "hub"].join(""), "gi") },
+  {
+    label: ["C", "5"].join(""),
+    pattern: new RegExp(`(^|[^A-Za-z0-9])${["c", "5"].join("")}([^A-Za-z0-9]|$)`, "gi"),
+  },
+  {
+    label: ["Codex", "Manager"].join(""),
+    pattern: new RegExp(["codex", "manager"].join(""), "gi"),
+  },
+];
+
+const repositoryTextExtensions = new Set([
+  ".css",
+  ".html",
+  ".js",
+  ".json",
+  ".lock",
+  ".md",
+  ".mjs",
+  ".rs",
+  ".svg",
+  ".toml",
+  ".ts",
+  ".tsx",
+  ".txt",
+  ".yaml",
+  ".yml",
+]);
+
+const sensitiveContentPatterns = [
+  {
+    name: "Windows 用户路径",
+    pattern: /[A-Za-z]:[\\/]+Users[\\/]+(?!example\b|<)[^\\/\s"'`<>]+/gi,
+  },
+  {
+    name: "macOS 用户路径",
+    pattern: /\/Users\/(?!example\b|<)[^/\s"'`<>]+/g,
+  },
+  {
+    name: "Linux 用户路径",
+    pattern: /\/home\/(?!example\b|<)[^/\s"'`<>]+/g,
+  },
+  {
+    name: "网络共享路径",
+    pattern: /\\\\(?!\\)(?!example\b|localhost\b)[A-Za-z0-9._$-]+\\[A-Za-z0-9._$-]+/g,
+  },
+  {
+    name: "私钥块",
+    pattern: /-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----/g,
+  },
+  {
+    name: "长 token",
+    pattern: /(^|[^A-Za-z0-9])sk-[A-Za-z0-9_-]{20,}/g,
+  },
+  {
+    name: "敏感字段赋值",
+    pattern:
+      /\b(?:api[_-]?key|access[_-]?token|refresh[_-]?token|auth[_-]?token|password|secret)\b\s*[:=]\s*["'](?!<已脱敏|<redacted|redacted|example|test|dummy|placeholder)[A-Za-z0-9_+=/@.-]{24,}["']/gi,
+  },
+];
+
+const allowedSensitivePathPatterns = [
+  /C:\/Program Files\/OpenAiMami\/OpenAiMami\.exe/i,
+  /\/Applications\/OpenAiMami\.app/i,
+  /\/Users\/example\/Applications\/OpenAiMami\.app/i,
+];
+
+const mojibakePatterns = [
+  /\uFFFD/,
+  /(?:Ã|Â|â€|鈥|鍖|鏄|绋|涓轰粈)/,
 ];
 
 function toRepoPath(path) {
@@ -63,6 +130,21 @@ function toRepoPath(path) {
 
 function addCheck(name, ok, detail = "") {
   checks.push({ name, ok, detail });
+}
+
+function findForbiddenTermHits(content) {
+  const hits = [];
+  for (const { label, pattern } of repositoryForbiddenPatterns) {
+    pattern.lastIndex = 0;
+    if (pattern.test(content)) {
+      hits.push(label);
+    }
+  }
+  return hits;
+}
+
+function isAllowedSensitiveHit(hit) {
+  return allowedSensitivePathPatterns.some((pattern) => pattern.test(hit));
 }
 
 function readUtf8(path) {
@@ -172,9 +254,7 @@ function validateReadmeFile(path) {
   const missingReasons = requiredReasons
     .filter(({ pattern }) => !pattern.test(content))
     .map(({ name }) => name);
-  const forbiddenTerms = repositoryForbiddenTerms.filter((term) =>
-    content.includes(term),
-  );
+  const forbiddenTerms = findForbiddenTermHits(content);
   const ok =
     missingHeadings.length === 0 &&
     missingReasons.length === 0 &&
@@ -256,6 +336,11 @@ function validateReadmeNoProgressChangelog(path) {
     /本次提交/,
     /这次提交/,
     /提交号/,
+    /逐次提交/,
+    /临时进度/,
+    /流水账/,
+    /\b20[0-9]{2}[-/.][0-9]{1,2}[-/.][0-9]{1,2}\b.*(?:完成|修复|新增|拆分)/,
+    /(?:完成|修复|新增|拆分).*\b20[0-9]{2}[-/.][0-9]{1,2}[-/.][0-9]{1,2}\b/,
     /第\s*(?:[0-9]+|[一二三四五六七八九十百千万]+)\s*次/,
   ];
   const hits = [];
@@ -264,6 +349,7 @@ function validateReadmeNoProgressChangelog(path) {
   lines.forEach((line, index) => {
     const trimmed = line.trim();
     if (/^##\s+PR\b/i.test(trimmed) || /^#+\s+/.test(trimmed)) return;
+    if (/不写|不包含|不能|禁止|不得|只能|只做|归纳/.test(trimmed)) return;
     if (progressPatterns.some((pattern) => pattern.test(trimmed))) {
       hits.push(`${path}:${index + 1}`);
     }
@@ -275,6 +361,35 @@ function validateReadmeNoProgressChangelog(path) {
     hits.length === 0
       ? "未发现按提交逐条追加的进度用语"
       : `发现流水账式进度用语：${hits.join(", ")}`,
+  );
+}
+
+function validateReadmeCommitUpdateRule(path) {
+  if (!existsSync(join(repoRoot, path))) return;
+
+  const content = readUtf8(path);
+  const ok = /每次提交/.test(content) && /README/.test(content) && /归纳/.test(content);
+  addCheck(
+    `${path} 明确每次提交同步 README 且禁止流水账`,
+    ok,
+    ok
+      ? "README 已写明每次提交要同步当前状态，并保持归纳口径"
+      : "README 必须写明每次提交要同步当前状态，且只能归纳状态变化",
+  );
+}
+
+function validateReadmeTextQuality(path) {
+  if (!existsSync(join(repoRoot, path))) return;
+
+  const content = readUtf8(path);
+  const hits = mojibakePatterns
+    .filter((pattern) => pattern.test(content))
+    .map((pattern) => pattern.toString());
+
+  addCheck(
+    `${path} 不包含明显乱码中文`,
+    hits.length === 0,
+    hits.length === 0 ? "未发现常见乱码中文特征" : `命中乱码特征：${hits.join(", ")}`,
   );
 }
 
@@ -349,11 +464,10 @@ function validateRawFrontendAssets() {
 
 function validateRepositoryTextBoundary() {
   const trackedTextFiles = listTrackedFiles().filter((file) =>
-    [".md", ".ts", ".tsx", ".js", ".mjs", ".rs", ".json"].includes(
-      extname(file).toLowerCase(),
-    ),
+    repositoryTextExtensions.has(extname(file).toLowerCase()),
   );
-  const hits = [];
+  const forbiddenHits = [];
+  const sensitiveHits = [];
 
   for (const file of trackedTextFiles) {
     const absolute = join(repoRoot, file);
@@ -361,17 +475,41 @@ function validateRepositoryTextBoundary() {
     const buffer = readFileSync(absolute);
     if (isBinaryLike(buffer)) continue;
     const content = buffer.toString("utf8");
-    for (const term of repositoryForbiddenTerms) {
-      if (content.includes(term)) {
-        hits.push(`${file} 命中 ${term}`);
+    for (const term of findForbiddenTermHits(content)) {
+      forbiddenHits.push(`${file} 命中 ${term}`);
+    }
+
+    if (file.replaceAll("\\", "/") === "scripts/validate-public-boundary.mjs") {
+      continue;
+    }
+
+    for (const { name, pattern } of sensitiveContentPatterns) {
+      pattern.lastIndex = 0;
+      let match = pattern.exec(content);
+      while (match) {
+        const hit = match[0].trim();
+        if (!isAllowedSensitiveHit(hit)) {
+          const line = content.slice(0, match.index).split(/\r?\n/).length;
+          sensitiveHits.push(`${file}:${line} 命中 ${name}`);
+        }
+        match = pattern.exec(content);
       }
     }
   }
 
   addCheck(
     "公开文本不存在禁止标识",
-    hits.length === 0,
-    hits.length === 0 ? "未发现禁止公开标识" : hits.join("；"),
+    forbiddenHits.length === 0,
+    forbiddenHits.length === 0
+      ? "未发现禁止公开标识"
+      : forbiddenHits.slice(0, 20).join("；"),
+  );
+  addCheck(
+    "公开文本不存在敏感路径或凭据形态",
+    sensitiveHits.length === 0,
+    sensitiveHits.length === 0
+      ? "未发现本机路径、共享路径、私钥或长 token 形态"
+      : sensitiveHits.slice(0, 20).join("；"),
   );
 }
 
@@ -383,6 +521,10 @@ validateReadmeStatusStructure("README.md");
 validateReadmeStatusStructure("README-cn.md");
 validateReadmeNoProgressChangelog("README.md");
 validateReadmeNoProgressChangelog("README-cn.md");
+validateReadmeCommitUpdateRule("README.md");
+validateReadmeCommitUpdateRule("README-cn.md");
+validateReadmeTextQuality("README.md");
+validateReadmeTextQuality("README-cn.md");
 validateTrackedAssets();
 validateRawFrontendAssets();
 validateRepositoryTextBoundary();

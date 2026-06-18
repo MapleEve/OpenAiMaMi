@@ -16,6 +16,7 @@ const files = {
   ports: join(backendRoot, "application", "ports.rs"),
   lib: join(backendRoot, "lib.rs"),
   hexagonalValidator: join(repoRoot, "scripts", "validate-backend-hexagonal.mjs"),
+  currentSourceMap: join(repoRoot, "docs", "reconstruction", "system-hotspot-current-source-map.md"),
   packageJson: join(repoRoot, "package.json"),
 };
 
@@ -263,6 +264,26 @@ requirePattern(
   raw.get("packageJson").path,
   raw.get("packageJson").content,
   /"validate:backend-hotspot-owner"\s*:\s*"node scripts\/validate-backend-hotspot-owner\.mjs"/,
+);
+
+const currentSourceMap = raw.get("currentSourceMap");
+requireAll(currentSourceMap.path, currentSourceMap.content, [
+  ["hotspot command 文档落点", /`src-tauri\/src\/commands\/hotspot\.rs`/],
+  ["hotspot usecase 文档落点", /`src-tauri\/src\/application\/usecase\/hotspot\.rs`/],
+  ["hotspot usecase 接线说明", /hotspot usecase 接线/],
+  ["backend hotspot owner 验证入口", /npm run validate:backend-hotspot-owner/],
+]);
+rejectAll(
+  currentSourceMap.path,
+  currentSourceMap.content,
+  [
+    ["旧 system command 文档落点", /`src-tauri\/src\/commands\/system\.rs`\s*\|\s*`has_notch`/],
+    ["旧 system usecase 文档落点", /`src-tauri\/src\/application\/usecase\/system\.rs`/],
+    ["旧 system usecase 说明", /system usecase\s*(?:调用|组织|接线)/],
+    ["旧 system hotspot 注册说明", /system hotspot commands/],
+    ["旧 hotspot command 占位说明", /当前不注册额外可调用命令|命令边界占位/],
+  ],
+  "hotspot current-source 文档必须跟随独立 hotspot owner，不得保留旧 system 接线描述",
 );
 
 if (failures.length > 0) {

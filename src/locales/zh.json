@@ -549,7 +549,8 @@
         "officialPassthroughBlocked": "官方透传已拦截"
       },
       "test": {
-        "missingTarget": "中转测试 mock 缺少目标"
+        "missingTarget": "中转测试 mock 缺少目标",
+        "success": "Relay mock terminal probe succeeded"
       },
       "diagnostic": {
         "missingRouterBlock": {
@@ -566,11 +567,18 @@
           "label": "受管路由配置块",
           "missing": "config.toml 中未检测到受管路由配置块。",
           "notRequired": "当前不需要受管路由配置块。"
+        },
+        "summary": {
+          "hasIssues": "relay 诊断已完成只读检查，发现需要处理的配置项。",
+          "noIssues": "relay 诊断已完成只读检查，未发现需要处理的配置项。"
         }
       },
       "fix": {
         "autoFixed": "已处理可自动修复的 Codex Router 诊断项。",
+        "autoFixedDetailConfig": "config.toml managed router block written",
+        "autoFixedDetailCatalog": "codex_router_catalog.json ensured",
         "staleRouterEntriesRemoved": "已移除过期 Codex Router 配置。",
+        "staleRouterEntriesRemovedDetail": "managed router config removed",
         "manualProfileRequired": "该诊断项需要手动处理，不能自动改写用户 profile。",
         "manualProfileRequiredDetail": "请手动确认 config.toml 顶层 profile 与路由配置的关系。",
         "readOnlyAcknowledged": "该诊断项已确认，但当前 mock 不自动修改相关外部状态。",

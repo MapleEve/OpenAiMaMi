@@ -549,7 +549,8 @@
         "officialPassthroughBlocked": "Official passthrough blocked"
       },
       "test": {
-        "missingTarget": "Relay test mock is missing a target"
+        "missingTarget": "Relay test mock is missing a target",
+        "success": "Relay mock terminal probe succeeded"
       },
       "diagnostic": {
         "missingRouterBlock": {
@@ -566,11 +567,18 @@
           "label": "Managed router block",
           "missing": "config.toml does not contain a managed router block.",
           "notRequired": "A managed router block is not required right now."
+        },
+        "summary": {
+          "hasIssues": "Relay diagnostics completed read-only checks and found configuration items to handle.",
+          "noIssues": "Relay diagnostics completed read-only checks and found no configuration items to handle."
         }
       },
       "fix": {
         "autoFixed": "Fixed Codex Router diagnostic items that can be repaired automatically.",
+        "autoFixedDetailConfig": "config.toml managed router block written",
+        "autoFixedDetailCatalog": "codex_router_catalog.json ensured",
         "staleRouterEntriesRemoved": "Removed stale Codex Router config.",
+        "staleRouterEntriesRemovedDetail": "managed router config removed",
         "manualProfileRequired": "This diagnostic item requires manual handling; the mock cannot rewrite the user profile automatically.",
         "manualProfileRequiredDetail": "Manually confirm how the top-level config.toml profile relates to router config.",
         "readOnlyAcknowledged": "This diagnostic item is acknowledged, but the mock does not automatically change external state.",

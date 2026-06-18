@@ -20,7 +20,7 @@
 | `evidence/full-chain/internal/audits/audits/macos-1.0.9-system-hotspot/manifest.json` | 确认 macOS 与 Windows 的 `hotspot_ready` 语义不同：macOS 是 window action，Windows 是 runtime state query。 |
 | `evidence/full-chain/internal/audits/audits/macos-1.0.9-system-hotspot/data/producer-ledger.json` | 确认三条 macOS leaf 的 owner 地址和 strictImplementationUse 结论来源。 |
 | `evidence/full-chain/internal/audits/audits/macos-1.0.9-system-hotspot/pointers/evidence-paths.md` | 确认 macOS raw evidence path、`create_hotspot_window`、`apply_native_hotspot_properties`、`set_window_alpha` 等证据入口。 |
-| `src-tauri/src/commands/system.rs`、`src-tauri/src/application/usecase/system.rs` | 当前 Rust system command/usecase 接线证据。 |
+| `src-tauri/src/commands/hotspot.rs`、`src-tauri/src/application/usecase/hotspot.rs` | 当前 Rust hotspot command/usecase 接线证据。 |
 | `src-tauri/src/core/model/hotspot.rs`、`src-tauri/src/core/hotspot.rs` | 当前 hotspot core/model owner 证据：配置快照、平台能力、状态码和 pending/skeleton 领域结果。 |
 | `src-tauri/src/repository/hotspot.rs`、`src-tauri/src/repository/settings.rs`、`src-tauri/src/contracts/system.rs` | 当前 hotspot repository snapshot、settings 持久化和 `hotspot_enabled` DTO 字段证据。 |
 | `src-tauri/src/application/ports.rs`、`src-tauri/src/platform/hotspot.rs` | 当前 `HotspotPlatformPort` 端口和 hotspot platform capability adapter 证据。 |
@@ -30,9 +30,9 @@
 
 | 命令 | 当前 frontend chain | gate 状态 | 当前公开源码结论 |
 | --- | --- | --- | --- |
-| `get_hotspot_enabled` | IPC contract、system service、settings facade、settings query、cache、page/panel 和 typed mock 已在 current-source report 中闭合。 | Windows gate-report: `strictImplementationUse`，dim1-dim5 done，dim6 missing，`gate_accepted=false`，`implementation_use=false`。macOS gate-report: strictImplementationUse 计数覆盖该 leaf，dim6 mapping 为空。 | Rust command 调用 system usecase；usecase 通过 hotspot repository 读取 settings snapshot，再交给 hotspot core 生成 `SettingsSnapshotReady` 结果。这是 settings snapshot 骨架，不是平台热点能力恢复。 |
-| `set_hotspot_enabled` | IPC contract、system service、settings mutation、page action、panel toggle 和 typed mock 已在 current-source report 中闭合。 | Windows gate-report: `strictImplementationUse`，dim1-dim5 done，dim6 missing，`gate_accepted=false`，`implementation_use=false`；manifest 记录 settings persist 和 post-write notify 证据。macOS evidence path 指向真实窗口创建和 native 属性入口。 | Rust usecase 通过 hotspot repository 保存 `hotspot_enabled`，再由 hotspot core 返回 `SettingsSaved` 结果；没有创建真实热点窗口，没有设置 native props，也没有恢复 post-write notify。 |
-| `hotspot_ready` | IPC contract、system/settings service、settings mutation、page action 和 typed mock 已在 current-source report 中闭合。 | Windows gate-report: `strictImplementationUse`，dim1-dim5 done，dim6 missing，`gate_accepted=false`，`implementation_use=false`。macOS manifest 记录它与 Windows 语义不同。 | Rust command 调用 `HotspotPlatformPort::hotspot_capability()`，usecase 交给 hotspot core 返回 `PlatformCapabilitySkeleton` pending 结果。这只是 platform capability 骨架，不恢复 macOS window action，也不恢复 Windows runtime discriminant 检查。 |
+| `get_hotspot_enabled` | IPC contract、system service、settings facade、settings query、cache、page/panel 和 typed mock 已在 current-source report 中闭合。 | Windows gate-report: `strictImplementationUse`，dim1-dim5 done，dim6 missing，`gate_accepted=false`，`implementation_use=false`。macOS gate-report: strictImplementationUse 计数覆盖该 leaf，dim6 mapping 为空。 | Rust command 归属 `commands/hotspot.rs` 并调用 hotspot usecase；usecase 通过 hotspot repository 读取 settings snapshot，再交给 hotspot core 生成 `SettingsSnapshotReady` 结果。这是 settings snapshot 骨架，不是平台热点能力恢复。 |
+| `set_hotspot_enabled` | IPC contract、system service、settings mutation、page action、panel toggle 和 typed mock 已在 current-source report 中闭合。 | Windows gate-report: `strictImplementationUse`，dim1-dim5 done，dim6 missing，`gate_accepted=false`，`implementation_use=false`；manifest 记录 settings persist 和 post-write notify 证据。macOS evidence path 指向真实窗口创建和 native 属性入口。 | Rust command 归属 `commands/hotspot.rs` 并调用 hotspot usecase；usecase 通过 hotspot repository 保存 `hotspot_enabled`，再由 hotspot core 返回 `SettingsSaved` 结果；没有创建真实热点窗口，没有设置 native props，也没有恢复 post-write notify。 |
+| `hotspot_ready` | IPC contract、system/settings service、settings mutation、page action 和 typed mock 已在 current-source report 中闭合。 | Windows gate-report: `strictImplementationUse`，dim1-dim5 done，dim6 missing，`gate_accepted=false`，`implementation_use=false`。macOS manifest 记录它与 Windows 语义不同。 | Rust command 归属 `commands/hotspot.rs`，usecase 调用 `HotspotPlatformPort::hotspot_capability()`，再交给 hotspot core 返回 `PlatformCapabilitySkeleton` pending 结果。这只是 platform capability 骨架，不恢复 macOS window action，也不恢复 Windows runtime discriminant 检查。 |
 
 ## 当前源码 owner 映射
 
@@ -50,8 +50,8 @@
 
 | owner | 当前可验证内容 | 边界 |
 | --- | --- | --- |
-| `src-tauri/src/commands/system.rs` | `has_notch`、`get_hotspot_enabled`、`set_hotspot_enabled`、`hotspot_ready` 只取得 repository 或 platform adapter，再调用 usecase。 | command 层不是业务 owner。 |
-| `src-tauri/src/application/usecase/system.rs` | `get_hotspot_enabled`、`set_hotspot_enabled` 组织 hotspot repository 和 hotspot core；`has_notch`、`hotspot_ready` 组织 `HotspotPlatformPort` 和 hotspot core。 | usecase 只做接线和返回，不创建窗口、不设置 native props、不检查 runtime discriminant。 |
+| `src-tauri/src/commands/hotspot.rs` | `has_notch`、`get_hotspot_enabled`、`set_hotspot_enabled`、`hotspot_ready` 只取得 repository 或 platform adapter，再调用 hotspot usecase。 | command 层不是业务 owner，也不直接访问 repository helper、core helper 或 settings 文件。 |
+| `src-tauri/src/application/usecase/hotspot.rs` | `get_hotspot_enabled`、`set_hotspot_enabled` 组织 hotspot repository 和 hotspot core；`has_notch`、`hotspot_ready` 组织 `HotspotPlatformPort` 和 hotspot core。 | usecase 只做用户动作级事务编排和返回，不创建窗口、不设置 native props、不检查 runtime discriminant。 |
 | `src-tauri/src/core/model/hotspot.rs` | `HotspotCommand`、`HotspotStatusCode`、`HotspotSettingsSnapshot`、`HotspotPlatformCapability` 和 `HotspotDomainResult` owning hotspot 领域模型和值对象。 | 纯模型不持有窗口、系统对象、平台端口或跨命令运行态。 |
 | `src-tauri/src/application/ports.rs` | `HotspotPlatformPort` owning 应用层对 hotspot 平台能力的窄端口，返回 `HotspotPlatformCapability`。 | 端口只定义 usecase 与 platform adapter 的协作合同，不承载领域模型或真实平台实现。 |
 | `src-tauri/src/core/hotspot.rs` | `get_hotspot_enabled`、`set_hotspot_enabled`、`hotspot_ready`、`has_notch` 生成 settings snapshot 或 platform capability 的 domain result。 | 只产出 pending/skeleton 或 settings snapshot 结果，不恢复平台行为。 |
@@ -59,12 +59,11 @@
 | `src-tauri/src/repository/settings.rs` | 继续提供 settings 文件读写基础能力。 | 不直接承担 hotspot 领域结果。 |
 | `src-tauri/src/contracts/system.rs` | `AppSettingsFile.hotspot_enabled` 承载当前 settings DTO 字段，默认值为 `false`。 | DTO 字段不等于真实平台能力。 |
 | `src-tauri/src/platform/hotspot.rs` | `HotspotPlatformAdapter` 当前返回 unsupported skeleton capability，并明确只公开六边形架构骨架。 | 不恢复 macOS notch/window 行为，不恢复 Windows runtime state query。 |
-| `src-tauri/src/commands/hotspot.rs` | 保留 hotspot 命令边界占位，说明后续入口只接参数、取 state 并转交 usecase。 | 当前不注册额外可调用命令。 |
-| `src-tauri/src/core/mod.rs`、`src-tauri/src/core/model/mod.rs`、`src-tauri/src/repository/mod.rs`、`src-tauri/src/commands/mod.rs`、`src-tauri/src/platform/mod.rs`、`src-tauri/src/lib.rs` | 注册 `core::hotspot`、`core::model::hotspot`、`repository::hotspot`、`commands::hotspot`、`platform::hotspot`，并在 Tauri handler 中注册 system hotspot commands。 | 模块注册只说明 owner 位置存在，不关闭 gate-report。 |
+| `src-tauri/src/core/mod.rs`、`src-tauri/src/core/model/mod.rs`、`src-tauri/src/repository/mod.rs`、`src-tauri/src/commands/mod.rs`、`src-tauri/src/platform/mod.rs`、`src-tauri/src/lib.rs` | 注册 `core::hotspot`、`core::model::hotspot`、`repository::hotspot`、`commands::hotspot`、`platform::hotspot` 和 `application::usecase::hotspot`，并在 Tauri handler 中注册 hotspot commands。 | 模块注册只说明 owner 位置存在，不关闭 gate-report。 |
 
 ## 本分支允许/目标包含的 Rust hotspot 骨架
 
-本分支允许并包含 `src-tauri/src/core/model/hotspot.rs`、`src-tauri/src/core/hotspot.rs`、`src-tauri/src/repository/hotspot.rs`、`src-tauri/src/platform/hotspot.rs`、`src-tauri/src/application/usecase/system.rs` 接线和相关 mod 注册。Rust 只做 pending/skeleton 和 settings snapshot，不恢复平台副作用。
+本分支允许并包含 `src-tauri/src/core/model/hotspot.rs`、`src-tauri/src/core/hotspot.rs`、`src-tauri/src/repository/hotspot.rs`、`src-tauri/src/platform/hotspot.rs`、`src-tauri/src/application/usecase/hotspot.rs`、`src-tauri/src/commands/hotspot.rs` 接线和相关 mod 注册。Rust 只做 pending/skeleton 和 settings snapshot，不恢复平台副作用。
 
 | 层 | 允许/目标 | 当前源码落点 | 不允许内容 |
 | --- | --- | --- | --- |
@@ -72,7 +71,7 @@
 | core hotspot | 纯 domain owner 表达 hotspot enabled、ready、unsupported、pending skeleton 等语义。 | `src-tauri/src/core/hotspot.rs`。 | 不把窗口创建、native props、runtime discriminant 或真实 platform query 写进 core。 |
 | repository snapshot | 通过 repository owner 从可替换 FS 读取 settings snapshot，并更新 `hotspot_enabled` 字段。 | `src-tauri/src/repository/hotspot.rs`，底层复用 `src-tauri/src/repository/settings.rs`。 | 不保存跨命令内存状态，不把平台运行态伪装成 repository 事实。 |
 | platform capability | 通过窄端口表达 notch/ready 探针和 unsupported 结果。 | `src-tauri/src/application/ports.rs`、`src-tauri/src/platform/hotspot.rs`。 | 不在 usecase 内直接调用 OS window、native props、runtime state 或外部进程。 |
-| system usecase 接线 | 用户动作由 system usecase 组织 repository/platform/core owner 并返回 envelope payload。 | `src-tauri/src/application/usecase/system.rs`。 | 不让 command 层 owning 业务规则，不绕过 repository 或 platform port。 |
+| hotspot usecase 接线 | 用户动作由 hotspot usecase 组织 repository/platform/core owner，并由 hotspot command adapter 返回 envelope payload。 | `src-tauri/src/application/usecase/hotspot.rs`、`src-tauri/src/commands/hotspot.rs`。 | 不让 command 层 owning 业务规则，不绕过 repository 或 platform port。 |
 | mod 注册 | hotspot 相关入口必须有清楚模块注册，避免隐式散落。 | `src-tauri/src/core/mod.rs`、`src-tauri/src/core/model/mod.rs`、`src-tauri/src/repository/mod.rs`、`src-tauri/src/commands/mod.rs`、`src-tauri/src/platform/mod.rs`、`src-tauri/src/lib.rs` 已提供当前边界注册。 | 不新增用于降低失败噪声的 gate 字段，不把注册当作验收通过。 |
 
 ## 明确未恢复内容
@@ -100,10 +99,11 @@ macOS `gate-report.json` 的当前字段保持为：`strict_count=3`、`ready_co
 
 本分支对 system hotspot 的可验收范围只包括当前源码证据映射和后端 owner 骨架说明：
 
-- 本分支包含 Rust hotspot owner 骨架：`core/model/hotspot.rs`、`core/hotspot.rs`、`repository/hotspot.rs`、`platform/hotspot.rs`、`application/usecase/system.rs` 接线和相关 mod 注册。
+- 本分支包含 Rust hotspot owner 骨架：`core/model/hotspot.rs`、`core/hotspot.rs`、`repository/hotspot.rs`、`platform/hotspot.rs`、`application/usecase/hotspot.rs`、`commands/hotspot.rs` 接线和相关 mod 注册。
 - Rust hotspot 范围只做 pending/skeleton 和 settings snapshot。
-- 不修改 README、voice、gate-report、前端或验证脚本。
+- 不修改 voice、gate-report 或前端运行入口。
 - 不新增 closeout JSON，不修改 manifest 或 gate-report 字段。
 - 不关闭 strict gate，不声明 `implementation_use`、`gate_accepted`、`full_leaf` 或 `full_leaf_100` 已完成。
+- 运行 `npm run validate:backend-hotspot-owner`。
 - 运行 `npm run validate:frontend-closeouts`。
 - 检查本文档不包含乱码字符。

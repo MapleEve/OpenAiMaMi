@@ -6,7 +6,7 @@
  * 判断，真实错误信息会被 fallback 吞掉。该函数做宽松兼容，保证任何常见形态
  * 的错误都能被转成可读文案显示给用户。
  */
-export function formatInvokeError(error: unknown, fallback = "请稍后重试。"): string {
+export function formatInvokeError(error: unknown, fallback = ""): string {
   if (error == null) return fallback;
 
   if (typeof error === "string") {

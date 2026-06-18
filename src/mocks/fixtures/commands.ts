@@ -1718,7 +1718,7 @@ const relayTestHandler: IpcCommandHandler = (context) => {
     health: missingTarget ? 0 : 100,
     latencyMs: missingTarget ? 0 : 24,
     statusCode: missingTarget ? null : 200,
-    message: missingTarget ? null : "Relay mock terminal probe succeeded",
+    message: missingTarget ? null : mockCopy("relay.mock.test.success"),
     errorMessage: missingTarget ? mockCopy("relay.mock.test.missingTarget") : null,
     models: missingTarget ? [] : models,
   };
@@ -1929,8 +1929,8 @@ function relayDiagnosticFromStatus(
     issues,
     items,
     summary: issues.length > 0
-      ? "relay 诊断已完成只读检查，发现需要处理的配置项。"
-      : "relay 诊断已完成只读检查，未发现需要处理的配置项。",
+      ? mockCopy("relay.mock.diagnostic.summary.hasIssues")
+      : mockCopy("relay.mock.diagnostic.summary.noIssues"),
     repositoryState: diagnosticSkeletonState(),
     platformState: diagnosticSkeletonState(),
   };
@@ -1976,8 +1976,8 @@ function relayRouterFixResult(itemId: string) {
       requiresRestart: true,
       message: mockCopy("relay.mock.fix.autoFixed"),
       details: [
-        "config.toml managed router block written",
-        "codex_router_catalog.json ensured",
+        mockCopy("relay.mock.fix.autoFixedDetailConfig"),
+        mockCopy("relay.mock.fix.autoFixedDetailCatalog"),
       ],
     };
   }
@@ -1986,7 +1986,7 @@ function relayRouterFixResult(itemId: string) {
       fixed: true,
       requiresRestart: true,
       message: mockCopy("relay.mock.fix.staleRouterEntriesRemoved"),
-      details: ["managed router config removed"],
+      details: [mockCopy("relay.mock.fix.staleRouterEntriesRemovedDetail")],
     };
   }
   if (itemId === "user_top_level_profile" || itemId === "config_profile_conflict") {
