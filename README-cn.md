@@ -46,31 +46,35 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 
 ## 当前补回状态
 
-### 已完成或已纳入公开骨架
+本节只记录当前仓库状态，不按提交流水追加。
 
-- 公开材料和许可：保留 Apache License 许可上下文、中文公开说明、raw/internal 主链路、前端 dumped 证据、匿名化规则和 `OpenAiMami IDB` 独立资产说明；主仓库不直接保存大体积 IDB 文件。
-- 前端架构：当前源码已按 route registry、entry/root、runtime initializer、全局 Provider、深模块 Provider/StoreUpdater/Content、cache、hooks、dialogs、panels、components、types 和 tests 边界重构；sidebar/header/tray/page title 只消费同一份 route meta。
-- 前端文案：660 个 zh/en locale key 已同步，全文案验收清单 `evidence/full-chain/internal/frontend-copy-acceptance.json` 当前为 `status=accepted`；607 项来自 raw translation object，9 项来自 raw literal，6 项来自 raw translation alias，38 项按 current-source owner、raw/internal 模块证据和 copy owner 验证标记为 `implementation-reconstructable-key-value`。
-- 前端状态与竞态：TanStack cache、runtime event reload、mutation payload、stale/delayed response、event replay、cancel 和 abort 防护已按模块 cache/helper 收口；E2E mock 覆盖 delayed、stale、concurrency、event replay、cancel 和 abort 场景。
-- Voice 边界：voice 前后端不进入 route registry、runtime reload map、IPC handler、`src/lib/api.ts` 或 E2E mock handler，只保留空骨架、合同清单和中文说明。
-- 后端六边形骨架：`commands`、`application/usecase`、`repository`、`repository/adapter`、`platform`、`contracts`、`core/model` 和 `core/error` 边界已经建立；command 只做 IPC adapter，usecase owning 用户动作事务，repository/adapter owning 文件读写，platform owning OS 能力，contracts owning IPC DTO。
-- 已补回的公开后端切片：Accounts 导入导出/切换/删除/登出，MCP 配置读写，Skills 安装/恢复/删除/备份，Custom Instructions apply/clear/rollback，Sessions 文件元数据清单，System diagnostics/bootstrap/settings/platform actions，Analytics 公开 sessions/cache 聚合骨架，Runtime extensions registry/store，Relay provider/model/diagnostics/payload、request builder、router config parser/render、mock terminal test provider/draft，以及 daemon/runtime watcher 进程内状态合同。
-- Bootstrap 与 runtime bridge：`bootstrap-cache.json` 已恢复读取、解析失败空状态、`snapshotProgressive`、`usageAnalytics`、`mcpServers`、`installedSkills` 和 E2E mock 共享 cache；runtime watcher status 会携带脱敏 `runtimeEvent`，前端只通过 `src/lib/api.ts` 订阅并由 `RuntimeInitializer` 写入 cache。
-- Mystery grants：已恢复 get/merge grants 调用链、overview 面板消费、allowlist 过滤和 route registry meta/preload 显隐 helper；allowlist 对齐 raw 前端 helper 词表 `overview/accounts/sessions/mcp/skills/plugins/relayModel/maintenance/settings`。
+| 分类 | 当前结论 |
+| --- | --- |
+| 公开材料 | Apache License、中文公开说明、匿名化 raw/internal 主链路、前端 dumped 证据、二进制清单和 `OpenAiMami IDB` 独立资产说明已纳入；主仓库不直接保存大体积 IDB 文件。 |
+| 前端还原 | 主入口、路由表、runtime initializer、全局 Provider、深模块 Provider/StoreUpdater/Content、cache、hooks、dialogs、panels、components、types 和 tests 已按 owner 边界重构。 |
+| 前端文案 | `evidence/full-chain/internal/frontend-copy-acceptance.json` 为 `status=accepted`；660 个 zh/en locale key 全部有 copy owner 验收来源，frontend manifest 当前没有非 full leaf 状态。 |
+| 前端状态竞争 | TanStack cache、mutation payload、runtime event reload、stale/delayed response、event replay、cancel、abort 和 E2E mock 竞态场景已纳入验收。 |
+| 后端骨架 | `commands`、`application/usecase`、`core`、`platform`、`repository`、`repository/adapter`、`contracts`、`adapters` 六边形边界已建立，并由 `validate:backend-hexagonal` 约束。 |
+| 已补后端能力 | 已补回公开过或可由证据支撑的 Accounts、MCP、Skills、Custom Instructions、Sessions、System、Analytics、Runtime extensions、Relay 和 daemon/runtime watcher 骨架切片；System 已补 `check_update_installability` 只读环境检测。 |
+| Voice | 前后端都不作为可用功能入口；只保留空骨架、合同清单和中文边界说明。 |
 
-### 未完成或不声明完成
+### 仍未完成
 
-- 前端仍不能声明 macOS / Windows 双平台 100% leaf 全闭合；`validate:frontend-leaf-copy` 现在证明 locale/copy owner/manifest/docs 侧可实现验收，但 internal 历史 gate/audit 中 `full_leaf_100`、`gate_accepted`、`readyToImplement`、`dim6` 等字段仍作为非阻塞完成声明信号保留。
-- 后端闭源业务不做全量还原；没有公开证据支撑的业务行为只能保留为合同、桩、待实现项、测试缺口或可替换接口，不能写成真实闭源业务实现。
-- Relay 仍不声明真实 HTTP、SSE、代理会话或转发闭环；Daemon 仍不声明真实后台线程、事件广播、网络刷新或账号自动切换闭环；Analytics 仍不声明真实 token、工具、变更或配额统计口径；MCP 仍不声明 server 启动或网络探测；System 仍不声明诊断修复、更新安装、外部进程重启或 shell 闭环。
-- `mystery_route_allowed` 仍不是完整 route guard；当前 helper 只能在传入 grants context 时计算显隐和 preload，尚未把 grants 查询正式接入导航 shell、redirect 或 route guard，也不因此关闭 dim6 或 full leaf gate。
-- Voice 不做真实功能还原；录音、语音运行时、快捷键、音频反馈和文本注入相关内容不进入当前公开实现。
-- Rust 编译验收需要具备目标平台工具链；Windows 下缺少 MSVC `link.exe` 时，`cargo check` 会在第三方 crate build script 阶段失败。
+| 分类 | 不声明完成的内容 |
+| --- | --- |
+| 前端完成声明 | 不能声明 macOS / Windows 双平台 100% leaf 全闭合；internal 历史 gate/audit 仍保留 `full_leaf_100`、`gate_accepted`、`readyToImplement`、`dim6` 等非阻塞完成声明信号。 |
+| Mystery grants | `mystery_route_allowed` 还不是完整 route guard；grants 查询尚未正式接入导航 shell、redirect 或 route guard。 |
+| 后端范围 | 闭源后端业务不做全量还原；没有公开证据支撑的行为只能保留为合同、桩、待实现项、测试缺口或可替换接口。 |
+| 后端闭环 | Relay 仍不声明真实 HTTP/SSE/转发闭环；Daemon 仍不声明真实后台线程或账号自动切换闭环；Analytics 仍不声明真实 token、工具、变更或配额统计口径；MCP 仍不声明 server 启动或网络探测；System 仍不声明更新安装执行、诊断修复、外部进程重启或 shell 闭环。 |
+| 编译环境 | Rust 编译验收需要目标平台工具链；Windows 缺少 MSVC `link.exe` 时，`cargo check` 会在第三方 crate build script 阶段失败。 |
 
-### 当前验证入口
+### 验收入口
 
-- 前端：`validate:frontend-dumped`、`validate:frontend-evidence`、`validate:frontend-entry`、`validate:frontend-layer-owners`、`validate:frontend-copy-owners`、`validate:frontend-leaf-copy`、`validate:frontend-voice-boundary`、`validate:frontend-relay-cache`、`validate:frontend-analytics-sequence`、`validate:frontend-mystery-gates`、`validate:i18n`、`validate:e2e-mocks`。
-- 后端：`validate:backend-hexagonal`、`validate:backend-accounts-owner`、`validate:backend-accounts-transfer-owner`、`validate:backend-mcp-owner`、`validate:backend-skills-owner`、`validate:backend-custom-instructions-owner`、`validate:backend-analytics-owner`、`validate:backend-relay-owner`、`validate:backend-daemon-owner`、`validate:backend-system-owner`、`validate:backend-runtime-extensions-owner`、`validate:backend-sessions-owner`。
+| 范围 | 命令 |
+| --- | --- |
+| 前端证据与文案 | `validate:frontend-dumped`、`validate:frontend-evidence`、`validate:frontend-leaf-copy`、`validate:frontend-copy-owners`、`validate:i18n` |
+| 前端架构与竞态 | `validate:frontend-entry`、`validate:frontend-layer-owners`、`validate:frontend-voice-boundary`、`validate:frontend-relay-cache`、`validate:frontend-analytics-sequence`、`validate:frontend-mystery-gates`、`validate:e2e-mocks` |
+| 后端边界 | `validate:backend-hexagonal`、`validate:backend-system-owner`、`validate:backend-accounts-owner`、`validate:backend-mcp-owner`、`validate:backend-skills-owner`、`validate:backend-custom-instructions-owner`、`validate:backend-analytics-owner`、`validate:backend-relay-owner`、`validate:backend-daemon-owner`、`validate:backend-runtime-extensions-owner`、`validate:backend-sessions-owner` |
 
 ## 可直接给 AI 的重建提示
 

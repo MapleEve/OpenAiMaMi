@@ -89,10 +89,20 @@ pub(crate) struct AppSystemInfo {
     pub hostname: String,
 }
 
+#[derive(Debug, Clone)]
+pub(crate) struct AppUpdateInstallability {
+    pub executable_path: Option<String>,
+    pub bundle_path: Option<String>,
+    pub translocated: bool,
+    pub quarantined: bool,
+    pub read_only_location: bool,
+}
+
 // 系统能力端口只返回纯数据和结构化能力状态。
 pub(crate) trait AppSystemPort {
     fn system_info(&self) -> AppSystemInfo;
     fn current_executable_path(&self) -> Option<String>;
+    fn update_installability(&self) -> AppUpdateInstallability;
     fn reset_config(&self) -> Result<(), CoreError>;
 }
 

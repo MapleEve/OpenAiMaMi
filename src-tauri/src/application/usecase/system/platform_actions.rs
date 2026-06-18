@@ -10,18 +10,28 @@ use crate::core::error::CoreError;
 
 // platform-actions usecase 只编排公开平台 port 动作，不恢复更新安装或外部进程闭环。
 pub fn check_update_installability(system: &impl AppSystemPort) -> UpdateInstallabilityPayload {
+    let installability = system.update_installability();
+    let code = if installability.translocated {
+        "app_translocation"
+    } else if installability.read_only_location {
+        "read_only_location"
+    } else {
+        "ok"
+    };
+    let can_install = code == "ok";
+
     UpdateInstallabilityPayload {
-        backend_status: unsupported_status(
+        backend_status: restored_status(
             "system",
             "check_update_installability",
-            "更新安装环境检测未在当前公开后端范围内恢复。",
+            BackendEffect::Platform,
         ),
-        can_install: false,
-        code: "unsupported".to_string(),
-        executable_path: system.current_executable_path(),
-        bundle_path: None,
-        translocated: false,
-        quarantined: false,
+        can_install,
+        code: code.to_string(),
+        executable_path: installability.executable_path,
+        bundle_path: installability.bundle_path,
+        translocated: installability.translocated,
+        quarantined: installability.quarantined,
     }
 }
 

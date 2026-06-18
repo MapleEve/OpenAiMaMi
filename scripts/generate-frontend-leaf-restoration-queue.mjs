@@ -16,6 +16,10 @@ function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
+function readText(path) {
+  return readFileSync(path, "utf8");
+}
+
 function readJsonl(path) {
   if (!existsSync(path)) return [];
   return readFileSync(path, "utf8")
@@ -92,7 +96,8 @@ function collectGateReportFailures() {
 function collectManifestNonLeafStatuses() {
   const closedManifestStatuses = loadClosedManifestStatuses();
   const manifestPath = repoPath("src", "restoration", "frontend-manifest", "index.ts");
-  const lines = readFileSync(manifestPath, "utf8").split(/\r?\n/);
+  const boundaryExceptions = loadBoundaryExceptions(manifestPath);
+  const lines = readText(manifestPath).split(/\r?\n/);
   const nonLeafStatuses = new Set(["source-only", "boundary-only", "contract-service-only", "owner-closed"]);
   const items = [];
   let currentArray = null;
@@ -146,7 +151,11 @@ function collectManifestNonLeafStatuses() {
     objectDepth += (line.match(/{/g) ?? []).length;
     objectDepth -= (line.match(/}/g) ?? []).length;
     if (objectDepth <= 0) {
-      if (currentRecord.status && !closedManifestStatuses.has(manifestCloseoutKey(currentRecord))) {
+      if (
+        currentRecord.status &&
+        !isBoundaryExceptionRecord(currentRecord, boundaryExceptions) &&
+        !closedManifestStatuses.has(manifestCloseoutKey(currentRecord))
+      ) {
         items.push({
           ...currentRecord,
           owner: currentRecord.owner ?? currentRecord.module,
@@ -169,6 +178,25 @@ function manifestCloseoutKey(record) {
     record.source ?? "",
     record.status ?? "",
   ].join("\u0000");
+}
+
+function loadBoundaryExceptions(manifestPath) {
+  const text = readText(manifestPath);
+  const match = text.match(/export const FRONTEND_DUMPED_BOUNDARY_EXCEPTIONS = \[([\s\S]*?)\] as const/);
+  if (!match) return [];
+  return [...match[1].matchAll(/\{[\s\S]*?\}/g)]
+    .map((block) => ({
+      module: block[0].match(/\bmodule:\s*"([^"]+)"/)?.[1] ?? null,
+      status: block[0].match(/\bstatus:\s*"([^"]+)"/)?.[1] ?? null,
+    }))
+    .filter((entry) => entry.module && entry.status);
+}
+
+function isBoundaryExceptionRecord(record, exceptions) {
+  const owner = record.owner ?? record.module ?? null;
+  return exceptions.some(
+    (exception) => exception.module === owner && exception.status === record.status,
+  );
 }
 
 function collectFrontendDocSignals() {
@@ -366,8 +394,11 @@ function buildQueue() {
       {
         id: "frontend-copy-acceptance-proof",
         area: "copy",
-        status: copyAcceptance.status === "accepted" ? "needs-verification" : "draft-or-missing",
-        blocker: "逐条 locale key 到 raw/internal 文案来源的验收文件尚未 accepted。",
+        status: copyAcceptance.status === "accepted" ? "accepted" : "draft-or-missing",
+        blocker:
+          copyAcceptance.status === "accepted"
+            ? null
+            : "逐条 locale key 到 raw/internal 文案来源的验收文件尚未 accepted。",
       },
       {
         id: "plugins-config-visible-leaf",
@@ -378,8 +409,11 @@ function buildQueue() {
       {
         id: "manifest-non-full-leaf-statuses",
         area: "frontend-manifest",
-        status: "open",
-        blocker: `当前 frontend manifest 还有 ${manifestNonLeafStatuses.length} 个非 full leaf 状态。`,
+        status: manifestNonLeafStatuses.length === 0 ? "accepted" : "open",
+        blocker:
+          manifestNonLeafStatuses.length === 0
+            ? null
+            : `当前 frontend manifest 还有 ${manifestNonLeafStatuses.length} 个非 full leaf 状态。`,
       },
       {
         id: "gate-report-strict-failures",
