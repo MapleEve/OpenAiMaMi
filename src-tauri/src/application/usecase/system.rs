@@ -298,14 +298,6 @@ fn is_mystery_route_allowed(route: &str) -> bool {
     )
 }
 
-pub fn get_image_compat(repo: &Repository) -> Result<bool, CoreError> {
-    config_repository::get_image_compat(repo)
-}
-
-pub fn set_image_compat(repo: &Repository, enabled: bool) -> Result<bool, CoreError> {
-    config_repository::set_image_compat(repo, enabled)
-}
-
 fn remove_children(repo: &Repository, path: &std::path::Path) -> Result<i32, CoreError> {
     let mut removed = 0;
     for entry in repo.fs().read_dir(path)? {

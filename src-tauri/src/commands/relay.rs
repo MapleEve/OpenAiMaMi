@@ -136,6 +136,25 @@ pub fn get_relay_proxy_status(
 }
 
 #[tauri::command]
+pub fn get_image_compat(repo: State<'_, Mutex<Repository>>) -> Result<CoreEnvelope<bool>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::relay::get_image_compat(&repo)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
+}
+
+#[tauri::command]
+pub fn set_image_compat(
+    repo: State<'_, Mutex<Repository>>,
+    enabled: bool,
+) -> Result<CoreEnvelope<bool>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::relay::set_image_compat(&repo, enabled)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
+}
+
+#[tauri::command]
 pub fn set_codex_router_enabled(
     repo: State<'_, Mutex<Repository>>,
     enabled: bool,

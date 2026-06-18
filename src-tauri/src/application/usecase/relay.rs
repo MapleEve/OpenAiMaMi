@@ -12,7 +12,7 @@ use crate::core::{
     model::relay::{RelayDraftDomain, RELAY_SCHEMA_VERSION},
     relay as relay_core,
 };
-use crate::repository::{relay as relay_repository, Repository};
+use crate::repository::{config as config_repository, relay as relay_repository, Repository};
 use serde_json::Value;
 
 mod diagnostics;
@@ -168,6 +168,15 @@ pub fn get_relay_proxy_status(repo: &Repository) -> (RelayProxyPayload, CoreWarn
         proxy_payload_from_domain(command, core_state_from_repo(repo).proxy),
         skeleton_warning(command),
     )
+}
+
+// relay image compatibility 用例负责 config.toml 功能位事务；命令名保留 settings IPC 兼容。
+pub fn get_image_compat(repo: &Repository) -> Result<bool, CoreError> {
+    config_repository::get_image_compat(repo)
+}
+
+pub fn set_image_compat(repo: &Repository, enabled: bool) -> Result<bool, CoreError> {
+    config_repository::set_image_compat(repo, enabled)
 }
 
 pub fn set_codex_router_enabled(

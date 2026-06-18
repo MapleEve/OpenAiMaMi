@@ -23,7 +23,12 @@ const files = {
   coreRequestBuilder: join(repoRoot, "src-tauri", "src", "core", "relay", "request_builder.rs"),
   coreRouterConfig: join(repoRoot, "src-tauri", "src", "core", "relay", "router_config.rs"),
   repository: join(repoRoot, "src-tauri", "src", "repository", "relay.rs"),
+  configRepository: join(repoRoot, "src-tauri", "src", "repository", "config.rs"),
   platform: join(repoRoot, "src-tauri", "src", "platform", "relay.rs"),
+  systemCommand: join(repoRoot, "src-tauri", "src", "commands", "system.rs"),
+  systemUsecase: join(repoRoot, "src-tauri", "src", "application", "usecase", "system.rs"),
+  tauriLib: join(repoRoot, "src-tauri", "src", "lib.rs"),
+  hexagonalValidator: join(repoRoot, "scripts", "validate-backend-hexagonal.mjs"),
 };
 
 function toRelative(path) {
@@ -213,7 +218,12 @@ const coreRouterConfigContent = readRequired(
   "relay core router config 文件",
 );
 const repositoryContent = readRequired(files.repository, "relay repository 文件");
+const configRepositoryContent = readRequired(files.configRepository, "config repository 文件");
 const platformContent = readRequired(files.platform, "relay platform 文件");
+const systemCommandContent = readRequired(files.systemCommand, "system command 文件");
+const systemUsecaseContent = readRequired(files.systemUsecase, "system usecase 文件");
+const tauriLibContent = readRequired(files.tauriLib, "Tauri command 注册表");
+const hexagonalValidatorContent = readRequired(files.hexagonalValidator, "后端六边形校验脚本");
 
 assertNoPatterns(files.commands, commandContent, [
   {
@@ -237,6 +247,18 @@ assertContains(
   commandContent,
   /\busecase\s*::\s*relay\s*::/,
   "必须通过 application/usecase 调度 relay 用户动作",
+);
+assertContains(
+  files.commands,
+  commandContent,
+  /\bpub\s+fn\s+get_image_compat\s*\([\s\S]*\busecase::relay::get_image_compat\s*\(\s*&repo\s*\)/,
+  "get_image_compat 必须归属 relay command 并调用 relay usecase",
+);
+assertContains(
+  files.commands,
+  commandContent,
+  /\bpub\s+fn\s+set_image_compat\s*\([\s\S]*\busecase::relay::set_image_compat\s*\(\s*&repo\s*,\s*enabled\s*\)/,
+  "set_image_compat 必须归属 relay command 并调用 relay usecase",
 );
 
 const usecaseNoPatternRules = [
@@ -313,6 +335,18 @@ assertContains(
   usecaseCombinedContent,
   /\bRelayPlatformPort\b/,
   "必须通过 RelayPlatformPort 表达平台 mock terminal 边界",
+);
+assertContains(
+  files.usecase,
+  usecaseContent,
+  /\bconfig_repository::get_image_compat\s*\(\s*repo\s*\)/,
+  "relay image compatibility 读取必须经 config repository owner",
+);
+assertContains(
+  files.usecase,
+  usecaseContent,
+  /\bconfig_repository::set_image_compat\s*\(\s*repo\s*,\s*enabled\s*\)/,
+  "relay image compatibility 写入必须经 config repository owner",
 );
 
 assertContains(
@@ -462,6 +496,36 @@ assertContains(
   /\brelay_core\s*::\s*strip_managed_router_config\s*\(/,
   "必须把 router config 清理委托给 core",
 );
+assertContains(
+  files.configRepository,
+  configRepositoryContent,
+  /\bpub\s+fn\s+get_image_compat\s*\(/,
+  "config repository 必须 owning get_image_compat 文件事实读取",
+);
+assertContains(
+  files.configRepository,
+  configRepositoryContent,
+  /\bpub\s+fn\s+set_image_compat\s*\(/,
+  "config repository 必须 owning set_image_compat 文件事实写入",
+);
+assertContains(
+  files.configRepository,
+  configRepositoryContent,
+  /\brepo\.paths\s*\(\s*\)\.config_path\b/,
+  "image compatibility 必须只读写 Repository config_path",
+);
+assertContains(
+  files.configRepository,
+  configRepositoryContent,
+  /\brepo\.fs\s*\(\s*\)\.(read_to_string|write_string)\s*\(/,
+  "image compatibility 必须通过可替换 FS adapter 读写 config.toml",
+);
+assertContains(
+  files.configRepository,
+  configRepositoryContent,
+  /\bimage_generation\s*=\s*false\b/,
+  "image compatibility 必须保留 raw/internal 证明的 image_generation=false 兼容语义",
+);
 assertNoPatterns(files.repository, repositoryContent, [
   {
     label: "router parser/render 私有实现",
@@ -491,6 +555,60 @@ assertNoPatterns(files.repository, repositoryContent, [
   },
 ]);
 
+assertNoPatterns(files.systemCommand, systemCommandContent, [
+  {
+    label: "relay image compatibility command",
+    message: "get_image_compat / set_image_compat 不得回流到 system command",
+    patterns: [
+      /\bpub\s+fn\s+get_image_compat\s*\(/,
+      /\bpub\s+fn\s+set_image_compat\s*\(/,
+      /\busecase::system::get_image_compat\b/,
+      /\busecase::system::set_image_compat\b/,
+    ],
+  },
+]);
+
+assertNoPatterns(files.systemUsecase, systemUsecaseContent, [
+  {
+    label: "relay image compatibility usecase",
+    message: "get_image_compat / set_image_compat 不得回流到 system usecase",
+    patterns: [/\bpub\s+fn\s+get_image_compat\s*\(/, /\bpub\s+fn\s+set_image_compat\s*\(/],
+  },
+]);
+
+assertContains(
+  files.tauriLib,
+  tauriLibContent,
+  /\bcommands::relay::get_image_compat\b/,
+  "Tauri 注册表必须把 get_image_compat 指向 relay command",
+);
+assertContains(
+  files.tauriLib,
+  tauriLibContent,
+  /\bcommands::relay::set_image_compat\b/,
+  "Tauri 注册表必须把 set_image_compat 指向 relay command",
+);
+assertNoPatterns(files.tauriLib, tauriLibContent, [
+  {
+    label: "system image compat registration",
+    message: "Tauri 注册表不得把 relay image compatibility 注册到 system command",
+    patterns: [/\bcommands::system::get_image_compat\b/, /\bcommands::system::set_image_compat\b/],
+  },
+]);
+
+assertContains(
+  files.hexagonalValidator,
+  hexagonalValidatorContent,
+  /\["get_image_compat",\s*"relay"\]/,
+  "后端六边形 IPC 映射必须把 get_image_compat 归属 relay",
+);
+assertContains(
+  files.hexagonalValidator,
+  hexagonalValidatorContent,
+  /\["set_image_compat",\s*"relay"\]/,
+  "后端六边形 IPC 映射必须把 set_image_compat 归属 relay",
+);
+
 assertNoPatterns(files.platform, platformContent, [
   {
     label: "真实网络或进程执行",
@@ -514,5 +632,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  "relay owner 门禁通过：command 薄边界、usecase port 化、core router parser/render、repository 文件读写和 platform mock terminal 边界满足当前规则。",
+  "relay owner 门禁通过：command 薄边界、usecase port 化、image compatibility、core router parser/render、repository 文件读写和 platform mock terminal 边界满足当前规则。",
 );

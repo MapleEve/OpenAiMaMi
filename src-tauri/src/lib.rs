@@ -128,8 +128,8 @@ pub fn run() {
             commands::hotspot::get_hotspot_enabled,
             commands::hotspot::set_hotspot_enabled,
             commands::hotspot::hotspot_ready,
-            commands::system::get_image_compat,
-            commands::system::set_image_compat,
+            commands::relay::get_image_compat,
+            commands::relay::set_image_compat,
         ])
         .run(tauri::generate_context!())
         .expect("AiMaMi 后端启动失败");

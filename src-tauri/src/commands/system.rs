@@ -367,22 +367,3 @@ pub fn confirm_pending_auto_switch_and_restart_codex() -> Result<CoreEnvelope<()
         usecase::system::confirm_pending_auto_switch_and_restart_codex(),
     ))
 }
-
-#[tauri::command]
-pub fn get_image_compat(repo: State<'_, Mutex<Repository>>) -> Result<CoreEnvelope<bool>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::system::get_image_compat(&repo)
-        .map(CoreEnvelope::ok)
-        .map_err(|error| error.to_string())
-}
-
-#[tauri::command]
-pub fn set_image_compat(
-    repo: State<'_, Mutex<Repository>>,
-    enabled: bool,
-) -> Result<CoreEnvelope<bool>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::system::set_image_compat(&repo, enabled)
-        .map(CoreEnvelope::ok)
-        .map_err(|error| error.to_string())
-}

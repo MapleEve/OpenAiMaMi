@@ -87,6 +87,8 @@ const ipcCommandModuleOverrides = new Map([
   ["set_hotspot_enabled", "hotspot"],
   ["has_notch", "hotspot"],
   ["hotspot_ready", "hotspot"],
+  ["get_image_compat", "relay"],
+  ["set_image_compat", "relay"],
 ]);
 
 // 当前只允许 evidence 明确登记的 system source-sidecar 命令超过 raw dumped 合同。

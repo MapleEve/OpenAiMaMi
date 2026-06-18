@@ -192,6 +192,7 @@ function validateRoot(path, original, content) {
     ["platform action helper", /\bfn\s+(force_kill_payload|system_action_payload)\s*\(/g],
     ["hotspot owner 依赖", /\bHotspotPlatformPort\b|\bhotspot_core\b|\bhotspot_repository\b/g],
     ["hotspot owner 实现", /\bpub\s+fn\s+(has_notch|get_hotspot_enabled|set_hotspot_enabled|hotspot_ready)\s*\(/g],
+    ["relay image compatibility 实现", /\bpub\s+fn\s+(get_image_compat|set_image_compat)\s*\(/g],
   ]) {
     rejectPattern(label, path, original, content, pattern, "实现必须归属更窄的 system owner");
   }
@@ -366,8 +367,10 @@ function validateCommandCompatibility(path, content) {
     ["HotspotPlatformAdapter", /\bHotspotPlatformAdapter\b/g],
     ["hotspot command 函数", /\bpub\s+fn\s+(has_notch|get_hotspot_enabled|set_hotspot_enabled|hotspot_ready)\s*\(/g],
     ["system hotspot usecase", /\busecase\s*::\s*system\s*::\s*(has_notch|get_hotspot_enabled|set_hotspot_enabled|hotspot_ready)\b/g],
+    ["relay image compatibility command 函数", /\bpub\s+fn\s+(get_image_compat|set_image_compat)\s*\(/g],
+    ["system relay image compatibility usecase", /\busecase\s*::\s*system\s*::\s*(get_image_compat|set_image_compat)\b/g],
   ]) {
-    rejectPattern(label, path, content, content, pattern, "hotspot IPC adapter 必须归属 commands/hotspot.rs");
+    rejectPattern(label, path, content, content, pattern, "hotspot 与 relay image compatibility IPC adapter 必须归属各自 owner");
   }
 }
 
