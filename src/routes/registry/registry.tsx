@@ -23,7 +23,7 @@ import {
   RouteHighIoFeedback,
   type RouteHighIoFeedbackProps,
 } from "@/routes/registry/feedback";
-import { RouteShellSkeleton } from "@/routes/registry/skeletons";
+import { RelayRouteSkeleton, RouteShellSkeleton } from "@/routes/registry/skeletons";
 import { ErrorBoundary } from "@/components/boundary";
 
 const OverviewRoute = lazy(() =>
@@ -295,7 +295,7 @@ export const routeDefinitions: RouteDefinition[] = ([
       ["relay", "router-toggle-progress"],
     ]),
     preload: () => import("@/routes/desktop/main/relay/page"),
-    skeleton: <RouteShellSkeleton />,
+    skeleton: <RelayRouteSkeleton />,
     HighIoFeedback: RouteHighIoFeedback,
     render: () => <RelayRoute />,
   },

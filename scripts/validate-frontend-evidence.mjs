@@ -410,11 +410,25 @@ function validatePageChunks(frontendFiles) {
 function validateRoutesAndLocales(controlFlowRows) {
   const navigationPath = join(repoRoot, "src", "types", "navigation.ts");
   const routeRegistryPath = join(repoRoot, "src", "routes", "registry", "registry.tsx");
+  const routeSkeletonsPath = join(repoRoot, "src", "routes", "registry", "skeletons.tsx");
+  const relayFrontendDocPath = join(
+    repoRoot,
+    "evidence",
+    "full-chain",
+    "internal",
+    "audits",
+    "audits",
+    "windows-1.0.9-relay",
+    "frontend",
+    "FRONTEND-FULL-CHAIN-109.md",
+  );
   const zhPath = join(repoRoot, "src", "locales", "zh.json");
   const enPath = join(repoRoot, "src", "locales", "en.json");
 
   const navigationSource = readRequired(navigationPath);
   const registrySource = readRequired(routeRegistryPath);
+  const routeSkeletonsSource = readRequired(routeSkeletonsPath);
+  const relayFrontendDoc = readRequired(relayFrontendDocPath);
   const zh = parseJsonFile(zhPath) ?? {};
   const en = parseJsonFile(enPath) ?? {};
 
@@ -433,6 +447,18 @@ function validateRoutesAndLocales(controlFlowRows) {
   assertNoDuplicates("routeDefinitions.route", registryRoutes);
   assertSameArray("route registry visible routes 与 raw live routes", rawVisibleRoutes, visibleRoutes);
   assertSameArray("route registry routeDefinitions 与 ALL_APP_ROUTES", allAppRoutes, registryRoutes);
+
+  const relaySkeletonOk =
+    /relay-specific skeleton/i.test(relayFrontendDoc) &&
+    /export function RelayRouteSkeleton\b/.test(routeSkeletonsSource) &&
+    /route:\s*"relay"[\s\S]+?skeleton:\s*<RelayRouteSkeleton\s*\/>/.test(registrySource) &&
+    /route:\s*"overview"[\s\S]+?skeleton:\s*<RouteShellSkeleton\s*\/>/.test(registrySource);
+  if (!relaySkeletonOk) {
+    failures.push("relay internal 证据要求专属 lazy loading skeleton，route registry 未正确绑定");
+  }
+  console.log(
+    `${relaySkeletonOk ? "PASS" : "FAIL"} relay route 专属加载骨架证据闭环`,
+  );
 
   const routeTitleKeys = unique(
     [...registrySource.matchAll(/titleKey:\s*"([^"]+)"/g)].map((match) => match[1]),

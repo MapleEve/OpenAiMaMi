@@ -149,8 +149,13 @@ function validateMaintenanceUsecase(path, content) {
     ],
     [
       "诊断窄 owner 复用",
-      /\bdiagnostics\s*::\s*diagnose\s*\(\s*repo\s*\)\s*\?/,
-      "diagnose 必须复用独立 diagnostics owner，不把诊断细节复制进 maintenance",
+      /\bdiagnostics\s*::\s*diagnose\s*\(\s*repo\s*,\s*platform\s*\)\s*\?/,
+      "diagnose 必须复用独立 diagnostics owner，并转传诊断平台端口",
+    ],
+    [
+      "诊断平台端口转传",
+      /\bpub\s+fn\s+diagnose\s*\(\s*repo\s*:\s*&Repository\s*,\s*platform\s*:\s*&impl\s+DiagnosticPlatformPort\s*,?\s*\)/,
+      "diagnose 必须只消费应用层诊断平台端口，不直接读取平台常量",
     ],
     [
       "进程动作窄 owner 复用",

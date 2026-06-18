@@ -238,6 +238,27 @@ expectIncludes("src/routes/registry/registry.tsx", routeRegistry, [
   "[\"mcp-servers\"]",
   "[\"installed-skills\"]",
   "[\"relay-state\"]",
+  "import { RelayRouteSkeleton, RouteShellSkeleton }",
+  "skeleton: <RelayRouteSkeleton />",
+]);
+expectPattern(
+  "src/routes/registry/registry.tsx",
+  routeRegistry,
+  /route:\s*"relay"[\s\S]+?skeleton:\s*<RelayRouteSkeleton\s*\/>/,
+  "relay route 必须使用 relay 专属加载骨架",
+);
+expectPattern(
+  "src/routes/registry/registry.tsx",
+  routeRegistry,
+  /route:\s*"overview"[\s\S]+?skeleton:\s*<RouteShellSkeleton\s*\/>/,
+  "overview route 必须继续使用通用加载骨架",
+);
+
+const routeSkeletons = readRequiredFile("src/routes/registry/skeletons.tsx");
+expectIncludes("src/routes/registry/skeletons.tsx", routeSkeletons, [
+  "export function RouteShellSkeleton",
+  "export function RelayRouteSkeleton",
+  "xl:grid-cols-[minmax(0,1fr)_22rem]",
 ]);
 
 const routeFeedback = readRequiredFile("src/routes/registry/feedback.tsx");
