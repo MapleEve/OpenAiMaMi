@@ -63,7 +63,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 | 范围 | 当前结论 |
 | --- | --- |
 | 原始公开后端 | Accounts、MCP、Skills、Custom Instructions、Runtime extensions、Relay、daemon/runtime watcher 等公开过或可由证据支撑的能力已归入六边形骨架。 |
-| 文件事实能力 | Sessions 已补已扫描文件删除，并从 rollout/session JSONL 读取更新时间、项目路径、父会话、agent 字段和 turn 计数；Analytics 已补公开会话文件事实聚合、平均 turn 映射、工具分析 function_call 路径聚合、变更分析命令分类和日序列聚合；System 已补配置清理和更新可安装性只读检测。 |
+| 文件事实能力 | Sessions 已补已扫描文件删除，并从 rollout/session JSONL 读取更新时间、项目路径、父会话、agent 字段和 turn 计数；Analytics 已补公开会话文件事实聚合、平均 turn 映射、工具分析 function_call 路径聚合、quota-history JSONL 点位读取/过滤/压缩和变更分析命令分类/日序列聚合；System 已补配置清理和更新可安装性只读检测。 |
 | 入口边界 | Voice 前后端都不作为可用功能入口；只保留空骨架、合同清单和中文边界说明。 |
 
 ### 暂不声明完成
@@ -73,7 +73,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 | 前端完成声明 | 不声明 macOS / Windows 双平台 100% leaf 全闭合；internal 历史 gate/audit 仍保留 `full_leaf_100`、`gate_accepted`、`readyToImplement`、`dim6` 等非阻塞完成声明信号。 |
 | Mystery grants | `mystery_route_allowed` 已接入导航 shell、visible meta、preload 和 route guard；仍不声明 raw/internal `gate_accepted`、`implementation_use`、`dim6` 或 `full_leaf_100` 恢复。 |
 | 后端范围 | 闭源后端业务不做全量还原；没有公开证据支撑的行为只能保留为合同、桩、待实现项、测试缺口或可替换接口。 |
-| 后端闭环 | Relay、Daemon、Sessions、Analytics、MCP、System 等后端能力不声明真实网络、后台线程、SQLite threads 表、全局状态、真实 token/quota 统计口径、严格运行时工具统计口径、server 启动、更新安装执行、诊断修复、外部进程重启或 shell 闭环。 |
+| 后端闭环 | Relay、Daemon、Sessions、Analytics、MCP、System 等后端能力不声明真实网络、后台线程、SQLite threads 表、全局状态、真实 token 统计口径、quota 写入快照采集链路、严格运行时工具统计口径、server 启动、更新安装执行、诊断修复、外部进程重启或 shell 闭环。 |
 | 编译环境 | Rust 编译验收需要目标平台工具链；Windows 缺少 MSVC `link.exe` 时，`cargo check` 会在第三方 crate build script 阶段失败。 |
 
 ### 验收入口
@@ -83,6 +83,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 
 | 前端证据与文案 | `validate:frontend-dumped`、`validate:frontend-evidence`、`validate:frontend-leaf-copy`、`validate:frontend-copy-owners`、`validate:i18n` |
 | 前端架构与竞态 | `validate:frontend-entry`、`validate:frontend-layer-owners`、`validate:frontend-voice-boundary`、`validate:frontend-relay-cache`、`validate:frontend-maintenance-cache`、`validate:frontend-analytics-sequence`、`validate:frontend-mystery-gates`、`validate:e2e-mocks` |
 | 后端边界 | `validate:backend-hexagonal`、`validate:backend-system-owner`、`validate:backend-accounts-owner`、`validate:backend-mcp-owner`、`validate:backend-skills-owner`、`validate:backend-custom-instructions-owner`、`validate:backend-analytics-owner`、`validate:backend-relay-owner`、`validate:backend-daemon-owner`、`validate:backend-runtime-extensions-owner`、`validate:backend-sessions-owner` |
+| 公开边界与 README | `validate:public-boundary` |
 
 ## 可直接给 AI 的重建提示
 

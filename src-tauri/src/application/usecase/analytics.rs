@@ -5,6 +5,7 @@ use crate::contracts::analytics::{
     TokenAnalyticsPayload, ToolAnalyticsPayload, ToolRankItemPayload, UsageAnalyticsPayload,
 };
 use crate::contracts::BackendEffect;
+use crate::core::error::CoreError;
 use crate::core::model::analytics::{
     aggregate_public_change_analytics, aggregate_public_tool_analytics, aggregate_public_usage,
     PublicAnalyticsRange,
@@ -61,16 +62,15 @@ pub fn load_usage_analytics(repo: &Repository) -> UsageAnalyticsPayload {
     payload
 }
 
-/// 读取配额历史的用户动作边界；只探测公开缓存来源，不推断配额百分比。
-pub fn load_quota_history(repo: &Repository, account_key: Option<String>) -> QuotaHistoryPayload {
+/// 读取配额历史的用户动作边界，只组装公开 quota-history JSONL 点位。
+pub fn load_quota_history(
+    repo: &Repository,
+    account_key: Option<String>,
+) -> Result<QuotaHistoryPayload, CoreError> {
     let history =
-        quota_repository::load_public_quota_history(repo, normalize_optional_string(account_key));
-    QuotaHistoryPayload {
-        backend_status: pending_status(
-            "analytics",
-            "load_quota_history",
-            quota_history_pending_note(history.cache_source_available),
-        ),
+        quota_repository::load_public_quota_history(repo, normalize_optional_string(account_key))?;
+    Ok(QuotaHistoryPayload {
+        backend_status: restored_status("analytics", "load_quota_history", BackendEffect::NoOp),
         account_key: history.account_key,
         points: history
             .points
@@ -82,7 +82,7 @@ pub fn load_quota_history(repo: &Repository, account_key: Option<String>) -> Quo
                 secondary_used_percent: point.secondary_used_percent,
             })
             .collect(),
-    }
+    })
 }
 
 /// 读取 token 分析的用户动作边界；真实 token 口径等待证据补齐。
@@ -178,13 +178,5 @@ fn public_range_from_contract(range: AnalyticsRange) -> PublicAnalyticsRange {
         AnalyticsRange::Today => PublicAnalyticsRange::Today,
         AnalyticsRange::Week => PublicAnalyticsRange::Week,
         AnalyticsRange::Month => PublicAnalyticsRange::Month,
-    }
-}
-
-fn quota_history_pending_note(cache_source_available: bool) -> &'static str {
-    if cache_source_available {
-        "配额历史已探测公开 bootstrap cache，但没有可证明的配额历史字段；当前不推断配额百分比。"
-    } else {
-        "配额历史只完成公开 IPC 骨架；当前没有可证明的本地配额历史来源。"
     }
 }

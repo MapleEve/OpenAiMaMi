@@ -4,10 +4,12 @@ import { join, relative } from "node:path";
 const repoRoot = process.cwd();
 const backendRoot = join(repoRoot, "src-tauri", "src");
 const files = {
+  commands: join(backendRoot, "commands", "analytics.rs"),
   usecase: join(backendRoot, "application", "usecase", "analytics.rs"),
   analyticsRepository: join(backendRoot, "repository", "analytics.rs"),
   analyticsContract: join(backendRoot, "contracts", "analytics.rs"),
   quotaRepository: join(backendRoot, "repository", "quota.rs"),
+  repositoryPaths: join(backendRoot, "repository", "paths.rs"),
   sessionsRepository: join(backendRoot, "repository", "sessions.rs"),
   coreModel: join(backendRoot, "core", "model", "analytics.rs"),
   coreModelMod: join(backendRoot, "core", "model", "mod.rs"),
@@ -163,12 +165,46 @@ requirePattern(
 );
 
 const quotaBody = requireFunctionBody(code.usecase.content, files.usecase, "load_quota_history");
+const quotaCommandBody = requireFunctionBody(
+  code.commands.content,
+  files.commands,
+  "load_quota_history",
+);
+requirePattern(
+  "quota command 调用 usecase",
+  files.commands,
+  quotaCommandBody,
+  /usecase\s*::\s*analytics\s*::\s*load_quota_history\s*\(\s*&repo\s*,\s*account_key\s*\)/,
+  "command 层只能调度 usecase，不得直接读取 repository 或业务文件",
+);
+requirePattern(
+  "quota command 映射脱敏错误",
+  files.commands,
+  quotaCommandBody,
+  /map_err\s*\([\s\S]*error\.code\(\)[\s\S]*error\.sanitized_message\(\)/,
+  "command 层必须保留诊断 code 和脱敏语义",
+);
+rejectPattern(
+  "quota command 直接文件或仓储操作",
+  files.commands,
+  raw.commands.content,
+  quotaCommandBody,
+  /\b(repo\s*\.\s*fs\s*\(|read_to_string|write_string|quota_repository\s*::|std\s*::\s*fs|tokio\s*::\s*fs)\b/g,
+  "command 层只能做 Tauri 参数、state 获取、usecase 调度和 envelope",
+);
 requirePattern(
   "quota usecase 调用 quota repository",
   files.usecase,
   quotaBody,
-  /quota_repository\s*::\s*load_public_quota_history\s*\(\s*repo\s*,/,
-  "配额历史公开来源探测必须由 repository owner 提供",
+  /quota_repository\s*::\s*load_public_quota_history\s*\(\s*repo\s*,[\s\S]*\?/,
+  "配额历史公开 JSONL 事实必须由 repository owner 提供并传播读取错误",
+);
+requirePattern(
+  "quota analytics restored 状态",
+  files.usecase,
+  quotaBody,
+  /restored_status\s*\(\s*"analytics"\s*,\s*"load_quota_history"\s*,\s*BackendEffect::NoOp\s*\)/,
+  "load_quota_history 必须恢复为公开 quota-history JSONL 点位",
 );
 
 const toolBody = requireFunctionBody(code.usecase.content, files.usecase, "load_tool_analytics");
@@ -327,11 +363,54 @@ requirePattern(
   "公开 session 来源必须通过 FileSystemAdapter 读取",
 );
 requirePattern(
-  "quota repository 读取 bootstrap cache",
+  "repository paths 暴露 quota history 路径",
+  files.repositoryPaths,
+  code.repositoryPaths.content,
+  /quota_history_path\s*:\s*accounts_dir\.join\(\s*"quota-history\.jsonl"\s*\)/,
+  "quota history 文件路径必须集中在 RepositoryPaths",
+);
+requirePattern(
+  "quota repository 读取 quota history JSONL",
   files.quotaRepository,
   code.quotaRepository.content,
-  /bootstrap\s*::\s*load_bootstrap_cache\s*\(\s*repo\s*\)/,
-  "quota repository 只能探测可替换 FS bootstrap cache 来源",
+  /repo\s*\.\s*fs\s*\(\s*\)\s*\.read_to_string\s*\(\s*path\s*\)\s*\?/,
+  "quota repository 必须通过可替换 FS 读取 quota-history.jsonl",
+);
+requirePattern(
+  "quota repository 过滤 accountKey",
+  files.quotaRepository,
+  code.quotaRepository.content,
+  /account_filter\.is_some_and[\s\S]*record\.account_key\s*!=\s*filter/,
+  "load_quota_history 必须按 accountKey 精确过滤",
+);
+requirePattern(
+  "quota repository 7 天 cutoff",
+  files.quotaRepository,
+  code.quotaRepository.content,
+  /saturating_sub\(\s*7\s*\*\s*24\s*\*\s*60\s*\*\s*60\s*\)/,
+  "quota history 必须按证据保留 7 天窗口",
+);
+requirePattern(
+  "quota repository compaction threshold",
+  files.quotaRepository,
+  code.quotaRepository.content,
+  /lines\.len\(\)\s*<\s*2000/,
+  "quota history compaction 只在大文件阈值后执行",
+);
+requirePattern(
+  "quota repository compaction write",
+  files.quotaRepository,
+  code.quotaRepository.content,
+  /repo\s*\.\s*fs\s*\(\s*\)\s*\.write_string\s*\(\s*path\s*,\s*&next\s*\)/,
+  "quota history compaction 写回必须通过 FileSystemAdapter",
+);
+rejectPattern(
+  "quota repository bootstrap cache fallback",
+  files.quotaRepository,
+  raw.quotaRepository.content,
+  code.quotaRepository.content,
+  /load_bootstrap_cache|usage_analytics/g,
+  "quota history 已恢复公开 JSONL 点位后不得继续用 bootstrap cache 伪来源",
 );
 for (const file of [raw.analyticsRepository, raw.quotaRepository]) {
   rejectPattern(
@@ -371,5 +450,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  "PASS 后端 analytics owner 校验通过：usecase 无直接文件 IO，repository 通过可替换 FS 提供公开事实，core owning usage/tool/change 聚合；工具分析只恢复公开 function_call 事实，token analytics 未标记 restored。",
+  "PASS 后端 analytics owner 校验通过：usecase 无直接文件 IO，repository 通过可替换 FS 提供公开事实，core owning usage/tool/change 聚合；quota history 恢复公开 JSONL 点位，工具分析只恢复公开 function_call 事实，token analytics 未标记 restored。",
 );

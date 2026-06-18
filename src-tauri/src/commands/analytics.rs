@@ -28,10 +28,9 @@ pub fn load_quota_history(
     account_key: Option<String>,
 ) -> Result<CoreEnvelope<QuotaHistoryPayload>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    Ok(CoreEnvelope::ok(usecase::analytics::load_quota_history(
-        &repo,
-        account_key,
-    )))
+    let payload = usecase::analytics::load_quota_history(&repo, account_key)
+        .map_err(|error| format!("{}: {}", error.code(), error.sanitized_message()))?;
+    Ok(CoreEnvelope::ok(payload))
 }
 
 #[tauri::command]

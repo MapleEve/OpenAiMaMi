@@ -78,7 +78,7 @@ pub struct QuotaHistoryPointPayload {
     pub secondary_used_percent: Option<f64>,
 }
 
-/// 配额历史 IPC DTO，真实来源等待仓储证据补齐。
+/// 配额历史 IPC DTO，读取公开 quota-history JSONL 点位。
 #[derive(Debug, Clone, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct QuotaHistoryPayload {
