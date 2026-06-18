@@ -1,20 +1,18 @@
 # OpenAiMami
 
-OpenAiMami 是一个面向个人本地工作流的桌面应用。本仓库公开项目的可审计材料，是为了支持个人持续迭代，也让使用者能够检查实现链路，判断它如何处理本地数据，从而降低隐私泄露和不透明执行的风险。
+OpenAiMami 是一个面向个人本地工作流的桌面应用。本仓库公开项目的可审计材料，是为了支持个人持续迭代，也让使用者能够检查实现链路，判断它如何处理本地数据，从而用得更放心，并降低隐私泄露和不透明执行的风险。
 
 项目使用 [Apache License](LICENSE) 许可。任何改进、补全、审查和重建工作都应保留该许可上下文。
 
 ## 为什么公开
 
-过去一部分 OpenAiMami 资料没有放在公开源码树中，外部使用者只能看到有限实现，难以确认界面、命令、数据读取、缓存和本地集成之间的完整关系。
-
-现在公开这些材料的目的不是发布一次性快照，而是把闭源部分转为可检查、可复核、可继续演进的公开链条：
+本仓库的目标不是发布一次性快照，而是把可公开的材料整理成可检查、可复核、可继续演进的公开链条：
 
 - 方便个人继续迭代 OpenAiMami。
 - 让使用者在运行前能检查实现链路和重建依据。
 - 用公开的 raw、internal、前端 dumped 文件和架构骨架减少对不透明本地包的依赖。
 - 让隐私相关行为可以被审查，避免把用户数据、机器状态或内部路径写入公开材料。
-- 接受基于仓库内 raw/internal 主链路，并在需要时核对 `OpenAiMami IDB` 的 PR。
+- 欢迎基于仓库内 raw/internal 主链路补齐完整还原代码的 PR；如使用 `OpenAiMami IDB` 作为辅助参考，需要在 PR 中说明核对范围和证据路径。
 
 ## 仓库内容
 
@@ -31,50 +29,51 @@ OpenAiMami 是一个面向个人本地工作流的桌面应用。本仓库公开
 | `src-tauri/` | 当前公开 Tauri 与 Rust 后端六边形骨架，以及已补回的原始公开后端能力。 |
 | `LICENSE` | Apache License 许可文本。 |
 
-LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库不直接保存大体积 IDB 文件，只保存匿名化 raw/internal、前端 dumped 文件、架构骨架、重建文档和独立资产清单。还原应以 `evidence/full-chain/internal` 和 `evidence/full-chain/raw` 为主线，IDB 只作为可选的独立参考资产，不能写成“只靠 IDB”。
+`OpenAiMami IDB` 是独立参考资产。主仓库不直接保存大体积 IDB 文件，只保存匿名化 raw/internal、前端 dumped 文件、架构骨架、重建文档和独立资产清单。还原应以 `evidence/full-chain/internal` 和 `evidence/full-chain/raw` 为主线，IDB 只能作为可选辅助参考，不能写成“只靠 IDB”。
 
 ## 重建流程
 
-1. 先确认 `evidence/full-chain/raw` 与 `evidence/full-chain/internal` 的索引、manifest、校验摘要和前端 dumped 校验文件一致。
-2. 从 raw 链条读取 macOS/Windows 前端 dumped 文件、IPC、CCF、manifest 和命令级证据。
-3. 从 internal 链条读取 audit map、frontend map、distilled logic、raw leaf 和版本差异材料。
-4. 前端按 route registry、entry/root、runtime initializer，以及深模块 Provider、StoreUpdater、Content、cache、hooks、dialogs、panels、components、types、tests 逐步还原。
-5. 前端实现应采用主流前端模块化架构重构并还原，不写入任何外部参考仓库名称。
-6. 后端明确保持六边形架构骨架，按 commands、application、core、platform、repository、adapters、contracts 边界渐进补齐；原始公开后端已经公开过的能力应补回骨架内。
-7. 未公开或未选择还原的后端业务行为只能保留为契约、桩或待实现项，不能写成真实闭源业务实现。
-8. 所有新增注释和文档使用中文，所有路径使用仓库相对路径。
+重建按证据链和架构边界推进，不按提交记录推进：
+
+1. 先校验 `evidence/full-chain/raw` 与 `evidence/full-chain/internal` 的索引、manifest、校验摘要和前端 dumped 校验文件。
+2. 再用 raw 链条确认 macOS/Windows dumped 文件、IPC、CCF、manifest 和命令级证据。
+3. 再用 internal 链条解释 audit map、frontend map、distilled logic、raw leaf、页面结构和数据流。
+4. 前端按 route registry、entry/root、runtime initializer 和深模块 owner 边界逐步还原。
+5. 后端按 commands、application、core、platform、repository、adapters、contracts 六边形骨架补齐公开能力和契约。
+6. 未公开或未选择还原的后端业务行为只保留为契约、桩、待实现项或测试缺口。
+7. 所有新增注释和文档使用中文，所有证据和实现描述只使用仓库相对路径。
+
+详细架构决策、owner 边界、重构门禁和执行顺序以仓库内 `AGENTS.md` 及同级规则文件为准；README 只保留范围说明和验收入口，不展开冗长规则原文。
 
 ## 当前状态
 
-本节只按仓库现状归纳，不按提交顺序追加流水账。
+本节按仓库现状归纳，不按提交顺序追加流水账；没有公开证据支撑的内容不写成真实实现。
 
 ### 已经归档
 
-| 范围 | 当前结论 |
+| 范围 | 状态说明 |
 | --- | --- |
-| 公开材料 | Apache License、中文公开说明、匿名化 raw/internal 主链路、前端 dumped 证据、二进制清单和 `OpenAiMami IDB` 独立资产说明已纳入；主仓库不直接保存大体积 IDB 文件，README 双文件一致性和归纳状态结构已由公开边界校验约束。 |
-| 前端架构 | 主入口、路由表、runtime initializer、全局 Provider、深模块 Provider/StoreUpdater/Content、cache、hooks、dialogs、panels、components、types 和 tests 已按 owner 边界重构。 |
-| 前端证据 | 前端文案验收文件为 `status=accepted`；660 个 zh/en locale key 均有文案 owner 验收来源；前端清单当前没有非 full leaf 状态。 |
-| 前端竞态 | TanStack cache、mutation payload、runtime event reload、stale/delayed response、event replay、cancel、abort 和 E2E mock 竞态场景已纳入验收。 |
-| 后端架构 | `commands`、`application/usecase`、`core`、`platform`、`repository`、`repository/adapter`、`contracts`、`adapters` 六边形边界已建立，并由后端 owner 校验约束。 |
+| 公开材料 | Apache License、中文公开说明、匿名化 raw/internal 主链路、前端 dumped 证据、二进制清单和 `OpenAiMami IDB` 独立资产说明已纳入。 |
+| 前端结构 | 主入口、路由表、runtime initializer、全局 Provider，以及复杂模块的 Provider、StoreUpdater、Content、cache、hooks、dialogs、panels、components、types、tests 已按 owner 边界归位。 |
+| 前端状态约束 | TanStack cache、mutation payload、runtime event reload、stale/delayed response、event replay、cancel、abort 和 E2E mock 竞态场景已纳入验收入口。 |
+| 后端结构 | `commands`、`application/usecase`、`core`、`platform`、`repository`、`repository/adapter`、`contracts`、`adapters` 六边形边界已建立，并由后端 owner 校验约束。 |
 
 ### 已恢复能力
 
-| 范围 | 当前结论 |
+| 范围 | 状态说明 |
 | --- | --- |
-| 原始公开后端 | Accounts、MCP、Skills、Custom Instructions、Runtime extensions、Relay、daemon/runtime watcher 等公开过或可由证据支撑的能力已归入六边形骨架。 |
-| 文件事实能力 | Sessions 已补已扫描文件删除，并从 rollout/session JSONL 读取更新时间、项目路径、父会话、agent 字段和 turn 计数；Analytics 已补公开会话文件事实聚合、平均 turn 映射、工具分析 function_call 路径聚合、quota-history JSONL 点位读取/过滤/压缩和变更分析命令分类/日序列聚合；System 已补配置清理和更新可安装性只读检测。 |
-| 入口边界 | Voice 前后端都不作为可用功能入口；只保留空骨架、合同清单和中文边界说明。 |
+| 原始公开后端 | 已公开过或可由仓库证据支撑的后端能力已按六边形边界归入骨架；没有证据支撑的闭源业务不写成真实逻辑。 |
+| 文件事实能力 | sessions、analytics、quota history、system 检测等能力只按公开文件事实和可审计合同恢复，不声明隐藏运行态或外部系统闭环。 |
+| 入口边界 | voice 只保留空骨架、合同清单和中文边界说明；不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。 |
 
 ### 暂不声明完成
 
-| 范围 | 当前结论 |
+| 范围 | 状态说明 |
 | --- | --- |
-| 前端完成声明 | 不声明 macOS / Windows 双平台 100% leaf 全闭合；internal 历史 gate/audit 仍保留 `full_leaf_100`、`gate_accepted`、`readyToImplement`、`dim6` 等非阻塞完成声明信号。 |
-| Mystery grants | `mystery_route_allowed` 已接入导航 shell、visible meta、preload 和 route guard；仍不声明 raw/internal `gate_accepted`、`implementation_use`、`dim6` 或 `full_leaf_100` 恢复。 |
-| 后端范围 | 闭源后端业务不做全量还原；没有公开证据支撑的行为只能保留为合同、桩、待实现项、测试缺口或可替换接口。 |
-| 后端闭环 | Relay、Daemon、Sessions、Analytics、MCP、System 等后端能力不声明真实网络、后台线程、SQLite threads 表、全局状态、真实 token 统计口径、quota 写入快照采集链路、严格运行时工具统计口径、server 启动、更新安装执行、诊断修复、外部进程重启或 shell 闭环。 |
-| 编译环境 | Rust 编译验收需要目标平台工具链；Windows 缺少 MSVC `link.exe` 时，`cargo check` 会在第三方 crate build script 阶段失败。 |
+| 前端完整度 | 不声明前端 100% 已完，也不声明 macOS / Windows 双平台 leaf 全闭合；只能以当前验收入口和仓库证据为准。 |
+| 后端业务范围 | 后端不做闭源业务全量还原，这是项目范围选择；未公开或未选择还原的行为只能保留为契约、桩、待实现项、测试缺口或可替换接口。 |
+| 运行闭环 | Relay、daemon、sessions、analytics、MCP、system 等后端能力不声明真实网络、后台线程、全局状态、真实 token 统计口径、更新安装执行、诊断修复、外部进程重启或 shell 闭环。 |
+| 编译环境 | Rust 编译验收需要目标平台工具链；Windows 缺少 MSVC `link.exe` 时，`cargo check` 可能在第三方 crate build script 阶段失败。 |
 
 ### 验收入口
 
