@@ -41,7 +41,7 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开的是
 | 领域 | 已完成 | 未完成或边界 |
 | --- | --- | --- |
 | 公开材料 | Apache License、中文说明、匿名化 `raw/internal` 主链路、前端 dumped 证据、二进制清单和重建文档已经进入仓库。 | 不公开机器名、用户路径、会话、令牌、账号私密值、未审查 dump 或未匿名化内容。 |
-| 前端 | 已按 `entry/root`、全局 Provider、route registry、runtime initializer、服务/API 门面、模块 cache owner、深模块 owner、i18n 和 E2E mock 建立可继续还原的主流模块化结构；当前前端恢复进度和验证状态通过证据、leaf 队列、current-source closeout、copy 接受项和验证脚本归纳。 | 不声明前端已经 100% 双平台全 leaf 完成。完整度继续由 `raw/internal`、leaf 队列、current-source closeout 和验证脚本确认。 |
+| 前端 | 已按 `entry/root`、全局 Provider、route registry、runtime initializer、服务/API 门面、模块 cache owner、深模块 owner、i18n 和 E2E mock 建立可继续还原的主流模块化结构；当前前端恢复进度和验证状态通过证据、leaf 队列、current-source closeout、copy 接受项、生产构建和验证脚本归纳。 | 不声明前端已经 100% 双平台全 leaf 完成。完整度继续由 `raw/internal`、leaf 队列、current-source closeout 和验证脚本确认。 |
 | 后端 | 已建立 `commands`、`application/usecase`、`core`、`platform`、`repository`、`adapters`、`contracts` 六边形骨架，并补回原始公开或公开证据支撑的能力边界。 | 不做闭源后端业务全量真实还原；未公开、未选择还原或无公开证据支撑的行为只能保留为合同、骨架、待实现项、测试缺口或待补证据位置。 |
 | voice | 保留空骨架、合同清单和中文边界说明。 | 不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。 |
 | 验收 | 已提供公开边界、README 同步、前端证据、leaf 队列、前端分层、cache owner、事件刷新、i18n、E2E mock、后端六边形、后端 owner 和合同 owner 等验证入口。 | 构建、编译和平台运行验收依赖本机 Rust、前端和目标平台工具链；工具链缺失只能记录环境限制，不能替代源码状态判断。 |
@@ -57,6 +57,7 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开的是
 - 前端证据与结构：`npm run validate:frontend-dumped`、`npm run validate:frontend-evidence`、`npm run validate:frontend-closeouts`、`npm run validate:frontend-layer-owners`
 - 前端 leaf / 文案：`npm run validate:frontend-leaf-queue`、`npm run validate:frontend-leaf-copy`
 - 前端 mock / i18n：`npm run validate:e2e-mocks`、`npm run validate:i18n`
+- 前端生产构建：`npm run build`
 - 后端骨架与合同：`npm run validate:backend-hexagonal`、`npm run validate:backend-contract-owners`
 
 单个 PR 只需要运行与修改范围相关的验证；涉及公开边界、README、匿名化或证据路径时，必须运行 `npm run validate:public-boundary`。
