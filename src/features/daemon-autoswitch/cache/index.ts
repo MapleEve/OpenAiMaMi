@@ -39,7 +39,12 @@ export const DAEMON_AUTOSWITCH_CONTRACT_QUERY_TARGETS = [
   { queryKey: DAEMON_AUTOSWITCH_PENDING_QUERY_KEY },
 ] as const satisfies readonly DaemonAutoswitchQueryInvalidationTarget[];
 
-// runtime 事件只声明 payload 到模块 cache target 的映射，避免 hook 散落裸 key。
+const DAEMON_AUTOSWITCH_WRITABLE_QUERY_KEYS = [
+  DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY,
+  DAEMON_AUTOSWITCH_PENDING_QUERY_KEY,
+] as const;
+
+// runtime 事件只声明 payload 到模块 cache target 的映射，避免 hook 散落装配 key。
 export const DAEMON_AUTOSWITCH_RUNTIME_EVENT_CACHE_TARGETS = {
   "auto-switch-pending": [
     ...DAEMON_AUTOSWITCH_CONTRACT_QUERY_TARGETS,
@@ -57,27 +62,79 @@ export const writeDaemonAutoswitchAuthoritativePayload = <
   envelope: Omit<DaemonAutoswitchCacheEnvelope<TPayload>, "moduleId">,
 ) => DaemonAutoswitchCache.writeAuthoritativePayload(queryClient, envelope);
 
-let daemonAutoswitchCacheSequence = 0;
-let daemonAutoswitchLatestAcceptedSequence = 0;
+const daemonAutoswitchQuerySequences = new Map<string, number>();
+const daemonAutoswitchMutationFences = new Map<string, number>();
+let daemonAutoswitchOperationSequence = 0;
 
-export function nextDaemonAutoswitchCacheSequence() {
-  daemonAutoswitchCacheSequence += 1;
-  return daemonAutoswitchCacheSequence;
+function stableDaemonAutoswitchQueryKey(queryKey: QueryKey) {
+  return JSON.stringify(queryKey);
 }
 
-export function writeDaemonAutoswitchCachePayload<
-  TPayload extends DaemonAutoswitchCachePayload,
->(
-  queryClient: QueryClient,
-  payload: TPayload,
+function nextDaemonAutoswitchOperationSequence() {
+  daemonAutoswitchOperationSequence += 1;
+  return daemonAutoswitchOperationSequence;
+}
+
+function reserveDaemonAutoswitchQuerySequence(queryKey: QueryKey) {
+  const sequence = nextDaemonAutoswitchOperationSequence();
+  const key = stableDaemonAutoswitchQueryKey(queryKey);
+  daemonAutoswitchQuerySequences.set(
+    key,
+    Math.max(daemonAutoswitchQuerySequences.get(key) ?? 0, sequence),
+  );
+  return sequence;
+}
+
+function canAcceptDaemonAutoswitchPayload(
+  queryKey: QueryKey,
   source: "full-refresh" | "mutation-payload",
   sequence: number,
 ) {
-  if (sequence < daemonAutoswitchLatestAcceptedSequence) {
+  if (source === "mutation-payload") return true;
+  const key = stableDaemonAutoswitchQueryKey(queryKey);
+  const latestStarted = daemonAutoswitchQuerySequences.get(key) ?? 0;
+  const mutationFence = daemonAutoswitchMutationFences.get(key) ?? 0;
+  return sequence >= latestStarted && sequence >= mutationFence;
+}
+
+export function beginDaemonAutoswitchMutation() {
+  const sequence = nextDaemonAutoswitchOperationSequence();
+  for (const queryKey of DAEMON_AUTOSWITCH_WRITABLE_QUERY_KEYS) {
+    const key = stableDaemonAutoswitchQueryKey(queryKey);
+    daemonAutoswitchMutationFences.set(
+      key,
+      Math.max(daemonAutoswitchMutationFences.get(key) ?? 0, sequence),
+    );
+  }
+  return sequence;
+}
+
+export async function prepareDaemonAutoswitchMutation(queryClient: QueryClient) {
+  const sequence = beginDaemonAutoswitchMutation();
+  await Promise.all(
+    DAEMON_AUTOSWITCH_WRITABLE_QUERY_KEYS.map((queryKey) =>
+      queryClient.cancelQueries({ queryKey }),
+    ),
+  );
+  return { sequence };
+}
+
+export function writeDaemonAutoswitchQueryPayload<
+  TPayload extends DaemonAutoswitchCachePayload,
+>(
+  queryClient: QueryClient,
+  queryKey: QueryKey,
+  payload: TPayload,
+  options: {
+    source: "full-refresh" | "mutation-payload";
+    sequence: number;
+  },
+) {
+  const { source, sequence } = options;
+  if (!canAcceptDaemonAutoswitchPayload(queryKey, source, sequence)) {
     return false;
   }
 
-  daemonAutoswitchLatestAcceptedSequence = sequence;
   writeDaemonAutoswitchAuthoritativePayload(queryClient, {
     payload,
     source,
@@ -94,13 +151,16 @@ export async function runDaemonAutoswitchQuery<
   queryKey: QueryKey,
   load: () => Promise<TPayload>,
 ) {
-  const sequence = nextDaemonAutoswitchCacheSequence();
+  const sequence = reserveDaemonAutoswitchQuerySequence(queryKey);
   const payload = await load();
-  const accepted = writeDaemonAutoswitchCachePayload(
+  const accepted = writeDaemonAutoswitchQueryPayload(
     queryClient,
+    queryKey,
     payload,
-    "full-refresh",
-    sequence,
+    {
+      source: "full-refresh",
+      sequence,
+    },
   );
   if (!accepted) {
     return queryClient.getQueryData<TPayload>(queryKey) ?? payload;
@@ -111,12 +171,16 @@ export async function runDaemonAutoswitchQuery<
 export async function writeDaemonAutoswitchMutationPayload(
   queryClient: QueryClient,
   payload: DaemonAutoswitchMutationEnvelope,
+  sequence = beginDaemonAutoswitchMutation(),
 ) {
-  const accepted = writeDaemonAutoswitchCachePayload(
+  const accepted = writeDaemonAutoswitchQueryPayload(
     queryClient,
+    DaemonAutoswitchCache.queryKeys.root,
     payload,
-    "mutation-payload",
-    nextDaemonAutoswitchCacheSequence(),
+    {
+      source: "mutation-payload",
+      sequence,
+    },
   );
   if (!accepted) return;
 

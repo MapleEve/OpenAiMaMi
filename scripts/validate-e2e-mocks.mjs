@@ -904,6 +904,50 @@ function validateMaintenanceSystemWindowEvidence() {
   ]);
 }
 
+function validateDaemonAutoswitchMockPayloadHandlers() {
+  const commandFixturePath = path.join(
+    repoRoot,
+    "src",
+    "mocks",
+    "fixtures",
+    "commands.ts",
+  );
+  const commandFixtureText = readRequired(commandFixturePath);
+  const requiredHandlers = [
+    ["configure_auto_switch", "configureAutoSwitchHandler"],
+    ["confirm_pending_auto_switch", "confirmPendingAutoSwitchHandler"],
+    [
+      "confirm_pending_auto_switch_and_restart_codex",
+      "confirmPendingAutoSwitchHandler",
+    ],
+    ["dismiss_pending_auto_switch", "dismissPendingAutoSwitchHandler"],
+    ["load_bootstrap_state", "bootstrapStateHandler"],
+    ["load_pending_auto_switch", "pendingAutoSwitchStateHandler"],
+    ["run_daemon_once", "runDaemonOnceHandler"],
+    ["set_auto_switch", "setAutoSwitchHandler"],
+  ];
+
+  assertIncludes("src/mocks/fixtures/commands.ts", commandFixtureText, [
+    "AutoSwitchConfigPayload",
+    "AutoSwitchRuntimeState",
+    "DaemonRunPayload",
+    "PendingAutoSwitchStatePayload",
+    "const daemonAutoswitchMockState",
+    "function daemonAutoswitchConfigPayload",
+    "const runDaemonOnceHandler",
+    "const setAutoSwitchHandler",
+    "const configureAutoSwitchHandler",
+    "const dismissPendingAutoSwitchHandler",
+    "const confirmPendingAutoSwitchHandler",
+    "const daemonAutoSwitchCommandHandlers",
+  ]);
+
+  for (const [command, handler] of requiredHandlers) {
+    assertCommandHandler(commandFixtureText, command, handler);
+    assertNotGenericHandler(commandFixtureText, command);
+  }
+}
+
 function validateMaintenanceSystemScenarioCoverage() {
   const coverageScenarios = [
     ["failure.ts", "reject"],
@@ -1367,6 +1411,7 @@ validateSessionsMockPayloadHandlers();
 validateRelayMockPayloadHandlers();
 validateSystemActionMockPayloadHandlers();
 validateMaintenanceSystemWindowEvidence();
+validateDaemonAutoswitchMockPayloadHandlers();
 validateMaintenanceSystemScenarioCoverage();
 validateOverviewMockPayloadHandlers();
 validateStatefulSystemHotspotUsageMysteryMocks();

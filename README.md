@@ -80,7 +80,7 @@ OpenAiMami 是一个面向个人本地工作流的桌面应用。本仓库公开
 | 范围 | 命令 |
 | --- | --- |
 | 前端证据与文案 | `validate:frontend-dumped`、`validate:frontend-evidence`、`validate:frontend-leaf-copy`、`validate:frontend-copy-owners`、`validate:i18n` |
-| 前端架构与竞态 | `validate:frontend-entry`、`validate:frontend-layer-owners`、`validate:frontend-voice-boundary`、`validate:frontend-relay-cache`、`validate:frontend-maintenance-cache`、`validate:frontend-analytics-sequence`、`validate:frontend-mystery-gates`、`validate:e2e-mocks` |
+| 前端架构与竞态 | `validate:frontend-entry`、`validate:frontend-layer-owners`、`validate:frontend-voice-boundary`、`validate:frontend-relay-cache`、`validate:frontend-maintenance-cache`、`validate:frontend-daemon-autoswitch-cache`、`validate:frontend-analytics-sequence`、`validate:frontend-mystery-gates`、`validate:e2e-mocks` |
 | 后端边界 | `validate:backend-hexagonal`、`validate:backend-system-owner`、`validate:backend-accounts-owner`、`validate:backend-mcp-owner`、`validate:backend-skills-owner`、`validate:backend-custom-instructions-owner`、`validate:backend-analytics-owner`、`validate:backend-relay-owner`、`validate:backend-daemon-owner`、`validate:backend-runtime-extensions-owner`、`validate:backend-sessions-owner` |
 | 公开边界与 README | `validate:public-boundary` |
 

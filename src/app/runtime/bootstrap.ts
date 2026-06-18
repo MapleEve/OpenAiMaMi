@@ -2,8 +2,7 @@ import type { QueryClient } from "@tanstack/react-query";
 import type { IpcJsonValue } from "@/contracts/ipc";
 import {
   DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY,
-  nextDaemonAutoswitchCacheSequence,
-  writeDaemonAutoswitchCachePayload,
+  runDaemonAutoswitchQuery,
 } from "@/features/daemon-autoswitch/cache";
 import {
   OVERVIEW_SNAPSHOT_QUERY_KEY,
@@ -28,7 +27,11 @@ export async function seedRuntimeBootstrap(queryClient: QueryClient) {
   const sequence = nextRuntimeBootstrapSequence();
   const receivedAt = Date.now();
   const [bootstrapResult, snapshotResult] = await Promise.allSettled([
-    api.loadBootstrapState(),
+    runDaemonAutoswitchQuery(
+      queryClient,
+      DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY,
+      () => api.loadBootstrapState(),
+    ),
     api.loadSnapshot(true),
   ]);
   const bootstrap = fulfilledValue(bootstrapResult);
@@ -36,12 +39,6 @@ export async function seedRuntimeBootstrap(queryClient: QueryClient) {
 
   if (bootstrap) {
     queryClient.setQueryData(DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY, bootstrap);
-    writeDaemonAutoswitchCachePayload(
-      queryClient,
-      bootstrap,
-      "full-refresh",
-      nextDaemonAutoswitchCacheSequence(),
-    );
   }
 
   if (snapshot) {

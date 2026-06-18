@@ -1,22 +1,14 @@
 import { useMutation, useQueryClient, type QueryClient } from "@tanstack/react-query";
 import { daemonAutoswitchService } from "@/services/daemon-autoswitch";
 import {
-  DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY,
-  DAEMON_AUTOSWITCH_PENDING_QUERY_KEY,
   invalidateDaemonAutoswitchContractQueries,
+  prepareDaemonAutoswitchMutation,
   writeDaemonAutoswitchMutationPayload,
 } from "../cache";
 import type { DaemonAutoswitchPageMutations } from "../types";
 
 function cancelDaemonAutoswitchQueries(queryClient: QueryClient) {
-  return Promise.all([
-    queryClient.cancelQueries({
-      queryKey: DAEMON_AUTOSWITCH_BOOTSTRAP_QUERY_KEY,
-    }),
-    queryClient.cancelQueries({
-      queryKey: DAEMON_AUTOSWITCH_PENDING_QUERY_KEY,
-    }),
-  ]);
+  return prepareDaemonAutoswitchMutation(queryClient);
 }
 
 async function reloadDaemonAutoswitchAfterMutation(
@@ -31,22 +23,34 @@ export function useDaemonAutoswitchPageMutations(): DaemonAutoswitchPageMutation
   const runOnceMutation = useMutation({
     mutationFn: () => daemonAutoswitchService.runDaemonOnce(),
     onMutate: () => cancelDaemonAutoswitchQueries(queryClient),
-    onSuccess: (payload) =>
-      writeDaemonAutoswitchMutationPayload(queryClient, payload),
+    onSuccess: (payload, _variables, context) =>
+      writeDaemonAutoswitchMutationPayload(
+        queryClient,
+        payload,
+        context?.sequence,
+      ),
   });
 
   const setAutoSwitchMutation = useMutation({
     mutationFn: (enabled: boolean) => daemonAutoswitchService.setAutoSwitch(enabled),
     onMutate: () => cancelDaemonAutoswitchQueries(queryClient),
-    onSuccess: (payload) =>
-      writeDaemonAutoswitchMutationPayload(queryClient, payload),
+    onSuccess: (payload, _variables, context) =>
+      writeDaemonAutoswitchMutationPayload(
+        queryClient,
+        payload,
+        context?.sequence,
+      ),
   });
 
   const dismissPendingMutation = useMutation({
     mutationFn: () => daemonAutoswitchService.dismissPendingAutoSwitch(),
     onMutate: () => cancelDaemonAutoswitchQueries(queryClient),
-    onSuccess: (payload) =>
-      writeDaemonAutoswitchMutationPayload(queryClient, payload),
+    onSuccess: (payload, _variables, context) =>
+      writeDaemonAutoswitchMutationPayload(
+        queryClient,
+        payload,
+        context?.sequence,
+      ),
   });
 
   const confirmPendingAndRestartMutation = useMutation({

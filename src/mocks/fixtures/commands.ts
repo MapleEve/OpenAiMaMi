@@ -12,10 +12,13 @@ import type {
   AccountMonitorPayload,
   AccountSessionImportPayload,
   AppPathState,
+  AutoSwitchConfigPayload,
+  AutoSwitchRuntimeState,
   BackendSkeletonStatus,
   ChangeAnalyticsPayload,
   CleanPayload,
   CoreSnapshotPayload,
+  DaemonRunPayload,
   DiagnosePayload,
   InstalledSkillSummary,
   McpServerListPayload,
@@ -44,6 +47,7 @@ import type {
   RuntimeExtensionPluginPayload,
   RuntimeExtensionSettingsValue,
   RuntimeExtensionTogglePayload,
+  PendingAutoSwitchStatePayload,
   SessionAnalyticsPayload,
   SessionsDeletePayload,
   SessionsListPayload,
@@ -86,10 +90,12 @@ export type IpcCommandMockData =
   | AccountImportPreviewPayload
   | AccountMonitorPayload
   | AccountSessionImportPayload
+  | AutoSwitchConfigPayload
   | BackendSkeletonStatus
   | ChangeAnalyticsPayload
   | CleanPayload
   | CoreSnapshotPayload
+  | DaemonRunPayload
   | DiagnosePayload
   | LogoutPayload
   | McpServerListPayload
@@ -111,6 +117,7 @@ export type IpcCommandMockData =
   | RuntimeExtensionConfigPayload
   | RuntimeExtensionListPayload
   | RuntimeExtensionTogglePayload
+  | PendingAutoSwitchStatePayload
   | RebuildRegistryPayload
   | QuotaHistoryPayload
   | SessionAnalyticsPayload
@@ -414,6 +421,34 @@ const bootstrapCacheMockState: {
   installedSkills: [],
 };
 
+const daemonAutoswitchMockState = {
+  enabled: false,
+  threshold5hPercent: 80,
+  thresholdWeeklyPercent: 80,
+  serviceState: "unknown" as AutoSwitchRuntimeState,
+  serviceLabel: "",
+  executedAt: null as number | null,
+  runOnce: false,
+  currentAccountKey: "",
+  candidateAccountKey: "",
+  dismissedAt: null as string | null,
+};
+
+function daemonAutoswitchConfigPayload(
+  backendStatus: BackendSkeletonStatus,
+): AutoSwitchConfigPayload {
+  return {
+    backendStatus,
+    autoSwitch: {
+      enabled: daemonAutoswitchMockState.enabled,
+      threshold5hPercent: daemonAutoswitchMockState.threshold5hPercent,
+      thresholdWeeklyPercent: daemonAutoswitchMockState.thresholdWeeklyPercent,
+      serviceState: daemonAutoswitchMockState.serviceState,
+      serviceLabel: daemonAutoswitchMockState.serviceLabel,
+    },
+  };
+}
+
 const bootstrapStateHandler: IpcCommandHandler = (context) => {
   const envelope = createRaceAwareIpcEnvelope(context);
   return {
@@ -425,12 +460,12 @@ const bootstrapStateHandler: IpcCommandHandler = (context) => {
       usageAnalytics: cloneUsageAnalytics(bootstrapCacheMockState.usageAnalytics),
       mcpServers: cloneMcpServers(bootstrapCacheMockState.mcpServers),
       installedSkills: cloneInstalledSkills(bootstrapCacheMockState.installedSkills),
-      executedAt: null,
-      runOnce: false,
-      autoSwitchEnabled: false,
+      executedAt: daemonAutoswitchMockState.executedAt,
+      runOnce: daemonAutoswitchMockState.runOnce,
+      autoSwitchEnabled: daemonAutoswitchMockState.enabled,
       activeAccountKey: null,
       switchedAccountKey: null,
-      pendingSwitchAccountKey: null,
+      pendingSwitchAccountKey: daemonAutoswitchMockState.candidateAccountKey || null,
     },
   };
 };
@@ -441,11 +476,86 @@ const pendingAutoSwitchStateHandler: IpcCommandHandler = (context) => {
     ...envelope,
     data: {
       backendStatus: envelope.data.status,
-      currentAccountKey: "",
-      candidateAccountKey: "",
-      dismissedAt: null,
+      currentAccountKey: daemonAutoswitchMockState.currentAccountKey,
+      candidateAccountKey: daemonAutoswitchMockState.candidateAccountKey,
+      dismissedAt: daemonAutoswitchMockState.dismissedAt,
     },
   };
+};
+
+const runDaemonOnceHandler: IpcCommandHandler = (context) => {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  daemonAutoswitchMockState.executedAt = Date.now();
+  daemonAutoswitchMockState.runOnce = true;
+  daemonAutoswitchMockState.serviceState = "running";
+  daemonAutoswitchMockState.serviceLabel = "模拟守护任务已运行";
+  const data: DaemonRunPayload = {
+    backendStatus: envelope.data.status,
+    executedAt: daemonAutoswitchMockState.executedAt,
+    runOnce: daemonAutoswitchMockState.runOnce,
+    autoSwitchEnabled: daemonAutoswitchMockState.enabled,
+    serviceState: daemonAutoswitchMockState.serviceState,
+  };
+  return { ...envelope, data };
+};
+
+const setAutoSwitchHandler: IpcCommandHandler = (context) => {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  daemonAutoswitchMockState.enabled = readArgBoolean(
+    context.args,
+    "enabled",
+    daemonAutoswitchMockState.enabled,
+  );
+  daemonAutoswitchMockState.serviceState = daemonAutoswitchMockState.enabled
+    ? "running"
+    : "stopped";
+  daemonAutoswitchMockState.serviceLabel = daemonAutoswitchMockState.enabled
+    ? "模拟自动切换已启用"
+    : "模拟自动切换已停用";
+  return {
+    ...envelope,
+    data: daemonAutoswitchConfigPayload(envelope.data.status),
+  };
+};
+
+const configureAutoSwitchHandler: IpcCommandHandler = (context) => {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  daemonAutoswitchMockState.enabled = readArgBoolean(
+    context.args,
+    "enabled",
+    daemonAutoswitchMockState.enabled,
+  );
+  daemonAutoswitchMockState.threshold5hPercent = readArgPositiveInteger(
+    context.args,
+    "threshold5hPercent",
+    daemonAutoswitchMockState.threshold5hPercent,
+  );
+  daemonAutoswitchMockState.thresholdWeeklyPercent = readArgPositiveInteger(
+    context.args,
+    "thresholdWeeklyPercent",
+    daemonAutoswitchMockState.thresholdWeeklyPercent,
+  );
+  return {
+    ...envelope,
+    data: daemonAutoswitchConfigPayload(envelope.data.status),
+  };
+};
+
+const dismissPendingAutoSwitchHandler: IpcCommandHandler = (context) => {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  daemonAutoswitchMockState.dismissedAt = new Date().toISOString();
+  daemonAutoswitchMockState.candidateAccountKey = "";
+  return { ...envelope, data: daemonAutoswitchMockState.dismissedAt };
+};
+
+const confirmPendingAutoSwitchHandler: IpcCommandHandler = (context) => {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  daemonAutoswitchMockState.currentAccountKey =
+    daemonAutoswitchMockState.candidateAccountKey ||
+    daemonAutoswitchMockState.currentAccountKey;
+  daemonAutoswitchMockState.candidateAccountKey = "";
+  daemonAutoswitchMockState.dismissedAt = null;
+  return { ...envelope, data: null };
 };
 
 function emptyAppPathState(): AppPathState {
@@ -1464,8 +1574,6 @@ const importRemoteDeviceSecretIfEmptyHandler: IpcCommandHandler = (context) => {
 const deviceIdHandler: IpcCommandHandler = (context) =>
   withMockData(context, "00000000-0000-4000-8000-000000000000");
 
-const unitHandler: IpcCommandHandler = (context) => withMockData(context, null);
-
 function relayProxyFromStatus(
   backendStatus: RelayProxyPayload["backendStatus"],
 ): RelayProxyPayload {
@@ -1900,11 +2008,14 @@ function relayRouterFixResult(itemId: string) {
 const daemonAutoSwitchCommandHandlers: Partial<
   Record<IpcCommandName, IpcCommandHandler>
 > = {
-  confirm_pending_auto_switch: unitHandler,
-  confirm_pending_auto_switch_and_restart_codex: unitHandler,
-  dismiss_pending_auto_switch: unitHandler,
+  configure_auto_switch: configureAutoSwitchHandler,
+  confirm_pending_auto_switch: confirmPendingAutoSwitchHandler,
+  confirm_pending_auto_switch_and_restart_codex: confirmPendingAutoSwitchHandler,
+  dismiss_pending_auto_switch: dismissPendingAutoSwitchHandler,
   load_bootstrap_state: bootstrapStateHandler,
   load_pending_auto_switch: pendingAutoSwitchStateHandler,
+  run_daemon_once: runDaemonOnceHandler,
+  set_auto_switch: setAutoSwitchHandler,
 };
 
 const maintenanceCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {
