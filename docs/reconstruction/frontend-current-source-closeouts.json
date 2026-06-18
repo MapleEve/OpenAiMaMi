@@ -1327,6 +1327,148 @@
       "reason": "当前公开源码已经形成 relay IPC、前端 service/cache/query/mutation/runtime/mock 与 Rust command/usecase/contracts/repository 的可验证公开骨架链路；本 closeout 只登记非 gating 当前源码证据，不声明真实业务恢复、后端平台恢复或 full leaf。"
     },
     {
+      "id": "relay-targeted-http-terminal-ui-trigger-current-source-chain",
+      "module": "relay-http-terminal",
+      "status": "current-source-closed-partial",
+      "currentSourceCommands": [
+        "test_relay_provider",
+        "test_relay_draft",
+        "fetch_relay_models_draft"
+      ],
+      "gateReports": [
+        "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/gate-report.json"
+      ],
+      "sidecarReports": [
+        "evidence/full-chain/internal/audits/audits/cross-1.0.9-relay-core-bootstrap/frontend-callchain-report.json"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/gate-report.json",
+          "includes": [
+            "\"strictImplementationUse_commands\"",
+            "\"test_relay_provider\"",
+            "\"test_relay_draft\"",
+            "\"fetch_relay_models_draft\"",
+            "Remaining blocker to readyToImplement = dim1 frontend CCF not_closed_windows",
+            "doNotInferWindowsFromMacOS"
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/cross-1.0.9-relay-core-bootstrap/frontend-callchain-report.json",
+          "includes": [
+            "\"status\": \"current-source-relay-skeleton-non-gating\"",
+            "\"gate_report_fields_unchanged\": true",
+            "\"fetch_relay_models_draft\"",
+            "\"test_relay_draft\"",
+            "\"test_relay_provider\""
+          ]
+        },
+        {
+          "file": "src/contracts/ipc/commands.ts",
+          "includes": [
+            "\"command\": \"test_relay_provider\"",
+            "\"command\": \"test_relay_draft\"",
+            "\"command\": \"fetch_relay_models_draft\""
+          ]
+        },
+        {
+          "file": "src/features/relay/panels/panels.tsx",
+          "includes": [
+            "onTest={() => void controller.actions.testProvider(provider)}",
+            "onFetchModels={() => void controller.actions.fetchModels()}",
+            "onTestDraft={() => void controller.actions.testDraft()}"
+          ]
+        },
+        {
+          "file": "src/features/relay/hooks/page.ts",
+          "includes": [
+            "const testDraft = async () => {",
+            "module.providerActions.testDraft.run(buildDraftInput())",
+            "const fetchModels = async () => {",
+            "module.providerActions.fetchModelsDraft.run(buildDraftInput())",
+            "const testProvider = async (provider: RelayProviderRow) => {",
+            "module.providerActions.testProvider.run(provider.id)"
+          ]
+        },
+        {
+          "file": "src/features/relay/hooks/mutation.ts",
+          "includes": [
+            "relayService.test(providerId)",
+            "relayService.testDraft(input)",
+            "relayService.fetchModelsDraft(input)",
+            "testProvider: {",
+            "testDraft: {",
+            "fetchModelsDraft: {"
+          ]
+        },
+        {
+          "file": "src/services/relay/index.ts",
+          "includes": [
+            "invokeIpc<CoreEnvelope<RelayTestPayload>>(\"test_relay_provider\"",
+            "invokeIpc<CoreEnvelope<RelayTestPayload>>(\"test_relay_draft\"",
+            "invokeIpc<CoreEnvelope<string[]>>(\"fetch_relay_models_draft\""
+          ]
+        },
+        {
+          "file": "src/mocks/fixtures/commands.ts",
+          "includes": [
+            "fetch_relay_models_draft: relayModelsHandler",
+            "test_relay_draft: relayTestHandler",
+            "test_relay_provider: relayTestHandler"
+          ]
+        },
+        {
+          "file": "src-tauri/src/lib.rs",
+          "includes": [
+            "commands::relay::fetch_relay_models_draft",
+            "commands::relay::test_relay_draft",
+            "commands::relay::test_relay_provider"
+          ]
+        },
+        {
+          "file": "src-tauri/src/commands/relay.rs",
+          "includes": [
+            "pub fn test_relay_provider",
+            "pub fn test_relay_draft",
+            "pub fn fetch_relay_models_draft"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/relay.rs",
+          "includes": [
+            "pub fn test_relay_provider",
+            "test_relay_provider_with_platform",
+            "platform.test_relay_mock_terminal",
+            "relay_repository::record_provider_health",
+            "pub fn test_relay_draft",
+            "test_relay_draft_with_platform",
+            "fetch_relay_models_draft_uses_mock_terminal_without_state_write",
+            "test_relay_draft_uses_mock_terminal_without_state_write",
+            "test_relay_provider_writes_health_result_to_repository"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/relay/models.rs",
+          "includes": [
+            "pub fn fetch_relay_models_draft",
+            "fetch_relay_models_draft_with_platform",
+            "platform.fetch_models_mock_terminal",
+            "relay_core::parse_model_ids"
+          ]
+        }
+      ],
+      "nonClaims": [
+        "不声明 Windows raw/internal readyToImplement 已恢复。",
+        "不声明 implementation_use、gate_accepted 或 full_leaf_100 已恢复。",
+        "不修改任何 gate-report 字段。",
+        "不把 macOS 证据推导为 Windows 行为。",
+        "不声明真实 HTTP 网络、远端模型拉取或外部代理行为已经恢复。",
+        "不声明这三条命令已从 Windows strictImplementationUse 晋升。",
+        "不处理 voice。"
+      ],
+      "reason": "current-source partial closeout 只登记 relay_targeted 三条 HTTP-terminal 命令在当前公开源码中的 UI 触发链：panels 到 page action、mutation、service、IPC contract、mock、Rust command 和 usecase 骨架均可定位；它不修改 gate-report，不声明 Windows readyToImplement、implementation_use、gate_accepted、dim6 或 full_leaf_100 已恢复。"
+    },
+    {
       "id": "relay-proxy-config-dim6-stale-gate-registration",
       "module": "relay-proxy-config",
       "status": "current-source-closed-partial",

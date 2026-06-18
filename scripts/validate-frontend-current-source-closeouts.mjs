@@ -60,6 +60,41 @@ const RELAY_CURRENT_SOURCE_COMMANDS = [
   "test_relay_provider",
   "upsert_relay_provider",
 ];
+const RELAY_HTTP_TERMINAL_CCF_CLOSEOUT_ID =
+  "relay-targeted-http-terminal-ui-trigger-current-source-chain";
+const RELAY_HTTP_TERMINAL_CCF_GATE_REPORT =
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/gate-report.json";
+const RELAY_HTTP_TERMINAL_CCF_SIDECAR = RELAY_CURRENT_SOURCE_SIDECAR;
+const RELAY_HTTP_TERMINAL_CCF_COMMANDS = [
+  "test_relay_provider",
+  "test_relay_draft",
+  "fetch_relay_models_draft",
+];
+const RELAY_HTTP_TERMINAL_CCF_SIGNAL_FILES = [
+  RELAY_HTTP_TERMINAL_CCF_GATE_REPORT,
+  RELAY_HTTP_TERMINAL_CCF_SIDECAR,
+  "src/contracts/ipc/commands.ts",
+  "src/features/relay/panels/panels.tsx",
+  "src/features/relay/hooks/page.ts",
+  "src/features/relay/hooks/mutation.ts",
+  "src/services/relay/index.ts",
+  "src/mocks/fixtures/commands.ts",
+  "src-tauri/src/lib.rs",
+  "src-tauri/src/commands/relay.rs",
+  "src-tauri/src/application/usecase/relay.rs",
+  "src-tauri/src/application/usecase/relay/models.rs",
+];
+const RELAY_HTTP_TERMINAL_CCF_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "currentSourceCommands",
+  "gateReports",
+  "sidecarReports",
+  "requiredSourceSignals",
+  "nonClaims",
+  "reason",
+];
 const RELAY_CURRENT_SOURCE_USECASE_FILES = new Map([
   ["activate_relay_provider", "src-tauri/src/application/usecase/relay/provider.rs"],
   ["deactivate_relay_provider", "src-tauri/src/application/usecase/relay/provider.rs"],
@@ -886,6 +921,81 @@ function validateRelayCurrentSourceSkeletonCloseout(closeout) {
   validateRelaySkeletonNonClaims(closeout, sidecar);
   validateRelayCurrentSourceCommandSignals();
   validateRequiredSignals(closeout);
+}
+
+function validateRelayHttpTerminalCcfCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, RELAY_HTTP_TERMINAL_CCF_ALLOWED_FIELDS);
+  if (closeout.module !== "relay-http-terminal") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} currentSourceCommands`,
+    closeout.currentSourceCommands ?? [],
+    RELAY_HTTP_TERMINAL_CCF_COMMANDS,
+  );
+  validateStringArraySet(
+    `${closeout.id} gateReports`,
+    closeout.gateReports ?? [],
+    [RELAY_HTTP_TERMINAL_CCF_GATE_REPORT],
+  );
+  validateStringArraySet(
+    `${closeout.id} sidecarReports`,
+    closeout.sidecarReports ?? [],
+    [RELAY_HTTP_TERMINAL_CCF_SIDECAR],
+  );
+  validateStringArraySet(
+    `${closeout.id} requiredSourceSignals files`,
+    (closeout.requiredSourceSignals ?? []).map((signal) => signal.file),
+    RELAY_HTTP_TERMINAL_CCF_SIGNAL_FILES,
+  );
+  validateSidecarReports(closeout);
+  validateRequiredSignals(closeout);
+
+  const gate = readJson(repoPath(RELAY_HTTP_TERMINAL_CCF_GATE_REPORT));
+  validateStringArraySet(
+    `${RELAY_HTTP_TERMINAL_CCF_GATE_REPORT} strictImplementationUse_commands`,
+    gate.strictImplementationUse_commands ?? [],
+    RELAY_HTTP_TERMINAL_CCF_COMMANDS,
+  );
+  for (const command of RELAY_HTTP_TERMINAL_CCF_COMMANDS) {
+    const blocker = gate.strictImplementationUse_blockers?.[command];
+    if (
+      typeof blocker !== "string" ||
+      !blocker.includes("dim1 frontend CCF not_closed_windows")
+    ) {
+      failures.push(`${RELAY_HTTP_TERMINAL_CCF_GATE_REPORT} ${command} 缺少 Windows frontend CCF 残留说明`);
+    }
+  }
+
+  const nonClaims = closeout.nonClaims ?? [];
+  for (const required of [
+    "不声明 Windows raw/internal readyToImplement 已恢复。",
+    "不声明 implementation_use、gate_accepted 或 full_leaf_100 已恢复。",
+    "不修改任何 gate-report 字段。",
+    "不把 macOS 证据推导为 Windows 行为。",
+    "不声明真实 HTTP 网络、远端模型拉取或外部代理行为已经恢复。",
+    "不声明这三条命令已从 Windows strictImplementationUse 晋升。",
+    "不处理 voice。",
+  ]) {
+    if (!nonClaims.includes(required)) {
+      failures.push(`${closeout.id} 缺少 nonClaims：${required}`);
+    }
+  }
+
+  const reason = closeout.reason ?? "";
+  for (const snippet of [
+    "current-source partial closeout",
+    "UI 触发链",
+    "不声明 Windows readyToImplement",
+  ]) {
+    if (!reason.includes(snippet)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${snippet}`);
+    }
+  }
 }
 
 function validateRelayProxyConfigDim6Closeout(closeout) {
@@ -2225,6 +2335,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateRelayCloseout(closeout);
   } else if (closeout.id === RELAY_CURRENT_SOURCE_SKELETON_ID) {
     validateRelayCurrentSourceSkeletonCloseout(closeout);
+  } else if (closeout.id === RELAY_HTTP_TERMINAL_CCF_CLOSEOUT_ID) {
+    validateRelayHttpTerminalCcfCloseout(closeout);
   } else if (closeout.id === RELAY_PROXY_CONFIG_DIM6_CLOSEOUT_ID) {
     validateRelayProxyConfigDim6Closeout(closeout);
   } else if (closeout.id === SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID) {
