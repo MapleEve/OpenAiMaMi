@@ -647,6 +647,19 @@ function validateRequiredSignals(closeout) {
   }
 }
 
+function rejectRequiredSignalIncludes(closeout, file, snippets) {
+  for (const signal of closeout.requiredSourceSignals ?? []) {
+    if (signal.file !== file) {
+      continue;
+    }
+    for (const snippet of snippets) {
+      if ((signal.includes ?? []).includes(snippet)) {
+        failures.push(`${closeout.id} 不允许旧 owner source signal 回流：${file} ${snippet}`);
+      }
+    }
+  }
+}
+
 function validatePluginsCloseout(closeout) {
   const rawPath = repoPath(closeout.rawAcceptance);
   if (!existsSync(rawPath)) {
@@ -1246,6 +1259,18 @@ function validateMysteryUnlockGrantsCloseout(closeout) {
   }
 
   validateRequiredSignals(closeout);
+  rejectRequiredSignalIncludes(closeout, "src-tauri/src/lib.rs", [
+    "commands::system::get_mystery_unlock_grants",
+    "commands::system::merge_mystery_unlock_grants",
+  ]);
+  rejectRequiredSignalIncludes(closeout, "src-tauri/src/commands/system.rs", [
+    "pub fn get_mystery_unlock_grants",
+    "pub fn merge_mystery_unlock_grants",
+  ]);
+  rejectRequiredSignalIncludes(closeout, "src-tauri/src/application/usecase/system.rs", [
+    "pub fn mystery_unlock_grants",
+    "pub fn merge_mystery_unlock_grants",
+  ]);
 }
 
 function validateBootstrapSystemCurrentSourceSidecar(report) {
@@ -1396,6 +1421,30 @@ function validateBootstrapCurrentSourceGateCloseout(closeout) {
   }
 
   validateRequiredSignals(closeout);
+  rejectRequiredSignalIncludes(closeout, "src-tauri/src/lib.rs", [
+    "commands::system::diagnose",
+    "commands::system::force_kill_codex",
+    "commands::system::load_pending_auto_switch",
+    "commands::system::dismiss_pending_auto_switch",
+    "commands::system::confirm_pending_auto_switch",
+    "commands::system::confirm_pending_auto_switch_and_restart_codex",
+  ]);
+  rejectRequiredSignalIncludes(closeout, "src-tauri/src/commands/system.rs", [
+    "pub fn diagnose",
+    "pub fn force_kill_codex",
+    "pub fn load_pending_auto_switch",
+    "pub fn dismiss_pending_auto_switch",
+    "pub fn confirm_pending_auto_switch",
+    "pub fn confirm_pending_auto_switch_and_restart_codex",
+  ]);
+  rejectRequiredSignalIncludes(closeout, "src-tauri/src/application/usecase/system.rs", [
+    "pub use self::diagnostics::diagnose",
+    "pub use self::platform_actions::",
+    "pub fn load_pending_auto_switch",
+    "pub fn dismiss_pending_auto_switch",
+    "pub fn confirm_pending_auto_switch",
+    "daemon_usecase::load_pending_auto_switch()",
+  ]);
 }
 
 function validateSystemWatcherCurrentSourceCloseout(closeout) {
@@ -1443,7 +1492,6 @@ function validateSystemWatcherCurrentSourceCloseout(closeout) {
     }
   }
   for (const required of [
-    "src-tauri/src/application/usecase/system.rs",
     "src-tauri/src/core/runtime.rs",
     "src-tauri/src/core/model/runtime.rs",
     "src-tauri/src/repository/runtime.rs",
@@ -1510,6 +1558,18 @@ function validateSystemWatcherCurrentSourceCloseout(closeout) {
   }
 
   validateRequiredSignals(closeout);
+  rejectRequiredSignalIncludes(closeout, "src-tauri/src/application/usecase/system.rs", [
+    "pub fn note_usage_refresh_activity",
+    "pub fn schedule_full_runtime_refresh",
+    "pub fn start_auto_switch_pending_watcher",
+    "pub fn start_usage_refresh_watcher",
+    "pub fn update_usage_refresh_schedule",
+    "daemon_usecase::note_usage_refresh_activity(repo)",
+    "daemon_usecase::schedule_full_runtime_refresh(repo)",
+    "daemon_usecase::start_auto_switch_pending_watcher(repo)",
+    "daemon_usecase::start_usage_refresh_watcher(repo)",
+    "daemon_usecase::update_usage_refresh_schedule(repo)",
+  ]);
 }
 
 function validateSystemShellInitDuplicateCloseout(closeout) {
@@ -1675,6 +1735,15 @@ function validateWindowsSystemCurrentSourceCloseout(closeout) {
   }
 
   validateRequiredSignals(closeout);
+  rejectRequiredSignalIncludes(closeout, "src-tauri/src/commands/system.rs", [
+    "pub fn force_kill_codex",
+    "pub fn diagnose",
+  ]);
+  rejectRequiredSignalIncludes(closeout, "src-tauri/src/application/usecase/system.rs", [
+    "pub use self::diagnostics::diagnose",
+    "pub use self::platform_actions::",
+    "force_kill_app",
+  ]);
 }
 
 function validateUiThemeCurrentSourceCloseout(closeout) {
@@ -2035,6 +2104,31 @@ function validateSystemWindowMaintenanceCloseout(closeout) {
   }
 
   validateRequiredSignals(closeout);
+  const signalText = JSON.stringify(closeout.requiredSourceSignals ?? []);
+  for (const required of [
+    "commands::maintenance::clean",
+    "commands::maintenance::rebuild_registry",
+    "src-tauri/src/commands/maintenance.rs",
+    "usecase::maintenance::clean",
+    "usecase::maintenance::rebuild_registry",
+    "src-tauri/src/application/usecase/maintenance.rs",
+  ]) {
+    if (!signalText.includes(required)) {
+      failures.push(`${closeout.id} 缺少 maintenance owner source signal：${required}`);
+    }
+  }
+  rejectRequiredSignalIncludes(closeout, "src-tauri/src/lib.rs", [
+    "commands::system::clean",
+    "commands::system::rebuild_registry",
+  ]);
+  rejectRequiredSignalIncludes(closeout, "src-tauri/src/commands/system.rs", [
+    "pub fn clean",
+    "pub fn rebuild_registry",
+  ]);
+  rejectRequiredSignalIncludes(closeout, "src-tauri/src/application/usecase/system.rs", [
+    "pub fn clean",
+    "pub fn rebuild_registry",
+  ]);
 }
 
 function validateCrossHomeUsageFrontendCloseout(closeout) {

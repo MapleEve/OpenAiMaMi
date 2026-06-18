@@ -814,6 +814,29 @@
             "[\"restart_codex\", \"systemActionHandler\"]",
             "[\"graceful_restart_for_update\", \"systemActionHandler\"]"
           ]
+        },
+        {
+          "file": "src-tauri/src/lib.rs",
+          "includes": [
+            "commands::maintenance::clean",
+            "commands::maintenance::rebuild_registry"
+          ]
+        },
+        {
+          "file": "src-tauri/src/commands/maintenance.rs",
+          "includes": [
+            "pub fn clean",
+            "pub fn rebuild_registry",
+            "usecase::maintenance::clean",
+            "usecase::maintenance::rebuild_registry"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/maintenance.rs",
+          "includes": [
+            "pub fn clean",
+            "pub fn rebuild_registry"
+          ]
         }
       ],
       "nonClaims": [
@@ -1850,16 +1873,23 @@
           ]
         },
         {
-          "file": "src-tauri/src/commands/system.rs",
+          "file": "src-tauri/src/lib.rs",
+          "includes": [
+            "commands::mystery::get_mystery_unlock_grants",
+            "commands::mystery::merge_mystery_unlock_grants"
+          ]
+        },
+        {
+          "file": "src-tauri/src/commands/mystery.rs",
           "includes": [
             "pub fn get_mystery_unlock_grants",
             "pub fn merge_mystery_unlock_grants"
           ]
         },
         {
-          "file": "src-tauri/src/application/usecase/system.rs",
+          "file": "src-tauri/src/application/usecase/mystery.rs",
           "includes": [
-            "pub fn mystery_unlock_grants",
+            "pub fn get_mystery_unlock_grants",
             "pub fn merge_mystery_unlock_grants"
           ]
         }
@@ -2063,11 +2093,12 @@
           "includes": [
             "commands::system::load_snapshot",
             "commands::system::load_bootstrap_state",
-            "commands::system::diagnose",
-            "commands::system::force_kill_codex",
-            "commands::system::load_pending_auto_switch",
-            "commands::system::dismiss_pending_auto_switch",
-            "commands::system::confirm_pending_auto_switch",
+            "commands::maintenance::diagnose",
+            "commands::maintenance::force_kill_codex",
+            "commands::daemon::load_pending_auto_switch",
+            "commands::daemon::dismiss_pending_auto_switch",
+            "commands::daemon::confirm_pending_auto_switch",
+            "commands::daemon::confirm_pending_auto_switch_and_restart_codex",
             "commands::relay::diagnose_codex_router"
           ]
         },
@@ -2075,24 +2106,46 @@
           "file": "src-tauri/src/commands/system.rs",
           "includes": [
             "pub fn load_snapshot",
-            "pub fn load_bootstrap_state",
+            "pub fn load_bootstrap_state"
+          ]
+        },
+        {
+          "file": "src-tauri/src/commands/maintenance.rs",
+          "includes": [
             "pub fn diagnose",
-            "pub fn force_kill_codex",
+            "pub fn force_kill_codex"
+          ]
+        },
+        {
+          "file": "src-tauri/src/commands/daemon.rs",
+          "includes": [
             "pub fn load_pending_auto_switch",
             "pub fn dismiss_pending_auto_switch",
-            "pub fn confirm_pending_auto_switch"
+            "pub fn confirm_pending_auto_switch",
+            "pub fn confirm_pending_auto_switch_and_restart_codex"
           ]
         },
         {
           "file": "src-tauri/src/application/usecase/system.rs",
           "includes": [
-            "pub use self::diagnostics::diagnose",
-            "pub use self::platform_actions::",
-            "pub use self::snapshot_bootstrap::{load_bootstrap_state, load_snapshot};",
+            "pub use self::snapshot_bootstrap::{load_bootstrap_state, load_snapshot};"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/maintenance.rs",
+          "includes": [
+            "pub fn diagnose",
+            "pub fn force_kill_codex",
+            "system::force_kill_app(process)"
+          ]
+        },
+        {
+          "file": "src-tauri/src/application/usecase/daemon.rs",
+          "includes": [
             "pub fn load_pending_auto_switch",
             "pub fn dismiss_pending_auto_switch",
             "pub fn confirm_pending_auto_switch",
-            "daemon_usecase::load_pending_auto_switch()"
+            "pub fn confirm_pending_auto_switch_and_restart_codex"
           ]
         },
         {
@@ -2249,9 +2302,8 @@
             ]
           },
         {
-          "file": "src-tauri/src/application/usecase/system.rs",
+          "file": "src-tauri/src/application/usecase/daemon.rs",
           "includes": [
-            "pub use self::snapshot_bootstrap::{load_bootstrap_state, load_snapshot};",
             "pub fn load_pending_auto_switch",
             "pub fn dismiss_pending_auto_switch",
             "pub fn confirm_pending_auto_switch"
@@ -2341,23 +2393,28 @@
           ]
         },
         {
-          "file": "src-tauri/src/application/usecase/system.rs",
+          "file": "src-tauri/src/commands/daemon.rs",
           "includes": [
             "pub fn note_usage_refresh_activity",
             "pub fn schedule_full_runtime_refresh",
             "pub fn start_auto_switch_pending_watcher",
             "pub fn start_usage_refresh_watcher",
             "pub fn update_usage_refresh_schedule",
-            "daemon_usecase::note_usage_refresh_activity(repo)",
-            "daemon_usecase::schedule_full_runtime_refresh(repo)",
-            "daemon_usecase::start_auto_switch_pending_watcher(repo)",
-            "daemon_usecase::start_usage_refresh_watcher(repo)",
-            "daemon_usecase::update_usage_refresh_schedule(repo)"
+            "usecase::daemon::note_usage_refresh_activity",
+            "usecase::daemon::schedule_full_runtime_refresh",
+            "usecase::daemon::start_auto_switch_pending_watcher",
+            "usecase::daemon::start_usage_refresh_watcher",
+            "usecase::daemon::update_usage_refresh_schedule"
           ]
         },
         {
           "file": "src-tauri/src/application/usecase/daemon.rs",
           "includes": [
+            "pub fn note_usage_refresh_activity",
+            "pub fn schedule_full_runtime_refresh",
+            "pub fn start_auto_switch_pending_watcher",
+            "pub fn start_usage_refresh_watcher",
+            "pub fn update_usage_refresh_schedule",
             "fn runtime_watcher_decision",
             "runtime_repository::load_runtime_watcher_snapshot(repo)?",
             "RuntimePlatformAdapter",
@@ -2610,7 +2667,7 @@
           ]
         },
         {
-          "file": "src-tauri/src/commands/system.rs",
+          "file": "src-tauri/src/commands/maintenance.rs",
           "includes": [
             "pub fn force_kill_codex",
             "pub fn diagnose"
@@ -2623,11 +2680,11 @@
           ]
         },
         {
-          "file": "src-tauri/src/application/usecase/system.rs",
+          "file": "src-tauri/src/application/usecase/maintenance.rs",
           "includes": [
-            "pub use self::diagnostics::diagnose",
-            "pub use self::platform_actions::",
-            "force_kill_app"
+            "pub fn diagnose",
+            "pub fn force_kill_codex",
+            "system::force_kill_app(process)"
           ]
         },
         {
