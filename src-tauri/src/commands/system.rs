@@ -2,10 +2,9 @@ use crate::adapters::tauri as tauri_adapter;
 use crate::application::usecase;
 use crate::contracts::{
     ApiModePayload, ApiProxyDetectPayload, ApiProxyMode, ApiProxyTestPayload,
-    AutoSwitchConfigPayload, BackendSkeletonStatus, BootstrapStatePayload, CleanPayload,
-    CoreEnvelope, CoreSnapshotPayload, DaemonRunPayload, DiagnosePayload, MysteryRouteGrant,
-    NotificationClientStatePayload, PendingAutoSwitchStatePayload, RebuildRegistryPayload,
-    SystemActionPayload, SystemInfoPayload, UpdateInstallabilityPayload,
+    AutoSwitchConfigPayload, BootstrapStatePayload, CleanPayload, CoreEnvelope,
+    CoreSnapshotPayload, DiagnosePayload, MysteryRouteGrant, NotificationClientStatePayload,
+    RebuildRegistryPayload, SystemActionPayload, SystemInfoPayload, UpdateInstallabilityPayload,
 };
 use crate::platform::process::ProcessPlatformAdapter;
 use crate::platform::shell::ShellPlatformAdapter;
@@ -127,17 +126,6 @@ pub fn detect_api_proxy_config() -> Result<CoreEnvelope<ApiProxyDetectPayload>, 
 }
 
 #[tauri::command]
-pub fn run_daemon_once(
-    app: AppHandle,
-    repo: State<'_, Mutex<Repository>>,
-) -> Result<CoreEnvelope<DaemonRunPayload>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    let payload = usecase::system::run_daemon_once(&repo).map_err(|error| error.to_string())?;
-    tauri_adapter::emit_runtime_bridge_event(&app, &payload.backend_status);
-    Ok(CoreEnvelope::ok(payload))
-}
-
-#[tauri::command]
 pub fn get_usage_refresh_interval(
     repo: State<'_, Mutex<Repository>>,
 ) -> Result<CoreEnvelope<String>, String> {
@@ -156,66 +144,6 @@ pub fn set_usage_refresh_interval(
     usecase::system::set_usage_refresh_interval(&repo, interval)
         .map(CoreEnvelope::ok)
         .map_err(|error| error.to_string())
-}
-
-#[tauri::command]
-pub fn note_usage_refresh_activity(
-    app: AppHandle,
-    repo: State<'_, Mutex<Repository>>,
-) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    let status =
-        usecase::system::note_usage_refresh_activity(&repo).map_err(|error| error.to_string())?;
-    tauri_adapter::emit_runtime_bridge_event(&app, &status);
-    Ok(CoreEnvelope::ok(status))
-}
-
-#[tauri::command]
-pub fn schedule_full_runtime_refresh(
-    app: AppHandle,
-    repo: State<'_, Mutex<Repository>>,
-) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    let status =
-        usecase::system::schedule_full_runtime_refresh(&repo).map_err(|error| error.to_string())?;
-    tauri_adapter::emit_runtime_bridge_event(&app, &status);
-    Ok(CoreEnvelope::ok(status))
-}
-
-#[tauri::command]
-pub fn start_auto_switch_pending_watcher(
-    app: AppHandle,
-    repo: State<'_, Mutex<Repository>>,
-) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    let status = usecase::system::start_auto_switch_pending_watcher(&repo)
-        .map_err(|error| error.to_string())?;
-    tauri_adapter::emit_runtime_bridge_event(&app, &status);
-    Ok(CoreEnvelope::ok(status))
-}
-
-#[tauri::command]
-pub fn start_usage_refresh_watcher(
-    app: AppHandle,
-    repo: State<'_, Mutex<Repository>>,
-) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    let status =
-        usecase::system::start_usage_refresh_watcher(&repo).map_err(|error| error.to_string())?;
-    tauri_adapter::emit_runtime_bridge_event(&app, &status);
-    Ok(CoreEnvelope::ok(status))
-}
-
-#[tauri::command]
-pub fn update_usage_refresh_schedule(
-    app: AppHandle,
-    repo: State<'_, Mutex<Repository>>,
-) -> Result<CoreEnvelope<BackendSkeletonStatus>, String> {
-    let repo = repo.lock().map_err(|error| error.to_string())?;
-    let status =
-        usecase::system::update_usage_refresh_schedule(&repo).map_err(|error| error.to_string())?;
-    tauri_adapter::emit_runtime_bridge_event(&app, &status);
-    Ok(CoreEnvelope::ok(status))
 }
 
 #[tauri::command]
@@ -340,30 +268,4 @@ pub fn import_remote_device_secret_if_empty(
     usecase::system::import_remote_device_secret_if_empty(&repo, secret)
         .map(CoreEnvelope::ok)
         .map_err(|error| error.to_string())
-}
-
-#[tauri::command]
-pub fn load_pending_auto_switch() -> Result<CoreEnvelope<PendingAutoSwitchStatePayload>, String> {
-    Ok(CoreEnvelope::ok(usecase::system::load_pending_auto_switch()))
-}
-
-#[tauri::command]
-pub fn dismiss_pending_auto_switch() -> Result<CoreEnvelope<Option<String>>, String> {
-    Ok(CoreEnvelope::ok(
-        usecase::system::dismiss_pending_auto_switch(),
-    ))
-}
-
-#[tauri::command]
-pub fn confirm_pending_auto_switch() -> Result<CoreEnvelope<()>, String> {
-    Ok(CoreEnvelope::ok(
-        usecase::system::confirm_pending_auto_switch(),
-    ))
-}
-
-#[tauri::command]
-pub fn confirm_pending_auto_switch_and_restart_codex() -> Result<CoreEnvelope<()>, String> {
-    Ok(CoreEnvelope::ok(
-        usecase::system::confirm_pending_auto_switch_and_restart_codex(),
-    ))
 }

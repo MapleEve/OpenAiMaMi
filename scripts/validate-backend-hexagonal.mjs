@@ -57,14 +57,14 @@ const ipcCommandContractFile = join(repoRoot, "src", "contracts", "ipc", "comman
 const tauriLibFile = join(backendRoot, "lib.rs");
 const applicationUsecaseRoot = join(backendRoot, "application", "usecase");
 const repositoryModFile = join(backendRoot, "repository", "mod.rs");
-const sourceSidecarSystemCommands = [
+const sourceSidecarDaemonCommands = [
   "note_usage_refresh_activity",
   "schedule_full_runtime_refresh",
   "start_auto_switch_pending_watcher",
   "start_usage_refresh_watcher",
   "update_usage_refresh_schedule",
 ];
-const expectedNonVoiceIpcCommandCount = 93 + sourceSidecarSystemCommands.length;
+const expectedNonVoiceIpcCommandCount = 93 + sourceSidecarDaemonCommands.length;
 
 const ipcDomainModuleMap = new Map([
   ["accounts", "accounts"],
@@ -82,6 +82,16 @@ const ipcDomainModuleMap = new Map([
 ]);
 
 const ipcCommandModuleOverrides = new Map([
+  ["run_daemon_once", "daemon"],
+  ["load_pending_auto_switch", "daemon"],
+  ["dismiss_pending_auto_switch", "daemon"],
+  ["confirm_pending_auto_switch", "daemon"],
+  ["confirm_pending_auto_switch_and_restart_codex", "daemon"],
+  ["note_usage_refresh_activity", "daemon"],
+  ["schedule_full_runtime_refresh", "daemon"],
+  ["start_auto_switch_pending_watcher", "daemon"],
+  ["start_usage_refresh_watcher", "daemon"],
+  ["update_usage_refresh_schedule", "daemon"],
   ["load_session_analytics", "sessions"],
   ["get_hotspot_enabled", "hotspot"],
   ["set_hotspot_enabled", "hotspot"],
@@ -91,8 +101,8 @@ const ipcCommandModuleOverrides = new Map([
   ["set_image_compat", "relay"],
 ]);
 
-// 当前只允许 evidence 明确登记的 system source-sidecar 命令超过 raw dumped 合同。
-const allowedExistingSystemCommands = new Set(sourceSidecarSystemCommands);
+// 当前只允许 evidence 明确登记的 daemon source-sidecar 命令超过 raw dumped 合同。
+const allowedExistingDaemonCommands = new Set(sourceSidecarDaemonCommands);
 
 const forbiddenSideEffectRules = [
   {
@@ -604,8 +614,8 @@ function collectTauriCommandFunctionsByModule() {
   return result;
 }
 
-function isAllowedExistingSystemCommand(module, command) {
-  return module === "system" && allowedExistingSystemCommands.has(command);
+function isAllowedExistingDaemonCommand(module, command) {
+  return module === "daemon" && allowedExistingDaemonCommands.has(command);
 }
 
 function validateIpcCommandRegistration() {
@@ -639,7 +649,7 @@ function validateIpcCommandRegistration() {
       );
     }
 
-    if (!expectedPaths.has(handler.key) && !isAllowedExistingSystemCommand(handler.module, handler.command)) {
+    if (!expectedPaths.has(handler.key) && !isAllowedExistingDaemonCommand(handler.module, handler.command)) {
       failures.push(`${toRelative(tauriLibFile)} 注册了非 TS IPC 合同 command：commands::${handler.key}`);
     }
   }
@@ -651,7 +661,7 @@ function validateIpcCommandRegistration() {
 
     for (const [command, location] of moduleCommands.entries()) {
       const key = commandPathKey(module, command);
-      if (expectedPaths.has(key) || isAllowedExistingSystemCommand(module, command)) {
+      if (expectedPaths.has(key) || isAllowedExistingDaemonCommand(module, command)) {
         continue;
       }
 

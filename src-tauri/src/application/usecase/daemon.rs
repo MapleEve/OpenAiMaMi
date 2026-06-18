@@ -151,7 +151,7 @@ fn runtime_watcher_backend_status(
     };
 
     BackendSkeletonStatus {
-        module: "system".to_string(),
+        module: "daemon".to_string(),
         command: command.to_string(),
         restored: !matches!(
             decision.status_code,
@@ -182,7 +182,7 @@ fn runtime_watcher_backend_status(
 
 fn runtime_watcher_status_without_repository(command: &str, note: String) -> BackendSkeletonStatus {
     BackendSkeletonStatus {
-        module: "system".to_string(),
+        module: "daemon".to_string(),
         command: command.to_string(),
         restored: false,
         note,

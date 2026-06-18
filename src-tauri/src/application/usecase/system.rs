@@ -18,9 +18,8 @@ use crate::application::usecase::daemon as daemon_usecase;
 use crate::contracts::{
     ApiConfigPayload, ApiModePayload, ApiProxyConfigPayload, ApiProxyDetectPayload, ApiProxyMode,
     ApiProxyTestPayload, AutoSwitchConfigPayload, BackendEffect, BackendSkeletonStatus,
-    CleanPayload, CoreSnapshotPayload, DaemonRunPayload, MysteryRouteGrant,
-    NotificationClientStatePayload, PendingAutoSwitchStatePayload, RebuildRegistryPayload,
-    SystemActionPayload,
+    CleanPayload, CoreSnapshotPayload, MysteryRouteGrant, NotificationClientStatePayload,
+    RebuildRegistryPayload, SystemActionPayload,
 };
 use crate::core::error::CoreError;
 use crate::core::model::settings::UsageRefreshInterval;
@@ -138,26 +137,6 @@ pub fn detect_api_proxy_config() -> ApiProxyDetectPayload {
     }
 }
 
-pub fn run_daemon_once(repo: &Repository) -> Result<DaemonRunPayload, CoreError> {
-    daemon_usecase::run_daemon_once(repo)
-}
-
-pub fn load_pending_auto_switch() -> PendingAutoSwitchStatePayload {
-    daemon_usecase::load_pending_auto_switch()
-}
-
-pub fn dismiss_pending_auto_switch() -> Option<String> {
-    daemon_usecase::dismiss_pending_auto_switch()
-}
-
-pub fn confirm_pending_auto_switch() {
-    daemon_usecase::confirm_pending_auto_switch()
-}
-
-pub fn confirm_pending_auto_switch_and_restart_codex() {
-    daemon_usecase::confirm_pending_auto_switch_and_restart_codex()
-}
-
 pub fn get_usage_refresh_interval(repo: &Repository) -> Result<String, CoreError> {
     Ok(settings_repository::get_usage_refresh_interval(repo)?
         .as_str()
@@ -172,32 +151,6 @@ pub fn set_usage_refresh_interval(
     let saved = settings_repository::set_usage_refresh_interval(repo, normalized)?;
     let _schedule_update = daemon_usecase::update_usage_refresh_schedule(repo).ok();
     Ok(saved.as_str().to_string())
-}
-
-pub fn note_usage_refresh_activity(repo: &Repository) -> Result<BackendSkeletonStatus, CoreError> {
-    daemon_usecase::note_usage_refresh_activity(repo)
-}
-
-pub fn schedule_full_runtime_refresh(
-    repo: &Repository,
-) -> Result<BackendSkeletonStatus, CoreError> {
-    daemon_usecase::schedule_full_runtime_refresh(repo)
-}
-
-pub fn start_auto_switch_pending_watcher(
-    repo: &Repository,
-) -> Result<BackendSkeletonStatus, CoreError> {
-    daemon_usecase::start_auto_switch_pending_watcher(repo)
-}
-
-pub fn start_usage_refresh_watcher(repo: &Repository) -> Result<BackendSkeletonStatus, CoreError> {
-    daemon_usecase::start_usage_refresh_watcher(repo)
-}
-
-pub fn update_usage_refresh_schedule(
-    repo: &Repository,
-) -> Result<BackendSkeletonStatus, CoreError> {
-    daemon_usecase::update_usage_refresh_schedule(repo)
 }
 
 pub fn reset_config(repo: &Repository) -> Result<SystemActionPayload, CoreError> {

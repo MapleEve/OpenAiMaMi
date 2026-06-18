@@ -198,19 +198,40 @@ function validateRoot(path, original, content) {
   }
 
   requirePattern(
-    "daemon forwarding remains",
-    path,
-    content,
-    /\bdaemon_usecase\s*::\s*run_daemon_once\s*\(\s*repo\s*\)/,
-    "system.rs 不得把 daemon owner 移回 system",
-  );
-  requirePattern(
     "refresh_usage_snapshot daemon scheduling compatibility",
     path,
     content,
     /\bdaemon_usecase\s*::\s*schedule_full_runtime_refresh_for_command\s*\(\s*repo\s*,\s*"refresh_usage_snapshot"\s*\)/,
     "refresh_usage_snapshot 跨 snapshot-bootstrap 与 daemon，兼容层必须继续调用 daemon owner",
   );
+  requirePattern(
+    "set_usage_refresh_interval daemon scheduling compatibility",
+    path,
+    content,
+    /\bdaemon_usecase\s*::\s*update_usage_refresh_schedule\s*\(\s*repo\s*\)\s*\.ok\s*\(\s*\)/,
+    "set_usage_refresh_interval 跨 settings 与 daemon，兼容层必须继续调度 daemon owner",
+  );
+  for (const command of [
+    "run_daemon_once",
+    "load_pending_auto_switch",
+    "dismiss_pending_auto_switch",
+    "confirm_pending_auto_switch",
+    "confirm_pending_auto_switch_and_restart_codex",
+    "note_usage_refresh_activity",
+    "schedule_full_runtime_refresh",
+    "start_auto_switch_pending_watcher",
+    "start_usage_refresh_watcher",
+    "update_usage_refresh_schedule",
+  ]) {
+    rejectPattern(
+      `${command} daemon wrapper`,
+      path,
+      original,
+      content,
+      new RegExp(`\\bpub\\s+fn\\s+${command}\\s*\\(`, "g"),
+      "daemon/autoswitch 命令不得回流到 system usecase",
+    );
+  }
   requirePattern(
     "reset config repository transaction",
     path,

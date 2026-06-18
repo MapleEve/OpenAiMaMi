@@ -4,12 +4,28 @@ import { join, relative } from "node:path";
 const repoRoot = process.cwd();
 const backendRoot = join(repoRoot, "src-tauri", "src");
 const files = {
+  daemonCommands: join(backendRoot, "commands", "daemon.rs"),
+  systemCommands: join(backendRoot, "commands", "system.rs"),
   daemonUsecase: join(backendRoot, "application", "usecase", "daemon.rs"),
   systemUsecase: join(backendRoot, "application", "usecase", "system.rs"),
+  tauriLib: join(backendRoot, "lib.rs"),
   coreRuntime: join(backendRoot, "core", "runtime.rs"),
   repositoryRuntime: join(backendRoot, "repository", "runtime.rs"),
 };
 const failures = [];
+
+const daemonCommandNames = [
+  "run_daemon_once",
+  "note_usage_refresh_activity",
+  "schedule_full_runtime_refresh",
+  "start_auto_switch_pending_watcher",
+  "start_usage_refresh_watcher",
+  "update_usage_refresh_schedule",
+  "load_pending_auto_switch",
+  "dismiss_pending_auto_switch",
+  "confirm_pending_auto_switch",
+  "confirm_pending_auto_switch_and_restart_codex",
+];
 
 function toRelative(path) {
   return relative(repoRoot, path).replaceAll("\\", "/");
@@ -196,6 +212,53 @@ function validateDaemonUsecase(path, content) {
     /\bfn\s+runtime_bridge_event\s*\(/,
     "daemon usecase 必须封装进程内 watcher runtime event payload",
   );
+  requirePattern(
+    "daemon skeleton status module",
+    path,
+    content,
+    /\bmodule\s*:\s*"daemon"\s*\.to_string\s*\(\s*\)/,
+    "daemon usecase 返回的后端骨架状态必须声明 daemon owner",
+  );
+}
+
+function validateDaemonCommands(path, content) {
+  for (const command of daemonCommandNames) {
+    requirePattern(
+      `${command} daemon command adapter`,
+      path,
+      content,
+      new RegExp(`\\bpub\\s+fn\\s+${command}\\s*\\(`),
+      "commands/daemon.rs 必须暴露 daemon/autoswitch IPC adapter",
+    );
+    requirePattern(
+      `${command} daemon usecase call`,
+      path,
+      content,
+      new RegExp(`\\busecase\\s*::\\s*daemon\\s*::\\s*${command}\\s*\\(`),
+      "daemon command adapter 必须直接调用 usecase::daemon owner",
+    );
+  }
+}
+
+function validateSystemCommands(path, original, content) {
+  for (const command of daemonCommandNames) {
+    rejectPattern(
+      `${command} system command wrapper`,
+      path,
+      original,
+      content,
+      new RegExp(`\\bpub\\s+fn\\s+${command}\\s*\\(`, "g"),
+      "daemon/autoswitch command wrapper 必须归属 commands/daemon.rs",
+    );
+    rejectPattern(
+      `${command} system usecase call`,
+      path,
+      original,
+      content,
+      new RegExp(`\\busecase\\s*::\\s*system\\s*::\\s*${command}\\s*\\(`, "g"),
+      "commands/system.rs 不得继续通过 system wrapper 转发 daemon/autoswitch 命令",
+    );
+  }
 }
 
 function validateSystemUsecase(path, original, content) {
@@ -211,14 +274,9 @@ function validateSystemUsecase(path, original, content) {
   }
 
   for (const [label, pattern] of [
-    ["run_daemon_once 转发", /\bdaemon_usecase\s*::\s*run_daemon_once\s*\(\s*repo\s*\)/],
     [
       "refresh_usage_snapshot 调用 daemon helper",
       /\bdaemon_usecase\s*::\s*schedule_full_runtime_refresh_for_command\s*\(\s*repo\s*,\s*"refresh_usage_snapshot"\s*\)/,
-    ],
-    [
-      "start_auto_switch_pending_watcher 转发",
-      /\bdaemon_usecase\s*::\s*start_auto_switch_pending_watcher\s*\(\s*repo\s*\)/,
     ],
     [
       "set_usage_refresh_interval 转发 schedule update",
@@ -226,6 +284,28 @@ function validateSystemUsecase(path, original, content) {
     ],
   ]) {
     requirePattern(label, path, content, pattern, "system usecase 必须调用 daemon usecase 窄入口");
+  }
+
+  for (const command of daemonCommandNames) {
+    rejectPattern(
+      `${command} system usecase wrapper`,
+      path,
+      original,
+      content,
+      new RegExp(`\\bpub\\s+fn\\s+${command}\\s*\\(`, "g"),
+      "daemon/autoswitch 用户动作必须直接归属 application/usecase/daemon.rs",
+    );
+    if (command === "update_usage_refresh_schedule") {
+      continue;
+    }
+    rejectPattern(
+      `${command} system daemon forwarding`,
+      path,
+      original,
+      content,
+      new RegExp(`\\bdaemon_usecase\\s*::\\s*${command}\\s*\\(`, "g"),
+      "system usecase 只允许跨 snapshot/settings 的兼容调用，不得保留 daemon command wrapper",
+    );
   }
 }
 
