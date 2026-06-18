@@ -41,11 +41,11 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开的是
 | 领域 | 已做 | 没做或边界 | 怎么验收 |
 | --- | --- | --- | --- |
 | 公开材料 | Apache License、中文说明、匿名化 `raw/internal` 主链路、前端 dumped 证据、二进制清单和重建文档已经进入仓库。 | 不公开机器名、用户路径、会话、令牌、账号私密值、未审查 dump 或未匿名化内容。 | 运行 `npm run validate:public-boundary`。 |
-| 前端 | 已建立 `entry/root`、全局 Provider、route registry、runtime initializer、服务/API 门面、模块 cache owner、深模块 owner、输入提交边界、plugins 竞态合同、i18n 和 E2E mock 的主流模块化结构。 | 不声明前端已经 100% 双平台全 leaf 完成；完整度继续由 `raw/internal`、leaf 队列、current-source closeout 和验证脚本确认。 | 运行 `npm run validate:frontend` 和必要的 `validate:frontend-*` 单项验证；生产构建用 `npm run build`。 |
-| 后端 | 已建立 `commands`、`application/usecase`、`core`、`platform`、`repository`、`adapters`、`contracts` 六边形骨架，并补回原始公开或公开证据支撑的能力边界；analytics 已按公开 session/rollout 文件事实聚合。 | 不做闭源后端业务全量真实还原；未公开、未选择还原或无公开证据支撑的行为只保留为合同、骨架、待实现项、测试缺口或待补证据位置。 | 运行 `npm run validate:backend` 和必要的 `validate:backend-*` owner 验证。 |
+| 前端 | 主流模块化 owner 边界已经落位：入口只装配全局能力，路由、运行时、服务门面、缓存、深模块、i18n 和 E2E mock 各自有稳定归属。 | 不声明前端已经 100% 双平台全 leaf 完成；完整度继续由 `raw/internal`、leaf 队列、current-source closeout 和验证脚本确认。 | 运行 `npm run validate:frontend` 和必要的 `validate:frontend-*` 单项验证；生产构建用 `npm run build`。 |
+| 后端 | 六边形分层已经落位：Tauri command、usecase、core、repository、platform、adapter 和 contract 有明确 owner；原始公开能力和公开证据支撑的事实聚合已归入对应层。 | 不做闭源后端业务全量真实还原；未公开、未选择还原或无公开证据支撑的行为只保留为合同、骨架、待实现项、测试缺口或待补证据位置。 | 运行 `npm run validate:backend` 和必要的 `validate:backend-*` owner 验证。 |
 | voice | 只保留空骨架、合同清单和中文边界说明。 | 不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。 | 确认路由、启动链路、IPC mock 和后端命令没有接入 voice。 |
-| 验收 | 已提供顶层聚合、公开边界、README 同步、current-source closeout、前端聚合、后端聚合和核心 owner 验证入口。 | 构建、编译和平台运行验收仍依赖本机 Rust、前端和目标平台工具链；Windows MSVC target 需要 C++ Build Tools 提供 `link.exe`。 | 一次性检查运行 `npm run validate:all`；平台工具链问题只记录为环境限制。 |
-| 运行闭环 | README 只承认已经有公开证据和脚本支撑的源码状态。 | 不声明真实网络、后台线程、全局状态、真实 token 统计口径、更新安装、诊断修复、外部进程重启或 shell 闭环已经完成。 | 只能在对应源码、证据和验证脚本补齐后更新本表。 |
+| 验收 | 已提供公开边界、README 同步、前端、后端、i18n、E2E mock 和 owner 边界的聚合验证入口。 | 构建、编译和平台运行验收仍依赖本机 Rust、前端和目标平台工具链；Windows MSVC target 需要 C++ Build Tools 提供 `link.exe`。 | 一次性检查运行 `npm run validate:all`；平台工具链问题只记录为环境限制。 |
+| 运行闭环 | README 只记录长期有效的源码状态、范围边界和验收入口。 | 不按提交、日期、局部补丁或临时进度追加内容；不声明真实网络、后台线程、全局状态、真实 token 统计口径、更新安装、诊断修复、外部进程重启或 shell 闭环已经完成。 | 只能在对应源码、证据和验证脚本补齐后更新本表。 |
 
 文档口径固定为“已做 / 没做或边界 / 怎么验收”。每次提交都必须同步 README，但只能更新归纳状态，不再追加流水账。
 
