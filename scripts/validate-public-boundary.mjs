@@ -743,6 +743,98 @@ function validateInstructionAndReconstructionDocs() {
   );
 }
 
+function isCurrentSourceEvidenceMapPath(path) {
+  const normalized = path.replaceAll("\\", "/");
+  const fileName = normalized.split("/").at(-1) ?? normalized;
+
+  return (
+    normalized.startsWith("docs/reconstruction/") &&
+    extname(normalized).toLowerCase() === ".md" &&
+    ((fileName.includes("current-source") && fileName.endsWith("map.md")) ||
+      fileName.endsWith("evidence-map.md"))
+  );
+}
+
+function validateCurrentSourceEvidenceMapRegistry() {
+  const reconstructionRoot = join(repoRoot, "docs", "reconstruction");
+  const mapPaths = walkFiles(reconstructionRoot)
+    .map(toRepoPath)
+    .filter(isCurrentSourceEvidenceMapPath)
+    .sort((left, right) => left.localeCompare(right));
+  const sourceMapPath = "docs/reconstruction/source-map.md";
+  const reconstructionReadmePath = "docs/reconstruction/README.md";
+  const sourceMapExists = existsSync(join(repoRoot, sourceMapPath));
+  const readmeExists = existsSync(join(repoRoot, reconstructionReadmePath));
+  const sourceMapContent = sourceMapExists ? readUtf8(sourceMapPath) : "";
+  const readmeContent = readmeExists ? readUtf8(reconstructionReadmePath) : "";
+
+  addCheck(
+    "current-source/evidence map 文件存在",
+    mapPaths.length > 0,
+    mapPaths.length > 0
+      ? `发现 ${mapPaths.length} 个 current-source/evidence map`
+      : "docs/reconstruction 下未发现 current-source/evidence map",
+  );
+
+  const missingFromSourceMap = mapPaths.filter(
+    (path) => !sourceMapContent.includes(path),
+  );
+  addCheck(
+    "source-map.md 收口所有 current-source/evidence map",
+    sourceMapExists && missingFromSourceMap.length === 0,
+    !sourceMapExists
+      ? `${sourceMapPath} 不存在`
+      : missingFromSourceMap.length === 0
+        ? "source-map.md 已索引所有 current-source/evidence map"
+        : `source-map.md 缺少：${missingFromSourceMap.join("；")}`,
+  );
+
+  const missingFromReadme = mapPaths.filter((path) => !readmeContent.includes(path));
+  addCheck(
+    "docs/reconstruction/README.md 收口所有 current-source/evidence map",
+    readmeExists && missingFromReadme.length === 0,
+    !readmeExists
+      ? `${reconstructionReadmePath} 不存在`
+      : missingFromReadme.length === 0
+        ? "docs/reconstruction/README.md 已索引所有 current-source/evidence map"
+        : `docs/reconstruction/README.md 缺少：${missingFromReadme.join("；")}`,
+  );
+
+  const validateScriptContents = walkFiles(join(repoRoot, "scripts"))
+    .map(toRepoPath)
+    .filter(
+      (path) =>
+        /^scripts\/validate.*\.mjs$/.test(path) &&
+        path !== "scripts/validate-public-boundary.mjs" &&
+        path !== "scripts/validate-all.mjs",
+    )
+    .map((path) => [path, readUtf8(path)]);
+  const sourceMapLines = sourceMapContent.split(/\r?\n/);
+  const mapsWithoutValidatorOrBoundary = [];
+
+  for (const mapPath of mapPaths) {
+    const fileName = mapPath.split("/").at(-1) ?? mapPath;
+    const referencedByValidator = validateScriptContents.some(
+      ([, content]) => content.includes(mapPath) || content.includes(fileName),
+    );
+    if (referencedByValidator) continue;
+
+    const sourceMapLine =
+      sourceMapLines.find((line) => line.includes(mapPath) || line.includes(fileName)) ?? "";
+    if (!sourceMapLine.includes("当前仅索引/无独立 validator 边界")) {
+      mapsWithoutValidatorOrBoundary.push(mapPath);
+    }
+  }
+
+  addCheck(
+    "current-source/evidence map 均有 validator 或显式索引边界",
+    mapsWithoutValidatorOrBoundary.length === 0,
+    mapsWithoutValidatorOrBoundary.length === 0
+      ? "每个 map 均被 validate 脚本显式引用，或在 source-map.md 标注当前仅索引/无独立 validator 边界"
+      : `缺少 validator 引用或索引边界：${mapsWithoutValidatorOrBoundary.join("；")}`,
+  );
+}
+
 function validateRepositoryTextBoundary() {
   const trackedTextFiles = listTrackedFiles().filter((file) =>
     repositoryTextExtensions.has(extname(file).toLowerCase()),
@@ -825,6 +917,7 @@ validateReadmeTextQuality("README-cn.md");
 validateTrackedAssets();
 validateRawFrontendAssets();
 validateInstructionAndReconstructionDocs();
+validateCurrentSourceEvidenceMapRegistry();
 validateRepositoryTextBoundary();
 
 let failed = false;

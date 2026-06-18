@@ -104,6 +104,7 @@ macOS `gate-report.json` 的当前字段保持为：`strict_count=3`、`ready_co
 - 不修改 voice、gate-report 或前端运行入口。
 - 不新增 closeout JSON，不修改 manifest 或 gate-report 字段。
 - 不关闭 strict gate，不声明 `implementation_use`、`gate_accepted`、`full_leaf` 或 `full_leaf_100` 已完成。
+- Run `npm run validate:frontend-system-hotspot-current-source` to pin this map, the existing closeout, the open leaf queue boundary, and the current frontend service/mock/cache chain.
 - 运行 `npm run validate:backend-hotspot-owner`。
 - 运行 `npm run validate:frontend-closeouts`。
 - 检查本文档不包含乱码字符。

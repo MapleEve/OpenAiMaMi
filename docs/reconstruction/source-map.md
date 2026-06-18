@@ -126,8 +126,18 @@ OpenAiMami 1.0.9 前端覆盖面：
 
 `assets/` 中保存公开应用资产。`OpenAiMami IDB` 是独立参考资产，主仓库只保存它的 manifest、大小和哈希信息。需要还原完整实现时，应先使用 raw/internal，再按需要核对 IDB 清单。
 
-## 后端 current-source evidence map
+## current-source / evidence map 注册表
 
-| 路径 | 说明 |
-| --- | --- |
-| `docs/reconstruction/runtime-extensions-current-source-evidence-map.md` | runtime-extensions 后端四个 plugins 命令的公开证据、当前源码 owner、已覆盖边界和未声明边界。 |
+下列索引只收口当前公开源码与 raw/internal 证据之间的 map 文档、owner 边界、验证入口和未声明边界。它不表示 raw/internal gate 已闭合，不表示 `implementation_use`、`gate_accepted`、`full_leaf` 或 `full_leaf_100` 已完成，也不表示双平台全 leaf 已完成。
+
+| 路径 | 类别 | 验证或索引边界 |
+| --- | --- | --- |
+| `docs/reconstruction/plugins-current-source-evidence-map.md` | plugins 前端 current-source partial closeout | `scripts/validate-frontend-plugins-current-source.mjs` 直接验证本文、raw/internal 证据路径、当前源码路径、npm 入口和未声明边界。 |
+| `docs/reconstruction/relay-core-current-source-evidence-map.md` | relay-core 前后端公开 owner 骨架 | 当前仅索引/无独立 validator 边界；relay owner 与 closeout 由 broader relay、frontend closeout 和 backend hexagonal 验证约束，但这些验证不直接把本 map 文件当作独立 gate。 |
+| `docs/reconstruction/runtime-extensions-current-source-evidence-map.md` | runtime-extensions 后端 owner | `scripts/validate-backend-runtime-extensions-owner.mjs` 直接验证本文、四个 plugins IPC、证据路径、源码 owner 和未声明边界。 |
+| `docs/reconstruction/mcp-current-source-evidence-map.md` | MCP 后端 owner | `scripts/validate-backend-mcp-owner.mjs` 直接验证本文、四个 MCP IPC、双平台 gate-report、raw manifest、源码 owner 和未声明边界。 |
+| `docs/reconstruction/sessions-analytics-current-source-evidence-map.md` | sessions/analytics 后端文件事实 | `scripts/validate-backend-sessions-owner.mjs` 与 `scripts/validate-backend-analytics-owner.mjs` 直接验证本文和公开文件事实/pending 边界。 |
+| `docs/reconstruction/system-hotspot-current-source-map.md` | system hotspot 前端链路与后端骨架 | `scripts/validate-frontend-system-hotspot-current-source.mjs` 与 `scripts/validate-backend-hotspot-owner.mjs` 直接验证本文、前端 settings/system 链路、hotspot command/usecase/core/repository/platform owner 和未恢复边界。 |
+| `docs/reconstruction/system-runtime-watchers-current-source-map.md` | system runtime watcher 后端骨架 | 当前仅索引/无独立 validator 边界；watcher closeout 与后端六边形结构由 broader validators 约束，但这些验证不直接把本 map 文件当作独立 gate。 |
+| `docs/reconstruction/tray-current-source-evidence-map.md` | tray current-source 前后端骨架 | `scripts/validate-backend-tray-owner.mjs` 与 `scripts/validate-frontend-tray-current-source.mjs` 直接验证本文、Windows accepted target、current-source extra 和 hidden shell 边界。 |
+| `docs/reconstruction/ui-theme-current-source-map.md` | UI theme 前端调用链 | `scripts/validate-frontend-ui-theme-current-source.mjs` 与 `scripts/validate-frontend-current-source-closeouts.mjs` 直接验证本文和 theme current-source partial closeout。 |

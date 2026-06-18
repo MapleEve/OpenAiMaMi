@@ -38,11 +38,11 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开匿名
 
 | 领域 | 已做 | 没做或边界 | 怎么验收 |
 | --- | --- | --- | --- |
-| 公开材料 | Apache License、中文说明、匿名化 `raw/internal` 主链路、前端 dumped 证据、二进制清单和重建文档已经进入仓库；公开文本、AGENTS、CLAUDE 和 `docs/reconstruction` 有禁词、敏感路径、凭据形态、乱码和原文漂移检查。 | 不公开机器名、用户路径、会话、令牌、账号私密值、未审查 dump、未匿名化内容、IDB 或压缩包。 | 运行 `npm run validate:public-boundary`。 |
-| 前端 | 主流模块化 owner 边界已经落位；入口、全局 Provider、路由、运行时、服务门面、缓存、深模块、i18n、E2E mock、plugins current-source 和部分 current-source 链路已有验证入口。 | 不声明已经 100% 双平台全 leaf 完成；`get_plugin_config` / `update_plugin_config` 不声明可见配置 UI leaf；完整度继续由 `raw/internal`、leaf 队列、closeout 和验证脚本确认。 | 运行 `npm run validate:frontend`、相关 `validate:frontend-*`，生产构建运行 `npm run build`。 |
-| 后端 | 六边形分层已经落位；Tauri command、usecase、core、repository、platform、adapter 和 contract 有明确 owner；已补回公开或证据支撑能力，并补齐 runtime-extensions current-source evidence map。 | 不做闭源后端业务全量真实还原；不声明动态插件加载、外部插件执行、市场导入安装、真实 capability 执行、voice 集成或平台副作用已完成。 | 运行 `npm run validate:backend` 和相关 `validate:backend-*` owner 验证。 |
+| 公开材料 | Apache License、中文说明、匿名化 `raw/internal` 主链路、前端 dumped 证据、二进制清单和重建文档已经进入仓库；公开文本、AGENTS、CLAUDE、`docs/reconstruction` 和 current-source/evidence map 索引有禁词、敏感路径、凭据形态、乱码和原文漂移检查。 | 不公开机器名、用户路径、会话、令牌、账号私密值、未审查 dump、未匿名化内容、IDB、压缩包或安装包。 | 运行 `npm run validate:public-boundary`。 |
+| 前端 | 主流模块化 owner 边界已经落位；入口、全局 Provider、路由、运行时、服务门面、缓存、深模块、i18n、E2E mock、plugins current-source、system-hotspot current-source 和部分 current-source 链路已有验证入口。 | 不声明已经 100% 双平台全 leaf 完成；`get_plugin_config` / `update_plugin_config` 不声明可见配置 UI leaf；hotspot 不声明真实平台行为恢复；完整度继续由 `raw/internal`、leaf 队列、closeout 和验证脚本确认。 | 运行 `npm run validate:frontend`、相关 `validate:frontend-*`，生产构建运行 `npm run build`。 |
+| 后端 | 六边形分层已经落位；Tauri command、usecase、core、repository、platform、adapter 和 contract 有明确 owner；已补回公开或证据支撑能力，并补齐 runtime-extensions 与 MCP current-source evidence map。 | 不做闭源后端业务全量真实还原；不声明动态插件加载、MCP server 启动或执行、外部插件执行、市场导入安装、真实 capability 执行、voice 集成或平台副作用已完成。 | 运行 `npm run validate:backend` 和相关 `validate:backend-*` owner 验证。 |
 | voice | 只保留空骨架、合同清单和中文边界说明。 | 不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。 | 确认路由、启动链路、IPC mock 和后端命令没有接入 voice。 |
-| 验收 | 已提供公开边界、README 同步、前端、后端、i18n、E2E mock、cache 竞态、current-source evidence map 和 owner 边界的聚合验证入口。 | 构建、编译和平台运行验收仍依赖本机 Rust、前端和目标平台工具链；Windows MSVC target 需要 C++ Build Tools 提供 `link.exe`。 | 一次性检查运行 `npm run validate:all`；平台工具链问题只记录为环境限制。 |
+| 验收 | 已提供公开边界、README 同步、前端、后端、i18n、E2E mock、cache 竞态、current-source evidence map registry 和 owner 边界的聚合验证入口。 | 构建、编译和平台运行验收仍依赖本机 Rust、前端和目标平台工具链；Windows MSVC target 需要 C++ Build Tools 提供 `link.exe`。 | 一次性检查运行 `npm run validate:all`；平台工具链问题只记录为环境限制。 |
 | 运行闭环 | README 只记录长期有效的源码状态、范围边界和验收入口。 | 不按提交、日期、局部补丁或临时进度追加内容；只有能力、边界或验证入口变化时才更新归纳状态。 | 每次提交同步 README，但只更新本表和相关稳定说明。 |
 
 文档口径固定为“已做 / 没做或边界 / 怎么验收”。每次提交都必须同步 README，但只能更新归纳状态，不再追加流水账。
