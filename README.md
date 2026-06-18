@@ -44,7 +44,7 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开的是
 | 前端 | 已按 `entry/root`、全局 Provider、route registry、runtime initializer、服务/API 门面、模块 cache owner、深模块 owner、i18n 和 E2E mock 建立可继续还原的主流模块化结构；当前前端恢复进度和验证状态通过证据、leaf 队列、current-source closeout、copy 接受项、生产构建和验证脚本归纳。 | 不声明前端已经 100% 双平台全 leaf 完成。完整度继续由 `raw/internal`、leaf 队列、current-source closeout 和验证脚本确认。 |
 | 后端 | 已建立 `commands`、`application/usecase`、`core`、`platform`、`repository`、`adapters`、`contracts` 六边形骨架，并补回原始公开或公开证据支撑的能力边界。 | 不做闭源后端业务全量真实还原；未公开、未选择还原或无公开证据支撑的行为只能保留为合同、骨架、待实现项、测试缺口或待补证据位置。 |
 | voice | 保留空骨架、合同清单和中文边界说明。 | 不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。 |
-| 验收 | 已提供公开边界、README 同步、前端聚合、前端证据、leaf 队列、前端分层、cache owner、事件刷新、i18n、E2E mock、后端聚合、后端 owner 和合同 owner 等验证入口。 | 构建、编译和平台运行验收依赖本机 Rust、前端和目标平台工具链；Windows MSVC target 需要 C++ Build Tools 提供 `link.exe`，工具链缺失只能记录环境限制，不能替代源码状态判断。 |
+| 验收 | 已提供顶层聚合、公开边界、README 同步、前端聚合、前端证据、leaf 队列、前端分层、cache owner、事件刷新、i18n、E2E mock、后端聚合、后端 owner 和合同 owner 等验证入口。 | 构建、编译和平台运行验收依赖本机 Rust、前端和目标平台工具链；Windows MSVC target 需要 C++ Build Tools 提供 `link.exe`，工具链缺失只能记录环境限制，不能替代源码状态判断。 |
 | 运行闭环 | README 只承认已经有公开证据和脚本支撑的源码状态。 | 不声明真实网络、后台线程、全局状态、真实 token 统计口径、更新安装、诊断修复、外部进程重启或 shell 闭环已经完成。 |
 
 文档口径固定为“已完成 / 未完成或边界 / 怎么验收”。每次提交都必须同步 README，但只能更新归纳状态，不能按提交逐条追加流水账。
@@ -53,6 +53,7 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开的是
 
 按范围运行验证：
 
+- 顶层聚合验证：`npm run validate:all`
 - 公开边界与 README 同步：`npm run validate:public-boundary`
 - 前端聚合验证：`npm run validate:frontend`
 - 前端单项验证：可按范围运行 `package.json` 中的 `validate:frontend-*`、`validate:i18n` 和 `validate:e2e-mocks` 验证入口。
@@ -60,7 +61,7 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开的是
 - 后端聚合验证：`npm run validate:backend`
 - 后端单项验证：可按范围运行 `package.json` 中的 `validate:backend-*` owner 验证入口。
 
-单个 PR 只需要运行与修改范围相关的验证；涉及公开边界、README、匿名化或证据路径时，必须运行 `npm run validate:public-boundary`。
+单个 PR 只需要运行与修改范围相关的验证；涉及公开边界、README、匿名化或证据路径时，必须运行 `npm run validate:public-boundary`。需要一次性验收公开边界、前端聚合和后端聚合时，运行 `npm run validate:all`。
 
 ## 可直接给 AI 的重建提示
 
