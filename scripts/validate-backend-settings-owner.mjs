@@ -159,14 +159,14 @@ function validateSettingsUsecase(path, content) {
       "set_usage_refresh_interval 必须继续调度 daemon schedule update",
     ],
     [
-      "update installability settings module",
-      /\brestored_status\s*\(\s*[\s\S]*"settings"[\s\S]*"check_update_installability"[\s\S]*BackendEffect::Platform\s*,?\s*[\s\S]*\)/,
-      "check_update_installability 对外状态必须声明 settings owner",
+      "update installability platform owner",
+      /\bplatform_actions\s*::\s*check_update_installability\s*\(\s*system\s*\)/,
+      "check_update_installability 必须调用独立 platform-actions owner",
     ],
     [
-      "graceful restart settings module",
-      /\bunsupported_status\s*\(\s*"settings"\s*,\s*"graceful_restart_for_update"/,
-      "graceful_restart_for_update 对外状态必须声明 settings owner",
+      "graceful restart platform owner",
+      /\bplatform_actions\s*::\s*graceful_restart_for_update\s*\(\s*process\s*\)/,
+      "graceful_restart_for_update 必须调用独立 platform-actions owner",
     ],
   ]) {
     requirePattern(label, path, content, pattern, reason);

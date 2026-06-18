@@ -48,30 +48,6 @@ pub struct CoreSnapshotPayload {
 
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct SystemInfoPayload {
-    pub backend_status: BackendSkeletonStatus,
-    pub os: String,
-    pub os_version: String,
-    pub arch: String,
-    pub hostname: String,
-}
-
-#[derive(Debug, Clone, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SystemActionPayload {
-    pub backend_status: BackendSkeletonStatus,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub config_cleared: Option<bool>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub killed_count: Option<i32>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub terminated_process_count: Option<i32>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub processes: Option<Vec<String>>,
-}
-
-#[derive(Debug, Clone, Serialize)]
-#[serde(rename_all = "camelCase")]
 pub struct NotificationClientStatePayload {
     pub backend_status: BackendSkeletonStatus,
     pub device_id: String,

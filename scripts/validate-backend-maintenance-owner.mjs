@@ -142,28 +142,23 @@ function validateMaintenanceUsecase(path, content) {
     ],
     [
       "进程动作窄 owner 复用",
-      /\bsystem\s*::\s*(force_kill_app|restart_app)\s*\(\s*process\s*\)/,
-      "maintenance 只编排用户动作，进程能力仍由 platform-actions owner 承载",
+      /\bplatform_actions\s*::\s*(force_kill_app|restart_app)\s*\(\s*process\s*\)/,
+      "maintenance 只编排用户动作，进程能力由独立 platform-actions owner 承载",
     ],
     [
       "打开路径窄 owner 复用",
-      /\bsystem\s*::\s*open_path\s*\(\s*shell\s*,\s*path\s*\)\s*\?/,
-      "open_path 继续通过 platform-actions owner 进入 shell port",
+      /\bplatform_actions\s*::\s*open_path\s*\(\s*shell\s*,\s*path\s*\)\s*\??/,
+      "open_path 必须通过独立 platform-actions owner 进入 shell port",
     ],
     [
       "系统信息窄 owner 复用",
-      /\bsystem\s*::\s*system_info\s*\(\s*system_port\s*\)/,
-      "get_system_info 继续复用 platform-actions owner",
+      /\bplatform_actions\s*::\s*system_info\s*\(\s*system_port\s*\)/,
+      "get_system_info 必须复用独立 platform-actions owner",
     ],
     [
       "配置仓库事务",
       /\bconfig_repository\s*::\s*reset_codex_config\s*\(\s*repo\s*\)\s*\?/,
       "reset_codex_config 文件事务必须由 repository/config owner 承载",
-    ],
-    [
-      "maintenance 状态 module",
-      /\bstatus\s*\.module\s*=\s*"maintenance"\s*\.to_string\s*\(\s*\)/,
-      "复用 system 窄 owner 后必须把对外状态归回 maintenance owner",
     ],
     [
       "reset 状态 module",

@@ -1,9 +1,9 @@
 use crate::application::ports::{AppProcessPort, AppSystemPort};
-use crate::application::service::{restored_status, unsupported_status};
 use crate::application::usecase::daemon as daemon_usecase;
+use crate::application::usecase::platform_actions;
 use crate::contracts::{
     ApiConfigPayload, ApiModePayload, ApiProxyConfigPayload, ApiProxyDetectPayload, ApiProxyMode,
-    ApiProxyTestPayload, BackendEffect, SystemActionPayload, UpdateInstallabilityPayload,
+    ApiProxyTestPayload, SystemActionPayload, UpdateInstallabilityPayload,
 };
 use crate::core::error::CoreError;
 use crate::core::model::settings::UsageRefreshInterval;
@@ -77,44 +77,11 @@ pub fn set_usage_refresh_interval(
 }
 
 pub fn check_update_installability(system: &impl AppSystemPort) -> UpdateInstallabilityPayload {
-    let installability = system.update_installability();
-    let code = if installability.translocated {
-        "app_translocation"
-    } else if installability.read_only_location {
-        "read_only_location"
-    } else {
-        "ok"
-    };
-    let can_install = code == "ok";
-
-    UpdateInstallabilityPayload {
-        backend_status: restored_status(
-            "settings",
-            "check_update_installability",
-            BackendEffect::Platform,
-        ),
-        can_install,
-        code: code.to_string(),
-        executable_path: installability.executable_path,
-        bundle_path: installability.bundle_path,
-        translocated: installability.translocated,
-        quarantined: installability.quarantined,
-    }
+    platform_actions::check_update_installability(system)
 }
 
 pub fn graceful_restart_for_update(process: &impl AppProcessPort) -> SystemActionPayload {
-    let _ = process.graceful_restart_for_update();
-    SystemActionPayload {
-        backend_status: unsupported_status(
-            "settings",
-            "graceful_restart_for_update",
-            "公开后端未恢复更新重启动作。",
-        ),
-        config_cleared: None,
-        killed_count: None,
-        terminated_process_count: None,
-        processes: None,
-    }
+    platform_actions::graceful_restart_for_update(process)
 }
 
 fn normalize_proxy_url(url: Option<String>) -> Option<String> {

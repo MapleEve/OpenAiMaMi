@@ -11,6 +11,7 @@ const ownerFiles = {
   bootstrap: join(contractsRoot, "bootstrap.rs"),
   daemon: join(contractsRoot, "daemon.rs"),
   maintenance: join(contractsRoot, "maintenance.rs"),
+  platform_actions: join(contractsRoot, "platform_actions.rs"),
   diagnostics: join(contractsRoot, "diagnostics.rs"),
   mystery: join(contractsRoot, "mystery.rs"),
   mod: join(contractsRoot, "mod.rs"),
@@ -37,7 +38,8 @@ const expectedTypes = {
     "DaemonRunPayload",
     "PendingAutoSwitchStatePayload",
   ],
-  maintenance: ["CleanPayload", "RebuildRegistryPayload", "UpdateInstallabilityPayload"],
+  maintenance: ["CleanPayload", "RebuildRegistryPayload"],
+  platform_actions: ["SystemInfoPayload", "SystemActionPayload", "UpdateInstallabilityPayload"],
   diagnostics: [
     "DiagnosePayload",
     "DiagnosePlatform",
@@ -64,6 +66,9 @@ const systemForbiddenDefinitions = [
   "DiagnoseDiagnosticFieldPayload",
   "CleanPayload",
   "RebuildRegistryPayload",
+  "SystemInfoPayload",
+  "SystemActionPayload",
+  "UpdateInstallabilityPayload",
   "DaemonRunPayload",
   "PendingAutoSwitchStatePayload",
   "MysteryRouteGrant",
@@ -123,7 +128,15 @@ for (const [owner, typeNames] of Object.entries(expectedTypes)) {
 }
 
 const modFile = files.get("mod");
-for (const owner of ["settings", "bootstrap", "daemon", "maintenance", "diagnostics", "mystery"]) {
+for (const owner of [
+  "settings",
+  "bootstrap",
+  "daemon",
+  "maintenance",
+  "platform_actions",
+  "diagnostics",
+  "mystery",
+]) {
   requirePattern(
     `${owner} module`,
     modFile.path,

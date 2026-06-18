@@ -8,7 +8,7 @@ use crate::contracts::{
 };
 use crate::core::error::CoreError;
 
-// platform-actions usecase 只编排公开平台 port 动作，不恢复更新安装或外部进程闭环。
+// 平台动作 usecase 只编排公开平台端口，不恢复更新安装或外部进程闭环。
 pub fn check_update_installability(system: &impl AppSystemPort) -> UpdateInstallabilityPayload {
     let installability = system.update_installability();
     let code = if installability.translocated {
@@ -22,7 +22,7 @@ pub fn check_update_installability(system: &impl AppSystemPort) -> UpdateInstall
 
     UpdateInstallabilityPayload {
         backend_status: restored_status(
-            "system",
+            "platform_actions",
             "check_update_installability",
             BackendEffect::Platform,
         ),
@@ -38,7 +38,7 @@ pub fn check_update_installability(system: &impl AppSystemPort) -> UpdateInstall
 pub fn graceful_restart_for_update(process: &impl AppProcessPort) -> SystemActionPayload {
     let _ = process.graceful_restart_for_update();
     system_action_payload(unsupported_status(
-        "system",
+        "platform_actions",
         "graceful_restart_for_update",
         "更新重启动作未在当前公开后端范围内恢复。",
     ))
@@ -47,7 +47,7 @@ pub fn graceful_restart_for_update(process: &impl AppProcessPort) -> SystemActio
 pub fn restart_app(process: &impl AppProcessPort) -> SystemActionPayload {
     let _ = process.restart_app();
     system_action_payload(unsupported_status(
-        "system",
+        "platform_actions",
         "restart_codex",
         "重启外部程序能力未在当前公开后端范围内恢复。",
     ))
@@ -64,7 +64,7 @@ pub fn open_path(
 ) -> Result<SystemActionPayload, CoreError> {
     shell.open_path(&path)?;
     Ok(system_action_payload(restored_status(
-        "system",
+        "platform_actions",
         "open_path",
         BackendEffect::Platform,
     )))
@@ -73,7 +73,11 @@ pub fn open_path(
 pub fn system_info(system: &impl AppSystemPort) -> SystemInfoPayload {
     let info = system.system_info();
     SystemInfoPayload {
-        backend_status: restored_status("system", "get_system_info", BackendEffect::Platform),
+        backend_status: restored_status(
+            "platform_actions",
+            "get_system_info",
+            BackendEffect::Platform,
+        ),
         os: info.os,
         os_version: info.os_version,
         arch: info.arch,
@@ -84,7 +88,7 @@ pub fn system_info(system: &impl AppSystemPort) -> SystemInfoPayload {
 pub fn focus_main_window(window: &impl AppWindowPort) -> Result<SystemActionPayload, CoreError> {
     window.focus_main_window()?;
     Ok(system_action_payload(restored_status(
-        "system",
+        "platform_actions",
         "focus_main_window",
         BackendEffect::Platform,
     )))
@@ -97,7 +101,11 @@ fn force_kill_payload(outcome: ForceKillOutcome) -> SystemActionPayload {
         .map(|process| format!("{} ({})", process.name, process.pid))
         .collect::<Vec<_>>();
     SystemActionPayload {
-        backend_status: restored_status("system", "force_kill_codex", BackendEffect::Platform),
+        backend_status: restored_status(
+            "platform_actions",
+            "force_kill_codex",
+            BackendEffect::Platform,
+        ),
         config_cleared: None,
         killed_count: Some(outcome.killed_count),
         terminated_process_count: Some(outcome.killed_count),

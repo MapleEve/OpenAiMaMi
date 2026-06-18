@@ -70,7 +70,7 @@ pub fn focus_main_window(
     app: tauri::AppHandle,
 ) -> Result<CoreEnvelope<SystemActionPayload>, String> {
     let window = crate::platform::window::TauriWindowPort::new(&app);
-    usecase::system::focus_main_window(&window)
+    usecase::platform_actions::focus_main_window(&window)
         .map(CoreEnvelope::ok)
         .map_err(|error| error.to_string())
 }

@@ -1,5 +1,6 @@
 use crate::application::ports::{AppProcessPort, AppShellPort, AppSystemPort};
 use crate::application::service::{restored_status, BackendEffect};
+use crate::application::usecase::platform_actions;
 use crate::application::usecase::system;
 use crate::contracts::{
     BackendSkeletonStatus, CleanPayload, DiagnosePayload, RebuildRegistryPayload,
@@ -25,30 +26,22 @@ pub fn diagnose(repo: &Repository) -> Result<DiagnosePayload, CoreError> {
 }
 
 pub fn force_kill_codex(process: &impl AppProcessPort) -> Result<SystemActionPayload, CoreError> {
-    let mut payload = system::force_kill_app(process)?;
-    mark_maintenance_status(&mut payload.backend_status);
-    Ok(payload)
+    platform_actions::force_kill_app(process)
 }
 
 pub fn restart_codex(process: &impl AppProcessPort) -> SystemActionPayload {
-    let mut payload = system::restart_app(process);
-    mark_maintenance_status(&mut payload.backend_status);
-    payload
+    platform_actions::restart_app(process)
 }
 
 pub fn get_system_info(system_port: &impl AppSystemPort) -> SystemInfoPayload {
-    let mut payload = system::system_info(system_port);
-    mark_maintenance_status(&mut payload.backend_status);
-    payload
+    platform_actions::system_info(system_port)
 }
 
 pub fn open_path(
     shell: &impl AppShellPort,
     path: String,
 ) -> Result<SystemActionPayload, CoreError> {
-    let mut payload = system::open_path(shell, path)?;
-    mark_maintenance_status(&mut payload.backend_status);
-    Ok(payload)
+    platform_actions::open_path(shell, path)
 }
 
 pub fn rebuild_registry(repo: &Repository) -> Result<RebuildRegistryPayload, CoreError> {

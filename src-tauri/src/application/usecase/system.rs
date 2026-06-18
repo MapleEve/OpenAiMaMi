@@ -1,13 +1,8 @@
 mod diagnostics;
-mod platform_actions;
 mod settings_secret;
 mod snapshot_bootstrap;
 
 pub use self::diagnostics::diagnose;
-pub use self::platform_actions::{
-    check_update_installability, focus_main_window, force_kill_app, graceful_restart_for_update,
-    open_path, restart_app, system_info,
-};
 pub use self::settings_secret::{
     get_device_id, get_or_create_remote_device_secret, import_remote_device_secret_if_empty,
 };
@@ -17,7 +12,7 @@ use crate::application::service::{pending_status, restored_status};
 use crate::application::usecase::daemon as daemon_usecase;
 use crate::contracts::{
     AutoSwitchConfigPayload, BackendEffect, BackendSkeletonStatus, CoreSnapshotPayload,
-    NotificationClientStatePayload, SystemActionPayload,
+    NotificationClientStatePayload,
 };
 use crate::core::error::CoreError;
 use crate::repository::settings as settings_repository;

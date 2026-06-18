@@ -6,6 +6,7 @@ pub mod hotspot;
 pub mod maintenance;
 pub mod mcp;
 pub mod mystery;
+pub mod platform_actions;
 pub mod relay;
 pub mod runtime_extensions;
 pub mod sessions;

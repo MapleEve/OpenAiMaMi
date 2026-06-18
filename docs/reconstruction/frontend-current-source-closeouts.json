@@ -575,16 +575,7 @@
           ]
         },
         {
-          "file": "src-tauri/src/application/usecase/system.rs",
-          "includes": [
-            "pub use self::platform_actions::",
-            "check_update_installability",
-            "graceful_restart_for_update",
-            "open_path"
-          ]
-        },
-        {
-          "file": "src-tauri/src/application/usecase/system/platform_actions.rs",
+          "file": "src-tauri/src/application/usecase/platform_actions.rs",
           "includes": [
             "pub fn check_update_installability",
             "pub fn graceful_restart_for_update",
@@ -2136,7 +2127,7 @@
           "includes": [
             "pub fn diagnose",
             "pub fn force_kill_codex",
-            "system::force_kill_app(process)"
+            "platform_actions::force_kill_app(process)"
           ]
         },
         {
@@ -2162,7 +2153,7 @@
           ]
         },
         {
-          "file": "src-tauri/src/application/usecase/system/platform_actions.rs",
+          "file": "src-tauri/src/application/usecase/platform_actions.rs",
           "includes": [
             "pub fn force_kill_app",
             "force_kill_payload"
@@ -2684,11 +2675,11 @@
           "includes": [
             "pub fn diagnose",
             "pub fn force_kill_codex",
-            "system::force_kill_app(process)"
+            "platform_actions::force_kill_app(process)"
           ]
         },
         {
-          "file": "src-tauri/src/application/usecase/system/platform_actions.rs",
+          "file": "src-tauri/src/application/usecase/platform_actions.rs",
           "includes": [
             "pub fn force_kill_app",
             "\"force_kill_codex\"",
