@@ -24,6 +24,7 @@ pub struct SessionFileMetadata {
     pub agent_nickname: Option<String>,
     pub agent_role: Option<String>,
     pub turn_count: i32,
+    pub activity_timestamps: Vec<i64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -62,6 +63,7 @@ pub fn load_session_file_metadata(repo: &Repository) -> Vec<SessionFileMetadata>
                 agent_nickname: jsonl.agent_nickname,
                 agent_role: jsonl.agent_role,
                 turn_count: jsonl.turn_count,
+                activity_timestamps: jsonl.activity_timestamps,
                 path: entry.path,
                 id,
             })
@@ -123,6 +125,7 @@ struct SessionJsonlFacts {
     agent_nickname: Option<String>,
     agent_role: Option<String>,
     turn_count: i32,
+    activity_timestamps: Vec<i64>,
 }
 
 fn load_session_jsonl_facts(repo: &Repository, path: &Path) -> SessionJsonlFacts {
@@ -143,6 +146,7 @@ fn merge_session_jsonl_value(mut facts: SessionJsonlFacts, value: Value) -> Sess
     if let Some(timestamp) = json_string(&value, &["/payload/timestamp", "/timestamp"])
         .and_then(parse_rfc3339_epoch_seconds)
     {
+        facts.activity_timestamps.push(timestamp);
         facts.updated_at = Some(
             facts
                 .updated_at
@@ -269,6 +273,10 @@ mod tests {
         assert_eq!(items[0].agent_nickname, Some("local-agent".to_string()));
         assert_eq!(items[0].agent_role, Some("reviewer".to_string()));
         assert_eq!(items[0].turn_count, 2);
+        assert_eq!(
+            items[0].activity_timestamps,
+            vec![1_710_000_000, 1_710_000_060]
+        );
         assert!(items[0].project_path_missing);
     }
 }

@@ -62,7 +62,8 @@ export function AccountActionsPanel({
   const canUseAccountKeys = selectedAccountKeys.length > 0;
   const canUseImportFile = importFilePath.trim().length > 0;
   const canUseExportTarget = exportTargetPath.trim().length > 0;
-  const canUseSessionJson = sessionJson.trim().length > 0;
+  const trimmedSessionJson = sessionJson.trim();
+  const canUseSessionJson = trimmedSessionJson.length > 0;
 
   const previewImportWithDialog = async () => {
     try {
@@ -341,7 +342,7 @@ export function AccountActionsPanel({
             aria-label={t("accounts.addAccountSessionImport")}
             onClick={() =>
               void module.importChatGptSessionAccount.run({
-                sessionJson,
+                sessionJson: trimmedSessionJson,
                 overwriteExisting,
               })
             }

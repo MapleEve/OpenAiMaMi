@@ -26,6 +26,7 @@ pub struct PublicSessionFileFact {
     pub created_at: Option<i64>,
     pub file_size: i64,
     pub turn_count: i32,
+    pub activity_timestamps: Vec<i64>,
 }
 
 impl PublicSessionFileFact {
@@ -42,7 +43,16 @@ impl PublicSessionFileFact {
             created_at,
             file_size: file_size.max(0),
             turn_count: turn_count.max(0),
+            activity_timestamps: Vec::new(),
         }
+    }
+
+    pub fn with_activity_timestamps(mut self, timestamps: Vec<i64>) -> Self {
+        self.activity_timestamps = timestamps
+            .into_iter()
+            .filter(|timestamp| *timestamp >= 0)
+            .collect();
+        self
     }
 }
 
@@ -57,10 +67,11 @@ pub struct PublicDailyActivity {
 
 impl PublicDailyActivity {
     pub fn activity_level(&self, max_count: i32) -> f64 {
-        if max_count <= 0 {
+        if self.session_count <= 0 || max_count <= 0 {
             0.0
         } else {
-            self.session_count as f64 / max_count as f64
+            (((self.session_count as f64 + 1.0).ln() * 4.0) / (max_count as f64 + 1.0).ln())
+                .clamp(1.0, 4.0)
         }
     }
 }
@@ -185,37 +196,31 @@ pub fn aggregate_public_usage(
     now_epoch_seconds: i64,
 ) -> PublicUsageAggregate {
     let today = date_key(now_epoch_seconds);
-    let mut by_day = BTreeMap::<String, (i32, i64)>::new();
+    let mut by_day = BTreeMap::<String, PublicUsageDayBucket>::new();
     let mut total_size_bytes = 0i64;
     let mut total_turns = 0i32;
 
     for fact in facts {
         let date = date_key(fact.updated_at);
-        let entry = by_day.entry(date).or_insert((0, 0));
-        entry.0 = entry.0.saturating_add(1);
-        entry.1 = entry.1.saturating_add(fact.file_size.max(0));
+        let entry = by_day.entry(date).or_default();
+        entry.session_count = entry.session_count.saturating_add(1);
+        entry.total_file_size = entry.total_file_size.saturating_add(fact.file_size.max(0));
+        if fact.activity_timestamps.is_empty() {
+            entry.activity_timestamps.push(fact.updated_at);
+        } else {
+            entry.activity_timestamps.extend(fact.activity_timestamps);
+        }
         total_size_bytes = total_size_bytes.saturating_add(fact.file_size.max(0));
         total_turns = total_turns.saturating_add(fact.turn_count.max(0));
     }
 
-    let mut daily_activity = by_day
-        .iter()
-        .map(
-            |(date, (session_count, total_file_size))| PublicDailyActivity {
-                date: date.clone(),
-                session_count: *session_count,
-                total_file_size: *total_file_size,
-                active_minutes: None,
-                tokens: None,
-            },
-        )
-        .collect::<Vec<_>>();
-    daily_activity.sort_by(|left, right| left.date.cmp(&right.date));
-
-    let total_sessions = daily_activity
-        .iter()
+    let total_sessions = by_day
+        .values()
         .fold(0i32, |acc, item| acc.saturating_add(item.session_count));
-    let active_days = daily_activity.len() as i32;
+    let active_days = by_day
+        .values()
+        .filter(|item| item.session_count > 0)
+        .count() as i32;
     let avg_sessions_per_active_day = if active_days == 0 {
         0.0
     } else {
@@ -226,22 +231,35 @@ pub fn aggregate_public_usage(
     } else {
         total_turns as f64 / total_sessions as f64
     };
-    let (most_active_date, most_active_count) = daily_activity
+    let (most_active_date, most_active_count) = by_day
         .iter()
         .max_by(|left, right| {
-            left.session_count
-                .cmp(&right.session_count)
-                .then_with(|| right.date.cmp(&left.date))
+            left.1
+                .session_count
+                .cmp(&right.1.session_count)
+                .then_with(|| right.0.cmp(left.0))
         })
-        .map(|item| (Some(item.date.clone()), item.session_count))
+        .map(|(date, bucket)| (Some(date.clone()), bucket.session_count))
         .unwrap_or((None, 0));
-    let today_entry = by_day.get(&today).copied().unwrap_or((0, 0));
+    let today_entry = by_day.get(&today).cloned().unwrap_or_default();
+    let daily_activity = public_usage_window(now_epoch_seconds)
+        .into_iter()
+        .map(|date| {
+            let bucket = by_day.get(&date).cloned().unwrap_or_default();
+            PublicDailyActivity {
+                date,
+                session_count: bucket.session_count,
+                total_file_size: bucket.total_file_size,
+                active_minutes: None,
+                tokens: None,
+            }
+        })
+        .collect::<Vec<_>>();
 
     PublicUsageAggregate {
-        today_session_count: today_entry.0,
-        today_total_file_size: today_entry.1,
-        // 公开 session 文件元数据无法证明真实活跃时长，骨架保持 0。
-        active_minutes_estimate: 0,
+        today_session_count: today_entry.session_count,
+        today_total_file_size: today_entry.total_file_size,
+        active_minutes_estimate: estimate_active_minutes(&today_entry.activity_timestamps),
         total_sessions,
         total_size_bytes,
         active_days,
@@ -251,6 +269,50 @@ pub fn aggregate_public_usage(
         most_active_count,
         daily_activity,
     }
+}
+
+#[derive(Debug, Clone, Default)]
+struct PublicUsageDayBucket {
+    session_count: i32,
+    total_file_size: i64,
+    activity_timestamps: Vec<i64>,
+}
+
+fn public_usage_window(now_epoch_seconds: i64) -> Vec<String> {
+    let first = now_epoch_seconds.saturating_sub(364 * 24 * 60 * 60);
+    (0..365)
+        .map(|offset| date_key(first.saturating_add(offset * 24 * 60 * 60)))
+        .collect()
+}
+
+fn estimate_active_minutes(timestamps: &[i64]) -> i32 {
+    if timestamps.is_empty() {
+        return 0;
+    }
+
+    let mut sorted = timestamps
+        .iter()
+        .copied()
+        .filter(|timestamp| *timestamp >= 0)
+        .collect::<Vec<_>>();
+    if sorted.is_empty() {
+        return 0;
+    }
+    sorted.sort_unstable();
+    sorted.dedup();
+
+    let mut active_minutes = 1i32;
+    for pair in sorted.windows(2) {
+        let gap = pair[1].saturating_sub(pair[0]);
+        if gap >= 301 {
+            active_minutes = active_minutes.saturating_add(1);
+        } else if gap > 0 {
+            let minutes = ((gap + 59) / 60).clamp(1, 300) as i32;
+            active_minutes = active_minutes.saturating_add(minutes);
+        }
+    }
+
+    active_minutes.min(1_440)
 }
 
 pub fn aggregate_public_usage_for_range(
@@ -505,9 +567,17 @@ mod tests {
         assert_eq!(aggregate.most_active_count, 2);
         assert_eq!(aggregate.today_session_count, 2);
         assert_eq!(aggregate.today_total_file_size, 150);
-        assert_eq!(aggregate.active_minutes_estimate, 0);
+        assert_eq!(aggregate.active_minutes_estimate, 3);
         assert_eq!(aggregate.avg_turns, 2.0);
-        assert_eq!(aggregate.daily_activity.len(), 2);
+        assert_eq!(aggregate.daily_activity.len(), 365);
+        let today = aggregate
+            .daily_activity
+            .iter()
+            .find(|item| item.date == "2024-03-09")
+            .expect("today activity");
+        assert_eq!(today.session_count, 2);
+        assert_eq!(today.total_file_size, 150);
+        assert_eq!(today.activity_level(aggregate.most_active_count), 4.0);
         assert!(aggregate
             .daily_activity
             .iter()
@@ -535,7 +605,15 @@ mod tests {
         assert_eq!(aggregate.total_size_bytes, 50);
         assert_eq!(aggregate.avg_turns, 2.0);
         assert_eq!(aggregate.active_days, 1);
-        assert_eq!(aggregate.daily_activity.len(), 1);
+        assert_eq!(aggregate.daily_activity.len(), 365);
+        assert_eq!(
+            aggregate
+                .daily_activity
+                .iter()
+                .filter(|item| item.session_count > 0)
+                .count(),
+            1
+        );
     }
 
     #[test]

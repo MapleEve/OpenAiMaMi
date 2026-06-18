@@ -58,7 +58,7 @@ pub struct SessionStatsPayload {
     pub most_active_count: i32,
 }
 
-/// 用量分析 IPC DTO，当前返回空统计骨架。
+/// 用量分析 IPC DTO，只表达公开 session 文件事实聚合。
 #[derive(Debug, Clone, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct UsageAnalyticsPayload {

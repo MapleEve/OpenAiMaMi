@@ -275,14 +275,26 @@ for (const [label, pattern] of [
   ["PublicToolAggregate", /\bstruct\s+PublicToolAggregate\b/],
   ["PublicChangeAggregate", /\bstruct\s+PublicChangeAggregate\b/],
   ["PublicUsageAggregate", /\bstruct\s+PublicUsageAggregate\b/],
+  ["PublicUsageDayBucket", /\bstruct\s+PublicUsageDayBucket\b/],
   ["PublicQuotaHistory", /\bstruct\s+PublicQuotaHistory\b/],
   ["aggregate_public_usage", /\bfn\s+aggregate_public_usage\s*\(/],
+  ["public_usage_window", /\bfn\s+public_usage_window\s*\(/],
+  ["estimate_active_minutes", /\bfn\s+estimate_active_minutes\s*\(/],
   ["aggregate_public_tool_analytics", /\bfn\s+aggregate_public_tool_analytics\s*\(/],
   ["classify_public_tool_call", /\bfn\s+classify_public_tool_call\s*\(/],
   ["aggregate_public_change_analytics", /\bfn\s+aggregate_public_change_analytics\s*\(/],
   ["classify_public_command", /\bfn\s+classify_public_command\s*\(/],
 ]) {
   requirePattern(label, files.coreModel, code.coreModel.content, pattern, "core 必须 owning analytics 事实和聚合模型");
+}
+for (const [label, pattern] of [
+  ["usage 365 天窗口", /0\.\.365[\s\S]*date_key/],
+  ["usage 365 天窗口起点", /saturating_sub\(\s*364\s*\*\s*24\s*\*\s*60\s*\*\s*60\s*\)/],
+  ["usage 缺失日期补零", /by_day\.get\(&date\)\.cloned\(\)\.unwrap_or_default\(\)/],
+  ["usage log activity level", /\.ln\(\)[\s\S]*\*\s*4\.0[\s\S]*\.clamp\(\s*1\.0\s*,\s*4\.0\s*\)/],
+  ["usage active minutes 301 秒分段", /gap\s*>=\s*301[\s\S]*active_minutes\.min\(\s*1_440\s*\)/],
+]) {
+  requirePattern(label, files.coreModel, code.coreModel.content, pattern, "usage analytics 必须覆盖 365 天窗口、补零、log activityLevel 和活跃分钟估算");
 }
 for (const [label, pattern] of [
   ["write classifier table", /\bWRITE_COMMAND_PATTERNS\b[\s\S]*git commit[\s\S]*cargo add/],
@@ -361,6 +373,13 @@ requirePattern(
   code.sessionsRepository.content,
   /repo\s*\.\s*fs\s*\(\s*\)\s*\.read_dir\s*\(\s*&repo\s*\.\s*paths\s*\(\s*\)\s*\.sessions_dir\s*\)/,
   "公开 session 来源必须通过 FileSystemAdapter 读取",
+);
+requirePattern(
+  "sessions repository 提取公开 JSONL 时间戳",
+  files.sessionsRepository,
+  code.sessionsRepository.content,
+  /activity_timestamps\.push\(\s*timestamp\s*\)/,
+  "usage analytics 活跃分钟估算只能来自公开 session JSONL 时间戳",
 );
 requirePattern(
   "repository paths 暴露 quota history 路径",

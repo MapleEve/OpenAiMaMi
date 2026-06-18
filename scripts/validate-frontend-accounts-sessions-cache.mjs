@@ -52,6 +52,8 @@ const modules = [
 const files = {
   packageJson: join(repoRoot, "package.json"),
   sharedCache: join(repoRoot, "src", "features", "_shared", "cache.ts"),
+  accountsActionsPanel: join(repoRoot, "src", "features", "accounts", "panels", "actions.tsx"),
+  accountsSessionDialog: join(repoRoot, "src", "features", "accounts", "dialogs", "session.tsx"),
 };
 
 function repoPath(path) {
@@ -484,8 +486,21 @@ function runFenceScenario(moduleId) {
 
 const packageJson = parseJson(files.packageJson);
 const sharedCache = readRequired(files.sharedCache);
+const accountsActionsPanel = readRequired(files.accountsActionsPanel);
+const accountsSessionDialog = readRequired(files.accountsSessionDialog);
 
 assertSharedCacheContract(sharedCache);
+
+assertIncludes("accounts inline session import 提交前裁剪输入", accountsActionsPanel, [
+  "const trimmedSessionJson = sessionJson.trim();",
+  "const canUseSessionJson = trimmedSessionJson.length > 0;",
+  "sessionJson: trimmedSessionJson,",
+]);
+assertIncludes("accounts session dialog 提交前裁剪输入", accountsSessionDialog, [
+  "const payload = sessionJson.trim();",
+  "if (!payload) return;",
+  "sessionJson: payload,",
+]);
 
 for (const module of modules) {
   const paths = moduleFiles(module.id);

@@ -22,6 +22,7 @@ pub fn load_public_session_facts(repo: &Repository) -> Vec<PublicSessionFileFact
                 metadata.file_size,
                 metadata.turn_count,
             )
+            .with_activity_timestamps(metadata.activity_timestamps)
         })
         .collect()
 }
