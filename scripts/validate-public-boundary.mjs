@@ -433,11 +433,12 @@ function validateReadmeFile(path) {
   const requiredHeadings = [
     "# OpenAiMami",
     "## 为什么公开",
-    "## 仓库内容",
-    "## 重建流程",
+    "## 范围边界",
+    "## 当前归纳",
+    "## 仓库入口",
+    "## 验收入口",
     "## 可直接给 AI 的重建提示",
-    "## PR 规则",
-    "## 匿名化规则",
+    "## PR 与匿名化",
   ];
   const missingHeadings = requiredHeadings.filter(
     (heading) => !headings.includes(heading),
@@ -471,7 +472,7 @@ function validateReadmeFile(path) {
   addCheck(
     `${path} 保留完整中文公开重建说明`,
     ok,
-    details.length === 0 ? "README 保留中文说明、重建流程和匿名化规则" : details.join("；"),
+    details.length === 0 ? "README 保留中文说明、范围边界、验收入口和匿名化规则" : details.join("；"),
   );
 }
 
@@ -503,15 +504,15 @@ function validateReadmeStatusStructure(path) {
 
   const content = readUtf8(path);
   const requiredStatusParts = [
-    "## 当前状态",
-    "| 领域 | 已做 | 没做或边界 | 怎么验收 |",
+    "## 当前归纳",
+    "| 范围 | 已做 | 未做或边界 | 验收 |",
     "| 公开材料 |",
     "| 前端 |",
     "| 后端 |",
     "| voice |",
     "| 验收 |",
-    "| 运行闭环 |",
-    "文档口径固定为",
+    "README 只保留长期有效的归纳状态",
+    "每次提交仍要同步",
   ];
   const missing = requiredStatusParts.filter((part) => !content.includes(part));
 

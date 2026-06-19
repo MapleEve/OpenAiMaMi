@@ -642,7 +642,10 @@ function validateUsecase(path, original, content) {
     ["upsert repository", /\bmcp\s*::\s*upsert_server\s*\(\s*repo\s*,\s*&server\s*\)/],
     ["set enabled repository", /\bmcp\s*::\s*set_enabled\s*\(\s*repo\s*,\s*&name\s*,\s*enabled\s*\)/],
     ["remove repository", /\bmcp\s*::\s*remove_server\s*\(\s*repo\s*,\s*&name\s*\)/],
-    ["NoOp status", /\bBackendEffect\s*::\s*NoOp\b/],
+    ["load repository write status", /restored_status\s*\(\s*"mcp"\s*,\s*"load_mcp_servers"\s*,\s*BackendEffect::RepositoryWrite\s*,?\s*\)/],
+    ["upsert repository write status", /restored_status\s*\(\s*"mcp"\s*,\s*"upsert_mcp_server"\s*,\s*BackendEffect::RepositoryWrite\s*,?\s*\)/],
+    ["set enabled repository write status", /restored_status\s*\(\s*"mcp"\s*,\s*"set_mcp_server_enabled"\s*,\s*BackendEffect::RepositoryWrite\s*,?\s*\)/],
+    ["remove repository write status", /restored_status\s*\(\s*"mcp"\s*,\s*"remove_mcp_server"\s*,\s*BackendEffect::RepositoryWrite\s*,?\s*\)/],
   ];
 
   for (const [label, pattern] of required) {
@@ -656,6 +659,14 @@ function validateUsecase(path, original, content) {
     content,
     /\b(toml\s*::|FileSystemAdapter|read_to_string\s*\(|write_string\s*\(|rename\s*\(|config_path|repo\s*\.\s*fs\s*\(|std\s*::\s*fs)\b/g,
     "usecase 只编排 repository 和 DTO，不读写 config.toml",
+  );
+  rejectPattern(
+    "MCP restored status NoOp",
+    path,
+    original,
+    content,
+    /\bBackendEffect\s*::\s*NoOp\b/g,
+    "MCP config/bootstrap repository IO 必须标成 RepositoryWrite",
   );
 }
 

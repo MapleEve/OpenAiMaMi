@@ -179,7 +179,7 @@ function validateMaintenanceUsecase(path, content) {
     ],
     [
       "reset 状态 module",
-      /\brestored_status\s*\(\s*"maintenance"\s*,\s*"reset_codex_config"\s*,\s*BackendEffect::NoOp\s*\)/,
+      /\brestored_status\s*\(\s*"maintenance"\s*,\s*"reset_codex_config"\s*,\s*BackendEffect::RepositoryWrite\s*,?\s*\)/,
       "reset_codex_config 对外状态必须声明 maintenance owner",
     ],
   ]) {

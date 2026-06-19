@@ -30,7 +30,7 @@ pub fn begin_add_account_attach_monitor(
 }
 
 pub fn switch_account(repo: &Repository, account_key: String) -> Result<SwitchPayload, CoreError> {
-    switch_account_with_status(repo, restored("switch_account"), account_key)
+    switch_account_with_status(repo, restored_write("switch_account"), account_key)
 }
 
 pub fn switch_account_and_restart_codex(
@@ -39,7 +39,7 @@ pub fn switch_account_and_restart_codex(
 ) -> Result<SwitchPayload, CoreError> {
     let mut payload = switch_account_with_status(
         repo,
-        restored("switch_account_and_restart_codex"),
+        restored_write("switch_account_and_restart_codex"),
         account_key,
     )?;
     payload
@@ -140,7 +140,7 @@ pub fn remove_accounts(
     accounts_repository::save_registry(repo, &registry)?;
 
     Ok(RemovePayload {
-        backend_status: restored("remove_accounts"),
+        backend_status: restored_write("remove_accounts"),
         removed_count: removed_account_keys.len() as i32,
         removed_account_keys,
         previous_account_key,
@@ -158,7 +158,7 @@ pub fn logout(repo: &Repository) -> Result<LogoutPayload, CoreError> {
     }
 
     Ok(LogoutPayload {
-        backend_status: restored("logout"),
+        backend_status: restored_write("logout"),
         auth_removed,
         auth_backed_up,
     })
@@ -215,7 +215,7 @@ pub fn export_accounts_to_file(
     accounts_repository::write_json_pretty(repo, Path::new(&normalized_target), &document)?;
 
     Ok(AccountExportPayload {
-        backend_status: restored("export_accounts_to_file"),
+        backend_status: restored_write("export_accounts_to_file"),
         target_path: normalized_target,
         account_count: target_items.len() as i32,
         exported_at: Some(exported_at),
@@ -347,7 +347,7 @@ pub fn import_accounts_from_file(
     let active_account_key = registry.active_key();
 
     Ok(AccountImportPayload {
-        backend_status: restored("import_accounts_from_file"),
+        backend_status: restored_write("import_accounts_from_file"),
         imported_count: imported_account_keys.len() as i32,
         imported_account_keys,
         skipped,
@@ -377,7 +377,11 @@ fn skip(account_key: Option<String>, reason: &str, message: &str) -> AccountSkip
 }
 
 fn restored(command: &str) -> BackendSkeletonStatus {
-    restored_status(MODULE, command, BackendEffect::NoOp)
+    restored_status(MODULE, command, BackendEffect::RepositoryRead)
+}
+
+fn restored_write(command: &str) -> BackendSkeletonStatus {
+    restored_status(MODULE, command, BackendEffect::RepositoryWrite)
 }
 
 fn pending_status(command: &str) -> BackendSkeletonStatus {

@@ -17,7 +17,7 @@ pub fn load_snapshot(repo: &Repository) -> Result<CoreSnapshotPayload, CoreError
     let settings = settings_repository::load_app_settings(repo)?;
     let accounts = accounts_repository::load_account_summaries(repo)?;
     let payload = CoreSnapshotPayload {
-        backend_status: restored_status("system", "load_snapshot", BackendEffect::NoOp),
+        backend_status: restored_status("system", "load_snapshot", BackendEffect::RepositoryWrite),
         status: make_status(repo, &settings),
         accounts,
     };
@@ -29,7 +29,11 @@ pub fn load_bootstrap_state(repo: &Repository) -> Result<BootstrapStatePayload, 
     let settings = settings_repository::load_app_settings(repo)?;
     let cache = bootstrap_repository::load_bootstrap_cache(repo).unwrap_or_default();
     Ok(BootstrapStatePayload {
-        backend_status: restored_status("system", "load_bootstrap_state", BackendEffect::NoOp),
+        backend_status: restored_status(
+            "system",
+            "load_bootstrap_state",
+            BackendEffect::RepositoryRead,
+        ),
         written_at: cache.written_at,
         snapshot_progressive: cache.snapshot_progressive,
         usage_analytics: cache.usage_analytics,

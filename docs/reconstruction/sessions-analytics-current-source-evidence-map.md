@@ -16,6 +16,8 @@
 
 ## 当前公开文件事实聚合
 
+backend status 的 effect 语义按当前源码真实仓储边界区分：`load_sessions`、`load_session_analytics`、`load_tool_analytics`、`load_change_analytics` 标记为 `RepositoryRead`；`delete_sessions`、`load_usage_analytics`、`load_quota_history` 标记为 `RepositoryWrite`。这里的 `RepositoryWrite` 只表示公开源码确实写入会话文件、bootstrap cache 或 quota compaction，不扩大为闭源业务还原。
+
 | 状态 | 命令 / 聚合 | 当前公开来源 | owner 边界 |
 | --- | --- | --- | --- |
 | restored | `load_sessions` | `sessions_dir` 下已扫描到的 session 文件元数据、file size、created/modified time、session JSONL 中的 `payload/cwd`、`payload/source/subagent/thread_spawn/parent_thread_id`、`payload/agent_nickname`、`payload/agent_role`、`payload/role`。 | `commands/sessions.rs` 调用 `usecase::sessions::load_sessions`；usecase 只排序和映射 DTO；`repository/sessions.rs` 通过 `FileSystemAdapter` 读取公开文件元数据和 JSONL 字段。 |

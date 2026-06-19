@@ -547,6 +547,41 @@ function validateUsecase(path, original, content) {
       `${operation} 必须通过 repository owner 暴露的窄函数完成`,
     );
   }
+  requirePattern(
+    "list repository write status",
+    path,
+    content,
+    /restored_status\s*\(\s*"runtime-extensions"\s*,\s*"list_plugins"\s*,\s*BackendEffect::RepositoryWrite\s*,?\s*\)/,
+    "list_plugins 当前源码会保存合并后的 repository store",
+  );
+  requirePattern(
+    "toggle repository write status",
+    path,
+    content,
+    /restored_status\s*\(\s*"runtime-extensions"\s*,\s*"toggle_plugin"\s*,\s*BackendEffect::RepositoryWrite\s*,?\s*\)/,
+    "toggle_plugin 必须写 repository store",
+  );
+  requirePattern(
+    "config effect variable",
+    path,
+    content,
+    /\brestored_status\s*\(\s*"runtime-extensions"\s*,\s*command\s*,\s*effect\s*,?\s*\)/,
+    "config 分支必须根据 get/update 选择 RepositoryRead 或 RepositoryWrite",
+  );
+  requirePattern(
+    "get config repository read status",
+    path,
+    content,
+    /"get_plugin_config"[\s\S]*BackendEffect::RepositoryRead/,
+    "get_plugin_config 只读 repository store",
+  );
+  requirePattern(
+    "update config repository write status",
+    path,
+    content,
+    /"update_plugin_config"[\s\S]*BackendEffect::RepositoryWrite/,
+    "update_plugin_config 必须写 repository store",
+  );
   for (const command of ["list", "toggle", "config"]) {
     requirePattern(
       `usecase ${command}`,
@@ -571,6 +606,14 @@ function validateUsecase(path, original, content) {
     content,
     /\b(tauri\s*::|State\s*<|CoreEnvelope|AppHandle|Window|Tray|Notification|crate\s*::\s*platform\s*::)\b/g,
     "usecase 不得依赖 Tauri UI 或平台副作用",
+  );
+  rejectPattern(
+    "runtime-extensions restored status NoOp",
+    path,
+    original,
+    content,
+    /\bBackendEffect\s*::\s*NoOp\b/g,
+    "runtime-extensions restored repository IO 必须标成 RepositoryRead/RepositoryWrite",
   );
 }
 

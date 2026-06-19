@@ -449,7 +449,7 @@ pub(super) fn skeleton_status(command: &str) -> BackendSkeletonStatus {
 }
 
 pub(super) fn repository_status(command: &str) -> BackendSkeletonStatus {
-    restored_status("relay", command, BackendEffect::NoOp)
+    restored_status("relay", command, relay_repository_effect(command))
 }
 
 fn payload_status(command: &str) -> BackendSkeletonStatus {
@@ -482,6 +482,30 @@ fn repository_restored_command(command: &str) -> bool {
             | "export_relay_config"
             | "import_relay_config"
     )
+}
+
+fn relay_repository_effect(command: &str) -> BackendEffect {
+    match command {
+        "load_relay_state"
+        | "get_passthrough_audit_log"
+        | "get_relay_active"
+        | "get_relay_proxy_status"
+        | "run_codex_router_diagnostics"
+        | "diagnose_codex_router" => BackendEffect::RepositoryRead,
+        "upsert_relay_provider"
+        | "delete_relay_provider"
+        | "activate_relay_provider"
+        | "deactivate_relay_provider"
+        | "set_relay_provider_network"
+        | "set_codex_router_enabled"
+        | "set_block_official_passthrough"
+        | "test_relay_provider"
+        | "export_relay_config"
+        | "import_relay_config"
+        | "fix_codex_router_issue" => BackendEffect::RepositoryWrite,
+        "test_relay_draft" => BackendEffect::NoOp,
+        _ => BackendEffect::NoOp,
+    }
 }
 
 pub(super) fn skeleton_warning(command: &str) -> CoreWarning {

@@ -63,7 +63,11 @@ pub fn rebuild_registry(repo: &Repository) -> Result<RebuildRegistryPayload, Cor
 pub fn reset_codex_config(repo: &Repository) -> Result<SystemActionPayload, CoreError> {
     let result = config_repository::reset_codex_config(repo)?;
     Ok(SystemActionPayload {
-        backend_status: restored_status("maintenance", "reset_codex_config", BackendEffect::NoOp),
+        backend_status: restored_status(
+            "maintenance",
+            "reset_codex_config",
+            BackendEffect::RepositoryWrite,
+        ),
         config_cleared: Some(result.config_cleared),
         killed_count: None,
         terminated_process_count: None,

@@ -33,8 +33,17 @@ function parseJson(path) {
   }
 }
 
+function compactForSignal(value) {
+  return value.replace(/\s+/g, "");
+}
+
 function requireIncludes(label, content, fragments) {
-  const missing = fragments.filter((fragment) => !content.includes(fragment));
+  const compactContent = compactForSignal(content);
+  const missing = fragments.filter(
+    (fragment) =>
+      !content.includes(fragment) &&
+      !compactContent.includes(compactForSignal(fragment)),
+  );
   if (missing.length > 0) {
     failures.push(`${label} 缺少片段：${missing.join("；")}`);
   }

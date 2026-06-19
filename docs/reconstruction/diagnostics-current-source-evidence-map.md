@@ -17,7 +17,7 @@
 
 | 能力 | 当前源码 owner | 恢复边界 |
 | --- | --- | --- |
-| `diagnose` 只读快照 | `application/usecase/diagnostics.rs` | `backend_status.restored=true`，`BackendEffect::NoOp`；只说明本地 repository snapshot 可读，不产生修复或平台副作用。 |
+| `diagnose` 只读快照 | `application/usecase/diagnostics.rs` | `backend_status.restored=true`，`BackendEffect::RepositoryRead`；只说明本地 repository snapshot 可读，不产生修复或平台副作用。 |
 | 路径探针 | `repository/diagnostics.rs` | 读取 `codex_home`、`accounts_dir`、`auth_path`、`registry_path`、`sessions_dir`、`config_path` 的存在性。 |
 | registry 数量 | `repository/diagnostics.rs` | 如果 registry JSON 存在，只读取 `items` 数组长度；不校验账号密钥、不修复 registry。 |
 | sessions 数量 | `repository/diagnostics.rs` | 如果 sessions 目录存在，只统计目录子项数量；不读取敏感会话内容。 |

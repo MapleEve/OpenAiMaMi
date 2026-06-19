@@ -68,7 +68,7 @@ for (const [label, pattern] of [
   ["diagnostics backend status", /\bfn\s+diagnose_backend_status\s*\(/],
   ["diagnostics module status", /module\s*:\s*"diagnostics"\s*\.to_string\s*\(\s*\)/],
   ["diagnostics restored status", /\brestored\s*:\s*true\s*,/],
-  ["diagnostics no-op effect", /\beffect\s*:\s*BackendEffect\s*::\s*NoOp\s*,/],
+  ["diagnostics repository read effect", /\beffect\s*:\s*BackendEffect\s*::\s*RepositoryRead\s*,/],
   ["diagnostics pending deep fields", /registry\/keychain\/sqlite\/TOML 深诊断引擎和修复逻辑仍为 pending/],
   ["pending diagnostics fields", /\bfn\s+make_pending_diagnostic_fields\s*\(/],
   ["diagnostic snapshot payload", /\bfn\s+make_diagnostic_snapshot_payload\s*\(/],
@@ -238,7 +238,7 @@ requirePattern(
 const diagnosticsMap = raw.get("diagnosticsMap");
 for (const [label, pattern] of [
   ["diagnostics map 标题", /^# diagnostics current-source 证据映射/m],
-  ["diagnostics map restored/no-op", /backend_status\.restored=true[\s\S]*BackendEffect::NoOp/],
+  ["diagnostics map restored/repository-read", /backend_status\.restored=true[\s\S]*BackendEffect::RepositoryRead/],
   ["diagnostics map repository probes", /codex_home[\s\S]*accounts_dir[\s\S]*auth_path[\s\S]*registry_path[\s\S]*sessions_dir[\s\S]*config_path/],
   ["diagnostics map pending fields", /auth_integrity[\s\S]*catalog_integrity[\s\S]*api_key_integrity[\s\S]*db_orphan_providers[\s\S]*rollout_orphan_providers[\s\S]*repair_logic/],
   ["diagnostics map validator", /scripts\/validate-backend-diagnostics-owner\.mjs/],
@@ -252,7 +252,7 @@ requirePattern(
   "source-map diagnostics 注册",
   sourceMap.path,
   sourceMap.content,
-  /docs\/reconstruction\/diagnostics-current-source-evidence-map\.md[\s\S]*scripts\/validate-backend-diagnostics-owner\.mjs[\s\S]*restored\/no-op 状态/,
+  /docs\/reconstruction\/diagnostics-current-source-evidence-map\.md[\s\S]*scripts\/validate-backend-diagnostics-owner\.mjs[\s\S]*restored\/RepositoryRead 状态/,
   "source-map 必须登记 diagnostics current-source map 和 owner validator",
 );
 
@@ -273,4 +273,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("PASS 后端 diagnostics owner 校验通过：诊断 usecase、DTO、repository 只读快照、restored/no-op 状态和 current-source map 均已脱离 system 中转。");
+console.log("PASS 后端 diagnostics owner 校验通过：诊断 usecase、DTO、repository 只读快照、restored/RepositoryRead 状态和 current-source map 均已脱离 system 中转。");

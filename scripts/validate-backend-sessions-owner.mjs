@@ -175,6 +175,9 @@ const usecaseLoadBody = requireFunctionBody(usecaseContent, usecaseFile, "load_s
 if (!/\bsessions_repository::load_session_file_metadata\s*\(\s*repo\s*\)/.test(usecaseLoadBody)) {
   failures.push("application/usecase/sessions.rs load_sessions 缺少 repository helper 调用证据");
 }
+if (!/\brestored_status\s*\(\s*"sessions"\s*,\s*"load_sessions"\s*,\s*BackendEffect::RepositoryRead\s*,?\s*\)/.test(usecaseLoadBody)) {
+  failures.push("application/usecase/sessions.rs load_sessions 成功路径必须标记 RepositoryRead");
+}
 assertNoPattern("application/usecase/sessions.rs load_sessions", usecaseLoadBody, [
   /\bstd::fs\b/,
   /\bread_dir\s*\(/,
@@ -305,7 +308,7 @@ const usecaseDeleteBody = requireFunctionBody(usecaseContent, usecaseFile, "dele
 if (!/\bsessions_repository::delete_session_files\s*\(\s*repo\s*,\s*&ids\s*\)/.test(usecaseDeleteBody)) {
   failures.push("application/usecase/sessions.rs delete_sessions 必须通过 repository delete_session_files 删除会话文件");
 }
-if (!/\brestored_status\s*\(\s*"sessions"\s*,\s*"delete_sessions"\s*,\s*BackendEffect::NoOp\s*\)/.test(usecaseDeleteBody)) {
+if (!/\brestored_status\s*\(\s*"sessions"\s*,\s*"delete_sessions"\s*,\s*BackendEffect::RepositoryWrite\s*,?\s*\)/.test(usecaseDeleteBody)) {
   failures.push("application/usecase/sessions.rs delete_sessions 成功路径必须返回 restored_status");
 }
 assertNoPattern("application/usecase/sessions.rs delete_sessions", usecaseDeleteBody, [
@@ -326,7 +329,7 @@ if (!/\banalytics_repository::load_public_session_facts\s*\(\s*repo\s*\)/.test(u
 if (!/\baggregate_public_usage_for_range\s*\(/.test(usecaseSessionAnalyticsBody)) {
   failures.push("application/usecase/sessions.rs load_session_analytics 必须通过 core analytics range aggregate 聚合公开事实");
 }
-if (!/\brestored_status\s*\(\s*"sessions"\s*,\s*"load_session_analytics"\s*,\s*BackendEffect::NoOp\s*\)/.test(usecaseSessionAnalyticsBody)) {
+if (!/\brestored_status\s*\(\s*"sessions"\s*,\s*"load_session_analytics"\s*,\s*BackendEffect::RepositoryRead\s*,?\s*\)/.test(usecaseSessionAnalyticsBody)) {
   failures.push("application/usecase/sessions.rs load_session_analytics 成功路径必须返回 restored_status");
 }
 if (!/avg_turns\s*:\s*aggregate\.avg_turns/.test(usecaseSessionAnalyticsBody)) {

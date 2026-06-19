@@ -229,6 +229,13 @@ requirePattern(
   /bootstrap\s*::\s*store_bootstrap_usage_analytics\s*\(/,
   "load_usage_analytics 必须保留 bootstrap cache 写回",
 );
+requirePattern(
+  "usage repository write status",
+  files.usecase,
+  usageBody,
+  /restored_status\s*\(\s*"analytics"\s*,\s*"load_usage_analytics"\s*,\s*BackendEffect::RepositoryWrite\s*,?\s*\)/,
+  "load_usage_analytics 读取公开 session 事实并写回 bootstrap cache",
+);
 
 const quotaBody = requireFunctionBody(code.usecase.content, files.usecase, "load_quota_history");
 const quotaCommandBody = requireFunctionBody(
@@ -269,8 +276,8 @@ requirePattern(
   "quota analytics restored 状态",
   files.usecase,
   quotaBody,
-  /restored_status\s*\(\s*"analytics"\s*,\s*"load_quota_history"\s*,\s*BackendEffect::NoOp\s*\)/,
-  "load_quota_history 必须恢复为公开 quota-history JSONL 点位",
+  /restored_status\s*\(\s*"analytics"\s*,\s*"load_quota_history"\s*,\s*BackendEffect::RepositoryWrite\s*,?\s*\)/,
+  "load_quota_history 必须恢复为公开 quota-history JSONL 点位，并保留 compaction write 边界",
 );
 
 const toolBody = requireFunctionBody(code.usecase.content, files.usecase, "load_tool_analytics");
@@ -292,7 +299,7 @@ requirePattern(
   "tool analytics restored 状态",
   files.usecase,
   toolBody,
-  /restored_status\s*\(\s*"analytics"\s*,\s*"load_tool_analytics"\s*,\s*BackendEffect::NoOp\s*\)/,
+  /restored_status\s*\(\s*"analytics"\s*,\s*"load_tool_analytics"\s*,\s*BackendEffect::RepositoryRead\s*,?\s*\)/,
   "load_tool_analytics 只恢复公开 rollout JSONL function_call 事实",
 );
 requirePattern(
@@ -322,7 +329,7 @@ requirePattern(
   "change analytics restored status",
   files.usecase,
   changeBody,
-  /restored_status\s*\(\s*"analytics"\s*,\s*"load_change_analytics"\s*,\s*BackendEffect::NoOp\s*\)/,
+  /restored_status\s*\(\s*"analytics"\s*,\s*"load_change_analytics"\s*,\s*BackendEffect::RepositoryRead\s*,?\s*\)/,
   "load_change_analytics 必须保持为公开 rollout JSONL command 事实恢复",
 );
 
@@ -514,7 +521,7 @@ rejectPattern(
   files.usecase,
   raw.usecase.content,
   tokenBody,
-  /\brestored_status\s*\(|BackendEffect\s*::\s*NoOp/g,
+  /\brestored_status\s*\(|BackendEffect\s*::\s*(?:NoOp|RepositoryRead|RepositoryWrite)/g,
   "token analytics 仍缺少闭源 token 路径证据，不得标记 restored",
 );
 rejectPattern(

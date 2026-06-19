@@ -39,7 +39,11 @@ pub fn load_usage_analytics(repo: &Repository) -> UsageAnalyticsPayload {
         .collect();
 
     let payload = UsageAnalyticsPayload {
-        backend_status: restored_status("analytics", "load_usage_analytics", BackendEffect::NoOp),
+        backend_status: restored_status(
+            "analytics",
+            "load_usage_analytics",
+            BackendEffect::RepositoryWrite,
+        ),
         today: TodaySummaryPayload {
             session_count: aggregate.today_session_count,
             total_file_size: aggregate.today_total_file_size,
@@ -70,7 +74,11 @@ pub fn load_quota_history(
     let history =
         quota_repository::load_public_quota_history(repo, normalize_optional_string(account_key))?;
     Ok(QuotaHistoryPayload {
-        backend_status: restored_status("analytics", "load_quota_history", BackendEffect::NoOp),
+        backend_status: restored_status(
+            "analytics",
+            "load_quota_history",
+            BackendEffect::RepositoryWrite,
+        ),
         account_key: history.account_key,
         points: history
             .points
@@ -117,7 +125,11 @@ pub fn load_tool_analytics(repo: &Repository, range: Option<String>) -> ToolAnal
         public_range_from_contract(normalized_range),
     );
     ToolAnalyticsPayload {
-        backend_status: restored_status("analytics", "load_tool_analytics", BackendEffect::NoOp),
+        backend_status: restored_status(
+            "analytics",
+            "load_tool_analytics",
+            BackendEffect::RepositoryRead,
+        ),
         range: normalized_range,
         total_calls: aggregate.total_calls,
         distinct_count: aggregate.distinct_count,
@@ -143,7 +155,11 @@ pub fn load_change_analytics(repo: &Repository, range: Option<String>) -> Change
         public_range_from_contract(normalized_range),
     );
     ChangeAnalyticsPayload {
-        backend_status: restored_status("analytics", "load_change_analytics", BackendEffect::NoOp),
+        backend_status: restored_status(
+            "analytics",
+            "load_change_analytics",
+            BackendEffect::RepositoryRead,
+        ),
         range: normalized_range,
         total_commands: aggregate.total_commands,
         write_commands: aggregate.write_commands,

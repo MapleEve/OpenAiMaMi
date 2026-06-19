@@ -28,7 +28,7 @@
 | --- | --- | --- |
 | IPC 注册 | `src-tauri/src/lib.rs` | `tauri::generate_handler!` 注册 `commands::runtime_extensions::{list_plugins,toggle_plugin,get_plugin_config,update_plugin_config}`。 |
 | command adapter | `src-tauri/src/commands/runtime_extensions.rs` | 只做 Tauri 参数反序列化、`State<Mutex<Repository>>` 获取、调用 usecase 和 `CoreEnvelope::ok` 封装。 |
-| usecase | `src-tauri/src/application/usecase/runtime_extensions.rs` | 编排 `list`、`toggle`、`config` 用户动作，把 repository 结果映射为 IPC payload 和 backend status。 |
+| usecase | `src-tauri/src/application/usecase/runtime_extensions.rs` | 编排 `list`、`toggle`、`config` 用户动作，把 repository 结果映射为 IPC payload 和 backend status；`list_plugins`、`toggle_plugin`、`update_plugin_config` 标记为 `RepositoryWrite`，`get_plugin_config` 标记为 `RepositoryRead`。 |
 | contracts | `src-tauri/src/contracts/runtime_extensions.rs` | 只声明可序列化 payload 和 `RuntimeExtensionSettingsValue`，不读取或保存 `plugins.json`。 |
 | repository | `src-tauri/src/repository/runtime_extensions.rs` | owning registry/store 文档结构、内建 plugin 列表、store merge、id 校验、读写、原子替换和 repository 层单元测试。 |
 | repository paths | `src-tauri/src/repository/paths.rs` | owning `runtime_extensions_path = app_data_dir.join("plugins.json")` 的逻辑路径来源；不写入机器绝对路径。 |
@@ -37,10 +37,10 @@
 
 | 命令 | 公开证据边界 | 当前源码闭环 |
 | --- | --- | --- |
-| `list_plugins` | registry list、DTO 映射、返回 list，无持久业务副作用声明。 | command 调 `usecase::runtime_extensions::list(&repo)`；usecase 调 `runtime_extensions::list_plugins(repo)`；repository merge builtin 和 store 后返回 `RuntimeExtensionListPayload`。 |
+| `list_plugins` | registry list、DTO 映射、返回 list，无持久业务副作用声明。 | command 调 `usecase::runtime_extensions::list(&repo)`；usecase 调 `runtime_extensions::list_plugins(repo)`；repository merge builtin 和 store 后返回 `RuntimeExtensionListPayload`，当前源码会保存合并后的 store，因此 backend status 标记为 `RepositoryWrite`。 |
 | `toggle_plugin` | id/enabled 解码、`set_enabled`、save store、返回 enabled 状态。 | command 调 `toggle(&repo, id, enabled)`；usecase 调 `set_enabled`；repository 校验 id、修改 enabled、保存 `plugins.json` 并返回当前 plugin 与列表。 |
-| `get_plugin_config` | id 解码、`get_config`、返回 config。 | command 调 `config(&repo, id, None)`；usecase 选择 `get_plugin_config` backend status；repository 读取合并后的 store 并返回 settings JSON。 |
-| `update_plugin_config` | id/settings 解码、`update_settings`、save store。 | command 调 `config(&repo, id, Some(settings))`；usecase 选择 `update_plugin_config` backend status；repository 更新 settings 后保存 `plugins.json`。 |
+| `get_plugin_config` | id 解码、`get_config`、返回 config。 | command 调 `config(&repo, id, None)`；usecase 选择 `get_plugin_config` backend status 并标记 `RepositoryRead`；repository 读取合并后的 store 并返回 settings JSON。 |
+| `update_plugin_config` | id/settings 解码、`update_settings`、save store。 | command 调 `config(&repo, id, Some(settings))`；usecase 选择 `update_plugin_config` backend status 并标记 `RepositoryWrite`；repository 更新 settings 后保存 `plugins.json`。 |
 
 ## 已覆盖边界
 

@@ -65,7 +65,7 @@ fn diagnose_backend_status() -> BackendSkeletonStatus {
             repository_path_known: true,
             platform_checked: true,
             core_checked: true,
-            effect: BackendEffect::NoOp,
+            effect: BackendEffect::RepositoryRead,
         },
         runtime_event: None,
     }

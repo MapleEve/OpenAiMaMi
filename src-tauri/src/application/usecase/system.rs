@@ -39,7 +39,11 @@ pub fn set_auto_switch(
     settings.auto_switch_enabled = enabled;
     settings_repository::save_app_settings(repo, &settings)?;
     Ok(AutoSwitchConfigPayload {
-        backend_status: restored_status("system", "set_auto_switch", BackendEffect::NoOp),
+        backend_status: restored_status(
+            "system",
+            "set_auto_switch",
+            BackendEffect::RepositoryWrite,
+        ),
         auto_switch: snapshot_bootstrap::make_auto_switch_status(&settings),
     })
 }
@@ -60,7 +64,11 @@ pub fn configure_auto_switch(
     }
     settings_repository::save_app_settings(repo, &settings)?;
     Ok(AutoSwitchConfigPayload {
-        backend_status: restored_status("system", "configure_auto_switch", BackendEffect::NoOp),
+        backend_status: restored_status(
+            "system",
+            "configure_auto_switch",
+            BackendEffect::RepositoryWrite,
+        ),
         auto_switch: snapshot_bootstrap::make_auto_switch_status(&settings),
     })
 }

@@ -195,7 +195,7 @@ fn runtime_watcher_backend_status(
             ) {
                 BackendEffect::Pending
             } else {
-                BackendEffect::NoOp
+                BackendEffect::RepositoryRead
             },
         },
         runtime_event: Some(runtime_bridge_event(command, decision)),

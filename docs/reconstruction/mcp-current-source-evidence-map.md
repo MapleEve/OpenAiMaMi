@@ -29,7 +29,7 @@
 | --- | --- | --- |
 | IPC 注册 | `src-tauri/src/lib.rs` | `tauri::generate_handler!` 注册 `commands::mcp::{load_mcp_servers,upsert_mcp_server,set_mcp_server_enabled,remove_mcp_server}`。 |
 | command adapter | `src-tauri/src/commands/mcp.rs` | 只做 Tauri 参数反序列化、`State<Mutex<Repository>>` 获取、调用 usecase 和 `CoreEnvelope::ok` 封装。 |
-| usecase | `src-tauri/src/application/usecase/mcp.rs` | 编排四个用户动作，校验服务名，把 repository 结果映射为 IPC payload 和 backend status；当前 status 使用 `BackendEffect::NoOp`，不声明运行时副作用。 |
+| usecase | `src-tauri/src/application/usecase/mcp.rs` | 编排四个用户动作，校验服务名，把 repository 结果映射为 IPC payload 和 backend status；当前 status 使用 `BackendEffect::RepositoryWrite` 表达 `config.toml` 写入或 bootstrap cache 写回，不声明运行时副作用。 |
 | contracts | `src-tauri/src/contracts/mcp.rs` | 只声明 `McpServerSummary`、输入 DTO、列表 payload、mutation payload 和 remove payload，不读写 `config.toml`。 |
 | repository | `src-tauri/src/repository/mcp.rs` | owning `config.toml` 路径安全、可替换 `FileSystemAdapter` 读写、临时文件写入和 rename 持久化；纯 TOML 解析、扫描和渲染委托给 core parser。 |
 | core parser | `src-tauri/src/core/parser/mcp.rs` | owning `mcp_servers` TOML 语义解析、托管块扫描、注释保留替换、删除、渲染和渲染后 TOML 有效性校验。 |
@@ -39,7 +39,7 @@
 
 | 命令 | 公开证据边界 | 当前源码闭环 |
 | --- | --- | --- |
-| `load_mcp_servers` | 同步 mutex/TOML parse；读取 `config.toml` MCP server blocks；返回 name、transport、command、args、url、headers、environment、enabled 字段；不写入、不联网、不启动进程。 | command 调 `usecase::mcp::load_servers(&repo)`；usecase 调 `mcp::load_server_snapshot(repo)`；repository 校验 `CODEX_HOME/config.toml` 路径、读取文本并调用 `parse_mcp_servers_from_config`；core parser 解析 `[mcp_servers.*]` 表后映射到 payload。 |
+| `load_mcp_servers` | 同步 mutex/TOML parse；读取 `config.toml` MCP server blocks；返回 name、transport、command、args、url、headers、environment、enabled 字段；不联网、不启动进程。 | command 调 `usecase::mcp::load_servers(&repo)`；usecase 调 `mcp::load_server_snapshot(repo)` 并写回 bootstrap MCP cache，因此 backend status 标记为 `RepositoryWrite`；repository 校验 `CODEX_HOME/config.toml` 路径、读取文本并调用 `parse_mcp_servers_from_config`；core parser 解析 `[mcp_servers.*]` 表后映射到 payload。 |
 | `upsert_mcp_server` | 同步 mutex/TOML parse-edit-save；插入或替换 MCP server block；持久写入 `config.toml`；成功返回 mutation payload。 | command 解码平铺字段 `name`、`transport`、`enabled`、`config`、`command`、`args`、`url`、`headers`、`environment` 后调 `usecase::mcp::upsert_server`；usecase 合并输入并校验名称；repository 调 `upsert_mcp_server_config` 生成下一版文本，经 `write_string` 写临时文件并 `rename` 到 `config.toml`，再重新读取保存结果。 |
 | `set_mcp_server_enabled` | 同步 mutex/load-find-upsert；基于 name 查找现有 MCP 服务；切换 enabled；持久写入 `config.toml`；缺失时返回 not-found 语义。 | command 调 `usecase::mcp::set_enabled`；usecase 校验名称；repository 先 `load_server_snapshot`，找到目标后复用 `upsert_server` 保存 enabled 变更并返回 mutation payload。 |
 | `remove_mcp_server` | 同步 mutex/TOML remove-save；删除目标 MCP server block；持久写入 `config.toml`；成功返回 remove payload。 | command 调 `usecase::mcp::remove_server`；usecase 校验名称；repository 调 `remove_mcp_server_config` 删除托管块，写临时文件并 `rename`，再读取剩余总数。 |

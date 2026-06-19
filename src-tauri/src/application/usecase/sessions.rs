@@ -43,7 +43,7 @@ pub fn load_sessions(repo: &Repository) -> SessionsListPayload {
     });
 
     SessionsListPayload {
-        backend_status: restored_status("sessions", "load_sessions", BackendEffect::NoOp),
+        backend_status: restored_status("sessions", "load_sessions", BackendEffect::RepositoryRead),
         total: items.len() as i32,
         items,
         source_path: sessions_source_path(repo),
@@ -56,7 +56,11 @@ pub fn delete_sessions(repo: &Repository, ids: Vec<String>) -> SessionsDeletePay
     let delete_result = sessions_repository::delete_session_files(repo, &ids);
     let (backend_status, deleted_ids, skipped_ids) = match delete_result {
         Ok(result) => (
-            restored_status("sessions", "delete_sessions", BackendEffect::NoOp),
+            restored_status(
+                "sessions",
+                "delete_sessions",
+                BackendEffect::RepositoryWrite,
+            ),
             result.deleted_ids,
             result.skipped_ids,
         ),
@@ -114,7 +118,11 @@ pub fn load_session_analytics(repo: &Repository, range: Option<String>) -> Sessi
     );
 
     SessionAnalyticsPayload {
-        backend_status: restored_status("sessions", "load_session_analytics", BackendEffect::NoOp),
+        backend_status: restored_status(
+            "sessions",
+            "load_session_analytics",
+            BackendEffect::RepositoryRead,
+        ),
         range: normalized_range,
         total_sessions: aggregate.total_sessions,
         avg_turns: aggregate.avg_turns,

@@ -66,7 +66,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库保存匿名化 raw/inter
 | relay HTTP-terminal 当前源码链路 | `docs/reconstruction/relay-http-terminal-current-source-map.md` | `test_relay_provider`、`test_relay_draft`、`fetch_relay_models_draft` 的前端触发链、mock terminal、relay test retry 错误语义和未声明真实 HTTP 边界；由 `scripts/validate-frontend-relay-http-terminal-ccf.mjs` 直接验证。 |
 | 后端 runtime-extensions owner | `docs/reconstruction/runtime-extensions-current-source-evidence-map.md` | runtime-extensions 四个 plugins IPC 的 command/usecase/contracts/repository 闭环。 |
 | Custom Instructions 后端 owner 与前端 E2E mock 合同 | `docs/reconstruction/custom-instructions-current-source-evidence-map.md` | Custom Instructions 五个 IPC 的 command/usecase/repository/core parser/core model/contracts 闭环由 custom-instructions owner validator 校验；五个 IPC 的专用 E2E mock handler、service wrapper 和 mutation hook 合同由 `scripts/validate-e2e-mocks.mjs` 校验。 |
-| diagnostics 后端只读快照 | `docs/reconstruction/diagnostics-current-source-evidence-map.md` | `diagnose` 只读 repository snapshot、平台 os/arch、DTO owner、restored/no-op 状态和 pending 深诊断边界。 |
+| diagnostics 后端只读快照 | `docs/reconstruction/diagnostics-current-source-evidence-map.md` | `diagnose` 只读 repository snapshot、平台 os/arch、DTO owner、restored/RepositoryRead 状态和 pending 深诊断边界。 |
 | 后端 MCP owner | `docs/reconstruction/mcp-current-source-evidence-map.md` | MCP 四个 IPC 的 command/usecase/contracts/repository/core parser/core model 闭环。 |
 | 后端 sessions/analytics 文件事实 | `docs/reconstruction/sessions-analytics-current-source-evidence-map.md` | sessions、usage analytics、tool/change/quota 公开文件事实与 pending 边界。 |
 | system hotspot 前端链路与后端骨架 | `docs/reconstruction/system-hotspot-current-source-map.md` | hotspot frontend chain、Rust hotspot owner 骨架和 strict gate 未恢复边界。 |

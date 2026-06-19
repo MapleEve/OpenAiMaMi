@@ -11,7 +11,11 @@ pub fn load_installed(repo: &Repository) -> Result<SkillListPayload, CoreError> 
     let last_scan_at = current_timestamp();
     let _ = bootstrap::store_bootstrap_installed_skills(repo, last_scan_at, items.clone());
     Ok(SkillListPayload {
-        status: restored_status("skills", "load_installed_skills", BackendEffect::NoOp),
+        status: restored_status(
+            "skills",
+            "load_installed_skills",
+            BackendEffect::RepositoryWrite,
+        ),
         total: items.len() as i32,
         root_path: repo.paths().skills_dir.display().to_string(),
         last_scan_at,
@@ -22,7 +26,11 @@ pub fn load_installed(repo: &Repository) -> Result<SkillListPayload, CoreError> 
 pub fn load_backups(repo: &Repository) -> Result<SkillBackupListPayload, CoreError> {
     let items = skills::load_backups(repo.fs(), &repo.paths().skill_backups_dir)?;
     Ok(SkillBackupListPayload {
-        status: restored_status("skills", "load_skill_backups", BackendEffect::NoOp),
+        status: restored_status(
+            "skills",
+            "load_skill_backups",
+            BackendEffect::RepositoryRead,
+        ),
         total: items.len() as i32,
         root_path: repo.paths().skill_backups_dir.display().to_string(),
         last_scan_at: current_timestamp(),
@@ -41,7 +49,7 @@ pub fn import_skill(repo: &Repository, path: String) -> Result<SkillImportPayloa
             skills::load_skill_from_dir(repo.fs(), &repo.paths().skills_dir, &target.target)
                 .ok_or_else(|| CoreError::InvalidInput("技能源无效".to_string()))?;
         return Ok(SkillImportPayload {
-            status: restored_status("skills", "import_skill", BackendEffect::NoOp),
+            status: restored_status("skills", "import_skill", BackendEffect::RepositoryRead),
             skill,
             replaced_existing: false,
             backup: None,
@@ -68,7 +76,7 @@ pub fn import_skill(repo: &Repository, path: String) -> Result<SkillImportPayloa
     let skill = skills::load_skill_from_dir(repo.fs(), &repo.paths().skills_dir, &target.target)
         .ok_or_else(|| CoreError::InvalidInput("导入后的技能无效".to_string()))?;
     Ok(SkillImportPayload {
-        status: restored_status("skills", "import_skill", BackendEffect::NoOp),
+        status: restored_status("skills", "import_skill", BackendEffect::RepositoryWrite),
         skill,
         replaced_existing,
         backup,
@@ -92,7 +100,7 @@ pub fn remove_skill(repo: &Repository, id: String) -> Result<SkillRemovePayload,
     let remaining_installed_count =
         skills::load_installed(repo.fs(), &repo.paths().skills_dir)?.len() as i32;
     Ok(SkillRemovePayload {
-        status: restored_status("skills", "remove_skill", BackendEffect::NoOp),
+        status: restored_status("skills", "remove_skill", BackendEffect::RepositoryWrite),
         removed_skill_id: id,
         backup,
         remaining_installed_count,
@@ -134,7 +142,11 @@ pub fn restore_backup(repo: &Repository, id: String) -> Result<SkillRestorePaylo
         skills::load_skill_from_dir(repo.fs(), &repo.paths().skills_dir, &restore.target)
             .ok_or_else(|| CoreError::InvalidInput("恢复后的技能无效".to_string()))?;
     Ok(SkillRestorePayload {
-        status: restored_status("skills", "restore_skill_backup", BackendEffect::NoOp),
+        status: restored_status(
+            "skills",
+            "restore_skill_backup",
+            BackendEffect::RepositoryWrite,
+        ),
         restored_skill,
         backup: restore.backup,
         rollback_backup,
@@ -146,7 +158,11 @@ pub fn delete_backup(repo: &Repository, id: String) -> Result<SkillDeleteBackupP
     let remaining_backup_count =
         skills::load_backups(repo.fs(), &repo.paths().skill_backups_dir)?.len() as i32;
     Ok(SkillDeleteBackupPayload {
-        status: restored_status("skills", "delete_skill_backup", BackendEffect::NoOp),
+        status: restored_status(
+            "skills",
+            "delete_skill_backup",
+            BackendEffect::RepositoryWrite,
+        ),
         deleted_backup_id: id,
         remaining_backup_count,
     })

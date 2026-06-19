@@ -16,7 +16,11 @@ pub fn list(repo: &Repository) -> Result<RuntimeExtensionListPayload, CoreError>
         .map(plugin_payload)
         .collect::<Vec<_>>();
     Ok(RuntimeExtensionListPayload {
-        backend_status: restored_status("runtime-extensions", "list_plugins", BackendEffect::NoOp),
+        backend_status: restored_status(
+            "runtime-extensions",
+            "list_plugins",
+            BackendEffect::RepositoryWrite,
+        ),
         total: items.len() as i32,
         source_path: runtime_extensions::plugins_path(repo).display().to_string(),
         last_scan_at: current_timestamp(),
@@ -33,7 +37,11 @@ pub fn toggle(
     let plugin = plugin_payload(plugin);
     let items = items.into_iter().map(plugin_payload).collect::<Vec<_>>();
     Ok(RuntimeExtensionTogglePayload {
-        backend_status: restored_status("runtime-extensions", "toggle_plugin", BackendEffect::NoOp),
+        backend_status: restored_status(
+            "runtime-extensions",
+            "toggle_plugin",
+            BackendEffect::RepositoryWrite,
+        ),
         plugin,
         total: items.len() as i32,
         source_path: runtime_extensions::plugins_path(repo).display().to_string(),
@@ -64,22 +72,24 @@ pub fn config(
     id: String,
     settings: Option<RuntimeExtensionSettingsValue>,
 ) -> Result<RuntimeExtensionConfigPayload, CoreError> {
-    let (settings, updated, command) = if let Some(settings) = settings {
+    let (settings, updated, command, effect) = if let Some(settings) = settings {
         (
             runtime_extensions::update_settings(repo, &id, settings)?,
             true,
             "update_plugin_config",
+            BackendEffect::RepositoryWrite,
         )
     } else {
         (
             runtime_extensions::get_config(repo, &id)?,
             false,
             "get_plugin_config",
+            BackendEffect::RepositoryRead,
         )
     };
 
     Ok(RuntimeExtensionConfigPayload {
-        backend_status: restored_status("runtime-extensions", command, BackendEffect::NoOp),
+        backend_status: restored_status("runtime-extensions", command, effect),
         id,
         settings,
         source_path: runtime_extensions::plugins_path(repo).display().to_string(),

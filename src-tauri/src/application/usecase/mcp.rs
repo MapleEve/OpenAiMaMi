@@ -12,7 +12,7 @@ pub fn load_servers(repo: &Repository) -> Result<McpServerListPayload, CoreError
     let last_scan_at = current_timestamp();
     let _ = bootstrap::store_bootstrap_mcp_servers(repo, last_scan_at, snapshot.items.clone());
     Ok(McpServerListPayload {
-        status: restored_status("mcp", "load_mcp_servers", BackendEffect::NoOp),
+        status: restored_status("mcp", "load_mcp_servers", BackendEffect::RepositoryWrite),
         total: snapshot.items.len() as i32,
         source_path: snapshot.source_path,
         last_scan_at,
@@ -82,7 +82,7 @@ pub fn upsert_server(
 
     let saved = mcp::upsert_server(repo, &server)?;
     Ok(McpServerMutationPayload {
-        status: restored_status("mcp", "upsert_mcp_server", BackendEffect::NoOp),
+        status: restored_status("mcp", "upsert_mcp_server", BackendEffect::RepositoryWrite),
         server: saved.server,
         total: saved.total,
         source_path: saved.source_path,
@@ -97,7 +97,11 @@ pub fn set_enabled(
     validate_name(&name)?;
     let saved = mcp::set_enabled(repo, &name, enabled)?;
     Ok(McpServerMutationPayload {
-        status: restored_status("mcp", "set_mcp_server_enabled", BackendEffect::NoOp),
+        status: restored_status(
+            "mcp",
+            "set_mcp_server_enabled",
+            BackendEffect::RepositoryWrite,
+        ),
         server: saved.server,
         total: saved.total,
         source_path: saved.source_path,
@@ -108,7 +112,7 @@ pub fn remove_server(repo: &Repository, name: String) -> Result<McpServerRemoveP
     validate_name(&name)?;
     let removed = mcp::remove_server(repo, &name)?;
     Ok(McpServerRemovePayload {
-        status: restored_status("mcp", "remove_mcp_server", BackendEffect::NoOp),
+        status: restored_status("mcp", "remove_mcp_server", BackendEffect::RepositoryWrite),
         removed_name: removed.removed_name,
         total: removed.total,
         source_path: removed.source_path,

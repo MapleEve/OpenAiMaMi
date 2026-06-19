@@ -5,6 +5,8 @@ use serde::{Deserialize, Serialize};
 pub enum BackendEffect {
     Pending,
     NoOp,
+    RepositoryRead,
+    RepositoryWrite,
     Platform,
     Unsupported,
 }

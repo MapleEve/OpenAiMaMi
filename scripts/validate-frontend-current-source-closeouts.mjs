@@ -552,6 +552,10 @@ function readText(path) {
   return readFileSync(path, "utf8");
 }
 
+function compactForSignal(value) {
+  return value.replace(/\s+/g, "");
+}
+
 function requireIncludes(file, snippets) {
   const path = repoPath(file);
   if (!existsSync(path)) {
@@ -560,8 +564,9 @@ function requireIncludes(file, snippets) {
   }
 
   const text = readFileSync(path, "utf8");
+  const compactText = compactForSignal(text);
   for (const snippet of snippets) {
-    if (!text.includes(snippet)) {
+    if (!text.includes(snippet) && !compactText.includes(compactForSignal(snippet))) {
       failures.push(`${file} 缺少 closeout 片段：${snippet}`);
     }
   }
