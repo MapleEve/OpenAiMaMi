@@ -28,8 +28,8 @@ use self::payload::{
     active_payload_from_state, core_state_from_repo, draft_from_input, draft_from_provider,
     load_provider_for_test, provider_payload_from_domain, proxy_payload_from_domain,
     relay_test_error, relay_test_error_warning, relay_test_warning, repository_error_warning,
-    repository_status, repository_warning, skeleton_status, skeleton_warning,
-    state_payload_from_domain, state_payload_from_repo, test_payload_from_domain,
+    repository_status, repository_warning, skeleton_status, state_payload_from_domain,
+    state_payload_from_repo, test_payload_from_domain,
 };
 pub use self::provider::{
     activate_relay_provider, deactivate_relay_provider, delete_relay_provider,
@@ -158,7 +158,7 @@ pub fn get_relay_active(repo: &Repository) -> (RelayActivePayload, CoreWarning) 
     let command = "get_relay_active";
     (
         active_payload_from_state(command, core_state_from_repo(repo)),
-        skeleton_warning(command),
+        repository_warning(command),
     )
 }
 
@@ -166,7 +166,7 @@ pub fn get_relay_proxy_status(repo: &Repository) -> (RelayProxyPayload, CoreWarn
     let command = "get_relay_proxy_status";
     (
         proxy_payload_from_domain(command, core_state_from_repo(repo).proxy),
-        skeleton_warning(command),
+        repository_warning(command),
     )
 }
 

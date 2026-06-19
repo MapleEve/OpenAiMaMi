@@ -65,7 +65,7 @@ pub fn delete_sessions(repo: &Repository, ids: Vec<String>) -> SessionsDeletePay
             result.skipped_ids,
         ),
         Err(error) => (
-            pending_status(
+            repository_write_error_status(
                 "sessions",
                 "delete_sessions",
                 &format!("会话文件删除失败，当前未恢复 sqlite/global-state 事务：{error}"),
@@ -83,6 +83,16 @@ pub fn delete_sessions(repo: &Repository, ids: Vec<String>) -> SessionsDeletePay
         skipped_ids,
         source_path: sessions_source_path(repo),
     }
+}
+
+fn repository_write_error_status(
+    module: &str,
+    command: &str,
+    note: &str,
+) -> crate::contracts::BackendSkeletonStatus {
+    let mut status = restored_status(module, command, BackendEffect::RepositoryWrite);
+    status.note = note.to_string();
+    status
 }
 
 /// 导入会话账号的用户动作边界，当前不解析 session JSON，也不写账号仓储。

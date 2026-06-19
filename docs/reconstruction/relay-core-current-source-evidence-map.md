@@ -59,6 +59,10 @@
 
 这只说明 relay test 的 mock terminal 错误语义已经由 core owning，并由 `src-tauri/src/application/usecase/relay/payload.rs` 消费到 payload/warning 文案；它不发起真实 HTTP，不执行真实 stream retry，也不启动代理进程。
 
+### relay 状态读边界
+
+`get_relay_active` 与 `get_relay_proxy_status` 只读取本地 `relay-config.json` 经 core 归一化后的 active/proxy snapshot。当前源码把 payload status 和 warning 都收口到 repository read 边界；未知 relay 命令不得通过 `BackendEffect::NoOp` fallback 伪装成 restored。这个状态读边界不启动代理进程、不探测真实网络端口、不恢复运行时健康检查，也不声明闭源 proxy lifecycle 已恢复。
+
 ## 未做内容
 
 - 未恢复密钥系统、真实代理进程启动、真实网络请求、真实模型拉取、SSE 转换、线程迁移、运行时健康检查、keychain、安全凭据迁移和闭源代理转发。

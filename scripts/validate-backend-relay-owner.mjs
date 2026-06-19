@@ -356,6 +356,41 @@ assertContains(
 assertContains(
   files.usecase,
   usecaseContent,
+  /\bpub\s+fn\s+get_relay_active\s*\([^]*?\bactive_payload_from_state\s*\([^]*?\brepository_warning\s*\(\s*command\s*\)/,
+  "get_relay_active warning 必须保持 repository read 边界，不能继续返回 skeleton warning",
+);
+assertContains(
+  files.usecase,
+  usecaseContent,
+  /\bpub\s+fn\s+get_relay_proxy_status\s*\([^]*?\bproxy_payload_from_domain\s*\([^]*?\brepository_warning\s*\(\s*command\s*\)/,
+  "get_relay_proxy_status warning 必须保持 repository read 边界，不能继续返回 skeleton warning",
+);
+assertContains(
+  files.usecasePayload,
+  usecasePayloadContent,
+  /\bfn\s+relay_repository_effect\s*\(\s*command:\s*&str\s*\)\s*->\s*Option\s*<\s*BackendEffect\s*>/,
+  "relay repository effect 必须用 Option 表达已恢复命令集合，未知命令不能落到 restored NoOp",
+);
+assertContains(
+  files.usecasePayload,
+  usecasePayloadContent,
+  /\bunwrap_or_else\s*\(\s*\|\|\s*skeleton_status\s*\(\s*command\s*\)\s*\)/,
+  "repository_status 未知命令必须回落 skeleton_status",
+);
+assertNoPatterns(
+  files.usecasePayload,
+  usecasePayloadContent,
+  [
+    {
+      label: "NoOp fallback",
+      patterns: [/_\s*=>\s*BackendEffect::NoOp/],
+      message: "relay restored status 禁止保留 NoOp fallback",
+    },
+  ],
+);
+assertContains(
+  files.usecase,
+  usecaseContent,
   /\bpub\s+fn\s+export_relay_config\s*\([\s\S]*?\bErr\s*\(\s*_\s*\)\s*=>\s*\(\s*RelayExportPayload\s*\{[\s\S]*?\bbackend_status\s*:\s*repository_status\s*\(\s*command\s*\)[\s\S]*?\brepository_error_warning\s*\(\s*command\s*\)/,
   "export_relay_config 仓储操作失败时 backend_status 必须保持 repository 状态，不能退回 skeleton/pending",
 );

@@ -449,7 +449,9 @@ pub(super) fn skeleton_status(command: &str) -> BackendSkeletonStatus {
 }
 
 pub(super) fn repository_status(command: &str) -> BackendSkeletonStatus {
-    restored_status("relay", command, relay_repository_effect(command))
+    relay_repository_effect(command)
+        .map(|effect| restored_status("relay", command, effect))
+        .unwrap_or_else(|| skeleton_status(command))
 }
 
 fn payload_status(command: &str) -> BackendSkeletonStatus {
@@ -461,31 +463,11 @@ fn payload_status(command: &str) -> BackendSkeletonStatus {
 }
 
 fn repository_restored_command(command: &str) -> bool {
-    matches!(
-        command,
-        "load_relay_state"
-            | "upsert_relay_provider"
-            | "delete_relay_provider"
-            | "activate_relay_provider"
-            | "deactivate_relay_provider"
-            | "set_relay_provider_network"
-            | "get_relay_active"
-            | "get_passthrough_audit_log"
-            | "run_codex_router_diagnostics"
-            | "diagnose_codex_router"
-            | "fix_codex_router_issue"
-            | "get_relay_proxy_status"
-            | "set_codex_router_enabled"
-            | "set_block_official_passthrough"
-            | "test_relay_provider"
-            | "test_relay_draft"
-            | "export_relay_config"
-            | "import_relay_config"
-    )
+    relay_repository_effect(command).is_some()
 }
 
-fn relay_repository_effect(command: &str) -> BackendEffect {
-    match command {
+fn relay_repository_effect(command: &str) -> Option<BackendEffect> {
+    Some(match command {
         "load_relay_state"
         | "get_passthrough_audit_log"
         | "get_relay_active"
@@ -504,8 +486,8 @@ fn relay_repository_effect(command: &str) -> BackendEffect {
         | "import_relay_config"
         | "fix_codex_router_issue" => BackendEffect::RepositoryWrite,
         "test_relay_draft" => BackendEffect::Platform,
-        _ => BackendEffect::NoOp,
-    }
+        _ => return None,
+    })
 }
 
 pub(super) fn skeleton_warning(command: &str) -> CoreWarning {

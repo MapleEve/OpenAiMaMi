@@ -311,8 +311,12 @@ if (!/\bsessions_repository::delete_session_files\s*\(\s*repo\s*,\s*&ids\s*\)/.t
 if (!/\brestored_status\s*\(\s*"sessions"\s*,\s*"delete_sessions"\s*,\s*BackendEffect::RepositoryWrite\s*,?\s*\)/.test(usecaseDeleteBody)) {
   failures.push("application/usecase/sessions.rs delete_sessions 成功路径必须返回 restored_status");
 }
+if (!/\brepository_write_error_status\s*\(\s*"sessions"\s*,\s*"delete_sessions"\s*,/.test(usecaseDeleteBody)) {
+  failures.push("application/usecase/sessions.rs delete_sessions 仓储错误路径必须保持 RepositoryWrite 状态，不得降级为 pending");
+}
 assertNoPattern("application/usecase/sessions.rs delete_sessions", usecaseDeleteBody, [
   /\bstd::fs\b/,
+  /\bpending_status\s*\(/,
   /\bwrite_string\s*\(/,
   /\bcreate_dir_all\s*\(/,
   /\bremove_file\s*\(/,
@@ -321,6 +325,18 @@ assertNoPattern("application/usecase/sessions.rs delete_sessions", usecaseDelete
   /\brename\s*\(/,
   /\bread_to_string\s*\(/,
 ]);
+
+const repositoryWriteErrorStatusBody = requireFunctionBody(
+  usecaseContent,
+  usecaseFile,
+  "repository_write_error_status",
+);
+if (!/\brestored_status\s*\(\s*module\s*,\s*command\s*,\s*BackendEffect::RepositoryWrite\s*\)/.test(repositoryWriteErrorStatusBody)) {
+  failures.push("application/usecase/sessions.rs repository_write_error_status 必须复用 restored_status 的 RepositoryWrite 边界");
+}
+if (!/status\.note\s*=\s*note\.to_string\(\)/.test(repositoryWriteErrorStatusBody)) {
+  failures.push("application/usecase/sessions.rs repository_write_error_status 必须保留仓储错误的中文诊断 note");
+}
 
 const usecaseSessionAnalyticsBody = requireFunctionBody(usecaseContent, usecaseFile, "load_session_analytics");
 if (!/\banalytics_repository::load_public_session_facts\s*\(\s*repo\s*\)/.test(usecaseSessionAnalyticsBody)) {

@@ -16,12 +16,12 @@
 
 ## 当前公开文件事实聚合
 
-backend status 的 effect 语义按当前源码真实仓储边界区分：`load_sessions`、`load_session_analytics`、`load_token_analytics`、`load_tool_analytics`、`load_change_analytics` 标记为 `RepositoryRead`；`delete_sessions`、`load_usage_analytics`、`load_quota_history` 标记为 `RepositoryWrite`。这里的 `RepositoryWrite` 只表示公开源码确实写入会话文件、bootstrap cache 或 quota compaction，不扩大为闭源业务还原。
+backend status 的 effect 语义按当前源码真实仓储边界区分：`load_sessions`、`load_session_analytics`、`load_token_analytics`、`load_tool_analytics`、`load_change_analytics` 标记为 `RepositoryRead`；`delete_sessions`、`load_usage_analytics`、`load_quota_history` 标记为 `RepositoryWrite`。这里的 `RepositoryWrite` 只表示公开源码确实进入会话文件删除、bootstrap cache 写入或 quota compaction 边界，不扩大为闭源业务还原；`delete_sessions` 的仓储错误路径也保持 `RepositoryWrite` effect，并通过中文 note 保留未恢复 SQLite/global-state 事务边界。
 
 | 状态 | 命令 / 聚合 | 当前公开来源 | owner 边界 |
 | --- | --- | --- | --- |
 | restored | `load_sessions` | `sessions_dir` 下已扫描到的 session 文件元数据、file size、created/modified time、session JSONL 中的 `payload/cwd`、`payload/source/subagent/thread_spawn/parent_thread_id`、`payload/agent_nickname`、`payload/agent_role`、`payload/role`。 | `commands/sessions.rs` 调用 `usecase::sessions::load_sessions`；usecase 只排序和映射 DTO；`repository/sessions.rs` 通过 `FileSystemAdapter` 读取公开文件元数据和 JSONL 字段。 |
-| restored | `delete_sessions` | 仅删除 `load_session_file_metadata` 已扫描出的 session id 对应文件。 | usecase 调用 `sessions_repository::delete_session_files`；repository 通过 `FileSystemAdapter::remove_file` 删除已确认路径，不恢复 SQLite/global-state 事务。 |
+| restored | `delete_sessions` | 仅删除 `load_session_file_metadata` 已扫描出的 session id 对应文件；仓储删除失败时仍按 repository write 边界返回，并把请求 id 归入 skipped。 | usecase 调用 `sessions_repository::delete_session_files`；repository 通过 `FileSystemAdapter::remove_file` 删除已确认路径；错误路径不降级成 pending，不恢复 SQLite/global-state 事务。 |
 | restored | `load_usage_analytics` | 公开 session 文件事实：updated_at、created_at、file_size、turn_count、activity_timestamps。 | `analytics_repository::load_public_session_facts` 提供事实；`core/model/analytics.rs` 聚合 365 天窗口、补零、activityLevel 和 active minutes estimate；usecase 写回 bootstrap usage cache。 |
 | restored | `load_session_analytics` | 同一批公开 session 文件事实。 | `sessions` usecase 通过 `analytics_repository::load_public_session_facts` 和 `aggregate_public_usage_for_range` 聚合 range 内 session count / avg_turns / active_days / series。 |
 | restored | `load_token_analytics` | `sessions_dir` 与 `rollouts` 下公开 JSONL 中的 `usage.input_tokens`、`usage.output_tokens`、`usage.output_tokens_details.reasoning_tokens`、`usage.total_tokens` 及同义 camelCase 字段。 | `repository/analytics.rs` 递归读取公开 JSONL 的 token 数字字段；core 只做 range window、input/output/reasoning/total、avg per session、percent 和 day series 聚合；usecase 返回 `RepositoryRead`。 |
@@ -40,5 +40,5 @@ backend status 的 effect 语义按当前源码真实仓储边界区分：`load_
 
 ## validator 接入
 
-- `scripts/validate-backend-sessions-owner.mjs` 必须验证本 evidence map 存在，且记录公开 session 文件事实、`load_session_analytics` owner、pending 的 session account import 和不恢复 SQLite/rusqlite 索引事务。
+- `scripts/validate-backend-sessions-owner.mjs` 必须验证本 evidence map 存在，且记录公开 session 文件事实、`delete_sessions` 成功与仓储错误路径的 RepositoryWrite 边界、`load_session_analytics` owner、pending 的 session account import 和不恢复 SQLite/rusqlite 索引事务。
 - `scripts/validate-backend-analytics-owner.mjs` 必须验证本 evidence map 存在，且记录公开 session/rollout/quota-history 文件事实聚合、token analytics 公开 JSONL 只读聚合边界、quota-history 7 天 compaction 和不声明闭源运行时一致性。
