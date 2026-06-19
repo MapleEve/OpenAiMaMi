@@ -1,4 +1,4 @@
-use crate::application::service::{pending_status as make_pending_status, restored_status};
+use crate::application::service::restored_status;
 use crate::contracts::accounts::{
     AccountExportPayload, AccountImportPayload, AccountImportPreviewEntry,
     AccountImportPreviewPayload, AccountMonitorPayload, AccountSkippedPayload,
@@ -17,15 +17,18 @@ use std::collections::HashSet;
 use std::path::Path;
 
 const MODULE: &str = "accounts";
-const PENDING_NOTE: &str =
-    "账号后端能力当前仅补齐 IPC 空骨架，真实文件读写与平台副作用等待证据补齐。";
+const MONITOR_PREFLIGHT_NOTE: &str =
+    "已恢复公开证据支持的账号监视仓储预检边界；不创建后台 monitor、线程、运行时事件或平台副作用。";
 
-// 账号监听需要浏览器会话和运行时事件，这里只保留已登记的待恢复边界。
+// 账号监视公开范围只做 registry/snapshot 仓储预检，不创建后台线程或 runtime event。
 pub fn begin_add_account_attach_monitor(
-    _repo: &Repository,
+    repo: &Repository,
 ) -> Result<AccountMonitorPayload, CoreError> {
+    let _registry = accounts_repository::load_registry(repo)?;
+    let mut backend_status = restored("begin_add_account_attach_monitor");
+    backend_status.note = MONITOR_PREFLIGHT_NOTE.to_string();
     Ok(AccountMonitorPayload {
-        backend_status: pending_status("begin_add_account_attach_monitor"),
+        backend_status,
     })
 }
 
@@ -382,8 +385,4 @@ fn restored(command: &str) -> BackendSkeletonStatus {
 
 fn restored_write(command: &str) -> BackendSkeletonStatus {
     restored_status(MODULE, command, BackendEffect::RepositoryWrite)
-}
-
-fn pending_status(command: &str) -> BackendSkeletonStatus {
-    make_pending_status(MODULE, command, PENDING_NOTE)
 }

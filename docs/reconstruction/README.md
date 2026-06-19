@@ -62,6 +62,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库保存匿名化 raw/inter
 | 类别 | 文件 | 收口边界 |
 | --- | --- | --- |
 | 前端 current-source closeout 台账 | `docs/reconstruction/frontend-current-source-closeouts.json` | 前端 ledger-only 与 map-backed closeout 的聚合台账；由 `scripts/validate-frontend-current-source-closeouts.mjs` 校验条目边界、未恢复范围和非完成声明，由 `scripts/validate-public-boundary.mjs` 校验聚合索引。 |
+| accounts monitor 仓储预检 | `docs/reconstruction/accounts-monitor-current-source-map.md` | `begin_add_account_attach_monitor` 的仓储 registry 预检、`RepositoryRead` 状态和未恢复后台 monitor、线程、runtime event、平台副作用边界；由 `scripts/validate-backend-accounts-owner.mjs` 直接验证。 |
 | 前端 current-source partial closeout | `docs/reconstruction/plugins-current-source-evidence-map.md` | plugins 路由、API、command 与 mock 链路映射，由 plugins current-source validator 校验。 |
 | 前后端 relay owner 骨架 | `docs/reconstruction/relay-core-current-source-evidence-map.md` | relay-core 公开源码 owner、本地配置 repository 恢复、relay test retry 错误语义与 pending 边界映射；由 `scripts/validate-backend-relay-owner.mjs` 直接验证，不作为 raw/internal strict gate 关闭依据。 |
 | relay HTTP-terminal 当前源码链路 | `docs/reconstruction/relay-http-terminal-current-source-map.md` | `test_relay_provider`、`test_relay_draft`、`fetch_relay_models_draft` 的前端触发链、mock terminal、relay test retry 错误语义和未声明真实 HTTP 边界；由 `scripts/validate-frontend-relay-http-terminal-ccf.mjs` 直接验证。 |

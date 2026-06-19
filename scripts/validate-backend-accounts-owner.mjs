@@ -5,6 +5,14 @@ const repoRoot = process.cwd();
 const backendRoot = join(repoRoot, "src-tauri", "src");
 const repositoryAccountsFile = join(backendRoot, "repository", "accounts.rs");
 const usecaseAccountsFile = join(backendRoot, "application", "usecase", "accounts.rs");
+const accountsMonitorMapFile = join(
+  repoRoot,
+  "docs",
+  "reconstruction",
+  "accounts-monitor-current-source-map.md",
+);
+const sourceMapFile = join(repoRoot, "docs", "reconstruction", "source-map.md");
+const reconstructionReadmeFile = join(repoRoot, "docs", "reconstruction", "README.md");
 const ownerTransactions = [
   {
     functionName: "switch_account",
@@ -47,6 +55,14 @@ function readRequiredUtf8(path, description) {
   }
 
   return readFileSync(path, "utf8");
+}
+
+function requireIncludes(path, content, snippets, reason) {
+  for (const snippet of snippets) {
+    if (!content.includes(snippet)) {
+      failures.push(`${toRelative(path)} 缺少 ${snippet}，${reason}`);
+    }
+  }
 }
 
 function lineNumberAt(content, index) {
@@ -304,8 +320,109 @@ function validateUsecaseOwnsTransactions(usecaseContent) {
   }
 }
 
+function validateMonitorPreflight(usecaseContent) {
+  const stripped = stripRustComments(usecaseContent);
+  const monitorFunction = findPublicFunction(stripped, "begin_add_account_attach_monitor");
+  if (!monitorFunction) {
+    failures.push(
+      `${toRelative(usecaseAccountsFile)} 缺少 pub fn begin_add_account_attach_monitor(...)，账号监视预检必须由 application/usecase owning`,
+    );
+    return;
+  }
+
+  const functionBody = findFunctionBody(stripped, monitorFunction.index);
+  if (!functionBody) {
+    failures.push(
+      `${toRelative(usecaseAccountsFile)}:${monitorFunction.line} 无法解析 begin_add_account_attach_monitor 函数体`,
+    );
+    return;
+  }
+
+  if (!/\baccounts_repository\s*::\s*load_registry\s*\(\s*repo\s*\)\s*\?/.test(functionBody)) {
+    failures.push(
+      `${toRelative(usecaseAccountsFile)}:${monitorFunction.line} begin_add_account_attach_monitor 必须通过 accounts_repository::load_registry(repo)? 做仓储预检`,
+    );
+  }
+
+  if (!/\brestored\s*\(\s*"begin_add_account_attach_monitor"\s*\)/.test(functionBody)) {
+    failures.push(
+      `${toRelative(usecaseAccountsFile)}:${monitorFunction.line} begin_add_account_attach_monitor 必须返回 RepositoryRead restored status`,
+    );
+  }
+
+  if (!/MONITOR_PREFLIGHT_NOTE/.test(functionBody)) {
+    failures.push(
+      `${toRelative(usecaseAccountsFile)}:${monitorFunction.line} begin_add_account_attach_monitor 必须保留中文 note 说明只恢复仓储预检边界`,
+    );
+  }
+
+  const forbiddenPatterns = [
+    { label: "pending status", pattern: /\bpending_status\s*\(/ },
+    { label: "线程创建", pattern: /\bstd\s*::\s*thread\b|\bthread\s*::\s*spawn\b/ },
+    { label: "tokio spawn", pattern: /\btokio\s*::\s*spawn\b/ },
+    { label: "Tauri emit", pattern: /\.emit\s*\(|runtime-state-updated/ },
+    { label: "平台副作用", pattern: /\bplatform\b|\bPlatform\b/ },
+    { label: "仓储写入", pattern: /\bsave_registry\s*\(|\bwrite_string\s*\(|\bcopy_snapshot_to_auth\s*\(|\bremove_/ },
+  ];
+  for (const { label, pattern } of forbiddenPatterns) {
+    if (pattern.test(functionBody)) {
+      failures.push(
+        `${toRelative(usecaseAccountsFile)}:${monitorFunction.line} begin_add_account_attach_monitor 禁止 ${label}，当前只允许仓储读取预检`,
+      );
+    }
+  }
+}
+
+function validateAccountsMonitorMap(accountsMonitorMapContent, sourceMapContent, reconstructionReadmeContent) {
+  requireIncludes(
+    accountsMonitorMapFile,
+    accountsMonitorMapContent,
+    [
+      "# accounts monitor current-source 证据映射",
+      "`begin_add_account_attach_monitor`",
+      "accounts_repository::load_registry",
+      "RepositoryRead",
+      "不创建后台 monitor",
+      "不创建线程",
+      "不发送 runtime-state-updated",
+      "不声明 macOS monitor lifecycle 已恢复",
+      "scripts/validate-backend-accounts-owner.mjs",
+    ],
+    "accounts monitor map 必须固定仓储预检边界和未恢复内容",
+  );
+  requireIncludes(
+    sourceMapFile,
+    sourceMapContent,
+    [
+      "docs/reconstruction/accounts-monitor-current-source-map.md",
+      "accounts monitor 仓储预检",
+      "scripts/validate-backend-accounts-owner.mjs",
+    ],
+    "source-map 必须索引 accounts monitor current-source map",
+  );
+  requireIncludes(
+    reconstructionReadmeFile,
+    reconstructionReadmeContent,
+    [
+      "accounts monitor 仓储预检",
+      "docs/reconstruction/accounts-monitor-current-source-map.md",
+      "scripts/validate-backend-accounts-owner.mjs",
+    ],
+    "docs/reconstruction README 必须索引 accounts monitor current-source map",
+  );
+}
+
 const repositoryContent = readRequiredUtf8(repositoryAccountsFile, "repository accounts owner 文件");
 const usecaseContent = readRequiredUtf8(usecaseAccountsFile, "application/usecase accounts owner 文件");
+const accountsMonitorMapContent = readRequiredUtf8(
+  accountsMonitorMapFile,
+  "accounts monitor current-source map",
+);
+const sourceMapContent = readRequiredUtf8(sourceMapFile, "reconstruction source-map");
+const reconstructionReadmeContent = readRequiredUtf8(
+  reconstructionReadmeFile,
+  "reconstruction README",
+);
 
 if (repositoryContent.length > 0) {
   validateRepositoryDoesNotOwnTransactions(repositoryContent);
@@ -313,6 +430,19 @@ if (repositoryContent.length > 0) {
 
 if (usecaseContent.length > 0) {
   validateUsecaseOwnsTransactions(usecaseContent);
+  validateMonitorPreflight(usecaseContent);
+}
+
+if (
+  accountsMonitorMapContent.length > 0 &&
+  sourceMapContent.length > 0 &&
+  reconstructionReadmeContent.length > 0
+) {
+  validateAccountsMonitorMap(
+    accountsMonitorMapContent,
+    sourceMapContent,
+    reconstructionReadmeContent,
+  );
 }
 
 if (failures.length > 0) {
@@ -324,6 +454,7 @@ if (failures.length > 0) {
 }
 
 console.log("PASS 后端账号事务 owner 校验通过：repository 未暴露账号用户动作事务入口。");
+console.log("PASS 账号监视预检边界：begin_add_account_attach_monitor 只做 repository read 预检，不创建线程、事件或平台副作用。");
 for (const transaction of ownerTransactions) {
   const evidence = helperEvidenceByFunction.get(transaction.functionName) ?? [];
   console.log(`PASS ${transaction.label} usecase helper 证据：${evidence.join(", ")}`);
