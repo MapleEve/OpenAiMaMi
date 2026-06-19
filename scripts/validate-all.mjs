@@ -9,6 +9,7 @@ const validators = [
   "validate-public-boundary.mjs",
   "validate-frontend.mjs",
   "validate-backend.mjs",
+  "validate-build-surface.mjs",
 ];
 
 for (const script of validators) {

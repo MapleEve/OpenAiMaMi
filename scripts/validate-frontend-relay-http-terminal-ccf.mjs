@@ -106,6 +106,8 @@ const sourceSnippets = new Map([
     "src/mocks/fixtures/commands.ts",
     [
       "fetch_relay_models_draft: relayModelsHandler",
+      "const baseUrl = readRecordString(input, [\"baseUrl\", \"url\", \"endpoint\"], \"\");",
+      "return { ...envelope, data: baseUrl ? relayModelsFromArgs(context) : [] };",
       "test_relay_draft: relayTestHandler",
       "test_relay_provider: relayTestHandler",
     ],

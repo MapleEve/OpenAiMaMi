@@ -40,7 +40,7 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开匿名
 | 前端 | 主流模块化 owner 边界已经落位；入口、全局 Provider、路由、运行时、服务门面、缓存、深模块、i18n、E2E mock、plugins、tray、UI theme、system/hotspot、mcp/skills 等 current-source 链路已有验证入口。 | 不声明已经完成双平台 100% 全 leaf；没有 raw/internal、leaf 队列、closeout 和 validator 支撑的内容不能写成已完成。 | `npm run validate:frontend`、相关 `validate:frontend-*`、`npm run build` |
 | 后端 | 六边形分层已经落位；command、usecase、core、repository、platform、adapter、contract 有明确 owner；accounts、sessions、analytics、runtime-extensions、MCP、Custom Instructions 等公开或证据支撑切片有 owner 验证。 | 不做闭源后端业务全量还原；不声明动态插件执行、真实平台副作用、外部进程、市场安装、完整 MCP server 启动、voice 集成已经完成。 | `npm run validate:backend`、相关 `validate:backend-*`；Rust 编译环境用 `npm run validate:backend-cargo` 单独检查 |
 | voice | 只保留空骨架、合同清单和中文边界说明。 | 不给入口，不调用后端，不参与启动链路，不阻塞其它模块。 | 确认路由、启动链路、IPC mock 和后端命令没有接入 voice。 |
-| 验收 | 顶层聚合、公开边界、前端聚合、后端聚合、i18n、E2E mock、cache 竞态和 current-source/evidence map registry 都有验证入口。 | Rust `cargo check/test` 依赖本机 Rust/MSVC 或目标平台工具链；缺少 `link.exe` 属于环境限制，不等同源码失败。 | `npm run validate:all`；需要 Rust 编译时再运行 `npm run validate:backend-cargo`。 |
+| 验收 | 顶层聚合、公开边界、前端聚合、后端聚合、构建面、i18n、E2E mock、cache 竞态和 current-source/evidence map registry 都有验证入口；registry 由公开边界验证，部分 map 仍明确标注为索引边界。 | Rust `cargo check/test` 依赖本机 Rust/MSVC 或目标平台工具链；缺少 `link.exe` 属于环境限制，不等同源码失败。 | `npm run validate:all`；需要只看构建面时运行 `npm run validate:build-surface`，需要 Rust 完整编译时再运行 `npm run validate:backend-cargo`。 |
 | 运行闭环 | README 只记录长期有效的源码状态、范围边界和验收入口。 | 不按提交、日期、局部补丁或临时进度追加内容。 | 每次提交同步 README，但只更新归纳状态和相关稳定说明。 |
 
 文档口径固定为“已做 / 没做或边界 / 怎么验收”。每次提交都必须同步 README，但只能更新归纳状态，不再追加流水式进度记录。
@@ -48,9 +48,9 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开匿名
 ## 验收入口
 
 - 顶层聚合验证：`npm run validate:all`
+- 构建面验证：`npm run validate:build-surface`
 - 公开边界与 README 同步：`npm run validate:public-boundary`
 - 前端聚合验证：`npm run validate:frontend`
-- 前端生产构建：`npm run build`
 - 后端聚合验证：`npm run validate:backend`
 - Rust 编译/测试环境验证：`npm run validate:backend-cargo`
 

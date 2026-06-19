@@ -1906,7 +1906,9 @@ function relayModelsFromArgs(context: Parameters<IpcCommandHandler>[0]) {
 
 const relayModelsHandler: IpcCommandHandler = (context) => {
   const envelope = createRaceAwareIpcEnvelope(context);
-  return { ...envelope, data: relayModelsFromArgs(context) };
+  const input = readArgRecord(context.args, "input");
+  const baseUrl = readRecordString(input, ["baseUrl", "url", "endpoint"], "");
+  return { ...envelope, data: baseUrl ? relayModelsFromArgs(context) : [] };
 };
 
 const relayActiveHandler: IpcCommandHandler = (context) => {
