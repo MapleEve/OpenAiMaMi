@@ -42,7 +42,7 @@ LFS/IDB 独立称为 `OpenAiMami IDB`，只能作为可选辅助核对材料，�
 | 领域 | 已做 | 没做或边界 | 怎么验收 |
 | --- | --- | --- | --- |
 | 公开材料 | Apache License、中文说明、匿名化 `raw/internal` 主链路、重建文档、证据入口和二进制清单已经进入仓库。 | 不公开设备标识、个人目录、会话、令牌、账号私密值、未审查采集材料、未匿名化内容、IDB、压缩包或安装包。 | `npm run validate:public-boundary` |
-| 前端 | 目标是全量还原；当前入口、Provider、路由、运行时、服务门面、缓存、i18n、E2E mock 和模块 owner 已按公开证据归位，细节收口到 `docs/reconstruction/source-map.md`。 | 不声明双平台、全叶子节点或全部文案已经百分百完成；没有公开证据、收口记录和验证器支撑的内容不能写成已完成。 | `npm run validate:frontend`、相关 `validate:frontend-*`、`npm run validate:build-surface` |
+| 前端 | 目标是全量还原；当前入口、Provider、路由、运行时、服务门面、缓存、i18n、E2E mock 合同和模块 owner 已按公开证据归位，custom-instructions 用户动作 mock 已纳入验收，细节收口到 `docs/reconstruction/source-map.md`。 | 不声明双平台、全叶子节点或全部文案已经百分百完成；没有公开证据、收口记录和验证器支撑的内容不能写成已完成。 | `npm run validate:frontend`、相关 `validate:frontend-*`、`npm run validate:build-surface` |
 | 后端 | 目标是六边形架构骨架；当前 commands、application/usecase、core、repository、platform、adapters、contracts 已归位，开源已有能力和证据支撑能力逐步纳入骨架。 | 不做闭源业务全量还原；不声明动态插件执行、真实平台副作用、外部进程、市场安装、真实网络重试、完整服务启动或 `voice` 集成已经完成。 | `npm run validate:backend`；Rust 完整编译/测试环境用 `npm run validate:backend-cargo` 单独检查 |
 | voice | 只保留空骨架、合同清单和中文边界说明。 | 不给入口，不接入路由、启动链路、IPC mock 或后端命令，不阻塞其它模块。 | 确认路由、启动链路、IPC mock 和后端命令没有接入 `voice`。 |
 | 验收 | 公开边界、前端聚合、后端聚合、构建面、i18n、E2E mock、cache 竞态和归属边界验证器都有脚本入口。 | Rust 完整编译和测试依赖本地 Rust/MSVC 或目标平台工具链；缺少 `link.exe` 属于环境限制，不等同于源码失败。 | `npm run validate:all`；构建面用 `npm run validate:build-surface`；Rust 环境用 `npm run validate:backend-cargo`。 |

@@ -74,6 +74,13 @@ const skillsCommands = [
   "restore_skill_backup",
   "delete_skill_backup",
 ];
+const customInstructionsCommands = [
+  "load_custom_instruction_state",
+  "preview_custom_instruction_apply",
+  "apply_custom_instruction",
+  "clear_custom_instruction_block",
+  "rollback_custom_instruction",
+];
 
 function repoPath(file) {
   return path.relative(repoRoot, file).replaceAll(path.sep, "/");
@@ -290,6 +297,211 @@ function validateSkillsCommandMirror() {
   ]) {
     assertIncludes("src/mocks/fixtures/commands.ts", commandFixtureText, [field]);
   }
+}
+
+function validateCustomInstructionsMockPayloadHandlers() {
+  const commandFixturePath = path.join(
+    repoRoot,
+    "src",
+    "mocks",
+    "fixtures",
+    "commands.ts",
+  );
+  const ipcCommandsPath = path.join(repoRoot, "src", "contracts", "ipc", "commands.ts");
+  const servicePath = path.join(
+    repoRoot,
+    "src",
+    "services",
+    "custom-instructions",
+    "index.ts",
+  );
+  const mutationHookPath = path.join(
+    repoRoot,
+    "src",
+    "features",
+    "custom-instructions",
+    "hooks",
+    "mutation.ts",
+  );
+  const commandFixtureText = readRequired(commandFixturePath);
+  const ipcCommandsText = readRequired(ipcCommandsPath);
+  const serviceText = readRequired(servicePath);
+  const mutationHookText = readRequired(mutationHookPath);
+  const requiredHandlers = [
+    ["load_custom_instruction_state", "loadCustomInstructionStateHandler"],
+    ["preview_custom_instruction_apply", "previewCustomInstructionApplyHandler"],
+    ["apply_custom_instruction", "applyCustomInstructionHandler"],
+    ["clear_custom_instruction_block", "clearCustomInstructionBlockHandler"],
+    ["rollback_custom_instruction", "rollbackCustomInstructionHandler"],
+  ];
+
+  assertIncludes("src/mocks/fixtures/commands.ts", commandFixtureText, [
+    "CustomInstructionPreviewPayload",
+    "CustomInstructionStatePayload",
+    "const customInstructionsMockState",
+    "const customInstructionSnapshots = new Map<string, string>();",
+    "function customInstructionsStatePayload()",
+    "function recordCustomInstructionHistory(",
+    "function writeCustomInstructionContent(",
+    "const customInstructionsCommandHandlers",
+    "customInstructionsCommandHandlers[definition.command] ??",
+    "managedBlockPresent: content.trim().length > 0",
+    "recordCustomInstructionHistory(\"apply\", content, context.args)",
+    "recordCustomInstructionHistory(",
+    "\"clear\"",
+    "customInstructionSnapshots.get(historyId)",
+    "\"rollback\"",
+  ]);
+
+  assertIncludes("src/services/custom-instructions/index.ts", serviceText, [
+    'invokeIpc<CoreEnvelope<CustomInstructionStatePayload>>(',
+    '"load_custom_instruction_state"',
+    '"preview_custom_instruction_apply"',
+    '"apply_custom_instruction"',
+    '"clear_custom_instruction_block"',
+    '"rollback_custom_instruction"',
+  ]);
+  assertIncludes("src/features/custom-instructions/hooks/mutation.ts", mutationHookText, [
+    "prepareCustomInstructionsMutation(queryClient)",
+    "writeCustomInstructionsStateMutationPayload(",
+    "customInstructionsService.previewApply(content)",
+    "customInstructionsService.apply(params)",
+    "customInstructionsService.clearBlock()",
+    "customInstructionsService.rollback(historyId)",
+  ]);
+
+  for (const command of customInstructionsCommands) {
+    assertIncludes("src/contracts/ipc/commands.ts", ipcCommandsText, [
+      `"command": "${command}"`,
+    ]);
+  }
+
+  for (const [command, handler] of requiredHandlers) {
+    assertCommandHandler(commandFixtureText, command, handler);
+    assertNotGenericHandler(commandFixtureText, command);
+  }
+}
+
+function validateCustomInstructionsMockPayloadFlow() {
+  const commandFixturePath = path.join(
+    repoRoot,
+    "src",
+    "mocks",
+    "fixtures",
+    "commands.ts",
+  );
+  const commandFixtureText = readRequired(commandFixturePath);
+  const previewBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts previewCustomInstructionApplyHandler",
+    commandFixtureText,
+    "const previewCustomInstructionApplyHandler",
+  );
+  const applyBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts applyCustomInstructionHandler",
+    commandFixtureText,
+    "const applyCustomInstructionHandler",
+  );
+  const clearBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts clearCustomInstructionBlockHandler",
+    commandFixtureText,
+    "const clearCustomInstructionBlockHandler",
+  );
+  const rollbackBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts rollbackCustomInstructionHandler",
+    commandFixtureText,
+    "const rollbackCustomInstructionHandler",
+  );
+  const statePayloadBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts customInstructionsStatePayload",
+    commandFixtureText,
+    "function customInstructionsStatePayload",
+  );
+  const historyBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts recordCustomInstructionHistory",
+    commandFixtureText,
+    "function recordCustomInstructionHistory",
+  );
+  const writerBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts writeCustomInstructionContent",
+    commandFixtureText,
+    "function writeCustomInstructionContent",
+  );
+
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts customInstructionsStatePayload",
+    statePayloadBody,
+    [
+      "current: { ...customInstructionsMockState.current }",
+      "history: customInstructionsMockState.history.map((entry) => ({ ...entry }))",
+    ],
+  );
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts recordCustomInstructionHistory",
+    historyBody,
+    [
+      "customInstructionSnapshots.set(entry.id, content)",
+      "entry",
+      "...customInstructionsMockState.history",
+    ],
+  );
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts writeCustomInstructionContent",
+    writerBody,
+    [
+      "fileExists: content.trim().length > 0",
+      "managedBlockPresent: content.trim().length > 0",
+      "managedContent: content",
+      "lastAppliedAt: Date.now()",
+      "lastTemplateCode: readArgOptionalString(args, \"templateCode\")",
+      "lastTemplateTitle: readArgOptionalString(args, \"templateTitle\")",
+    ],
+  );
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts previewCustomInstructionApplyHandler",
+    previewBody,
+    [
+      "currentManagedContent: customInstructionsMockState.current.managedContent",
+      "nextManagedContent: content",
+      "resultingContent: content",
+      "return withMockData(context, data);",
+    ],
+  );
+  assertNotIncludes(
+    "src/mocks/fixtures/commands.ts previewCustomInstructionApplyHandler",
+    previewBody,
+    ["writeCustomInstructionContent(", "recordCustomInstructionHistory("],
+  );
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts applyCustomInstructionHandler",
+    applyBody,
+    [
+      "const content = readCustomInstructionContent(context.args)",
+      "recordCustomInstructionHistory(\"apply\", content, context.args)",
+      "writeCustomInstructionContent(content, context.args)",
+      "customInstructionsStatePayload()",
+    ],
+  );
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts clearCustomInstructionBlockHandler",
+    clearBody,
+    [
+      "\"clear\"",
+      "customInstructionsMockState.current.managedContent",
+      "writeCustomInstructionContent(\"\", context.args)",
+      "customInstructionsStatePayload()",
+    ],
+  );
+  assertIncludes(
+    "src/mocks/fixtures/commands.ts rollbackCustomInstructionHandler",
+    rollbackBody,
+    [
+      "const historyId = readArgString(context.args, \"historyId\", \"\")",
+      "customInstructionSnapshots.get(historyId)",
+      "recordCustomInstructionHistory(\"rollback\", content, context.args)",
+      "writeCustomInstructionContent(content, context.args)",
+      "customInstructionsStatePayload()",
+    ],
+  );
 }
 
 function validateScenarioFiles() {
@@ -1401,6 +1613,8 @@ function validateSessionsMockPayloadHandlers() {
 
 validateScenarioRegistry();
 validateSkillsCommandMirror();
+validateCustomInstructionsMockPayloadHandlers();
+validateCustomInstructionsMockPayloadFlow();
 validateScenarioFiles();
 validateRaceContractMockHelpers();
 validateAccountsMockPayloadHandlers();

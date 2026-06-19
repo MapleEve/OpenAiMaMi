@@ -18,6 +18,10 @@ import type {
   ChangeAnalyticsPayload,
   CleanPayload,
   CoreSnapshotPayload,
+  CustomInstructionCurrentState,
+  CustomInstructionHistoryEntry,
+  CustomInstructionPreviewPayload,
+  CustomInstructionStatePayload,
   DaemonRunPayload,
   DiagnosePayload,
   InstalledSkillSummary,
@@ -100,6 +104,8 @@ export type IpcCommandMockData =
   | ChangeAnalyticsPayload
   | CleanPayload
   | CoreSnapshotPayload
+  | CustomInstructionPreviewPayload
+  | CustomInstructionStatePayload
   | DaemonRunPayload
   | DiagnosePayload
   | LogoutPayload
@@ -1554,6 +1560,120 @@ function syncBootstrapInstalledSkills() {
   touchBootstrapCache();
 }
 
+const customInstructionsMockState: {
+  current: CustomInstructionCurrentState;
+  history: CustomInstructionHistoryEntry[];
+} = {
+  current: {
+    globalPath: "",
+    fileExists: false,
+    managedBlockPresent: false,
+    protectionState: "ready",
+    issueMessage: null,
+    managedContent: "",
+    lastAppliedAt: null,
+    lastTemplateCode: null,
+    lastTemplateTitle: null,
+  },
+  history: [],
+};
+
+const customInstructionSnapshots = new Map<string, string>();
+
+function customInstructionsStatePayload(): CustomInstructionStatePayload {
+  return {
+    current: { ...customInstructionsMockState.current },
+    history: customInstructionsMockState.history.map((entry) => ({ ...entry })),
+  };
+}
+
+function readCustomInstructionContent(args: IpcArgs | undefined) {
+  const value = args?.content;
+  return typeof value === "string" ? value : "";
+}
+
+function recordCustomInstructionHistory(
+  action: CustomInstructionHistoryEntry["action"],
+  content: string,
+  args: IpcArgs | undefined,
+) {
+  const createdAt = Date.now();
+  const entry: CustomInstructionHistoryEntry = {
+    id: `mock-custom-instruction-${customInstructionsMockState.history.length + 1}`,
+    createdAt,
+    action,
+    source: readArgString(args, "source", "mock"),
+    templateCode: readArgOptionalString(args, "templateCode"),
+    templateTitle: readArgOptionalString(args, "templateTitle"),
+  };
+  customInstructionSnapshots.set(entry.id, content);
+  customInstructionsMockState.history = [
+    entry,
+    ...customInstructionsMockState.history,
+  ];
+  return entry;
+}
+
+function writeCustomInstructionContent(
+  content: string,
+  args: IpcArgs | undefined,
+) {
+  customInstructionsMockState.current = {
+    ...customInstructionsMockState.current,
+    fileExists: content.trim().length > 0,
+    managedBlockPresent: content.trim().length > 0,
+    protectionState: "ready",
+    issueMessage: null,
+    managedContent: content,
+    lastAppliedAt: Date.now(),
+    lastTemplateCode: readArgOptionalString(args, "templateCode"),
+    lastTemplateTitle: readArgOptionalString(args, "templateTitle"),
+  };
+}
+
+const loadCustomInstructionStateHandler: IpcCommandHandler = (context) =>
+  withMockData(context, customInstructionsStatePayload());
+
+const previewCustomInstructionApplyHandler: IpcCommandHandler = (context) => {
+  const content = readCustomInstructionContent(context.args);
+  const data: CustomInstructionPreviewPayload = {
+    globalPath: customInstructionsMockState.current.globalPath,
+    protectionState: customInstructionsMockState.current.protectionState,
+    issueMessage: customInstructionsMockState.current.issueMessage,
+    currentManagedContent: customInstructionsMockState.current.managedContent,
+    nextManagedContent: content,
+    resultingContent: content,
+  };
+  return withMockData(context, data);
+};
+
+const applyCustomInstructionHandler: IpcCommandHandler = (context) => {
+  const content = readCustomInstructionContent(context.args);
+  recordCustomInstructionHistory("apply", content, context.args);
+  writeCustomInstructionContent(content, context.args);
+  return withMockData(context, customInstructionsStatePayload());
+};
+
+const clearCustomInstructionBlockHandler: IpcCommandHandler = (context) => {
+  recordCustomInstructionHistory(
+    "clear",
+    customInstructionsMockState.current.managedContent,
+    context.args,
+  );
+  writeCustomInstructionContent("", context.args);
+  return withMockData(context, customInstructionsStatePayload());
+};
+
+const rollbackCustomInstructionHandler: IpcCommandHandler = (context) => {
+  const historyId = readArgString(context.args, "historyId", "");
+  const content =
+    customInstructionSnapshots.get(historyId) ??
+    customInstructionsMockState.current.managedContent;
+  recordCustomInstructionHistory("rollback", content, context.args);
+  writeCustomInstructionContent(content, context.args);
+  return withMockData(context, customInstructionsStatePayload());
+};
+
 function touchBootstrapCache() {
   bootstrapCacheMockState.writtenAt = Date.now();
 }
@@ -2283,6 +2403,16 @@ const skillsCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> 
   restore_skill_backup: restoreSkillBackupHandler,
 };
 
+const customInstructionsCommandHandlers: Partial<
+  Record<IpcCommandName, IpcCommandHandler>
+> = {
+  apply_custom_instruction: applyCustomInstructionHandler,
+  clear_custom_instruction_block: clearCustomInstructionBlockHandler,
+  load_custom_instruction_state: loadCustomInstructionStateHandler,
+  preview_custom_instruction_apply: previewCustomInstructionApplyHandler,
+  rollback_custom_instruction: rollbackCustomInstructionHandler,
+};
+
 const pluginsCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {
   get_plugin_config: getPluginConfigHandler,
   list_plugins: listPluginsHandler,
@@ -2335,6 +2465,7 @@ export const ipcCommandFixtures = IPC_COMMAND_DEFINITIONS.reduce(
         trayCommandHandlers[definition.command] ??
         pluginsCommandHandlers[definition.command] ??
         skillsCommandHandlers[definition.command] ??
+        customInstructionsCommandHandlers[definition.command] ??
         daemonAutoSwitchCommandHandlers[definition.command] ??
         maintenanceCommandHandlers[definition.command] ??
         settingsCommandHandlers[definition.command] ??

@@ -54,12 +54,19 @@
 - 当前公开后端 DTO 与 domain model 分离：contracts 只表达 IPC payload，core model 表达领域状态和 history snapshot。
 - 当前 validator 入口是 `npm run validate:backend-custom-instructions-owner`，聚合入口是 `npm run validate:backend`。
 
+## 前端 E2E mock 合同
+
+- `src/mocks/fixtures/commands.ts` 为五个 custom-instructions IPC 提供专用 handler，不再回退到默认 mock。
+- mock state 覆盖 `load_custom_instruction_state`、`preview_custom_instruction_apply`、`apply_custom_instruction`、`clear_custom_instruction_block` 和 `rollback_custom_instruction` 的 state/preview payload 形状。
+- `preview_custom_instruction_apply` 只返回预览 payload，不写入 mock state；`apply_custom_instruction`、`clear_custom_instruction_block` 和 `rollback_custom_instruction` 通过 mock state 镜像用户动作结果。
+- `scripts/validate-e2e-mocks.mjs` 验证五个命令的专用 handler、service wrapper、mutation hook 和 stateful mock 合同；聚合入口是 `npm run validate:frontend` 与 `npm run validate:all`。
+
 ## 未声明边界
 
 - 不声明闭源后端已经全量还原；本文只约束当前公开后端已有能力和 owner 边界。
 - 不声明 raw/internal gate 已被本文替代；raw/internal/full-chain 证据仍以 evidence 目录中的报告和 manifest 为准。
 - 不声明平台级副作用、后台 watcher、daemon reload、外部进程、网络请求、通知或托盘行为属于 Custom Instructions 后端命令。
-- 不声明前端页面、TanStack cache、E2E mock 或文案链路由本文闭合；这些属于前端 owner 和其他 validator。
+- 不声明前端页面、TanStack cache 或文案链路由本文闭合；这些属于前端 owner 和其他 validator。本文只登记 custom-instructions E2E mock 合同已经由 `scripts/validate-e2e-mocks.mjs` 验证。
 - 不处理 voice 边界。
 
 ## validator 接入
@@ -72,3 +79,4 @@
 - Windows/macOS custom-instructions internal gate-report 存在。
 - Windows custom-instructions 五个 raw manifest 存在。
 - 当前源码保持 command 薄 adapter、usecase owning 用户动作事务、core owning marker/parser/model、repository 只 owning 全局文件和 history JSON 读写。
+- `scripts/validate-e2e-mocks.mjs` 必须验证 custom-instructions 五个 IPC 均绑定专用 mock handler，且 service wrapper、mutation hook 和 stateful mock 合同未回退到默认 handler。
