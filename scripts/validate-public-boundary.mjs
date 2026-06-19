@@ -525,6 +525,8 @@ function validateReadmeStatusStructure(path) {
     "| voice |",
     "| 验收 |",
     "README 只保留长期有效的归纳状态",
+    "模块级 validator 不再把根 README 当作模块进度证明",
+    "由公开边界验证统一约束",
     "每次提交仍要同步",
   ];
   const missing = requiredStatusParts.filter((part) => !content.includes(part));

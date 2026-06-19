@@ -20,7 +20,6 @@ const files = {
   currentSourceMap: join(repoRoot, currentSourceMapPath),
   sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
   reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
-  rootReadme: join(repoRoot, "README.md"),
   packageJson: join(repoRoot, "package.json"),
   frontendAggregate: join(repoRoot, "scripts", "validate-frontend.mjs"),
 };
@@ -109,7 +108,6 @@ const closeouts = parseJson(files.closeouts);
 const currentSourceMap = readRequired(files.currentSourceMap);
 const sourceMap = readRequired(files.sourceMap);
 const reconstructionReadme = readRequired(files.reconstructionReadme);
-const rootReadme = readRequired(files.rootReadme);
 const packageJson = parseJson(files.packageJson);
 const frontendAggregate = readRequired(files.frontendAggregate);
 
@@ -176,11 +174,6 @@ requireIncludes("reconstruction README custom-instructions 前端索引", recons
   "custom-instructions 前端当前源码链路",
   "scripts/validate-frontend-custom-instructions-current-source.mjs",
 ]);
-requireIncludes("README 前端归纳", rootReadme, [
-  "README 只保留长期有效的归纳状态",
-  "具体模块进度",
-  "验证脚本",
-]);
 
 if (
   packageJson?.scripts?.["validate:frontend-custom-instructions-current-source"] !==
@@ -196,7 +189,6 @@ requireNoIncludes("custom-instructions current-source 公开源码链", [
   currentSourceMap,
   sourceMap,
   reconstructionReadme,
-  rootReadme,
 ].join("\n"), [
   "full_leaf_100 已完成",
   "gate_accepted 已完成",

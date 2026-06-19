@@ -8,7 +8,6 @@ const files = {
   map: join(repoRoot, "docs", "reconstruction", "skills-current-source-evidence-map.md"),
   sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
   reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
-  rootReadme: join(repoRoot, "README.md"),
   macosGate: join(repoRoot, "evidence", "full-chain", "internal", "audits", "audits", "macos-1.0.9-skills", "gate-report.json"),
   windowsGate: join(repoRoot, "evidence", "full-chain", "internal", "audits", "audits", "windows-1.0.9-skills", "gate-report.json"),
   command: join(repoRoot, "src-tauri", "src", "commands", "skills.rs"),
@@ -72,7 +71,6 @@ const repositoryMod = stripRustComments(readRequired(files.repositoryMod, "repos
 const map = readRequired(files.map, "skills evidence map");
 const sourceMap = readRequired(files.sourceMap, "reconstruction source-map");
 const reconstructionReadme = readRequired(files.reconstructionReadme, "reconstruction README");
-const rootReadme = readRequired(files.rootReadme, "root README");
 const macosGate = readJson(files.macosGate, "macOS skills gate-report");
 const windowsGate = readJson(files.windowsGate, "Windows skills gate-report");
 
@@ -170,14 +168,6 @@ for (const [label, content, path] of [
   }
 }
 
-for (const required of [
-  "公开能力归属统一由后端 owner 验证脚本约束",
-  "README 只保留长期有效的归纳状态",
-]) {
-  if (!rootReadme.includes(required)) {
-    failures.push(`${toRelative(files.rootReadme)} 缺少后端归纳片段：${required}`);
-  }
-}
 
 for (const [name, content] of [
   ["command", command],

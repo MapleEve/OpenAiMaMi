@@ -23,7 +23,6 @@ const files = {
   currentSourceMap: currentSourceMapPath,
   sourceMap: "docs/reconstruction/source-map.md",
   reconstructionReadme: "docs/reconstruction/README.md",
-  rootReadme: "README.md",
   packageJson: "package.json",
   frontendAggregate: "scripts/validate-frontend.mjs",
   closeoutValidator: "scripts/validate-frontend-current-source-closeouts.mjs",
@@ -135,7 +134,6 @@ const closeouts = parseJson(files.closeouts);
 const map = readRequired(files.currentSourceMap);
 const sourceMap = readRequired(files.sourceMap);
 const reconstructionReadme = readRequired(files.reconstructionReadme);
-const rootReadme = readRequired(files.rootReadme);
 const packageJson = parseJson(files.packageJson);
 const frontendAggregate = readRequired(files.frontendAggregate);
 const closeoutValidator = readRequired(files.closeoutValidator);
@@ -217,11 +215,6 @@ requireIncludes("reconstruction README system-window-maintenance 索引", recons
   currentSourceMapPath,
   "system-window-maintenance 前端当前源码链路",
   `scripts/${validatorScript}`,
-]);
-requireIncludes("README 前端归纳", rootReadme, [
-  "README 只保留长期有效的归纳状态",
-  "具体模块进度",
-  "验证脚本",
 ]);
 
 if (packageJson?.scripts?.[npmScript] !== `node scripts/${validatorScript}`) {
@@ -344,7 +337,6 @@ requireNoPositiveClaims(
     map,
     sourceMap,
     reconstructionReadme,
-    rootReadme,
     JSON.stringify(closeout ?? {}),
   ].join("\n"),
   [

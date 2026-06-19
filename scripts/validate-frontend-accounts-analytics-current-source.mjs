@@ -29,7 +29,6 @@ const files = {
   currentSourceMap: currentSourceMapPath,
   sourceMap: "docs/reconstruction/source-map.md",
   reconstructionReadme: "docs/reconstruction/README.md",
-  rootReadme: "README.md",
   packageJson: "package.json",
   frontendAggregate: "scripts/validate-frontend.mjs",
   closeoutValidator: "scripts/validate-frontend-current-source-closeouts.mjs",
@@ -151,7 +150,6 @@ const closeouts = parseJson(files.closeouts);
 const currentSourceMap = readRequired(files.currentSourceMap);
 const sourceMap = readRequired(files.sourceMap);
 const reconstructionReadme = readRequired(files.reconstructionReadme);
-const rootReadme = readRequired(files.rootReadme);
 const packageJson = parseJson(files.packageJson);
 const frontendAggregate = readRequired(files.frontendAggregate);
 const closeoutValidator = readRequired(files.closeoutValidator);
@@ -250,11 +248,6 @@ requireIncludes("reconstruction README accounts/analytics 索引", reconstructio
   `scripts/${validatorScript}`,
 ]);
 
-requireIncludes("README 前端归纳", rootReadme, [
-  "README 只保留长期有效的归纳状态",
-  "具体模块进度",
-  "验证脚本",
-]);
 
 if (packageJson?.scripts?.[npmScript] !== `node scripts/${validatorScript}`) {
   failures.push(`package.json 未登记 ${npmScript}`);
@@ -421,7 +414,7 @@ requireIncludes(files.analyticsContracts, readRequired(files.analyticsContracts)
 
 requireNoPositiveClaims(
   "accounts/analytics current-source 公开链",
-  [currentSourceMap, sourceMap, reconstructionReadme, rootReadme, JSON.stringify(closeout ?? {})].join("\n"),
+  [currentSourceMap, sourceMap, reconstructionReadme, JSON.stringify(closeout ?? {})].join("\n"),
   [
     "全文案验收完成",
     "MAC/WIN 100% leaf 已完成",

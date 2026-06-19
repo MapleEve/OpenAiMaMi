@@ -24,7 +24,6 @@ const files = {
   map: currentSourceMap,
   sourceMap: "docs/reconstruction/source-map.md",
   reconstructionReadme: "docs/reconstruction/README.md",
-  rootReadme: "README.md",
   gateReport: gateReportPath,
   overviewRoute: "src/routes/desktop/main/overview/page.tsx",
   overviewContent: "src/features/overview/Content.tsx",
@@ -173,7 +172,7 @@ function validateCloseout(closeouts) {
   ]);
 }
 
-function validateRegistrations(packageJson, frontendAggregator, sourceMap, reconstructionReadme, rootReadme) {
+function validateRegistrations(packageJson, frontendAggregator, sourceMap, reconstructionReadme) {
   if (packageJson?.scripts?.[npmScript] !== `node scripts/${validatorScript}`) {
     failures.push(`package.json 未登记 ${npmScript}`);
   }
@@ -187,11 +186,6 @@ function validateRegistrations(packageJson, frontendAggregator, sourceMap, recon
     currentSourceMap,
     `scripts/${validatorScript}`,
     "cross-home-usage 前端当前源码链路",
-  ]);
-  assertIncludes("根 README 保持归纳口径", rootReadme, [
-    "README 只保留长期有效的归纳状态",
-    "current-source",
-    "不声明双平台、全叶子节点、全功能或全部文案已经完成",
   ]);
 }
 
@@ -341,7 +335,6 @@ validateRegistrations(
   contents.frontendAggregator,
   contents.sourceMap,
   contents.reconstructionReadme,
-  contents.rootReadme,
 );
 validateMap(contents.map);
 validateSourceChain(contents);
