@@ -32,6 +32,7 @@ const requiredFiles = [
   "application/usecase/path_state.rs",
   "core/mod.rs",
   "core/error.rs",
+  "core/single_flight.rs",
   "core/dto/mod.rs",
   "core/model/mod.rs",
   "core/parser/mod.rs",
@@ -73,6 +74,7 @@ const repositoryModFile = join(backendRoot, "repository", "mod.rs");
 const repositoryPathStateFile = join(backendRoot, "repository", "path_state.rs");
 const repositoryPathsFile = join(backendRoot, "repository", "paths.rs");
 const repositoryDirectoriesFile = join(backendRoot, "repository", "directories.rs");
+const coreSingleFlightFile = join(backendRoot, "core", "single_flight.rs");
 const sourceSidecarDaemonCommands = [
   "note_usage_refresh_activity",
   "schedule_full_runtime_refresh",
@@ -965,6 +967,53 @@ function validatePathStateOwner() {
   }
 }
 
+function validateCoreSingleFlightOwner() {
+  const original = readRequiredUtf8(coreSingleFlightFile, "core single-flight owner 文件");
+  if (original.length === 0) {
+    return;
+  }
+
+  const content = stripRustComments(original);
+  const requiredFragments = [
+    "pub(crate) struct SingleFlightRegistry",
+    "inner: Mutex<SingleFlightState>",
+    "operations: HashMap<String, OperationSlot>",
+    "pub(crate) struct SingleFlightToken",
+    "pub(crate) enum OperationStart",
+    "pub(crate) enum OperationFinish",
+    "pub(crate) enum OperationState",
+    "pub(crate) struct SingleFlightSnapshot",
+    "pub(crate) trait OperationCoalescingPort",
+    "fn begin(&self, operation_key: &str, now_epoch_seconds: i64) -> OperationStart",
+    "fn complete(&self, token: &SingleFlightToken, now_epoch_seconds: i64) -> OperationFinish",
+    "fn abort(&self, token: &SingleFlightToken, now_epoch_seconds: i64) -> OperationFinish",
+    "fn snapshot(&self, operation_key: &str) -> Option<SingleFlightSnapshot>",
+    "OperationStart::Coalesced",
+    "OperationFinish::Stale",
+    "duplicate_begin_coalesces_to_existing_token",
+    "stale_finish_cannot_overwrite_newer_sequence",
+    "abort_records_state_and_allows_restart",
+  ];
+  for (const fragment of requiredFragments) {
+    if (!content.includes(fragment)) {
+      failures.push(`${toRelative(coreSingleFlightFile)} 缺少 single-flight owner 片段：${fragment}`);
+    }
+  }
+
+  for (const [label, pattern] of [
+    ["Tauri 依赖", /\btauri\s*::/g],
+    ["真实文件系统", /\bstd\s*::\s*fs\b/g],
+    ["平台命令", /\bstd\s*::\s*process\s*::\s*Command\b/g],
+    ["仓储依赖", /\bRepository\b/g],
+  ]) {
+    for (const index of findRuleMatches(content, pattern)) {
+      failures.push(
+        `${toRelative(coreSingleFlightFile)}:${lineNumberAt(original, index)} single-flight core 不得包含 ${label}`,
+      );
+    }
+  }
+}
+
 function validateVoiceSkeleton() {
   for (const file of voiceBoundaryFiles) {
     const absolute = join(backendRoot, file);
@@ -990,6 +1039,7 @@ validateNoApplicationUsecaseDirectPlatformCalls();
 validateRepositoryReplaceableFileSystem();
 validateRepositoryDirectoriesOwner();
 validatePathStateOwner();
+validateCoreSingleFlightOwner();
 validateVoiceSkeleton();
 validateIpcCommandRegistration();
 
