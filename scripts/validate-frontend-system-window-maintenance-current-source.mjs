@@ -219,8 +219,9 @@ requireIncludes("reconstruction README system-window-maintenance 索引", recons
   `scripts/${validatorScript}`,
 ]);
 requireIncludes("README 前端归纳", rootReadme, [
-  "系统维护窗口等当前源码链路",
   "README 只保留长期有效的归纳状态",
+  "具体模块进度",
+  "验证脚本",
 ]);
 
 if (packageJson?.scripts?.[npmScript] !== `node scripts/${validatorScript}`) {

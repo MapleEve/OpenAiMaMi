@@ -222,6 +222,9 @@ if (!closeout) {
   if (closeout.status !== "current-source-closed-partial") {
     failures.push(`${closeoutId} status=${String(closeout.status)}`);
   }
+  if (closeout.currentSourceMap !== mapPath) {
+    failures.push(`${closeoutId} currentSourceMap 必须指向 ${mapPath}`);
+  }
   requireSet(`${closeoutId} currentSourceCommands`, closeout.currentSourceCommands, commands);
   requireSet(`${closeoutId} gateReports`, closeout.gateReports, [gateReport]);
   requireSet(`${closeoutId} sidecarReports`, closeout.sidecarReports, [sidecarReport]);

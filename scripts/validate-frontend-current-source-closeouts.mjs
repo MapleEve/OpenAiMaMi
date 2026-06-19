@@ -62,6 +62,8 @@ const RELAY_CURRENT_SOURCE_COMMANDS = [
 ];
 const RELAY_HTTP_TERMINAL_CCF_CLOSEOUT_ID =
   "relay-targeted-http-terminal-ui-trigger-current-source-chain";
+const RELAY_HTTP_TERMINAL_CCF_MAP =
+  "docs/reconstruction/relay-http-terminal-current-source-map.md";
 const RELAY_HTTP_TERMINAL_CCF_GATE_REPORT =
   "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay/gate-report.json";
 const RELAY_HTTP_TERMINAL_CCF_SIDECAR = RELAY_CURRENT_SOURCE_SIDECAR;
@@ -88,6 +90,7 @@ const RELAY_HTTP_TERMINAL_CCF_ALLOWED_FIELDS = [
   "id",
   "module",
   "status",
+  "currentSourceMap",
   "currentSourceCommands",
   "gateReports",
   "sidecarReports",
@@ -1134,6 +1137,9 @@ function validateRelayHttpTerminalCcfCloseout(closeout) {
   }
   if (closeout.status !== "current-source-closed-partial") {
     failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+  if (closeout.currentSourceMap !== RELAY_HTTP_TERMINAL_CCF_MAP) {
+    failures.push(`${closeout.id} currentSourceMap=${String(closeout.currentSourceMap)}`);
   }
 
   validateStringArraySet(

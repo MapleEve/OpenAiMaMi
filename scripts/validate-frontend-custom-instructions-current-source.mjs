@@ -177,8 +177,9 @@ requireIncludes("reconstruction README custom-instructions 前端索引", recons
   "scripts/validate-frontend-custom-instructions-current-source.mjs",
 ]);
 requireIncludes("README 前端归纳", rootReadme, [
-  "custom-instructions 当前源码链路",
   "README 只保留长期有效的归纳状态",
+  "具体模块进度",
+  "验证脚本",
 ]);
 
 if (
