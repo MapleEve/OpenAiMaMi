@@ -2,15 +2,15 @@
 
 OpenAiMami 是面向个人本地工作流的桌面应用公开重建仓库。仓库只接收已经匿名化、可审计、可验证的材料，并用这些材料约束源码骨架、文档说明、验证脚本和贡献边界。
 
-本仓库采用 Apache License，具体许可文本以 [LICENSE](LICENSE) 为准。公开重建的目的不是暴露个人运行环境，也不是把未验证材料写成真实业务，而是让使用者和贡献者可以在清晰许可、清晰证据和清晰隐私边界下审查、验证和继续恢复。
+本仓库采用 Apache License，具体许可文本以 [LICENSE](LICENSE) 为准。公开重建不是为了暴露个人运行环境，也不是把未验证材料写成真实业务，而是让使用者和贡献者可以在清晰许可、清晰证据和清晰隐私边界下审查、验证和继续恢复。
 
 ## 为什么公开
 
-公开是为了便于个人迭代和继续迭代，让 Apache License 下的许可边界保持清晰，让使用者能审查公开材料、源码边界和验证入口，并通过公开审查降低隐私泄露风险与越界还原风险。
+公开闭源部分的可审计材料，是为了便于个人迭代和继续迭代，让 Apache License 下的许可边界保持清晰，并让使用者能通过公开审查降低隐私泄露风险与越界还原风险。
 
-本仓库的实现原则是证据链优先：真实业务实现必须能回指仓库内已公开、已匿名化的 `raw/internal` 材料。没有公开证据支撑的行为不能写成真实逻辑，只能保留职责注释、边界、接口、DTO、错误语义、测试占位或待补证据位置。
+本仓库遵守证据链优先：真实业务实现必须能回指仓库内已公开、已匿名化的 `raw/internal` 材料。没有公开证据支撑的行为不能写成真实逻辑，只能保留职责注释、边界、接口、DTO、错误语义、测试占位或待补证据位置。
 
-这个边界也是为了让个人用户放心使用和审查：公开内容不得包含个人目录、绝对本地路径、设备标识、凭据、令牌、会话、密钥、账号私密值、未脱敏日志、个人数据、客户数据、运行时缓存或未审查采集材料。发现可能造成隐私泄露的内容时，应先匿名化或移出公开范围，再讨论功能恢复。
+公开内容不得包含个人目录、绝对本地路径、设备标识、凭据、令牌、会话、密钥、账号私密值、未脱敏日志、个人数据、客户数据、运行时缓存或未审查采集材料。发现可能造成隐私泄露的内容时，应先匿名化或移出公开范围，再讨论功能恢复。
 
 ## 范围边界
 
@@ -22,15 +22,15 @@ OpenAiMami 是面向个人本地工作流的桌面应用公开重建仓库。仓
 
 ## 当前归纳
 
-README 只保留长期有效的归纳状态，只做范围、边界和验收入口的摘要；具体模块进度、证据细节和收口记录应放在 `docs/reconstruction/` 与对应验证脚本中。模块级 validator 不再把根 README 当作模块进度证明；根 README 的归纳、匿名化、验收入口和禁止完成声明由公开边界验证统一约束。当前归纳表只允许保留公开材料、前端、后端、voice 和验收五个聚合范围，不追加模块行、日期行、提交号、map 文件名或完成闭合叙事。每次提交仍要同步 README、相关重建文档和验证脚本，但 README 只能归纳状态变化，不记录按日期、提交号或模块小项堆叠的流水。
+README 只保留长期有效的归纳状态：做了什么、没做什么、怎么验收。具体模块进度、证据细节和收口记录放在 `docs/reconstruction/` 与对应验证脚本中。模块级 validator 不再把根 README 当作模块进度证明；根 README 的归纳、匿名化、验收入口和禁止完成声明由公开边界验证统一约束。每次提交仍要同步 README、相关重建文档和验证脚本，但 README 只更新归纳结论，不记录流水账、日期、提交号或模块小项。
 
 | 范围 | 已做 | 未做或边界 | 验收 |
 | --- | --- | --- | --- |
-| 公开材料 | 已固定 Apache License 许可边界、公开目的、匿名化规则、重建说明和验证入口。 | 只纳入已匿名化、可审计、可验证材料；外部猜测、未脱敏材料和本机私密信息不进入公开范围。 | `npm run validate:public-boundary` |
-| 前端 | 已建立按入口、全局 Provider、route registry、runtime initializer、服务门面、TanStack cache、i18n、E2E mock 和深模块 owner 推进的公开恢复框架；当前源码与 `raw/internal` 证据的映射由 `docs/reconstruction/` 和对应验证入口收口。 | 仍按 `raw/internal` 证据链逐步恢复；不声明 100% 还原、全叶子节点完成、双平台 full leaf 完成、全功能完成或全部文案完成。 | `npm run validate:frontend`、`npm run validate:frontend-visible-copy`、`npm run validate:frontend-leaf-copy` |
-| 后端 | 已按 commands、application/usecase、core、platform、repository、adapters 和 contracts 组织六边形公开骨架，并通过 `docs/reconstruction/` 收口当前源码 owner、接口、DTO、仓储、平台和验证入口边界。 | 不补写无公开证据支撑的闭源业务逻辑；相关位置只保留接口、DTO、错误语义、测试占位、待补证据、待处理、空操作或可替换骨架。 | `npm run validate:backend`、`npm run validate:backend-cargo` |
+| 公开材料 | 已固定 Apache License、匿名化规则、`raw/internal` 证据入口、重建提示和贡献边界。 | 未脱敏材料、个人环境、凭据、会话、运行时缓存和外部猜测不进入公开范围。 | `npm run validate:public-boundary` |
+| 前端 | 已按入口、全局 Provider、route registry、runtime initializer、服务门面、TanStack cache、i18n、E2E mock 和深模块 owner 建立恢复框架。 | 仍按证据链继续恢复；不声明 100% 还原、全叶子节点完成、双平台 full leaf 完成、全功能完成或全部文案完成。 | `npm run validate:frontend`、`npm run validate:frontend-visible-copy`、`npm run validate:frontend-leaf-copy` |
+| 后端 | 已保留原开源能力，并按 commands、application/usecase、core、platform、repository、adapters 和 contracts 放入六边形公开骨架。 | 闭源业务不做全量还原；无证据行为只保留接口、DTO、错误语义、测试占位、待处理、空操作或可替换骨架。 | `npm run validate:backend`、`npm run validate:backend-cargo` |
 | voice | 已限定为空骨架、合同清单和中文说明。 | 不接入口、路由、IPC mock、后端命令或 runtime 启动链路。 | `npm run validate:frontend`、`npm run validate:backend` |
-| 验收 | 已固定公开边界、前端、后端、构建面和 Rust 环境检查入口。 | 本地工具链缺口需要按环境边界判断，不能直接等同于源码失败或业务完成。 | `npm run validate:all`、`npm run validate:build-surface` |
+| 验收 | 已固定公开边界、前端、后端、构建面和 Rust 环境检查入口。 | 工具链、`link.exe`、Rust 编译环境或平台依赖缺口按环境边界判断，不当作业务完成或失败结论。 | `npm run validate:all`、`npm run validate:build-surface` |
 
 ## 仓库入口
 
