@@ -1,1 +1,1 @@
-export { ApiProxyDialog } from "@/features/settings/components/proxy";
+export { SettingsApiProxyDialog as ApiProxyDialog } from "@/features/settings/dialogs/proxy";

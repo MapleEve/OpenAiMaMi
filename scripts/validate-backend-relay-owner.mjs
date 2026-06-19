@@ -25,6 +25,7 @@ const files = {
   repository: join(repoRoot, "src-tauri", "src", "repository", "relay.rs"),
   configRepository: join(repoRoot, "src-tauri", "src", "repository", "config.rs"),
   platform: join(repoRoot, "src-tauri", "src", "platform", "relay.rs"),
+  contracts: join(repoRoot, "src-tauri", "src", "contracts", "relay.rs"),
   systemCommand: join(repoRoot, "src-tauri", "src", "commands", "system.rs"),
   systemUsecase: join(repoRoot, "src-tauri", "src", "application", "usecase", "system.rs"),
   tauriLib: join(repoRoot, "src-tauri", "src", "lib.rs"),
@@ -223,6 +224,7 @@ const coreRouterConfigContent = readRequired(
 const repositoryContent = readRequired(files.repository, "relay repository 文件");
 const configRepositoryContent = readRequired(files.configRepository, "config repository 文件");
 const platformContent = readRequired(files.platform, "relay platform 文件");
+const contractsContent = readRequired(files.contracts, "relay contracts 文件");
 const systemCommandContent = readRequired(files.systemCommand, "system command 文件");
 const systemUsecaseContent = readRequired(files.systemUsecase, "system usecase 文件");
 const tauriLibContent = readRequired(files.tauriLib, "Tauri command 注册表");
@@ -632,10 +634,32 @@ assertContains(
   "必须通过 RelayPlatformPort 暴露平台能力",
 );
 
+if (
+  /真实配置读写等待证据补齐|真实文件检查等待证据补齐/.test(contractsContent)
+) {
+  failures.push(
+    `${toRelative(files.contracts)} relay DTO 注释不得继续把已恢复的本地配置读写或 router 配置检查描述为等待证据`,
+  );
+}
+if (
+  !/本地配置读写由 repository owner 恢复，真实代理运行时仍不在 DTO 层承诺/.test(
+    contractsContent,
+  )
+) {
+  failures.push(`${toRelative(files.contracts)} RelayStatePayload 注释必须说明本地配置读写已由 repository owner 恢复`);
+}
+if (
+  !/本地 router 配置检查由 repository\/core owner 恢复，真实平台诊断仍不在 DTO 层承诺/.test(
+    contractsContent,
+  )
+) {
+  failures.push(`${toRelative(files.contracts)} RelayDiagnosticPayload 注释必须说明 router 配置检查由 repository/core owner 恢复`);
+}
+
 assertContains(
   files.relayMap,
   relayMapContent,
-  /可由公开 owner 验证的本地配置读写、受管 router 配置注入\/移除、诊断修复骨架和 mock terminal 边界/,
+  /可由公开 owner 验证的本地配置读写、受管 router 配置注入\/移除、诊断修复本地配置事务和 mock terminal 边界/,
   "relay-core map 必须记录当前公开源码已经恢复的本地配置能力边界",
 );
 assertContains(
@@ -664,6 +688,8 @@ assertNoPatterns(files.relayMap, relayMapContent, [
       /不写真实 router 配置/,
       /未恢复真实 relay provider 存储/,
       /repository 也只提供路径和空集合边界/,
+      /诊断修复骨架/,
+      /diagnostic skeleton/,
       /无独立 validator 边界/,
     ],
   },

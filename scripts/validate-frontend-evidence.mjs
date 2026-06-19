@@ -1716,7 +1716,9 @@ function validateSettingsTypedPayloadGate() {
   const mutationHookPath = join(repoRoot, "src", "features", "settings", "hooks", "mutation.ts");
   const actionHookPath = join(repoRoot, "src", "features", "settings", "hooks", "action.ts");
   const pageHookPath = join(repoRoot, "src", "features", "settings", "hooks", "page.ts");
-  const proxyComponentPath = join(repoRoot, "src", "features", "settings", "components", "proxy.tsx");
+  const settingsPagePath = join(repoRoot, "src", "features", "settings", "components", "page.tsx");
+  const legacyProxyComponentPath = join(repoRoot, "src", "features", "settings", "components", "proxy.tsx");
+  const proxyDialogPath = join(repoRoot, "src", "features", "settings", "dialogs", "proxy.tsx");
   const panelAndDialogText = [
     ...walkFiles(join(repoRoot, "src", "features", "settings", "panels"), (file) => /\.(ts|tsx)$/.test(file)),
     ...walkFiles(join(repoRoot, "src", "features", "settings", "dialogs"), (file) => /\.(ts|tsx)$/.test(file)),
@@ -1731,8 +1733,9 @@ function validateSettingsTypedPayloadGate() {
   const mutationHook = readRequired(mutationHookPath);
   const actionHook = readRequired(actionHookPath);
   const pageHook = readRequired(pageHookPath);
+  const settingsPage = readRequired(settingsPagePath);
   const hookOwners = [queryHook, mutationHook, actionHook, pageHook].join("\n");
-  const proxyComponent = readRequired(proxyComponentPath);
+  const proxyDialog = readRequired(proxyDialogPath);
   const hooksIndexReExportPattern =
     /export\s+(?:type\s+)?(?:\*|\{[\s\S]*?\})\s+from\s+["']([^"']+)["'];?/g;
   const hooksIndexReExports = [...hooksIndex.matchAll(hooksIndexReExportPattern)].map(
@@ -1803,10 +1806,17 @@ function validateSettingsTypedPayloadGate() {
     mutationHook.includes("writeSettingsMutationPayload") &&
     mutationHook.includes("setUsageRefreshInterval") &&
     mutationHook.includes("settingsService.setApiProxyConfig") &&
+    mutationHook.includes("onSaved?: (result: Awaited<ReturnType<typeof settingsService.setApiProxyConfig>>) => Promise<void> | void") &&
     actionHook.includes("useSettingsBusyActions") &&
     hookOwners.includes("Promise<void> | void") &&
     pageHook.includes("SettingsPageController") &&
-    proxyComponent.includes("onSaved?: () => Promise<void> | void") &&
+    settingsPage.includes('import { SettingsApiProxyDialog, SettingsThresholdDialog } from "../dialogs";') &&
+    settingsPage.includes("<SettingsApiProxyDialog controller={controller} />") &&
+    proxyDialog.includes("export function SettingsApiProxyDialog") &&
+    proxyDialog.includes("controller.proxyDialog") &&
+    proxyDialog.includes("controller.actions.detectProxy") &&
+    proxyDialog.includes("controller.actions.testProxy") &&
+    proxyDialog.includes("controller.actions.saveProxy") &&
     !types.includes("SettingsCacheEnvelope<TPayload = unknown>") &&
     !types.includes("SettingsPageController = ReturnType") &&
     !cache.includes("createModuleCacheOwner(\"settings\")") &&
@@ -1816,9 +1826,12 @@ function validateSettingsTypedPayloadGate() {
     !hookOwners.includes("payload: unknown") &&
     !pageHook.match(/\buse(Query|Mutation|QueryClient)\b/) &&
     !pageHook.match(/@\/services\/settings|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|settingsService\.|systemService\.|invokeIpc|invoke\(/) &&
+    !existsSync(legacyProxyComponentPath) &&
     !panelAndDialogText.includes("ReturnType<typeof useSettingsPageController>") &&
     !/(?:import|export)\s+type[^;]*from\s+["']\.\.\/hooks["']/.test(panelAndDialogText) &&
-    !proxyComponent.includes("Promise<unknown> | void");
+    !proxyDialog.match(/useApiProxyMutations|useBusyAction|toast\(/) &&
+    !proxyDialog.match(/@\/services\/settings|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|settingsService\.|systemService\.|invokeIpc|invoke\(/) &&
+    !proxyDialog.includes("Promise<unknown> | void");
 
   const typedPayloadOk = hooksIndexOnlyReExports && settingsTypedPayloadOk;
 

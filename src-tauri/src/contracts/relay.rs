@@ -77,7 +77,7 @@ pub struct RelayActivePayload {
     pub ide: String,
 }
 
-/// relay 页面状态 DTO 对齐前端缓存合同，真实配置读写等待证据补齐。
+/// relay 页面状态 DTO 对齐前端缓存合同；本地配置读写由 repository owner 恢复，真实代理运行时仍不在 DTO 层承诺。
 #[derive(Debug, Clone, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct RelayStatePayload {
@@ -195,7 +195,7 @@ pub struct RelayDiagnosticIssuePayload {
     pub fixable: bool,
 }
 
-/// relay 诊断 DTO 保留前端新旧字段别名，真实文件检查等待证据补齐。
+/// relay 诊断 DTO 保留前端新旧字段别名；本地 router 配置检查由 repository/core owner 恢复，真实平台诊断仍不在 DTO 层承诺。
 #[derive(Debug, Clone, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct RelayDiagnosticPayload {

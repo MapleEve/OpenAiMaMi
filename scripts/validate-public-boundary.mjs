@@ -524,6 +524,64 @@ function validateReadmeStatusStructure(path) {
   );
 }
 
+function validateReadmeValidationCommands(path) {
+  if (!existsSync(join(repoRoot, path))) return;
+
+  let packageJson;
+  try {
+    packageJson = JSON.parse(readUtf8("package.json"));
+  } catch (error) {
+    addCheck(`${path} 验收入口可解析`, false, `package.json 无法解析：${error.message}`);
+    return;
+  }
+
+  const scripts = packageJson.scripts ?? {};
+  const content = readUtf8(path);
+  const commands = [...content.matchAll(/`npm run (validate:[^`\s]+)`/g)].map(
+    (match) => match[1],
+  );
+  const uniqueCommands = [...new Set(commands)];
+  const missingScripts = uniqueCommands.filter((command) => !(command in scripts));
+  const requiredCommands = [
+    "validate:all",
+    "validate:build-surface",
+    "validate:public-boundary",
+    "validate:frontend",
+    "validate:backend",
+    "validate:backend-cargo",
+  ];
+  const missingRequired = requiredCommands.filter((command) => !uniqueCommands.includes(command));
+  const forbiddenDirectBuild = /`npm run build`/.test(content);
+  const cargoBoundaryOk =
+    /validate:backend-cargo/.test(content) &&
+    /Rust/.test(content) &&
+    /单独检查|完整编译|编译\/测试环境/.test(content);
+  const buildSurfaceBoundaryOk =
+    /validate:build-surface/.test(content) &&
+    /构建面/.test(content) &&
+    /link\.exe/.test(content);
+
+  const failures = [
+    missingScripts.length > 0
+      ? `README 引用了 package.json 未登记的 validate 命令：${missingScripts.join(", ")}`
+      : "",
+    missingRequired.length > 0
+      ? `README 缺少固定验收入口：${missingRequired.join(", ")}`
+      : "",
+    forbiddenDirectBuild ? "README 不应再把 npm run build 作为公开验收入口，应使用 validate:build-surface" : "",
+    cargoBoundaryOk ? "" : "README 必须说明 validate:backend-cargo 是 Rust 完整编译/测试环境的单独检查入口",
+    buildSurfaceBoundaryOk ? "" : "README 必须说明 validate:build-surface 记录构建面和 link.exe 环境边界",
+  ].filter(Boolean);
+
+  addCheck(
+    `${path} 验收入口命令与 package.json 同步`,
+    failures.length === 0,
+    failures.length === 0
+      ? `${uniqueCommands.length} 个 README validate 命令均存在，且构建面/Rust 单独检查边界已固定`
+      : failures.join("；"),
+  );
+}
+
 function validateReadmeNoProgressChangelog(path) {
   if (!existsSync(join(repoRoot, path))) return;
 
@@ -1012,6 +1070,8 @@ validateReadmeFile("README.md");
 validateReadmeFile("README-cn.md");
 validateReadmeStatusStructure("README.md");
 validateReadmeStatusStructure("README-cn.md");
+validateReadmeValidationCommands("README.md");
+validateReadmeValidationCommands("README-cn.md");
 validateReadmeNoProgressChangelog("README.md");
 validateReadmeNoProgressChangelog("README-cn.md");
 validateReadmeCommitUpdateRule("README.md");

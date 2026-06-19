@@ -68,6 +68,6 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库保存匿名化 raw/inter
 | 后端 MCP owner | `docs/reconstruction/mcp-current-source-evidence-map.md` | MCP 四个 IPC 的 command/usecase/contracts/repository/core parser/core model 闭环。 |
 | 后端 sessions/analytics 文件事实 | `docs/reconstruction/sessions-analytics-current-source-evidence-map.md` | sessions、usage analytics、tool/change/quota 公开文件事实与 pending 边界。 |
 | system hotspot 前端链路与后端骨架 | `docs/reconstruction/system-hotspot-current-source-map.md` | hotspot frontend chain、Rust hotspot owner 骨架和 strict gate 未恢复边界。 |
-| 后端 system runtime watcher 骨架 | `docs/reconstruction/system-runtime-watchers-current-source-map.md` | watcher/schedule 信号的 current-source skeleton 与未恢复 runtime 行为。 |
+| 后端 system runtime watcher 骨架 | `docs/reconstruction/system-runtime-watchers-current-source-map.md` | watcher/schedule 信号的 current-source skeleton、daemon/runtime owner 和未恢复 runtime 行为；由 `scripts/validate-backend-daemon-owner.mjs` 直接验证。 |
 | 托盘 current-source 骨架 | `docs/reconstruction/tray-current-source-evidence-map.md` | Windows accepted tray target、current-source extra 和前后端 tray owner。 |
 | UI theme 前端调用链 | `docs/reconstruction/ui-theme-current-source-map.md` | UI theme 设置面板、Provider、service 和 Tauri theme API 调用链。 |

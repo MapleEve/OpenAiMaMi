@@ -1392,6 +1392,9 @@ function validateSettingsDeepOwnerBoundaries() {
   const pagePath = join(settingsRoot, "hooks", "page.ts");
   const cachePath = join(settingsRoot, "cache", "index.ts");
   const typesPath = join(settingsRoot, "types", "index.ts");
+  const legacyProxyComponentPath = join(settingsRoot, "components", "proxy.tsx");
+  const settingsPageComponentPath = join(settingsRoot, "components", "page.tsx");
+  const proxyDialogPath = join(settingsRoot, "dialogs", "proxy.tsx");
   const controllerConsumerPaths = [
     ...walkFiles(join(settingsRoot, "panels"), (file) => /\.(ts|tsx)$/.test(file)),
     ...walkFiles(join(settingsRoot, "dialogs"), (file) => /\.(ts|tsx)$/.test(file)),
@@ -1405,9 +1408,35 @@ function validateSettingsDeepOwnerBoundaries() {
   const page = readRequired(pagePath);
   const cache = readRequired(cachePath);
   const types = readRequired(typesPath);
+  const settingsPageComponent = readRequired(settingsPageComponentPath);
+  const proxyDialog = readRequired(proxyDialogPath);
   const controllerConsumerText = controllerConsumerPaths
     .map((file) => readRequired(file))
     .join("\n");
+
+  if (existsSync(legacyProxyComponentPath)) {
+    failures.push("src/features/settings/components/proxy.tsx must not exist; API proxy dialog owner is src/features/settings/dialogs/proxy.tsx");
+  }
+  assertIncludes("src/features/settings/components/page.tsx", settingsPageComponent, [
+    'import { SettingsApiProxyDialog, SettingsThresholdDialog } from "../dialogs";',
+    "<SettingsApiProxyDialog controller={controller} />",
+  ]);
+  assertNotMatches("src/features/settings/components/page.tsx", settingsPageComponent, [
+    [/components\/proxy|\bApiProxyDialog\b/, "settings page must not import legacy API proxy component"],
+  ]);
+  assertIncludes("src/features/settings/dialogs/proxy.tsx", proxyDialog, [
+    'import type { SettingsControllerProps } from "../types";',
+    "export function SettingsApiProxyDialog",
+    "}: SettingsControllerProps)",
+    "controller.proxyDialog",
+    "controller.actions.detectProxy",
+    "controller.actions.testProxy",
+    "controller.actions.saveProxy",
+  ]);
+  assertNotMatches("src/features/settings/dialogs/proxy.tsx", proxyDialog, [
+    [/useApiProxyMutations|useBusyAction|toast\(/, "settings API proxy dialog must consume controller state/actions, not own mutations, busy actions, or toast"],
+    [/@\/services\/settings|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "settings API proxy dialog must not access service/API/IPC directly"],
+  ]);
 
   assertOnlyBarrelReExports("src/features/settings/hooks/index.ts", hooksIndex, [
     "query",

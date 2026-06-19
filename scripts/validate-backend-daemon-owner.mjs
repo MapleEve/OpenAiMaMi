@@ -14,6 +14,14 @@ const files = {
   coreRuntime: join(backendRoot, "core", "runtime.rs"),
   platformRuntime: join(backendRoot, "platform", "runtime.rs"),
   repositoryRuntime: join(backendRoot, "repository", "runtime.rs"),
+  runtimeWatchersMap: join(
+    repoRoot,
+    "docs",
+    "reconstruction",
+    "system-runtime-watchers-current-source-map.md",
+  ),
+  sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
+  reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
 };
 const failures = [];
 
@@ -412,6 +420,66 @@ function validateRepositoryRuntime(path, original, content) {
   }
 }
 
+function validateRuntimeWatcherDocs(runtimeMapPath, runtimeMapContent, sourceMapPath, sourceMapContent, reconstructionReadmePath, reconstructionReadmeContent) {
+  requirePattern(
+    "runtime watcher map 记录 daemon usecase owner",
+    runtimeMapPath,
+    runtimeMapContent,
+    /src-tauri\/src\/application\/usecase\/daemon\.rs[\s\S]*repository snapshot[\s\S]*runtime core[\s\S]*platform capability/,
+    "system runtime watcher map 必须记录 daemon usecase 组织 repository/core/platform 的 owner 边界",
+  );
+  requirePattern(
+    "runtime watcher map 记录 core model",
+    runtimeMapPath,
+    runtimeMapContent,
+    /RuntimeWatcherSignal[\s\S]*RuntimeWatcherOperationKey[\s\S]*RuntimeWatcherStatusCode[\s\S]*RuntimeWatcherSnapshot/,
+    "system runtime watcher map 必须记录 runtime 领域模型 owner",
+  );
+  requirePattern(
+    "runtime watcher map 保留 pending skeleton 语义",
+    runtimeMapPath,
+    runtimeMapContent,
+    /pending skeleton status/,
+    "system runtime watcher map 必须说明当前只返回 pending skeleton status",
+  );
+  requirePattern(
+    "runtime watcher map 未恢复真实 watcher 边界",
+    runtimeMapPath,
+    runtimeMapContent,
+    /不启动真实 watcher[\s\S]*不创建后台线程[\s\S]*不发 `Condvar::notify_all`[\s\S]*不广播真实 runtime snapshot event/,
+    "system runtime watcher map 必须保留真实 watcher、后台线程、condvar 和 runtime event 未恢复边界",
+  );
+  requirePattern(
+    "source-map 直接登记 daemon validator",
+    sourceMapPath,
+    sourceMapContent,
+    /docs\/reconstruction\/system-runtime-watchers-current-source-map\.md[\s\S]*scripts\/validate-backend-daemon-owner\.mjs[\s\S]*runtime core guard\/debounce\/sequence/,
+    "source-map 必须把 system runtime watcher map 收口到 validate-backend-daemon-owner.mjs",
+  );
+  requirePattern(
+    "reconstruction README 同步 daemon validator",
+    reconstructionReadmePath,
+    reconstructionReadmeContent,
+    /system-runtime-watchers-current-source-map\.md[\s\S]*daemon\/runtime owner[\s\S]*scripts\/validate-backend-daemon-owner\.mjs/,
+    "docs/reconstruction README 必须同步 runtime watcher map 的直接验证边界",
+  );
+
+  for (const [path, original, content] of [
+    [runtimeMapPath, runtimeMapContent, runtimeMapContent],
+    [sourceMapPath, sourceMapContent, sourceMapContent],
+    [reconstructionReadmePath, reconstructionReadmeContent, reconstructionReadmeContent],
+  ]) {
+    rejectPattern(
+      "旧 runtime watcher map 索引口径",
+      path,
+      original,
+      content,
+      /当前仅索引\/无独立 validator 边界|只作为 registry 索引|不作为独立 gate/,
+      "runtime watcher map 已由 daemon owner validator 直接约束",
+    );
+  }
+}
+
 const raw = new Map(
   Object.entries(files).map(([label, path]) => [label, { path, content: readRequired(path, label) }]),
 );
@@ -443,6 +511,14 @@ validateRepositoryRuntime(
   files.repositoryRuntime,
   raw.get("repositoryRuntime").content,
   stripped.get("repositoryRuntime").content,
+);
+validateRuntimeWatcherDocs(
+  files.runtimeWatchersMap,
+  raw.get("runtimeWatchersMap").content,
+  files.sourceMap,
+  raw.get("sourceMap").content,
+  files.reconstructionReadme,
+  raw.get("reconstructionReadme").content,
 );
 
 if (failures.length > 0) {

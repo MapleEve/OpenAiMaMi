@@ -4,7 +4,7 @@
 
 本文只记录当前公开源码已经补上的 relay-core owner、可验证入口和证据来源。它不是原始审计报告的替代品，也不把 relay-core 标记为严格门禁已闭合。
 
-前端 dumped、i18n 和文案接受清单已经可以通过，说明当前公开前端的路由、服务门面、DTO、缓存、mock 和文案链条已经有可验证 owner。严格门禁仍未闭合，是因为原始内部材料还要求闭源后端行为、平台副作用、网络转发、线程迁移、真实代理运行时和测试验收链条；当前源码只恢复可由公开 owner 验证的本地配置读写、受管 router 配置注入/移除、诊断修复骨架和 mock terminal 边界，不恢复无证据的闭源代理业务。
+前端 dumped、i18n 和文案接受清单已经可以通过，说明当前公开前端的路由、服务门面、DTO、缓存、mock 和文案链条已经有可验证 owner。严格门禁仍未闭合，是因为原始内部材料还要求闭源后端行为、平台副作用、网络转发、线程迁移、真实代理运行时和测试验收链条；当前源码只恢复可由公开 owner 验证的本地配置读写、受管 router 配置注入/移除、诊断修复本地配置事务和 mock terminal 边界，不恢复无证据的闭源代理业务。
 
 ## 已读取证据
 
@@ -48,7 +48,7 @@
 | `src-tauri/src/core/relay.rs` | relay core 建立领域状态、operation key、cluster boundary、pending test/model/diagnostic/fix 语义，不读写真实文件或网络。 |
 | `src-tauri/src/core/model/relay.rs` | relay domain model 拆出 provider、draft、proxy、state、cluster、operation、diagnostic、test 和 snapshot 值对象，不依赖 Tauri 或前端对象。 |
 | `src-tauri/src/contracts/relay.rs` | Rust DTO 与前端 TypeScript 类型对齐，覆盖 provider、state、proxy、router toggle、test、import/export、audit、diagnostic 和 fix payload。 |
-| `src-tauri/src/repository/relay.rs` | repository 通过可替换 FS 读写 `relay-config.json`，恢复 provider CRUD、active provider、`blockOfficialPassthrough`、import/export、passthrough audit 读取、受管 router config 注入/移除和 diagnostic skeleton；不保存跨命令内存业务状态。 |
+| `src-tauri/src/repository/relay.rs` | repository 通过可替换 FS 读写 `relay-config.json`，恢复 provider CRUD、active provider、`blockOfficialPassthrough`、import/export、passthrough audit 读取、受管 router config 注入/移除和 diagnostic snapshot；不保存跨命令内存业务状态。 |
 | `src-tauri/src/platform/relay.rs` | relay platform adapter 只封装 OS 环境代理候选和能力占位，不解释 relay 业务状态，也不发起真实网络或进程操作。 |
 | `src-tauri/src/core/model/diagnostics.rs` | core model 只承载诊断只读值对象，没有写入无证据闭源业务字段。 |
 | `src-tauri/src/repository/diagnostics.rs` | diagnostics repository 只从 repository paths 和 FS adapter 读取可验证路径事实，不触碰真实用户环境之外的隐式状态。 |
