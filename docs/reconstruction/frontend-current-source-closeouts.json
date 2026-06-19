@@ -3516,6 +3516,158 @@
         "不把 Windows 1.0.9 theme parity 扩大成系统主题读取、系统主题订阅或窗口材质实现。"
       ],
       "reason": "当前公开源码已经存在设置面板、侧边栏、设置 Provider、useTheme、api.setAppTheme、themeService.setTheme、Tauri app setTheme 与 zh/en locale key 的 UI theme 调用链；该链路足以登记 windows-1.0.9-ui/theme 的 current-source partial closeout，但不伪造 raw/internal gate，也不声明 full leaf 100。"
+    },
+    {
+      "id": "daemon-autoswitch-pending-auto-switch-current-source-frontend-chain",
+      "module": "daemon-autoswitch",
+      "status": "current-source-closed-partial",
+      "currentSourceMap": "docs/reconstruction/daemon-autoswitch-current-source-map.md",
+      "currentSourceCommands": [
+        "load_pending_auto_switch",
+        "dismiss_pending_auto_switch",
+        "confirm_pending_auto_switch",
+        "confirm_pending_auto_switch_and_restart_codex"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "docs/reconstruction/daemon-autoswitch-current-source-map.md",
+          "includes": [
+            "自动切换待确认状态当前源码证据映射",
+            "load_pending_auto_switch",
+            "dismiss_pending_auto_switch",
+            "confirm_pending_auto_switch",
+            "confirm_pending_auto_switch_and_restart_codex",
+            "后端待确认队列、真实账号切换、真实重启或真实 watcher 已恢复",
+            "不新增 route、sidebar、header、tray、settings 入口或 `voice` 入口"
+          ]
+        },
+        {
+          "file": "src/services/system/index.ts",
+          "includes": [
+            "loadPendingAutoSwitch: ()",
+            "\"load_pending_auto_switch\"",
+            "dismissPendingAutoSwitch: ()",
+            "\"dismiss_pending_auto_switch\"",
+            "confirmPendingAutoSwitch: ()",
+            "\"confirm_pending_auto_switch\"",
+            "confirmPendingAutoSwitchAndRestartCodex: ()",
+            "\"confirm_pending_auto_switch_and_restart_codex\""
+          ]
+        },
+        {
+          "file": "src/services/daemon-autoswitch/index.ts",
+          "includes": [
+            "const AUTO_SWITCH_PENDING_EVENT = \"auto-switch-pending\";",
+            "listen<PendingAutoSwitchEventPayload>",
+            "loadPendingAutoSwitch: systemService.loadPendingAutoSwitch",
+            "dismissPendingAutoSwitch: systemService.dismissPendingAutoSwitch",
+            "confirmPendingAutoSwitch: systemService.confirmPendingAutoSwitch",
+            "systemService.confirmPendingAutoSwitchAndRestartCodex",
+            "subscribePendingAutoSwitch"
+          ]
+        },
+        {
+          "file": "src/features/daemon-autoswitch/hooks/query.ts",
+          "includes": [
+            "DAEMON_AUTOSWITCH_PENDING_QUERY_KEY",
+            "runDaemonAutoswitchQuery",
+            "daemonAutoswitchService.loadPendingAutoSwitch()",
+            "useDaemonAutoswitchPendingQuery"
+          ]
+        },
+        {
+          "file": "src/features/daemon-autoswitch/hooks/mutation.ts",
+          "includes": [
+            "prepareDaemonAutoswitchMutation",
+            "writeDaemonAutoswitchMutationPayload",
+            "dismissPendingMutation",
+            "daemonAutoswitchService.dismissPendingAutoSwitch()",
+            "confirmPendingAndRestartMutation",
+            "daemonAutoswitchService.confirmPendingAutoSwitchAndRestartCodex()",
+            "invalidateDaemonAutoswitchContractQueries(queryClient)"
+          ]
+        },
+        {
+          "file": "src/features/daemon-autoswitch/hooks/runtime.ts",
+          "includes": [
+            "daemonAutoswitchService.subscribePendingAutoSwitch",
+            "applyDaemonAutoswitchRuntimeEventToCache(",
+            "\"auto-switch-pending\""
+          ]
+        },
+        {
+          "file": "src/features/daemon-autoswitch/cache/index.ts",
+          "includes": [
+            "DAEMON_AUTOSWITCH_PENDING_QUERY_KEY",
+            "DAEMON_AUTOSWITCH_RUNTIME_EVENT_CACHE_TARGETS",
+            "\"auto-switch-pending\"",
+            "DAEMON_AUTOSWITCH_PENDING_QUERY_KEY, type: \"active\"",
+            "runDaemonAutoswitchQuery",
+            "prepareDaemonAutoswitchMutation",
+            "writeDaemonAutoswitchMutationPayload",
+            "applyDaemonAutoswitchRuntimeEventToCache"
+          ]
+        },
+        {
+          "file": "src/app/runtime/pending.ts",
+          "includes": [
+            "useDaemonAutoswitchPendingPrompt",
+            "buildPendingAutoSwitchView",
+            "currentAccount.email",
+            "candidateAccount.email",
+            "prompt.dismissPendingAction.run",
+            "prompt.confirmPendingAndRestartAction.run"
+          ]
+        },
+        {
+          "file": "src/app/providers/prompt.tsx",
+          "includes": [
+            "usePendingAutoSwitchPrompt",
+            "showPendingAutoSwitchPrompt",
+            "PendingAutoSwitchPromptDialog",
+            "settings.autoSwitchPromptTitle",
+            "settings.autoSwitchPromptSkip",
+            "settings.autoSwitchPromptConfirm"
+          ]
+        },
+        {
+          "file": "src/mocks/fixtures/commands.ts",
+          "includes": [
+            "const pendingAutoSwitchStateHandler",
+            "const dismissPendingAutoSwitchHandler",
+            "const confirmPendingAutoSwitchHandler",
+            "confirm_pending_auto_switch: confirmPendingAutoSwitchHandler",
+            "confirm_pending_auto_switch_and_restart_codex: confirmPendingAutoSwitchHandler",
+            "dismiss_pending_auto_switch: dismissPendingAutoSwitchHandler",
+            "load_pending_auto_switch: pendingAutoSwitchStateHandler"
+          ]
+        },
+        {
+          "file": "src/contracts/ipc/commands.ts",
+          "includes": [
+            "\"domain\": \"daemon-autoswitch\"",
+            "\"command\": \"load_pending_auto_switch\"",
+            "\"command\": \"dismiss_pending_auto_switch\"",
+            "\"command\": \"confirm_pending_auto_switch\"",
+            "\"command\": \"confirm_pending_auto_switch_and_restart_codex\"",
+            "\"loadPendingAutoSwitch\"",
+            "\"dismissPendingAutoSwitch\"",
+            "\"confirmPendingAutoSwitch\"",
+            "\"confirmPendingAutoSwitchAndRestartCodex\""
+          ]
+        }
+      ],
+      "backendBoundaryNotes": [
+        "后端待确认队列、真实账号切换、真实重启、真实 watcher 仍未恢复；本条只登记当前公开前端链路、mock handler 和 IPC contract。"
+      ],
+      "nonClaims": [
+        "不修改 raw/internal 证据。",
+        "不声明 gate_accepted、implementation_use、dim6、full_leaf_100 已完成。",
+        "不恢复后端待确认队列、真实账号切换、真实重启、真实 watcher 或平台副作用。",
+        "不新增 route、sidebar、header、tray、settings 或 voice 入口。",
+        "不把 mock handler 等同真实后端行为。"
+      ],
+      "reason": "本 closeout 是 daemon-autoswitch 待确认自动切换的当前源码部分收口：当前公开源码可验证 system service、daemon-autoswitch service facade、query/mutation/cache/runtime subscription、prompt host、mock handlers 和 IPC contracts 的前端链路；它不修改 raw/internal 证据，不处理 voice，不声明真实后端待确认队列、真实账号切换、真实重启或真实 watcher 已恢复。"
     }
   ]
 }

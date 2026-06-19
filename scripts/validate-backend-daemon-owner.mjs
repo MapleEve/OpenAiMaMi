@@ -14,6 +14,8 @@ const files = {
   coreRuntime: join(backendRoot, "core", "runtime.rs"),
   platformRuntime: join(backendRoot, "platform", "runtime.rs"),
   repositoryRuntime: join(backendRoot, "repository", "runtime.rs"),
+  repositoryPaths: join(backendRoot, "repository", "paths.rs"),
+  settingsContract: join(backendRoot, "contracts", "settings.rs"),
   runtimeWatchersMap: join(
     repoRoot,
     "docs",
@@ -230,6 +232,107 @@ function validateDaemonUsecase(path, content) {
     /\bmodule\s*:\s*"daemon"\s*\.to_string\s*\(\s*\)/,
     "daemon usecase 返回的后端骨架状态必须声明 daemon owner",
   );
+}
+
+function validatePendingAutoSwitchBackendBoundary(
+  daemonUsecasePath,
+  daemonUsecaseOriginal,
+  daemonUsecaseContent,
+  daemonCommandsPath,
+  daemonCommandsContent,
+  repositoryPathsPath,
+  repositoryPathsOriginal,
+  repositoryPathsContent,
+  settingsContractPath,
+  settingsContractOriginal,
+  settingsContractContent,
+) {
+  requirePattern(
+    "load pending auto-switch 无仓储输入",
+    daemonUsecasePath,
+    daemonUsecaseContent,
+    /\bpub\s+fn\s+load_pending_auto_switch\s*\(\s*\)\s*->\s*PendingAutoSwitchStatePayload\s*\{/,
+    "当前公开证据没有 pending/snooze 仓储事实，load_pending_auto_switch 必须保持无仓储输入骨架",
+  );
+  requirePattern(
+    "load pending auto-switch pending status",
+    daemonUsecasePath,
+    daemonUsecaseContent,
+    /runtime_watcher_status_without_repository\s*\(\s*"load_pending_auto_switch"\s*,\s*runtime_core\s*::\s*pending_auto_switch_note\s*\(\s*\)\s*,?\s*\)/,
+    "load_pending_auto_switch 必须继续声明 runtime watcher pending 边界，不伪造成 repository restored",
+  );
+  requirePattern(
+    "load pending auto-switch 空 payload",
+    daemonUsecasePath,
+    daemonUsecaseContent,
+    /current_account_key\s*:\s*String\s*::\s*new\s*\(\s*\)\s*,[\s\S]*candidate_account_key\s*:\s*String\s*::\s*new\s*\(\s*\)\s*,[\s\S]*dismissed_at\s*:\s*None/,
+    "没有公开 pending payload 仓储事实前，load_pending_auto_switch 只能返回空 payload",
+  );
+  requirePattern(
+    "dismiss pending auto-switch no-op",
+    daemonUsecasePath,
+    daemonUsecaseContent,
+    /\bpub\s+fn\s+dismiss_pending_auto_switch\s*\(\s*\)\s*->\s*Option\s*<\s*String\s*>\s*\{\s*None\s*\}/,
+    "没有公开 pending/snooze 写入事实前，dismiss_pending_auto_switch 必须保持 no-op",
+  );
+  requirePattern(
+    "confirm pending auto-switch no-op",
+    daemonUsecasePath,
+    daemonUsecaseContent,
+    /\bpub\s+fn\s+confirm_pending_auto_switch\s*\(\s*\)\s*\{\s*\}/,
+    "没有公开 pending candidate 仓储事实前，confirm_pending_auto_switch 不得调用账号切换",
+  );
+  requirePattern(
+    "confirm pending auto-switch restart no-op",
+    daemonUsecasePath,
+    daemonUsecaseContent,
+    /\bpub\s+fn\s+confirm_pending_auto_switch_and_restart_codex\s*\(\s*\)\s*\{\s*\}/,
+    "没有公开 restart 平台能力恢复前，confirm_pending_auto_switch_and_restart_codex 不得触发真实重启",
+  );
+
+  for (const command of [
+    "load_pending_auto_switch",
+    "dismiss_pending_auto_switch",
+    "confirm_pending_auto_switch",
+    "confirm_pending_auto_switch_and_restart_codex",
+  ]) {
+    requirePattern(
+      `${command} command 无 Repository state`,
+      daemonCommandsPath,
+      daemonCommandsContent,
+      new RegExp(`\\bpub\\s+fn\\s+${command}\\s*\\(\\s*\\)\\s*->`),
+      "pending auto-switch command 当前不得注入 Repository 或 platform；否则会暗示存在公开仓储/平台事实",
+    );
+  }
+
+  for (const [label, pattern] of [
+    ["pending/snooze 仓储路径", /\b(pending|snooze)[A-Za-z0-9_]*(path|dir)\b|\b(auto_switch_pending|pending_auto_switch|pending_switch|snooze)[A-Za-z0-9_]*\s*:/g],
+    ["账号切换真实调用", /\baccounts(_repository|_usecase)?\s*::\s*switch_account\b|\bswitch_account\s*\(/g],
+    ["真实重启调用", /\brestart_codex\s*\(|graceful_restart_for_update\s*\(|platform_actions\s*::/g],
+  ]) {
+    rejectPattern(
+      label,
+      daemonUsecasePath,
+      daemonUsecaseOriginal,
+      daemonUsecaseContent,
+      pattern,
+      "pending auto-switch 缺少公开仓储事实，后端只能保留 typed pending/no-op 边界",
+    );
+  }
+
+  for (const [label, path, original, content] of [
+    ["repository paths", repositoryPathsPath, repositoryPathsOriginal, repositoryPathsContent],
+    ["settings contract", settingsContractPath, settingsContractOriginal, settingsContractContent],
+  ]) {
+    rejectPattern(
+      `${label} 伪造 pending/snooze 字段`,
+      path,
+      original,
+      content,
+      /\b(auto_switch_pending|pending_auto_switch|pending_switch|snooze|dismissed_at|candidate_account_key|current_account_key)\b/g,
+      "未补齐 pending/snooze 真实证据前，不得新增仓储路径或 settings 字段伪装后端恢复",
+    );
+  }
 }
 
 function validateDaemonCommands(path, content) {
@@ -496,6 +599,19 @@ validateRuntimePort(
   stripped.get("platformRuntime").content,
 );
 validateDaemonUsecase(files.daemonUsecase, stripped.get("daemonUsecase").content);
+validatePendingAutoSwitchBackendBoundary(
+  files.daemonUsecase,
+  raw.get("daemonUsecase").content,
+  stripped.get("daemonUsecase").content,
+  files.daemonCommands,
+  stripped.get("daemonCommands").content,
+  files.repositoryPaths,
+  raw.get("repositoryPaths").content,
+  stripped.get("repositoryPaths").content,
+  files.settingsContract,
+  raw.get("settingsContract").content,
+  stripped.get("settingsContract").content,
+);
 validateSystemUsecase(
   files.systemUsecase,
   raw.get("systemUsecase").content,
