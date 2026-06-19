@@ -4105,6 +4105,159 @@
       "reason": "本 closeout 是 accounts/sessions 前端当前源码部分收口：当前公开源码可验证 accounts 八条 IPC 与 sessions 四条 IPC 的 route、service、query、mutation、cache、dialog、panel、mock 和 IPC contract 链路；它不修改 raw/internal 证据，不处理 voice，不声明 full_leaf_100，也不声明双平台全 leaf、全文案验收、ChatGPT session account 真实导入或闭源业务完整恢复。"
     },
     {
+      "id": "notification-client-state-current-source-frontend-chain",
+      "module": "notification-client-state",
+      "status": "current-source-closed-partial",
+      "currentSourceMap": "docs/reconstruction/notification-client-state-current-source-map.md",
+      "currentSourceCommands": [
+        "get_notification_client_state"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "docs/reconstruction/notification-client-state-current-source-map.md",
+          "includes": [
+            "get_notification_client_state current-source 证据映射",
+            "`get_notification_client_state`",
+            "不声明 `gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成",
+            "不声明通知客户端运行时、推送订阅、轮询、后台 watcher、Tauri event、托盘通知或平台通知能力已经恢复",
+            "不碰 `voice`"
+          ]
+        },
+        {
+          "file": "src/services/system/index.ts",
+          "includes": [
+            "getNotificationClientState: () =>",
+            "invokeIpc<CoreEnvelope<NotificationClientStatePayload>>(",
+            "\"get_notification_client_state\""
+          ]
+        },
+        {
+          "file": "src/features/overview/types/index.ts",
+          "includes": [
+            "NotificationClientStatePayload",
+            "OverviewNotificationEnvelope",
+            "notificationStateQuery: OverviewNotificationQuery",
+            "id: \"notification-state\""
+          ]
+        },
+        {
+          "file": "src/features/overview/cache/index.ts",
+          "includes": [
+            "OVERVIEW_NOTIFICATION_STATE_QUERY_KEY",
+            "\"notification-client-state\"",
+            "runOverviewQuery",
+            "writeOverviewQueryPayload"
+          ]
+        },
+        {
+          "file": "src/features/overview/hooks/query.ts",
+          "includes": [
+            "notificationStateQuery = useQuery",
+            "OVERVIEW_NOTIFICATION_STATE_QUERY_KEY",
+            "systemService.getNotificationClientState()",
+            "runOverviewQuery"
+          ]
+        },
+        {
+          "file": "src/features/overview/hooks/page.ts",
+          "includes": [
+            "NotificationClientStatePayload",
+            "module.notificationStateQuery.data",
+            "void notificationState"
+          ]
+        },
+        {
+          "file": "src/features/tray-shell/types/index.ts",
+          "includes": [
+            "TrayShellNotificationEnvelope",
+            "CoreEnvelope<NotificationClientStatePayload>",
+            "TrayShellCachePayload = TrayShellNotificationEnvelope",
+            "titleKey: \"trayShell.notificationClient\""
+          ]
+        },
+        {
+          "file": "src/features/tray-shell/cache/index.ts",
+          "includes": [
+            "createModuleCacheOwner<TrayShellCachePayload>(\"tray-shell\")",
+            "TRAY_SHELL_NOTIFICATION_CLIENT_QUERY_KEY",
+            "\"notification-client\"",
+            "runTrayShellQuery"
+          ]
+        },
+        {
+          "file": "src/features/tray-shell/hooks/query.ts",
+          "includes": [
+            "useTrayShellNotificationQuery",
+            "TRAY_SHELL_NOTIFICATION_CLIENT_QUERY_KEY",
+            "systemService.getNotificationClientState()",
+            "runTrayShellQuery"
+          ]
+        },
+        {
+          "file": "src/features/tray-shell/hooks/page.ts",
+          "includes": [
+            "useTrayShellNotificationQuery",
+            "NotificationClientStatePayload",
+            "selectTrayShellReady(notification)",
+            "titleKey: \"trayShell.notificationClient\""
+          ]
+        },
+        {
+          "file": "src/features/tray-shell/hooks/mutation.ts",
+          "includes": [
+            "useTrayShellFocusMainWindowMutation",
+            "systemService.focusMainWindow()",
+            "prepareTrayShellCommandAckFence(queryClient)",
+            "invalidateTrayShellCommandAckFence(queryClient)"
+          ]
+        },
+        {
+          "file": "src/features/tray-shell/utils/index.ts",
+          "includes": [
+            "selectTrayShellClient",
+            "NotificationClientStatePayload",
+            "value?.deviceId",
+            "selectTrayShellReady"
+          ]
+        },
+        {
+          "file": "src/contracts/ipc/commands.ts",
+          "includes": [
+            "\"domain\": \"system\"",
+            "\"command\": \"get_notification_client_state\"",
+            "\"getNotificationClientState\"",
+            "\"argKeys\": []"
+          ]
+        },
+        {
+          "file": "src/mocks/fixtures/commands.ts",
+          "includes": [
+            "NotificationClientStatePayload",
+            "const notificationClientStateHandler",
+            "notificationsSince: 0",
+            "get_notification_client_state: notificationClientStateHandler"
+          ]
+        },
+        {
+          "file": "scripts/validate-e2e-mocks.mjs",
+          "includes": [
+            "validateOverviewMockPayloadHandlers",
+            "[\"get_notification_client_state\", \"notificationClientStateHandler\"]",
+            "NotificationClientStatePayload",
+            "overview 专用 handler"
+          ]
+        }
+      ],
+      "nonClaims": [
+        "不修改 raw/internal 证据。",
+        "不声明 gate_accepted、implementation_use、full_leaf 或 full_leaf_100 已完成。",
+        "不声明通知客户端运行时、远端推送订阅、通知轮询、后台 watcher、Tauri event、托盘通知或平台通知能力恢复。",
+        "不新增 voice 入口。",
+        "不把 mock handler 当真实后端行为。"
+      ],
+      "reason": "本 closeout 是 get_notification_client_state 前端调用链当前源码部分收口：当前公开源码可验证 system service、overview、tray-shell、IPC contract、mock handler 和 E2E mock validator 链路；它不修改 raw/internal 证据，不声明通知运行时、远端推送订阅、轮询、后台 watcher、Tauri event、托盘通知或平台通知能力恢复，不新增 voice 入口，也不把 mock handler 当真实后端行为。"
+    },
+    {
       "id": "custom-instructions-frontend-current-source-chain",
       "module": "custom-instructions",
       "status": "current-source-closed-partial",

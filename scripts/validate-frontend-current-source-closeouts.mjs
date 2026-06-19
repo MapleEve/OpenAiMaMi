@@ -355,6 +355,163 @@ const DAEMON_AUTOSWITCH_CURRENT_SOURCE_SIGNAL_FILES = [
   "src/mocks/fixtures/commands.ts",
   "src/contracts/ipc/commands.ts",
 ];
+const NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_CLOSEOUT_ID =
+  "notification-client-state-current-source-frontend-chain";
+const NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/notification-client-state-current-source-map.md";
+const NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_COMMANDS = [
+  "get_notification_client_state",
+];
+const NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "currentSourceMap",
+  "currentSourceCommands",
+  "requiredSourceSignals",
+  "nonClaims",
+  "reason",
+];
+const NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_REQUIRED_SIGNALS = [
+  {
+    file: NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_MAP,
+    includes: [
+      "get_notification_client_state current-source 证据映射",
+      "`get_notification_client_state`",
+      "不声明 `gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成",
+      "不声明通知客户端运行时、推送订阅、轮询、后台 watcher、Tauri event、托盘通知或平台通知能力已经恢复",
+      "不碰 `voice`",
+    ],
+  },
+  {
+    file: "src/services/system/index.ts",
+    includes: [
+      "getNotificationClientState: () =>",
+      "invokeIpc<CoreEnvelope<NotificationClientStatePayload>>(",
+      "\"get_notification_client_state\"",
+    ],
+  },
+  {
+    file: "src/features/overview/types/index.ts",
+    includes: [
+      "NotificationClientStatePayload",
+      "OverviewNotificationEnvelope",
+      "notificationStateQuery: OverviewNotificationQuery",
+      "id: \"notification-state\"",
+    ],
+  },
+  {
+    file: "src/features/overview/cache/index.ts",
+    includes: [
+      "OVERVIEW_NOTIFICATION_STATE_QUERY_KEY",
+      "\"notification-client-state\"",
+      "runOverviewQuery",
+      "writeOverviewQueryPayload",
+    ],
+  },
+  {
+    file: "src/features/overview/hooks/query.ts",
+    includes: [
+      "notificationStateQuery = useQuery",
+      "OVERVIEW_NOTIFICATION_STATE_QUERY_KEY",
+      "systemService.getNotificationClientState()",
+      "runOverviewQuery",
+    ],
+  },
+  {
+    file: "src/features/overview/hooks/page.ts",
+    includes: [
+      "NotificationClientStatePayload",
+      "module.notificationStateQuery.data",
+      "void notificationState",
+    ],
+  },
+  {
+    file: "src/features/tray-shell/types/index.ts",
+    includes: [
+      "TrayShellNotificationEnvelope",
+      "CoreEnvelope<NotificationClientStatePayload>",
+      "TrayShellCachePayload = TrayShellNotificationEnvelope",
+      "titleKey: \"trayShell.notificationClient\"",
+    ],
+  },
+  {
+    file: "src/features/tray-shell/cache/index.ts",
+    includes: [
+      "createModuleCacheOwner<TrayShellCachePayload>(\"tray-shell\")",
+      "TRAY_SHELL_NOTIFICATION_CLIENT_QUERY_KEY",
+      "\"notification-client\"",
+      "runTrayShellQuery",
+    ],
+  },
+  {
+    file: "src/features/tray-shell/hooks/query.ts",
+    includes: [
+      "useTrayShellNotificationQuery",
+      "TRAY_SHELL_NOTIFICATION_CLIENT_QUERY_KEY",
+      "systemService.getNotificationClientState()",
+      "runTrayShellQuery",
+    ],
+  },
+  {
+    file: "src/features/tray-shell/hooks/page.ts",
+    includes: [
+      "useTrayShellNotificationQuery",
+      "NotificationClientStatePayload",
+      "selectTrayShellReady(notification)",
+      "titleKey: \"trayShell.notificationClient\"",
+    ],
+  },
+  {
+    file: "src/features/tray-shell/hooks/mutation.ts",
+    includes: [
+      "useTrayShellFocusMainWindowMutation",
+      "systemService.focusMainWindow()",
+      "prepareTrayShellCommandAckFence(queryClient)",
+      "invalidateTrayShellCommandAckFence(queryClient)",
+    ],
+  },
+  {
+    file: "src/features/tray-shell/utils/index.ts",
+    includes: [
+      "selectTrayShellClient",
+      "NotificationClientStatePayload",
+      "value?.deviceId",
+      "selectTrayShellReady",
+    ],
+  },
+  {
+    file: "src/contracts/ipc/commands.ts",
+    includes: [
+      "\"domain\": \"system\"",
+      "\"command\": \"get_notification_client_state\"",
+      "\"getNotificationClientState\"",
+      "\"argKeys\": []",
+    ],
+  },
+  {
+    file: "src/mocks/fixtures/commands.ts",
+    includes: [
+      "NotificationClientStatePayload",
+      "const notificationClientStateHandler",
+      "notificationsSince: 0",
+      "get_notification_client_state: notificationClientStateHandler",
+    ],
+  },
+  {
+    file: "scripts/validate-e2e-mocks.mjs",
+    includes: [
+      "validateOverviewMockPayloadHandlers",
+      "[\"get_notification_client_state\", \"notificationClientStateHandler\"]",
+      "NotificationClientStatePayload",
+      "overview 专用 handler",
+    ],
+  },
+];
+const NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_SIGNAL_FILES =
+  NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_REQUIRED_SIGNALS.map(
+    (signal) => signal.file,
+  );
 const CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_CLOSEOUT_ID =
   "custom-instructions-frontend-current-source-chain";
 const CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_MAP =
@@ -1945,6 +2102,97 @@ function validateCustomInstructionsFrontendCurrentSourceCloseout(closeout) {
   validateRequiredSignals(closeout);
 }
 
+function validateNotificationClientStateFrontendCurrentSourceCloseout(closeout) {
+  validateAllowedCloseoutFields(
+    closeout,
+    NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_ALLOWED_FIELDS,
+  );
+  if (closeout.module !== "notification-client-state") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+  if (
+    closeout.currentSourceMap !==
+    NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_MAP
+  ) {
+    failures.push(`${closeout.id} currentSourceMap=${String(closeout.currentSourceMap)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} currentSourceCommands`,
+    closeout.currentSourceCommands ?? [],
+    NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_COMMANDS,
+  );
+  validateStringArraySet(
+    `${closeout.id} requiredSourceSignals files`,
+    (closeout.requiredSourceSignals ?? []).map((signal) => signal.file),
+    NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_SIGNAL_FILES,
+  );
+
+  for (const forbiddenField of [
+    "gateReports",
+    "sidecarReports",
+    "closedGateReportFailures",
+    "closedManifestStatuses",
+    "closedCommands",
+    "closedFrontendDocs",
+    "rawAcceptance",
+    "backendBoundaryNotes",
+  ]) {
+    if (Object.prototype.hasOwnProperty.call(closeout, forbiddenField)) {
+      failures.push(`${closeout.id} 不允许登记 ${forbiddenField}；本条只验证当前前端源码调用链`);
+    }
+  }
+
+  const signalsByFile = new Map(
+    (closeout.requiredSourceSignals ?? []).map((signal) => [signal.file, signal]),
+  );
+  for (const expected of NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_REQUIRED_SIGNALS) {
+    const actual = signalsByFile.get(expected.file);
+    if (!actual) {
+      failures.push(`${closeout.id} 缺少 requiredSourceSignals 文件：${expected.file}`);
+      continue;
+    }
+    for (const snippet of expected.includes) {
+      if (!(actual.includes ?? []).includes(snippet)) {
+        failures.push(`${closeout.id} ${expected.file} 缺少 source signal：${snippet}`);
+      }
+    }
+    requireIncludes(expected.file, expected.includes);
+  }
+
+  const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
+  for (const required of [
+    "不修改 raw/internal 证据",
+    "不声明 gate_accepted、implementation_use、full_leaf 或 full_leaf_100 已完成",
+    "不声明通知客户端运行时、远端推送订阅、通知轮询、后台 watcher、Tauri event、托盘通知或平台通知能力恢复",
+    "不新增 voice 入口",
+    "不把 mock handler 当真实后端行为",
+  ]) {
+    if (!nonClaimsText.includes(required)) {
+      failures.push(`${closeout.id} nonClaims 缺少声明：${required}`);
+    }
+  }
+
+  const reason = closeout.reason ?? "";
+  for (const required of [
+    "当前源码部分收口",
+    "get_notification_client_state",
+    "system service、overview、tray-shell、IPC contract、mock handler 和 E2E mock validator",
+    "不声明通知运行时",
+    "不新增 voice",
+    "不把 mock handler 当真实后端行为",
+  ]) {
+    if (!reason.includes(required)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${required}`);
+    }
+  }
+
+  validateRequiredSignals(closeout);
+}
+
 function validateAccountsSessionsFrontendCurrentSourceCloseout(closeout) {
   validateAllowedCloseoutFields(
     closeout,
@@ -3254,6 +3502,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateSystemUsageCurrentSourceCloseout(closeout);
   } else if (closeout.id === DAEMON_AUTOSWITCH_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateDaemonAutoswitchCurrentSourceCloseout(closeout);
+  } else if (closeout.id === NOTIFICATION_CLIENT_STATE_FRONTEND_CURRENT_SOURCE_CLOSEOUT_ID) {
+    validateNotificationClientStateFrontendCurrentSourceCloseout(closeout);
   } else if (closeout.id === ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateAccountsSessionsFrontendCurrentSourceCloseout(closeout);
   } else if (closeout.id === CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_CLOSEOUT_ID) {
