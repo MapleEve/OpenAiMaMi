@@ -23,6 +23,7 @@ const validators = [
   ["validate-frontend-system-hotspot-current-source.mjs"],
   ["validate-frontend-mcp-skills-current-source.mjs"],
   ["validate-frontend-daemon-autoswitch-current-source.mjs"],
+  ["validate-frontend-custom-instructions-current-source.mjs"],
   ["validate-frontend-daemon-autoswitch-cache.mjs"],
   ["validate-frontend-plugins-cache.mjs"],
   ["validate-frontend-mcp-cache.mjs"],

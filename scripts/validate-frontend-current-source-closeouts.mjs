@@ -341,6 +341,45 @@ const DAEMON_AUTOSWITCH_CURRENT_SOURCE_SIGNAL_FILES = [
   "src/mocks/fixtures/commands.ts",
   "src/contracts/ipc/commands.ts",
 ];
+const CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_CLOSEOUT_ID =
+  "custom-instructions-frontend-current-source-chain";
+const CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/custom-instructions-frontend-current-source-map.md";
+const CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_COMMANDS = [
+  "load_custom_instruction_state",
+  "preview_custom_instruction_apply",
+  "apply_custom_instruction",
+  "clear_custom_instruction_block",
+  "rollback_custom_instruction",
+];
+const CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "currentSourceMap",
+  "currentSourceCommands",
+  "requiredSourceSignals",
+  "nonClaims",
+  "reason",
+];
+const CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_SIGNAL_FILES = [
+  CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_MAP,
+  "src/restoration/frontend-manifest/index.ts",
+  "src/routes/registry/registry.tsx",
+  "src/routes/desktop/main/custom-instructions/page.tsx",
+  "src/features/custom-instructions/index.ts",
+  "src/features/custom-instructions/Content.tsx",
+  "src/services/custom-instructions/index.ts",
+  "src/features/custom-instructions/hooks/query.ts",
+  "src/features/custom-instructions/hooks/mutation.ts",
+  "src/features/custom-instructions/cache/index.ts",
+  "src/features/custom-instructions/hooks/page.ts",
+  "src/features/custom-instructions/dialogs/apply.tsx",
+  "src/features/custom-instructions/dialogs/clear.tsx",
+  "src/features/custom-instructions/panels/configure.tsx",
+  "src/mocks/fixtures/commands.ts",
+  "src/contracts/ipc/commands.ts",
+];
 const MYSTERY_UNLOCK_GRANTS_CLOSEOUT_ID =
   "mystery-unlock-grants-current-source-chain";
 const MYSTERY_UNLOCK_GRANTS_SIDECAR =
@@ -1713,6 +1752,93 @@ function validateDaemonAutoswitchCurrentSourceCloseout(closeout) {
   validateRequiredSignals(closeout);
 }
 
+function validateCustomInstructionsFrontendCurrentSourceCloseout(closeout) {
+  validateAllowedCloseoutFields(
+    closeout,
+    CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_ALLOWED_FIELDS,
+  );
+  if (closeout.module !== "custom-instructions") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+  if (closeout.currentSourceMap !== CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_MAP) {
+    failures.push(`${closeout.id} currentSourceMap=${String(closeout.currentSourceMap)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} currentSourceCommands`,
+    closeout.currentSourceCommands ?? [],
+    CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_COMMANDS,
+  );
+  validateStringArraySet(
+    `${closeout.id} requiredSourceSignals files`,
+    (closeout.requiredSourceSignals ?? []).map((signal) => signal.file),
+    CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_SIGNAL_FILES,
+  );
+
+  for (const forbiddenField of [
+    "gateReports",
+    "sidecarReports",
+    "closedGateReportFailures",
+    "closedManifestStatuses",
+    "closedCommands",
+    "closedFrontendDocs",
+    "rawAcceptance",
+    "backendBoundaryNotes",
+  ]) {
+    if (Object.prototype.hasOwnProperty.call(closeout, forbiddenField)) {
+      failures.push(`${closeout.id} 不允许登记 ${forbiddenField}；本条只验证当前前端源码链路`);
+    }
+  }
+
+  const mapText = existsSync(repoPath(CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_MAP))
+    ? readText(repoPath(CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_MAP))
+    : "";
+  for (const required of [
+    "custom-instructions 前端 current-source 证据映射",
+    "load_custom_instruction_state",
+    "preview_custom_instruction_apply",
+    "apply_custom_instruction",
+    "clear_custom_instruction_block",
+    "rollback_custom_instruction",
+    "不声明 `gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成",
+    "不碰 `voice`",
+  ]) {
+    if (!mapText.includes(required)) {
+      failures.push(`${CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_MAP} 缺少说明片段：${required}`);
+    }
+  }
+
+  const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
+  for (const required of [
+    "不修改 raw/internal 证据",
+    "不声明 gate_accepted、implementation_use、full_leaf 或 full_leaf_100 已完成",
+    "不声明双平台全 leaf、全文案验收或闭源业务完整恢复",
+    "不新增 route、sidebar、header、tray、settings 或 voice 入口",
+    "不把 mock handler 等同真实后端行为",
+  ]) {
+    if (!nonClaimsText.includes(required)) {
+      failures.push(`${closeout.id} nonClaims 缺少声明：${required}`);
+    }
+  }
+
+  const reason = closeout.reason ?? "";
+  for (const required of [
+    "当前源码部分收口",
+    "route、service、query、mutation、cache、dialog、panel、mock 和 IPC contract",
+    "不处理 voice",
+    "不声明 full_leaf_100",
+  ]) {
+    if (!reason.includes(required)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${required}`);
+    }
+  }
+
+  validateRequiredSignals(closeout);
+}
+
 function validateMysteryUnlockGrantsCloseout(closeout) {
   validateAllowedCloseoutFields(closeout, MYSTERY_UNLOCK_GRANTS_ALLOWED_FIELDS);
   if (closeout.module !== "mystery-unlock-grants") {
@@ -2773,6 +2899,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateSystemUsageCurrentSourceCloseout(closeout);
   } else if (closeout.id === DAEMON_AUTOSWITCH_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateDaemonAutoswitchCurrentSourceCloseout(closeout);
+  } else if (closeout.id === CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_CLOSEOUT_ID) {
+    validateCustomInstructionsFrontendCurrentSourceCloseout(closeout);
   } else if (closeout.id === MYSTERY_UNLOCK_GRANTS_CLOSEOUT_ID) {
     validateMysteryUnlockGrantsCloseout(closeout);
   } else if (closeout.id === BOOTSTRAP_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID) {

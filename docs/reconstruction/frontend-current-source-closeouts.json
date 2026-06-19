@@ -3681,6 +3681,183 @@
         "不把 mock handler 等同真实后端行为。"
       ],
       "reason": "本 closeout 是 daemon-autoswitch 待确认自动切换的当前源码部分收口：当前公开源码可验证 system service、daemon-autoswitch service facade、query/mutation/cache/runtime subscription、prompt host、mock handlers 和 IPC contracts 的前端链路；它不修改 raw/internal 证据，不处理 voice，不声明真实后端待确认队列、真实账号切换、真实重启或真实 watcher 已恢复。"
+    },
+    {
+      "id": "custom-instructions-frontend-current-source-chain",
+      "module": "custom-instructions",
+      "status": "current-source-closed-partial",
+      "currentSourceMap": "docs/reconstruction/custom-instructions-frontend-current-source-map.md",
+      "currentSourceCommands": [
+        "load_custom_instruction_state",
+        "preview_custom_instruction_apply",
+        "apply_custom_instruction",
+        "clear_custom_instruction_block",
+        "rollback_custom_instruction"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "docs/reconstruction/custom-instructions-frontend-current-source-map.md",
+          "includes": [
+            "custom-instructions 前端 current-source 证据映射",
+            "load_custom_instruction_state",
+            "preview_custom_instruction_apply",
+            "apply_custom_instruction",
+            "clear_custom_instruction_block",
+            "rollback_custom_instruction",
+            "不声明 `gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成",
+            "不碰 `voice`"
+          ]
+        },
+        {
+          "file": "src/restoration/frontend-manifest/index.ts",
+          "includes": [
+            "owner: \"custom-instructions\"",
+            "status: \"covered\"",
+            "load_custom_instruction_state",
+            "preview_custom_instruction_apply",
+            "apply_custom_instruction",
+            "clear_custom_instruction_block",
+            "rollback_custom_instruction",
+            "feature: \"src/features/custom-instructions/hooks/index.ts\"",
+            "cache: \"src/features/custom-instructions/cache/index.ts\"",
+            "surface: \"src/features/custom-instructions/panels/index.ts\""
+          ]
+        },
+        {
+          "file": "src/routes/registry/registry.tsx",
+          "includes": [
+            "route: \"custom-instructions\"",
+            "import(\"@/routes/desktop/main/custom-instructions/page\")",
+            "[\"custom-instructions\", \"state\"]",
+            "render: () => <CustomInstructionsRoute />"
+          ]
+        },
+        {
+          "file": "src/routes/desktop/main/custom-instructions/page.tsx",
+          "includes": [
+            "CustomInstructionsFeature",
+            "CustomInstructionsRoute"
+          ]
+        },
+        {
+          "file": "src/features/custom-instructions/index.ts",
+          "includes": [
+            "CustomInstructionsProvider",
+            "CustomInstructionsContent"
+          ]
+        },
+        {
+          "file": "src/features/custom-instructions/Content.tsx",
+          "includes": [
+            "DUMPED_CUSTOM_INSTRUCTIONS_COMMANDS",
+            "moduleId=\"custom-instructions\"",
+            "<CustomInstructionsPage />"
+          ]
+        },
+        {
+          "file": "src/services/custom-instructions/index.ts",
+          "includes": [
+            "customInstructionsService",
+            "\"load_custom_instruction_state\"",
+            "\"preview_custom_instruction_apply\"",
+            "\"apply_custom_instruction\"",
+            "\"clear_custom_instruction_block\"",
+            "\"rollback_custom_instruction\"",
+            "openPath: systemService.openPath"
+          ]
+        },
+        {
+          "file": "src/features/custom-instructions/hooks/query.ts",
+          "includes": [
+            "CUSTOM_INSTRUCTION_STATE_QUERY_KEY",
+            "customInstructionsService.loadState()",
+            "runCustomInstructionsStateQuery"
+          ]
+        },
+        {
+          "file": "src/features/custom-instructions/hooks/mutation.ts",
+          "includes": [
+            "customInstructionsService.apply",
+            "customInstructionsService.clearBlock",
+            "customInstructionsService.rollback",
+            "prepareCustomInstructionsMutation",
+            "writeCustomInstructionsStateMutationPayload"
+          ]
+        },
+        {
+          "file": "src/features/custom-instructions/cache/index.ts",
+          "includes": [
+            "createModuleCacheOwner<CustomInstructionsCachePayload>(\"custom-instructions\")",
+            "CUSTOM_INSTRUCTION_STATE_QUERY_KEY",
+            "customInstructionsMutationFenceSequence",
+            "writeCustomInstructionsStateMutationPayload"
+          ]
+        },
+        {
+          "file": "src/features/custom-instructions/hooks/page.ts",
+          "includes": [
+            "useCustomInstructionQueries",
+            "useCustomInstructionMutations",
+            "toast({",
+            "previewMutation.mutate",
+            "applyMutation.mutate"
+          ]
+        },
+        {
+          "file": "src/features/custom-instructions/dialogs/apply.tsx",
+          "includes": [
+            "CustomInstructionsPreviewApplyDialog",
+            "customInstructions.previewTitle",
+            "customInstructions.confirmApply"
+          ]
+        },
+        {
+          "file": "src/features/custom-instructions/dialogs/clear.tsx",
+          "includes": [
+            "CustomInstructionsClearManagedBlockDialog",
+            "customInstructions.clearConfirmTitle",
+            "customInstructions.clearManagedBlock"
+          ]
+        },
+        {
+          "file": "src/features/custom-instructions/panels/configure.tsx",
+          "includes": [
+            "CustomInstructionsCurrentStatusPanel",
+            "CustomInstructionsEditorPanel",
+            "CustomInstructionsHistoryPanel"
+          ]
+        },
+        {
+          "file": "src/mocks/fixtures/commands.ts",
+          "includes": [
+            "const customInstructionsCommandHandlers",
+            "apply_custom_instruction: applyCustomInstructionHandler",
+            "clear_custom_instruction_block: clearCustomInstructionBlockHandler",
+            "load_custom_instruction_state: loadCustomInstructionStateHandler",
+            "preview_custom_instruction_apply: previewCustomInstructionApplyHandler",
+            "rollback_custom_instruction: rollbackCustomInstructionHandler"
+          ]
+        },
+        {
+          "file": "src/contracts/ipc/commands.ts",
+          "includes": [
+            "\"domain\": \"custom-instructions\"",
+            "\"command\": \"load_custom_instruction_state\"",
+            "\"command\": \"preview_custom_instruction_apply\"",
+            "\"command\": \"apply_custom_instruction\"",
+            "\"command\": \"clear_custom_instruction_block\"",
+            "\"command\": \"rollback_custom_instruction\""
+          ]
+        }
+      ],
+      "nonClaims": [
+        "不修改 raw/internal 证据。",
+        "不声明 gate_accepted、implementation_use、full_leaf 或 full_leaf_100 已完成。",
+        "不声明双平台全 leaf、全文案验收或闭源业务完整恢复。",
+        "不新增 route、sidebar、header、tray、settings 或 voice 入口。",
+        "不把 mock handler 等同真实后端行为。"
+      ],
+      "reason": "本 closeout 是 custom-instructions 前端当前源码部分收口：当前公开源码可验证 route、service、query、mutation、cache、dialog、panel、mock 和 IPC contract 链路；它不修改 raw/internal 证据，不处理 voice，不声明 full_leaf_100，也不声明双平台全 leaf、全文案验收或闭源业务完整恢复。"
     }
   ]
 }
