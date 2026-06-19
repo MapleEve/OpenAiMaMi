@@ -1,32 +1,34 @@
 # OpenAiMami
 
-OpenAiMami 是面向个人本地工作流的桌面应用公开重建仓库。本仓库不记录逐条提交进度，而是把匿名化证据、可审计架构骨架、已开放能力和验证口径放在同一条链路中，支持个人长期迭代，也让使用者和贡献者用得更放心，降低隐私泄露、越界还原和无证据实现的风险。
+OpenAiMami 是面向个人本地工作流的桌面应用公开重建仓库。本仓库不按提交追加逐条进度，而是把匿名化证据、架构边界、已开放能力、未完成范围和验收入口固定在同一条可审计链路中。
 
-项目使用 [Apache License](LICENSE) 许可。欢迎基于公开证据提交完整还原 PR 或证据修正 PR。
-
-## 项目定位
-
-- 前端以全量还原为目标：按仓库内 `raw/internal` 证据逐步补齐入口、路由、运行时、服务门面、缓存、弹窗、面板、组件、类型、测试和文档。
-- 后端是六边形架构骨架：开源已有能力纳入六边形骨架，闭源业务不做全量还原；后端不是“无后端”，但无公开证据支撑的业务行为只能保留合同、接口、DTO、错误语义、测试缺口和待补证据位置。
-- `voice` 只描述为空骨架、无入口、不阻塞；不写成已完成业务，不接入启动链路、路由、IPC mock 或后端命令。
-- README 每次提交都要同步，但只更新归纳状态、范围边界和稳定验证入口，不按日期、提交或临时修补记录进度。
+项目使用 [Apache License](LICENSE) 许可。欢迎基于公开证据提交完整还原 PR、证据修正 PR 和验证脚本修正 PR。
 
 ## 为什么公开
 
-1. 个人迭代：把证据、代码、文档和验证脚本放在同一条可追踪链路里，后续继续迭代时先看证据，再看实现。
-2. Apache License：明确使用、审查、再分发和二次开发的许可边界。
+1. 个人迭代：把证据、代码、文档和验证脚本放在同一条可追溯链路里，后续继续迭代时先看证据，再看实现。
+2. Apache License 许可：明确使用、审查、再分发和二次开发的许可边界。
 3. 用得更放心：公开内容必须经过匿名化和验证，使用者可以检查实现是否来自仓库内证据链，从而降低隐私泄露、越界还原和无证据实现的风险。
+
+## 范围边界
+
+- 前端目标是全量还原：按仓库内 `raw/internal` 证据逐步补齐入口、路由、运行时、服务门面、缓存、弹窗、面板、组件、类型、测试和文档。
+- 后端目标是六边形架构骨架：开源已有能力和公开证据支撑能力纳入 `commands`、`application/usecase`、`core`、`repository`、`platform`、`adapters`、`contracts`；闭源业务不做全量还原。
+- `voice` 只保留空骨架、合同清单和中文边界说明；不给入口，不接入路由、启动链路、IPC mock 或后端命令，不阻塞其他模块。
+- LFS/IDB 独立称为 `OpenAiMami IDB`，只能作为可选辅助核对材料，不混入主源代码仓库，也不能替代公开 `raw/internal` 证据链。
+- 没有公开证据支撑的业务行为，只能写成合同、接口、DTO、错误语义、测试缺口、待补证据位置或可替换骨架，不能写成真实业务逻辑。
 
 ## 仓库内容
 
-| 路径或材料 | 说明 |
+| 路径或材料 | 用途 |
 | --- | --- |
-| 证据 | `evidence/full-chain/raw/`、`evidence/full-chain/internal/` 和 `evidence/binary-manifests/` 只保存匿名化、可审计入口。 |
-| 文档 | `docs/reconstruction/` 保存重建规则、原文决策、source map、发布规则和大文件策略。 |
-| 源码 | `src/` 保存前端模块化还原内容，`src-tauri/` 保存 Tauri / Rust 后端六边形骨架。 |
-| 许可 | `LICENSE` 保存 Apache License 许可文本。 |
-
-LFS/IDB 独立称为 `OpenAiMami IDB`，只能作为可选辅助核对材料，不混入主源代码仓库，也不能替代公开 `raw/internal` 证据链。
+| `evidence/full-chain/raw/` | 匿名化原始证据链。 |
+| `evidence/full-chain/internal/` | 匿名化内部结构、门禁和还原线索。 |
+| `evidence/binary-manifests/` | 二进制清单和可核对入口。 |
+| `docs/reconstruction/` | 重建规则、原文决策、source map、发布规则和大文件策略。 |
+| `src/` | 前端模块化还原内容。 |
+| `src-tauri/` | Tauri / Rust 后端六边形骨架和已纳入能力。 |
+| `scripts/` | 公开边界、前端、后端、构建面和聚合验证脚本。 |
 
 ## 重建流程
 
@@ -41,14 +43,18 @@ LFS/IDB 独立称为 `OpenAiMami IDB`，只能作为可选辅助核对材料，�
 
 | 领域 | 已做 | 没做或边界 | 怎么验收 |
 | --- | --- | --- | --- |
-| 公开材料 | Apache License、中文说明、匿名化 `raw/internal` 主链路、重建文档、证据入口和二进制清单已经进入仓库。 | 不公开设备标识、个人目录、会话、令牌、账号私密值、未审查采集材料、未匿名化内容、IDB、压缩包或安装包。 | `npm run validate:public-boundary` |
-| 前端 | 目标是全量还原；当前入口、Provider、路由、运行时、服务门面、缓存、i18n、E2E mock 合同和模块 owner 已按公开证据归位，custom-instructions 用户动作 mock 已纳入验收，细节收口到 `docs/reconstruction/source-map.md`。 | 不声明双平台、全叶子节点或全部文案已经百分百完成；没有公开证据、收口记录和验证器支撑的内容不能写成已完成。 | `npm run validate:frontend`、相关 `validate:frontend-*`、`npm run validate:build-surface` |
-| 后端 | 目标是六边形架构骨架；当前 commands、application/usecase、core、repository、platform、adapters、contracts 已归位，开源已有能力和证据支撑能力逐步纳入骨架。 | 不做闭源业务全量还原；不声明动态插件执行、真实平台副作用、外部进程、市场安装、真实网络重试、完整服务启动或 `voice` 集成已经完成。 | `npm run validate:backend`；Rust 完整编译/测试环境用 `npm run validate:backend-cargo` 单独检查 |
-| voice | 只保留空骨架、合同清单和中文边界说明。 | 不给入口，不接入路由、启动链路、IPC mock 或后端命令，不阻塞其它模块。 | 确认路由、启动链路、IPC mock 和后端命令没有接入 `voice`。 |
-| 验收 | 公开边界、前端聚合、后端聚合、构建面、i18n、E2E mock、cache 竞态和归属边界验证器都有脚本入口。 | Rust 完整编译和测试依赖本地 Rust/MSVC 或目标平台工具链；缺少 `link.exe` 属于环境限制，不等同于源码失败。 | `npm run validate:all`；构建面用 `npm run validate:build-surface`；Rust 环境用 `npm run validate:backend-cargo`。 |
+| 公开材料 | Apache License、中文说明、匿名化 `raw/internal` 主链路、重建文档、证据入口和二进制清单已进入仓库。 | 不公开设备标识、个人目录、会话、令牌、账号私密值、未审查采集材料、未匿名化内容、IDB、压缩包或安装包。 | `npm run validate:public-boundary` |
+| 前端 | 入口、Provider、路由、运行时、服务门面、缓存、i18n、E2E mock 合同和模块 owner 已按公开证据归位；模块细节收口到 source map 和验证脚本。 | 不在 README 声明双平台、全叶子节点或全部文案已经 100% 完成；没有证据、收口记录和验证器支撑的内容不写成已完成。 | `npm run validate:frontend` |
+| 后端 | 六边形目录、命令适配、用例层、核心层、仓储层、平台层、适配器、合同和 DTO 边界已归位；开源已有能力和证据支撑能力逐步纳入骨架。 | 不做闭源业务全量还原；不声明动态插件执行、真实平台副作用、外部进程、市场安装、真实网络重试、完整服务启动或 `voice` 集成已经完成。 | `npm run validate:backend` |
+| voice | 只保留空骨架、合同清单和中文边界说明。 | 不给前端入口，不调用后端能力，不参与启动流程，也不阻塞其他验收。 | 路由、启动链路、IPC mock 和后端命令均不得接入 `voice`。 |
+| 验收 | 公开边界、前端聚合、后端聚合、构建面、i18n、E2E mock、cache 竞争和归属边界都有脚本入口。 | Rust 完整编译和测试依赖本地 Rust/MSVC 或目标平台工具链；缺少 `link.exe` 属于环境限制，不等同于源码失败。 | `npm run validate:all` |
 | 运行闭环 | README 只记录长期有效的源码状态、范围边界和验收入口；具体模块进度放在 reconstruction source map 与验证脚本中。 | 不按提交、日期、局部补丁或零散临时项追加逐条进度记录。 | 每次提交同步 README，但只更新归纳状态和稳定说明。 |
 
-文档口径固定为“已做 / 没做或边界 / 怎么验收”。每次提交都必须同步 README，但只能更新归纳状态、范围边界和稳定验收入口，不再追加逐条进度记录。
+## README 更新规则
+
+文档口径固定为“已做 / 没做或边界 / 怎么验收”。README 只记录长期有效的归纳状态、范围边界和稳定验收入口。具体模块进度、临时修补、证据细节和逐项完成记录放到 `docs/reconstruction/source-map.md`、对应重建文档和验证脚本中，不再追加到 README。
+
+每次提交仍要同步 `README.md` 和 `README-cn.md`，但更新内容必须回答三个问题：做了什么归类、还没有做什么或边界是什么、怎么验收。
 
 ## 验收入口
 
@@ -78,7 +84,7 @@ LFS/IDB 独立称为 `OpenAiMami IDB`，只能作为可选辅助核对材料，�
 
 后端按 commands、application/usecase、core、platform、repository、adapters、contracts 六边形边界补齐已经开源过或公开证据支撑的能力；闭源业务不做全量还原。无公开证据支撑的行为只能写成合同、骨架、待实现项、测试缺口或可替换接口。
 
-voice 只保留空骨架、合同清单和中文边界说明；它不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其它验收。
+voice 只保留空骨架、合同清单和中文边界说明；它不作为前端入口，不调用后端能力，不参与启动流程，也不能阻塞其他验收。
 ```
 
 ## PR 规则
