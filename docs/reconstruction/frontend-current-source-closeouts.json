@@ -3683,6 +3683,282 @@
       "reason": "本 closeout 是 daemon-autoswitch 待确认自动切换的当前源码部分收口：当前公开源码可验证 system service、daemon-autoswitch service facade、query/mutation/cache/runtime subscription、prompt host、mock handlers 和 IPC contracts 的前端链路；它不修改 raw/internal 证据，不处理 voice，不声明真实后端待确认队列、真实账号切换、真实重启或真实 watcher 已恢复。"
     },
     {
+      "id": "accounts-sessions-frontend-current-source-chain",
+      "module": "accounts-sessions",
+      "status": "current-source-closed-partial",
+      "currentSourceMap": "docs/reconstruction/accounts-sessions-frontend-current-source-map.md",
+      "currentSourceCommands": [
+        "begin_add_account_attach_monitor",
+        "export_accounts_to_file",
+        "import_accounts_from_file",
+        "logout",
+        "preview_account_import",
+        "remove_accounts",
+        "switch_account",
+        "switch_account_and_restart_codex",
+        "delete_sessions",
+        "import_chatgpt_session_account",
+        "load_session_analytics",
+        "load_sessions"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "docs/reconstruction/accounts-sessions-frontend-current-source-map.md",
+          "includes": [
+            "accounts/sessions 前端 current-source 证据映射",
+            "begin_add_account_attach_monitor",
+            "switch_account_and_restart_codex",
+            "import_chatgpt_session_account",
+            "load_sessions",
+            "不声明 `gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成",
+            "不碰 `voice`"
+          ]
+        },
+        {
+          "file": "src/restoration/frontend-manifest/index.ts",
+          "includes": [
+            "command: \"begin_add_account_attach_monitor\"",
+            "command: \"export_accounts_to_file\"",
+            "command: \"import_accounts_from_file\"",
+            "command: \"switch_account_and_restart_codex\"",
+            "command: \"delete_sessions\"",
+            "command: \"import_chatgpt_session_account\"",
+            "command: \"load_session_analytics\"",
+            "command: \"load_sessions\"",
+            "service: \"src/services/accounts/index.ts\"",
+            "service: \"src/services/sessions/index.ts\""
+          ]
+        },
+        {
+          "file": "src/routes/registry/registry.tsx",
+          "includes": [
+            "route: \"accounts\"",
+            "route: \"sessions\"",
+            "import(\"@/routes/desktop/main/accounts/page\")",
+            "import(\"@/routes/desktop/main/sessions/page\")",
+            "render: () => <AccountsRoute />",
+            "render: () => <SessionsRoute />"
+          ]
+        },
+        {
+          "file": "src/routes/desktop/main/accounts/page.tsx",
+          "includes": [
+            "AccountsFeature",
+            "AccountsRoute"
+          ]
+        },
+        {
+          "file": "src/routes/desktop/main/sessions/page.tsx",
+          "includes": [
+            "SessionsFeature",
+            "SessionsRoute"
+          ]
+        },
+        {
+          "file": "src/features/accounts/index.ts",
+          "includes": [
+            "AccountsProvider",
+            "AccountsContent"
+          ]
+        },
+        {
+          "file": "src/features/accounts/Content.tsx",
+          "includes": [
+            "DUMPED_ACCOUNTS_COMMANDS",
+            "moduleId=\"accounts\"",
+            "<AccountsPage />"
+          ]
+        },
+        {
+          "file": "src/features/sessions/index.ts",
+          "includes": [
+            "SessionsProvider",
+            "SessionsContent"
+          ]
+        },
+        {
+          "file": "src/features/sessions/Content.tsx",
+          "includes": [
+            "DUMPED_SESSIONS_COMMANDS",
+            "moduleId=\"sessions\"",
+            "<SessionsPage />"
+          ]
+        },
+        {
+          "file": "src/services/accounts/index.ts",
+          "includes": [
+            "accountsService",
+            "\"begin_add_account_attach_monitor\"",
+            "\"switch_account\"",
+            "\"switch_account_and_restart_codex\"",
+            "\"remove_accounts\"",
+            "\"logout\"",
+            "\"import_chatgpt_session_account\"",
+            "\"export_accounts_to_file\"",
+            "\"preview_account_import\"",
+            "\"import_accounts_from_file\""
+          ]
+        },
+        {
+          "file": "src/services/sessions/index.ts",
+          "includes": [
+            "sessionsService",
+            "\"load_sessions\"",
+            "\"load_session_analytics\"",
+            "\"delete_sessions\""
+          ]
+        },
+        {
+          "file": "src/features/accounts/hooks/query.ts",
+          "includes": [
+            "AccountsAuthoritativeQueryKeys.snapshot",
+            "accountsService.loadSnapshot(true)",
+            "writeAccountsSnapshotPayload"
+          ]
+        },
+        {
+          "file": "src/features/accounts/hooks/mutation.ts",
+          "includes": [
+            "accountsService.beginAddAccountAttachMonitor()",
+            "accountsService.switchAccount",
+            "accountsService.switchAccountAndRestartCodex",
+            "accountsService.removeAccounts",
+            "accountsService.importChatGptSessionAccount",
+            "writeAccountsMutationPayload"
+          ]
+        },
+        {
+          "file": "src/features/accounts/cache/index.ts",
+          "includes": [
+            "createModuleCacheOwner<AccountsCachePayload>(\"accounts\")",
+            "AccountsDumpedQueryKeys",
+            "writeAccountsMutationPayload",
+            "invalidateAccountsDumpedQueries"
+          ]
+        },
+        {
+          "file": "src/features/accounts/hooks/page.ts",
+          "includes": [
+            "useAccountsModule",
+            "useAccountsPageController",
+            "useAccountsPageMutations",
+            "useAccountsPageQueries"
+          ]
+        },
+        {
+          "file": "src/features/accounts/components/page.tsx",
+          "includes": [
+            "AccountActionDialogs",
+            "AccountsPagePanel",
+            "AddSessionAccountDialog"
+          ]
+        },
+        {
+          "file": "src/features/accounts/dialogs/index.ts",
+          "includes": [
+            "AccountActionDialogs",
+            "AddSessionAccountDialog"
+          ]
+        },
+        {
+          "file": "src/features/accounts/panels/index.ts",
+          "includes": [
+            "AccountActionsPanel",
+            "AccountsPagePanel"
+          ]
+        },
+        {
+          "file": "src/features/sessions/hooks/query.ts",
+          "includes": [
+            "SessionsAuthoritativeQueryKeys.sessions",
+            "sessionsService.loadSessions()",
+            "analyticsService.loadUsageAnalytics()",
+            "writeSessionsListPayload"
+          ]
+        },
+        {
+          "file": "src/features/sessions/hooks/mutation.ts",
+          "includes": [
+            "sessionsService.deleteSessions",
+            "writeSessionsMutationPayload",
+            "invalidateSessionsDumpedQueries",
+            "fenceAnalyticsPanelPayload"
+          ]
+        },
+        {
+          "file": "src/features/sessions/cache/index.ts",
+          "includes": [
+            "createModuleCacheOwner<SessionsCachePayload>(\"sessions\")",
+            "SessionsDumpedQueryKeys",
+            "writeSessionsMutationPayload",
+            "invalidateSessionsDumpedQueries"
+          ]
+        },
+        {
+          "file": "src/features/sessions/hooks/page.ts",
+          "includes": [
+            "useSessionsModule",
+            "useSessionsPageController",
+            "useSessionsPageMutations",
+            "useSessionsPageQueries"
+          ]
+        },
+        {
+          "file": "src/features/sessions/components/page.tsx",
+          "includes": [
+            "SessionsMainPanel",
+            "SessionsDeleteConfirmDialog"
+          ]
+        },
+        {
+          "file": "src/features/sessions/dialogs/index.ts",
+          "includes": [
+            "SessionsDeleteConfirmDialog"
+          ]
+        },
+        {
+          "file": "src/features/sessions/panels/index.ts",
+          "includes": [
+            "SessionsMainPanel",
+            "SessionsTreePanel"
+          ]
+        },
+        {
+          "file": "src/mocks/fixtures/commands.ts",
+          "includes": [
+            "const accountsCommandHandlers",
+            "begin_add_account_attach_monitor: accountMonitorHandler",
+            "switch_account_and_restart_codex: accountSwitchHandler",
+            "const sessionsCommandHandlers",
+            "delete_sessions: deleteSessionsHandler",
+            "import_chatgpt_session_account: accountSessionImportHandler",
+            "load_sessions: loadSessionsHandler"
+          ]
+        },
+        {
+          "file": "src/contracts/ipc/commands.ts",
+          "includes": [
+            "\"domain\": \"accounts\"",
+            "\"command\": \"begin_add_account_attach_monitor\"",
+            "\"command\": \"switch_account_and_restart_codex\"",
+            "\"domain\": \"sessions\"",
+            "\"command\": \"delete_sessions\"",
+            "\"command\": \"import_chatgpt_session_account\"",
+            "\"command\": \"load_sessions\""
+          ]
+        }
+      ],
+      "nonClaims": [
+        "不修改 raw/internal 证据。",
+        "不声明 gate_accepted、implementation_use、full_leaf 或 full_leaf_100 已完成。",
+        "不声明双平台全 leaf、全文案验收或闭源业务完整恢复。",
+        "不声明 ChatGPT session account 导入真实业务已恢复。",
+        "不把 mock handler 等同真实后端行为。",
+        "不碰 voice。"
+      ],
+      "reason": "本 closeout 是 accounts/sessions 前端当前源码部分收口：当前公开源码可验证 accounts 八条 IPC 与 sessions 四条 IPC 的 route、service、query、mutation、cache、dialog、panel、mock 和 IPC contract 链路；它不修改 raw/internal 证据，不处理 voice，不声明 full_leaf_100，也不声明双平台全 leaf、全文案验收、ChatGPT session account 真实导入或闭源业务完整恢复。"
+    },
+    {
       "id": "custom-instructions-frontend-current-source-chain",
       "module": "custom-instructions",
       "status": "current-source-closed-partial",

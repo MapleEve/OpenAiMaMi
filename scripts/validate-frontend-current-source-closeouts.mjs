@@ -380,6 +380,63 @@ const CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_SIGNAL_FILES = [
   "src/mocks/fixtures/commands.ts",
   "src/contracts/ipc/commands.ts",
 ];
+const ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_CLOSEOUT_ID =
+  "accounts-sessions-frontend-current-source-chain";
+const ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/accounts-sessions-frontend-current-source-map.md";
+const ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_COMMANDS = [
+  "begin_add_account_attach_monitor",
+  "export_accounts_to_file",
+  "import_accounts_from_file",
+  "logout",
+  "preview_account_import",
+  "remove_accounts",
+  "switch_account",
+  "switch_account_and_restart_codex",
+  "delete_sessions",
+  "import_chatgpt_session_account",
+  "load_session_analytics",
+  "load_sessions",
+];
+const ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "currentSourceMap",
+  "currentSourceCommands",
+  "requiredSourceSignals",
+  "nonClaims",
+  "reason",
+];
+const ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_SIGNAL_FILES = [
+  ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_MAP,
+  "src/restoration/frontend-manifest/index.ts",
+  "src/routes/registry/registry.tsx",
+  "src/routes/desktop/main/accounts/page.tsx",
+  "src/routes/desktop/main/sessions/page.tsx",
+  "src/features/accounts/index.ts",
+  "src/features/accounts/Content.tsx",
+  "src/features/sessions/index.ts",
+  "src/features/sessions/Content.tsx",
+  "src/services/accounts/index.ts",
+  "src/services/sessions/index.ts",
+  "src/features/accounts/hooks/query.ts",
+  "src/features/accounts/hooks/mutation.ts",
+  "src/features/accounts/cache/index.ts",
+  "src/features/accounts/hooks/page.ts",
+  "src/features/accounts/components/page.tsx",
+  "src/features/accounts/dialogs/index.ts",
+  "src/features/accounts/panels/index.ts",
+  "src/features/sessions/hooks/query.ts",
+  "src/features/sessions/hooks/mutation.ts",
+  "src/features/sessions/cache/index.ts",
+  "src/features/sessions/hooks/page.ts",
+  "src/features/sessions/components/page.tsx",
+  "src/features/sessions/dialogs/index.ts",
+  "src/features/sessions/panels/index.ts",
+  "src/mocks/fixtures/commands.ts",
+  "src/contracts/ipc/commands.ts",
+];
 const MYSTERY_UNLOCK_GRANTS_CLOSEOUT_ID =
   "mystery-unlock-grants-current-source-chain";
 const MYSTERY_UNLOCK_GRANTS_SIDECAR =
@@ -1839,6 +1896,94 @@ function validateCustomInstructionsFrontendCurrentSourceCloseout(closeout) {
   validateRequiredSignals(closeout);
 }
 
+function validateAccountsSessionsFrontendCurrentSourceCloseout(closeout) {
+  validateAllowedCloseoutFields(
+    closeout,
+    ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_ALLOWED_FIELDS,
+  );
+  if (closeout.module !== "accounts-sessions") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+  if (closeout.currentSourceMap !== ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_MAP) {
+    failures.push(`${closeout.id} currentSourceMap=${String(closeout.currentSourceMap)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} currentSourceCommands`,
+    closeout.currentSourceCommands ?? [],
+    ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_COMMANDS,
+  );
+  validateStringArraySet(
+    `${closeout.id} requiredSourceSignals files`,
+    (closeout.requiredSourceSignals ?? []).map((signal) => signal.file),
+    ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_SIGNAL_FILES,
+  );
+
+  for (const forbiddenField of [
+    "gateReports",
+    "sidecarReports",
+    "closedGateReportFailures",
+    "closedManifestStatuses",
+    "closedCommands",
+    "closedFrontendDocs",
+    "rawAcceptance",
+    "backendBoundaryNotes",
+  ]) {
+    if (Object.prototype.hasOwnProperty.call(closeout, forbiddenField)) {
+      failures.push(`${closeout.id} 不允许登记 ${forbiddenField}；本条只验证当前前端源码链路`);
+    }
+  }
+
+  const mapText = existsSync(repoPath(ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_MAP))
+    ? readText(repoPath(ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_MAP))
+    : "";
+  for (const required of [
+    "accounts/sessions 前端 current-source 证据映射",
+    "begin_add_account_attach_monitor",
+    "switch_account_and_restart_codex",
+    "import_chatgpt_session_account",
+    "load_sessions",
+    "不声明 `gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成",
+    "不碰 `voice`",
+  ]) {
+    if (!mapText.includes(required)) {
+      failures.push(`${ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_MAP} 缺少说明片段：${required}`);
+    }
+  }
+
+  const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
+  for (const required of [
+    "不修改 raw/internal 证据",
+    "不声明 gate_accepted、implementation_use、full_leaf 或 full_leaf_100 已完成",
+    "不声明双平台全 leaf、全文案验收或闭源业务完整恢复",
+    "不声明 ChatGPT session account 导入真实业务已恢复",
+    "不把 mock handler 等同真实后端行为",
+    "不碰 voice",
+  ]) {
+    if (!nonClaimsText.includes(required)) {
+      failures.push(`${closeout.id} nonClaims 缺少声明：${required}`);
+    }
+  }
+
+  const reason = closeout.reason ?? "";
+  for (const required of [
+    "当前源码部分收口",
+    "accounts 八条 IPC 与 sessions 四条 IPC",
+    "route、service、query、mutation、cache、dialog、panel、mock 和 IPC contract",
+    "不处理 voice",
+    "不声明 full_leaf_100",
+  ]) {
+    if (!reason.includes(required)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${required}`);
+    }
+  }
+
+  validateRequiredSignals(closeout);
+}
+
 function validateMysteryUnlockGrantsCloseout(closeout) {
   validateAllowedCloseoutFields(closeout, MYSTERY_UNLOCK_GRANTS_ALLOWED_FIELDS);
   if (closeout.module !== "mystery-unlock-grants") {
@@ -2899,6 +3044,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateSystemUsageCurrentSourceCloseout(closeout);
   } else if (closeout.id === DAEMON_AUTOSWITCH_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateDaemonAutoswitchCurrentSourceCloseout(closeout);
+  } else if (closeout.id === ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_CLOSEOUT_ID) {
+    validateAccountsSessionsFrontendCurrentSourceCloseout(closeout);
   } else if (closeout.id === CUSTOM_INSTRUCTIONS_FRONTEND_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateCustomInstructionsFrontendCurrentSourceCloseout(closeout);
   } else if (closeout.id === MYSTERY_UNLOCK_GRANTS_CLOSEOUT_ID) {
