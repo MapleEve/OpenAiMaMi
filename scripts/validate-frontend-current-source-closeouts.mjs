@@ -617,6 +617,8 @@ const UI_THEME_CURRENT_SOURCE_CLOSEOUT_ID =
   "ui-theme-current-source-theme-chain";
 const UI_THEME_CURRENT_SOURCE_MAP =
   "docs/reconstruction/ui-theme-current-source-map.md";
+const SYSTEM_WINDOW_MAINTENANCE_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/system-window-maintenance-current-source-map.md";
 const UI_THEME_GATE_REPORT =
   "evidence/full-chain/internal/audits/audits/windows-1.0.9-ui/gate-report.json";
 const UI_THEME_RAW_IMPLEMENTATION_TARGET =
@@ -2828,6 +2830,20 @@ function validateSystemWindowMaintenanceCloseout(closeout) {
     "graceful_restart_for_update",
     "restart_codex",
   ]);
+  if (closeout.currentSourceMap !== SYSTEM_WINDOW_MAINTENANCE_CURRENT_SOURCE_MAP) {
+    failures.push(`${closeout.id} currentSourceMap=${String(closeout.currentSourceMap)}`);
+  }
+  const actualCurrentSourceCommands = new Set(closeout.currentSourceCommands ?? []);
+  for (const command of expectedCommands) {
+    if (!actualCurrentSourceCommands.has(command)) {
+      failures.push(`${closeout.id} 缺少 currentSourceCommands：${command}`);
+    }
+  }
+  for (const command of actualCurrentSourceCommands) {
+    if (!expectedCommands.has(command)) {
+      failures.push(`${closeout.id} 不允许 currentSourceCommands：${command}`);
+    }
+  }
   const actualCommands = new Set(closeout.closedCommands ?? []);
   for (const command of expectedCommands) {
     if (!actualCommands.has(command)) {
@@ -2936,6 +2952,27 @@ function validateSystemWindowMaintenanceCloseout(closeout) {
     "pub fn clean",
     "pub fn rebuild_registry",
   ]);
+  const mapPath = repoPath(SYSTEM_WINDOW_MAINTENANCE_CURRENT_SOURCE_MAP);
+  if (!existsSync(mapPath)) {
+    failures.push(`${closeout.id} 缺少当前源码说明文档：${SYSTEM_WINDOW_MAINTENANCE_CURRENT_SOURCE_MAP}`);
+  } else {
+    const mapText = readText(mapPath);
+    for (const required of [
+      "# system-window-maintenance 前端 current-source 证据映射",
+      "focus_main_window",
+      "open_path",
+      "clean",
+      "rebuild_registry",
+      "graceful_restart_for_update",
+      "restart_codex",
+      "不关闭 `load_snapshot`",
+      "不处理 `voice`",
+    ]) {
+      if (!mapText.includes(required)) {
+        failures.push(`${SYSTEM_WINDOW_MAINTENANCE_CURRENT_SOURCE_MAP} 缺少说明片段：${required}`);
+      }
+    }
+  }
 }
 
 function validateCrossHomeUsageFrontendCloseout(closeout) {

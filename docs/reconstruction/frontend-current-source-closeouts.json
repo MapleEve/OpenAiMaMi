@@ -650,6 +650,15 @@
       "id": "system-window-maintenance-frontend-callchain-non-gating-closeout",
       "module": "system-window-maintenance",
       "status": "current-source-closed-partial",
+      "currentSourceMap": "docs/reconstruction/system-window-maintenance-current-source-map.md",
+      "currentSourceCommands": [
+        "focus_main_window",
+        "open_path",
+        "clean",
+        "rebuild_registry",
+        "graceful_restart_for_update",
+        "restart_codex"
+      ],
       "sidecarReports": [
         "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/frontend-callchain-report.json",
         "evidence/full-chain/internal/audits/audits/macos-1.0.9-maintenance/frontend-callchain-report.json",
