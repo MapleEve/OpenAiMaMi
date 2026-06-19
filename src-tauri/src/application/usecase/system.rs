@@ -2,7 +2,8 @@ mod settings_secret;
 mod snapshot_bootstrap;
 
 pub use self::settings_secret::{
-    get_device_id, get_or_create_remote_device_secret, import_remote_device_secret_if_empty,
+    get_device_id, get_or_create_notification_client_state, get_or_create_remote_device_secret,
+    import_remote_device_secret_if_empty,
 };
 pub use self::snapshot_bootstrap::{load_bootstrap_state, load_snapshot};
 
@@ -76,14 +77,15 @@ pub fn configure_auto_switch(
 pub fn notification_client_state(
     repo: &Repository,
 ) -> Result<NotificationClientStatePayload, CoreError> {
+    let state = get_or_create_notification_client_state(repo)?;
     Ok(NotificationClientStatePayload {
         backend_status: restored_status(
             "system",
             "get_notification_client_state",
             BackendEffect::RepositoryWrite,
         ),
-        device_id: get_device_id(repo)?,
-        notifications_since: 0,
+        device_id: state.device_id,
+        notifications_since: state.notifications_since,
     })
 }
 

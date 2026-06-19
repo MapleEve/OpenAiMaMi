@@ -114,7 +114,7 @@ OpenAiMami 1.0.9 前端覆盖面：
 
 只有通过 `tauri::generate_handler!` 注册的命令属于前端 IPC 表面。模块内辅助函数不应被当成 IPC 入口，除非它被注册。
 
-`get_notification_client_state` 当前只恢复 settings-backed device id 读取/必要时创建的 repository 事务，因此 backend status 使用 `BackendEffect::RepositoryWrite`；`notifications_since` 仍保持公开骨架默认值，不声明通知客户端运行时、推送订阅或平台通知能力已经恢复。
+`get_notification_client_state` 当前恢复 settings 持久化的 `deviceId` 与 `notificationsSince` 读取/必要时创建的 repository 事务，因此 backend status 使用 `BackendEffect::RepositoryWrite`；它不声明通知客户端运行时、推送订阅、后台 watcher、Tauri event 或平台通知能力已经恢复。
 
 ## 构建和打包
 
@@ -137,6 +137,7 @@ OpenAiMami 1.0.9 前端覆盖面：
 | `docs/reconstruction/frontend-current-source-closeouts.json` | 前端 current-source closeout 台账 | `scripts/validate-frontend-current-source-closeouts.mjs` 直接验证台账条目、ledger-only closeout 边界、map 引用、非完成声明和未恢复范围；`scripts/validate-public-boundary.mjs` 验证本台账被 source-map 与 reconstruction README 索引。 |
 | `docs/reconstruction/accounts-monitor-current-source-map.md` | accounts monitor 仓储预检 | `scripts/validate-backend-accounts-owner.mjs` 直接验证本文、`begin_add_account_attach_monitor` 仓储 registry 预检、`RepositoryRead` status、未恢复后台 monitor/线程/runtime event/platform 边界和索引注册。 |
 | `docs/reconstruction/mcp-skills-current-source-map.md` | mcp/skills 前端 index query owner | `scripts/validate-frontend-mcp-skills-current-source.mjs` 直接验证本文、`mcp-servers` 与 `installed-skills` 的 service、query、cache、overview consumer、mock、后端入口和 owner-closed closeout 边界；不作为双平台全 leaf 或闭源业务恢复声明。 |
+| `docs/reconstruction/notification-client-state-current-source-map.md` | 通知客户端状态 settings 持久化收口 | `scripts/validate-backend-system-owner.mjs` 直接验证本文、`deviceId` / `notificationsSince` settings 持久化读取创建事务、DTO 字段、source-map/README 索引和未恢复通知运行时边界。 |
 | `docs/reconstruction/plugins-current-source-evidence-map.md` | plugins 前端 current-source partial closeout | `scripts/validate-frontend-plugins-current-source.mjs` 直接验证本文、raw/internal 证据路径、当前源码路径、npm 入口和未声明边界。 |
 | `docs/reconstruction/relay-core-current-source-evidence-map.md` | relay-core 前后端公开 owner 骨架 | `scripts/validate-backend-relay-owner.mjs` 直接验证本文、本地配置 repository 恢复、router config owner、diagnostic fix owner、relay test retry 错误语义、未声明真实代理/网络/进程边界和 source-map 注册。 |
 | `docs/reconstruction/relay-http-terminal-current-source-map.md` | relay HTTP-terminal 前后端触发链 | `scripts/validate-frontend-relay-http-terminal-ccf.mjs` 直接验证本文、三个 relay HTTP-terminal 命令、前端 UI 触发链、mock terminal、relay test retry 错误语义和未声明真实 HTTP 边界。 |

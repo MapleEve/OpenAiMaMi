@@ -8,9 +8,13 @@ const files = {
   snapshotBootstrap: join(backendRoot, "application", "usecase", "system", "snapshot_bootstrap.rs"),
   pathStateUsecase: join(backendRoot, "application", "usecase", "path_state.rs"),
   repositoryPathState: join(backendRoot, "repository", "path_state.rs"),
+  settingsContracts: join(backendRoot, "contracts", "settings.rs"),
   settingsSecret: join(backendRoot, "application", "usecase", "system", "settings_secret.rs"),
   commands: join(backendRoot, "commands", "system.rs"),
   configRepository: join(backendRoot, "repository", "config.rs"),
+  notificationMap: join(repoRoot, "docs", "reconstruction", "notification-client-state-current-source-map.md"),
+  sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
+  reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
 };
 const failures = [];
 
@@ -332,20 +336,35 @@ function validateRepositoryPathStateOwner(path, content) {
 function validateSettingsSecretOwner(path, original, content) {
   for (const [label, pattern] of [
     ["device id action", /\bpub\s+fn\s+get_device_id\s*\(\s*repo\s*:\s*&Repository\s*\)/],
+    ["notification client state action", /\bpub\s+fn\s+get_or_create_notification_client_state\s*\(\s*repo\s*:\s*&Repository\s*,?\s*\)\s*->\s*Result\s*<\s*NotificationClientSettingsState\s*,\s*CoreError\s*>/],
+    ["notification state struct", /\bpub\s+struct\s+NotificationClientSettingsState\s*\{[\s\S]*\bdevice_id\s*:\s*String[\s\S]*\bnotifications_since\s*:\s*i64[\s\S]*\}/],
+    ["notification timestamp source", /\bcurrent_timestamp\s*\(\s*\)/],
+    ["notification settings persistence", /\bsettings\s*\.\s*notifications_since\s*=\s*notifications_since\s*;[\s\S]*settings_repository\s*::\s*save_app_settings\s*\(\s*repo\s*,\s*&settings\s*\)\?/],
     ["create remote device secret", /\bpub\s+fn\s+get_or_create_remote_device_secret\s*\(\s*repo\s*:\s*&Repository\s*\)/],
     ["import remote device secret", /\bpub\s+fn\s+import_remote_device_secret_if_empty\s*\(/],
     ["secret normalization", /\bfn\s+normalize_remote_device_secret\s*\(/],
     ["settings persistence", /\bsettings_repository\s*::\s*save_app_settings\s*\(/],
   ]) {
-    requirePattern(label, path, content, pattern, "settings-secret owner 必须承载 settings-backed secret 事务");
+    requirePattern(label, path, content, pattern, "settings-secret owner 必须承载 settings 持久化 secret 事务");
   }
 
   for (const [label, pattern] of [
     ["diagnostics owner", /\bload_system_diagnostic_snapshot\b|\bDiagnostic(Probe|Snapshot)\b/g],
     ["bootstrap owner", /\bbootstrap_repository\b/g],
     ["daemon owner", /\bdaemon_usecase\b/g],
+    ["通知运行时副作用", /\bemit_all\b|\blisten\b|\bspawn\b|\btokio\b|\bnotify_rust\b|\btauri_plugin_notification\b/g],
   ]) {
     rejectPattern(label, path, original, content, pattern, "settings-secret owner 必须保持 settings/secret 范围");
+  }
+}
+
+function validateSettingsContracts(path, content) {
+  for (const [label, pattern] of [
+    ["notificationsSince settings field", /\bpub\s+notifications_since\s*:\s*i64\b/],
+    ["notificationsSince serde default", /#\s*\[\s*serde\s*\(\s*default\s*\)\s*\]\s*\n\s*pub\s+notifications_since\s*:\s*i64\b/],
+    ["notificationsSince default value", /\bnotifications_since\s*:\s*0\s*,/],
+  ]) {
+    requirePattern(label, path, content, pattern, "AppSettingsFile 必须保留 notificationsSince settings 持久化字段");
   }
 }
 
@@ -355,28 +374,72 @@ function validateNotificationClientState(path, content) {
     path,
     content,
     /\bpub\s+fn\s+notification_client_state\s*\(\s*repo\s*:\s*&Repository\s*,?\s*\)\s*->\s*Result\s*<\s*NotificationClientStatePayload\s*,\s*CoreError\s*>/,
-    "system usecase 必须 owning notification client state 的 settings-backed 状态边界",
+    "system usecase 必须 owning notification client state 的 settings 持久化状态边界",
   );
   requirePattern(
-    "notification client state device id",
+    "notification client state settings helper",
     path,
     content,
-    /\bdevice_id\s*:\s*get_device_id\s*\(\s*repo\s*\)\?/,
-    "notification client state 必须通过 settings-secret owner 获取 device id",
+    /\blet\s+state\s*=\s*get_or_create_notification_client_state\s*\(\s*repo\s*\)\?/,
+    "notification client state 必须通过 settings-secret owner 获取 device id 与 notificationsSince",
   );
   requirePattern(
     "notification client state restored write",
     path,
     content,
     /restored_status\s*\(\s*"system"\s*,\s*"get_notification_client_state"\s*,\s*BackendEffect::RepositoryWrite\s*,?\s*\)/,
-    "get_notification_client_state 必须标记为 settings-backed repository write 状态",
+    "get_notification_client_state 必须标记为 settings 持久化 repository write 状态",
   );
   requirePattern(
-    "notification runtime counter boundary",
+    "notification client state payload device id",
     path,
     content,
-    /\bnotifications_since\s*:\s*0\b/,
-    "notification client state 当前只恢复 device id，通知运行时计数必须保持公开骨架边界",
+    /\bdevice_id\s*:\s*state\s*\.\s*device_id\b/,
+    "notification client state payload 必须返回 settings 持久化 device id",
+  );
+  requirePattern(
+    "notification client state payload timestamp",
+    path,
+    content,
+    /\bnotifications_since\s*:\s*state\s*\.\s*notifications_since\b/,
+    "notification client state payload 必须返回 settings 持久化 notificationsSince",
+  );
+}
+
+function validateNotificationMap(path, content) {
+  for (const [label, pattern] of [
+    ["中文标题", /# get_notification_client_state current-source 证据映射/],
+    ["macOS evidence", /NOTIFICATION-CLIENT-STATE-DISTILLED-109\.md/],
+    ["Windows evidence", /WIN-GET-NOTIFICATION-CLIENT-STATE-109\.md/],
+    ["settings DTO", /src-tauri\/src\/contracts\/settings\.rs/],
+    ["settings-secret owner", /src-tauri\/src\/application\/usecase\/system\/settings_secret\.rs/],
+    ["notificationsSince", /notificationsSince/],
+    ["未恢复通知运行时", /不声明通知客户端运行时/],
+    ["不碰 voice", /不碰 `voice`/],
+  ]) {
+    requirePattern(label, path, content, pattern, "notification client state map 必须记录证据、源码链和未恢复边界");
+  }
+}
+
+function validateNotificationIndex(sourceMapPath, sourceMap, readmePath, readme) {
+  for (const [label, path, content] of [
+    ["source-map notification index", sourceMapPath, sourceMap],
+    ["reconstruction README notification index", readmePath, readme],
+  ]) {
+    requirePattern(
+      label,
+      path,
+      content,
+      /notification-client-state-current-source-map\.md/,
+      "notification client state current-source map 必须被 reconstruction 索引收口",
+    );
+  }
+  requirePattern(
+    "source-map notification updated boundary",
+    sourceMapPath,
+    sourceMap,
+    /get_notification_client_state` 当前恢复 settings 持久化的 `deviceId` 与 `notificationsSince`/,
+    "source-map 必须说明 get_notification_client_state 当前恢复的 settings 持久化范围",
   );
 }
 
@@ -428,7 +491,15 @@ validateSettingsSecretOwner(
   raw.get("settingsSecret").content,
   stripped.get("settingsSecret").content,
 );
+validateSettingsContracts(files.settingsContracts, stripped.get("settingsContracts").content);
 validateNotificationClientState(files.root, stripped.get("root").content);
+validateNotificationMap(files.notificationMap, raw.get("notificationMap").content);
+validateNotificationIndex(
+  files.sourceMap,
+  raw.get("sourceMap").content,
+  files.reconstructionReadme,
+  raw.get("reconstructionReadme").content,
+);
 validatePathStateOwner(
   files.pathStateUsecase,
   raw.get("pathStateUsecase").content,
