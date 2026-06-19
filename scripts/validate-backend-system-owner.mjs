@@ -349,6 +349,37 @@ function validateSettingsSecretOwner(path, original, content) {
   }
 }
 
+function validateNotificationClientState(path, content) {
+  requirePattern(
+    "notification client state action",
+    path,
+    content,
+    /\bpub\s+fn\s+notification_client_state\s*\(\s*repo\s*:\s*&Repository\s*,?\s*\)\s*->\s*Result\s*<\s*NotificationClientStatePayload\s*,\s*CoreError\s*>/,
+    "system usecase 必须 owning notification client state 的 settings-backed 状态边界",
+  );
+  requirePattern(
+    "notification client state device id",
+    path,
+    content,
+    /\bdevice_id\s*:\s*get_device_id\s*\(\s*repo\s*\)\?/,
+    "notification client state 必须通过 settings-secret owner 获取 device id",
+  );
+  requirePattern(
+    "notification client state restored write",
+    path,
+    content,
+    /restored_status\s*\(\s*"system"\s*,\s*"get_notification_client_state"\s*,\s*BackendEffect::RepositoryWrite\s*,?\s*\)/,
+    "get_notification_client_state 必须标记为 settings-backed repository write 状态",
+  );
+  requirePattern(
+    "notification runtime counter boundary",
+    path,
+    content,
+    /\bnotifications_since\s*:\s*0\b/,
+    "notification client state 当前只恢复 device id，通知运行时计数必须保持公开骨架边界",
+  );
+}
+
 function validateCommandCompatibility(path, content) {
   for (const [label, pattern] of [
     ["load snapshot command adapter", /\busecase\s*::\s*system\s*::\s*load_snapshot\s*\(\s*&repo\s*\)/],
@@ -397,6 +428,7 @@ validateSettingsSecretOwner(
   raw.get("settingsSecret").content,
   stripped.get("settingsSecret").content,
 );
+validateNotificationClientState(files.root, stripped.get("root").content);
 validatePathStateOwner(
   files.pathStateUsecase,
   raw.get("pathStateUsecase").content,

@@ -114,6 +114,8 @@ OpenAiMami 1.0.9 前端覆盖面：
 
 只有通过 `tauri::generate_handler!` 注册的命令属于前端 IPC 表面。模块内辅助函数不应被当成 IPC 入口，除非它被注册。
 
+`get_notification_client_state` 当前只恢复 settings-backed device id 读取/必要时创建的 repository 事务，因此 backend status 使用 `BackendEffect::RepositoryWrite`；`notifications_since` 仍保持公开骨架默认值，不声明通知客户端运行时、推送订阅或平台通知能力已经恢复。
+
 ## 构建和打包
 
 | 路径 | 说明 |

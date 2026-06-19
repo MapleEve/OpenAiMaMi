@@ -7,7 +7,7 @@ pub use self::settings_secret::{
 pub use self::snapshot_bootstrap::{load_bootstrap_state, load_snapshot};
 
 use crate::application::ports::RuntimePlatformPort;
-use crate::application::service::{pending_status, restored_status};
+use crate::application::service::restored_status;
 use crate::application::usecase::daemon as daemon_usecase;
 use crate::contracts::{
     AutoSwitchConfigPayload, BackendEffect, BackendSkeletonStatus, CoreSnapshotPayload,
@@ -77,10 +77,10 @@ pub fn notification_client_state(
     repo: &Repository,
 ) -> Result<NotificationClientStatePayload, CoreError> {
     Ok(NotificationClientStatePayload {
-        backend_status: pending_status(
+        backend_status: restored_status(
             "system",
             "get_notification_client_state",
-            "通知客户端状态未在当前公开后端范围内恢复。",
+            BackendEffect::RepositoryWrite,
         ),
         device_id: get_device_id(repo)?,
         notifications_since: 0,
