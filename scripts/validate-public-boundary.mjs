@@ -516,6 +516,7 @@ function validateReadmeStatusStructure(path) {
   if (!existsSync(join(repoRoot, path))) return;
 
   const content = readUtf8(path);
+  const statusSection = content.match(/## 当前归纳[\s\S]*?(?=\n## 仓库入口)/)?.[0] ?? "";
   const requiredStatusParts = [
     "## 当前归纳",
     "| 范围 | 已做 | 未做或边界 | 验收 |",
@@ -537,6 +538,66 @@ function validateReadmeStatusStructure(path) {
     missing.length === 0
       ? "README 状态摘要表齐全"
       : `缺少状态摘要内容：${missing.join(", ")}`,
+  );
+
+  const tableRows = statusSection
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith("|") && line.endsWith("|"));
+  const header = tableRows[0] ?? "";
+  const divider = tableRows[1] ?? "";
+  const dataRows = tableRows.slice(2);
+  const scopes = dataRows.map((row) => row.split("|")[1]?.trim() ?? "");
+  const expectedScopes = ["公开材料", "前端", "后端", "voice", "验收"];
+  const scopeOk =
+    header === "| 范围 | 已做 | 未做或边界 | 验收 |" &&
+    /^\|\s*-+\s*\|\s*-+\s*\|\s*-+\s*\|\s*-+\s*\|$/.test(divider) &&
+    scopes.length === expectedScopes.length &&
+    scopes.every((scope, index) => scope === expectedScopes[index]);
+  addCheck(
+    `${path} 当前归纳表只保留五个聚合范围`,
+    scopeOk,
+    scopeOk
+      ? "当前归纳表只包含公开材料、前端、后端、voice、验收五行"
+      : `当前归纳表范围必须固定为 ${expectedScopes.join("、")}，实际为 ${scopes.join("、")}`,
+  );
+
+  const forbiddenStatusPatterns = [
+    /docs\/reconstruction\/[^)\s|]+(?:current-source|evidence-map)[^)\s|]*/i,
+    /current-source.*(?:完成|收口|闭合|已做)/i,
+    /[0-9a-f]{7,40}/i,
+    /\b20[0-9]{2}[-/.][0-9]{1,2}[-/.][0-9]{1,2}\b/,
+  ];
+  const forbiddenCompletionPatterns = [
+    /100%\s*(?:完成|还原|恢复|通过)/,
+    /full_leaf(?:_100)?\s*(?:完成|通过|恢复|true)/i,
+    /gate_accepted\s*(?:完成|通过|恢复|true)/,
+    /implementation_use\s*(?:完成|通过|恢复|true)/,
+    /双平台全\s*leaf\s*(?:完成|通过|恢复)/,
+    /全功能完成/,
+    /全文案完成/,
+    /已完成收口/,
+  ];
+  const statusHits = [];
+  statusSection.split(/\r?\n/).forEach((line, index) => {
+    const trimmed = line.trim();
+    if (!trimmed) return;
+    if (/不写|不包含|不能|禁止|不得|只能|只做|只允许|只记录|归纳|不记录|不追加|不再|不声明|边界/.test(trimmed)) {
+      return;
+    }
+    if (
+      forbiddenStatusPatterns.some((pattern) => pattern.test(trimmed)) ||
+      forbiddenCompletionPatterns.some((pattern) => pattern.test(trimmed))
+    ) {
+      statusHits.push(`${path}:当前归纳:${index + 1}`);
+    }
+  });
+  addCheck(
+    `${path} 当前归纳不写模块流水或完成声明漂移`,
+    statusHits.length === 0,
+    statusHits.length === 0
+      ? "当前归纳未登记模块明细、日期、提交号或完成声明"
+      : `当前归纳存在漂移风险：${statusHits.join(", ")}`,
   );
 }
 

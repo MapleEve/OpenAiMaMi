@@ -627,9 +627,25 @@ const MYSTERY_UNLOCK_CURRENT_SOURCE_MAP =
   "docs/reconstruction/mystery-unlock-current-source-map.md";
 const MYSTERY_UNLOCK_GRANTS_SIDECAR =
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/frontend-callchain-report.json";
+const MYSTERY_UNLOCK_GATE_REPORT =
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json";
 const MYSTERY_UNLOCK_GRANTS_COMMANDS = [
   "get_mystery_unlock_grants",
   "merge_mystery_unlock_grants",
+];
+const MYSTERY_UNLOCK_GRANTS_GATE_FAILURE_KEYS = [
+  `${MYSTERY_UNLOCK_GATE_REPORT}\u0000gate_accepted\u0000false`,
+  `${MYSTERY_UNLOCK_GATE_REPORT}\u0000implementation_use\u0000false`,
+  `${MYSTERY_UNLOCK_GATE_REPORT}\u0000dim6_missing\u0000true`,
+  `${MYSTERY_UNLOCK_GATE_REPORT}\u0000leaves.get_mystery_unlock_grants.gate_accepted\u0000false`,
+  `${MYSTERY_UNLOCK_GATE_REPORT}\u0000leaves.get_mystery_unlock_grants.implementation_use\u0000false`,
+  `${MYSTERY_UNLOCK_GATE_REPORT}\u0000leaves.merge_mystery_unlock_grants.gate_accepted\u0000false`,
+  `${MYSTERY_UNLOCK_GATE_REPORT}\u0000leaves.merge_mystery_unlock_grants.implementation_use\u0000false`,
+  `${MYSTERY_UNLOCK_GATE_REPORT}\u0000cluster_gate_summary.readyToImplement\u00000`,
+];
+const MYSTERY_ROUTE_ALLOWED_GATE_FAILURE_KEYS = [
+  `${MYSTERY_UNLOCK_GATE_REPORT}\u0000leaves.mystery_route_allowed.gate_accepted\u0000false`,
+  `${MYSTERY_UNLOCK_GATE_REPORT}\u0000leaves.mystery_route_allowed.implementation_use\u0000false`,
 ];
 const MYSTERY_UNLOCK_GRANTS_SIGNAL_FILES = [
   MYSTERY_UNLOCK_CURRENT_SOURCE_MAP,
@@ -640,6 +656,11 @@ const MYSTERY_UNLOCK_GRANTS_SIGNAL_FILES = [
   "src/features/overview/hooks/mutation.ts",
   "src/features/overview/cache/index.ts",
   "src/mocks/fixtures/commands.ts",
+  "src-tauri/src/commands/mystery.rs",
+  "src-tauri/src/application/usecase/mystery.rs",
+  "src-tauri/src/repository/settings.rs",
+  "src-tauri/src/contracts/mystery.rs",
+  "scripts/validate-backend-mystery-owner.mjs",
 ];
 const MYSTERY_UNLOCK_GRANTS_ALLOWED_FIELDS = [
   "id",
@@ -649,6 +670,7 @@ const MYSTERY_UNLOCK_GRANTS_ALLOWED_FIELDS = [
   "currentSourceCommands",
   "sidecarReports",
   "requiredSourceSignals",
+  "closedGateReportFailures",
   "nonClaims",
   "reason",
 ];
@@ -669,6 +691,7 @@ const MYSTERY_ROUTE_ALLOWED_ALLOWED_FIELDS = [
   "status",
   "currentSourceMap",
   "requiredSourceSignals",
+  "closedGateReportFailures",
   "nonClaims",
   "reason",
 ];
@@ -2336,8 +2359,21 @@ function validateMysteryUnlockGrantsCloseout(closeout) {
     (closeout.requiredSourceSignals ?? []).map((signal) => signal.file),
     MYSTERY_UNLOCK_GRANTS_SIGNAL_FILES,
   );
-  if (Object.prototype.hasOwnProperty.call(closeout, "closedGateReportFailures")) {
-    failures.push(`${closeout.id} 不允许登记 gate-report failure；本条只登记 current-source partial`);
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  validateStringArraySet(
+    `${closeout.id} closedGateReportFailures`,
+    [...actualGateFailureKeys],
+    MYSTERY_UNLOCK_GRANTS_GATE_FAILURE_KEYS,
+  );
+  validateClosedGateReportFailures(closeout);
+  for (const entry of closeout.closedGateReportFailures ?? []) {
+    if (entry.path.includes("full_leaf_100")) {
+      failures.push(`${closeout.id} 不允许登记 full_leaf_100：${entry.report} ${entry.path}`);
+    }
   }
   if (
     (closeout.requiredSourceSignals ?? []).some((signal) =>
@@ -2350,7 +2386,7 @@ function validateMysteryUnlockGrantsCloseout(closeout) {
   const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
   for (const required of [
     "不修改 gate-report",
-    "不登记 gate-report failure",
+    "只登记 mystery-unlock 非 full_leaf_100 gate 非绿字段",
     "不声明 dim6、gate_accepted、implementation_use、full_leaf_100 已完成",
     "不把 mystery_route_allowed 或 route_allowed 当作 IPC command",
     "不接入 voice",
@@ -2367,7 +2403,7 @@ function validateMysteryUnlockGrantsCloseout(closeout) {
     "merge_mystery_unlock_grants",
     "mystery_route_allowed",
     "route helper 不是 IPC command",
-    "不登记 gate-report failure",
+    "只登记非 full_leaf_100 gate 非绿字段",
     "full_leaf_100",
   ]) {
     if (!reason.includes(required)) {
@@ -2410,8 +2446,21 @@ function validateMysteryRouteAllowedCloseout(closeout) {
     (closeout.requiredSourceSignals ?? []).map((signal) => signal.file),
     MYSTERY_ROUTE_ALLOWED_SIGNAL_FILES,
   );
-  if (Object.prototype.hasOwnProperty.call(closeout, "closedGateReportFailures")) {
-    failures.push(`${closeout.id} 不允许登记 gate-report failure；本条只登记 route gate/helper current-source partial`);
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  validateStringArraySet(
+    `${closeout.id} closedGateReportFailures`,
+    [...actualGateFailureKeys],
+    MYSTERY_ROUTE_ALLOWED_GATE_FAILURE_KEYS,
+  );
+  validateClosedGateReportFailures(closeout);
+  for (const entry of closeout.closedGateReportFailures ?? []) {
+    if (entry.path.includes("full_leaf_100")) {
+      failures.push(`${closeout.id} 不允许登记 full_leaf_100：${entry.report} ${entry.path}`);
+    }
   }
   if (
     (closeout.requiredSourceSignals ?? []).some((signal) =>
@@ -2424,7 +2473,7 @@ function validateMysteryRouteAllowedCloseout(closeout) {
   const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
   for (const required of [
     "不修改 gate-report",
-    "不登记 gate-report failure",
+    "只登记 mystery_route_allowed 非 full_leaf_100 gate 非绿字段",
     "不声明 dim6、gate_accepted、implementation_use、full_leaf_100 已完成",
     "route helper 不是 IPC command",
     "不把 mystery_route_allowed 或 route_allowed 当作 IPC command",
@@ -2443,7 +2492,7 @@ function validateMysteryRouteAllowedCloseout(closeout) {
     "route helper 不是 IPC command",
     "resolveMysteryGrantRoute",
     "resolveRouteVisibility",
-    "不登记 gate-report failure",
+    "只登记非 full_leaf_100 gate 非绿字段",
     "不声明 dim6、gate_accepted、implementation_use 或 full_leaf_100",
     "不接入 voice",
   ]) {

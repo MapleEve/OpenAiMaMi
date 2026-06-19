@@ -21,6 +21,11 @@ const files = {
   routerShell: "src/app/router/shell.tsx",
   mocks: "src/mocks/fixtures/commands.ts",
   ipcContracts: "src/contracts/ipc/commands.ts",
+  backendMysteryCommands: "src-tauri/src/commands/mystery.rs",
+  backendMysteryUsecase: "src-tauri/src/application/usecase/mystery.rs",
+  backendSettingsRepository: "src-tauri/src/repository/settings.rs",
+  backendMysteryContract: "src-tauri/src/contracts/mystery.rs",
+  backendMysteryValidator: "scripts/validate-backend-mystery-owner.mjs",
 };
 
 const npmScript = "validate:frontend-mystery-unlock-current-source";
@@ -29,6 +34,21 @@ const grantsCloseoutId = "mystery-unlock-grants-current-source-chain";
 const routeCloseoutId = "mystery-route-allowed-current-source-helper-chain";
 const commands = ["get_mystery_unlock_grants", "merge_mystery_unlock_grants"];
 const forbiddenHelperCommands = ["mystery_route_allowed", "route_allowed"];
+const gateReport = "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json";
+const grantsGateFailureKeys = [
+  `${gateReport}\u0000gate_accepted\u0000false`,
+  `${gateReport}\u0000implementation_use\u0000false`,
+  `${gateReport}\u0000dim6_missing\u0000true`,
+  `${gateReport}\u0000leaves.get_mystery_unlock_grants.gate_accepted\u0000false`,
+  `${gateReport}\u0000leaves.get_mystery_unlock_grants.implementation_use\u0000false`,
+  `${gateReport}\u0000leaves.merge_mystery_unlock_grants.gate_accepted\u0000false`,
+  `${gateReport}\u0000leaves.merge_mystery_unlock_grants.implementation_use\u0000false`,
+  `${gateReport}\u0000cluster_gate_summary.readyToImplement\u00000`,
+];
+const routeGateFailureKeys = [
+  `${gateReport}\u0000leaves.mystery_route_allowed.gate_accepted\u0000false`,
+  `${gateReport}\u0000leaves.mystery_route_allowed.implementation_use\u0000false`,
+];
 const forbiddenCompletionClaims = [
   "accepted_full_leaf_100",
   "\"gate_accepted\": true",
@@ -117,6 +137,29 @@ function assertArraySet(label, actual, expected) {
   if (actual.length !== actualSet.size) fail(label, "存在重复条目");
 }
 
+function assertGateFailureKeys(label, closeout, expected) {
+  const entries = closeout?.closedGateReportFailures;
+  if (!Array.isArray(entries)) {
+    fail(label, "缺少 closedGateReportFailures");
+    return;
+  }
+  const actual = entries.map(
+    (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+  );
+  assertArraySet(label, actual, expected);
+  for (const entry of entries) {
+    if (String(entry.path).includes("full_leaf_100")) {
+      fail(label, `不得登记 full_leaf_100：${entry.path}`);
+    }
+    if (entry.classification !== "scope-selection") {
+      fail(label, `classification 必须是 scope-selection：${String(entry.classification)}`);
+    }
+    if (typeof entry.reason !== "string" || !entry.reason.includes("不声明")) {
+      fail(label, `reason 必须说明不声明完成：${String(entry.reason)}`);
+    }
+  }
+}
+
 function findCloseout(closeouts, id) {
   const matches = (closeouts.closeouts ?? []).filter((item) => item.id === id);
   if (matches.length !== 1) {
@@ -129,9 +172,11 @@ function findCloseout(closeouts, id) {
 
 function assertMap(mapText) {
   assertIncludes("map 写明 mystery unlock current-source 标题和范围", mapText, [
-    "mystery unlock 前端当前源码证据映射",
+    "mystery unlock 前后端当前源码证据映射",
     "get_mystery_unlock_grants",
     "merge_mystery_unlock_grants",
+    "后端 command / usecase",
+    "后端 repository / DTO",
     "resolveMysteryGrantRoute",
     "resolveRouteVisibility",
     "route helper",
@@ -143,13 +188,18 @@ function assertMap(mapText) {
     files.overviewCache,
     files.overviewQuery,
     files.overviewMutation,
+    files.backendMysteryCommands,
+    files.backendMysteryUsecase,
+    files.backendSettingsRepository,
+    files.backendMysteryContract,
     files.routeGates,
     files.routerShell,
     files.mocks,
   ]);
   assertIncludes("map 写明未声明边界", mapText, [
     "不修改任何 raw/internal `gate-report.json`",
-    "不登记 gate-report failure closeout",
+    "只登记 `macos-1.0.9-mystery-unlock/gate-report.json` 中非 `full_leaf_100` 的 10 个非绿字段",
+    "不登记 `full_leaf_100`，不把登记视为 gate 通过",
     "不声明 `dim6`、`gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成",
     "不接入 `voice`",
     "不声明后端闭源业务",
@@ -235,6 +285,46 @@ function assertOverview(overviewCache, overviewQuery, overviewMutation) {
   assertNotIncludes("overview hooks 不把 route helper 当 command", overviewQuery + overviewMutation, forbiddenHelperCommands);
 }
 
+function assertBackendMysteryOwner(commandsFile, usecaseFile, settingsRepository, contractFile, validatorFile) {
+  assertIncludes("后端 mystery command 只做 IPC adapter", commandsFile, [
+    "pub fn get_mystery_unlock_grants",
+    "pub fn merge_mystery_unlock_grants",
+    "usecase::mystery::get_mystery_unlock_grants(&repo)",
+    "usecase::mystery::merge_mystery_unlock_grants(&repo, grants)",
+    "CoreEnvelope::ok",
+  ]);
+  assertIncludes("后端 mystery usecase owning 清理合并持久化事务", usecaseFile, [
+    "settings_repository::load_mystery_unlock_grants(repo)?",
+    "settings_repository::save_mystery_unlock_grants(repo, grants.clone())?",
+    "settings_repository::save_mystery_unlock_grants(repo, output.clone())?",
+    "fn active_normalized_grants",
+    "fn normalize_mystery_route",
+    "BTreeMap::<String, MysteryRouteGrant>::new()",
+  ]);
+  assertNotIncludes("后端 mystery usecase 不 owning 前端 route allowlist", usecaseFile, [
+    "is_mystery_route_allowed",
+    "allowed_mystery",
+    "allowlist",
+    '"relayModel"',
+  ]);
+  assertIncludes("settings repository owning mystery grants 读写", settingsRepository, [
+    "pub fn load_mystery_unlock_grants(repo: &Repository)",
+    "pub fn save_mystery_unlock_grants(",
+    "settings.mystery_unlock_grants = grants",
+  ]);
+  assertIncludes("后端 MysteryRouteGrant DTO 独立 owner", contractFile, [
+    "pub struct MysteryRouteGrant",
+    "pub route: String",
+    '#[serde(rename = "epochMs", alias = "epoch_ms")]',
+    "pub epoch_ms: i64",
+  ]);
+  assertIncludes("后端 mystery owner validator 已登记边界", validatorFile, [
+    "mystery grants 已迁出 system",
+    "后端不得判断前端 route 是否允许",
+    "voice 空骨架不得接入 mystery grants",
+  ]);
+}
+
 function assertRouteGate(routeGates, routerShell, mysteryGatesValidator) {
   assertIncludes("route gates helper 校验 route 和 grant 过期时间", routeGates, [
     "resolveMysteryGrantRoute",
@@ -293,6 +383,7 @@ function assertCloseouts(closeouts, closeoutValidator) {
       "currentSourceCommands",
       "sidecarReports",
       "requiredSourceSignals",
+      "closedGateReportFailures",
       "nonClaims",
       "reason",
     ];
@@ -307,11 +398,7 @@ function assertCloseouts(closeouts, closeoutValidator) {
       fail("grants closeout currentSourceMap", String(grantsCloseout.currentSourceMap));
     }
     assertArraySet("grants closeout 只登记两个真实 IPC", grantsCloseout.currentSourceCommands, commands);
-    if (Object.prototype.hasOwnProperty.call(grantsCloseout, "closedGateReportFailures")) {
-      fail("grants closeout 不登记 gate-report failure");
-    } else {
-      pass("grants closeout 不登记 gate-report failure");
-    }
+    assertGateFailureKeys("grants closeout 只登记允许的非 full_leaf_100 gate 非绿字段", grantsCloseout, grantsGateFailureKeys);
     const signalFiles = (grantsCloseout.requiredSourceSignals ?? []).map((signal) => signal.file);
     assertArraySet("grants closeout requiredSourceSignals", signalFiles, [
       files.map,
@@ -322,6 +409,11 @@ function assertCloseouts(closeouts, closeoutValidator) {
       files.overviewMutation,
       files.overviewCache,
       files.mocks,
+      files.backendMysteryCommands,
+      files.backendMysteryUsecase,
+      files.backendSettingsRepository,
+      files.backendMysteryContract,
+      files.backendMysteryValidator,
     ]);
   }
 
@@ -332,6 +424,7 @@ function assertCloseouts(closeouts, closeoutValidator) {
       "status",
       "currentSourceMap",
       "requiredSourceSignals",
+      "closedGateReportFailures",
       "nonClaims",
       "reason",
     ];
@@ -350,11 +443,7 @@ function assertCloseouts(closeouts, closeoutValidator) {
     } else {
       pass("route helper closeout 不登记 IPC command");
     }
-    if (Object.prototype.hasOwnProperty.call(routeCloseout, "closedGateReportFailures")) {
-      fail("route helper closeout 不登记 gate-report failure");
-    } else {
-      pass("route helper closeout 不登记 gate-report failure");
-    }
+    assertGateFailureKeys("route helper closeout 只登记允许的非 full_leaf_100 gate 非绿字段", routeCloseout, routeGateFailureKeys);
     const signalFiles = (routeCloseout.requiredSourceSignals ?? []).map((signal) => signal.file);
     assertArraySet("route helper closeout requiredSourceSignals", signalFiles, [
       files.map,
@@ -370,18 +459,19 @@ function assertCloseouts(closeouts, closeoutValidator) {
   const closeoutText = JSON.stringify([grantsCloseout, routeCloseout]);
   assertIncludes("mystery closeouts 写明未恢复边界", closeoutText, [
     "不修改 gate-report",
-    "不登记 gate-report failure",
+    "只登记",
+    "非 full_leaf_100 gate 非绿字段",
     "不声明 dim6、gate_accepted、implementation_use、full_leaf_100 已完成",
     "route helper 不是 IPC command",
     "不接入 voice",
   ]);
   assertNotIncludes("mystery closeouts 不声明完成态", closeoutText, forbiddenCompletionClaims);
-  assertIncludes("closeout 聚合验证器接入 mystery current-source 纯 partial 约束", closeoutValidator, [
+  assertIncludes("closeout 聚合验证器接入 mystery current-source gate 非绿字段约束", closeoutValidator, [
     "MYSTERY_UNLOCK_CURRENT_SOURCE_MAP",
     "validateMysteryUnlockGrantsCloseout",
     "validateMysteryRouteAllowedCloseout",
     "closedGateReportFailures",
-    "不允许登记 gate-report failure",
+    "MYSTERY_UNLOCK_GRANTS_GATE_FAILURE_KEYS",
   ]);
 }
 
@@ -401,12 +491,24 @@ const routeGates = readRequired(files.routeGates);
 const routerShell = readRequired(files.routerShell);
 const mocks = readRequired(files.mocks);
 const ipcContracts = readRequired(files.ipcContracts);
+const backendMysteryCommands = readRequired(files.backendMysteryCommands);
+const backendMysteryUsecase = readRequired(files.backendMysteryUsecase);
+const backendSettingsRepository = readRequired(files.backendSettingsRepository);
+const backendMysteryContract = readRequired(files.backendMysteryContract);
+const backendMysteryValidator = readRequired(files.backendMysteryValidator);
 
 assertMap(mapText);
 assertRegistrations(packageJson, frontendAggregator, sourceMap, reconstructionReadme);
 assertIpcContracts(ipcContracts);
 assertSystemService(systemService);
 assertOverview(overviewCache, overviewQuery, overviewMutation);
+assertBackendMysteryOwner(
+  backendMysteryCommands,
+  backendMysteryUsecase,
+  backendSettingsRepository,
+  backendMysteryContract,
+  backendMysteryValidator,
+);
 assertRouteGate(routeGates, routerShell, mysteryGatesValidator);
 assertMocks(mocks);
 assertCloseouts(closeouts, closeoutValidator);
