@@ -5,11 +5,21 @@ const repoRoot = process.cwd();
 const failures = [];
 
 const files = {
+  map: join(repoRoot, "docs", "reconstruction", "skills-current-source-evidence-map.md"),
+  sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
+  reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
+  rootReadme: join(repoRoot, "README.md"),
+  macosGate: join(repoRoot, "evidence", "full-chain", "internal", "audits", "audits", "macos-1.0.9-skills", "gate-report.json"),
+  windowsGate: join(repoRoot, "evidence", "full-chain", "internal", "audits", "audits", "windows-1.0.9-skills", "gate-report.json"),
   command: join(repoRoot, "src-tauri", "src", "commands", "skills.rs"),
   usecase: join(repoRoot, "src-tauri", "src", "application", "usecase", "skills.rs"),
   repository: join(repoRoot, "src-tauri", "src", "repository", "skills.rs"),
   pathGuard: join(repoRoot, "src-tauri", "src", "repository", "path_guard.rs"),
   repositoryMod: join(repoRoot, "src-tauri", "src", "repository", "mod.rs"),
+};
+const rawDirs = {
+  macosRaw: join(repoRoot, "evidence", "full-chain", "raw", "aimami", "1.0.9", "macos", "skills"),
+  windowsRaw: join(repoRoot, "evidence", "full-chain", "raw", "aimami", "1.0.9", "windows", "skills"),
 };
 
 function toRelative(path) {
@@ -23,6 +33,17 @@ function readRequired(path, label) {
   }
 
   return readFileSync(path, "utf8");
+}
+
+function readJson(path, label) {
+  const content = readRequired(path, label);
+  if (!content) return null;
+  try {
+    return JSON.parse(content);
+  } catch (error) {
+    failures.push(`${toRelative(path)} JSON 解析失败：${error.message}`);
+    return null;
+  }
 }
 
 function stripRustComments(content) {
@@ -48,6 +69,12 @@ const usecase = stripRustComments(readRequired(files.usecase, "skills usecase"))
 const repository = stripRustComments(readRequired(files.repository, "skills repository"));
 const pathGuard = stripRustComments(readRequired(files.pathGuard, "path guard"));
 const repositoryMod = stripRustComments(readRequired(files.repositoryMod, "repository mod"));
+const map = readRequired(files.map, "skills evidence map");
+const sourceMap = readRequired(files.sourceMap, "reconstruction source-map");
+const reconstructionReadme = readRequired(files.reconstructionReadme, "reconstruction README");
+const rootReadme = readRequired(files.rootReadme, "root README");
+const macosGate = readJson(files.macosGate, "macOS skills gate-report");
+const windowsGate = readJson(files.windowsGate, "Windows skills gate-report");
 
 for (const [label, path] of Object.entries(files)) {
   const content = readRequired(path, label);
@@ -58,6 +85,98 @@ for (const [label, path] of Object.entries(files)) {
     new RegExp(`${["Codex", "Manager"].join("")}|\\b${["C", "5"].join("")}\\b|${["lobe", "hub"].join("")}`, "gi"),
     "后端 skills owner 切片不得写入禁止公开标识",
   );
+}
+
+for (const [label, gate] of [
+  ["macOS skills gate-report", macosGate],
+  ["Windows skills gate-report", windowsGate],
+]) {
+  if (!gate) continue;
+  if (gate.module !== "skills") {
+    failures.push(`${label} module=${String(gate.module)}`);
+  }
+  for (const field of [
+    "consumerStartReady",
+    "strictImplementationUse",
+    "readyToImplement",
+    "implementation_use",
+    "gate_accepted",
+    "full_leaf_100",
+  ]) {
+    if (gate[field] !== true) {
+      failures.push(`${label} ${field}=${String(gate[field])}`);
+    }
+  }
+  if (gate.accepted_count !== 6 || gate.total_count !== 6) {
+    failures.push(`${label} accepted_count/total_count=${String(gate.accepted_count)}/${String(gate.total_count)}`);
+  }
+  const commands = new Set(gate.commands ?? []);
+  for (const commandName of [
+    "load_installed_skills",
+    "load_skill_backups",
+    "import_skill",
+    "remove_skill",
+    "restore_skill_backup",
+    "delete_skill_backup",
+  ]) {
+    if (!commands.has(commandName)) {
+      failures.push(`${label} 缺少命令：${commandName}`);
+    }
+  }
+}
+
+for (const [label, path] of [
+  ["macOS raw skills 证据目录", rawDirs.macosRaw],
+  ["Windows raw skills 证据目录", rawDirs.windowsRaw],
+]) {
+  if (!existsSync(path)) {
+    failures.push(`缺少 ${label}：${toRelative(path)}`);
+  }
+}
+
+for (const required of [
+  "# skills 后端 current-source 证据映射",
+  "load_installed_skills",
+  "load_skill_backups",
+  "import_skill",
+  "remove_skill",
+  "restore_skill_backup",
+  "delete_skill_backup",
+  "src-tauri/src/commands/skills.rs",
+  "src-tauri/src/application/usecase/skills.rs",
+  "src-tauri/src/repository/skills.rs",
+  "src-tauri/src/repository/path_guard.rs",
+  "不声明执行 skill、动态插件运行、市场安装、网络下载、外部进程、daemon watcher 或平台副作用已经恢复",
+  "不新增 `voice` 入口",
+  "scripts/validate-backend-skills-owner.mjs",
+]) {
+  if (!map.includes(required)) {
+    failures.push(`${toRelative(files.map)} 缺少说明片段：${required}`);
+  }
+}
+
+for (const [label, content, path] of [
+  ["source-map", sourceMap, files.sourceMap],
+  ["reconstruction README", reconstructionReadme, files.reconstructionReadme],
+]) {
+  for (const required of [
+    "docs/reconstruction/skills-current-source-evidence-map.md",
+    "skills 后端文件事务 owner",
+    "scripts/validate-backend-skills-owner.mjs",
+  ]) {
+    if (!content.includes(required)) {
+      failures.push(`${toRelative(path)} 缺少 skills evidence map 索引片段：${required}`);
+    }
+  }
+}
+
+for (const required of [
+  "skills 文件事务 owner",
+  "README 只保留长期有效的归纳状态",
+]) {
+  if (!rootReadme.includes(required)) {
+    failures.push(`${toRelative(files.rootReadme)} 缺少后端归纳片段：${required}`);
+  }
 }
 
 for (const [name, content] of [
