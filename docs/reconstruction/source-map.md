@@ -134,6 +134,7 @@ OpenAiMami 1.0.9 前端覆盖面：
 
 | 路径 | 类别 | 验证或索引边界 |
 | --- | --- | --- |
+| `docs/reconstruction/frontend-current-source-closeouts.json` | 前端 current-source closeout 台账 | `scripts/validate-frontend-current-source-closeouts.mjs` 直接验证台账条目、ledger-only closeout 边界、map 引用、非完成声明和未恢复范围；`scripts/validate-public-boundary.mjs` 验证本台账被 source-map 与 reconstruction README 索引。 |
 | `docs/reconstruction/plugins-current-source-evidence-map.md` | plugins 前端 current-source partial closeout | `scripts/validate-frontend-plugins-current-source.mjs` 直接验证本文、raw/internal 证据路径、当前源码路径、npm 入口和未声明边界。 |
 | `docs/reconstruction/relay-core-current-source-evidence-map.md` | relay-core 前后端公开 owner 骨架 | `scripts/validate-backend-relay-owner.mjs` 直接验证本文、本地配置 repository 恢复、router config owner、diagnostic fix owner、relay test retry 错误语义、未声明真实代理/网络/进程边界和 source-map 注册。 |
 | `docs/reconstruction/relay-http-terminal-current-source-map.md` | relay HTTP-terminal 前后端触发链 | `scripts/validate-frontend-relay-http-terminal-ccf.mjs` 直接验证本文、三个 relay HTTP-terminal 命令、前端 UI 触发链、mock terminal、relay test retry 错误语义和未声明真实 HTTP 边界。 |

@@ -1,14 +1,15 @@
-use crate::application::service::{current_timestamp, pending_status, restored_status};
+use crate::application::service::{current_timestamp, restored_status};
 use crate::contracts::analytics::{
     AnalyticsRange, ChangeAnalyticsPayload, ChangeDaySeriesPayload, DailyActivityPayload,
     QuotaHistoryPayload, QuotaHistoryPointPayload, SessionStatsPayload, TodaySummaryPayload,
-    TokenAnalyticsPayload, ToolAnalyticsPayload, ToolRankItemPayload, UsageAnalyticsPayload,
+    TokenAnalyticsPayload, TokenDaySeriesPayload, ToolAnalyticsPayload, ToolRankItemPayload,
+    UsageAnalyticsPayload,
 };
 use crate::contracts::BackendEffect;
 use crate::core::error::CoreError;
 use crate::core::model::analytics::{
-    aggregate_public_change_analytics, aggregate_public_tool_analytics, aggregate_public_usage,
-    PublicAnalyticsRange,
+    aggregate_public_change_analytics, aggregate_public_token_analytics,
+    aggregate_public_tool_analytics, aggregate_public_usage, PublicAnalyticsRange,
 };
 use crate::repository::{
     analytics as analytics_repository, bootstrap, quota as quota_repository, Repository,
@@ -93,26 +94,41 @@ pub fn load_quota_history(
     })
 }
 
-/// 读取 token 分析的用户动作边界；真实 token 口径等待证据补齐。
-pub fn load_token_analytics(_repo: &Repository, range: Option<String>) -> TokenAnalyticsPayload {
+/// 读取 token 分析的用户动作边界，只聚合公开 session/rollout JSONL usage 字段。
+pub fn load_token_analytics(repo: &Repository, range: Option<String>) -> TokenAnalyticsPayload {
     let normalized_range = AnalyticsRange::from_input(range);
-    let _range_day_span = public_range_from_contract(normalized_range).day_span();
+    let aggregate = aggregate_public_token_analytics(
+        analytics_repository::load_public_token_facts(repo),
+        current_timestamp(),
+        public_range_from_contract(normalized_range),
+    );
     TokenAnalyticsPayload {
-        backend_status: pending_status(
+        backend_status: restored_status(
             "analytics",
             "load_token_analytics",
-            "token 分析只完成公开 IPC 骨架；当前不推断闭源 token 统计口径。",
+            BackendEffect::RepositoryRead,
         ),
         range: normalized_range,
-        total_tokens: 0,
-        avg_per_session: 0.0,
-        input_pct: 0.0,
-        output_pct: 0.0,
-        reasoning_pct: 0.0,
-        input_total: 0,
-        output_total: 0,
-        reasoning_total: 0,
-        series: Vec::new(),
+        total_tokens: aggregate.total_tokens,
+        avg_per_session: aggregate.avg_per_session,
+        input_pct: aggregate.input_pct,
+        output_pct: aggregate.output_pct,
+        reasoning_pct: aggregate.reasoning_pct,
+        input_total: aggregate.input_total,
+        output_total: aggregate.output_total,
+        reasoning_total: aggregate.reasoning_total,
+        series: aggregate
+            .series
+            .into_iter()
+            .map(|day| TokenDaySeriesPayload {
+                date: day.date,
+                input_tokens: day.input_tokens,
+                output_tokens: day.output_tokens,
+                reasoning_tokens: day.reasoning_tokens,
+                total_tokens: day.total_tokens,
+                cumulative: day.cumulative,
+            })
+            .collect(),
     }
 }
 

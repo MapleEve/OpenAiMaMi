@@ -1,7 +1,7 @@
 use chrono::{TimeZone, Utc};
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
-// analytics 模型只聚合公开可重建的本地文件事实，不表达闭源 token、严格运行时工具或配额统计口径。
+// analytics 模型只聚合公开可重建的本地文件事实，不表达闭源运行时或平台副作用。
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PublicAnalyticsRange {
     Today,
@@ -144,6 +144,63 @@ impl PublicToolCallFact {
             path: path.trim().to_string(),
         }
     }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PublicTokenFact {
+    pub timestamp: i64,
+    pub session_id: String,
+    pub input_tokens: i64,
+    pub output_tokens: i64,
+    pub reasoning_tokens: i64,
+    pub total_tokens: i64,
+}
+
+impl PublicTokenFact {
+    pub fn new(
+        timestamp: i64,
+        session_id: String,
+        input_tokens: i64,
+        output_tokens: i64,
+        reasoning_tokens: i64,
+        total_tokens: i64,
+    ) -> Self {
+        let component_total = input_tokens
+            .max(0)
+            .saturating_add(output_tokens.max(0))
+            .saturating_add(reasoning_tokens.max(0));
+        Self {
+            timestamp: timestamp.max(0),
+            session_id: session_id.trim().to_string(),
+            input_tokens: input_tokens.max(0),
+            output_tokens: output_tokens.max(0),
+            reasoning_tokens: reasoning_tokens.max(0),
+            total_tokens: total_tokens.max(component_total).max(0),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PublicTokenDay {
+    pub date: String,
+    pub input_tokens: i64,
+    pub output_tokens: i64,
+    pub reasoning_tokens: i64,
+    pub total_tokens: i64,
+    pub cumulative: i64,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct PublicTokenAggregate {
+    pub total_tokens: i64,
+    pub avg_per_session: f64,
+    pub input_pct: f64,
+    pub output_pct: f64,
+    pub reasoning_pct: f64,
+    pub input_total: i64,
+    pub output_total: i64,
+    pub reasoning_total: i64,
+    pub series: Vec<PublicTokenDay>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -451,6 +508,73 @@ pub fn aggregate_public_tool_analytics(
     }
 }
 
+pub fn aggregate_public_token_analytics(
+    facts: Vec<PublicTokenFact>,
+    now_epoch_seconds: i64,
+    range: PublicAnalyticsRange,
+) -> PublicTokenAggregate {
+    let earliest = range_window_start(now_epoch_seconds, range);
+    let mut by_day = BTreeMap::<String, (i64, i64, i64, i64)>::new();
+    let mut sessions = BTreeSet::<String>::new();
+    let mut input_total = 0i64;
+    let mut output_total = 0i64;
+    let mut reasoning_total = 0i64;
+    let mut total_tokens = 0i64;
+
+    for fact in facts
+        .into_iter()
+        .filter(|fact| fact.timestamp >= earliest && fact.timestamp <= now_epoch_seconds)
+    {
+        let date = date_key(fact.timestamp);
+        let entry = by_day.entry(date).or_insert((0, 0, 0, 0));
+        entry.0 = entry.0.saturating_add(fact.input_tokens);
+        entry.1 = entry.1.saturating_add(fact.output_tokens);
+        entry.2 = entry.2.saturating_add(fact.reasoning_tokens);
+        entry.3 = entry.3.saturating_add(fact.total_tokens);
+
+        input_total = input_total.saturating_add(fact.input_tokens);
+        output_total = output_total.saturating_add(fact.output_tokens);
+        reasoning_total = reasoning_total.saturating_add(fact.reasoning_tokens);
+        total_tokens = total_tokens.saturating_add(fact.total_tokens);
+        if !fact.session_id.is_empty() {
+            sessions.insert(fact.session_id);
+        }
+    }
+
+    let mut cumulative = 0i64;
+    let mut series = Vec::new();
+    for offset in 0..range.day_span() {
+        let timestamp = earliest.saturating_add(offset.saturating_mul(24 * 60 * 60));
+        let date = date_key(timestamp);
+        let bucket = by_day.get(&date).copied().unwrap_or((0, 0, 0, 0));
+        cumulative = cumulative.saturating_add(bucket.3);
+        series.push(PublicTokenDay {
+            date,
+            input_tokens: bucket.0,
+            output_tokens: bucket.1,
+            reasoning_tokens: bucket.2,
+            total_tokens: bucket.3,
+            cumulative,
+        });
+    }
+
+    PublicTokenAggregate {
+        total_tokens,
+        avg_per_session: if sessions.is_empty() {
+            0.0
+        } else {
+            total_tokens as f64 / sessions.len() as f64
+        },
+        input_pct: percent(input_total, total_tokens),
+        output_pct: percent(output_total, total_tokens),
+        reasoning_pct: percent(reasoning_total, total_tokens),
+        input_total,
+        output_total,
+        reasoning_total,
+        series,
+    }
+}
+
 pub fn classify_public_tool_call(path: &str) -> PublicToolCallKind {
     let normalized = path.trim().to_lowercase();
     if SEARCH_TOOL_PATTERNS
@@ -484,6 +608,23 @@ pub fn classify_public_command(command: &str) -> PublicCommandKind {
     }
 
     PublicCommandKind::Other
+}
+
+fn range_window_start(now_epoch_seconds: i64, range: PublicAnalyticsRange) -> i64 {
+    now_epoch_seconds.saturating_sub(
+        range
+            .day_span()
+            .saturating_sub(1)
+            .saturating_mul(24 * 60 * 60),
+    )
+}
+
+fn percent(part: i64, total: i64) -> f64 {
+    if total <= 0 {
+        0.0
+    } else {
+        (part.max(0) as f64 / total as f64) * 100.0
+    }
 }
 
 fn date_key(epoch_seconds: i64) -> String {
@@ -687,5 +828,31 @@ mod tests {
             classify_public_tool_call("apply_patch"),
             PublicToolCallKind::Edit
         );
+    }
+
+    #[test]
+    fn aggregate_public_token_analytics_groups_daily_components() {
+        let facts = vec![
+            PublicTokenFact::new(1_710_000_000, "a".to_string(), 10, 20, 5, 35),
+            PublicTokenFact::new(1_710_000_100, "a".to_string(), 1, 2, 0, 3),
+            PublicTokenFact::new(1_710_086_400, "b".to_string(), 7, 8, 0, 15),
+        ];
+
+        let aggregate =
+            aggregate_public_token_analytics(facts, 1_710_000_500, PublicAnalyticsRange::Today);
+
+        assert_eq!(aggregate.total_tokens, 38);
+        assert_eq!(aggregate.input_total, 11);
+        assert_eq!(aggregate.output_total, 22);
+        assert_eq!(aggregate.reasoning_total, 5);
+        assert_eq!(aggregate.avg_per_session, 38.0);
+        assert_eq!(aggregate.series.len(), 1);
+        assert_eq!(aggregate.series[0].input_tokens, 11);
+        assert_eq!(aggregate.series[0].output_tokens, 22);
+        assert_eq!(aggregate.series[0].reasoning_tokens, 5);
+        assert_eq!(aggregate.series[0].total_tokens, 38);
+        assert_eq!(aggregate.series[0].cumulative, 38);
+        assert!(aggregate.input_pct > 28.0);
+        assert!(aggregate.output_pct > 57.0);
     }
 }

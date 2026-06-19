@@ -1,4 +1,6 @@
-use crate::core::model::analytics::{PublicCommandFact, PublicSessionFileFact, PublicToolCallFact};
+use crate::core::model::analytics::{
+    PublicCommandFact, PublicSessionFileFact, PublicTokenFact, PublicToolCallFact,
+};
 use crate::repository::{sessions, Repository};
 use chrono::{DateTime, Utc};
 use serde_json::Value;
@@ -42,6 +44,20 @@ pub fn load_public_tool_call_facts(repo: &Repository) -> Vec<PublicToolCallFact>
     for root in public_session_roots(repo) {
         visit_public_tool_call_rollout_dir(repo, &root, &mut facts);
     }
+    facts
+}
+
+/// 递归读取公开 session/rollout JSONL，只抽取 usage token 数字字段供 core 聚合。
+pub fn load_public_token_facts(repo: &Repository) -> Vec<PublicTokenFact> {
+    let mut facts = Vec::new();
+    for root in public_session_roots(repo) {
+        visit_public_token_jsonl_dir(repo, &root, &mut facts);
+    }
+    facts.sort_by(|left, right| {
+        left.timestamp
+            .cmp(&right.timestamp)
+            .then_with(|| left.session_id.cmp(&right.session_id))
+    });
     facts
 }
 
@@ -108,11 +124,48 @@ fn visit_public_tool_call_rollout_dir(
     }
 }
 
+fn visit_public_token_jsonl_dir(repo: &Repository, root: &Path, facts: &mut Vec<PublicTokenFact>) {
+    let Ok(entries) = repo.fs().read_dir(root) else {
+        return;
+    };
+
+    for entry in entries {
+        if entry.is_dir {
+            visit_public_token_jsonl_dir(repo, &entry.path, facts);
+            continue;
+        }
+        if !is_jsonl(&entry.path) {
+            continue;
+        }
+
+        let fallback_timestamp = repo.fs().modified_unix_seconds(&entry.path).unwrap_or(0);
+        let session_id = session_id_from_path(&entry.path);
+        let Ok(raw) = repo.fs().read_to_string(&entry.path) else {
+            continue;
+        };
+        facts.extend(
+            raw.lines()
+                .filter_map(|line| serde_json::from_str::<Value>(line).ok())
+                .filter_map(|value| {
+                    public_token_fact_from_value(
+                        &value,
+                        fallback_timestamp,
+                        session_id.as_deref().unwrap_or("unknown"),
+                    )
+                }),
+        );
+    }
+}
+
 fn is_rollout_jsonl(path: &Path) -> bool {
     let Some(file_name) = path.file_name().and_then(|value| value.to_str()) else {
         return false;
     };
     file_name.starts_with("rollout-") && file_name.ends_with(".jsonl")
+}
+
+fn is_jsonl(path: &Path) -> bool {
+    path.extension().and_then(|value| value.to_str()) == Some("jsonl")
 }
 
 fn public_command_fact_from_value(
@@ -179,6 +232,90 @@ fn public_tool_call_fact_from_value(
         json_timestamp(value, &["/payload/timestamp", "/timestamp"]).unwrap_or(fallback_timestamp);
 
     Some(PublicToolCallFact::new(timestamp, path))
+}
+
+fn public_token_fact_from_value(
+    value: &Value,
+    fallback_timestamp: i64,
+    session_id: &str,
+) -> Option<PublicTokenFact> {
+    let input_tokens = json_i64(
+        value,
+        &[
+            "/payload/usage/input_tokens",
+            "/payload/usage/inputTokens",
+            "/payload/usage/prompt_tokens",
+            "/payload/input_tokens",
+            "/payload/inputTokens",
+            "/payload/prompt_tokens",
+            "/usage/input_tokens",
+            "/usage/inputTokens",
+            "/usage/prompt_tokens",
+        ],
+    )
+    .unwrap_or(0);
+    let output_tokens = json_i64(
+        value,
+        &[
+            "/payload/usage/output_tokens",
+            "/payload/usage/outputTokens",
+            "/payload/usage/completion_tokens",
+            "/payload/output_tokens",
+            "/payload/outputTokens",
+            "/payload/completion_tokens",
+            "/usage/output_tokens",
+            "/usage/outputTokens",
+            "/usage/completion_tokens",
+        ],
+    )
+    .unwrap_or(0);
+    let reasoning_tokens = json_i64(
+        value,
+        &[
+            "/payload/usage/reasoning_tokens",
+            "/payload/usage/reasoningTokens",
+            "/payload/usage/output_tokens_details/reasoning_tokens",
+            "/payload/usage/outputTokensDetails/reasoningTokens",
+            "/payload/reasoning_tokens",
+            "/payload/reasoningTokens",
+            "/usage/reasoning_tokens",
+            "/usage/reasoningTokens",
+            "/usage/output_tokens_details/reasoning_tokens",
+            "/usage/outputTokensDetails/reasoningTokens",
+        ],
+    )
+    .unwrap_or(0);
+    let total_tokens = json_i64(
+        value,
+        &[
+            "/payload/usage/total_tokens",
+            "/payload/usage/totalTokens",
+            "/payload/total_tokens",
+            "/payload/totalTokens",
+            "/usage/total_tokens",
+            "/usage/totalTokens",
+        ],
+    )
+    .unwrap_or_else(|| {
+        input_tokens
+            .saturating_add(output_tokens)
+            .saturating_add(reasoning_tokens)
+    });
+    if input_tokens <= 0 && output_tokens <= 0 && reasoning_tokens <= 0 && total_tokens <= 0 {
+        return None;
+    }
+
+    let timestamp =
+        json_timestamp(value, &["/payload/timestamp", "/timestamp"]).unwrap_or(fallback_timestamp);
+
+    Some(PublicTokenFact::new(
+        timestamp,
+        session_id.to_string(),
+        input_tokens,
+        output_tokens,
+        reasoning_tokens,
+        total_tokens,
+    ))
 }
 
 fn command_from_arguments(value: &Value) -> Option<String> {
@@ -249,6 +386,26 @@ fn json_timestamp(value: &Value, pointers: &[&str]) -> Option<i64> {
     None
 }
 
+fn json_i64(value: &Value, pointers: &[&str]) -> Option<i64> {
+    for pointer in pointers {
+        let Some(item) = value.pointer(pointer) else {
+            continue;
+        };
+        if let Some(number) = item.as_i64() {
+            return Some(number);
+        }
+        if let Some(unsigned) = item.as_u64() {
+            return i64::try_from(unsigned).ok();
+        }
+        if let Some(raw) = item.as_str() {
+            if let Ok(parsed) = raw.trim().parse::<i64>() {
+                return Some(parsed);
+            }
+        }
+    }
+    None
+}
+
 fn parse_rfc3339_epoch_seconds(value: &str) -> Option<i64> {
     DateTime::parse_from_rfc3339(value)
         .ok()
@@ -258,6 +415,13 @@ fn parse_rfc3339_epoch_seconds(value: &str) -> Option<i64> {
 fn non_empty(value: &str) -> Option<String> {
     let trimmed = value.trim();
     (!trimmed.is_empty()).then(|| trimmed.to_string())
+}
+
+fn session_id_from_path(path: &Path) -> Option<String> {
+    path.file_stem()
+        .or_else(|| path.file_name())
+        .map(|value| value.to_string_lossy().to_string())
+        .filter(|value| !value.is_empty())
 }
 
 #[cfg(test)]
@@ -316,5 +480,35 @@ mod tests {
         assert_eq!(facts[0].path, "exec_command");
         assert_eq!(facts[1].path, "web_search");
         assert_eq!(facts[2].path, "tools/edit");
+    }
+
+    #[test]
+    fn load_public_token_facts_reads_session_and_rollout_jsonl_usage() {
+        let codex_home = PathBuf::from("/codex");
+        let paths = RepositoryPaths::from_codex_home(codex_home.clone());
+        let session = codex_home.join("sessions/session-a.jsonl");
+        let rollout = codex_home.join("rollouts/project/rollout-b.jsonl");
+        let fs = FakeFileSystem::default()
+            .with_file(
+                session,
+                r#"{"payload":{"timestamp":"2024-03-09T16:00:00.000000Z","usage":{"input_tokens":10,"output_tokens":20,"output_tokens_details":{"reasoning_tokens":5},"total_tokens":35}}}"#.to_string(),
+            )
+            .with_file(
+                rollout,
+                r#"{"timestamp":1710000060,"usage":{"inputTokens":1,"outputTokens":2,"reasoningTokens":3}}"#.to_string(),
+            );
+        let repo = Repository::with_paths_and_file_system(paths, fs);
+
+        let facts = load_public_token_facts(&repo);
+
+        assert_eq!(facts.len(), 2);
+        assert_eq!(facts[0].session_id, "session-a");
+        assert_eq!(facts[0].timestamp, 1_710_000_000);
+        assert_eq!(facts[0].input_tokens, 10);
+        assert_eq!(facts[0].output_tokens, 20);
+        assert_eq!(facts[0].reasoning_tokens, 5);
+        assert_eq!(facts[0].total_tokens, 35);
+        assert_eq!(facts[1].session_id, "rollout-b");
+        assert_eq!(facts[1].total_tokens, 6);
     }
 }

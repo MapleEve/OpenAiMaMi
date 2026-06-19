@@ -145,15 +145,18 @@ requireTextIncludes(
     "`load_change_analytics`",
     "`load_quota_history`",
     "`load_token_analytics`",
-    "pending status",
+    "load_token_analytics` |",
+    "RepositoryRead",
     "accounts/quota-history.jsonl",
     "`rollout-*.jsonl`",
     "response_item/function_call",
+    "usage.input_tokens",
+    "usage.output_tokens",
+    "usage.output_tokens_details.reasoning_tokens",
     "exec_command",
     "topTools path/count",
     "7 天窗口",
     "compaction write",
-    "不声明闭源 token analytics",
     "不声明真实运行时统计口径",
     "不声明 Windows/macOS 手工验收",
     "不声明整仓 100% leaf",
@@ -345,6 +348,8 @@ for (const [label, pattern] of [
   ["PublicSessionFileFact", /\bstruct\s+PublicSessionFileFact\b/],
   ["PublicCommandFact", /\bstruct\s+PublicCommandFact\b/],
   ["PublicToolCallFact", /\bstruct\s+PublicToolCallFact\b/],
+  ["PublicTokenFact", /\bstruct\s+PublicTokenFact\b/],
+  ["PublicTokenAggregate", /\bstruct\s+PublicTokenAggregate\b/],
   ["PublicToolAggregate", /\bstruct\s+PublicToolAggregate\b/],
   ["PublicChangeAggregate", /\bstruct\s+PublicChangeAggregate\b/],
   ["PublicUsageAggregate", /\bstruct\s+PublicUsageAggregate\b/],
@@ -354,6 +359,7 @@ for (const [label, pattern] of [
   ["public_usage_window", /\bfn\s+public_usage_window\s*\(/],
   ["estimate_active_minutes", /\bfn\s+estimate_active_minutes\s*\(/],
   ["aggregate_public_tool_analytics", /\bfn\s+aggregate_public_tool_analytics\s*\(/],
+  ["aggregate_public_token_analytics", /\bfn\s+aggregate_public_token_analytics\s*\(/],
   ["classify_public_tool_call", /\bfn\s+classify_public_tool_call\s*\(/],
   ["aggregate_public_change_analytics", /\bfn\s+aggregate_public_change_analytics\s*\(/],
   ["classify_public_command", /\bfn\s+classify_public_command\s*\(/],
@@ -516,21 +522,76 @@ for (const file of [raw.analyticsRepository, raw.quotaRepository]) {
 }
 
 const tokenBody = requireFunctionBody(code.usecase.content, files.usecase, "load_token_analytics");
-rejectPattern(
+requirePattern(
+  "token usecase 调用 analytics repository",
+  files.usecase,
+  tokenBody,
+  /analytics_repository\s*::\s*load_public_token_facts\s*\(\s*repo\s*\)/,
+  "公开 JSONL token 事实必须由 repository owner 提供",
+);
+requirePattern(
+  "token usecase 调用 core aggregate",
+  files.usecase,
+  tokenBody,
+  /aggregate_public_token_analytics\s*\(/,
+  "token range、百分比、avg per session 和 day series 必须由 core/model/analytics.rs owning",
+);
+requirePattern(
   "token analytics restored 状态",
   files.usecase,
-  raw.usecase.content,
   tokenBody,
-  /\brestored_status\s*\(|BackendEffect\s*::\s*(?:NoOp|RepositoryRead|RepositoryWrite)/g,
-  "token analytics 仍缺少闭源 token 路径证据，不得标记 restored",
+  /restored_status\s*\(\s*"analytics"\s*,\s*"load_token_analytics"\s*,\s*BackendEffect::RepositoryRead\s*,?\s*\)/,
+  "load_token_analytics 必须恢复为公开 JSONL token 数字字段只读聚合",
+);
+requirePattern(
+  "token usecase 映射 day series",
+  files.usecase,
+  tokenBody,
+  /TokenDaySeriesPayload\s*\{[\s\S]*input_tokens\s*:\s*day\.input_tokens[\s\S]*output_tokens\s*:\s*day\.output_tokens[\s\S]*reasoning_tokens\s*:\s*day\.reasoning_tokens[\s\S]*cumulative\s*:\s*day\.cumulative/,
+  "token day series 必须映射 input/output/reasoning/total/cumulative",
+);
+requirePattern(
+  "analytics repository 读取 token facts",
+  files.analyticsRepository,
+  code.analyticsRepository.content,
+  /\bpub\s+fn\s+load_public_token_facts\s*\(\s*repo\s*:\s*&Repository\s*\)/,
+  "analytics repository 必须提供公开 JSONL token facts",
+);
+for (const [label, pattern] of [
+  ["token JSONL recursive visitor", /\bfn\s+visit_public_token_jsonl_dir\s*\(/],
+  ["token JSONL filename filter", /\bfn\s+is_jsonl\s*\(/],
+  ["token parser function", /\bfn\s+public_token_fact_from_value\s*\(/],
+  ["token usage input field", /\/payload\/usage\/input_tokens/],
+  ["token usage output field", /\/payload\/usage\/output_tokens/],
+  ["token usage reasoning field", /\/payload\/usage\/output_tokens_details\/reasoning_tokens/],
+  ["token usage total field", /\/payload\/usage\/total_tokens/],
+  ["token JSON number parser", /\bfn\s+json_i64\s*\(/],
+]) {
+  requirePattern(label, files.analyticsRepository, code.analyticsRepository.content, pattern, "repository 必须 owning 公开 token JSONL 事实解析");
+}
+for (const [label, pattern] of [
+  ["token aggregate totals", /input_total[\s\S]*output_total[\s\S]*reasoning_total[\s\S]*total_tokens/],
+  ["token aggregate pct", /input_pct[\s\S]*output_pct[\s\S]*reasoning_pct/],
+  ["token aggregate avg per session", /avg_per_session[\s\S]*sessions\.len\(\)/],
+  ["token aggregate cumulative", /cumulative\s*=\s*cumulative\.saturating_add/],
+]) {
+  requirePattern(label, files.coreModel, code.coreModel.content, pattern, "core 必须 owning token 聚合口径");
+}
+rejectPattern(
+  "token analytics 文件写入或外部副作用",
+  files.analyticsRepository,
+  raw.analyticsRepository.content,
+  requireFunctionBody(code.analyticsRepository.content, files.analyticsRepository, "load_public_token_facts"),
+  /\b(write_string|create_dir_all|remove_file|remove_dir_all|copy_file|rename|std\s*::\s*fs|tokio\s*::\s*fs|Command\s*::|reqwest|rusqlite|sqlite)\b/g,
+  "load_public_token_facts 只能只读公开 JSONL",
 );
 rejectPattern(
-  "token restored 闭环声明",
+  "token 闭源口径完成声明",
   files.usecase,
   raw.usecase.content,
   raw.usecase.content,
-  /真实\s*token\s*统计闭环|token\s*统计闭环已恢复|restored_status\s*\(\s*"analytics"\s*,\s*"load_token_analytics"/g,
-  "本切片不得声明真实 token analytics 闭环",
+  /真实\s*token\s*统计闭环|token\s*统计闭环已恢复|闭源\s*token\s*analytics\s*已恢复/g,
+  "本切片只能声明公开 JSONL token 数字字段聚合，不声明闭源 token analytics 闭环",
 );
 
 if (failures.length > 0) {
@@ -542,5 +603,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  "PASS 后端 analytics owner 校验通过：usecase 无直接文件 IO，repository 通过可替换 FS 提供公开事实，core owning usage/tool/change 聚合；quota history 恢复公开 JSONL 点位，工具分析只恢复公开 function_call 事实，token analytics 未标记 restored。",
+  "PASS 后端 analytics owner 校验通过：usecase 无直接文件 IO，repository 通过可替换 FS 提供公开事实，core owning usage/token/tool/change 聚合；quota history 恢复公开 JSONL 点位，token/tool/change 均只恢复公开 JSONL 事实。",
 );

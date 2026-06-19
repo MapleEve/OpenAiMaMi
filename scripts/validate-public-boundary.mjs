@@ -927,8 +927,13 @@ function validateCurrentSourceEvidenceMapRegistry() {
     .sort((left, right) => left.localeCompare(right));
   const sourceMapPath = "docs/reconstruction/source-map.md";
   const reconstructionReadmePath = "docs/reconstruction/README.md";
+  const frontendCloseoutLedgerPath =
+    "docs/reconstruction/frontend-current-source-closeouts.json";
   const sourceMapExists = existsSync(join(repoRoot, sourceMapPath));
   const readmeExists = existsSync(join(repoRoot, reconstructionReadmePath));
+  const frontendCloseoutLedgerExists = existsSync(
+    join(repoRoot, frontendCloseoutLedgerPath),
+  );
   const sourceMapContent = sourceMapExists ? readUtf8(sourceMapPath) : "";
   const readmeContent = readmeExists ? readUtf8(reconstructionReadmePath) : "";
 
@@ -962,6 +967,29 @@ function validateCurrentSourceEvidenceMapRegistry() {
       : missingFromReadme.length === 0
         ? "docs/reconstruction/README.md 已索引所有 current-source/evidence map"
         : `docs/reconstruction/README.md 缺少：${missingFromReadme.join("；")}`,
+  );
+
+  const closeoutLedgerRegistryFailures = [];
+  if (!frontendCloseoutLedgerExists) {
+    closeoutLedgerRegistryFailures.push(`${frontendCloseoutLedgerPath} 不存在`);
+  }
+  if (!sourceMapContent.includes(frontendCloseoutLedgerPath)) {
+    closeoutLedgerRegistryFailures.push(
+      `${sourceMapPath} 缺少 ${frontendCloseoutLedgerPath}`,
+    );
+  }
+  if (!readmeContent.includes(frontendCloseoutLedgerPath)) {
+    closeoutLedgerRegistryFailures.push(
+      `${reconstructionReadmePath} 缺少 ${frontendCloseoutLedgerPath}`,
+    );
+  }
+
+  addCheck(
+    "frontend current-source closeout 台账进入 reconstruction 聚合索引",
+    closeoutLedgerRegistryFailures.length === 0,
+    closeoutLedgerRegistryFailures.length === 0
+      ? "frontend-current-source-closeouts.json 已由 source-map.md 和 docs/reconstruction/README.md 收口"
+      : closeoutLedgerRegistryFailures.join("；"),
   );
 
   const validateScriptContents = walkFiles(join(repoRoot, "scripts"))
