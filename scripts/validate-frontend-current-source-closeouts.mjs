@@ -674,12 +674,15 @@ const UI_THEME_GATE_FAILURE_KEYS = [
 ];
 const CROSS_HOME_USAGE_FRONTEND_CLOSEOUT_ID =
   "cross-home-usage-frontend-current-source-non-gating-closeout";
+const CROSS_HOME_USAGE_FRONTEND_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/cross-home-usage-frontend-current-source-map.md";
 const CROSS_HOME_USAGE_FRONTEND_GATE_REPORT =
   "evidence/full-chain/internal/audits/audits/cross-1.0.9-home-usage-frontend/gate-report.json";
 const CROSS_HOME_USAGE_FRONTEND_ALLOWED_FIELDS = [
   "id",
   "module",
   "status",
+  "currentSourceMap",
   "gateReports",
   "requiredSourceSignals",
   "backendBoundaryNotes",
@@ -3026,6 +3029,9 @@ function validateCrossHomeUsageFrontendCloseout(closeout) {
   if (closeout.status !== "current-source-closed-partial") {
     failures.push(`${closeout.id} status=${String(closeout.status)}`);
   }
+  if (closeout.currentSourceMap !== CROSS_HOME_USAGE_FRONTEND_CURRENT_SOURCE_MAP) {
+    failures.push(`${closeout.id} currentSourceMap=${String(closeout.currentSourceMap)}`);
+  }
 
   const gateReports = closeout.gateReports ?? [];
   if (gateReports.length !== 1 || gateReports[0] !== CROSS_HOME_USAGE_FRONTEND_GATE_REPORT) {
@@ -3046,6 +3052,24 @@ function validateCrossHomeUsageFrontendCloseout(closeout) {
 
   validateRequiredSignals(closeout);
   validateClosedGateReportFailures(closeout);
+
+  const mapPath = repoPath(CROSS_HOME_USAGE_FRONTEND_CURRENT_SOURCE_MAP);
+  if (!existsSync(mapPath)) {
+    failures.push(`${closeout.id} 缺少当前源码说明文档：${CROSS_HOME_USAGE_FRONTEND_CURRENT_SOURCE_MAP}`);
+  } else {
+    const mapText = readText(mapPath);
+    for (const required of [
+      "# cross-home-usage 前端当前源码证据映射",
+      "home-dashboard + usage-snapshot-panel",
+      "不声明 `gate_accepted`、`implementation_use` 或 `readyToImplement` 已恢复",
+      "不声明该 cross 包完成后端 IDA 验证",
+      "不新增 route、sidebar、header、tray、prompt host、plugins config 或 `voice` 入口",
+    ]) {
+      if (!mapText.includes(required)) {
+        failures.push(`${CROSS_HOME_USAGE_FRONTEND_CURRENT_SOURCE_MAP} 缺少说明片段：${required}`);
+      }
+    }
+  }
 
   const expectedGateFailureKeys = new Set(CROSS_HOME_USAGE_FRONTEND_GATE_FAILURE_KEYS);
   const actualGateFailureKeys = new Set(

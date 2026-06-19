@@ -3108,10 +3108,19 @@
       "id": "cross-home-usage-frontend-current-source-non-gating-closeout",
       "module": "cross-home-usage-frontend",
       "status": "current-source-closed-partial",
+      "currentSourceMap": "docs/reconstruction/cross-home-usage-frontend-current-source-map.md",
       "gateReports": [
         "evidence/full-chain/internal/audits/audits/cross-1.0.9-home-usage-frontend/gate-report.json"
       ],
       "requiredSourceSignals": [
+        {
+          "file": "docs/reconstruction/cross-home-usage-frontend-current-source-map.md",
+          "includes": [
+            "cross-home-usage 前端当前源码证据映射",
+            "不声明 `gate_accepted`、`implementation_use` 或 `readyToImplement` 已恢复",
+            "不声明该 cross 包完成后端 IDA 验证"
+          ]
+        },
         {
           "file": "evidence/full-chain/internal/audits/audits/cross-1.0.9-home-usage-frontend/gate-report.json",
           "includes": [
