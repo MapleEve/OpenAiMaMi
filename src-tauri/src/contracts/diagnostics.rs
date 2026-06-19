@@ -18,6 +18,7 @@ pub struct DiagnosePayload {
 
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
+// 公开平台 DTO 只包含 os/arch/source，避免把 hostname、os_version 或平台能力探针写入诊断合同。
 pub struct DiagnosePlatform {
     pub os: String,
     pub arch: String,

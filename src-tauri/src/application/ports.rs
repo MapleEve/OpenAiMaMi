@@ -52,7 +52,7 @@ pub(crate) struct DiagnosticCapabilityProbe {
     pub message: String,
 }
 
-// 诊断平台端口只暴露结构化平台信息和能力探针结果，不实现注册表、钥匙串、sqlite 或 TOML 修复逻辑。
+// 诊断平台端口只暴露结构化平台信息和能力探针类型化骨架，不实现注册表、钥匙串、sqlite、TOML 修复或平台动作。
 pub(crate) trait DiagnosticPlatformPort {
     fn platform_info(&self) -> DiagnosticPlatformInfo;
     fn capability_probes(&self) -> Vec<DiagnosticCapabilityProbe>;

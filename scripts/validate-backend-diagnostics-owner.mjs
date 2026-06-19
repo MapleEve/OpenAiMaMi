@@ -68,6 +68,7 @@ for (const [label, pattern] of [
   ["diagnostics repository snapshot", /\bload_system_diagnostic_snapshot\s*\(\s*repo\s*\)/],
   ["diagnostics platform port", /\bDiagnosticPlatformPort\b/],
   ["diagnostics platform payload", /\bmake_diagnose_platform\s*\(\s*platform\s*\)/],
+  ["diagnostics platform public projection", /公开 diagnose DTO 只投影 os\/arch[\s\S]*?DiagnosePlatform\s*\{[\s\S]*?os\s*:\s*info\.os,[\s\S]*?arch\s*:\s*info\.arch,[\s\S]*?info_source\s*:\s*"platform\.system"\s*\.to_string\s*\(\s*\)/],
   ["diagnostics backend status", /\bfn\s+diagnose_backend_status\s*\(/],
   ["diagnostics module status", /module\s*:\s*"diagnostics"\s*\.to_string\s*\(\s*\)/],
   ["diagnostics restored status", /\brestored\s*:\s*true\s*,/],
@@ -78,6 +79,8 @@ for (const [label, pattern] of [
   ["catalog integrity repository read boundary", /diagnostics\.catalog_integrity\.repository_read/],
   ["diagnostics pending deep fields", /registry\/keychain\/sqlite 深诊断引擎和修复逻辑仍为 pending/],
   ["pending diagnostics fields", /\bfn\s+make_pending_diagnostic_fields\s*\(/],
+  ["unsupported pending no-op boundary", /未支持的深层诊断项只能表达为待处理[\s\S]*?diagnose 不执行平台动作/],
+  ["pending diagnostics status literal", /status\s*:\s*"pending"\s*\.to_string\s*\(\s*\)/],
   ["diagnostic snapshot payload", /\bfn\s+make_diagnostic_snapshot_payload\s*\(/],
   ["diagnostic repository path state", /\bload_app_path_state\s*\(\s*repo\s*\)/],
   ["diagnostic path state merge", /\bfn\s+make_path_state\s*\(\s*state\s*:\s*RepositoryPathState\s*\)\s*->\s*AppPathState/],
@@ -94,6 +97,8 @@ for (const [label, pattern] of [
   ["settings secret owner", /\bremote_device_secret\b/g],
   ["daemon owner", /\bdaemon_usecase\b/g],
   ["平台动作 owner", /\bApp(Process|Shell|System|Window)Port\b|\bplatform_actions\b/g],
+  ["平台能力探针外泄", /\bcapability_probes\s*\(/g],
+  ["平台私有字段外泄", /\binfo\s*\.\s*(hostname|os_version)\b|\b(hostname|os_version)\s*:/g],
 ]) {
   rejectPattern(label, diagnosticsUsecase.path, diagnosticsUsecase.content, pattern, "diagnostics owner 必须保持只读诊断范围");
 }
@@ -170,6 +175,20 @@ requirePattern(
   /\bpub\(crate\)\s+trait\s+DiagnosticPlatformPort\b/,
   "diagnostics 用例必须通过应用层平台端口消费系统能力",
 );
+requirePattern(
+  "诊断平台端口类型化骨架注释",
+  applicationPorts.path,
+  applicationPorts.content,
+  /诊断平台端口只暴露结构化平台信息和能力探针类型化骨架，不实现注册表、钥匙串、sqlite、TOML 修复或平台动作/,
+  "DiagnosticPlatformPort 必须声明未支持的平台诊断只能停留在端口骨架",
+);
+requirePattern(
+  "诊断能力探针类型化骨架",
+  applicationPorts.path,
+  applicationPorts.content,
+  /\bpub\(crate\)\s+struct\s+DiagnosticCapabilityProbe\b/,
+  "能力探针只能作为类型化骨架保留在 application port",
+);
 
 const systemPlatform = raw.get("systemPlatform");
 for (const [label, pattern] of [
@@ -237,6 +256,19 @@ for (const typeName of [
     `${typeName} 必须定义在 contracts/diagnostics.rs`,
   );
 }
+requirePattern(
+  "公开平台 DTO 只含 os/arch/source",
+  contractsDiagnostics.path,
+  contractsDiagnostics.content,
+  /公开平台 DTO 只包含 os\/arch\/source[\s\S]*?pub\s+struct\s+DiagnosePlatform\s*\{[\s\S]*?pub\s+os\s*:\s*String,[\s\S]*?pub\s+arch\s*:\s*String,[\s\S]*?pub\s+info_source\s*:\s*String,[\s\S]*?\}/,
+  "DiagnosePlatform 不得暴露 hostname、os_version 或能力探针",
+);
+for (const [label, pattern] of [
+  ["公开 DTO 平台私有字段", /\bpub\s+(hostname|os_version|osVersion)\s*:/g],
+  ["公开 DTO 能力探针字段", /\bpub\s+(capability_probes|capabilityProbes)\s*:/g],
+]) {
+  rejectPattern(label, contractsDiagnostics.path, contractsDiagnostics.content, pattern, "diagnostics 公开合同不得外泄平台私有信息或未恢复能力探针");
+}
 
 const frontendTypes = raw.get("frontendTypes");
 for (const [label, pattern] of [
@@ -277,9 +309,12 @@ const diagnosticsMap = raw.get("diagnosticsMap");
 for (const [label, pattern] of [
   ["diagnostics map 标题", /^# diagnostics current-source 证据映射/m],
   ["diagnostics map restored/repository-read", /backend_status\.restored=true[\s\S]*BackendEffect::RepositoryRead/],
+  ["diagnostics map application ports", /src-tauri\/src\/application\/ports\.rs[\s\S]*能力探针类型化骨架[\s\S]*hostname[\s\S]*os_version/],
   ["diagnostics map repository probes", /codex_home[\s\S]*accounts_dir[\s\S]*auth_path[\s\S]*registry_path[\s\S]*sessions_dir[\s\S]*config_path/],
+  ["diagnostics map platform public projection", /diagnose` payload 只公开 os、arch 和 info_source[\s\S]*能力探针保持类型化骨架[\s\S]*平台动作不进入公开诊断 DTO/],
   ["diagnostics map catalog integrity", /catalog_integrity[\s\S]*config\.toml[\s\S]*codex_router_catalog\.json[\s\S]*只读探针/],
-  ["diagnostics map pending fields", /auth_integrity[\s\S]*api_key_integrity[\s\S]*db_orphan_providers[\s\S]*rollout_orphan_providers[\s\S]*repair_logic/],
+  ["diagnostics map pending fields", /auth_integrity[\s\S]*api_key_integrity[\s\S]*db_orphan_providers[\s\S]*rollout_orphan_providers[\s\S]*repair_logic[\s\S]*平台动作/],
+  ["diagnostics map pending no-op boundary", /只保留端口骨架、待处理和空操作边界/],
   ["diagnostics map validator", /scripts\/validate-backend-diagnostics-owner\.mjs/],
   ["diagnostics map no full leaf claim", /不声明双平台全 leaf 已完成/],
 ]) {
@@ -312,4 +347,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("PASS 后端 diagnostics owner 校验通过：诊断 usecase、DTO、repository 只读快照、catalog_integrity 只读探针、TypeScript 类型、E2E mock、restored/RepositoryRead 状态和 current-source map 均已脱离 system 中转。");
+console.log("PASS 后端 diagnostics owner 校验通过：诊断 usecase、DTO、ports、repository 只读快照、catalog_integrity 只读探针、平台私有字段不外泄、TypeScript 类型、E2E mock、restored/RepositoryRead 状态和 current-source map 均已脱离 system 中转。");

@@ -7,6 +7,8 @@ const failures = [];
 const notes = [];
 const relayCoreCurrentSourceCloseoutGateReport =
   "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json";
+const relayCoreBootstrapCurrentSourceCloseoutGateReport =
+  "evidence/full-chain/internal/audits/audits/cross-1.0.9-relay-core-bootstrap/gate-report.json";
 const relayCoreCurrentSourceCloseoutGateFailureClusters = [
   "relay_codex_writer",
   "relay_diagnostic",
@@ -30,8 +32,14 @@ const relayCoreCurrentSourceCloseoutGateFailureKeys =
         `${relayCoreCurrentSourceCloseoutGateReport}\u0000clusters.${cluster}.${field}\u0000false`,
     ),
   );
+const relayCoreBootstrapCurrentSourceCloseoutGateFailureKeys = [
+  `${relayCoreBootstrapCurrentSourceCloseoutGateReport}\u0000readyToImplement\u0000false`,
+  `${relayCoreBootstrapCurrentSourceCloseoutGateReport}\u0000implementation_use\u0000false`,
+  `${relayCoreBootstrapCurrentSourceCloseoutGateReport}\u0000gate_accepted\u0000false`,
+];
 const allowedCloseoutGateFailureKeys = new Set([
   ...relayCoreCurrentSourceCloseoutGateFailureKeys,
+  ...relayCoreBootstrapCurrentSourceCloseoutGateFailureKeys,
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000gate_accepted\u0000false",
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000implementation_use\u0000false",
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json\u0000dim6_missing\u0000true",

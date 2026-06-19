@@ -17,6 +17,8 @@ const RELAY_CURRENT_SOURCE_GATE_REPORTS = [
 ];
 const RELAY_CURRENT_SOURCE_WINDOWS_CORE_GATE_REPORT =
   "evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json";
+const RELAY_CURRENT_SOURCE_BOOTSTRAP_GATE_REPORT =
+  "evidence/full-chain/internal/audits/audits/cross-1.0.9-relay-core-bootstrap/gate-report.json";
 const RELAY_CURRENT_SOURCE_GATE_FAILURE_CLUSTERS = [
   "relay_codex_writer",
   "relay_diagnostic",
@@ -33,12 +35,22 @@ const RELAY_CURRENT_SOURCE_GATE_FAILURE_FIELDS = [
   "gate_accepted",
   "implementation_use",
 ];
-const RELAY_CURRENT_SOURCE_GATE_FAILURE_KEYS = RELAY_CURRENT_SOURCE_GATE_FAILURE_CLUSTERS.flatMap((cluster) =>
-  RELAY_CURRENT_SOURCE_GATE_FAILURE_FIELDS.map(
-    (field) =>
-      `${RELAY_CURRENT_SOURCE_WINDOWS_CORE_GATE_REPORT}\u0000clusters.${cluster}.${field}\u0000false`,
-  ),
-);
+const RELAY_CURRENT_SOURCE_WINDOWS_CORE_GATE_FAILURE_KEYS =
+  RELAY_CURRENT_SOURCE_GATE_FAILURE_CLUSTERS.flatMap((cluster) =>
+    RELAY_CURRENT_SOURCE_GATE_FAILURE_FIELDS.map(
+      (field) =>
+        `${RELAY_CURRENT_SOURCE_WINDOWS_CORE_GATE_REPORT}\u0000clusters.${cluster}.${field}\u0000false`,
+    ),
+  );
+const RELAY_CURRENT_SOURCE_BOOTSTRAP_GATE_FAILURE_KEYS = [
+  `${RELAY_CURRENT_SOURCE_BOOTSTRAP_GATE_REPORT}\u0000readyToImplement\u0000false`,
+  `${RELAY_CURRENT_SOURCE_BOOTSTRAP_GATE_REPORT}\u0000implementation_use\u0000false`,
+  `${RELAY_CURRENT_SOURCE_BOOTSTRAP_GATE_REPORT}\u0000gate_accepted\u0000false`,
+];
+const RELAY_CURRENT_SOURCE_GATE_FAILURE_KEYS = [
+  ...RELAY_CURRENT_SOURCE_WINDOWS_CORE_GATE_FAILURE_KEYS,
+  ...RELAY_CURRENT_SOURCE_BOOTSTRAP_GATE_FAILURE_KEYS,
+];
 const RELAY_CURRENT_SOURCE_COMMANDS = [
   "activate_relay_provider",
   "deactivate_relay_provider",

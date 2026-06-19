@@ -10,6 +10,7 @@
 | `src-tauri/src/commands/maintenance.rs` | command 层只获取 repository 和 `SystemPlatformAdapter`，调用 maintenance usecase 并返回 envelope。 |
 | `src-tauri/src/application/usecase/maintenance.rs` | maintenance 只转交独立 diagnostics usecase，并把返回状态模块改为 maintenance。 |
 | `src-tauri/src/application/usecase/diagnostics.rs` | diagnostics usecase 组装只读诊断 DTO、平台 os/arch、路径状态、registry/session 摘要、`catalog_integrity` 只读探针和 pending diagnostics 字段。 |
+| `src-tauri/src/application/ports.rs` | `DiagnosticPlatformPort` 只提供平台信息和能力探针类型化骨架；当前 `diagnose` 只消费 os/arch 投影，不把平台动作、hostname 或 os_version 写入公开 DTO。 |
 | `src-tauri/src/repository/diagnostics.rs` | diagnostics repository 只通过可替换 FS 读取路径存在性、registry JSON items 数量和 sessions 子项数量。 |
 | `src-tauri/src/repository/relay.rs` | `catalog_integrity` 只复用 relay repository 对 config.toml、`codex_router_catalog.json` 和 relay 本地配置状态的只读事实，不执行修复。 |
 | `src-tauri/src/contracts/diagnostics.rs` | 公开 `DiagnosePayload`、platform、snapshot、probe、`catalog_integrity` 和 pending field DTO。 |
@@ -23,7 +24,7 @@
 | registry 数量 | `repository/diagnostics.rs` | 如果 registry JSON 存在，只读取 `items` 数组长度；不校验账号密钥、不修复 registry。 |
 | sessions 数量 | `repository/diagnostics.rs` | 如果 sessions 目录存在，只统计目录子项数量；不读取敏感会话内容。 |
 | `catalog_integrity` 只读探针 | `application/usecase/diagnostics.rs`、`repository/relay.rs` | 读取 config.toml 受管区块、`codex_router_catalog.json` 存在性、relay 本地 router 开关和 stale reason；不调用 router 修复，不写文件，不启动进程。 |
-| 平台信息 | `platform/system.rs` 经 `DiagnosticPlatformPort` | 只返回 os、arch 和 capability probe 结构化信息；不执行原生诊断修复。 |
+| 平台信息 | `application/ports.rs`、`platform/system.rs` 经 `DiagnosticPlatformPort` | `diagnose` payload 只公开 os、arch 和 info_source；能力探针保持类型化骨架，hostname、os_version 和平台动作不进入公开诊断 DTO。 |
 
 ## pending 边界
 
@@ -34,9 +35,10 @@
 | `db_orphan_providers` | SQLite 中转 Provider 孤儿记录诊断引擎未恢复。 |
 | `rollout_orphan_providers` | rollout 线程孤儿 Provider 诊断引擎未恢复。 |
 | `repair_logic` | 诊断修复逻辑未恢复；当前 `diagnose` 不写文件、不启动进程、不修改配置。 |
+| 平台动作 | 注册表、钥匙串、系统修复、外部进程和平台原生诊断动作未恢复；当前只保留端口骨架、待处理和空操作边界。 |
 
 ## 验证入口
 
-- `scripts/validate-backend-diagnostics-owner.mjs` 直接验证本文件、diagnostics usecase、repository、contracts、TypeScript 类型、E2E mock、maintenance 转发、`catalog_integrity` 只读探针和 pending 边界。
+- `scripts/validate-backend-diagnostics-owner.mjs` 直接验证本文件、diagnostics usecase、repository、contracts、ports、TypeScript 类型、E2E mock、maintenance 转发、`catalog_integrity` 只读探针、平台私有字段不外泄和待处理/空操作边界。
 - `npm run validate:backend-diagnostics-owner` 用于单独验收 diagnostics owner。
 - `npm run validate:backend` 和 `npm run validate:all` 用于聚合验收。

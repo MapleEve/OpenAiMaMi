@@ -113,6 +113,7 @@ fn make_catalog_integrity_payload(repo: &Repository) -> DiagnoseCatalogIntegrity
 
 fn make_diagnose_platform(platform: &impl DiagnosticPlatformPort) -> DiagnosePlatform {
     let info = platform.platform_info();
+    // 公开 diagnose DTO 只投影 os/arch，不外泄 hostname、os_version 或平台能力探针细节。
     DiagnosePlatform {
         os: info.os,
         arch: info.arch,
@@ -208,6 +209,7 @@ fn diagnostic_probe<'a>(
 }
 
 fn make_pending_diagnostic_fields() -> Vec<DiagnoseDiagnosticFieldPayload> {
+    // 未支持的深层诊断项只能表达为待处理；diagnose 不执行平台动作，也不把空操作扩展成修复副作用。
     vec![
         pending_diagnostic_field(
             "auth_integrity",
