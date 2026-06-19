@@ -2,14 +2,15 @@ use crate::application::ports::DiagnosticPlatformPort;
 use crate::application::usecase::path_state::app_path_state_from_repository;
 use crate::contracts::{
     AppPathState, BackendEffect, BackendSkeletonBoundaryStatus, BackendSkeletonStatus,
-    DiagnoseApiState, DiagnoseDiagnosticFieldPayload, DiagnoseDiagnosticProbePayload,
-    DiagnoseDiagnosticSnapshotPayload, DiagnosePayload, DiagnosePlatform, DiagnoseRegistryState,
-    DiagnoseSessionState,
+    DiagnoseApiState, DiagnoseCatalogIntegrityPayload, DiagnoseDiagnosticFieldPayload,
+    DiagnoseDiagnosticProbePayload, DiagnoseDiagnosticSnapshotPayload, DiagnosePayload,
+    DiagnosePlatform, DiagnoseRegistryState, DiagnoseSessionState,
 };
 use crate::core::error::CoreError;
 use crate::core::model::diagnostics::{DiagnosticProbe, DiagnosticSnapshot};
 use crate::repository::diagnostics::load_system_diagnostic_snapshot;
 use crate::repository::path_state::{load_app_path_state, RepositoryPathState};
+use crate::repository::relay as relay_repository;
 use crate::repository::Repository;
 
 // diagnostics usecase 只负责公开只读诊断快照合同，不恢复诊断修复闭环。
@@ -49,6 +50,7 @@ pub fn diagnose(
             last_name_failure_account: None,
         },
         diagnostic_snapshot: make_diagnostic_snapshot_payload(&diagnostic_snapshot),
+        catalog_integrity: make_catalog_integrity_payload(repo),
         pending_diagnostics: make_pending_diagnostic_fields(),
     })
 }
@@ -58,7 +60,7 @@ fn diagnose_backend_status() -> BackendSkeletonStatus {
         module: "diagnostics".to_string(),
         command: "diagnose".to_string(),
         restored: true,
-        note: "系统诊断已恢复 diagnostics repository 只读快照：路径存在性、registry 数量、sessions 数量和平台 os/arch；registry/keychain/sqlite/TOML 深诊断引擎和修复逻辑仍为 pending。"
+        note: "系统诊断已恢复 diagnostics repository 只读快照：路径存在性、registry 数量、sessions 数量、平台 os/arch 和 catalog_integrity 只读探针；registry/keychain/sqlite 深诊断引擎和修复逻辑仍为 pending。"
             .to_string(),
         boundary: BackendSkeletonBoundaryStatus {
             repository_checked: true,
@@ -68,6 +70,44 @@ fn diagnose_backend_status() -> BackendSkeletonStatus {
             effect: BackendEffect::RepositoryRead,
         },
         runtime_event: None,
+    }
+}
+
+fn make_catalog_integrity_payload(repo: &Repository) -> DiagnoseCatalogIntegrityPayload {
+    let skeleton = relay_repository::load_router_diagnostic_skeleton(repo, "catalog_integrity");
+    let has_issues = skeleton.router_enabled
+        && (!skeleton.catalog_exists
+            || !skeleton.config_toml_has_router
+            || !skeleton.config_toml_has_catalog
+            || !skeleton.managed_block_exists
+            || skeleton.config_stale_reason.is_some());
+    let status = if has_issues {
+        "needs_attention"
+    } else {
+        "restored"
+    };
+    let detail = if has_issues {
+        "catalog_integrity 只读探针发现路由模型目录或 config.toml 受管区块需要人工核对；当前 diagnose 不执行修复。"
+    } else {
+        "catalog_integrity 只读探针已读取路由模型目录、config.toml 受管区块和 relay 本地配置状态。"
+    };
+
+    DiagnoseCatalogIntegrityPayload {
+        source_path: skeleton.source_path,
+        catalog_source_path: skeleton.catalog_source_path,
+        diagnostic_boundary: "diagnostics.catalog_integrity.repository_read".to_string(),
+        pending: false,
+        status: status.to_string(),
+        detail: detail.to_string(),
+        codex_provider_count: skeleton.codex_provider_count,
+        catalog_exists: skeleton.catalog_exists,
+        config_toml_has_router: skeleton.config_toml_has_router,
+        config_toml_has_catalog: skeleton.config_toml_has_catalog,
+        managed_block_exists: skeleton.managed_block_exists,
+        router_enabled: skeleton.router_enabled,
+        user_top_level_profile: skeleton.user_top_level_profile,
+        config_stale_reason: skeleton.config_stale_reason,
+        has_issues,
     }
 }
 
@@ -172,10 +212,6 @@ fn make_pending_diagnostic_fields() -> Vec<DiagnoseDiagnosticFieldPayload> {
         pending_diagnostic_field(
             "auth_integrity",
             "认证文件与平台密钥或注册表的一致性诊断引擎未在当前公开后端恢复。",
-        ),
-        pending_diagnostic_field(
-            "catalog_integrity",
-            "路由模型目录与 config.toml 托管区块诊断引擎未在当前公开后端恢复。",
         ),
         pending_diagnostic_field(
             "api_key_integrity",

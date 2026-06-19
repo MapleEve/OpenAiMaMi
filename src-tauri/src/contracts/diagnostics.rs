@@ -12,6 +12,7 @@ pub struct DiagnosePayload {
     pub session_state: DiagnoseSessionState,
     pub api_state: DiagnoseApiState,
     pub diagnostic_snapshot: DiagnoseDiagnosticSnapshotPayload,
+    pub catalog_integrity: DiagnoseCatalogIntegrityPayload,
     pub pending_diagnostics: Vec<DiagnoseDiagnosticFieldPayload>,
 }
 
@@ -49,6 +50,26 @@ pub struct DiagnoseDiagnosticFieldPayload {
     pub field: String,
     pub status: String,
     pub detail: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DiagnoseCatalogIntegrityPayload {
+    pub source_path: String,
+    pub catalog_source_path: Option<String>,
+    pub diagnostic_boundary: String,
+    pub pending: bool,
+    pub status: String,
+    pub detail: String,
+    pub codex_provider_count: i32,
+    pub catalog_exists: bool,
+    pub config_toml_has_router: bool,
+    pub config_toml_has_catalog: bool,
+    pub managed_block_exists: bool,
+    pub router_enabled: bool,
+    pub user_top_level_profile: Option<String>,
+    pub config_stale_reason: Option<String>,
+    pub has_issues: bool,
 }
 
 #[derive(Debug, Clone, Serialize)]

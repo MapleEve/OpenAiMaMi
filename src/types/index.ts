@@ -575,6 +575,24 @@ export interface DiagnoseDiagnosticFieldPayload {
   detail: string | null;
 }
 
+export interface DiagnoseCatalogIntegrityPayload {
+  sourcePath: string;
+  catalogSourcePath: string | null;
+  diagnosticBoundary: string;
+  pending: boolean;
+  status: "restored" | "needs_attention" | string;
+  detail: string;
+  codexProviderCount: number;
+  catalogExists: boolean;
+  configTomlHasRouter: boolean;
+  configTomlHasCatalog: boolean;
+  managedBlockExists: boolean;
+  routerEnabled: boolean;
+  userTopLevelProfile: string | null;
+  configStaleReason: string | null;
+  hasIssues: boolean;
+}
+
 export interface DiagnosePayload {
   backendStatus: BackendSkeletonStatus;
   checkedAt?: string | number | null;
@@ -594,6 +612,7 @@ export interface DiagnosePayload {
     lastNameFailureAccount: string | null;
   };
   diagnosticSnapshot: DiagnoseDiagnosticSnapshotPayload;
+  catalogIntegrity: DiagnoseCatalogIntegrityPayload;
   pendingDiagnostics: DiagnoseDiagnosticFieldPayload[];
   repositoryState?: DiagnosticSkeletonStatePayload;
   platformState?: DiagnosticSkeletonStatePayload;

@@ -11,11 +11,14 @@ const files = {
   pathStateUsecase: join(backendRoot, "application", "usecase", "path_state.rs"),
   systemPlatform: join(backendRoot, "platform", "system.rs"),
   repositoryDiagnostics: join(backendRoot, "repository", "diagnostics.rs"),
+  repositoryRelay: join(backendRoot, "repository", "relay.rs"),
   repositoryPathState: join(backendRoot, "repository", "path_state.rs"),
   systemRoot: join(backendRoot, "application", "usecase", "system.rs"),
   maintenanceUsecase: join(backendRoot, "application", "usecase", "maintenance.rs"),
   contractsDiagnostics: join(backendRoot, "contracts", "diagnostics.rs"),
   contractsMod: join(backendRoot, "contracts", "mod.rs"),
+  frontendTypes: join(repoRoot, "src", "types", "index.ts"),
+  mockCommands: join(repoRoot, "src", "mocks", "fixtures", "commands.ts"),
   diagnosticsMap: join(repoRoot, "docs", "reconstruction", "diagnostics-current-source-evidence-map.md"),
   sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
   reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
@@ -69,7 +72,11 @@ for (const [label, pattern] of [
   ["diagnostics module status", /module\s*:\s*"diagnostics"\s*\.to_string\s*\(\s*\)/],
   ["diagnostics restored status", /\brestored\s*:\s*true\s*,/],
   ["diagnostics repository read effect", /\beffect\s*:\s*BackendEffect\s*::\s*RepositoryRead\s*,/],
-  ["diagnostics pending deep fields", /registry\/keychain\/sqlite\/TOML 深诊断引擎和修复逻辑仍为 pending/],
+  ["diagnostics catalog integrity payload", /\bcatalog_integrity\s*:\s*make_catalog_integrity_payload\s*\(\s*repo\s*\)/],
+  ["catalog integrity helper", /\bfn\s+make_catalog_integrity_payload\s*\(\s*repo\s*:\s*&Repository\s*\)\s*->\s*DiagnoseCatalogIntegrityPayload/],
+  ["catalog integrity relay repository fact", /\brelay_repository\s*::\s*load_router_diagnostic_skeleton\s*\(\s*repo\s*,\s*"catalog_integrity"\s*\)/],
+  ["catalog integrity repository read boundary", /diagnostics\.catalog_integrity\.repository_read/],
+  ["diagnostics pending deep fields", /registry\/keychain\/sqlite 深诊断引擎和修复逻辑仍为 pending/],
   ["pending diagnostics fields", /\bfn\s+make_pending_diagnostic_fields\s*\(/],
   ["diagnostic snapshot payload", /\bfn\s+make_diagnostic_snapshot_payload\s*\(/],
   ["diagnostic repository path state", /\bload_app_path_state\s*\(\s*repo\s*\)/],
@@ -144,6 +151,17 @@ for (const [label, pattern] of [
   rejectPattern(label, repositoryDiagnostics.path, repositoryDiagnostics.content, pattern, "diagnostics repository 只能读取本地文件事实，不执行修复或平台副作用");
 }
 
+const repositoryRelay = raw.get("repositoryRelay");
+for (const [label, pattern] of [
+  ["relay router diagnostic skeleton", /\bpub\s+fn\s+load_router_diagnostic_skeleton\s*\([\s\S]*?repo\s*:\s*&Repository\s*,[\s\S]*?command\s*:\s*&str[\s\S]*?\)\s*->\s*RelayDiagnosticSkeleton/],
+  ["relay catalog exists fact", /\bcatalog_exists\s*:\s*snapshot\.catalog_exists/],
+  ["relay config router fact", /\bconfig_toml_has_router\s*:\s*analysis\.config_toml_has_router/],
+  ["relay config catalog fact", /\bconfig_toml_has_catalog\s*:\s*analysis\.config_toml_has_catalog/],
+  ["relay managed block fact", /\bmanaged_block_exists\s*:\s*analysis\.managed_block_exists/],
+]) {
+  requirePattern(label, repositoryRelay.path, repositoryRelay.content, pattern, "catalog_integrity 只能复用 relay repository 只读本地事实");
+}
+
 const applicationPorts = raw.get("applicationPorts");
 requirePattern(
   "诊断平台端口声明",
@@ -209,6 +227,7 @@ for (const typeName of [
   "DiagnoseDiagnosticSnapshotPayload",
   "DiagnoseDiagnosticProbePayload",
   "DiagnoseDiagnosticFieldPayload",
+  "DiagnoseCatalogIntegrityPayload",
 ]) {
   requirePattern(
     `${typeName} 合同 owner`,
@@ -217,6 +236,25 @@ for (const typeName of [
     new RegExp(`\\bpub\\s+struct\\s+${typeName}\\b`),
     `${typeName} 必须定义在 contracts/diagnostics.rs`,
   );
+}
+
+const frontendTypes = raw.get("frontendTypes");
+for (const [label, pattern] of [
+  ["前端 catalog integrity 类型", /\bexport\s+interface\s+DiagnoseCatalogIntegrityPayload\b/],
+  ["前端 diagnose catalog 字段", /\bcatalogIntegrity\s*:\s*DiagnoseCatalogIntegrityPayload\s*;/],
+  ["前端 catalog path 字段", /\bcatalogSourcePath\s*:\s*string\s*\|\s*null\s*;/],
+  ["前端 catalog issue 字段", /\bhasIssues\s*:\s*boolean\s*;/],
+]) {
+  requirePattern(label, frontendTypes.path, frontendTypes.content, pattern, "改 diagnostics DTO 必须同步前端 TypeScript 类型");
+}
+
+const mockCommands = raw.get("mockCommands");
+for (const [label, pattern] of [
+  ["diagnose mock catalog 字段", /\bcatalogIntegrity\s*:\s*\{/],
+  ["diagnose mock catalog 边界", /diagnostics\.catalog_integrity\.repository_read/],
+  ["diagnose mock catalog issue 镜像", /\bhasIssues\s*:\s*false/],
+]) {
+  requirePattern(label, mockCommands.path, mockCommands.content, pattern, "改 diagnostics DTO 必须同步 E2E mock 合同");
 }
 
 const contractsMod = raw.get("contractsMod");
@@ -240,7 +278,8 @@ for (const [label, pattern] of [
   ["diagnostics map 标题", /^# diagnostics current-source 证据映射/m],
   ["diagnostics map restored/repository-read", /backend_status\.restored=true[\s\S]*BackendEffect::RepositoryRead/],
   ["diagnostics map repository probes", /codex_home[\s\S]*accounts_dir[\s\S]*auth_path[\s\S]*registry_path[\s\S]*sessions_dir[\s\S]*config_path/],
-  ["diagnostics map pending fields", /auth_integrity[\s\S]*catalog_integrity[\s\S]*api_key_integrity[\s\S]*db_orphan_providers[\s\S]*rollout_orphan_providers[\s\S]*repair_logic/],
+  ["diagnostics map catalog integrity", /catalog_integrity[\s\S]*config\.toml[\s\S]*codex_router_catalog\.json[\s\S]*只读探针/],
+  ["diagnostics map pending fields", /auth_integrity[\s\S]*api_key_integrity[\s\S]*db_orphan_providers[\s\S]*rollout_orphan_providers[\s\S]*repair_logic/],
   ["diagnostics map validator", /scripts\/validate-backend-diagnostics-owner\.mjs/],
   ["diagnostics map no full leaf claim", /不声明双平台全 leaf 已完成/],
 ]) {
@@ -273,4 +312,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("PASS 后端 diagnostics owner 校验通过：诊断 usecase、DTO、repository 只读快照、restored/RepositoryRead 状态和 current-source map 均已脱离 system 中转。");
+console.log("PASS 后端 diagnostics owner 校验通过：诊断 usecase、DTO、repository 只读快照、catalog_integrity 只读探针、TypeScript 类型、E2E mock、restored/RepositoryRead 状态和 current-source map 均已脱离 system 中转。");
