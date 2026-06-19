@@ -6,6 +6,9 @@ const failures = [];
 
 const files = {
   closeouts: join(repoRoot, "docs", "reconstruction", "frontend-current-source-closeouts.json"),
+  currentSourceMap: join(repoRoot, "docs", "reconstruction", "mcp-skills-current-source-map.md"),
+  sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
+  reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
   packageJson: join(repoRoot, "package.json"),
   frontendAggregate: join(repoRoot, "scripts", "validate-frontend.mjs"),
 };
@@ -57,6 +60,9 @@ function requireFileSignal(signal) {
 }
 
 const closeouts = parseJson(files.closeouts);
+const currentSourceMap = readRequired(files.currentSourceMap);
+const sourceMap = readRequired(files.sourceMap);
+const reconstructionReadme = readRequired(files.reconstructionReadme);
 const packageJson = parseJson(files.packageJson);
 const frontendAggregate = readRequired(files.frontendAggregate);
 
@@ -68,6 +74,10 @@ if (!closeout) {
 } else {
   if (closeout.status !== "current-source-closed-partial") {
     failures.push(`mcp/skills closeout status 必须保持 current-source-closed-partial，当前为 ${closeout.status}`);
+  }
+
+  if (closeout.currentSourceMap !== "docs/reconstruction/mcp-skills-current-source-map.md") {
+    failures.push("mcp/skills closeout 必须登记 docs/reconstruction/mcp-skills-current-source-map.md");
   }
 
   const manifestPairs = new Set(
@@ -100,6 +110,30 @@ if (!closeout) {
     "不声明 MAC/WIN 100% leaf 已完成",
   ]);
 }
+
+requireIncludes("mcp/skills current-source map", currentSourceMap, [
+  "# mcp/skills current-source 证据映射",
+  "`mcp-servers`",
+  "`installed-skills`",
+  "owner-closed",
+  "不把 manifest 状态从 `owner-closed` 提升为 `covered`",
+  "不新增 UI、route、sidebar、header、tray 或 settings 入口",
+  "不碰 `voice`",
+  "不声明 mcp/skills 全业务 parity",
+  "scripts/validate-frontend-mcp-skills-current-source.mjs",
+]);
+
+requireIncludes("source-map mcp/skills 索引", sourceMap, [
+  "docs/reconstruction/mcp-skills-current-source-map.md",
+  "mcp/skills 前端 index query owner",
+  "scripts/validate-frontend-mcp-skills-current-source.mjs",
+]);
+
+requireIncludes("reconstruction README mcp/skills 索引", reconstructionReadme, [
+  "mcp/skills 前端 index query owner",
+  "docs/reconstruction/mcp-skills-current-source-map.md",
+  "scripts/validate-frontend-mcp-skills-current-source.mjs",
+]);
 
 if (
   packageJson?.scripts?.["validate:frontend-mcp-skills-current-source"] !==

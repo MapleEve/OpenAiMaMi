@@ -132,6 +132,7 @@
       "id": "mcp-skills-index-query-owner-closed-chain",
       "module": "mcp-skills",
       "status": "current-source-closed-partial",
+      "currentSourceMap": "docs/reconstruction/mcp-skills-current-source-map.md",
       "closedFrontendDocs": [],
       "closedManifestStatuses": [
         {
@@ -156,6 +157,18 @@
         "evidence/full-chain/internal/audits/audits/macos-1.0.9-skills/gate-report.json"
       ],
       "requiredSourceSignals": [
+        {
+          "file": "docs/reconstruction/mcp-skills-current-source-map.md",
+          "includes": [
+            "mcp/skills current-source 证据映射",
+            "`mcp-servers`",
+            "`installed-skills`",
+            "owner-closed",
+            "不把 manifest 状态从 `owner-closed` 提升为 `covered`",
+            "不声明 mcp/skills 全业务 parity",
+            "不碰 `voice`"
+          ]
+        },
         {
           "file": "src/restoration/frontend-manifest/index.ts",
           "includes": [
