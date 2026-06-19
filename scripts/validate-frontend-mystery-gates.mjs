@@ -34,10 +34,33 @@ const objects = read("src/routes/registry/objects.tsx");
 const shell = read("src/app/router/shell.tsx");
 const routerPrewarm = read("src/app/router/prewarm.ts");
 const overviewQuery = read("src/features/overview/hooks/query.ts");
+const compactGates = gates.replace(/\s+/g, "");
 
+assert(
+  /export function resolveMysteryGrantRoute/.test(gates) &&
+    /isAppRoute\(\s*mappedRoute\s*\)/.test(gates),
+  "gates.ts 的 resolveMysteryGrantRoute 必须通过 isAppRoute 收口到合法 Route",
+);
+assert(
+  /relayModel\s*:\s*["']relay["']/.test(gates),
+  "gates.ts 缺少 relayModel 到 relay 的显式映射",
+);
 assert(
   /relayModel/.test(gates) && /relay["']/.test(gates),
   "gates.ts 缺少 relayModel 到 relay 的映射",
+);
+assert(
+  /grant\.epochMs\s*>=\s*nowMs/.test(gates) || /nowMs\s*<=\s*grant\.epochMs/.test(gates),
+  "gates.ts 缺少 grant.epochMs >= nowMs 或等价未来时间判断",
+);
+assert(
+  /export function resolveRouteVisibility/.test(gates) &&
+    /context\?\.grants/.test(gates) &&
+    (
+      /isRouteVisibleByMysteryGrant\(\s*route\s*,\s*context\.grants\s*,\s*context\.nowMs\s*\)/s.test(gates) ||
+      compactGates.includes("isRouteVisibleByMysteryGrant(route,context.grants,context.nowMs)")
+    ),
+  "gates.ts 的 resolveRouteVisibility 必须使用 mystery grants 计算可见性",
 );
 assert(
   /resolveRouteVisibility/.test(meta) && /MysteryRouteGateContext/.test(meta),

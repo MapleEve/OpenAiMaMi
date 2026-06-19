@@ -477,6 +477,33 @@ const MYSTERY_UNLOCK_GRANTS_ALLOWED_FIELDS = [
   "nonClaims",
   "reason",
 ];
+const MYSTERY_ROUTE_ALLOWED_CLOSEOUT_ID =
+  "mystery-route-allowed-current-source-helper-chain";
+const MYSTERY_ROUTE_ALLOWED_GATE_FAILURE_KEYS = [
+  `${MYSTERY_UNLOCK_GRANTS_GATE_REPORT}\u0000leaves.mystery_route_allowed.gate_accepted\u0000false`,
+  `${MYSTERY_UNLOCK_GRANTS_GATE_REPORT}\u0000leaves.mystery_route_allowed.implementation_use\u0000false`,
+];
+const MYSTERY_ROUTE_ALLOWED_SIGNAL_FILES = [
+  "src/routes/registry/gates.ts",
+  "src/routes/registry/meta.ts",
+  "src/routes/registry/preload.ts",
+  "src/routes/registry/registry.tsx",
+  "src/routes/registry/objects.tsx",
+  "src/app/router/shell.tsx",
+  "src/app/router/prewarm.ts",
+  "src/features/overview/hooks/query.ts",
+  "src/features/overview/cache/index.ts",
+  "src/features/overview/hooks/mutation.ts",
+];
+const MYSTERY_ROUTE_ALLOWED_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "requiredSourceSignals",
+  "closedGateReportFailures",
+  "nonClaims",
+  "reason",
+];
 const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID =
   "bootstrap-system-current-source-reconcile-sidecars";
 const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_SIDECARS = [
@@ -2099,6 +2126,86 @@ function validateMysteryUnlockGrantsCloseout(closeout) {
   ]);
 }
 
+function validateMysteryRouteAllowedCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, MYSTERY_ROUTE_ALLOWED_ALLOWED_FIELDS);
+  if (closeout.module !== "mystery-route-allowed") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} requiredSourceSignals files`,
+    (closeout.requiredSourceSignals ?? []).map((signal) => signal.file),
+    MYSTERY_ROUTE_ALLOWED_SIGNAL_FILES,
+  );
+
+  const actualGateFailureKeys = new Set(
+    (closeout.closedGateReportFailures ?? []).map(
+      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
+    ),
+  );
+  validateStringArraySet(
+    `${closeout.id} closedGateReportFailures`,
+    [...actualGateFailureKeys],
+    MYSTERY_ROUTE_ALLOWED_GATE_FAILURE_KEYS,
+  );
+  validateClosedGateReportFailures(closeout);
+
+  for (const entry of closeout.closedGateReportFailures ?? []) {
+    if (
+      entry.path === "gate_accepted" ||
+      entry.path === "implementation_use" ||
+      entry.path === "dim6_missing" ||
+      entry.path.includes("readyToImplement") ||
+      entry.path.includes("full_leaf_100") ||
+      entry.path.startsWith("cluster_gate_summary") ||
+      entry.path.startsWith("clusters.") ||
+      entry.path.startsWith("cluster_gates.")
+    ) {
+      failures.push(`${closeout.id} 不允许登记 top-level、cluster summary、dim6、readyToImplement 或 full_leaf_100：${entry.path}`);
+    }
+  }
+
+  const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
+  for (const required of [
+    "不修改 gate-report",
+    "不声明 IPC command",
+    "不声明 raw/internal dim6、implementation_use、gate_accepted、full_leaf_100 恢复",
+    "不登记 top-level/cluster summary/dim6 gate 字段",
+    "不恢复 voice",
+    "不把 mock helper 当真实后端行为",
+  ]) {
+    if (!nonClaimsText.includes(required)) {
+      failures.push(`${closeout.id} nonClaims 缺少声明：${required}`);
+    }
+  }
+
+  const reason = closeout.reason ?? "";
+  for (const required of [
+    "current-source route gate/helper 链路",
+    "不是 IPC command closeout",
+    "resolveMysteryGrantRoute",
+    "resolveRouteVisibility",
+    "不登记 top-level、cluster summary、dim6 或 full_leaf_100",
+    "不恢复 voice",
+  ]) {
+    if (!reason.includes(required)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${required}`);
+    }
+  }
+
+  validateRequiredSignals(closeout);
+  for (const file of [
+    "src/contracts/ipc/commands.ts",
+    "src/services/system/index.ts",
+    "src/mocks/fixtures/commands.ts",
+  ]) {
+    requireExcludes(file, ["mystery_route_allowed", "route_allowed"]);
+  }
+}
+
 function validateBootstrapSystemCurrentSourceSidecar(report) {
   const path = repoPath(report);
   if (!existsSync(path)) {
@@ -3153,6 +3260,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateCustomInstructionsFrontendCurrentSourceCloseout(closeout);
   } else if (closeout.id === MYSTERY_UNLOCK_GRANTS_CLOSEOUT_ID) {
     validateMysteryUnlockGrantsCloseout(closeout);
+  } else if (closeout.id === MYSTERY_ROUTE_ALLOWED_CLOSEOUT_ID) {
+    validateMysteryRouteAllowedCloseout(closeout);
   } else if (closeout.id === BOOTSTRAP_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID) {
     validateBootstrapSystemCurrentSourceCloseout(closeout);
   } else if (closeout.id === BOOTSTRAP_CURRENT_SOURCE_GATE_CLOSEOUT_ID) {
