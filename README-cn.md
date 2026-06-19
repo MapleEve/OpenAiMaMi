@@ -44,7 +44,7 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开匿名
 | --- | --- | --- | --- |
 | 公开材料 | Apache License、中文说明、匿名化 `raw/internal` 主链路、前端 dumped 证据、二进制清单和重建文档已经进入仓库；公开边界检查覆盖禁词、敏感路径、凭据形态、乱码、README 同步和 source map 索引。 | 不公开机器名、用户路径、会话、令牌、账号私密值、未审查 dump、未匿名化内容、IDB、压缩包或安装包。 | `npm run validate:public-boundary` |
 | 前端 | 已按主流模块化 owner 边界收敛入口、全局 Provider、route registry、runtime initializer、服务门面、TanStack cache、深模块、i18n、E2E mock、settings/API proxy、plugins、tray、UI theme、system/hotspot、mcp/skills 等可验证链路。 | 不声明已经完成双平台 100% 全 leaf；没有 `raw/internal`、leaf 队列、closeout 和 validator 支撑的内容，不能写成已完成。 | `npm run validate:frontend`、相关 `validate:frontend-*`、`npm run validate:build-surface` |
-| 后端 | 已保留原开源功能并按六边形边界整理 commands、application/usecase、core、repository、platform、adapters、contracts；accounts、sessions、analytics、relay 本地配置、runtime-extensions、MCP、Custom Instructions 等公开或证据支撑切片已有 owner 验证入口。 | 不做闭源业务全量还原；不声明动态插件执行、真实平台副作用、外部进程、市场安装、完整 MCP server 启动或 `voice` 集成已经完成。 | `npm run validate:backend`；Rust 完整编译/测试环境用 `npm run validate:backend-cargo` 单独检查 |
+| 后端 | 已保留原开源功能并按六边形边界整理 commands、application/usecase、core、repository、platform、adapters、contracts；accounts、sessions、analytics、relay 本地配置、diagnostics 只读快照、runtime-extensions、MCP、Custom Instructions 等公开或证据支撑切片已有 owner 验证入口。 | 不做闭源业务全量还原；不声明动态插件执行、真实平台副作用、外部进程、市场安装、完整 MCP server 启动或 `voice` 集成已经完成。 | `npm run validate:backend`；Rust 完整编译/测试环境用 `npm run validate:backend-cargo` 单独检查 |
 | voice | 只保留空骨架、合同清单和中文边界说明。 | 不给入口，不接入路由、启动链路、IPC mock 或后端命令，不阻塞其它模块。 | 确认路由、启动链路、IPC mock 和后端命令没有接入 `voice`。 |
 | 验收 | 顶层聚合、公开边界、前端聚合、后端聚合、构建面、i18n、E2E mock、cache 竞态、current-source/evidence map registry 和各类 owner validator 都有对应脚本。 | Rust `cargo check/test` 依赖本机 Rust/MSVC 或目标平台工具链；缺少 `link.exe` 属于环境限制，不等同于源码失败。 | `npm run validate:all`；构建面用 `npm run validate:build-surface`；Rust 环境用 `npm run validate:backend-cargo`。 |
 | 运行闭环 | README 只记录长期有效的源码状态、范围边界和验收入口。 | 不按提交、日期、局部补丁或临时进度追加流水式记录。 | 每次提交同步 README，但只更新归纳状态和稳定说明。 |
@@ -61,6 +61,8 @@ OpenAiMami 是面向个人本地工作流的桌面应用。本仓库公开匿名
 | 构建面和脚本入口 | `npm run validate:build-surface` |
 | 公开边界、匿名化、README 同步 | `npm run validate:public-boundary` |
 | 前端聚合验收 | `npm run validate:frontend` |
+| 前端可见文案收口 | `npm run validate:frontend-visible-copy` |
+| 前端 leaf/copy 可实现验收 | `npm run validate:frontend-leaf-copy` |
 | 后端聚合验收 | `npm run validate:backend` |
 | Rust 编译和测试环境 | `npm run validate:backend-cargo` |
 

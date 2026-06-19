@@ -547,6 +547,8 @@ function validateReadmeValidationCommands(path) {
     "validate:build-surface",
     "validate:public-boundary",
     "validate:frontend",
+    "validate:frontend-visible-copy",
+    "validate:frontend-leaf-copy",
     "validate:backend",
     "validate:backend-cargo",
   ];

@@ -65,6 +65,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库保存匿名化 raw/inter
 | 前后端 relay owner 骨架 | `docs/reconstruction/relay-core-current-source-evidence-map.md` | relay-core 公开源码 owner、本地配置 repository 恢复与 pending 边界映射；由 `scripts/validate-backend-relay-owner.mjs` 直接验证，不作为 raw/internal strict gate 关闭依据。 |
 | 后端 runtime-extensions owner | `docs/reconstruction/runtime-extensions-current-source-evidence-map.md` | runtime-extensions 四个 plugins IPC 的 command/usecase/contracts/repository 闭环。 |
 | Custom Instructions 后端 owner | `docs/reconstruction/custom-instructions-current-source-evidence-map.md` | Custom Instructions 五个 IPC 的 command/usecase/repository/core parser/core model/contracts 闭环，由 custom-instructions owner validator 校验。 |
+| diagnostics 后端只读快照 | `docs/reconstruction/diagnostics-current-source-evidence-map.md` | `diagnose` 只读 repository snapshot、平台 os/arch、DTO owner、restored/no-op 状态和 pending 深诊断边界。 |
 | 后端 MCP owner | `docs/reconstruction/mcp-current-source-evidence-map.md` | MCP 四个 IPC 的 command/usecase/contracts/repository/core parser/core model 闭环。 |
 | 后端 sessions/analytics 文件事实 | `docs/reconstruction/sessions-analytics-current-source-evidence-map.md` | sessions、usage analytics、tool/change/quota 公开文件事实与 pending 边界。 |
 | system hotspot 前端链路与后端骨架 | `docs/reconstruction/system-hotspot-current-source-map.md` | hotspot frontend chain、Rust hotspot owner 骨架和 strict gate 未恢复边界。 |

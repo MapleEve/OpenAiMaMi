@@ -57,15 +57,15 @@ fn diagnose_backend_status() -> BackendSkeletonStatus {
     BackendSkeletonStatus {
         module: "diagnostics".to_string(),
         command: "diagnose".to_string(),
-        restored: false,
-        note: "系统诊断已接入 diagnostics repository 只读快照骨架；registry/keychain/sqlite/TOML 诊断引擎和修复逻辑未在当前公开后端恢复。"
+        restored: true,
+        note: "系统诊断已恢复 diagnostics repository 只读快照：路径存在性、registry 数量、sessions 数量和平台 os/arch；registry/keychain/sqlite/TOML 深诊断引擎和修复逻辑仍为 pending。"
             .to_string(),
         boundary: BackendSkeletonBoundaryStatus {
             repository_checked: true,
             repository_path_known: true,
             platform_checked: true,
             core_checked: true,
-            effect: BackendEffect::Pending,
+            effect: BackendEffect::NoOp,
         },
         runtime_event: None,
     }

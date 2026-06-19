@@ -10,11 +10,15 @@ const files = {
   diagnosticsUsecase: join(backendRoot, "application", "usecase", "diagnostics.rs"),
   pathStateUsecase: join(backendRoot, "application", "usecase", "path_state.rs"),
   systemPlatform: join(backendRoot, "platform", "system.rs"),
+  repositoryDiagnostics: join(backendRoot, "repository", "diagnostics.rs"),
   repositoryPathState: join(backendRoot, "repository", "path_state.rs"),
   systemRoot: join(backendRoot, "application", "usecase", "system.rs"),
   maintenanceUsecase: join(backendRoot, "application", "usecase", "maintenance.rs"),
   contractsDiagnostics: join(backendRoot, "contracts", "diagnostics.rs"),
   contractsMod: join(backendRoot, "contracts", "mod.rs"),
+  diagnosticsMap: join(repoRoot, "docs", "reconstruction", "diagnostics-current-source-evidence-map.md"),
+  sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
+  reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
 };
 const failures = [];
 
@@ -63,6 +67,9 @@ for (const [label, pattern] of [
   ["diagnostics platform payload", /\bmake_diagnose_platform\s*\(\s*platform\s*\)/],
   ["diagnostics backend status", /\bfn\s+diagnose_backend_status\s*\(/],
   ["diagnostics module status", /module\s*:\s*"diagnostics"\s*\.to_string\s*\(\s*\)/],
+  ["diagnostics restored status", /\brestored\s*:\s*true\s*,/],
+  ["diagnostics no-op effect", /\beffect\s*:\s*BackendEffect\s*::\s*NoOp\s*,/],
+  ["diagnostics pending deep fields", /registry\/keychain\/sqlite\/TOML 深诊断引擎和修复逻辑仍为 pending/],
   ["pending diagnostics fields", /\bfn\s+make_pending_diagnostic_fields\s*\(/],
   ["diagnostic snapshot payload", /\bfn\s+make_diagnostic_snapshot_payload\s*\(/],
   ["diagnostic repository path state", /\bload_app_path_state\s*\(\s*repo\s*\)/],
@@ -109,6 +116,32 @@ for (const [label, pattern] of [
   ["sessions 存在性事实", /\bsessions_exists\s*:\s*repo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(\s*&paths\.sessions_dir\s*\)/],
 ]) {
   requirePattern(label, repositoryPathState.path, repositoryPathState.content, pattern, "路径存在性事实必须归属 repository/path_state.rs");
+}
+
+const repositoryDiagnostics = raw.get("repositoryDiagnostics");
+for (const [label, pattern] of [
+  ["diagnostic snapshot loader", /\bpub\s+fn\s+load_system_diagnostic_snapshot\s*\(\s*repo\s*:\s*&Repository\s*\)\s*->\s*Result\s*<\s*DiagnosticSnapshot\s*,\s*CoreError\s*>/],
+  ["codex home path probe", /"diagnostics\.path\.codex_home"/],
+  ["accounts path probe", /"diagnostics\.path\.accounts"/],
+  ["auth path probe", /"diagnostics\.path\.auth"/],
+  ["registry path probe", /"diagnostics\.path\.registry"/],
+  ["sessions path probe", /"diagnostics\.path\.sessions"/],
+  ["config path probe", /"diagnostics\.path\.config"/],
+  ["registry item count", /\bregistry_account_count\s*\(\s*repo\s*\)\?/],
+  ["sessions child count", /\bchild_count\s*\(\s*repo\s*,\s*&paths\.sessions_dir\s*\)\?/],
+  ["repository FS exists probe", /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(/],
+  ["repository JSON items field", /\.get\s*\(\s*"items"\s*\)/],
+  ["repository JSON items array", /serde_json::Value::as_array/],
+  ["repository JSON items length", /\.len\s*\(\s*\)\s+as\s+i32/],
+]) {
+  requirePattern(label, repositoryDiagnostics.path, repositoryDiagnostics.content, pattern, "diagnostics repository 必须只读生成路径和数量快照");
+}
+for (const [label, pattern] of [
+  ["诊断修复写入", /\bwrite(_to_string|_json|_json_pretty)?\b|\bremove_file\b|\bcreate_dir_all\b|\brename\b|\bcopy\b|\bset_permissions\b/g],
+  ["平台行为", /\bcrate\s*::\s*platform\b|\bSystemPlatformAdapter\b|\bDiagnosticPlatformPort\b/g],
+  ["外部进程", /\bCommand\s*::\s*new\b|\bstd\s*::\s*process\b/g],
+]) {
+  rejectPattern(label, repositoryDiagnostics.path, repositoryDiagnostics.content, pattern, "diagnostics repository 只能读取本地文件事实，不执行修复或平台副作用");
 }
 
 const applicationPorts = raw.get("applicationPorts");
@@ -202,6 +235,36 @@ requirePattern(
   "诊断 DTO 必须保持 crate::contracts::{Type} 兼容",
 );
 
+const diagnosticsMap = raw.get("diagnosticsMap");
+for (const [label, pattern] of [
+  ["diagnostics map 标题", /^# diagnostics current-source 证据映射/m],
+  ["diagnostics map restored/no-op", /backend_status\.restored=true[\s\S]*BackendEffect::NoOp/],
+  ["diagnostics map repository probes", /codex_home[\s\S]*accounts_dir[\s\S]*auth_path[\s\S]*registry_path[\s\S]*sessions_dir[\s\S]*config_path/],
+  ["diagnostics map pending fields", /auth_integrity[\s\S]*catalog_integrity[\s\S]*api_key_integrity[\s\S]*db_orphan_providers[\s\S]*rollout_orphan_providers[\s\S]*repair_logic/],
+  ["diagnostics map validator", /scripts\/validate-backend-diagnostics-owner\.mjs/],
+  ["diagnostics map no full leaf claim", /不声明双平台全 leaf 已完成/],
+]) {
+  requirePattern(label, diagnosticsMap.path, diagnosticsMap.content, pattern, "diagnostics current-source map 必须记录只读快照、pending 边界和验证入口");
+}
+
+const sourceMap = raw.get("sourceMap");
+requirePattern(
+  "source-map diagnostics 注册",
+  sourceMap.path,
+  sourceMap.content,
+  /docs\/reconstruction\/diagnostics-current-source-evidence-map\.md[\s\S]*scripts\/validate-backend-diagnostics-owner\.mjs[\s\S]*restored\/no-op 状态/,
+  "source-map 必须登记 diagnostics current-source map 和 owner validator",
+);
+
+const reconstructionReadme = raw.get("reconstructionReadme");
+requirePattern(
+  "reconstruction README diagnostics 注册",
+  reconstructionReadme.path,
+  reconstructionReadme.content,
+  /diagnostics-current-source-evidence-map\.md[\s\S]*diagnose[\s\S]*只读 repository snapshot[\s\S]*pending 深诊断边界/,
+  "docs/reconstruction/README.md 必须登记 diagnostics current-source map",
+);
+
 if (failures.length > 0) {
   console.error("FAIL 后端 diagnostics owner 校验失败：");
   for (const failure of failures) {
@@ -210,4 +273,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("PASS 后端 diagnostics owner 校验通过：诊断 usecase 和 DTO 已脱离 system 中转。");
+console.log("PASS 后端 diagnostics owner 校验通过：诊断 usecase、DTO、repository 只读快照、restored/no-op 状态和 current-source map 均已脱离 system 中转。");
