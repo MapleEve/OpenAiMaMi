@@ -77,6 +77,12 @@ for (const [label, pattern] of [
   ["catalog integrity helper", /\bfn\s+make_catalog_integrity_payload\s*\(\s*repo\s*:\s*&Repository\s*\)\s*->\s*DiagnoseCatalogIntegrityPayload/],
   ["catalog integrity relay repository fact", /\brelay_repository\s*::\s*load_router_diagnostic_skeleton\s*\(\s*repo\s*,\s*"catalog_integrity"\s*\)/],
   ["catalog integrity repository read boundary", /diagnostics\.catalog_integrity\.repository_read/],
+  ["catalog integrity TOML syntax issue gate", /!skeleton\.config_toml_syntax_valid/],
+  ["catalog integrity profile conflict issue gate", /\|\|\s*skeleton\.config_profile_conflict/],
+  ["catalog integrity TOML syntax payload", /config_toml_syntax_valid\s*:\s*skeleton\.config_toml_syntax_valid/],
+  ["catalog integrity TOML syntax reason payload", /config_toml_syntax_reason\s*:\s*skeleton\.config_toml_syntax_reason/],
+  ["catalog integrity profile conflict payload", /config_profile_conflict\s*:\s*skeleton\.config_profile_conflict/],
+  ["catalog integrity profile conflict reason payload", /config_profile_conflict_reason\s*:\s*skeleton\.config_profile_conflict_reason/],
   ["diagnostics pending deep fields", /registry\/keychain\/sqlite 深诊断引擎和修复逻辑仍为 pending/],
   ["pending diagnostics fields", /\bfn\s+make_pending_diagnostic_fields\s*\(/],
   ["unsupported pending no-op boundary", /未支持的深层诊断项只能表达为待处理[\s\S]*?diagnose 不执行平台动作/],
@@ -162,6 +168,8 @@ for (const [label, pattern] of [
   ["relay catalog exists fact", /\bcatalog_exists\s*:\s*snapshot\.catalog_exists/],
   ["relay config router fact", /\bconfig_toml_has_router\s*:\s*analysis\.config_toml_has_router/],
   ["relay config catalog fact", /\bconfig_toml_has_catalog\s*:\s*analysis\.config_toml_has_catalog/],
+  ["relay config TOML syntax fact", /\bconfig_toml_syntax_valid\s*:\s*analysis\.config_toml_syntax_valid/],
+  ["relay config profile conflict fact", /\bconfig_profile_conflict\s*:\s*analysis\.config_profile_conflict/],
   ["relay managed block fact", /\bmanaged_block_exists\s*:\s*analysis\.managed_block_exists/],
 ]) {
   requirePattern(label, repositoryRelay.path, repositoryRelay.content, pattern, "catalog_integrity 只能复用 relay repository 只读本地事实");
@@ -264,6 +272,14 @@ requirePattern(
   "DiagnosePlatform 不得暴露 hostname、os_version 或能力探针",
 );
 for (const [label, pattern] of [
+  ["诊断 catalog TOML 语法字段", /\bpub\s+config_toml_syntax_valid\s*:\s*bool\s*,/],
+  ["诊断 catalog TOML 语法原因字段", /\bpub\s+config_toml_syntax_reason\s*:\s*Option\s*<\s*String\s*>\s*,/],
+  ["诊断 catalog profile 冲突字段", /\bpub\s+config_profile_conflict\s*:\s*bool\s*,/],
+  ["诊断 catalog profile 冲突原因字段", /\bpub\s+config_profile_conflict_reason\s*:\s*Option\s*<\s*String\s*>\s*,/],
+]) {
+  requirePattern(label, contractsDiagnostics.path, contractsDiagnostics.content, pattern, "catalog_integrity DTO 必须镜像 relay repository 的只读诊断事实");
+}
+for (const [label, pattern] of [
   ["公开 DTO 平台私有字段", /\bpub\s+(hostname|os_version|osVersion)\s*:/g],
   ["公开 DTO 能力探针字段", /\bpub\s+(capability_probes|capabilityProbes)\s*:/g],
 ]) {
@@ -275,6 +291,10 @@ for (const [label, pattern] of [
   ["前端 catalog integrity 类型", /\bexport\s+interface\s+DiagnoseCatalogIntegrityPayload\b/],
   ["前端 diagnose catalog 字段", /\bcatalogIntegrity\s*:\s*DiagnoseCatalogIntegrityPayload\s*;/],
   ["前端 catalog path 字段", /\bcatalogSourcePath\s*:\s*string\s*\|\s*null\s*;/],
+  ["前端 catalog TOML 语法字段", /\bconfigTomlSyntaxValid\s*:\s*boolean\s*;/],
+  ["前端 catalog TOML 语法原因字段", /\bconfigTomlSyntaxReason\s*:\s*string\s*\|\s*null\s*;/],
+  ["前端 catalog profile 冲突字段", /\bconfigProfileConflict\s*:\s*boolean\s*;/],
+  ["前端 catalog profile 冲突原因字段", /\bconfigProfileConflictReason\s*:\s*string\s*\|\s*null\s*;/],
   ["前端 catalog issue 字段", /\bhasIssues\s*:\s*boolean\s*;/],
 ]) {
   requirePattern(label, frontendTypes.path, frontendTypes.content, pattern, "改 diagnostics DTO 必须同步前端 TypeScript 类型");
@@ -284,6 +304,8 @@ const mockCommands = raw.get("mockCommands");
 for (const [label, pattern] of [
   ["diagnose mock catalog 字段", /\bcatalogIntegrity\s*:\s*\{/],
   ["diagnose mock catalog 边界", /diagnostics\.catalog_integrity\.repository_read/],
+  ["diagnose mock catalog TOML 语法镜像", /\bconfigTomlSyntaxValid\s*:\s*true/],
+  ["diagnose mock catalog profile 冲突镜像", /\bconfigProfileConflict\s*:\s*false/],
   ["diagnose mock catalog issue 镜像", /\bhasIssues\s*:\s*false/],
 ]) {
   requirePattern(label, mockCommands.path, mockCommands.content, pattern, "改 diagnostics DTO 必须同步 E2E mock 合同");
@@ -312,7 +334,7 @@ for (const [label, pattern] of [
   ["diagnostics map application ports", /src-tauri\/src\/application\/ports\.rs[\s\S]*能力探针类型化骨架[\s\S]*hostname[\s\S]*os_version/],
   ["diagnostics map repository probes", /codex_home[\s\S]*accounts_dir[\s\S]*auth_path[\s\S]*registry_path[\s\S]*sessions_dir[\s\S]*config_path/],
   ["diagnostics map platform public projection", /diagnose` payload 只公开 os、arch 和 info_source[\s\S]*能力探针保持类型化骨架[\s\S]*平台动作不进入公开诊断 DTO/],
-  ["diagnostics map catalog integrity", /catalog_integrity[\s\S]*config\.toml[\s\S]*codex_router_catalog\.json[\s\S]*只读探针/],
+  ["diagnostics map catalog integrity", /catalog_integrity[\s\S]*config\.toml[\s\S]*codex_router_catalog\.json[\s\S]*语法[\s\S]*profile[\s\S]*只读探针/],
   ["diagnostics map pending fields", /auth_integrity[\s\S]*api_key_integrity[\s\S]*db_orphan_providers[\s\S]*rollout_orphan_providers[\s\S]*repair_logic[\s\S]*平台动作/],
   ["diagnostics map pending no-op boundary", /只保留端口骨架、待处理和空操作边界/],
   ["diagnostics map validator", /scripts\/validate-backend-diagnostics-owner\.mjs/],

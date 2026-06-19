@@ -75,12 +75,14 @@ fn diagnose_backend_status() -> BackendSkeletonStatus {
 
 fn make_catalog_integrity_payload(repo: &Repository) -> DiagnoseCatalogIntegrityPayload {
     let skeleton = relay_repository::load_router_diagnostic_skeleton(repo, "catalog_integrity");
-    let has_issues = skeleton.router_enabled
-        && (!skeleton.catalog_exists
-            || !skeleton.config_toml_has_router
-            || !skeleton.config_toml_has_catalog
-            || !skeleton.managed_block_exists
-            || skeleton.config_stale_reason.is_some());
+    let has_issues = !skeleton.config_toml_syntax_valid
+        || skeleton.config_profile_conflict
+        || (skeleton.router_enabled
+            && (!skeleton.catalog_exists
+                || !skeleton.config_toml_has_router
+                || !skeleton.config_toml_has_catalog
+                || !skeleton.managed_block_exists
+                || skeleton.config_stale_reason.is_some()));
     let status = if has_issues {
         "needs_attention"
     } else {
@@ -103,6 +105,10 @@ fn make_catalog_integrity_payload(repo: &Repository) -> DiagnoseCatalogIntegrity
         catalog_exists: skeleton.catalog_exists,
         config_toml_has_router: skeleton.config_toml_has_router,
         config_toml_has_catalog: skeleton.config_toml_has_catalog,
+        config_toml_syntax_valid: skeleton.config_toml_syntax_valid,
+        config_toml_syntax_reason: skeleton.config_toml_syntax_reason,
+        config_profile_conflict: skeleton.config_profile_conflict,
+        config_profile_conflict_reason: skeleton.config_profile_conflict_reason,
         managed_block_exists: skeleton.managed_block_exists,
         router_enabled: skeleton.router_enabled,
         user_top_level_profile: skeleton.user_top_level_profile,

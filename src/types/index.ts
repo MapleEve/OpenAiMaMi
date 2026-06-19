@@ -586,6 +586,10 @@ export interface DiagnoseCatalogIntegrityPayload {
   catalogExists: boolean;
   configTomlHasRouter: boolean;
   configTomlHasCatalog: boolean;
+  configTomlSyntaxValid: boolean;
+  configTomlSyntaxReason: string | null;
+  configProfileConflict: boolean;
+  configProfileConflictReason: string | null;
   managedBlockExists: boolean;
   routerEnabled: boolean;
   userTopLevelProfile: string | null;

@@ -32,6 +32,7 @@
 ## 未恢复和禁止声明
 
 - 不声明通知客户端运行时、远端推送订阅、通知轮询、后台 watcher、Tauri event、托盘通知或平台通知能力已经恢复。
+- 不声明通知运行时、平台通知或 tray native notification 已恢复；当前只收紧 `get_notification_client_state` 的前端 current-source 读取链路验证。
 - 不声明 raw/internal gate 已闭合，不声明 `gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成。
 - 不新增 HTTP、外部进程、平台通知 API、线程、定时器或 runtime event。
 - 不碰 `voice`，不把 notification client state 接入 `voice` 入口、路由、IPC mock 或后端命令。
@@ -40,4 +41,5 @@
 
 - `scripts/validate-backend-system-owner.mjs` 直接验证本文、settings DTO、settings-secret owner、system usecase payload、source-map 索引和未恢复边界。
 - `scripts/validate-frontend-tray-shell-cache.mjs` 直接验证前端 tray-shell notification client cache 的 stale、delayed、event replay 和 focus/ack mutation fence 竞态边界；该验证只证明 current-source cache owner，不声明通知运行时、托盘通知或平台通知能力恢复。
+- `scripts/validate-frontend-notification-client-state-current-source.mjs` / `npm run validate:frontend-notification-client-state-current-source` 专门验证前端 service、overview/tray-shell query、IPC contract、E2E mock 和本文边界；该验证不声明通知功能完整恢复，也不接 `voice`。
 - `npm run validate:backend-system-owner` 进入 `npm run validate:backend`，再进入 `npm run validate:all`。

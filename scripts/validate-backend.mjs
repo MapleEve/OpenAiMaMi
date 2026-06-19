@@ -26,6 +26,7 @@ const validators = [
   "validate-backend-hotspot-owner.mjs",
   "validate-backend-sessions-owner.mjs",
   "validate-backend-skills-owner.mjs",
+  "validate-backend-voice-owner.mjs",
 ];
 
 for (const script of validators) {

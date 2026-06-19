@@ -34,6 +34,7 @@ const validators = [
   ["validate-frontend-skills-cache.mjs"],
   ["validate-frontend-custom-instructions-cache.mjs"],
   ["validate-frontend-tray-shell-cache.mjs"],
+  ["validate-frontend-notification-client-state-current-source.mjs"],
   ["validate-frontend-relay-http-terminal-ccf.mjs"],
   ["validate-frontend-tray-current-source.mjs"],
   ["validate-frontend-mystery-unlock-current-source.mjs"],
