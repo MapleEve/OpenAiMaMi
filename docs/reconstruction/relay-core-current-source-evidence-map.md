@@ -45,7 +45,7 @@
 | `src-tauri/src/commands/relay.rs` | Tauri command adapter 只锁定 repository、反序列化参数、调用 usecase、封装 envelope 和 warning。 |
 | `src-tauri/src/application/usecase/relay.rs`、`src-tauri/src/application/usecase/relay/` | relay 用户动作集中在 usecase；provider CRUD、active provider、passthrough policy、import/export、router diagnostic/fix、model/test mock terminal 和 payload 映射已拆分到子 owner；不启动代理进程、不发真实网络请求、不实现闭源流式代理。 |
 | `src-tauri/src/application/ports.rs` | relay 平台端口只暴露结构化能力和环境代理候选，真实 HTTP、进程和流式转发仍归 platform owner。 |
-| `src-tauri/src/core/relay.rs` | relay core 建立领域状态、operation key、cluster boundary、pending test/model/diagnostic/fix 语义，不读写真实文件或网络。 |
+| `src-tauri/src/core/relay.rs` | relay core 建立领域状态、operation key、cluster boundary、pending test/model/diagnostic/fix 语义，以及 `needs_stream_retry` / `should_retry_relay_test` 错误分类；不读写真实文件或网络。 |
 | `src-tauri/src/core/model/relay.rs` | relay domain model 拆出 provider、draft、proxy、state、cluster、operation、diagnostic、test 和 snapshot 值对象，不依赖 Tauri 或前端对象。 |
 | `src-tauri/src/contracts/relay.rs` | Rust DTO 与前端 TypeScript 类型对齐，覆盖 provider、state、proxy、router toggle、test、import/export、audit、diagnostic 和 fix payload。 |
 | `src-tauri/src/repository/relay.rs` | repository 通过可替换 FS 读写 `relay-config.json`，恢复 provider CRUD、active provider、`blockOfficialPassthrough`、import/export、passthrough audit 读取、受管 router config 注入/移除和 diagnostic snapshot；不保存跨命令内存业务状态。 |
@@ -53,10 +53,17 @@
 | `src-tauri/src/core/model/diagnostics.rs` | core model 只承载诊断只读值对象，没有写入无证据闭源业务字段。 |
 | `src-tauri/src/repository/diagnostics.rs` | diagnostics repository 只从 repository paths 和 FS adapter 读取可验证路径事实，不触碰真实用户环境之外的隐式状态。 |
 
+### relay test 错误语义
+
+当前源码在 `src-tauri/src/core/relay.rs` 中恢复了 `needs_stream_retry`、`should_retry_relay_test` 和 `relay_test_error_message`。词表覆盖 `stream mode is required`、`stream must be true`、`must enable stream`、`streaming required`、`only stream`、`request failed`、`timeout`、`connection reset`、`connection refused`、`no response data` 和 `stream read failed`。
+
+这只说明 relay test 的 mock terminal 错误语义已经由 core owning，并由 `src-tauri/src/application/usecase/relay/payload.rs` 消费到 payload/warning 文案；它不发起真实 HTTP，不执行真实 stream retry，也不启动代理进程。
+
 ## 未做内容
 
 - 未恢复密钥系统、真实代理进程启动、真实网络请求、真实模型拉取、SSE 转换、线程迁移、运行时健康检查、keychain、安全凭据迁移和闭源代理转发。
 - 未声明本地 `relay-config.json`、受管 `config.toml` router block、catalog 空文件和导入导出文件事务等公开 FS 能力等同于闭源 relay-core 全量业务恢复。
+- 未声明 `needs_stream_retry` / `should_retry_relay_test` 已连接真实网络重试；当前只证明错误语义和 mock terminal payload 分类。
 - 未把 Windows 证据直接推导为 macOS 行为，也未把 macOS 行为写成 Windows 通用事实。
 - 未修改任何原始审计报告字段，也未新增用于关闭失败项的 JSON 字段。
 - 未把当前源码的 skeleton payload 解释为真实业务恢复。
@@ -76,6 +83,7 @@
 - 前端交互 owner：`src/features/relay/panels/`、`src/features/relay/dialogs/`。
 - E2E mock owner：`src/mocks/fixtures/commands.ts`。
 - 后端 command/usecase/contracts/core/repository/platform owner：`src-tauri/src/commands/relay.rs`、`src-tauri/src/application/usecase/relay.rs`、`src-tauri/src/application/usecase/relay/payload.rs`、`src-tauri/src/application/usecase/relay/provider.rs`、`src-tauri/src/application/usecase/relay/models.rs`、`src-tauri/src/application/usecase/relay/diagnostics.rs`、`src-tauri/src/application/ports.rs`、`src-tauri/src/contracts/relay.rs`、`src-tauri/src/core/relay.rs`、`src-tauri/src/core/relay/request_builder.rs`、`src-tauri/src/core/relay/router_config.rs`、`src-tauri/src/core/model/relay.rs`、`src-tauri/src/repository/relay.rs`、`src-tauri/src/platform/relay.rs`。
+- 后端错误语义 owner：`src-tauri/src/core/relay.rs` owning relay test retry/stream retry 分类，`src-tauri/src/application/usecase/relay/payload.rs` 只消费 core 分类结果。
 
 ## 后续补证据建议
 

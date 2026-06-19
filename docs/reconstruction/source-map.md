@@ -133,7 +133,8 @@ OpenAiMami 1.0.9 前端覆盖面：
 | 路径 | 类别 | 验证或索引边界 |
 | --- | --- | --- |
 | `docs/reconstruction/plugins-current-source-evidence-map.md` | plugins 前端 current-source partial closeout | `scripts/validate-frontend-plugins-current-source.mjs` 直接验证本文、raw/internal 证据路径、当前源码路径、npm 入口和未声明边界。 |
-| `docs/reconstruction/relay-core-current-source-evidence-map.md` | relay-core 前后端公开 owner 骨架 | `scripts/validate-backend-relay-owner.mjs` 直接验证本文、本地配置 repository 恢复、router config owner、diagnostic fix owner、未声明真实代理/网络/进程边界和 source-map 注册。 |
+| `docs/reconstruction/relay-core-current-source-evidence-map.md` | relay-core 前后端公开 owner 骨架 | `scripts/validate-backend-relay-owner.mjs` 直接验证本文、本地配置 repository 恢复、router config owner、diagnostic fix owner、relay test retry 错误语义、未声明真实代理/网络/进程边界和 source-map 注册。 |
+| `docs/reconstruction/relay-http-terminal-current-source-map.md` | relay HTTP-terminal 前后端触发链 | `scripts/validate-frontend-relay-http-terminal-ccf.mjs` 直接验证本文、三个 relay HTTP-terminal 命令、前端 UI 触发链、mock terminal、relay test retry 错误语义和未声明真实 HTTP 边界。 |
 | `docs/reconstruction/runtime-extensions-current-source-evidence-map.md` | runtime-extensions 后端 owner | `scripts/validate-backend-runtime-extensions-owner.mjs` 直接验证本文、四个 plugins IPC、证据路径、源码 owner 和未声明边界。 |
 | `docs/reconstruction/custom-instructions-current-source-evidence-map.md` | Custom Instructions 后端 owner | `scripts/validate-backend-custom-instructions-owner.mjs` 直接验证本文、README/source-map 注册、关键 Rust owner 文件、custom-instructions raw/internal 证据和未声明边界。 |
 | `docs/reconstruction/diagnostics-current-source-evidence-map.md` | diagnostics 后端只读快照 | `scripts/validate-backend-diagnostics-owner.mjs` 直接验证本文、diagnostics repository 只读快照、maintenance 转发、DTO owner、restored/no-op 状态和 pending 深诊断边界。 |

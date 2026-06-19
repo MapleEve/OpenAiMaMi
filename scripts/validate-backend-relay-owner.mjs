@@ -384,6 +384,44 @@ assertContains(
   /\bpub\s+use\s+self\s*::\s*router_config\s*::/,
   "必须通过 core relay 根模块重新暴露 router config 公开 API",
 );
+assertContains(
+  files.core,
+  coreContent,
+  /\bpub\s+fn\s+needs_stream_retry\s*\(/,
+  "relay core 必须 owning stream retry 错误语义",
+);
+assertContains(
+  files.core,
+  coreContent,
+  /\bpub\s+fn\s+should_retry_relay_test\s*\(/,
+  "relay core 必须 owning relay test retry 错误语义",
+);
+for (const term of [
+  "stream mode is required",
+  "stream must be true",
+  "must enable stream",
+  "streaming required",
+  "only stream",
+  "request failed",
+  "timeout",
+  "connection reset",
+  "connection refused",
+  "no response data",
+  "stream read failed",
+]) {
+  assertContains(
+    files.core,
+    coreContent,
+    new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+    `relay core retry 词表必须包含 ${term}`,
+  );
+}
+assertContains(
+  files.usecasePayload,
+  usecasePayloadContent,
+  /\brelay_core\s*::\s*relay_test_error_message\s*\(/,
+  "relay test payload 必须消费 core retry 错误语义",
+);
 assertNoPatterns(files.core, coreContent, [
   {
     label: "request builder 私有实现",

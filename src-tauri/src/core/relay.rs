@@ -261,6 +261,49 @@ pub fn stream_boundary_note(command: &str) -> String {
     "SSE/流式转换只建立状态机边界，未启动真实转发流。".to_string()
 }
 
+pub fn needs_stream_retry(message: &str) -> bool {
+    const TERMS: [&str; 5] = [
+        "stream mode is required",
+        "stream must be true",
+        "must enable stream",
+        "streaming required",
+        "only stream",
+    ];
+
+    let normalized = message.to_ascii_lowercase();
+    TERMS.iter().any(|term| normalized.contains(term))
+}
+
+pub fn should_retry_relay_test(message: &str) -> bool {
+    if needs_stream_retry(message) {
+        return true;
+    }
+
+    const TERMS: [&str; 7] = [
+        "request failed",
+        "timeout",
+        "timed out",
+        "connection reset",
+        "connection refused",
+        "no response data",
+        "stream read failed",
+    ];
+
+    let normalized = message.to_ascii_lowercase();
+    TERMS.iter().any(|term| normalized.contains(term))
+}
+
+pub fn relay_test_error_message(message: &str) -> String {
+    if needs_stream_retry(message) {
+        return format!("{message}；建议按流式请求重试。");
+    }
+    if should_retry_relay_test(message) {
+        return format!("{message}；该错误属于可重试 relay 测试失败。");
+    }
+
+    message.to_string()
+}
+
 fn empty_state(repo_view: &RelayCoreRepositoryView) -> RelayStateDomain {
     let mut active_by_ide = HashMap::new();
     active_by_ide.insert(RELAY_DEFAULT_IDE.to_string(), Vec::new());
@@ -400,6 +443,43 @@ mod tests {
             .expect("parse model ids");
 
         assert_eq!(models, vec!["model-a".to_string(), "model-b".to_string()]);
+    }
+
+    #[test]
+    fn relay_test_retry_classifier_matches_public_retry_terms() {
+        for message in [
+            "stream mode is required",
+            "stream must be true",
+            "must enable stream",
+            "streaming required",
+            "only stream responses are supported",
+        ] {
+            assert!(needs_stream_retry(message), "{message}");
+            assert!(should_retry_relay_test(message), "{message}");
+        }
+
+        for message in [
+            "request failed",
+            "request timeout",
+            "connection reset by peer",
+            "connection refused",
+            "no response data",
+            "stream read failed",
+        ] {
+            assert!(should_retry_relay_test(message), "{message}");
+        }
+
+        assert!(!should_retry_relay_test("invalid provider name"));
+    }
+
+    #[test]
+    fn relay_test_error_message_marks_stream_and_retry_failures() {
+        assert!(relay_test_error_message("stream must be true").contains("流式请求重试"));
+        assert!(relay_test_error_message("connection reset").contains("可重试 relay 测试失败"));
+        assert_eq!(
+            relay_test_error_message("invalid provider name"),
+            "invalid provider name".to_string()
+        );
     }
 
     #[test]

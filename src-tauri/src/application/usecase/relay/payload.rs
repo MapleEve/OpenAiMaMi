@@ -513,19 +513,21 @@ pub(super) fn relay_test_warning(command: &str) -> CoreWarning {
 }
 
 pub(super) fn relay_test_error_warning(command: &str, error: &CoreError) -> CoreWarning {
+    let message = relay_core::relay_test_error_message(&error.sanitized_message());
     CoreWarning {
         code: format!("relay.{command}.mock_terminal_error"),
-        message: error.sanitized_message(),
+        message,
     }
 }
 
 pub(super) fn relay_test_error(error: &CoreError) -> RelayTestDomain {
+    let message = relay_core::relay_test_error_message(&error.sanitized_message());
     RelayTestDomain {
         ok: false,
         latency_ms: 0,
         status_code: None,
         message: None,
-        error_message: Some(error.sanitized_message()),
+        error_message: Some(message),
         models: Vec::new(),
     }
 }

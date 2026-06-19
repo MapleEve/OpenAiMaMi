@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const closeoutPath = repoPath("docs/reconstruction/frontend-current-source-closeouts.json");
+const mapPath = "docs/reconstruction/relay-http-terminal-current-source-map.md";
 const closeoutId = "relay-targeted-http-terminal-ui-trigger-current-source-chain";
 const sidecarReport =
   "evidence/full-chain/internal/audits/audits/cross-1.0.9-relay-core-bootstrap/frontend-callchain-report.json";
@@ -35,6 +36,19 @@ const requiredNonClaims = [
   "不声明真实 HTTP 网络、远端模型拉取或外部代理行为已经恢复。",
 ];
 const sourceSnippets = new Map([
+  [
+    mapPath,
+    [
+      "# relay HTTP-terminal 当前源码映射",
+      "`test_relay_provider`",
+      "`test_relay_draft`",
+      "`fetch_relay_models_draft`",
+      "relay test retry/stream retry 错误语义",
+      "不声明真实 HTTP 网络",
+      "npm run validate:frontend-relay-http-terminal-ccf",
+      "npm run validate:backend-relay-owner",
+    ],
+  ],
   [
     gateReport,
     [
