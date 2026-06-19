@@ -7,6 +7,9 @@ use crate::contracts::sessions::{
 };
 use crate::contracts::BackendEffect;
 use crate::core::model::analytics::{aggregate_public_usage_for_range, PublicAnalyticsRange};
+use crate::core::parser::session_account::{
+    parse_chatgpt_session_account, ChatGptSessionAccountParseError,
+};
 use crate::repository::analytics as analytics_repository;
 use crate::repository::sessions as sessions_repository;
 use crate::repository::Repository;
@@ -95,26 +98,37 @@ fn repository_write_error_status(
     status
 }
 
-/// 导入会话账号的用户动作边界，当前不解析 session JSON，也不写账号仓储。
+/// 导入会话账号的用户动作边界，只做公开字段解析，不写账号仓储。
 pub fn import_chatgpt_session_account(
     _repo: &Repository,
-    _session_json: String,
+    session_json: String,
     _overwrite_existing: bool,
 ) -> AccountSessionImportPayload {
+    let parse_result = parse_chatgpt_session_account(&session_json);
+    let note = match &parse_result {
+        Ok(_) => "会话账号导入只完成公开字段解析；账号仓储、快照、auth 写入仍等待证据补齐。",
+        Err(ChatGptSessionAccountParseError::InvalidJson) => {
+            "会话账号导入收到无效 JSON；未写账号仓储、快照或 auth。"
+        }
+        Err(ChatGptSessionAccountParseError::MissingAccountFields) => {
+            "会话账号导入未识别到账号字段；未写账号仓储、快照或 auth。"
+        }
+    };
+    let parsed = parse_result.ok();
+
     AccountSessionImportPayload {
-        backend_status: pending_status(
-            "sessions",
-            "import_chatgpt_session_account",
-            "会话账号导入只完成公开 IPC 骨架；账号写入和快照生成等待证据补齐。",
-        ),
+        backend_status: pending_status("sessions", "import_chatgpt_session_account", note),
         imported: false,
-        account_key: None,
-        email: None,
-        plan: None,
+        account_key: parsed.as_ref().and_then(|value| value.account_key.clone()),
+        email: parsed.as_ref().and_then(|value| value.email.clone()),
+        plan: parsed.as_ref().and_then(|value| value.plan.clone()),
         snapshot_path: None,
         registry_account_count: 0,
         active_account_key: None,
-        refresh_token_placeholder: false,
+        refresh_token_placeholder: parsed
+            .as_ref()
+            .map(|value| value.refresh_token_placeholder)
+            .unwrap_or(false),
     }
 }
 

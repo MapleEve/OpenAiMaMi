@@ -11,8 +11,10 @@
 | `docs/reconstruction/frontend-current-source-closeouts.json` | 只作为前端 current-source partial closeout 参考；本文件不更新该 JSON，不声明前端或整仓 leaf 完成。 |
 | `src-tauri/src/commands/analytics.rs`、`src-tauri/src/commands/sessions.rs` | 确认 command 层只做 Tauri 参数、state/repository 获取、usecase 调度和 envelope 返回。 |
 | `src-tauri/src/application/usecase/analytics.rs`、`src-tauri/src/application/usecase/sessions.rs` | 确认用户动作事务只编排 repository/core，并区分 restored 与 pending。 |
+| `src-tauri/src/core/parser/session_account.rs`、`src-tauri/src/core/parser/mod.rs`、`src-tauri/src/contracts/sessions.rs` | 确认 ChatGPT session account 当前只进入只读解析和强类型待处理 payload 边界，不返回 token 原文。 |
 | `src-tauri/src/repository/analytics.rs`、`src-tauri/src/repository/quota.rs` | 确认公开文件事实由 repository owner 通过可替换 FS 读取。 |
 | `src-tauri/src/core/model/analytics.rs` | 确认 usage/session/token/tool/change/quota 的公开事实聚合由 core model owning。 |
+| `evidence/full-chain/internal/root/REVERSE-STATUS.md` 中 `import_chatgpt_session_account` 段落、`evidence/full-chain/internal/audits/audits/macos-1.0.9-accounts/logic/ACCOUNTS-CHATGPT-SESSION-*.md` | 只作为闭源行为和字段边界的内部证据索引；当前公开源码不复制其写入链路，不把 local-outtake/strictImplementationUse 写成当前实现完成。 |
 
 ## 当前公开文件事实聚合
 
@@ -33,12 +35,12 @@ backend status 的 effect 语义按当前源码真实仓储边界区分：`load_
 
 | pending 项 | 当前边界 |
 | --- | --- |
-| `import_chatgpt_session_account` | 只保留公开 IPC / DTO 骨架和 pending status；不声明 ChatGPT session account 导入、账号写入、refresh token 或 snapshot 生成已恢复。 |
+| `import_chatgpt_session_account` | 本切片只把 `import_chatgpt_session_account` 推到只读解析 + 强类型待处理边界：parser 可从 session JSON 归一 `account_key`、`email`、`plan` 和 `refresh_token_placeholder`，usecase 仍返回 pending status，不做真实账号导入，不声明 ChatGPT session account 导入。禁止声明或实现 registry/auth/snapshot 写入，不复制 access token、refresh token 或 id token 原文，不恢复 refresh token 持久化，不关闭 raw/internal gate，不声明 `full_leaf_100`、`gate_accepted` 或 `implementation_use` 完成。 |
 | SQLite / rusqlite session index | 当前公开实现不恢复 SQLite/rusqlite 索引事务；session list 只读公开文件元数据和 JSONL 字段。 |
 | 运行时统计精确口径 | `active_minutes_estimate`、token/tool/change 分类和 quota history 只来自公开可重建文件事实；不声明真实运行时统计口径、闭源敏感字段路径之外的 token 语义或闭源一致性。 |
 | 跨平台验收 | 本文件只约束 current-source 静态 owner；不声明 Windows/macOS 手工验收，不声明整仓 100% leaf，也不声明 raw/internal gate 已由当前仓库完成。 |
 
 ## validator 接入
 
-- `scripts/validate-backend-sessions-owner.mjs` 必须验证本 evidence map 存在，且记录公开 session 文件事实、`delete_sessions` 成功与仓储错误路径的 RepositoryWrite 边界、`load_session_analytics` owner、pending 的 session account import 和不恢复 SQLite/rusqlite 索引事务。
+- `scripts/validate-backend-sessions-owner.mjs` 必须验证本 evidence map 存在，且记录公开 session 文件事实、`delete_sessions` 成功与仓储错误路径的 RepositoryWrite 边界、`load_session_analytics` owner、pending 的 session account import、`import_chatgpt_session_account` 只读 parser 边界、payload 不返回 token 原文，以及不恢复 SQLite/rusqlite 索引事务。
 - `scripts/validate-backend-analytics-owner.mjs` 必须验证本 evidence map 存在，且记录公开 session/rollout/quota-history 文件事实聚合、token analytics 公开 JSONL 只读聚合边界、quota-history 7 天 compaction 和不声明闭源运行时一致性。

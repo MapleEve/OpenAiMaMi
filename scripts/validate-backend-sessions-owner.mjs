@@ -11,6 +11,9 @@ const evidenceMapFile = join(
 );
 const commandFile = join(backendRoot, "commands", "sessions.rs");
 const usecaseFile = join(backendRoot, "application", "usecase", "sessions.rs");
+const contractsFile = join(backendRoot, "contracts", "sessions.rs");
+const parserModFile = join(backendRoot, "core", "parser", "mod.rs");
+const sessionAccountParserFile = join(backendRoot, "core", "parser", "session_account.rs");
 const repositoryFile = join(backendRoot, "repository", "sessions.rs");
 const adapterModFile = join(backendRoot, "repository", "adapter", "mod.rs");
 const realFsFile = join(backendRoot, "repository", "adapter", "real_fs.rs");
@@ -84,6 +87,21 @@ function requireFunctionBody(content, file, name) {
   return body;
 }
 
+function requireStructBody(content, file, name) {
+  const pattern = new RegExp(`\\bpub\\s+struct\\s+${name}\\s*\\{`, "g");
+  const match = pattern.exec(content);
+  if (!match) {
+    failures.push(`${toRelative(file)} 缺少 ${name} 结构体`);
+    return "";
+  }
+  const body = findFunctionBody(content, match.index);
+  if (!body) {
+    failures.push(`${toRelative(file)}:${lineNumberAt(content, match.index)} 无法解析 ${name} 结构体`);
+    return "";
+  }
+  return body;
+}
+
 function assertNoPattern(label, body, patterns) {
   for (const pattern of patterns) {
     if (pattern.test(body)) {
@@ -110,6 +128,9 @@ function rejectTextIncludes(label, file, content, snippets, reason) {
 
 const commandContent = readRequired(commandFile, "sessions command");
 const usecaseContent = readRequired(usecaseFile, "sessions usecase");
+const contractsContent = readRequired(contractsFile, "sessions contracts");
+const parserModContent = readRequired(parserModFile, "parser module registration");
+const sessionAccountParserContent = readRequired(sessionAccountParserFile, "ChatGPT session account parser");
 const repositoryContent = readRequired(repositoryFile, "sessions repository");
 const evidenceMapContent = readRequired(evidenceMapFile, "sessions/analytics current-source evidence map");
 const adapterModContent = readRequired(adapterModFile, "repository fs adapter trait");
@@ -138,6 +159,15 @@ requireTextIncludes(
     "FileSystemAdapter",
     "不恢复 SQLite/rusqlite 索引事务",
     "不声明 ChatGPT session account 导入",
+    "只读解析 + 强类型待处理边界",
+    "`account_key`",
+    "`email`",
+    "`plan`",
+    "`refresh_token_placeholder`",
+    "不复制 access token、refresh token 或 id token 原文",
+    "不恢复 refresh token 持久化",
+    "不关闭 raw/internal gate",
+    "不声明 `full_leaf_100`、`gate_accepted` 或 `implementation_use` 完成",
     "不声明跨平台手工验收",
     "scripts/validate-backend-sessions-owner.mjs",
   ],
@@ -151,6 +181,12 @@ rejectTextIncludes(
     "真实运行时统计口径已恢复",
     "SQLite/rusqlite 索引事务已恢复",
     "ChatGPT session account 导入已恢复",
+    "registry/auth/snapshot 写入已恢复",
+    "refresh token 持久化已恢复",
+    "raw/internal gate 已关闭",
+    "full_leaf_100 完成",
+    "gate_accepted 完成",
+    "implementation_use 完成",
     "跨平台手工验收已完成",
     "整仓 100% leaf 完成",
   ],
@@ -364,20 +400,96 @@ assertNoPattern("application/usecase/sessions.rs load_session_analytics", usecas
   /\bread_to_string\s*\(/,
 ]);
 
-for (const name of ["import_chatgpt_session_account"]) {
-  const body = requireFunctionBody(usecaseContent, usecaseFile, name);
-  assertNoPattern(`application/usecase/sessions.rs ${name}`, body, [
-    /\bstd::fs\b/,
-    /\bsessions_repository::/,
-    /\bwrite_string\s*\(/,
-    /\bcreate_dir_all\s*\(/,
-    /\bremove_file\s*\(/,
-    /\bremove_dir_all\s*\(/,
-    /\bcopy_file\s*\(/,
-    /\brename\s*\(/,
-    /\bread_to_string\s*\(/,
-  ]);
+if (!/\bpub\s+mod\s+session_account\s*;/.test(parserModContent)) {
+  failures.push("core/parser/mod.rs 必须注册 session_account parser 模块");
 }
+
+const sessionAccountParserBody = requireFunctionBody(
+  sessionAccountParserContent,
+  sessionAccountParserFile,
+  "parse_chatgpt_session_account",
+);
+if (!/\bserde_json::from_str\s*::<\s*Value\s*>/.test(sessionAccountParserBody)) {
+  failures.push("core/parser/session_account.rs 必须只读解析 session JSON");
+}
+for (const field of [
+  "ParsedChatGptSessionAccount",
+  "account_key",
+  "email",
+  "plan",
+  "refresh_token_placeholder",
+]) {
+  if (!sessionAccountParserContent.includes(field)) {
+    failures.push(`core/parser/session_account.rs 缺少 ${field} 强类型解析字段`);
+  }
+}
+assertNoPattern("core/parser/session_account.rs parse_chatgpt_session_account", sessionAccountParserBody, [
+  /\bstd::fs\b/,
+  /\bwrite_string\s*\(/,
+  /\bcreate_dir_all\s*\(/,
+  /\bremove_file\s*\(/,
+  /\bremove_dir_all\s*\(/,
+  /\bcopy_file\s*\(/,
+  /\brename\s*\(/,
+]);
+
+const accountSessionImportPayloadBody = requireStructBody(
+  contractsContent,
+  contractsFile,
+  "AccountSessionImportPayload",
+);
+for (const field of ["backend_status", "account_key", "email", "plan", "refresh_token_placeholder"]) {
+  if (!new RegExp(`\\b${field}\\b`).test(accountSessionImportPayloadBody)) {
+    failures.push(`contracts/sessions.rs AccountSessionImportPayload 缺少 ${field}`);
+  }
+}
+assertNoPattern("contracts/sessions.rs AccountSessionImportPayload token 原文", accountSessionImportPayloadBody, [
+  /\baccess_token\b/,
+  /\baccessToken\b/,
+  /\brefresh_token\s*:/,
+  /\brefreshToken\b/,
+  /\bid_token\b/,
+  /\bidToken\b/,
+  /\btoken\s*:/,
+]);
+
+const importChatGptSessionAccountBody = requireFunctionBody(
+  usecaseContent,
+  usecaseFile,
+  "import_chatgpt_session_account",
+);
+if (!/\bparse_chatgpt_session_account\s*\(\s*&?session_json\s*\)/.test(importChatGptSessionAccountBody)) {
+  failures.push("application/usecase/sessions.rs import_chatgpt_session_account 必须调用 core parser 做只读解析");
+}
+if (!/\bpending_status\s*\(\s*"sessions"\s*,\s*"import_chatgpt_session_account"\s*,/.test(importChatGptSessionAccountBody)) {
+  failures.push("application/usecase/sessions.rs import_chatgpt_session_account backend_status 必须保持 pending");
+}
+for (const field of ["account_key", "email", "plan", "refresh_token_placeholder"]) {
+  if (!new RegExp(`\\b${field}\\b`).test(importChatGptSessionAccountBody)) {
+    failures.push(`application/usecase/sessions.rs import_chatgpt_session_account payload 缺少 ${field}`);
+  }
+}
+assertNoPattern("application/usecase/sessions.rs import_chatgpt_session_account", importChatGptSessionAccountBody, [
+  /\bstd::fs\b/,
+  /\bsessions_repository::/,
+  /\baccounts_repository::/,
+  /\bwrite_string\s*\(/,
+  /\bcreate_dir_all\s*\(/,
+  /\bremove_file\s*\(/,
+  /\bremove_dir_all\s*\(/,
+  /\bcopy_file\s*\(/,
+  /\brename\s*\(/,
+  /\bread_to_string\s*\(/,
+]);
+assertNoPattern("application/usecase/sessions.rs import_chatgpt_session_account payload token 原文", importChatGptSessionAccountBody, [
+  /\baccess_token\b/,
+  /\baccessToken\b/,
+  /\brefresh_token\s*:/,
+  /\brefreshToken\b/,
+  /\bid_token\b/,
+  /\bidToken\b/,
+  /\btoken\s*:/,
+]);
 
 if (!/"validate:backend-sessions-owner"\s*:\s*"node scripts\/validate-backend-sessions-owner\.mjs"/.test(packageContent)) {
   failures.push("package.json 缺少 validate:backend-sessions-owner 脚本");

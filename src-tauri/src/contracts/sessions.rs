@@ -46,7 +46,7 @@ pub struct SessionsDeletePayload {
     pub source_path: String,
 }
 
-/// 会话导入账号 IPC DTO，仅保留公开合同字段，不解析或写入账号数据。
+/// 会话账号导入 IPC DTO，只返回只读解析结果和待处理状态。
 #[derive(Debug, Clone, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct AccountSessionImportPayload {
