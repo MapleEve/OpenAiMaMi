@@ -5,7 +5,7 @@ use crate::application::{
 use crate::contracts::{
     CoreWarning, RelayActivePayload, RelayExportPayload, RelayImportPayload,
     RelayPassthroughAuditEntryPayload, RelayProviderDraftInput, RelayProxyPayload,
-    RelayRouterMigrationPayload, RelayRouterTogglePayload, RelayStatePayload, RelayTestPayload,
+    RelayRouterTogglePayload, RelayStatePayload, RelayTestPayload,
 };
 use crate::core::{
     error::CoreError,
@@ -19,6 +19,7 @@ mod diagnostics;
 mod models;
 mod payload;
 mod provider;
+mod thread_migration;
 
 pub use self::diagnostics::{
     diagnose_codex_router, fix_codex_router_issue, run_codex_router_diagnostics,
@@ -196,15 +197,7 @@ pub fn set_codex_router_enabled(
         RelayRouterTogglePayload {
             backend_status: repository_status(command),
             state: state_payload_from_domain(command, state),
-            migration: RelayRouterMigrationPayload {
-                action: "repository-state-updated".to_string(),
-                migrated_count: 0,
-                rolled_back_count: 0,
-                skipped_count: 0,
-                target_provider: None,
-                target_model: None,
-                manifest_path: None,
-            },
+            migration: thread_migration::router_toggle_noop_migration(),
             codex_launch_error: None,
         },
         warning,

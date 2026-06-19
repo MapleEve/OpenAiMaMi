@@ -19,6 +19,15 @@ const files = {
     "relay",
     "diagnostics.rs",
   ),
+  usecaseThreadMigration: join(
+    repoRoot,
+    "src-tauri",
+    "src",
+    "application",
+    "usecase",
+    "relay",
+    "thread_migration.rs",
+  ),
   core: join(repoRoot, "src-tauri", "src", "core", "relay.rs"),
   coreRequestBuilder: join(repoRoot, "src-tauri", "src", "core", "relay", "request_builder.rs"),
   coreRouterConfig: join(repoRoot, "src-tauri", "src", "core", "relay", "router_config.rs"),
@@ -204,12 +213,17 @@ const usecaseDiagnosticsContent = readRequired(
   files.usecaseDiagnostics,
   "relay usecase diagnostics owner file",
 );
+const usecaseThreadMigrationContent = readRequired(
+  files.usecaseThreadMigration,
+  "relay usecase thread migration 空操作 owner file",
+);
 const usecaseOwnerContents = [
   [files.usecase, usecaseContent],
   [files.usecasePayload, usecasePayloadContent],
   [files.usecaseProvider, usecaseProviderContent],
   [files.usecaseModels, usecaseModelsContent],
   [files.usecaseDiagnostics, usecaseDiagnosticsContent],
+  [files.usecaseThreadMigration, usecaseThreadMigrationContent],
 ];
 const usecaseCombinedContent = usecaseOwnerContents.map(([, content]) => content).join("\n");
 const coreContent = readRequired(files.core, "relay core 文件");
@@ -318,6 +332,12 @@ assertContains(
   "必须把 router diagnostics/fix 拆入 application/usecase/relay/diagnostics.rs",
 );
 assertContains(
+  files.usecase,
+  usecaseContent,
+  /\bmod\s+thread_migration\s*;/,
+  "必须把 relay_thread_migration 空操作/待处理 payload 拆入 application/usecase/relay/thread_migration.rs",
+);
+assertContains(
   files.usecasePayload,
   usecasePayloadContent,
   /\bpub\s*\(\s*super\s*\)\s+fn\s+provider_payload_from_domain\s*\(/,
@@ -341,6 +361,53 @@ assertContains(
   /\bpub\s+fn\s+fix_codex_router_issue\s*\(/,
   "diagnostics owner 必须 owning router diagnostics/fix usecase",
 );
+assertContains(
+  files.usecaseThreadMigration,
+  usecaseThreadMigrationContent,
+  /\bpub\s*\(\s*super\s*\)\s+fn\s+router_toggle_noop_migration\s*\(/,
+  "thread migration owner 必须 owning router toggle 空操作 migration payload",
+);
+assertContains(
+  files.usecase,
+  usecaseContent,
+  /\bthread_migration\s*::\s*router_toggle_noop_migration\s*\(/,
+  "set_codex_router_enabled 必须通过 thread_migration owner 获取空操作 migration payload",
+);
+assertNoPatterns(files.usecase, usecaseContent, [
+  {
+    label: "内联 migration payload",
+    message: "relay usecase 主文件不得内联 relay_thread_migration payload",
+    patterns: [/\bRelayRouterMigrationPayload\s*\{/],
+  },
+]);
+assertContains(
+  files.usecaseThreadMigration,
+  usecaseThreadMigrationContent,
+  /migrated_count:\s*0[\s\S]*rolled_back_count:\s*0[\s\S]*skipped_count:\s*0[\s\S]*manifest_path:\s*None/,
+  "thread migration 空操作 payload 必须保持 count 为 0 且 manifest_path 为 None",
+);
+assertContains(
+  files.usecasePayload,
+  usecasePayloadContent,
+  /thread_migration_exists:\s*false/,
+  "relay state payload 必须保持 thread_migration_exists=false，不能声明公开迁移运行时存在",
+);
+assertNoPatterns(files.usecaseThreadMigration, usecaseThreadMigrationContent, [
+  {
+    label: "真实 thread migration 执行逻辑",
+    message: "thread migration owner 当前只能返回空操作/待处理 payload，不得实现闭源运行时迁移",
+    patterns: [
+      /\bstd\s*::\s*process\b/,
+      /\bCommand\s*::\s*new\s*\(/,
+      /\.spawn\s*\(/,
+      /\bspawn\s*\(/,
+      /\b(process_scan|scan_process|scan_codex_process|process\s+scan)\b/i,
+      /\b(sqlite_patch|patch_sqlite|SQLite\s+patch)\b/i,
+      /\b(session_meta|replace_first_session_meta_line)\b/i,
+      /\b(restart_codex|relaunch_codex|restart\s*\(|relaunch\s*\()\b/i,
+    ],
+  },
+]);
 assertContains(
   files.usecase,
   usecaseCombinedContent,
@@ -725,6 +792,33 @@ assertContains(
   "必须通过 RelayPlatformPort 暴露平台能力",
 );
 
+const relayRuntimeMigrationForbidden = [
+  {
+    label: "真实 relay thread migration 执行逻辑",
+    message: "relay 后端公开 owner 不得实现真实进程扫描、线程 patch、SQLite patch、session meta 替换或重启迁移",
+    patterns: [
+      /\bstd\s*::\s*process\b/,
+      /\bCommand\s*::\s*new\s*\(/,
+      /\.spawn\s*\(/,
+      /\b(process_scan|scan_process|scan_codex_process|process\s+scan)\b/i,
+      /\b(sqlite_patch|patch_sqlite|SQLite\s+patch)\b/i,
+      /\b(thread_patch|patch_thread|rollout_patch_parallel)\b/i,
+      /\b(session_meta|replace_first_session_meta_line)\b/i,
+      /\b(restart_codex|relaunch_codex|restart\s*\(|relaunch\s*\()\b/i,
+    ],
+  },
+];
+for (const [path, content] of [
+  ...usecaseOwnerContents,
+  [files.core, coreContent],
+  [files.coreRequestBuilder, coreRequestBuilderContent],
+  [files.coreRouterConfig, coreRouterConfigContent],
+  [files.repository, repositoryContent],
+  [files.platform, platformContent],
+]) {
+  assertNoPatterns(path, content, relayRuntimeMigrationForbidden);
+}
+
 if (
   /真实配置读写等待证据补齐|真实文件检查等待证据补齐/.test(contractsContent)
 ) {
@@ -771,6 +865,36 @@ assertContains(
   /不启动代理进程、不发真实网络请求、不实现闭源流式代理/,
   "relay-core map 必须保留真实代理、网络和流式代理未声明边界",
 );
+assertContains(
+  files.relayMap,
+  relayMapContent,
+  /relay_thread_migration[\s\S]*manifest\.json[\s\S]*producer-ledger\.json[\s\S]*gate-report\.json/,
+  "relay-core map 必须记录 relay_thread_migration 的公开证据来源",
+);
+assertContains(
+  files.relayMap,
+  relayMapContent,
+  /只保留独立的 thread migration owner[\s\S]*空操作\/待处理 payload/,
+  "relay-core map 必须说明当前源码只落独立 thread migration 空操作/待处理 owner",
+);
+assertContains(
+  files.relayMap,
+  relayMapContent,
+  /migrated_count=0[\s\S]*rolled_back_count=0[\s\S]*skipped_count=0[\s\S]*manifest_path=None[\s\S]*thread_migration_exists=false/,
+  "relay-core map 必须明确空操作 migration payload 的 count、manifest_path 和 thread_migration_exists 边界",
+);
+assertContains(
+  files.relayMap,
+  relayMapContent,
+  /不声明 raw\/internal gate 全闭合或闭源业务全恢复/,
+  "relay-core map 必须明确不声明 raw/internal gate 全闭合或闭源业务全恢复",
+);
+assertContains(
+  files.relayMap,
+  relayMapContent,
+  /不得据此实现真实进程扫描、线程 patch、SQLite patch、session meta 替换、Codex 重启或真实运行时迁移/,
+  "relay-core map 必须明确禁止恢复真实 thread migration 运行时副作用",
+);
 assertNoPatterns(files.relayMap, relayMapContent, [
   {
     label: "旧 relay-core map 口径",
@@ -788,13 +912,13 @@ assertNoPatterns(files.relayMap, relayMapContent, [
 assertContains(
   files.sourceMap,
   sourceMapContent,
-  /docs\/reconstruction\/relay-core-current-source-evidence-map\.md[\s\S]*scripts\/validate-backend-relay-owner\.mjs[\s\S]*本地配置 repository 恢复/,
+  /docs\/reconstruction\/relay-core-current-source-evidence-map\.md[\s\S]*scripts\/validate-backend-relay-owner\.mjs[\s\S]*本地配置 repository 恢复[\s\S]*relay_thread_migration 空操作\/待处理 owner 边界/,
   "source-map 必须把 relay-core map 收口到 validate-backend-relay-owner.mjs",
 );
 assertContains(
   files.reconstructionReadme,
   reconstructionReadmeContent,
-  /relay-core-current-source-evidence-map\.md[\s\S]*本地配置 repository 恢复[\s\S]*scripts\/validate-backend-relay-owner\.mjs/,
+  /relay-core-current-source-evidence-map\.md[\s\S]*本地配置 repository 恢复[\s\S]*relay_thread_migration 空操作\/待处理边界[\s\S]*scripts\/validate-backend-relay-owner\.mjs/,
   "docs/reconstruction README 必须同步 relay-core map 的直接验证边界",
 );
 

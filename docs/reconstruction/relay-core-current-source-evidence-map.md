@@ -19,6 +19,9 @@
 | `evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/logic/WIN-RELAY-IMAGE-COMPAT-109.md` | 用于确认 image compatibility 涉及 config.toml 写入和转发路径，当前源码没有把它写成真实 relay-core 行为。 |
 | `evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/logic/WIN-RELAY-TRANSPORT-CLOSEOUT-109.md` | 用于确认 proxy config、transport 和代理检测有平台行为，当前源码只保留公开边界。 |
 | `evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/logic/WIN-SSE-TRANSLATE-CEILINGCRACK-109.md` | 用于确认 SSE/translator 仍属于深层后端行为，不能由前端 dumped 通过推导为已恢复。 |
+| `evidence/full-chain/internal/leaves/aimami/1.0.9/windows-x64/relay_thread_migration/migrate_threads_for_router_with_scope/data/manifest.json` | 确认 `relay_thread_migration` 的公开证据入口、函数名 `migrate_threads_for_router_with_scope`、Windows 1.0.9 平台、`strictImplementationUse` 层级、`implementation_use=true`、`gate_accepted=true` 和 caller 为 `switch_account_stop_codex_restart`；本文只把它登记为证据来源，不把内部 gate 直接转写成公开运行时实现。 |
+| `evidence/full-chain/internal/leaves/aimami/1.0.9/windows-x64/relay_thread_migration/migrate_threads_for_router_with_scope/data/producer-ledger.json` | 确认该 leaf 的内部 callee 包含进程列表扫描、并行 patch、session meta 替换等闭源行为；当前公开源码不得据此实现真实进程扫描、线程 patch、SQLite patch、session meta 替换、Codex 重启或真实运行时迁移。 |
+| `evidence/full-chain/internal/audits/audits/windows-1.0.9-relay-core/gate-report.json` 中 `relay_thread_migration` 段落 | 确认内部审计段落把 `relay_thread_migration` 标成 `readyToImplement`、`gate_accepted=true`、`implementation_use=true`、`dim6_test_acceptance=closed`；公开仓库仍按项目范围只落空操作/待处理 owner，不声明 raw/internal gate 全闭合或闭源业务全恢复。 |
 
 ## 当前源码已做
 
@@ -53,6 +56,14 @@
 | `src-tauri/src/core/model/diagnostics.rs` | core model 只承载诊断只读值对象，没有写入无证据闭源业务字段。 |
 | `src-tauri/src/repository/diagnostics.rs` | diagnostics repository 只从 repository paths 和 FS adapter 读取可验证路径事实，不触碰真实用户环境之外的隐式状态。 |
 
+### relay_thread_migration 空操作 owner 边界
+
+`relay_thread_migration` 的公开证据已经能定位到内部函数、leaf manifest、producer ledger 和 gate-report 段落，但这些材料描述的是闭源运行时迁移能力，不等同于当前公开仓库可以直接恢复真实业务。当前公开源码应只保留独立的 thread migration owner，并由 `set_codex_router_enabled` 消费该 owner 返回的空操作/待处理 payload；迁移 payload 不应内联在 relay usecase 主文件中。
+
+该公开 owner 的唯一允许语义是：`migrated_count=0`、`rolled_back_count=0`、`skipped_count=0`、`manifest_path=None`，并保持 `thread_migration_exists=false`。它可以说明“当前没有执行公开运行时迁移”，不能执行或声明真实进程扫描、线程 patch、SQLite patch、session meta 替换、Codex 重启、relaunch 或真实运行时迁移。
+
+因此，`scripts/validate-backend-relay-owner.mjs` 需要同时检查文档和后端源码：存在独立 thread migration owner；router toggle 不内联 migration payload；count 全为 0；`manifest_path` 为 `None`；`thread_migration_exists` 保持 `false`；relay 后端 owner 中不得出现 `std::process`、`Command::new`、`spawn`、process scan、SQLite patch、restart/relaunch 执行逻辑。若后端代码 worker 尚未落地该 owner，validator 应报告 FAIL，而不应扩大到 README 或 evidence 原件中记录流水账。
+
 ### relay test 错误语义
 
 当前源码在 `src-tauri/src/core/relay.rs` 中恢复了 `needs_stream_retry`、`should_retry_relay_test` 和 `relay_test_error_message`。词表覆盖 `stream mode is required`、`stream must be true`、`must enable stream`、`streaming required`、`only stream`、`request failed`、`timeout`、`connection reset`、`connection refused`、`no response data` 和 `stream read failed`。
@@ -65,7 +76,8 @@
 
 ## 未做内容
 
-- 未恢复密钥系统、真实代理进程启动、真实网络请求、真实模型拉取、SSE 转换、线程迁移、运行时健康检查、keychain、安全凭据迁移和闭源代理转发。
+- 未恢复密钥系统、真实代理进程启动、真实网络请求、真实模型拉取、SSE 转换、真实线程迁移、运行时健康检查、keychain、安全凭据迁移和闭源代理转发。
+- 未把 `relay_thread_migration` 内部 `readyToImplement` / `gate_accepted` / `implementation_use` 结论声明为公开源码 raw/internal gate 全闭合，也未恢复进程扫描、线程 patch、SQLite patch、session meta 替换、Codex 重启或运行时迁移。
 - 未声明本地 `relay-config.json`、受管 `config.toml` router block、catalog 空文件和导入导出文件事务等公开 FS 能力等同于闭源 relay-core 全量业务恢复。
 - 未声明 `needs_stream_retry` / `should_retry_relay_test` 已连接真实网络重试；当前只证明错误语义和 mock terminal payload 分类。
 - 未把 Windows 证据直接推导为 macOS 行为，也未把 macOS 行为写成 Windows 通用事实。
