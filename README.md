@@ -10,7 +10,7 @@ OpenAiMami 是面向个人本地工作流的桌面应用公开重建仓库。仓
 
 ## 范围边界
 
-- 前端正在按 `raw/internal` 证据链逐步恢复，目标覆盖入口、路由、运行时、服务门面、缓存、弹窗、面板、模块、类型、测试和文档，但不能宣称 100% 还原、全叶子节点完成或全功能完成。
+- 前端按 `raw/internal` 证据链逐步恢复，目标覆盖入口、路由、运行时、服务门面、缓存、弹窗、面板、模块、类型、测试和文档；未完成验收前不声明 100% 还原、全叶子节点完成或全功能完成。
 - 后端保留原开源能力，并补出真实六边形架构骨架；闭源业务不做全量还原，无公开证据支撑的业务只保留接口、DTO、错误语义、测试占位、待补证据或可替换骨架。
 - `voice` 只保留空骨架、合同清单和中文说明，不接前端入口、路由、运行时启动链路、IPC mock 或后端命令。
 - IDB/LFS 是独立边界，只作为存储、资产或大文件边界处理，不混入前后端业务还原结论，也不作为闭源业务完成度证明。
@@ -18,12 +18,12 @@ OpenAiMami 是面向个人本地工作流的桌面应用公开重建仓库。仓
 
 ## 当前归纳
 
-README 只保留长期有效的归纳状态，只做范围、边界和验收入口的摘要；具体模块进度、证据细节和收口记录应放在 `docs/reconstruction/` 与对应验证脚本中。模块级 validator 不再把根 README 当作模块进度证明；根 README 的归纳、匿名化、验收入口和禁止完成声明由公开边界验证统一约束。每次提交仍要同步 README、相关重建文档和验证脚本，避免按日期、提交号或模块小日志堆录流水账。
+README 只保留长期有效的归纳状态，只做范围、边界和验收入口的摘要；具体模块进度、证据细节和收口记录应放在 `docs/reconstruction/` 与对应验证脚本中。模块级 validator 不再把根 README 当作模块进度证明；根 README 的归纳、匿名化、验收入口和禁止完成声明由公开边界验证统一约束。每次提交仍要同步 README、相关重建文档和验证脚本，但只能归纳状态变化，避免按日期、提交号或模块小日志堆录流水账。
 
 | 范围 | 已做 | 未做或边界 | 验收 |
 | --- | --- | --- | --- |
-| 公开材料 | 采用 Apache License，并把公开边界、匿名化规则、重建说明和验证入口收敛到仓库。 | 只纳入已匿名化、可审计、可验证材料；外部猜测和未脱敏材料不进入公开范围。 | `npm run validate:public-boundary` |
-| 前端 | 已建立入口、Provider、route registry、runtime initializer、服务门面、TanStack cache、i18n、E2E mock 和模块边界的恢复方向，当前源码路由门禁辅助链路继续收口，通知客户端状态前端调用链已纳入当前源码收口。 | 仍按 `raw/internal` 逐步恢复；不声明 100% 还原、全叶子节点完成、全功能完成或全部文案完成。 | `npm run validate:frontend`、`npm run validate:frontend-visible-copy`、`npm run validate:frontend-leaf-copy` |
+| 公开材料 | 已采用 Apache License，固定公开边界、匿名化规则、重建说明和验证入口。 | 只纳入已匿名化、可审计、可验证材料；外部猜测、未脱敏材料和本机私密信息不进入公开范围。 | `npm run validate:public-boundary` |
+| 前端 | 已建立按入口、Provider、route registry、runtime initializer、服务门面、TanStack cache、i18n、E2E mock 和深模块 owner 推进的恢复框架。 | 仍按 `raw/internal` 证据链逐步恢复；不在根 README 登记模块小进度，也不声明 100% 还原、全叶子节点完成、全功能完成或全部文案完成。 | `npm run validate:frontend`、`npm run validate:frontend-visible-copy`、`npm run validate:frontend-leaf-copy` |
 | 后端 | 已按 commands、application/usecase、core、platform、repository、adapters、contracts 组织六边形公开骨架，并保留原开源能力。 | 不补写无公开证据支撑的闭源业务逻辑；相关位置只保留接口、DTO、错误语义、测试占位、待补证据或可替换骨架。 | `npm run validate:backend`、`npm run validate:backend-cargo` |
 | voice | 已限定为空骨架、合同清单和中文说明。 | 不接入口、路由、IPC mock、后端命令或 runtime 启动链路。 | `npm run validate:frontend`、`npm run validate:backend` |
 | 验收 | 已固定公开边界、前端、后端、构建面和 Rust 环境检查入口。 | 本地工具链缺口需要按环境边界判断，不能直接等同于源码失败。 | `npm run validate:all`、`npm run validate:build-surface` |
