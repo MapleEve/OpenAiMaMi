@@ -270,6 +270,43 @@ const SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECAR_NON_CLAIMS = [
   "不修改 gate-report 字段。",
   "不声明 implementation_use 或 full_leaf_100。",
 ];
+const SYSTEM_USAGE_CURRENT_SOURCE_CLOSEOUT_ID =
+  "system-usage-current-source-frontend-chain";
+const SYSTEM_USAGE_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/system-usage-current-source-map.md";
+const SYSTEM_USAGE_CURRENT_SOURCE_SIDECAR =
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/frontend-callchain-report.json";
+const SYSTEM_USAGE_CURRENT_SOURCE_GATE_REPORT =
+  "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json";
+const SYSTEM_USAGE_CURRENT_SOURCE_COMMANDS = [
+  "get_usage_refresh_interval",
+  "set_usage_refresh_interval",
+  "refresh_usage_snapshot",
+];
+const SYSTEM_USAGE_CURRENT_SOURCE_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "currentSourceMap",
+  "currentSourceCommands",
+  "sidecarReports",
+  "requiredSourceSignals",
+  "nonClaims",
+  "reason",
+];
+const SYSTEM_USAGE_CURRENT_SOURCE_SIGNAL_FILES = [
+  SYSTEM_USAGE_CURRENT_SOURCE_MAP,
+  SYSTEM_USAGE_CURRENT_SOURCE_SIDECAR,
+  SYSTEM_USAGE_CURRENT_SOURCE_GATE_REPORT,
+  "src/services/system/index.ts",
+  "src/services/settings/index.ts",
+  "src/features/settings/hooks/query.ts",
+  "src/features/settings/hooks/mutation.ts",
+  "src/features/settings/cache/index.ts",
+  "src/features/overview/hooks/mutation.ts",
+  "src/features/overview/cache/index.ts",
+  "src/services/analytics/index.ts",
+];
 const MYSTERY_UNLOCK_GRANTS_CLOSEOUT_ID =
   "mystery-unlock-grants-current-source-chain";
 const MYSTERY_UNLOCK_GRANTS_SIDECAR =
@@ -1412,6 +1449,131 @@ function validateSystemHotspotUsageMysteryCloseout(closeout) {
   validateRequiredSignals(closeout);
 }
 
+function validateSystemUsageCurrentSourceCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, SYSTEM_USAGE_CURRENT_SOURCE_ALLOWED_FIELDS);
+  if (closeout.module !== "system-usage") {
+    failures.push(`${closeout.id} module=${String(closeout.module)}`);
+  }
+  if (closeout.status !== "current-source-closed-partial") {
+    failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+  if (closeout.currentSourceMap !== SYSTEM_USAGE_CURRENT_SOURCE_MAP) {
+    failures.push(`${closeout.id} currentSourceMap=${String(closeout.currentSourceMap)}`);
+  }
+
+  validateStringArraySet(
+    `${closeout.id} currentSourceCommands`,
+    closeout.currentSourceCommands ?? [],
+    SYSTEM_USAGE_CURRENT_SOURCE_COMMANDS,
+  );
+  validateStringArraySet(
+    `${closeout.id} sidecarReports`,
+    closeout.sidecarReports ?? [],
+    [SYSTEM_USAGE_CURRENT_SOURCE_SIDECAR],
+  );
+  validateStringArraySet(
+    `${closeout.id} requiredSourceSignals files`,
+    (closeout.requiredSourceSignals ?? []).map((signal) => signal.file),
+    SYSTEM_USAGE_CURRENT_SOURCE_SIGNAL_FILES,
+  );
+  validateSidecarReports(closeout);
+
+  if (Object.prototype.hasOwnProperty.call(closeout, "closedGateReportFailures")) {
+    failures.push(`${closeout.id} 不允许登记 closedGateReportFailures；本条只验证当前源码链路和未声明边界`);
+  }
+
+  const sidecar = readJson(repoPath(SYSTEM_USAGE_CURRENT_SOURCE_SIDECAR));
+  validateStringArraySet(
+    `${SYSTEM_USAGE_CURRENT_SOURCE_SIDECAR} current_source_ipc_commands`,
+    sidecar.current_source_ipc_commands ?? [],
+    SYSTEM_USAGE_CURRENT_SOURCE_COMMANDS,
+  );
+  if (sidecar.full_leaf !== false) {
+    failures.push(`${SYSTEM_USAGE_CURRENT_SOURCE_SIDECAR} full_leaf=${String(sidecar.full_leaf)}`);
+  }
+  if (sidecar.gate_report_fields_unchanged !== true) {
+    failures.push(
+      `${SYSTEM_USAGE_CURRENT_SOURCE_SIDECAR} gate_report_fields_unchanged=${String(
+        sidecar.gate_report_fields_unchanged,
+      )}`,
+    );
+  }
+  if (sidecar.backend_platform_evidence_required !== true) {
+    failures.push(
+      `${SYSTEM_USAGE_CURRENT_SOURCE_SIDECAR} backend_platform_evidence_required=${String(
+        sidecar.backend_platform_evidence_required,
+      )}`,
+    );
+  }
+
+  const mapText = existsSync(repoPath(SYSTEM_USAGE_CURRENT_SOURCE_MAP))
+    ? readText(repoPath(SYSTEM_USAGE_CURRENT_SOURCE_MAP))
+    : "";
+  for (const required of [
+    "系统用量当前源码证据映射",
+    "get_usage_refresh_interval",
+    "set_usage_refresh_interval",
+    "refresh_usage_snapshot",
+    "不修改 raw/internal 证据",
+    "不声明 `gate_accepted`、`implementation_use`、`full_leaf_100` 或 `dim6` 已完成",
+    "不恢复真实平台 watcher、daemon、runtime event、后台线程、计划调度或平台副作用",
+    "不新增 route、sidebar、header、tray、plugins config 或 `voice` 入口",
+  ]) {
+    if (!mapText.includes(required)) {
+      failures.push(`${SYSTEM_USAGE_CURRENT_SOURCE_MAP} 缺少说明片段：${required}`);
+    }
+  }
+
+  const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
+  for (const required of [
+    "不修改 raw/internal 证据",
+    "不声明 gate_accepted、implementation_use、dim6、full_leaf_100 已完成",
+    "不恢复真实平台 watcher、daemon、runtime event 或后台调度副作用",
+    "不新增 route、sidebar、header、tray、plugins config 或 voice 入口",
+    "不把 system-hotspot、mystery-unlock 或 watcher/schedule 信号纳入本条 system-usage 边界",
+  ]) {
+    if (!nonClaimsText.includes(required)) {
+      failures.push(`${closeout.id} nonClaims 缺少声明：${required}`);
+    }
+  }
+
+  const reason = closeout.reason ?? "";
+  for (const required of [
+    "current-source partial closeout",
+    "system service",
+    "settings facade",
+    "settings query/mutation/cache",
+    "overview usage refresh/cache",
+    "analytics service",
+    "不修改 raw/internal 证据",
+    "不声明 gate_accepted、implementation_use、dim6 或 full_leaf_100 已完成",
+    "不恢复真实 watcher、daemon、runtime event 或平台副作用",
+  ]) {
+    if (!reason.includes(required)) {
+      failures.push(`${closeout.id} reason 缺少边界声明：${required}`);
+    }
+  }
+
+  for (const command of [
+    "note_usage_refresh_activity",
+    "schedule_full_runtime_refresh",
+    "start_auto_switch_pending_watcher",
+    "start_usage_refresh_watcher",
+    "update_usage_refresh_schedule",
+    "get_hotspot_enabled",
+    "set_hotspot_enabled",
+    "hotspot_ready",
+    "get_mystery_unlock_grants",
+    "merge_mystery_unlock_grants",
+  ]) {
+    if ((closeout.currentSourceCommands ?? []).includes(command)) {
+      failures.push(`${closeout.id} 不允许把非 usage 命令纳入 currentSourceCommands：${command}`);
+    }
+  }
+
+  validateRequiredSignals(closeout);
+}
+
 function validateMysteryUnlockGrantsCloseout(closeout) {
   validateAllowedCloseoutFields(closeout, MYSTERY_UNLOCK_GRANTS_ALLOWED_FIELDS);
   if (closeout.module !== "mystery-unlock-grants") {
@@ -2468,6 +2630,8 @@ for (const closeout of closeouts.closeouts ?? []) {
     validateRelayProxyConfigDim6Closeout(closeout);
   } else if (closeout.id === SYSTEM_HOTSPOT_USAGE_MYSTERY_CLOSEOUT_ID) {
     validateSystemHotspotUsageMysteryCloseout(closeout);
+  } else if (closeout.id === SYSTEM_USAGE_CURRENT_SOURCE_CLOSEOUT_ID) {
+    validateSystemUsageCurrentSourceCloseout(closeout);
   } else if (closeout.id === MYSTERY_UNLOCK_GRANTS_CLOSEOUT_ID) {
     validateMysteryUnlockGrantsCloseout(closeout);
   } else if (closeout.id === BOOTSTRAP_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID) {

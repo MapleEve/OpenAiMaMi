@@ -239,7 +239,7 @@ pub fn export_relay_config(
         ),
         Err(_) => (
             RelayExportPayload {
-                backend_status: skeleton_status(command),
+                backend_status: repository_status(command),
                 schema_version: Some(RELAY_SCHEMA_VERSION),
                 exported_by: None,
                 exported_at: None,
@@ -272,7 +272,7 @@ pub fn import_relay_config(
         ),
         Err(_) => (
             RelayImportPayload {
-                backend_status: skeleton_status(command),
+                backend_status: repository_status(command),
                 file_path,
                 imported_count: 0,
                 skipped_count: 1,
@@ -287,6 +287,7 @@ pub fn import_relay_config(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::contracts::BackendEffect;
 
     #[test]
     fn diagnose_codex_router_returns_no_issues_on_clean_state() {
@@ -431,6 +432,42 @@ mod tests {
         );
         let snapshot = relay_repository::load_relay_repository_snapshot(&repo);
         assert!(!snapshot.relay_config_exists);
+    }
+
+    #[test]
+    fn export_relay_config_repository_error_keeps_repository_status() {
+        let repo = Repository::with_temp_file_system("relay-export-error-status");
+
+        let (payload, warning) =
+            export_relay_config(&repo, "invalid\0export.json".to_string(), false);
+
+        assert_eq!(warning.code, "relay.export_relay_config.repository_error");
+        assert!(payload.backend_status.restored);
+        assert!(payload.backend_status.boundary.repository_checked);
+        assert!(payload.backend_status.boundary.repository_path_known);
+        assert_eq!(
+            payload.backend_status.boundary.effect,
+            BackendEffect::RepositoryWrite
+        );
+        assert_eq!(payload.provider_count, 0);
+    }
+
+    #[test]
+    fn import_relay_config_repository_error_keeps_repository_status() {
+        let repo = Repository::with_temp_file_system("relay-import-error-status");
+
+        let (payload, warning) = import_relay_config(&repo, "missing-export.json".to_string());
+
+        assert_eq!(warning.code, "relay.import_relay_config.repository_error");
+        assert!(payload.backend_status.restored);
+        assert!(payload.backend_status.boundary.repository_checked);
+        assert!(payload.backend_status.boundary.repository_path_known);
+        assert_eq!(
+            payload.backend_status.boundary.effect,
+            BackendEffect::RepositoryWrite
+        );
+        assert_eq!(payload.imported_count, 0);
+        assert_eq!(payload.skipped_count, 1);
     }
 
     #[test]

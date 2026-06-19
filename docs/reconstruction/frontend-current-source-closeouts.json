@@ -1957,6 +1957,146 @@
       "reason": "当前公开源码已覆盖 system-hotspot、system-usage 与 mystery-unlock 的八个真实 IPC 命令在前端 contract/service/cache/hook/mock/validator 链路中的非 gating sidecar 证据；本 closeout 只登记当前公开源码前端链路，不声明后端平台实现、raw/internal dim6、真实 implementation_use 或 full_leaf_100。"
     },
     {
+      "id": "system-usage-current-source-frontend-chain",
+      "module": "system-usage",
+      "status": "current-source-closed-partial",
+      "currentSourceMap": "docs/reconstruction/system-usage-current-source-map.md",
+      "currentSourceCommands": [
+        "get_usage_refresh_interval",
+        "set_usage_refresh_interval",
+        "refresh_usage_snapshot"
+      ],
+      "sidecarReports": [
+        "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/frontend-callchain-report.json"
+      ],
+      "requiredSourceSignals": [
+        {
+          "file": "docs/reconstruction/system-usage-current-source-map.md",
+          "includes": [
+            "系统用量当前源码证据映射",
+            "get_usage_refresh_interval",
+            "set_usage_refresh_interval",
+            "refresh_usage_snapshot",
+            "不声明 `gate_accepted`、`implementation_use`、`full_leaf_100` 或 `dim6` 已完成",
+            "不恢复真实平台 watcher、daemon、runtime event、后台线程、计划调度或平台副作用",
+            "不新增 route、sidebar、header、tray、plugins config 或 `voice` 入口"
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/frontend-callchain-report.json",
+          "includes": [
+            "\"full_leaf\": false",
+            "\"gate_report_fields_unchanged\": true",
+            "\"backend_platform_evidence_required\": true",
+            "\"current_source_ipc_commands\"",
+            "\"get_usage_refresh_interval\"",
+            "\"set_usage_refresh_interval\"",
+            "\"refresh_usage_snapshot\""
+          ]
+        },
+        {
+          "file": "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json",
+          "includes": [
+            "\"gate_accepted\": false",
+            "\"implementation_use\": false",
+            "\"dim6_missing\": true",
+            "\"get_usage_refresh_interval\"",
+            "\"set_usage_refresh_interval\"",
+            "\"refresh_usage_snapshot\""
+          ]
+        },
+        {
+          "file": "src/services/system/index.ts",
+          "includes": [
+            "refreshUsageSnapshot: ()",
+            "invokeIpc<CoreEnvelope<CoreSnapshotPayload>>(\"refresh_usage_snapshot\")",
+            "getUsageRefreshInterval: ()",
+            "invokeIpc<CoreEnvelope<string>>(\"get_usage_refresh_interval\")",
+            "setUsageRefreshInterval: (interval: string)",
+            "invokeIpc<CoreEnvelope<string>>(\"set_usage_refresh_interval\", { interval })"
+          ]
+        },
+        {
+          "file": "src/services/settings/index.ts",
+          "includes": [
+            "getUsageRefreshInterval: systemService.getUsageRefreshInterval",
+            "setUsageRefreshInterval: systemService.setUsageRefreshInterval"
+          ]
+        },
+        {
+          "file": "src/features/settings/hooks/query.ts",
+          "includes": [
+            "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
+            "runSettingsQuery(queryClient, SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
+            "settingsService.getUsageRefreshInterval()",
+            "normalizeSettingsRefreshInterval"
+          ]
+        },
+        {
+          "file": "src/features/settings/hooks/mutation.ts",
+          "includes": [
+            "useSettingsRefreshIntervalMutation",
+            "beginSettingsMutation(SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY)",
+            "queryClient.cancelQueries",
+            "settingsService",
+            ".setUsageRefreshInterval(interval)",
+            "writeSettingsMutationPayload(",
+            "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY"
+          ]
+        },
+        {
+          "file": "src/features/settings/cache/index.ts",
+          "includes": [
+            "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
+            "SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS",
+            "const settingsQuerySequences = new Map<string, number>();",
+            "const settingsMutationFences = new Map<string, number>();",
+            "function canAcceptSettingsPayload",
+            "writeSettingsMutationPayload",
+            "invalidateSettingsContractQueries"
+          ]
+        },
+        {
+          "file": "src/features/overview/hooks/mutation.ts",
+          "includes": [
+            "refreshUsageMutation",
+            "accountsService.refreshUsageSnapshot()",
+            "prepareOverviewMutation(queryClient, [OVERVIEW_SNAPSHOT_QUERY_KEY])",
+            "writeOverviewMutationPayload(",
+            "invalidateOverviewUsageMutationQueries(queryClient)"
+          ]
+        },
+        {
+          "file": "src/features/overview/cache/index.ts",
+          "includes": [
+            "OVERVIEW_SNAPSHOT_QUERY_KEY",
+            "OVERVIEW_USAGE_QUERY_KEY",
+            "const overviewQuerySequences = new Map<string, number>();",
+            "const overviewMutationFences = new Map<string, number>();",
+            "writeOverviewMutationPayload",
+            "invalidateOverviewUsageMutationQueries",
+            "queryClient.invalidateQueries({ queryKey: [\"usage-analytics\"] })",
+            "queryClient.invalidateQueries({ queryKey: [\"analytics\", \"usage\"] })"
+          ]
+        },
+        {
+          "file": "src/services/analytics/index.ts",
+          "includes": [
+            "loadUsageAnalytics: () =>",
+            "invokeIpc<CoreEnvelope<UsageAnalyticsPayload>>(\"load_usage_analytics\")"
+          ]
+        }
+      ],
+      "nonClaims": [
+        "不修改 raw/internal 证据。",
+        "不声明 gate_accepted、implementation_use、dim6、full_leaf_100 已完成。",
+        "不恢复真实平台 watcher、daemon、runtime event 或后台调度副作用。",
+        "不新增 route、sidebar、header、tray、plugins config 或 voice 入口。",
+        "不把 system-hotspot、mystery-unlock 或 watcher/schedule 信号纳入本条 system-usage 边界。"
+      ],
+      "reason": "本 closeout 只登记 system-usage 三条命令的 current-source partial closeout：当前公开前端存在 system service、settings facade、settings query/mutation/cache、overview usage refresh/cache 与 analytics service owner 证据；不修改 raw/internal 证据，不声明 gate_accepted、implementation_use、dim6 或 full_leaf_100 已完成，也不恢复真实 watcher、daemon、runtime event 或平台副作用。"
+    },
+    {
       "id": "mystery-unlock-grants-current-source-chain",
       "module": "mystery-unlock-grants",
       "status": "current-source-closed-partial",

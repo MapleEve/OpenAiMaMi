@@ -356,6 +356,18 @@ assertContains(
 assertContains(
   files.usecase,
   usecaseContent,
+  /\bpub\s+fn\s+export_relay_config\s*\([\s\S]*?\bErr\s*\(\s*_\s*\)\s*=>\s*\(\s*RelayExportPayload\s*\{[\s\S]*?\bbackend_status\s*:\s*repository_status\s*\(\s*command\s*\)[\s\S]*?\brepository_error_warning\s*\(\s*command\s*\)/,
+  "export_relay_config 仓储操作失败时 backend_status 必须保持 repository 状态，不能退回 skeleton/pending",
+);
+assertContains(
+  files.usecase,
+  usecaseContent,
+  /\bpub\s+fn\s+import_relay_config\s*\([\s\S]*?\bErr\s*\(\s*_\s*\)\s*=>\s*\(\s*RelayImportPayload\s*\{[\s\S]*?\bbackend_status\s*:\s*repository_status\s*\(\s*command\s*\)[\s\S]*?\brepository_error_warning\s*\(\s*command\s*\)/,
+  "import_relay_config 仓储操作失败时 backend_status 必须保持 repository 状态，不能退回 skeleton/pending",
+);
+assertContains(
+  files.usecase,
+  usecaseContent,
   /\bconfig_repository::get_image_compat\s*\(\s*repo\s*\)/,
   "relay image compatibility 读取必须经 config repository owner",
 );
