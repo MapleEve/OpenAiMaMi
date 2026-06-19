@@ -22,6 +22,12 @@ const files = {
     "reconstruction",
     "system-runtime-watchers-current-source-map.md",
   ),
+  daemonAutoswitchMap: join(
+    repoRoot,
+    "docs",
+    "reconstruction",
+    "daemon-autoswitch-current-source-map.md",
+  ),
   sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
   reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
 };
@@ -583,6 +589,58 @@ function validateRuntimeWatcherDocs(runtimeMapPath, runtimeMapContent, sourceMap
   }
 }
 
+function validateDaemonAutoswitchMap(path, content) {
+  for (const [label, pattern, reason] of [
+    [
+      "后端 typed pending/no-op 标题",
+      /## 后端 typed pending\/no-op 边界/,
+      "daemon-autoswitch map 必须记录后端 pending/no-op 骨架边界",
+    ],
+    [
+      "daemon command owner",
+      /src-tauri\/src\/commands\/daemon\.rs[\s\S]*usecase::daemon[\s\S]*不注入 `Repository` 或 platform/,
+      "daemon-autoswitch map 必须声明 pending 命令不注入仓储或平台能力",
+    ],
+    [
+      "load pending runtime status",
+      /runtime_watcher_status_without_repository\("load_pending_auto_switch"[\s\S]*pending 边界[\s\S]*current_account_key[\s\S]*candidate_account_key[\s\S]*dismissed_at: None/,
+      "daemon-autoswitch map 必须记录 load_pending_auto_switch 的 typed 空 payload 和 pending status",
+    ],
+    [
+      "pending action no-op",
+      /dismiss_pending_auto_switch\(\)[\s\S]*None[\s\S]*confirm_pending_auto_switch\(\)[\s\S]*confirm_pending_auto_switch_and_restart_codex\(\)[\s\S]*no-op/,
+      "daemon-autoswitch map 必须记录 dismiss/confirm/restart 当前保持 no-op",
+    ],
+    [
+      "daemon DTO owner",
+      /src-tauri\/src\/contracts\/daemon\.rs[\s\S]*PendingAutoSwitchStatePayload[\s\S]*backend_status[\s\S]*current_account_key[\s\S]*candidate_account_key[\s\S]*dismissed_at/,
+      "daemon-autoswitch map 必须记录 pending auto-switch DTO 形状 owner",
+    ],
+    [
+      "validator 直接约束",
+      /scripts\/validate-backend-daemon-owner\.mjs[\s\S]*repository\/paths\.rs[\s\S]*contracts\/settings\.rs[\s\S]*pending\/snooze/,
+      "daemon-autoswitch map 必须说明 validator 防止伪造 pending/snooze 仓储事实",
+    ],
+  ]) {
+    requirePattern(label, path, content, pattern, reason);
+  }
+
+  for (const [label, pattern] of [
+    ["后端恢复真实队列", /(?<!不声明)(?<!不恢复)后端待确认队列真实恢复|(?<!不声明)(?<!不恢复)真实 pending 队列已恢复|(?<!不声明)(?<!不恢复)真实候选账号已恢复/g],
+    ["真实账号切换完成", /(?<!不声明)(?<!不恢复)真实账号切换已恢复|(?<!不声明)(?<!不恢复)账号切换语义完成/g],
+    ["真实重启完成", /(?<!不声明)(?<!不恢复)真实重启已恢复|(?<!不声明)(?<!不恢复)重启平台能力已恢复/g],
+  ]) {
+    rejectPattern(
+      label,
+      path,
+      content,
+      content,
+      pattern,
+      "daemon-autoswitch map 只能声明 typed pending/no-op 骨架，不能声明闭源行为恢复",
+    );
+  }
+}
+
 const raw = new Map(
   Object.entries(files).map(([label, path]) => [label, { path, content: readRequired(path, label) }]),
 );
@@ -635,6 +693,10 @@ validateRuntimeWatcherDocs(
   raw.get("sourceMap").content,
   files.reconstructionReadme,
   raw.get("reconstructionReadme").content,
+);
+validateDaemonAutoswitchMap(
+  files.daemonAutoswitchMap,
+  raw.get("daemonAutoswitchMap").content,
 );
 
 if (failures.length > 0) {

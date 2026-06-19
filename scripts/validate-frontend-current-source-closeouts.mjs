@@ -3234,7 +3234,7 @@ function validateAppShellSourceOnlyCloseout(closeout) {
 }
 
 function validateSystemWindowMaintenanceCloseout(closeout) {
-  const expectedCommands = new Set([
+  const expectedClosedCommands = new Set([
     "focus_main_window",
     "open_path",
     "clean",
@@ -3242,33 +3242,49 @@ function validateSystemWindowMaintenanceCloseout(closeout) {
     "graceful_restart_for_update",
     "restart_codex",
   ]);
+  const expectedRestrictedCommands = new Set(["load_snapshot"]);
+  const expectedCurrentSourceCommands = new Set([
+    ...expectedClosedCommands,
+    ...expectedRestrictedCommands,
+  ]);
   if (closeout.currentSourceMap !== SYSTEM_WINDOW_MAINTENANCE_CURRENT_SOURCE_MAP) {
     failures.push(`${closeout.id} currentSourceMap=${String(closeout.currentSourceMap)}`);
   }
   const actualCurrentSourceCommands = new Set(closeout.currentSourceCommands ?? []);
-  for (const command of expectedCommands) {
+  for (const command of expectedCurrentSourceCommands) {
     if (!actualCurrentSourceCommands.has(command)) {
       failures.push(`${closeout.id} 缺少 currentSourceCommands：${command}`);
     }
   }
   for (const command of actualCurrentSourceCommands) {
-    if (!expectedCommands.has(command)) {
+    if (!expectedCurrentSourceCommands.has(command)) {
       failures.push(`${closeout.id} 不允许 currentSourceCommands：${command}`);
     }
   }
   const actualCommands = new Set(closeout.closedCommands ?? []);
-  for (const command of expectedCommands) {
+  for (const command of expectedClosedCommands) {
     if (!actualCommands.has(command)) {
       failures.push(`${closeout.id} 缺少 closedCommands：${command}`);
     }
   }
   for (const command of actualCommands) {
-    if (!expectedCommands.has(command)) {
+    if (!expectedClosedCommands.has(command)) {
       failures.push(`${closeout.id} 不允许关闭命令：${command}`);
     }
   }
-  if (!(closeout.notClosedCommands ?? []).includes("load_snapshot")) {
-    failures.push(`${closeout.id} 必须显式保留 load_snapshot 为未关闭状态`);
+  const actualRestrictedCommands = new Set(closeout.restrictedCurrentSourceCommands ?? []);
+  for (const command of expectedRestrictedCommands) {
+    if (!actualRestrictedCommands.has(command)) {
+      failures.push(`${closeout.id} 缺少 restrictedCurrentSourceCommands：${command}`);
+    }
+  }
+  for (const command of actualRestrictedCommands) {
+    if (!expectedRestrictedCommands.has(command)) {
+      failures.push(`${closeout.id} 不允许 restrictedCurrentSourceCommands：${command}`);
+    }
+  }
+  if ((closeout.notClosedCommands ?? []).includes("load_snapshot")) {
+    failures.push(`${closeout.id} 不应继续把 load_snapshot 放在未关闭命令中`);
   }
 
   const requiredSidecars = new Set([
@@ -3329,7 +3345,8 @@ function validateSystemWindowMaintenanceCloseout(closeout) {
     "\u4e0d\u542f\u7528\u540e\u7aef\u771f\u5b9e\u6062\u590d",
     "\u4e0d\u4fee\u6539 gate-report",
     "\u4e0d\u58f0\u660e MAC/WIN 100%",
-    "\u4e0d\u5173\u95ed load_snapshot",
+    "不把 load_snapshot 提升为全量闭环",
+    "load_snapshot 后端真实副作用仍未恢复",
     "\u4e0d\u767b\u8bb0 accounts \u6216 plugins \u7684 gate-report \u5931\u8d25\u5b57\u6bb5",
     "\u4e0d\u767b\u8bb0\u4efb\u4f55 full_leaf_100=false \u5b57\u6bb5",
   ]) {
@@ -3377,7 +3394,10 @@ function validateSystemWindowMaintenanceCloseout(closeout) {
       "rebuild_registry",
       "graceful_restart_for_update",
       "restart_codex",
-      "不关闭 `load_snapshot`",
+      "load_snapshot",
+      "受限 current-source 命令",
+      "不把 `load_snapshot` 提升为全量闭环",
+      "后端真实副作用仍未恢复",
       "不处理 `voice`",
     ]) {
       if (!mapText.includes(required)) {

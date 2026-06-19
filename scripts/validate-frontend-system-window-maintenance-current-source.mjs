@@ -17,6 +17,8 @@ const closedCommands = [
   "graceful_restart_for_update",
   "restart_codex",
 ];
+const restrictedCommands = ["load_snapshot"];
+const currentSourceCommands = [...closedCommands, ...restrictedCommands];
 
 const files = {
   closeouts: "docs/reconstruction/frontend-current-source-closeouts.json",
@@ -152,17 +154,27 @@ if (!closeout) {
   if (closeout.currentSourceMap !== currentSourceMapPath) {
     failures.push(`${closeoutId} currentSourceMap 必须指向 ${currentSourceMapPath}`);
   }
-  requireArraySet(`${closeoutId} currentSourceCommands`, closeout.currentSourceCommands, closedCommands);
+  requireArraySet(
+    `${closeoutId} currentSourceCommands`,
+    closeout.currentSourceCommands,
+    currentSourceCommands,
+  );
   requireArraySet(`${closeoutId} closedCommands`, closeout.closedCommands, closedCommands);
-  if (!(closeout.notClosedCommands ?? []).includes("load_snapshot")) {
-    failures.push(`${closeoutId} 必须保留 load_snapshot 为未关闭状态`);
+  requireArraySet(
+    `${closeoutId} restrictedCurrentSourceCommands`,
+    closeout.restrictedCurrentSourceCommands,
+    restrictedCommands,
+  );
+  if ((closeout.notClosedCommands ?? []).includes("load_snapshot")) {
+    failures.push(`${closeoutId} 不应继续把 load_snapshot 放在未关闭命令中`);
   }
   for (const required of [
     "不声明全量叶子验收完成",
     "不启用后端真实恢复",
     "不修改 gate-report",
     "不声明 MAC/WIN 100%",
-    "不关闭 load_snapshot",
+    "不把 load_snapshot 提升为全量闭环",
+    "load_snapshot 后端真实副作用仍未恢复",
     "不登记 accounts 或 plugins 的 gate-report 失败字段",
     "不登记任何 full_leaf_100=false 字段",
   ]) {
@@ -173,6 +185,8 @@ if (!closeout) {
   requireIncludes(`${closeoutId} reason`, closeout.reason ?? "", [
     "system/window/maintenance",
     "前端 service/facade/API/mock/e2e-validator 链路",
+    "受限 current-source 命令",
+    "后端真实副作用仍未恢复",
     "非 gating 证据",
   ]);
   for (const signal of closeout.requiredSourceSignals ?? []) {
@@ -199,9 +213,11 @@ requireIncludes("system-window-maintenance current-source map", map, [
   "graceful_restart_for_update",
   "restart_codex",
   "load_snapshot",
+  "受限 current-source 命令",
   "不启用后端真实恢复",
   "不声明 MAC/WIN 100%",
-  "不关闭 `load_snapshot`",
+  "不把 `load_snapshot` 提升为全量闭环",
+  "后端真实副作用仍未恢复",
   "不处理 `voice`",
   `scripts/${validatorScript}`,
 ]);
@@ -344,7 +360,8 @@ requireNoPositiveClaims(
     "gate_accepted 已完成",
     "implementation_use 已完成",
     "MAC/WIN 100% 已完成",
-    "load_snapshot 已关闭",
+    "load_snapshot 全量闭环已完成",
+    "load_snapshot 后端真实副作用已恢复",
     "voice 已接入",
   ],
 );
@@ -358,5 +375,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `PASS system-window-maintenance 前端 current-source validator：${closedCommands.length} 条 non-gating command、load_snapshot 边界、源码链、mock、IPC contract 和索引均已核对。`,
+  `PASS system-window-maintenance 前端 current-source validator：${closedCommands.length} 条 non-gating closed command、${restrictedCommands.length} 条受限 current-source command、源码链、mock、IPC contract 和索引均已核对。`,
 );

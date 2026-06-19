@@ -1,16 +1,17 @@
 # 自动切换待确认状态当前源码证据映射
 
-本文只登记当前公开前端源码中 `daemon-autoswitch` 待确认自动切换链路的可审计当前源码证据。它不修改 raw/internal 证据，不声明 `gate_accepted`、`implementation_use`、`dim6`、`full_leaf` 或 `full_leaf_100` 已完成，也不声明后端待确认队列、真实账号切换、真实重启或真实 watcher 已恢复。
+本文只登记当前公开源码中 `daemon-autoswitch` 待确认自动切换链路的可审计当前源码证据，包含前端调用链与后端 typed pending/no-op 骨架边界。它不修改 raw/internal 证据，不声明 `gate_accepted`、`implementation_use`、`dim6`、`full_leaf` 或 `full_leaf_100` 已完成，也不声明后端待确认队列、真实账号切换、真实重启或真实 watcher 已恢复。
 
 ## 范围
 
 | 项目 | 边界 |
 | --- | --- |
 | 模块 | `daemon-autoswitch` |
-| 当前源码状态 | 当前源码部分收口 |
+| 当前源码状态 | 当前源码部分收口；后端只恢复 typed pending/no-op 骨架 |
 | 命令范围 | `load_pending_auto_switch`、`dismiss_pending_auto_switch`、`confirm_pending_auto_switch`、`confirm_pending_auto_switch_and_restart_codex` |
 | 前端链路 | system service、daemon-autoswitch service facade、query/mutation/cache、runtime subscription、prompt host、mock handler、IPC contract |
-| 明确排除 | 后端待确认队列、真实账号切换、真实重启、真实 watcher、平台副作用、`voice` |
+| 后端链路 | `commands/daemon.rs`、`application/usecase/daemon.rs`、`contracts/daemon.rs`、runtime watcher pending status |
+| 明确排除 | 后端待确认队列仓储、pending/snooze 持久化、真实账号切换、真实重启、真实 watcher、平台副作用、`voice` |
 
 ## 当前源码调用链
 
@@ -33,10 +34,22 @@
 
 `src/mocks/fixtures/commands.ts` 为四条待确认自动切换命令提供前端 mock handler，用于验证 E2E mock 合同和竞态响应形状。`src/contracts/ipc/commands.ts` 把四条命令登记到 `daemon-autoswitch` domain。该登记不等同于后端真实待确认队列、真实账号切换、真实重启或真实 watcher 已恢复。
 
+## 后端 typed pending/no-op 边界
+
+| owner | 当前源码证据 | 未声明边界 |
+| --- | --- | --- |
+| `src-tauri/src/commands/daemon.rs` | 四条 pending auto-switch 命令直接调用 `usecase::daemon::*`，且命令签名不注入 `Repository` 或 platform。 | 不暗示存在公开 pending/snooze 仓储事实，不触发平台副作用。 |
+| `src-tauri/src/application/usecase/daemon.rs` | `load_pending_auto_switch()` 返回 `PendingAutoSwitchStatePayload`，通过 `runtime_watcher_status_without_repository("load_pending_auto_switch", runtime_core::pending_auto_switch_note())` 标记 pending 边界，并返回空 `current_account_key`、空 `candidate_account_key`、`dismissed_at: None`。 | 不读取闭源待确认队列，不伪装成 repository restored。 |
+| `src-tauri/src/application/usecase/daemon.rs` | `dismiss_pending_auto_switch()` 返回 `None`；`confirm_pending_auto_switch()` 与 `confirm_pending_auto_switch_and_restart_codex()` 保持空 no-op。 | 不写 pending/snooze 状态，不调用账号切换，不调用重启或更新平台能力。 |
+| `src-tauri/src/contracts/daemon.rs` | `PendingAutoSwitchStatePayload` 只保留 `backend_status`、`current_account_key`、`candidate_account_key`、`dismissed_at` 的 typed DTO 形状。 | DTO 形状不等同真实候选账号、真实 dismissed 时间或真实后台 watcher 已恢复。 |
+
+该边界由 `scripts/validate-backend-daemon-owner.mjs` 直接校验：没有公开仓储证据前，`repository/paths.rs` 和 `contracts/settings.rs` 不得新增 pending/snooze 路径或 settings 字段；usecase 不得调用账号切换、真实重启或平台动作。
+
 ## 未声明项
 
 - 不修改 raw/internal 证据。
 - 不声明 `gate_accepted`、`implementation_use`、`dim6`、`full_leaf` 或 `full_leaf_100` 已完成。
 - 不恢复后端待确认队列、真实账号切换、真实重启、真实 watcher、后台线程或平台副作用。
+- 不新增 pending/snooze 仓储路径、settings 字段或真实候选账号来源。
 - 不新增 route、sidebar、header、tray、settings 入口或 `voice` 入口。
 - 不把 mock handler 等同真实后端行为。
