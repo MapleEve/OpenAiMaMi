@@ -29,6 +29,9 @@ const files = {
   systemUsecase: join(repoRoot, "src-tauri", "src", "application", "usecase", "system.rs"),
   tauriLib: join(repoRoot, "src-tauri", "src", "lib.rs"),
   hexagonalValidator: join(repoRoot, "scripts", "validate-backend-hexagonal.mjs"),
+  relayMap: join(repoRoot, "docs", "reconstruction", "relay-core-current-source-evidence-map.md"),
+  sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
+  reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
 };
 
 function toRelative(path) {
@@ -224,6 +227,12 @@ const systemCommandContent = readRequired(files.systemCommand, "system command �
 const systemUsecaseContent = readRequired(files.systemUsecase, "system usecase 文件");
 const tauriLibContent = readRequired(files.tauriLib, "Tauri command 注册表");
 const hexagonalValidatorContent = readRequired(files.hexagonalValidator, "后端六边形校验脚本");
+const relayMapContent = readRequired(files.relayMap, "relay-core current-source evidence map");
+const sourceMapContent = readRequired(files.sourceMap, "source-map 注册表");
+const reconstructionReadmeContent = readRequired(
+  files.reconstructionReadme,
+  "docs/reconstruction README",
+);
 
 assertNoPatterns(files.commands, commandContent, [
   {
@@ -621,6 +630,55 @@ assertContains(
   platformContent,
   /\bimpl\s+RelayPlatformPort\s+for\s+RelayPlatformAdapter\b/,
   "必须通过 RelayPlatformPort 暴露平台能力",
+);
+
+assertContains(
+  files.relayMap,
+  relayMapContent,
+  /可由公开 owner 验证的本地配置读写、受管 router 配置注入\/移除、诊断修复骨架和 mock terminal 边界/,
+  "relay-core map 必须记录当前公开源码已经恢复的本地配置能力边界",
+);
+assertContains(
+  files.relayMap,
+  relayMapContent,
+  /repository 通过可替换 FS 读写 `relay-config\.json`[\s\S]*provider CRUD[\s\S]*`blockOfficialPassthrough`[\s\S]*受管 router config 注入\/移除/,
+  "relay-core map 必须记录 repository 本地配置恢复范围",
+);
+assertContains(
+  files.relayMap,
+  relayMapContent,
+  /repository restored[\s\S]*真实网络、进程和流式代理保留为 pending\/mock terminal/,
+  "relay-core map 必须说明 repository restored 与真实代理能力的边界",
+);
+assertContains(
+  files.relayMap,
+  relayMapContent,
+  /不启动代理进程、不发真实网络请求、不实现闭源流式代理/,
+  "relay-core map 必须保留真实代理、网络和流式代理未声明边界",
+);
+assertNoPatterns(files.relayMap, relayMapContent, [
+  {
+    label: "旧 relay-core map 口径",
+    message: "relay-core map 不得继续把已恢复的公开本地配置能力描述成未恢复",
+    patterns: [
+      /不写真实 router 配置/,
+      /未恢复真实 relay provider 存储/,
+      /repository 也只提供路径和空集合边界/,
+      /无独立 validator 边界/,
+    ],
+  },
+]);
+assertContains(
+  files.sourceMap,
+  sourceMapContent,
+  /docs\/reconstruction\/relay-core-current-source-evidence-map\.md[\s\S]*scripts\/validate-backend-relay-owner\.mjs[\s\S]*本地配置 repository 恢复/,
+  "source-map 必须把 relay-core map 收口到 validate-backend-relay-owner.mjs",
+);
+assertContains(
+  files.reconstructionReadme,
+  reconstructionReadmeContent,
+  /relay-core-current-source-evidence-map\.md[\s\S]*本地配置 repository 恢复[\s\S]*scripts\/validate-backend-relay-owner\.mjs/,
+  "docs/reconstruction README 必须同步 relay-core map 的直接验证边界",
 );
 
 if (failures.length > 0) {

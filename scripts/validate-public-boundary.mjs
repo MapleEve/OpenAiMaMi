@@ -1,6 +1,6 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { extname, join, relative } from "node:path";
+import { basename, extname, join, relative } from "node:path";
 
 const repoRoot = process.cwd();
 const maxTrackedBytes = 5 * 1024 * 1024;
@@ -51,15 +51,25 @@ const publishForbiddenTerms = [
   "QRCode",
 ];
 
+function hiddenLiteral(...codes) {
+  return String.fromCharCode(...codes);
+}
+
 const repositoryForbiddenPatterns = [
-  { label: ["lobe", "hub"].join(""), pattern: new RegExp(["lobe", "hub"].join(""), "gi") },
   {
-    label: ["C", "5"].join(""),
-    pattern: new RegExp(`(^|[^A-Za-z0-9])${["c", "5"].join("")}([^A-Za-z0-9]|$)`, "gi"),
+    label: "外部参考项目名",
+    pattern: new RegExp(hiddenLiteral(108, 111, 98, 101, 104, 117, 98), "gi"),
   },
   {
-    label: ["Codex", "Manager"].join(""),
-    pattern: new RegExp(["codex", "manager"].join(""), "gi"),
+    label: "内部短标识",
+    pattern: new RegExp(`(^|[^A-Za-z0-9])${hiddenLiteral(99, 53)}([^A-Za-z0-9]|$)`, "gi"),
+  },
+  {
+    label: "内部工具名",
+    pattern: new RegExp(
+      hiddenLiteral(99, 111, 100, 101, 120, 109, 97, 110, 97, 103, 101, 114),
+      "gi",
+    ),
   },
 ];
 
@@ -313,6 +323,99 @@ function validatePackageValidateScripts() {
     unregistered.length === 0
       ? `${validateScriptFiles.length} 个 validate 脚本均已登记`
       : `未登记脚本：${unregistered.join(", ")}`,
+  );
+}
+
+function extractNodeScriptBasename(command) {
+  const match = /\bnode\s+([^\s]+\.mjs)\b/.exec(command);
+  return match ? basename(match[1].replaceAll("\\", "/")) : null;
+}
+
+function readAggregateScriptBasenames(path) {
+  if (!existsSync(join(repoRoot, path))) {
+    return new Set();
+  }
+
+  const content = readUtf8(path);
+  return new Set(
+    [...content.matchAll(/["']([^"']+\.mjs)["']/g)].map((match) =>
+      basename(match[1].replaceAll("\\", "/")),
+    ),
+  );
+}
+
+function validateAggregateValidateCoverage() {
+  const packagePath = join(repoRoot, "package.json");
+  if (!existsSync(packagePath)) {
+    addCheck("validate 聚合清单覆盖", false, "缺少 package.json");
+    return;
+  }
+
+  let packageJson;
+  try {
+    packageJson = JSON.parse(readUtf8("package.json"));
+  } catch (error) {
+    addCheck("validate 聚合清单覆盖", false, `package.json 无法解析：${error.message}`);
+    return;
+  }
+
+  const scripts = packageJson.scripts ?? {};
+  const topLevelAggregate = readAggregateScriptBasenames("scripts/validate-all.mjs");
+  const frontendAggregate = readAggregateScriptBasenames("scripts/validate-frontend.mjs");
+  const backendAggregate = readAggregateScriptBasenames("scripts/validate-backend.mjs");
+
+  const topLevelRequired = [
+    "validate:public-boundary",
+    "validate:frontend",
+    "validate:backend",
+    "validate:build-surface",
+  ];
+  const topLevelMissing = topLevelRequired
+    .map((name) => [name, extractNodeScriptBasename(scripts[name] ?? "")])
+    .filter(([, script]) => script && !topLevelAggregate.has(script))
+    .map(([name, script]) => `${name} -> ${script}`);
+
+  addCheck(
+    "validate:all 覆盖顶层聚合入口",
+    topLevelMissing.length === 0,
+    topLevelMissing.length === 0
+      ? "validate:all 已覆盖 public-boundary、frontend、backend 和 build-surface"
+      : `validate:all 缺少：${topLevelMissing.join("；")}`,
+  );
+
+  const frontendNames = Object.keys(scripts).filter(
+    (name) =>
+      name.startsWith("validate:frontend-") ||
+      name === "validate:i18n" ||
+      name === "validate:e2e-mocks",
+  );
+  const frontendMissing = frontendNames
+    .map((name) => [name, extractNodeScriptBasename(scripts[name])])
+    .filter(([, script]) => script && !frontendAggregate.has(script))
+    .map(([name, script]) => `${name} -> ${script}`);
+
+  addCheck(
+    "validate:frontend 覆盖前端子验证入口",
+    frontendMissing.length === 0,
+    frontendMissing.length === 0
+      ? `${frontendNames.length} 个前端子验证入口均已进入 validate-frontend 聚合`
+      : `validate:frontend 缺少：${frontendMissing.join("；")}`,
+  );
+
+  const backendNames = Object.keys(scripts).filter(
+    (name) => name.startsWith("validate:backend-") && name !== "validate:backend-cargo",
+  );
+  const backendMissing = backendNames
+    .map((name) => [name, extractNodeScriptBasename(scripts[name])])
+    .filter(([, script]) => script && !backendAggregate.has(script))
+    .map(([name, script]) => `${name} -> ${script}`);
+
+  addCheck(
+    "validate:backend 覆盖后端子验证入口",
+    backendMissing.length === 0,
+    backendMissing.length === 0
+      ? `${backendNames.length} 个后端子验证入口均已进入 validate-backend 聚合`
+      : `validate:backend 缺少：${backendMissing.join("；")}`,
   );
 }
 
@@ -903,6 +1006,7 @@ function validateRepositoryTextBoundary() {
 
 validateGitAttributes();
 validatePackageValidateScripts();
+validateAggregateValidateCoverage();
 validateReadmePairConsistency();
 validateReadmeFile("README.md");
 validateReadmeFile("README-cn.md");

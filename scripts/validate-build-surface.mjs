@@ -4,17 +4,21 @@ import { fileURLToPath } from "node:url";
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+
+function hiddenLiteral(...codes) {
+  return String.fromCharCode(...codes);
+}
+
 const blockedFragments = [
-  ["C", "5"].join(""),
-  ["Codex", "Manager"].join(""),
-  ["lobe", "hub"].join(""),
-  ["Lobe", "Hub"].join(""),
+  hiddenLiteral(67, 53),
+  hiddenLiteral(99, 111, 100, 101, 120, 109, 97, 110, 97, 103, 101, 114),
+  hiddenLiteral(108, 111, 98, 101, 104, 117, 98),
 ];
 
 function sanitizeOutput(output) {
   let sanitized = output.replace(/[A-Za-z]:[\\/][^\r\n"'<>|]*/g, "[本机路径已隐藏]");
   for (const fragment of blockedFragments) {
-    sanitized = sanitized.split(fragment).join("[敏感片段已隐藏]");
+    sanitized = sanitized.replace(new RegExp(fragment, "gi"), "[敏感片段已隐藏]");
   }
   return sanitized;
 }

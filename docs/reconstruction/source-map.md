@@ -133,7 +133,7 @@ OpenAiMami 1.0.9 前端覆盖面：
 | 路径 | 类别 | 验证或索引边界 |
 | --- | --- | --- |
 | `docs/reconstruction/plugins-current-source-evidence-map.md` | plugins 前端 current-source partial closeout | `scripts/validate-frontend-plugins-current-source.mjs` 直接验证本文、raw/internal 证据路径、当前源码路径、npm 入口和未声明边界。 |
-| `docs/reconstruction/relay-core-current-source-evidence-map.md` | relay-core 前后端公开 owner 骨架 | 当前仅索引/无独立 validator 边界；relay owner 与 closeout 由 broader relay、frontend closeout 和 backend hexagonal 验证约束，但这些验证不直接把本 map 文件当作独立 gate。 |
+| `docs/reconstruction/relay-core-current-source-evidence-map.md` | relay-core 前后端公开 owner 骨架 | `scripts/validate-backend-relay-owner.mjs` 直接验证本文、本地配置 repository 恢复、router config owner、diagnostic fix owner、未声明真实代理/网络/进程边界和 source-map 注册。 |
 | `docs/reconstruction/runtime-extensions-current-source-evidence-map.md` | runtime-extensions 后端 owner | `scripts/validate-backend-runtime-extensions-owner.mjs` 直接验证本文、四个 plugins IPC、证据路径、源码 owner 和未声明边界。 |
 | `docs/reconstruction/custom-instructions-current-source-evidence-map.md` | Custom Instructions 后端 owner | `scripts/validate-backend-custom-instructions-owner.mjs` 直接验证本文、README/source-map 注册、关键 Rust owner 文件、custom-instructions raw/internal 证据和未声明边界。 |
 | `docs/reconstruction/mcp-current-source-evidence-map.md` | MCP 后端 owner | `scripts/validate-backend-mcp-owner.mjs` 直接验证本文、四个 MCP IPC、双平台 gate-report、raw manifest、源码 owner 和未声明边界。 |
