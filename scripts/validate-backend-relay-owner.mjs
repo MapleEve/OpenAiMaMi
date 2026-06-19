@@ -637,6 +637,24 @@ assertContains(
 assertContains(
   files.coreRouterConfig,
   coreRouterConfigContent,
+  /\bconfig_toml_syntax_valid\b[\s\S]*\bconfig_toml_syntax_reason\b[\s\S]*\bconfig_profile_conflict\b[\s\S]*\bconfig_profile_conflict_reason\b/,
+  "core/relay/router_config.rs 必须承载 config_toml_syntax 与 config_profile_conflict 只读诊断事实",
+);
+assertContains(
+  files.coreRouterConfig,
+  coreRouterConfigContent,
+  /\bconfig\.parse\s*::\s*<\s*Value\s*>\s*\(/,
+  "config_toml_syntax 必须使用 Cargo.toml 已有 toml::Value 解析，不得手写字符串猜测语法",
+);
+assertContains(
+  files.coreRouterConfig,
+  coreRouterConfigContent,
+  /\bfn\s+detect_config_profile_conflict\s*\(/,
+  "config_profile_conflict 必须由 core/relay/router_config.rs owning 结构化 TOML Value 检查",
+);
+assertContains(
+  files.coreRouterConfig,
+  coreRouterConfigContent,
   /\bpub\s+fn\s+render_managed_router_config\s*\(/,
   "core/relay/router_config.rs 必须 owning router config block 渲染",
 );
@@ -652,6 +670,36 @@ assertContains(
   repositoryContent,
   /\brelay_core\s*::\s*analyze_router_config\s*\(/,
   "必须把 router config 解析委托给 core",
+);
+assertContains(
+  files.repository,
+  repositoryContent,
+  /\bconfig_toml_syntax_valid:\s*analysis\.config_toml_syntax_valid[\s\S]*\bconfig_profile_conflict:\s*analysis\.config_profile_conflict/,
+  "repository diagnostic skeleton 必须只搬运 core 产生的 config_toml_syntax/config_profile_conflict 事实",
+);
+assertContains(
+  files.usecasePayload,
+  usecasePayloadContent,
+  /"config_toml_syntax"[\s\S]*"config_profile_conflict"/,
+  "diagnostic payload 必须输出 config_toml_syntax 与 config_profile_conflict item/issue",
+);
+assertContains(
+  files.usecasePayload,
+  usecasePayloadContent,
+  /"config_toml_syntax"[\s\S]{0,600}false[\s\S]*"config_profile_conflict"[\s\S]{0,700}false/,
+  "config_toml_syntax/config_profile_conflict 诊断项必须保持 fixable=false",
+);
+assertContains(
+  files.usecaseDiagnostics,
+  usecaseDiagnosticsContent,
+  /"config_toml_syntax"\s*\|\s*"config_omit_syntax"[\s\S]*fixed:\s*false/,
+  "fix_router_issue 必须兼容 config_toml_syntax/config_omit_syntax 且只返回手动修复",
+);
+assertContains(
+  files.usecaseDiagnostics,
+  usecaseDiagnosticsContent,
+  /auto_fixable\s*=\s*skeleton\.config_toml_syntax_valid[\s\S]*!\s*skeleton\.config_profile_conflict/,
+  "fix all 不得在 config_toml_syntax 或 config_profile_conflict 异常时自动写 config",
 );
 assertContains(
   files.repository,
@@ -720,6 +768,48 @@ assertNoPatterns(files.repository, repositoryContent, [
       /\bCommand\s*::\s*new\s*\(/,
       /\breqwest\b/,
       /\b(fetch_models|test_relay)_mock_terminal\b/,
+    ],
+  },
+]);
+assertNoPatterns(files.coreRouterConfig, coreRouterConfigContent, [
+  {
+    label: "token/auth read",
+    message: "router config diagnostics must not inspect token/auth/API-key material",
+    patterns: [
+      /\btoken\b/i,
+      /\bauth\b/i,
+      /\bapi_key\b/i,
+      /\bOPENAI_API_KEY\b/,
+      /\bAuthorization\b/,
+      /\bBearer\b/,
+    ],
+  },
+  {
+    label: "process/thread/network",
+    message: "router config diagnostics must stay read-only and avoid process/thread/network side effects",
+    patterns: [
+      /\bstd\s*::\s*process\b/,
+      /\bCommand\s*::\s*new\s*\(/,
+      /\bstd\s*::\s*thread\b/,
+      /\bthread_migration\b/,
+      /\breqwest\b/,
+      /\bfetch\s*\(/,
+      /\.spawn\s*\(/,
+    ],
+  },
+]);
+assertNoPatterns(files.usecaseDiagnostics, usecaseDiagnosticsContent, [
+  {
+    label: "process/thread/network",
+    message: "router diagnostic fix dispatch must not add process/thread/network side effects",
+    patterns: [
+      /\bstd\s*::\s*process\b/,
+      /\bCommand\s*::\s*new\s*\(/,
+      /\bstd\s*::\s*thread\b/,
+      /\bthread_migration\b/,
+      /\breqwest\b/,
+      /\bfetch\s*\(/,
+      /\.spawn\s*\(/,
     ],
   },
 ]);
@@ -862,6 +952,18 @@ assertContains(
 assertContains(
   files.relayMap,
   relayMapContent,
+  /read-only diagnostics[\s\S]*config_toml_syntax[\s\S]*config_profile_conflict[\s\S]*fixable=false[\s\S]*不会自动写 config/,
+  "relay-core map 必须说明 config_toml_syntax/config_profile_conflict 只读诊断边界",
+);
+assertContains(
+  files.relayMap,
+  relayMapContent,
+  /不读取 token、auth、API key、Authorization 或 Bearer[\s\S]*不启动进程、不创建线程、不执行 thread migration、不发网络请求/,
+  "relay-core map 必须说明 router diagnostics 不触碰 token/auth/process/thread/network",
+);
+assertContains(
+  files.relayMap,
+  relayMapContent,
   /不启动代理进程、不发真实网络请求、不实现闭源流式代理/,
   "relay-core map 必须保留真实代理、网络和流式代理未声明边界",
 );
@@ -906,6 +1008,8 @@ assertNoPatterns(files.relayMap, relayMapContent, [
       /诊断修复骨架/,
       /diagnostic skeleton/,
       /无独立 validator 边界/,
+      /full\s+leaf/i,
+      /closed-source\s+parity/i,
     ],
   },
 ]);

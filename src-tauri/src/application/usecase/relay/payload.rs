@@ -290,8 +290,10 @@ fn diagnostic_payload_from_parts(
 }
 
 pub(super) fn diagnostic_has_issues(skeleton: &relay_repository::RelayDiagnosticSkeleton) -> bool {
-    skeleton.router_enabled
-        && (!skeleton.managed_block_exists || skeleton.config_stale_reason.is_some())
+    !skeleton.config_toml_syntax_valid
+        || skeleton.config_profile_conflict
+        || (skeleton.router_enabled
+            && (!skeleton.managed_block_exists || skeleton.config_stale_reason.is_some()))
 }
 
 fn diagnostic_entries_from_skeleton(
@@ -325,6 +327,39 @@ fn diagnostic_entries_from_skeleton(
             ));
         }
     }
+    if !skeleton.config_toml_syntax_valid {
+        issues.push(diagnostic_issue(
+            "config_toml_syntax",
+            "config.toml syntax",
+            "config.toml cannot be parsed as TOML.",
+            skeleton.config_toml_syntax_reason.as_deref(),
+            "medium",
+            Some("medium"),
+            false,
+        ));
+    }
+    if skeleton.config_profile_conflict {
+        issues.push(diagnostic_issue(
+            "config_profile_conflict",
+            "config profile conflict",
+            "Top-level router/provider config conflicts with profile-level router/provider config.",
+            skeleton.config_profile_conflict_reason.as_deref(),
+            "medium",
+            Some("medium"),
+            false,
+        ));
+    }
+
+    let config_toml_syntax_detail = skeleton
+        .config_toml_syntax_reason
+        .as_deref()
+        .unwrap_or("config.toml TOML syntax is valid.");
+    let config_profile_conflict_detail = skeleton
+        .config_profile_conflict_reason
+        .as_deref()
+        .unwrap_or(
+            "No top-level router/provider keys conflict with profile-level router/provider keys.",
+        );
 
     let items = vec![
         diagnostic_item(
@@ -397,6 +432,28 @@ fn diagnostic_entries_from_skeleton(
                 "config.toml 未包含模型目录字段。"
             },
             skeleton.router_enabled && !skeleton.config_toml_has_catalog,
+        ),
+        diagnostic_item(
+            "config_toml_syntax",
+            "config.toml syntax",
+            if skeleton.config_toml_syntax_valid {
+                "ok"
+            } else {
+                "medium"
+            },
+            config_toml_syntax_detail,
+            false,
+        ),
+        diagnostic_item(
+            "config_profile_conflict",
+            "config profile conflict",
+            if skeleton.config_profile_conflict {
+                "medium"
+            } else {
+                "ok"
+            },
+            config_profile_conflict_detail,
+            false,
         ),
     ];
 

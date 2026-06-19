@@ -56,6 +56,14 @@
 | `src-tauri/src/core/model/diagnostics.rs` | core model 只承载诊断只读值对象，没有写入无证据闭源业务字段。 |
 | `src-tauri/src/repository/diagnostics.rs` | diagnostics repository 只从 repository paths 和 FS adapter 读取可验证路径事实，不触碰真实用户环境之外的隐式状态。 |
 
+### relay router diagnostics 只读边界
+
+当前源码在 `src-tauri/src/core/relay/router_config.rs` 中为 `analyze_router_config` 补齐两个 read-only diagnostics：`config_toml_syntax` 通过已有 `toml = "0.8"` 的 `toml::Value` 解析判断 config.toml 是否能被 TOML 解析；`config_profile_conflict` 只在结构化 TOML 中同时发现顶层 router/provider key 和 profile 级 router/provider key 时报告保守冲突。诊断原因只返回允许列表 key 和解析偏移这类脱敏事实，不读取 token、auth、API key、Authorization 或 Bearer 内容。
+
+`src-tauri/src/repository/relay.rs` 只通过可替换 FS 读取 `config.toml` 内容并搬运 core 返回的 syntax/conflict 事实；`src-tauri/src/application/usecase/relay/payload.rs` 只把它们输出为 `config_toml_syntax` 与 `config_profile_conflict` item/issue，`fixable=false`；`src-tauri/src/application/usecase/relay/diagnostics.rs` 对 `config_toml_syntax`/兼容旧 `config_omit_syntax` 只返回手动修复提示，`config_profile_conflict` 也只返回手动处理提示。`all` 修复在 TOML 语法错误或 profile 冲突存在时不会自动写 config。
+
+该切片不启动进程、不创建线程、不执行 thread migration、不发网络请求、不访问真实代理运行时，也不把内部 leaf 证据扩写成闭源等价或 raw/internal gate 全闭合。它只证明当前公开源码能在 repository/core/usecase 边界内暴露两个只读诊断项。
+
 ### relay_thread_migration 空操作 owner 边界
 
 `relay_thread_migration` 的公开证据已经能定位到内部函数、leaf manifest、producer ledger 和 gate-report 段落，但这些材料描述的是闭源运行时迁移能力，不等同于当前公开仓库可以直接恢复真实业务。当前公开源码应只保留独立的 thread migration owner，并由 `set_codex_router_enabled` 消费该 owner 返回的空操作/待处理 payload；迁移 payload 不应内联在 relay usecase 主文件中。

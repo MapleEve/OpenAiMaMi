@@ -89,7 +89,11 @@ fn fix_router_issue(repo: &Repository, item_id: &str) -> Result<RouterIssueFixRe
         }
         "all" => {
             let skeleton = relay_repository::load_router_diagnostic_skeleton(repo, "fix_all");
-            let details = if diagnostic_has_issues(&skeleton) {
+            let auto_fixable = skeleton.config_toml_syntax_valid
+                && !skeleton.config_profile_conflict
+                && skeleton.router_enabled
+                && (!skeleton.managed_block_exists || skeleton.config_stale_reason.is_some());
+            let details = if auto_fixable {
                 relay_repository::inject_router_config(repo)?
             } else {
                 vec!["没有需要自动修复的 Codex Router 诊断项。".to_string()]
@@ -106,7 +110,17 @@ fn fix_router_issue(repo: &Repository, item_id: &str) -> Result<RouterIssueFixRe
             message: "该诊断项需要手动处理，不能自动改写用户 profile。".to_string(),
             details: vec!["请手动确认 config.toml 顶层 profile 与路由配置的关系。".to_string()],
         }),
-        "auth_integrity" | "config_third_party" | "config_omit_syntax" | "db_orphan_providers" => {
+        "config_toml_syntax" | "config_omit_syntax" => Ok(RouterIssueFixResult {
+            fixed: false,
+            requires_restart: false,
+            message:
+                "config.toml syntax requires manual repair; no automatic rewrite was performed."
+                    .to_string(),
+            details: vec![
+                "Fix config.toml TOML syntax manually, then rerun router diagnostics.".to_string(),
+            ],
+        }),
+        "auth_integrity" | "config_third_party" | "db_orphan_providers" => {
             Ok(RouterIssueFixResult {
                 fixed: false,
                 requires_restart: false,

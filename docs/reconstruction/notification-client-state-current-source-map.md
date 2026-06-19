@@ -39,4 +39,5 @@
 ## 验证入口
 
 - `scripts/validate-backend-system-owner.mjs` 直接验证本文、settings DTO、settings-secret owner、system usecase payload、source-map 索引和未恢复边界。
+- `scripts/validate-frontend-tray-shell-cache.mjs` 直接验证前端 tray-shell notification client cache 的 stale、delayed、event replay 和 focus/ack mutation fence 竞态边界；该验证只证明 current-source cache owner，不声明通知运行时、托盘通知或平台通知能力恢复。
 - `npm run validate:backend-system-owner` 进入 `npm run validate:backend`，再进入 `npm run validate:all`。

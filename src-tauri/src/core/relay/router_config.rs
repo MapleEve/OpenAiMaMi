@@ -1,7 +1,19 @@
+use toml::Value;
+
+const ROUTER_PROVIDER_KEYS: &[&str] = &[
+    "model_provider",
+    "model_provider_router",
+    "model_catalog_json",
+];
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RelayRouterConfigAnalysis {
     pub config_toml_has_router: bool,
     pub config_toml_has_catalog: bool,
+    pub config_toml_syntax_valid: bool,
+    pub config_toml_syntax_reason: Option<String>,
+    pub config_profile_conflict: bool,
+    pub config_profile_conflict_reason: Option<String>,
     pub managed_block_exists: bool,
     pub codex_provider_count: i32,
     pub user_top_level_profile: Option<String>,
@@ -16,10 +28,25 @@ pub fn analyze_router_config(
 ) -> RelayRouterConfigAnalysis {
     let config_toml_has_router = config.map(config_has_router).unwrap_or(false);
     let config_toml_has_catalog = config.map(config_has_catalog).unwrap_or(false);
+    let parsed_config = config.map(parse_config_toml_value);
+    let (config_toml_syntax_valid, config_toml_syntax_reason, config_toml_value) =
+        match parsed_config {
+            Some(Ok(value)) => (true, None, Some(value)),
+            Some(Err(reason)) => (false, Some(reason), None),
+            None => (true, None, None),
+        };
+    let (config_profile_conflict, config_profile_conflict_reason) = config_toml_value
+        .as_ref()
+        .map(detect_config_profile_conflict)
+        .unwrap_or((false, None));
 
     RelayRouterConfigAnalysis {
         config_toml_has_router,
         config_toml_has_catalog,
+        config_toml_syntax_valid,
+        config_toml_syntax_reason,
+        config_profile_conflict,
+        config_profile_conflict_reason,
         managed_block_exists: config.map(config_has_managed_block).unwrap_or(false),
         codex_provider_count: config.map(count_model_providers).unwrap_or(0),
         user_top_level_profile: config.and_then(top_level_profile),
@@ -83,6 +110,67 @@ fn config_has_catalog(config: &str) -> bool {
 fn config_has_managed_block(config: &str) -> bool {
     config.contains("# >>> aimami-relay managed start")
         || config.contains("# >>> aimami-relay codex-router top start")
+}
+
+fn parse_config_toml_value(config: &str) -> Result<Value, String> {
+    config.parse::<Value>().map_err(|error| {
+        error
+            .span()
+            .map(|span| format!("toml_parse_error@{}..{}", span.start, span.end))
+            .unwrap_or_else(|| "toml_parse_error".to_string())
+    })
+}
+
+fn detect_config_profile_conflict(value: &Value) -> (bool, Option<String>) {
+    let Some(root) = value.as_table() else {
+        return (false, None);
+    };
+
+    let top_level_keys = router_provider_keys_in_table(root);
+    if top_level_keys.is_empty() {
+        return (false, None);
+    }
+
+    let profile_level_keys = root
+        .get("profiles")
+        .and_then(Value::as_table)
+        .map(router_provider_keys_in_profiles)
+        .unwrap_or_default();
+    if profile_level_keys.is_empty() {
+        return (false, None);
+    }
+
+    (
+        true,
+        Some(format!(
+            "top_level_keys={};profile_level_keys={}",
+            top_level_keys.join(","),
+            profile_level_keys.join(",")
+        )),
+    )
+}
+
+fn router_provider_keys_in_table(table: &toml::map::Map<String, Value>) -> Vec<&'static str> {
+    ROUTER_PROVIDER_KEYS
+        .iter()
+        .copied()
+        .filter(|key| table.contains_key(*key))
+        .collect()
+}
+
+fn router_provider_keys_in_profiles(profiles: &toml::map::Map<String, Value>) -> Vec<&'static str> {
+    ROUTER_PROVIDER_KEYS
+        .iter()
+        .copied()
+        .filter(|key| {
+            profiles.values().any(|profile| {
+                profile
+                    .as_table()
+                    .map(|table| table.contains_key(*key))
+                    .unwrap_or(false)
+            })
+        })
+        .collect()
 }
 
 fn append_managed_router_block(content: &str, catalog_path: &str) -> String {
