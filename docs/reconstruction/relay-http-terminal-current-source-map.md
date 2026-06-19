@@ -23,14 +23,14 @@
 | service wrapper | `src/services/relay/index.ts` | 统一调用三个 IPC 命令。 |
 | E2E mock | `src/mocks/fixtures/commands.ts` | 提供 relay test 和 model fetch mock handler。 |
 | Tauri command | `src-tauri/src/commands/relay.rs` | 薄 adapter：参数、repository state、usecase 和 envelope。 |
-| usecase | `src-tauri/src/application/usecase/relay.rs`、`src-tauri/src/application/usecase/relay/models.rs` | 编排 provider/draft 输入、platform mock terminal、core 解析和 repository health 记录。 |
+| usecase | `src-tauri/src/application/usecase/relay.rs`、`src-tauri/src/application/usecase/relay/models.rs` | 编排 provider/draft 输入、platform mock terminal、core 解析和 repository health 记录；`test_relay_draft` 的 backend status 使用 `BackendEffect::Platform`，不再把 mock terminal 动作标成 `NoOp`。 |
 | core | `src-tauri/src/core/relay.rs`、`src-tauri/src/core/relay/request_builder.rs` | owning request builder、model ID parser、health check parser、relay test retry/stream retry 错误语义。 |
 | platform | `src-tauri/src/platform/relay.rs` | 只提供 mock terminal；不发起真实外部联网。 |
 
 ## 已恢复边界
 
 - 前端 UI 触发链已从面板、page hook、mutation hook、service wrapper 到 IPC mock 闭合。
-- 后端 command/usecase/platform/core 链路已能构建 mock terminal request、解析 mock response，并把 provider health 写回 repository。
+- 后端 command/usecase/platform/core 链路已能构建 mock terminal request、解析 mock response，并把 provider health 写回 repository；draft 测试链路按 platform mock terminal effect 归类。
 - relay test 错误语义由 `src-tauri/src/core/relay.rs` owning，覆盖 stream retry 和 relay test retry 文本分类。
 - 当前 validator 是 `npm run validate:frontend-relay-http-terminal-ccf` 与 `npm run validate:backend-relay-owner`；聚合入口是 `npm run validate:frontend`、`npm run validate:backend` 和 `npm run validate:all`。
 

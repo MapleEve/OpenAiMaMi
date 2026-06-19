@@ -503,7 +503,7 @@ fn relay_repository_effect(command: &str) -> BackendEffect {
         | "export_relay_config"
         | "import_relay_config"
         | "fix_codex_router_issue" => BackendEffect::RepositoryWrite,
-        "test_relay_draft" => BackendEffect::NoOp,
+        "test_relay_draft" => BackendEffect::Platform,
         _ => BackendEffect::NoOp,
     }
 }

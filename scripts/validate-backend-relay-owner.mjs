@@ -348,6 +348,12 @@ assertContains(
   "必须通过 RelayPlatformPort 表达平台 mock terminal 边界",
 );
 assertContains(
+  files.usecasePayload,
+  usecasePayloadContent,
+  /"test_relay_draft"\s*=>\s*BackendEffect::Platform/,
+  "test_relay_draft backend status 必须标记为 Platform effect，不能继续使用 NoOp",
+);
+assertContains(
   files.usecase,
   usecaseContent,
   /\bconfig_repository::get_image_compat\s*\(\s*repo\s*\)/,
