@@ -44,8 +44,8 @@ LFS/IDB 独立称为 `OpenAiMami IDB`，只能作为可选辅助核对材料，�
 | 领域 | 已做 | 没做或边界 | 怎么验收 |
 | --- | --- | --- | --- |
 | 公开材料 | Apache License、中文说明、匿名化 `raw/internal` 主链路、重建文档、证据入口和二进制清单已经进入仓库。 | 不公开设备标识、个人目录、会话、令牌、账号私密值、未审查采集材料、未匿名化内容、IDB、压缩包或安装包。 | `npm run validate:public-boundary` |
-| 前端 | 入口、全局 Provider、路由注册表、运行时初始化器、服务门面、TanStack cache、runtime event 到模块 cache query key 映射、深模块拆分、i18n、E2E mock 和归属边界验证入口已经按当前公开证据收敛。 | 不声明前端双平台、全叶子节点已经百分百完成；没有公开证据、叶子队列、收口记录和验证器支撑的内容不能写成已完成。 | `npm run validate:frontend`、相关 `validate:frontend-*`、`npm run validate:build-surface` |
-| 后端 | commands、application/usecase、core、repository、platform、adapters、contracts 已按六边形边界整理；开源已有能力纳入六边形骨架。 | 不做闭源业务全量还原；不声明动态插件执行、真实平台副作用、外部进程、市场安装、完整服务启动或 `voice` 集成已经完成。 | `npm run validate:backend`；Rust 完整编译/测试环境用 `npm run validate:backend-cargo` 单独检查 |
+| 前端 | 入口、全局 Provider、路由注册表、运行时初始化器、服务门面、TanStack cache、runtime event 到模块 cache query key 映射、MCP 平铺 IPC request shape、深模块拆分、i18n、E2E mock 和归属边界验证入口已经按当前公开证据收敛。 | 不声明前端双平台、全叶子节点已经百分百完成；没有公开证据、叶子队列、收口记录和验证器支撑的内容不能写成已完成。 | `npm run validate:frontend`、相关 `validate:frontend-*`、`npm run validate:build-surface` |
+| 后端 | commands、application/usecase、core、repository、platform、adapters、contracts 已按六边形边界整理；开源已有能力和 MCP 平铺请求 shape 纳入六边形骨架。 | 不做闭源业务全量还原；不声明动态插件执行、真实平台副作用、外部进程、市场安装、完整服务启动或 `voice` 集成已经完成。 | `npm run validate:backend`；Rust 完整编译/测试环境用 `npm run validate:backend-cargo` 单独检查 |
 | voice | 只保留空骨架、合同清单和中文边界说明。 | 不给入口，不接入路由、启动链路、IPC mock 或后端命令，不阻塞其它模块。 | 确认路由、启动链路、IPC mock 和后端命令没有接入 `voice`。 |
 | 验收 | 公开边界、前端聚合、后端聚合、构建面、i18n、E2E mock、cache 竞态和归属边界验证器都有脚本入口。 | Rust 完整编译和测试依赖本地 Rust/MSVC 或目标平台工具链；缺少 `link.exe` 属于环境限制，不等同于源码失败。 | `npm run validate:all`；构建面用 `npm run validate:build-surface`；Rust 环境用 `npm run validate:backend-cargo`。 |
 | 运行闭环 | README 只记录长期有效的源码状态、范围边界和验收入口。 | 不按提交、日期、局部补丁或临时进度追加流水式记录。 | 每次提交同步 README，但只更新归纳状态和稳定说明。 |

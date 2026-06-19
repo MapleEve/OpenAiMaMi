@@ -601,6 +601,9 @@ function validateCommand(path, original, content) {
     ["repo lock", /\brepo\s*\.lock\s*\(\s*\)\s*\.map_err\s*\(/],
     ["load usecase", /usecase\s*::\s*mcp\s*::\s*load_servers\s*\(\s*&repo\s*\)/],
     ["upsert usecase", /usecase\s*::\s*mcp\s*::\s*upsert_server\s*\(\s*&repo\s*,/],
+    ["upsert flattened args field", /\bargs\s*:\s*Vec\s*<\s*String\s*>/],
+    ["upsert flattened headers field", /\bheaders\s*:\s*HashMap\s*<\s*String\s*,\s*String\s*>/],
+    ["upsert flattened environment field", /\benvironment\s*:\s*HashMap\s*<\s*String\s*,\s*String\s*>/],
     ["set enabled usecase", /usecase\s*::\s*mcp\s*::\s*set_enabled\s*\(\s*&repo\s*,\s*name\s*,\s*enabled\s*\)/],
     ["remove usecase", /usecase\s*::\s*mcp\s*::\s*remove_server\s*\(\s*&repo\s*,\s*name\s*\)/],
     ["CoreEnvelope ok", /\.map\s*\(\s*CoreEnvelope\s*::\s*ok\s*\)/],
@@ -617,6 +620,14 @@ function validateCommand(path, original, content) {
     content,
     /\b(toml\s*::|FileSystemAdapter|read_to_string\s*\(|write_string\s*\(|rename\s*\(|config_path|parse_mcp_servers_from_config|upsert_mcp_server_config|remove_mcp_server_config|std\s*::\s*fs)\b/g,
     "command 层只做参数、state 和 envelope 适配",
+  );
+  rejectPattern(
+    "upsert_mcp_server input envelope",
+    path,
+    original,
+    content,
+    /\binput\s*:\s*(?:UpsertMcpServerInput|McpServerConfigInput|.+Input)\b/g,
+    "upsert_mcp_server 必须保持 name/transport/args/headers/environment 平铺请求 shape",
   );
 }
 

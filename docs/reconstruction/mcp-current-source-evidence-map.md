@@ -21,6 +21,7 @@
 | `evidence/full-chain/raw/aimami/1.0.9/windows/mcp/upsert_mcp_server/manifest.json` | 确认 `upsert_mcp_server` 的公开叶子证据覆盖 name、transport/mode、command、args、url、headers、environment/open/path 字段，插入或替换 MCP server block，并持久写入 `config.toml`。 |
 | `evidence/full-chain/raw/aimami/1.0.9/windows/mcp/set_mcp_server_enabled/manifest.json` | 确认 `set_mcp_server_enabled` 的公开叶子证据覆盖 name/enabled DTO、缺失时 not-found 语义、读取现有服务后切换 enabled 并持久写入 `config.toml`。 |
 | `evidence/full-chain/raw/aimami/1.0.9/windows/mcp/remove_mcp_server/manifest.json` | 确认 `remove_mcp_server` 的公开叶子证据覆盖 name DTO、删除 MCP server block，并持久写入 `config.toml`。 |
+| `evidence/full-chain/internal/version-diff/CHAIN-DIFF-LADDER/00-main-to-1.0.1.md` | 记录历史 request-shape 偏差：旧实现曾把 `upsert_mcp_server` 包成 `input` envelope。当前源码已改为平铺 `name`、`transport`、`args`、`headers`、`environment` 等字段，validator 必须防止回退。 |
 
 ## 当前源码 owner 归属
 
@@ -39,7 +40,7 @@
 | 命令 | 公开证据边界 | 当前源码闭环 |
 | --- | --- | --- |
 | `load_mcp_servers` | 同步 mutex/TOML parse；读取 `config.toml` MCP server blocks；返回 name、transport、command、args、url、headers、environment、enabled 字段；不写入、不联网、不启动进程。 | command 调 `usecase::mcp::load_servers(&repo)`；usecase 调 `mcp::load_server_snapshot(repo)`；repository 校验 `CODEX_HOME/config.toml` 路径、读取文本并调用 `parse_mcp_servers_from_config`；core parser 解析 `[mcp_servers.*]` 表后映射到 payload。 |
-| `upsert_mcp_server` | 同步 mutex/TOML parse-edit-save；插入或替换 MCP server block；持久写入 `config.toml`；成功返回 mutation payload。 | command 解码表单字段后调 `usecase::mcp::upsert_server`；usecase 合并输入并校验名称；repository 调 `upsert_mcp_server_config` 生成下一版文本，经 `write_string` 写临时文件并 `rename` 到 `config.toml`，再重新读取保存结果。 |
+| `upsert_mcp_server` | 同步 mutex/TOML parse-edit-save；插入或替换 MCP server block；持久写入 `config.toml`；成功返回 mutation payload。 | command 解码平铺字段 `name`、`transport`、`enabled`、`config`、`command`、`args`、`url`、`headers`、`environment` 后调 `usecase::mcp::upsert_server`；usecase 合并输入并校验名称；repository 调 `upsert_mcp_server_config` 生成下一版文本，经 `write_string` 写临时文件并 `rename` 到 `config.toml`，再重新读取保存结果。 |
 | `set_mcp_server_enabled` | 同步 mutex/load-find-upsert；基于 name 查找现有 MCP 服务；切换 enabled；持久写入 `config.toml`；缺失时返回 not-found 语义。 | command 调 `usecase::mcp::set_enabled`；usecase 校验名称；repository 先 `load_server_snapshot`，找到目标后复用 `upsert_server` 保存 enabled 变更并返回 mutation payload。 |
 | `remove_mcp_server` | 同步 mutex/TOML remove-save；删除目标 MCP server block；持久写入 `config.toml`；成功返回 remove payload。 | command 调 `usecase::mcp::remove_server`；usecase 校验名称；repository 调 `remove_mcp_server_config` 删除托管块，写临时文件并 `rename`，再读取剩余总数。 |
 
@@ -50,6 +51,7 @@
 - 当前源码覆盖可替换文件系统：repository 通过 `FileSystemAdapter` 执行 `exists`、`read_to_string`、`write_string` 和 `rename`，测试可使用 fake FS。
 - 当前源码覆盖 `mcp_servers` TOML parse、insert、replace、remove、comment-preserving block scan 和 render fallback。
 - 当前源码覆盖 DTO/envelope 字段：`McpServerSummary`、`McpServerConfigInput`、`McpServerListPayload`、`McpServerMutationPayload`、`McpServerRemovePayload`。
+- 当前源码覆盖 `upsert_mcp_server` 平铺请求 shape：前端 service 直接发送 `args`、`headers`、`environment`，后端 command 直接接收同名字段，不再包一层 `input`。
 - 当前 validator 入口是 `npm run validate:backend-mcp-owner`，聚合入口是 `npm run validate:backend`。
 
 ## 未声明边界
@@ -71,4 +73,4 @@
 - Windows/macOS 两个平台 gate-report 存在，且 `module=mcp`、四个命令、gate 状态和 `full_leaf_100=true` 匹配。
 - 四个 Windows raw manifest 存在，且命令、owner、threading model、terminal side effect class 和 gate 状态匹配当前实现范围。
 - `src-tauri/src/lib.rs` 注册四个 MCP command。
-- command/usecase/contracts/repository/core parser/core model 保持六边形 owner 边界，不出现 MCP server 启动、网络探测、HTTP/SSE 实际调用、外部进程 spawn、平台副作用、daemon/watchers 或 voice 集成。
+- command/usecase/contracts/repository/core parser/core model 保持六边形 owner 边界，`upsert_mcp_server` 保持平铺请求 shape，不出现 MCP server 启动、网络探测、HTTP/SSE 实际调用、外部进程 spawn、平台副作用、daemon/watchers 或 voice 集成。

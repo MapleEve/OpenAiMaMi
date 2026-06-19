@@ -1381,6 +1381,11 @@ function validateMcpTypedPayloadGate() {
     service.includes("CoreEnvelope<McpServerListPayload>") &&
     service.includes("CoreEnvelope<McpServerMutationPayload>") &&
     service.includes("CoreEnvelope<McpServerRemovePayload>") &&
+    service.includes("args: input.args ?? []") &&
+    service.includes("headers: input.headers ?? {}") &&
+    service.includes("environment: input.environment ?? {}") &&
+    !/input\s*:\s*input\b/.test(service) &&
+    !/input\s*:\s*toMcpUpsertArgs\s*\(/.test(service) &&
     !service.includes("IpcEvidencePayload") &&
     !service.includes("IpcJsonObject") &&
     types.includes("export type McpListEnvelope") &&
@@ -1403,9 +1408,9 @@ function validateMcpTypedPayloadGate() {
     pageControllerBoundaryOk;
 
   if (!typedPayloadOk) {
-    failures.push("mcp IPC payload owner 必须收口到 typed envelope、hooks/query、hooks/mutation、hooks/page 和 cache helper");
+    failures.push("mcp IPC payload owner 必须收口到 typed envelope、hooks/query、hooks/mutation、hooks/page、cache helper，并保持 upsert_mcp_server 平铺 args/headers/environment 请求 shape");
   } else {
-    console.log("PASS mcp typed IPC payload owner：service/query/mutation/page/cache");
+    console.log("PASS mcp typed IPC payload owner：service/query/mutation/page/cache，upsert request shape 平铺");
   }
 }
 
