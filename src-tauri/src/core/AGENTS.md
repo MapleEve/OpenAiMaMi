@@ -10,7 +10,7 @@
 
 ## core 边界
 
-- core 承载 domain model、解析、迁移、状态机、DTO 转换、错误语义、single-flight 和后台调度边界。
+- core 承载 领域模型、解析、迁移、状态机、DTO 转换、错误语义、single-flight 和后台调度边界。
 - core 不依赖 Tauri UI 对象，不直接解释平台窗口、托盘或系统权限行为。
 - 跨模块事务必须以 usecase / service / repository 方法表达，命名描述业务动作。
 - 阻塞 IO、tray rebuild、daemon runner 和外部进程操作必须有明确返回路径，不能卡住 IPC mutation response。

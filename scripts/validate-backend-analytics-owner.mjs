@@ -395,7 +395,7 @@ rejectPattern(
   raw.coreModel.content,
   code.coreModel.content,
   /\b(tauri\s*::|Repository\b|FileSystemAdapter\b|std\s*::\s*fs|tokio\s*::\s*fs)\b/g,
-  "domain model 不得依赖 Tauri、Repository 或真实文件系统",
+  "领域模型 不得依赖 Tauri、Repository 或真实文件系统",
 );
 
 requirePattern(

@@ -523,7 +523,7 @@
       ],
       "backendBoundaryNotes": [
         "accounts 的 index query 命令经 system 后端入口闭合。",
-        "analytics 的当前 closeout 只关闭前端 app-shell index query owner-closed 队列项；Rust analytics 后端已恢复公开 session/rollout 文件事实聚合，闭源 token 与严格运行时统计口径仍不声明恢复。"
+        "analytics 的当前 closeout 只关闭前端 app-shell index query 的 owner-closed 队列项；Rust analytics 后端已恢复公开 session/rollout 文件事实聚合，闭源 token 与严格运行时统计口径仍不声明恢复。"
       ],
       "nonClaims": [
         "不把 accounts 或 analytics 的 manifest 状态改成 covered。",
@@ -654,7 +654,7 @@
         "不声明全文案验收完成。",
         "不声明 MAC/WIN 100% leaf 已完成。"
       ],
-      "reason": "当前源码已把 app-shell index chunk 的启动、更新、提示和全局授权入口收口到 entry/runtime/service 边界，也把 desktop-message 保留为无 endpoint 的 source-only query owner。本 closeout 只关闭 source-only 边界登记的队列项，不修改 manifest 状态，不声明 covered，不声明 update/restart/window-path 后端完整恢复，也不声明 MAC/WIN 100% leaf 已完成。"
+      "reason": "当前源码已把 app-shell index chunk 的启动、更新、提示和全局授权入口收口到 entry/runtime/service 边界，也把 desktop-message 保留为无 endpoint 的 source-only 查询归属。本 closeout 只关闭 source-only 边界登记的队列项，不修改 manifest 状态，不声明 covered，不声明 update/restart/window-path 后端完整恢复，也不声明 MAC/WIN 100% leaf 已完成。"
     },
     {
       "id": "system-window-maintenance-frontend-callchain-non-gating-closeout",

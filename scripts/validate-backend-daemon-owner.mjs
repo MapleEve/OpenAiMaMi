@@ -563,7 +563,7 @@ function validateRuntimeWatcherDocs(runtimeMapPath, runtimeMapContent, sourceMap
     "reconstruction README 同步 daemon validator",
     reconstructionReadmePath,
     reconstructionReadmeContent,
-    /system-runtime-watchers-current-source-map\.md[\s\S]*daemon\/runtime owner[\s\S]*scripts\/validate-backend-daemon-owner\.mjs/,
+    /system-runtime-watchers-current-source-map\.md[\s\S]*daemon\/运行时归属[\s\S]*scripts\/validate-backend-daemon-owner\.mjs/,
     "docs/reconstruction README 必须同步 runtime watcher map 的直接验证边界",
   );
 

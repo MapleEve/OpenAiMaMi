@@ -1702,9 +1702,9 @@ function validateTrayShellTypedPayloadGate() {
   if (!typedPayloadOk) failures.push("tray-shell types owner 必须保留 typed payload、TrayShellPageController、metric/runtime/action model");
   if (!cacheOk) failures.push("tray-shell cache owner 必须保留 typed createModuleCacheOwner 和 Omit<TrayShellCacheEnvelope<TPayload>, \"moduleId\">");
   if (!hooksIndexOk) failures.push("tray-shell hooks/index.ts 只能 re-export query、mutation、page");
-  if (!actionOwnerOk) failures.push("tray-shell hooks/action.ts 不得保留独立 action owner；focus main window action 必须归 hooks/mutation.ts");
+  if (!actionOwnerOk) failures.push("tray-shell hooks/action.ts 不得保留独立 动作归属；focus main window action 必须归 hooks/mutation.ts");
   if (!queryOk) failures.push("tray-shell hooks/query.ts 必须 owning cache controller、notification query 和 getNotificationClientState");
-  if (!mutationOk) failures.push("tray-shell hooks/mutation.ts 必须 owning focus main window mutation/action、focusMainWindow 和 cache invalidation");
+  if (!mutationOk) failures.push("tray-shell hooks/mutation.ts 必须 owning focus main window mutation/action、focusMainWindow 和 cache 失效");
   if (!pageOk) failures.push("tray-shell hooks/page.ts 必须只组合 query/mutation 与 selectTrayShellClient/Ready，不得直接 TanStack 或 service");
   if (!utilsOk) failures.push("tray-shell utils owner 必须保留 typed selector，且不得回退 unknown reader");
 
@@ -1841,7 +1841,7 @@ function validateSettingsTypedPayloadGate() {
   const typedPayloadOk = hooksIndexOnlyReExports && settingsTypedPayloadOk;
 
   if (!settingsTypedPayloadOk) {
-    failures.push("settings split owner gate must keep typed query payload, explicit controller props, cache helper writes, and no unknown fallback");
+    failures.push("settings split owner gate 必须保留 typed query payload, explicit controller props, cache helper writes, and no unknown fallback");
   } else if (typedPayloadOk) {
     console.log("PASS settings typed IPC payload owner: split hooks/types/cache");
   }

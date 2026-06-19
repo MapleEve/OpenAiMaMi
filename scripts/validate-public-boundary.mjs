@@ -197,6 +197,19 @@ function isBinaryLike(buffer) {
   return buffer.includes(0);
 }
 
+function shouldSkipEnglishTerminologyCheck(file) {
+  const normalized = file.replaceAll("\\", "/");
+  return (
+    normalized.startsWith("evidence/") ||
+    normalized === "AGENTS.md" ||
+    normalized === "CLAUDE.md" ||
+    normalized === "docs/reconstruction/architecture-decision-original.md" ||
+    normalized === "docs/reconstruction/refactor-gates-original.md" ||
+    normalized === "docs/reconstruction/rebuild-execution-order.md" ||
+    normalized === "scripts/validate-public-boundary.mjs"
+  );
+}
+
 function listTrackedFiles() {
   const output = execFileSync(
     "git",
@@ -854,6 +867,7 @@ function validateInstructionAndReconstructionDocs() {
   const emptyFiles = [];
   const mojibakeHits = [];
   const missingChineseSignal = [];
+  const englishNaturalLanguageHits = [];
 
   for (const file of reconstructionMarkdownFiles) {
     const repoPath = toRepoPath(file);
@@ -875,6 +889,21 @@ function validateInstructionAndReconstructionDocs() {
     if (!hasMarkdownHeading && !hasChineseBody) {
       missingChineseSignal.push(repoPath);
     }
+
+    content.split(/\r?\n/).forEach((line, index) => {
+      const trimmed = line.trim();
+      if (!trimmed) return;
+      if (
+        /^\s*[-*]\s+(Run|Use|Do not|Must|Should|This|The|Frontend|Backend|Validation|Validator)\b/.test(
+          line,
+        ) ||
+        /\b(to pin this map|validation passed|current frontend service\/mock\/cache chain)\b/i.test(
+          line,
+        )
+      ) {
+        englishNaturalLanguageHits.push(`${repoPath}:${index + 1}`);
+      }
+    });
   }
 
   addCheck(
@@ -904,6 +933,13 @@ function validateInstructionAndReconstructionDocs() {
     missingChineseSignal.length === 0
       ? "所有 reconstruction Markdown 均含 Markdown 标题或中文正文"
       : `缺少标题或中文正文信号：${missingChineseSignal.join("；")}`,
+  );
+  addCheck(
+    "docs/reconstruction Markdown 不包含英文自然语言说明",
+    englishNaturalLanguageHits.length === 0,
+    englishNaturalLanguageHits.length === 0
+      ? "未发现英文自然语言说明"
+      : `命中英文自然语言说明：${englishNaturalLanguageHits.join("；")}`,
   );
 }
 
@@ -1034,6 +1070,25 @@ function validateRepositoryTextBoundary() {
   const forbiddenHits = [];
   const sensitiveHits = [];
   const mojibakeHits = [];
+  const englishTerminologyHits = [];
+  const englishTerminologyFragments = [
+    "feature owner",
+    "feature Agent",
+    "feature Claude",
+    "domain model",
+    "page controller",
+    "mutation owner",
+    "query owner",
+    "action owner",
+    "runtime owner",
+    "current-source / evidence map",
+    "validator passed",
+    "validator failed",
+    "validation passed",
+    "validation failed",
+    "to pin this map",
+    "current frontend service/mock/cache chain",
+  ];
 
   for (const file of trackedTextFiles) {
     const absolute = join(repoRoot, file);
@@ -1049,6 +1104,16 @@ function validateRepositoryTextBoundary() {
       for (const { pattern, index } of findMojibakeMatches(content)) {
         const line = content.slice(0, index).split(/\r?\n/).length;
         mojibakeHits.push(`${file}:${line} 命中 ${pattern}`);
+      }
+    }
+
+    if (!shouldSkipEnglishTerminologyCheck(file)) {
+      for (const fragment of englishTerminologyFragments) {
+        const index = content.indexOf(fragment);
+        if (index >= 0) {
+          const line = content.slice(0, index).split(/\r?\n/).length;
+          englishTerminologyHits.push(`${file}:${line} 命中 ${fragment}`);
+        }
       }
     }
 
@@ -1090,6 +1155,13 @@ function validateRepositoryTextBoundary() {
     mojibakeHits.length === 0
       ? "所有 tracked 公开文本未发现常见 mojibake 特征"
       : mojibakeHits.slice(0, 20).join("；"),
+  );
+  addCheck(
+    "公开文本不包含半英文职责说明",
+    englishTerminologyHits.length === 0,
+    englishTerminologyHits.length === 0
+      ? "未发现半英文职责说明"
+      : englishTerminologyHits.slice(0, 20).join("；"),
   );
 }
 

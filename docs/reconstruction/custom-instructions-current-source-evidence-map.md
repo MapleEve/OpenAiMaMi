@@ -51,7 +51,7 @@
 - 当前公开后端覆盖 Custom Instructions 的 command/usecase/repository/core parser/core model/contracts 分层 owner。
 - 当前公开后端覆盖全局文件受控块的 marker、parse、protected/unmanaged/ready 状态、preview/apply/clear/rollback 和 history JSON 读写。
 - 当前公开后端通过 `Repository` 暴露的 file system adapter 完成文件读写，repository 不保存跨命令业务状态。
-- 当前公开后端 DTO 与 domain model 分离：contracts 只表达 IPC payload，core model 表达领域状态和 history snapshot。
+- 当前公开后端 DTO 与 领域模型 分离：contracts 只表达 IPC payload，core model 表达领域状态和 history snapshot。
 - 当前 validator 入口是 `npm run validate:backend-custom-instructions-owner`，聚合入口是 `npm run validate:backend`。
 
 ## 前端 E2E mock 合同

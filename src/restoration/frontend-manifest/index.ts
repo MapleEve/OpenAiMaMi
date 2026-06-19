@@ -179,7 +179,7 @@ export const FRONTEND_DUMPED_INDEX_ASSET_SOURCES = [
     cache: "src/app/runtime/events.ts",
     surface: "src/app/providers/prompt.tsx",
     note:
-      "登记 app shell 在 index chunk 中的启动、更新、提示和全局授权入口；它不是模块还原完成证明，需由入口和 runtime owner 承接。",
+      "登记 app shell 在 index chunk 中的启动、更新、提示和全局授权入口；它不是模块还原完成证明，需由入口和 运行时归属 承接。",
   },
   {
     owner: "overview",
@@ -276,7 +276,7 @@ export const FRONTEND_DUMPED_APP_SHELL_REMOTE_SECRET_RESTORATION_MATRIX = [
     runtimeOwner: "src/app/runtime/secret.ts",
     initializer: "src/app/runtime/initializer.tsx",
     note:
-      "app-shell 启动迁移链路必须先读取 localStorage 旧 remote device secret，调用 system service 导入后移除旧值，并由 runtime owner 写入启动缓存。",
+      "app-shell 启动迁移链路必须先读取 localStorage 旧 remote device secret，调用 system service 导入后移除旧值，并由 运行时归属 写入启动缓存。",
   },
   {
     module: "app-shell",
@@ -287,7 +287,7 @@ export const FRONTEND_DUMPED_APP_SHELL_REMOTE_SECRET_RESTORATION_MATRIX = [
     runtimeOwner: "src/app/runtime/secret.ts",
     initializer: "src/app/runtime/initializer.tsx",
     note:
-      "app-shell 启动迁移链路必须在导入旧值后获取或创建 remote device secret，并由 initializer 挂载 runtime owner 完成缓存写入。",
+      "app-shell 启动迁移链路必须在导入旧值后获取或创建 remote device secret，并由 initializer 挂载 运行时归属 完成缓存写入。",
   },
 ] as const satisfies readonly FrontendDumpedAppShellRemoteSecretRestorationRequirement[];
 
@@ -419,7 +419,7 @@ export const FRONTEND_DUMPED_CONTRACT_SLICE_D_COVERAGE = [
     service: "src/services/accounts/index.ts",
     feature: "src/features/accounts/hooks/mutation.ts",
     surface: "src/features/accounts/panels/actions.tsx",
-    note: "登出命令作为账号模块 action 暴露，页面不直连 IPC，结果经 mutation owner 写回缓存。",
+    note: "登出命令作为账号模块 action 暴露，页面不直连 IPC，结果经 变更操作归属 写回缓存。",
   },
   {
     module: "accounts",
@@ -437,7 +437,7 @@ export const FRONTEND_DUMPED_CONTRACT_SLICE_D_COVERAGE = [
     service: "src/services/accounts/index.ts",
     feature: "src/features/accounts/hooks/mutation.ts",
     surface: "src/features/accounts/panels/detail.tsx",
-    note: "批量移除和详情页移除都归 accounts mutation owner，组件只传账号 key，不保存后端事实。",
+    note: "批量移除和详情页移除都归 accounts 变更操作归属，组件只传账号 key，不保存后端事实。",
   },
   {
     module: "accounts",
@@ -455,7 +455,7 @@ export const FRONTEND_DUMPED_CONTRACT_SLICE_D_COVERAGE = [
     service: "src/services/accounts/index.ts",
     feature: "src/features/accounts/hooks/mutation.ts",
     surface: "src/features/accounts/panels/actions.tsx",
-    note: "切换并重启由账号操作面板触发，同样经 accounts mutation owner 写回结果，页面层不直连 IPC。",
+    note: "切换并重启由账号操作面板触发，同样经 accounts 变更操作归属 写回结果，页面层不直连 IPC。",
   },
   {
     module: "sessions",

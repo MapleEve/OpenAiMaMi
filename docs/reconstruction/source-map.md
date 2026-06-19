@@ -128,7 +128,7 @@ OpenAiMami 1.0.9 前端覆盖面：
 
 `assets/` 中保存公开应用资产。`OpenAiMami IDB` 是独立参考资产，主仓库只保存它的 manifest、大小和哈希信息。需要还原完整实现时，应先使用 raw/internal，再按需要核对 IDB 清单。
 
-## current-source / evidence map 注册表
+## 当前源码 / 证据映射注册表
 
 下列索引只收口当前公开源码与 raw/internal 证据之间的 map 文档、owner 边界、验证入口和未声明边界。它不表示 raw/internal gate 已闭合，不表示 `implementation_use`、`gate_accepted`、`full_leaf` 或 `full_leaf_100` 已完成，也不表示双平台全 leaf 已完成。
 
@@ -136,7 +136,7 @@ OpenAiMami 1.0.9 前端覆盖面：
 | --- | --- | --- |
 | `docs/reconstruction/frontend-current-source-closeouts.json` | 前端 current-source closeout 台账 | `scripts/validate-frontend-current-source-closeouts.mjs` 直接验证台账条目、ledger-only closeout 边界、map 引用、非完成声明和未恢复范围；`scripts/validate-public-boundary.mjs` 验证本台账被 source-map 与 reconstruction README 索引。 |
 | `docs/reconstruction/accounts-monitor-current-source-map.md` | accounts monitor 仓储预检 | `scripts/validate-backend-accounts-owner.mjs` 直接验证本文、`begin_add_account_attach_monitor` 仓储 registry 预检、`RepositoryRead` status、未恢复后台 monitor/线程/runtime event/platform 边界和索引注册。 |
-| `docs/reconstruction/mcp-skills-current-source-map.md` | mcp/skills 前端 index query owner | `scripts/validate-frontend-mcp-skills-current-source.mjs` 直接验证本文、`mcp-servers` 与 `installed-skills` 的 service、query、cache、overview consumer、mock、后端入口和 owner-closed closeout 边界；不作为双平台全 leaf 或闭源业务恢复声明。 |
+| `docs/reconstruction/mcp-skills-current-source-map.md` | mcp/skills 前端 index 查询归属 | `scripts/validate-frontend-mcp-skills-current-source.mjs` 直接验证本文、`mcp-servers` 与 `installed-skills` 的 service、query、cache、overview consumer、mock、后端入口和 owner-closed closeout 边界；不作为双平台全 leaf 或闭源业务恢复声明。 |
 | `docs/reconstruction/accounts-analytics-current-source-map.md` | accounts/analytics 前端链路与后端公开 owner | `scripts/validate-frontend-accounts-analytics-current-source.mjs` 直接验证本文、`quota-history` 与 `usage-analytics` 的 service、query、mutation、cache、overview consumer、mock、IPC contract 定义、后端公开文件事实 owner、closeout 台账、README 归纳和未声明边界；不作为双平台全 leaf、全文案验收、闭源 token 统计、真实运行时统计、严格平台 parity 或 `voice` 接入声明。 |
 | `docs/reconstruction/notification-client-state-current-source-map.md` | 通知客户端状态 settings 持久化收口 | `scripts/validate-backend-system-owner.mjs` 直接验证本文、`deviceId` / `notificationsSince` settings 持久化读取创建事务、DTO 字段、source-map/README 索引和未恢复通知运行时边界。 |
 | `docs/reconstruction/accounts-sessions-frontend-current-source-map.md` | accounts/sessions 前端当前源码链路 | `scripts/validate-frontend-accounts-sessions-current-source.mjs` 直接验证本文、accounts 与 sessions 的 route、service、query、mutation、cache、dialog、panel、mock、IPC contract、closeout 台账、README 归纳和未声明边界；不作为双平台全 leaf、全文案验收、闭源业务恢复、ChatGPT session account 真实导入或 `voice` 接入声明。 |

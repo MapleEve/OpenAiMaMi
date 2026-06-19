@@ -125,12 +125,12 @@ requireIncludes("mcp/skills current-source map", currentSourceMap, [
 
 requireIncludes("source-map mcp/skills 索引", sourceMap, [
   "docs/reconstruction/mcp-skills-current-source-map.md",
-  "mcp/skills 前端 index query owner",
+  "mcp/skills 前端 index 查询归属",
   "scripts/validate-frontend-mcp-skills-current-source.mjs",
 ]);
 
 requireIncludes("reconstruction README mcp/skills 索引", reconstructionReadme, [
-  "mcp/skills 前端 index query owner",
+  "mcp/skills 前端 index 查询归属",
   "docs/reconstruction/mcp-skills-current-source-map.md",
   "scripts/validate-frontend-mcp-skills-current-source.mjs",
 ]);

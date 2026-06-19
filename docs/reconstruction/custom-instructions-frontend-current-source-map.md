@@ -16,7 +16,7 @@
 | query | `src/features/custom-instructions/hooks/query.ts` | `loadState` 只通过 cache helper 写入 TanStack cache。 |
 | mutation | `src/features/custom-instructions/hooks/mutation.ts` | apply、clear、rollback 先准备 mutation fence，再写入 authoritative payload。 |
 | cache | `src/features/custom-instructions/cache/index.ts` | owning `CUSTOM_INSTRUCTION_STATE_QUERY_KEY`、mutation fence、stale/delayed/replay 防护和合同 query 失效。 |
-| page controller | `src/features/custom-instructions/hooks/page.ts` | 只 owning UI 草稿、弹窗开关、toast 和用户意图调度，不直接拼 IPC。 |
+| 页面控制器 | `src/features/custom-instructions/hooks/page.ts` | 只 owning UI 草稿、弹窗开关、toast 和用户意图调度，不直接拼 IPC。 |
 | dialogs/panels | `src/features/custom-instructions/dialogs/`、`src/features/custom-instructions/panels/` | 只渲染模块 UI 和发出 controller 意图。 |
 | E2E mock | `src/mocks/fixtures/commands.ts` | 五条 IPC 有专用 mock handler 和状态变更镜像。 |
 | IPC contract | `src/contracts/ipc/commands.ts` | 五条 IPC 归属 `custom-instructions` domain。 |

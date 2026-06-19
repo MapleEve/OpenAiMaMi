@@ -1,4 +1,4 @@
-# _shared feature Claude 执行规则
+# _shared 前端模块 Claude 执行规则
 
 ## 渐进式覆盖
 

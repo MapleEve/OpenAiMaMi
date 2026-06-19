@@ -9,7 +9,7 @@
 - 本目录和下级目录禁止写入共享盘地址、本机用户名、机器名、内部历史标识和外部参考仓库名称。
 
 
-## feature owner 边界
+## 模块归属边界
 
 - 复杂模块必须拆出 Provider / StoreUpdater / Content、hooks、cache、dialogs、panels、components、types 和贴近模块的 tests。
 - Provider 建立模块上下文，StoreUpdater 只同步外部 props/event/query cache 到模块状态，Content 只渲染和发出用户意图。

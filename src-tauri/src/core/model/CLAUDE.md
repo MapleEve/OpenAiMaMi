@@ -1,4 +1,4 @@
-# Rust domain model Claude 执行规则
+# Rust 领域模型 Claude 执行规则
 
 ## 渐进式覆盖
 
@@ -9,8 +9,8 @@
 - 本目录和下级目录禁止写入共享盘地址、本机用户名、机器名、内部历史标识和外部参考仓库名称。
 
 
-## domain model 边界
+## 领域模型边界
 
 - 本目录只放领域模型和值对象，不依赖 Tauri、真实文件系统或平台 API。
 - 模型字段必须来自证据或明确标为待补骨架。
-- 不得把 IPC envelope、前端 view model 或平台能力结果混入 domain model。
+- 不得把 IPC envelope、前端 view model 或平台能力结果混入 领域模型。

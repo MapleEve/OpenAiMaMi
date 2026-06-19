@@ -55,7 +55,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库保存匿名化 raw/inter
 - `large-file-policy.md`：大文件与外部资产策略。
 - `publication-rules.md`：匿名化和发布规则。
 
-### current-source / evidence map 索引
+### 当前源码 / 证据映射索引
 
 这些文件只记录当前公开源码与 raw/internal 证据之间的可审计映射、owner 边界和未声明边界；它们不是 raw/internal gate 闭合声明，也不表示双平台全 leaf 已完成。
 
@@ -63,7 +63,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库保存匿名化 raw/inter
 | --- | --- | --- |
 | 前端 current-source closeout 台账 | `docs/reconstruction/frontend-current-source-closeouts.json` | 前端 ledger-only 与 map-backed closeout 的聚合台账；由 `scripts/validate-frontend-current-source-closeouts.mjs` 校验条目边界、未恢复范围和非完成声明，由 `scripts/validate-public-boundary.mjs` 校验聚合索引。 |
 | accounts monitor 仓储预检 | `docs/reconstruction/accounts-monitor-current-source-map.md` | `begin_add_account_attach_monitor` 的仓储 registry 预检、`RepositoryRead` 状态和未恢复后台 monitor、线程、runtime event、平台副作用边界；由 `scripts/validate-backend-accounts-owner.mjs` 直接验证。 |
-| mcp/skills 前端 index query owner | `docs/reconstruction/mcp-skills-current-source-map.md` | `mcp-servers` 与 `installed-skills` 的 service、query、cache、overview consumer、mock 和后端入口 current-source owner-closed 链路；由 `scripts/validate-frontend-mcp-skills-current-source.mjs` 直接验证，不提升为双平台全 leaf 或闭源业务恢复声明。 |
+| mcp/skills 前端 index 查询归属 | `docs/reconstruction/mcp-skills-current-source-map.md` | `mcp-servers` 与 `installed-skills` 的 service、query、cache、overview consumer、mock 和后端入口 current-source owner-closed 链路；由 `scripts/validate-frontend-mcp-skills-current-source.mjs` 直接验证，不提升为双平台全 leaf 或闭源业务恢复声明。 |
 | accounts/analytics 前端链路与后端公开 owner | `docs/reconstruction/accounts-analytics-current-source-map.md` | `quota-history` 与 `usage-analytics` 的 service、query、mutation、cache、overview consumer、mock、IPC contract 定义和后端公开文件事实 owner；由 `scripts/validate-frontend-accounts-analytics-current-source.mjs` 直接验证，不声明闭源 token 统计、真实运行时统计、严格平台 parity、双平台全 leaf 或 `voice` 接入。 |
 | 通知客户端状态 settings 持久化收口 | `docs/reconstruction/notification-client-state-current-source-map.md` | `get_notification_client_state` 的 `deviceId` / `notificationsSince` settings 持久化读取创建事务、DTO 字段和未恢复通知运行时边界；由 `scripts/validate-backend-system-owner.mjs` 直接验证。 |
 | accounts/sessions 前端当前源码链路 | `docs/reconstruction/accounts-sessions-frontend-current-source-map.md` | accounts 与 sessions 的 route、service、query、mutation、cache、dialog、panel、mock、IPC contract、closeout 台账、README 归纳和未声明边界；由 `scripts/validate-frontend-accounts-sessions-current-source.mjs` 直接验证，不作为双平台全 leaf、全文案验收、闭源业务恢复、ChatGPT session account 真实导入或 `voice` 接入声明。 |
@@ -80,7 +80,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库保存匿名化 raw/inter
 | system hotspot 前端链路与后端骨架 | `docs/reconstruction/system-hotspot-current-source-map.md` | hotspot frontend chain、Rust hotspot owner 骨架和 strict gate 未恢复边界。 |
 | `system-usage` 前端当前源码链路 | `docs/reconstruction/system-usage-current-source-map.md` | 三条 usage 命令的服务门面、settings query/mutation/cache、overview usage refresh/cache、analytics service 和未恢复 watcher/daemon/runtime 副作用边界；由 `scripts/validate-frontend-system-usage-current-source.mjs` 直接验证。 |
 | system-window-maintenance 前端当前源码链路 | `docs/reconstruction/system-window-maintenance-current-source-map.md` | 六条 non-gating closed command、`load_snapshot` 未关闭边界、route/service/query/mutation/cache/mock/IPC contract 和未恢复后端真实副作用边界；由 `scripts/validate-frontend-system-window-maintenance-current-source.mjs` 直接验证。 |
-| 后端 system runtime watcher 骨架 | `docs/reconstruction/system-runtime-watchers-current-source-map.md` | watcher/schedule 信号的 current-source skeleton、daemon/runtime owner 和未恢复 runtime 行为；由 `scripts/validate-backend-daemon-owner.mjs` 直接验证。 |
+| 后端 system runtime watcher 骨架 | `docs/reconstruction/system-runtime-watchers-current-source-map.md` | watcher/schedule 信号的 current-source skeleton、daemon/运行时归属 和未恢复 runtime 行为；由 `scripts/validate-backend-daemon-owner.mjs` 直接验证。 |
 | daemon-autoswitch 待确认自动切换前端当前源码链路 | `docs/reconstruction/daemon-autoswitch-current-source-map.md` | 四条待确认自动切换命令的 system service、daemon-autoswitch service facade、query/mutation/cache/runtime subscription、prompt host、mock handlers、IPC contracts 和未恢复后端待确认队列、真实账号切换、真实重启、真实 watcher 边界；由 `scripts/validate-frontend-daemon-autoswitch-current-source.mjs` 直接验证。 |
 | 托盘 current-source 骨架 | `docs/reconstruction/tray-current-source-evidence-map.md` | Windows accepted tray target、current-source extra 和前后端 tray owner。 |
 | UI theme 前端调用链 | `docs/reconstruction/ui-theme-current-source-map.md` | UI theme 设置面板、Provider、service 和 Tauri theme API 调用链。 |

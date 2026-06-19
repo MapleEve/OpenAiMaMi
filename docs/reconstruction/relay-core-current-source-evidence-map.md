@@ -30,7 +30,7 @@
 | `src/features/relay/Provider.tsx`、`StoreUpdater.tsx`、`Content.tsx` | relay 模块拆出 Provider、StoreUpdater 和 Content；Content 挂载 dumped contract boundary。 |
 | `src/features/relay/contract.ts` | 记录 relay dumped command 合同和来源 chunk，覆盖当前公开 relay 命令集合。 |
 | `src/services/relay/index.ts` | relay service 统一收口 IPC 调用，包括 provider、router、audit、import/export、diagnostic 和 fix 等命令。 |
-| `src/features/relay/cache/index.ts` | 通过 `RelayCache`、query key、sequence guard、mutation payload 写入和 query invalidation 表达 TanStack owner。 |
+| `src/features/relay/cache/index.ts` | 通过 `RelayCache`、query key、sequence guard、mutation payload 写入和 query 失效 表达 TanStack owner。 |
 | `src/features/relay/hooks/query.ts` | owning `load_relay_state`、active state、proxy status、audit log 的 query 入口。 |
 | `src/features/relay/hooks/mutation.ts` | owning provider mutation、router toggle、diagnostic、fix、import/export 等用户动作入口；mutation payload 先写 cache，再按合同失效 query。 |
 | `src/features/relay/hooks/runtime.ts` | owning router toggle progress 事件到 query cache 的映射，不把事件直接写进展示组件状态。 |
@@ -46,7 +46,7 @@
 | `src-tauri/src/application/usecase/relay.rs`、`src-tauri/src/application/usecase/relay/` | relay 用户动作集中在 usecase；provider CRUD、active provider、passthrough policy、import/export、router diagnostic/fix、model/test mock terminal 和 payload 映射已拆分到子 owner；不启动代理进程、不发真实网络请求、不实现闭源流式代理。 |
 | `src-tauri/src/application/ports.rs` | relay 平台端口只暴露结构化能力和环境代理候选，真实 HTTP、进程和流式转发仍归 platform owner。 |
 | `src-tauri/src/core/relay.rs` | relay core 建立领域状态、operation key、cluster boundary、pending test/model/diagnostic/fix 语义，以及 `needs_stream_retry` / `should_retry_relay_test` 错误分类；不读写真实文件或网络。 |
-| `src-tauri/src/core/model/relay.rs` | relay domain model 拆出 provider、draft、proxy、state、cluster、operation、diagnostic、test 和 snapshot 值对象，不依赖 Tauri 或前端对象。 |
+| `src-tauri/src/core/model/relay.rs` | relay 领域模型 拆出 provider、draft、proxy、state、cluster、operation、diagnostic、test 和 snapshot 值对象，不依赖 Tauri 或前端对象。 |
 | `src-tauri/src/contracts/relay.rs` | Rust DTO 与前端 TypeScript 类型对齐，覆盖 provider、state、proxy、router toggle、test、import/export、audit、diagnostic 和 fix payload。 |
 | `src-tauri/src/repository/relay.rs` | repository 通过可替换 FS 读写 `relay-config.json`，恢复 provider CRUD、active provider、`blockOfficialPassthrough`、import/export、passthrough audit 读取、受管 router config 注入/移除和 diagnostic snapshot；不保存跨命令内存业务状态。 |
 | `src-tauri/src/platform/relay.rs` | relay platform adapter 只封装 OS 环境代理候选和能力占位，不解释 relay 业务状态，也不发起真实网络或进程操作。 |

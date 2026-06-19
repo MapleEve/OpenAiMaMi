@@ -26,7 +26,7 @@
 - `src/features/plugins/panels/page.tsx` 渲染 plugins 列表、空态、启用数量 copy signal，并通过 `controller.togglePlugin.run(id, checked)` 暴露非 builtin plugin 的 toggle 入口。
 - `src/features/plugins/hooks/query.ts` 通过 `pluginsService.list()` 读取列表，并用 `writePluginsListQueryPayload` 写入 TanStack cache。
 - `src/features/plugins/hooks/refresh.ts` 通过 `pluginsService.list()` 执行刷新，并用 `writePluginsRefreshPayload` 合并 payload。
-- `src/features/plugins/hooks/mutation.ts` 通过 `pluginsService.toggle` 执行开关 mutation，并覆盖 optimistic update、rollback 和 authoritative mutation payload 写入。
+- `src/features/plugins/hooks/mutation.ts` 通过 `pluginsService.toggle` 执行开关 mutation，并覆盖 optimistic 更新、rollback 和 authoritative mutation payload 写入。
 - `src/services/plugins/index.ts` 把 plugins 门面收口到 `runtimeExtensionsService`，包括 `list`、`toggle`、`getConfig` 与 `updateConfig`。
 - `src/services/runtime-extensions/index.ts` 通过 `invokeIpc` 暴露 `list_plugins`、`toggle_plugin`、`get_plugin_config` 与 `update_plugin_config`。
 - `src/mocks/fixtures/commands.ts` 提供 `listPluginsHandler`、`togglePluginHandler`、`getPluginConfigHandler` 与 `updatePluginConfigHandler`，并在 `pluginsCommandHandlers` 中注册四个命令。
@@ -34,7 +34,7 @@
 ## 已覆盖范围
 
 - `list_plugins`：当前源码已有可见 route、page、query hook、service wrapper、runtime-extension IPC wrapper、mock handler 和 list cache 写入。
-- `toggle_plugin`：当前源码已有可见 Switch 入口、mutation hook、optimistic update、rollback、authoritative mutation payload 写入、service wrapper、runtime-extension IPC wrapper 和 mock handler。
+- `toggle_plugin`：当前源码已有可见 Switch 入口、mutation hook、optimistic 更新、rollback、authoritative mutation payload 写入、service wrapper、runtime-extension IPC wrapper 和 mock handler。
 - `get_plugin_config`：当前源码只登记为 service/runtime-extension IPC wrapper 与 mock handler 合同链路，不声明有可见配置 UI leaf。
 - `update_plugin_config`：当前源码只登记为 service/runtime-extension IPC wrapper 与 mock handler 合同链路，不声明有可见配置保存 UI leaf。
 

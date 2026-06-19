@@ -1,8 +1,8 @@
-# accounts feature Agent 执行规则
+# accounts 前端模块 Agent 执行规则
 
 ## 渐进式覆盖
 
-- 本目录是 accounts 复杂前端模块的唯一 feature owner。
+- 本目录是 accounts 复杂前端模块的唯一 模块归属。
 - 下级目录规则只能收紧本文件，不能放宽入口、路由、Provider、StoreUpdater、Content、hooks、cache、dialogs、panels、components、types、tests 和 locale 的边界。
 - 禁止写入共享盘地址、本机用户名、机器名、内部历史标识和外部参考仓库名称。
 - 所有新增注释、文档和用户可见文案必须使用中文；用户可见文案必须进入 locale。

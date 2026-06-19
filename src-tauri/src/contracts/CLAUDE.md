@@ -11,6 +11,6 @@
 
 ## Rust contract 边界
 
-- 本目录只放 IPC DTO、envelope 和跨层错误契约，不放 domain model。
+- 本目录只放 IPC DTO、envelope 和跨层错误契约，不放 领域模型。
 - 错误按 Domain / Repository / Platform / Runtime 分类后映射 CoreError，保留诊断 code 和脱敏语义。
 - 改 DTO 必须同步前端 TypeScript 类型、API wrapper、Rust command 和 E2E mock。

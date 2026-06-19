@@ -1,4 +1,4 @@
-# _shared feature Agent 执行规则
+# _shared 前端模块 Agent 执行规则
 
 ## 渐进式覆盖
 

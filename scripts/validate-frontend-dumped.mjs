@@ -1032,7 +1032,7 @@ function validateAppShellRemoteSecretRestorationMatrix(raw, manifest) {
 
     for (const requirement of runtimeRequirements) {
       if (!requirement.ok) {
-        failures.push(`app-shell remote secret runtime owner 缺少：${requirement.name}`);
+        failures.push(`app-shell remote secret 运行时归属 缺少：${requirement.name}`);
       }
     }
   }
@@ -1056,13 +1056,13 @@ function validateAppShellRemoteSecretRestorationMatrix(raw, manifest) {
     );
 
     if (!importsRuntimeOwner) {
-      failures.push("RuntimeInitializer 必须导入 app-shell remote secret runtime owner");
+      failures.push("RuntimeInitializer 必须导入 app-shell remote secret 运行时归属");
     }
     if (exportedOwnerNames.length === 0) {
-      failures.push("app-shell remote secret runtime owner 必须导出 initializer 可调用的函数");
+      failures.push("app-shell remote secret 运行时归属 必须导出 initializer 可调用的函数");
     } else if (!callsRuntimeOwner) {
       failures.push(
-        `RuntimeInitializer 必须调用 app-shell remote secret runtime owner 导出函数：${exportedOwnerNames.join(", ")}`,
+        `RuntimeInitializer 必须调用 app-shell remote secret 运行时归属 导出函数：${exportedOwnerNames.join(", ")}`,
       );
     }
   }
@@ -1160,7 +1160,7 @@ function validateAppShellDesktopMessageQueryMatrix(raw, manifest) {
 
     for (const requirement of runtimeRequirements) {
       if (!requirement.ok) {
-        failures.push(`desktop-message runtime owner 缺少：${requirement.name}`);
+        failures.push(`desktop-message 运行时归属 缺少：${requirement.name}`);
       }
     }
 
@@ -1173,14 +1173,14 @@ function validateAppShellDesktopMessageQueryMatrix(raw, manifest) {
       /queryKey:\s*DESKTOP_MESSAGE_QUERY_KEY/.test(runtimeOwner);
     if (!hasCacheWrite && !hasOwnerHook) {
       failures.push(
-        "desktop-message runtime owner 必须包含 QueryClient cache write 或 useQuery owner hook。",
+        "desktop-message 运行时归属 必须包含 QueryClient cache write 或 useQuery owner hook。",
       );
     }
 
     const returnNullLines = unexplainedReturnNullLines(runtimeOwner);
     if (returnNullLines.length > 0) {
       failures.push(
-        `desktop-message runtime owner 禁止无说明的 return null stub：${contract.runtimeOwnerPath}:${returnNullLines.join(", ")}`,
+        `desktop-message 运行时归属 禁止无说明的 return null stub：${contract.runtimeOwnerPath}:${returnNullLines.join(", ")}`,
       );
     }
   }
@@ -1192,7 +1192,7 @@ function validateAppShellDesktopMessageQueryMatrix(raw, manifest) {
       /from\s+["'](?:\.\/message|@\/app\/runtime\/message)["']/.test(surface);
     if (!importsOwnerHook) {
       failures.push(
-        "desktop-message popover 必须通过 message runtime owner hook 消费查询结果。",
+        "desktop-message popover 必须通过 message 运行时归属 hook 消费查询结果。",
       );
     }
     if (/\buseQuery\s*\(/.test(surface) || /@tanstack\/react-query/.test(surface)) {
@@ -1213,7 +1213,7 @@ function validateAppShellDesktopMessageQueryMatrix(raw, manifest) {
   if (failures.length === before) {
     logPass("app-shell desktop-message query closure", `${hits.length}/${hits.length}`);
   } else {
-    logFail("app-shell desktop-message query closure", "存在 evidence、manifest 或 runtime owner 缺口");
+    logFail("app-shell desktop-message query closure", "存在 evidence、manifest 或 运行时归属 缺口");
   }
 }
 

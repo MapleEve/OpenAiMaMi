@@ -154,11 +154,11 @@ assertOutOfOrderOlderResponse(
 );
 
 if (failures.length > 0) {
-  console.error("FAIL analytics query/cache sequence validator");
+  console.error("FAIL analytics query/cache sequence 验证失败");
   for (const failure of failures) {
     console.error(`- ${failure}`);
   }
   process.exit(1);
 }
 
-console.log("PASS analytics query/cache sequence validator");
+console.log("PASS analytics query/cache sequence 验证通过");

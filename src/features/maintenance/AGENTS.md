@@ -1,4 +1,4 @@
-# maintenance feature Agent 执行规则
+# maintenance 前端模块 Agent 执行规则
 
 ## 渐进式覆盖
 
@@ -8,9 +8,9 @@
 - 本目录和下级目录禁止写入共享盘地址、本机用户名、机器名、内部历史标识和外部参考仓库名称。
 
 
-## maintenance feature owner
+## maintenance 模块归属
 
-- 本目录是 maintenance 复杂模块的唯一 feature owner。
+- 本目录是 maintenance 复杂模块的唯一 模块归属。
 - Provider 只建立模块上下文；StoreUpdater 只同步外部 props/event/query cache；Content 只渲染并发出用户意图。
 - cache/hooks 负责 query key、single-flight、mutation payload、stale/delayed response、abort 和 event replay 防护。
 - dialogs/panels/components 只消费模块状态和发出意图，不直接拼 IPC transport。

@@ -237,7 +237,7 @@ function assertStaticCacheContract(cache, query, mutation, packageJson) {
   ]);
 
   const invalidateBody = extractFunctionBody(cache, "invalidateMaintenanceContractQueries");
-  assertIncludes("maintenance invalidation 覆盖三个合同 query key", invalidateBody, [
+  assertIncludes("maintenance 失效 覆盖三个合同 query key", invalidateBody, [
     "MAINTENANCE_IMAGE_COMPAT_QUERY_KEY",
     "MAINTENANCE_SYSTEM_INFO_QUERY_KEY",
     "MAINTENANCE_SNAPSHOT_QUERY_KEY",

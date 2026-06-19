@@ -300,7 +300,7 @@ function assertSettingsContract(cache, query, mutation, types) {
     "if (accepted)",
     "await invalidateSettingsContractQueries(queryClient);",
   ]);
-  assertIncludes("settings invalidation 覆盖 usage 与 hotspot query key", extractFunctionBody(cache, "invalidateSettingsContractQueries"), [
+  assertIncludes("settings 失效 覆盖 usage 与 hotspot query key", extractFunctionBody(cache, "invalidateSettingsContractQueries"), [
     "SETTINGS_HOTSPOT_ENABLED_QUERY_KEY",
     "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
   ]);
@@ -405,12 +405,12 @@ function assertOverviewContract(cache, query, mutation, types) {
     "if (accepted)",
     "await invalidateOverviewContractQueries(queryClient);",
   ]);
-  assertIncludes("overview usage mutation invalidation 覆盖 usage analytics query", extractFunctionBody(cache, "invalidateOverviewUsageMutationQueries"), [
+  assertIncludes("overview usage mutation 失效 覆盖 usage analytics query", extractFunctionBody(cache, "invalidateOverviewUsageMutationQueries"), [
     "invalidateOverviewContractQueries(queryClient)",
     'queryKey: ["usage-analytics"]',
     'queryKey: ["analytics", "usage"]',
   ]);
-  assertIncludes("overview mystery grants invalidation 覆盖 mystery grants query key", extractFunctionBody(cache, "invalidateOverviewMysteryGrantsQueries"), [
+  assertIncludes("overview mystery grants 失效 覆盖 mystery grants query key", extractFunctionBody(cache, "invalidateOverviewMysteryGrantsQueries"), [
     "invalidateOverviewContractQueries(queryClient)",
     "OVERVIEW_MYSTERY_GRANTS_QUERY_KEY",
   ]);

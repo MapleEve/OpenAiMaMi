@@ -360,11 +360,11 @@ function runMutationSuccessOrderSimulation() {
   ];
 
   if (trace.join("\n") === expected.join("\n")) {
-    logPass("mutation success writes cache before fanout and invalidation", trace.join(" | "));
+    logPass("mutation success writes cache before fanout and 失效", trace.join(" | "));
     return;
   }
 
-  logFail("mutation success writes cache before fanout and invalidation", trace.join(" | "));
+  logFail("mutation success writes cache before fanout and 失效", trace.join(" | "));
   failures.push("mutation success order simulation did not match expected order");
 }
 
@@ -419,11 +419,11 @@ assertStaticCacheContract(cacheSource, mutationSource, readmeSource, packageJson
 assertRuntimeRaceContract();
 
 if (failures.length > 0) {
-  console.error("relay frontend cache validator failed:");
+  console.error("FAIL relay 前端 cache 验证失败：");
   for (const failure of failures) {
     console.error(`- ${failure}`);
   }
   process.exit(1);
 }
 
-console.log("relay frontend cache validator passed.");
+console.log("PASS relay 前端 cache 验证通过。");

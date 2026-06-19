@@ -156,7 +156,7 @@ function assertOnlyBarrelReExports(file, content, owners) {
     .trim();
 
   if (remainder) {
-    failures.push(`${file} 只能作为 re-export barrel，不得包含 hook 实现、cache 写入或 page controller`);
+    failures.push(`${file} 只能作为 re-export barrel，不得包含 hook 实现、cache 写入或 页面控制器`);
   }
 
   for (const owner of owners) {
@@ -210,7 +210,7 @@ function validateAccountsDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/accounts/hooks/index.ts", hooksIndex, [
     [/\b(useQuery|useMutation|useQueryClient|useState|useReducer|useEffect|useMemo|useCallback)\b/, "accounts hooks/index can only re-export split owners"],
-    [/\b(writeAccounts|setQueryData|invalidateQueries|cancelQueries|Accounts[A-Za-z]*QueryKeys)\b/, "accounts hooks/index must not own cache writes or query keys"],
+    [/\b(writeAccounts|setQueryData|invalidateQueries|cancelQueries|Accounts[A-Za-z]*QueryKeys)\b/, "accounts hooks/index 不得持有 cache 写入 or query keys"],
     [/@\/services\/accounts|@\/services\/system|@\/services\/maintenance|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|accountsService\.|systemService\.|maintenanceService\.|invokeIpc|invoke\(/, "accounts hooks/index must not access service/API/IPC"],
   ]);
 
@@ -227,12 +227,12 @@ function validateAccountsDeepOwnerBoundaries() {
     "AccountsSnapshotEnvelope",
   ]);
   assertNotMatches("src/features/accounts/hooks/query.ts", query, [
-    [/\buseMutation\b/, "accounts query owner must not own mutation"],
-    [/\buse(State|Reducer|Memo|Callback)\b/, "accounts query owner must not own page/controller UI state or view models"],
-    [/\b(writeAccountsMutationPayload|invalidateAccountsDumpedQueries|setQueryData|cancelQueries)\b/, "accounts query owner must delegate mutation writes and invalidation"],
-    [/useTranslation|AccountsPageController|setQuery|setPlanFilter|setSelectedKey|envelopeData|readArray|accountEmail|accountKey|accountPlan|isActiveAccount/, "accounts query owner must not own page controller, locale formatting, or view model parsing"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "accounts query owner must use accounts service wrapper, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "accounts query owner must keep typed authoritative payloads"],
+    [/\buseMutation\b/, "accounts 查询归属 不得持有 mutation"],
+    [/\buse(State|Reducer|Memo|Callback)\b/, "accounts 查询归属 不得持有 页面/控制器 UI 状态 or view models"],
+    [/\b(writeAccountsMutationPayload|invalidateAccountsDumpedQueries|setQueryData|cancelQueries)\b/, "accounts 查询归属 必须委托 mutation writes and 失效"],
+    [/useTranslation|AccountsPageController|setQuery|setPlanFilter|setSelectedKey|envelopeData|readArray|accountEmail|accountKey|accountPlan|isActiveAccount/, "accounts 查询归属 不得持有 页面控制器, locale 格式化, or view model 解析"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "accounts 查询归属 必须使用 accounts service wrapper, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "accounts 查询归属 必须保留 typed authoritative payloads"],
   ]);
 
   assertIncludes("src/features/accounts/hooks/mutation.ts", mutation, [
@@ -254,12 +254,12 @@ function validateAccountsDeepOwnerBoundaries() {
     "invalidateAccountsDumpedQueries",
   ]);
   assertNotMatches("src/features/accounts/hooks/mutation.ts", mutation, [
-    [/\buseQuery\b/, "accounts mutation owner must not own query"],
-    [/\buse(State|Reducer|Effect|Memo|Callback)\b/, "accounts mutation owner must not own page/controller UI state"],
-    [/\bsetQueryData\b/, "accounts mutation owner must delegate cache writes to cache helper"],
-    [/useTranslation|AccountsPageController|setQuery|setPlanFilter|setSelectedKey|envelopeData|readArray|accountEmail|accountPlan|isActiveAccount/, "accounts mutation owner must not own page controller, locale formatting, or view model parsing"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "accounts mutation owner must use accounts service wrapper, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|useMutation<unknown/, "accounts mutation owner must keep typed mutation payloads"],
+    [/\buseQuery\b/, "accounts 变更操作归属 不得持有 query"],
+    [/\buse(State|Reducer|Effect|Memo|Callback)\b/, "accounts 变更操作归属 不得持有 页面/控制器 UI 状态"],
+    [/\bsetQueryData\b/, "accounts 变更操作归属 必须委托 cache 写入 to cache helper"],
+    [/useTranslation|AccountsPageController|setQuery|setPlanFilter|setSelectedKey|envelopeData|readArray|accountEmail|accountPlan|isActiveAccount/, "accounts 变更操作归属 不得持有 页面控制器, locale 格式化, or view model 解析"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "accounts 变更操作归属 必须使用 accounts service wrapper, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|useMutation<unknown/, "accounts 变更操作归属 必须保留 类型化 mutation payload"],
   ]);
 
   assertIncludes("src/features/accounts/hooks/action.ts", action, [
@@ -267,10 +267,10 @@ function validateAccountsDeepOwnerBoundaries() {
     "accountsService.openPath",
   ]);
   assertNotMatches("src/features/accounts/hooks/action.ts", action, [
-    [/\buse(Query|Mutation|QueryClient)\b/, "accounts action owner must not call TanStack directly"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries|writeAccounts|Accounts[A-Za-z]*QueryKeys)\b/, "accounts action owner must not write cache or consume query keys"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "accounts action owner must not bypass service wrapper"],
-    [/useTranslation|AccountsPageController|setQuery|setPlanFilter|setSelectedKey|envelopeData|readArray/, "accounts action owner must not own page controller or UI view model"],
+    [/\buse(Query|Mutation|QueryClient)\b/, "accounts 动作归属 must not call TanStack directly"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries|writeAccounts|Accounts[A-Za-z]*QueryKeys)\b/, "accounts 动作归属 must not write cache or consume query keys"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "accounts 动作归属 must not bypass service wrapper"],
+    [/useTranslation|AccountsPageController|setQuery|setPlanFilter|setSelectedKey|envelopeData|readArray/, "accounts 动作归属 不得持有 页面控制器 or UI view model"],
   ]);
 
   assertIncludes("src/features/accounts/hooks/page.ts", page, [
@@ -308,7 +308,7 @@ function validateAccountsDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/accounts/types/index.ts", types, [
     [/AccountsPageController\s*=\s*ReturnType|ReturnType<typeof useAccountsPageController>|ReturnType<typeof useAccountsModule>/, "accounts controller contract must be explicit, not ReturnType"],
-    [/AccountsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "accounts types owner must keep typed cache payloads"],
+    [/AccountsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "accounts types owner 必须保留 typed cache payloads"],
   ]);
 
   assertIncludes("src/features/accounts/cache/index.ts", cache, [
@@ -324,9 +324,9 @@ function validateAccountsDeepOwnerBoundaries() {
     "next.sequence < current.sequence",
   ]);
   assertNotMatches("src/features/accounts/cache/index.ts", cache, [
-    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "accounts cache owner must not own React hooks"],
+    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "accounts cache owner 不得持有 React hooks"],
     [/@\/services\/accounts|@\/services\/system|@\/services\/maintenance|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|accountsService\.|systemService\.|maintenanceService\.|invokeIpc|invoke\(/, "accounts cache owner must not access service/API/IPC"],
-    [/createModuleCacheOwner\("accounts"\)|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "accounts cache owner must keep typed payloads"],
+    [/createModuleCacheOwner\("accounts"\)|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "accounts cache owner 必须保留 typed payloads"],
   ]);
 
   if (
@@ -376,7 +376,7 @@ function validateSessionsDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/sessions/hooks/index.ts", hooksIndex, [
     [/\b(useQuery|useMutation|useQueryClient|useState|useReducer|useEffect|useMemo|useCallback|useRef)\b/, "sessions hooks/index can only re-export split owners"],
-    [/\b(writeSessions|writeAnalytics|fenceAnalytics|setQueryData|invalidateQueries|cancelQueries|Sessions[A-Za-z]*QueryKeys|Analytics[A-Za-z]*QueryKeys)\b/, "sessions hooks/index must not own cache writes or query keys"],
+    [/\b(writeSessions|writeAnalytics|fenceAnalytics|setQueryData|invalidateQueries|cancelQueries|Sessions[A-Za-z]*QueryKeys|Analytics[A-Za-z]*QueryKeys)\b/, "sessions hooks/index 不得持有 cache 写入 or query keys"],
     [/@\/services\/sessions|@\/services\/analytics|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|sessionsService\.|analyticsService\.|invokeIpc|invoke\(/, "sessions hooks/index must not access service/API/IPC"],
   ]);
 
@@ -397,12 +397,12 @@ function validateSessionsDeepOwnerBoundaries() {
     "writeAnalyticsPanelPayload",
   ]);
   assertNotMatches("src/features/sessions/hooks/query.ts", query, [
-    [/\buseMutation\b/, "sessions query owner must not own mutation"],
-    [/\buse(State|Reducer|Memo|Callback)\b/, "sessions query owner must not own page/controller UI state or view models"],
-    [/\b(writeSessionsMutationPayload|invalidateSessionsDumpedQueries|fenceAnalyticsPanelPayload|setQueryData|cancelQueries)\b/, "sessions query owner must delegate mutation writes, fences, and invalidation"],
-    [/useTranslation|SessionsPageController|SessionsModuleController|setSelected|setExpanded|setFocused|deleteRequest|setDeleteRequest|buildSessionGroups|countOrphans|flattenGroups|formatBytes|readNumber|selectDeletedSessionIds/, "sessions query owner must not own page controller, locale formatting, view model, or delete dialog state"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "sessions query owner must use sessions/analytics service wrappers, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>|response\.data/, "sessions query owner must keep typed authoritative payloads"],
+    [/\buseMutation\b/, "sessions 查询归属 不得持有 mutation"],
+    [/\buse(State|Reducer|Memo|Callback)\b/, "sessions 查询归属 不得持有 页面/控制器 UI 状态 or view models"],
+    [/\b(writeSessionsMutationPayload|invalidateSessionsDumpedQueries|fenceAnalyticsPanelPayload|setQueryData|cancelQueries)\b/, "sessions 查询归属 必须委托 mutation writes, fences, and 失效"],
+    [/useTranslation|SessionsPageController|SessionsModuleController|setSelected|setExpanded|setFocused|deleteRequest|setDeleteRequest|buildSessionGroups|countOrphans|flattenGroups|formatBytes|readNumber|selectDeletedSessionIds/, "sessions 查询归属 不得持有 页面控制器, locale 格式化, view model, or delete 弹窗状态"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "sessions 查询归属 必须使用 sessions/analytics service wrappers, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>|response\.data/, "sessions 查询归属 必须保留 typed authoritative payloads"],
   ]);
 
   assertIncludes("src/features/sessions/hooks/mutation.ts", mutation, [
@@ -419,12 +419,12 @@ function validateSessionsDeepOwnerBoundaries() {
     failures.push("src/features/sessions/hooks/mutation.ts must own single-flight refresh");
   }
   assertNotMatches("src/features/sessions/hooks/mutation.ts", mutation, [
-    [/\buseQuery\b/, "sessions mutation owner must not own query"],
-    [/\buse(State|Reducer|Effect|Memo|Callback)\b/, "sessions mutation owner must not own page/controller UI state"],
-    [/\bsetQueryData\b/, "sessions mutation owner must delegate cache writes to cache helper"],
-    [/useTranslation|SessionsPageController|setSelected|setExpanded|setFocused|deleteRequest|setDeleteRequest|buildSessionGroups|countOrphans|flattenGroups|formatBytes|readNumber/, "sessions mutation owner must not own page controller, locale formatting, view model, or delete dialog state"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "sessions mutation owner must use sessions service wrapper, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>|useMutation<unknown|Promise<unknown>|response\.data/, "sessions mutation owner must keep typed mutation payloads"],
+    [/\buseQuery\b/, "sessions 变更操作归属 不得持有 query"],
+    [/\buse(State|Reducer|Effect|Memo|Callback)\b/, "sessions 变更操作归属 不得持有 页面/控制器 UI 状态"],
+    [/\bsetQueryData\b/, "sessions 变更操作归属 必须委托 cache 写入 to cache helper"],
+    [/useTranslation|SessionsPageController|setSelected|setExpanded|setFocused|deleteRequest|setDeleteRequest|buildSessionGroups|countOrphans|flattenGroups|formatBytes|readNumber/, "sessions 变更操作归属 不得持有 页面控制器, locale 格式化, view model, or delete 弹窗状态"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "sessions 变更操作归属 必须使用 sessions service wrapper, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>|useMutation<unknown|Promise<unknown>|response\.data/, "sessions 变更操作归属 必须保留 类型化 mutation payload"],
   ]);
 
   assertIncludes("src/features/sessions/hooks/page.ts", page, [
@@ -465,7 +465,7 @@ function validateSessionsDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/sessions/types/index.ts", types, [
     [/Sessions[A-Za-z]*(?:Controller|Queries|Mutations)\s*=\s*ReturnType|ReturnType<typeof useSessions[A-Za-z]*/, "sessions controller contracts must be explicit, not hook ReturnType"],
-    [/SessionsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>/, "sessions types owner must keep typed cache payloads"],
+    [/SessionsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>/, "sessions types owner 必须保留 typed cache payloads"],
   ]);
 
   assertIncludes("src/features/sessions/cache/index.ts", cache, [
@@ -481,9 +481,9 @@ function validateSessionsDeepOwnerBoundaries() {
     "next.sequence < current.sequence",
   ]);
   assertNotMatches("src/features/sessions/cache/index.ts", cache, [
-    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback|Ref)\b/, "sessions cache owner must not own React hooks"],
+    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback|Ref)\b/, "sessions cache owner 不得持有 React hooks"],
     [/@\/services\/sessions|@\/services\/analytics|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|sessionsService\.|analyticsService\.|invokeIpc|invoke\(/, "sessions cache owner must not access service/API/IPC"],
-    [/createModuleCacheOwner\("sessions"\)|ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>/, "sessions cache owner must keep typed payloads"],
+    [/createModuleCacheOwner\("sessions"\)|ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>/, "sessions cache owner 必须保留 typed payloads"],
   ]);
 
   if (
@@ -530,7 +530,7 @@ function validateAnalyticsDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/analytics/hooks/index.ts", hooksIndex, [
     [/\b(useQuery|useMutation|useQueryClient|useState|useReducer|useEffect|useMemo|useCallback)\b/, "analytics hooks/index can only re-export split owners"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries|writeAnalytics|fenceAnalytics|Analytics[A-Za-z]*QueryKeys)\b/, "analytics hooks/index must not own cache writes or query keys"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries|writeAnalytics|fenceAnalytics|Analytics[A-Za-z]*QueryKeys)\b/, "analytics hooks/index 不得持有 cache 写入 or query keys"],
     [/@\/services\/analytics|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|analyticsService\.|invokeIpc|invoke\(/, "analytics hooks/index must not access service/API/IPC"],
   ]);
 
@@ -557,12 +557,12 @@ function validateAnalyticsDeepOwnerBoundaries() {
     "AnalyticsCacheEnvelope<AnalyticsQuotaEnvelope>",
   ]);
   assertNotMatches("src/features/analytics/hooks/query.ts", query, [
-    [/\buseMutation\b/, "analytics query owner must not own mutation"],
-    [/\buse(State|Reducer|Memo)\b/, "analytics query owner must not own page/controller UI state or view models"],
-    [/useTranslation|formatInvokeError|build[A-Za-z]*(Panel|Model)|AnalyticsPageController|setActivePanel|setRange|setActivityRange|setQuotaAccountKey/, "analytics query owner must not own page controller, locale formatting, or panel view models"],
-    [/\b(useRef|sequenceRef|nextSequence|writeAnalyticsPanelPayload)\b/, "analytics query owner must delegate sequence allocation and cache writes to cache helper"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "analytics query owner must use analytics service wrapper, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "analytics query owner must keep typed authoritative payloads"],
+    [/\buseMutation\b/, "analytics 查询归属 不得持有 mutation"],
+    [/\buse(State|Reducer|Memo)\b/, "analytics 查询归属 不得持有 页面/控制器 UI 状态 or view models"],
+    [/useTranslation|formatInvokeError|build[A-Za-z]*(Panel|Model)|AnalyticsPageController|setActivePanel|setRange|setActivityRange|setQuotaAccountKey/, "analytics 查询归属 不得持有 页面控制器, locale 格式化, or panel view models"],
+    [/\b(useRef|sequenceRef|nextSequence|writeAnalyticsPanelPayload)\b/, "analytics 查询归属 必须委托 sequence allocation and cache 写入 to cache helper"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "analytics 查询归属 必须使用 analytics service wrapper, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "analytics 查询归属 必须保留 typed authoritative payloads"],
   ]);
 
   assertIncludes("src/features/analytics/hooks/page.ts", page, [
@@ -601,7 +601,7 @@ function validateAnalyticsDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/analytics/types/index.ts", types, [
     [/AnalyticsPageController\s*=\s*ReturnType|ReturnType<typeof useAnalyticsPageController>/, "analytics controller contract must be explicit, not ReturnType"],
-    [/AnalyticsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "analytics types owner must keep typed cache payloads"],
+    [/AnalyticsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "analytics types owner 必须保留 typed cache payloads"],
   ]);
 
   assertIncludes("src/features/analytics/cache/index.ts", cache, [
@@ -621,9 +621,9 @@ function validateAnalyticsDeepOwnerBoundaries() {
     "next.sequence < current.sequence",
   ]);
   assertNotMatches("src/features/analytics/cache/index.ts", cache, [
-    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "analytics cache owner must not own React hooks"],
+    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "analytics cache owner 不得持有 React hooks"],
     [/@\/services\/analytics|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|analyticsService\.|invokeIpc|invoke\(/, "analytics cache owner must not access service/API/IPC"],
-    [/createModuleCacheOwner\("analytics"\)|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "analytics cache owner must keep typed payloads"],
+    [/createModuleCacheOwner\("analytics"\)|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "analytics cache owner 必须保留 typed payloads"],
   ]);
 
   if (controllerConsumerText.includes("ReturnType<typeof useAnalyticsPageController>")) {
@@ -683,7 +683,7 @@ function validateCustomInstructionsDeepOwnerBoundaries() {
     "../types",
   ]);
   if (hooksIndexRemainder) {
-    failures.push("src/features/custom-instructions/hooks/index.ts 只能作为 re-export barrel，不得包含 hook 实现、cache 写入或 page controller");
+    failures.push("src/features/custom-instructions/hooks/index.ts 只能作为 re-export barrel，不得包含 hook 实现、cache 写入或 页面控制器");
   }
   for (const owner of ["query", "mutation", "action", "page"]) {
     if (!hooksIndexReExports.some((item) => item.path === `./${owner}`)) {
@@ -700,7 +700,7 @@ function validateCustomInstructionsDeepOwnerBoundaries() {
   }
   assertNotMatches("src/features/custom-instructions/hooks/index.ts", hooksIndex, [
     [/\b(useQuery|useMutation|useQueryClient|useState|useReducer|useEffect|useMemo|useCallback)\b/, "custom-instructions hooks/index can only re-export split owners"],
-    [/\b(runCustomInstructionsStateQuery|writeCustomInstructions|setQueryData|invalidateQueries|cancelQueries|CUSTOM_INSTRUCTION_[A-Z0-9_]+_QUERY_KEY)\b/, "custom-instructions hooks/index must not own query keys or cache writes"],
+    [/\b(runCustomInstructionsStateQuery|writeCustomInstructions|setQueryData|invalidateQueries|cancelQueries|CUSTOM_INSTRUCTION_[A-Z0-9_]+_QUERY_KEY)\b/, "custom-instructions hooks/index 不得持有 query keys or cache 写入"],
     [/@\/services\/custom-instructions|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|customInstructionsService\.|systemService\.|invokeIpc|invoke\(/, "custom-instructions hooks/index must not access service/API/IPC"],
   ]);
 
@@ -717,12 +717,12 @@ function validateCustomInstructionsDeepOwnerBoundaries() {
     "mergeCustomInstructionTemplates",
   ]);
   assertNotMatches("src/features/custom-instructions/hooks/query.ts", query, [
-    [/\buseMutation\b/, "custom-instructions query owner must not own mutation"],
-    [/\buse(State|Reducer|Memo|Callback)\b/, "custom-instructions query owner must not own page/controller UI state or view models"],
-    [/\b(writeCustomInstructionsStateMutationPayload|invalidateCustomInstructionsContractQueries|setQueryData|cancelQueries)\b/, "custom-instructions query owner must delegate mutation writes and invalidation"],
-    [/toast\(|useTranslation|useBusyAction|CustomInstructionsPageController|loadErrorPanel|setDraftContent|setPreview|setPendingApply/, "custom-instructions query owner must not own page controller, locale formatting, busy actions, or dialog state"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "custom-instructions query owner must use module service wrapper, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "custom-instructions query owner must keep typed authoritative payloads"],
+    [/\buseMutation\b/, "custom-instructions 查询归属 不得持有 mutation"],
+    [/\buse(State|Reducer|Memo|Callback)\b/, "custom-instructions 查询归属 不得持有 页面/控制器 UI 状态 or view models"],
+    [/\b(writeCustomInstructionsStateMutationPayload|invalidateCustomInstructionsContractQueries|setQueryData|cancelQueries)\b/, "custom-instructions 查询归属 必须委托 mutation writes and 失效"],
+    [/toast\(|useTranslation|useBusyAction|CustomInstructionsPageController|loadErrorPanel|setDraftContent|setPreview|setPendingApply/, "custom-instructions 查询归属 不得持有 页面控制器, locale 格式化, busy 动作, or 弹窗状态"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "custom-instructions 查询归属 必须使用 module service wrapper, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "custom-instructions 查询归属 必须保留 typed authoritative payloads"],
   ]);
 
   assertIncludes("src/features/custom-instructions/hooks/mutation.ts", mutation, [
@@ -737,12 +737,12 @@ function validateCustomInstructionsDeepOwnerBoundaries() {
     "writeCustomInstructionsStateMutationPayload",
   ]);
   assertNotMatches("src/features/custom-instructions/hooks/mutation.ts", mutation, [
-    [/\buseQuery\b/, "custom-instructions mutation owner must not own query"],
-    [/\buse(State|Reducer|Effect|Memo|Callback)\b/, "custom-instructions mutation owner must not own page/controller UI state"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "custom-instructions mutation owner must delegate mutation fence, cache writes, query cancellation, and invalidation to cache helper"],
-    [/toast\(|useTranslation|useBusyAction|CustomInstructionsPageController|setDraftContent|setPreview|setPendingApply|previewOpen|clearOpen/, "custom-instructions mutation owner must not own page controller, locale formatting, busy actions, or dialog state"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "custom-instructions mutation owner must use module service wrapper, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|useMutation<unknown|Promise<unknown>/, "custom-instructions mutation owner must keep typed mutation payloads"],
+    [/\buseQuery\b/, "custom-instructions 变更操作归属 不得持有 query"],
+    [/\buse(State|Reducer|Effect|Memo|Callback)\b/, "custom-instructions 变更操作归属 不得持有 页面/控制器 UI 状态"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "custom-instructions 变更操作归属 必须委托 mutation fence, cache 写入, query 取消, and 失效 to cache helper"],
+    [/toast\(|useTranslation|useBusyAction|CustomInstructionsPageController|setDraftContent|setPreview|setPendingApply|previewOpen|clearOpen/, "custom-instructions 变更操作归属 不得持有 页面控制器, locale 格式化, busy 动作, or 弹窗状态"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "custom-instructions 变更操作归属 必须使用 module service wrapper, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|useMutation<unknown|Promise<unknown>/, "custom-instructions 变更操作归属 必须保留 类型化 mutation payload"],
   ]);
 
   assertIncludes("src/features/custom-instructions/hooks/action.ts", action, [
@@ -750,10 +750,10 @@ function validateCustomInstructionsDeepOwnerBoundaries() {
     "customInstructionsService.openPath",
   ]);
   assertNotMatches("src/features/custom-instructions/hooks/action.ts", action, [
-    [/\buse(Query|Mutation|QueryClient)\b/, "custom-instructions action owner must not call TanStack directly"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries|runCustomInstructionsStateQuery|writeCustomInstructions|CUSTOM_INSTRUCTION_[A-Z0-9_]+_QUERY_KEY)\b/, "custom-instructions action owner must not write cache or consume query keys"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "custom-instructions action owner must not bypass service wrapper"],
-    [/toast\(|useTranslation|useBusyAction|CustomInstructionsPageController|setDraftContent|setPreview|setPendingApply/, "custom-instructions action owner must not own page controller or UI feedback"],
+    [/\buse(Query|Mutation|QueryClient)\b/, "custom-instructions 动作归属 must not call TanStack directly"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries|runCustomInstructionsStateQuery|writeCustomInstructions|CUSTOM_INSTRUCTION_[A-Z0-9_]+_QUERY_KEY)\b/, "custom-instructions 动作归属 must not write cache or consume query keys"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "custom-instructions 动作归属 must not bypass service wrapper"],
+    [/toast\(|useTranslation|useBusyAction|CustomInstructionsPageController|setDraftContent|setPreview|setPendingApply/, "custom-instructions 动作归属 不得持有 页面控制器 or UI feedback"],
   ]);
 
   assertIncludes("src/features/custom-instructions/hooks/page.ts", page, [
@@ -795,7 +795,7 @@ function validateCustomInstructionsDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/custom-instructions/types/index.ts", types, [
     [/CustomInstructionsPageController\s*=\s*ReturnType|ReturnType<typeof useCustomInstructionsPageController>/, "custom-instructions controller contract must be explicit, not ReturnType"],
-    [/CustomInstructionsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "custom-instructions types owner must keep typed cache payloads"],
+    [/CustomInstructionsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "custom-instructions types owner 必须保留 typed cache payloads"],
   ]);
 
   assertIncludes("src/features/custom-instructions/cache/index.ts", cache, [
@@ -822,9 +822,9 @@ function validateCustomInstructionsDeepOwnerBoundaries() {
     failures.push("src/features/custom-instructions/cache/index.ts must own sequence/stale/delayed response protection");
   }
   assertNotMatches("src/features/custom-instructions/cache/index.ts", cache, [
-    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "custom-instructions cache owner must not own React hooks"],
+    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "custom-instructions cache owner 不得持有 React hooks"],
     [/@\/services\/custom-instructions|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|customInstructionsService\.|systemService\.|invokeIpc|invoke\(/, "custom-instructions cache owner must not access service/API/IPC"],
-    [/createModuleCacheOwner\("custom-instructions"\)|CustomInstructionsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "custom-instructions cache owner must keep typed payloads"],
+    [/createModuleCacheOwner\("custom-instructions"\)|CustomInstructionsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "custom-instructions cache owner 必须保留 typed payloads"],
   ]);
 
   if (controllerConsumerText.includes("ReturnType<typeof useCustomInstructionsPageController>")) {
@@ -872,7 +872,7 @@ function validateMcpDeepOwnerBoundaries() {
     .trim();
 
   if (barrelRemainder) {
-    failures.push("src/features/mcp/hooks/index.ts 只能作为 re-export barrel，不得包含 hook 实现、cache 写入或 page controller");
+    failures.push("src/features/mcp/hooks/index.ts 只能作为 re-export barrel，不得包含 hook 实现、cache 写入或 页面控制器");
   }
   for (const ownerFile of ["query", "mutation", "page"]) {
     if (!hooksIndex.includes(`from "./${ownerFile}"`) && !hooksIndex.includes(`from './${ownerFile}'`)) {
@@ -893,11 +893,11 @@ function validateMcpDeepOwnerBoundaries() {
     "writeMcpCachePayload",
   ]);
   assertNotMatches("src/features/mcp/hooks/query.ts", query, [
-    [/\buseMutation\b/, "mcp query owner 不得 owning mutation"],
-    [/\buse(State|Reducer)\b/, "mcp query owner 不得 owning 页面短生命周期 UI state"],
-    [/\b(setQueryData|cancelQueries)\b/, "mcp query owner 不得 owning mutation cache 写入或取消"],
-    [/toast\(|navigator\.clipboard/, "mcp query owner 不得 owning toast 或剪贴板 UI 组合"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "mcp query owner 必须经 mcp service wrapper，不得直接拼 IPC"],
+    [/\buseMutation\b/, "mcp 查询归属 不得 owning mutation"],
+    [/\buse(State|Reducer)\b/, "mcp 查询归属 不得 owning 页面短生命周期 UI state"],
+    [/\b(setQueryData|cancelQueries)\b/, "mcp 查询归属 不得 owning mutation cache 写入或取消"],
+    [/toast\(|navigator\.clipboard/, "mcp 查询归属 不得 owning toast 或剪贴板 UI 组合"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "mcp 查询归属 必须经 mcp service wrapper，不得直接拼 IPC"],
   ]);
 
   assertIncludes("src/features/mcp/hooks/mutation.ts", mutation, [
@@ -910,11 +910,11 @@ function validateMcpDeepOwnerBoundaries() {
     "writeMcpMutationPayload",
   ]);
   assertNotMatches("src/features/mcp/hooks/mutation.ts", mutation, [
-    [/\buseQuery\b/, "mcp mutation owner 不得 owning query"],
-    [/\buse(State|Reducer|Effect|Memo)\b/, "mcp mutation owner 不得 owning page/controller UI state"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "mcp mutation owner 必须把 mutation fence、cache 写入、失效和取消交给 cache helper"],
-    [/toast\(|navigator\.clipboard/, "mcp mutation owner 不得 owning toast 或剪贴板 UI 组合"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "mcp mutation owner 必须经 mcp service wrapper，不得直接拼 IPC"],
+    [/\buseQuery\b/, "mcp 变更操作归属 不得 owning query"],
+    [/\buse(State|Reducer|Effect|Memo)\b/, "mcp 变更操作归属 不得 owning 页面/控制器 UI 状态"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "mcp 变更操作归属 必须把 mutation fence、cache 写入、失效和取消交给 cache helper"],
+    [/toast\(|navigator\.clipboard/, "mcp 变更操作归属 不得 owning toast 或剪贴板 UI 组合"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "mcp 变更操作归属 必须经 mcp service wrapper，不得直接拼 IPC"],
   ]);
 
   assertIncludes("src/features/mcp/hooks/page.ts", page, [
@@ -1063,11 +1063,11 @@ function validatePluginsDeepOwnerBoundaries() {
     "writePluginsListQueryPayload",
   ]);
   assertNotMatches("src/features/plugins/hooks/query.ts", query, [
-    [/\buseMutation\b/, "plugins query owner 不得 owning mutation 或 refresh mutation"],
-    [/\buse(State|Reducer)\b/, "plugins query owner 不得 owning 页面短生命周期 UI state"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "plugins query owner 不得 owning cache 写入、失效或取消"],
-    [/toast\(|useToast|navigator\.clipboard/, "plugins query owner 不得 owning toast 或 UI 组合"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "plugins query owner 必须经 plugins service wrapper，不得直接拼 IPC"],
+    [/\buseMutation\b/, "plugins 查询归属 不得 owning mutation 或 refresh mutation"],
+    [/\buse(State|Reducer)\b/, "plugins 查询归属 不得 owning 页面短生命周期 UI state"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "plugins 查询归属 不得 owning cache 写入、失效或取消"],
+    [/toast\(|useToast|navigator\.clipboard/, "plugins 查询归属 不得 owning toast 或 UI 组合"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "plugins 查询归属 必须经 plugins service wrapper，不得直接拼 IPC"],
   ]);
 
   assertIncludes("src/features/plugins/hooks/refresh.ts", refresh, [
@@ -1082,9 +1082,9 @@ function validatePluginsDeepOwnerBoundaries() {
   }
   assertNotMatches("src/features/plugins/hooks/refresh.ts", refresh, [
     [/\buseQuery\b/, "plugins refresh owner 不得 owning list query"],
-    [/\buse(State|Reducer|Effect|Memo)\b/, "plugins refresh owner 不得 owning page/controller UI state"],
+    [/\buse(State|Reducer|Effect|Memo)\b/, "plugins refresh owner 不得 owning 页面/控制器 UI 状态"],
     [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "plugins refresh owner 必须把 cache 写入、失效和取消交给 cache helper"],
-    [/writePluginsMutationPayload|optimisticallyUpdatePluginsToggle|rollbackPluginsToggle/, "plugins refresh owner 不得 owning toggle mutation payload、optimistic update 或 rollback"],
+    [/writePluginsMutationPayload|optimisticallyUpdatePluginsToggle|rollbackPluginsToggle/, "plugins refresh owner 不得 owning toggle mutation payload、optimistic 更新 或 rollback"],
     [/pluginsService\.(getConfig|updateConfig)|getPluginConfig|updatePluginConfig/, "plugins refresh owner 不得消费 config service"],
     [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "plugins refresh owner 必须经 plugins service wrapper，不得直接拼 IPC"],
   ]);
@@ -1098,11 +1098,11 @@ function validatePluginsDeepOwnerBoundaries() {
     "writePluginsMutationPayload",
   ]);
   assertNotMatches("src/features/plugins/hooks/mutation.ts", mutation, [
-    [/\buseQuery\b/, "plugins mutation owner 不得 owning query"],
-    [/\buse(State|Reducer|Effect|Memo)\b/, "plugins mutation owner 不得 owning page/controller UI state"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "plugins mutation owner 必须把 optimistic update、rollback、cache 写入和失效交给 cache helper"],
-    [/writePluginsRefreshPayload|pluginsService\.list/, "plugins mutation owner 不得 owning refresh/list 请求"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "plugins mutation owner 必须经 plugins service wrapper，不得直接拼 IPC"],
+    [/\buseQuery\b/, "plugins 变更操作归属 不得 owning query"],
+    [/\buse(State|Reducer|Effect|Memo)\b/, "plugins 变更操作归属 不得 owning 页面/控制器 UI 状态"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "plugins 变更操作归属 必须把 optimistic 更新、rollback、cache 写入和失效交给 cache helper"],
+    [/writePluginsRefreshPayload|pluginsService\.list/, "plugins 变更操作归属 不得 owning refresh/list 请求"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "plugins 变更操作归属 必须经 plugins service wrapper，不得直接拼 IPC"],
   ]);
 
   assertIncludes("src/features/plugins/hooks/page.ts", page, [
@@ -1207,24 +1207,24 @@ function validateRuntimeExtensionsPluginsOwnerMerge() {
 
   if (runtimeFeatureFiles.length > 0) {
     failures.push(
-      `src/features/runtime-extensions 不得新增 TS/TSX 可见 feature owner 文件：${runtimeFeatureFiles.map(repoPath).join(", ")}`,
+      `src/features/runtime-extensions 不得新增 TS/TSX 可见 模块归属 文件：${runtimeFeatureFiles.map(repoPath).join(", ")}`,
     );
   }
 
   for (const entry of forbiddenFeatureOwnerEntries) {
     if (existsSync(join(runtimeExtensionsFeatureRoot, entry))) {
-      failures.push(`src/features/runtime-extensions/${entry} 会形成重复 feature owner，当前可见 owner 只能是 plugins`);
+      failures.push(`src/features/runtime-extensions/${entry} 会形成重复 模块归属，当前可见 owner 只能是 plugins`);
     }
   }
 
   const runtimeAgents = readRequired(join(runtimeExtensionsFeatureRoot, "AGENTS.md"));
   assertIncludes("src/features/runtime-extensions/AGENTS.md", runtimeAgents, [
     "runtime-extensions 是 IPC domain 和 service 能力边界",
-    "不作为可见 feature owner",
+    "不作为可见 模块归属",
     "plugins 是当前 runtime extension 可见页面",
   ]);
   assertNotMatches("src/features/runtime-extensions/AGENTS.md", runtimeAgents, [
-    [/唯一 feature owner/, "runtime-extensions feature 规则不得再声明自己是可见 feature owner"],
+    [/唯一 模块归属/, "runtime-extensions feature 规则不得再声明自己是可见 模块归属"],
   ]);
 
   const runtimeService = readRequired(runtimeExtensionsServicePath);
@@ -1279,7 +1279,7 @@ function validateTrayShellDeepOwnerBoundaries() {
     "page",
   ]);
   if (existsSync(actionPath)) {
-    failures.push("src/features/tray-shell/hooks/action.ts 不得保留独立 action owner；focus main window action 必须归 hooks/mutation.ts");
+    failures.push("src/features/tray-shell/hooks/action.ts 不得保留独立 动作归属；focus main window action 必须归 hooks/mutation.ts");
   }
   assertNotMatches("src/features/tray-shell/hooks/index.ts", hooksIndex, [
     [/\b(useQuery|useMutation|useQueryClient|useState|useReducer|useEffect|useMemo|useCallback)\b/, "tray-shell hooks/index 只能聚合 re-export，不得 owning query/mutation/controller"],
@@ -1304,10 +1304,10 @@ function validateTrayShellDeepOwnerBoundaries() {
     failures.push("src/features/tray-shell/hooks/query.ts 不得重复声明 tray-shell query key，必须消费 cache owner 导出的 key");
   }
   assertNotMatches("src/features/tray-shell/hooks/query.ts", query, [
-    [/\buseMutation\b/, "tray-shell query owner 只能 owning cache controller 和 notification query"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "tray-shell query owner 不得 owning mutation cache 写入、失效或取消"],
-    [/systemService\.focusMainWindow|focus-main-window|TrayShellActionModel/, "tray-shell query owner 不得 owning focus main window action"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "tray-shell query owner 必须经 system service wrapper，不得直接拼 IPC"],
+    [/\buseMutation\b/, "tray-shell 查询归属 只能 owning cache controller 和 notification query"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "tray-shell 查询归属 不得 owning mutation cache 写入、失效或取消"],
+    [/systemService\.focusMainWindow|focus-main-window|TrayShellActionModel/, "tray-shell 查询归属 不得 owning focus main window action"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "tray-shell 查询归属 必须经 system service wrapper，不得直接拼 IPC"],
   ]);
 
   assertIncludes("src/features/tray-shell/hooks/mutation.ts", mutation, [
@@ -1321,10 +1321,10 @@ function validateTrayShellDeepOwnerBoundaries() {
     "invalidateTrayShellCommandAckFence(queryClient)",
   ]);
   assertNotMatches("src/features/tray-shell/hooks/mutation.ts", mutation, [
-    [/\buseQuery\b/, "tray-shell mutation owner 不得 owning notification query"],
-    [/\buse(State|Reducer|Effect|Memo)\b/, "tray-shell mutation owner 不得 owning page/controller UI state"],
-    [/systemService\.getNotificationClientState|TRAY_SHELL_NOTIFICATION_CLIENT_QUERY_KEY/, "tray-shell mutation owner 不得 owning notification query service 或 query key"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "tray-shell mutation owner 必须经 system service wrapper，不得直接拼 IPC"],
+    [/\buseQuery\b/, "tray-shell 变更操作归属 不得 owning notification query"],
+    [/\buse(State|Reducer|Effect|Memo)\b/, "tray-shell 变更操作归属 不得 owning 页面/控制器 UI 状态"],
+    [/systemService\.getNotificationClientState|TRAY_SHELL_NOTIFICATION_CLIENT_QUERY_KEY/, "tray-shell 变更操作归属 不得 owning notification query service 或 query key"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "tray-shell 变更操作归属 必须经 system service wrapper，不得直接拼 IPC"],
   ]);
 
   assertIncludes("src/features/tray-shell/hooks/page.ts", page, [
@@ -1434,7 +1434,7 @@ function validateSettingsDeepOwnerBoundaries() {
     "controller.actions.saveProxy",
   ]);
   assertNotMatches("src/features/settings/dialogs/proxy.tsx", proxyDialog, [
-    [/useApiProxyMutations|useBusyAction|toast\(/, "settings API proxy dialog must consume controller state/actions, not own mutations, busy actions, or toast"],
+    [/useApiProxyMutations|useBusyAction|toast\(/, "settings API proxy dialog must consume controller state/actions, not own mutations, busy 动作, or toast"],
     [/@\/services\/settings|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "settings API proxy dialog must not access service/API/IPC directly"],
   ]);
 
@@ -1446,7 +1446,7 @@ function validateSettingsDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/settings/hooks/index.ts", hooksIndex, [
     [/\b(useQuery|useMutation|useQueryClient|useState|useReducer|useEffect|useMemo|useCallback)\b/, "settings hooks/index can only re-export split owners"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries|beginSettingsMutation|writeSettings)/, "settings hooks/index must not own cache writes"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries|beginSettingsMutation|writeSettings)/, "settings hooks/index 不得持有 cache 写入"],
     [/@\/services\/settings|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "settings hooks/index must not access service/API/IPC"],
   ]);
 
@@ -1469,11 +1469,11 @@ function validateSettingsDeepOwnerBoundaries() {
     "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
   ]);
   assertNotMatches("src/features/settings/hooks/query.ts", query, [
-    [/\buseMutation\b/, "settings query owner must not own mutation"],
-    [/\buseReducer\b/, "settings query owner must not own page/controller reducer state"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries|beginSettingsMutation|writeSettingsMutationPayload)\b/, "settings query owner must delegate cache writes and mutation fences"],
-    [/toast\(|useBusyAction/, "settings query owner must not own toast or busy UI actions"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "settings query owner must use settings service wrapper, not IPC/API transport"],
+    [/\buseMutation\b/, "settings 查询归属 不得持有 mutation"],
+    [/\buseReducer\b/, "settings 查询归属 不得持有 page/controller reducer state"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries|beginSettingsMutation|writeSettingsMutationPayload)\b/, "settings 查询归属 必须委托 cache 写入 and mutation fences"],
+    [/toast\(|useBusyAction/, "settings 查询归属 不得持有 toast or busy UI actions"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "settings 查询归属 必须使用 settings service wrapper, 不得直接使用 IPC/API transport"],
   ]);
 
   assertIncludes("src/features/settings/hooks/mutation.ts", mutation, [
@@ -1493,11 +1493,11 @@ function validateSettingsDeepOwnerBoundaries() {
     "writeSettingsMutationPayload",
   ]);
   assertNotMatches("src/features/settings/hooks/mutation.ts", mutation, [
-    [/\buseQuery\b/, "settings mutation owner must not own query"],
-    [/\buse(State|Reducer|Effect|Memo)\b/, "settings mutation owner must not own page/controller UI state"],
-    [/\b(setQueryData|invalidateQueries)\b/, "settings mutation owner must delegate cache writes and invalidation to cache helper"],
-    [/toast\(|useBusyAction/, "settings mutation owner must not own toast or busy UI actions"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "settings mutation owner must use settings service wrapper, not IPC/API transport"],
+    [/\buseQuery\b/, "settings 变更操作归属 不得持有 query"],
+    [/\buse(State|Reducer|Effect|Memo)\b/, "settings 变更操作归属 不得持有 页面/控制器 UI 状态"],
+    [/\b(setQueryData|invalidateQueries)\b/, "settings 变更操作归属 必须委托 cache 写入 and 失效 to cache helper"],
+    [/toast\(|useBusyAction/, "settings 变更操作归属 不得持有 toast or busy UI actions"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "settings 变更操作归属 必须使用 settings service wrapper, 不得直接使用 IPC/API transport"],
   ]);
 
   assertIncludes("src/features/settings/hooks/action.ts", action, [
@@ -1509,9 +1509,9 @@ function validateSettingsDeepOwnerBoundaries() {
     "saveProxyAction",
   ]);
   assertNotMatches("src/features/settings/hooks/action.ts", action, [
-    [/\buse(Query|Mutation|QueryClient)\b/, "settings action owner may compose module hooks but must not call TanStack directly"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries|beginSettingsMutation|writeSettings|SETTINGS_[A-Z0-9_]+_QUERY_KEY)\b/, "settings action owner must not write cache or consume query keys"],
-    [/@\/services\/settings|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|settingsService\.|systemService\.|invokeIpc|invoke\(/, "settings action owner must not access service/API/IPC directly"],
+    [/\buse(Query|Mutation|QueryClient)\b/, "settings 动作归属 may compose module hooks but must not call TanStack directly"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries|beginSettingsMutation|writeSettings|SETTINGS_[A-Z0-9_]+_QUERY_KEY)\b/, "settings 动作归属 must not write cache or consume query keys"],
+    [/@\/services\/settings|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|settingsService\.|systemService\.|invokeIpc|invoke\(/, "settings 动作归属 must not access service/API/IPC directly"],
   ]);
 
   assertIncludes("src/features/settings/hooks/page.ts", page, [
@@ -1541,7 +1541,7 @@ function validateSettingsDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/settings/types/index.ts", types, [
     [/SettingsPageController\s*=\s*ReturnType|ReturnType<typeof useSettingsPageController>/, "settings controller contract must be explicit, not ReturnType"],
-    [/SettingsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "settings types owner must keep typed cache payloads"],
+    [/SettingsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "settings types owner 必须保留 typed cache payloads"],
   ]);
 
   assertIncludes("src/features/settings/cache/index.ts", cache, [
@@ -1569,9 +1569,9 @@ function validateSettingsDeepOwnerBoundaries() {
     failures.push("src/features/settings/cache/index.ts must own mutation fences and stale/delayed response acceptance");
   }
   assertNotMatches("src/features/settings/cache/index.ts", cache, [
-    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "settings cache owner must not own React hooks"],
+    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "settings cache owner 不得持有 React hooks"],
     [/@\/services\/settings|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "settings cache owner must not access service/API/IPC"],
-    [/createModuleCacheOwner\("settings"\)|SettingsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "settings cache owner must keep typed payloads"],
+    [/createModuleCacheOwner\("settings"\)|SettingsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "settings cache owner 必须保留 typed payloads"],
   ]);
 
   const runtimeEvents = readRequired(join(srcRoot, "app", "runtime", "events.ts"));
@@ -1631,7 +1631,7 @@ function validateSkillsDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/skills/hooks/index.ts", hooksIndex, [
     [/\b(useQuery|useMutation|useQueryClient|useState|useReducer|useEffect|useMemo|useCallback)\b/, "skills hooks/index can only re-export split owners"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries|nextSkillsCacheSequence|writeSkills)/, "skills hooks/index must not own cache writes or sequence"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries|nextSkillsCacheSequence|writeSkills)/, "skills hooks/index 不得持有 cache 写入 or sequence"],
     [/@\/services\/skills|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|skillsService\.|invokeIpc|invoke\(/, "skills hooks/index must not access service/API/IPC"],
   ]);
 
@@ -1647,12 +1647,12 @@ function validateSkillsDeepOwnerBoundaries() {
     "writeSkillsCachePayload",
   ]);
   assertNotMatches("src/features/skills/hooks/query.ts", query, [
-    [/\buseMutation\b/, "skills query owner must not own mutation"],
-    [/\buse(State|Reducer)\b/, "skills query owner must not own page/controller UI state"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries|writeSkillsMutationPayload)\b/, "skills query owner must delegate cache writes, invalidation, and mutation payloads"],
-    [/toast\(|navigator\.clipboard/, "skills query owner must not own toast or clipboard UI"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "skills query owner must use skills service wrapper, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "skills query owner must keep typed authoritative payloads"],
+    [/\buseMutation\b/, "skills 查询归属 不得持有 mutation"],
+    [/\buse(State|Reducer)\b/, "skills 查询归属 不得持有 页面/控制器 UI 状态"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries|writeSkillsMutationPayload)\b/, "skills 查询归属 必须委托 cache 写入, 失效, and mutation payloads"],
+    [/toast\(|navigator\.clipboard/, "skills 查询归属 不得持有 toast or 剪贴板 UI"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "skills 查询归属 必须使用 skills service wrapper, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "skills 查询归属 必须保留 typed authoritative payloads"],
   ]);
 
   assertIncludes("src/features/skills/hooks/mutation.ts", mutation, [
@@ -1667,15 +1667,15 @@ function validateSkillsDeepOwnerBoundaries() {
     "writeSkillsMutationPayload",
   ]);
   if (!/skillsService\.pickSkillDirectory\(\)[\s\S]*return null;[\s\S]*if \(payload\)[\s\S]*writeSkillsMutationPayload\(queryClient, payload, context\)/.test(mutation)) {
-    failures.push("src/features/skills/hooks/mutation.ts must keep import cancel as silent null no-op before writeSkillsMutationPayload");
+    failures.push("src/features/skills/hooks/mutation.ts 必须保留 import cancel as silent null no-op before writeSkillsMutationPayload");
   }
   assertNotMatches("src/features/skills/hooks/mutation.ts", mutation, [
-    [/\buseQuery\b/, "skills mutation owner must not own query"],
-    [/\buse(State|Reducer|Effect|Memo)\b/, "skills mutation owner must not own page/controller UI state"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "skills mutation owner must delegate mutation fence, cache writes, query cancellation, and invalidation to cache helper"],
-    [/toast\(|navigator\.clipboard/, "skills mutation owner must not own toast or clipboard UI"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "skills mutation owner must use skills service wrapper, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "skills mutation owner must keep typed mutation payloads"],
+    [/\buseQuery\b/, "skills 变更操作归属 不得持有 query"],
+    [/\buse(State|Reducer|Effect|Memo)\b/, "skills 变更操作归属 不得持有 页面/控制器 UI 状态"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries)\b/, "skills 变更操作归属 必须委托 mutation fence, cache 写入, query 取消, and 失效 to cache helper"],
+    [/toast\(|navigator\.clipboard/, "skills 变更操作归属 不得持有 toast or 剪贴板 UI"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "skills 变更操作归属 必须使用 skills service wrapper, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "skills 变更操作归属 必须保留 类型化 mutation payload"],
   ]);
 
   assertIncludes("src/features/skills/hooks/page.ts", page, [
@@ -1710,7 +1710,7 @@ function validateSkillsDeepOwnerBoundaries() {
   }
   assertNotMatches("src/features/skills/types/index.ts", types, [
     [/SkillsPageController\s*=\s*ReturnType|ReturnType<typeof useSkillsPageController>/, "skills controller contract must be explicit, not ReturnType"],
-    [/SkillsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "skills types owner must keep typed cache payloads"],
+    [/SkillsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "skills types owner 必须保留 typed cache payloads"],
   ]);
 
   assertIncludes("src/features/skills/cache/index.ts", cache, [
@@ -1740,9 +1740,9 @@ function validateSkillsDeepOwnerBoundaries() {
     failures.push("src/features/skills/cache/index.ts or cache/sequence.ts must own sequence/stale/delayed response protection");
   }
   assertNotMatches("src/features/skills/cache/index.ts", cache, [
-    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "skills cache owner must not own React hooks"],
+    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "skills cache owner 不得持有 React hooks"],
     [/@\/services\/skills|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|skillsService\.|invokeIpc|invoke\(/, "skills cache owner must not access service/API/IPC"],
-    [/createModuleCacheOwner\("skills"\)|SkillsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "skills cache owner must keep typed payloads"],
+    [/createModuleCacheOwner\("skills"\)|SkillsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "skills cache owner 必须保留 typed payloads"],
   ]);
 
   if (controllerConsumerText.includes("ReturnType<typeof useSkillsPageController>")) {
@@ -1795,7 +1795,7 @@ function validateRelayDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/relay/hooks/index.ts", hooksIndex, [
     [/\b(useQuery|useMutation|useQueryClient|useState|useReducer|useEffect|useMemo|useCallback)\b/, "relay hooks/index can only re-export split owners"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries|nextRelayCacheSequence|writeRelay)/, "relay hooks/index must not own cache writes, invalidation, cancellation, or sequence"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries|nextRelayCacheSequence|writeRelay)/, "relay hooks/index 不得持有 cache 写入, 失效, cancellation, or sequence"],
     [/@\/services\/relay|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|relayService\.|systemService\.|invokeIpc|invoke\(/, "relay hooks/index must not access service/API/IPC"],
   ]);
 
@@ -1814,12 +1814,12 @@ function validateRelayDeepOwnerBoundaries() {
     "full-refresh",
   ]);
   assertNotMatches("src/features/relay/hooks/query.ts", query, [
-    [/\buseMutation\b/, "relay query owner must not own mutation"],
-    [/\buse(State|Reducer)\b/, "relay query owner must not own page/controller UI state"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries|writeRelayMutationPayload)\b/, "relay query owner must delegate cache writes, invalidation, cancellation, and mutation payloads"],
-    [/toast\(|navigator\.clipboard/, "relay query owner must not own toast or browser UI"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "relay query owner must use relay service wrapper, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "relay query owner must keep typed authoritative payloads"],
+    [/\buseMutation\b/, "relay 查询归属 不得持有 mutation"],
+    [/\buse(State|Reducer)\b/, "relay 查询归属 不得持有 页面/控制器 UI 状态"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries|writeRelayMutationPayload)\b/, "relay 查询归属 必须委托 cache 写入, 失效, cancellation, and mutation payloads"],
+    [/toast\(|navigator\.clipboard/, "relay 查询归属 不得持有 toast or 浏览器 UI"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "relay 查询归属 必须使用 relay service wrapper, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "relay 查询归属 必须保留 typed authoritative payloads"],
   ]);
 
   assertIncludes("src/features/relay/hooks/mutation.ts", mutation, [
@@ -1835,12 +1835,12 @@ function validateRelayDeepOwnerBoundaries() {
     "cancelQueries",
   ]);
   assertNotMatches("src/features/relay/hooks/mutation.ts", mutation, [
-    [/\buseQuery\b/, "relay mutation owner must not own query"],
-    [/\buse(State|Reducer|Effect|Memo)\b/, "relay mutation owner must not own page/controller UI state"],
-    [/\b(setQueryData|invalidateQueries)\b/, "relay mutation owner must delegate cache writes and invalidation to cache helper"],
-    [/toast\(|navigator\.clipboard/, "relay mutation owner must not own toast or browser UI"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "relay mutation owner must use relay service wrapper, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|useMutation<unknown|Promise<unknown>/, "relay mutation owner must keep typed mutation payloads"],
+    [/\buseQuery\b/, "relay 变更操作归属 不得持有 query"],
+    [/\buse(State|Reducer|Effect|Memo)\b/, "relay 变更操作归属 不得持有 页面/控制器 UI 状态"],
+    [/\b(setQueryData|invalidateQueries)\b/, "relay 变更操作归属 必须委托 cache 写入 and 失效 to cache helper"],
+    [/toast\(|navigator\.clipboard/, "relay 变更操作归属 不得持有 toast or 浏览器 UI"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "relay 变更操作归属 必须使用 relay service wrapper, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|useMutation<unknown|Promise<unknown>/, "relay 变更操作归属 必须保留 类型化 mutation payload"],
   ]);
 
   assertIncludes("src/features/relay/hooks/runtime.ts", runtime, [
@@ -1854,11 +1854,11 @@ function validateRelayDeepOwnerBoundaries() {
     "RELAY_ROUTER_TOGGLE_PROGRESS_QUERY_KEY",
   ]);
   assertNotMatches("src/features/relay/hooks/runtime.ts", runtime, [
-    [/\buse(Query|Mutation)\b/, "relay runtime owner must not own query or mutation"],
-    [/\buse(State|Reducer|Memo|Callback)\b/, "relay runtime owner must not own page/controller UI state"],
-    [/\bsetQueryData\b/, "relay runtime owner must write router progress through cache helper only"],
-    [/relayService\.(?!subscribeRouterToggleProgress\b)\w+/, "relay runtime owner must not call relay service commands beyond router progress subscription"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "relay runtime owner must use relay service event facade, not IPC/API transport"],
+    [/\buse(Query|Mutation)\b/, "relay 运行时归属 不得持有 query or mutation"],
+    [/\buse(State|Reducer|Memo|Callback)\b/, "relay 运行时归属 不得持有 页面/控制器 UI 状态"],
+    [/\bsetQueryData\b/, "relay 运行时归属 must write router progress through cache helper only"],
+    [/relayService\.(?!subscribeRouterToggleProgress\b)\w+/, "relay 运行时归属 must not call relay service commands beyond router progress subscription"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "relay 运行时归属 必须使用 relay service event facade, 不得直接使用 IPC/API transport"],
   ]);
 
   assertIncludes("src/features/relay/hooks/page.ts", page, [
@@ -1892,7 +1892,7 @@ function validateRelayDeepOwnerBoundaries() {
   }
   assertNotMatches("src/features/relay/types/index.ts", types, [
     [/RelayPageController\s*=\s*ReturnType|ReturnType<typeof useRelayPageController>/, "relay controller contract must be explicit, not ReturnType"],
-    [/RelayCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "relay types owner must keep typed cache payloads"],
+    [/RelayCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "relay types owner 必须保留 typed cache payloads"],
   ]);
 
   assertIncludes("src/features/relay/cache/index.ts", cache, [
@@ -1920,9 +1920,9 @@ function validateRelayDeepOwnerBoundaries() {
     failures.push("src/features/relay/cache/index.ts or cache/sequence.ts must own full-refresh/mutation sequence and stale/delayed response protection");
   }
   assertNotMatches("src/features/relay/cache/index.ts", cache, [
-    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "relay cache owner must not own React hooks"],
+    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "relay cache owner 不得持有 React hooks"],
     [/@\/services\/relay|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|relayService\.|systemService\.|invokeIpc|invoke\(/, "relay cache owner must not access service/API/IPC"],
-    [/createModuleCacheOwner\("relay"\)|RelayCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "relay cache owner must keep typed payloads"],
+    [/createModuleCacheOwner\("relay"\)|RelayCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "relay cache owner 必须保留 typed payloads"],
   ]);
 
   if (controllerConsumerText.includes("ReturnType<typeof useRelayPageController>")) {
@@ -1972,7 +1972,7 @@ function validateMaintenanceDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/maintenance/hooks/index.ts", hooksIndex, [
     [/\b(useQuery|useMutation|useQueryClient|useState|useReducer|useEffect|useMemo|useCallback)\b/, "maintenance hooks/index can only re-export split owners"],
-    [/\b(setQueryData|invalidateQueries|cancelQueries|beginMaintenanceMutation|prepareMaintenanceMutation|writeMaintenance|Maintenance[A-Za-z]*QueryKeys|MAINTENANCE_[A-Z0-9_]+_QUERY_KEY)\b/, "maintenance hooks/index must not own cache writes or query keys"],
+    [/\b(setQueryData|invalidateQueries|cancelQueries|beginMaintenanceMutation|prepareMaintenanceMutation|writeMaintenance|Maintenance[A-Za-z]*QueryKeys|MAINTENANCE_[A-Z0-9_]+_QUERY_KEY)\b/, "maintenance hooks/index 不得持有 cache 写入 or query keys"],
     [/@\/services\/maintenance|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|maintenanceService\.|systemService\.|invokeIpc|invoke\(/, "maintenance hooks/index must not access service/API/IPC"],
   ]);
 
@@ -1986,12 +1986,12 @@ function validateMaintenanceDeepOwnerBoundaries() {
     "maintenanceService.getSystemInfo",
   ]);
   assertNotMatches("src/features/maintenance/hooks/query.ts", query, [
-    [/\buseMutation\b/, "maintenance query owner must not own mutation"],
-    [/\buse(State|Reducer|Memo)\b/, "maintenance query owner must not own page/controller UI state or view models"],
-    [/\b(beginMaintenanceMutation|prepareMaintenanceMutation|writeMaintenanceActionPayload|writeMaintenanceMutationPayload|invalidateMaintenanceContractQueries|setQueryData|cancelQueries)\b/, "maintenance query owner must delegate mutation fences, cache writes, and invalidation"],
-    [/toast\(|useTranslation|formatInvokeError|MaintenancePageController|restartDialog|routerDiagnosticsDialog|setActionResult|setActionRunning/, "maintenance query owner must not own page controller, locale formatting, or dialog state"],
-    [/@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|systemService\.|invokeIpc|invoke\(/, "maintenance query owner must use maintenance service wrapper, not system/API/IPC transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "maintenance query owner must keep typed authoritative payloads"],
+    [/\buseMutation\b/, "maintenance 查询归属 不得持有 mutation"],
+    [/\buse(State|Reducer|Memo)\b/, "maintenance 查询归属 不得持有 页面/控制器 UI 状态 or view models"],
+    [/\b(beginMaintenanceMutation|prepareMaintenanceMutation|writeMaintenanceActionPayload|writeMaintenanceMutationPayload|invalidateMaintenanceContractQueries|setQueryData|cancelQueries)\b/, "maintenance 查询归属 必须委托 mutation fences, cache 写入, and 失效"],
+    [/toast\(|useTranslation|formatInvokeError|MaintenancePageController|restartDialog|routerDiagnosticsDialog|setActionResult|setActionRunning/, "maintenance 查询归属 不得持有 页面控制器, locale 格式化, or 弹窗状态"],
+    [/@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|systemService\.|invokeIpc|invoke\(/, "maintenance 查询归属 必须使用 maintenance service wrapper, 不得直接使用 system/API/IPC transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "maintenance 查询归属 必须保留 typed authoritative payloads"],
   ]);
 
   assertIncludes("src/features/maintenance/hooks/mutation.ts", mutation, [
@@ -2008,12 +2008,12 @@ function validateMaintenanceDeepOwnerBoundaries() {
     "maintenanceService.fixCodexRouterIssue",
   ]);
   assertNotMatches("src/features/maintenance/hooks/mutation.ts", mutation, [
-    [/\buseQuery\b/, "maintenance mutation owner must not own query"],
-    [/\buse(State|Reducer|Effect|Memo)\b/, "maintenance mutation owner must not own page/controller UI state"],
-    [/\b(setQueryData|invalidateQueries)\b/, "maintenance mutation owner must delegate cache writes and invalidation to cache helper"],
-    [/toast\(|useTranslation|MaintenancePageController|restartDialog|routerDiagnosticsDialog|setActionResult|setActionRunning/, "maintenance mutation owner must not own page controller, locale formatting, or dialog state"],
-    [/@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|systemService\.|invokeIpc|invoke\(/, "maintenance mutation owner must use maintenance service wrapper, not system/API/IPC transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|useMutation<unknown|Promise<unknown>/, "maintenance mutation owner must keep typed mutation payloads"],
+    [/\buseQuery\b/, "maintenance 变更操作归属 不得持有 query"],
+    [/\buse(State|Reducer|Effect|Memo)\b/, "maintenance 变更操作归属 不得持有 页面/控制器 UI 状态"],
+    [/\b(setQueryData|invalidateQueries)\b/, "maintenance 变更操作归属 必须委托 cache 写入 and 失效 to cache helper"],
+    [/toast\(|useTranslation|MaintenancePageController|restartDialog|routerDiagnosticsDialog|setActionResult|setActionRunning/, "maintenance 变更操作归属 不得持有 页面控制器, locale 格式化, or 弹窗状态"],
+    [/@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|systemService\.|invokeIpc|invoke\(/, "maintenance 变更操作归属 必须使用 maintenance service wrapper, 不得直接使用 system/API/IPC transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|useMutation<unknown|Promise<unknown>/, "maintenance 变更操作归属 必须保留 类型化 mutation payload"],
   ]);
 
   assertIncludes("src/features/maintenance/hooks/page.ts", page, [
@@ -2036,13 +2036,13 @@ function validateMaintenanceDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/maintenance/types/index.ts", types, [
     [/MaintenancePageController\s*=\s*ReturnType|ReturnType<typeof useMaintenancePageController>/, "maintenance controller contract must be explicit, not ReturnType"],
-    [/MaintenanceCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "maintenance types owner must keep typed cache payloads"],
+    [/MaintenanceCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "maintenance types owner 必须保留 typed cache payloads"],
   ]);
 
   assertNotMatches("src/features/maintenance/cache/index.ts", cache, [
-    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "maintenance cache owner must not own React hooks"],
+    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "maintenance cache owner 不得持有 React hooks"],
     [/@\/services\/maintenance|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|maintenanceService\.|systemService\.|invokeIpc|invoke\(/, "maintenance cache owner must not access service/API/IPC"],
-    [/createModuleCacheOwner\("maintenance"\)|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "maintenance cache owner must keep typed payloads"],
+    [/createModuleCacheOwner\("maintenance"\)|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "maintenance cache owner 必须保留 typed payloads"],
   ]);
 
   if (controllerConsumerText.includes("ReturnType<typeof useMaintenancePageController>")) {
@@ -2093,7 +2093,7 @@ function validateDaemonAutoswitchDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/daemon-autoswitch/hooks/index.ts", hooksIndex, [
     [/\b(useQuery|useMutation|useQueryClient|useState|useReducer|useEffect|useMemo|useCallback)\b/, "daemon-autoswitch hooks/index can only re-export split owners"],
-    [/\b(writeDaemonAutoswitch|setQueryData|invalidateQueries|cancelQueries|DaemonAutoswitch[A-Za-z]*QueryKeys|DAEMON_AUTOSWITCH_[A-Z0-9_]+_QUERY_KEY)\b/, "daemon-autoswitch hooks/index must not own cache writes or query keys"],
+    [/\b(writeDaemonAutoswitch|setQueryData|invalidateQueries|cancelQueries|DaemonAutoswitch[A-Za-z]*QueryKeys|DAEMON_AUTOSWITCH_[A-Z0-9_]+_QUERY_KEY)\b/, "daemon-autoswitch hooks/index 不得持有 cache 写入 or query keys"],
     [/@\/services\/daemon-autoswitch|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|daemonAutoswitchService\.|systemService\.|invokeIpc|invoke\(/, "daemon-autoswitch hooks/index must not access service/API/IPC"],
   ]);
 
@@ -2109,13 +2109,13 @@ function validateDaemonAutoswitchDeepOwnerBoundaries() {
     "daemonAutoswitchService.loadPendingAutoSwitch",
   ]);
   assertNotMatches("src/features/daemon-autoswitch/hooks/query.ts", query, [
-    [/\buseMutation\b/, "daemon-autoswitch query owner must not own mutation"],
-    [/\buseEffect\b/, "daemon-autoswitch query owner must not own runtime subscriptions"],
-    [/\buse(State|Reducer|Memo|Callback)\b/, "daemon-autoswitch query owner must not own page/controller UI state or view models"],
-    [/\b(cancelDaemonAutoswitchQueries|writeDaemonAutoswitchMutationPayload|invalidateDaemonAutoswitchContractQueries|setQueryData|cancelQueries)\b/, "daemon-autoswitch query owner must delegate mutation writes, cancellation, and invalidation"],
-    [/useTranslation|DaemonAutoswitchPageController|useDaemonAutoswitchModule|useDaemonAutoswitchPendingPrompt|metrics|panels|labelKey|envelopeData|readBoolean|readString/, "daemon-autoswitch query owner must not own page controller, locale, or view model parsing"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "daemon-autoswitch query owner must use daemon-autoswitch service wrapper, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>|response\.data/, "daemon-autoswitch query owner must keep typed authoritative payloads"],
+    [/\buseMutation\b/, "daemon-autoswitch 查询归属 不得持有 mutation"],
+    [/\buseEffect\b/, "daemon-autoswitch 查询归属 不得持有 runtime subscriptions"],
+    [/\buse(State|Reducer|Memo|Callback)\b/, "daemon-autoswitch 查询归属 不得持有 页面/控制器 UI 状态 or view models"],
+    [/\b(cancelDaemonAutoswitchQueries|writeDaemonAutoswitchMutationPayload|invalidateDaemonAutoswitchContractQueries|setQueryData|cancelQueries)\b/, "daemon-autoswitch 查询归属 必须委托 mutation writes, cancellation, and 失效"],
+    [/useTranslation|DaemonAutoswitchPageController|useDaemonAutoswitchModule|useDaemonAutoswitchPendingPrompt|metrics|panels|labelKey|envelopeData|readBoolean|readString/, "daemon-autoswitch 查询归属 不得持有 页面控制器, locale, or view model 解析"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "daemon-autoswitch 查询归属 必须使用 daemon-autoswitch service wrapper, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>|response\.data/, "daemon-autoswitch 查询归属 必须保留 typed authoritative payloads"],
   ]);
 
   assertIncludes("src/features/daemon-autoswitch/hooks/mutation.ts", mutation, [
@@ -2130,12 +2130,12 @@ function validateDaemonAutoswitchDeepOwnerBoundaries() {
     "invalidateDaemonAutoswitchContractQueries",
   ]);
   assertNotMatches("src/features/daemon-autoswitch/hooks/mutation.ts", mutation, [
-    [/\buseQuery\b/, "daemon-autoswitch mutation owner must not own query"],
-    [/\buse(State|Reducer|Effect|Memo|Callback)\b/, "daemon-autoswitch mutation owner must not own page/controller UI state"],
-    [/\bsetQueryData\b/, "daemon-autoswitch mutation owner must delegate cache writes to cache helper"],
-    [/useTranslation|DaemonAutoswitchPageController|useDaemonAutoswitchModule|useDaemonAutoswitchPendingPrompt|metrics|panels|labelKey|envelopeData|readBoolean|readString/, "daemon-autoswitch mutation owner must not own page controller, locale, or view model parsing"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "daemon-autoswitch mutation owner must use daemon-autoswitch service wrapper, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>|useMutation<unknown|Promise<unknown>|response\.data/, "daemon-autoswitch mutation owner must keep typed mutation payloads"],
+    [/\buseQuery\b/, "daemon-autoswitch 变更操作归属 不得持有 query"],
+    [/\buse(State|Reducer|Effect|Memo|Callback)\b/, "daemon-autoswitch 变更操作归属 不得持有 页面/控制器 UI 状态"],
+    [/\bsetQueryData\b/, "daemon-autoswitch 变更操作归属 必须委托 cache 写入 to cache helper"],
+    [/useTranslation|DaemonAutoswitchPageController|useDaemonAutoswitchModule|useDaemonAutoswitchPendingPrompt|metrics|panels|labelKey|envelopeData|readBoolean|readString/, "daemon-autoswitch 变更操作归属 不得持有 页面控制器, locale, or view model 解析"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "daemon-autoswitch 变更操作归属 必须使用 daemon-autoswitch service wrapper, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>|useMutation<unknown|Promise<unknown>|response\.data/, "daemon-autoswitch 变更操作归属 必须保留 类型化 mutation payload"],
   ]);
 
   assertIncludes("src/features/daemon-autoswitch/hooks/runtime.ts", runtime, [
@@ -2147,14 +2147,14 @@ function validateDaemonAutoswitchDeepOwnerBoundaries() {
     "\"auto-switch-pending\"",
   ]);
   assertNotMatches("src/features/daemon-autoswitch/hooks/runtime.ts", runtime, [
-    [/\buse(Query|Mutation)\b/, "daemon-autoswitch runtime owner must not own query or mutation"],
-    [/\buse(State|Reducer|Memo|Callback)\b/, "daemon-autoswitch runtime owner must not own page/controller UI state"],
-    [/\bsetQueryData\b/, "daemon-autoswitch runtime owner must invalidate through cache/query helper only"],
-    [/\binvalidateQueries\b/, "daemon-autoswitch runtime owner must call cache helper, not invalidate queries directly"],
-    [/\bDAEMON_AUTOSWITCH_[A-Z0-9_]+_QUERY_KEY\b/, "daemon-autoswitch runtime owner must not consume query keys directly"],
-    [/useTranslation|DaemonAutoswitchPageController|useDaemonAutoswitchModule|useDaemonAutoswitchPendingPrompt|metrics|panels|labelKey|envelopeData|readBoolean|readString/, "daemon-autoswitch runtime owner must not own page controller, locale, or view model parsing"],
-    [/daemonAutoswitchService\.(?!subscribePendingAutoSwitch\b)\w+/, "daemon-autoswitch runtime owner must not call daemon-autoswitch service commands beyond pending subscription"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "daemon-autoswitch runtime owner must use service event facade, not IPC/API transport"],
+    [/\buse(Query|Mutation)\b/, "daemon-autoswitch 运行时归属 不得持有 query or mutation"],
+    [/\buse(State|Reducer|Memo|Callback)\b/, "daemon-autoswitch 运行时归属 不得持有 页面/控制器 UI 状态"],
+    [/\bsetQueryData\b/, "daemon-autoswitch 运行时归属 must invalidate through cache/query helper only"],
+    [/\binvalidateQueries\b/, "daemon-autoswitch 运行时归属 must call cache helper, not invalidate queries directly"],
+    [/\bDAEMON_AUTOSWITCH_[A-Z0-9_]+_QUERY_KEY\b/, "daemon-autoswitch 运行时归属 must not consume query keys directly"],
+    [/useTranslation|DaemonAutoswitchPageController|useDaemonAutoswitchModule|useDaemonAutoswitchPendingPrompt|metrics|panels|labelKey|envelopeData|readBoolean|readString/, "daemon-autoswitch 运行时归属 不得持有 页面控制器, locale, or view model 解析"],
+    [/daemonAutoswitchService\.(?!subscribePendingAutoSwitch\b)\w+/, "daemon-autoswitch 运行时归属 must not call daemon-autoswitch service commands beyond pending subscription"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "daemon-autoswitch 运行时归属 必须使用 service event facade, 不得直接使用 IPC/API transport"],
   ]);
 
   assertIncludes("src/features/daemon-autoswitch/hooks/page.ts", page, [
@@ -2186,7 +2186,7 @@ function validateDaemonAutoswitchDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/daemon-autoswitch/types/index.ts", types, [
     [/DaemonAutoswitch[A-Za-z]*(?:Controller|Queries|Mutations)\s*=\s*ReturnType|ReturnType<typeof useDaemonAutoswitch[A-Za-z]*/, "daemon-autoswitch controller/query/mutation/runtime contracts must be explicit, not hook ReturnType"],
-    [/DaemonAutoswitchCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>/, "daemon-autoswitch types owner must keep typed cache payloads"],
+    [/DaemonAutoswitchCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown|CoreEnvelope<unknown>/, "daemon-autoswitch types owner 必须保留 typed cache payloads"],
   ]);
 
   assertIncludes("src/features/daemon-autoswitch/cache/index.ts", cache, [
@@ -2199,9 +2199,9 @@ function validateDaemonAutoswitchDeepOwnerBoundaries() {
     "applyDaemonAutoswitchRuntimeEventToCache",
   ]);
   assertNotMatches("src/features/daemon-autoswitch/cache/index.ts", cache, [
-    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "daemon-autoswitch cache owner must not own React hooks"],
+    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "daemon-autoswitch cache owner 不得持有 React hooks"],
     [/@\/services\/daemon-autoswitch|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|daemonAutoswitchService\.|systemService\.|invokeIpc|invoke\(/, "daemon-autoswitch cache owner must not access service/API/IPC"],
-    [/createModuleCacheOwner\("daemon-autoswitch"\)|DaemonAutoswitchCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "daemon-autoswitch cache owner must keep typed payloads"],
+    [/createModuleCacheOwner\("daemon-autoswitch"\)|DaemonAutoswitchCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "daemon-autoswitch cache owner 必须保留 typed payloads"],
     [/queryKey:\s*\[\s*["']accounts["']\s*\]/, "daemon-autoswitch cache owner must reference accounts cache helper instead of bare accounts key"],
     [/queryKey:\s*\[\s*["']runtime-state["']\s*,\s*["']display["']\s*\]/, "daemon-autoswitch cache owner must reference module cache helper instead of bare runtime display key"],
     [/queryKey:\s*\[\s*["']quota-history["']\s*\]/, "daemon-autoswitch cache owner must reference module cache helper instead of bare quota key"],
@@ -2251,7 +2251,7 @@ function validateOverviewDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/overview/hooks/index.ts", hooksIndex, [
     [/\b(useQuery|useMutation|useQueryClient|useState|useReducer|useEffect|useMemo|useCallback)\b/, "overview hooks/index can only re-export split owners"],
-    [/\b(writeOverview|setQueryData|invalidateQueries|cancelQueries|Overview[A-Za-z]*QueryKeys|OVERVIEW_[A-Z0-9_]+_QUERY_KEY)\b/, "overview hooks/index must not own cache writes or query keys"],
+    [/\b(writeOverview|setQueryData|invalidateQueries|cancelQueries|Overview[A-Za-z]*QueryKeys|OVERVIEW_[A-Z0-9_]+_QUERY_KEY)\b/, "overview hooks/index 不得持有 cache 写入 or query keys"],
     [/@\/services\/(?:accounts|analytics|mcp|skills|system)|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|(?:accounts|analytics|mcp|skills|system)Service\.|invokeIpc|invoke\(/, "overview hooks/index must not access service/API/IPC"],
   ]);
 
@@ -2271,12 +2271,12 @@ function validateOverviewDeepOwnerBoundaries() {
     "runOverviewQuery",
   ]);
   assertNotMatches("src/features/overview/hooks/query.ts", query, [
-    [/\buseMutation\b/, "overview query owner must not own mutation"],
-    [/\buse(State|Reducer|Memo)\b/, "overview query owner must not own page/controller UI state or view models"],
-    [/\b(writeOverviewMutationPayload|writeOverviewMysteryGrantsPayload|invalidateOverviewContractQueries|setQueryData|cancelQueries)\b/, "overview query owner must delegate mutation writes and invalidation"],
-    [/toast\(|useTranslation|OverviewPageController|setRemoteDeviceSecret|importRemoteSecret/, "overview query owner must not own page controller, locale formatting, or dialog state"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "overview query owner must use module service wrappers, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "overview query owner must keep typed authoritative payloads"],
+    [/\buseMutation\b/, "overview 查询归属 不得持有 mutation"],
+    [/\buse(State|Reducer|Memo)\b/, "overview 查询归属 不得持有 页面/控制器 UI 状态 or view models"],
+    [/\b(writeOverviewMutationPayload|writeOverviewMysteryGrantsPayload|invalidateOverviewContractQueries|setQueryData|cancelQueries)\b/, "overview 查询归属 必须委托 mutation writes and 失效"],
+    [/toast\(|useTranslation|OverviewPageController|setRemoteDeviceSecret|importRemoteSecret/, "overview 查询归属 不得持有 页面控制器, locale 格式化, or 弹窗状态"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "overview 查询归属 必须使用 module service wrappers, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "overview 查询归属 必须保留 typed authoritative payloads"],
   ]);
 
   assertIncludes("src/features/overview/hooks/mutation.ts", mutation, [
@@ -2295,12 +2295,12 @@ function validateOverviewDeepOwnerBoundaries() {
     "invalidateOverviewMysteryGrantsQueries",
   ]);
   assertNotMatches("src/features/overview/hooks/mutation.ts", mutation, [
-    [/\buseQuery\b/, "overview mutation owner must not own query"],
-    [/\buse(State|Reducer|Effect|Memo)\b/, "overview mutation owner must not own page/controller UI state"],
-    [/\b(setQueryData|invalidateQueries)\b/, "overview mutation owner must delegate cache writes and invalidation to cache helper"],
-    [/toast\(|useTranslation|OverviewPageController|setRemoteDeviceSecret|importRemoteSecret(?:Draft|Open|Dialog)/, "overview mutation owner must not own page controller, locale formatting, or dialog state"],
-    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "overview mutation owner must use module service wrappers, not IPC/API transport"],
-    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|useMutation<unknown/, "overview mutation owner must keep typed mutation payloads"],
+    [/\buseQuery\b/, "overview 变更操作归属 不得持有 query"],
+    [/\buse(State|Reducer|Effect|Memo)\b/, "overview 变更操作归属 不得持有 页面/控制器 UI 状态"],
+    [/\b(setQueryData|invalidateQueries)\b/, "overview 变更操作归属 必须委托 cache 写入 and 失效 to cache helper"],
+    [/toast\(|useTranslation|OverviewPageController|setRemoteDeviceSecret|importRemoteSecret(?:Draft|Open|Dialog)/, "overview 变更操作归属 不得持有 页面控制器, locale 格式化, or 弹窗状态"],
+    [/@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "overview 变更操作归属 必须使用 module service wrappers, 不得直接使用 IPC/API transport"],
+    [/ModuleCacheEnvelope<unknown>|payload:\s*unknown|useMutation<unknown/, "overview 变更操作归属 必须保留 类型化 mutation payload"],
   ]);
 
   assertIncludes("src/features/overview/hooks/page.ts", page, [
@@ -2338,7 +2338,7 @@ function validateOverviewDeepOwnerBoundaries() {
   ]);
   assertNotMatches("src/features/overview/types/index.ts", types, [
     [/OverviewPageController\s*=\s*ReturnType|ReturnType<typeof useOverviewPageController>/, "overview controller contract must be explicit, not ReturnType"],
-    [/OverviewCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown|items:\s*unknown\[\]/, "overview types owner must keep typed cache payloads"],
+    [/OverviewCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown|items:\s*unknown\[\]/, "overview types owner 必须保留 typed cache payloads"],
   ]);
 
   assertIncludes("src/features/overview/cache/index.ts", cache, [
@@ -2353,9 +2353,9 @@ function validateOverviewDeepOwnerBoundaries() {
     "Omit<OverviewCacheEnvelope<TPayload>, \"moduleId\">",
   ]);
   assertNotMatches("src/features/overview/cache/index.ts", cache, [
-    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "overview cache owner must not own React hooks"],
+    [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "overview cache owner 不得持有 React hooks"],
     [/@\/services\/(?:accounts|analytics|mcp|skills|system)|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|(?:accounts|analytics|mcp|skills|system)Service\.|invokeIpc|invoke\(/, "overview cache owner must not access service/API/IPC"],
-    [/createModuleCacheOwner\("overview"\)|OverviewCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "overview cache owner must keep typed payloads"],
+    [/createModuleCacheOwner\("overview"\)|OverviewCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "overview cache owner 必须保留 typed payloads"],
   ]);
 
   if (controllerConsumerText.includes("ReturnType<typeof useOverviewPageController>")) {

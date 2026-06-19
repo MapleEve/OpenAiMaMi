@@ -386,7 +386,7 @@ requirePattern(
   files.coreModelMod,
   coreModelMod,
   /\bpub\s+mod\s+custom_instructions\s*;/g,
-  "core/model 必须注册 custom_instructions domain model",
+  "core/model 必须注册 custom_instructions 领域模型",
 );
 requirePattern(
   "core parser 模块注册",

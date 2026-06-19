@@ -11,6 +11,6 @@
 
 ## 前端契约边界
 
-- IPC DTO、后端 domain model 和前端 TypeScript 类型必须分开。
+- IPC DTO、后端 领域模型 和前端 TypeScript 类型必须分开。
 - 改 command、DTO 或 error envelope 时必须同步 Rust DTO/command、TypeScript 类型、API wrapper 和 E2E mock。
 - 本目录只描述可验证契约，不写业务流程实现。

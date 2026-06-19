@@ -78,7 +78,7 @@ assert(
     overviewQuery.includes("OVERVIEW_MYSTERY_GRANTS_QUERY_KEY") &&
     overviewQuery.includes("systemService.getMysteryUnlockGrants()") &&
     overviewQuery.includes("export function useOverviewMysteryUnlockGrantsQuery"),
-  "overview query owner 未暴露 shell 可复用的 mystery grants 查询",
+  "overview 查询归属 未暴露 shell 可复用的 mystery grants 查询",
 );
 assert(!/route:\s*["']voice["']/.test(registry), "registry.tsx 不应出现 voice route");
 

@@ -16,7 +16,7 @@
 | query | `src/features/accounts/hooks/query.ts`、`src/features/sessions/hooks/query.ts` | 列表与 snapshot 读取只通过 cache helper 写入 TanStack cache。 |
 | mutation | `src/features/accounts/hooks/mutation.ts`、`src/features/sessions/hooks/mutation.ts` | mutation payload 先写模块 cache，再按模块合同失效 query。 |
 | cache | `src/features/accounts/cache/index.ts`、`src/features/sessions/cache/index.ts` | owning authoritative query key、mutation fence、stale/delayed/replay 防护和合同 query 失效。 |
-| page controller | `src/features/accounts/hooks/page.ts`、`src/features/sessions/hooks/page.ts` | 只 owning 搜索、选择、展开、弹窗开关和用户意图调度，不直接拼 IPC。 |
+| 页面控制器 | `src/features/accounts/hooks/page.ts`、`src/features/sessions/hooks/page.ts` | 只 owning 搜索、选择、展开、弹窗开关和用户意图调度，不直接拼 IPC。 |
 | dialogs/panels | `src/features/accounts/dialogs/`、`src/features/accounts/panels/`、`src/features/sessions/dialogs/`、`src/features/sessions/panels/` | 只渲染模块 UI 和发出 controller 意图。 |
 | E2E mock | `src/mocks/fixtures/commands.ts` | accounts 与 sessions IPC 有专用 mock handler 和状态变更镜像。 |
 | IPC contract | `src/contracts/ipc/commands.ts` | accounts 八条 IPC 归属 `accounts` domain，sessions 四条 IPC 归属 `sessions` domain。 |

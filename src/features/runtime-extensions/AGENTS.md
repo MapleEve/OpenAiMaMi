@@ -1,4 +1,4 @@
-# runtime-extensions feature Agent 执行规则
+# runtime-extensions 前端模块 Agent 执行规则
 
 ## 渐进式覆盖
 
@@ -10,7 +10,7 @@
 
 ## runtime-extensions feature 边界
 
-- runtime-extensions 是 IPC domain 和 service 能力边界，不作为可见 feature owner。
+- runtime-extensions 是 IPC domain 和 service 能力边界，不作为可见 模块归属。
 - plugins 是当前 runtime extension 可见页面、Provider、StoreUpdater、Content、hooks、cache、dialogs、panels、components、types 和贴近测试的单一模块归属方。
 - 本目录不得新增 Provider、StoreUpdater、Content、hooks、cache、dialogs、panels、components、store、types 或页面入口。
 - 需要访问 runtime-extensions 后端能力时，只能经 src/services/runtime-extensions 和 src/services/plugins 的窄 wrapper，再由可见 plugins owner 消费。

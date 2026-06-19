@@ -19,7 +19,7 @@
 | IPC 合同 | `src/contracts/ipc/commands.ts` | 登记 `test_relay_provider`、`test_relay_draft`、`fetch_relay_models_draft`。 |
 | UI 触发 | `src/features/relay/panels/panels.tsx` | 暴露 provider test、draft test 和 fetch models 的用户触发入口。 |
 | 页面控制 | `src/features/relay/hooks/page.ts` | 将 UI 意图转成模块 action，不直接拼 IPC。 |
-| mutation owner | `src/features/relay/hooks/mutation.ts` | owning `testProvider`、`testDraft`、`fetchModelsDraft` mutation。 |
+| 变更操作归属 | `src/features/relay/hooks/mutation.ts` | owning `testProvider`、`testDraft`、`fetchModelsDraft` mutation。 |
 | service wrapper | `src/services/relay/index.ts` | 统一调用三个 IPC 命令。 |
 | E2E mock | `src/mocks/fixtures/commands.ts` | 提供 relay test 和 model fetch mock handler。 |
 | Tauri command | `src-tauri/src/commands/relay.rs` | 薄 adapter：参数、repository state、usecase 和 envelope。 |

@@ -54,7 +54,7 @@ export interface SessionsQueryController<TData> {
   refetch: () => Promise<unknown>;
 }
 
-/** sessions query owner 的边界接口，聚合 sessions 和 analytics usage 读取状态。 */
+/** sessions 查询归属 的边界接口，聚合 sessions 和 analytics usage 读取状态。 */
 export interface SessionsPageQueries {
   sessionsEnvelope: SessionsCacheEnvelope | null | undefined;
   usageEnvelope: SessionsUsageCacheEnvelope | null | undefined;
@@ -74,7 +74,7 @@ export interface SessionsInputAction<TInput, TResult = void> {
   isPending: boolean;
 }
 
-/** mutation owner 的边界接口，只暴露用户动作，不暴露 queryClient/cache 细节。 */
+/** 变更操作归属 的边界接口，只暴露用户动作，不暴露 queryClient/cache 细节。 */
 export interface SessionsPageMutations {
   refreshAction: SessionsAction<void>;
   deleteSessions: SessionsInputAction<string[], SessionsDeleteEnvelope>;

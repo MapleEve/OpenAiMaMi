@@ -376,11 +376,11 @@ validateQueue();
 validateEntrypoints();
 
 if (failures.length > 0) {
-  console.error("frontend plugins current-source validation failed:");
+  console.error("FAIL plugins 前端 current-source 验证失败：");
   for (const failure of failures) {
     console.error(`- ${failure}`);
   }
   process.exit(1);
 }
 
-console.log("frontend plugins current-source validation passed");
+console.log("PASS plugins 前端 current-source 验证通过");

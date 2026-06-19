@@ -14,7 +14,7 @@
 - 后端不做闭源业务全量还原是项目范围选择；必须按逆向内容打出真实六边形架构全骨架。
 - commands 只做 IPC adapter：参数反序列化、获取/克隆 app state、调度 blocking task、调用 application/core、封装 CoreEnvelope。
 - application/usecase owning 一次用户动作事务：校验输入、组织 repository/platform/core、提交结果。
-- core owning domain model、解析、迁移、状态机、DTO 转换、错误语义和 single-flight；core 不依赖 Tauri UI 对象。
+- core owning 领域模型、解析、迁移、状态机、DTO 转换、错误语义和 single-flight；core 不依赖 Tauri UI 对象。
 - platform 只封装 OS、进程、路径、权限、窗口、通知、shell/no-console、daemon/task/launchd 等能力。
 - repository/adapter 集中文件系统读写和路径安全；真实 FS 与 fake/temp FS 必须可替换。
 - 无 raw/internal 证据支撑的业务实现不得伪造成真实逻辑，只能保留边界、接口、DTO、错误语义、测试占位和待补证据位置。
