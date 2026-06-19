@@ -22,7 +22,7 @@ README 只保留长期有效的归纳状态，只做范围、边界和验收入�
 | --- | --- | --- | --- |
 | 公开材料 | 采用 Apache License，证据、公开边界、重建说明和验证入口已收口到仓库。 | 只纳入已匿名化、可审计、可验证材料；外部猜测和未脱敏材料不进入仓库。 | `npm run validate:public-boundary` |
 | 前端 | 已按入口、Provider、route registry、runtime initializer、服务门面、TanStack cache、i18n、E2E mock 和模块 owner 建立渐进还原方向；current-source 映射继续收口到重建文档和验证脚本。 | 仍按 `raw/internal` 渐进全量还原，不声明双平台、全叶子节点、全功能或全部文案已经完成。 | `npm run validate:frontend`、`npm run validate:frontend-visible-copy`、`npm run validate:frontend-leaf-copy` |
-| 后端 | 已按命令适配、用例层、核心层、仓储层、平台层、适配器、合同和 DTO 组织六边形公开骨架；skills 文件事务归属继续由后端 owner 验证脚本约束。 | 不补写无公开证据支撑的闭源业务逻辑；相关位置只保留接口、DTO、错误语义、测试占位、待补证据或可替换骨架。 | `npm run validate:backend`、`npm run validate:backend-cargo` |
+| 后端 | 已按命令适配、用例层、核心层、仓储层、平台层、适配器、合同和 DTO 组织六边形公开骨架；公开能力归属统一由后端 owner 验证脚本约束。 | 不补写无公开证据支撑的闭源业务逻辑；相关位置只保留接口、DTO、错误语义、测试占位、待补证据或可替换骨架。 | `npm run validate:backend`、`npm run validate:backend-cargo` |
 | voice | 已限定为空骨架、合同清单和中文说明。 | 不接入口、路由、IPC mock、后端命令或 runtime 启动链路。 | `npm run validate:frontend`、`npm run validate:backend` |
 | 验收 | 已固定公开边界、前端、后端、构建面和 Rust 环境检查入口。 | 本地工具链缺口需要按环境边界判断，不能直接等同于源码失败。 | `npm run validate:all`、`npm run validate:build-surface` |
 

@@ -171,7 +171,7 @@ for (const [label, content, path] of [
 }
 
 for (const required of [
-  "skills 文件事务归属",
+  "公开能力归属统一由后端 owner 验证脚本约束",
   "README 只保留长期有效的归纳状态",
 ]) {
   if (!rootReadme.includes(required)) {

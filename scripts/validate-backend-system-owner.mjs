@@ -13,8 +13,16 @@ const files = {
   commands: join(backendRoot, "commands", "system.rs"),
   configRepository: join(backendRoot, "repository", "config.rs"),
   notificationMap: join(repoRoot, "docs", "reconstruction", "notification-client-state-current-source-map.md"),
+  snapshotBootstrapMap: join(repoRoot, "docs", "reconstruction", "system-snapshot-bootstrap-current-source-map.md"),
   sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
   reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
+  tauriLib: join(backendRoot, "lib.rs"),
+  repositoryBootstrap: join(backendRoot, "repository", "bootstrap.rs"),
+  bootstrapContracts: join(backendRoot, "contracts", "bootstrap.rs"),
+  systemContracts: join(backendRoot, "contracts", "system.rs"),
+  tsSystemService: join(repoRoot, "src", "services", "system", "index.ts"),
+  ipcContracts: join(repoRoot, "src", "contracts", "ipc", "commands.ts"),
+  mockCommands: join(repoRoot, "src", "mocks", "fixtures", "commands.ts"),
 };
 const failures = [];
 
@@ -443,6 +451,148 @@ function validateNotificationIndex(sourceMapPath, sourceMap, readmePath, readme)
   );
 }
 
+function validateSnapshotBootstrapMap(path, content) {
+  for (const [label, pattern] of [
+    ["中文标题", /# system snapshot-bootstrap 后端当前源码证据映射/],
+    ["load_snapshot 范围", /`load_snapshot`/],
+    ["load_bootstrap_state 范围", /`load_bootstrap_state`/],
+    ["Tauri 注册", /src-tauri\/src\/lib\.rs/],
+    ["command adapter", /src-tauri\/src\/commands\/system\.rs/],
+    ["snapshot usecase owner", /src-tauri\/src\/application\/usecase\/system\/snapshot_bootstrap\.rs/],
+    ["bootstrap repository owner", /src-tauri\/src\/repository\/bootstrap\.rs/],
+    ["Rust DTO", /src-tauri\/src\/contracts\/bootstrap\.rs/],
+    ["TS service", /src\/services\/system\/index\.ts/],
+    ["IPC contract", /src\/contracts\/ipc\/commands\.ts/],
+    ["mock", /src\/mocks\/fixtures\/commands\.ts/],
+    ["snapshot progressive", /snapshot progressive/],
+    ["compat fields", /executedAt.*runOnce.*activeAccountKey.*switchedAccountKey.*pendingSwitchAccountKey/s],
+    ["不关闭前端 load_snapshot", /不改变前端 system-window-maintenance 文档中 `load_snapshot` 未关闭/],
+    ["不接 voice", /不扩大到 `voice`/],
+  ]) {
+    requirePattern(label, path, content, pattern, "snapshot-bootstrap current-source map 必须记录 owner、合同和未声明边界");
+  }
+}
+
+function validateSnapshotBootstrapIndex(sourceMapPath, sourceMap, readmePath, readme) {
+  for (const [label, path, content] of [
+    ["source-map snapshot-bootstrap index", sourceMapPath, sourceMap],
+    ["reconstruction README snapshot-bootstrap index", readmePath, readme],
+  ]) {
+    requirePattern(
+      label,
+      path,
+      content,
+      /system-snapshot-bootstrap-current-source-map\.md/,
+      "system snapshot-bootstrap current-source map 必须被 reconstruction 索引收口",
+    );
+  }
+}
+
+function validateSnapshotBootstrapCrossLayer(files) {
+  const checks = [
+    [
+      "Tauri load_snapshot 注册",
+      files.tauriLib.path,
+      files.tauriLib.content,
+      /\bcommands::system::load_snapshot\b/,
+    ],
+    [
+      "Tauri load_bootstrap_state 注册",
+      files.tauriLib.path,
+      files.tauriLib.content,
+      /\bcommands::system::load_bootstrap_state\b/,
+    ],
+    [
+      "system service load_snapshot",
+      files.tsSystemService.path,
+      files.tsSystemService.content,
+      /invokeIpc<CoreEnvelope<CoreSnapshotPayload>>\("load_snapshot"\s*,\s*\{\s*localOnly\s*\}\)/,
+    ],
+    [
+      "system service load_bootstrap_state",
+      files.tsSystemService.path,
+      files.tsSystemService.content,
+      /invokeIpc<CoreEnvelope<BootstrapStatePayload>>\("load_bootstrap_state"\)/,
+    ],
+    [
+      "IPC contract load_snapshot",
+      files.ipcContracts.path,
+      files.ipcContracts.content,
+      /"command":\s*"load_snapshot"/,
+    ],
+    [
+      "IPC contract load_bootstrap_state",
+      files.ipcContracts.path,
+      files.ipcContracts.content,
+      /"command":\s*"load_bootstrap_state"/,
+    ],
+    [
+      "mock load_snapshot handler",
+      files.mockCommands.path,
+      files.mockCommands.content,
+      /load_snapshot\s*:\s*coreSnapshotHandler/,
+    ],
+    [
+      "mock load_bootstrap_state handler",
+      files.mockCommands.path,
+      files.mockCommands.content,
+      /load_bootstrap_state\s*:\s*bootstrapStateHandler/,
+    ],
+    [
+      "mock snapshotProgressive typed mirror",
+      files.mockCommands.path,
+      files.mockCommands.content,
+      /snapshotProgressive\s*:\s*null/,
+    ],
+    [
+      "BootstrapCacheFile DTO",
+      files.bootstrapContracts.path,
+      files.bootstrapContracts.content,
+      /pub\s+struct\s+BootstrapCacheFile\s*\{[\s\S]*snapshot_progressive[\s\S]*usage_analytics[\s\S]*mcp_servers[\s\S]*installed_skills/s,
+    ],
+    [
+      "BootstrapStatePayload DTO",
+      files.bootstrapContracts.path,
+      files.bootstrapContracts.content,
+      /pub\s+struct\s+BootstrapStatePayload\s*\{[\s\S]*written_at[\s\S]*snapshot_progressive[\s\S]*executed_at[\s\S]*run_once[\s\S]*active_account_key[\s\S]*switched_account_key[\s\S]*pending_switch_account_key/s,
+    ],
+    [
+      "CoreSnapshotPayload DTO",
+      files.systemContracts.path,
+      files.systemContracts.content,
+      /pub\s+struct\s+CoreSnapshotPayload\s*\{[\s\S]*backend_status[\s\S]*status[\s\S]*accounts/s,
+    ],
+    [
+      "bootstrap repository load",
+      files.repositoryBootstrap.path,
+      files.repositoryBootstrap.content,
+      /pub\s+fn\s+load_bootstrap_cache\s*\(\s*repo\s*:\s*&Repository\s*\)/,
+    ],
+    [
+      "bootstrap repository snapshot write",
+      files.repositoryBootstrap.path,
+      files.repositoryBootstrap.content,
+      /pub\s+fn\s+store_bootstrap_snapshot_progressive\s*\(/,
+    ],
+    [
+      "bootstrap repository FS adapter read",
+      files.repositoryBootstrap.path,
+      files.repositoryBootstrap.content,
+      /repo\s*\.\s*fs\s*\(\s*\)\s*\.read_to_string\s*\(\s*path\s*\)/,
+    ],
+    [
+      "bootstrap repository FS adapter write",
+      files.repositoryBootstrap.path,
+      files.repositoryBootstrap.content,
+      /repo\s*\.\s*fs\s*\(\s*\)\s*\.write_string\s*\(/,
+    ],
+  ];
+
+  for (const [label, path, content, pattern] of checks) {
+    requirePattern(label, path, content, pattern, "snapshot-bootstrap 跨层合同必须显式闭合");
+  }
+}
+
 function validateCommandCompatibility(path, content) {
   for (const [label, pattern] of [
     ["load snapshot command adapter", /\busecase\s*::\s*system\s*::\s*load_snapshot\s*\(\s*&repo\s*\)/],
@@ -494,12 +644,28 @@ validateSettingsSecretOwner(
 validateSettingsContracts(files.settingsContracts, stripped.get("settingsContracts").content);
 validateNotificationClientState(files.root, stripped.get("root").content);
 validateNotificationMap(files.notificationMap, raw.get("notificationMap").content);
+validateSnapshotBootstrapMap(files.snapshotBootstrapMap, raw.get("snapshotBootstrapMap").content);
 validateNotificationIndex(
   files.sourceMap,
   raw.get("sourceMap").content,
   files.reconstructionReadme,
   raw.get("reconstructionReadme").content,
 );
+validateSnapshotBootstrapIndex(
+  files.sourceMap,
+  raw.get("sourceMap").content,
+  files.reconstructionReadme,
+  raw.get("reconstructionReadme").content,
+);
+validateSnapshotBootstrapCrossLayer({
+  tauriLib: stripped.get("tauriLib"),
+  repositoryBootstrap: stripped.get("repositoryBootstrap"),
+  bootstrapContracts: stripped.get("bootstrapContracts"),
+  systemContracts: stripped.get("systemContracts"),
+  tsSystemService: raw.get("tsSystemService"),
+  ipcContracts: raw.get("ipcContracts"),
+  mockCommands: raw.get("mockCommands"),
+});
 validatePathStateOwner(
   files.pathStateUsecase,
   raw.get("pathStateUsecase").content,
