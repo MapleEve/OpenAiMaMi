@@ -37,6 +37,14 @@ export const SETTINGS_IMAGE_COMPAT_QUERY_KEY: SettingsImageCompatQueryKey = ["im
 export const SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY: SettingsUsageRefreshIntervalQueryKey = [
   "usage-refresh-interval",
 ] as const;
+export const SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS = [
+  SettingsCache.queryKeys.root,
+  SETTINGS_RUNTIME_STATE_DISPLAY_QUERY_KEY,
+  SETTINGS_HAS_NOTCH_QUERY_KEY,
+  SETTINGS_HOTSPOT_ENABLED_QUERY_KEY,
+  SETTINGS_IMAGE_COMPAT_QUERY_KEY,
+  SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY,
+] as const satisfies readonly QueryKey[];
 export const writeSettingsAuthoritativePayload = <
   TPayload extends SettingsCachePayload,
 >(

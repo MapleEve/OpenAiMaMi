@@ -234,7 +234,11 @@ function assertSettingsContract(cache, query, mutation, types) {
   ]);
 
   assertIncludes("settings cache 导出 usage 与 hotspot query key/helper", cache, [
+    "SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS",
+    "SETTINGS_RUNTIME_STATE_DISPLAY_QUERY_KEY",
+    "SETTINGS_HAS_NOTCH_QUERY_KEY",
     "SETTINGS_HOTSPOT_ENABLED_QUERY_KEY",
+    "SETTINGS_IMAGE_COMPAT_QUERY_KEY",
     "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
     "export function beginSettingsMutation",
     "export function writeSettingsQueryPayload",
@@ -246,6 +250,16 @@ function assertSettingsContract(cache, query, mutation, types) {
     "const settingsQuerySequences = new Map<string, number>();",
     "const settingsMutationFences = new Map<string, number>();",
     "function canAcceptSettingsPayload",
+  ]);
+  assertIncludes("settings runtime reload target query keys are owned by cache", cache, [
+    "export const SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS = [",
+    "SettingsCache.queryKeys.root",
+    "SETTINGS_RUNTIME_STATE_DISPLAY_QUERY_KEY",
+    "SETTINGS_HAS_NOTCH_QUERY_KEY",
+    "SETTINGS_HOTSPOT_ENABLED_QUERY_KEY",
+    "SETTINGS_IMAGE_COMPAT_QUERY_KEY",
+    "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
+    "] as const satisfies readonly QueryKey[];",
   ]);
 
   const acceptBody = extractFunctionBody(cache, "canAcceptSettingsPayload");

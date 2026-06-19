@@ -11,7 +11,7 @@ import { OverviewCache } from "@/features/overview/cache";
 import { PluginsCache } from "@/features/plugins/cache";
 import { RelayCache } from "@/features/relay/cache";
 import { SessionsCache } from "@/features/sessions/cache";
-import { SettingsCache } from "@/features/settings/cache";
+import { SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS } from "@/features/settings/cache";
 import { SkillsCache } from "@/features/skills/cache";
 import { TrayShellCache } from "@/features/tray-shell/cache";
 import type { Route } from "@/types/navigation";
@@ -88,7 +88,7 @@ export const RUNTIME_QUERY_KEYS_BY_MODULE = {
   skills: runtimeModuleQueryKeys(SkillsCache.queryKeys.root),
   plugins: runtimeModuleQueryKeys(PluginsCache.queryKeys.root),
   relay: runtimeModuleQueryKeys(RelayCache.queryKeys.root),
-  settings: runtimeModuleQueryKeys(SettingsCache.queryKeys.root),
+  settings: runtimeModuleQueryKeys(...SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS),
   maintenance: runtimeModuleQueryKeys(MaintenanceCache.queryKeys.root),
   "daemon-autoswitch": runtimeModuleQueryKeys(DaemonAutoswitchCache.queryKeys.root),
   "tray-shell": runtimeModuleQueryKeys(TrayShellCache.queryKeys.root),

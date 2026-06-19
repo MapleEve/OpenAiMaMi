@@ -1547,6 +1547,13 @@ function validateSettingsDeepOwnerBoundaries() {
   assertIncludes("src/features/settings/cache/index.ts", cache, [
     "createModuleCacheOwner<SettingsCachePayload>(\"settings\")",
     "Omit<SettingsCacheEnvelope<TPayload>, \"moduleId\">",
+    "SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS",
+    "SettingsCache.queryKeys.root",
+    "SETTINGS_RUNTIME_STATE_DISPLAY_QUERY_KEY",
+    "SETTINGS_HAS_NOTCH_QUERY_KEY",
+    "SETTINGS_HOTSPOT_ENABLED_QUERY_KEY",
+    "SETTINGS_IMAGE_COMPAT_QUERY_KEY",
+    "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
     "TKey extends SettingsWritableQueryKey",
     "SettingsQueryPayloadForKey<TKey>",
     "writeSettingsAuthoritativePayload",
@@ -1565,6 +1572,16 @@ function validateSettingsDeepOwnerBoundaries() {
     [/\buse(Query|Mutation|QueryClient|State|Reducer|Effect|Memo|Callback)\b/, "settings cache owner must not own React hooks"],
     [/@\/services\/settings|@\/services\/system|@\/lib\/api|@\/contracts\/ipc|@tauri-apps\/api|invokeIpc|invoke\(/, "settings cache owner must not access service/API/IPC"],
     [/createModuleCacheOwner\("settings"\)|SettingsCacheEnvelope<TPayload = unknown>|ModuleCacheEnvelope<unknown>|payload:\s*unknown/, "settings cache owner must keep typed payloads"],
+  ]);
+
+  const runtimeEvents = readRequired(join(srcRoot, "app", "runtime", "events.ts"));
+  assertIncludes("src/app/runtime/events.ts", runtimeEvents, [
+    "SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS",
+    "settings: runtimeModuleQueryKeys(...SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS)",
+  ]);
+  assertNotMatches("src/app/runtime/events.ts", runtimeEvents, [
+    [/SettingsCache\.queryKeys\.root/, "runtime events must consume settings cache owner target list instead of settings root directly"],
+    [/\bSETTINGS_(?:RUNTIME_STATE_DISPLAY|HAS_NOTCH|HOTSPOT_ENABLED|IMAGE_COMPAT|USAGE_REFRESH_INTERVAL)_QUERY_KEY\b/, "runtime events must not consume settings bare query keys directly"],
   ]);
 
   if (controllerConsumerText.includes("ReturnType<typeof useSettingsPageController>")) {

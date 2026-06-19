@@ -323,10 +323,20 @@ expectNotIncludes("src/app/runtime/initializer.tsx", runtimeInitializer, [
 
 const runtimeEvents = readRequiredFile("src/app/runtime/events.ts");
 expectIncludes("src/app/runtime/events.ts", runtimeEvents, [
+  "SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS",
   "RUNTIME_QUERY_KEYS_BY_MODULE",
+  "settings: runtimeModuleQueryKeys(...SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS)",
   "getRuntimeEventQueryTargets",
   "acceptRuntimeEventSequence",
   "invalidateRuntimeTargets",
+]);
+expectNotIncludes("src/app/runtime/events.ts", runtimeEvents, [
+  "SettingsCache.queryKeys.root",
+  "SETTINGS_RUNTIME_STATE_DISPLAY_QUERY_KEY",
+  "SETTINGS_HAS_NOTCH_QUERY_KEY",
+  "SETTINGS_HOTSPOT_ENABLED_QUERY_KEY",
+  "SETTINGS_IMAGE_COMPAT_QUERY_KEY",
+  "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
 ]);
 
 const navigationTypes = readRequiredFile("src/types/navigation.ts");
