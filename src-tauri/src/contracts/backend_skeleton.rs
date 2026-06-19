@@ -31,7 +31,12 @@ pub struct RuntimeBridgeEventPayload {
     pub sequence: u64,
     pub received_at: i64,
     pub command: String,
+    pub signal: String,
+    pub operation_key: String,
     pub status_code: String,
+    pub schedule_interval_seconds: u64,
+    pub schedule_source: String,
+    pub platform_effect: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

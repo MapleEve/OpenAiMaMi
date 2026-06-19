@@ -16,6 +16,7 @@ const files = {
   repositoryRuntime: join(backendRoot, "repository", "runtime.rs"),
   repositoryPaths: join(backendRoot, "repository", "paths.rs"),
   settingsContract: join(backendRoot, "contracts", "settings.rs"),
+  backendSkeletonContract: join(backendRoot, "contracts", "backend_skeleton.rs"),
   runtimeWatchersMap: join(
     repoRoot,
     "docs",
@@ -238,6 +239,92 @@ function validateDaemonUsecase(path, content) {
     /\bmodule\s*:\s*"daemon"\s*\.to_string\s*\(\s*\)/,
     "daemon usecase 返回的后端骨架状态必须声明 daemon owner",
   );
+}
+
+function validateRuntimeBridgeEventUsecase(path, content) {
+  for (const [label, pattern, reason] of [
+    [
+      "runtime bridge event target",
+      /\blet\s*\(\s*module_id\s*,\s*mode\s*\)\s*=\s*runtime_event_target\s*\(\s*decision\s*\.\s*signal\s*\)\s*;/,
+      "runtime event payload must route by the domain signal",
+    ],
+    [
+      "runtime bridge event command",
+      /\bcommand\s*:\s*command\s*\.\s*to_string\s*\(\s*\)\s*,/,
+      "runtime event payload must retain the triggering IPC command",
+    ],
+    [
+      "runtime bridge event signal",
+      /\bsignal\s*:\s*runtime_watcher_signal\s*\(\s*decision\s*\.\s*signal\s*\)\s*\.to_string\s*\(\s*\)\s*,/,
+      "runtime event payload must expose watcher signal diagnostics",
+    ],
+    [
+      "runtime bridge event operation key",
+      /\boperation_key\s*:\s*runtime_watcher_operation_key\s*\(\s*&\s*decision\s*\.\s*operation_key\s*\)\s*\.to_string\s*\(\s*\)\s*,/,
+      "runtime event payload must expose the coalescing operation key",
+    ],
+    [
+      "runtime bridge event status code",
+      /\bstatus_code\s*:\s*runtime_watcher_status_code\s*\(\s*&\s*decision\s*\.\s*status_code\s*\)\s*\.to_string\s*\(\s*\)\s*,/,
+      "runtime event payload must expose the skeleton status code",
+    ],
+    [
+      "runtime bridge event schedule interval",
+      /\bschedule_interval_seconds\s*:\s*decision\s*\.\s*state\s*\.\s*schedule_interval\s*\.\s*interval_seconds\s*,/,
+      "runtime event payload must carry settings-derived interval evidence",
+    ],
+    [
+      "runtime bridge event schedule source",
+      /\bschedule_source\s*:\s*"settingsDerivedSnapshot"\s*\.to_string\s*\(\s*\)\s*,/,
+      "runtime event payload must not imply a restored external scheduler source",
+    ],
+    [
+      "runtime bridge event platform effect",
+      /\bplatform_effect\s*:\s*runtime_watcher_platform_effect\s*\(\s*decision\s*\)\s*\.to_string\s*\(\s*\)\s*,/,
+      "runtime event payload must record whether the platform layer actually performed side effects",
+    ],
+  ]) {
+    requirePattern(label, path, content, pattern, reason);
+  }
+}
+
+function validateBackendSkeletonContract(path, content) {
+  requirePattern(
+    "RuntimeBridgeEventPayload camelCase DTO",
+    path,
+    content,
+    /#\[serde\(rename_all\s*=\s*"camelCase"\)\]\s*pub\s+struct\s+RuntimeBridgeEventPayload\s*\{/,
+    "Rust runtime bridge payload must serialize to the frontend BackendRuntimeEventPayload shape",
+  );
+  requirePattern(
+    "RuntimeBridgeEventPayload type rename",
+    path,
+    content,
+    /#\[serde\(rename\s*=\s*"type"\)\]\s*pub\s+event_type\s*:\s*String\s*,/,
+    "Rust field event_type must serialize as type",
+  );
+
+  for (const [field, rustType] of [
+    ["module_id", "String"],
+    ["mode", "String"],
+    ["sequence", "u64"],
+    ["received_at", "i64"],
+    ["command", "String"],
+    ["signal", "String"],
+    ["operation_key", "String"],
+    ["status_code", "String"],
+    ["schedule_interval_seconds", "u64"],
+    ["schedule_source", "String"],
+    ["platform_effect", "String"],
+  ]) {
+    requirePattern(
+      `RuntimeBridgeEventPayload ${field}`,
+      path,
+      content,
+      new RegExp(`\\bpub\\s+${field}\\s*:\\s*${rustType}\\s*,`),
+      "Rust runtime bridge payload must keep TS BackendRuntimeEventPayload synchronized",
+    );
+  }
 }
 
 function validatePendingAutoSwitchBackendBoundary(
@@ -493,6 +580,33 @@ function validateCoreRuntime(path, original, content) {
   }
 }
 
+function validateCoreRuntimeTests(path, content) {
+  for (const [label, pattern, reason] of [
+    [
+      "usage activity runtime test assertions",
+      /\bfn\s+usage_activity_records_timestamp_and_notify_sequence\s*\(\s*\)[\s\S]*?RuntimeWatcherStatusCode::ActivityRecorded[\s\S]*?assert_eq!\s*\(\s*decision\s*\.\s*state\s*\.\s*last_activity_epoch_seconds\s*,\s*Some\s*\(\s*100\s*\)\s*\)[\s\S]*?assert!\s*\(\s*decision\s*\.\s*state\s*\.\s*notify_sequence\s*>\s*0\s*\)/,
+      "runtime tests must prove activity timestamp and notify sequence behavior",
+    ],
+    [
+      "full refresh debounce runtime test assertions",
+      /\bfn\s+full_refresh_uses_eight_second_debounce\s*\(\s*\)[\s\S]*?RuntimeWatcherStatusCode::FullRefreshScheduled[\s\S]*?RuntimeWatcherStatusCode::FullRefreshCoalesced/,
+      "runtime tests must prove full refresh debounce/coalescing behavior",
+    ],
+    [
+      "usage watcher guard runtime test assertions",
+      /\bfn\s+start_usage_watcher_is_guarded\s*\(\s*\)[\s\S]*?RuntimeWatcherStatusCode::UsageWatcherStarted[\s\S]*?RuntimeWatcherStatusCode::UsageWatcherAlreadyStarted[\s\S]*?assert!\s*\(\s*second\s*\.\s*state\s*\.\s*usage_watcher_started\s*\)/,
+      "runtime tests must prove watcher start guard behavior",
+    ],
+    [
+      "schedule update runtime test assertions",
+      /\bfn\s+schedule_update_tracks_settings_interval_and_sequence\s*\(\s*\)[\s\S]*?RuntimeWatcherOperationKey::UsageRefreshSchedule[\s\S]*?RuntimeWatcherStatusCode::ScheduleUpdated[\s\S]*?assert_eq!\s*\(\s*decision\s*\.\s*state\s*\.\s*schedule_interval\s*\.\s*interval_seconds\s*,\s*180\s*\)[\s\S]*?assert_eq!\s*\(\s*decision\s*\.\s*state\s*\.\s*notify_sequence\s*,\s*1\s*\)[\s\S]*?assert_eq!\s*\(\s*decision\s*\.\s*state\s*\.\s*last_notified\s*,\s*Some\s*\(\s*300\s*\)\s*\)/,
+      "runtime tests must prove settings-derived schedule interval and sequence behavior",
+    ],
+  ]) {
+    requirePattern(label, path, content, pattern, reason);
+  }
+}
+
 function validateRepositoryRuntime(path, original, content) {
   for (const [label, pattern, reason] of [
     [
@@ -530,6 +644,20 @@ function validateRepositoryRuntime(path, original, content) {
 }
 
 function validateRuntimeWatcherDocs(runtimeMapPath, runtimeMapContent, sourceMapPath, sourceMapContent, reconstructionReadmePath, reconstructionReadmeContent) {
+  requirePattern(
+    "runtime watcher map records RuntimeBridgeEventPayload fields",
+    runtimeMapPath,
+    runtimeMapContent,
+    /RuntimeBridgeEventPayload[\s\S]*signal[\s\S]*operationKey[\s\S]*statusCode[\s\S]*scheduleIntervalSeconds[\s\S]*scheduleSource[\s\S]*platformEffect/,
+    "system runtime watcher map must document bridge event diagnostics without claiming real broadcast recovery",
+  );
+  requirePattern(
+    "runtime watcher map records daemon validator test coverage",
+    runtimeMapPath,
+    runtimeMapContent,
+    /scripts\/validate-backend-daemon-owner\.mjs[\s\S]*RuntimeBridgeEventPayload[\s\S]*schedule_update_tracks_settings_interval_and_sequence/,
+    "system runtime watcher map must document validator coverage for bridge payload and runtime tests",
+  );
   requirePattern(
     "runtime watcher map 记录 daemon usecase owner",
     runtimeMapPath,
@@ -656,7 +784,12 @@ validateRuntimePort(
   files.platformRuntime,
   stripped.get("platformRuntime").content,
 );
+validateBackendSkeletonContract(
+  files.backendSkeletonContract,
+  stripped.get("backendSkeletonContract").content,
+);
 validateDaemonUsecase(files.daemonUsecase, stripped.get("daemonUsecase").content);
+validateRuntimeBridgeEventUsecase(files.daemonUsecase, stripped.get("daemonUsecase").content);
 validatePendingAutoSwitchBackendBoundary(
   files.daemonUsecase,
   raw.get("daemonUsecase").content,
@@ -681,6 +814,7 @@ validateCoreRuntime(
   raw.get("coreRuntime").content,
   stripped.get("coreRuntime").content,
 );
+validateCoreRuntimeTests(files.coreRuntime, stripped.get("coreRuntime").content);
 validateRepositoryRuntime(
   files.repositoryRuntime,
   raw.get("repositoryRuntime").content,

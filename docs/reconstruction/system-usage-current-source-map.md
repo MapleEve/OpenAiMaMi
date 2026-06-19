@@ -18,9 +18,10 @@
 | `evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json` | 保留 raw/internal gate 未通过状态；本文不修改其中任何字段。 |
 | `src/services/system/index.ts` | `get_usage_refresh_interval`、`set_usage_refresh_interval`、`refresh_usage_snapshot` 的 system 服务门面。 |
 | `src/services/settings/index.ts` | settings facade 只代理 usage interval 的 get/set 能力，不 owning IPC 字符串。 |
+| `src/app/runtime/events.ts` | runtime initializer 收到 `settings` module reload 后只委托 `applySettingsRuntimeEventToCache`，不直接消费 settings 裸 query key。 |
 | `src/features/settings/hooks/query.ts` | usage interval query 只通过 `runSettingsQuery` 与 `SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY` 进入 cache owner。 |
 | `src/features/settings/hooks/mutation.ts` | usage interval mutation 通过 `beginSettingsMutation`、`cancelQueries` 和 `writeSettingsMutationPayload` 写入权威 payload。 |
-| `src/features/settings/cache/index.ts` | owning usage interval query key、runtime event target、sequence fence、mutation payload 写入和合同查询失效。 |
+| `src/features/settings/cache/index.ts` | owning usage interval query key、usage schedule runtime event target、sequence fence、mutation payload 写入和合同查询失效。 |
 | `src/features/overview/hooks/mutation.ts` | overview usage refresh mutation 使用现有 refresh owner，并交给 overview cache helper 处理返回 payload。 |
 | `src/features/overview/cache/index.ts` | owning overview snapshot/usage query key、mutation fence、usage analytics 查询失效。 |
 | `src/services/analytics/index.ts` | usage analytics 读取仍由 analytics 服务的 `load_usage_analytics` owner 表达，overview 只消费该事实。 |
@@ -40,6 +41,15 @@
 2. mutation 成功后通过 `writeSettingsMutationPayload` 写入 `SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY`。
 3. `src/features/settings/cache/index.ts` 先写 TanStack cache 和 authoritative payload，再按 settings 合同失效 query。
 4. `src/services/settings/index.ts` 只代理 `setUsageRefreshInterval: systemService.setUsageRefreshInterval`；IPC 字符串仍在 `systemService` 收口。
+
+### usage schedule runtime event reload
+
+1. `src/app/runtime/initializer.tsx` 只订阅后端 `aimami-runtime-event` 与进程内 `subscribeRuntimeEvent`，不拥有 settings 状态。
+2. `src/app/runtime/events.ts` 将后端 `module:reload` payload 标准化为 `RuntimeEvent`，保留 `command`、`statusCode`、`sequence` 与 `receivedAt`。
+3. 当前公开后端把 `UpdateUsageRefreshSchedule` 映射为 `moduleId=settings`、`mode=active-only`；前端只把这类 `settings` reload 委托给 `applySettingsRuntimeEventToCache`。
+4. `src/features/settings/cache/index.ts` 的 `SETTINGS_USAGE_SCHEDULE_RUNTIME_EVENT_CACHE_TARGETS` 只声明 `SettingsCache.queryKeys.root` 与 `SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY`，并由 `applySettingsRuntimeEventToCache` 执行 active/full invalidation。
+5. replay 防护由 `src/app/runtime/events.ts` 的 runtime event cursor 拦截旧 `sequence`；后续 query 返回仍必须经过 `runSettingsQuery` 与 settings mutation fence，旧 query、delayed response 或 replay 不得覆盖较新的 mutation payload。
+6. 本段只登记前端 runtime event/cache helper 消费链路；`update_usage_refresh_schedule` 不纳入本条 `currentSourceCommands`，也不声明真实 watcher、condvar、后台 schedule wakeup 或平台事件已经恢复。
 
 ### 刷新 usage snapshot
 

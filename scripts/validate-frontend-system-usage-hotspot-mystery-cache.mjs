@@ -7,6 +7,7 @@ const failures = [];
 const files = {
   packageJson: join(repoRoot, "package.json"),
   frontendAggregator: join(repoRoot, "scripts", "validate-frontend.mjs"),
+  runtimeEvents: join(repoRoot, "src", "app", "runtime", "events.ts"),
   systemService: join(repoRoot, "src", "services", "system", "index.ts"),
   settingsService: join(repoRoot, "src", "services", "settings", "index.ts"),
   settingsCache: join(repoRoot, "src", "features", "settings", "cache", "index.ts"),
@@ -235,6 +236,8 @@ function assertSettingsContract(cache, query, mutation, types) {
 
   assertIncludes("settings cache 导出 usage 与 hotspot query key/helper", cache, [
     "SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS",
+    "SETTINGS_USAGE_SCHEDULE_RUNTIME_EVENT_CACHE_TARGETS",
+    "SETTINGS_RUNTIME_EVENT_CACHE_TARGETS",
     "SETTINGS_RUNTIME_STATE_DISPLAY_QUERY_KEY",
     "SETTINGS_HAS_NOTCH_QUERY_KEY",
     "SETTINGS_HOTSPOT_ENABLED_QUERY_KEY",
@@ -244,6 +247,7 @@ function assertSettingsContract(cache, query, mutation, types) {
     "export function writeSettingsQueryPayload",
     "export async function runSettingsQuery",
     "export async function writeSettingsMutationPayload",
+    "export async function applySettingsRuntimeEventToCache",
     "export async function invalidateSettingsContractQueries",
   ]);
   assertIncludes("settings cache 持有 query sequence 与 mutation fence", cache, [
@@ -260,6 +264,15 @@ function assertSettingsContract(cache, query, mutation, types) {
     "SETTINGS_IMAGE_COMPAT_QUERY_KEY",
     "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
     "] as const satisfies readonly QueryKey[];",
+  ]);
+  assertIncludes("settings usage schedule runtime event 只经 cache helper 声明 target", cache, [
+    "export type SettingsRuntimeEventName = \"usage-refresh-schedule-reload\";",
+    "export const SETTINGS_USAGE_SCHEDULE_RUNTIME_EVENT_CACHE_TARGETS = [",
+    "SettingsCache.queryKeys.root",
+    "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
+    "export const SETTINGS_RUNTIME_EVENT_CACHE_TARGETS = {",
+    "\"usage-refresh-schedule-reload\": SETTINGS_USAGE_SCHEDULE_RUNTIME_EVENT_CACHE_TARGETS",
+    "applySettingsRuntimeEventToCache",
   ]);
 
   const acceptBody = extractFunctionBody(cache, "canAcceptSettingsPayload");
@@ -680,6 +693,7 @@ function runOverviewMysteryGrantsSimulation() {
 
 const packageJson = parseJson(files.packageJson);
 const frontendAggregator = readRequired(files.frontendAggregator);
+const runtimeEvents = readRequired(files.runtimeEvents);
 const systemService = readRequired(files.systemService);
 const settingsService = readRequired(files.settingsService);
 const settingsCache = readRequired(files.settingsCache);
@@ -692,6 +706,14 @@ const overviewMutation = readRequired(files.overviewMutation);
 const overviewTypes = readRequired(files.overviewTypes);
 const restorationQueue = parseJson(files.restorationQueue);
 
+assertIncludes("runtime settings reload 委托 settings cache helper", runtimeEvents, [
+  "applySettingsRuntimeEventToCache",
+  "delegateRuntimeEventToModuleCacheHelper",
+  '"usage-refresh-schedule-reload"',
+  'event.moduleId !== "settings"',
+  "command: payload.command",
+  "statusCode: payload.statusCode",
+]);
 assertSystemServiceContract(systemService, settingsService);
 assertSettingsContract(settingsCache, settingsQuery, settingsMutation, settingsTypes);
 assertOverviewContract(overviewCache, overviewQuery, overviewMutation, overviewTypes);

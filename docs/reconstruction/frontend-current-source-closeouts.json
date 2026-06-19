@@ -2088,6 +2088,18 @@
           ]
         },
         {
+          "file": "src/app/runtime/events.ts",
+          "includes": [
+            "normalizeBackendRuntimeEvent",
+            "applyRuntimeEventToQueryCache",
+            "acceptRuntimeEventSequence(queryClient, event)",
+            "delegateRuntimeEventToModuleCacheHelper(queryClient, event)",
+            "\"usage-refresh-schedule-reload\"",
+            "command: payload.command",
+            "statusCode: payload.statusCode"
+          ]
+        },
+        {
           "file": "src/services/system/index.ts",
           "includes": [
             "refreshUsageSnapshot: ()",
@@ -2176,7 +2188,7 @@
         "不新增 route、sidebar、header、tray、plugins config 或 voice 入口。",
         "不把 system-hotspot、mystery-unlock 或 watcher/schedule 信号纳入本条 system-usage 边界。"
       ],
-      "reason": "本 closeout 只登记 system-usage 三条命令的 current-source partial closeout：当前公开前端存在 system service、settings facade、settings query/mutation/cache、overview usage refresh/cache 与 analytics service owner 证据；不修改 raw/internal 证据，不声明 gate_accepted、implementation_use、dim6 或 full_leaf_100 已完成，也不恢复真实 watcher、daemon、runtime event 或平台副作用。"
+      "reason": "本 closeout 只登记 system-usage 三条命令的 current-source partial closeout：当前公开前端存在 system service、runtime event/cache helper、settings facade、settings query/mutation/cache、overview usage refresh/cache 与 analytics service owner 证据；不修改 raw/internal 证据，不声明 gate_accepted、implementation_use、dim6 或 full_leaf_100 已完成，也不恢复真实 watcher、daemon、runtime event 或平台副作用。"
     },
     {
       "id": "mystery-unlock-grants-current-source-chain",

@@ -6,7 +6,8 @@ use crate::contracts::{
 };
 use crate::core::error::CoreError;
 use crate::core::model::runtime::{
-    RuntimeWatcherDecision, RuntimeWatcherSignal, RuntimeWatcherStatusCode,
+    RuntimeWatcherDecision, RuntimeWatcherOperationKey, RuntimeWatcherSignal,
+    RuntimeWatcherStatusCode,
 };
 use crate::core::runtime as runtime_core;
 use crate::repository::runtime as runtime_repository;
@@ -231,7 +232,12 @@ fn runtime_bridge_event(
         sequence: decision.state.notify_sequence,
         received_at: current_epoch_ms(),
         command: command.to_string(),
+        signal: runtime_watcher_signal(decision.signal).to_string(),
+        operation_key: runtime_watcher_operation_key(&decision.operation_key).to_string(),
         status_code: runtime_watcher_status_code(&decision.status_code).to_string(),
+        schedule_interval_seconds: decision.state.schedule_interval.interval_seconds,
+        schedule_source: "settingsDerivedSnapshot".to_string(),
+        platform_effect: runtime_watcher_platform_effect(decision).to_string(),
     }
 }
 
@@ -260,6 +266,35 @@ fn runtime_watcher_status_code(status_code: &RuntimeWatcherStatusCode) -> &'stat
         RuntimeWatcherStatusCode::UsageWatcherStarted => "usageWatcherStarted",
         RuntimeWatcherStatusCode::UsageWatcherAlreadyStarted => "usageWatcherAlreadyStarted",
         RuntimeWatcherStatusCode::ScheduleUpdated => "scheduleUpdated",
+    }
+}
+
+fn runtime_watcher_signal(signal: RuntimeWatcherSignal) -> &'static str {
+    match signal {
+        RuntimeWatcherSignal::NoteUsageRefreshActivity => "noteUsageRefreshActivity",
+        RuntimeWatcherSignal::ScheduleFullRuntimeRefresh => "scheduleFullRuntimeRefresh",
+        RuntimeWatcherSignal::StartAutoSwitchPendingWatcher => "startAutoSwitchPendingWatcher",
+        RuntimeWatcherSignal::StartUsageRefreshWatcher => "startUsageRefreshWatcher",
+        RuntimeWatcherSignal::UpdateUsageRefreshSchedule => "updateUsageRefreshSchedule",
+    }
+}
+
+fn runtime_watcher_operation_key(operation_key: &RuntimeWatcherOperationKey) -> &'static str {
+    match operation_key {
+        RuntimeWatcherOperationKey::UsageRefreshActivity => "usageRefreshActivity",
+        RuntimeWatcherOperationKey::FullRuntimeRefresh => "fullRuntimeRefresh",
+        RuntimeWatcherOperationKey::AutoSwitchPendingWatcher => "autoSwitchPendingWatcher",
+        RuntimeWatcherOperationKey::UsageRefreshWatcher => "usageRefreshWatcher",
+        RuntimeWatcherOperationKey::UsageRefreshSchedule => "usageRefreshSchedule",
+    }
+}
+
+fn runtime_watcher_platform_effect(decision: &RuntimeWatcherDecision) -> &'static str {
+    let capability = &decision.platform_capability;
+    if capability.creates_thread || capability.emits_event || capability.touches_user_environment {
+        "platformSideEffectAvailable"
+    } else {
+        "typedPendingNoop"
     }
 }
 

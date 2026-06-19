@@ -21,6 +21,9 @@
 | `src-tauri/src/core/model/runtime.rs` | 当前 runtime model owning signal、operation key、status code、snapshot、platform capability 和 decision。 |
 | `src-tauri/src/repository/runtime.rs` | 当前 repository 只从 settings 文件重建 watcher snapshot，不保存跨命令业务状态。 |
 | `src-tauri/src/platform/runtime.rs` | 当前 platform adapter 只返回结构化 capability，不创建真实线程、事件或用户环境副作用。 |
+| `src/app/runtime/events.ts` | 当前前端只标准化 runtime event payload、维护 sequence cursor，并把 settings schedule reload 委托给模块 cache helper。 |
+| `src/features/settings/cache/index.ts` | 当前 settings cache helper owning usage schedule runtime event target，不让 runtime initializer 直写 settings 裸 query key。 |
+| `src-tauri/src/contracts/backend_skeleton.rs` | `RuntimeBridgeEventPayload` 只作为 skeleton DTO 暴露 `type/moduleId/mode/sequence/receivedAt/command/signal/operationKey/statusCode/scheduleIntervalSeconds/scheduleSource/platformEffect`，不代表真实 watcher broadcast 已恢复。 |
 
 ## 5 个 watcher / schedule 信号
 
@@ -41,6 +44,17 @@
 | `src-tauri/src/core/runtime.rs` | 为 5 个信号生成结构化 decision 和中文 pending note。 | core 只表达状态机语义，不启动真实 watcher。 |
 | `src-tauri/src/repository/runtime.rs` | 从 settings repository 重建 interval、auto-switch enabled 和 settings path。 | repository 只持有可重建文件事实，不保存跨命令业务状态。 |
 | `src-tauri/src/platform/runtime.rs` | 返回 condvar/thread/schedule notify/event/user-environment capability。 | platform 只返回结构化能力结果，不创建真实资源。 |
+| `src/app/runtime/events.ts` | `settings` module reload 保留 `command/statusCode/sequence/receivedAt`，旧 sequence 被 runtime event cursor 拒绝。 | 前端只消费已到达的 event envelope，不声明后端真实广播已恢复。 |
+| `src/features/settings/cache/index.ts` | `applySettingsRuntimeEventToCache` 只失效 usage schedule 相关 cache target。 | usage schedule reload 经模块 cache helper 消费，不越过 settings owner。 |
+
+## 前端 usage schedule 事件消费补充
+
+- `update_usage_refresh_schedule` 在当前后端骨架中只会生成 `moduleId=settings`、`mode=active-only` 的 runtime event envelope；这仍不是后台 watcher、condvar 或真实 schedule wakeup。
+- 后端 `RuntimeBridgeEventPayload` 额外保留 `signal`、`operationKey`、`statusCode`、`scheduleIntervalSeconds`、`scheduleSource` 和 `platformEffect`，用于说明 watcher skeleton 决策来源；前端 `BackendRuntimeEventPayload` 仅同步 DTO shape 并消费 `command/statusCode`，不据此声明真实事件广播。
+- 前端 `RuntimeInitializer` 只负责订阅并把 payload 交给 `applyRuntimeEventToQueryCache`，不保存业务状态。
+- `src/app/runtime/events.ts` 对旧 `sequence` 的事件重放直接返回；被接受的 settings reload 再委托 `src/features/settings/cache/index.ts` 的 `applySettingsRuntimeEventToCache`。
+- `applySettingsRuntimeEventToCache` 只声明并失效 `SettingsCache.queryKeys.root` 与 `SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY`，后续重新读取仍必须经过 `runSettingsQuery` 的 sequence 与 mutation fence。
+- 该前端闭环只提高 current-source 可审计性，不把 runtime event、后台线程、平台 watcher 或真实 usage schedule 行为标记为已恢复。
 
 ## 明确未恢复内容
 
@@ -73,5 +87,6 @@
 - 不允许登记 `implementation_use`、`gate_accepted`、`full_leaf_100`、dim6 或聚合门。
 - README 只保持归纳状态摘要；不修改 voice、gate-report 或 raw 审计事实。
 - Rust 只做 pending skeleton，不启动真实 watcher、线程、condvar、网络或外部进程。
+- `scripts/validate-backend-daemon-owner.mjs` 直接约束 `RuntimeBridgeEventPayload` 新字段、`runtime_bridge_event` 字段组装，以及 `usage_activity_records_timestamp_and_notify_sequence`、`full_refresh_uses_eight_second_debounce`、`start_usage_watcher_is_guarded`、`schedule_update_tracks_settings_interval_and_sequence` runtime test 断言。
 - 需要通过 `npm run validate:frontend-closeouts`、`npm run validate:backend-hexagonal`、`npm run validate:public-boundary`。
 - strict leaf-copy 仍按剩余 gate 失败，不作为本分支伪关闭依据。

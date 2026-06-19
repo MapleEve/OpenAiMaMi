@@ -11,7 +11,10 @@ import { OverviewCache } from "@/features/overview/cache";
 import { PluginsCache } from "@/features/plugins/cache";
 import { RelayCache } from "@/features/relay/cache";
 import { SessionsCache } from "@/features/sessions/cache";
-import { SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS } from "@/features/settings/cache";
+import {
+  applySettingsRuntimeEventToCache,
+  SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS,
+} from "@/features/settings/cache";
 import { SkillsCache } from "@/features/skills/cache";
 import { TrayShellCache } from "@/features/tray-shell/cache";
 import type { Route } from "@/types/navigation";
@@ -31,6 +34,8 @@ export type RuntimeEvent =
       mode: "full" | "active-only";
       sequence: number;
       receivedAt: number;
+      command?: string;
+      statusCode?: string;
     }
   | {
       type: "module:mutation-payload";
@@ -120,6 +125,8 @@ export function normalizeBackendRuntimeEvent(
     mode: payload.mode === "active-only" ? "active-only" : "full",
     sequence: payload.sequence,
     receivedAt: payload.receivedAt,
+    command: payload.command,
+    statusCode: payload.statusCode,
   };
 }
 
@@ -159,6 +166,10 @@ export function applyRuntimeEventToQueryCache(
     );
   }
 
+  if (delegateRuntimeEventToModuleCacheHelper(queryClient, event)) {
+    return;
+  }
+
   invalidateRuntimeTargets(queryClient, getRuntimeEventQueryTargets(event));
 }
 
@@ -196,6 +207,28 @@ function setSequencedRuntimeCache(
       sequence: event.sequence,
     };
   });
+}
+
+function delegateRuntimeEventToModuleCacheHelper(
+  queryClient: QueryClient,
+  event: RuntimeEvent,
+) {
+  if (event.type !== "module:reload" || event.moduleId !== "settings") {
+    return false;
+  }
+
+  void applySettingsRuntimeEventToCache(
+    queryClient,
+    "usage-refresh-schedule-reload",
+    {
+      command: event.command,
+      mode: event.mode,
+      receivedAt: event.receivedAt,
+      sequence: event.sequence,
+      statusCode: event.statusCode,
+    },
+  );
+  return true;
 }
 
 function invalidateRuntimeTargets(

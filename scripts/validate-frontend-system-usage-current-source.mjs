@@ -12,6 +12,7 @@ const files = {
   map: "docs/reconstruction/system-usage-current-source-map.md",
   sourceMap: "docs/reconstruction/source-map.md",
   reconstructionReadme: "docs/reconstruction/README.md",
+  runtimeEvents: "src/app/runtime/events.ts",
   systemService: "src/services/system/index.ts",
   settingsService: "src/services/settings/index.ts",
   settingsQuery: "src/features/settings/hooks/query.ts",
@@ -231,6 +232,7 @@ function assertMapBoundary(mapText) {
   assertIncludes("证据 map 写明当前源码 owner 文件", mapText, [
     files.systemService,
     files.settingsService,
+    files.runtimeEvents,
     files.settingsQuery,
     files.settingsMutation,
     files.settingsCache,
@@ -243,6 +245,8 @@ function assertMapBoundary(mapText) {
     "不声明 `gate_accepted`、`implementation_use`、`full_leaf_100` 或 `dim6` 已完成",
     "不恢复真实平台 watcher、daemon、runtime event、后台线程、计划调度或平台副作用",
     "不新增 route、sidebar、header、tray、plugins config 或 `voice` 入口",
+    "usage schedule runtime event reload",
+    "applySettingsRuntimeEventToCache",
   ]);
   assertNotIncludes("证据 map 不写个人路径或敏感材料", mapText, [
     "C:\\Users\\",
@@ -325,6 +329,10 @@ function assertSettingsLayer(settingsService, settingsQuery, settingsMutation, s
   assertIncludes("settings cache owning usage interval key 与 runtime event target", settingsCache, [
     "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
     "SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS",
+    "SETTINGS_USAGE_SCHEDULE_RUNTIME_EVENT_CACHE_TARGETS",
+    "SETTINGS_RUNTIME_EVENT_CACHE_TARGETS",
+    "applySettingsRuntimeEventToCache",
+    '"usage-refresh-schedule-reload"',
     "SettingsUsageRefreshIntervalQueryKey",
     "beginSettingsMutation",
     "runSettingsQuery",
@@ -342,6 +350,39 @@ function assertSettingsLayer(settingsService, settingsQuery, settingsMutation, s
     /return\s+sequence\s*>=\s*latestStarted\s*&&\s*sequence\s*>=\s*mutationFence\s*;/,
   );
   assertIncludes("settings cache invalidate 覆盖 usage interval key", extractFunctionBody(settingsCache, "invalidateSettingsContractQueries"), [
+    "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
+  ]);
+  assertIncludes("settings cache helper 消费 usage schedule runtime event", extractFunctionBody(settingsCache, "applySettingsRuntimeEventToCache"), [
+    "SETTINGS_RUNTIME_EVENT_CACHE_TARGETS[eventName]",
+    "payload.mode",
+    "invalidateSettingsRuntimeEventTargets",
+  ]);
+}
+
+function assertRuntimeEventLayer(runtimeEvents) {
+  assertIncludes("runtime events 保留后端 schedule event 诊断字段", runtimeEvents, [
+    "command?: string;",
+    "statusCode?: string;",
+    "command: payload.command",
+    "statusCode: payload.statusCode",
+  ]);
+  assertIncludes("runtime events 将 settings reload 委托给 settings cache helper", runtimeEvents, [
+    "applySettingsRuntimeEventToCache",
+    "delegateRuntimeEventToModuleCacheHelper",
+    'event.moduleId !== "settings"',
+    '"usage-refresh-schedule-reload"',
+    "return true;",
+  ]);
+  assertIncludes("runtime events replay 先过 sequence cursor", runtimeEvents, [
+    "acceptRuntimeEventSequence(queryClient, event)",
+    "event.sequence <= current.sequence",
+    "delegateRuntimeEventToModuleCacheHelper(queryClient, event)",
+  ]);
+  assertNotIncludes("runtime events 不直接消费 settings 裸 query key", runtimeEvents, [
+    "SETTINGS_RUNTIME_STATE_DISPLAY_QUERY_KEY",
+    "SETTINGS_HAS_NOTCH_QUERY_KEY",
+    "SETTINGS_HOTSPOT_ENABLED_QUERY_KEY",
+    "SETTINGS_IMAGE_COMPAT_QUERY_KEY",
     "SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY",
   ]);
 }
@@ -406,6 +447,7 @@ function assertCloseout(closeout, closeoutValidator) {
     currentSourceMap,
     "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/frontend-callchain-report.json",
     "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json",
+    files.runtimeEvents,
     files.systemService,
     files.settingsService,
     files.settingsQuery,
@@ -442,6 +484,7 @@ const closeoutValidator = readRequired(files.currentSourceCloseoutValidator);
 const mapText = readRequired(files.map);
 const sourceMap = readRequired(files.sourceMap);
 const reconstructionReadme = readRequired(files.reconstructionReadme);
+const runtimeEvents = readRequired(files.runtimeEvents);
 const systemService = readRequired(files.systemService);
 const settingsService = readRequired(files.settingsService);
 const settingsQuery = readRequired(files.settingsQuery);
@@ -455,6 +498,7 @@ assertMapBoundary(mapText);
 assertRegistrations(packageJson, frontendAggregator, sourceMap, reconstructionReadme);
 assertSystemService(systemService);
 assertSettingsLayer(settingsService, settingsQuery, settingsMutation, settingsCache);
+assertRuntimeEventLayer(runtimeEvents);
 assertOverviewAndAnalytics(overviewMutation, overviewCache, analyticsService);
 assertCloseout(findCloseout(closeouts), closeoutValidator);
 

@@ -1,7 +1,7 @@
 use crate::core::model::runtime::{
-    RuntimeWatcherDecision, RuntimeWatcherPlatformCapability, RuntimeWatcherSchedule,
-    RuntimeWatcherSignal, RuntimeWatcherSnapshot, RuntimeWatcherStartMode, RuntimeWatcherState,
-    RuntimeWatcherStatusCode,
+    RuntimeWatcherDecision, RuntimeWatcherOperationKey, RuntimeWatcherPlatformCapability,
+    RuntimeWatcherSchedule, RuntimeWatcherSignal, RuntimeWatcherSnapshot, RuntimeWatcherStartMode,
+    RuntimeWatcherState, RuntimeWatcherStatusCode,
 };
 use crate::core::model::settings::UsageRefreshInterval;
 use std::sync::{Mutex, OnceLock};
@@ -340,5 +340,26 @@ mod tests {
             RuntimeWatcherStatusCode::UsageWatcherAlreadyStarted
         );
         assert!(second.state.usage_watcher_started);
+    }
+
+    #[test]
+    fn schedule_update_tracks_settings_interval_and_sequence() {
+        let _guard = watcher_test_guard();
+        reset_watcher_state_for_test();
+
+        let decision = update_usage_refresh_schedule(
+            snapshot(UsageRefreshInterval::ThreeMinutes),
+            capability(),
+            300,
+        );
+
+        assert_eq!(
+            decision.operation_key,
+            RuntimeWatcherOperationKey::UsageRefreshSchedule
+        );
+        assert_eq!(decision.status_code, RuntimeWatcherStatusCode::ScheduleUpdated);
+        assert_eq!(decision.state.schedule_interval.interval_seconds, 180);
+        assert_eq!(decision.state.notify_sequence, 1);
+        assert_eq!(decision.state.last_notified, Some(300));
     }
 }

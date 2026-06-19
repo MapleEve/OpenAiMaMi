@@ -645,7 +645,12 @@ export interface BackendRuntimeEventPayload {
   sequence: number;
   receivedAt: number;
   command: string;
+  signal: string;
+  operationKey: string;
   statusCode: string;
+  scheduleIntervalSeconds: number;
+  scheduleSource: string;
+  platformEffect: string;
 }
 
 export interface BackendSkeletonStatus {

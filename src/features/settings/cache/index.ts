@@ -45,6 +45,38 @@ export const SETTINGS_RUNTIME_EVENT_TARGET_QUERY_KEYS = [
   SETTINGS_IMAGE_COMPAT_QUERY_KEY,
   SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY,
 ] as const satisfies readonly QueryKey[];
+
+type SettingsRuntimeEventInvalidationType = "active" | "all";
+
+interface SettingsRuntimeEventInvalidationTarget {
+  queryKey: QueryKey;
+  type?: SettingsRuntimeEventInvalidationType;
+}
+
+export type SettingsRuntimeEventName = "usage-refresh-schedule-reload";
+
+export interface SettingsRuntimeEventPayloads {
+  "usage-refresh-schedule-reload": {
+    command?: string;
+    mode: "active-only" | "full";
+    receivedAt: number;
+    sequence: number;
+    statusCode?: string;
+  };
+}
+
+// usage schedule runtime 事件只由 settings cache helper 消费，避免 initializer 直写模块裸 key。
+export const SETTINGS_USAGE_SCHEDULE_RUNTIME_EVENT_CACHE_TARGETS = [
+  { queryKey: SettingsCache.queryKeys.root },
+  { queryKey: SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY },
+] as const satisfies readonly SettingsRuntimeEventInvalidationTarget[];
+
+export const SETTINGS_RUNTIME_EVENT_CACHE_TARGETS = {
+  "usage-refresh-schedule-reload": SETTINGS_USAGE_SCHEDULE_RUNTIME_EVENT_CACHE_TARGETS,
+} as const satisfies Record<
+  SettingsRuntimeEventName,
+  readonly SettingsRuntimeEventInvalidationTarget[]
+>;
 export const writeSettingsAuthoritativePayload = <
   TPayload extends SettingsCachePayload,
 >(
@@ -300,4 +332,33 @@ export async function invalidateSettingsContractQueries(queryClient: QueryClient
       queryKey: SETTINGS_USAGE_REFRESH_INTERVAL_QUERY_KEY,
     }),
   ]);
+}
+
+export async function applySettingsRuntimeEventToCache<
+  TEventName extends SettingsRuntimeEventName,
+>(
+  queryClient: QueryClient,
+  eventName: TEventName,
+  payload: SettingsRuntimeEventPayloads[TEventName],
+) {
+  await invalidateSettingsRuntimeEventTargets(
+    queryClient,
+    SETTINGS_RUNTIME_EVENT_CACHE_TARGETS[eventName],
+    payload.mode,
+  );
+}
+
+async function invalidateSettingsRuntimeEventTargets(
+  queryClient: QueryClient,
+  targets: readonly SettingsRuntimeEventInvalidationTarget[],
+  mode: "active-only" | "full",
+) {
+  await Promise.all(
+    targets.map((target) =>
+      queryClient.invalidateQueries({
+        queryKey: target.queryKey,
+        type: target.type ?? (mode === "active-only" ? "active" : "all"),
+      }),
+    ),
+  );
 }
