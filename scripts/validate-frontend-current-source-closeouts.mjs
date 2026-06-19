@@ -98,6 +98,17 @@ const RELAY_HTTP_TERMINAL_CCF_ALLOWED_FIELDS = [
   "nonClaims",
   "reason",
 ];
+const ACCOUNTS_ANALYTICS_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/accounts-analytics-current-source-map.md";
+const ACCOUNTS_ANALYTICS_CURRENT_SOURCE_COMMANDS = [
+  "load_snapshot",
+  "refresh_usage_snapshot",
+  "load_usage_analytics",
+  "load_quota_history",
+  "load_token_analytics",
+  "load_tool_analytics",
+  "load_change_analytics",
+];
 const TRAY_CURRENT_SOURCE_CLOSEOUT_ID =
   "tray-windows-current-source-native-event-frontend-chain";
 const TRAY_CURRENT_SOURCE_GATE_REPORT =
@@ -2720,6 +2731,31 @@ function validateMcpSkillsCloseout(closeout) {
 function validateAccountsAnalyticsCloseout(closeout) {
   validateClosedDocs("accounts-analytics", closeout.closedFrontendDocs);
   validateGateReports(closeout);
+  if (closeout.currentSourceMap !== ACCOUNTS_ANALYTICS_CURRENT_SOURCE_MAP) {
+    failures.push(`${closeout.id} currentSourceMap=${String(closeout.currentSourceMap)}`);
+  }
+  validateStringArraySet(
+    `${closeout.id} currentSourceCommands`,
+    closeout.currentSourceCommands,
+    ACCOUNTS_ANALYTICS_CURRENT_SOURCE_COMMANDS,
+  );
+  const mapPath = repoPath(ACCOUNTS_ANALYTICS_CURRENT_SOURCE_MAP);
+  if (!existsSync(mapPath)) {
+    failures.push(`${closeout.id} 缺少当前源码说明文档：${ACCOUNTS_ANALYTICS_CURRENT_SOURCE_MAP}`);
+  } else {
+    const mapText = readText(mapPath);
+    for (const required of [
+      "# accounts/analytics 前端链路与后端公开 owner 证据映射",
+      "`quota-history`",
+      "`usage-analytics`",
+      "不把 `accounts` 或 `analytics` 的 manifest 状态改成 `covered`",
+      "不接入 `voice`",
+    ]) {
+      if (!mapText.includes(required)) {
+        failures.push(`${ACCOUNTS_ANALYTICS_CURRENT_SOURCE_MAP} 缺少说明片段：${required}`);
+      }
+    }
+  }
 
   const expected = [
     {
