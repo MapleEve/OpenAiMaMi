@@ -641,6 +641,77 @@ function validateReadmeNoProgressChangelog(path) {
   );
 }
 
+function validateReconstructionCurrentSourceSummaryDocs() {
+  const docs = [
+    {
+      path: "docs/reconstruction/README.md",
+      requiredParts: [
+        "### 当前源码 / 证据映射索引",
+        "只记录当前公开源码与 raw/internal 证据之间的可审计映射、owner 边界和未声明边界",
+        "本表只允许登记文件、边界和验证入口，不记录提交流水、临时进度、最近运行日期或完成叙事",
+      ],
+    },
+    {
+      path: "docs/reconstruction/source-map.md",
+      requiredParts: [
+        "## 当前源码 / 证据映射注册表",
+        "下列索引只收口当前公开源码与 raw/internal 证据之间的 map 文档、owner 边界、验证入口和未声明边界",
+        "不表示 raw/internal gate 已闭合",
+        "不表示 `implementation_use`、`gate_accepted`、`full_leaf` 或 `full_leaf_100` 已完成",
+      ],
+    },
+  ];
+  const progressPatterns = [
+    /本次提交/,
+    /这次提交/,
+    /提交号/,
+    /逐次提交/,
+    /临时进度/,
+    /\b20[0-9]{2}[-/.][0-9]{1,2}[-/.][0-9]{1,2}\b.*(?:完成|修复|新增|拆分)/,
+    /(?:完成|修复|新增|拆分).*\b20[0-9]{2}[-/.][0-9]{1,2}[-/.][0-9]{1,2}\b/,
+    /第\s*(?:[0-9]+|[一二三四五六七八九十百千万]+)\s*次/,
+  ];
+
+  for (const doc of docs) {
+    const absolute = join(repoRoot, doc.path);
+    if (!existsSync(absolute)) {
+      addCheck(`${doc.path} 承载当前源码非流水账归纳`, false, "文件不存在");
+      continue;
+    }
+
+    const content = readUtf8(doc.path);
+    const missingParts = doc.requiredParts.filter((part) => !content.includes(part));
+    const changelogHits = [];
+    content.split(/\r?\n/).forEach((line, index) => {
+      const trimmed = line.trim();
+      if (!trimmed) return;
+      if (/不写|不包含|不能|禁止|不得|只能|只做|只记录|只收口|归纳|不记录|不追加|不再|不表示|不声明|边界/.test(trimmed)) {
+        return;
+      }
+      if (progressPatterns.some((pattern) => pattern.test(trimmed))) {
+        changelogHits.push(`${doc.path}:${index + 1}`);
+      }
+    });
+
+    const failures = [
+      missingParts.length > 0
+        ? `缺少非流水账归纳锚点：${missingParts.join("；")}`
+        : "",
+      changelogHits.length > 0
+        ? `发现按提交或日期堆叠的当前源码记录：${changelogHits.join("；")}`
+        : "",
+    ].filter(Boolean);
+
+    addCheck(
+      `${doc.path} 承载当前源码非流水账归纳`,
+      failures.length === 0,
+      failures.length === 0
+        ? "当前源码索引只归纳文件、边界、验证入口和未声明范围，未发现提交流水"
+        : failures.join("；"),
+    );
+  }
+}
+
 function validateReadmeCommitUpdateRule(path) {
   if (!existsSync(join(repoRoot, path))) return;
 
@@ -1179,6 +1250,7 @@ validateReadmeValidationCommands("README.md");
 validateReadmeValidationCommands("README-cn.md");
 validateReadmeNoProgressChangelog("README.md");
 validateReadmeNoProgressChangelog("README-cn.md");
+validateReconstructionCurrentSourceSummaryDocs();
 validateReadmeCommitUpdateRule("README.md");
 validateReadmeCommitUpdateRule("README-cn.md");
 validateReadmeTextQuality("README.md");

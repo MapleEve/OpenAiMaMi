@@ -3,15 +3,18 @@ import { join, relative } from "node:path";
 
 const repoRoot = process.cwd();
 const failures = [];
+const SKILLS_SPLIT_MAP = "docs/reconstruction/skills-current-source-evidence-map.md";
 
 const files = {
-  map: join(repoRoot, "docs", "reconstruction", "skills-current-source-evidence-map.md"),
+  map: join(repoRoot, "docs", "reconstruction", "mcp-skills-current-source-map.md"),
+  splitMap: join(repoRoot, ...SKILLS_SPLIT_MAP.split("/")),
   sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
   reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
   macosGate: join(repoRoot, "evidence", "full-chain", "internal", "audits", "audits", "macos-1.0.9-skills", "gate-report.json"),
   windowsGate: join(repoRoot, "evidence", "full-chain", "internal", "audits", "audits", "windows-1.0.9-skills", "gate-report.json"),
   command: join(repoRoot, "src-tauri", "src", "commands", "skills.rs"),
   usecase: join(repoRoot, "src-tauri", "src", "application", "usecase", "skills.rs"),
+  contracts: join(repoRoot, "src-tauri", "src", "contracts", "skills.rs"),
   repository: join(repoRoot, "src-tauri", "src", "repository", "skills.rs"),
   pathGuard: join(repoRoot, "src-tauri", "src", "repository", "path_guard.rs"),
   repositoryMod: join(repoRoot, "src-tauri", "src", "repository", "mod.rs"),
@@ -65,10 +68,12 @@ function rejectPattern(label, path, content, pattern, reason) {
 
 const command = stripRustComments(readRequired(files.command, "skills command"));
 const usecase = stripRustComments(readRequired(files.usecase, "skills usecase"));
+const contracts = stripRustComments(readRequired(files.contracts, "skills contracts"));
 const repository = stripRustComments(readRequired(files.repository, "skills repository"));
 const pathGuard = stripRustComments(readRequired(files.pathGuard, "path guard"));
 const repositoryMod = stripRustComments(readRequired(files.repositoryMod, "repository mod"));
 const map = readRequired(files.map, "skills evidence map");
+const splitMap = readRequired(files.splitMap, "skills split evidence map");
 const sourceMap = readRequired(files.sourceMap, "reconstruction source-map");
 const reconstructionReadme = readRequired(files.reconstructionReadme, "reconstruction README");
 const macosGate = readJson(files.macosGate, "macOS skills gate-report");
@@ -133,7 +138,7 @@ for (const [label, path] of [
 }
 
 for (const required of [
-  "# skills 后端 current-source 证据映射",
+  "skills 后端 current-source 证据映射",
   "load_installed_skills",
   "load_skill_backups",
   "import_skill",
@@ -142,9 +147,13 @@ for (const required of [
   "delete_skill_backup",
   "src-tauri/src/commands/skills.rs",
   "src-tauri/src/application/usecase/skills.rs",
+  "src-tauri/src/contracts/skills.rs",
   "src-tauri/src/repository/skills.rs",
   "src-tauri/src/repository/path_guard.rs",
   "不声明执行 skill、动态插件运行、市场安装、网络下载、外部进程、daemon watcher 或平台副作用已经恢复",
+  "不执行 skill",
+  "不启动 MCP server",
+  "不做网络、进程、daemon、platform 或 voice 能力",
   "不新增 `voice` 入口",
   "scripts/validate-backend-skills-owner.mjs",
 ]) {
@@ -153,12 +162,30 @@ for (const required of [
   }
 }
 
+for (const required of [
+  "# skills 后端 current-source 证据映射",
+  "load_installed_skills",
+  "load_skill_backups",
+  "import_skill",
+  "remove_skill",
+  "restore_skill_backup",
+  "delete_skill_backup",
+  "command/usecase/repository/path_guard owner",
+  "不声明执行 skill",
+  "不新增 `voice` 入口",
+  "scripts/validate-backend-skills-owner.mjs",
+]) {
+  if (!splitMap.includes(required)) {
+    failures.push(`${toRelative(files.splitMap)} 缺少说明片段：${required}`);
+  }
+}
+
 for (const [label, content, path] of [
   ["source-map", sourceMap, files.sourceMap],
   ["reconstruction README", reconstructionReadme, files.reconstructionReadme],
 ]) {
   for (const required of [
-    "docs/reconstruction/skills-current-source-evidence-map.md",
+    "docs/reconstruction/mcp-skills-current-source-map.md",
     "skills 后端文件事务 owner",
     "scripts/validate-backend-skills-owner.mjs",
   ]) {
@@ -198,6 +225,28 @@ for (const [name, content] of [
 }
 
 requirePattern("调用 skills usecase", files.command, command, /usecase\s*::\s*skills\s*::/g, "command 必须保持薄 IPC adapter");
+
+for (const [label, pattern] of [
+  ["InstalledSkillSummary DTO", /\bpub\s+struct\s+InstalledSkillSummary\b/],
+  ["SkillBackupSummary DTO", /\bpub\s+struct\s+SkillBackupSummary\b/],
+  ["SkillListPayload DTO", /\bpub\s+struct\s+SkillListPayload\b/],
+  ["SkillBackupListPayload DTO", /\bpub\s+struct\s+SkillBackupListPayload\b/],
+  ["SkillImportPayload DTO", /\bpub\s+struct\s+SkillImportPayload\b/],
+  ["SkillRemovePayload DTO", /\bpub\s+struct\s+SkillRemovePayload\b/],
+  ["SkillRestorePayload DTO", /\bpub\s+struct\s+SkillRestorePayload\b/],
+  ["SkillDeleteBackupPayload DTO", /\bpub\s+struct\s+SkillDeleteBackupPayload\b/],
+  ["serde boundary", /\buse\s+serde\s*::\s*\{\s*Deserialize\s*,\s*Serialize\s*\}\s*;/],
+]) {
+  requirePattern(label, files.contracts, contracts, pattern, "skills contracts 必须 owning 前后端 DTO 字段");
+}
+rejectPattern(
+  "contracts 持有存储、路径安全或运行时事务",
+  files.contracts,
+  contracts,
+  /\b(Repository|FileSystemAdapter|PathGuard|PathBuf|std\s*::\s*fs|read_to_string\s*\(|write_string\s*\(|copy_file\s*\(|remove_dir_all\s*\(|create_dir_all\s*\(|rename\s*\(|std\s*::\s*process|Command\s*::\s*new|tauri\s*::|tauri_plugin_|daemon|watcher|voice)\b/gi,
+  "skills contracts 只能声明 DTO，不承载文件事务、路径 guard 或 runtime 能力",
+);
+
 requirePattern("调用 repository load_installed", files.usecase, usecase, /skills\s*::\s*load_installed\s*\(/g, "usecase 必须通过 repository 读取技能");
 requirePattern("import_skill 解析导入目标", files.usecase, usecase, /skills\s*::\s*resolve_skill_import_target\s*\(/g, "import_skill 用户动作事务必须由 usecase 编排 repository 路径解析");
 requirePattern("import_skill 判断同源目标", files.usecase, usecase, /paths_equal\s*\(\s*&target\.source\s*,\s*&target\.target\s*\)/g, "import_skill 必须由 usecase owning 同源导入语义");

@@ -623,54 +623,52 @@ const ACCOUNTS_SESSIONS_FRONTEND_CURRENT_SOURCE_SIGNAL_FILES = [
 ];
 const MYSTERY_UNLOCK_GRANTS_CLOSEOUT_ID =
   "mystery-unlock-grants-current-source-chain";
+const MYSTERY_UNLOCK_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/mystery-unlock-current-source-map.md";
 const MYSTERY_UNLOCK_GRANTS_SIDECAR =
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/frontend-callchain-report.json";
-const MYSTERY_UNLOCK_GRANTS_GATE_REPORT =
-  "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json";
 const MYSTERY_UNLOCK_GRANTS_COMMANDS = [
   "get_mystery_unlock_grants",
   "merge_mystery_unlock_grants",
 ];
-const MYSTERY_UNLOCK_GRANTS_GATE_FAILURE_KEYS = [
-  `${MYSTERY_UNLOCK_GRANTS_GATE_REPORT}\u0000leaves.get_mystery_unlock_grants.gate_accepted\u0000false`,
-  `${MYSTERY_UNLOCK_GRANTS_GATE_REPORT}\u0000leaves.get_mystery_unlock_grants.implementation_use\u0000false`,
-  `${MYSTERY_UNLOCK_GRANTS_GATE_REPORT}\u0000leaves.merge_mystery_unlock_grants.gate_accepted\u0000false`,
-  `${MYSTERY_UNLOCK_GRANTS_GATE_REPORT}\u0000leaves.merge_mystery_unlock_grants.implementation_use\u0000false`,
+const MYSTERY_UNLOCK_GRANTS_SIGNAL_FILES = [
+  MYSTERY_UNLOCK_CURRENT_SOURCE_MAP,
+  MYSTERY_UNLOCK_GRANTS_SIDECAR,
+  "src/contracts/ipc/commands.ts",
+  "src/services/system/index.ts",
+  "src/features/overview/hooks/query.ts",
+  "src/features/overview/hooks/mutation.ts",
+  "src/features/overview/cache/index.ts",
+  "src/mocks/fixtures/commands.ts",
 ];
 const MYSTERY_UNLOCK_GRANTS_ALLOWED_FIELDS = [
   "id",
   "module",
   "status",
+  "currentSourceMap",
+  "currentSourceCommands",
   "sidecarReports",
   "requiredSourceSignals",
-  "closedGateReportFailures",
   "nonClaims",
   "reason",
 ];
 const MYSTERY_ROUTE_ALLOWED_CLOSEOUT_ID =
   "mystery-route-allowed-current-source-helper-chain";
-const MYSTERY_ROUTE_ALLOWED_GATE_FAILURE_KEYS = [
-  `${MYSTERY_UNLOCK_GRANTS_GATE_REPORT}\u0000leaves.mystery_route_allowed.gate_accepted\u0000false`,
-  `${MYSTERY_UNLOCK_GRANTS_GATE_REPORT}\u0000leaves.mystery_route_allowed.implementation_use\u0000false`,
-];
 const MYSTERY_ROUTE_ALLOWED_SIGNAL_FILES = [
+  MYSTERY_UNLOCK_CURRENT_SOURCE_MAP,
   "src/routes/registry/gates.ts",
-  "src/routes/registry/meta.ts",
-  "src/routes/registry/preload.ts",
-  "src/routes/registry/registry.tsx",
-  "src/routes/registry/objects.tsx",
   "src/app/router/shell.tsx",
-  "src/app/router/prewarm.ts",
+  "scripts/validate-frontend-mystery-gates.mjs",
   "src/features/overview/hooks/query.ts",
-  "src/features/overview/cache/index.ts",
   "src/features/overview/hooks/mutation.ts",
+  "src/features/overview/cache/index.ts",
 ];
 const MYSTERY_ROUTE_ALLOWED_ALLOWED_FIELDS = [
   "id",
   "module",
   "status",
+  "currentSourceMap",
   "requiredSourceSignals",
-  "closedGateReportFailures",
   "nonClaims",
   "reason",
 ];
@@ -2305,6 +2303,14 @@ function validateMysteryUnlockGrantsCloseout(closeout) {
   if (closeout.status !== "current-source-closed-partial") {
     failures.push(`${closeout.id} status=${String(closeout.status)}`);
   }
+  if (closeout.currentSourceMap !== MYSTERY_UNLOCK_CURRENT_SOURCE_MAP) {
+    failures.push(`${closeout.id} currentSourceMap=${String(closeout.currentSourceMap)}`);
+  }
+  validateStringArraySet(
+    `${closeout.id} currentSourceCommands`,
+    closeout.currentSourceCommands ?? [],
+    MYSTERY_UNLOCK_GRANTS_COMMANDS,
+  );
 
   validateStringArraySet(
     `${closeout.id} sidecarReports`,
@@ -2325,37 +2331,29 @@ function validateMysteryUnlockGrantsCloseout(closeout) {
     ["mystery_route_allowed"],
   );
 
-  const actualGateFailureKeys = new Set(
-    (closeout.closedGateReportFailures ?? []).map(
-      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
-    ),
-  );
   validateStringArraySet(
-    `${closeout.id} closedGateReportFailures`,
-    [...actualGateFailureKeys],
-    MYSTERY_UNLOCK_GRANTS_GATE_FAILURE_KEYS,
+    `${closeout.id} requiredSourceSignals files`,
+    (closeout.requiredSourceSignals ?? []).map((signal) => signal.file),
+    MYSTERY_UNLOCK_GRANTS_SIGNAL_FILES,
   );
-  validateClosedGateReportFailures(closeout);
-
-  for (const entry of closeout.closedGateReportFailures ?? []) {
-    if (
-      entry.path.includes("mystery_route_allowed") ||
-      entry.path === "gate_accepted" ||
-      entry.path === "implementation_use" ||
-      entry.path === "dim6_missing" ||
-      entry.path.startsWith("cluster_gate_summary")
-    ) {
-      failures.push(`${closeout.id} 不允许登记 mystery 聚合或 helper gate：${entry.path}`);
-    }
+  if (Object.prototype.hasOwnProperty.call(closeout, "closedGateReportFailures")) {
+    failures.push(`${closeout.id} 不允许登记 gate-report failure；本条只登记 current-source partial`);
+  }
+  if (
+    (closeout.requiredSourceSignals ?? []).some((signal) =>
+      String(signal.file).endsWith("gate-report.json"),
+    )
+  ) {
+    failures.push(`${closeout.id} requiredSourceSignals 不允许引用 gate-report.json`);
   }
 
   const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
   for (const required of [
     "不修改 gate-report",
-    "不声明 raw/internal dim6 已补齐",
-    "不声明 implementation_use、gate_accepted 或 full_leaf_100 已恢复",
-    "不登记 mystery_route_allowed",
-    "不登记 top-level、cluster summary 或 dim6 gate 字段",
+    "不登记 gate-report failure",
+    "不声明 dim6、gate_accepted、implementation_use、full_leaf_100 已完成",
+    "不把 mystery_route_allowed 或 route_allowed 当作 IPC command",
+    "不接入 voice",
   ]) {
     if (!nonClaimsText.includes(required)) {
       failures.push(`${closeout.id} nonClaims 缺少声明：${required}`);
@@ -2368,6 +2366,8 @@ function validateMysteryUnlockGrantsCloseout(closeout) {
     "get_mystery_unlock_grants",
     "merge_mystery_unlock_grants",
     "mystery_route_allowed",
+    "route helper 不是 IPC command",
+    "不登记 gate-report failure",
     "full_leaf_100",
   ]) {
     if (!reason.includes(required)) {
@@ -2398,47 +2398,37 @@ function validateMysteryRouteAllowedCloseout(closeout) {
   if (closeout.status !== "current-source-closed-partial") {
     failures.push(`${closeout.id} status=${String(closeout.status)}`);
   }
+  if (closeout.currentSourceMap !== MYSTERY_UNLOCK_CURRENT_SOURCE_MAP) {
+    failures.push(`${closeout.id} currentSourceMap=${String(closeout.currentSourceMap)}`);
+  }
+  if (Object.prototype.hasOwnProperty.call(closeout, "currentSourceCommands")) {
+    failures.push(`${closeout.id} 不允许登记 IPC command；route helper 不是 IPC command`);
+  }
 
   validateStringArraySet(
     `${closeout.id} requiredSourceSignals files`,
     (closeout.requiredSourceSignals ?? []).map((signal) => signal.file),
     MYSTERY_ROUTE_ALLOWED_SIGNAL_FILES,
   );
-
-  const actualGateFailureKeys = new Set(
-    (closeout.closedGateReportFailures ?? []).map(
-      (entry) => `${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`,
-    ),
-  );
-  validateStringArraySet(
-    `${closeout.id} closedGateReportFailures`,
-    [...actualGateFailureKeys],
-    MYSTERY_ROUTE_ALLOWED_GATE_FAILURE_KEYS,
-  );
-  validateClosedGateReportFailures(closeout);
-
-  for (const entry of closeout.closedGateReportFailures ?? []) {
-    if (
-      entry.path === "gate_accepted" ||
-      entry.path === "implementation_use" ||
-      entry.path === "dim6_missing" ||
-      entry.path.includes("readyToImplement") ||
-      entry.path.includes("full_leaf_100") ||
-      entry.path.startsWith("cluster_gate_summary") ||
-      entry.path.startsWith("clusters.") ||
-      entry.path.startsWith("cluster_gates.")
-    ) {
-      failures.push(`${closeout.id} 不允许登记 top-level、cluster summary、dim6、readyToImplement 或 full_leaf_100：${entry.path}`);
-    }
+  if (Object.prototype.hasOwnProperty.call(closeout, "closedGateReportFailures")) {
+    failures.push(`${closeout.id} 不允许登记 gate-report failure；本条只登记 route gate/helper current-source partial`);
+  }
+  if (
+    (closeout.requiredSourceSignals ?? []).some((signal) =>
+      String(signal.file).endsWith("gate-report.json"),
+    )
+  ) {
+    failures.push(`${closeout.id} requiredSourceSignals 不允许引用 gate-report.json`);
   }
 
   const nonClaimsText = (closeout.nonClaims ?? []).join("\n");
   for (const required of [
     "不修改 gate-report",
-    "不声明 IPC command",
-    "不声明 raw/internal dim6、implementation_use、gate_accepted、full_leaf_100 恢复",
-    "不登记 top-level/cluster summary/dim6 gate 字段",
-    "不恢复 voice",
+    "不登记 gate-report failure",
+    "不声明 dim6、gate_accepted、implementation_use、full_leaf_100 已完成",
+    "route helper 不是 IPC command",
+    "不把 mystery_route_allowed 或 route_allowed 当作 IPC command",
+    "不接入 voice",
     "不把 mock helper 当真实后端行为",
   ]) {
     if (!nonClaimsText.includes(required)) {
@@ -2450,10 +2440,12 @@ function validateMysteryRouteAllowedCloseout(closeout) {
   for (const required of [
     "current-source route gate/helper 链路",
     "不是 IPC command closeout",
+    "route helper 不是 IPC command",
     "resolveMysteryGrantRoute",
     "resolveRouteVisibility",
-    "不登记 top-level、cluster summary、dim6 或 full_leaf_100",
-    "不恢复 voice",
+    "不登记 gate-report failure",
+    "不声明 dim6、gate_accepted、implementation_use 或 full_leaf_100",
+    "不接入 voice",
   ]) {
     if (!reason.includes(required)) {
       failures.push(`${closeout.id} reason 缺少边界声明：${required}`);

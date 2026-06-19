@@ -2194,10 +2194,27 @@
       "id": "mystery-unlock-grants-current-source-chain",
       "module": "mystery-unlock-grants",
       "status": "current-source-closed-partial",
+      "currentSourceMap": "docs/reconstruction/mystery-unlock-current-source-map.md",
+      "currentSourceCommands": [
+        "get_mystery_unlock_grants",
+        "merge_mystery_unlock_grants"
+      ],
       "sidecarReports": [
         "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/frontend-callchain-report.json"
       ],
       "requiredSourceSignals": [
+        {
+          "file": "docs/reconstruction/mystery-unlock-current-source-map.md",
+          "includes": [
+            "mystery unlock 前端当前源码证据映射",
+            "get_mystery_unlock_grants",
+            "merge_mystery_unlock_grants",
+            "route helper",
+            "不是 IPC command",
+            "不登记 gate-report failure closeout",
+            "不接入 `voice`"
+          ]
+        },
         {
           "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/frontend-callchain-report.json",
           "includes": [
@@ -2207,17 +2224,6 @@
             "\"gate_report_helper_gaps\"",
             "\"mystery_route_allowed\"",
             "不覆盖 mystery_route_allowed，因为当前公开源码没有真实 IPC 命令。"
-          ]
-        },
-        {
-          "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json",
-          "includes": [
-            "\"get_mystery_unlock_grants\"",
-            "\"merge_mystery_unlock_grants\"",
-            "\"mystery_route_allowed\"",
-            "\"dim6\": \"missing\"",
-            "\"gate_accepted\": false",
-            "\"implementation_use\": false"
           ]
         },
         {
@@ -2264,73 +2270,35 @@
             "merge_mystery_unlock_grants: mergeMysteryUnlockGrantsHandler",
             "const mysteryUnlockMockState"
           ]
-        },
-        {
-          "file": "src-tauri/src/lib.rs",
-          "includes": [
-            "commands::mystery::get_mystery_unlock_grants",
-            "commands::mystery::merge_mystery_unlock_grants"
-          ]
-        },
-        {
-          "file": "src-tauri/src/commands/mystery.rs",
-          "includes": [
-            "pub fn get_mystery_unlock_grants",
-            "pub fn merge_mystery_unlock_grants"
-          ]
-        },
-        {
-          "file": "src-tauri/src/application/usecase/mystery.rs",
-          "includes": [
-            "pub fn get_mystery_unlock_grants",
-            "pub fn merge_mystery_unlock_grants"
-          ]
-        }
-      ],
-      "closedGateReportFailures": [
-        {
-          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json",
-          "path": "leaves.get_mystery_unlock_grants.gate_accepted",
-          "value": false,
-          "classification": "scope-selection",
-          "reason": "本条只登记 get_mystery_unlock_grants 的 current-source partial closeout；当前公开 IPC/service/overview/cache/mock/Rust 骨架链路存在，但 raw/internal dim6、implementation_use、gate_accepted 与 full_leaf_100 均不声明恢复，也不登记 mystery_route_allowed。"
-        },
-        {
-          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json",
-          "path": "leaves.get_mystery_unlock_grants.implementation_use",
-          "value": false,
-          "classification": "scope-selection",
-          "reason": "本条只登记 get_mystery_unlock_grants 的 current-source partial closeout；当前公开 IPC/service/overview/cache/mock/Rust 骨架链路存在，但 raw/internal dim6、implementation_use、gate_accepted 与 full_leaf_100 均不声明恢复，也不登记 mystery_route_allowed。"
-        },
-        {
-          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json",
-          "path": "leaves.merge_mystery_unlock_grants.gate_accepted",
-          "value": false,
-          "classification": "scope-selection",
-          "reason": "本条只登记 merge_mystery_unlock_grants 的 current-source partial closeout；当前公开 IPC/service/overview/cache/mock/Rust 骨架链路存在，但 raw/internal dim6、implementation_use、gate_accepted 与 full_leaf_100 均不声明恢复，也不登记 mystery_route_allowed。"
-        },
-        {
-          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json",
-          "path": "leaves.merge_mystery_unlock_grants.implementation_use",
-          "value": false,
-          "classification": "scope-selection",
-          "reason": "本条只登记 merge_mystery_unlock_grants 的 current-source partial closeout；当前公开 IPC/service/overview/cache/mock/Rust 骨架链路存在，但 raw/internal dim6、implementation_use、gate_accepted 与 full_leaf_100 均不声明恢复，也不登记 mystery_route_allowed。"
         }
       ],
       "nonClaims": [
         "不修改 gate-report",
-        "不声明 raw/internal dim6 已补齐",
-        "不声明 implementation_use、gate_accepted 或 full_leaf_100 已恢复",
-        "不登记 mystery_route_allowed",
-        "不登记 top-level、cluster summary 或 dim6 gate 字段"
+        "不登记 gate-report failure",
+        "不声明 dim6、gate_accepted、implementation_use、full_leaf_100 已完成",
+        "不把 mystery_route_allowed 或 route_allowed 当作 IPC command",
+        "不接入 voice",
+        "不把 mock handler 等同真实后端行为"
       ],
-      "reason": "本 closeout 只登记 mystery unlock grants 的 current-source partial closeout：get_mystery_unlock_grants 与 merge_mystery_unlock_grants 在当前公开 IPC/service/overview/cache/mock/Rust 骨架链路中可验证；mystery_route_allowed 仍是 helper gap，不登记 top-level、cluster summary、dim6 或 full_leaf_100。"
+      "reason": "本 closeout 只登记 mystery unlock grants 的 current-source partial closeout：get_mystery_unlock_grants 与 merge_mystery_unlock_grants 在当前公开 IPC/service/overview/cache/mock 链路中可验证；mystery_route_allowed 仍是 route helper gap，route helper 不是 IPC command，不登记 gate-report failure，不声明 dim6、gate_accepted、implementation_use 或 full_leaf_100 已完成，也不接入 voice。"
     },
     {
       "id": "mystery-route-allowed-current-source-helper-chain",
       "module": "mystery-route-allowed",
       "status": "current-source-closed-partial",
+      "currentSourceMap": "docs/reconstruction/mystery-unlock-current-source-map.md",
       "requiredSourceSignals": [
+        {
+          "file": "docs/reconstruction/mystery-unlock-current-source-map.md",
+          "includes": [
+            "Route Helper 边界",
+            "mystery_route_allowed",
+            "route_allowed",
+            "route helper 不是 IPC command",
+            "不登记 gate-report failure closeout",
+            "不接入 `voice`"
+          ]
+        },
         {
           "file": "src/routes/registry/gates.ts",
           "includes": [
@@ -2340,39 +2308,6 @@
             "grant.epochMs >= nowMs",
             "resolveRouteVisibility",
             "isRouteVisibleByMysteryGrant(route, context.grants, context.nowMs)"
-          ]
-        },
-        {
-          "file": "src/routes/registry/meta.ts",
-          "includes": [
-            "MysteryRouteGateContext",
-            "resolveRouteVisibility",
-            "visible: resolveRouteVisibility(definition.route, definition.visible, context)"
-          ]
-        },
-        {
-          "file": "src/routes/registry/preload.ts",
-          "includes": [
-            "MysteryRouteGateContext",
-            "resolveRouteVisibility",
-            "preloadVisibleRoutes(context?: MysteryRouteGateContext)"
-          ]
-        },
-        {
-          "file": "src/routes/registry/registry.tsx",
-          "includes": [
-            "mysteryRouteGate:",
-            "context: MysteryRouteGateContext",
-            "pending: boolean"
-          ]
-        },
-        {
-          "file": "src/routes/registry/objects.tsx",
-          "includes": [
-            "resolveRouteVisibility(",
-            "context.mysteryRouteGate.context",
-            "context.mysteryRouteGate.pending",
-            "return <Navigate to={resolveRoutePath(\"overview\")} replace />;"
           ]
         },
         {
@@ -2386,10 +2321,14 @@
           ]
         },
         {
-          "file": "src/app/router/prewarm.ts",
+          "file": "scripts/validate-frontend-mystery-gates.mjs",
           "includes": [
-            "context?: MysteryRouteGateContext",
-            "preloadVisibleRoutes(context)"
+            "resolveMysteryGrantRoute",
+            "resolveRouteVisibility",
+            "getVisibleRouteMeta(mysteryRouteGateContext)",
+            "preloadVisibleRoutes(context)",
+            "registry.tsx",
+            "objects.tsx"
           ]
         },
         {
@@ -2417,31 +2356,16 @@
           ]
         }
       ],
-      "closedGateReportFailures": [
-        {
-          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json",
-          "path": "leaves.mystery_route_allowed.gate_accepted",
-          "value": false,
-          "classification": "scope-selection",
-          "reason": "本条只登记 mystery_route_allowed 的 current-source route gate/helper 链路部分收口；当前公开源码存在 route helper、route meta、prewarm、guard 与 overview grants cache/query/mutation 接线，但不修改 gate-report，不声明 IPC command，也不声明 raw/internal dim6、implementation_use、gate_accepted 或 full_leaf_100 恢复。"
-        },
-        {
-          "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-mystery-unlock/gate-report.json",
-          "path": "leaves.mystery_route_allowed.implementation_use",
-          "value": false,
-          "classification": "scope-selection",
-          "reason": "本条只登记 mystery_route_allowed 的 current-source route gate/helper 链路部分收口；当前公开源码存在 route helper、route meta、prewarm、guard 与 overview grants cache/query/mutation 接线，但不修改 gate-report，不声明 IPC command，也不声明 raw/internal dim6、implementation_use、gate_accepted 或 full_leaf_100 恢复。"
-        }
-      ],
       "nonClaims": [
-        "不修改 gate-report。",
-        "不声明 IPC command；不把 mystery_route_allowed 或 route_allowed 当作 IPC command。",
-        "不声明 raw/internal dim6、implementation_use、gate_accepted、full_leaf_100 恢复。",
-        "不登记 top-level/cluster summary/dim6 gate 字段。",
-        "不恢复 voice。",
+        "不修改 gate-report",
+        "不登记 gate-report failure",
+        "不声明 dim6、gate_accepted、implementation_use、full_leaf_100 已完成",
+        "route helper 不是 IPC command",
+        "不把 mystery_route_allowed 或 route_allowed 当作 IPC command",
+        "不接入 voice",
         "不把 mock helper 当真实后端行为。"
       ],
-      "reason": "本 closeout 只登记 mystery_route_allowed 的 current-source route gate/helper 链路部分收口：当前公开源码可验证 resolveMysteryGrantRoute、isAppRoute、relayModel 到 relay 映射、未来时间 grant 判断、resolveRouteVisibility、route meta/prewarm/guard 与 overview grants cache/query/mutation 接线；本条不是 IPC command closeout，不修改 gate-report，不登记 top-level、cluster summary、dim6 或 full_leaf_100，也不恢复 voice。"
+      "reason": "本 closeout 只登记 mystery_route_allowed 的 current-source route gate/helper 链路部分收口：当前公开源码可验证 resolveMysteryGrantRoute、isAppRoute、relayModel 到 relay 映射、未来时间 grant 判断、resolveRouteVisibility、shell grants context 和 overview grants cache/query/mutation 接线；本条不是 IPC command closeout，route helper 不是 IPC command，不修改 gate-report，不登记 gate-report failure，不声明 dim6、gate_accepted、implementation_use 或 full_leaf_100 已完成，也不接入 voice。"
     },
     {
       "id": "bootstrap-system-current-source-reconcile-sidecars",

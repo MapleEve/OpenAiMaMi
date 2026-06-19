@@ -12,6 +12,8 @@ const commandNames = [
   "remove_mcp_server",
 ];
 
+const MCP_SPLIT_EVIDENCE_MAP = "docs/reconstruction/mcp-current-source-evidence-map.md";
+
 const commandExpectations = {
   load_mcp_servers: {
     owner: {
@@ -52,8 +54,10 @@ const commandExpectations = {
 };
 
 const files = {
-  evidenceMap: join(repoRoot, "docs", "reconstruction", "mcp-current-source-evidence-map.md"),
+  evidenceMap: join(repoRoot, "docs", "reconstruction", "mcp-skills-current-source-map.md"),
+  splitEvidenceMap: join(repoRoot, ...MCP_SPLIT_EVIDENCE_MAP.split("/")),
   sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
+  reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
   windowsGate: join(
     repoRoot,
     "evidence",
@@ -473,7 +477,7 @@ function validateEvidenceMap(content) {
     "当前源码 owner 归属",
     "四个命令的当前闭环",
     "已覆盖边界",
-    "未声明边界",
+    "明确未声明",
     "config.toml",
     "mcp_servers",
     "CoreEnvelope",
@@ -526,13 +530,58 @@ function validateEvidenceMap(content) {
   }
 }
 
+function validateSplitEvidenceMap(content) {
+  const path = files.splitEvidenceMap;
+  for (const required of [
+    "# MCP current-source 证据映射",
+    "load_mcp_servers",
+    "upsert_mcp_server",
+    "set_mcp_server_enabled",
+    "remove_mcp_server",
+    "config.toml",
+    "command/usecase/contracts/repository/core parser/core model",
+    "不声明 MCP server 已启动",
+    "不声明网络探测",
+    "不声明外部进程 spawn",
+    "不声明 daemon/watchers",
+    "不声明 voice 集成",
+    "scripts/validate-backend-mcp-owner.mjs",
+  ]) {
+    requireText("MCP 拆分 evidence map", path, content, required, "MCP 拆分证据映射必须继续说明当前后端 owner 和未声明边界");
+  }
+}
+
 function validateSourceMap(content) {
   requireText(
     "MCP evidence map 索引",
     files.sourceMap,
     content,
-    "docs/reconstruction/mcp-current-source-evidence-map.md",
-    "source-map 应索引 MCP current-source evidence map，但不得扩大声明",
+    "docs/reconstruction/mcp-skills-current-source-map.md",
+    "source-map 应索引 mcp/skills current-source map 作为 MCP 后端 owner 收口，但不得扩大声明",
+  );
+  requireText(
+    "MCP validator 索引",
+    files.sourceMap,
+    content,
+    "scripts/validate-backend-mcp-owner.mjs",
+    "source-map 应索引 MCP 后端 owner validator",
+  );
+}
+
+function validateReconstructionReadme(content) {
+  requireText(
+    "MCP evidence map 索引",
+    files.reconstructionReadme,
+    content,
+    "docs/reconstruction/mcp-skills-current-source-map.md",
+    "reconstruction README 应索引 mcp/skills current-source map 作为 MCP 后端 owner 收口，但不得扩大声明",
+  );
+  requireText(
+    "MCP validator 索引",
+    files.reconstructionReadme,
+    content,
+    "scripts/validate-backend-mcp-owner.mjs",
+    "reconstruction README 应索引 MCP 后端 owner validator",
   );
 }
 
@@ -812,7 +861,9 @@ function validateCoreModel(path, original, content) {
 
 const rawText = {
   evidenceMap: readRequired(files.evidenceMap, "MCP evidence map"),
+  splitEvidenceMap: readRequired(files.splitEvidenceMap, "MCP split evidence map"),
   sourceMap: readRequired(files.sourceMap, "source-map"),
+  reconstructionReadme: readRequired(files.reconstructionReadme, "reconstruction README"),
   lib: readRequired(files.lib, "lib.rs"),
   command: readRequired(files.command, "commands/mcp.rs"),
   usecase: readRequired(files.usecase, "application/usecase/mcp.rs"),
@@ -839,7 +890,9 @@ for (const [command, path] of manifestFiles) {
 }
 
 validateEvidenceMap(rawText.evidenceMap);
+validateSplitEvidenceMap(rawText.splitEvidenceMap);
 validateSourceMap(rawText.sourceMap);
+validateReconstructionReadme(rawText.reconstructionReadme);
 validateLib(files.lib, code.lib);
 
 for (const label of ["command", "usecase", "contracts", "repository", "coreParser", "coreModel"]) {
