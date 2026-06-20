@@ -1,6 +1,6 @@
 # OpenAiMami 重建说明
 
-本目录说明如何基于公开、匿名化、可审计的材料重建 OpenAiMami 1.0.9。重建主线必须同时使用 `evidence/full-chain/raw` 和 `evidence/full-chain/internal`，不能写成只依赖 `OpenAiMami IDB`。
+本目录说明如何基于公开、匿名化、可审计的材料重建 OpenAiMami 1.0.9，并跟踪 1.1.1 版本差异。重建主线必须同时使用 `evidence/full-chain/raw` 和 `evidence/full-chain/internal`，不能写成只依赖 `OpenAiMami IDB`。
 
 ## 范围
 
@@ -26,7 +26,7 @@
 - `scripts/`
 - `assets/`
 
-LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库保存匿名化 raw/internal、前端 dumped 文件、架构骨架和文档；大体积 IDB 文件不放入主源码仓库，状态、大小和哈希由 `evidence/binary-manifests/1.0.9/i64-databases.json` 记录。
+LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库保存匿名化 raw/internal、前端 dumped 文件、架构骨架和文档；大体积 IDB 文件不放入主源码仓库，状态、大小和哈希由 `evidence/binary-manifests/<version>/i64-databases.json` 记录。
 
 ## 重建主线
 
@@ -66,7 +66,7 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库保存匿名化 raw/inter
 | mcp/skills 前端 index 查询归属与后端本地文件能力 | `docs/reconstruction/mcp-skills-current-source-map.md` | `mcp-servers` 与 `installed-skills` 的 service、query、cache、overview consumer、mock 和后端入口 current-source owner-closed 链路由 `scripts/validate-frontend-mcp-skills-current-source.mjs` 直接验证；MCP 后端 config.toml owner、四条 IPC、mutation 类命令、raw manifest、Rust owner 和未声明 runtime/network/process/platform/daemon/voice 边界由 `scripts/validate-backend-mcp-owner.mjs` 直接验证；skills 后端文件事务 owner、六条 IPC、raw skills 证据目录、command/usecase/contracts/repository/path_guard owner 和未声明执行 skill、市场安装、网络下载、外部进程、daemon watcher、平台副作用或 `voice` 接入边界由 `scripts/validate-backend-skills-owner.mjs` 直接验证；不提升为双平台全 leaf 或闭源业务恢复声明。 |
 | MCP 后端拆分证据映射 | `docs/reconstruction/mcp-current-source-evidence-map.md` | MCP 后端四条 IPC、config.toml repository、core parser、平铺请求 shape 和未声明 runtime/network/process/platform/daemon/voice 边界；作为合并 mcp/skills map 的拆分证据，由 `scripts/validate-backend-mcp-owner.mjs` 直接验证。 |
 | skills 后端拆分证据映射 | `docs/reconstruction/skills-current-source-evidence-map.md` | skills 后端六条 IPC、raw skills 证据目录、command/usecase/repository/path_guard owner 和未声明动态执行、市场安装、网络下载、外部进程、daemon watcher、平台副作用或 `voice` 接入边界；作为合并 mcp/skills map 的拆分证据，由 `scripts/validate-backend-skills-owner.mjs` 直接验证。 |
-| cross-home-usage 前端当前源码链路 | `docs/reconstruction/cross-home-usage-frontend-current-source-map.md` | 首页 overview usage load/refresh、analytics usage panel、service/API 门面、mock、IPC contract、closeout 台账和未声明边界；由 `scripts/validate-frontend-cross-home-usage-current-source.mjs` 与 `scripts/validate-frontend-current-source-closeouts.mjs` 直接验证，不声明 raw/internal gate、后端 IDA、真实 watcher、平台 parity、full_leaf、full_leaf_100 或 `voice` 接入。 |
+| cross-home-usage 前端当前源码链路 | `docs/reconstruction/cross-home-usage-frontend-current-source-map.md` | 首页 overview usage load/refresh、analytics usage panel、service/API 门面、mock、IPC contract、closeout 台账和未声明边界；由 `scripts/validate-frontend-cross-home-usage-current-source.mjs` 与 `scripts/validate-frontend-current-source-closeouts.mjs` 直接验证，不声明 raw/internal gate、后端逆向、真实 watcher、平台 parity、full_leaf、full_leaf_100 或 `voice` 接入。 |
 | accounts/analytics 前端链路与后端公开 owner | `docs/reconstruction/accounts-analytics-current-source-map.md` | `quota-history` 与 `usage-analytics` 的 service、query、mutation、cache、overview consumer、mock、IPC contract 定义和后端公开文件事实 owner；由 `scripts/validate-frontend-accounts-analytics-current-source.mjs` 直接验证，不声明闭源 token 统计、真实运行时统计、严格平台 parity、双平台全 leaf 或 `voice` 接入。 |
 | mystery unlock grants 与 route gate/helper | `docs/reconstruction/mystery-unlock-current-source-map.md` | `get_mystery_unlock_grants`、`merge_mystery_unlock_grants` 的 system service、overview cache/query/mutation、mock、IPC contract、后端 mystery command/usecase/repository/DTO，以及 route gate/helper 接线；由 `scripts/validate-frontend-mystery-unlock-current-source.mjs`、`scripts/validate-frontend-mystery-gates.mjs` 与 `scripts/validate-backend-mystery-owner.mjs` 直接验证，只登记 mystery-unlock 非 `full_leaf_100` gate 非绿字段为 current-source partial，不把 route helper 当 IPC command，不声明 dim6、gate_accepted、implementation_use、full_leaf_100 或 `voice` 接入。 |
 | 通知客户端状态 settings 持久化收口 | `docs/reconstruction/notification-client-state-current-source-map.md` | `get_notification_client_state` 的 `deviceId` / `notificationsSince` settings 持久化读取创建事务、DTO 字段和未恢复通知运行时边界；由 `scripts/validate-backend-system-owner.mjs` 直接验证，并由 `scripts/validate-frontend-notification-client-state-current-source.mjs` 专名验证 system service、overview、tray-shell、IPC contract、mock handler、E2E mock validator 和不接 `voice` 边界。 |

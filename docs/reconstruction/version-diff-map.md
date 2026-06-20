@@ -14,6 +14,7 @@
 - `version-diff/CHAIN-DIFF-LADDER/03-target-1.0.5.md`
 - `version-diff/CHAIN-DIFF-LADDER/04-target-1.0.6.md`
 - `version-diff/CHAIN-DIFF-LADDER/05-target-1.0.8.md`
+- `version-diff/CHAIN-DIFF-LADDER/06-target-1.1.1.md`
 - `version-diff/CHAIN-DIFF-LADDER/README.md`
 
 ## 使用规则
