@@ -1,6 +1,6 @@
 # 大文件策略
 
-本策略用于保持主源码仓库轻量、可审计、可匿名化。OpenAiMami 1.0.9 的重建材料应优先使用文本清单、摘要、索引和校验文件表达。
+本策略用于保持主源码仓库轻量、可审计、可匿名化。OpenAiMami 重建材料和版本差异材料应优先使用文本清单、摘要、索引和校验文件表达。
 
 ## 默认规则
 
@@ -21,7 +21,7 @@
 
 ## OpenAiMami IDB
 
-LFS/IDB 独立称为 `OpenAiMami IDB`。它用于保存 OpenAiMami 1.0.9 的 macOS/Windows `.i64` 参考文件。
+LFS/IDB 独立称为 `OpenAiMami IDB`。它用于保存 OpenAiMami 各发布版本的 macOS/Windows `.i64` 参考文件。
 
 主仓库只记录它的状态、大小和哈希，不保存大体积文件本体。重建说明必须明确：IDB 是独立参考资产，还原主线仍然是 `evidence/full-chain/raw` 与 `evidence/full-chain/internal`。
 

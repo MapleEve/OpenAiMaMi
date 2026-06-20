@@ -1,6 +1,6 @@
 # OpenAiMami 重建说明
 
-本目录说明如何基于公开、匿名化、可审计的材料重建 OpenAiMami 1.0.9。重建主线必须同时使用 `evidence/full-chain/raw` 和 `evidence/full-chain/internal`，不能写成只依赖 `OpenAiMami IDB`。
+本目录说明如何基于公开、匿名化、可审计的材料重建 OpenAiMami 1.0.9，并跟踪 1.1.1 版本差异。重建主线必须同时使用 `evidence/full-chain/raw` 和 `evidence/full-chain/internal`，不能写成只依赖 `OpenAiMami IDB`。
 
 ## 范围
 
@@ -26,7 +26,7 @@
 - `scripts/`
 - `assets/`
 
-LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库保存匿名化 raw/internal、前端 dumped 文件、架构骨架和文档；大体积 IDB 文件不放入主源码仓库，状态、大小和哈希由 `evidence/binary-manifests/1.0.9/i64-databases.json` 记录。
+LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库保存匿名化 raw/internal、前端 dumped 文件、架构骨架和文档；大体积 IDB 文件不放入主源码仓库，状态、大小和哈希由 `evidence/binary-manifests/<version>/i64-databases.json` 记录。
 
 ## 重建主线
 

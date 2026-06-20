@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "project": "OpenAiMami",
+  "release": "1.1.1",
+  "license": "Apache-2.0",
+  "stack": "Tauri 2 + React + Rust",
+  "policy": {
+    "content_imported": true,
+    "publication_shape": "Only the standalone Git LFS archive in OpenAiMami IDB contains the macOS and Windows .i64 reference databases.",
+    "notes": "This source repository keeps only sanitized metadata for the 1.1.1 reference databases. It does not publish private evidence, raw reverse rows, binaries, machine-local paths, database sidecars, or generated analysis text."
+  },
+  "binaries": [
+    {
+      "platform": "macos-arm64",
+      "version": "1.1.1",
+      "sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb"
+    },
+    {
+      "platform": "windows-x64",
+      "version": "1.1.1",
+      "sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610"
+    }
+  ],
+  "delta_summary": {
+    "baseline": "1.0.9",
+    "target": "1.1.1",
+    "macos": {
+      "delta_commands": 43,
+      "readyToImplement": 43,
+      "strictImplementationUse": 0,
+      "lower": 0,
+      "same_skip": 54,
+      "orphan_no_backend": 39
+    },
+    "windows": {
+      "delta_commands": 60,
+      "readyToImplement": 55,
+      "strictImplementationUse": 3,
+      "lower": 2,
+      "removed_commands": 14,
+      "orphan_no_backend": 2
+    }
+  },
+  "archive": {
+    "name": "OpenAiMami IDB",
+    "repository": "MapleEve/OpenAiMami-IDB",
+    "repository_path": "1.1.1/AiMaMi-1.1.1-i64-databases.zip",
+    "zip_name": "AiMaMi-1.1.1-i64-databases.zip",
+    "size_bytes": 154614538,
+    "sha256": "70b353b510429e24830cd9a385ebded0de5334c6bc251fe826bb9e5ba5fa9d6a",
+    "status": "separate-large-asset",
+    "entries": [
+      {
+        "platform": "macos",
+        "archive_path": "macos/AiMaMi-1.1.1-macos.i64",
+        "size_bytes": 259520250,
+        "sha256": "a4bc0643061996ab1178fa07e81606b8e380fccb29c08d92a60fdbf46702ea4f"
+      },
+      {
+        "platform": "windows",
+        "archive_path": "windows/AiMaMi-1.1.1-windows.i64",
+        "size_bytes": 512919910,
+        "sha256": "e0032ce9d53424dd72e98eaa268c6ea7a79f7132af684a6a36dc785bc16e8c10"
+      }
+    ]
+  },
+  "public_entries": [
+    "evidence/full-chain/internal/version-diff/CHAIN-DIFF-LADDER/06-target-1.1.1.md",
+    "docs/reconstruction/version-diff-map.md"
+  ],
+  "notes": [
+    "The source repository intentionally keeps only sanitized metadata for 1.1.1.",
+    "The standalone OpenAiMami IDB archive contains only macOS and Windows .i64 reference databases.",
+    "Raw evidence rows, generated analysis text, database sidecar files, and private producer locations are out of scope for this public source tree."
+  ]
+}

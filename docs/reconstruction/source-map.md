@@ -8,7 +8,7 @@
 | --- | --- |
 | 包名 | 以 `package.json` 为准 |
 | 仓库内公开版本 | `1.0.0` |
-| 目标重建版本 | `1.0.9` |
+| 目标重建版本 | `1.0.9` baseline；`1.1.1` version-delta |
 | 许可 | Apache License |
 | 桌面应用名称 | OpenAiMami |
 | 技术栈 | Tauri 2、React、Rust |
@@ -23,7 +23,7 @@
 | `docs/reconstruction/` | 中文重建说明。 |
 | `evidence/full-chain/raw/` | raw 链条、前端 dumped 文件、IPC、CCF、manifest 和校验摘要。 |
 | `evidence/full-chain/internal/` | 审计地图、前端地图、蒸馏逻辑、原始叶子和结构化摘要。 |
-| `evidence/binary-manifests/1.0.9/i64-databases.json` | `OpenAiMami IDB` 状态、大小和哈希清单。 |
+| `evidence/binary-manifests/<version>/i64-databases.json` | `OpenAiMami IDB` 状态、大小和哈希清单。 |
 | `package.json` | 前端脚本和依赖声明。 |
 | `src-tauri/Cargo.toml` | Rust 包和依赖声明。 |
 | `src-tauri/tauri.conf.json` | Tauri 应用和打包配置。 |
