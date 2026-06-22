@@ -35,6 +35,24 @@ pub fn load_public_quota_history(
     })
 }
 
+/// 托盘只读取最新公开 quota 点位，不触发历史压缩写回。
+pub(crate) fn load_latest_public_quota_point(
+    repo: &Repository,
+    account_key: Option<String>,
+) -> Result<Option<PublicQuotaHistoryPoint>, CoreError> {
+    let path = &repo.paths().quota_history_path;
+    if !repo.fs().exists(path) {
+        return Ok(None);
+    }
+
+    let cutoff = current_timestamp().saturating_sub(7 * 24 * 60 * 60);
+    let raw = repo.fs().read_to_string(path)?;
+    Ok(raw
+        .lines()
+        .filter_map(|line| parse_quota_history_line(line, cutoff, account_key.as_deref()))
+        .max_by(|left, right| left.timestamp.cmp(&right.timestamp)))
+}
+
 fn parse_quota_history_line(
     line: &str,
     cutoff: i64,

@@ -4,6 +4,9 @@ use crate::contracts::{
     TrayMenuEventPayload, TrayMenuSnapshotPayload, TrayRelayUsageQuotaModelPayload,
 };
 use crate::platform::tray::TrayPlatformAdapter;
+use crate::repository::Repository;
+use std::sync::Mutex;
+use tauri::State;
 
 pub(crate) struct TrayCommandBoundary;
 
@@ -18,10 +21,13 @@ pub fn create_tray_icon_window() -> Result<CoreEnvelope<TrayIconWindowPayload>, 
 }
 
 #[tauri::command]
-pub fn create_or_refresh_tray_menu() -> Result<CoreEnvelope<TrayMenuSnapshotPayload>, String> {
+pub fn create_or_refresh_tray_menu(
+    repo: State<'_, Mutex<Repository>>,
+) -> Result<CoreEnvelope<TrayMenuSnapshotPayload>, String> {
     let platform = TrayPlatformAdapter;
+    let repo = repo.lock().map_err(|error| error.to_string())?;
     Ok(CoreEnvelope::ok(
-        usecase::tray::create_or_refresh_tray_menu(&platform),
+        usecase::tray::create_or_refresh_tray_menu(&repo, &platform),
     ))
 }
 
@@ -46,9 +52,11 @@ pub fn set_tray_locale(language: String) -> Result<CoreEnvelope<TrayLocalePayloa
 
 #[tauri::command]
 pub fn tray_relay_usage_quota_model(
+    repo: State<'_, Mutex<Repository>>,
 ) -> Result<CoreEnvelope<TrayRelayUsageQuotaModelPayload>, String> {
     let platform = TrayPlatformAdapter;
+    let repo = repo.lock().map_err(|error| error.to_string())?;
     Ok(CoreEnvelope::ok(
-        usecase::tray::tray_relay_usage_quota_model(&platform),
+        usecase::tray::tray_relay_usage_quota_model(&repo, &platform),
     ))
 }

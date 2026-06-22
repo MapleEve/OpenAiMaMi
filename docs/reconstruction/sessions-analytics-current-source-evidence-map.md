@@ -30,6 +30,7 @@ backend status 的 effect 语义按当前源码真实仓储边界区分：`load_
 | restored | `load_tool_analytics` | `sessions_dir` 与 `rollouts` 下 `rollout-*.jsonl` 的 `response_item/function_call` path/name 事实。 | `repository/analytics.rs` 递归读取 rollout JSONL；core 只做公开 path 计数、search/edit 分类和 topTools path/count 聚合。 |
 | restored | `load_change_analytics` | `rollout-*.jsonl` 中 `response_item/function_call` 且 name 为 `exec_command` 的 arguments command 事实。 | repository 解析公开 command 字段；core 依据公开分类表聚合 total/write/read/other 和 day series。 |
 | restored | `load_quota_history` | `accounts/quota-history.jsonl` 的 timestamp、accountKey、primaryUsedPercent、secondaryUsedPercent。 | `repository/quota.rs` 通过 `FileSystemAdapter` 读取 JSONL、按 accountKey 过滤、保留 7 天窗口，并仅在大文件阈值后 compaction write。 |
+| restored | `tray_relay_usage_quota_model` | `registry.json` 的 active account、`relay-config.json` 的 active provider/model、`accounts/quota-history.jsonl` 的最新公开点位。 | `repository/tray.rs` 只组合已有公开文件事实，`repository/quota.rs` 为该路径提供不触发 compaction 的 latest helper；backend status 使用 `RepositoryRead`，不读取运行时 relay state、provider runtime 或 quota runtime。 |
 
 ## pending 边界
 

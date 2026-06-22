@@ -12,6 +12,7 @@ const ownerFiles = [
   "src-tauri/src/core/model/tray.rs",
   "src-tauri/src/core/tray.rs",
   "src-tauri/src/platform/tray.rs",
+  "src-tauri/src/repository/tray.rs",
 ];
 
 const windowsAcceptedTrayTargets = [
@@ -91,6 +92,19 @@ function requireNotIncludes(path, snippets, reason) {
   }
 }
 
+function readProductionRust(path) {
+  return readText(path).split(/\n#\[cfg\(test\)\]/u)[0] ?? "";
+}
+
+function requireProductionNotIncludes(path, snippets, reason) {
+  const text = readProductionRust(path);
+  for (const snippet of snippets) {
+    if (text.includes(snippet)) {
+      failures.push(`${path} 生产路径不允许出现 ${snippet}：${reason}`);
+    }
+  }
+}
+
 for (const file of ownerFiles) {
   readText(file);
 }
@@ -144,6 +158,7 @@ requireIncludes("src-tauri/src/application/usecase/mod.rs", ["pub mod tray;"]);
 requireIncludes("src-tauri/src/commands/mod.rs", ["pub mod tray;"]);
 requireIncludes("src-tauri/src/core/model/mod.rs", ["pub mod tray;"]);
 requireIncludes("src-tauri/src/core/mod.rs", ["pub mod tray;"]);
+requireIncludes("src-tauri/src/repository/mod.rs", ["pub mod tray;"]);
 
 requireIncludes("src-tauri/src/application/ports.rs", [
   "TrayPlatformCapability",
@@ -167,6 +182,7 @@ requireIncludes("src-tauri/src/core/tray.rs", [
   "classify_tray_menu_event",
   "tray_router_open",
   "source_archive_extra: event_id == \"tray_router_open\"",
+  "quota_model_from_public_fact",
   "empty_tray_quota_model",
   "empty_menu_item_keys",
 ]);
@@ -177,13 +193,76 @@ requireNotIncludes(
 );
 requireIncludes("src-tauri/src/application/usecase/tray.rs", [
   "tray_core::classify_tray_menu_event",
+  "tray_repository::load_tray_quota_fact(repo)",
+  "tray_core::quota_model_from_public_fact",
+  "tray_repository_status(platform, \"tray_relay_usage_quota_model\")",
+  "restored: true",
+  "repository_checked: true",
+  "repository_path_known: true",
+  "BackendEffect::RepositoryRead",
   "tray_status(platform, \"handle_tray_menu_event\")",
   "BackendEffect::Pending",
 ]);
 requireIncludes("src-tauri/src/commands/tray.rs", [
   "CoreEnvelope::ok",
   "TrayPlatformAdapter",
+  "State<'_, Mutex<Repository>>",
+  "pub fn create_or_refresh_tray_menu(\n    repo: State<'_, Mutex<Repository>>",
+  "usecase::tray::create_or_refresh_tray_menu(&repo, &platform)",
+  "pub fn tray_relay_usage_quota_model(\n    repo: State<'_, Mutex<Repository>>",
+  "usecase::tray::tray_relay_usage_quota_model(&repo, &platform)",
 ]);
+requireIncludes("src-tauri/src/repository/tray.rs", [
+  "pub(crate) struct TrayRepository",
+  "pub(crate) fn load_tray_quota_fact(repo: &Repository)",
+  "accounts_repository::load_registry(repo)",
+  "relay_repository::load_relay_state(repo)",
+  "quota_repository::load_latest_public_quota_point(repo",
+  "RELAY_DEFAULT_IDE",
+]);
+requireIncludes("src-tauri/src/repository/quota.rs", [
+  "pub(crate) fn load_latest_public_quota_point",
+  "不触发历史压缩写回",
+]);
+
+requireProductionNotIncludes(
+  "src-tauri/src/application/usecase/tray.rs",
+  [
+    "load_public_quota_history",
+    "compact_quota_history_if_needed",
+    "write_string",
+    "create_dir_all",
+    "save_registry",
+    "usecase::accounts::switch_account",
+    "accounts_repository::copy_snapshot_to_auth",
+    "accounts_repository::backup_auth_if_present",
+    "activate_provider",
+    "set_router_enabled",
+    "upsert_provider",
+    "delete_provider",
+    "record_provider_health",
+  ],
+  "tray usecase 只能编排公开文件事实读取，不触发写入、账号切换或 relay mutation",
+);
+requireProductionNotIncludes(
+  "src-tauri/src/repository/tray.rs",
+  [
+    "load_public_quota_history",
+    "compact_quota_history_if_needed",
+    "write_string",
+    "create_dir_all",
+    "save_registry",
+    "usecase::accounts::switch_account",
+    "accounts_repository::copy_snapshot_to_auth",
+    "accounts_repository::backup_auth_if_present",
+    "activate_provider",
+    "set_router_enabled",
+    "upsert_provider",
+    "delete_provider",
+    "record_provider_health",
+  ],
+  "tray repository 只能组合公开文件只读事实，不触发写入、账号切换或 relay mutation",
+);
 
 for (const command of allTrayCommands) {
   requireIncludes("src-tauri/src/lib.rs", [`commands::tray::${command}`]);
@@ -211,7 +290,8 @@ requireIncludes(paths.evidenceMap, [
   "`tray_router_open`",
   "不声明 macOS dim6",
   "不创建真实原生托盘",
-  "不读取真实 relay state",
+  "公开本地文件事实",
+  "不读取运行时 relay state",
   "不执行账号切换",
   "scripts/validate-backend-tray-owner.mjs",
 ]);

@@ -7,6 +7,7 @@ use crate::contracts::{
 use crate::core::model::tray::TrayMenuEventKind;
 use crate::core::model::tray::TrayMenuRefreshReason;
 use crate::core::tray as tray_core;
+use crate::repository::{tray as tray_repository, Repository};
 
 pub(crate) struct TrayUseCaseBoundary;
 
@@ -20,8 +21,11 @@ pub fn create_tray_icon_window(platform: &impl TrayPlatformPort) -> TrayIconWind
     }
 }
 
-pub fn create_or_refresh_tray_menu(platform: &impl TrayPlatformPort) -> TrayMenuSnapshotPayload {
-    let quota_model = tray_relay_usage_quota_model(platform);
+pub fn create_or_refresh_tray_menu(
+    repo: &Repository,
+    platform: &impl TrayPlatformPort,
+) -> TrayMenuSnapshotPayload {
+    let quota_model = tray_relay_usage_quota_model(repo, platform);
     let items = tray_core::empty_menu_item_keys(TrayMenuRefreshReason::Manual)
         .into_iter()
         .map(|(id, label_key)| TrayMenuItemPayload {
@@ -74,11 +78,29 @@ pub fn set_tray_locale(platform: &impl TrayPlatformPort, language: String) -> Tr
 }
 
 pub fn tray_relay_usage_quota_model(
+    repo: &Repository,
     platform: &impl TrayPlatformPort,
 ) -> TrayRelayUsageQuotaModelPayload {
-    let quota = tray_core::empty_tray_quota_model();
+    let (quota, backend_status) = match tray_repository::load_tray_quota_fact(repo) {
+        Ok(fact) => {
+            let quota = tray_core::quota_model_from_public_fact(
+                fact.active_provider_label,
+                fact.quota_point
+                    .and_then(|point| point.primary_used_percent.or(point.secondary_used_percent)),
+                fact.model_label,
+            );
+            (
+                quota,
+                tray_repository_status(platform, "tray_relay_usage_quota_model"),
+            )
+        }
+        Err(_) => (
+            tray_core::empty_tray_quota_model(),
+            tray_status(platform, "tray_relay_usage_quota_model"),
+        ),
+    };
     TrayRelayUsageQuotaModelPayload {
-        backend_status: tray_status(platform, "tray_relay_usage_quota_model"),
+        backend_status,
         active_provider_label: quota.active_provider_label,
         quota_percent: quota.quota_percent,
         model_label: quota.model_label,
@@ -98,6 +120,30 @@ fn tray_status(platform: &impl TrayPlatformPort, command: &str) -> BackendSkelet
             platform_checked: true,
             core_checked: true,
             effect: BackendEffect::Pending,
+        },
+        runtime_event: None,
+    }
+}
+
+fn tray_repository_status(
+    platform: &impl TrayPlatformPort,
+    command: &str,
+) -> BackendSkeletonStatus {
+    let capability = platform.tray_capability();
+    BackendSkeletonStatus {
+        module: "tray".to_string(),
+        command: command.to_string(),
+        restored: true,
+        note: format!(
+            "托盘 quota model 已恢复公开文件事实读取；仍不创建真实托盘或读取运行时 relay 状态。{}",
+            capability.detail
+        ),
+        boundary: BackendSkeletonBoundaryStatus {
+            repository_checked: true,
+            repository_path_known: true,
+            platform_checked: true,
+            core_checked: true,
+            effect: BackendEffect::RepositoryRead,
         },
         runtime_event: None,
     }

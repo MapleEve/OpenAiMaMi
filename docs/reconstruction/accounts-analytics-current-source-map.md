@@ -29,6 +29,8 @@
 | `load_quota_history` | `src-tauri/src/commands/analytics.rs` 调用 `usecase::analytics::load_quota_history`，再由 `src-tauri/src/repository/quota.rs` 的 `load_public_quota_history` 读取 `accounts/quota-history.jsonl` 公开点位并保留 compaction write 边界。 |
 | `load_token_analytics` / `load_tool_analytics` / `load_change_analytics` | 当前只恢复公开 JSONL 文件事实聚合，不声明闭源 token 或严格运行时统计口径恢复。 |
 
+`tray_relay_usage_quota_model` 只是同一 `accounts/quota-history.jsonl` 公开文件事实的消费者。它通过 `src-tauri/src/repository/tray.rs` 调用 `src-tauri/src/repository/quota.rs` 的只读 latest helper，不建立第二套 quota 事实 owner，也不触发 `load_public_quota_history` 的 compaction write。
+
 ## 明确未声明
 
 - 不把 `accounts` 或 `analytics` 的 manifest 状态改成 `covered`。

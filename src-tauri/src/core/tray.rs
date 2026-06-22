@@ -39,6 +39,18 @@ pub(crate) fn empty_tray_quota_model() -> TrayQuotaModel {
     }
 }
 
+pub(crate) fn quota_model_from_public_fact(
+    active_provider_label: Option<String>,
+    quota_used_percent: Option<f64>,
+    model_label: Option<String>,
+) -> TrayQuotaModel {
+    TrayQuotaModel {
+        active_provider_label: non_empty_string(active_provider_label),
+        quota_percent: quota_used_percent.map(normalize_quota_percent),
+        model_label: non_empty_string(model_label),
+    }
+}
+
 pub(crate) fn empty_menu_item_keys(
     _reason: TrayMenuRefreshReason,
 ) -> Vec<(&'static str, &'static str)> {
@@ -46,4 +58,23 @@ pub(crate) fn empty_menu_item_keys(
         ("tray_open_main", "tray.openMain"),
         ("tray_quit", "tray.quit"),
     ]
+}
+
+fn normalize_quota_percent(value: f64) -> i32 {
+    if value.is_finite() {
+        value.round().clamp(0.0, 100.0) as i32
+    } else {
+        0
+    }
+}
+
+fn non_empty_string(value: Option<String>) -> Option<String> {
+    value.and_then(|item| {
+        let trimmed = item.trim();
+        if trimmed.is_empty() {
+            None
+        } else {
+            Some(trimmed.to_string())
+        }
+    })
 }

@@ -4,7 +4,7 @@
 
 本文只记录当前公开源码中的后端 tray owner 骨架、Windows 1.0.9 accepted tray target，以及当前源码额外路径之间的映射。它不是原始审计报告的替代品，也不把真实原生托盘、macOS dim6 或真实运行闭合声明为已恢复。
 
-当前后端只提供 tray 六边形骨架：command 层返回 envelope，usecase 层组织 platform port 与 core，core 层分类菜单事件并返回空 quota/model，platform 层只暴露结构化 capability。这个结论只说明 owner 边界存在，不创建真实原生托盘，不设置真实菜单，不执行窗口 focus，不退出应用，不 emit navigate，不读取真实 relay state，不执行账号切换，也不做 native tray refresh。
+当前后端提供 tray 六边形骨架和公开本地文件事实读取：command 层返回 envelope，usecase 层组织 repository、platform port 与 core，repository 层只读账号 registry、relay 配置和 quota-history 最新公开点位，core 层分类菜单事件并把公开事实映射为 quota/model，platform 层只暴露结构化 capability。这个结论只说明 owner 边界存在，不创建真实原生托盘，不设置真实菜单，不执行窗口 focus，不退出应用，不 emit navigate，不读取运行时 relay state、真实 provider runtime 或 quota runtime，不执行账号切换，也不做 native tray refresh。
 
 ## 已读取证据
 
@@ -22,6 +22,8 @@
 | `src-tauri/src/commands/tray.rs` | 当前 command owner，只做 IPC 参数和 envelope 适配。 |
 | `src-tauri/src/application/usecase/tray.rs` | 当前 usecase owner，组织 tray core 与 platform capability。 |
 | `src-tauri/src/core/tray.rs` | 当前 core owner，分类 event id、返回空 quota model 和可验证菜单 key。 |
+| `src-tauri/src/repository/tray.rs` | 当前 tray repository owner，聚合公开本地文件事实用于 quota model。 |
+| `src-tauri/src/repository/quota.rs` | 当前 quota repository owner，为 tray 暴露不触发 compaction 写回的最新公开点位只读 helper。 |
 | `src-tauri/src/platform/tray.rs` | 当前 platform owner，只返回 capability，不创建真实托盘资源。 |
 
 ## 目标分类
@@ -31,7 +33,7 @@
 | Windows accepted tray target | `create_tray_icon_window` | `src-tauri/src/commands/tray.rs`、`src-tauri/src/application/usecase/tray.rs` | 后端有 command/usecase/platform skeleton，返回 `created: false`，不创建真实 icon window。 |
 | Windows accepted tray target | `create_or_refresh_tray_menu` | `src-tauri/src/application/usecase/tray.rs`、`src-tauri/src/core/tray.rs` | 后端可生成空骨架菜单项 payload，不调用真实 menu builder，不做 native tray refresh。 |
 | Windows accepted tray target | `handle_tray_menu_event` | `src-tauri/src/application/usecase/tray.rs`、`src-tauri/src/core/tray.rs` | 后端可分类 event id 并返回结构化 payload，不执行 focus、quit、navigate emit 或账号切换。 |
-| Windows accepted tray target | `tray_relay_usage_quota_model` | `src-tauri/src/application/usecase/tray.rs`、`src-tauri/src/core/tray.rs` | 后端返回空 quota model，不读取真实 relay state、账号状态或 provider runtime。 |
+| Windows accepted tray target | `tray_relay_usage_quota_model` | `src-tauri/src/commands/tray.rs`、`src-tauri/src/application/usecase/tray.rs`、`src-tauri/src/repository/tray.rs`、`src-tauri/src/core/tray.rs` | 后端只读取公开本地文件事实：active account、active relay provider/model 和 quota-history 最新点位；不读取运行时 relay state、真实 provider runtime 或 quota runtime。 |
 | current-source extra | `set_tray_locale` | `src-tauri/src/commands/tray.rs`、`src-tauri/src/application/usecase/tray.rs` | 当前源码保留 locale refresh 命令骨架，返回 `refreshed: false`，不重建真实 native tray 菜单。 |
 | current-source extra | `tray_router_open` | `src-tauri/src/core/tray.rs`、`evidence/full-chain/internal/audits/audits/windows-1.0.9-tray/gate-report.json` | 只作为当前源码 classifier extra 和 `source_archive_extra` 标记；不是 Windows 1.0.9 accepted menu item。 |
 
@@ -39,9 +41,10 @@
 
 | owner | 当前可验证内容 | 边界 |
 | --- | --- | --- |
-| `src-tauri/src/commands/tray.rs` | 五个 Tauri command 只构造 `TrayPlatformAdapter`、调用 tray usecase 并返回 `CoreEnvelope::ok`。 | command 层不写业务规则，不创建 `TrayIconBuilder`，不访问真实窗口、菜单、relay state 或账号状态。 |
-| `src-tauri/src/application/usecase/tray.rs` | usecase 组织 platform capability、core classifier、空菜单项和空 quota model。 | usecase 层只做用户动作级编排，不执行真实 focus、quit、emit navigate、账号切换或 native refresh。 |
-| `src-tauri/src/core/tray.rs` | core owning `classify_tray_menu_event`、`empty_tray_quota_model` 和 `empty_menu_item_keys`。 | core 只表达 event id 到 payload 语义，不依赖 Tauri UI 对象、平台对象或 repository。 |
+| `src-tauri/src/commands/tray.rs` | 五个 Tauri command 只构造 `TrayPlatformAdapter`、获取 `Repository` state、调用 tray usecase 并返回 `CoreEnvelope::ok`。 | command 层不写业务规则，不创建 `TrayIconBuilder`，不访问真实窗口、菜单、运行时 relay state 或账号切换状态。 |
+| `src-tauri/src/application/usecase/tray.rs` | usecase 组织 repository、platform capability、core classifier、空菜单项和公开文件事实 quota model。 | usecase 层只做用户动作级编排，不执行真实 focus、quit、emit navigate、账号切换或 native refresh。 |
+| `src-tauri/src/repository/tray.rs` | repository 聚合 active account、active relay provider/model 和 quota-history 最新公开点位。 | repository 只通过可替换 FS 读取公开文件事实，不读取运行时 relay state、provider runtime、quota runtime 或真实托盘对象。 |
+| `src-tauri/src/core/tray.rs` | core owning `classify_tray_menu_event`、`quota_model_from_public_fact`、`empty_tray_quota_model` 和 `empty_menu_item_keys`。 | core 只表达 event id 到 payload 语义和公开事实到 quota model 的纯映射，不依赖 Tauri UI 对象、平台对象或 repository。 |
 | `src-tauri/src/core/model/tray.rs` | model owning `TrayMenuEventDecision`、`TrayMenuEventKind`、`TrayMenuRefreshReason` 和 `TrayQuotaModel`。 | model 是纯值对象，不承载 native 句柄或运行时状态。 |
 | `src-tauri/src/application/ports.rs` | `TrayPlatformPort` owning usecase 与 platform adapter 的窄端口。 | 端口只返回 capability，不暴露真实菜单、窗口或通知 API。 |
 | `src-tauri/src/platform/tray.rs` | `TrayPlatformAdapter` 返回 `creates_native_icon: false` 与 `emits_navigation_event: false`。 | platform 层当前不创建真实托盘图标，不设置菜单，不发事件，不退出应用。 |
@@ -54,7 +57,8 @@
 - 不执行窗口 focus。
 - 不退出应用。
 - 不 emit navigate。
-- 不读取真实 relay state、账号列表、active provider 或 quota runtime。
+- 不读取运行时 relay state、真实 provider runtime 或 quota runtime。
+- 不把公开本地文件事实读取声明成闭源 tray、relay 或 quota runtime 恢复。
 - 不执行账号切换。
 - 不做 native tray refresh。
 - 不声明 macOS dim6 已由当前源码闭合。

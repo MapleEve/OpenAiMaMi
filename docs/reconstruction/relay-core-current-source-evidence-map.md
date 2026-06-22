@@ -82,6 +82,8 @@
 
 `get_relay_active` 与 `get_relay_proxy_status` 只读取本地 `relay-config.json` 经 core 归一化后的 active/proxy snapshot。当前源码把 payload status 和 warning 都收口到 repository read 边界；未知 relay 命令不得通过 `BackendEffect::NoOp` fallback 伪装成 restored。这个状态读边界不启动代理进程、不探测真实网络端口、不恢复运行时健康检查，也不声明闭源 proxy lifecycle 已恢复。
 
+`tray_relay_usage_quota_model` 只作为 tray 模块消费者读取同一 `relay-config.json` 的 active provider/model 公开文件事实；该路径不属于 relay runtime、proxy lifecycle、provider health runtime 或真实网络状态恢复。
+
 ### closeout map 绑定命令片段
 
 `relay-passthrough-audit-backend-skeleton-chain` 只绑定当前公开源码里的 `get_passthrough_audit_log` 与 `set_block_official_passthrough`，用于证明 passthrough audit 读取和 policy intent 记录有 service、hook、mock、command、usecase、repository 和 contract owner；它不声明 relay 业务状态机或真实 passthrough 运行时恢复。
