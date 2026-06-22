@@ -720,14 +720,13 @@
       "closedCommands": [
         "focus_main_window",
         "open_path",
-        "clean",
-        "rebuild_registry",
-        "graceful_restart_for_update",
-        "restart_codex"
-      ],
-      "restrictedCurrentSourceCommands": [
-        "load_snapshot"
-      ],
+      "clean",
+      "rebuild_registry",
+      "graceful_restart_for_update",
+      "restart_codex",
+      "load_snapshot"
+    ],
+    "restrictedCurrentSourceCommands": [],
       "closedGateReportFailures": [
         {
           "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-window-path/gate-report.json",
@@ -811,21 +810,21 @@
           "path": "gate_accepted",
           "value": false,
           "classification": "scope-selection",
-          "reason": "本条只登记 macOS maintenance 前端 current-source callchain partial closeout；不修改 gate-report，不把 load_snapshot 提升为全量闭环，后端平台 dim6 与真实副作用仍未恢复，也不声明 full leaf。"
+          "reason": "本条只登记 macOS maintenance 前端 current-source callchain partial closeout；不修改 gate-report，不把 load_snapshot 提升为 maintenance/window 全量闭环，平台侧 dim6 仍按原报告保留，也不声明 full leaf。"
         },
         {
           "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-maintenance/gate-report.json",
           "path": "implementation_use",
           "value": false,
           "classification": "scope-selection",
-          "reason": "本条只登记 macOS maintenance 前端 current-source callchain partial closeout；不把当前源码前端链路提升为严格 implementation_use，不把 load_snapshot 提升为全量闭环，后端平台 dim6 与真实副作用仍未恢复，也不声明 full leaf。"
+          "reason": "本条只登记 macOS maintenance 前端 current-source callchain partial closeout；不把当前源码前后端链路提升为严格 implementation_use，不把 load_snapshot 提升为 maintenance/window 全量闭环，平台侧 dim6 仍按原报告保留，也不声明 full leaf。"
         },
         {
           "report": "evidence/full-chain/internal/audits/audits/macos-1.0.9-maintenance/gate-report.json",
           "path": "dim6_missing",
           "value": true,
           "classification": "scope-selection",
-          "reason": "本条只登记 macOS maintenance 前端 current-source callchain partial closeout；后端平台 dim6 仍按原 gate-report 保持缺失，load_snapshot 后端真实副作用仍未恢复，也不声明 full leaf。"
+          "reason": "本条只登记 macOS maintenance 前端 current-source callchain partial closeout；平台侧 dim6 仍按原 gate-report 保持缺失，load_snapshot 只登记 snapshot-bootstrap 公开文件事实 owner，不声明 full leaf。"
         }
       ],
       "requiredSourceSignals": [
@@ -959,15 +958,15 @@
       ],
       "nonClaims": [
         "不声明全量叶子验收完成",
-        "不启用后端真实恢复",
+        "不声明 maintenance/window 全部平台副作用恢复",
         "不修改 gate-report",
         "不声明 MAC/WIN 100%",
-        "不把 load_snapshot 提升为全量闭环",
-        "load_snapshot 后端真实副作用仍未恢复",
+        "不把 load_snapshot 提升为 maintenance/window 全量闭环",
+        "load_snapshot 只登记 snapshot-bootstrap 公开文件事实 owner",
         "不登记 accounts 或 plugins 的 gate-report 失败字段",
         "不登记任何 full_leaf_100=false 字段"
       ],
-      "reason": "当前源码已覆盖所列 system/window/maintenance 命令的前端 service/facade/API/mock/e2e-validator 链路；load_snapshot 仅作为受限 current-source 命令登记到 service/query/cache/mock/IPC contract 范围，后端真实副作用仍未恢复。本 closeout 只记录非 gating 证据，并仅对明确列出的 gate-report false 字段做 strict leaf-copy 降噪。"
+      "reason": "当前源码已覆盖所列 system/window/maintenance 命令的前端 service/facade/API/mock/e2e-validator 链路；load_snapshot 进一步登记到后端 snapshot-bootstrap owner、service/query/cache/mock/IPC contract 范围。本 closeout 只记录非 gating 证据，不把 load_snapshot 提升为 maintenance/window 全量闭环，并仅对明确列出的 gate-report false 字段做 strict leaf-copy 降噪。"
     },
     {
       "id": "relay-passthrough-audit-backend-skeleton-chain",

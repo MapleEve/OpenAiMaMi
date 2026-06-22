@@ -16,8 +16,9 @@ const closedCommands = [
   "rebuild_registry",
   "graceful_restart_for_update",
   "restart_codex",
+  "load_snapshot",
 ];
-const restrictedCommands = ["load_snapshot"];
+const restrictedCommands = [];
 const currentSourceCommands = [...closedCommands, ...restrictedCommands];
 
 const files = {
@@ -170,11 +171,11 @@ if (!closeout) {
   }
   for (const required of [
     "不声明全量叶子验收完成",
-    "不启用后端真实恢复",
+    "不声明 maintenance/window 全部平台副作用恢复",
     "不修改 gate-report",
     "不声明 MAC/WIN 100%",
-    "不把 load_snapshot 提升为全量闭环",
-    "load_snapshot 后端真实副作用仍未恢复",
+    "不把 load_snapshot 提升为 maintenance/window 全量闭环",
+    "load_snapshot 只登记 snapshot-bootstrap 公开文件事实 owner",
     "不登记 accounts 或 plugins 的 gate-report 失败字段",
     "不登记任何 full_leaf_100=false 字段",
   ]) {
@@ -185,8 +186,8 @@ if (!closeout) {
   requireIncludes(`${closeoutId} reason`, closeout.reason ?? "", [
     "system/window/maintenance",
     "前端 service/facade/API/mock/e2e-validator 链路",
-    "受限 current-source 命令",
-    "后端真实副作用仍未恢复",
+    "snapshot-bootstrap owner",
+    "maintenance/window 全量闭环",
     "非 gating 证据",
   ]);
   for (const signal of closeout.requiredSourceSignals ?? []) {
@@ -213,11 +214,10 @@ requireIncludes("system-window-maintenance current-source map", map, [
   "graceful_restart_for_update",
   "restart_codex",
   "load_snapshot",
-  "受限 current-source 命令",
-  "不启用后端真实恢复",
+  "snapshot-bootstrap 公开文件事实 owner",
+  "不声明 maintenance/window 全部平台副作用恢复",
   "不声明 MAC/WIN 100%",
-  "不把 `load_snapshot` 提升为全量闭环",
-  "后端真实副作用仍未恢复",
+  "不把 `load_snapshot` 提升为 maintenance/window 全量闭环",
   "不处理 `voice`",
   `scripts/${validatorScript}`,
 ]);
@@ -360,8 +360,8 @@ requireNoPositiveClaims(
     "gate_accepted 已完成",
     "implementation_use 已完成",
     "MAC/WIN 100% 已完成",
-    "load_snapshot 全量闭环已完成",
-    "load_snapshot 后端真实副作用已恢复",
+    "load_snapshot maintenance/window 全量闭环已完成",
+    "load_snapshot 平台副作用已恢复",
     "voice 已接入",
   ],
 );

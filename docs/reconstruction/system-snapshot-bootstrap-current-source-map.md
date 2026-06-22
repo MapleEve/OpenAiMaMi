@@ -1,6 +1,6 @@
 # system snapshot-bootstrap 后端当前源码证据映射
 
-本文只记录 `load_snapshot` 与 `load_bootstrap_state` 在当前公开源码中的后端 owner、合同、前端服务门面和 mock 镜像。本文不关闭 `docs/reconstruction/system-window-maintenance-current-source-map.md` 中的前端 `load_snapshot` 未关闭边界，不修改 raw/internal gate，也不声明真实 daemon、watcher、autoswitch、平台副作用或 `voice` 接入已经恢复。
+本文只记录 `load_snapshot` 与 `load_bootstrap_state` 在当前公开源码中的后端 owner、合同、前端服务门面和 mock 镜像。本文只把 `load_snapshot` 关闭到 snapshot-bootstrap 公开文件事实 owner，不修改 raw/internal gate，也不声明真实 daemon、watcher、autoswitch、maintenance/window 平台副作用或 `voice` 接入已经恢复。
 
 ## 当前 owner 边界
 
@@ -27,7 +27,7 @@
 - 不修改 raw/internal gate-report，不声明 `gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成。
 - 不声明双平台 100%、后端 IDA 完成、真实 watcher、daemon、runtime event、autoswitch 状态、后台采集或平台副作用恢复。
 - 不把 mock handler 当作真实后端行为证明。
-- 不改变前端 system-window-maintenance 文档中 `load_snapshot` 未关闭的 non-gating 边界。
+- 不把 `load_snapshot` 提升为 maintenance/window 全量闭环或平台副作用恢复。
 - 不扩大到 `voice`。
 
 ## validator 接入

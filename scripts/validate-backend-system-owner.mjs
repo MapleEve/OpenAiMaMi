@@ -466,7 +466,7 @@ function validateSnapshotBootstrapMap(path, content) {
     ["mock", /src\/mocks\/fixtures\/commands\.ts/],
     ["snapshot progressive", /snapshot progressive/],
     ["compat fields", /executedAt.*runOnce.*activeAccountKey.*switchedAccountKey.*pendingSwitchAccountKey/s],
-    ["不关闭前端 load_snapshot", /不改变前端 system-window-maintenance 文档中 `load_snapshot` 未关闭/],
+    ["不提升 maintenance/window 全量闭环", /不把 `load_snapshot` 提升为 maintenance\/window 全量闭环/],
     ["不接 voice", /不扩大到 `voice`/],
   ]) {
     requirePattern(label, path, content, pattern, "snapshot-bootstrap current-source map 必须记录 owner、合同和未声明边界");
