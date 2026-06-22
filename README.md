@@ -20,15 +20,15 @@ OpenAiMami 是面向个人本地工作流的桌面应用公开重建仓库。仓
 
 ## 当前归纳
 
-README 只保留长期有效的归纳状态：做了什么、没做什么、怎么验收。模块级 validator 不再把根 README 当作模块进度证明；根 README 的归纳、匿名化、验收入口和禁止完成声明由公开边界验证统一约束。每次提交仍要同步 README、相关重建文档和验证脚本，但 README 只更新归纳结论，不记录提交流水、日期、提交号或模块小项。
+README 只保留长期有效的归纳状态：做了什么、没做什么、怎么验收。模块级 validator 不再把根 README 当作模块进度证明；由公开边界验证统一约束 README 的匿名化、禁止完成声明、五行聚合范围和验收入口。每次提交仍要同步 README，但只更新归纳判断，不记录提交、日期或模块小项。
 
 | 范围 | 已做 | 未做或边界 | 验收 |
 | --- | --- | --- | --- |
-| 公开材料 | 已固定 Apache License、匿名化规则、`raw/internal` 证据入口、重建提示、贡献边界和 current-source 映射验证入口。 | 未脱敏材料、个人环境、凭据、会话、运行时缓存和外部猜测不进入公开范围。 | `npm run validate:public-boundary` |
-| 前端 | 已按入口、全局 Provider、route registry、runtime initializer、服务门面、TanStack cache、i18n、E2E mock、cache 竞态验证、current-source 专名验证、source-only 边界验证、closeout map 绑定验证和深模块 owner 建立恢复框架。 | 仍按证据链继续恢复；不声明 100% 还原、全叶子节点完成、双平台 full leaf 完成、全功能完成或全部文案完成。 | `npm run validate:frontend`、`npm run validate:frontend-visible-copy`、`npm run validate:frontend-leaf-copy` |
-| 后端 | 已保留原开源能力，并按 commands、application/usecase、core、platform、repository、adapters 和 contracts 放入六边形公开骨架；只读诊断合同、维护边界、settings 边界和空骨架 owner 进入公开验证。 | 闭源业务不做全量还原；无证据行为只保留接口、DTO、错误语义、测试占位、待处理、空操作或可替换骨架。 | `npm run validate:backend`、`npm run validate:backend-cargo` |
-| voice | 已限定为空骨架、合同清单、中文说明和独立 owner 验证。 | 不接入口、路由、IPC mock、后端命令或 runtime 启动链路。 | `npm run validate:frontend`、`npm run validate:backend` |
-| 验收 | 已固定公开边界、前端、后端、构建面、映射入口和 Rust 环境检查入口。 | 工具链、`link.exe`、Rust 编译环境或平台依赖缺口按环境边界判断，不当作业务完成或失败结论。 | `npm run validate:all`、`npm run validate:build-surface` |
+| 公开材料 | 已保留 Apache License、匿名化规则、`raw/internal` 证据入口、AI 重建提示和贡献边界。 | 未脱敏材料、个人环境、凭据、会话、运行时缓存和外部猜测不公开。 | `npm run validate:public-boundary` |
+| 前端 | 已建立入口、路由、全局 Provider、运行时、服务门面、缓存、i18n、mock 和深模块边界。 | 继续按证据链恢复；不声明 100% 还原、全叶子节点完成、双平台 full leaf 完成、全功能完成或全部文案完成。 | `npm run validate:frontend`、`npm run validate:frontend-visible-copy`、`npm run validate:frontend-leaf-copy` |
+| 后端 | 已保留原开源能力，并建立 commands、usecase、core、platform、repository、adapter、contracts 的六边形骨架。 | 闭源业务不做全量还原；无公开证据行为只保留接口、DTO、错误语义、测试占位、待处理、空操作或可替换骨架。 | `npm run validate:backend`、`npm run validate:backend-cargo` |
+| voice | 只保留空骨架、合同清单、中文说明和独立边界验证。 | 不接入口、路由、IPC mock、后端命令或 runtime 启动链路。 | `npm run validate:frontend`、`npm run validate:backend` |
+| 验收 | 已设置公开边界、前端、后端、构建面和 Rust 环境检查入口。 | 工具链、`link.exe`、Rust 编译环境或平台依赖缺口按环境边界判断，不当作业务完成或失败结论。 | `npm run validate:all`、`npm run validate:build-surface` |
 
 ## 仓库入口
 
