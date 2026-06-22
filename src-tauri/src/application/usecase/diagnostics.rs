@@ -8,7 +8,9 @@ use crate::contracts::{
 };
 use crate::core::error::CoreError;
 use crate::core::model::diagnostics::{DiagnosticProbe, DiagnosticSnapshot};
-use crate::repository::diagnostics::load_system_diagnostic_snapshot;
+use crate::repository::diagnostics::{
+    load_diagnostic_file_shape_summary, load_system_diagnostic_snapshot, DiagnosticFileShapeSummary,
+};
 use crate::repository::path_state::{load_app_path_state, RepositoryPathState};
 use crate::repository::relay as relay_repository;
 use crate::repository::Repository;
@@ -19,6 +21,7 @@ pub fn diagnose(
     platform: &impl DiagnosticPlatformPort,
 ) -> Result<DiagnosePayload, CoreError> {
     let diagnostic_snapshot = load_system_diagnostic_snapshot(repo)?;
+    let diagnostic_file_shape = load_diagnostic_file_shape_summary(repo);
     let paths = make_path_state_from_diagnostic_snapshot(repo, &diagnostic_snapshot);
     Ok(DiagnosePayload {
         backend_status: diagnose_backend_status(),
@@ -51,7 +54,7 @@ pub fn diagnose(
         },
         diagnostic_snapshot: make_diagnostic_snapshot_payload(&diagnostic_snapshot),
         catalog_integrity: make_catalog_integrity_payload(repo),
-        pending_diagnostics: make_pending_diagnostic_fields(),
+        pending_diagnostics: make_diagnostic_fields(&diagnostic_file_shape),
     })
 }
 
@@ -214,6 +217,48 @@ fn diagnostic_probe<'a>(
         .find(|probe| probe.status_code == status_code)
 }
 
+fn make_diagnostic_fields(
+    file_shape: &DiagnosticFileShapeSummary,
+) -> Vec<DiagnoseDiagnosticFieldPayload> {
+    let mut fields = make_repository_read_diagnostic_fields(file_shape);
+    fields.extend(make_pending_diagnostic_fields());
+    fields
+}
+
+fn make_repository_read_diagnostic_fields(
+    file_shape: &DiagnosticFileShapeSummary,
+) -> Vec<DiagnoseDiagnosticFieldPayload> {
+    vec![
+        repository_read_diagnostic_field(
+            "auth_file_shape",
+            format!(
+                "auth 文件形态只读探针：exists={}，sizeBytes={}；不解析凭据内容，不读取 keychain。",
+                file_shape.auth_exists, file_shape.auth_size_bytes
+            ),
+        ),
+        repository_read_diagnostic_field(
+            "registry_file_shape",
+            format!(
+                "registry 文件形态只读探针：exists={}，jsonValid={}，items={}，missingKey={}，duplicateKey={}；不返回账号私密值。",
+                file_shape.registry_exists,
+                file_shape.registry_json_valid,
+                file_shape.registry_item_count,
+                file_shape.registry_missing_key_count,
+                file_shape.registry_duplicate_key_count
+            ),
+        ),
+        repository_read_diagnostic_field(
+            "session_rollout_file_shape",
+            format!(
+                "sessions 目录形态只读探针：exists={}，entries={}，jsonlFiles={}；不读取会话正文。",
+                file_shape.sessions_exists,
+                file_shape.sessions_entry_count,
+                file_shape.sessions_jsonl_count
+            ),
+        ),
+    ]
+}
+
 fn make_pending_diagnostic_fields() -> Vec<DiagnoseDiagnosticFieldPayload> {
     // 未支持的深层诊断项只能表达为待处理；diagnose 不执行平台动作，也不把空操作扩展成修复副作用。
     vec![
@@ -242,5 +287,13 @@ fn pending_diagnostic_field(field: &str, detail: &str) -> DiagnoseDiagnosticFiel
         field: field.to_string(),
         status: "pending".to_string(),
         detail: Some(detail.to_string()),
+    }
+}
+
+fn repository_read_diagnostic_field(field: &str, detail: String) -> DiagnoseDiagnosticFieldPayload {
+    DiagnoseDiagnosticFieldPayload {
+        field: field.to_string(),
+        status: "repository_read".to_string(),
+        detail: Some(detail),
     }
 }

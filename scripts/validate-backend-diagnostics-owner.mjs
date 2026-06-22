@@ -66,6 +66,7 @@ const diagnosticsUsecase = raw.get("diagnosticsUsecase");
 for (const [label, pattern] of [
   ["diagnose action", /\bpub\s+fn\s+diagnose\s*\(\s*repo\s*:\s*&Repository\s*,\s*platform\s*:\s*&impl\s+DiagnosticPlatformPort\s*,?\s*\)/],
   ["diagnostics repository snapshot", /\bload_system_diagnostic_snapshot\s*\(\s*repo\s*\)/],
+  ["diagnostics file shape summary", /\bload_diagnostic_file_shape_summary\s*\(\s*repo\s*\)/],
   ["diagnostics platform port", /\bDiagnosticPlatformPort\b/],
   ["diagnostics platform payload", /\bmake_diagnose_platform\s*\(\s*platform\s*\)/],
   ["diagnostics platform public projection", /公开 diagnose DTO 只投影 os\/arch[\s\S]*?DiagnosePlatform\s*\{[\s\S]*?os\s*:\s*info\.os,[\s\S]*?arch\s*:\s*info\.arch,[\s\S]*?info_source\s*:\s*"platform\.system"\s*\.to_string\s*\(\s*\)/],
@@ -83,6 +84,8 @@ for (const [label, pattern] of [
   ["catalog integrity TOML syntax reason payload", /config_toml_syntax_reason\s*:\s*skeleton\.config_toml_syntax_reason/],
   ["catalog integrity profile conflict payload", /config_profile_conflict\s*:\s*skeleton\.config_profile_conflict/],
   ["catalog integrity profile conflict reason payload", /config_profile_conflict_reason\s*:\s*skeleton\.config_profile_conflict_reason/],
+  ["diagnostics repository-read file-shape fields", /\bauth_file_shape\b[\s\S]*?\bregistry_file_shape\b[\s\S]*?\bsession_rollout_file_shape\b/],
+  ["diagnostics repository-read field status", /status\s*:\s*"repository_read"\s*\.to_string\s*\(\s*\)/],
   ["diagnostics pending deep fields", /registry\/keychain\/sqlite 深诊断引擎和修复逻辑仍为 pending/],
   ["pending diagnostics fields", /\bfn\s+make_pending_diagnostic_fields\s*\(/],
   ["unsupported pending no-op boundary", /未支持的深层诊断项只能表达为待处理[\s\S]*?diagnose 不执行平台动作/],
@@ -145,6 +148,11 @@ for (const [label, pattern] of [
   ["registry path probe", /"diagnostics\.path\.registry"/],
   ["sessions path probe", /"diagnostics\.path\.sessions"/],
   ["config path probe", /"diagnostics\.path\.config"/],
+  ["diagnostic file shape summary struct", /\bpub\s+struct\s+DiagnosticFileShapeSummary\b/],
+  ["diagnostic file shape summary loader", /\bpub\s+fn\s+load_diagnostic_file_shape_summary\s*\(\s*repo\s*:\s*&Repository\s*\)\s*->\s*DiagnosticFileShapeSummary/],
+  ["auth file shape avoids content parse", /\bauth_size_bytes\s*=\s*if\s+auth_exists[\s\S]*?file_size_bytes\s*\(\s*&paths\.auth_path\s*\)/],
+  ["registry file shape duplicate count", /\bregistry_duplicate_key_count\b[\s\S]*?\bduplicate_key_count\b/],
+  ["session file shape jsonl count", /\bsessions_jsonl_count\b[\s\S]*?\bjsonl_count\b/],
   ["registry item count", /\bregistry_account_count\s*\(\s*repo\s*\)\?/],
   ["sessions child count", /\bchild_count\s*\(\s*repo\s*,\s*&paths\.sessions_dir\s*\)\?/],
   ["repository FS exists probe", /\brepo\s*\.\s*fs\s*\(\s*\)\s*\.\s*exists\s*\(/],
@@ -307,6 +315,9 @@ for (const [label, pattern] of [
   ["diagnose mock catalog TOML 语法镜像", /\bconfigTomlSyntaxValid\s*:\s*true/],
   ["diagnose mock catalog profile 冲突镜像", /\bconfigProfileConflict\s*:\s*false/],
   ["diagnose mock catalog issue 镜像", /\bhasIssues\s*:\s*false/],
+  ["diagnose mock auth file-shape 字段", /\bfield\s*:\s*"auth_file_shape"[\s\S]*?\bstatus\s*:\s*"repository_read"/],
+  ["diagnose mock registry file-shape 字段", /\bfield\s*:\s*"registry_file_shape"[\s\S]*?\bstatus\s*:\s*"repository_read"/],
+  ["diagnose mock session rollout file-shape 字段", /\bfield\s*:\s*"session_rollout_file_shape"[\s\S]*?\bstatus\s*:\s*"repository_read"/],
 ]) {
   requirePattern(label, mockCommands.path, mockCommands.content, pattern, "改 diagnostics DTO 必须同步 E2E mock 合同");
 }

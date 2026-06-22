@@ -839,6 +839,21 @@ const diagnoseHandler: IpcCommandHandler = (context) => {
       hasIssues: false,
     },
     pendingDiagnostics: [
+      {
+        field: "auth_file_shape",
+        status: "repository_read",
+        detail: null,
+      },
+      {
+        field: "registry_file_shape",
+        status: "repository_read",
+        detail: null,
+      },
+      {
+        field: "session_rollout_file_shape",
+        status: "repository_read",
+        detail: null,
+      },
       { field: "repository", status: "pending", detail: null },
       { field: "platform", status: "pending", detail: null },
     ],
