@@ -8,8 +8,22 @@ const files = {
   systemCommands: join(backendRoot, "commands", "system.rs"),
   settingsUsecase: join(backendRoot, "application", "usecase", "settings.rs"),
   systemUsecase: join(backendRoot, "application", "usecase", "system.rs"),
+  settingsRepository: join(backendRoot, "repository", "settings.rs"),
+  settingsCoreModel: join(backendRoot, "core", "model", "settings.rs"),
+  settingsContracts: join(backendRoot, "contracts", "settings.rs"),
+  platformActions: join(backendRoot, "application", "usecase", "platform_actions.rs"),
   tauriLib: join(backendRoot, "lib.rs"),
   hexagonalValidator: join(repoRoot, "scripts", "validate-backend-hexagonal.mjs"),
+  settingsMap: join(
+    repoRoot,
+    "docs",
+    "reconstruction",
+    "settings-current-source-evidence-map.md",
+  ),
+  sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
+  reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
+  packageJson: join(repoRoot, "package.json"),
+  backendAggregator: join(repoRoot, "scripts", "validate-backend.mjs"),
 };
 const failures = [];
 
@@ -241,6 +255,171 @@ function validateHexagonalMapping(path, content) {
   );
 }
 
+function validateSettingsMap(path, content) {
+  requirePattern(
+    "settings map 标题",
+    path,
+    content,
+    /^# settings current-source 证据映射/m,
+    "settings current-source map 必须存在并使用固定标题",
+  );
+  requirePattern(
+    "公开源码 owner 边界范围",
+    path,
+    content,
+    /只登记当前公开源码的 settings owner 边界/,
+    "map 只能说明当前公开源码 owner 边界",
+  );
+
+  for (const requiredPath of [
+    "src-tauri/src/commands/settings.rs",
+    "src-tauri/src/application/usecase/settings.rs",
+    "src-tauri/src/repository/settings.rs",
+    "src-tauri/src/core/model/settings.rs",
+    "src-tauri/src/contracts/settings.rs",
+    "src-tauri/src/application/usecase/platform_actions.rs",
+    "src-tauri/src/lib.rs",
+    "package.json",
+    "scripts/validate-backend.mjs",
+    "scripts/validate-backend-settings-owner.mjs",
+  ]) {
+    requirePattern(
+      `${requiredPath} map path`,
+      path,
+      content,
+      new RegExp(requiredPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+      "map 必须登记 settings current-source 的关键源码路径和验证入口",
+    );
+  }
+
+  for (const command of settingsCommands) {
+    requirePattern(
+      `${command} map command coverage`,
+      path,
+      content,
+      new RegExp(`\\\`${command}\\\``),
+      "map 必须登记全部 settings 命令覆盖面",
+    );
+  }
+
+  for (const [label, pattern, reason] of [
+    [
+      "settings command adapter 边界",
+      /settings command adapter[\s\S]*Tauri 参数[\s\S]*CoreEnvelope[\s\S]*usecase::settings/,
+      "map 必须登记 settings command adapter owner",
+    ],
+    [
+      "settings usecase 边界",
+      /settings usecase[\s\S]*用户动作[\s\S]*settings_repository[\s\S]*UsageRefreshInterval[\s\S]*platform_actions/,
+      "map 必须登记 settings usecase owner、repository 调度、core model 解析和平台动作委托",
+    ],
+    [
+      "settings repository 边界",
+      /settings repository[\s\S]*settings\.json[\s\S]*load_app_settings[\s\S]*save_app_settings/,
+      "map 必须登记 settings repository 文件事务 owner",
+    ],
+    [
+      "settings core model 边界",
+      /settings core model[\s\S]*UsageRefreshInterval[\s\S]*parse[\s\S]*as_str/,
+      "map 必须登记 settings core model owner",
+    ],
+    [
+      "settings contracts 边界",
+      /settings contracts[\s\S]*AppSettingsFile[\s\S]*ApiProxyTestPayload[\s\S]*ApiProxyDetectPayload/,
+      "map 必须登记 settings DTO owner",
+    ],
+    [
+      "platform_actions 委托边界",
+      /platform_actions[\s\S]*check_update_installability[\s\S]*graceful_restart_for_update[\s\S]*平台端口/,
+      "map 必须登记 settings 对 platform_actions 的委托边界",
+    ],
+  ]) {
+    requirePattern(label, path, content, pattern, reason);
+  }
+
+  for (const entry of [
+    "npm run validate:backend-settings-owner",
+    "npm run validate:backend",
+    "validate:backend-settings-owner",
+  ]) {
+    requirePattern(
+      `${entry} 验证入口`,
+      path,
+      content,
+      new RegExp(entry.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+      "map 必须登记 settings current-source 的验证入口",
+    );
+  }
+
+  for (const [label, text] of [
+    ["不恢复闭源业务", "不恢复闭源业务"],
+    ["API proxy test 非真实网络探测", "不把 API proxy test 写成真实网络探测"],
+    ["update/restart 非真实平台副作用", "不新增真实 update/restart 平台副作用"],
+    [
+      "settings 字段 helper 不扩大 owner",
+      "不把 hotspot/mystery/notification/daemon 的 settings 字段 helper 扩大为对应业务 owner",
+    ],
+    ["voice 边界", "不处理 voice"],
+  ]) {
+    requirePattern(
+      label,
+      path,
+      content,
+      new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+      "map 必须明确 settings current-source 的未声明边界",
+    );
+  }
+}
+
+function validateSettingsIndexes(sourceMap, reconstructionReadme) {
+  for (const [label, file] of [
+    ["source-map settings 索引", sourceMap],
+    ["reconstruction README settings 索引", reconstructionReadme],
+  ]) {
+    requirePattern(
+      label,
+      file.path,
+      file.content,
+      /docs\/reconstruction\/settings-current-source-evidence-map\.md[\s\S]*scripts\/validate-backend-settings-owner\.mjs/,
+      "索引必须登记 settings current-source map 和 settings owner validator",
+    );
+    requirePattern(
+      `${label} npm 专名入口`,
+      file.path,
+      file.content,
+      /docs\/reconstruction\/settings-current-source-evidence-map\.md[\s\S]*npm run validate:backend-settings-owner/,
+      "索引必须登记 settings owner validator 的 npm 入口",
+    );
+  }
+}
+
+function validatePackageScripts(path, content) {
+  requirePattern(
+    "validate:backend-settings-owner script",
+    path,
+    content,
+    /"validate:backend-settings-owner"\s*:\s*"node scripts\/validate-backend-settings-owner\.mjs"/,
+    "package.json 必须暴露 settings owner validator",
+  );
+  requirePattern(
+    "validate:backend script",
+    path,
+    content,
+    /"validate:backend"\s*:\s*"node scripts\/validate-backend\.mjs"/,
+    "package.json 必须保留 npm run validate:backend 聚合入口",
+  );
+}
+
+function validateBackendAggregator(path, content) {
+  requirePattern(
+    "settings owner 聚合入口",
+    path,
+    content,
+    /"validate-backend-settings-owner\.mjs"/,
+    "scripts/validate-backend.mjs 必须继续纳入 settings owner validator",
+  );
+}
+
 const raw = new Map(
   Object.entries(files).map(([label, path]) => [label, { path, content: readRequired(path, label) }]),
 );
@@ -252,6 +431,10 @@ validateSystemNoSettings(files.systemCommands, raw.get("systemCommands").content
 validateSystemUsecaseNoSettings(files.systemUsecase, raw.get("systemUsecase").content);
 validateLibRegistration(files.tauriLib, raw.get("tauriLib").content);
 validateHexagonalMapping(files.hexagonalValidator, raw.get("hexagonalValidator").content);
+validateSettingsMap(files.settingsMap, raw.get("settingsMap").content);
+validateSettingsIndexes(raw.get("sourceMap"), raw.get("reconstructionReadme"));
+validatePackageScripts(files.packageJson, raw.get("packageJson").content);
+validateBackendAggregator(files.backendAggregator, raw.get("backendAggregator").content);
 
 if (failures.length > 0) {
   console.error("FAIL 后端 settings owner 校验失败：");
@@ -262,5 +445,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  "PASS 后端 settings owner 校验通过：settings 命令适配、设置事务、平台状态归属和 Tauri 注册已归位。",
+  "PASS 后端 settings owner 校验通过：settings 命令适配、设置事务、平台状态归属、current-source evidence map、索引入口和 Tauri 注册已归位。",
 );
