@@ -351,29 +351,35 @@ function assertMockBoundary(commandMocks, e2eMockValidator) {
     "settingsCommandHandlers[definition.command] ??",
     "defaultHandler",
   ]);
-  assertIncludes("settings API proxy mock 当前使用专用 handler 但不做真实探测", commandMocks, [
+  assertIncludes("settings API proxy mock 当前使用专用 handler 且只模拟 env/probe payload", commandMocks, [
     "function createApiProxyTestPayload",
+    "const apiProxyMockEnvironmentCandidates",
+    "const apiProxyMockReachableUrls",
     "setApiProxyConfigHandler",
     "testApiProxyConfigHandler",
     "detectApiProxyConfigHandler",
     "statusCode: null",
-    "found: false",
-    "probe: createApiProxyTestPayload(\"direct\", null)",
+    "found: true",
+    "mode: \"manual\"",
+    "probe: createApiProxyTestPayload(\"manual\", apiProxyMockEnvironmentCandidates[0])",
     "mockCopy(",
     "settings.apiProxyTestReachableManual",
     "settings.apiProxyTestReachableDirect",
     "settings.apiProxyTestInvalidConfig",
+    "settings.apiProxyTestNetworkFailed",
   ]);
   assertIncludes("settings command handler 映射三条 API proxy 命令", settingsHandlers, [
     "detect_api_proxy_config: detectApiProxyConfigHandler",
     "set_api_proxy_config: setApiProxyConfigHandler",
     "test_api_proxy_config: testApiProxyConfigHandler",
   ]);
-  assertNotIncludes("mock fixture 不声明真实网络探测或系统代理扫描", commandMocks, [
+  assertNotIncludes("mock fixture 不调用真实网络或系统代理 API", commandMocks, [
     "real network probe",
     "real system proxy scan",
     "fetch(",
     "XMLHttpRequest",
+    "TcpStream",
+    "networksetup",
     "system proxy scan",
     "network probe completed",
   ]);
@@ -383,7 +389,12 @@ function assertMockBoundary(commandMocks, e2eMockValidator) {
     "settingsCommandHandlers[definition.command] ??",
     "validateStatefulSystemHotspotUsageMysteryMocks();",
   ]);
-  assertNotIncludes("E2E mock validator 不把 API proxy 写成真实探测完成", e2eMockValidator, [
+  assertIncludes("E2E mock validator 保留 API proxy env/probe 模拟断言", e2eMockValidator, [
+    "const apiProxyMockEnvironmentCandidates",
+    "const apiProxyMockReachableUrls",
+    "apiProxyMockReachableUrls.has(normalizedUrl)",
+  ]);
+  assertNotIncludes("E2E mock validator 不把 API proxy 写成真实 OS/network 调用", e2eMockValidator, [
     "real network probe",
     "system proxy scan",
     "真实网络探测完成",
@@ -419,10 +430,10 @@ function assertDocs(mapDoc, sourceMap, reconstructionReadme, settingsBackendMap)
     "statusCode: null",
     ...apiProxyCommands,
   ]);
-  assertIncludes("settings API proxy map 写明未做边界", mapDoc, [
+  assertIncludes("settings API proxy map 写明未声明边界", mapDoc, [
     "不接入 voice",
-    "不声明真实网络探测完成",
-    "不声明系统代理扫描完成",
+    "前端不直接执行真实网络探测或系统代理扫描",
+    "后端 current-source 只声明受限平台端口探针",
     "不声明 100% 还原",
     "不声明 full leaf 完成",
     "不声明全功能完成",
@@ -447,10 +458,10 @@ function assertDocs(mapDoc, sourceMap, reconstructionReadme, settingsBackendMap)
     `scripts/${validatorScript}`,
     "settings API proxy 当前源码链路",
   ]);
-  assertIncludes("settings 后端 owner map 保留 API proxy 未做真实探测边界", settingsBackendMap, [
+  assertIncludes("settings 后端 owner map 保留 API proxy 受限探针边界", settingsBackendMap, [
     "API proxy",
-    "真实网络探测",
-    "系统代理",
+    "平台端口",
+    "200ms TCP",
     "voice",
   ]);
 

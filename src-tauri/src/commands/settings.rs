@@ -4,6 +4,7 @@ use crate::contracts::{
     SystemActionPayload, UpdateInstallabilityPayload,
 };
 use crate::platform::process::ProcessPlatformAdapter;
+use crate::platform::proxy::ProxyPlatformAdapter;
 use crate::platform::runtime::RuntimePlatformAdapter;
 use crate::platform::system::SystemPlatformAdapter;
 use crate::repository::Repository;
@@ -28,15 +29,17 @@ pub fn test_api_proxy_config(
     mode: ApiProxyMode,
     url: Option<String>,
 ) -> Result<CoreEnvelope<ApiProxyTestPayload>, String> {
+    let proxy = ProxyPlatformAdapter;
     Ok(CoreEnvelope::ok(usecase::settings::test_api_proxy_config(
-        mode, url,
+        mode, url, &proxy,
     )))
 }
 
 #[tauri::command]
 pub fn detect_api_proxy_config() -> Result<CoreEnvelope<ApiProxyDetectPayload>, String> {
+    let proxy = ProxyPlatformAdapter;
     Ok(CoreEnvelope::ok(
-        usecase::settings::detect_api_proxy_config(),
+        usecase::settings::detect_api_proxy_config(&proxy),
     ))
 }
 

@@ -1445,6 +1445,9 @@ function normalizeApiProxyUrlArg(args: IpcArgs | undefined) {
   return typeof value === "string" && value.trim() ? value.trim() : null;
 }
 
+const apiProxyMockEnvironmentCandidates = ["socks5://mock-proxy.example:1080"];
+const apiProxyMockReachableUrls = new Set(["socks5://mock-proxy.example:1080"]);
+
 function createApiModePayload(): ApiModePayload {
   return {
     api: {
@@ -1457,9 +1460,16 @@ function createApiProxyTestPayload(
   mode: ApiProxyMode,
   url: string | null,
 ): ApiProxyTestPayload {
-  const reachable = mode === "direct" || (mode === "manual" && Boolean(url?.includes("://")));
+  const normalizedUrl = url?.trim() ?? null;
+  const supported =
+    mode === "direct" ||
+    (mode === "manual" &&
+      Boolean(normalizedUrl?.match(/^(?:http|https|socks5|socks5h):\/\/[^/\s]+/i)));
+  const reachable =
+    mode === "direct" ||
+    (supported && Boolean(normalizedUrl && apiProxyMockReachableUrls.has(normalizedUrl)));
   return {
-    code: reachable ? "proxy.accepted" : "proxy.invalid",
+    code: reachable ? "ok" : supported ? "network_error" : "invalid_config",
     reachable,
     statusCode: null,
     message: reachable
@@ -1468,7 +1478,11 @@ function createApiProxyTestPayload(
             ? "settings.apiProxyTestReachableManual"
             : "settings.apiProxyTestReachableDirect",
         )
-      : mockCopy("settings.apiProxyTestInvalidConfig"),
+      : mockCopy(
+          supported
+            ? "settings.apiProxyTestNetworkFailed"
+            : "settings.apiProxyTestInvalidConfig",
+        ),
   };
 }
 
@@ -1486,10 +1500,10 @@ const testApiProxyConfigHandler: IpcCommandHandler = (context) => {
 
 const detectApiProxyConfigHandler: IpcCommandHandler = (context) =>
   withMockData(context, {
-    found: false,
-    mode: null,
-    url: null,
-    probe: createApiProxyTestPayload("direct", null),
+    found: true,
+    mode: "manual",
+    url: apiProxyMockEnvironmentCandidates[0],
+    probe: createApiProxyTestPayload("manual", apiProxyMockEnvironmentCandidates[0]),
   });
 
 function readArgOptionalString(args: IpcArgs | undefined, key: string) {

@@ -1,6 +1,6 @@
 # settings API proxy 当前源码映射
 
-本文只记录 settings API proxy 在当前公开前端源码中的调用链、缓存写回和验证入口。它不是 raw/internal gate 关闭声明，不是闭源业务还原声明，也不表示双平台全 leaf 已经完成。
+本文只记录 settings API proxy 在当前公开源码中的前端调用链、缓存写回、mock 形状和验证入口。它不是 raw/internal gate 关闭声明，不是闭源业务还原声明，也不表示双平台全 leaf 已经完成。
 
 ## 已做
 
@@ -17,14 +17,14 @@
 | 对话框 | `src/features/settings/dialogs/proxy.tsx` | 只消费 controller 状态与动作，渲染模式选择、手动 URL、检测、测试和保存按钮。 |
 | 模式面板 | `src/features/settings/panels/mode.tsx` | 展示当前 API proxy 模式 badge，并通过 controller 打开对话框。 |
 | settings 页面 | `src/features/settings/components/page.tsx` | 只装配 `SettingsModeSwitchPanel` 和 `SettingsApiProxyDialog`。 |
-| E2E mock | `src/mocks/fixtures/commands.ts` | 已为三条 API proxy IPC 增加专用 mock handler，并把保存结果写回 snapshot 中的 `status.api.proxy`；仍不模拟真实网络探测或系统代理扫描。 |
-| mock 验证器 | `scripts/validate-e2e-mocks.mjs` | 保留 settings handler 聚合边界，并验证 API proxy 专用 handler、状态写回、`statusCode: null` 和无真实探测边界。 |
+| E2E mock | `src/mocks/fixtures/commands.ts` | 为三条 API proxy IPC 增加专用 mock handler，把保存结果写回 snapshot 中的 `status.api.proxy`，并用 `apiProxyMockEnvironmentCandidates` 与 `apiProxyMockReachableUrls` 模拟 env/probe payload；mock 不调用真实 OS 或网络 API。 |
+| mock 验证器 | `scripts/validate-e2e-mocks.mjs` | 保留 settings handler 聚合边界，并验证 API proxy 专用 handler、状态写回、`statusCode: null`、env/probe 模拟和无真实 OS/network 调用边界。 |
 
 ## 未做
 
 - 不接入 voice，不把 settings API proxy 链路接到 voice 命令、voice 空骨架、前端 voice 入口或运行时链路。
-- 不声明真实网络探测完成；当前前端只验证调用链和 payload 写回，不证明后端发起 HTTP、TCP 或外部请求。
-- 不声明系统代理扫描完成；`detect_api_proxy_config` 的当前前端链路只传递用户动作和后端返回，不证明系统代理环境扫描已经恢复。
+- 前端不直接执行真实网络探测或系统代理扫描；前端只传递用户动作、后端返回的 probe/detect payload 和缓存写回。
+- 后端 current-source 只声明受限平台端口探针；它通过公开平台端口读取环境候选并做 200ms TCP probe，不声明业务 HTTP 请求、账号私密值读取、订阅接口探测或闭源 settings 业务全量恢复。
 - 不声明 100% 还原，不声明 full leaf 完成，不声明全功能完成，不把本文作为 raw/internal gate 关闭证明。
 - 不把 mock handler 当作真实后端能力完成证明；它只用于前端 E2E 合同、状态竞争和 payload 形状验证。
 
@@ -32,6 +32,6 @@
 
 | 入口 | 作用 |
 | --- | --- |
-| `scripts/validate-frontend-settings-api-proxy-current-source.mjs` | 专名验证 settings API proxy 的 UI、controller、service、API、IPC、cache、mock 当前源码链路和未做边界。 |
+| `scripts/validate-frontend-settings-api-proxy-current-source.mjs` | 专名验证 settings API proxy 的 UI、controller、service、API、IPC、cache、mock 当前源码链路和未声明边界。 |
 | `npm run validate:frontend-settings-api-proxy-current-source` | package.json 暴露的专名验证入口。 |
 | `scripts/validate-frontend.mjs` | 前端聚合验证入口，已纳入本专名验证器。 |

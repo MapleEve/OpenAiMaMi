@@ -11,6 +11,48 @@ pub(crate) trait RepositoryPort {}
 pub(crate) trait PlatformPort {}
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) enum ApiProxyUrlErrorKind {
+    Empty,
+    MissingScheme,
+    UnsupportedScheme,
+    MissingHost,
+    InvalidPort,
+    InvalidFormat,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct ApiProxyUrlError {
+    pub kind: ApiProxyUrlErrorKind,
+    pub message: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct ApiProxyEndpoint {
+    pub normalized_url: String,
+    pub scheme: String,
+    pub host: String,
+    pub port: u16,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct ApiProxyEnvironment {
+    pub candidates: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct ApiProxyTcpProbe {
+    pub reachable: bool,
+    pub detail: String,
+}
+
+// API 代理平台端口只暴露公开可验证的 URL 解析、环境候选和 TCP 连通性能力；不读取账号私密值，不发起业务 HTTP 请求。
+pub(crate) trait ApiProxyPlatformPort {
+    fn normalize_proxy_url(&self, raw_url: &str) -> Result<ApiProxyEndpoint, ApiProxyUrlError>;
+    fn proxy_environment_candidates(&self) -> ApiProxyEnvironment;
+    fn probe_tcp(&self, endpoint: &ApiProxyEndpoint, timeout_ms: u64) -> ApiProxyTcpProbe;
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct RelayPlatformCapability {
     pub code: String,
     pub available: bool,

@@ -6,7 +6,9 @@ const backendRoot = join(repoRoot, "src-tauri", "src");
 const files = {
   settingsCommands: join(backendRoot, "commands", "settings.rs"),
   systemCommands: join(backendRoot, "commands", "system.rs"),
+  applicationPorts: join(backendRoot, "application", "ports.rs"),
   settingsUsecase: join(backendRoot, "application", "usecase", "settings.rs"),
+  proxyPlatform: join(backendRoot, "platform", "proxy.rs"),
   systemUsecase: join(backendRoot, "application", "usecase", "system.rs"),
   settingsRepository: join(backendRoot, "repository", "settings.rs"),
   settingsCoreModel: join(backendRoot, "core", "model", "settings.rs"),
@@ -129,6 +131,7 @@ function validateSettingsCommands(path, content) {
   for (const [label, pattern] of [
     ["SystemPlatformAdapter", /\bSystemPlatformAdapter\b/],
     ["ProcessPlatformAdapter", /\bProcessPlatformAdapter\b/],
+    ["ProxyPlatformAdapter", /\bProxyPlatformAdapter\b/],
     ["Repository State", /\bState\s*<\s*'_\s*,\s*Mutex\s*<\s*Repository\s*>\s*>/],
   ]) {
     requirePattern(label, path, content, pattern, "settings command adapter 必须装配所需平台或仓储边界");
@@ -182,6 +185,21 @@ function validateSettingsUsecase(path, content) {
       /\bplatform_actions\s*::\s*graceful_restart_for_update\s*\(\s*process\s*\)/,
       "graceful_restart_for_update 必须调用独立 platform-actions owner",
     ],
+    [
+      "API proxy test platform port",
+      /\btest_api_proxy_config\s*\([\s\S]*platform\s*:\s*&impl\s+ApiProxyPlatformPort[\s\S]*test_manual_api_proxy_config\s*\(\s*url\s*,\s*platform\s*\)/,
+      "test_api_proxy_config 必须经 ApiProxyPlatformPort 执行受限探针",
+    ],
+    [
+      "API proxy detect platform port",
+      /\bdetect_api_proxy_config\s*\(\s*platform\s*:\s*&impl\s+ApiProxyPlatformPort\s*\)[\s\S]*platform\s*\.\s*proxy_environment_candidates\s*\(\s*\)[\s\S]*probe_api_proxy_endpoint\s*\(\s*platform\s*,\s*&endpoint\s*\)/,
+      "detect_api_proxy_config 必须经 ApiProxyPlatformPort 读取候选并执行受限探针",
+    ],
+    [
+      "API proxy 200ms timeout",
+      /\bconst\s+API_PROXY_TCP_PROBE_TIMEOUT_MS\s*:\s*u64\s*=\s*200\s*;/,
+      "API proxy TCP 探针 timeout 必须固定为公开证据中的 200ms",
+    ],
   ]) {
     requirePattern(label, path, content, pattern, reason);
   }
@@ -189,10 +207,42 @@ function validateSettingsUsecase(path, content) {
   for (const [label, pattern] of [
     ["hotspot owner", /\bhotspot\b|\bHotspot\b/g],
     ["relay image compatibility owner", /\bimage_compat\b|\bImageCompat\b/g],
-    ["真实 HTTP 探测", /\breqwest\b|\bTcpStream\b|\bstd\s*::\s*net\b/g],
+    ["usecase 直接网络探测", /\breqwest\b|\bTcpStream\b|\bstd\s*::\s*net\b|\bstd::env\b/g],
   ]) {
-    rejectPattern(label, path, content, pattern, "settings owner 不得吸收 hotspot/relay 或真实联网探测");
+    rejectPattern(label, path, content, pattern, "settings usecase 不得吸收 hotspot/relay 或直接联网探测");
   }
+}
+
+function validateApplicationPorts(path, content) {
+  for (const [label, pattern] of [
+    ["ApiProxyPlatformPort trait", /\btrait\s+ApiProxyPlatformPort\s*\{[\s\S]*normalize_proxy_url[\s\S]*proxy_environment_candidates[\s\S]*probe_tcp/s],
+    ["ApiProxyEndpoint DTO", /\bstruct\s+ApiProxyEndpoint\s*\{[\s\S]*normalized_url[\s\S]*scheme[\s\S]*host[\s\S]*port/s],
+    ["ApiProxyEnvironment DTO", /\bstruct\s+ApiProxyEnvironment\s*\{[\s\S]*candidates\s*:\s*Vec\s*<\s*String\s*>/],
+    ["ApiProxyTcpProbe DTO", /\bstruct\s+ApiProxyTcpProbe\s*\{[\s\S]*reachable\s*:\s*bool[\s\S]*detail\s*:\s*String/s],
+  ]) {
+    requirePattern(label, path, content, pattern, "application ports 必须公开 API proxy 受限平台端口合同");
+  }
+}
+
+function validateProxyPlatform(path, content) {
+  for (const [label, pattern] of [
+    ["ProxyPlatformAdapter", /\bstruct\s+ProxyPlatformAdapter\b/],
+    ["port impl", /\bimpl\s+ApiProxyPlatformPort\s+for\s+ProxyPlatformAdapter\b/],
+    ["env 候选", /\bHTTPS_PROXY\b[\s\S]*\bHTTP_PROXY\b[\s\S]*\bALL_PROXY\b[\s\S]*\bhttps_proxy\b[\s\S]*\bhttp_proxy\b[\s\S]*\ball_proxy\b/s],
+    ["TCP connect timeout", /\bTcpStream\s*::\s*connect_timeout\s*\(/],
+    ["200ms 由 usecase 传入", /\bDuration\s*::\s*from_millis\s*\(\s*timeout_ms\s*\)/],
+    ["supported schemes", /"http"\s*\|\s*"https"\s*\|\s*"socks5"\s*\|\s*"socks5h"/],
+  ]) {
+    requirePattern(label, path, content, pattern, "platform/proxy.rs 必须 owning 环境候选、URL 规范化和 TCP 探针");
+  }
+
+  rejectPattern(
+    "业务凭据或 HTTP 请求",
+    path,
+    content,
+    /\breqwest\b|\bAuthorization\b|\bBearer\b|\bauth\b|\btoken\b|\bchatgpt\b/gi,
+    "API proxy 平台端口不得读取凭据或发起业务 HTTP 请求",
+  );
 }
 
 function validateSystemNoSettings(path, content) {
@@ -353,7 +403,7 @@ function validateSettingsMap(path, content) {
 
   for (const [label, text] of [
     ["不恢复闭源业务", "不恢复闭源业务"],
-    ["API proxy test 非真实网络探测", "不把 API proxy test 写成真实网络探测"],
+    ["API proxy 受限平台端口探测", "API proxy 真实探测只限平台端口的 200ms TCP 探针"],
     ["update/restart 非真实平台副作用", "不新增真实 update/restart 平台副作用"],
     [
       "settings 字段 helper 不扩大 owner",
@@ -427,6 +477,8 @@ const raw = new Map(
 validateForbiddenNames([...raw.values()].map((file) => [file.path, file.content]));
 validateSettingsCommands(files.settingsCommands, raw.get("settingsCommands").content);
 validateSettingsUsecase(files.settingsUsecase, raw.get("settingsUsecase").content);
+validateApplicationPorts(files.applicationPorts, raw.get("applicationPorts").content);
+validateProxyPlatform(files.proxyPlatform, raw.get("proxyPlatform").content);
 validateSystemNoSettings(files.systemCommands, raw.get("systemCommands").content);
 validateSystemUsecaseNoSettings(files.systemUsecase, raw.get("systemUsecase").content);
 validateLibRegistration(files.tauriLib, raw.get("tauriLib").content);

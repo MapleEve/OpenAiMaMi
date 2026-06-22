@@ -1470,6 +1470,11 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     "mode: \"direct\"",
     "url: null",
   ]);
+  assertIncludes("src/mocks/fixtures/commands.ts settings API proxy mock probe state", commandFixtureText, [
+    "const apiProxyMockEnvironmentCandidates",
+    "const apiProxyMockReachableUrls",
+    "apiProxyMockReachableUrls.has(normalizedUrl)",
+  ]);
   assertIncludes("src/mocks/fixtures/commands.ts setApiProxyConfigHandler", setApiProxyBody, [
     "apiProxyMockState.mode = readApiProxyModeArg(",
     "apiProxyMockState.url = normalizeApiProxyUrlArg(context.args);",
@@ -1481,8 +1486,9 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
   ]);
   assertIncludes("src/mocks/fixtures/commands.ts createApiProxyTestPayload", createApiProxyTestBody, [
     "mode === \"direct\"",
-    "mode === \"manual\" && Boolean(url?.includes(\"://\"))",
-    "code: reachable ? \"proxy.accepted\" : \"proxy.invalid\"",
+    "mode === \"manual\"",
+    "apiProxyMockReachableUrls.has(normalizedUrl)",
+    "code: reachable ? \"ok\" : supported ? \"network_error\" : \"invalid_config\"",
     "reachable,",
     "statusCode: null",
   ]);
@@ -1492,10 +1498,10 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     "return withMockData(context, createApiProxyTestPayload(mode, url));",
   ]);
   assertIncludes("src/mocks/fixtures/commands.ts detectApiProxyConfigHandler", detectApiProxyBody, [
-    "found: false",
-    "mode: null",
-    "url: null",
-    "probe: createApiProxyTestPayload(\"direct\", null)",
+    "found: true",
+    "mode: \"manual\"",
+    "url: apiProxyMockEnvironmentCandidates[0]",
+    "probe: createApiProxyTestPayload(\"manual\", apiProxyMockEnvironmentCandidates[0])",
   ]);
   assertMatches(
     "src/mocks/fixtures/commands.ts createCoreSnapshotPayload signature",
