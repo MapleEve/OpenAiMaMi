@@ -25,3 +25,9 @@
 本 closeout 只说明当前公开源码已有 UI theme 的前端 source chain：设置面板、侧边栏、设置 Provider、`useTheme`、`api.setAppTheme`、`themeService.setTheme`、Tauri `setTheme` 和 zh/en locale key。它是 current-source partial closeout，用来允许 validator 把 `windows-1.0.9-ui/gate-report.json` 中与 theme 相关的 8 个失败字段计为有证据的当前源码差异。
 
 本 closeout 不声明 raw/internal gate 已被修复，不声明 `gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成，不把 Windows 1.0.9 主题链路扩展成 OS theme 读取、系统主题订阅、DWM material API 或后端持久化实现。
+
+## 验证入口
+
+- `scripts/validate-frontend-ui-theme-current-source.mjs` 直接验证本文、theme gate-report、settings appearance、sidebar theme entry、settings provider、theme hook、API/service 门面、locale key 和未完成声明边界。
+- `scripts/validate-frontend-current-source-closeouts.mjs` 验证 `ui-theme-current-source-theme-chain` closeout 台账。
+- `npm run validate:frontend` 聚合执行本条前端验证。

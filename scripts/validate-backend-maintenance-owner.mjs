@@ -12,6 +12,15 @@ const files = {
   systemUsecase: join(backendRoot, "application", "usecase", "system.rs"),
   tauriLib: join(backendRoot, "lib.rs"),
   hexagonalValidator: join(repoRoot, "scripts", "validate-backend-hexagonal.mjs"),
+  maintenanceMap: join(
+    repoRoot,
+    "docs",
+    "reconstruction",
+    "maintenance-current-source-evidence-map.md",
+  ),
+  sourceMap: join(repoRoot, "docs", "reconstruction", "source-map.md"),
+  reconstructionReadme: join(repoRoot, "docs", "reconstruction", "README.md"),
+  packageJson: join(repoRoot, "package.json"),
 };
 const failures = [];
 
@@ -340,6 +349,196 @@ function validateHexagonalMapping(path, content) {
   );
 }
 
+function validateMaintenanceMap(path, content) {
+  requirePattern(
+    "maintenance map 标题",
+    path,
+    content,
+    /^# maintenance current-source 证据映射/m,
+    "maintenance current-source map 必须存在并使用固定标题",
+  );
+  requirePattern(
+    "公开源码 owner 边界范围",
+    path,
+    content,
+    /只登记当前公开源码的 maintenance owner 边界/,
+    "map 只能说明当前公开源码 owner 边界",
+  );
+  requirePattern(
+    "非闭源业务完整恢复声明",
+    path,
+    content,
+    /不把当前公开骨架等同于闭源业务还原/,
+    "map 必须明确不是闭源业务完整恢复声明",
+  );
+
+  for (const [label, pattern, reason] of [
+    [
+      "maintenance command 边界",
+      /src-tauri\/src\/commands\/maintenance\.rs[\s\S]*Tauri 参数[\s\S]*usecase::maintenance/,
+      "map 必须登记 maintenance command adapter owner",
+    ],
+    [
+      "maintenance usecase 边界",
+      /src-tauri\/src\/application\/usecase\/maintenance\.rs[\s\S]*用户动作[\s\S]*repository\/maintenance[\s\S]*platform_actions/,
+      "map 必须登记 maintenance usecase owner 与窄 owner 复用",
+    ],
+    [
+      "maintenance repository 边界",
+      /src-tauri\/src\/repository\/maintenance\.rs[\s\S]*FileSystemAdapter[\s\S]*clean_backup_children[\s\S]*rebuild_registry_summary/,
+      "map 必须登记 maintenance repository 文件事务 owner",
+    ],
+    [
+      "platform_actions 边界",
+      /src-tauri\/src\/application\/usecase\/platform_actions\.rs[\s\S]*平台端口[\s\S]*force_kill_app[\s\S]*restart_app[\s\S]*open_path[\s\S]*system_info/,
+      "map 必须登记 maintenance 复用的 platform_actions owner",
+    ],
+  ]) {
+    requirePattern(label, path, content, pattern, reason);
+  }
+
+  for (const command of maintenanceCommands) {
+    requirePattern(
+      `${command} map command coverage`,
+      path,
+      content,
+      new RegExp(`\\b${command}\\b`),
+      "map 必须登记全部 maintenance 命令覆盖面",
+    );
+  }
+
+  for (const entry of [
+    "scripts/validate-backend-maintenance-owner.mjs",
+    "scripts/validate-backend-platform-actions-owner.mjs",
+    "scripts/validate-backend-diagnostics-owner.mjs",
+    "scripts/validate-backend-hexagonal.mjs",
+    "npm run validate:backend",
+  ]) {
+    requirePattern(
+      `${entry} 验证入口`,
+      path,
+      content,
+      new RegExp(entry.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+      "map 必须登记 maintenance current-source 的验证入口",
+    );
+  }
+
+  for (const [label, pattern, reason] of [
+    [
+      "闭源 maintenance 引擎边界",
+      /闭源 maintenance 引擎[\s\S]*不包含[\s\S]*不把当前公开骨架等同于闭源业务还原/,
+      "map 必须说明不声明闭源 maintenance 引擎",
+    ],
+    [
+      "真实更新重启闭环边界",
+      /真实更新重启闭环[\s\S]*不登记安装更新或重启闭环验收/,
+      "map 必须说明不声明真实更新重启闭环",
+    ],
+    [
+      "voice 接入边界",
+      /voice 接入[\s\S]*不接入 voice[\s\S]*不把 maintenance 与 voice 形成业务链路/,
+      "map 必须说明不声明 voice 接入",
+    ],
+  ]) {
+    requirePattern(label, path, content, pattern, reason);
+  }
+}
+
+function validateMaintenanceIndexes(sourceMap, reconstructionReadme) {
+  for (const [label, file] of [
+    ["source-map maintenance 索引", sourceMap],
+    ["reconstruction README maintenance 索引", reconstructionReadme],
+  ]) {
+    requirePattern(
+      label,
+      file.path,
+      file.content,
+      /docs\/reconstruction\/maintenance-current-source-evidence-map\.md[\s\S]*scripts\/validate-backend-maintenance-owner\.mjs/,
+      "索引必须登记 maintenance current-source map 和 maintenance owner validator",
+    );
+    requirePattern(
+      `${label} validate:backend 入口`,
+      file.path,
+      file.content,
+      /docs\/reconstruction\/maintenance-current-source-evidence-map\.md[\s\S]*npm run validate:backend/,
+      "索引必须登记 npm run validate:backend 聚合入口",
+    );
+  }
+}
+
+function validatePackageScripts(path, content) {
+  requirePattern(
+    "validate:backend-maintenance-owner script",
+    path,
+    content,
+    /"validate:backend-maintenance-owner"\s*:\s*"node scripts\/validate-backend-maintenance-owner\.mjs"/,
+    "package.json 必须暴露 maintenance owner validator",
+  );
+  requirePattern(
+    "validate:backend script",
+    path,
+    content,
+    /"validate:backend"\s*:\s*"node scripts\/validate-backend\.mjs"/,
+    "package.json 必须保留 npm run validate:backend 聚合入口",
+  );
+}
+
+function rejectPositiveRestorationClaims(contents) {
+  const negativeMarkers = [
+    "不声明",
+    "不作为",
+    "不代表",
+    "不表示",
+    "不登记",
+    "不包含",
+    "不接入",
+    "未恢复",
+    "不得",
+    "不能",
+    "仍为",
+    "仍不",
+    "待补",
+    "pending",
+    "unsupported",
+  ];
+  const forbiddenClaims = [
+    [
+      "平台动作恢复正向声明",
+      /平台动作[^。；\n|]*(?:已|已经|完整|完全|完成)[^。；\n|]*(?:恢复|闭环|接通|落地)/,
+      "不得把平台动作写成已恢复的正向声明",
+    ],
+    [
+      "闭源 maintenance 引擎恢复正向声明",
+      /闭源\s*maintenance\s*引擎[^。；\n|]*(?:已|已经|完整|完全|完成)[^。；\n|]*(?:恢复|还原|落地)/,
+      "不得把闭源 maintenance 引擎写成已恢复的正向声明",
+    ],
+    [
+      "真实更新重启闭环恢复正向声明",
+      /真实更新重启闭环[^。；\n|]*(?:已|已经|完整|完全|完成)[^。；\n|]*(?:恢复|还原|闭合|落地)/,
+      "不得把真实更新重启闭环写成已恢复的正向声明",
+    ],
+    [
+      "voice 接入恢复正向声明",
+      /(?:voice|Voice)\s*接入[^。；\n|]*(?:已|已经|完整|完全|完成|恢复|接通|落地)|(?:已|已经|完整|完全|完成)[^。；\n|]*(?:voice|Voice)\s*接入/,
+      "不得把 voice 接入写成已恢复的正向声明",
+    ],
+  ];
+
+  for (const [path, content] of contents) {
+    const lines = content.split(/\r?\n/);
+    for (const [index, line] of lines.entries()) {
+      if (negativeMarkers.some((marker) => line.includes(marker))) {
+        continue;
+      }
+      for (const [label, pattern, reason] of forbiddenClaims) {
+        if (pattern.test(line)) {
+          failures.push(`${toRelative(path)}:${index + 1} 禁止 ${label}：${reason}`);
+        }
+      }
+    }
+  }
+}
+
 const raw = new Map(
   Object.entries(files).map(([label, path]) => [label, { path, content: readRequired(path, label) }]),
 );
@@ -356,6 +555,15 @@ validateSystemNoMaintenance(files.systemCommands, raw.get("systemCommands").cont
 validateSystemUsecaseNoMaintenance(files.systemUsecase, raw.get("systemUsecase").content);
 validateLibRegistration(files.tauriLib, raw.get("tauriLib").content);
 validateHexagonalMapping(files.hexagonalValidator, raw.get("hexagonalValidator").content);
+validateMaintenanceMap(files.maintenanceMap, raw.get("maintenanceMap").content);
+validateMaintenanceIndexes(raw.get("sourceMap"), raw.get("reconstructionReadme"));
+validatePackageScripts(files.packageJson, raw.get("packageJson").content);
+rejectPositiveRestorationClaims(
+  ["maintenanceMap", "sourceMap", "reconstructionReadme"].map((label) => [
+    raw.get(label).path,
+    raw.get(label).content,
+  ]),
+);
 
 if (failures.length > 0) {
   console.error("FAIL 后端 maintenance owner 校验失败：");

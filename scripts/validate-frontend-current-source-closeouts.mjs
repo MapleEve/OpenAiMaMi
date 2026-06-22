@@ -123,6 +123,8 @@ const ACCOUNTS_ANALYTICS_CURRENT_SOURCE_COMMANDS = [
 ];
 const TRAY_CURRENT_SOURCE_CLOSEOUT_ID =
   "tray-windows-current-source-native-event-frontend-chain";
+const TRAY_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/tray-current-source-evidence-map.md";
 const TRAY_CURRENT_SOURCE_GATE_REPORT =
   "evidence/full-chain/internal/audits/audits/windows-1.0.9-tray/gate-report.json";
 const TRAY_CURRENT_SOURCE_FRONTEND_DOC =
@@ -144,6 +146,7 @@ const TRAY_CURRENT_SOURCE_ALLOWED_FIELDS = [
   "id",
   "module",
   "status",
+  "currentSourceMap",
   "currentSourceCommands",
   "gateReports",
   "frontendChainDocs",
@@ -1448,6 +1451,13 @@ function validateTrayCurrentSourceCloseout(closeout) {
   if (closeout.status !== "current-source-closed-partial") {
     failures.push(`${closeout.id} status=${String(closeout.status)}`);
   }
+  if (closeout.currentSourceMap !== TRAY_CURRENT_SOURCE_MAP) {
+    failures.push(
+      `${closeout.id} currentSourceMap 必须绑定 ${TRAY_CURRENT_SOURCE_MAP}，实际为 ${String(
+        closeout.currentSourceMap,
+      )}`,
+    );
+  }
 
   validateStringArraySet(
     `${closeout.id} currentSourceCommands`,
@@ -1465,6 +1475,36 @@ function validateTrayCurrentSourceCloseout(closeout) {
     [TRAY_CURRENT_SOURCE_FRONTEND_DOC],
   );
   validateRequiredSignals(closeout);
+
+  const mapPath = repoPath(TRAY_CURRENT_SOURCE_MAP);
+  if (!existsSync(mapPath)) {
+    failures.push(`${closeout.id} 缺少当前源码说明文档：${TRAY_CURRENT_SOURCE_MAP}`);
+  } else {
+    const mapText = readText(mapPath);
+    for (const required of [
+      "# tray current-source 证据映射",
+      "后端 owner 映射",
+      "scripts/validate-backend-tray-owner.mjs",
+      "scripts/validate-frontend-tray-current-source.mjs",
+      "不创建真实原生托盘",
+    ]) {
+      if (!mapText.includes(required)) {
+        failures.push(`${TRAY_CURRENT_SOURCE_MAP} 缺少说明片段：${required}`);
+      }
+    }
+    const voiceBoundarySnippets = [
+      "不处理 voice",
+      "不处理 `voice`",
+      "不碰 `voice`",
+      "不接入 `voice`",
+    ];
+    if (
+      /\bvoice\b/i.test(mapText) &&
+      !voiceBoundarySnippets.some((snippet) => mapText.includes(snippet))
+    ) {
+      failures.push(`${TRAY_CURRENT_SOURCE_MAP} 出现 voice 时必须表达为不处理 voice 的边界`);
+    }
+  }
 
   const gate = readJson(repoPath(TRAY_CURRENT_SOURCE_GATE_REPORT));
   if (gate.status !== "accepted_full_leaf_100_windows_ida") {

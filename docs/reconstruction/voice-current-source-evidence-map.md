@@ -28,5 +28,6 @@
 
 ## 验证入口
 
-- `npm run validate:backend-voice-owner` 验证四个 Rust 空骨架、Tauri 注册表和本文边界。
+- `scripts/validate-backend-voice-owner.mjs` 验证四个 Rust 空骨架、Tauri 注册表和本文边界。
+- `npm run validate:backend-voice-owner` 单独执行 voice 后端 owner 验证。
 - `npm run validate:backend` 聚合执行 voice 后端 owner 验证。

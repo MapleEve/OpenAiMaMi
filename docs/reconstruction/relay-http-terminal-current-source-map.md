@@ -32,7 +32,7 @@
 - 前端 UI 触发链已从面板、page hook、mutation hook、service wrapper 到 IPC mock 闭合。
 - 后端 command/usecase/platform/core 链路已能构建 mock terminal request、解析 mock response，并把 provider health 写回 repository；draft 测试链路按 platform mock terminal effect 归类。
 - relay test 错误语义由 `src-tauri/src/core/relay.rs` owning，覆盖 stream retry 和 relay test retry 文本分类。
-- 当前 validator 是 `npm run validate:frontend-relay-http-terminal-ccf` 与 `npm run validate:backend-relay-owner`；聚合入口是 `npm run validate:frontend`、`npm run validate:backend` 和 `npm run validate:all`。
+- 当前 validator 是 `scripts/validate-frontend-relay-http-terminal-ccf.mjs` 与 `scripts/validate-backend-relay-owner.mjs`，对应 `npm run validate:frontend-relay-http-terminal-ccf` 与 `npm run validate:backend-relay-owner`；聚合入口是 `npm run validate:frontend`、`npm run validate:backend` 和 `npm run validate:all`。
 
 ## 未声明边界
 

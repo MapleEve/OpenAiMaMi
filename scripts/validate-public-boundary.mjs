@@ -1173,18 +1173,30 @@ function validateCurrentSourceEvidenceMapRegistry() {
     .map((path) => [path, readUtf8(path)]);
   const sourceMapLines = sourceMapContent.split(/\r?\n/);
   const mapsWithoutValidatorOrBoundary = [];
+  const mapsWithoutLocalValidationEntry = [];
 
   for (const mapPath of mapPaths) {
     const fileName = mapPath.split("/").at(-1) ?? mapPath;
+    const mapContent = readUtf8(mapPath);
     const referencedByValidator = validateScriptContents.some(
       ([, content]) => content.includes(mapPath) || content.includes(fileName),
     );
-    if (referencedByValidator) continue;
-
     const sourceMapLine =
       sourceMapLines.find((line) => line.includes(mapPath) || line.includes(fileName)) ?? "";
-    if (!sourceMapLine.includes("当前仅索引/无独立 validator 边界")) {
+
+    const hasExplicitIndexBoundary = sourceMapLine.includes(
+      "当前仅索引/无独立 validator 边界",
+    );
+    if (!referencedByValidator && !hasExplicitIndexBoundary) {
       mapsWithoutValidatorOrBoundary.push(mapPath);
+    }
+
+    const hasLocalValidationEntry =
+      /scripts\/validate[A-Za-z0-9_.-]+\.mjs/.test(mapContent) ||
+      /npm run validate:[A-Za-z0-9:-]+/.test(mapContent) ||
+      hasExplicitIndexBoundary;
+    if (!hasLocalValidationEntry) {
+      mapsWithoutLocalValidationEntry.push(mapPath);
     }
   }
 
@@ -1194,6 +1206,13 @@ function validateCurrentSourceEvidenceMapRegistry() {
     mapsWithoutValidatorOrBoundary.length === 0
       ? "每个 map 均被 validate 脚本显式引用，或在 source-map.md 标注当前仅索引/无独立 validator 边界"
       : `缺少 validator 引用或索引边界：${mapsWithoutValidatorOrBoundary.join("；")}`,
+  );
+  addCheck(
+    "current-source/evidence map 本文登记验证入口",
+    mapsWithoutLocalValidationEntry.length === 0,
+    mapsWithoutLocalValidationEntry.length === 0
+      ? "每个 map 本文均登记 validate 脚本、npm 验证入口或显式索引边界"
+      : `map 本文缺少验证入口：${mapsWithoutLocalValidationEntry.join("；")}`,
   );
 }
 

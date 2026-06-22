@@ -66,3 +66,9 @@
 - 不恢复真实平台 watcher、daemon、runtime event、后台线程、计划调度或平台副作用。
 - 不新增 route、sidebar、header、tray、plugins config 或 `voice` 入口。
 - 不把 `note_usage_refresh_activity`、`schedule_full_runtime_refresh`、`start_usage_refresh_watcher`、`update_usage_refresh_schedule` 等 watcher/schedule 信号纳入本条前端 usage current-source 边界。
+
+## 验证入口
+
+- `scripts/validate-frontend-system-usage-current-source.mjs` 直接验证本文、system service、settings service、settings query/mutation/cache、overview refresh/cache、analytics service、runtime event 委托和未恢复边界。
+- `scripts/validate-frontend-system-usage-hotspot-mystery-cache.mjs` 验证 usage refresh interval、overview usage refresh、stale/delayed/replay、mutation fence 和 `voice` 未接入边界。
+- `npm run validate:frontend` 聚合执行本条前端验证。
