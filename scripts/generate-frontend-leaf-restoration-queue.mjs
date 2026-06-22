@@ -93,6 +93,44 @@ function collectGateReportFailures() {
   return failures;
 }
 
+function gateFailureKey(failure) {
+  return `${failure.file}\u0000${failure.path}\u0000${JSON.stringify(failure.value)}`;
+}
+
+function loadClosedGateReportFailures() {
+  const closeoutsPath = repoPath("docs", "reconstruction", "frontend-current-source-closeouts.json");
+  if (!existsSync(closeoutsPath)) return new Set();
+  const closeouts = readJson(closeoutsPath);
+  const closed = new Set();
+  for (const closeout of closeouts.closeouts ?? []) {
+    if (closeout.status !== "current-source-closed-partial") continue;
+    for (const entry of closeout.closedGateReportFailures ?? []) {
+      if (!entry?.report || !entry?.path) continue;
+      if (entry.path.endsWith("full_leaf_100")) continue;
+      closed.add(`${entry.report}\u0000${entry.path}\u0000${JSON.stringify(entry.value)}`);
+    }
+  }
+  return closed;
+}
+
+function summarizeGateReportFailures(gateReportFailures) {
+  const closedGateReportFailures = loadClosedGateReportFailures();
+  const closeoutCoveredGateReportFailures = gateReportFailures.filter((failure) =>
+    closedGateReportFailures.has(gateFailureKey(failure)),
+  );
+  const finalDeclarationBlockers = gateReportFailures.filter(
+    (failure) => !closedGateReportFailures.has(gateFailureKey(failure)),
+  );
+  return {
+    total: gateReportFailures.length,
+    closeoutCovered: closeoutCoveredGateReportFailures.length,
+    finalDeclarationBlockers: finalDeclarationBlockers.length,
+    finalDeclarationBlockerFields: finalDeclarationBlockers,
+    interpretation:
+      "已由 current-source closeout 覆盖的历史 gate 非绿字段不阻塞继续实现；剩余字段只阻止 100% leaf 完成声明，不得改写为已完成。",
+  };
+}
+
 function collectManifestNonLeafStatuses() {
   const closedManifestStatuses = loadClosedManifestStatuses();
   const manifestPath = repoPath("src", "restoration", "frontend-manifest", "index.ts");
@@ -359,6 +397,7 @@ function buildQueue() {
   const gapAuditPath = repoPath("evidence", "full-chain", "internal", "data", "data", "full-leaf-100-gap-audit.json");
   const gapAudit = readJson(gapAuditPath);
   const gateReportFailures = collectGateReportFailures();
+  const gateReportFailureSummary = summarizeGateReportFailures(gateReportFailures);
   const manifestNonLeafStatuses = collectManifestNonLeafStatuses();
   const frontendDocSignals = collectFrontendDocSignals();
   const localeCoverage = collectLocaleCoverage();
@@ -385,6 +424,7 @@ function buildQueue() {
     gapAuditTotals: gapAudit.totals,
     gapAuditModules: gapAudit.modules,
     gateReportFailures,
+    gateReportFailureSummary,
     manifestNonLeafStatuses,
     frontendDocSignals,
     localeCoverage,
@@ -419,7 +459,7 @@ function buildQueue() {
         id: "gate-report-strict-failures",
         area: "internal-gate",
         status: "open",
-        blocker: `当前 internal gate-report 还有 ${gateReportFailures.length} 个完成声明非绿字段；这些字段不阻塞基于证据和可测试边界继续实现。`,
+        blocker: `当前 internal gate-report 有 ${gateReportFailureSummary.total} 个完成声明非绿字段，其中 ${gateReportFailureSummary.closeoutCovered} 个已由 current-source closeout 覆盖，剩余 ${gateReportFailureSummary.finalDeclarationBlockers} 个 full_leaf_100=false 只阻止最终完成声明。`,
       },
     ],
   };

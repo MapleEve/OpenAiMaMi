@@ -870,6 +870,42 @@
       "value": 0
     }
   ],
+  "gateReportFailureSummary": {
+    "total": 113,
+    "closeoutCovered": 109,
+    "finalDeclarationBlockers": 4,
+    "finalDeclarationBlockerFields": [
+      {
+        "platform": "cross",
+        "area": "relay-core-bootstrap",
+        "file": "evidence/full-chain/internal/audits/audits/cross-1.0.9-relay-core-bootstrap/gate-report.json",
+        "path": "full_leaf_100",
+        "value": false
+      },
+      {
+        "platform": "macos",
+        "area": "bootstrap",
+        "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/gate-report.json",
+        "path": "full_leaf_100",
+        "value": false
+      },
+      {
+        "platform": "macos",
+        "area": "relay",
+        "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay/gate-report.json",
+        "path": "full_leaf_100",
+        "value": false
+      },
+      {
+        "platform": "macos",
+        "area": "system-shell-init",
+        "file": "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/gate-report.json",
+        "path": "full_leaf_100",
+        "value": false
+      }
+    ],
+    "interpretation": "已由 current-source closeout 覆盖的历史 gate 非绿字段不阻塞继续实现；剩余字段只阻止 100% leaf 完成声明，不得改写为已完成。"
+  },
   "manifestNonLeafStatuses": [],
   "frontendDocSignals": [],
   "localeCoverage": [
@@ -978,7 +1014,7 @@
       "id": "gate-report-strict-failures",
       "area": "internal-gate",
       "status": "open",
-      "blocker": "当前 internal gate-report 还有 113 个完成声明非绿字段；这些字段不阻塞基于证据和可测试边界继续实现。"
+      "blocker": "当前 internal gate-report 有 113 个完成声明非绿字段，其中 109 个已由 current-source closeout 覆盖，剩余 4 个 full_leaf_100=false 只阻止最终完成声明。"
     }
   ]
 }

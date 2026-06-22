@@ -120,6 +120,12 @@ const allowedCloseoutGateFailureKeys = new Set([
   "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json\u0000leaves.refresh_usage_snapshot.implementation_use\u0000false",
   "evidence/full-chain/internal/audits/audits/windows-1.0.9-system-usage/gate-report.json\u0000cluster_gate_summary.readyToImplement\u00000",
 ]);
+const finalDeclarationBlockerKeys = new Set([
+  "evidence/full-chain/internal/audits/audits/cross-1.0.9-relay-core-bootstrap/gate-report.json\u0000full_leaf_100\u0000false",
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/gate-report.json\u0000full_leaf_100\u0000false",
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-relay/gate-report.json\u0000full_leaf_100\u0000false",
+  "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/gate-report.json\u0000full_leaf_100\u0000false",
+]);
 
 function repoPath(...parts) {
   return join(repoRoot, ...parts);
@@ -287,12 +293,29 @@ function checkGateReports() {
   }
   const allowedFalseFields = falseFields.filter((field) => allowedFailures.has(gateFailureKey(field)));
   const remainingFalseFields = falseFields.filter((field) => !allowedFailures.has(gateFailureKey(field)));
+  const remainingKeys = remainingFalseFields.map(gateFailureKey).sort();
+  const expectedRemainingKeys = [...finalDeclarationBlockerKeys].sort();
 
   notes.push(
     `internal gate-report 完成声明字段：${reports.length} reports, allowed closeout failures ${allowedFalseFields.length}, remaining non-blocking signals ${remainingFalseFields.length}`,
   );
   for (const field of remainingFalseFields.slice(0, 12)) {
     notes.push(`${field.file} ${field.path}=${String(field.value)}`);
+  }
+  if (remainingKeys.length !== expectedRemainingKeys.length) {
+    failures.push(
+      `internal gate-report 剩余完成声明 blocker 数量应为 ${expectedRemainingKeys.length}，当前为 ${remainingKeys.length}`,
+    );
+  }
+  for (const key of expectedRemainingKeys) {
+    if (!remainingKeys.includes(key)) {
+      failures.push(`internal gate-report 缺少预期最终声明 blocker：${key.replaceAll("\u0000", " ")}`);
+    }
+  }
+  for (const key of remainingKeys) {
+    if (!finalDeclarationBlockerKeys.has(key)) {
+      failures.push(`internal gate-report 出现未登记非绿字段：${key.replaceAll("\u0000", " ")}`);
+    }
   }
 }
 function checkLeafLedger() {
