@@ -11,6 +11,10 @@ import type {
   AccountImportPreviewPayload,
   AccountMonitorPayload,
   AccountSessionImportPayload,
+  ApiModePayload,
+  ApiProxyDetectPayload,
+  ApiProxyMode,
+  ApiProxyTestPayload,
   AppPathState,
   AutoSwitchConfigPayload,
   AutoSwitchRuntimeState,
@@ -99,6 +103,9 @@ export type IpcCommandMockData =
   | AccountImportPreviewPayload
   | AccountMonitorPayload
   | AccountSessionImportPayload
+  | ApiModePayload
+  | ApiProxyDetectPayload
+  | ApiProxyTestPayload
   | AutoSwitchConfigPayload
   | BackendSkeletonStatus
   | ChangeAnalyticsPayload
@@ -331,6 +338,11 @@ const systemUsageMockState = {
   usageLastError: null as string | null,
   usageSource: "local" as CoreSnapshotPayload["status"]["usageSource"],
   usageStatus: "unknown" as CoreSnapshotPayload["status"]["apiConnectivity"]["usageStatus"],
+};
+
+const apiProxyMockState: ApiModePayload["api"]["proxy"] = {
+  mode: "direct",
+  url: null,
 };
 
 const usageRefreshIntervalHandler: IpcCommandHandler = (context) =>
@@ -1408,6 +1420,63 @@ function readRefreshIntervalArg(
     : fallback;
 }
 
+function readApiProxyModeArg(args: IpcArgs | undefined, fallback: ApiProxyMode) {
+  const value = args?.mode;
+  return value === "direct" || value === "manual" ? value : fallback;
+}
+
+function normalizeApiProxyUrlArg(args: IpcArgs | undefined) {
+  const value = args?.url;
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
+function createApiModePayload(): ApiModePayload {
+  return {
+    api: {
+      proxy: { ...apiProxyMockState },
+    },
+  };
+}
+
+function createApiProxyTestPayload(
+  mode: ApiProxyMode,
+  url: string | null,
+): ApiProxyTestPayload {
+  const reachable = mode === "direct" || (mode === "manual" && Boolean(url?.includes("://")));
+  return {
+    code: reachable ? "proxy.accepted" : "proxy.invalid",
+    reachable,
+    statusCode: null,
+    message: reachable
+      ? mockCopy(
+          mode === "manual"
+            ? "settings.apiProxyTestReachableManual"
+            : "settings.apiProxyTestReachableDirect",
+        )
+      : mockCopy("settings.apiProxyTestInvalidConfig"),
+  };
+}
+
+const setApiProxyConfigHandler: IpcCommandHandler = (context) => {
+  apiProxyMockState.mode = readApiProxyModeArg(context.args, apiProxyMockState.mode);
+  apiProxyMockState.url = normalizeApiProxyUrlArg(context.args);
+  return withMockData(context, createApiModePayload());
+};
+
+const testApiProxyConfigHandler: IpcCommandHandler = (context) => {
+  const mode = readApiProxyModeArg(context.args, "direct");
+  const url = normalizeApiProxyUrlArg(context.args);
+  return withMockData(context, createApiProxyTestPayload(mode, url));
+};
+
+const detectApiProxyConfigHandler: IpcCommandHandler = (context) =>
+  withMockData(context, {
+    found: false,
+    mode: null,
+    url: null,
+    probe: createApiProxyTestPayload("direct", null),
+  });
+
 function readArgOptionalString(args: IpcArgs | undefined, key: string) {
   const value = args?.[key];
   return typeof value === "string" && value.trim() ? value : null;
@@ -1733,10 +1802,7 @@ function createCoreSnapshotPayload(
         serviceLabel: "",
       },
       api: {
-        proxy: {
-          mode: "direct",
-          url: null,
-        },
+        proxy: { ...apiProxyMockState },
       },
       apiConnectivity: {
         usageStatus: systemUsageMockState.usageStatus,
@@ -2353,9 +2419,12 @@ const settingsCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>
   graceful_restart_for_update: systemActionHandler,
   has_notch: hasNotchHandler,
   hotspot_ready: hotspotReadyHandler,
+  detect_api_proxy_config: detectApiProxyConfigHandler,
   set_hotspot_enabled: setHotspotEnabledHandler,
   set_image_compat: setImageCompatHandler,
+  set_api_proxy_config: setApiProxyConfigHandler,
   set_usage_refresh_interval: setUsageRefreshIntervalHandler,
+  test_api_proxy_config: testApiProxyConfigHandler,
 };
 
 const systemCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> = {

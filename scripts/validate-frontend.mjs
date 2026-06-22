@@ -24,6 +24,7 @@ const validators = [
   ["validate-frontend-system-usage-current-source.mjs"],
   ["validate-frontend-system-window-maintenance-current-source.mjs"],
   ["validate-frontend-system-hotspot-current-source.mjs"],
+  ["validate-frontend-settings-api-proxy-current-source.mjs"],
   ["validate-frontend-mcp-skills-current-source.mjs"],
   ["validate-frontend-cross-home-usage-current-source.mjs"],
   ["validate-frontend-accounts-analytics-current-source.mjs"],

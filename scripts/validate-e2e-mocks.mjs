@@ -1279,6 +1279,11 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     commandFixtureText,
     "const systemUsageMockState",
   );
+  const apiProxyStateBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts apiProxyMockState",
+    commandFixtureText,
+    "const apiProxyMockState",
+  );
   const setHotspotBody = readDelimitedBody(
     "src/mocks/fixtures/commands.ts setHotspotEnabledHandler",
     commandFixtureText,
@@ -1298,6 +1303,31 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     "src/mocks/fixtures/commands.ts readRefreshIntervalArg",
     commandFixtureText,
     "function readRefreshIntervalArg",
+  );
+  const setApiProxyBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts setApiProxyConfigHandler",
+    commandFixtureText,
+    "const setApiProxyConfigHandler",
+  );
+  const testApiProxyBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts testApiProxyConfigHandler",
+    commandFixtureText,
+    "const testApiProxyConfigHandler",
+  );
+  const detectApiProxyBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts detectApiProxyConfigHandler",
+    commandFixtureText,
+    "const detectApiProxyConfigHandler",
+  );
+  const createApiModeBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts createApiModePayload",
+    commandFixtureText,
+    "function createApiModePayload",
+  );
+  const createApiProxyTestBody = readDelimitedBody(
+    "src/mocks/fixtures/commands.ts createApiProxyTestPayload",
+    commandFixtureText,
+    "function createApiProxyTestPayload",
   );
   const coreSnapshotBody = readDelimitedBody(
     "src/mocks/fixtures/commands.ts createCoreSnapshotPayload",
@@ -1348,6 +1378,9 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     ["set_usage_refresh_interval", "setUsageRefreshIntervalHandler"],
     ["load_snapshot", "coreSnapshotHandler"],
     ["refresh_usage_snapshot", "refreshUsageSnapshotHandler"],
+    ["set_api_proxy_config", "setApiProxyConfigHandler"],
+    ["test_api_proxy_config", "testApiProxyConfigHandler"],
+    ["detect_api_proxy_config", "detectApiProxyConfigHandler"],
     ["get_mystery_unlock_grants", "getMysteryUnlockGrantsHandler"],
     ["merge_mystery_unlock_grants", "mergeMysteryUnlockGrantsHandler"],
   ];
@@ -1368,6 +1401,9 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     'invokeIpc<CoreEnvelope<string>>("set_usage_refresh_interval", { interval })',
     'invokeIpc<CoreEnvelope<CoreSnapshotPayload>>("load_snapshot", { localOnly })',
     'invokeIpc<CoreEnvelope<CoreSnapshotPayload>>("refresh_usage_snapshot")',
+    'invokeIpc<CoreEnvelope<ApiModePayload>>("set_api_proxy_config", {',
+    'invokeIpc<CoreEnvelope<ApiProxyTestPayload>>("test_api_proxy_config", {',
+    'invokeIpc<CoreEnvelope<ApiProxyDetectPayload>>("detect_api_proxy_config")',
     'invokeIpc<CoreEnvelope<MysteryRouteGrant[]>>("get_mystery_unlock_grants")',
     'invokeIpc<CoreEnvelope<MysteryRouteGrant[]>>("merge_mystery_unlock_grants", {',
     "grants: toMysteryRouteGrantArgs(grants)",
@@ -1388,6 +1424,10 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     "withMockData(context, systemHotspotMockState.enabled)",
     "withMockData(context, systemHotspotMockState.hasNotch)",
     "withMockData(context, systemUsageMockState.refreshInterval)",
+    "const apiProxyMockState",
+    "setApiProxyConfigHandler",
+    "testApiProxyConfigHandler",
+    "detectApiProxyConfigHandler",
     "const mysteryUnlockMockState",
     "withMockData(context, [...mysteryUnlockMockState.grants])",
   ]);
@@ -1426,6 +1466,37 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     "value === \"30s\" || value === \"1m\" || value === \"3m\" || value === \"5m\"",
     ": fallback",
   ]);
+  assertIncludes("src/mocks/fixtures/commands.ts apiProxyMockState", apiProxyStateBody, [
+    "mode: \"direct\"",
+    "url: null",
+  ]);
+  assertIncludes("src/mocks/fixtures/commands.ts setApiProxyConfigHandler", setApiProxyBody, [
+    "apiProxyMockState.mode = readApiProxyModeArg(",
+    "apiProxyMockState.url = normalizeApiProxyUrlArg(context.args);",
+    "return withMockData(context, createApiModePayload());",
+  ]);
+  assertIncludes("src/mocks/fixtures/commands.ts createApiModePayload", createApiModeBody, [
+    "api: {",
+    "proxy: { ...apiProxyMockState }",
+  ]);
+  assertIncludes("src/mocks/fixtures/commands.ts createApiProxyTestPayload", createApiProxyTestBody, [
+    "mode === \"direct\"",
+    "mode === \"manual\" && Boolean(url?.includes(\"://\"))",
+    "code: reachable ? \"proxy.accepted\" : \"proxy.invalid\"",
+    "reachable,",
+    "statusCode: null",
+  ]);
+  assertIncludes("src/mocks/fixtures/commands.ts testApiProxyConfigHandler", testApiProxyBody, [
+    "const mode = readApiProxyModeArg(context.args, \"direct\");",
+    "const url = normalizeApiProxyUrlArg(context.args);",
+    "return withMockData(context, createApiProxyTestPayload(mode, url));",
+  ]);
+  assertIncludes("src/mocks/fixtures/commands.ts detectApiProxyConfigHandler", detectApiProxyBody, [
+    "found: false",
+    "mode: null",
+    "url: null",
+    "probe: createApiProxyTestPayload(\"direct\", null)",
+  ]);
   assertMatches(
     "src/mocks/fixtures/commands.ts createCoreSnapshotPayload signature",
     coreSnapshotSignature,
@@ -1445,8 +1516,21 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     "const usageSource = localOnly ? \"local\" : systemUsageMockState.usageSource;",
     "lastScanAt: systemUsageMockState.lastScanAt",
     "usageSource,",
+    "proxy: { ...apiProxyMockState }",
     "usageStatus: systemUsageMockState.usageStatus",
     "usageLastError: systemUsageMockState.usageLastError",
+  ]);
+  assertNotIncludes("src/mocks/fixtures/commands.ts settings API proxy mocks", commandFixtureText, [
+    "fetch(",
+    "XMLHttpRequest",
+    "httpClient",
+    "http client",
+    "system proxy",
+    "systemProxy",
+    "WinHttpGetIEProxyConfigForCurrentUser",
+    "CFNetworkCopySystemProxySettings",
+    "networksetup",
+    "gsettings",
   ]);
   assertNotIncludes("src/mocks/fixtures/commands.ts createCoreSnapshotPayload", coreSnapshotBody, [
     "envelope",
@@ -1507,9 +1591,14 @@ function validateStatefulSystemHotspotUsageMysteryMocks() {
     "withMockData(context, systemHotspotMockState.ready)",
     "withMockData(context, systemHotspotMockState.hasNotch)",
     "const systemUsageMockState",
+    "const apiProxyMockState",
     "withMockData(context, systemUsageMockState.refreshInterval)",
     "systemUsageMockState.refreshInterval = readRefreshIntervalArg(",
     "value === \"30s\" || value === \"1m\" || value === \"3m\" || value === \"5m\"",
+    "apiProxyMockState.mode = readApiProxyModeArg(",
+    "apiProxyMockState.url = normalizeApiProxyUrlArg(context.args)",
+    "statusCode: null",
+    "proxy: { ...apiProxyMockState }",
     "function createCoreSnapshotPayload(",
     "backendStatus,",
     "lastScanAt: systemUsageMockState.lastScanAt",

@@ -93,3 +93,4 @@ LFS/IDB 资料独立称为 `OpenAiMami IDB`。主仓库保存匿名化 raw/inter
 | 托盘 current-source 骨架 | `docs/reconstruction/tray-current-source-evidence-map.md` | Windows accepted tray target、current-source extra 和前后端 tray owner。 |
 | voice 后端空骨架边界 | `docs/reconstruction/voice-current-source-evidence-map.md` | voice 四个 Rust 空骨架、Tauri 注册表未接命令、未出现 IPC envelope、Repository 参数、runtime 事件或平台接线；由 `scripts/validate-backend-voice-owner.mjs` 直接验证，不作为录音、语音识别、权限、后台任务、前端入口或闭源业务恢复声明。 |
 | UI theme 前端调用链 | `docs/reconstruction/ui-theme-current-source-map.md` | UI theme 设置面板、Provider、service 和 Tauri theme API 调用链。 |
+| settings API proxy 当前源码链路 | `docs/reconstruction/settings-api-proxy-current-source-map.md` | 由 `scripts/validate-frontend-settings-api-proxy-current-source.mjs` 与 `npm run validate:frontend-settings-api-proxy-current-source` 专名验证 UI、controller、service、API、IPC、cache、mock 当前源码链路和未做边界；不声明 100% 还原、full leaf 完成、全功能完成、真实网络探测完成、系统代理扫描完成或 `voice` 接入。 |
