@@ -244,6 +244,11 @@ const SYSTEM_HOTSPOT_USAGE_MYSTERY_COMMANDS = [
   "get_mystery_unlock_grants",
   "merge_mystery_unlock_grants",
 ];
+const SYSTEM_HOTSPOT_USAGE_MYSTERY_MAPS = [
+  "docs/reconstruction/system-hotspot-current-source-map.md",
+  "docs/reconstruction/system-usage-current-source-map.md",
+  "docs/reconstruction/mystery-unlock-current-source-map.md",
+];
 const SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECAR_COMMANDS = new Map([
   [
     SYSTEM_HOTSPOT_USAGE_MYSTERY_SIDECARS[0],
@@ -266,6 +271,7 @@ const SYSTEM_HOTSPOT_USAGE_MYSTERY_ALLOWED_FIELDS = [
   "id",
   "module",
   "status",
+  "currentSourceMaps",
   "sidecarReports",
   "requiredSourceSignals",
   "closedGateReportFailures",
@@ -839,6 +845,8 @@ const SYSTEM_SHELL_INIT_DUPLICATE_SIDECAR =
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/frontend-callchain-report.json";
 const SYSTEM_SHELL_INIT_DUPLICATE_GATE_REPORT =
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-system-shell-init/gate-report.json";
+const SYSTEM_SHELL_INIT_DUPLICATE_MAP =
+  "docs/reconstruction/system-shell-init-duplicate-current-source-map.md";
 const SYSTEM_SHELL_INIT_DUPLICATE_GATE_FAILURE_KEYS = [
   `${SYSTEM_SHELL_INIT_DUPLICATE_GATE_REPORT}\u0000readyToImplement\u0000false`,
   `${SYSTEM_SHELL_INIT_DUPLICATE_GATE_REPORT}\u0000implementation_use\u0000false`,
@@ -848,6 +856,7 @@ const SYSTEM_SHELL_INIT_DUPLICATE_ALLOWED_FIELDS = [
   "id",
   "module",
   "status",
+  "currentSourceMap",
   "sidecarReports",
   "requiredSourceSignals",
   "closedGateReportFailures",
@@ -865,6 +874,11 @@ const WINDOWS_SYSTEM_CURRENT_SOURCE_COMMANDS = [
   "diagnose_codex_router",
   "diagnose",
 ];
+const WINDOWS_SYSTEM_CURRENT_SOURCE_MAPS = [
+  "docs/reconstruction/maintenance-current-source-evidence-map.md",
+  "docs/reconstruction/diagnostics-current-source-evidence-map.md",
+  "docs/reconstruction/relay-core-current-source-evidence-map.md",
+];
 const WINDOWS_SYSTEM_CURRENT_SOURCE_GATE_FAILURE_FIELDS = [
   "readyToImplement",
   "implementation_use",
@@ -881,6 +895,7 @@ const WINDOWS_SYSTEM_CURRENT_SOURCE_ALLOWED_FIELDS = [
   "id",
   "module",
   "status",
+  "currentSourceMaps",
   "sidecarReports",
   "requiredSourceSignals",
   "closedGateReportFailures",
@@ -1868,6 +1883,16 @@ function validateSystemHotspotUsageMysteryCloseout(closeout) {
   }
   if (closeout.status !== "current-source-closed-partial") {
     failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+  validateStringArraySet(
+    `${closeout.id} currentSourceMaps`,
+    closeout.currentSourceMaps ?? [],
+    SYSTEM_HOTSPOT_USAGE_MYSTERY_MAPS,
+  );
+  for (const map of SYSTEM_HOTSPOT_USAGE_MYSTERY_MAPS) {
+    if (!existsSync(repoPath(map))) {
+      failures.push(`${closeout.id} 缺少 current-source map：${map}`);
+    }
   }
 
   validateStringArraySet(
@@ -2946,6 +2971,13 @@ function validateSystemShellInitDuplicateCloseout(closeout) {
   if (closeout.status !== "current-source-closed-partial") {
     failures.push(`${closeout.id} status=${String(closeout.status)}`);
   }
+  if (closeout.currentSourceMap !== SYSTEM_SHELL_INIT_DUPLICATE_MAP) {
+    failures.push(
+      `${closeout.id} currentSourceMap 必须绑定 ${SYSTEM_SHELL_INIT_DUPLICATE_MAP}，实际为 ${String(
+        closeout.currentSourceMap,
+      )}`,
+    );
+  }
 
   validateStringArraySet(
     `${closeout.id} sidecarReports`,
@@ -3022,6 +3054,26 @@ function validateSystemShellInitDuplicateCloseout(closeout) {
   }
 
   validateRequiredSignals(closeout);
+
+  const mapPath = repoPath(SYSTEM_SHELL_INIT_DUPLICATE_MAP);
+  if (!existsSync(mapPath)) {
+    failures.push(`${closeout.id} 缺少 current-source map：${SYSTEM_SHELL_INIT_DUPLICATE_MAP}`);
+  } else {
+    const mapText = readText(mapPath);
+    for (const required of [
+      "system-shell-init",
+      "duplicate_local_outtake_not_authoritative",
+      "authoritative_shared_bootstrap_work_exists",
+      "authoritative closeout",
+      "full_leaf_100",
+      "scripts/validate-frontend-current-source-closeouts.mjs",
+      "scripts/validate-frontend-closeout-map-bindings.mjs",
+    ]) {
+      if (!mapText.includes(required)) {
+        failures.push(`${SYSTEM_SHELL_INIT_DUPLICATE_MAP} 缺少说明片段：${required}`);
+      }
+    }
+  }
 }
 
 function validateWindowsSystemCurrentSourceCloseout(closeout) {
@@ -3031,6 +3083,16 @@ function validateWindowsSystemCurrentSourceCloseout(closeout) {
   }
   if (closeout.status !== "current-source-closed-partial") {
     failures.push(`${closeout.id} status=${String(closeout.status)}`);
+  }
+  validateStringArraySet(
+    `${closeout.id} currentSourceMaps`,
+    closeout.currentSourceMaps ?? [],
+    WINDOWS_SYSTEM_CURRENT_SOURCE_MAPS,
+  );
+  for (const map of WINDOWS_SYSTEM_CURRENT_SOURCE_MAPS) {
+    if (!existsSync(repoPath(map))) {
+      failures.push(`${closeout.id} 缺少 current-source map：${map}`);
+    }
   }
 
   validateStringArraySet(
@@ -3701,6 +3763,15 @@ if (closeouts.schema !== "open-aimami.frontend_current_source_closeouts.v1") {
 }
 
 for (const closeout of closeouts.closeouts ?? []) {
+  const hasSingleMap = typeof closeout.currentSourceMap === "string" && closeout.currentSourceMap.length > 0;
+  const hasMapList =
+    Array.isArray(closeout.currentSourceMaps) &&
+    closeout.currentSourceMaps.length > 0 &&
+    closeout.currentSourceMaps.every((map) => typeof map === "string" && map.length > 0);
+  if (closeout.status === "current-source-closed-partial" && !hasSingleMap && !hasMapList) {
+    failures.push(`${closeout.id} 必须绑定 currentSourceMap 或 currentSourceMaps`);
+  }
+
   if (closeout.id === "plugins-current-route-api-command-mock-chain") {
     validatePluginsCloseout(closeout);
   } else if (closeout.id === "mcp-skills-index-query-owner-closed-chain") {

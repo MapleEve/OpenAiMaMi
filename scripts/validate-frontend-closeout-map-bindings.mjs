@@ -97,6 +97,71 @@ const bindings = [
       "不处理 system-shell-init、relay、mystery 或 voice",
     ],
   },
+  {
+    id: "system-hotspot-usage-mystery-frontend-callchain-non-gating-closeout",
+    map: "docs/reconstruction/system-hotspot-current-source-map.md",
+    field: "currentSourceMaps",
+    mapSnippets: ["get_hotspot_enabled", "set_hotspot_enabled", "hotspot_ready"],
+    closeoutSnippets: ["get_hotspot_enabled", "set_hotspot_enabled", "hotspot_ready"],
+  },
+  {
+    id: "system-hotspot-usage-mystery-frontend-callchain-non-gating-closeout",
+    map: "docs/reconstruction/system-usage-current-source-map.md",
+    field: "currentSourceMaps",
+    mapSnippets: [
+      "get_usage_refresh_interval",
+      "set_usage_refresh_interval",
+      "refresh_usage_snapshot",
+    ],
+    closeoutSnippets: [
+      "get_usage_refresh_interval",
+      "set_usage_refresh_interval",
+      "refresh_usage_snapshot",
+    ],
+  },
+  {
+    id: "system-hotspot-usage-mystery-frontend-callchain-non-gating-closeout",
+    map: "docs/reconstruction/mystery-unlock-current-source-map.md",
+    field: "currentSourceMaps",
+    mapSnippets: ["get_mystery_unlock_grants", "merge_mystery_unlock_grants"],
+    closeoutSnippets: ["get_mystery_unlock_grants", "merge_mystery_unlock_grants"],
+  },
+  {
+    id: "system-shell-init-duplicate-outtake-non-authoritative",
+    map: "docs/reconstruction/system-shell-init-duplicate-current-source-map.md",
+    mapSnippets: [
+      "system-shell-init",
+      "duplicate_local_outtake_not_authoritative",
+      "authoritative_shared_bootstrap_work_exists",
+      "full_leaf_100",
+    ],
+    closeoutSnippets: [
+      "duplicate_local_outtake_not_authoritative",
+      "authoritative closeout",
+      "full_leaf_100",
+    ],
+  },
+  {
+    id: "windows-system-current-source-strict-chain",
+    map: "docs/reconstruction/maintenance-current-source-evidence-map.md",
+    field: "currentSourceMaps",
+    mapSnippets: ["force_kill_codex", "diagnose"],
+    closeoutSnippets: ["force_kill_codex", "diagnose"],
+  },
+  {
+    id: "windows-system-current-source-strict-chain",
+    map: "docs/reconstruction/diagnostics-current-source-evidence-map.md",
+    field: "currentSourceMaps",
+    mapSnippets: ["diagnose", "catalog_integrity"],
+    closeoutSnippets: ["diagnose"],
+  },
+  {
+    id: "windows-system-current-source-strict-chain",
+    map: "docs/reconstruction/relay-core-current-source-evidence-map.md",
+    field: "currentSourceMaps",
+    mapSnippets: ["diagnose_codex_router", "run_codex_router_diagnostics"],
+    closeoutSnippets: ["diagnose_codex_router"],
+  },
 ];
 
 function pathOf(path) {
@@ -148,7 +213,15 @@ for (const binding of bindings) {
   }
 
   const closeout = matches[0];
-  if (closeout.currentSourceMap !== binding.map) {
+  if (binding.field === "currentSourceMaps") {
+    if (!Array.isArray(closeout.currentSourceMaps) || !closeout.currentSourceMaps.includes(binding.map)) {
+      failures.push(
+        `${binding.id} currentSourceMaps 必须包含 ${binding.map}，实际为 ${JSON.stringify(
+          closeout.currentSourceMaps,
+        )}`,
+      );
+    }
+  } else if (closeout.currentSourceMap !== binding.map) {
     failures.push(
       `${binding.id} currentSourceMap 必须为 ${binding.map}，实际为 ${String(
         closeout.currentSourceMap,
@@ -159,6 +232,22 @@ for (const binding of bindings) {
   const closeoutText = JSON.stringify(closeout);
   requireSnippets(`${binding.id} closeout`, closeoutText, binding.closeoutSnippets);
   requireSnippets(binding.map, readText(binding.map), binding.mapSnippets);
+}
+
+const unboundCloseouts = closeouts
+  .filter((item) => item.status === "current-source-closed-partial")
+  .filter(
+    (item) =>
+      !(typeof item.currentSourceMap === "string" && item.currentSourceMap.length > 0) &&
+      !(
+        Array.isArray(item.currentSourceMaps) &&
+        item.currentSourceMaps.length > 0 &&
+        item.currentSourceMaps.every((map) => typeof map === "string" && map.length > 0)
+      ),
+  )
+  .map((item) => item.id);
+if (unboundCloseouts.length > 0) {
+  failures.push(`current-source closeout 缺少 map 绑定：${unboundCloseouts.join("、")}`);
 }
 
 const packageJson = readJson("package.json");
