@@ -4,6 +4,7 @@ use crate::contracts::accounts::{
     LogoutPayload, RemovePayload, SwitchPayload,
 };
 use crate::contracts::CoreEnvelope;
+use crate::platform::system::SystemPlatformAdapter;
 use crate::repository::Repository;
 use std::sync::Mutex;
 use tauri::State;
@@ -67,7 +68,8 @@ pub fn export_accounts_to_file(
     account_keys: Option<Vec<String>>,
 ) -> Result<CoreEnvelope<AccountExportPayload>, String> {
     let repo = repo.lock().map_err(|error| error.to_string())?;
-    usecase::accounts::export_accounts_to_file(&repo, target_path, account_keys)
+    let system = SystemPlatformAdapter;
+    usecase::accounts::export_accounts_to_file(&repo, &system, target_path, account_keys)
         .map(CoreEnvelope::ok)
         .map_err(|error| error.to_string())
 }

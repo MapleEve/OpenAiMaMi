@@ -1,3 +1,4 @@
+use crate::application::ports::AppSystemPort;
 use crate::application::service::restored_status;
 use crate::contracts::accounts::{
     AccountExportPayload, AccountImportPayload, AccountImportPreviewEntry,
@@ -27,9 +28,7 @@ pub fn begin_add_account_attach_monitor(
     let _registry = accounts_repository::load_registry(repo)?;
     let mut backend_status = restored("begin_add_account_attach_monitor");
     backend_status.note = MONITOR_PREFLIGHT_NOTE.to_string();
-    Ok(AccountMonitorPayload {
-        backend_status,
-    })
+    Ok(AccountMonitorPayload { backend_status })
 }
 
 pub fn switch_account(repo: &Repository, account_key: String) -> Result<SwitchPayload, CoreError> {
@@ -169,6 +168,7 @@ pub fn logout(repo: &Repository) -> Result<LogoutPayload, CoreError> {
 
 pub fn export_accounts_to_file(
     repo: &Repository,
+    system: &impl AppSystemPort,
     target_path: String,
     account_keys: Option<Vec<String>>,
 ) -> Result<AccountExportPayload, CoreError> {
@@ -191,9 +191,9 @@ pub fn export_accounts_to_file(
     }
 
     let exported_at = Utc::now().to_rfc3339();
-    let exported_hostname = hostname::get()
-        .ok()
-        .map(|value| value.to_string_lossy().to_string());
+    let hostname = system.system_info().hostname;
+    let exported_hostname =
+        (!hostname.trim().is_empty() && hostname != "unknown").then_some(hostname);
     let accounts = target_items
         .iter()
         .map(|item| {

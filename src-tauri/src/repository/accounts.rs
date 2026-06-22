@@ -46,10 +46,7 @@ pub(crate) fn save_registry(
     document: &AccountRegistryDocument,
 ) -> Result<(), CoreError> {
     repo.fs().create_dir_all(&repo.paths().accounts_dir)?;
-    repo.fs().write_string(
-        &repo.paths().registry_path,
-        &serde_json::to_string_pretty(document)?,
-    )
+    write_json_pretty_atomic(repo, &repo.paths().registry_path, document)
 }
 
 pub(crate) fn snapshot_path(repo: &Repository, item: &AccountRegistryItem) -> PathBuf {
@@ -188,8 +185,7 @@ pub(crate) fn write_json_pretty<T: Serialize>(
     path: &Path,
     document: &T,
 ) -> Result<(), CoreError> {
-    repo.fs()
-        .write_string(path, &serde_json::to_string_pretty(document)?)
+    write_json_pretty_atomic(repo, path, document)
 }
 
 pub(crate) fn write_snapshot_json(
@@ -197,8 +193,58 @@ pub(crate) fn write_snapshot_json(
     item: &AccountRegistryItem,
     value: &Value,
 ) -> Result<(), CoreError> {
-    repo.fs().write_string(
-        &snapshot_path(repo, item),
-        &serde_json::to_string_pretty(value)?,
-    )
+    write_json_pretty_atomic(repo, &snapshot_path(repo, item), value)
+}
+
+fn write_json_pretty_atomic<T: Serialize>(
+    repo: &Repository,
+    path: &Path,
+    document: &T,
+) -> Result<(), CoreError> {
+    let tmp_path = path.with_extension("json.tmp");
+    repo.fs()
+        .write_string(&tmp_path, &serde_json::to_string_pretty(document)?)?;
+    repo.fs().rename(&tmp_path, path)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn save_registry_uses_atomic_temp_replace() {
+        let repo = Repository::with_temp_file_system("accounts-registry-atomic");
+        let document = AccountRegistryDocument {
+            schema_version: 1,
+            items: vec![AccountRegistryItem {
+                account_key: "account-a".to_string(),
+                email: Some("a@example.test".to_string()),
+                ..AccountRegistryItem::default()
+            }],
+            ..AccountRegistryDocument::default()
+        };
+
+        save_registry(&repo, &document).expect("保存账号 registry");
+
+        assert!(repo.fs().exists(&repo.paths().registry_path));
+        assert!(!repo
+            .fs()
+            .exists(&repo.paths().registry_path.with_extension("json.tmp")));
+    }
+
+    #[test]
+    fn write_snapshot_json_uses_atomic_temp_replace() {
+        let repo = Repository::with_temp_file_system("accounts-snapshot-atomic");
+        let item = AccountRegistryItem {
+            account_key: "account-a".to_string(),
+            ..AccountRegistryItem::default()
+        };
+
+        write_snapshot_json(&repo, &item, &serde_json::json!({ "token": "redacted" }))
+            .expect("保存账号 snapshot");
+
+        let snapshot = snapshot_path(&repo, &item);
+        assert!(repo.fs().exists(&snapshot));
+        assert!(!repo.fs().exists(&snapshot.with_extension("json.tmp")));
+    }
 }

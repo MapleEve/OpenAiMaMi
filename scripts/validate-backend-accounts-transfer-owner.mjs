@@ -3,8 +3,17 @@ import { join, relative } from "node:path";
 
 const repoRoot = process.cwd();
 const backendRoot = join(repoRoot, "src-tauri", "src");
+const commandsAccountsFile = join(backendRoot, "commands", "accounts.rs");
 const repositoryAccountsFile = join(backendRoot, "repository", "accounts.rs");
 const usecaseAccountsFile = join(backendRoot, "application", "usecase", "accounts.rs");
+const accountsTransferMapFile = join(
+  repoRoot,
+  "docs",
+  "reconstruction",
+  "accounts-transfer-current-source-map.md",
+);
+const sourceMapFile = join(repoRoot, "docs", "reconstruction", "source-map.md");
+const reconstructionReadmeFile = join(repoRoot, "docs", "reconstruction", "README.md");
 
 const transferTransactions = [
   {
@@ -275,15 +284,153 @@ function validateUsecaseOwnsTransfers(usecaseContent) {
   }
 }
 
+function validateExportPlatformOwner(commandsContent, usecaseContent) {
+  if (!commandsContent.includes("use crate::platform::system::SystemPlatformAdapter;")) {
+    failures.push(
+      `${toRelative(commandsAccountsFile)} 必须由 command 装配 SystemPlatformAdapter，再交给 usecase`,
+    );
+  }
+  if (!/let\s+system\s*=\s*SystemPlatformAdapter\s*;/.test(commandsContent)) {
+    failures.push(
+      `${toRelative(commandsAccountsFile)} export_accounts_to_file 必须创建 system platform adapter`,
+    );
+  }
+  if (
+    !/usecase::accounts::export_accounts_to_file\s*\(\s*&repo\s*,\s*&system\s*,\s*target_path\s*,\s*account_keys\s*\)/.test(
+      commandsContent,
+    )
+  ) {
+    failures.push(
+      `${toRelative(commandsAccountsFile)} export_accounts_to_file 必须把 system port 传入 usecase`,
+    );
+  }
+  if (!usecaseContent.includes("use crate::application::ports::AppSystemPort;")) {
+    failures.push(`${toRelative(usecaseAccountsFile)} 必须通过 AppSystemPort 消费系统信息`);
+  }
+  if (!/system\s*:\s*&impl\s+AppSystemPort/.test(usecaseContent)) {
+    failures.push(`${toRelative(usecaseAccountsFile)} export_accounts_to_file 必须接收 AppSystemPort`);
+  }
+  if (!/system\s*\.\s*system_info\s*\(\s*\)\s*\.\s*hostname/.test(usecaseContent)) {
+    failures.push(
+      `${toRelative(usecaseAccountsFile)} export_accounts_to_file 必须通过 platform port 读取 hostname`,
+    );
+  }
+  if (/\bhostname\s*::\s*get\s*\(/.test(stripRustComments(usecaseContent))) {
+    failures.push(`${toRelative(usecaseAccountsFile)} usecase 不得直接调用 hostname::get()`);
+  }
+}
+
+function validateRepositoryAtomicWrites(repositoryContent) {
+  const stripped = stripRustComments(repositoryContent);
+  const required = [
+    {
+      pattern: /\bfn\s+write_json_pretty_atomic\s*<\s*T\s*:\s*Serialize\s*>/,
+      reason: "accounts repository 必须有统一 JSON 原子写 helper",
+    },
+    {
+      pattern: /\blet\s+tmp_path\s*=\s*path\s*\.\s*with_extension\s*\(\s*"json\.tmp"\s*\)/,
+      reason: "accounts repository 必须使用同路径临时 JSON 文件",
+    },
+    {
+      pattern: /\.write_string\s*\(\s*&tmp_path\s*,/,
+      reason: "accounts repository 必须先写临时文件",
+    },
+    {
+      pattern: /\.rename\s*\(\s*&tmp_path\s*,\s*path\s*\)/,
+      reason: "accounts repository 必须通过 rename 原子替换目标文件",
+    },
+    {
+      pattern: /\bwrite_json_pretty_atomic\s*\(\s*repo\s*,\s*&repo\s*\.\s*paths\s*\(\s*\)\s*\.\s*registry_path\s*,\s*document\s*,?\s*\)/,
+      reason: "save_registry 必须使用原子写 helper",
+    },
+    {
+      pattern: /\bwrite_json_pretty_atomic\s*\(\s*repo\s*,\s*path\s*,\s*document\s*,?\s*\)/,
+      reason: "write_json_pretty 必须委托原子写 helper",
+    },
+    {
+      pattern: /\bwrite_json_pretty_atomic\s*\(\s*repo\s*,\s*&snapshot_path\s*\(\s*repo\s*,\s*item\s*\)\s*,\s*value\s*,?\s*\)/,
+      reason: "write_snapshot_json 必须委托原子写 helper",
+    },
+  ];
+
+  for (const { pattern, reason } of required) {
+    if (!pattern.test(stripped)) {
+      failures.push(`${toRelative(repositoryAccountsFile)} ${reason}`);
+    }
+  }
+}
+
+function validateAccountsTransferMap(mapContent, sourceMapContent, reconstructionReadmeContent) {
+  const requiredMapParts = [
+    "# accounts transfer current-source 证据映射",
+    "`export_accounts_to_file`",
+    "`preview_account_import`",
+    "`import_accounts_from_file`",
+    "`SystemPlatformAdapter`",
+    "`AppSystemPort`",
+    "`json.tmp`",
+    "`rename`",
+    "不声明 `gate_accepted`、`implementation_use`、`full_leaf` 或 `full_leaf_100` 已完成",
+    "不接入 `voice`",
+    "scripts/validate-backend-accounts-transfer-owner.mjs",
+  ];
+  for (const part of requiredMapParts) {
+    if (!mapContent.includes(part)) {
+      failures.push(`${toRelative(accountsTransferMapFile)} 缺少 ${part}`);
+    }
+  }
+
+  const requiredIndexParts = [
+    "docs/reconstruction/accounts-transfer-current-source-map.md",
+    "accounts transfer 后端文件事务 owner",
+    "scripts/validate-backend-accounts-transfer-owner.mjs",
+  ];
+  for (const part of requiredIndexParts) {
+    if (!sourceMapContent.includes(part)) {
+      failures.push(`${toRelative(sourceMapFile)} 缺少 ${part}`);
+    }
+    if (!reconstructionReadmeContent.includes(part)) {
+      failures.push(`${toRelative(reconstructionReadmeFile)} 缺少 ${part}`);
+    }
+  }
+}
+
+const commandsContent = readRequiredUtf8(commandsAccountsFile, "commands accounts 文件");
 const repositoryContent = readRequiredUtf8(repositoryAccountsFile, "repository accounts 文件");
 const usecaseContent = readRequiredUtf8(usecaseAccountsFile, "application/usecase accounts 文件");
+const accountsTransferMapContent = readRequiredUtf8(
+  accountsTransferMapFile,
+  "accounts transfer current-source map",
+);
+const sourceMapContent = readRequiredUtf8(sourceMapFile, "reconstruction source-map");
+const reconstructionReadmeContent = readRequiredUtf8(
+  reconstructionReadmeFile,
+  "reconstruction README",
+);
 
 if (repositoryContent.length > 0) {
   validateRepositoryDoesNotOwnTransfers(repositoryContent);
+  validateRepositoryAtomicWrites(repositoryContent);
 }
 
 if (usecaseContent.length > 0) {
   validateUsecaseOwnsTransfers(usecaseContent);
+}
+
+if (commandsContent.length > 0 && usecaseContent.length > 0) {
+  validateExportPlatformOwner(commandsContent, usecaseContent);
+}
+
+if (
+  accountsTransferMapContent.length > 0 &&
+  sourceMapContent.length > 0 &&
+  reconstructionReadmeContent.length > 0
+) {
+  validateAccountsTransferMap(
+    accountsTransferMapContent,
+    sourceMapContent,
+    reconstructionReadmeContent,
+  );
 }
 
 if (failures.length > 0) {
@@ -295,7 +442,7 @@ if (failures.length > 0) {
 }
 
 console.log(
-  "PASS 后端账号导入导出 owner 校验通过：repository 未暴露 export/preview/import 用户动作入口。",
+  "PASS 后端账号导入导出 owner 校验通过：repository 未暴露 export/preview/import 用户动作入口，hostname 由 platform port 提供，账号 JSON 写入使用 temp+rename。",
 );
 for (const transaction of transferTransactions) {
   const evidence = helperEvidenceByFunction.get(transaction.functionName) ?? [];
