@@ -82,6 +82,14 @@
 
 `get_relay_active` 与 `get_relay_proxy_status` 只读取本地 `relay-config.json` 经 core 归一化后的 active/proxy snapshot。当前源码把 payload status 和 warning 都收口到 repository read 边界；未知 relay 命令不得通过 `BackendEffect::NoOp` fallback 伪装成 restored。这个状态读边界不启动代理进程、不探测真实网络端口、不恢复运行时健康检查，也不声明闭源 proxy lifecycle 已恢复。
 
+### closeout map 绑定命令片段
+
+`relay-passthrough-audit-backend-skeleton-chain` 只绑定当前公开源码里的 `get_passthrough_audit_log` 与 `set_block_official_passthrough`，用于证明 passthrough audit 读取和 policy intent 记录有 service、hook、mock、command、usecase、repository 和 contract owner；它不声明 relay 业务状态机或真实 passthrough 运行时恢复。
+
+`relay-current-source-skeleton` 只绑定当前公开源码里的 `load_relay_state`、`run_codex_router_diagnostics`、`diagnose_codex_router`、`upsert_relay_provider` 和相关 provider/router/diagnostic 骨架 owner；它不恢复无证据的闭源代理业务，不启动真实代理进程，也不关闭 raw/internal gate。
+
+`relay-proxy-config-dim6-stale-gate-registration` 只把 `relay_proxy_config`、`config.toml`、`dim6` 和 stale gate registration 回指到现有 evidence map；不修改任何原始审计报告字段，也不把未修改任何原始审计报告字段解释成 gate 已通过。
+
 ## 未做内容
 
 - 未恢复密钥系统、真实代理进程启动、真实网络请求、真实模型拉取、SSE 转换、真实线程迁移、运行时健康检查、keychain、安全凭据迁移和闭源代理转发。

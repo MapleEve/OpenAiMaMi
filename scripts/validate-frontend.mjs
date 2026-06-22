@@ -12,6 +12,7 @@ const validators = [
   ["validate-frontend-app-shell-source-only.mjs"],
   ["validate-frontend-evidence.mjs"],
   ["validate-frontend-current-source-closeouts.mjs"],
+  ["validate-frontend-closeout-map-bindings.mjs"],
   ["validate-frontend-plugins-current-source.mjs"],
   ["validate-frontend-ui-theme-current-source.mjs"],
   ["validate-frontend-layer-owners.mjs"],

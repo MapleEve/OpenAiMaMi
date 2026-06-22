@@ -36,6 +36,8 @@ const APP_SHELL_SOURCE_ONLY_MAP_SNIPPETS = [
   "scripts/validate-frontend-current-source-closeouts.mjs",
 ];
 const RELAY_CURRENT_SOURCE_SKELETON_ID = "relay-current-source-skeleton";
+const RELAY_CORE_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/relay-core-current-source-evidence-map.md";
 const RELAY_CURRENT_SOURCE_SIDECAR =
   "evidence/full-chain/internal/audits/audits/cross-1.0.9-relay-core-bootstrap/frontend-callchain-report.json";
 const RELAY_CURRENT_SOURCE_GATE_REPORTS = [
@@ -218,6 +220,7 @@ const RELAY_PROXY_CONFIG_DIM6_ALLOWED_FIELDS = [
   "id",
   "module",
   "status",
+  "currentSourceMap",
   "sidecarReports",
   "requiredSourceSignals",
   "closedGateReportFailures",
@@ -730,6 +733,8 @@ const MYSTERY_ROUTE_ALLOWED_ALLOWED_FIELDS = [
 ];
 const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_CLOSEOUT_ID =
   "bootstrap-system-current-source-reconcile-sidecars";
+const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/system-snapshot-bootstrap-current-source-map.md";
 const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_SIDECARS = [
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-bootstrap/frontend-callchain-report.json",
   "evidence/full-chain/internal/audits/audits/windows-1.0.9-bootstrap/frontend-callchain-report.json",
@@ -741,6 +746,7 @@ const BOOTSTRAP_SYSTEM_CURRENT_SOURCE_ALLOWED_FIELDS = [
   "id",
   "module",
   "status",
+  "currentSourceMap",
   "sidecarReports",
   "requiredSourceSignals",
   "nonClaims",
@@ -789,6 +795,7 @@ const BOOTSTRAP_CURRENT_SOURCE_ALLOWED_FIELDS = [
   "id",
   "module",
   "status",
+  "currentSourceMap",
   "sidecarReports",
   "requiredSourceSignals",
   "closedGateReportFailures",
@@ -797,6 +804,8 @@ const BOOTSTRAP_CURRENT_SOURCE_ALLOWED_FIELDS = [
 ];
 const SYSTEM_WATCHER_CURRENT_SOURCE_CLOSEOUT_ID =
   "system-runtime-watcher-current-source-skeleton-chain";
+const SYSTEM_WATCHER_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/system-runtime-watchers-current-source-map.md";
 const SYSTEM_WATCHER_CURRENT_SOURCE_SIDECAR =
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-system/frontend-callchain-report.json";
 const SYSTEM_WATCHER_CURRENT_SOURCE_GATE_REPORT =
@@ -817,6 +826,7 @@ const SYSTEM_WATCHER_CURRENT_SOURCE_ALLOWED_FIELDS = [
   "id",
   "module",
   "status",
+  "currentSourceMap",
   "sidecarReports",
   "requiredSourceSignals",
   "closedGateReportFailures",
@@ -1007,6 +1017,19 @@ function requireIncludes(file, snippets) {
       failures.push(`${file} 缺少 closeout 片段：${snippet}`);
     }
   }
+}
+
+function validateCurrentSourceMapBinding(closeout, expectedMap, snippets = []) {
+  if (closeout.currentSourceMap !== expectedMap) {
+    failures.push(
+      `${closeout.id} currentSourceMap 必须绑定 ${expectedMap}，实际为 ${String(
+        closeout.currentSourceMap,
+      )}`,
+    );
+    return;
+  }
+
+  requireIncludes(expectedMap, snippets);
 }
 
 function requireExcludes(file, snippets) {
@@ -1241,6 +1264,11 @@ function validatePluginsCloseout(closeout) {
 
 function validateRelayCloseout(closeout) {
   validateClosedDocs("relay", closeout.closedFrontendDocs);
+  validateCurrentSourceMapBinding(closeout, RELAY_CORE_CURRENT_SOURCE_MAP, [
+    "passthrough policy",
+    "passthrough audit",
+    "不恢复无证据的闭源代理业务",
+  ]);
 
   const expectedCommands = new Set([
     "set_block_official_passthrough",
@@ -1328,6 +1356,11 @@ function validateRelayCurrentSourceCommandSignals() {
 
 function validateRelayCurrentSourceSkeletonCloseout(closeout) {
   requireNoRelaySkeletonGatePromotionFields(closeout);
+  validateCurrentSourceMapBinding(closeout, RELAY_CORE_CURRENT_SOURCE_MAP, [
+    "relay-current-source-skeleton",
+    "load_relay_state",
+    "不恢复无证据的闭源代理业务",
+  ]);
 
   const expectedSidecars = [RELAY_CURRENT_SOURCE_SIDECAR];
   validateStringArraySet(
@@ -1605,6 +1638,12 @@ function validateRelayProxyConfigDim6Closeout(closeout) {
   if (closeout.status !== "current-source-closed-partial") {
     failures.push(`${closeout.id} status=${String(closeout.status)}`);
   }
+  validateCurrentSourceMapBinding(closeout, RELAY_CORE_CURRENT_SOURCE_MAP, [
+    "proxy config",
+    "config.toml",
+    "dim6",
+    "未修改任何原始审计报告字段",
+  ]);
 
   validateStringArraySet(
     `${closeout.id} sidecarReports`,
@@ -2615,6 +2654,12 @@ function validateBootstrapSystemCurrentSourceSidecar(report) {
 
 function validateBootstrapSystemCurrentSourceCloseout(closeout) {
   validateAllowedCloseoutFields(closeout, BOOTSTRAP_SYSTEM_CURRENT_SOURCE_ALLOWED_FIELDS);
+  validateCurrentSourceMapBinding(closeout, BOOTSTRAP_SYSTEM_CURRENT_SOURCE_MAP, [
+    "load_snapshot",
+    "load_bootstrap_state",
+    "bootstrap-cache.json",
+    "不声明真实 daemon",
+  ]);
   for (const field of BOOTSTRAP_SYSTEM_CURRENT_SOURCE_FORBIDDEN_GATE_FIELDS) {
     if (Object.prototype.hasOwnProperty.call(closeout, field)) {
       failures.push(`${closeout.id} 不允许登记 gate closeout 字段：${field}`);
@@ -2651,6 +2696,11 @@ function validateBootstrapCurrentSourceGateCloseout(closeout) {
   if (closeout.status !== "current-source-closed-partial") {
     failures.push(`${closeout.id} status=${String(closeout.status)}`);
   }
+  validateCurrentSourceMapBinding(closeout, BOOTSTRAP_SYSTEM_CURRENT_SOURCE_MAP, [
+    "load_bootstrap_state",
+    "pendingSwitchAccountKey",
+    "不修改 raw/internal gate-report",
+  ]);
 
   validateStringArraySet(
     `${closeout.id} sidecarReports`,
@@ -2763,6 +2813,14 @@ function validateSystemWatcherCurrentSourceCloseout(closeout) {
   if (closeout.status !== "current-source-closed-partial") {
     failures.push(`${closeout.id} status=${String(closeout.status)}`);
   }
+  validateCurrentSourceMapBinding(closeout, SYSTEM_WATCHER_CURRENT_SOURCE_MAP, [
+    "note_usage_refresh_activity",
+    "schedule_full_runtime_refresh",
+    "start_auto_switch_pending_watcher",
+    "start_usage_refresh_watcher",
+    "update_usage_refresh_schedule",
+    "不允许登记 `implementation_use`",
+  ]);
 
   validateStringArraySet(
     `${closeout.id} sidecarReports`,
