@@ -9,6 +9,7 @@ const validators = [
   ["generate-frontend-copy-acceptance.mjs", "--check"],
   ["generate-frontend-leaf-restoration-queue.mjs", "--check"],
   ["validate-frontend-dumped.mjs"],
+  ["validate-frontend-app-shell-source-only.mjs"],
   ["validate-frontend-evidence.mjs"],
   ["validate-frontend-current-source-closeouts.mjs"],
   ["validate-frontend-plugins-current-source.mjs"],

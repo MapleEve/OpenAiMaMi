@@ -5,6 +5,36 @@ import { fileURLToPath } from "node:url";
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const closeoutPath = join(repoRoot, "docs", "reconstruction", "frontend-current-source-closeouts.json");
 const failures = [];
+const APP_SHELL_SOURCE_ONLY_CURRENT_SOURCE_MAP =
+  "docs/reconstruction/app-shell-source-only-current-source-map.md";
+const APP_SHELL_SOURCE_ONLY_ALLOWED_FIELDS = [
+  "id",
+  "module",
+  "status",
+  "currentSourceMap",
+  "closedFrontendDocs",
+  "closedManifestStatuses",
+  "requiredSourceSignals",
+  "nonClaims",
+  "reason",
+];
+const APP_SHELL_SOURCE_ONLY_MAP_SNIPPETS = [
+  "app-shell source-only 当前源码证据映射",
+  "source-only",
+  "desktop-message",
+  "不可编造 endpoint",
+  "非 covered",
+  "非 full leaf",
+  "非 update/restart/window-path 完整恢复",
+  "不把 app-shell 的 source-only manifest 状态改成 covered",
+  "不给 `desktop-message` 编造可审计 endpoint",
+  "不声明 update、restart 或 window-path 后端完整恢复",
+  "不处理 `voice`",
+  "验证入口",
+  "scripts/validate-frontend-app-shell-source-only.mjs",
+  "npm run validate:frontend-app-shell-source-only",
+  "scripts/validate-frontend-current-source-closeouts.mjs",
+];
 const RELAY_CURRENT_SOURCE_SKELETON_ID = "relay-current-source-skeleton";
 const RELAY_CURRENT_SOURCE_SIDECAR =
   "evidence/full-chain/internal/audits/audits/cross-1.0.9-relay-core-bootstrap/frontend-callchain-report.json";
@@ -3268,7 +3298,14 @@ function validateAccountsAnalyticsCloseout(closeout) {
 }
 
 function validateAppShellSourceOnlyCloseout(closeout) {
+  validateAllowedCloseoutFields(closeout, APP_SHELL_SOURCE_ONLY_ALLOWED_FIELDS);
   validateClosedDocs("app-shell", closeout.closedFrontendDocs);
+
+  if (closeout.currentSourceMap !== APP_SHELL_SOURCE_ONLY_CURRENT_SOURCE_MAP) {
+    failures.push(
+      `${closeout.id} currentSourceMap 必须为 ${APP_SHELL_SOURCE_ONLY_CURRENT_SOURCE_MAP}`,
+    );
+  }
 
   const expected = [
     {
@@ -3309,6 +3346,7 @@ function validateAppShellSourceOnlyCloseout(closeout) {
     "不声明 desktop-message 存在可审计 endpoint。",
     "不声明全文案验收完成。",
     "不声明 MAC/WIN 100% leaf 已完成。",
+    "不处理 `voice`。",
   ]) {
     if (!nonClaims.includes(required)) {
       failures.push(`${closeout.id} 缺少 nonClaims：${required}`);
@@ -3316,6 +3354,18 @@ function validateAppShellSourceOnlyCloseout(closeout) {
   }
 
   validateRequiredSignals(closeout);
+
+  const mapPath = repoPath(APP_SHELL_SOURCE_ONLY_CURRENT_SOURCE_MAP);
+  if (!existsSync(mapPath)) {
+    failures.push(`${closeout.id} 缺少 app-shell source-only map：${APP_SHELL_SOURCE_ONLY_CURRENT_SOURCE_MAP}`);
+  } else {
+    const mapText = readText(mapPath);
+    for (const required of APP_SHELL_SOURCE_ONLY_MAP_SNIPPETS) {
+      if (!mapText.includes(required)) {
+        failures.push(`${APP_SHELL_SOURCE_ONLY_CURRENT_SOURCE_MAP} 缺少说明片段：${required}`);
+      }
+    }
+  }
 }
 
 function validateSystemWindowMaintenanceCloseout(closeout) {
