@@ -15,6 +15,8 @@
 | `evidence/full-chain/internal/audits/audits/macos-1.0.9-plugins/frontend/FRONTEND-FULL-CHAIN-109.md` | 记录 macOS frontend source archive 当时缺同一条 route/API/command/mock 链路。 |
 | `docs/reconstruction/frontend-current-source-closeouts.json` | 记录 `plugins-current-route-api-command-mock-chain` 只做 current-source partial closeout，关闭 `list_plugins` 与 `toggle_plugin`，并把 config 两个命令保持为 `contract-service-only`。 |
 | `docs/reconstruction/frontend-leaf-restoration-queue.json` | 记录 `plugins-config-visible-leaf` 仍被 raw observation 阻塞，不能编造 UI leaf。 |
+| `src/features/plugins/contract.ts` | 作为 plugins dumped contract 证据，`DUMPED_PLUGINS_COMMANDS` 覆盖 `list_plugins`、`toggle_plugin`、`get_plugin_config` 与 `update_plugin_config` 四条命令；其中 config 两条仍只有 contract/service 信号。 |
+| `src/contracts/ipc/commands.ts` | 作为 plugins IPC contract 证据，`IPC_COMMAND_DEFINITIONS` 在 `runtime-extensions` domain 覆盖四条 plugins command 与 `listPlugins`、`togglePlugin`、`getPluginConfig`、`updatePluginConfig` wrapper。 |
 
 ## 当前源码链路
 
@@ -23,6 +25,8 @@
 - `src/routes/registry/registry.tsx` 注册 `route: "plugins"`，使用 `Puzzle` 图标、`nav.plugins` title key、可见路由、`["plugins-list"]` 高 IO query key，并 lazy preload `@/routes/desktop/main/plugins/page`。
 - `src/routes/desktop/main/plugins/page.tsx` 只作为 route shell，挂载 `PluginsFeature`。
 - `src/features/plugins/Content.tsx` 渲染 `DumpedContractBoundary` 与 `DUMPED_PLUGINS_COMMANDS`，再挂载 `<PluginsPage />`。
+- `src/features/plugins/contract.ts` 的 `DUMPED_PLUGINS_COMMANDS` 明确登记 `list_plugins`、`toggle_plugin`、`get_plugin_config` 与 `update_plugin_config` 的 dumped contract，且 config 两条没有可见 UI control-flow。
+- `src/contracts/ipc/commands.ts` 的 `IPC_COMMAND_DEFINITIONS` 明确登记 runtime-extensions domain 下四条 plugins IPC command 与对应 wrapper 名称。
 - `src/features/plugins/panels/page.tsx` 渲染 plugins 列表、空态、启用数量 copy signal，并通过 `controller.togglePlugin.run(id, checked)` 暴露非 builtin plugin 的 toggle 入口。
 - `src/features/plugins/hooks/query.ts` 通过 `pluginsService.list()` 读取列表，并用 `writePluginsListQueryPayload` 写入 TanStack cache。
 - `src/features/plugins/hooks/refresh.ts` 通过 `pluginsService.list()` 执行刷新，并用 `writePluginsRefreshPayload` 合并 payload。

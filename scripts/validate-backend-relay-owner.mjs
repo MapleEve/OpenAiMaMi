@@ -204,6 +204,12 @@ function assertContains(path, content, pattern, message) {
   }
 }
 
+function assertContainsRaw(path, content, pattern, message) {
+  if (!pattern.test(content)) {
+    failures.push(`${toRelative(path)} ${message}`);
+  }
+}
+
 const commandContent = readRequired(files.commands, "relay command 文件");
 const usecaseContent = readRequired(files.usecase, "relay usecase 文件");
 const usecasePayloadContent = readRequired(files.usecasePayload, "relay usecase payload owner file");
@@ -1019,7 +1025,7 @@ assertContains(
   /docs\/reconstruction\/relay-core-current-source-evidence-map\.md[\s\S]*scripts\/validate-backend-relay-owner\.mjs[\s\S]*本地配置 repository 恢复[\s\S]*relay_thread_migration 空操作\/待处理 owner 边界/,
   "source-map 必须把 relay-core map 收口到 validate-backend-relay-owner.mjs",
 );
-assertContains(
+assertContainsRaw(
   files.reconstructionReadme,
   reconstructionReadmeContent,
   /relay-core-current-source-evidence-map\.md[\s\S]*本地配置 repository 恢复[\s\S]*relay_thread_migration 空操作\/待处理边界[\s\S]*scripts\/validate-backend-relay-owner\.mjs/,

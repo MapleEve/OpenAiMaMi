@@ -3,6 +3,7 @@ import { join, relative } from "node:path";
 
 const repoRoot = process.cwd();
 const contractsRoot = join(repoRoot, "src-tauri", "src", "contracts");
+const reconstructionReadmePath = join(repoRoot, "docs", "reconstruction", "README.md");
 const failures = [];
 
 const ownerFiles = {
@@ -104,6 +105,20 @@ function rejectPattern(label, path, content, pattern, reason) {
 const files = new Map(
   Object.entries(ownerFiles).map(([label, path]) => [label, { path, content: readRequired(path, label) }]),
 );
+const reconstructionReadme = readRequired(reconstructionReadmePath, "reconstruction README");
+
+for (const [label, pattern] of [
+  ["README 后端合同 owner / DTO 边界索引", /\|\s*后端合同 owner \/ DTO 边界\s*\|/],
+  ["README contracts 模块拆分说明", /contracts 模块拆分/],
+  ["README DTO re-export 说明", /DTO re-export/],
+  ["README 默认响应边界说明", /默认响应边界/],
+  ["README voice 空骨架边界说明", /voice 空骨架边界/],
+  ["README validator 脚本名", /scripts\/validate-backend-contract-owners\.mjs/],
+  ["README npm validator 入口", /npm run validate:backend-contract-owners/],
+  ["README voice 未接入边界", /不接入 `voice`/],
+]) {
+  requirePattern(label, reconstructionReadmePath, reconstructionReadme, pattern, "reconstruction README 必须索引后端 contracts owner / DTO 边界");
+}
 
 const system = files.get("system");
 for (const typeName of systemForbiddenDefinitions) {

@@ -67,6 +67,28 @@
           ]
         },
         {
+          "file": "src/features/plugins/contract.ts",
+          "includes": [
+            "DUMPED_PLUGINS_COMMANDS",
+            "\"command\": \"list_plugins\"",
+            "\"command\": \"toggle_plugin\"",
+            "\"command\": \"get_plugin_config\"",
+            "\"command\": \"update_plugin_config\""
+          ]
+        },
+        {
+          "file": "src/contracts/ipc/commands.ts",
+          "includes": [
+            "IPC_COMMAND_DEFINITIONS",
+            "\"domain\": \"runtime-extensions\"",
+            "\"command\": \"list_plugins\"",
+            "\"command\": \"toggle_plugin\"",
+            "\"command\": \"get_plugin_config\"",
+            "\"command\": \"update_plugin_config\"",
+            "\"wrapperNames\""
+          ]
+        },
+        {
           "file": "src/services/plugins/index.ts",
           "includes": [
             "runtimeExtensionsService",

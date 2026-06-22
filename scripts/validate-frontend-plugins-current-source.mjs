@@ -15,6 +15,15 @@ const WINDOWS_FRONTEND_DOC =
   "evidence/full-chain/internal/audits/audits/windows-1.0.9-plugins/frontend/FRONTEND-FULL-CHAIN-109.md";
 const MACOS_FRONTEND_DOC =
   "evidence/full-chain/internal/audits/audits/macos-1.0.9-plugins/frontend/FRONTEND-FULL-CHAIN-109.md";
+const PLUGINS_COMMAND_CONTRACT = "src/features/plugins/contract.ts";
+const IPC_COMMAND_CONTRACT = "src/contracts/ipc/commands.ts";
+
+const PLUGIN_COMMAND_WRAPPERS = [
+  ["list_plugins", "listPlugins"],
+  ["toggle_plugin", "togglePlugin"],
+  ["get_plugin_config", "getPluginConfig"],
+  ["update_plugin_config", "updatePluginConfig"],
+];
 
 const SOURCE_SIGNAL_REQUIREMENTS = new Map([
   [
@@ -35,6 +44,28 @@ const SOURCE_SIGNAL_REQUIREMENTS = new Map([
   [
     "src/features/plugins/Content.tsx",
     ["DUMPED_PLUGINS_COMMANDS", "<PluginsPage />", "DumpedContractBoundary"],
+  ],
+  [
+    PLUGINS_COMMAND_CONTRACT,
+    [
+      "DUMPED_PLUGINS_COMMANDS",
+      '"command": "list_plugins"',
+      '"command": "toggle_plugin"',
+      '"command": "get_plugin_config"',
+      '"command": "update_plugin_config"',
+    ],
+  ],
+  [
+    IPC_COMMAND_CONTRACT,
+    [
+      "IPC_COMMAND_DEFINITIONS",
+      '"domain": "runtime-extensions"',
+      '"command": "list_plugins"',
+      '"command": "toggle_plugin"',
+      '"command": "get_plugin_config"',
+      '"command": "update_plugin_config"',
+      '"wrapperNames"',
+    ],
   ],
   [
     "src/features/plugins/panels/page.tsx",
@@ -149,6 +180,53 @@ function requireArraySet(label, actual, expected) {
   }
   for (const value of actualSet) {
     if (!expectedSet.has(value)) failures.push(`${label} unexpected: ${value}`);
+  }
+}
+
+function commandBlock(path, text, commandName) {
+  const needle = `"command": "${commandName}"`;
+  const commandIndex = text.indexOf(needle);
+  if (commandIndex === -1) {
+    failures.push(`${path} missing command contract: ${commandName}`);
+    return "";
+  }
+  const start = text.lastIndexOf("\n  {", commandIndex);
+  const end = text.indexOf("\n  }", commandIndex);
+  if (start === -1 || end === -1) {
+    failures.push(`${path} cannot isolate command contract: ${commandName}`);
+    return "";
+  }
+  return text.slice(start, end + 5);
+}
+
+function validateDumpedAndIpcContracts() {
+  const dumpedText = requireIncludes(PLUGINS_COMMAND_CONTRACT, ["DUMPED_PLUGINS_COMMANDS"]);
+  const ipcText = requireIncludes(IPC_COMMAND_CONTRACT, ["IPC_COMMAND_DEFINITIONS"]);
+
+  for (const [commandName, wrapperName] of PLUGIN_COMMAND_WRAPPERS) {
+    const dumpedBlock = commandBlock(PLUGINS_COMMAND_CONTRACT, dumpedText, commandName);
+    if (dumpedBlock && !dumpedBlock.includes(`"${wrapperName}"`)) {
+      failures.push(`${PLUGINS_COMMAND_CONTRACT} ${commandName} missing wrapper ${wrapperName}`);
+    }
+
+    const ipcBlock = commandBlock(IPC_COMMAND_CONTRACT, ipcText, commandName);
+    if (ipcBlock && !ipcBlock.includes('"domain": "runtime-extensions"')) {
+      failures.push(`${IPC_COMMAND_CONTRACT} ${commandName} must stay in runtime-extensions domain`);
+    }
+    if (ipcBlock && !ipcBlock.includes(`"${wrapperName}"`)) {
+      failures.push(`${IPC_COMMAND_CONTRACT} ${commandName} missing wrapper ${wrapperName}`);
+    }
+  }
+
+  for (const commandName of ["get_plugin_config", "update_plugin_config"]) {
+    const dumpedBlock = commandBlock(PLUGINS_COMMAND_CONTRACT, dumpedText, commandName);
+    if (!dumpedBlock) continue;
+    if (!dumpedBlock.includes('"controlFlowCount": 0')) {
+      failures.push(`${PLUGINS_COMMAND_CONTRACT} ${commandName} must remain non-visible contract-only dumped signal`);
+    }
+    if (dumpedBlock.includes('"assets/plugins-page-BOi_QT1c.js"')) {
+      failures.push(`${PLUGINS_COMMAND_CONTRACT} ${commandName} must not be promoted to plugins page UI leaf`);
+    }
   }
 }
 
@@ -371,6 +449,7 @@ validateDoc();
 validateRawAcceptance();
 validateHistoricalFrontendDocs();
 validateCurrentSource();
+validateDumpedAndIpcContracts();
 validateCloseout();
 validateQueue();
 validateEntrypoints();

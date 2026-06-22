@@ -12,7 +12,7 @@
 | IPC 合同 | `src/contracts/ipc/commands.ts` | 登记 settings 域三条 API proxy 命令、wrapper 名和参数键。 |
 | dumped 合同 | `src/features/settings/contract.ts` | 保留三条 API proxy 命令在当前前端 dumped 合同中的来源、参数和控制流计数。 |
 | mutation hook | `src/features/settings/hooks/mutation.ts` | `useApiProxyMutations` 统一调用 settings service；保存成功后用 `writeSettingsApiProxyMutationPayload` 写入 settings runtime snapshot。 |
-| page controller | `src/features/settings/hooks/page.ts` | owning proxy dialog 开关、草稿模式、草稿 URL、测试结果、busy action 和 toast；只发出保存、测试、检测意图。 |
+| 页面控制器 | `src/features/settings/hooks/page.ts` | 负责 proxy dialog 开关、草稿模式、草稿 URL、测试结果、busy action 和 toast；只发出保存、测试、检测意图。 |
 | cache helper | `src/features/settings/cache/index.ts` | `writeSettingsApiProxyMutationPayload` 只把后端 mutation payload 中的 `api` 写回 `SETTINGS_RUNTIME_STATE_DISPLAY_QUERY_KEY`。 |
 | 对话框 | `src/features/settings/dialogs/proxy.tsx` | 只消费 controller 状态与动作，渲染模式选择、手动 URL、检测、测试和保存按钮。 |
 | 模式面板 | `src/features/settings/panels/mode.tsx` | 展示当前 API proxy 模式 badge，并通过 controller 打开对话框。 |

@@ -281,7 +281,7 @@ function assertMutationAndCache(settingsMutation, settingsCache) {
 }
 
 function assertControllerAndUi(pageHook, proxyDialog, modePanel, settingsPage) {
-  assertIncludes("settings page controller owning API proxy 短生命周期 UI 状态", pageHook, [
+  assertIncludes("settings 页面控制器持有 API proxy 短生命周期 UI 状态", pageHook, [
     "const [proxyDialogOpen, setProxyDialogOpen] = useState(false)",
     'const [draftProxyMode, setDraftProxyMode] = useState<ApiProxyMode>("direct")',
     'const [draftProxyUrl, setDraftProxyUrl] = useState("")',
@@ -293,7 +293,7 @@ function assertControllerAndUi(pageHook, proxyDialog, modePanel, settingsPage) {
     "handleDetectProxy",
     "handleSaveProxy",
   ]);
-  assertIncludes("settings page controller 将 API proxy 动作交给 busy action 和 mutation", pageHook, [
+  assertIncludes("settings 页面控制器将 API proxy 动作交给 busy action 和 mutation", pageHook, [
     "detectProxyAction.run",
     "testProxyAction.run",
     "saveProxyAction.run",
