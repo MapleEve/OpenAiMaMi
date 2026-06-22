@@ -22,7 +22,7 @@
 | `force_kill_codex` | command adapter 装配 process adapter；maintenance usecase 复用 `platform_actions::force_kill_app`。 |
 | `open_path` | command adapter 接收路径参数；maintenance usecase 复用 `platform_actions::open_path`。 |
 | `get_system_info` | command adapter 装配 system adapter；maintenance usecase 复用 `platform_actions::system_info`。 |
-| `restart_codex` | command adapter 装配 process adapter；maintenance usecase 复用 `platform_actions::restart_app`，当前公开语义仍由 platform actions 的 unsupported 状态说明。 |
+| `restart_codex` | command adapter 装配 process adapter；maintenance usecase 复用 `platform_actions::restart_app`；`AppProcessPort` 承载非阻塞 relaunch spawn 端口，spawn 错误经 `Result` 返回；不强制当前进程退出，不登记安装更新或重启闭环验收，也不声明完整 OS 真实副作用验收。 |
 
 ## 验证入口
 
@@ -40,5 +40,5 @@
 | --- | --- |
 | 平台能力真实副作用 | 本文只登记公开平台端口编排和状态语义，不登记 process、shell、system 端口在各操作系统上的真实副作用验收。 |
 | 闭源 maintenance 引擎 | 本文不包含闭源 maintenance 引擎、内部调度策略或修复算法，也不把当前公开骨架等同于闭源业务还原。 |
-| 真实更新重启闭环 | 本文只登记 `restart_codex` / `force_kill_codex` 的公开端口编排和状态语义，不登记安装更新或重启闭环验收。 |
+| 真实更新重启闭环 | 本文只登记 `restart_codex` / `force_kill_codex` 的公开端口编排和状态语义；`restart_codex` 当前公开边界是非阻塞 relaunch spawn 端口，spawn 错误经 `Result` 返回，不强制当前进程退出；不登记安装更新或重启闭环验收，也不声明完整 OS 真实副作用验收。 |
 | voice 接入 | 本文不接入 voice，也不把 maintenance 与 voice 形成业务链路。 |

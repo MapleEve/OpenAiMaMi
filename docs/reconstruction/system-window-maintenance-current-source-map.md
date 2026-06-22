@@ -24,10 +24,10 @@
 
 - 当前公开前端源码可回指七条 non-gating current-source command：`focus_main_window`、`open_path`、`clean`、`rebuild_registry`、`graceful_restart_for_update`、`restart_codex`、`load_snapshot`。
 - `load_snapshot` 作为当前源码 closed command 登记：前端已具备 maintenance service facade、system service IPC、snapshot query、TanStack cache owner、typed mock handler 和 IPC contract 链路；后端由 `src-tauri/src/application/usecase/system/snapshot_bootstrap.rs` owning 公开文件事实读取和 bootstrap cache 写入。
-- 不声明 maintenance/window 全部平台副作用恢复；`focus_main_window`、`open_path`、`graceful_restart_for_update` 和 `restart_codex` 仍只按当前公开平台动作边界登记。
+- 不声明 maintenance/window 全部平台副作用恢复；`focus_main_window` 和 `open_path` 仍只按当前公开平台动作边界登记；`graceful_restart_for_update` 与 `restart_codex` 只登记前端调用链，后端当前公开边界是非阻塞 relaunch 平台端口，不提升为更新安装闭环或完整平台副作用验收。
 - `maintenance` route shell 不 owning 业务流程。
 - `clean` 与 `rebuild_registry` 已经从前端 service、mock、E2E validator 和 Rust maintenance owner 信号回指到 `commands::maintenance` 与 `application/usecase/maintenance` 边界。
-- `open_path`、`focus_main_window`、`graceful_restart_for_update` 和 `restart_codex` 只登记当前前端和 system service 调用链，不提升为真实平台副作用完成声明。
+- `open_path`、`focus_main_window`、`graceful_restart_for_update` 和 `restart_codex` 只登记当前前端和 system service 调用链；其中 `graceful_restart_for_update` 与 `restart_codex` 的后端当前公开边界是非阻塞 relaunch 平台端口，不提升为更新安装闭环或完整平台副作用验收。
 
 ## 未恢复和禁止声明
 

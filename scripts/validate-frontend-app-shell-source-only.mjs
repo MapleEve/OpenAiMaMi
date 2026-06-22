@@ -273,9 +273,15 @@ function assertSystemService(systemService) {
 function assertPlatformActions(platformActions) {
   assertIncludes("platform_actions 保留公开后端边界", platformActions, [
     "pub fn check_update_installability",
+    "AppProcessPort",
+    "ProcessActionOutcome",
     "pub fn graceful_restart_for_update",
+    ") -> Result<SystemActionPayload, CoreError>",
+    "process.graceful_restart_for_update()?",
+    "process_action_payload(",
+    "current_process_exit_scheduled",
     "pub fn open_path",
-    "unsupported_status",
+    "shell.open_path(&path)?",
   ]);
 }
 

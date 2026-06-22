@@ -134,9 +134,25 @@ pub(crate) struct ForceKillOutcome {
     pub processes: Vec<ForceKillProcess>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) enum ProcessActionKind {
+    RestartApp,
+    GracefulRestartForUpdate,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct ProcessActionOutcome {
+    pub action: ProcessActionKind,
+    pub program: String,
+    pub args: Vec<String>,
+    pub spawned: bool,
+    pub current_process_exit_scheduled: bool,
+    pub detail: String,
+}
+
 pub(crate) trait AppProcessPort {
-    fn graceful_restart_for_update(&self) -> Result<(), CoreError>;
-    fn restart_app(&self) -> Result<(), CoreError>;
+    fn graceful_restart_for_update(&self) -> Result<ProcessActionOutcome, CoreError>;
+    fn restart_app(&self) -> Result<ProcessActionOutcome, CoreError>;
     fn force_kill_app(&self) -> Result<ForceKillOutcome, CoreError>;
 }
 

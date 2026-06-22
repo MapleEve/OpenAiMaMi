@@ -668,9 +668,15 @@
           "file": "src-tauri/src/application/usecase/platform_actions.rs",
           "includes": [
             "pub fn check_update_installability",
+            "AppProcessPort",
+            "ProcessActionOutcome",
             "pub fn graceful_restart_for_update",
-            "unsupported_status",
-            "pub fn open_path"
+            ") -> Result<SystemActionPayload, CoreError>",
+            "process.graceful_restart_for_update()?",
+            "process_action_payload(",
+            "current_process_exit_scheduled",
+            "pub fn open_path",
+            "shell.open_path(&path)?"
           ]
         },
         {

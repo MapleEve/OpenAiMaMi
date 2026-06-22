@@ -5,7 +5,9 @@ const repoRoot = process.cwd();
 const backendRoot = join(repoRoot, "src-tauri", "src");
 const files = {
   usecaseMod: join(backendRoot, "application", "usecase", "mod.rs"),
+  applicationPorts: join(backendRoot, "application", "ports.rs"),
   platformActions: join(backendRoot, "application", "usecase", "platform_actions.rs"),
+  processPlatform: join(backendRoot, "platform", "process.rs"),
   systemRoot: join(backendRoot, "application", "usecase", "system.rs"),
   maintenanceUsecase: join(backendRoot, "application", "usecase", "maintenance.rs"),
   settingsUsecase: join(backendRoot, "application", "usecase", "settings.rs"),
@@ -57,7 +59,7 @@ requirePattern(
 const platformActions = raw.get("platformActions");
 for (const [label, pattern] of [
   ["update installability action", /\bpub\s+fn\s+check_update_installability\s*\(\s*system\s*:\s*&impl\s+AppSystemPort\s*\)/],
-  ["graceful update restart action", /\bpub\s+fn\s+graceful_restart_for_update\s*\(\s*process\s*:\s*&impl\s+AppProcessPort\s*\)/],
+  ["graceful update restart action", /\bpub\s+fn\s+graceful_restart_for_update\s*\(\s*process\s*:\s*&impl\s+AppProcessPort\s*,?\s*\)/],
   ["restart app action", /\bpub\s+fn\s+restart_app\s*\(\s*process\s*:\s*&impl\s+AppProcessPort\s*\)/],
   ["force kill action", /\bpub\s+fn\s+force_kill_app\s*\(\s*process\s*:\s*&impl\s+AppProcessPort\s*\)/],
   ["open path action", /\bpub\s+fn\s+open_path\s*\(\s*[\s\S]*shell\s*:\s*&impl\s+AppShellPort\s*,\s*[\s\S]*path\s*:\s*String\s*,?\s*[\s\S]*\)/],
@@ -67,6 +69,54 @@ for (const [label, pattern] of [
   ["platform effect status", /\bBackendEffect\s*::\s*Platform\b/],
 ]) {
   requirePattern(label, platformActions.path, platformActions.content, pattern, "平台动作 owner 必须承载公开平台动作和状态组装");
+}
+
+const applicationPorts = raw.get("applicationPorts");
+for (const [label, pattern] of [
+  ["ProcessActionOutcome DTO", /\bpub\(crate\)\s+struct\s+ProcessActionOutcome\s*\{[\s\S]*\bspawned\s*:\s*bool[\s\S]*\bcurrent_process_exit_scheduled\s*:\s*bool/s],
+  ["process action kind", /\bpub\(crate\)\s+enum\s+ProcessActionKind\s*\{[\s\S]*RestartApp[\s\S]*GracefulRestartForUpdate/s],
+  ["restart app port outcome", /\bfn\s+restart_app\s*\(&self\)\s*->\s*Result\s*<\s*ProcessActionOutcome\s*,\s*CoreError\s*>/],
+  ["update restart port outcome", /\bfn\s+graceful_restart_for_update\s*\(&self\)\s*->\s*Result\s*<\s*ProcessActionOutcome\s*,\s*CoreError\s*>/],
+]) {
+  requirePattern(label, applicationPorts.path, applicationPorts.content, pattern, "process restart actions must expose a replaceable structured process port outcome");
+}
+
+for (const [label, pattern] of [
+  ["restart app propagates process outcome", /\bprocess_action_payload\s*\(\s*"restart_codex"\s*,[\s\S]*process\s*\.\s*restart_app\s*\(\s*\)\s*\?\s*,?\s*\)/],
+  ["update restart propagates process outcome", /\bprocess_action_payload\s*\(\s*"graceful_restart_for_update"\s*,[\s\S]*process\s*\.\s*graceful_restart_for_update\s*\(\s*\)\s*\?\s*,?\s*\)/],
+  ["process action restored platform payload", /平台端口已非阻塞启动替换进程/],
+]) {
+  requirePattern(label, platformActions.path, platformActions.content, pattern, "restart payloads must come from AppProcessPort outcome and propagate errors, not unsupported stubs");
+}
+
+for (const [label, pattern] of [
+  ["restart unsupported status", /\bunsupported_status\s*\(|BackendEffect\s*::\s*Unsupported|更新重启动作未在当前公开后端范围内恢复|重启外部程序能力未在当前公开后端范围内恢复/g],
+  ["direct process API", /\bstd\s*::\s*(process|env)\b|\bCommand\s*::\s*new\b|\bcurrent_exe\s*\(|\bargs_os\s*\(/g],
+]) {
+  rejectPattern(label, platformActions.path, platformActions.content, pattern, "platform_actions usecase must only orchestrate AppProcessPort and must not return restart unsupported stubs");
+}
+
+const processPlatform = raw.get("processPlatform");
+for (const [label, pattern] of [
+  ["ProcessPlatformAdapter port impl", /\bimpl\s+AppProcessPort\s+for\s+ProcessPlatformAdapter\b/],
+  ["restart app adapter outcome", /\bfn\s+restart_app\s*\(&self\)\s*->\s*Result\s*<\s*ProcessActionOutcome\s*,\s*CoreError\s*>/],
+  ["update restart adapter outcome", /\bfn\s+graceful_restart_for_update\s*\(&self\)\s*->\s*Result\s*<\s*ProcessActionOutcome\s*,\s*CoreError\s*>/],
+  ["current executable restart source", /\bstd\s*::\s*env\s*::\s*current_exe\s*\(\s*\)/],
+  ["current args restart source", /\bstd\s*::\s*env\s*::\s*args_os\s*\(\s*\)/],
+  ["restart arg filtering", /\brestart_args_from\s*\(\s*std\s*::\s*env\s*::\s*args_os\s*\(\s*\)\s*\)[\s\S]*\bfilter\s*\(\s*is_forwardable_restart_arg\s*\)/],
+  ["async replacement spawn", /\bspawn_background_os_command\s*\(\s*executable\s*\.\s*as_os_str\s*\(\s*\)\s*,\s*&args\s*\)\s*\?/],
+  ["current process exit remains external", /\bcurrent_process_exit_scheduled\s*:\s*false[\s\S]*当前进程退出由外层应用生命周期处理/],
+]) {
+  requirePattern(label, processPlatform.path, processPlatform.content, pattern, "process platform adapter must own non-blocking restart spawn behind AppProcessPort without scheduling current process exit");
+}
+
+for (const [label, pattern] of [
+  ["process restart unsupported stub", /\bCoreError\s*::\s*Unsupported\b|当前公开后端未恢复更新重启动作|当前公开后端未恢复重启外部程序能力/g],
+  ["blocking restart output", /\bpub\s+fn\s+(graceful_restart_for_update|restart_app)\b[\s\S]{0,240}\bbackground_command_output\s*\(/g],
+  ["direct current process exit", /\bstd\s*::\s*process\s*::\s*exit\s*\(/g],
+  ["scheduled current process exit", /\bschedule_current_process_exit\b|\bRESTART_EXIT_DELAY_MS\b/g],
+]) {
+  rejectPattern(label, processPlatform.path, processPlatform.content, pattern, "restart process actions must not remain unsupported or use blocking command output");
 }
 
 for (const [label, pattern] of [

@@ -76,7 +76,7 @@ pub fn check_update_installability() -> Result<CoreEnvelope<UpdateInstallability
 #[tauri::command]
 pub fn graceful_restart_for_update() -> Result<CoreEnvelope<SystemActionPayload>, String> {
     let process = ProcessPlatformAdapter;
-    Ok(CoreEnvelope::ok(
-        usecase::settings::graceful_restart_for_update(&process),
-    ))
+    usecase::settings::graceful_restart_for_update(&process)
+        .map(CoreEnvelope::ok)
+        .map_err(|error| error.to_string())
 }

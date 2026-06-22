@@ -109,7 +109,9 @@ pub fn check_update_installability(system: &impl AppSystemPort) -> UpdateInstall
     platform_actions::check_update_installability(system)
 }
 
-pub fn graceful_restart_for_update(process: &impl AppProcessPort) -> SystemActionPayload {
+pub fn graceful_restart_for_update(
+    process: &impl AppProcessPort,
+) -> Result<SystemActionPayload, CoreError> {
     platform_actions::graceful_restart_for_update(process)
 }
 

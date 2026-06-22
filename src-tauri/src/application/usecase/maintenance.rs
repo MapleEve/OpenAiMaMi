@@ -36,7 +36,7 @@ pub fn force_kill_codex(process: &impl AppProcessPort) -> Result<SystemActionPay
     platform_actions::force_kill_app(process)
 }
 
-pub fn restart_codex(process: &impl AppProcessPort) -> SystemActionPayload {
+pub fn restart_codex(process: &impl AppProcessPort) -> Result<SystemActionPayload, CoreError> {
     platform_actions::restart_app(process)
 }
 

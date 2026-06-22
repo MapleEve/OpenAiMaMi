@@ -9,6 +9,7 @@ const files = {
   applicationPorts: join(backendRoot, "application", "ports.rs"),
   settingsUsecase: join(backendRoot, "application", "usecase", "settings.rs"),
   proxyPlatform: join(backendRoot, "platform", "proxy.rs"),
+  processPlatform: join(backendRoot, "platform", "process.rs"),
   systemUsecase: join(backendRoot, "application", "usecase", "system.rs"),
   settingsRepository: join(backendRoot, "repository", "settings.rs"),
   settingsCoreModel: join(backendRoot, "core", "model", "settings.rs"),
@@ -219,8 +220,75 @@ function validateApplicationPorts(path, content) {
     ["ApiProxyEndpoint DTO", /\bstruct\s+ApiProxyEndpoint\s*\{[\s\S]*normalized_url[\s\S]*scheme[\s\S]*host[\s\S]*port/s],
     ["ApiProxyEnvironment DTO", /\bstruct\s+ApiProxyEnvironment\s*\{[\s\S]*candidates\s*:\s*Vec\s*<\s*String\s*>/],
     ["ApiProxyTcpProbe DTO", /\bstruct\s+ApiProxyTcpProbe\s*\{[\s\S]*reachable\s*:\s*bool[\s\S]*detail\s*:\s*String/s],
+    ["ProcessActionOutcome DTO", /\bstruct\s+ProcessActionOutcome\s*\{[\s\S]*spawned\s*:\s*bool[\s\S]*current_process_exit_scheduled\s*:\s*bool/s],
+    ["graceful restart process outcome", /\bfn\s+graceful_restart_for_update\s*\(&self\)\s*->\s*Result\s*<\s*ProcessActionOutcome\s*,\s*CoreError\s*>/],
   ]) {
     requirePattern(label, path, content, pattern, "application ports 必须公开 API proxy 受限平台端口合同");
+  }
+}
+
+function validateUpdateRestartProcessOwner(
+  settingsCommands,
+  settingsUsecase,
+  platformActions,
+  processPlatform,
+) {
+  for (const [label, file, pattern, reason] of [
+    [
+      "settings update restart usecase returns Result",
+      settingsUsecase,
+      /\bpub\s+fn\s+graceful_restart_for_update\s*\(\s*process\s*:\s*&impl\s+AppProcessPort\s*,?\s*\)\s*->\s*Result\s*<\s*SystemActionPayload\s*,\s*CoreError\s*>/,
+      "graceful_restart_for_update usecase must propagate AppProcessPort errors",
+    ],
+    [
+      "settings update restart command maps envelope",
+      settingsCommands,
+      /\busecase\s*::\s*settings\s*::\s*graceful_restart_for_update\s*\(\s*&process\s*\)[\s\S]*\.map\s*\(\s*CoreEnvelope\s*::\s*ok\s*\)[\s\S]*\.map_err\s*\(\s*\|error\|\s*error\s*\.\s*to_string\s*\(\s*\)\s*\)/,
+      "graceful_restart_for_update command must map Result into CoreEnvelope and propagate errors",
+    ],
+    [
+      "settings update restart maps process outcome",
+      platformActions,
+      /\bprocess_action_payload\s*\(\s*"graceful_restart_for_update"\s*,[\s\S]*process\s*\.\s*graceful_restart_for_update\s*\(\s*\)\s*\?\s*,?\s*\)/,
+      "graceful_restart_for_update must be assembled by platform_actions from AppProcessPort",
+    ],
+    [
+      "process adapter owns update restart spawn",
+      processPlatform,
+      /\bspawn_replacement_process\s*\(\s*ProcessActionKind::GracefulRestartForUpdate\s*\)[\s\S]*\bspawn_background_os_command\s*\(/,
+      "process platform adapter must own non-blocking update restart spawn",
+    ],
+  ]) {
+    requirePattern(label, file.path, file.content, pattern, reason);
+  }
+
+  for (const [label, file, pattern, reason] of [
+    [
+      "settings update restart unsupported stub",
+      platformActions,
+      /\bunsupported_status\s*\(|BackendEffect\s*::\s*Unsupported|更新重启动作未在当前公开后端范围内恢复/g,
+      "graceful_restart_for_update must not return the old unsupported payload",
+    ],
+    [
+      "settings update restart direct process API",
+      platformActions,
+      /\bstd\s*::\s*(process|env)\b|\bCommand\s*::\s*new\b|\bcurrent_exe\s*\(|\bargs_os\s*\(/g,
+      "platform_actions must not bypass AppProcessPort",
+    ],
+    [
+      "process update restart unsupported adapter",
+      processPlatform,
+      /\bCoreError\s*::\s*Unsupported\b|当前公开后端未恢复更新重启动作/g,
+      "process adapter must no longer expose graceful_restart_for_update as unsupported",
+    ],
+    [
+      "process update restart exit scheduling",
+      processPlatform,
+      /\bstd\s*::\s*process\s*::\s*exit\s*\(|\bschedule_current_process_exit\b|\bRESTART_EXIT_DELAY_MS\b/g,
+      "process adapter must not delay or directly exit the current process from IPC update restart paths",
+    ],
+  ]) {
+    rejectPattern(label, file.path, file.content, pattern, reason);
   }
 }
 
@@ -478,6 +546,12 @@ validateForbiddenNames([...raw.values()].map((file) => [file.path, file.content]
 validateSettingsCommands(files.settingsCommands, raw.get("settingsCommands").content);
 validateSettingsUsecase(files.settingsUsecase, raw.get("settingsUsecase").content);
 validateApplicationPorts(files.applicationPorts, raw.get("applicationPorts").content);
+validateUpdateRestartProcessOwner(
+  raw.get("settingsCommands"),
+  raw.get("settingsUsecase"),
+  raw.get("platformActions"),
+  raw.get("processPlatform"),
+);
 validateProxyPlatform(files.proxyPlatform, raw.get("proxyPlatform").content);
 validateSystemNoSettings(files.systemCommands, raw.get("systemCommands").content);
 validateSystemUsecaseNoSettings(files.systemUsecase, raw.get("systemUsecase").content);

@@ -1,10 +1,13 @@
-use crate::application::ports::{AppProcessPort, ForceKillOutcome, ForceKillProcess};
+use crate::application::ports::{
+    AppProcessPort, ForceKillOutcome, ForceKillProcess, ProcessActionKind, ProcessActionOutcome,
+};
 use crate::core::error::CoreError;
+use std::ffi::{OsStr, OsString};
 use std::thread;
 use std::time::Duration;
 
 #[cfg(target_os = "windows")]
-pub fn background_command(program: &str) -> std::process::Command {
+pub fn background_command(program: impl AsRef<OsStr>) -> std::process::Command {
     use std::os::windows::process::CommandExt;
     const CREATE_NO_WINDOW: u32 = 0x08000000;
 
@@ -14,12 +17,17 @@ pub fn background_command(program: &str) -> std::process::Command {
 }
 
 #[cfg(not(target_os = "windows"))]
-pub fn background_command(program: &str) -> std::process::Command {
+pub fn background_command(program: impl AsRef<OsStr>) -> std::process::Command {
     std::process::Command::new(program)
 }
 
 // 进程平台适配器只封装外部进程能力，不解释业务状态。
 pub fn spawn_background_command(program: &str, args: &[&str]) -> Result<(), CoreError> {
+    background_command(program).args(args).spawn()?;
+    Ok(())
+}
+
+fn spawn_background_os_command(program: &OsStr, args: &[OsString]) -> Result<(), CoreError> {
     background_command(program).args(args).spawn()?;
     Ok(())
 }
@@ -34,11 +42,11 @@ pub fn background_command_output(
 pub(crate) struct ProcessPlatformAdapter;
 
 impl AppProcessPort for ProcessPlatformAdapter {
-    fn graceful_restart_for_update(&self) -> Result<(), CoreError> {
+    fn graceful_restart_for_update(&self) -> Result<ProcessActionOutcome, CoreError> {
         graceful_restart_for_update()
     }
 
-    fn restart_app(&self) -> Result<(), CoreError> {
+    fn restart_app(&self) -> Result<ProcessActionOutcome, CoreError> {
         restart_app()
     }
 
@@ -47,16 +55,12 @@ impl AppProcessPort for ProcessPlatformAdapter {
     }
 }
 
-pub fn graceful_restart_for_update() -> Result<(), CoreError> {
-    Err(CoreError::Unsupported(
-        "当前公开后端未恢复更新重启动作".to_string(),
-    ))
+pub fn graceful_restart_for_update() -> Result<ProcessActionOutcome, CoreError> {
+    spawn_replacement_process(ProcessActionKind::GracefulRestartForUpdate)
 }
 
-pub fn restart_app() -> Result<(), CoreError> {
-    Err(CoreError::Unsupported(
-        "当前公开后端未恢复重启外部程序能力".to_string(),
-    ))
+pub fn restart_app() -> Result<ProcessActionOutcome, CoreError> {
+    spawn_replacement_process(ProcessActionKind::RestartApp)
 }
 
 pub fn force_kill_app() -> Result<ForceKillOutcome, CoreError> {
@@ -98,6 +102,40 @@ fn force_kill_codex_processes() -> Result<ForceKillOutcome, CoreError> {
         killed_count: killed.len() as i32,
         processes: killed,
     })
+}
+
+fn spawn_replacement_process(action: ProcessActionKind) -> Result<ProcessActionOutcome, CoreError> {
+    let executable = std::env::current_exe()?;
+    let args = restart_args_from(std::env::args_os());
+    spawn_background_os_command(executable.as_os_str(), &args)?;
+
+    // IPC 路径只负责非阻塞启动替换进程；当前进程退出由外层应用生命周期处理。
+    Ok(ProcessActionOutcome {
+        action,
+        program: display_os_str(executable.as_os_str()),
+        args: args
+            .iter()
+            .map(|arg| display_os_str(arg.as_os_str()))
+            .collect(),
+        spawned: true,
+        current_process_exit_scheduled: false,
+        detail: "已非阻塞启动替换进程；当前进程退出由外层应用生命周期处理。".to_string(),
+    })
+}
+
+fn restart_args_from(args: impl IntoIterator<Item = OsString>) -> Vec<OsString> {
+    args.into_iter()
+        .skip(1)
+        .filter(is_forwardable_restart_arg)
+        .collect()
+}
+
+fn is_forwardable_restart_arg(arg: &OsString) -> bool {
+    !arg.as_os_str().is_empty()
+}
+
+fn display_os_str(value: &OsStr) -> String {
+    value.to_string_lossy().to_string()
 }
 
 fn list_codex_processes() -> Result<Vec<ForceKillProcess>, CoreError> {
@@ -272,6 +310,21 @@ mod tests {
         assert!(!is_codex_process("OpenAiMami.exe"));
         assert!(!is_codex_process("code.exe"));
         assert!(!is_codex_process("not-codex-helper"));
+    }
+
+    #[test]
+    fn restart_args_skip_current_binary_name() {
+        let args = restart_args_from([
+            OsString::from("codex.exe"),
+            OsString::from("--profile"),
+            OsString::from(""),
+            OsString::from("default"),
+        ]);
+
+        assert_eq!(
+            args,
+            vec![OsString::from("--profile"), OsString::from("default")]
+        );
     }
 
     #[cfg(target_os = "windows")]

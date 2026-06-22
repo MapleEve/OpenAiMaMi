@@ -26,13 +26,13 @@
 | `get_usage_refresh_interval` | `commands/settings.rs` -> `application/usecase/settings.rs` -> `repository/settings.rs` -> `core/model/settings.rs` | 读取 `settings.json` 并由 `UsageRefreshInterval` 解析。 |
 | `set_usage_refresh_interval` | `commands/settings.rs` -> `application/usecase/settings.rs` -> `repository/settings.rs` -> `daemon_usecase` | 写入 `usage_refresh_interval` 后调度公开 runtime schedule 更新；不声明真实 daemon watcher 全量恢复。 |
 | `check_update_installability` | `commands/settings.rs` -> `application/usecase/settings.rs` -> `platform_actions.rs` | 只委托平台端口读取安装可行性状态。 |
-| `graceful_restart_for_update` | `commands/settings.rs` -> `application/usecase/settings.rs` -> `platform_actions.rs` | 只委托平台端口并返回公开 unsupported 状态；不新增真实 update/restart 平台副作用。 |
+| `graceful_restart_for_update` | `commands/settings.rs` -> `application/usecase/settings.rs` -> `platform_actions.rs` | 委托 `platform_actions` / `AppProcessPort` 承载非阻塞 relaunch spawn；spawn 错误经 `Result` 返回；不实现 update install，不扩展 settings 业务逻辑。 |
 
 ## 不声明边界
 
 - 不恢复闭源业务，也不把当前公开 settings owner 写成闭源 settings 后端完整还原。
 - API proxy 真实探测只限平台端口的 200ms TCP 探针；不发起业务 HTTP 请求，不读取账号私密值，不声明 API 连通性或订阅接口探测完成。
-- 不新增真实 update/restart 平台副作用；`check_update_installability` 和 `graceful_restart_for_update` 的平台动作仍由 `platform_actions` 统一收口。
+- 不新增真实 update/restart 平台副作用；不实现 update install，不把 `graceful_restart_for_update` 提升为更新安装闭环；其公开边界是委托 `platform_actions` / `AppProcessPort` 承载非阻塞 relaunch spawn，不扩展 settings 业务逻辑，也不声明完整平台副作用验收。
 - 不把 hotspot/mystery/notification/daemon 的 settings 字段 helper 扩大为对应业务 owner；这些字段在 `AppSettingsFile` 或 `repository/settings.rs` 中只表达 settings 持久化字段边界。
 - 不处理 voice，不接 voice 命令、voice 空骨架、voice validator、前端入口或运行时链路。
 

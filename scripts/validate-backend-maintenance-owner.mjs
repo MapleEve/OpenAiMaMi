@@ -6,7 +6,10 @@ const backendRoot = join(repoRoot, "src-tauri", "src");
 const files = {
   maintenanceCommands: join(backendRoot, "commands", "maintenance.rs"),
   systemCommands: join(backendRoot, "commands", "system.rs"),
+  applicationPorts: join(backendRoot, "application", "ports.rs"),
   maintenanceUsecase: join(backendRoot, "application", "usecase", "maintenance.rs"),
+  platformActions: join(backendRoot, "application", "usecase", "platform_actions.rs"),
+  processPlatform: join(backendRoot, "platform", "process.rs"),
   repositoryMaintenance: join(backendRoot, "repository", "maintenance.rs"),
   repositoryMod: join(backendRoot, "repository", "mod.rs"),
   systemUsecase: join(backendRoot, "application", "usecase", "system.rs"),
@@ -218,6 +221,78 @@ function validateMaintenanceUsecase(path, content) {
     ],
   ]) {
     rejectPattern(label, path, content, pattern, reason);
+  }
+}
+
+function validateProcessActionRestartOwner(
+  maintenanceCommands,
+  maintenanceUsecase,
+  applicationPorts,
+  platformActions,
+  processPlatform,
+) {
+  for (const [label, file, pattern, reason] of [
+    [
+      "process action outcome port",
+      applicationPorts,
+      /\btrait\s+AppProcessPort\s*\{[\s\S]*Result\s*<\s*ProcessActionOutcome\s*,\s*CoreError\s*>[\s\S]*force_kill_app/s,
+      "restart_codex must use a replaceable AppProcessPort outcome, not command/usecase process calls",
+    ],
+    [
+      "maintenance restart usecase returns Result",
+      maintenanceUsecase,
+      /\bpub\s+fn\s+restart_codex\s*\(\s*process\s*:\s*&impl\s+AppProcessPort\s*\)\s*->\s*Result\s*<\s*SystemActionPayload\s*,\s*CoreError\s*>/,
+      "restart_codex usecase must propagate AppProcessPort errors",
+    ],
+    [
+      "maintenance restart command maps envelope",
+      maintenanceCommands,
+      /\busecase\s*::\s*maintenance\s*::\s*restart_codex\s*\(\s*&process\s*\)[\s\S]*\.map\s*\(\s*CoreEnvelope\s*::\s*ok\s*\)[\s\S]*\.map_err\s*\(\s*\|error\|\s*error\s*\.\s*to_string\s*\(\s*\)\s*\)/,
+      "restart_codex command must map Result into CoreEnvelope and propagate errors",
+    ],
+    [
+      "maintenance restart maps platform action outcome",
+      platformActions,
+      /\bprocess_action_payload\s*\(\s*"restart_codex"\s*,\s*process\s*\.\s*restart_app\s*\(\s*\)\s*\?\s*,?\s*\)/,
+      "restart_codex must be assembled by platform_actions from AppProcessPort",
+    ],
+    [
+      "process adapter owns async restart spawn",
+      processPlatform,
+      /\bspawn_replacement_process\s*\(\s*ProcessActionKind::RestartApp\s*\)[\s\S]*\bspawn_background_os_command\s*\(/,
+      "process platform adapter must own non-blocking replacement spawn",
+    ],
+  ]) {
+    requirePattern(label, file.path, file.content, pattern, reason);
+  }
+
+  for (const [label, file, pattern, reason] of [
+    [
+      "maintenance restart unsupported stub",
+      platformActions,
+      /\bunsupported_status\s*\(|BackendEffect\s*::\s*Unsupported|重启外部程序能力未在当前公开后端范围内恢复/g,
+      "restart_codex must not return the old unsupported payload",
+    ],
+    [
+      "maintenance direct process API",
+      platformActions,
+      /\bstd\s*::\s*(process|env)\b|\bCommand\s*::\s*new\b|\bcurrent_exe\s*\(|\bargs_os\s*\(/g,
+      "platform_actions must not bypass AppProcessPort",
+    ],
+    [
+      "process restart unsupported adapter",
+      processPlatform,
+      /\bCoreError\s*::\s*Unsupported\b|当前公开后端未恢复重启外部程序能力/g,
+      "process adapter must no longer expose restart_codex as unsupported",
+    ],
+    [
+      "process restart exit scheduling",
+      processPlatform,
+      /\bstd\s*::\s*process\s*::\s*exit\s*\(|\bschedule_current_process_exit\b|\bRESTART_EXIT_DELAY_MS\b/g,
+      "process adapter must not delay or directly exit the current process from IPC restart paths",
+    ],
+  ]) {
+    rejectPattern(label, file.path, file.content, pattern, reason);
   }
 }
 
@@ -546,6 +621,13 @@ const raw = new Map(
 validateForbiddenNames([...raw.values()].map((file) => [file.path, file.content]));
 validateMaintenanceCommands(files.maintenanceCommands, raw.get("maintenanceCommands").content);
 validateMaintenanceUsecase(files.maintenanceUsecase, raw.get("maintenanceUsecase").content);
+validateProcessActionRestartOwner(
+  raw.get("maintenanceCommands"),
+  raw.get("maintenanceUsecase"),
+  raw.get("applicationPorts"),
+  raw.get("platformActions"),
+  raw.get("processPlatform"),
+);
 validateMaintenanceRepository(
   files.repositoryMaintenance,
   raw.get("repositoryMaintenance").content,

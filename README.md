@@ -24,7 +24,7 @@ README 只保留长期有效的归纳状态：做了什么、没做什么、怎�
 | --- | --- | --- | --- |
 | 公开材料 | 已收敛许可、匿名化、证据来源、公开禁区和贡献边界，明确 Apache License 与隐私边界。 | 未脱敏资料、个人环境、凭据、会话、密钥、账号私密值和外部猜测不进入公开范围。 | `npm run validate:public-boundary` |
 | 前端 | 已确定按 `raw/internal` 证据链逐步恢复，并通过 current-source 专名验证、source-only 边界验证、map 绑定验证约束入口、路由、服务门面、缓存、文案、模拟和页面可见面。 | 不声明完成率；根 README 不替代模块验收或功能完成证明。 | `npm run validate:frontend`、`npm run validate:frontend-visible-copy`、`npm run validate:frontend-leaf-copy` |
-| 后端 | 已保留原开源和公开证据支撑能力，并按命令、用例、核心、平台、仓储、DTO、错误语义等六边形边界组织公开骨架；公开证据支撑的文件事实读取和网络探测分别收敛为 repository/usecase owner 与受限平台端口能力。 | 闭源业务不全量恢复；无公开证据的诊断、修复、平台动作和数据检查只保留边界、接口、占位或可替换实现。 | `npm run validate:backend`、`npm run validate:backend-cargo` |
+| 后端 | 已保留原开源和公开证据支撑能力，并按命令、用例、核心、平台、仓储、DTO、错误语义等六边形边界组织公开骨架；公开证据支撑的文件事实读取、受限网络探测和进程 relaunch 能力分别收敛为 repository/usecase owner、受限平台端口和 platform_actions 进程端口。 | 闭源业务不全量恢复；不声明真实更新安装闭环或完整平台副作用验收；无公开证据的诊断、修复、平台动作和数据检查只保留边界、接口、占位或可替换实现。 | `npm run validate:backend`、`npm run validate:backend-cargo` |
 | voice | 已保留空骨架和中文说明。 | 不接入口、不接 IPC mock、不接后端命令、不调用、不阻塞其他验收。 | `npm run validate:frontend`、`npm run validate:backend` |
 | 验收 | 已把公开边界、前端、后端、构建面和 Rust 环境检查收敛到固定入口。 | 工具链、`link.exe`、Rust 编译/测试环境或平台依赖缺口按环境边界判断，不写成业务完成或失败结论。 | `npm run validate:all`、`npm run validate:build-surface`、`npm run validate:backend-cargo` |
 
