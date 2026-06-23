@@ -107,7 +107,7 @@
         {
           "case": "STORAGE REGRESSION: data reads from file not SQLite (delta from 1.0.9)",
           "type": "explicit_non_automatable_accept",
-          "reason": "Critical behavioral delta — 1.0.9 read SQLite, 1.1.1 reads file; consumer must verify no SQLite dependency in C5 implementation"
+          "reason": "Critical behavioral delta — 1.0.9 read SQLite, 1.1.1 reads file; consumer must verify no SQLite dependency in 内部构建 implementation"
         }
       ],
       "unblocked_when": "dim2 completed (interface.md with exact arg keys from 逆向分析) + dim4 completed (pseudocode.md for sub_140788F20 owner + file path constant extraction)"

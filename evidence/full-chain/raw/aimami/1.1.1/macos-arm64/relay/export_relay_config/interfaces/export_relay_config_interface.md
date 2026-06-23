@@ -121,4 +121,4 @@ XSIMD check at write path:
 - `RelayExportProvider` 10th field exact name/type (accepted; non-critical)
 - Frontend IPC arg key: `includeApiKey` vs `includeApiKeys` — reconcile against 1.0.9 CCF (accepted; 1.0.9 CCF has precedent)
 - Windows platform behavior (Windows Unknown — requires independent Windows 逆向分析 evidence)
-- dim6 test/acceptance mapping (C5 implementation side)
+- dim6 test/acceptance mapping (内部构建 implementation side)

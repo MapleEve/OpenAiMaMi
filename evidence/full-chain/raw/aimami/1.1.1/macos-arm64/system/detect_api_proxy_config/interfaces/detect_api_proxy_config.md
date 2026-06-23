@@ -145,7 +145,7 @@ From `sanitize_proxy_config` switch table (byte-length cases 4/5/6/7):
 | `make_api_request_context` body (0x10053e690) | accepted_unknown | leaf_named_not_decompiled; consistent with 1.0.9 accepted_unknown |
 | HTTP probe PAC behavior in platform::proxy | accepted_unknown | reqwest HTTP call pattern confirmed but exact PAC parsing logic not decompiled |
 | Windows platform behavior | Unknown | Windows artifact required; macOS evidence not extrapolatable |
-| dim6 test/acceptance mapping | Unknown | C5 implementation side |
+| dim6 test/acceptance mapping | Unknown | 内部构建 implementation side |
 
 ## Delta vs 1.0.9
 

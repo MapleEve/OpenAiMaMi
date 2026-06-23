@@ -12,7 +12,7 @@
   },
   "accepted_unknown_recovery": {
     "dim4": [
-      "'manager' arg: backend dispatcher confirms reading 'manager' (7B key @unk_101148410) AND 'slots' (5B key @unk_101148407). Frontend CCF (ipc-contracts.jsonl col=121002) sends ONLY 'slots' — 'manager' absent from CCF. Recovery attempts: (1) re-read ipc-contracts.jsonl for set_codex_api_slots — confirmed argKeys=[slots] only; (2) checked interface.md DTO schema which shows manager=provider-id; (3) dim6.json documents discrepancy with 3 candidate explanations. Non-blocking: documented as consumer clarification task. C5 must clarify whether 'manager' must be passed explicitly or is derived server-side."
+      "'manager' arg: backend dispatcher confirms reading 'manager' (7B key @unk_101148410) AND 'slots' (5B key @unk_101148407). Frontend CCF (ipc-contracts.jsonl col=121002) sends ONLY 'slots' — 'manager' absent from CCF. Recovery attempts: (1) re-read ipc-contracts.jsonl for set_codex_api_slots — confirmed argKeys=[slots] only; (2) checked interface.md DTO schema which shows manager=provider-id; (3) dim6.json documents discrepancy with 3 candidate explanations. Non-blocking: documented as consumer clarification task. 内部构建 must clarify whether 'manager' must be passed explicitly or is derived server-side."
     ]
   },
   "evidence_refs": [

@@ -46,7 +46,7 @@
 ## ## Unknown
 
 1. **dim5_win**: Windows platform behavior — Windows IDB required for separate platform evidence; do not extrapolate from macOS
-2. **dim6 test/acceptance mapping**: C5 implementation-side responsibility; not reverse producer work
+2. **dim6 test/acceptance mapping**: 内部构建 implementation-side responsibility; not reverse producer work
 3. **enabled flag byte offset in McpServerSummary struct**: exact field offset within 224B stride not byte-confirmed from 逆向分析 struct view (inferred from a6 param passing pattern)
 4. **McpServerSummary full field layout**: stride=224B confirmed; exact field order/offsets beyond name(ptr+len@offset 8,16) not enumerated
 5. **config.toml locking behavior**: no OS-level file lock observed; relies on Mutex::lock pattern; concurrent write behavior not confirmed

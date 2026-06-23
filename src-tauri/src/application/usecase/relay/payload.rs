@@ -1,8 +1,9 @@
 use crate::application::service::{default_relay_platform, pending_status, restored_status};
 use crate::contracts::{
     BackendEffect, BackendSkeletonStatus, CoreWarning, RelayActivePayload,
-    RelayDiagnosticIssuePayload, RelayDiagnosticPayload, RelayProviderDraftInput,
-    RelayProviderPayload, RelayProxyPayload, RelayStatePayload, RelayTestPayload,
+    RelayDeeplinkImportPayload, RelayDiagnosticIssuePayload, RelayDiagnosticPayload,
+    RelayProviderDraftInput, RelayProviderPayload, RelayProxyPayload, RelayStatePayload,
+    RelayTestPayload,
 };
 use crate::core::{
     error::CoreError,
@@ -206,6 +207,38 @@ pub(super) fn test_payload_from_domain(command: &str, test: RelayTestDomain) -> 
         message: test.message,
         error_message: test.error_message,
         models: test.models,
+    }
+}
+
+pub(super) fn deeplink_payload_from_domain(
+    command: &str,
+    parsed: relay_core::RelayDeeplinkImport,
+) -> RelayDeeplinkImportPayload {
+    RelayDeeplinkImportPayload {
+        backend_status: payload_status(command),
+        valid: true,
+        provider: Some(parsed.provider),
+        name: Some(parsed.name),
+        endpoint: Some(parsed.endpoint),
+        api_key_present: parsed.api_key_present,
+        model: Some(parsed.model),
+        message: Some("deeplink 已解析；未导入、未持久化、未返回 apiKey 明文。".to_string()),
+    }
+}
+
+pub(super) fn invalid_deeplink_payload(
+    command: &str,
+    error: &CoreError,
+) -> RelayDeeplinkImportPayload {
+    RelayDeeplinkImportPayload {
+        backend_status: payload_status(command),
+        valid: false,
+        provider: None,
+        name: None,
+        endpoint: None,
+        api_key_present: false,
+        model: None,
+        message: Some(error.sanitized_message()),
     }
 }
 
@@ -542,6 +575,7 @@ fn relay_repository_effect(command: &str) -> Option<BackendEffect> {
         | "export_relay_config"
         | "import_relay_config"
         | "fix_codex_router_issue" => BackendEffect::RepositoryWrite,
+        "parse_aimami_deeplink" => BackendEffect::NoOp,
         "test_relay_draft" => BackendEffect::Platform,
         _ => return None,
     })
@@ -592,6 +626,22 @@ pub(super) fn relay_test_error(error: &CoreError) -> RelayTestDomain {
         message: None,
         error_message: Some(message),
         models: Vec::new(),
+    }
+}
+
+pub(super) fn deeplink_warning(command: &str, valid: bool) -> CoreWarning {
+    CoreWarning {
+        code: format!(
+            "relay.{command}.{}",
+            if valid {
+                "no_op_restored"
+            } else {
+                "invalid_input"
+            }
+        ),
+        message:
+            "Relay deeplink 解析已恢复为纯 DTO 操作；不会导入、持久化、记录敏感值或调用平台能力。"
+                .to_string(),
     }
 }
 

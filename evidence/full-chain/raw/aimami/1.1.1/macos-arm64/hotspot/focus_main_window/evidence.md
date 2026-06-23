@@ -47,7 +47,7 @@
 
 ## Unknown
 
-1. **dim6 test/acceptance mapping**: Not assessed in this raw leaf (C5 implementation side responsibility). Requires C5 test plan mapping: which C5 tests cover window focus? What is the acceptance criterion? Not a blocker for strictImplementationUse.
+1. **dim6 test/acceptance mapping**: Not assessed in this raw leaf (内部构建 implementation side responsibility). Requires 内部构建 test plan mapping: which 内部构建 tests cover window focus? What is the acceptance criterion? Not a blocker for strictImplementationUse.
 2. **Windows-x64 1.1.1 parity**: This leaf covers macOS arm64 only. Windows 1.1.1 VA and behavior delta not assessed here. 1.0.9 windows-x64 had module=system (INDEX key: `aimami/1.0.9/windows-x64/system/focus_main_window`). Whether the Windows module assignment changed in 1.1.1 is unknown; Windows production required separately.
 3. **tray event full coverage**: `handle_tray_menu_event` calls `focus_main_window` at `0x100627ef2`; exact tray menu ID matching conditions (length checks for `tray_open_main` / `tray_active_title` / `tray_active_subtitle`) were confirmed in 1.0.9 but not re-decompiled for 1.1.1 tray handler body. Assumed same by behavioral parity; accepted as no-diff for tray path given identical call site.
 4. **`handle_user_message` discriminant-28 branch**: The 38998-byte handler was not traced to its NSApp `setVisible` / `makeKey` ObjC call for discriminant 28 specifically. Accepted as macOS UI terminal (confirmed by 1.0.9 analysis + NSApp objc_msgSend confirmed in callees list).

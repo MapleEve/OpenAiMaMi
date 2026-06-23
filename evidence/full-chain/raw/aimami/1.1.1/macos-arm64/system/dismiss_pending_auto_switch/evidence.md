@@ -55,7 +55,7 @@ delta_classification: migrated_no_behavior_diff (interface identical; impl addre
 - `dismissedAt` precise serialization format (serde_json output of Duration — likely `{secs:u64, nanos:u32}` object, not confirmed)
 - `AutoSwitchSnoozeRecord` full struct definition (only the three serialized keys confirmed)
 - Windows platform behavior (Windows Unknown — not inferred from macOS evidence)
-- dim6 test/acceptance mapping (C5 implementation side)
+- dim6 test/acceptance mapping (内部构建 implementation side)
 - Whether multiple pending requests can exist or only single (no multi-element iteration observed)
 - Snooze TTL or expiry logic (not present in dismiss path — snooze record is written, clearing happens on separate command)
 - `clear_auto_switch_snooze` exact file path argument origin (a2[61], a2[62] — repo struct fields, not decoded)

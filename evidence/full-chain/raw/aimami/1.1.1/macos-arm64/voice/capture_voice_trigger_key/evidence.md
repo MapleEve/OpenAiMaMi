@@ -48,7 +48,7 @@
 3. **No side-effect leaf reachable**: with no backend handler, no fs/http/registry/sidecar side-effects possible from this command in 1.1.1.
 4. **Migration gate preservation**: 1.0.9 gate was `readyToImplement=true` with `not_upstream_backend_parity=true`; 1.1.1 inherits same gate tier under `migrated_no_behavior_diff` + `unchanged_reused` via absence-identity.
 5. **Voice anchor VAs differ from 1.0.9** (1.0.9 had `0x100f3933a`, `0x100f35807`, `0x100f38815`; 1.1.1 has `0x1010e8aea`, `0x1011514d1`, `0x10115990e`) — VA drift due to binary rebase/recompile, but anchor semantics identical (UI/path, not command owner).
-6. **C5 implementation guidance unchanged**: C5 should not implement an upstream backend owner for `capture_voice_trigger_key` unless voice is restored as a product decision; implementation would be C5-native not upstream-parity.
+6. **内部构建 implementation guidance unchanged**: 内部构建 should not implement an upstream backend owner for `capture_voice_trigger_key` unless voice is restored as a product decision; implementation would be 内部构建-native not upstream-parity.
 7. **P3 priority confirmed correct**: DELTA-PLAN.md §8 correctly classified voice series as P3 "confirm absent first"; this triage confirms absent without requiring further deep reverse work.
 
 ---
@@ -58,5 +58,5 @@
 1. **Frontend CCF exact line/wrapper in 1.1.1 JS bundle**: not directly confirmed this session (cmd-same classification is sufficient; 1.0.9 baseline had `captureVoiceTriggerKey:(style)=>ne("capture_voice_trigger_key",{style})`). Would require direct JS bundle grep to get exact line number — accepted_unknown: product_decision (frontend-only UI element, no backend behavior to drive implementation).
 2. **Windows 1.1.1 status**: not checked this session (win_same.txt classification covers win dispatcher presence; win deep reverse not in scope for this command this session). win_same = command string present in win dispatcher string pool, DTO/callee depth Unknown.
 3. **Why frontend JS not removed**: product/build decision — the frontend JS dead code was not tree-shaken; accepted_unknown: product_decision.
-4. **Voice feature roadmap**: whether C5 will restore voice as a product feature is product_decision, not upstream reverse scope.
+4. **Voice feature roadmap**: whether 内部构建 will restore voice as a product feature is product_decision, not upstream reverse scope.
 5. **voice-volume-marker.json semantic owner**: the path blob at `0x10115990e` confirms the file path exists in binary constants; the function writing to `voice-volume-marker.json` is not traced this session (not required for `capture_voice_trigger_key` gate closure — command is absent, no write path needed). accepted_unknown: product_decision.

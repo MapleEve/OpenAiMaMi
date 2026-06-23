@@ -7,6 +7,7 @@ import { systemService } from "@/services/system";
 import type {
   CoreEnvelope,
   RelayActivePayload,
+  RelayDeeplinkImportPayload,
   RelayDiagnosticPayload,
   RelayExportPayload,
   RelayImportPayload,
@@ -162,6 +163,11 @@ export const relayService = {
     invokeIpc<CoreEnvelope<RelayImportPayload>>("import_relay_config", {
       filePath,
     }),
+  parseAimamiDeeplink: (url: string) =>
+    invokeIpc<CoreEnvelope<RelayDeeplinkImportPayload>>(
+      "parse_aimami_deeplink",
+      { url },
+    ),
   importConfigWithDialog: async (input: RelayImportDialogInput) => {
     const { open } = await import("@tauri-apps/plugin-dialog");
     const filePath = await open({

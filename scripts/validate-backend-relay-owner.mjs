@@ -35,6 +35,10 @@ const files = {
   configRepository: join(repoRoot, "src-tauri", "src", "repository", "config.rs"),
   platform: join(repoRoot, "src-tauri", "src", "platform", "relay.rs"),
   contracts: join(repoRoot, "src-tauri", "src", "contracts", "relay.rs"),
+  tsTypes: join(repoRoot, "src", "types", "index.ts"),
+  ipcCommands: join(repoRoot, "src", "contracts", "ipc", "commands.ts"),
+  relayService: join(repoRoot, "src", "services", "relay", "index.ts"),
+  mockFixtures: join(repoRoot, "src", "mocks", "fixtures", "commands.ts"),
   systemCommand: join(repoRoot, "src-tauri", "src", "commands", "system.rs"),
   systemUsecase: join(repoRoot, "src-tauri", "src", "application", "usecase", "system.rs"),
   tauriLib: join(repoRoot, "src-tauri", "src", "lib.rs"),
@@ -245,6 +249,10 @@ const repositoryContent = readRequired(files.repository, "relay repository 文�
 const configRepositoryContent = readRequired(files.configRepository, "config repository 文件");
 const platformContent = readRequired(files.platform, "relay platform 文件");
 const contractsContent = readRequired(files.contracts, "relay contracts 文件");
+const tsTypesContent = readRequired(files.tsTypes, "前端类型文件");
+const ipcCommandsContent = readRequired(files.ipcCommands, "前端 IPC command 合同");
+const relayServiceContent = readRequired(files.relayService, "前端 relay service 门面");
+const mockFixturesContent = readRequired(files.mockFixtures, "E2E mock command fixture");
 const systemCommandContent = readRequired(files.systemCommand, "system command 文件");
 const systemUsecaseContent = readRequired(files.systemUsecase, "system usecase 文件");
 const tauriLibContent = readRequired(files.tauriLib, "Tauri command 注册表");
@@ -290,6 +298,12 @@ assertContains(
   commandContent,
   /\bpub\s+fn\s+set_image_compat\s*\([\s\S]*\busecase::relay::set_image_compat\s*\(\s*&repo\s*,\s*enabled\s*\)/,
   "set_image_compat 必须归属 relay command 并调用 relay usecase",
+);
+assertContainsRaw(
+  files.commands,
+  commandContent,
+  /\bpub\s+fn\s+parse_aimami_deeplink\s*\([\s\S]*\busecase::relay::parse_aimami_deeplink\s*\(\s*&repo\s*,\s*url\s*,?\s*\)/,
+  "parse_aimami_deeplink 必须归属 relay command 并只调用 relay usecase",
 );
 
 const usecaseNoPatternRules = [
@@ -391,6 +405,24 @@ assertContains(
   usecaseThreadMigrationContent,
   /migrated_count:\s*0[\s\S]*rolled_back_count:\s*0[\s\S]*skipped_count:\s*0[\s\S]*manifest_path:\s*None/,
   "thread migration 空操作 payload 必须保持 count 为 0 且 manifest_path 为 None",
+);
+assertContains(
+  files.usecase,
+  usecaseContent,
+  /\bpub\s+fn\s+parse_aimami_deeplink\s*\([\s\S]*relay_core::parse_aimami_deeplink\s*\(\s*&url\s*\)[\s\S]*invalid_deeplink_payload/,
+  "parse_aimami_deeplink usecase 必须只调 core parser 并返回脱敏成功/失败 payload",
+);
+assertContains(
+  files.usecasePayload,
+  usecasePayloadContent,
+  /\bfn\s+relay_repository_effect\s*\([\s\S]*"parse_aimami_deeplink"\s*=>\s*BackendEffect::NoOp/,
+  "parse_aimami_deeplink 必须标记为 NoOp，不得写 repository 或调用 platform",
+);
+assertContains(
+  files.usecasePayload,
+  usecasePayloadContent,
+  /RelayDeeplinkImportPayload\s*\{[\s\S]*api_key_present:\s*parsed\.api_key_present[\s\S]*未导入、未持久化、未返回 apiKey 明文/,
+  "deeplink payload 必须只返回 api_key_present，并说明不导入、不持久化、不返回 apiKey 明文",
 );
 assertContains(
   files.usecasePayload,
@@ -749,6 +781,24 @@ assertContains(
   /\bimage_generation\s*=\s*false\b/,
   "image compatibility 必须保留 raw/internal 证明的 image_generation=false 兼容语义",
 );
+assertContains(
+  files.core,
+  coreContent,
+  /\bpub\s+fn\s+parse_aimami_deeplink\s*\([\s\S]*required_deeplink_field\(&query,\s*"provider"\)[\s\S]*required_deeplink_field\(&query,\s*"name"\)[\s\S]*required_deeplink_field\(&query,\s*"endpoint"\)[\s\S]*required_deeplink_field\(&query,\s*"apiKey"\)[\s\S]*required_deeplink_field\(&query,\s*"model"\)/,
+  "core 必须 owning aimami://v1/import 字段校验",
+);
+assertContains(
+  files.core,
+  coreContent,
+  /\bfn\s+is_http_endpoint\s*\([\s\S]*starts_with\("http:\/\/"\)[\s\S]*starts_with\("https:\/\/"\)/,
+  "core 必须限制 deeplink endpoint 为 http 或 https",
+);
+assertContains(
+  files.core,
+  coreContent,
+  /\bfn\s+percent_decode_component\s*\([\s\S]*b'\+'[\s\S]*hex_value/,
+  "core 必须 owning query percent decoding 和 + 空格解码",
+);
 assertNoPatterns(files.repository, repositoryContent, [
   {
     label: "router parser/render 私有实现",
@@ -853,6 +903,12 @@ assertContains(
   /\bcommands::relay::set_image_compat\b/,
   "Tauri 注册表必须把 set_image_compat 指向 relay command",
 );
+assertContains(
+  files.tauriLib,
+  tauriLibContent,
+  /\bcommands::relay::parse_aimami_deeplink\b/,
+  "Tauri 注册表必须注册 parse_aimami_deeplink relay command",
+);
 assertNoPatterns(files.tauriLib, tauriLibContent, [
   {
     label: "system image compat registration",
@@ -872,6 +928,37 @@ assertContains(
   hexagonalValidatorContent,
   /\["set_image_compat",\s*"relay"\]/,
   "后端六边形 IPC 映射必须把 set_image_compat 归属 relay",
+);
+
+assertContains(
+  files.contracts,
+  contractsContent,
+  /\bpub\s+struct\s+RelayDeeplinkImportPayload\s*\{[\s\S]*pub\s+valid:\s*bool[\s\S]*pub\s+api_key_present:\s*bool[\s\S]*pub\s+message:\s*Option<String>/,
+  "Rust relay contract 必须定义脱敏 deeplink payload",
+);
+assertContains(
+  files.tsTypes,
+  tsTypesContent,
+  /\bexport\s+interface\s+RelayDeeplinkImportPayload\s*\{[\s\S]*valid:\s*boolean[\s\S]*apiKeyPresent:\s*boolean[\s\S]*message:\s*string\s*\|\s*null/,
+  "前端类型必须同步脱敏 deeplink payload",
+);
+assertContains(
+  files.ipcCommands,
+  ipcCommandsContent,
+  /"command":\s*"parse_aimami_deeplink"[\s\S]*"parseAimamiDeeplink"[\s\S]*"url"/,
+  "前端 IPC command 合同必须登记 parse_aimami_deeplink 和 url 参数",
+);
+assertContains(
+  files.relayService,
+  relayServiceContent,
+  /parseAimamiDeeplink:\s*\(url:\s*string\)\s*=>[\s\S]*invokeIpc<CoreEnvelope<RelayDeeplinkImportPayload>>\([\s\S]*"parse_aimami_deeplink"[\s\S]*\{\s*url\s*\}/,
+  "relay service 必须通过 API 门面调用 parse_aimami_deeplink",
+);
+assertContains(
+  files.mockFixtures,
+  mockFixturesContent,
+  /\bconst\s+relayDeeplinkImportHandler:[\s\S]*apiKeyPresent:\s*false[\s\S]*apiKeyPresent:\s*true[\s\S]*parse_aimami_deeplink:\s*relayDeeplinkImportHandler/,
+  "E2E mock 必须有 parse_aimami_deeplink 专用脱敏 handler",
 );
 
 assertNoPatterns(files.platform, platformContent, [

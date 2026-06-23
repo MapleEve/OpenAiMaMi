@@ -1,6 +1,6 @@
-# load_relay_state — dim6 ACCEPTANCE MAPPING
+﻿# load_relay_state — dim6 ACCEPTANCE MAPPING
 # version: 1.1.1 | platform: macos-arm64 | shard: mac-3/5
-# authored: 2026-06-19 | session: <审计会话>
+# authored: 2026-06-19 | session: wf-aimami111-dim6-20260619
 
 ## gate_tier: readyToImplement (dim1-5 all closed; dim6=acceptance-draft)
 
@@ -68,7 +68,7 @@ Expected output:
 | virtual-auth-marker.json and auth.json written correctly in api-login mode | e2e (Tauri) / manual | requires relay configured in ROUTER_ON+api_login mode |
 | UUID v4 format in generated apiKey | unit (Rust) — uuid crate | validate UUID format in marker |
 | BackedUpRealAuth=true only when real credentials present | unit (Rust) — has_real_login_material | mock auth.json with sk-... key vs virtual key |
-| SIMD prefix check excludes "<virtual-relay-key-prefix>" prefix | unit (Rust) — has_real_login_material | inject key starting with virtual prefix, assert backedUpRealAuth=false |
+| SIMD prefix check excludes "sk-<redacted>" prefix | unit (Rust) — has_real_login_material | inject key starting with virtual prefix, assert backedUpRealAuth=false |
 | Error from enable_virtual_login is silently dropped (list_state succeeds) | manual / e2e | make auth_mod_e path unwritable, call invoke, verify Ok response |
 | relay storage::save triggered on proxy spawn attempt | e2e (Tauri) | requires relay in state needing proxy spawn |
 

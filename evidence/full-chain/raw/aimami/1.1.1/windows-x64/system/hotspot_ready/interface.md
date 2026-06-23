@@ -100,7 +100,7 @@ Resolved via `tauri_ipc_main_dispatcher_sys` → `hotspot_ready_owner_sys_111` �
 | dim3 | CLOSED — full call-tree, all callees enumerated, depth ≥ 3 |
 | dim4 | CLOSED — argKeys=[], response discriminant map, error paths, side-effects documented |
 | dim5 | CLOSED — caller tauri_ipc_main_dispatcher_sys confirmed; win/mac divergence noted |
-| dim6 | unknown (C5 consumer side) |
+| dim6 | unknown (内部构建 consumer side) |
 
 **gate_tier: strictImplementationUse** (upgraded from candidate — session <审计会话>, 2026-06-17)
 genuine_ceiling: false | accepted_unknown: false | real_body_found: true

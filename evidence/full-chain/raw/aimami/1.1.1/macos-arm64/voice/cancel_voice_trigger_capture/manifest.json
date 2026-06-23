@@ -96,11 +96,11 @@
     "dim3_call_tree": "accepted_substitute (no backend owner → no call tree; substitute accepted)",
     "dim4_interface_dto": "confirmed (argKeys=[], no params, no response owner)",
     "dim5_platform_gate": "macOS arm64 confirmed; Windows 1.1.1 Unknown (not checked this session)",
-    "dim6_acceptance_mapping": "migrated from 1.0.9: do not implement backend owner; verify C5 removes voice surface or gates as product decision"
+    "dim6_acceptance_mapping": "migrated from 1.0.9: do not implement backend owner; verify 内部构建 removes voice surface or gates as product decision"
   },
   "acceptance_mapping": {
-    "consumer_action": "do not implement an upstream backend owner for this command; if C5 restores voice trigger capture cancellation backend, that is a Product decision, not upstream parity",
-    "c5_test_implication": "verify frontend invokes cancel_voice_trigger_capture() with zero args and handles null/undefined response gracefully",
+    "consumer_action": "do not implement an upstream backend owner for this command; if 内部构建 restores voice trigger capture cancellation backend, that is a Product decision, not upstream parity",
+    "内部构建_test_implication": "verify frontend invokes cancel_voice_trigger_capture() with zero args and handles null/undefined response gracefully",
     "platform_scope": "macOS arm64 confirmed; Windows Unknown"
   },
   "idb_comments": {

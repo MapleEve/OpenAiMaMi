@@ -68,7 +68,18 @@ const sourceSidecarFiles = {
     "frontend",
     "FRONTEND-FULL-CHAIN-109.md",
   ),
+  versionDelta111: join(
+    repoRoot,
+    "evidence",
+    "full-chain",
+    "internal",
+    "version-diff",
+    "CHAIN-DIFF-LADDER",
+    "06-target-1.1.1.md",
+  ),
 };
+
+const implementedVersionDeltaCommands = ["parse_aimami_deeplink"];
 
 const ipcContractPath = join(repoRoot, "src", "contracts", "ipc", "commands.ts");
 const servicesRoot = join(repoRoot, "src", "services");
@@ -249,14 +260,23 @@ function extractSourceSidecarCommands() {
   const systemManifest = parseJsonFile(sourceSidecarFiles.systemManifest);
   const trayGateReport = parseJsonFile(sourceSidecarFiles.trayGateReport);
   const trayFrontendChain = readRequired(sourceSidecarFiles.trayFrontendChain);
+  const versionDelta111 = readRequired(sourceSidecarFiles.versionDelta111);
   const trayFrontendCommands = [
     ...trayFrontendChain.matchAll(/invoke\("([^"]+)"\)/g),
   ].map((match) => match[1]);
+  const versionDeltaCommands = implementedVersionDeltaCommands.filter((command) => {
+    if (versionDelta111.includes(`\`${command}\``)) return true;
+    failures.push(
+      `${toRepoPath(sourceSidecarFiles.versionDelta111)} 缺少已实现 version-delta 命令：${command}`,
+    );
+    return false;
+  });
 
   return unique([
     ...(systemManifest?.helper_watchers ?? []),
     ...(trayGateReport?.acceptedTargets ?? []),
     ...trayFrontendCommands,
+    ...versionDeltaCommands,
   ]);
 }
 

@@ -149,7 +149,7 @@ delete_relay_provider @0x1005e9c30
 
 - **dim1 (frontend CCF)**: Not reversed in this session. 1.0.9 baseline frontend CCF status should carry via migration.
 - **dim5 (Windows)**: Windows platform evidence not available from macOS IDB. Windows binary uses different keychain impl.
-- **dim6 (test/acceptance mapping)**: Not provided (C5 implementation-side work per GATE-SPEC dim6 definition).
+- **dim6 (test/acceptance mapping)**: Not provided (内部构建 implementation-side work per GATE-SPEC dim6 definition).
 - **Keychain service name / account name**: Passed to `security_framework` but not decoded from registers in this pass. File path is `.codex/<dir>/keys/<providerId>` (from `anon_cb488c0530badd667ddecb834e53ca81_783` = string "keys" at `0x101156e80`).
 - **`unk_1010B7418` / `unk_1010B73D6` / `unk_1010B7391`**: Dynamic format strings for session guard errors — content not decoded (likely "provider '{}' still exists in relay state" / "provider '{}' has active sessions").
 
@@ -184,7 +184,7 @@ delete_relay_provider @0x1005e9c30
 | dim3: call-tree → impl leaves | **Accepted** | depth=6+; fs/keychain/atomic_write/config.toml/tray all reached |
 | dim4: interface/DTO/error/side-effect | **Accepted** | 5 error codes; 7 side effects; all fields confirmed |
 | dim5: platform gate (macOS) | **Accepted** | macOS confirmed; Windows Unknown |
-| dim6: test/acceptance mapping | Unknown | C5 implementation-side |
+| dim6: test/acceptance mapping | Unknown | 内部构建 implementation-side |
 
-**Tier**: `strictImplementationUse` (macOS; dim1 pending migration; dim6 pending C5 impl)
+**Tier**: `strictImplementationUse` (macOS; dim1 pending migration; dim6 pending 内部构建 impl)
 **Critical implementation note**: Error messages are now Chinese; post-persist session guard ordering unchanged; router manifest path evolved in 1.1.1.

@@ -164,7 +164,7 @@ Windows artifact required. macOS arm64 evidence not extrapolatable to Windows x6
 
 ### 8. dim6 test/acceptance mapping
 
-C5 implementation side verification — not a reverse producer deliverable.
+内部构建 implementation side verification — not a reverse producer deliverable.
 
 ### 9. Exact `CoreEnvelope<ApiProxyDetectPayload>` JSON wire format
 

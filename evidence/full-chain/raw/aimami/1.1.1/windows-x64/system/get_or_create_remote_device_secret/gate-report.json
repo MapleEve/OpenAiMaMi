@@ -55,7 +55,7 @@
       "v109": "{uuid_hyphen}-{uuid_hyphen} (73 chars, hyphens inside)",
       "v111": "{hex32}-{hex32} (65 chars, NO hyphens inside segments)",
       "regex": "/^[0-9a-f]{32}-[0-9a-f]{32}$/",
-      "note": "C5 must handle both formats or enforce re-generation if stored 1.0.9 secret (73-char) is found"
+      "note": "内部构建 must handle both formats or enforce re-generation if stored 1.0.9 secret (73-char) is found"
     },
     "error_paths": [
       "directory check fails (relay_config_check_parent_dirs_sys) → Err tag=2; no write",

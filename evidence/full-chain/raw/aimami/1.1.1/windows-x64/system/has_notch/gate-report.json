@@ -58,7 +58,7 @@
   "dim6_detail": {
     "source": "gate-report.json#dim6_acceptance_mapping (session <审计会话>)",
     "happy_path": "invoke('has_notch') => always Ok(true) on Windows",
-    "note": "C5 UI must not cache as cross-platform invariant; macOS may return false (hardware-dependent)"
+    "note": "内部构建 UI must not cache as cross-platform invariant; macOS may return false (hardware-dependent)"
   },
   "regen_by": "<审计会话>"
 }

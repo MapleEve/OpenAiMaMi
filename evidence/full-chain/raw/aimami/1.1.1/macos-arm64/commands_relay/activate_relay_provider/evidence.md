@@ -79,7 +79,7 @@
 
 7. **Frontend CCF**: Whether the frontend invokes `activate_relay_provider` directly from a UI action or via a programmatic trigger is not confirmed from backend evidence alone. dim1 requires frontend CCF analysis.
 
-8. **test/acceptance mapping (dim6)**: C5 implementation acceptance criteria not defined — this is C5 implementation-side work.
+8. **test/acceptance mapping (dim6)**: 内部构建 implementation acceptance criteria not defined — this is 内部构建 implementation-side work.
 
 ## Fake-Wall Taxonomy Verification (red line 13)
 

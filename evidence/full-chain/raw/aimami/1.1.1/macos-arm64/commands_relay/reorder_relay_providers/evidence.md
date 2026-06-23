@@ -48,7 +48,7 @@
 ## ## Unknown
 
 - dim5_win: Windows platform behavior for reorder_relay_providers — NOT confirmed in this session (separate Windows INDEX entry exists: aimami/1.1.1/windows-x64/reorder_relay_providers/full-chain + gate-upgrade; cross-reference available but not deep-traced here)
-- dim6: C5 implementation side acceptance criteria / test mapping — out of scope for producer role
+- dim6: 内部构建 implementation side acceptance criteria / test mapping — out of scope for producer role
 - Exact response payload schema (field names): CoreEnvelope inner type field names not decoded from macOS binary (response = success envelope wrapping reorder result; Windows analysis accepted for cross-platform schema)
 - codex_writer::apply_codex_state internal behavior: 0x10075ae20 decompile not executed in this session (called from sync_codex_config, affects Codex CLI config file; behavior inferred from function name + similar calls in other commands)
 - codex_catalog::resolve_api_slots behavior: 0x1006e8950 not decompiled (slots resolution for active relay)
@@ -89,4 +89,4 @@
 - dim3 (callees/xrefs to implementation leaves): call-tree depth ≥7; terminal leaves: write_atomic(fs)+sync_data(syscall)+rename(syscall)+sync_parent_dir(fs)+apply_codex_state — PASS
 - dim4 (DTO/response fields): CoreEnvelope::ok wrapping reorder result — confirmed; exact inner field names accepted_unknown (Windows analysis available)
 - dim5_mac: decompile succeeded, macOS arm64 binary confirmed — PASS; dim5_win: from Windows session (separate INDEX entry exists)
-- dim6: Unknown (C5 implementation side)
+- dim6: Unknown (内部构建 implementation side)

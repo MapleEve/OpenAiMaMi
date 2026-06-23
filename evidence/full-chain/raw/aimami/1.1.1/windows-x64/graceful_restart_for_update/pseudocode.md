@@ -399,4 +399,4 @@ volatile int64_t* send_ipc_response(__int64 channel_ctx, __int128 *tag_payload)
 
 ### gate
 
-dim1-5: all CLOSED (gold gate_tier). dim6: acceptance-draft. **gate_tier=readyToImplement** (eligible; pending C5 test fixture confirmation).
+dim1-5: all CLOSED (gold gate_tier). dim6: acceptance-draft. **gate_tier=readyToImplement** (eligible; pending 内部构建 test fixture confirmation).

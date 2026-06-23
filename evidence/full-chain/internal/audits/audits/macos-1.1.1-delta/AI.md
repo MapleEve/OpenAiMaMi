@@ -27,7 +27,7 @@
 
 4. **plugin 系列全部消失，passthrough 系列全部消失**
    - plugin×4 / passthrough×2 共 6 条命令从 IPC 合约移除
-   - 若 C5 实现中有 plugin 管理或 passthrough 审计，对应接口需同步下线
+   - 若 内部构建 实现中有 plugin 管理或 passthrough 审计，对应接口需同步下线
 
 ### P1：新增命令接口摘要
 
@@ -51,7 +51,7 @@
 
 ### P3：voice 系列 / custom_instructions 孤儿
 
-全部标为 orphan-no-backend（34 条）。C5 **不实现** backend。capture_voice_trigger_key / cancel_voice_trigger_capture 已有 readyToImplement gate（见 gate-report）。
+全部标为 orphan-no-backend（34 条）。内部构建 **不实现** backend。capture_voice_trigger_key / cancel_voice_trigger_capture 已有 readyToImplement gate（见 gate-report）。
 
 ---
 

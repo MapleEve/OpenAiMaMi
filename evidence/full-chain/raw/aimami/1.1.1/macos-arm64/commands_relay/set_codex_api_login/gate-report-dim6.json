@@ -16,7 +16,7 @@
       "backend_argKeys_confirmed": [
         "enabled"
       ],
-      "note": "Frontend sends 'relaunch' (bool, default true) that is NOT confirmed as read by backend. Backend decompile confirms only 'enabled' (bool) parameter. Possible: 'relaunch' is a frontend-only flag ignored by backend, OR backend has additional param handling not traced in this session. C5 must investigate and verify actual server-side behavior with 'relaunch' param."
+      "note": "Frontend sends 'relaunch' (bool, default true) that is NOT confirmed as read by backend. Backend decompile confirms only 'enabled' (bool) parameter. Possible: 'relaunch' is a frontend-only flag ignored by backend, OR backend has additional param handling not traced in this session. 内部构建 must investigate and verify actual server-side behavior with 'relaunch' param."
     },
     "happy_path": {
       "input_enable": {
@@ -53,7 +53,7 @@
         "trigger": "slot cap reached (>=5 providers already have api_login)",
         "condition": "resolve_api_login_slots finds cap=5 reached",
         "expected_error": "77B error string @0x101153b01 \u2014 content unknown but semantically 'login slot cap reached'",
-        "notes": "Exact error text not extracted; non-blocking for C5 implementation awareness"
+        "notes": "Exact error text not extracted; non-blocking for 内部构建 implementation awareness"
       },
       {
         "trigger": "enable_virtual_login fails (write/config error)",
@@ -80,7 +80,7 @@
       {
         "type": "manual",
         "description": "Enable api_login; verify virtual-auth-marker.json created, Codex relaunched, relay config updated",
-        "reason": "Complex OS process management + multi-file writes; not automatable in C5 CI"
+        "reason": "Complex OS process management + multi-file writes; not automatable in 内部构建 CI"
       },
       {
         "type": "manual",
@@ -96,7 +96,7 @@
         "type": "explicit_non_automatable_accept",
         "description": "Verify 'relaunch' CCF param behavior: does backend use it or ignore it?",
         "reason": "CCF discrepancy: frontend sends relaunch param; backend evidence only confirms 'enabled'. Must be resolved before full acceptance.",
-        "notes": "producer-acceptance-draft: C5 consumer must investigate relaunch param handling"
+        "notes": "producer-acceptance-draft: 内部构建 consumer must investigate relaunch param handling"
       }
     ],
     "dim6_basis": "Enable/disable paths confirmed from evidence.md decompile (11 pseudocode files in manifest). Progress event strings confirmed at offsets (stopping_codex 14B, restoring_auth 14B, writing_auth 12B, writing_config 14B, done\\a 4B). Error paths: slot cap (77B string), enable_virtual_login failure, persist failure, rollback confirmed. CCF discrepancy noted: 'relaunch' arg from ipc-contracts.jsonl not confirmed in backend."
@@ -106,6 +106,6 @@
     "new": "readyToImplement",
     "rationale": "dim1 PASS (CCF confirmed: argKeys=['enabled','relaunch'] with 'enabled' being the backend-confirmed key); dim2 PASS (11 pseudocode files, owner+10 callees decompiled); dim3 PASS (depth=5, terminal FS+POSIX+OS process leaves); dim4 PASS (argKeys, CodexApiLoginTogglePayload response type confirmed, full side-effect map, error paths); dim5_mac PASS; dim5_win separate; dim6=acceptance-draft with CCF discrepancy note",
     "implementation_use": "eligible",
-    "notes": "dim6=acceptance-draft. 'relaunch' param from CCF is unconfirmed in backend \u2014 C5 consumer must clarify. CodexApiLoginTogglePayload exact fields unknown (accepted_unknown). Fast-path behavior must be tested."
+    "notes": "dim6=acceptance-draft. 'relaunch' param from CCF is unconfirmed in backend \u2014 内部构建 consumer must clarify. CodexApiLoginTogglePayload exact fields unknown (accepted_unknown). Fast-path behavior must be tested."
   }
 }

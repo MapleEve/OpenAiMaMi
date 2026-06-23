@@ -51,7 +51,7 @@ command_number: 22/76
 - **reqwest client configuration**: timeout values, TLS settings, proxy settings within the async fetch_models client not traced (separate `build_url` for client build path exists at 0x1010e9c0f context).
 - **CoreEnvelope error discriminants**: specific error codes for `model_not_found`, `invalid_api_key` etc. not confirmed from pseudocode; error classification likely done by matching the error blob strings at 0x10114ffd0.
 - **Windows platform behavior**: Windows Unknown; dim5_win not closed.
-- **dim6 test/acceptance mapping**: C5 implementation side; not part of producer scope.
+- **dim6 test/acceptance mapping**: 内部构建 implementation side; not part of producer scope.
 - **Whether `model` field is sent in request**: `build_url` takes `(baseUrl, endpoint)` but whether a specific model is passed in the URL or as a query param is inferred only.
 - **extraHeaders field name in JSON**: the field name sent in frontend invoke is `extraHeaders` (inferred from `parse_extra_headers` function name and 1.0.9 CCF).
 - **CoreEnvelope error envelope format**: follows standard CoreEnvelope pattern (confirmed from other relay commands); specific error code values for fetch_models errors not confirmed.

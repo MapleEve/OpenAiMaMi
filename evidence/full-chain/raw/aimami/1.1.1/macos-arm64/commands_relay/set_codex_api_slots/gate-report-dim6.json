@@ -16,7 +16,7 @@
         "manager",
         "slots"
       ],
-      "note": "Frontend CCF (ipc-contracts.jsonl col=121002) sends ONLY 'slots' \u2014 'manager' key is absent from the frontend invocation. Backend evidence confirms Rust reads 'manager' (7B key from dispatcher) and 'slots' (5B key). Possible explanations: (a) 'manager' has a default/optional handling in backend not traced, (b) the observed CCF is from a different invocation pattern than the one that uses 'manager', (c) 'manager' is resolved server-side from session context. C5 consumer must clarify whether 'manager' must be passed explicitly."
+      "note": "Frontend CCF (ipc-contracts.jsonl col=121002) sends ONLY 'slots' \u2014 'manager' key is absent from the frontend invocation. Backend evidence confirms Rust reads 'manager' (7B key from dispatcher) and 'slots' (5B key). Possible explanations: (a) 'manager' has a default/optional handling in backend not traced, (b) the observed CCF is from a different invocation pattern than the one that uses 'manager', (c) 'manager' is resolved server-side from session context. 内部构建 consumer must clarify whether 'manager' must be passed explicitly."
     },
     "happy_path": {
       "input_ccf": {
@@ -119,6 +119,6 @@
     "new": "readyToImplement",
     "rationale": "dim1 PASS (CCF confirmed from 1.1.1 ipc-contracts.jsonl; note: 'manager' arg appears in backend but not CCF \u2014 documented as acceptance-draft note); dim2 PASS (owner+core_impl+dispatcher decompiled); dim3 PASS (depth=5, FS+POSIX terminal); dim4 PASS (5 validated error paths, CodexApiSlot struct, RelayState response); dim5_mac PASS; dim5_win separate; dim6=acceptance-draft",
     "implementation_use": "eligible",
-    "notes": "CCF/backend 'manager' discrepancy must be clarified by C5 consumer before shipping. All other dims closed."
+    "notes": "CCF/backend 'manager' discrepancy must be clarified by 内部构建 consumer before shipping. All other dims closed."
   }
 }

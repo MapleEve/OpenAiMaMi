@@ -51,7 +51,7 @@ delta_basis: 1.0.9 baseline (owner 0x10015c300) — delta_reversed (VA change on
 - exact format string at 0x1010B6A09 (not-found error message text) — non-blocking; pattern is format_inner with name arg
 - McpServerSummary exact field layout beyond stride=224B — non-blocking; struct identity matches list_mcp_servers response
 - Windows platform behavior — separate producer task (Windows IDB required)
-- dim6 test/acceptance mapping — C5 implementation side responsibility
+- dim6 test/acceptance mapping — 内部构建 implementation side responsibility
 - Frontend CCF exact trigger path in 1.1.1 frontend bundle — cross-confirmed via 1.1.1 ipc-contracts.jsonl (same JS bundle pattern); macOS-explicit trace accepted_unknown (non-blocking)
 - Config file path exact value at runtime — passed via AppState, consistent with other mcp commands
 - State poison error exact message string at 0x10114c2e6 — fmt string in anon symbol, non-blocking
@@ -81,6 +81,6 @@ genuine_ceiling=false — all 7 fake-wall taxonomy categories excluded:
 - dim3 (call-tree depth): Accepted — depth≥5, terminal leaves: write_atomic(fs), sync_data(syscall), rename(syscall), sync_parent_dir(fs)
 - dim4 (interface/DTO/error/side-effect): Accepted — argKeys=["name"], CoreEnvelope<Vec<McpServerSummary>>, 4 error paths, TOML+atomic_write side effect
 - dim5 (platform gate): macOS confirmed; Windows Unknown (separate task)
-- dim6 (test/acceptance): Unknown — C5 implementation side
+- dim6 (test/acceptance): Unknown — 内部构建 implementation side
 
 gate_tier: strictImplementationUse_candidate (dim1+dim2+dim3+dim4+dim5_mac accepted; dim5_win+dim6 Unknown)

@@ -17,7 +17,7 @@
       "backend_argKeys_confirmed": [
         "enabled"
       ],
-      "note": "Frontend sends 'relaunch' (bool, default true) and 'apiLogin' (nullable) that are NOT confirmed as read by backend. Backend decompile confirms only 'enabled' and inferred 'mode' byte (a5) not directly named in CCF. The 'apiLogin' param likely maps to the 'mode' byte (a5) controlling virtual auth path. C5 consumer must verify whether 'apiLogin' is deserialized by backend as a separate arg."
+      "note": "Frontend sends 'relaunch' (bool, default true) and 'apiLogin' (nullable) that are NOT confirmed as read by backend. Backend decompile confirms only 'enabled' and inferred 'mode' byte (a5) not directly named in CCF. The 'apiLogin' param likely maps to the 'mode' byte (a5) controlling virtual auth path. 内部构建 consumer must verify whether 'apiLogin' is deserialized by backend as a separate arg."
     },
     "happy_path": {
       "input_enable": {
@@ -77,7 +77,7 @@
       {
         "type": "manual",
         "description": "Enable codex router; verify TOML block written with correct markers; verify catalog created; verify Codex relaunched",
-        "reason": "Complex multi-file FS + OS process + TCP proxy; not automatable in C5 CI"
+        "reason": "Complex multi-file FS + OS process + TCP proxy; not automatable in 内部构建 CI"
       },
       {
         "type": "manual",
@@ -92,7 +92,7 @@
       {
         "type": "e2e",
         "description": "Trigger rollback path (simulate enable failure); verify TOML restored to original state",
-        "reason": "Rollback is critical for data integrity; should be covered in C5"
+        "reason": "Rollback is critical for data integrity; should be covered in 内部构建"
       },
       {
         "type": "explicit_non_automatable_accept",

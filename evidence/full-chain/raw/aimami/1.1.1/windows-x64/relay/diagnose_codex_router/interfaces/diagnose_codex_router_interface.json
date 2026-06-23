@@ -59,7 +59,7 @@
   },
   "frontier_unknowns": [
     {"field": "dim5_mac", "status": "Unknown", "reason": "macOS platform gate not in scope for this win leaf"},
-    {"field": "dim6", "status": "Unknown", "reason": "C5 test/acceptance mapping is consumer-side work"},
+    {"field": "dim6", "status": "Unknown", "reason": "内部构建 test/acceptance mapping is consumer-side work"},
     {"field": "exact_provider_count_field_offset", "status": "accepted_unknown", "reason": "field packed in 320B struct; precise offset not extracted (low implementation risk)"},
     {"field": "exact_catalog_path_string", "status": "accepted_unknown", "reason": "constructed by CodexPaths from registry; path pattern known from 1.0.9 win"},
     {"field": "DiagnoseCodexRouterResult_full_struct_layout", "status": "accepted_unknown", "reason": "320B payload layout partially known; 5 bool + summary string sufficient for implementation"}

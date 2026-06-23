@@ -9,12 +9,12 @@
 ### Response fields
 - `null` / undefined — backend handler is absent; no registered response contract exists in 1.1.1 binary.
 - At runtime, Tauri would return an unregistered-command error if invoked against AiMaMi 1.1.1 backend.
-- C5 implementation should treat as frontend-only: clear UI state without backend round-trip, or handle the invoke result as a no-op/error.
+- 内部构建 implementation should treat as frontend-only: clear UI state without backend round-trip, or handle the invoke result as a no-op/error.
 
 ### Error surface
 - No upstream error envelope defined (no backend handler).
 - Runtime error: Tauri command-not-registered (if frontend invokes and AiMaMi is the backend).
-- C5 implementation boundary: do not rely on upstream backend error shape; implement own error handling.
+- 内部构建 implementation boundary: do not rely on upstream backend error shape; implement own error handling.
 
 ### Side effects
 - **Backend**: none (no handler registered, no persistence, no fs/http/process side effects).

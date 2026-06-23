@@ -98,4 +98,4 @@ Expected output: `CoreEnvelope<CoreSnapshotPayload>` (0x2A8 = 680 bytes)
 ## dim6_basis
 Evidence: accounts/refresh_usage_snapshot/evidence.md §Confirmed (Tauri event "runtime-state-updated" at 0x1011578d6, note_usage_refresh_activity at 0x10061c240 decompiled — mutex + Condvar::notify_all confirmed, refresh_tray_menu_with_snapshot at 0x10062bc40 decompiled — TrayIcon::set_menu call confirmed, User-Agent AiMaMi/1.1.1 confirmed, 10 rate-limit JSON keys confirmed); interfaces/interface.md documents retry logic (200ms, status==2), error codes, and all 11 side-effects with VAs.
 
-Note: dim1 partial — Tauri event name delta "load_snapshot" → "runtime-state-updated" confirmed by VA at 0x1011578d6 in binary; C5 frontend must have been updated to listen to new event; explicit 1.1.1 frontend CCF verification required. dim5_win Unknown. Blocked for readyToImplement.
+Note: dim1 partial — Tauri event name delta "load_snapshot" → "runtime-state-updated" confirmed by VA at 0x1011578d6 in binary; 内部构建 frontend must have been updated to listen to new event; explicit 1.1.1 frontend CCF verification required. dim5_win Unknown. Blocked for readyToImplement.

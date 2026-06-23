@@ -44,7 +44,7 @@
     "request_dto": "none (argKeys=[])",
     "response_shape": "CoreEnvelope<SkillListPayload>",
     "installed_skill_summary_fields_confirmed": 7,
-    "installed_skill_summary_field_8": "unresolved (field table @ 0x1412B7E58); C5 should ignore unknown fields",
+    "installed_skill_summary_field_8": "unresolved (field table @ 0x1412B7E58); 内部构建 should ignore unknown fields",
     "skill_list_payload_totalrootPath": "confirmed; fields 2-4 unresolved",
     "skill_snapshot_all_6_fields": "confirmed with struct offsets",
     "side_effects": {
@@ -61,7 +61,7 @@
   "dim6_detail": {
     "source": "gate-report.json (prev)#dim6_acceptance_mapping (session <审计会话>)",
     "happy_paths": ["PATH_A normal read", "PATH_B auto-switch pending triggers snapshot file write"],
-    "critical_behavior": "PATH_B triggers disk write; C5 caller must account for non-pure-read behavior on Windows 1.1.1"
+    "critical_behavior": "PATH_B triggers disk write; 内部构建 caller must account for non-pure-read behavior on Windows 1.1.1"
   },
   "regen_by": "<审计会话>"
 }

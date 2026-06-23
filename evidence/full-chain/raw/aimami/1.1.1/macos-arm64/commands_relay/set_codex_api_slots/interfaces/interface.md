@@ -68,4 +68,4 @@ All errors return via `CoreError` type (display via `_$LT$codexmate_lib..core..m
 - `slots` replaces the full slots list for that provider (not merge/append)
 - Relay config write path: at `a2+608` (relay config file path ptr) in CodexPaths struct
 - dim5 Windows: independently done (REVERSE-STATUS line 2168, INDEX key aimami/1.1.1/windows-x64/set_codex_api_slots/full-chain)
-- dim6 test/acceptance: C5 implementation side responsibility
+- dim6 test/acceptance: 内部构建 implementation side responsibility

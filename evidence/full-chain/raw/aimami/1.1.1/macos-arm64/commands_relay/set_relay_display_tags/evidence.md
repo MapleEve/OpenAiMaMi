@@ -95,7 +95,7 @@
 **Gate tier**: readyToImplement (dim6=acceptance-draft)
 
 ### Happy Path
-- Input: `{global: "C5 Relay", woyao: "我要模型"}`
+- Input: `{global: "内部构建 Relay", woyao: "我要模型"}`
 - Expected: `CoreEnvelope::ok(RelayState)` — relay.json written atomically; codex catalog + config updated IF relay was active; whitespace trimmed from both tags before persist.
 
 ### Error Paths
@@ -115,7 +115,7 @@
 ### Test Mapping
 - `e2e`: happy_path_relay_active
 - `unit`: happy_path_relay_inactive, mutex_poisoned, atomic_write_failure, whitespace_trim
-- `explicit_non_automatable_accept`: woyao field name at +88B — consumer confirms in C5 RelayProvider struct
+- `explicit_non_automatable_accept`: woyao field name at +88B — consumer confirms in 内部构建 RelayProvider struct
 
 ### Accepted Unknowns
-- "woyao" struct field name (offset +88B confirmed from zeroing loop; consumer validates in C5 implementation)
+- "woyao" struct field name (offset +88B confirmed from zeroing loop; consumer validates in 内部构建 implementation)

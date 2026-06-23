@@ -44,7 +44,7 @@
   "dim4_detail": {
     "request": {},
     "response": "HotspotConfigJson {hotspot:bool, usageRefreshInterval:u64, deviceId:String, remoteDeviceSecret:String, notificationsSince:u64}",
-    "breaking_change_vs_109": "1.0.9 returned Option<String> (bare deviceId). 1.1.1 returns 5-field HotspotConfigJson. C5 DTO binding MUST be updated.",
+    "breaking_change_vs_109": "1.0.9 returned Option<String> (bare deviceId). 1.1.1 returns 5-field HotspotConfigJson. 内部构建 DTO binding MUST be updated.",
     "error_paths": [
       "repo lock fails → async dispatch check != 6 → error via sub_14080C3C0",
       "hotspot config read fails → Err(v13) → LOBYTE(v30)=6 → error response",

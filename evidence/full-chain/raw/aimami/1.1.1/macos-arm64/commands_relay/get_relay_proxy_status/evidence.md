@@ -42,7 +42,7 @@
 
 1. **dim1 frontend CCF complete trace**: only the invoke wrapper confirmed; UI trigger component/route, guard/preflight, and state mutation on response not yet traced (accepted_unknown, consistent with 1.0.9 baseline)
 2. **Windows platform behavior**: separate producer/IDB required; Windows delta not confirmed this session
-3. **dim6 test/acceptance mapping**: C5 implementation side — not part of this leaf
+3. **dim6 test/acceptance mapping**: 内部构建 implementation side — not part of this leaf
 4. **proxyAddr Some path**: no code path in compose_proxy_status populates proxyAddr to Some; always None — may be used by other commands or dead field
 5. **Exact RelayManager struct field layout**: offsets derived from decompile (+24 poisoned, +32 proxy_running, +40 port u16); field names not confirmed (stripped binary)
 6. **format_inner two-call order**: anon_267 called for hostStr, anon_265 called for portStr — or vice versa (label assignment from 逆向分析 variable names; functional output confirmed by byte analysis of templates)
@@ -59,7 +59,7 @@
 | dim4 interface/DTO/error | Accepted | hostStr/portStr/port/active/proxyAddr fields; error paths documented |
 | dim5 macOS platform gate | Accepted | same-binary decompile; SHA confirmed |
 | dim5 Windows gate | Unknown | separate Windows IDB required |
-| dim6 test/acceptance | Unknown | C5 implementation side |
+| dim6 test/acceptance | Unknown | 内部构建 implementation side |
 
 **Gate tier**: `strictImplementationUse_candidate` (macOS; dim1 accepted_unknown consistent with 1.0.9 baseline; dim5_win + dim6 Unknown)
 

@@ -43,7 +43,7 @@
 ## ## Unknown
 
 1. **Windows platform**: Windows IDB required; Windows may use `ShellExecuteW` or similar — not confirmed (platform evidence separate)
-2. **dim6 test/acceptance mapping**: C5 implementation side, not scope of raw evidence
+2. **dim6 test/acceptance mapping**: 内部构建 implementation side, not scope of raw evidence
 3. **Exact error message format on ENOENT**: inferred from std::io::Error Display impl; not byte-confirmed
 4. **Whether `open` is searched in PATH at runtime or hardcoded**: inferred PATH lookup from Command::new without absolute path
 5. **Behavior with special chars in path**: no sanitization observed; URL-encoded paths may be passed verbatim

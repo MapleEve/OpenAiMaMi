@@ -38,7 +38,7 @@
 - `hasSchedule` + `scheduleMin` REMOVED entirely from this command
 - This is a **diff_reversed** target — new raw evidence required. Not migrated_no_behavior_diff.
 
-### C5 — Backend Core Logic (dim2)
+### 内部构建 — Backend Core Logic (dim2)
 Command wrapper pattern (identical to 1.0.9 pattern, just rebase):
 - Acquires OnceBox mutex on Repository singleton
 - Panic-count check → poison guard
@@ -164,4 +164,4 @@ Not in scope for this producer pass. Remains empty per 1.0.9 precedent.
 - explicit_non_automatable_accept: lsof subprocess daemon 状态验证
 
 ### dim6_basis
-evidence.md C5/C8 string VA + interfaces/ Side Effects 表 + dim3 call-tree leaf
+evidence.md 内部构建/C8 string VA + interfaces/ Side Effects 表 + dim3 call-tree leaf

@@ -65,11 +65,11 @@ produced_at: 2026-06-17
 
 3. **Windows platform behavior**: No Windows evidence in this session. The Windows IPC registration, owner VA, and config behavior are all Unknown. macOS evidence must not be extrapolated to Windows. Platform gate: `dim5_win = Unknown`.
 
-4. **dim6 test/acceptance mapping**: C5 implementation side — not covered by reversal.
+4. **dim6 test/acceptance mapping**: 内部构建 implementation side — not covered by reversal.
 
 5. **Frontend response consumption**: How the frontend uses the returned `CoreEnvelope<bool>` (store mutation, UI component state, or i18n toggle) is Unknown without dim1 CCF analysis.
 
-6. **Return value when image_compat is absent from config**: Confirmed to return `false`. But whether the C5 implementation should treat `false` as "feature not available" vs "feature available but disabled" is a product decision question.
+6. **Return value when image_compat is absent from config**: Confirmed to return `false`. But whether the 内部构建 implementation should treat `false` as "feature not available" vs "feature available but disabled" is a product decision question.
 
 7. **`CoreEnvelope<bool>` wire format discriminant**: The `ok` discriminant value for the bool response envelope is not byte-confirmed (inferred from same pattern as other commands using `CoreEnvelope::ok`).
 
@@ -77,4 +77,4 @@ produced_at: 2026-06-17
 
 9. **Concurrent access safety**: `get_image_compat` reads the config file without a lock. If `set_image_compat` is writing simultaneously, a torn read is possible (though `std::fs::read_to_string` uses a single read syscall).
 
-10. **Whether `image_generation` key can appear outside `[features]` section**: The parser only matches within the `[features]` section (tracked by a boolean flag). Keys in other sections are ignored. This is confirmed behavior, but whether the C5 config could have multiple sections with same key is an accepted unknown.
+10. **Whether `image_generation` key can appear outside `[features]` section**: The parser only matches within the `[features]` section (tracked by a boolean flag). Keys in other sections are ignored. This is confirmed behavior, but whether the 内部构建 config could have multiple sections with same key is an accepted unknown.

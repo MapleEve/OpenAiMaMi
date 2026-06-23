@@ -48,7 +48,7 @@
 
 5. **asrErrorCode field**: Presence of asrErrorCode as input arg (not output) suggests ASR failure can be passed into the prompt generation — the frontend may include error context in the LLM prompt for graceful degradation handling.
 
-6. **Consumer implication**: Same as 1.0.9 — do not implement upstream backend owner for this command. If C5 implements generate_voice_prompt, it must be as a product decision (frontend LLM call pattern), not as upstream Tauri backend parity. The new 19-field argKeys define the C5 implementation contract surface for the frontend-to-LLM call pattern.
+6. **Consumer implication**: Same as 1.0.9 — do not implement upstream backend owner for this command. If 内部构建 implements generate_voice_prompt, it must be as a product decision (frontend LLM call pattern), not as upstream Tauri backend parity. The new 19-field argKeys define the 内部构建 implementation contract surface for the frontend-to-LLM call pattern.
 
 ---
 
@@ -70,6 +70,6 @@
 
 8. **Windows platform (1.1.1)**: Windows evidence independent. Windows IPC contracts and backend not examined here. Platform behavior Unknown for Windows.
 
-9. **dim6 test/acceptance mapping**: C5 implementation side acceptance criteria. Not determined here — this is C5 implementation-side work.
+9. **dim6 test/acceptance mapping**: 内部构建 implementation side acceptance criteria. Not determined here — this is 内部构建 implementation-side work.
 
 10. **Retry/error handling if backend invoke fails**: Since no backend handler exists, Tauri invoke would error at the IPC layer. Frontend error handling for missing backend handler is unknown from this evidence.

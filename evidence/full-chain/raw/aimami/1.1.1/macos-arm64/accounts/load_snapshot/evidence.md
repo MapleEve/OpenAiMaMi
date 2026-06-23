@@ -64,5 +64,5 @@
 6. **AppPathState inner fields** (clone shim found at `0x100507cb0`; struct layout not expanded)
 7. **note_usage_refresh_activity exact effect** (calls `0x10061c240`; timing measurement via `SystemTime::now/duration_since` confirmed; downstream effect not traced)
 8. **Windows platform behavior** (Windows Unknown — win64 lane not done for this command)
-9. **dim6 test/acceptance mapping** (C5 implementation side, not producer scope)
+9. **dim6 test/acceptance mapping** (内部构建 implementation side, not producer scope)
 10. **CodexPaths home path construction** (runtime-constructed; not confirmed in this pass)

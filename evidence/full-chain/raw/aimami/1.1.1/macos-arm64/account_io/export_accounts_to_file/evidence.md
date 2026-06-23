@@ -70,7 +70,7 @@
 - **ExportedAccount.auth field type**: not decompiled; only field count (14) confirmed
 - **subscriptionExpiresAt/subscriptionWillRenew exact serde format**: optional fields — not byte-confirmed for 1.1.1 (inferred from 1.0.9 + struct name at 0x101148783)
 - **Windows platform behavior**: Windows Unknown (no windows-x64 IDB loaded)
-- **dim6 test/acceptance mapping**: C5 implementation side work
+- **dim6 test/acceptance mapping**: 内部构建 implementation side work
 
 ---
 

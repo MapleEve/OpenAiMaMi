@@ -164,7 +164,7 @@ load_custom_instruction_state, preview_custom_instruction_apply
 
 **规范清单指针** → `/intermediate/aimami/1.1.1/version-delta/mac-orphan.txt`
 
-**Product 决策依据**：AiMaMi 1.0.9 playbook §8 已记录"voice 系列为 AiMaMi 特有功能，C5 不实现"；1.1.1 binary 逆向分析 确认 0 hit（capture_voice_trigger_key/cancel_voice_trigger_capture 两条有 gate-report 验证 readyToImplement with accepted_substitute=no_backend）。load_custom_instruction_state 在 mac 1.1.1 无 backend（不同于 win 侧的 command_removed）。
+**Product 决策依据**：AiMaMi 1.0.9 playbook §8 已记录"voice 系列为 AiMaMi 特有功能，内部构建 不实现"；1.1.1 binary 逆向分析 确认 0 hit（capture_voice_trigger_key/cancel_voice_trigger_capture 两条有 gate-report 验证 readyToImplement with accepted_substitute=no_backend）。load_custom_instruction_state 在 mac 1.1.1 无 backend（不同于 win 侧的 command_removed）。
 
 ---
 
@@ -199,7 +199,7 @@ load_custom_instruction_state, preview_custom_instruction_apply
 
 ### readyToImplement（24 条）
 
-所有 dim1-5 已闭合，dim6 acceptance-draft 已写入 ACCEPTANCE.md；消费者 C5 确认测试落地后正式升档。
+所有 dim1-5 已闭合，dim6 acceptance-draft 已写入 ACCEPTANCE.md；消费者 内部构建 确认测试落地后正式升档。
 
 `get_relay_active` · `load_installed_skills` · `load_mcp_servers` · `load_relay_state` · `merge_mystery_unlock_grants` · `open_path` · `parse_aimami_deeplink` · `rebuild_registry` · `remove_mcp_server` · `remove_skill` · `reorder_relay_providers` · `restart_codex` · `reveal_relay_api_key` · `set_codex_api_login` · `set_codex_api_slots` · `set_codex_router_enabled` · `set_mcp_server_enabled` · `set_relay_display_tags` · `switch_account_and_restart_codex` · `test_api_proxy_config` · `test_relay_draft_stream` · `test_relay_provider_stream` · `upsert_mcp_server` · `upsert_relay_provider`
 

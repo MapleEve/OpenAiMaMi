@@ -54,7 +54,7 @@
       {
         "type": "explicit_non_automatable_accept",
         "description": "No-args IPC contract verified; response is unit Ok \u2014 test that IPC call does not error on healthy system",
-        "reason": "OS process management side-effects cannot be deterministically asserted in C5 automated test suite without process introspection infrastructure; manual accept required"
+        "reason": "OS process management side-effects cannot be deterministically asserted in 内部构建 automated test suite without process introspection infrastructure; manual accept required"
       }
     ],
     "dim6_basis": "Happy path and error paths from evidence.md confirmed decompile of 6 functions: stop_codex_for_file_edit, launch_codex_app (4-path strategy), request_codex_app_quit (osascript), kill_codex_processes_until_clear (3s deadline), is_process_running (pgrep). Error strings: 'Codex launch timed out' (22B) confirmed in evidence. Frontend CCF confirmed from 1.1.1 ipc-contracts.jsonl: 2 wrappers, argKeys=[]."
@@ -64,6 +64,6 @@
     "new": "readyToImplement",
     "rationale": "dim1 confirmed (CCF argKeys=[] dual-source in 1.1.1 ipc-contracts.jsonl); dim2 PASS (owner + 5 platform functions decompiled); dim3 PASS (depth>=6, terminal: pgrep/kill/open syscalls); dim4 PASS (no args, unit Ok response, 2 error strings, OS process side-effects); dim5_mac PASS; dim5_win separate (INDEX line 1481); dim6=acceptance-draft",
     "implementation_use": "eligible",
-    "notes": "OS process management side-effects are not automatable in C5 test suite; manual acceptance required per test_mapping"
+    "notes": "OS process management side-effects are not automatable in 内部构建 test suite; manual acceptance required per test_mapping"
   }
 }

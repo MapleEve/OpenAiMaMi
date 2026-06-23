@@ -5,8 +5,8 @@
 **Date**: 2026-06-16
 **Binary SHA256**: d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610
 **IDB**: <本地路径>
-**Gate**: strictImplementationUse (dim1-5 closed; dim6 C5-side pending)
-**is_upstream**: false (C5-extra command, not in upstream codex-cli)
+**Gate**: strictImplementationUse (dim1-5 closed; dim6 内部构建-side pending)
+**is_upstream**: false (内部构建-extra command, not in upstream codex-cli)
 **IDB saved**: true (idb_save confirmed 2026-06-16)
 
 ---
@@ -128,9 +128,9 @@ Shared with 1.0.9 baseline — frontend CCF confirmed via win-divergence session
 | dim3 call-tree to leaves | closed | 5-depth: cmd_wrapper→coordinator→poll_quit→kill→launch; terminal leaves: taskkill, powershell, is_process_running, Codex.exe not found |
 | dim4 interface/DTO/error | closed | no-args; CODEX_APP_QUIT_TIMEOUT=0x8000000000000000; "Codex.exe not found" tag7 |
 | dim5 platform gate | closed (win) | win 1.1.1 independent evidence; macOS NOT inferred |
-| dim6 acceptance mapping | C5-side pending | outside reverse scope |
+| dim6 acceptance mapping | 内部构建-side pending | outside reverse scope |
 
-**Ceiling**: `strictImplementationUse` (dim6 missing = C5-side task)
+**Ceiling**: `strictImplementationUse` (dim6 missing = 内部构建-side task)
 
 ---
 

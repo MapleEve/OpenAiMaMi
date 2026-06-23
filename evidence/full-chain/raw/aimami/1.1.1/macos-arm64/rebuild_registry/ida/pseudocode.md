@@ -1,5 +1,5 @@
-# rebuild_registry — 逆向分析 Pseudocode
-# session=<审计会话>  machine=<本地机器>
+﻿# rebuild_registry — 逆向分析 Pseudocode
+# session=wf-aimami111-delta-20260617-sweep  machine=<本地机器>
 # delta_class=integrity_recovered  platform=macos-arm64
 # IDB=<来源位置>/raw/binary/AiMaMi-1.1.1-idb
 
@@ -197,7 +197,7 @@ Result<(), CoreError> persist_registry(repo, registry_vec, backup_flag);
 // Reads JSON file at (path_ptr, path_len), deserializes to AuthFile struct
 // Errors: 2=file not found, 3=JSON parse error,
 //         9="auth.json contains AiMaMi virtual relay key; not a real account"
-//            (triggered when token starts with "<virtual-relay-key-prefix>")
+//            (triggered when token starts with "sk-<redacted>")
 Result<AuthFile, CoreError> load_auth_file(path_ptr, path_len);
 ```
 

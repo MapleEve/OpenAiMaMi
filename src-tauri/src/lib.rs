@@ -79,6 +79,7 @@ pub fn run() {
             commands::relay::get_relay_proxy_status,
             commands::relay::import_relay_config,
             commands::relay::load_relay_state,
+            commands::relay::parse_aimami_deeplink,
             commands::relay::run_codex_router_diagnostics,
             commands::relay::set_codex_router_enabled,
             commands::relay::set_block_official_passthrough,

@@ -563,7 +563,7 @@
   - disk_write (hotspot config JSON, conditional)
   - reads app settings file
 
-**note**: C5-extra command (not upstream codex)；previously mis-classified same；managed_state_key=dev.aimami.auto-switch；UUID format + settings write scope changed；gate_result=PASS；root goldleaf version gate_tier=full_leaf
+**note**: 内部构建-extra command (not upstream codex)；previously mis-classified same；managed_state_key=dev.aimami.auto-switch；UUID format + settings write scope changed；gate_result=PASS；root goldleaf version gate_tier=full_leaf
 
 **逆向分析 symbols**: `handler@0x14000E335`, `handler@0x14078CD70`
 

@@ -56,9 +56,9 @@ Max depth: **5** (platform primitives). All branches terminated.
 | `quit_codex_fallback_kill_sys_111` | No Codex PIDs remaining OR 3s deadline exceeded |
 | `check_update_installability_launch_sys_111` | "Codex.exe not found" OR process appeared in 5s poll OR spawn failed |
 
-## dim6 — Implementation Notes (C5-side)
+## dim6 — Implementation Notes (内部构建-side)
 
-- C5 consumer must send no args: `invoke("graceful_restart_for_update")`.
+- 内部构建 consumer must send no args: `invoke("graceful_restart_for_update")`.
 - On `Ok` response: Codex has been terminated and relaunched — caller can wait for Codex IPC ready.
 - On `Err(tag6)`: Codex process did not exit within 5s; forceful kill also timed out at 3s.
 - On `Err(tag7)`: Codex executable not found at any expected path; installation may be corrupt.

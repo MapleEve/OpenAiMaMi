@@ -1,6 +1,6 @@
 # AI.md — 消费者快速入口
 
-**给 C5 实现侧消费者的最短摘要。完整证据链在 VERSION-DIFF.md 和 logic/ 目录。**
+**给 内部构建 实现侧消费者的最短摘要。完整证据链在 VERSION-DIFF.md 和 logic/ 目录。**
 
 ---
 

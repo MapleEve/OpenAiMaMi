@@ -27,7 +27,7 @@
     "dim3_call_tree_depth5": "26 entries, depth=5. Terminal: Mutex::lock/unlock(stdlib), read_to_string(fs), HashMap::insert(stdlib), write_atomic::rename(syscall), sync_parent_dir(fs). All branches reached. CLOSED.",
     "dim4_interface_dto_error_sideeffect": "argKeys=[name:String]. Response CoreEnvelope<Vec<McpServerSummary>> stride=224B confirmed. 4 error paths: mutex_poison/load_config_io/name_not_found(format @0x1010B6A09)/save_config_io. Side-effect: TOML atomic write (tmp->fsync->rename->sync_parent). No HTTP/process. CLOSED.",
     "dim5_same_platform_gate": "macos-arm64 binary sha256=f34ff829..., IDB confirmed, IPC VA=0x10072a660, core VA=0x1005a0510. CLOSED. dim5_win: requires separate Windows IDB — non-blocking for mac gate.",
-    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft. dim6 producer-side closed (acceptance-draft = producer done, consumer confirms C5 test coverage). CLOSED."
+    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft. dim6 producer-side closed (acceptance-draft = producer done, consumer confirms 内部构建 test coverage). CLOSED."
   },
   "regen_by": "<审计会话>"
 }

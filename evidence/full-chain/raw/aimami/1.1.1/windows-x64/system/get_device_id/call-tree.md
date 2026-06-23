@@ -79,5 +79,5 @@ idb_save: ok (path=<本地路径>
 | Exact struct byte offsets of HotspotConfig fields | accepted_unknown | Offsets (a3+16, a3+40, a3+64, a3+88, a3+112, a3+144) visible in serialize path but full struct layout not reconstructed |
 | mysteryUnlockGrants / mysteryUnlockedRoutes semantics | accepted_unknown | Read in settings parse layer; not part of get_device_id response DTO; behavioral impact on response unclear |
 | Inner async closure body (Future::poll) | accepted_unknown | State machine inlined into sub_140783480; core logic path confirmed via direct decompile |
-| dim6 test/acceptance mapping | product_decision | C5 implementation side |
+| dim6 test/acceptance mapping | product_decision | 内部构建 implementation side |
 | Windows platform frontier vs mac 1.1.1 | accepted — separate producer | Mac 1.1.1 not yet reversed for this command |

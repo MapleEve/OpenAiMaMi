@@ -80,8 +80,8 @@
     "gate_basis": "backend absent in both 1.0.9 and 1.1.1 macOS IDB; 4-channel 逆向分析 search confirms absence; frontend unchanged (cmd-same); migration gate preserved"
   },
   "acceptance_mapping": {
-    "consumer_action": "do not implement upstream backend owner; C5 native voice implementation is product decision",
-    "acceptance": "verify C5 gates restored voice as product decision, not upstream backend parity"
+    "consumer_action": "do not implement upstream backend owner; 内部构建 native voice implementation is product decision",
+    "acceptance": "verify 内部构建 gates restored voice as product decision, not upstream backend parity"
   },
   "prewrite_owner_gate": {
     "gate": "PREWRITE_PRODUCER_COLLISION_GATE_V1",

@@ -117,6 +117,160 @@ pub fn pending_model_fetch(command: &str) -> (Vec<String>, String) {
     )
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RelayDeeplinkImport {
+    pub provider: String,
+    pub name: String,
+    pub endpoint: String,
+    pub api_key_present: bool,
+    pub model: String,
+}
+
+pub fn parse_aimami_deeplink(url: &str) -> Result<RelayDeeplinkImport, CoreError> {
+    let value = url.trim();
+    if value.is_empty() {
+        return Err(CoreError::InvalidInput("deeplink 链接不能为空".to_string()));
+    }
+
+    let (scheme, remainder) = value
+        .split_once(':')
+        .ok_or_else(|| CoreError::InvalidInput("deeplink 缺少协议".to_string()))?;
+    if !scheme.eq_ignore_ascii_case("aimami") {
+        return Err(CoreError::InvalidInput(
+            "deeplink 协议必须是 aimami".to_string(),
+        ));
+    }
+
+    let (address, query) = remainder
+        .split_once('?')
+        .ok_or_else(|| CoreError::InvalidInput("deeplink 缺少查询参数".to_string()))?;
+    if !is_aimami_import_address(address) {
+        return Err(CoreError::InvalidInput(
+            "deeplink 路径必须是 v1/import".to_string(),
+        ));
+    }
+
+    let query = query.split('#').next().unwrap_or_default();
+    let query = parse_deeplink_query(query)?;
+    let provider = required_deeplink_field(&query, "provider")?;
+    let name = required_deeplink_field(&query, "name")?;
+    let endpoint = required_deeplink_field(&query, "endpoint")?;
+    let api_key = required_deeplink_field(&query, "apiKey")?;
+    let model = required_deeplink_field(&query, "model")?;
+
+    if !is_http_endpoint(&endpoint) {
+        return Err(CoreError::InvalidInput(
+            "deeplink endpoint 必须以 http:// 或 https:// 开头".to_string(),
+        ));
+    }
+
+    Ok(RelayDeeplinkImport {
+        provider,
+        name,
+        endpoint,
+        api_key_present: !api_key.is_empty(),
+        model,
+    })
+}
+
+fn is_aimami_import_address(address: &str) -> bool {
+    let mut segments = Vec::new();
+    if let Some(rest) = address.strip_prefix("//") {
+        let (host, path) = rest.split_once('/').unwrap_or((rest, ""));
+        if !host.trim().is_empty() {
+            segments.push(host.trim());
+        }
+        segments.extend(
+            path.split('/')
+                .map(str::trim)
+                .filter(|item| !item.is_empty()),
+        );
+    } else {
+        segments.extend(
+            address
+                .trim_start_matches('/')
+                .split('/')
+                .map(str::trim)
+                .filter(|item| !item.is_empty()),
+        );
+    }
+
+    segments.len() == 2 && segments[0] == "v1" && segments[1] == "import"
+}
+
+fn parse_deeplink_query(query: &str) -> Result<HashMap<String, String>, CoreError> {
+    let mut values = HashMap::new();
+    for item in query.split('&').filter(|item| !item.is_empty()) {
+        let (key, value) = item.split_once('=').unwrap_or((item, ""));
+        values.insert(
+            percent_decode_component(key)?,
+            percent_decode_component(value)?,
+        );
+    }
+    Ok(values)
+}
+
+fn required_deeplink_field(
+    query: &HashMap<String, String>,
+    field: &str,
+) -> Result<String, CoreError> {
+    query
+        .get(field)
+        .map(|value| value.trim())
+        .filter(|value| !value.is_empty())
+        .map(ToString::to_string)
+        .ok_or_else(|| CoreError::InvalidInput(format!("deeplink 缺少必填字段 {field}")))
+}
+
+fn is_http_endpoint(endpoint: &str) -> bool {
+    let normalized = endpoint.to_ascii_lowercase();
+    normalized.starts_with("http://") || normalized.starts_with("https://")
+}
+
+fn percent_decode_component(value: &str) -> Result<String, CoreError> {
+    let bytes = value.as_bytes();
+    let mut output = Vec::with_capacity(bytes.len());
+    let mut index = 0;
+
+    while index < bytes.len() {
+        match bytes[index] {
+            b'%' => {
+                if index + 2 >= bytes.len() {
+                    return Err(CoreError::InvalidInput(
+                        "deeplink 查询参数百分号编码无效".to_string(),
+                    ));
+                }
+                let high = hex_value(bytes[index + 1])?;
+                let low = hex_value(bytes[index + 2])?;
+                output.push((high << 4) | low);
+                index += 3;
+            }
+            b'+' => {
+                output.push(b' ');
+                index += 1;
+            }
+            byte => {
+                output.push(byte);
+                index += 1;
+            }
+        }
+    }
+
+    String::from_utf8(output)
+        .map_err(|_| CoreError::InvalidInput("deeplink 查询参数不是有效 UTF-8".to_string()))
+}
+
+fn hex_value(value: u8) -> Result<u8, CoreError> {
+    match value {
+        b'0'..=b'9' => Ok(value - b'0'),
+        b'a'..=b'f' => Ok(value - b'a' + 10),
+        b'A'..=b'F' => Ok(value - b'A' + 10),
+        _ => Err(CoreError::InvalidInput(
+            "deeplink 查询参数百分号编码无效".to_string(),
+        )),
+    }
+}
+
 pub fn parse_model_ids(response_body: &str) -> Result<Vec<String>, CoreError> {
     let value: Value = serde_json::from_str(response_body)?;
     let models = value
@@ -393,6 +547,73 @@ fn cluster(
 mod tests {
     use super::*;
     use serde_json::json;
+
+    fn invalid_input_message(error: CoreError) -> String {
+        match error {
+            CoreError::InvalidInput(message) => message,
+            other => panic!("expected invalid input error, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn parse_aimami_deeplink_accepts_valid_import_link() {
+        let parsed = parse_aimami_deeplink(
+            "aimami://v1/import?provider=openai-chat&name=Work+Relay&endpoint=https%3A%2F%2Frelay.example%2Fv1&apiKey=sk-secret&model=gpt-4o",
+        )
+        .expect("valid deeplink should parse");
+
+        assert_eq!(parsed.provider, "openai-chat");
+        assert_eq!(parsed.name, "Work Relay");
+        assert_eq!(parsed.endpoint, "https://relay.example/v1");
+        assert!(parsed.api_key_present);
+        assert_eq!(parsed.model, "gpt-4o");
+    }
+
+    #[test]
+    fn parse_aimami_deeplink_rejects_missing_required_field() {
+        let error = parse_aimami_deeplink(
+            "aimami://v1/import?provider=openai-chat&name=Work&endpoint=https%3A%2F%2Frelay.example%2Fv1&model=gpt-4o",
+        )
+        .expect_err("missing apiKey should fail");
+
+        assert_eq!(invalid_input_message(error), "deeplink 缺少必填字段 apiKey");
+    }
+
+    #[test]
+    fn parse_aimami_deeplink_rejects_wrong_scheme() {
+        let error = parse_aimami_deeplink(
+            "https://v1/import?provider=openai-chat&name=Work&endpoint=https%3A%2F%2Frelay.example%2Fv1&apiKey=sk-secret&model=gpt-4o",
+        )
+        .expect_err("wrong scheme should fail");
+
+        assert_eq!(invalid_input_message(error), "deeplink 协议必须是 aimami");
+    }
+
+    #[test]
+    fn parse_aimami_deeplink_rejects_non_http_endpoint() {
+        let error = parse_aimami_deeplink(
+            "aimami://v1/import?provider=openai-chat&name=Work&endpoint=ftp%3A%2F%2Frelay.example%2Fv1&apiKey=sk-secret&model=gpt-4o",
+        )
+        .expect_err("non-http endpoint should fail");
+
+        assert_eq!(
+            invalid_input_message(error),
+            "deeplink endpoint 必须以 http:// 或 https:// 开头"
+        );
+    }
+
+    #[test]
+    fn parse_aimami_deeplink_decodes_percent_and_plus_encoding() {
+        let parsed = parse_aimami_deeplink(
+            "aimami://v1/import?provider=openai-chat&name=%E4%B8%AD%E6%96%87+Relay&endpoint=https%3A%2F%2Frelay.example%2Fv1%3Fregion%3Dhk&apiKey=sk%2Dsecret&model=gpt%2D4o",
+        )
+        .expect("encoded deeplink should parse");
+
+        assert_eq!(parsed.name, "中文 Relay");
+        assert_eq!(parsed.endpoint, "https://relay.example/v1?region=hk");
+        assert!(parsed.api_key_present);
+        assert_eq!(parsed.model, "gpt-4o");
+    }
 
     #[test]
     fn build_models_url_candidates_normalizes_v1_and_compat_suffix() {

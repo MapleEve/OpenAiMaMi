@@ -52,7 +52,7 @@
 - Whether `set_hotspot_enabled` emits a Tauri event to frontend after state change (no `emit` call observed in decompile)
 - Exact `tao` send_event discriminant values (42 = close-window command, 33 = window identifier) — inferred from decompile, not string-confirmed
 - Windows platform behavior (Windows binary not analyzed; Windows Unknown)
-- dim6 test/acceptance mapping (C5 implementation side)
+- dim6 test/acceptance mapping (内部构建 implementation side)
 - Whether there is a separate in-memory state cache beyond the file (no write to in-memory cache observed in set_hotspot_enabled; get_hotspot_enabled always reads from file via load_settings)
 - Frontend call-site component (minified JS; IPC wrapper not located in 1.1.1 frontend yet — hotspot module CCF to be done)
 - argKeys for get_hotspot_enabled confirmed empty (no frontend IPC invocation arguments); frontend wrapper name unknown

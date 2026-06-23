@@ -58,5 +58,5 @@ idb_save: ok × 1 (path=<本地路径>
 | dim1 Frontend CCF | accepted_unknown | Migrated from 1.0.9 win: `getHotspotEnabled:()=>G("get_hotspot_enabled")` — invoke wrapper confirmed. Re-verification of 1.1.1 win frontend not run this session (same bundle). |
 | Exact byte offset of `enabled` in HotspotConfig struct | accepted_unknown | Not needed for implementation — bool returned directly from hashmap lookup, no struct offset required |
 | mysteryUnlockGrants / mysteryUnlockedRoutes semantics | accepted_unknown | Optional fields read alongside hotspot; not relevant to get_hotspot_enabled return value |
-| dim6 test/acceptance mapping | product_decision | C5 implementation side |
+| dim6 test/acceptance mapping | product_decision | 内部构建 implementation side |
 | Windows platform frontier vs mac dim5 | accepted — same platform evidence | Windows evidence is this session; mac is separate producer |

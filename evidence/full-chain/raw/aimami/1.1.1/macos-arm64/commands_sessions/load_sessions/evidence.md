@@ -36,7 +36,7 @@
 ## ## Inferred
 
 1. **DTO: SessionListPayload** (inferred from 1.0.9 canonical + drop shim type name + SQL columns): `{items: Vec<CodexSession>, total: i32}` FLAT layout. Item `CodexSession` 15 fields (from 1.0.9 confirmed): `{id, fileSize, filePath, threadName, updatedAt, projectName, projectPath, parentSessionId, depth, agentNickname, agentRole, isArchived, excerpt, projectPathMissing, isConversationThread}`.
-2. **DTO drift vs C5 current**: `SessionListPayload` in 1.1.1 (and 1.0.9) is FLAT `{items, total}` — C5 current impl uses `SessionTreePayload` with grouped project tree (`{projects: Vec<ProjectGroup>, totalSessions, totalSizeBytes, databasePath, databaseExists, scannedAt, items?}`). This is an intentional C5 divergence (product decision), not a 1.1.1 change.
+2. **DTO drift vs 内部构建 current**: `SessionListPayload` in 1.1.1 (and 1.0.9) is FLAT `{items, total}` — 内部构建 current impl uses `SessionTreePayload` with grouped project tree (`{projects: Vec<ProjectGroup>, totalSessions, totalSizeBytes, databasePath, databaseExists, scannedAt, items?}`). This is an intentional 内部构建 divergence (product decision), not a 1.1.1 change.
 3. **CodexPaths derivation**: 2 roots enumerated in build_rollout_index (consistent with 1.0.9 `home1`+`home2` dual-root pattern). Exact paths constructed by `CodexPaths::resolve_codex_home` + `CodexPaths::from_home`.
 4. **Rollout index keys**: workspace path (normalized, `\`→`/`) mapped to `{depth: u8, rollout_data: ...}` including subagent spawn metadata. Used in `is_codex_visible_session` to filter sessions by workspace membership and subagent classification.
 5. **Error envelope**: `CoreEnvelope` discriminant `0x8000000000000000` = Err variant; code 9 = serde/IO/rusqlite open failure; mutex-poison panic is unhandled (`panic!` path in `prepare_with_flags` callchain).
@@ -55,6 +55,6 @@
 5. **is_codex_visible_session source field full enum**: len=19 XOR confirmed (likely `"conversation_thread"`); len=6 `"openai"` and `"vscode"` confirmed; other source values (e.g. `"codex"`, `"human"`) not confirmed in this session.
 6. **Row deserialization closure** (`load_codex_threads::{{closure}}`): drop shim only found at 0x10073e630; body not decompiled (medium-priority); maps rusqlite Row columns to CodexThreadRow struct; 9 SQL columns → struct fields.
 7. **Windows platform**: Windows Unknown — separate producer task required for win64 binary.
-8. **dim6 test/acceptance mapping**: C5 implementation side; not reverser's scope.
+8. **dim6 test/acceptance mapping**: 内部构建 implementation side; not reverser's scope.
 9. **parentSessionId, depth field population**: rollout index lookup determines `parentSessionId`/`depth` for subagent threads; exact HashMap value layout (offset 88→parentSessionId, offset 96/104→depth per decompile) not fully mapped.
 10. **truncate_chars max_len param**: called for title/excerpt; max char count value not extracted in this session (likely 100 or 200 from 1.0.9 baseline).

@@ -31,7 +31,7 @@ response:
 
 ## gate 说明
 
-该命令已达 strictImplementationUse 级别（最高 gate），但 gate_accepted=false（C5 实现侧尚未使用）。
+该命令已达 strictImplementationUse 级别（最高 gate），但 gate_accepted=false（内部构建 实现侧尚未使用）。
 
 ## WIN 平台特有
 

@@ -50,4 +50,4 @@
 4. **`sync_codex_config_with_outcome` success/failure return**: Returns unit `*a1=10` on success to caller in core impl; caller (core impl) propagates as Ok branch; exact error from `write_catalog` failure logged at "writing_config" source location (src/core/relay/manager.rs:25)
 5. **`apply_codex_state` internals**: VA `0x10075ae20`; not decompiled (separate deep-chain function); behavior inferred from WIN cross-ref as "writes codex config state to disk" — accepted_unknown genuine_ceiling=false (decompilable if needed; budget constraint)
 6. **dim5 Windows**: Windows platform done separately (REVERSE-STATUS line 2168); WIN uses InterlockedCompareExchange8 lock vs macOS POSIX Mutex; atomic_write uses GetCurrentProcessId+CloseHandle vs macOS uuid+rename — platform diff documented in interfaces/interface.md
-7. **dim6 test/acceptance mapping**: Not in scope for producer; C5 implementation side responsibility per GATE-SPEC §DIM1-6
+7. **dim6 test/acceptance mapping**: Not in scope for producer; 内部构建 implementation side responsibility per GATE-SPEC §DIM1-6

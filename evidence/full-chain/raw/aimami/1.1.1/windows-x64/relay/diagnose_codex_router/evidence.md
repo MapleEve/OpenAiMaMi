@@ -7,7 +7,7 @@
 **Produced**: 2026-06-17
 **Platform**: windows-x64
 **Module**: relay (reclassified from system in 1.0.9; matches macOS 1.1.1 reclassification)
-**is_upstream**: false (C5-extra; not in upstream codex-cli)
+**is_upstream**: false (内部构建-extra; not in upstream codex-cli)
 **IDB**: <本地路径>
 **Gate tier**: strictImplementationUse (dim1-5 closed; dim6 not in reverse scope)
 
@@ -153,7 +153,7 @@ Call-tree depth 3 from handler; all branches terminate at fs/interlock/std leave
 
 ## dim6 — Not assessed
 
-ceiling = strictImplementationUse. dim6 (C5 test/acceptance mapping) is consumer-side implementation work, not reverse scope.
+ceiling = strictImplementationUse. dim6 (内部构建 test/acceptance mapping) is consumer-side implementation work, not reverse scope.
 
 ---
 

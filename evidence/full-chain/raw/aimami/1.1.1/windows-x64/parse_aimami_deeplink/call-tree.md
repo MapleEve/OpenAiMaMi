@@ -118,7 +118,7 @@ idb_save: ok=true path=<本地路径>
 | item | recovery_attempts | ceiling_reason | genuine_ceiling |
 |---|---|---|---|
 | model default string exact content | hex decode of LE constants 762605671/875443501 attempted — partial: "ons-" + "m024" suggest "sonnet-X" or "claude-..." | 7B embedded const in alloc; no string xref in 逆向分析 cache; full content requires memory read | false — not genuine ceiling, low priority |
-| InvokeResolver internals (sub_1402FED40, sub_14083A250) | structure recognized as Tauri 2 serde/resolve pattern; not reversed further | standard framework internals, not relevant to C5 impl | false — not business logic |
-| sub_14080C3C0 error path details | analyzed: it is InvokeResolver finalization with _InterlockedCompareExchange8 + WakeByAddressSingle; standard Win IPC pattern | Tauri 2 Win64 resolver, not C5 business logic | false |
+| InvokeResolver internals (sub_1402FED40, sub_14083A250) | structure recognized as Tauri 2 serde/resolve pattern; not reversed further | standard framework internals, not relevant to 内部构建 impl | false — not business logic |
+| sub_14080C3C0 error path details | analyzed: it is InvokeResolver finalization with _InterlockedCompareExchange8 + WakeByAddressSingle; standard Win IPC pattern | Tauri 2 Win64 resolver, not 内部构建 business logic | false |
 
 All business-relevant leaves: ACCEPTED (no genuine ceilings blocking consumerStartReady)

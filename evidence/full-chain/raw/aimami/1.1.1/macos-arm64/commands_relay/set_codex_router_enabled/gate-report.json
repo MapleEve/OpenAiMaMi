@@ -13,7 +13,7 @@
   "accepted_unknown_recovery": {
     "dim4": [
       "CCF sends 'relaunch' (bool, default true) and 'apiLogin' (nullable) but backend decompile confirms only 'enabled' as named param (a3). 'apiLogin' likely maps to mode byte a5 (0=direct-key, 1=api-login, 2=no-change). Recovery attempts: (1) backend decompile of owner (7455B) — only 'enabled' confirmed, mode is a5 not a named key; (2) ipc-contracts.jsonl confirms frontend sends {enabled,relaunch,apiLogin}; (3) interface.md gate-report-dim6 documents discrepancy. Non-blocking: consumer clarification task for 'apiLogin'->mode byte mapping.",
-      "CodexRouterTogglePayload field types: 15 field names confirmed from string pool @0x1011542f7. Types partially inferred (not all Rust types confirmed from decompile). Non-blocking for implementation — field names sufficient for C5 frontend contract."
+      "CodexRouterTogglePayload field types: 15 field names confirmed from string pool @0x1011542f7. Types partially inferred (not all Rust types confirmed from decompile). Non-blocking for implementation — field names sufficient for 内部构建 frontend contract."
     ]
   },
   "evidence_refs": [

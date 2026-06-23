@@ -166,6 +166,20 @@ pub struct RelayImportPayload {
     pub skipped: Vec<RelayImportSkipPayload>,
 }
 
+/// deeplink 导入解析 DTO 只暴露脱敏字段，不承诺真实导入副作用。
+#[derive(Debug, Clone, Serialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct RelayDeeplinkImportPayload {
+    pub backend_status: BackendSkeletonStatus,
+    pub valid: bool,
+    pub provider: Option<String>,
+    pub name: Option<String>,
+    pub endpoint: Option<String>,
+    pub api_key_present: bool,
+    pub model: Option<String>,
+    pub message: Option<String>,
+}
+
 /// relay 官方直连审计日志条目 DTO，字段必须和前端 RelayPassthroughAuditEntry 保持同步。
 #[derive(Debug, Clone, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]

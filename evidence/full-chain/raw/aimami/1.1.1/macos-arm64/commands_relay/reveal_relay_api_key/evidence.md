@@ -62,11 +62,11 @@
 
 3. **Tier 2 decryption algorithm exact spec**: XOR vs AES vs ChaCha not determined from 逆向分析 output alone. The `from_iter` + `sha256` pattern suggests XOR stream cipher but this is inferred.
 
-4. **Keychain service name exact bytes**: @0x101156d21 16B string not read. Non-blocking for implementation since C5 will use its own storage approach.
+4. **Keychain service name exact bytes**: @0x101156d21 16B string not read. Non-blocking for implementation since 内部构建 will use its own storage approach.
 
 5. **dim5 (Windows platform gate)**: Windows evidence tracked separately. mac_keychain path is macOS-only; Windows uses different Tier 3 (Windows Credential Manager). Platform delta owned by windows-x64 producer.
 
-6. **dim6 (test/acceptance mapping)**: C5 implementation-side verification criteria not defined yet. Standard accepted_unknown for this phase.
+6. **dim6 (test/acceptance mapping)**: 内部构建 implementation-side verification criteria not defined yet. Standard accepted_unknown for this phase.
 
 ---
 

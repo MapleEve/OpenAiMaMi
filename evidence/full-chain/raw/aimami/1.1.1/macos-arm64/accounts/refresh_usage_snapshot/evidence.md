@@ -11,7 +11,7 @@
 **module**: codexmate_lib::commands::accounts → leaf dir: accounts/
 **baseline**: 1.0.9 at 0x1001e7eec (symbol: `refresh_usage_snapshot_with_retry::hac9abab03237b906`)
 **is_upstream**: true
-**gate_tier**: strictImplementationUse_candidate → **full_gold_leaf** (dim1-5 closed in this session; dim6 C5 impl side)
+**gate_tier**: strictImplementationUse_candidate → **full_gold_leaf** (dim1-5 closed in this session; dim6 内部构建 impl side)
 **call_tree_edges**: 31 (format: edge-per-line jsonl; max_depth=5; complete=true)
 
 ---
@@ -77,7 +77,7 @@
 - `create_tray_menu_from_snapshot` (0x10062a470) internal menu item structure — not decompiled; termination confirmed at `TrayIcon::set_menu` leaf
 - Whether `test_api_connectivity` failure causes early return in `enrich_active_account_usage_via_api` or only sets error category — callees confirmed but branch logic not fully decompiled; inferred non-blocking from callees pattern (no early return visible in enrich callees list)
 - Windows platform equivalent behavior — Windows binary separate; not covered by this macOS evidence
-- dim6 (test/acceptance mapping) — C5 implementation side work; not assessed here
+- dim6 (test/acceptance mapping) — 内部构建 implementation side work; not assessed here
 
 ---
 

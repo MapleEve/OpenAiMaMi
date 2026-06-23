@@ -56,7 +56,7 @@
 3. **MysteryUnlockGrant full struct field names**: Inferred as `{ route: String, flags: u64, expires_at_ms: u64 }` from stride/access pattern but field names not from source schema. Possible additional fields (e.g., `id`, `scope`, `createdAt`). Non-blocking for implementation.
 4. **Grant JSON serialization field names**: `serde_json::Value` round-trip means field names in JSON may differ from Rust struct field names. Actual JSON key names for expiry field unknown (could be `expiresAt`, `expires_at`, `expiry_ms`). Non-blocking — frontend owns the grant format contract.
 5. **Windows platform behavior**: No 1.1.1 Windows IDB loaded in this session. Windows Unknown.
-6. **dim6 test/acceptance mapping**: C5 implementation side — outside reverse scope.
+6. **dim6 test/acceptance mapping**: 内部构建 implementation side — outside reverse scope.
 7. **mysteryUnlockGrants array maximum size / capacity**: No size limit observed in decompile. Accepted as unbounded.
 8. **Concurrent grant mutation safety**: Lock is held during load+filter+save. If save_settings fails mid-write (non-atomic write), partial write risk exists. Non-blocking for gate.
 9. **Frontend response consumption**: How the returned Vec<MysteryUnlockGrant> is used in UI (which routes get unlocked, how route string maps to UI nav) — frontend concern, accepted unknown.
@@ -97,4 +97,4 @@
 - dim4 (interface/DTO/error/side-effect): PASS — argKeys=[], response CoreEnvelope<Vec<Grant>>, error paths mapped, side-effect = settings file read+conditional write
 - dim5_mac: PASS — macOS ARM64 confirmed
 - dim5_win: Unknown
-- dim6: Unknown (C5 implementation side)
+- dim6: Unknown (内部构建 implementation side)

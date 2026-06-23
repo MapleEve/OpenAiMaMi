@@ -1,5 +1,5 @@
-# get_notification_client_state — Raw Evidence
-## AiMaMi 1.1.1 macOS arm64 | session <审计会话>
+﻿# get_notification_client_state — Raw Evidence
+## AiMaMi 1.1.1 macOS arm64 | session wf-aimami111-delta-20260616
 
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 **IDB**: `<来源位置>/raw/binary/AiMaMi-1.1.1-idb`
@@ -50,8 +50,8 @@
 2. **Exact settings file path string**: constructed dynamically by `CodexPaths::resolve_codex_home` + path builder at `Repository` offsets `a2+440/448`. Path not decoded this session (out of scope for this leaf; shared infrastructure with other system commands).
 3. **`notifications_since == 0` edge case treatment**: if `SystemTime::before_UNIX_EPOCH` → `duration_since` Err → `v6=0` (sentinel) → subsequent call always hits create-path (see LABEL_14 logic). Behavior: keeps retrying save with notifications_since=0 until clock normalizes. Accepted unknown (unusual environment edge case).
 4. **CoreEnvelope error discriminant values**: exact integer codes for each error class not decoded (only tag 10=Ok and 0x8000000000000000=Err sentinel confirmed). Accepted: consistent with all other system commands in this codebase.
-5. **Windows platform behavior**: Windows binary not analyzed this session. Windows provider in INDEX.jsonl (session <审计会话>, gate=strictImplementationUse) exists for 1.0.9 but not confirmed for 1.1.1. Windows = Unknown for 1.1.1.
-6. **dim6 test/acceptance mapping**: C5 implementation side; not assessed (reversal ceiling).
+5. **Windows platform behavior**: Windows binary not analyzed this session. Windows provider in INDEX.jsonl (session wf-aimami109-dualcomplete, gate=strictImplementationUse) exists for 1.0.9 but not confirmed for 1.1.1. Windows = Unknown for 1.1.1.
+6. **dim6 test/acceptance mapping**: 内部构建 implementation side; not assessed (reversal ceiling).
 7. **`uuid::Uuid::new_v4` entropy source**: OS getrandom or similar — standard uuid crate behavior, not custom seeded. Accepted unknown (external library internal).
 8. **`notificationsSince` serde rename**: whether serde uses `#[serde(rename_all = "camelCase")]` or per-field rename. String pool `notificationsSince` at `0x10114cde0` (embedded in rodata) suggests the JSON key is exactly `notificationsSince`. Inferred camelCase consistent with field name.
 9. **Full `CodexMateSettings` struct layout**: only notification-relevant fields decoded this session. Other fields (hotspot, usageRefreshInterval, remoteDeviceSecret, mysteryUnlockGrants, etc.) documented in separate leaves.
@@ -116,7 +116,7 @@
 - dim4 (interface/DTO/error/side-effect): PASS (req=none, resp={deviceId, notificationsSince}, 5 error paths, create side-effect=save_settings)
 - dim5 (macOS platform gate): PASS (macOS arm64 IDB confirmed, all VAs verified)
 - dim5 (Windows): Unknown (1.1.1 Windows not analyzed)
-- dim6 (test/acceptance): Unknown (C5 implementation side — reversal ceiling)
+- dim6 (test/acceptance): Unknown (内部构建 implementation side — reversal ceiling)
 
 **implementation_use**: false (dim6 not assessed, Windows Unknown)
 **gate_accepted**: false (dim6 not assessed)

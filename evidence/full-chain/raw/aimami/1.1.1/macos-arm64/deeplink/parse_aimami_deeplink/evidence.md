@@ -51,7 +51,7 @@
 ## ## Unknown
 
 1. **Windows-macOS behavior parity on "app" check**: Windows owner (895B) has a separate core fn (0x1401C7B90, 3164B, 105 blocks cc=45); the "app"/"codex" validation sub-check byte sequence may differ in Windows (non-blocking; not blocking strictImplementationUse_candidate)
-2. **dim6 test/acceptance mapping**: C5 implementation side; not producer responsibility
+2. **dim6 test/acceptance mapping**: 内部构建 implementation side; not producer responsibility
 3. **frontend trigger exact event handler**: `deep-link://new-url` Tauri event → `parseDeeplink` call chain not fully traced in macOS frontend CCF (Windows CCF confirmed; macOS CCF accepted_unknown consistent with same JS bundle)
 4. **model param value validation**: any string accepted for custom model; no allowlist check observed in owner body; may be validated downstream by relay provider
 5. **"app" param meaning**: intermediate param `"app"` removed from HashMap + checked == `"codex"` (5B); possible sub-resource discriminator; not in frontend argKeys list; semantics uncertain — may be stripped before relay

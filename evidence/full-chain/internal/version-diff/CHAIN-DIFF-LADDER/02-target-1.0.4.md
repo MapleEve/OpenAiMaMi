@@ -94,7 +94,7 @@
 
 | 链路名 | 1.0.1 入参 | 1.0.1 链路 → 1.0.4 状态 | 证据锚 / confidence |
 |---|---|---|---|
-| `recover_unindexed_sessions`（`0x10030b6f0`） | `ids`（closure-only body） | 1.0.1：→ `core::sessions::recover_unindexed_sessions` → response_serialize。1.0.4：**显式移除**（task-e-recover-unindexed-sessions-removal，非 voice 连带，是独立 session 功能下线）。 | FULL-CHAIN-101 §sessions `0065`；演进表 §2 sessions=1；parity-freeze `reports/1.0.4/task-e-recover-unindexed-sessions-removal.md`；**high** |
+| `recover_unindexed_sessions`（`0x10030b6f0`） | `ids`（closure-only body） | 1.0.1：→ `core::sessions::recover_unindexed_sessions` → response_serialize。1.0.4：**显式移除**（task-<redacted>，非 voice 连带，是独立 session 功能下线）。 | FULL-CHAIN-101 §sessions `0065`；演进表 §2 sessions=1；parity-freeze `reports/1.0.4/task-<redacted>.md`；**high** |
 
 ---
 

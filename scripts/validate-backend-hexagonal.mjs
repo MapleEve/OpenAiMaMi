@@ -82,7 +82,9 @@ const sourceSidecarDaemonCommands = [
   "start_usage_refresh_watcher",
   "update_usage_refresh_schedule",
 ];
-const expectedNonVoiceIpcCommandCount = 98 + sourceSidecarDaemonCommands.length;
+const versionDeltaRelayCommands = ["parse_aimami_deeplink"];
+const expectedNonVoiceIpcCommandCount =
+  98 + sourceSidecarDaemonCommands.length + versionDeltaRelayCommands.length;
 
 const ipcDomainModuleMap = new Map([
   ["accounts", "accounts"],

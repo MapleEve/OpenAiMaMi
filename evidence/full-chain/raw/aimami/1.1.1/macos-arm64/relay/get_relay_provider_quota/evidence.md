@@ -60,7 +60,7 @@ produced_by=<本地机器> produced_at=2026-06-17
 - **extraHeaders null/missing behavior**: whether nil/empty extraHeaders is handled before parse_extra_headers or inside (assumed: empty/nil → no additional headers, no error)
 - **retry logic**: whether quota fetch retries on transient errors (is_transient_error function not found in fetch_async callees — may not retry for quota, only for fetch_models)
 - **dim5 Windows**: Windows platform behavior confirmed via win 逆向分析 session (separate Windows evidence); stride=232B matches mac; Windows lock pattern differs (ICEX8 vs parking_lot mutex)
-- **dim6 test/acceptance**: C5 implementation side
+- **dim6 test/acceptance**: 内部构建 implementation side
 - **quota response error codes**: specific error discriminant values for rate_limit/quota_exceeded/auth_failure not decoded from HTTP response path
 - **ASYNC_CLIENT build params**: reqwest client build configuration (timeout, TLS settings) in OnceLock initializer not decompiled
 - **mac_keychain service name**: 16B constant at `0x101156d21` (anon.cb488c0530badd667ddecb834e53ca81.780) — not decoded; service = AiMaMi keychain service identifier

@@ -122,4 +122,4 @@
 - e2e: 真实 SQLite DB + 真实 rollout 目录；响应 Vec<(path,mtime)> 格式确认
 
 ### dim6_basis
-interfaces/delete_sessions_dto.md Side Effects 有序列表 + Error Envelope; evidence.md C3 SQL statements + C4 rollout index + C5 global-state rewrite
+interfaces/delete_sessions_dto.md Side Effects 有序列表 + Error Envelope; evidence.md C3 SQL statements + C4 rollout index + 内部构建 global-state rewrite

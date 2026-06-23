@@ -62,7 +62,7 @@
   "dim6_detail": {
     "source": "gate-report.json (prev)#dim6_acceptance_mapping (session <审计会话>)",
     "behavioral_delta_risk": "HIGH",
-    "critical_note": "1.1.1 returns ONLY last 7 days of quota history. 1.0.9 returned ALL history. C5 UI MUST communicate 7-day window to users. Silent truncation is a breaking behavioral change.",
+    "critical_note": "1.1.1 returns ONLY last 7 days of quota history. 1.0.9 returned ALL history. 内部构建 UI MUST communicate 7-day window to users. Silent truncation is a breaking behavioral change.",
     "file_not_found_note": "Missing quota-history.jsonl returns success=true data=[] (not an error); callers must not treat empty response as error"
   },
   "regen_by": "<审计会话>"

@@ -590,6 +590,18 @@ export const IPC_COMMAND_DEFINITIONS = [
   },
   {
     "domain": "relay",
+    "command": "parse_aimami_deeplink",
+    "wrapperNames": [
+      "parseAimamiDeeplink"
+    ],
+    "argKeys": [
+      "url"
+    ],
+    "source": "minified",
+    "tier": "P1"
+  },
+  {
+    "domain": "relay",
     "command": "run_codex_router_diagnostics",
     "wrapperNames": [],
     "argKeys": [],

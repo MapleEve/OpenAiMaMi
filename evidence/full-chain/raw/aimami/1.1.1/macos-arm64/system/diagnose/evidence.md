@@ -148,7 +148,7 @@
 - Exact DiagnoseResult serde field names (derive macro, not in string pool for this command)
 - Full layout of DiagnoseResult struct beyond confirmed strides and size
 - Windows platform behavior (Windows Unknown — separate platform, not deduced from macOS)
-- dim6: test/acceptance mapping (C5 implementation side, not reverse scope)
+- dim6: test/acceptance mapping (内部构建 implementation side, not reverse scope)
 - `load_current_auth_snapshot@0x1004cd5c0` internal body (leaf_named, not decompiled this pass)
 - `load_registry@0x1004bf8e0` internal body (leaf_named)
 - `load_settings@0x1004bfa30` internal body (leaf_named)
@@ -190,7 +190,7 @@
 - **dim4** (interface/DTO/error/side-effect): CLOSED — argKeys=[], return 0x1A0B CoreEnvelope<DiagnoseResult>, error via CoreError Display, side effects identified
 - **dim5 macOS**: CLOSED — macOS ARM64 confirmed
 - **dim5 Windows**: UNKNOWN (separate platform, not analyzed)
-- **dim6** (test/acceptance mapping): UNKNOWN (C5 implementation side)
+- **dim6** (test/acceptance mapping): UNKNOWN (内部构建 implementation side)
 - **ceiling**: strictImplementationUse (dim5_win + dim6 not reverse scope)
 - **gate_accepted**: false (dim6 not assessed)
 - **implementation_use**: false

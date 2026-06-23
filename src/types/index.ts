@@ -935,6 +935,17 @@ export interface RelayImportPayload {
   skipped: RelayImportSkipPayload[];
 }
 
+export interface RelayDeeplinkImportPayload {
+  backendStatus?: BackendSkeletonStatus;
+  valid: boolean;
+  provider: string | null;
+  name: string | null;
+  endpoint: string | null;
+  apiKeyPresent: boolean;
+  model: string | null;
+  message: string | null;
+}
+
 export interface RelayPassthroughAuditEntry {
   timestamp: string;
   event: string;

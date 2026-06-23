@@ -46,7 +46,7 @@ idb_path: <来源位置>/raw/binary/AiMaMi-1.1.1-idb
 7. **fix_auth_integrity auth.json dir path** — `a2+272` offset from Repository struct; absolute path unknown
 8. **CoreEnvelope error discriminants** for Err branch — accepted_unknown; 0x8000000000000000 observed in owner for top-level Err
 9. **Windows platform behavior** — Windows Unknown; no Windows artifact analysis in this session
-10. **dim6 test/acceptance mapping** — C5 implementation side work; not producer responsibility
+10. **dim6 test/acceptance mapping** — 内部构建 implementation side work; not producer responsibility
 11. **"db_orphan_providers" exact handler** — string ref only, not individually traced through fix_issue large body
 12. **"catalog_path_validity" exact handler** — string ref only
 13. **"config_profile_conflict" exact handler** — string ref only
@@ -60,7 +60,7 @@ dim3: call-tree depth 3+; fs_write/fs_read/process_kill/process_spawn leaves rea
 dim4: interface/DTO: argKeys=[itemId], 11 known itemId values, CoreEnvelope<Vec<FixResult>> response, error paths enumerated, side effects ordered — ACCEPTED
 dim5_mac: macOS confirmed; IPC blob confirmed; decompile on ARM64 binary — ACCEPTED
 dim5_win: Windows Unknown — BLOCKED
-dim6: C5 implementation side — Unknown
+dim6: 内部构建 implementation side — Unknown
 
 four_angle_completeness:
 - A (func_query): codexmate_lib::commands::relay::fix_codex_router_issue found unique at 0x1005eb070 — PASS

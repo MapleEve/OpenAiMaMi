@@ -28,6 +28,6 @@ No upstream backend side-effect leaf. Voice path/UI/global-shortcut constants (`
 
 macOS ARM64 confirmed absent. Windows 1.1.1 status: win_same per DELTA-PLAN.md (dispatcher string pool presence, DTO/callee depth not confirmed this session).
 
-## C5 Implementation Note
+## 内部构建 Implementation Note
 
-C5 should implement voice capture as a C5-native feature with its own backend logic. No upstream backend parity possible (upstream has no backend for this command). The accepted substitute gate (`not_upstream_backend_parity=true`) means C5 is free to design its own voice trigger key capture behavior.
+内部构建 should implement voice capture as a 内部构建-native feature with its own backend logic. No upstream backend parity possible (upstream has no backend for this command). The accepted substitute gate (`not_upstream_backend_parity=true`) means 内部构建 is free to design its own voice trigger key capture behavior.

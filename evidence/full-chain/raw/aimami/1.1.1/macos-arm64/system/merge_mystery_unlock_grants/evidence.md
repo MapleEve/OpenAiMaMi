@@ -50,7 +50,7 @@
 
 1. **Windows behavior**: Not decompiled. Windows IDB required. `platformScopeDeclared = "macOS confirmed; Windows Unknown"`.
 
-2. **dim6 test/acceptance mapping**: C5 implementation side responsibility. Not producer-assigned.
+2. **dim6 test/acceptance mapping**: 内部构建 implementation side responsibility. Not producer-assigned.
 
 3. **Exact sort comparator**: The `PartialOrd`/`Ord` impl for `MysteryUnlockGrant` was not decompiled. Likely derives from struct field order (route then grant_id then granted_at_ms) but not byte-confirmed.
 
@@ -92,6 +92,6 @@
 - **dim3 (call-tree depth)**: CONFIRMED — depth=3 to stdlib/persistence leaves; all implementation leaves reached
 - **dim4 (interface/DTO/error/side-effect)**: CONFIRMED — argKeys, response envelope, route allowlist, mutex pattern, error paths
 - **dim5 (platform gate)**: macOS CONFIRMED; Windows Unknown
-- **dim6 (test/acceptance mapping)**: Unknown (C5 side)
+- **dim6 (test/acceptance mapping)**: Unknown (内部构建 side)
 
 **Gate tier**: `strictImplementationUse_candidate` (dim1+dim2+dim3+dim4+dim5_mac confirmed; dim5_win+dim6 Unknown)

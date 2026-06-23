@@ -61,7 +61,7 @@
       {
         "type": "e2e",
         "description": "Call with unknown providerId; verify CoreEnvelope::ok(None) \u2014 not an error",
-        "reason": "None-response semantics differ from error; must be handled distinctly in C5"
+        "reason": "None-response semantics differ from error; must be handled distinctly in 内部构建"
       },
       {
         "type": "manual",
@@ -81,6 +81,6 @@
     "new": "readyToImplement",
     "rationale": "dim1 NOW confirmed (1.1.1 ipc-contracts.jsonl: argKeys=['providerId'] PASS \u2014 resolves pending dim1 from evidence.md); dim2 PASS (4 decompiles: owner+dispatcher+get_api_key+mac_keychain::get); dim3 PASS (depth>=5, terminal: FS SYSCALL + macOS Keychain syscall + SHA256); dim4 PASS (CoreEnvelope<Option<String>>, 3-tier arch, write-through side-effect); dim5_mac PASS; dim5_win separate; dim6=acceptance-draft",
     "implementation_use": "eligible",
-    "notes": "Tier 3 (macOS Keychain) side-effect requires manual acceptance; Tier 2 decrypt algorithm (XOR/SHA256) accepted_unknown but non-blocking for C5 implementation which will use its own storage"
+    "notes": "Tier 3 (macOS Keychain) side-effect requires manual acceptance; Tier 2 decrypt algorithm (XOR/SHA256) accepted_unknown but non-blocking for 内部构建 implementation which will use its own storage"
   }
 }

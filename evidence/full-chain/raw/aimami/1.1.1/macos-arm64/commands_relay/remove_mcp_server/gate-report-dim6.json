@@ -60,7 +60,7 @@
       {
         "type": "e2e",
         "description": "Call with non-existent name; verify error response with name in message",
-        "reason": "Error path requires IPC dispatch; not easily unit-testable in C5 without mock"
+        "reason": "Error path requires IPC dispatch; not easily unit-testable in 内部构建 without mock"
       },
       {
         "type": "manual",
@@ -75,6 +75,6 @@
     "new": "readyToImplement",
     "rationale": "dim1+dim2+dim3+dim4+dim5_mac all accepted; dim5_win separate (non-blocking for mac implementation); dim6=acceptance-draft (producer-acceptance-draft, consumer to confirm test landing)",
     "implementation_use": "eligible",
-    "notes": "dim6=acceptance-draft; readyToImplement conditioned on consumer confirming C5 test coverage"
+    "notes": "dim6=acceptance-draft; readyToImplement conditioned on consumer confirming 内部构建 test coverage"
   }
 }

@@ -32,11 +32,11 @@
 - The absence is consistent across 1.0.9 (macos sha=1db044e8, windows sha=a5822387) and 1.1.1 (universal binary), indicating a deliberate product decision to not implement backend handling.
 - argKeys=[] (zero-arity) — the command takes no parameters, consistent with a stateless clear/reset operation.
 - The response type (if invoked against a registered handler) would likely return a unit/void response or CoreEnvelope::ok(()). Since no handler exists, the actual response is undefined (Tauri unregistered command error).
-- The C5 implementation should treat this as a frontend-only operation (clear UI state, no backend call required), or silently handle the no-op invoke result.
+- The 内部构建 implementation should treat this as a frontend-only operation (clear UI state, no backend call required), or silently handle the no-op invoke result.
 
 ## Unknown
 
-- Exact Tauri error response when frontend invokes `clear_custom_instruction_block` against an absent backend handler: unknown (would require runtime trace on 1.1.1 binary; not a blocking unknown since C5 should not pass through the invoke to AiMaMi backend).
+- Exact Tauri error response when frontend invokes `clear_custom_instruction_block` against an absent backend handler: unknown (would require runtime trace on 1.1.1 binary; not a blocking unknown since 内部构建 should not pass through the invoke to AiMaMi backend).
 - Whether future versions of AiMaMi will register a backend handler for this command: unknown, product decision.
 - Windows 1.1.1 binary: not analyzed in this session (Windows evidence is a separate platform, must come from <逆向工具通道>). Windows 1.0.9 status: accepted_ready_absent_backend_orphan_ida_direct (sha=a5822387). Windows 1.1.1 backend absence not independently verified in this session — Windows unknown.
 - Whether the frontend `clearCustomInstructionBlock()` call is ever invoked from a UI element in 1.1.1 (FCF entry has no guards and no specific trigger element identified — only a minified-static-function trigger type with no component_file element): unknown UI trigger path.

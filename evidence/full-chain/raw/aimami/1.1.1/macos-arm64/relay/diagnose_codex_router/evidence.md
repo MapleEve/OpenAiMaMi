@@ -101,7 +101,7 @@
 
 2. **dim5_win behavior** — Windows platform not reversed this session; Windows 1.0.9 data available but 1.1.1 win not done.
 
-3. **dim6 test/acceptance mapping** — C5 implementation side scope not assessed.
+3. **dim6 test/acceptance mapping** — 内部构建 implementation side scope not assessed.
 
 4. **Exact stale-reason message strings** — `codex_config_stale_reason` produces dynamic formatted strings via `format_inner`; ~8 rodata string templates referenced but not all byte-decoded.
 

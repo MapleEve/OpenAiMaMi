@@ -96,11 +96,11 @@ IPC dispatcher (0x100312de0)
 
 - **macOS-arm64**: Accepted (this evidence)
 - **Windows-x64**: Unknown — requires Windows IDB; do not extrapolate
-- **dim6 test/acceptance**: Unknown — C5 implementation side
+- **dim6 test/acceptance**: Unknown — 内部构建 implementation side
 
 ## Accepted Unknowns
 
 - dim5_win: Windows platform behavior (non-blocking, requires separate Win IDB session)
-- dim6: test/acceptance mapping (C5 implementation responsibility)
+- dim6: test/acceptance mapping (内部构建 implementation responsibility)
 - McpServerSummary exact field layout beyond name_ptr/name_len (non-blocking)
 - enabled flag byte offset in struct (inferred from param passing; non-blocking for implementation)

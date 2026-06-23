@@ -81,7 +81,7 @@
     "library_internal_vs_config_callsite": "excluded — all key callees are codexmate_lib internal"
   },
   "gate_candidate": "consumerStartReady",
-  "gate_notes": "dim1 (frontend CCF) requires frontend verification for 1.1.1 (1.0.9 baseline: invoke with no args); dim2 confirmed; dim3 confirmed depth=7; dim4 confirmed; dim5 macOS only; dim6 C5 implementation side. strictImplementationUse and readyToImplement require Windows evidence and frontend CCF 1.1.1 confirmation.",
+  "gate_notes": "dim1 (frontend CCF) requires frontend verification for 1.1.1 (1.0.9 baseline: invoke with no args); dim2 confirmed; dim3 confirmed depth=7; dim4 confirmed; dim5 macOS only; dim6 内部构建 implementation side. strictImplementationUse and readyToImplement require Windows evidence and frontend CCF 1.1.1 confirmation.",
   "platform_gate": {
     "macos_arm64": "confirmed",
     "windows_x64": "Unknown — not checked in this session"

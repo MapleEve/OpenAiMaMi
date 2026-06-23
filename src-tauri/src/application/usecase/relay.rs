@@ -3,9 +3,9 @@ use crate::application::{
     service::{current_timestamp, default_relay_platform},
 };
 use crate::contracts::{
-    CoreWarning, RelayActivePayload, RelayExportPayload, RelayImportPayload,
-    RelayPassthroughAuditEntryPayload, RelayProviderDraftInput, RelayProxyPayload,
-    RelayRouterTogglePayload, RelayStatePayload, RelayTestPayload,
+    CoreWarning, RelayActivePayload, RelayDeeplinkImportPayload, RelayExportPayload,
+    RelayImportPayload, RelayPassthroughAuditEntryPayload, RelayProviderDraftInput,
+    RelayProxyPayload, RelayRouterTogglePayload, RelayStatePayload, RelayTestPayload,
 };
 use crate::core::{
     error::CoreError,
@@ -26,7 +26,8 @@ pub use self::diagnostics::{
 };
 pub use self::models::fetch_relay_models_draft;
 use self::payload::{
-    active_payload_from_state, core_state_from_repo, draft_from_input, draft_from_provider,
+    active_payload_from_state, core_state_from_repo, deeplink_payload_from_domain,
+    deeplink_warning, draft_from_input, draft_from_provider, invalid_deeplink_payload,
     load_provider_for_test, provider_payload_from_domain, proxy_payload_from_domain,
     relay_test_error, relay_test_error_warning, relay_test_warning, repository_error_warning,
     repository_status, repository_warning, skeleton_status, state_payload_from_domain,
@@ -273,6 +274,23 @@ pub fn import_relay_config(
                 skipped: Vec::new(),
             },
             repository_error_warning(command),
+        ),
+    }
+}
+
+pub fn parse_aimami_deeplink(
+    _repo: &Repository,
+    url: String,
+) -> (RelayDeeplinkImportPayload, CoreWarning) {
+    let command = "parse_aimami_deeplink";
+    match relay_core::parse_aimami_deeplink(&url) {
+        Ok(parsed) => (
+            deeplink_payload_from_domain(command, parsed),
+            deeplink_warning(command, true),
+        ),
+        Err(error) => (
+            invalid_deeplink_payload(command, &error),
+            deeplink_warning(command, false),
         ),
     }
 }

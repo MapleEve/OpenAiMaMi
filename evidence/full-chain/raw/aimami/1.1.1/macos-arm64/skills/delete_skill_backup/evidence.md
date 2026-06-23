@@ -54,7 +54,7 @@
 5. **Windows behavior**: `delete_skill_backup` on Windows — separate binary (win64.exe SHA=d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610); Windows unknown per platform gate; not inferred from macOS
 6. **`metadata.json` full schema**: only 4 serde keys confirmed (backupID/skillID/title/relativePath); SkillBackupMetadata may have additional fields
 7. **`"Backup corrupted: "` trigger condition**: third error string present in binary but no corresponding code path clearly observed in decompile (may be from load_skill_backups on parse failure)
-8. **dim6 (test/acceptance mapping)**: not in scope for producer — C5 implementation side must define unit/E2E/manual acceptance criteria
+8. **dim6 (test/acceptance mapping)**: not in scope for producer — 内部构建 implementation side must define unit/E2E/manual acceptance criteria
 9. **`skill/` subdirectory structure**: content of skill subdir within backup is not enumerated in delete path; `remove_dir_all` handles all nested content
 10. **SkillBackupSummary sort stability**: whether sort is stable — driftsort is stable, insertion_sort_shift_left stability not verified
 

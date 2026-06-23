@@ -63,7 +63,7 @@
   "dim6_detail": {
     "source": "gate-report.json (prev)#dim6_acceptance_mapping (session <审计会话>)",
     "happy_path": "invoke('load_mcp_servers') => SkillSnapshot JSON with mcpServers array including new 1.1.1 fields (transport, enabled, usageAnalytics)",
-    "critical_note": "McpServer.transport and McpServer.enabled are NEW in 1.1.1 — C5 UI must handle these fields; callers expecting 1.0.9 shape will see extra fields"
+    "critical_note": "McpServer.transport and McpServer.enabled are NEW in 1.1.1 — 内部构建 UI must handle these fields; callers expecting 1.0.9 shape will see extra fields"
   },
   "regen_by": "<审计会话>"
 }

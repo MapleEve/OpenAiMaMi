@@ -5,7 +5,7 @@
 ## Command Registration
 - IPC command name: `restart_codex`
 - Module: `codexmate_lib::commands::system`
-- is_upstream: false (C5-extra command; not in upstream codex-cli)
+- is_upstream: false (内部构建-extra command; not in upstream codex-cli)
 
 ## ArgKeys
 - `[]` — no arguments required
@@ -61,4 +61,4 @@
 ## Accepted Unknowns (non-blocking)
 - bundleId string exact value at 0x10114F1A0 and 0x10114F1B0 (packed blob, not decoded)
 - dim5_win: macOS confirms macos-arm64 only; Windows done separately (INDEX line 1481)
-- dim6 test/acceptance mapping: C5 implementation side responsibility
+- dim6 test/acceptance mapping: 内部构建 implementation side responsibility

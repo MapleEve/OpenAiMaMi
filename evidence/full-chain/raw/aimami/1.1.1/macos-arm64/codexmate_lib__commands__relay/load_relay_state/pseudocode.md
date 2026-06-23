@@ -1,7 +1,7 @@
-# load_relay_state — Pseudocode (macos-arm64, AiMaMi 1.1.1)
+﻿# load_relay_state — Pseudocode (macos-arm64, AiMaMi 1.1.1)
 
 delta_class: integrity_recovered
-session: <审计会话>
+session: wf-aimami111-delta-20260617-sweep
 machine: <本地机器>
 produced: 2026-06-17
 
@@ -273,7 +273,7 @@ bool has_real_login_material(paths) {
     let val: Value = serde_json::from_str(text);
     // Check val["tokens"]["id_token"] non-empty and trimmed non-empty
     // OR val["tokens"]["access_token"] non-empty and trimmed non-empty
-    // OR val["OPENAI_API_KEY"] len>=23 AND NOT matching "<virtual-relay-key-prefix>" prefix
-    //    (SIMD xor check against 0x10114F090/0x10114F080 = "<virtual-relay-key-prefix>" pattern)
+    // OR val["OPENAI_API_KEY"] len>=23 AND NOT matching "sk-<redacted>" prefix
+    //    (SIMD xor check against 0x10114F090/0x10114F080 = "sk-<redacted>" pattern)
 }
 ```

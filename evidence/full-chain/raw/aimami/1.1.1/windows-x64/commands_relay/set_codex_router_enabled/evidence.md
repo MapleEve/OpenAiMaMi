@@ -82,7 +82,7 @@ Last-updated-session: <审计会话>
 
 3. **codex-router-toggle-progress event VA in win**: mac has 0x1011542f7, win has no equivalent string literal found (stripped). Event name known from mac; win emission point unknown. accepted_unknown.
 
-4. **payload win field order / layout**: 15 fields inferred from mac parity. If C5 team reorganized struct for win build (different Rust target feature flags, alignment differences), win layout could differ. No evidence of divergence; accepted_unknown.
+4. **payload win field order / layout**: 15 fields inferred from mac parity. If 内部构建 team reorganized struct for win build (different Rust target feature flags, alignment differences), win layout could differ. No evidence of divergence; accepted_unknown.
 
 5. **Secondary callers of orchestration (sub_1406DC5D0, sub_1406E85D0)**: two VAs call sync_codex_config_with_outcome_win_sys. Their roles not decompiled this session. May be additional async paths or error recovery. accepted_unknown.
 

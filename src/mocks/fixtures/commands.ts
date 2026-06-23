@@ -38,6 +38,7 @@ import type {
   NotificationClientStatePayload,
   QuotaHistoryPayload,
   RelayActivePayload,
+  RelayDeeplinkImportPayload,
   RelayDiagnosticIssuePayload,
   RelayDiagnosticPayload,
   RelayExportPayload,
@@ -123,6 +124,7 @@ export type IpcCommandMockData =
   | NotificationClientStatePayload
   | RemovePayload
   | RelayActivePayload
+  | RelayDeeplinkImportPayload
   | RelayDiagnosticPayload
   | RelayExportPayload
   | RelayImportPayload
@@ -2222,6 +2224,69 @@ const relayImportHandler: IpcCommandHandler = (context) => {
   return { ...envelope, data };
 };
 
+function isHttpEndpoint(value: string) {
+  try {
+    const endpointUrl = new URL(value);
+    return endpointUrl.protocol === "http:" || endpointUrl.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+const relayDeeplinkImportHandler: IpcCommandHandler = (context) => {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  const invalidData: RelayDeeplinkImportPayload = {
+    backendStatus: envelope.data.status,
+    valid: false,
+    provider: null,
+    name: null,
+    endpoint: null,
+    apiKeyPresent: false,
+    model: null,
+    message: mockCopy("relay.mock.deeplink.invalid"),
+  };
+  const rawUrl = readArgString(context.args, "url", "").trim();
+
+  try {
+    const parsed = new URL(rawUrl);
+    const provider = parsed.searchParams.get("provider")?.trim() || null;
+    const name = parsed.searchParams.get("name")?.trim() || null;
+    const endpoint = parsed.searchParams.get("endpoint")?.trim() || null;
+    const secretPresent = Boolean(parsed.searchParams.get("apiKey")?.trim());
+    const model = parsed.searchParams.get("model")?.trim() || null;
+    const routeValid =
+      parsed.protocol === "aimami:" &&
+      parsed.hostname === "v1" &&
+      parsed.pathname === "/import";
+
+    if (
+      !routeValid ||
+      !provider ||
+      !name ||
+      !endpoint ||
+      !isHttpEndpoint(endpoint) ||
+      !secretPresent ||
+      !model
+    ) {
+      return { ...envelope, data: invalidData };
+    }
+
+    const data: RelayDeeplinkImportPayload = {
+      backendStatus: envelope.data.status,
+      valid: true,
+      provider,
+      name,
+      endpoint,
+      apiKeyPresent: true,
+      model,
+      message: mockCopy("relay.mock.deeplink.parsed"),
+    };
+    return { ...envelope, data };
+  } catch {
+    return { ...envelope, data: invalidData };
+  }
+};
+
 function readRelayAuditFixture(): RelayPassthroughAuditEntry[] {
   return [
     {
@@ -2554,6 +2619,7 @@ const relayCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> =
   get_relay_proxy_status: relayProxyHandler,
   import_relay_config: relayImportHandler,
   load_relay_state: loadRelayStateHandler,
+  parse_aimami_deeplink: relayDeeplinkImportHandler,
   run_codex_router_diagnostics: relayDiagnosticHandler,
   set_block_official_passthrough: writeBooleanArgHandler,
   set_codex_router_enabled: relayRouterToggleHandler,

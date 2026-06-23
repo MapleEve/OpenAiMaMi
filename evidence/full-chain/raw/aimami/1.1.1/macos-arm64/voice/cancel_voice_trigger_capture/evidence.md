@@ -27,7 +27,7 @@
 
 1. **Voice feature remains frontend-only in 1.1.1**: The complete absence of backend command string and handler symbol across both 1.0.9 and 1.1.1 indicates the voice trigger capture cancellation is handled entirely frontend-side (frontend state machine, OS-level capture API cancellation, or no-op invoke).
 2. **No backend error envelope or response type**: Since no backend handler exists, any `invoke("cancel_voice_trigger_capture")` from frontend would resolve as Tauri returning a null/undefined result with no registered handler error — or the backend silently no-ops if the command framework allows unregistered calls to return Ok(()).
-3. **C5 implementation implication**: Same as 1.0.9 — do not implement an upstream backend owner unless C5 product decision explicitly restores voice backend. Frontend-only cancellation logic should mirror the zero-arg invoke pattern.
+3. **内部构建 implementation implication**: Same as 1.0.9 — do not implement an upstream backend owner unless 内部构建 product decision explicitly restores voice backend. Frontend-only cancellation logic should mirror the zero-arg invoke pattern.
 4. **Voice path infrastructure present but not command-owner**: The path blob at 0x1011514d1 includes `voice-workspace.json` and `voice-runtime.json` confirming voice workspace persistence infrastructure exists; the overlay string at 0x1010e8aea confirms UI surface present. These support voice feature infrastructure but are not cancel_voice_trigger_capture command owners.
 5. **Delta classification from owner-map-111.jsonl**: status="shared", module=null, owner_va=null, note="not_yet_queried" — upgraded to fully queried and confirmed absent by this session.
 

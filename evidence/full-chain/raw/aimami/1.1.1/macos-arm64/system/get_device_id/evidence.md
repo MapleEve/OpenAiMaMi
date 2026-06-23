@@ -9,7 +9,7 @@
 - **Size**: 0x303 = 771 bytes (+127B vs 1.0.9's 644B, +20%)
 - **Binary**: AiMaMi 1.1.1 macOS universal (arm64 slice)
 - **逆向分析 module**: AiMaMi — confirmed via server_health (status=ok, uptime=35218s, hexrays_ready=true)
-- **is_upstream**: false (C5-extra, not in upstream codex-cli)
+- **is_upstream**: false (内部构建-extra, not in upstream codex-cli)
 - **Module**: system
 - **IPC type**: Retained-IPC / native-bootstrap-substitute — no frontend static CCF; Tauri dispatch closure confirmed
 - **gate_tier**: `strictImplementationUse` (dim1-5 closed; dim6 open — same ceiling as 1.0.9)

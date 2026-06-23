@@ -1,5 +1,5 @@
-# rebuild_registry — Evidence & Delta Analysis
-# session=<审计会话>  machine=<本地机器>
+﻿# rebuild_registry — Evidence & Delta Analysis
+# session=wf-aimami111-delta-20260617-sweep  machine=<本地机器>
 # delta_class=integrity_recovered  platform=macos-arm64
 # baseline=1.0.9  target=1.1.1
 # date=2026-06-17
@@ -87,7 +87,7 @@ RegistryItem fields extracted from `make_auth_snapshot` and `carry_over_registry
 | Poison flag set | Mutex poison | Prior panic in rebuild |
 | `auth.json` not found | CoreError(2) | load_auth_file code=2 |
 | `auth.json` parse error | CoreError(3) | serde_json error |
-| Virtual relay key | CoreError(9) | token="<virtual-relay-key-prefix>" |
+| Virtual relay key | CoreError(9) | token="sk-<redacted>" |
 | persist_registry JSON error | CoreError(3) | serde serialization |
 | persist_registry write error | CoreError(2) | fs::write failed |
 

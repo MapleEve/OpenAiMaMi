@@ -42,7 +42,7 @@
 
 12. **Synchronous command pattern**: dispatcher `0x100315290` is a blocking closure (non-async), size 416B, single-function body. No tokio::spawn, no BlockingTask wrapper, no async state machine.
 
-13. **Platform: is_upstream=false** (confirmed from Windows manifest and absence of `restart_codex` in upstream codex-cli commands). This is a C5-extra AiMaMi command.
+13. **Platform: is_upstream=false** (confirmed from Windows manifest and absence of `restart_codex` in upstream codex-cli commands). This is a 内部构建-extra AiMaMi command.
 
 14. **IDB comments appended** (7 functions): 0x100616150, 0x100315290, 0x10055c090, 0x10055afd0, 0x10055bc10, 0x10055e390, 0x10055b8c0.
 
@@ -82,7 +82,7 @@
 
 3. **dim5_win full detail**: macOS and Windows both reversed independently. This leaf covers macOS only. Windows delta confirmed from manifest (INDEX line 1481). Accepted_unknown: separate platform, no inference needed.
 
-4. **dim6 test/acceptance mapping**: C5 implementation side. Accepted_unknown: not producer's responsibility per GATE-SPEC.
+4. **dim6 test/acceptance mapping**: 内部构建 implementation side. Accepted_unknown: not producer's responsibility per GATE-SPEC.
 
 5. **Exact pgrep pattern in collect_codex_kill_targets**: "Codex" vs "Codex.app" vs broader. Accepted_unknown: outer behavior (kill-until-clear) is confirmed terminal.
 

@@ -98,7 +98,7 @@
 - `exportedAt` exact unit (inferred ms, not ns — from chrono arithmetic pattern)
 - Frontend CCF exact arg key: `includeApiKey` vs `includeApiKeys` (inherited from 1.0.9; frontend bundle not re-extracted this session)
 - Windows 1.1.1 behavior (dim5_win=Unknown; requires Windows 逆向分析 session)
-- dim6 acceptance mapping (C5 impl side, not producer)
+- dim6 acceptance mapping (内部构建 impl side, not producer)
 - IPC response payload exact JSON structure returned to Tauri frontend
 - `encrypted_keys.json` JSON schema full structure (only field names confirmed via string pool)
 

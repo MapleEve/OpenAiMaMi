@@ -1,9 +1,10 @@
 use crate::application::usecase;
 use crate::contracts::{
-    CoreEnvelope, CoreWarning, RelayActivePayload, RelayDiagnosticPayload, RelayExportPayload,
-    RelayImportPayload, RelayPassthroughAuditEntryPayload, RelayProviderDraftInput,
-    RelayProviderPayload, RelayProxyPayload, RelayRouterIssueFixPayload, RelayRouterTogglePayload,
-    RelayStatePayload, RelayTestPayload,
+    CoreEnvelope, CoreWarning, RelayActivePayload, RelayDeeplinkImportPayload,
+    RelayDiagnosticPayload, RelayExportPayload, RelayImportPayload,
+    RelayPassthroughAuditEntryPayload, RelayProviderDraftInput, RelayProviderPayload,
+    RelayProxyPayload, RelayRouterIssueFixPayload, RelayRouterTogglePayload, RelayStatePayload,
+    RelayTestPayload,
 };
 use crate::repository::Repository;
 use serde::Serialize;
@@ -210,6 +211,17 @@ pub fn import_relay_config(
     let repo = repo.lock().map_err(|error| error.to_string())?;
     Ok(with_warning(usecase::relay::import_relay_config(
         &repo, file_path,
+    )))
+}
+
+#[tauri::command]
+pub fn parse_aimami_deeplink(
+    repo: State<'_, Mutex<Repository>>,
+    url: String,
+) -> Result<CoreEnvelope<RelayDeeplinkImportPayload>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    Ok(with_warning(usecase::relay::parse_aimami_deeplink(
+        &repo, url,
     )))
 }
 

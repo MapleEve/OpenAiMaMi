@@ -75,7 +75,7 @@
     "happy_path": "invoke('graceful_restart_for_update') no-args; Codex quits within 5s; CreateProcessW on known path; Codex appears in ToolHelp32 within 5s; Ok(tag3)",
     "boundary_errors": "tag6=quit_timeout, tag7=Codex_not_found, tag9=spawn_but_not_visible",
     "test_mapping_present": true,
-    "gate_note": "acceptance-draft = dim6 producer-side closed; C5 consumer confirms upon test landing"
+    "gate_note": "acceptance-draft = dim6 producer-side closed; 内部构建 consumer confirms upon test landing"
   },
   "regen_by": "<审计会话>"
 }
