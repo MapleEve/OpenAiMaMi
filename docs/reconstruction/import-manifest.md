@@ -28,7 +28,8 @@
 
 LFS/IDB 独立称为 `OpenAiMami IDB`。主仓库不保存大体积 IDB 文件，只保存独立资产清单：
 
-`evidence/binary-manifests/1.0.9/i64-databases.json`
+- `evidence/binary-manifests/1.0.9/i64-databases.json`
+- `evidence/binary-manifests/1.1.1/i64-databases.json`
 
 还原流程不得写成只依赖 IDB。完整还原必须以 raw/internal 为主链路；需要 IDB 时只核对 `OpenAiMami IDB`，它是独立参考资产。
 
@@ -41,4 +42,4 @@ LFS/IDB 独立称为 `OpenAiMami IDB`。主仓库不保存大体积 IDB 文件�
 - 不含内部项目名、机器名、用户名、共享盘路径或绝对本机路径。
 - 不含凭据、令牌、会话、密钥、个人数据或未脱敏日志。
 - 不含外部参考仓库名称。
-- 能解释它与 OpenAiMami 1.0.9 重建链条的关系。
+- 能解释它与 OpenAiMami 重建链条或版本差异链条的关系。

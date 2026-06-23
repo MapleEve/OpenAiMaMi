@@ -8,7 +8,7 @@
 | --- | --- |
 | 包名 | 以 `package.json` 为准 |
 | 仓库内公开版本 | `1.0.0` |
-| 目标重建版本 | `1.0.9` |
+| 目标重建版本 | `1.0.9` baseline；`1.1.1` version-delta |
 | 许可 | Apache License |
 | 桌面应用名称 | OpenAiMami |
 | 技术栈 | Tauri 2、React、Rust |
@@ -23,7 +23,7 @@
 | `docs/reconstruction/` | 中文重建说明。 |
 | `evidence/full-chain/raw/` | raw 链条、前端 dumped 文件、IPC、CCF、manifest 和校验摘要。 |
 | `evidence/full-chain/internal/` | 审计地图、前端地图、蒸馏逻辑、原始叶子和结构化摘要。 |
-| `evidence/binary-manifests/1.0.9/i64-databases.json` | `OpenAiMami IDB` 状态、大小和哈希清单。 |
+| `evidence/binary-manifests/<version>/i64-databases.json` | `OpenAiMami IDB` 状态、大小和哈希清单。 |
 | `package.json` | 前端脚本和依赖声明。 |
 | `src-tauri/Cargo.toml` | Rust 包和依赖声明。 |
 | `src-tauri/tauri.conf.json` | Tauri 应用和打包配置。 |
@@ -143,7 +143,7 @@ OpenAiMami 1.0.9 前端覆盖面：
 | `docs/reconstruction/mcp-current-source-evidence-map.md` | MCP 后端拆分证据映射 | `scripts/validate-backend-mcp-owner.mjs` 直接验证本文、MCP 后端四条 IPC、config.toml repository、core parser、平铺请求 shape 和未声明 runtime/network/process/platform/daemon/voice 边界；本文作为合并 mcp/skills map 的拆分证据继续被索引。 |
 | `docs/reconstruction/skills-current-source-evidence-map.md` | skills 后端拆分证据映射 | `scripts/validate-backend-skills-owner.mjs` 直接验证本文、skills 后端六条 IPC、raw skills 证据目录、command/usecase/repository/path_guard owner 和未声明动态执行、市场安装、网络下载、外部进程、daemon watcher、平台副作用或 `voice` 接入边界；本文作为合并 mcp/skills map 的拆分证据继续被索引。 |
 | `docs/reconstruction/settings-current-source-evidence-map.md` | settings 后端 current-source owner 边界 | `scripts/validate-backend-settings-owner.mjs` 与 `npm run validate:backend-settings-owner` 直接验证本文、settings command adapter、settings usecase、settings repository、settings core model、settings contracts、API proxy 平台端口、200ms TCP 探针、platform_actions 委托、Tauri 注册、package/后端聚合入口和未声明边界；不作为闭源 settings 业务恢复、业务 HTTP 探测完成、真实 update/restart 平台副作用、hotspot/mystery/notification/daemon 业务 owner 或 `voice` 接入声明。 |
-| `docs/reconstruction/cross-home-usage-frontend-current-source-map.md` | cross-home-usage 前端当前源码链路 | `scripts/validate-frontend-cross-home-usage-current-source.mjs` 与 `scripts/validate-frontend-current-source-closeouts.mjs` 直接验证本文、首页 overview usage load/refresh、analytics usage panel、service/API 门面、mock、IPC contract、closeout 台账和未声明边界；不作为 raw/internal gate、后端 IDA、真实 watcher、平台 parity、full_leaf、full_leaf_100 或 `voice` 接入声明。 |
+| `docs/reconstruction/cross-home-usage-frontend-current-source-map.md` | cross-home-usage 前端当前源码链路 | `scripts/validate-frontend-cross-home-usage-current-source.mjs` 与 `scripts/validate-frontend-current-source-closeouts.mjs` 直接验证本文、首页 overview usage load/refresh、analytics usage panel、service/API 门面、mock、IPC contract、closeout 台账和未声明边界；不作为 raw/internal gate、后端逆向、真实 watcher、平台 parity、full_leaf、full_leaf_100 或 `voice` 接入声明。 |
 | `docs/reconstruction/accounts-analytics-current-source-map.md` | accounts/analytics 前端链路与后端公开 owner | `scripts/validate-frontend-accounts-analytics-current-source.mjs` 直接验证本文、`quota-history` 与 `usage-analytics` 的 service、query、mutation、cache、overview consumer、mock、IPC contract 定义、后端公开文件事实 owner、closeout 台账、README 归纳和未声明边界；不作为双平台全 leaf、全文案验收、闭源 token 统计、真实运行时统计、严格平台 parity 或 `voice` 接入声明。 |
 | `docs/reconstruction/mystery-unlock-current-source-map.md` | mystery unlock grants 与 route gate/helper | `scripts/validate-frontend-mystery-unlock-current-source.mjs`、`scripts/validate-frontend-mystery-gates.mjs` 与 `scripts/validate-backend-mystery-owner.mjs` 直接验证本文、`get_mystery_unlock_grants`、`merge_mystery_unlock_grants` 的 system service、overview cache/query/mutation、mock、IPC contract、后端 mystery command/usecase/repository/DTO、route gate/helper、closeout 台账和未声明边界；只登记 mystery-unlock 非 `full_leaf_100` gate 非绿字段为 current-source partial，不把 route helper 当 IPC command，不声明 dim6、gate_accepted、implementation_use、full_leaf_100 或 `voice` 接入。 |
 | `docs/reconstruction/notification-client-state-current-source-map.md` | 通知客户端状态 settings 持久化收口 | `scripts/validate-backend-system-owner.mjs` 直接验证本文、`deviceId` / `notificationsSince` settings 持久化读取创建事务、DTO 字段、source-map/README 索引和未恢复通知运行时边界；`scripts/validate-frontend-notification-client-state-current-source.mjs` 专名验证 system service、overview、tray-shell、IPC contract、mock handler、E2E mock validator 和不接 `voice` 边界；`scripts/validate-frontend-current-source-closeouts.mjs` 同时验证前端调用链 closeout，不作为通知运行时恢复声明。 |

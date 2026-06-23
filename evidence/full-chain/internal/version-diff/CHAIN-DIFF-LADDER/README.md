@@ -1,4 +1,4 @@
-# CHAIN-DIFF-LADDER — 逐链路差异阶梯（main → 1.0.1 → Win → 1.0.4 → 1.0.5 → 1.0.6）
+# CHAIN-DIFF-LADDER — 逐链路差异阶梯（main → 1.0.1 → Win → 1.0.4 → 1.0.5 → 1.0.6 → 1.1.1）
 
 **task#2 · opus-diff · 2026-05-24**
 
@@ -18,6 +18,7 @@
 | `03-target-1.0.5.md` | 1.0.4 → 1.0.5 | 版本演进（+list_plugins 等微调） | `DELTA-LOGIC-105` + `STABLE-19-LOGIC` + 演进表 §4 |
 | `04-target-1.0.6.md` | 1.0.5 → 1.0.6 | 版本演进（60 must-reverse delta：4 新增 + 32 body+calltree + 24 body） | `DELTA-LOGIC-106` + 演进表 §4 |
 | `05-target-1.0.8.md` | 1.0.6 → 1.0.8 | 版本演进（41 must-reverse delta：5 新增 + 16 body+calltree + 15 body + 5 calltree；7 退役；Win 跨平台 3/5 确认） | `DELTA-LOGIC-108` + `REGISTRATION-TABLE-108` + delta bundle 2026-05-25 |
+| `06-target-1.1.1.md` | 1.0.9 → 1.1.1 | 版本演进（macOS 43/43 RTI；Windows 59/59 RTI；plugin/passthrough 下线、relay stream/API login、router diagnostics、mcp/skills/registry/auth/account 子系统变化；backend_truly_full=true） | sanitized 1.1.1 delta summaries + gate-final rollups |
 
 ## 每条 diff 行的强制字段
 
@@ -43,6 +44,7 @@
 
 - [x] 阶梯目录骨架（本 README）
 - [x] `05-target-1.0.8.md` — 全量 41 命令（5 NEW + 16 body+calltree + 15 body + 5 calltree）+ 7 退役链路 + **全链路状态表（≈120）**（2026-05-25）
+- [x] `06-target-1.1.1.md` — 公开清洗版：macOS 43/43 readyToImplement，Windows 59/59 readyToImplement，backend_truly_full=true（2026-06-22）
 - [x] `04-target-1.0.6.md` — 全量 60 命令（4 NEW + 32 body+calltree + 24 body）+ 3 退役链路 + **全链路状态表（122）**
 - [x] `03-target-1.0.5.md` — 全量 37 命令（1 NEW + 14 body+calltree + 22 body）+ 5 短暂命令（medium，待 104 链路补）+ **全链路状态表（120/121）**
 - [x] `00-main-to-1.0.1.md` — 8 链路对照（3 高偏离 + 2 待确认 + 13 ours-only + 2 surface-scope + 一致摘录）+ **全链路状态表（我方124↔上游111）**
@@ -55,7 +57,7 @@
 
 | hop | 主证据 | 粒度 | 已知缺口 |
 |---|---|---|---|
-| 05 | DELTA-LOGIC-108（41 命令分支级，Ghidra 41/41）+ Win 字符串+Ghidra 跨平台 | 全分支级 | async-stable ≈18 无 1.0.8 直证；`get_passthrough_audit_log`/`set_block_official_passthrough`/`list_plugins` confidence medium（无 CCF 基线）；MCP/Skill 新嵌套层具体 Rust 类型待对比确认 |
+| 05 | DELTA-LOGIC-108（41 命令分支级，Ghidra 41/41）+ Win 字符串+Ghidra 跨平台 | 全分支级 | async-stable ≈18 无 1.0.8 直证；`get_passthrough_audit_log`/`set_block_official_passthrough`/`list_plugins` confidence medium（无 CCF 基线）；mcp/skill 新嵌套层具体 Rust 类型待对比确认 |
 | 04 | DELTA-LOGIC-106（60 命令分支级） | 全分支级 | 无 |
 | 03 | DELTA-LOGIC-105（37 命令分支级） | 全分支级 | D 段「1.0.4→1.0.5 移除 5」未逐命令坐实（DELTA 不含已移除），标 medium |
 | 00 | PARITY-AUDIT（8 链路对照块）+ parity-gap（逐命令 join 矩阵） | 链路级（我方 vs 上游对齐 diff） | ide 用途 / stream retry 词表 / fix_codex_router 来源标待确认 |
