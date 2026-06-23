@@ -13,6 +13,7 @@ pub(crate) enum HotspotStatusCode {
     SettingsSaved,
     PlatformCapabilitySkeleton,
     PlatformBehaviorUnsupported,
+    ReadOnlyScreenShapeProbe,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -42,6 +43,22 @@ impl HotspotPlatformCapability {
             status_code: HotspotStatusCode::PlatformBehaviorUnsupported,
             pending: true,
             unsupported: true,
+            detail: detail.to_string(),
+        }
+    }
+
+    pub(crate) fn read_only_has_notch(
+        source_path: impl Into<String>,
+        has_notch: bool,
+        detail: &str,
+    ) -> Self {
+        Self {
+            ready: false,
+            has_notch,
+            source_path: source_path.into(),
+            status_code: HotspotStatusCode::ReadOnlyScreenShapeProbe,
+            pending: false,
+            unsupported: false,
             detail: detail.to_string(),
         }
     }

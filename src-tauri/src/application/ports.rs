@@ -191,12 +191,16 @@ pub(crate) trait AppWindowPort {
     fn focus_main_window(&self) -> Result<(), CoreError>;
 }
 
-// hotspot 能力端口只公开可替换的平台查询骨架，不声明 Windows/macOS 热点能力已恢复。
+// hotspot 能力端口只公开可替换的平台查询；只有 has_notch 可返回公开证据支撑的只读屏幕形态探针。
 pub(crate) trait HotspotPlatformPort {
     fn hotspot_capability(&self) -> HotspotPlatformCapability;
 
-    fn has_notch(&self) -> bool {
-        self.hotspot_capability().has_notch
+    fn has_notch_capability(&self) -> Result<HotspotPlatformCapability, CoreError> {
+        Ok(self.hotspot_capability())
+    }
+
+    fn has_notch(&self) -> Result<bool, CoreError> {
+        Ok(self.has_notch_capability()?.has_notch)
     }
 
     fn is_hotspot_ready(&self) -> bool {

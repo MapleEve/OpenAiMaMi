@@ -5,9 +5,9 @@ use crate::repository::hotspot as hotspot_repository;
 use crate::repository::Repository;
 
 // 热点用例层负责一次用户动作的事务编排，只协作仓储、平台端口和核心领域语义。
-pub(crate) fn has_notch(hotspot: &impl HotspotPlatformPort) -> bool {
-    let capability = hotspot.hotspot_capability();
-    hotspot_core::has_notch(capability).has_notch
+pub(crate) fn has_notch(hotspot: &impl HotspotPlatformPort) -> Result<bool, CoreError> {
+    let capability = hotspot.has_notch_capability()?;
+    Ok(hotspot_core::has_notch(capability).has_notch)
 }
 
 pub(crate) fn get_hotspot_enabled(repo: &Repository) -> Result<bool, CoreError> {

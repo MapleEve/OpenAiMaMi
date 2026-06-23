@@ -205,23 +205,33 @@ rejectAll(
 const platform = raw.get("platform");
 requireAll(platform.path, platform.content, [
   ["HotspotPlatformPort implementation", /\bimpl\s+HotspotPlatformPort\s+for\s+HotspotPlatformAdapter\b/],
-  ["unsupported skeleton", /\bHotspotPlatformCapability::unsupported_skeleton\s*\(/],
+  ["ready/window unsupported skeleton", /\bHotspotPlatformCapability::unsupported_skeleton\s*\(/],
+  ["has_notch capability owner", /\bfn\s+has_notch_capability\s*\(/],
+  ["has_notch read-only capability", /\bHotspotPlatformCapability::read_only_has_notch\s*\(/],
+  ["macOS main thread dispatch", /\brun_on_main_thread\s*\(/],
+  ["macOS NSScreen screens", /\bNSScreen::screens\s*\(/],
+  ["macOS auxiliary left area", /\bauxiliaryTopLeftArea\s*\(/],
+  ["macOS auxiliary right area", /\bauxiliaryTopRightArea\s*\(/],
+  ["non macOS false", /#\[cfg\(not\(target_os = "macos"\)\)\][\s\S]*Ok\(false\)/],
 ]);
 rejectAll(
   platform.path,
   platform.content,
   [
     ["repository dependency", /\bRepository\b|\brepository::|\bsettings_repository\b/],
-    ["Tauri boundary", /\btauri::|\bState\s*<|\bCoreEnvelope\b/],
+    ["IPC boundary", /\bState\s*<|\bCoreEnvelope\b/],
+    ["hotspot window 行为", /\bNSWindow\b|\bcreate_hotspot_window\b|\bset_window_alpha\b|\bapply_native_hotspot_properties\b/],
   ],
-  "平台层只封装结构化平台能力，不保存业务状态或仓储状态",
+  "平台层只允许 macOS has_notch 只读屏幕形态探针，不保存业务状态或仓储状态",
 );
 
 requireAll(raw.get("model").path, raw.get("model").content, [
   ["HotspotCommand", /\benum\s+HotspotCommand\b/],
   ["HotspotStatusCode", /\benum\s+HotspotStatusCode\b/],
+  ["只读屏幕形态探针状态码", /\bReadOnlyScreenShapeProbe\b/],
   ["HotspotSettingsSnapshot", /\bstruct\s+HotspotSettingsSnapshot\b/],
   ["HotspotPlatformCapability", /\bstruct\s+HotspotPlatformCapability\b/],
+  ["has_notch read-only constructor", /\bread_only_has_notch\s*\(/],
   ["HotspotDomainResult", /\bstruct\s+HotspotDomainResult\b/],
 ]);
 
@@ -229,7 +239,7 @@ requirePattern(
   "HotspotPlatformPort trait",
   raw.get("ports").path,
   raw.get("ports").content,
-  /\btrait\s+HotspotPlatformPort\b[\s\S]*\bhotspot_capability\s*\(/,
+  /\btrait\s+HotspotPlatformPort\b[\s\S]*\bhotspot_capability\s*\([\s\S]*\bhas_notch_capability\s*\(/,
 );
 
 const lib = raw.get("lib");
@@ -270,6 +280,8 @@ const currentSourceMap = raw.get("currentSourceMap");
 requireAll(currentSourceMap.path, currentSourceMap.content, [
   ["hotspot command 文档落点", /`src-tauri\/src\/commands\/hotspot\.rs`/],
   ["hotspot usecase 文档落点", /`src-tauri\/src\/application\/usecase\/hotspot\.rs`/],
+  ["has_notch macOS 只读探针说明", /macOS `has_notch` 只读屏幕形态探针/],
+  ["has_notch 不恢复窗口说明", /不恢复窗口创建/],
   ["hotspot usecase 接线说明", /hotspot usecase 接线/],
   ["backend hotspot owner 验证入口", /npm run validate:backend-hotspot-owner/],
 ]);

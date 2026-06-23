@@ -3,7 +3,8 @@ use crate::core::model::hotspot::{
     HotspotStatusCode,
 };
 
-// 热点核心负责开关读取、保存结果和就绪查询的状态机语义；当前只产出骨架结果，不恢复平台行为。
+// 热点核心负责开关读取、保存结果、就绪查询和只读屏幕形态探针语义。
+// 只有 has_notch 消费公开证据支撑的平台探针；窗口、ready 和 set 副作用仍不恢复。
 pub(crate) fn get_hotspot_enabled(snapshot: HotspotSettingsSnapshot) -> HotspotDomainResult {
     HotspotDomainResult {
         command: HotspotCommand::GetEnabled,
@@ -59,12 +60,13 @@ pub(crate) fn has_notch(capability: HotspotPlatformCapability) -> HotspotDomainR
         command: HotspotCommand::HasNotch,
         enabled: false,
         ready: false,
-        has_notch: false,
+        has_notch: capability.has_notch,
         source_path: capability.source_path.clone(),
-        status_code: HotspotStatusCode::PlatformCapabilitySkeleton,
-        pending: true,
-        unsupported: capability.unsupported,
+        status_code: HotspotStatusCode::ReadOnlyScreenShapeProbe,
+        pending: false,
+        unsupported: false,
         platform_capability: Some(capability),
-        detail: "屏幕形态探测当前只返回平台能力骨架；未调用原生窗口或设备属性。".to_string(),
+        detail: "屏幕形态探针只消费平台 has_notch 只读结果；不创建窗口、不设置原生属性、不声明热点就绪。"
+            .to_string(),
     }
 }
