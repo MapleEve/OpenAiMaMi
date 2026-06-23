@@ -9,12 +9,12 @@
 
 ## happy_path
 
-**Scenario**: Frontend calls `invoke("parse_aimami_deeplink", { url: "aimami://v1/import?provider=codex&name=MyRelay&endpoint=https://relay.example.com&apiKey=sk-abc123" })`. All required params present and valid.
+**Scenario**: Frontend calls `invoke("parse_aimami_deeplink", { url: "aimami://v1/import?provider=codex&name=MyRelay&endpoint=https://relay.example.com&apiKey=<redacted-api-key>" })`. All required params present and valid.
 
 Input:
 ```json
 {
-  "url": "aimami://v1/import?provider=codex&name=MyRelay&endpoint=https://relay.example.com&apiKey=sk-abc123"
+  "url": "aimami://v1/import?provider=codex&name=MyRelay&endpoint=https://relay.example.com&apiKey=<redacted-api-key>"
 }
 ```
 
@@ -25,7 +25,7 @@ Expected output:
   "data": {
     "name": "MyRelay",
     "endpoint": "https://relay.example.com",
-    "apiKey": "sk-abc123",
+    "apiKey": "<redacted-api-key>",
     "model": "gpt-5.4",
     "host": "relay.example.com"
   }
@@ -38,7 +38,7 @@ Expected output:
 
 **With explicit model param**:
 ```
-url: "aimami://v1/import?provider=codex&name=MyRelay&endpoint=https://relay.example.com&apiKey=sk-abc123&model=claude-3.5"
+url: "aimami://v1/import?provider=codex&name=MyRelay&endpoint=https://relay.example.com&apiKey=<redacted-api-key>&model=claude-3.5"
 → response.data.model = "claude-3.5"
 ```
 

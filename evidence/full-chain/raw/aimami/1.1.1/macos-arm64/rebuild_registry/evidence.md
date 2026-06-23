@@ -87,7 +87,7 @@ RegistryItem fields extracted from `make_auth_snapshot` and `carry_over_registry
 | Poison flag set | Mutex poison | Prior panic in rebuild |
 | `auth.json` not found | CoreError(2) | load_auth_file code=2 |
 | `auth.json` parse error | CoreError(3) | serde_json error |
-| Virtual relay key | CoreError(9) | token="sk-aimami-relay-virtual" |
+| Virtual relay key | CoreError(9) | token="<virtual-relay-key-prefix>" |
 | persist_registry JSON error | CoreError(3) | serde serialization |
 | persist_registry write error | CoreError(2) | fs::write failed |
 

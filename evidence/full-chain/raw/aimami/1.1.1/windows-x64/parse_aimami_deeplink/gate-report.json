@@ -99,7 +99,7 @@
     "promotion_reason": "per-platform rule applied: all 6 dims closed for win platform; mac dim5 unknown is not a win gate blocker",
     "ACCEPTANCE": {
       "happy_path": {
-        "input": "invoke('parse_aimami_deeplink', {url: 'aimami://import/provider?app=codex&name=MyProvider&endpoint=https://api.example.com&apiKey=https://token123&model=gpt-4'})",
+        "input": "invoke('parse_aimami_deeplink', {url: 'aimami://import/provider?app=codex&name=MyProvider&endpoint=https://api.example.com&apiKey=https://redacted.example/api-key&model=gpt-4'})",
         "preconditions": "relay state initialized (TLS[TlsIndex]+584 valid)",
         "expected_response": "Ok({status:'ok', result:'success'})",
         "side_effect_asserts": [
@@ -112,7 +112,7 @@
       "boundary_tests": [
         {
           "case": "apiKey without http/https prefix",
-          "input": "url with apiKey=sk-xxx (no http prefix)",
+          "input": "url with apiKey=<redacted-api-key> (no http prefix)",
           "expected": "Err — apiKey validation fails; no insert"
         },
         {

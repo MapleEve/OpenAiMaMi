@@ -94,7 +94,7 @@ tauri_ipc_main_dispatcher_sys (0x14000d2a0)
         │     │     └── accepts: free/paid/demo/msft/team(4) / invalid(7) /
         │     │                  undefined(9) / placeholder(11) /
         │     │                  cc-switch/cc_switch(9) / ccswitch/decodex(8) /
-        │     │                  sk-fake/sk-test(7) / len<10 = true
+        │     │                  <invalid-token-marker-a>/<invalid-token-marker-b>(7) / len<10 = true
         │     │
         │     ├── relay_keychain_lookup_for_quota_sys (0x1402ee7c0)
         │     │     [relay credentials lookup for quota validation]

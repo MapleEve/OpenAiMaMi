@@ -197,7 +197,7 @@ Result<(), CoreError> persist_registry(repo, registry_vec, backup_flag);
 // Reads JSON file at (path_ptr, path_len), deserializes to AuthFile struct
 // Errors: 2=file not found, 3=JSON parse error,
 //         9="auth.json contains AiMaMi virtual relay key; not a real account"
-//            (triggered when token starts with "sk-aimami-relay-virtual")
+//            (triggered when token starts with "<virtual-relay-key-prefix>")
 Result<AuthFile, CoreError> load_auth_file(path_ptr, path_len);
 ```
 

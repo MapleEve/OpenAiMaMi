@@ -273,7 +273,7 @@ bool has_real_login_material(paths) {
     let val: Value = serde_json::from_str(text);
     // Check val["tokens"]["id_token"] non-empty and trimmed non-empty
     // OR val["tokens"]["access_token"] non-empty and trimmed non-empty
-    // OR val["OPENAI_API_KEY"] len>=23 AND NOT matching "sk-aimami-relay-virtual" prefix
-    //    (SIMD xor check against 0x10114F090/0x10114F080 = "sk-aimami-relay-virtual" pattern)
+    // OR val["OPENAI_API_KEY"] len>=23 AND NOT matching "<virtual-relay-key-prefix>" prefix
+    //    (SIMD xor check against 0x10114F090/0x10114F080 = "<virtual-relay-key-prefix>" pattern)
 }
 ```

@@ -96,8 +96,8 @@ In 1.0.9, storage::save in this context was not observed in the command path.
 **Status: NEW behavioral logic**
 
 `has_real_login_material` uses SIMD xor comparison (xmmword at 0x10114F090 + 0x10114F080)
-to detect the prefix `"sk-aimami-relay-virtual"` (23 bytes, confirmed by string at 0x10114f962:
-`"sk-aimami-relay-virtualhttps://..."`) and returns false if the key starts with this prefix.
+to detect the prefix `"<virtual-relay-key-prefix>"` (23 bytes, confirmed by string at 0x10114f962:
+`"<virtual-relay-key-prefix>https://..."`) and returns false if the key starts with this prefix.
 This guard was absent in 1.0.9.
 
 ---
@@ -220,6 +220,6 @@ Prior task description stated "1.1.1 行为 RelayManager::list_state only, ensur
 - `ensure_proxy_started` (0x1005d56f0) IS present in `list_state` callees in 1.1.1.
 - The proxy autostart path is active. DELTA-5 (above) confirms it gained a NEW call site: `relay::storage::save` on both success and failure branches.
 
-- `apiKey scrub` is NOT removed. The scrub logic was RESTRUCTURED: in 1.1.1 it lives in `has_real_login_material` (0x1005466b0) which uses SIMD prefix check for "sk-aimami-relay-virtual" (DELTA-6). This is a moved+enhanced scrub, not a removal.
+- `apiKey scrub` is NOT removed. The scrub logic was RESTRUCTURED: in 1.1.1 it lives in `has_real_login_material` (0x1005466b0) which uses SIMD prefix check for "<virtual-relay-key-prefix>" (DELTA-6). This is a moved+enhanced scrub, not a removal.
 
 Evidence basis: live `callees(0x1005d1ab0)` 2026-06-18 shows 6 callees, `ensure_proxy_started` among them.

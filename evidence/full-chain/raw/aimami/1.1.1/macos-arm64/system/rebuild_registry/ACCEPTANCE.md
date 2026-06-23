@@ -68,7 +68,7 @@ Expected output:
 1. After successful call: registry.json file exists and contains valid JSON with keys `version`, `timestamp`, `account_snapshot`, `items`.
 2. After successful call: backup of prior auth.json exists at snapshot path.
 3. After second call: timestamped backup of prior registry.json exists.
-4. Relay virtual key guard: if auth.json contains `OPENAI_API_KEY` matching "sk-aimami-relay-virtual" prefix pattern, command returns error without writing registry.
+4. Relay virtual key guard: if auth.json contains `OPENAI_API_KEY` matching "<virtual-relay-key-prefix>" prefix pattern, command returns error without writing registry.
 5. `plan_type` and `auth_mode` fields in registry.json are lowercase strings.
 
 ---
@@ -78,7 +78,7 @@ Expected output:
 | Test | Type | Rationale |
 |------|------|-----------|
 | Successful rebuild writes registry.json with correct fields | e2e (Tauri) | requires real auth.json + fs access |
-| Relay virtual key guard rejects virtual key with code=9 | unit (Rust) — core | inject auth.json with sk-aimami-relay-virtual prefix key |
+| Relay virtual key guard rejects virtual key with code=9 | unit (Rust) — core | inject auth.json with <virtual-relay-key-prefix> prefix key |
 | plan_type and auth_mode lowercase in response and file | unit (Rust) — core | inject mixed-case plan/auth, assert lowercase |
 | Only .json files processed from accounts dir | unit (Rust) — core | place .toml and .json files in accounts dir, assert only .json processed |
 | Duplicate account deduplication | unit (Rust) — core | same account in primary + accounts dir, assert appears once |

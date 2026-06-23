@@ -68,7 +68,7 @@ Expected output:
 | virtual-auth-marker.json and auth.json written correctly in api-login mode | e2e (Tauri) / manual | requires relay configured in ROUTER_ON+api_login mode |
 | UUID v4 format in generated apiKey | unit (Rust) — uuid crate | validate UUID format in marker |
 | BackedUpRealAuth=true only when real credentials present | unit (Rust) — has_real_login_material | mock auth.json with sk-... key vs virtual key |
-| SIMD prefix check excludes "sk-aimami-relay-virtual" prefix | unit (Rust) — has_real_login_material | inject key starting with virtual prefix, assert backedUpRealAuth=false |
+| SIMD prefix check excludes "<virtual-relay-key-prefix>" prefix | unit (Rust) — has_real_login_material | inject key starting with virtual prefix, assert backedUpRealAuth=false |
 | Error from enable_virtual_login is silently dropped (list_state succeeds) | manual / e2e | make auth_mod_e path unwritable, call invoke, verify Ok response |
 | relay storage::save triggered on proxy spawn attempt | e2e (Tauri) | requires relay in state needing proxy spawn |
 

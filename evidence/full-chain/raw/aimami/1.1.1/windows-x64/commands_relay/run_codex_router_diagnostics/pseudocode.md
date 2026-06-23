@@ -214,7 +214,7 @@ __int64 __fastcall run_codex_router_diagnostics_core_sys(__int64 out_result, __i
     //              msft(0x7466736D) / team(0x6D616574)
     //       len=7: invalid (0x64696C6176 partial)
     //       len=8: ccswitch(0x6863746977736363) / decodex(0x7865646F63656564)
-    //              sk-fake / sk-test (7-char variants)
+    //              <invalid-token-marker-a> / <invalid-token-marker-b> (7-char variants)
     //       len=9: undefined (0x656E696665646E75 + 'd')
     //       len=11: placeholder (0x6C6F686563616C70 overlap)
     //       9+: cc-switch(0x63746977732D6363+'h') / cc_switch(0x63746977735F6363+'h')
@@ -635,7 +635,7 @@ __int64 __fastcall diag_config_mode_validator_sys(__int64 a1, unsigned __int64 a
             v2 = 1;
             // "invalid" = 0x64696C6176... (partial QWORD overlap)
             if (*u32(v6) ^ 0x61766E69 | *u32(v6+3) ^ 0x64696C61)
-                goto LABEL_23;  // → sk-fake/sk-test check
+                goto LABEL_23;  // → <invalid-token-marker-a>/<invalid-token-marker-b> check
             goto LABEL_13;  // valid
 
         case 9:
@@ -675,10 +675,10 @@ __int64 __fastcall diag_config_mode_validator_sys(__int64 a1, unsigned __int64 a
             v2 = a2 < 0xA;
             goto LABEL_26;
 
-        LABEL_23:  // len=7 secondary check: sk-fake / sk-test
+        LABEL_23:  // len=7 secondary check: <invalid-token-marker-a> / <invalid-token-marker-b>
             v2 = 1;
-            // "sk-fake" = 0x662D6B73 + 0x656B6166 (overlap +3)
-            // "sk-test" = 0x742D6B73 + 0x74736574
+            // "<invalid-token-marker-a>" = 0x662D6B73 + 0x656B6166 (overlap +3)
+            // "<invalid-token-marker-b>" = 0x742D6B73 + 0x74736574
             if (*u32(v6) ^ 0x662D6B73 | *u32(v6+3) ^ 0x656B6166 &&
                 *u32(v6) ^ 0x742D6B73 | *u32(v6+3) ^ 0x74736574)
                 goto LABEL_25;
