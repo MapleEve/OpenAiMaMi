@@ -1,0 +1,82 @@
+{
+  "command": "run_codex_router_diagnostics",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "imagebase": "0x140000000",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-17",
+
+  "frontend_ccf": {
+    "kind": "tauriInvokeRaw",
+    "argKeys": [],
+    "argObject": null,
+    "response_shape": "{data: DiagnosticData}",
+    "error_key": "relay.diagnostic.dataFormatError",
+    "file": "assets/maintenance-page-C2wkSNnk.js",
+    "line": 17,
+    "column": 1472,
+    "snippet": "s(\"run_codex_router_diagnostics\")"
+  },
+
+  "owner": {
+    "addr": "0x14006F4B0",
+    "name": "run_codex_router_diagnostics_owner_sys",
+    "size": "0x1e7",
+    "pattern": "try-lock Tokio dispatcher (0x1e7-clone series)",
+    "hash_key": "0x945CA2F02A2B6F44",
+    "flags": "0xffffffff (no-arg)",
+    "called_from": "0x14000f0a2 in tauri_ipc_main_dispatcher_sys (len=28 dispatch block)",
+    "string_ref": "0x1412ac580 run_codex_router_diagnostics",
+    "handler_group": "0x14150E608",
+    "registration_table": "0x1418a3624"
+  },
+
+  "core": {
+    "addr": "0x14021C1A0",
+    "name": "run_codex_router_diagnostics_core_sys",
+    "size": "0x167",
+    "called_from": "0x14000f0f4 in tauri_ipc_main_dispatcher_sys",
+    "module": "codexmate_lib::core::relay::codex_diagnostic",
+    "source_file": "src\\core\\relay\\codex_diagnostic.rs",
+    "description": "Result builder. Calls fix_all_sections_impl_full_sys (diagnostic engine). Resolves CODEX_HOME, reads relay state, runs full section scan, builds result {status=ok, data=diagnostic_output}."
+  },
+
+  "diagnostic_engine": {
+    "addr": "0x1407456B0",
+    "name": "fix_all_sections_impl_full_sys",
+    "size_chars": 319688,
+    "called_from_core": "0x14021c202",
+    "leaf_calls": [
+      {"name": "RegOpenKeyExW", "kind": "external", "purpose": "Windows registry read"},
+      {"name": "GetDiskFreeSpaceExW", "kind": "external", "purpose": "disk space check"},
+      {"name": "is_process_running_toolhelp_sys_111", "addr": "0x140504DA0", "purpose": "process existence check via ToolHelp32"},
+      {"name": "relay_keychain_lookup_for_quota_sys", "addr": "0x1402EE7C0", "purpose": "relay credential/quota lookup"}
+    ]
+  },
+
+  "call_chain": [
+    "tauri_ipc_main_dispatcher_sys@0x14000D2A0 (len=28 block @0x14000efd1)",
+    "run_codex_router_diagnostics_owner_sys@0x14006F4B0 (try-lock Tokio runner) @0x14000f0a2",
+    "sub_141214620@0x141214620 (Tokio await helper) @0x14000f0c9",
+    "run_codex_router_diagnostics_core_sys@0x14021C1A0 (result builder) @0x14000f0f4",
+    "fix_all_sections_impl_full_sys@0x1407456B0 (main diagnostic engine) @0x14021c202",
+    "[RegOpenKeyExW, GetDiskFreeSpaceExW, is_process_running_toolhelp_sys_111, relay_keychain_lookup_for_quota_sys]"
+  ],
+
+  "auxiliary_helpers": [
+    {"addr": "0x1406F29D0", "purpose": "CODEX_HOME env-var resolver, .codexsqlitestate path builder"},
+    {"addr": "0x1406E8480", "purpose": "relay state accessor from Tauri managed state (panic msg: relay state poisoned)"},
+    {"addr": "0x1407668C0", "purpose": "section checker called from codex_diagnostic_section_filter_sys"},
+    {"addr": "0x140760890", "name": "codex_diagnostic_section_filter_sys", "purpose": "filters 104-byte diagnostic entries by field type=18, string=ax, status!=ok"}
+  ],
+
+  "fake_wall": "none — fully implemented. 319KB engine + registry + ToolHelp32 + disk checks",
+  "status": "complete",
+  "completeness_angles": {
+    "A_func_query": "PASS - owner+core identified via SIMD hash probe xref chain",
+    "B_frontend_ccf": "PASS - no-arg, {data:...} response, error key relay.diagnostic.dataFormatError",
+    "C_exports": "N/A - no .exports for this command (Tauri IPC, not DLL export)",
+    "D_manifest": "PASS - this file"
+  }
+}

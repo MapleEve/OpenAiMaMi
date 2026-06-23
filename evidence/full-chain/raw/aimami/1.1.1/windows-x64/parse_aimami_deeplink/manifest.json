@@ -1,0 +1,55 @@
+{
+  "schema": "c5cm.raw.bundle.manifest.v1",
+  "command": "parse_aimami_deeplink",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "binary_format": "pe",
+  "pe_machine": "x64",
+  "session": "wf-aimami111-delta-20260616",
+  "session_extension": "wf-aimami111-delta-20260617-win-parsedeeplink",
+  "machine": "<本地机器>",
+  "model": "claude-sonnet-4-6",
+  "produced_at": "2026-06-16",
+  "extended_at": "2026-06-17",
+  "role": "producer_only",
+  "binary_sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "idb": "<本地路径>",
+  "imagebase": "0x140000000",
+  "idb_save_ok": true,
+  "delta_target_number": "11/22",
+  "owner_gate": {
+    "status": "no_collision",
+    "basis": "INDEX.jsonl line 1477 key=aimami/1.1.1/windows-x64/parse_aimami_deeplink/full-chain session=wf-aimami111-delta-20260616 — same session, ADDITIVE extension; REVERSE-STATUS.md registered owner; no competing producer"
+  },
+  "files": [
+    "owner.md",
+    "pseudocode.md",
+    "interface.md",
+    "call-tree.md",
+    "gate-report.json",
+    "manifest.json",
+    "producer-ledger.json",
+    "call-trees/parse_aimami_deeplink.jsonl"
+  ],
+  "gate_tier": "strictImplementationUse_candidate",
+  "gate_tier_upgraded_from": "consumerStartReady",
+  "gate_tier_upgrade_reason": "dim1 frontend CCF confirmed in extension pass: parseDeeplink fn → vt('parse_aimami_deeplink',{url:t}) at col 121149 assets/index-DdcCOEJG.js line 86; frontend-control-flow.jsonl line 140 + ipc-contracts.jsonl confirmed argKeys=[url]; all 4 angles now PASS",
+  "authoritative": true,
+  "idb_renames": [
+    {"va": "0x14002A690", "new_name": "parse_aimami_deeplink_owner_sys", "level": "A"},
+    {"va": "0x1401C7B90", "new_name": "parse_aimami_deeplink_core_sys", "level": "A"},
+    {"va": "0x1401C7900", "new_name": "deeplink_query_param_extract_sys", "level": "B"},
+    {"va": "0x1401C7780", "new_name": "deeplink_endpoint_str_clone_sys", "level": "B"},
+    {"va": "0x1401C78A0", "new_name": "deeplink_model_default_none_sys", "level": "B"},
+    {"va": "0x140214EA0", "new_name": "deeplink_success_response_build_sys", "level": "B"},
+    {"va": "0x14070B500", "new_name": "str_trim_end_matches_char_sys", "level": "B"},
+    {"va": "0x140730900", "new_name": "relay_provider_hashmap_insert_sys", "level": "B"}
+  ],
+  "four_angle_completeness": {
+    "A_func_query": "PASS — parse_aimami_deeplink_owner_sys @ 0x14002A690 (0x37f B); single unique hit; PE stripped, located via command string xref",
+    "B_string_pool": "PASS — command string @ 0x1412ac601 (n=1); all validation strings confirmed (aimami scheme, /import path, resource=provider, app=codex, name/endpoint/apiKey/model params)",
+    "C_frontend_ccf": "PASS — parseDeeplink fn @ assets/index-DdcCOEJG.js line 86 col 121149; snippet vt('parse_aimami_deeplink',{url:t}); argKeys=[url]; frontend-control-flow.jsonl line 140; ipc-contracts.jsonl confirmed; trigger type=minified-static-function",
+    "D_manifest_coverage": "PASS — manifest.json + call-tree.md + call-trees/parse_aimami_deeplink.jsonl (39 entries) + 4 pseudocode files written; gate_tier upgraded"
+  }
+}

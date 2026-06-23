@@ -1,0 +1,105 @@
+{
+  "command": "dismiss_pending_auto_switch",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/dismiss_pending_auto_switch/pseudocode.md (16450B, gold-leaf)",
+    "raw/aimami/1.1.1/windows-x64/dismiss_pending_auto_switch/call-tree.md (7492B, depth=7)",
+    "raw/aimami/1.1.1/windows-x64/dismiss_pending_auto_switch/interface.md (6526B)",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl line 98: argKeys=[] col=32223",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl lines 111,165: dismissPendingAutoSwitch + guarded callsite",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#dismiss_pending_auto_switch (acceptance-draft)"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 98,
+    "wrapper": "dismissPendingAutoSwitch",
+    "argKeys": [],
+    "snippet_col": 32223,
+    "ccf_lines": [111, 165],
+    "guard": "if(!(!t||r)){i(!0);try{await Ge.dismissPendingAutoSwitch(),e(null)}finally{i(!1)}}",
+    "ipc_string_va": "0x1412AC2DB"
+  },
+  "dim2_detail": {
+    "handler_va": "0x140029270",
+    "core_va": "0x1401B29E0",
+    "dispatch_shim_va": "0x14078AA20",
+    "owner_name": "dismiss_pending_auto_switch_owner_sys",
+    "pseudocode_bytes": 16450,
+    "session": "wf-aimami111-delta-20260617-sweep + gold_leaf 2026-06-18",
+    "delta_class": "integrity_recovered"
+  },
+  "dim3_detail": {
+    "depth": 7,
+    "terminated_reason": "WIN32 OS API",
+    "terminated_at": ["CloseHandle","DeleteFileW","SetFileInformationByHandle","GetSystemTimePreciseAsFileTime","GetFullPathNameW"],
+    "new_callees_111": [
+      "snooze_file_delete_111@0x14108BF60 (NEW: DeleteFileW+SetFileInformationByHandle fallback)",
+      "win32_file_write_bytes_111@0x141093710 (NEW: writes AutoSwitchSnoozeRecord)",
+      "system_time_precise_u32_111@0x14107B7E0 (NEW: GetSystemTimePreciseAsFileTime for dismissedAt)",
+      "elapsed_since_ts_111@0x14107B790 (NEW: FILETIME→Duration)",
+      "io_error_classify_111@0x140152630 (NEW: classifies Win32 error for restart decision)"
+    ]
+  },
+  "dim4_detail": {
+    "input_params": [],
+    "dto_shapes": {
+      "PendingAutoSwitchPayload": {
+        "source_file": "auto-switch-pending.json",
+        "serde_tag_va": "0x1412ACF73",
+        "element_count": 5,
+        "fields": ["currentAccountKey","candidateAccountKey","dismissedAt","<2 optional>"]
+      },
+      "AutoSwitchSnoozeRecord": {
+        "dest_file": "auto-switch-snooze.json",
+        "serde_tag_va": "0x1412AD107",
+        "element_count": 3,
+        "fields": {
+          "currentAccountKey": {"serde_key_va":"0x1412AD0D8"},
+          "candidateAccountKey": {"serde_key_va":"0x1412AD0E9"},
+          "dismissedAt": {"serde_key_va":"0x1412AD0FC","type":"Duration{sign,secs,nanos}","note":"freshly computed via GetSystemTimePreciseAsFileTime at dismiss time, NOT from payload"}
+        },
+        "persist_fn_va": "0x1403A64F0",
+        "file_handle_slot": "acct + 84 * sizeof(ptr)"
+      },
+      "Duration_encoding": {
+        "ref_epoch_lo": 3577643008,
+        "ref_epoch_hi": 27111902,
+        "secs_divisor": 10000000,
+        "nanos_multiplier": 100,
+        "layout": {"sign":"out+0(u64)","secs":"out+8(u64)","nanos":"out+16(u32)"}
+      }
+    },
+    "new_return_variant_111": "RestartNeeded (tag=2 with snooze_path) — absent in 1.0.9",
+    "new_persistence_artifacts_111": ["auto-switch-snooze.json"],
+    "new_branch_logic_111": "restart gate: if stale snooze file existed and io_error_classify returns non-zero → RestartNeeded(path)",
+    "error_sentinels": ["panic 'poisoned lock'", "IoError on snooze file write", "RestartNeeded(tag=2) on stale-file-delete-classified-restart"],
+    "side_effects": [
+      "READ auto-switch-pending.json (pending_auto_switch_payload_read_111@0x1401ABFF0)",
+      "WRITE auto-switch-snooze.json {currentAccountKey,candidateAccountKey,dismissedAt} (NEW 1.1.1)",
+      "CONDITIONAL DELETE stale snooze file (DeleteFileW+SetFileInformationByHandle) (NEW 1.1.1)",
+      "GetSystemTimePreciseAsFileTime (WIN32 timestamp, dismissedAt freshly computed)"
+    ]
+  },
+  "dim5_detail": {
+    "win32_apis": ["GetSystemTimePreciseAsFileTime","DeleteFileW","SetFileInformationByHandle","GetFullPathNameW","GetLastError","CloseHandle","_InterlockedCompareExchange8"],
+    "idb": "<本地路径>",
+    "sha": "d24e429a",
+    "renames_applied": 11,
+    "comments_set": 4
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "shard_ref": "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#dismiss_pending_auto_switch"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

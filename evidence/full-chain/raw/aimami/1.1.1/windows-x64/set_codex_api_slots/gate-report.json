@@ -1,0 +1,29 @@
+{
+  "command": "set_codex_api_slots",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/set_codex_api_slots/pseudocode.md",
+    "raw/aimami/1.1.1/windows-x64/set_codex_api_slots/call-tree.md",
+    "raw/aimami/1.1.1/windows-x64/set_codex_api_slots/interface.md",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl#L117 command=set_codex_api_slots argKeys=[slots]",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl#L139,L155",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-consolidated.json#readyToImplement"
+  ],
+  "dim1_evidence": "ipc-contracts.jsonl L117: command=set_codex_api_slots, argKeys=[slots], argObject={slots:t}, callee=vt, kind=tauriInvokeWrapper, file=assets/index-DdcCOEJG.js:86; CCF L139,L155 confirmed; note: frontend sends slots only (manager resolved server-side per binary param extraction)",
+  "dim2_evidence": "set_codex_api_slots_owner_sys@0x14001BDE0 (1217B) full decompile; set_codex_api_slots_core_dispatch_sys@0x140218120; sub_1406D9FC0(relay state write-lock+mutation gate); sub_1406D7860(relay provider slots Vec updater); relay_providers_config_write_and_persist_sys@0x1406E6960(shared leaf); struct CodexApiSlot serde table@0x1412BFE38 confirmed",
+  "dim3_evidence": "call-tree depth=6 terminated at WIN OS leaf (GetCurrentProcessId+CloseHandle); terminal leaves: _InterlockedCompareExchange8, WakeByAddressSingle@0x14124A5D0, GetCurrentProcessId@0x14108B3B0, CloseHandle@0x14124D788, sub_14080C3C0(Tauri IPC resolver); genuine_ceiling=false",
+  "dim4_evidence": "params: manager(String,7B), slots(Vec<CodexApiSlot>,5B); CodexApiSlot{providerId:String(10B), model:String(5B)}; constraint: slots.len<=5 (hard-validated in sub_1406D7860); slots.len==0 → error code 8; response: 'ok'(2B 0x6B6F); side-effects: relay state in-memory update(stride=232B) + relay config JSON atomic_write(9 fields) + relay_post_login_state_sync(conditional); WIN lock _InterlockedCompareExchange8+WakeByAddressSingle",
+  "dim5_evidence": "windows confirmed: _InterlockedCompareExchange8+WakeByAddressSingle lock; atomic_write GetCurrentProcessId+CloseHandle pattern; RelayProvider stride=232B confirmed; relay state poisoned panic@0x1412ea5ed; shared leaf relay_providers_config_write_and_persist_sys also confirmed in reorder_relay_providers win leaf",
+  "dim6_evidence": "acceptance-draft by wf-aimami111-dim6-20260619; promoted to readyToImplement in win-consolidated.json",
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

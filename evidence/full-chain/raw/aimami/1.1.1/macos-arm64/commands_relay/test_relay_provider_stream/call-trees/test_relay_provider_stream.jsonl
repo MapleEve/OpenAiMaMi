@@ -1,0 +1,19 @@
+{"depth":0,"va":"0x1000ba9c0","symbol":"codexmate_lib::commands::relay::test_relay_provider_stream::{closure_drop}","type":"owner_drop","note":"ICF owner; entry VA for command"}
+{"depth":1,"va":"0x10009d110","symbol":"codexmate_lib::core::relay::health_check::test_provider_staged::{closure}","type":"async_poll_body","note":"true async future body; 2992 bytes; called from drop_in_place and Tauri poll"}
+{"depth":2,"va":"0x1001234d0","symbol":"tauri::ipc::InvokeResolver::respond_async_serialized_inner::{closure}","type":"tauri_dispatch","note":"Tauri IPC router; dispatches command by name string at 0x1010e7311"}
+{"depth":2,"va":"0x100766a30","symbol":"codexmate_lib::core::relay::health_check::resolve_responses_urls","type":"callee","note":"constructs chat + responses URL variants from base URL"}
+{"depth":2,"va":"0x100767e10","symbol":"codexmate_lib::core::relay::health_check::build_url","type":"callee","note":"normalizes base URL, strips /v1, appends path suffix"}
+{"depth":2,"va":"0x100767d20","symbol":"codexmate_lib::core::relay::health_check::classify_openai_chat_endpoint","type":"callee","note":"returns true if endpoint is embedding (embed/bge-/m3e patterns)"}
+{"depth":2,"va":"0x100764800","symbol":"codexmate_lib::core::relay::health_check::build_test_request","type":"callee","note":"builds JSON body; stream:true + stream_options:{include_usage:true} when streaming"}
+{"depth":2,"va":"0x1007662e0","symbol":"codexmate_lib::core::relay::health_check::build_openai_headers","type":"callee","note":"builds HeaderMap; adds Accept:text/event-stream when streaming"}
+{"depth":2,"va":"0x100766ca0","symbol":"codexmate_lib::core::relay::health_check::build_anthropic_headers","type":"callee","note":"builds HeaderMap for Anthropic; no originator headers"}
+{"depth":2,"va":"0x100763dc0","symbol":"codexmate_lib::core::relay::health_check::responses_payload","type":"callee","note":"builds Responses-API payload; handles reasoning budget from model#N syntax"}
+{"depth":3,"va":"0x1007677a0","symbol":"codexmate_lib::core::relay::health_check::is_stream_terminal_event","type":"streaming_leaf","note":"new 1.1.1; detects SSE terminal events by type string match"}
+{"depth":3,"va":"0x1007678a0","symbol":"codexmate_lib::core::relay::health_check::extract_stream_text_delta","type":"streaming_leaf","note":"new 1.1.1; extracts text delta from SSE chunk; 3 endpoint type paths"}
+{"depth":3,"va":"0x100765560","symbol":"codexmate_lib::core::relay::health_check::apply_extra_headers","type":"callee","note":"applies extra headers from provider config; called by both header builders"}
+{"depth":3,"va":"0x100520060","symbol":"alloc::collections::btree::map::BTreeMap::insert","type":"stdlib","note":"BTreeMap key insertion for JSON body construction"}
+{"depth":4,"va":"0x101442e70","symbol":"codexmate_lib::core::relay::health_check::ASYNC_CLIENT","type":"global_static","note":"OnceLock<reqwest::Client>; shared HTTP client for all health checks"}
+{"depth":4,"va":"0x100fbc820","symbol":"core::panicking::panic_const::panic_const_async_fn_resumed","type":"safety_guard","note":"fires if future polled after completion"}
+{"depth":4,"va":"0x100fbc840","symbol":"core::panicking::panic_const::panic_const_async_fn_resumed_panic","type":"safety_guard","note":"fires if future polled after panic"}
+{"depth":5,"terminated_reason":"leaf_stdlib","va":"0x100ee9d20","symbol":"<str as serde_json::value::index::Index>::index_into","type":"serde_leaf","note":"JSON value field access used by streaming leaves"}
+{"depth":5,"terminated_reason":"leaf_stdlib","va":"0x100f63980","symbol":"alloc::fmt::format::format_inner","type":"stdlib_leaf","note":"string formatting for URL construction"}

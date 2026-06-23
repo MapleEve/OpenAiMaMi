@@ -1,0 +1,91 @@
+{
+  "schema": "c5cm.raw.leaf.v2",
+  "key": "aimami/1.1.1/macos-arm64/hotspot/focus_main_window",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "hotspot",
+  "command": "focus_main_window",
+  "session": "wf-aimami111-delta-20260616",
+  "produced_by": "<本地机器>",
+  "produced_at": "2026-06-17",
+  "sha256_binary": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "sha256_binary_short": "f34ff8291053",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "owner_va": "0x1005ec060",
+  "owner_symbol": "codexmate_lib::commands::hotspot::focus_main_window::he42a9e4c93c10f67",
+  "owner_size_bytes": 330,
+  "gate": "strictImplementationUse",
+  "gate_accepted": false,
+  "implementation_use": false,
+  "strictImplementationUse": true,
+  "readyToImplement": false,
+  "consumerStartReady": true,
+  "full_leaf_100": false,
+  "delta_from_baseline": {
+    "baseline_version": "1.0.9",
+    "baseline_platform": "macos-arm64",
+    "baseline_va": "0x10032e820",
+    "baseline_module": "window-path",
+    "baseline_gate": "strictImplementationUse",
+    "behavior_diff": "none",
+    "va_relocated": true,
+    "vtable_hash_changed": true,
+    "vtable_1_0_9": "anon_3229ff4e18cd66813633fef5ae3b16b2_1026",
+    "vtable_1_1_1": "anon_91b23c3e0afeec67b869976d9683aaed_711",
+    "discriminant": 28,
+    "focused_flag": "0x01 (unchanged)",
+    "module_assignment_change": "1.0.9 module was window-path (INDEX key), but demangled symbol was always hotspot; 1.1.1 confirmed hotspot",
+    "migration_status": "diff_reversed (full 逆向分析 run done; behavior identical; VA+vtable hash are binary relocation artifacts)"
+  },
+  "dims": {
+    "dim1_frontend_ccf": "partial — IPC dispatcher and tray event caller confirmed; 1.1.1 frontend bundle file/line not re-extracted; command string confirmed in packed table; accepted as no-diff",
+    "dim2_owner_decompile": "closed — non-failed 逆向分析 decompile at VA 0x1005ec060",
+    "dim3_call_tree": "closed — depth 2 meaningful levels; terminated at Wry/NSApp; no async hidden body",
+    "dim4_interface_dto_error": "closed — no args, Result<(),Error> return, WryUserEvent(28,focused=true), no persistence/http/sidecar",
+    "dim5_platform_gate": "closed — macOS arm64 evidence only; same-platform confirmed",
+    "dim6_test_acceptance": "not assessed — C5 implementation side"
+  },
+  "accepted_unknowns": [
+    {
+      "id": "frontend_bundle_line",
+      "description": "1.1.1 JS bundle file/line for focusMainWindow wrapper not re-extracted; command name and IPC dispatcher confirmed; accepted as no-diff",
+      "recovery_attempts": ["command string confirmed in packed table at 0x101148166", "IPC dispatcher decompile shows command name match"],
+      "genuine_ceiling": false
+    },
+    {
+      "id": "tray_handler_1_1_1_body",
+      "description": "handle_tray_menu_event 1.1.1 body not fully decompiled; call site at 0x100627ef2 confirmed; accepted as no-diff from 1.0.9",
+      "recovery_attempts": ["xrefs_to confirmed call site", "1.0.9 tray analysis available in baseline leaf"],
+      "genuine_ceiling": false
+    },
+    {
+      "id": "windows_x64_1_1_1",
+      "description": "Windows 1.1.1 platform not covered by this leaf",
+      "recovery_attempts": [],
+      "genuine_ceiling": false,
+      "blocks_cross_platform": true
+    }
+  ],
+  "callers": [
+    {
+      "va": "0x10030ec98",
+      "in_fn": "0x10030eb00",
+      "symbol": "codexmate_lib::run::{{closure}}::{{closure}}::h25ed32806bf8ca6e",
+      "path": "IPC dispatcher"
+    },
+    {
+      "va": "0x100627ef2",
+      "in_fn": "0x1006278e0",
+      "symbol": "codexmate_lib::commands::tray_menu::handle_tray_menu_event::h4e2f02913f540532",
+      "path": "tray event native substitute"
+    }
+  ],
+  "files": {
+    "evidence": "evidence.md",
+    "pseudocode": "ida/pseudocode/0001_focus_main_window_owner_he42a9e4c93c10f67.c",
+    "pseudocode_manifest": "ida/pseudocode-manifest.jsonl",
+    "call_tree": "call-trees/focus_main_window.jsonl",
+    "interface": "interfaces/focus_main_window_dto.md"
+  }
+}

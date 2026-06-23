@@ -1,0 +1,213 @@
+{
+  "schema": "c5cm.reverse.leaf.manifest.v1",
+  "command": "begin_add_account_attach_monitor",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "module": "system",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-17T00:00:00+08:00",
+  "producer_role": "纯生产者 (SOP steps 0-6)",
+  "binary_format": "pe",
+  "pe_machine": "x86_64",
+  "source_binary": "AiMaMi 1.1.1 win64.exe",
+  "source_binary_sha256": "see_INDEX.jsonl_key_aimami/1.1.1/windows-x64/binary",
+  "idb_path": "<本地路径>",
+  "hexrays_ready": true,
+  "idb_save": "ok",
+  "imagebase": "0x140000000",
+  "handler_va": "0x140013A60",
+  "handler_symbol": "begin_add_account_attach_monitor_handler",
+  "handler_size_bytes": 1167,
+  "core_va": "0x14078C070",
+  "core_symbol": "begin_add_account_attach_monitor_core",
+  "business_va": "0x1401AA1C0",
+  "business_symbol": "begin_add_account_attach_monitor_business",
+  "string_va": "0x1412ac25d",
+  "string_value": "begin_add_account_attach_monitor",
+  "arg_keys": [],
+  "response_type": "CoreEnvelope<CoreSnapshotPayload>",
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 49144,
+    "hexrays_ready": true,
+    "module": "AiMaMi 1.1.1 win64.exe",
+    "checked_at_session_start": true
+  },
+  "prewrite_collision_gate": {
+    "status": "no_collision",
+    "index_key_check": "aimami/1.1.1/windows-x64/system/begin_add_account_attach_monitor — absent from INDEX.jsonl",
+    "raw_dir_check": "raw/aimami/1.1.1/windows-x64/system/begin_add_account_attach_monitor — did not exist before this session",
+    "owner_matrix": {
+      "target": "begin_add_account_attach_monitor",
+      "canonical_scope": "aimami/1.1.1/windows-x64/system",
+      "current_producer": "wf-aimami111-delta-20260616",
+      "machine": "<本地机器>",
+      "index_row": "absent",
+      "write_mode": "additive_owner",
+      "collision_status": "none"
+    }
+  },
+  "thread_model": {
+    "mechanism": "std::thread::spawn (Windows CreateThread wrapper via sub_141078170)",
+    "stack_size_env": "RUST_MIN_STACK",
+    "stack_size_default": "0x200000",
+    "thread_vtable": "0x1412DBE90",
+    "spawn_fn": "0x140589300",
+    "panic_string": "failed to spawn thread",
+    "spawn_error_sentinel": "0x8000000000000000",
+    "windows_sync": "WakeByAddressSingle + _InterlockedCompareExchange8 + _InterlockedDecrement64 + CloseHandle"
+  },
+  "call_tree": [
+    {
+      "level": 0,
+      "va": "0x140013A60",
+      "name": "begin_add_account_attach_monitor_handler",
+      "role": "Tauri IPC entry point, arg parse, invoke resolver setup",
+      "callees": ["0x140089A50", "0x14080C3C0", "0x14006EDC0", "0x141214620", "0x14078C070"]
+    },
+    {
+      "level": 1,
+      "va": "0x14078C070",
+      "name": "begin_add_account_attach_monitor_core",
+      "role": "spawns OS thread, calls state_manager_lock_and_assemble, handles WakeByAddressSingle, CloseHandle",
+      "callees": ["0x140589300", "0x1401AA1C0", "0x1401ABC20", "0x140243FC0"]
+    },
+    {
+      "level": 1,
+      "va": "0x14006EDC0",
+      "name": "state_manager_hashmap_lookup",
+      "role": "SIMD hashmap lookup for StateManager (SSE2 xmmword_14124E090/A0), vtable dispatch at +24",
+      "callees": ["WakeByAddressSingle"]
+    },
+    {
+      "level": 1,
+      "va": "0x141214620",
+      "name": "load_snapshot_local_builder",
+      "role": "constructs two future/closure pairs (sub_140082100, sub_14106D960) for snapshot load",
+      "callees": ["0x1410A1DF0", "0x141222DD0", "0x14106D960"]
+    },
+    {
+      "level": 2,
+      "va": "0x1401AA1C0",
+      "name": "begin_add_account_attach_monitor_business",
+      "role": "business logic: calls state_manager_lock_and_assemble, sync_local_runtime_state_builder(a4=4), schedule_full_runtime_refresh_builder",
+      "callees": ["0x1401ABC20", "0x1401B62F0", "0x140213770"]
+    },
+    {
+      "level": 3,
+      "va": "0x1401ABC20",
+      "name": "state_manager_lock_and_assemble",
+      "role": "RwLock::read + state assembly. v21==10->fallback sub_1401A5570; v21==2->Ok(T)",
+      "callees": ["0x1401ACB20", "0x1401A5570"]
+    },
+    {
+      "level": 3,
+      "va": "0x1401B62F0",
+      "name": "sync_local_runtime_state_builder",
+      "role": "builds sync payload. hardcode bundle_id='dev.aimami.auto-switch'(22B). a4==4 -> check_schtask_codexmate_autoswitch(). field layout: codex_path@+68(Option<String>,sentinel=0x8000000000000000), usage_refresh_interval@+80(i32), account stride 360B, provider stride 168B",
+      "callees": ["0x14079F5C0", "0x1401EB500", "0x1401ED840", "0x1410A2210"]
+    },
+    {
+      "level": 3,
+      "va": "0x140213770",
+      "name": "schedule_full_runtime_refresh_builder",
+      "role": "writes 'ok'(2B=0x6B6F) + 7-byte scheduler tag. struct fields at +680..+720. sets count=1, enabled=1",
+      "callees": []
+    },
+    {
+      "level": 4,
+      "va": "0x1401ACB20",
+      "name": "state_manager_assemble_inner",
+      "role": "timestamp sub_14107B7E0/B790, CURRENT_AUTH_SYNC_FAILED(24B), LEGACY_QUOTA_MIGRATION_FAILED(29B), snapshot state-machine sub_140243FC0(8-case switch), persist_registry sub_1401A6C10, quota_save sub_1401FF820. account stride 360B, provider stride 168B",
+      "callees": ["0x1401B2420", "0x1401A1480", "0x14107B7E0", "0x14107B790", "0x140243FC0", "0x1406F2870", "0x1401A6C10", "0x1401FF820", "0x1401FFE00"]
+    },
+    {
+      "level": 4,
+      "va": "0x14079F5C0",
+      "name": "check_schtask_codexmate_autoswitch",
+      "role": "WINDOWS-ONLY: executes 'schtasks /Query /TN CodexMateAutoSwitch /V /FO CSV'. parses CSV output. returns 0=running(case-insensitive 'running'), 1=running-alt, 2=not-running/error/absent. NO macOS equivalent.",
+      "callees": ["0x1410878D0", "0x14072E9F0", "0x140233B60"]
+    },
+    {
+      "level": 5,
+      "va": "0x140243FC0",
+      "name": "snapshot_state_machine",
+      "role": "8-case switch on state variant (0-7). each case calls sub_1410A8340 with JSON serde/future closure. case 2: sub_1401D1E80",
+      "terminated_reason": "leaf: each case terminates in sub_1410A8340 (JSON serialize/future exec)"
+    },
+    {
+      "level": 5,
+      "va": "0x1401A6C10",
+      "name": "persist_registry_fs_write",
+      "role": "Repository::persist_registry -> fs::write to disk. called within sync_local_runtime_state.",
+      "terminated_reason": "fs leaf"
+    },
+    {
+      "level": 5,
+      "va": "0x1401FF820",
+      "name": "quota_store_save",
+      "role": "quota_store::save -> fs::write. called per poll cycle in sync_local_runtime_state.",
+      "terminated_reason": "fs leaf"
+    }
+  ],
+  "windows_platform_deltas": {
+    "vs_macos": [
+      "check_schtask_codexmate_autoswitch (0x14079F5C0): Windows-only, runs schtasks.exe /Query /TN CodexMateAutoSwitch. macOS uses launchctl/pthread equivalent.",
+      "CloseHandle(hObject[1]) in begin_add_account_attach_monitor_core: Windows HANDLE cleanup, no macOS equivalent.",
+      "WakeByAddressSingle + _InterlockedCompareExchange8 + _InterlockedDecrement64: Windows futex-style sync primitives. macOS uses pthread_mutex/condvar.",
+      "_InterlockedDecrement64 / _InterlockedIncrement64: Windows atomic intrinsics. macOS uses __atomic_fetch_sub/__atomic_fetch_add.",
+      "Thread spawn via sub_141078170 (CreateThread wrapper) vs pthread_create on macOS.",
+      "RUST_MIN_STACK env var parsing same across platforms but stack size = 0x200000 default."
+    ]
+  },
+  "side_effects": [
+    "std::thread::spawn (detached monitor thread, RUST_MIN_STACK stack size)",
+    "sync_local_runtime_state_builder: checks 'dev.aimami.auto-switch' schtask status (WINDOWS-ONLY)",
+    "schedule_full_runtime_refresh_builder: schedules refresh if codex_path/usage_refresh_interval changed",
+    "persist_registry_fs_write: Repository::persist_registry -> fs::write (within sync_local_runtime_state)",
+    "quota_store_save: quota_store::save -> fs::write (within sync_local_runtime_state)"
+  ],
+  "error_paths": [
+    "Thread spawn fail: 'failed to spawn thread' panic at 0x1412f3816, returns None sentinel 0x8000000000000000",
+    "StateManager::try_get None: 'poisoned lock: another task failed inside' panic at 0x1412e6bb3",
+    "load_snapshot_local Err: returns CoreError envelope immediately, no thread spawn",
+    "CURRENT_AUTH_SYNC_FAILED: auth sync error path in state_manager_assemble_inner",
+    "LEGACY_QUOTA_MIGRATION_FAILED: quota migration error path in state_manager_assemble_inner",
+    "state_machine case dispatch: each case may return serde error via sub_1410A8340",
+    "resolver consumed check: 'resolver consumed' panic at 0x1412f79e8 if duplicate resolve"
+  ],
+  "change_detection_fields": [
+    {
+      "field": "codex_path",
+      "struct_offset": 68,
+      "type": "Option<String>",
+      "sentinel_none": "0x8000000000000000"
+    },
+    {
+      "field": "usage_refresh_interval",
+      "struct_offset": 80,
+      "type": "i32"
+    }
+  ],
+  "idb_rename_ops": [
+    {"addr": "0x140013A60", "old": "sub_140013A60", "new": "begin_add_account_attach_monitor_handler"},
+    {"addr": "0x14078C070", "old": "sub_14078C070", "new": "begin_add_account_attach_monitor_core"},
+    {"addr": "0x1401AA1C0", "old": "sub_1401AA1C0", "new": "begin_add_account_attach_monitor_business"},
+    {"addr": "0x1401B62F0", "old": "sub_1401B62F0", "new": "sync_local_runtime_state_builder"},
+    {"addr": "0x14079F5C0", "old": "sub_14079F5C0", "new": "check_schtask_codexmate_autoswitch"},
+    {"addr": "0x140213770", "old": "sub_140213770", "new": "schedule_full_runtime_refresh_builder"},
+    {"addr": "0x1401ABC20", "old": "sub_1401ABC20", "new": "state_manager_lock_and_assemble"},
+    {"addr": "0x1401ACB20", "old": "sub_1401ACB20", "new": "state_manager_assemble_inner"}
+  ],
+  "gate_leaf": {
+    "dim1": "pending_frontend_ccf",
+    "dim2": "accepted — begin_add_account_attach_monitor_handler @ 0x140013A60, non-failed decompile, source=AiMaMi 1.1.1 win64.exe, PE stripped, hexrays_ready=true",
+    "dim3": "accepted — call tree depth 5, terminates at fs::write (persist_registry, quota_store::save), schtasks.exe child process (Windows)",
+    "dim4": "accepted — arg_keys=[], response_type=CoreEnvelope<CoreSnapshotPayload>, codex_path@+68 Option<String> sentinel=0x8000000000000000, usage_refresh_interval@+80 i32, account stride 360B, provider stride 168B, error envelopes: CURRENT_AUTH_SYNC_FAILED + LEGACY_QUOTA_MIGRATION_FAILED",
+    "dim5": "accepted — windows-x64 independent evidence. delta vs macOS: schtask check, CloseHandle, WakeByAddressSingle, _InterlockedDecrement64. NOT inferred from macOS.",
+    "dim6": "pending_consumer_acceptance_mapping",
+    "overall": "strictImplementationUse — dim2/3/4/5 closed; dim1 pending frontend CCF; dim6 pending consumer"
+  }
+}

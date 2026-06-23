@@ -1,0 +1,86 @@
+{
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-17",
+  "target": "begin_add_account_attach_monitor",
+  "platform": "windows-x64",
+  "version": "1.1.1",
+  "layers": [
+    {
+      "layer": "L1",
+      "name": "begin_add_account_attach_monitor_handler",
+      "addr": "0x140013a60",
+      "size": "0x48f",
+      "role": "Tauri IPC entry",
+      "callees": [
+        {"addr": "0x140089a50", "name": "confirm_pending_auto_switch_deserialize_request_sys", "role": "arg_parser, v17==3→cached snapshot"},
+        {"addr": "0x14006edc0", "name": "pending_auto_switch_state_lock_acquire_111", "role": "StateManager SIMD hashmap lookup"},
+        {"addr": "0x141214620", "name": "query_installed_skills_with_repo_111", "role": "load_snapshot_local_builder"},
+        {"addr": "0x14080c3c0", "name": "sub_14080C3C0", "role": "IPC resolver / early response sender"},
+        {"addr": "0x14078c070", "name": "begin_add_account_attach_monitor_core", "role": "L2 dispatch"},
+        {"addr": "0x140832560", "name": "sub_140832560", "role": "send error response"},
+        {"addr": "0x14033ab50", "name": "sub_14033AB50", "role": "listener cleanup iterator"},
+        {"addr": "0x140042650", "name": "sub_140042650", "role": "finalize IPC call"}
+      ],
+      "xrefs_from": [
+        {"addr": "0x14000daac", "fn": "tauri_ipc_main_dispatcher_sys", "fn_addr": "0x14000d2a0", "type": "code"},
+        {"addr": "0x1414fa64c", "fn": null, "type": "data"},
+        {"addr": "0x14189dcfc", "fn": null, "type": "data"}
+      ]
+    },
+    {
+      "layer": "L2",
+      "name": "begin_add_account_attach_monitor_core",
+      "addr": "0x14078c070",
+      "size": "0x74b",
+      "role": "CAS monitor dispatch + thread spawn (WINDOWS-ONLY)",
+      "callees": [
+        {"addr": "0x1401aa1c0", "name": "begin_add_account_attach_monitor_business", "role": "L3 business logic"},
+        {"addr": "0x140589300", "name": "sub_140589300", "role": "std::thread::spawn RUST_MIN_STACK=0x8000000000000000"},
+        {"addr": "0x1410b1930", "name": "sub_1410B1930", "role": "RwLock::write (poison check)"},
+        {"addr": "0x14124a5d0", "name": "WakeByAddressSingle", "role": "WINDOWS-ONLY: wake waiters on unlock"},
+        {"addr": "0x14124d788", "name": "__imp_CloseHandle", "role": "WINDOWS-ONLY: close thread handle"},
+        {"addr": "0x140243fc0", "name": "sub_140243FC0", "role": "future/one-shot channel construct"},
+        {"addr": "0x1407b1650", "name": "sub_1407B1650", "role": "channel endpoint init"},
+        {"addr": "0x141088150", "name": "sub_141088150", "role": "Arc<Thread> drop"},
+        {"addr": "0x141088010", "name": "sub_141088010", "role": "HANDLE Arc drop"},
+        {"addr": "0x14124b1d0", "name": "sub_14124B1D0", "role": "feature-flag conditional check"},
+        {"addr": "0x14124a510", "name": "sub_14124A510", "role": "monitor spin/wait"},
+        {"addr": "0x14124bfe0", "name": "sub_14124BFE0", "role": "panic handler"},
+        {"addr": "0x140041870", "name": "sub_140041870", "role": "drop context/future"},
+        {"addr": "0x1400467a0", "name": "sub_1400467A0", "role": "drop output block A"},
+        {"addr": "0x140046d60", "name": "sub_140046D60", "role": "drop schtask list"}
+      ],
+      "monitor_state_machine": {
+        "byte0": "CAS lock (0=free, 1=locked, 2=waiters present)",
+        "byte1": "waiter_flag",
+        "data_at_plus8": "state data area (passed to business as a2)"
+      },
+      "platform_specific": ["_InterlockedCompareExchange8", "WakeByAddressSingle", "CloseHandle"]
+    },
+    {
+      "layer": "L3",
+      "name": "begin_add_account_attach_monitor_business",
+      "addr": "0x1401aa1c0",
+      "size": "0x33a",
+      "role": "state_manager_lock_and_assemble + sync_local_runtime_state + schedule_refresh",
+      "callees": [
+        {"addr": "0x1401abc20", "name": "state_manager_lock_and_assemble", "role": "L3a: lock+assemble snapshot, v14==2→cached"},
+        {"addr": "0x1401b62f0", "name": "sync_local_runtime_state_builder", "role": "L3b: full sync, a4=4 triggers check_schtask_codexmate_autoswitch"},
+        {"addr": "0x140213770", "name": "schedule_full_runtime_refresh_builder", "role": "L3c: write ok+SCHEdul tag, refresh_required=1"},
+        {"addr": "0x1400467a0", "name": "sub_1400467A0", "role": "drop lock guard"},
+        {"addr": "0x1400485a0", "name": "sub_1400485A0", "role": "drop snapshot tmp"},
+        {"addr": "0x140047480", "name": "sub_140047480", "role": "drop output tmp"},
+        {"addr": "0x140046d60", "name": "sub_140046D60", "role": "drop schtask list (kind!=2)"}
+      ],
+      "fast_path": "v14==2: copy 6x128bit cached snapshot directly, return Ok(3)",
+      "slow_path": "sync_local_runtime_state_builder(a4=4) + schedule_full_runtime_refresh_builder"
+    }
+  ],
+  "string_evidence": [
+    {"addr": "0x1412ac25d", "value": "begin_add_account_attach_monitor"},
+    {"addr": "0x1412e6bb3", "value": "poisoned lock: another task failed inside"},
+    {"addr": "0x1412f3816", "value": "failed to spawn thread"},
+    {"addr": "0x1412f4e88", "value": "a Display implementation returned an error unexpectedly"}
+  ]
+}

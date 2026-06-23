@@ -1,0 +1,81 @@
+{
+  "command": "begin_add_account_attach_monitor",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/accounts/begin_add_account_attach_monitor/pseudocode.md (23271B, gold-leaf)",
+    "raw/aimami/1.1.1/windows-x64/accounts/begin_add_account_attach_monitor/call-tree.json",
+    "raw/aimami/1.1.1/windows-x64/accounts/begin_add_account_attach_monitor/interface.md (2285B)",
+    "raw/aimami/1.1.1/windows-x64/accounts/begin_add_account_attach_monitor/owner.md (1678B)",
+    "raw/aimami/1.1.1/windows-x64/accounts/begin_add_account_attach_monitor/evidence-ida.md (6236B)",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl line 24: argKeys=[] col=25608",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl line 37: beginAddAccountAttachMonitor minified-static-terminal-call",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#begin_add_account_attach_monitor (acceptance-draft)"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 24,
+    "wrapper": "beginAddAccountAttachMonitor",
+    "argKeys": [],
+    "snippet_col": 25608,
+    "ccf_line": 37
+  },
+  "dim2_detail": {
+    "owner_va": "0x140013a60",
+    "owner_name": "begin_add_account_attach_monitor_owner_sys",
+    "core_va": "0x14078c070",
+    "business_va": "0x1401aa1c0",
+    "pseudocode_bytes": 23271,
+    "session": "wf-aimami111-delta-20260618-goldleaf"
+  },
+  "dim3_detail": {
+    "depth": 6,
+    "edges": 25,
+    "terminated_reason": "all_branches_hit_known_leaves",
+    "key_leaves": [
+      "schtasks /Query /TN CodexMateAutoSwitch /V /FO CSV (external_call@0x14079f5c0)",
+      "auto_switch_state JSON persist (persistence_commit@0x1401a6c10)",
+      "quota history dedup (persistence_commit@0x1401ff820)",
+      "Win32 file write bytes (platform_primitive@0x141093710)",
+      "std::thread::spawn (platform_primitive@0x140589300)",
+      "WakeByAddressSingle (platform_primitive@0x14124a5d0)",
+      "CloseHandle (platform_primitive@0x14124d788)"
+    ]
+  },
+  "dim4_detail": {
+    "input_params": [],
+    "fast_path": "v17==3 returns cached snapshot",
+    "response_fields": {
+      "autoswitch_status": "schtask query result (0=running,1=other,2=err)",
+      "bundle_id": "dev.aimami.auto-switch (22B hardcoded)",
+      "refresh_required": true,
+      "refresh_count": 1,
+      "tag_str": "SCHEdul (7B)",
+      "status_str": "ok (2B)"
+    },
+    "error_sentinels": ["0x8000000000000000 (Pending/waiter/thread-spawn)", "panic failed to spawn thread", "panic poisoned lock"],
+    "side_effects": ["auto_switch_state_persist_json_111 JSON write", "quota_history_append_dedup_111", "win32_file_write_bytes_111", "std::thread::spawn (background monitor)", "schtasks.exe external process (WIN-ONLY)"]
+  },
+  "dim5_detail": {
+    "win_idb": "<本地路径>",
+    "baseline_va_109": "0x140283580",
+    "baseline_gate_109": "strictImplementationUse",
+    "sha": "d24e429a",
+    "win_specifics": ["schtasks.exe process spawn (WIN-ONLY)", "WakeByAddressSingle", "CloseHandle", "RwLock poison guard"]
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "shard_ref": "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#begin_add_account_attach_monitor",
+    "note": "acceptance-draft counts as closed for producer-side per task mandate"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

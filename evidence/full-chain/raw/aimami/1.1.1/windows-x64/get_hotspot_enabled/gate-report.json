@@ -1,0 +1,22 @@
+{
+  "command": "get_hotspot_enabled",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "canonical_leaf": "system/get_hotspot_enabled/",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "system/get_hotspot_enabled/gate-report.json — full evidence (canonical leaf)",
+    "frontend/ipc-contracts.jsonl — wrapper=getHotspotEnabled argKeys=[] index-DdcCOEJG.js:86",
+    "system/get_hotspot_enabled/pseudocode.md",
+    "system/get_hotspot_enabled/interface.md"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

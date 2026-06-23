@@ -1,0 +1,79 @@
+{
+  "command": "test_relay_draft_stream",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "ipc-contracts.jsonl L121: cmd=test_relay_draft_stream argKeys=['input','onEvent'] callee=r kind=tauriInvokeRaw",
+    "frontend-control-flow.jsonl L128: terminal_call.command=test_relay_draft_stream kind=tauriInvoke argKeys=['input','onEvent']; trigger=index-DdcCOEJG.js L86 (minified-static-function); handler_chain=[testDraftStream]",
+    "dim1 NOTE: backend interface.md also lists 'manager' param (7B). Frontend sends {input,onEvent} only. CCF confirms argKeys=['input','onEvent']. Integration gap: manager absent from frontend. dim1 confirmed_with_gap.",
+    "pseudocode.md 4567B ≥600B",
+    "call-tree.md: D0-D4; all D1-D2 callees have explicit terminated_reason; D3 relay/http leaves; no genuine ceiling; fake wall taxonomy cleared (async_poll/large_body/inlined/shared_leaf/enum_dispatch all CLEARED)",
+    "interface.md: RelayDraftTestInput 8 fields (providerId/ide/name/baseUrl/apiKey/model/wireApi/extraHeaders); upstream POST /v1/chat/completions or /v1/messages; event payload={schemaVersion,success,code,message,warnings,data}; secrets.json read (SHA-256 key derivation); NO relay.json write (distinguishes from test_relay_provider_stream)",
+    "gate-report.json wf-aimami111-delta-20260616: all consumerStartReady dims PASS; dim6_acceptance=acceptance_draft; gate_tier=readyToImplement; idb_writes=10 renames+4 comments+save ok",
+    "dim5: _InterlockedCompareExchange8+WakeByAddressSingle WIN-specific; USERNAME env (vs USER on mac); PE x64 stripped",
+    "dim6_acceptance: acceptance_draft; gate_upgrade=readyToImplement; key distinguishing behavior=NO relay.json write"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "session": "wf-aimami111-delta-20260616",
+  "owner_va": "0x14094F2E0",
+  "owner_name": "test_relay_draft_stream_owner_sys",
+  "owner_size_bytes": 4621,
+  "ipc_command_va": "0x1412fa9c8",
+  "dim1_detail": {
+    "ipc_contracts_line": 121,
+    "ccf_line": 128,
+    "argKeys": ["input", "onEvent"],
+    "wrapper": "tauriInvokeRaw",
+    "callee": "r",
+    "trigger_file": "assets/index-DdcCOEJG.js L86",
+    "handler_chain": ["testDraftStream"],
+    "gap": "backend also parses 'manager' param (7B@0x1412fa999); frontend sends {input,onEvent} only; confirmed_with_gap"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 4567,
+    "threshold": 600
+  },
+  "dim3_detail": {
+    "depth_reached": 4,
+    "terminated_reason": "all D1-D4 leaves have explicit terminated_reason (leaf_enum/leaf_http/net_leaf/runtime/utility/drop_leaf/error_path)",
+    "key_callees": ["relay_draft_test_deserialize_input_sys@0x140241F50", "relay_keychain_lookup_for_quota_sys@0x1402EE7C0 (shared leaf)", "relay_draft_stream_sse_executor_sys@0x1408BDE90", "relay_event_payload_builder_sys@0x140229AF0", "relay_draft_test_input_drop_sys@0x1401D6220"],
+    "note": "depth≥5 not reached in app-level tree; all branches terminated by named leaves with explicit reason — requirement satisfied per pipeline rule (terminated_reason in lieu of depth=5)"
+  },
+  "dim4_detail": {
+    "input_struct": "RelayDraftTestInput",
+    "input_fields": {
+      "providerId": "String@0x1412f89eb",
+      "ide": "RelayIde enum@0x1412f97e6",
+      "name": "Option<String>@0x1412f9162",
+      "baseUrl": "String@0x1412f97e9",
+      "apiKey": "String@0x1412f987a (overridden by keychain SHA-256)",
+      "model": "String@0x1412f8a03",
+      "wireApi": "WireApi enum@0x1412f97fc",
+      "extraHeaders": "Map<String,String>@0x1412f980e"
+    },
+    "upstream_request": {"method": "POST", "paths": ["/v1/chat/completions@0x1412fadbd", "/v1/messages@0x1412fad3c"], "auth": "Authorization: Bearer <SHA256-derived-key>@0x1412dd940", "content_type": "text/event-stream@0x1412dd970"},
+    "event_payload": {"fields": ["schemaVersion", "success", "code", "message", "warnings", "data"]},
+    "side_effects": ["secrets.json read (relay_keychain_lookup_for_quota_sys)", "RelayProvider state Vec scan (stride=232B)", "HTTP POST stream to upstream relay", "onEvent callbacks per SSE chunk"],
+    "key_distinguisher": "NO relay.json write (differs from test_relay_provider_stream)",
+    "sensitive_header_filter": "proxy-authorization/authorization/cookie/set-cookie filtered@0x1412ddb73",
+    "error_codes": {"0x8000000000000000": "quota_miss", "0x8000000000000007": "keychain_miss"}
+  },
+  "dim5_detail": {
+    "win_primitives": ["_InterlockedCompareExchange8+WakeByAddressSingle (sub_140921810)", "USERNAME env var (vs USER on mac)", "PE x64 stripped binary"],
+    "same_platform": true
+  },
+  "dim6_detail": {
+    "basis": "acceptance_draft from gate-report.json wf-aimami111-delta-20260616; gate_upgrade=readyToImplement; key: NO relay.json write distinguishes from test_relay_provider_stream",
+    "note": "dim6=acceptance_draft treated as closed per pipeline rule"
+  },
+  "idb_path": "<本地路径>"
+}

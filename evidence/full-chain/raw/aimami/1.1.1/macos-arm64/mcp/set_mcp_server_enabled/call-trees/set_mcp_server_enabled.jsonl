@@ -1,0 +1,20 @@
+{"depth": 0, "addr": "0x100312de0", "symbol": "codexmate_lib::run::{{closure}}::{{closure}}::h7764831ff1bebf82", "role": "ipc_dispatcher", "note": "sole xref to owner; argKeys=[name,enabled] extracted here"}
+{"depth": 1, "addr": "0x10072bb90", "symbol": "codexmate_lib::commands::mcp::set_mcp_server_enabled::ha2f28bcc417a91a5", "role": "cmd_handler_owner", "note": "mutex lock/unlock wrapper; dispatches to core impl; reloads server list for response"}
+{"depth": 2, "addr": "0x100f2e7a0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::lock::h6b8bb4259dcc18d0", "role": "mutex_lock", "terminal": false}
+{"depth": 2, "addr": "0x1005a3760", "symbol": "codexmate_lib::core::mcp::set_mcp_server_enabled::h7968daf1798b61a2", "role": "core_impl", "note": "load→find→clone→upsert logic"}
+{"depth": 3, "addr": "0x10059e470", "symbol": "codexmate_lib::core::mcp::load_mcp_servers::he76d107bf22802d1", "role": "load_mcp_servers_first", "note": "first call: load Vec<McpServerSummary> for name search"}
+{"depth": 4, "addr": "0x100f25740", "symbol": "std::fs::read_to_string::inner::hcce2334f4117b5b3", "role": "fs_read", "terminal": true, "terminal_reason": "FS_READ_SYSCALL"}
+{"depth": 3, "addr": "0x100fbd04c", "symbol": "memcmp", "role": "name_match", "terminal": true, "terminal_reason": "libc_memcmp"}
+{"depth": 3, "addr": "0x100605840", "symbol": "codexmate_lib::core::models::McpServerSummary::clone::h4a025a688ce55639", "role": "clone_found_server", "note": "clone before modification"}
+{"depth": 3, "addr": "0x1005a0d80", "symbol": "codexmate_lib::core::mcp::upsert_mcp_server::h1be5aebae4f36c52", "role": "upsert_write_back", "note": "write modified server (enabled flag updated)"}
+{"depth": 4, "addr": "0x10059e330", "symbol": "codexmate_lib::core::mcp::load_config_text::h134f9807aa838eb6", "role": "load_config_text"}
+{"depth": 4, "addr": "0x1005a2db0", "symbol": "codexmate_lib::core::mcp::parse_mcp_document::h6148949b1c6e834f", "role": "parse_mcp_document"}
+{"depth": 4, "addr": "0x10059def0", "symbol": "codexmate_lib::core::mcp::insert_mcp_block::h412a2f479563a102", "role": "insert_mcp_block", "note": "respects aimami-relay managed sentinel comment boundary"}
+{"depth": 4, "addr": "0x1005a03d0", "symbol": "codexmate_lib::core::mcp::save_config_text::h355aa5998f6e8242", "role": "save_config_text"}
+{"depth": 5, "addr": "0x10041e960", "symbol": "codexmate_lib::core::relay::atomic_write::write_atomic::haa4522197089ee4a", "role": "write_atomic", "terminal": true, "terminal_reason": "FS_WRITE_ATOMIC — rename(syscall)+sync_data(syscall)"}
+{"depth": 2, "addr": "0x10059e470", "symbol": "codexmate_lib::core::mcp::load_mcp_servers::he76d107bf22802d1", "role": "load_mcp_servers_second", "note": "second call in cmd_handler success path: reload for CoreEnvelope<Vec<McpServerSummary>> response"}
+{"depth": 2, "addr": "0x100555ca0", "symbol": "codexmate_lib::core::models::CoreEnvelope::ok::h3113934169f3e161", "role": "build_ok_envelope", "terminal": true, "terminal_reason": "response_builder"}
+{"depth": 2, "addr": "0x100f2e7c0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::unlock::hb9acd26a137dd78d", "role": "mutex_unlock", "terminal": true, "terminal_reason": "sync_primitive"}
+{"depth": 3, "addr": "0x100f63980", "symbol": "alloc::fmt::format::format_inner::h3c16c74008a310d4", "role": "format_error", "note": "error path: format MCP server not found string @0x1010b6a09"}
+{"depth": 1, "addr": "0x100f66320", "symbol": "_$LT$str$u20$as$u20$core..fmt..Display$GT$::fmt::had12e4ac7ffbdcef", "role": "fmt_str", "note": "poisoned-lock error path in cmd_handler"}
+{"depth": 0, "addr": null, "symbol": null, "role": "summary", "call_tree_depth": 5, "terminal_leaves": ["read_to_string(FS_READ)", "memcmp(libc)", "write_atomic(FS_WRITE_ATOMIC)", "String::clone(alloc)", "McpServerSummary::clone", "CoreEnvelope::ok(response_builder)", "Mutex::lock/unlock(sync)"], "total_entries": 20, "terminated_reason": "all_leaves_reached_terminal_or_stdlib"}

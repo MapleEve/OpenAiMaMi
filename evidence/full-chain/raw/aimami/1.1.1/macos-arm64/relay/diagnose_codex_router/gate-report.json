@@ -1,0 +1,32 @@
+{
+  "command": "diagnose_codex_router",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "accepted_unknown",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim4": [
+      "stale_reason_format_templates: ~8 format string templates for codex_config_stale_reason not byte-confirmed from binary string pool; non-blocking accepted_unknown per mac-regrade.json (read-only command; templates do not affect input contract or output schema structure)"
+    ],
+    "dim4_interface_dto_error_sideeffect": [
+      "stale_reason_format_templates_search: ~8 format string templates for codex_config_stale_reason not byte-confirmed from binary string pool; read-only command so templates do not affect input contract or structural output schema"
+    ]
+  },
+  "evidence_refs": [
+    "frontend/frontend-control-flow.jsonl:182 — terminal_call diagnose_codex_router argKeys=[] callee=zn kind=tauriInvokeRaw file=assets/relay-page-CsHU7KuS.js:43:32466",
+    "ipc-contracts grep match: command=diagnose_codex_router file=relay-page-CsHU7KuS.js (inlined raw invoke, not wrapper SDK)",
+    "ida/pseudocode/0001_diagnose_codex_router_owner_h685f014e.c — VA:0x1005e9e00 size=0xd69 (3433B); read-only: snapshot+stale_reason+profile_reader+migration_checker; 7784B evidence file",
+    "call-trees/diagnose_codex_router.jsonl — 22 edges depth2; RelayManager::snapshot+stale_reason+profile_reader+migration_checker+CodexPaths+read_config+toml_key_reader+catalog_exists all terminated; CoreEnvelope::ok terminal",
+    "dim4 confirmed: argKeys=[] (no input); response CoreEnvelope<CodexRouterDiagnostic>; key fields: config_toml_has_router(bool), config_toml_has_catalog(bool/null), summary(optional String); read-only no side-effects",
+    "intermediate/dim6/mac-regrade.json — RTI: dim5_win_Unknown only blocker; read-only command; stale-reason ~8 format templates accepted_unknown non-blocking",
+    "intermediate/dim6/mac-consolidated.json — readyToImplement: mac-regrade RTI"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "recovery_synced_by": "honest-verify-20260620 (from gate-final shard)"
+}

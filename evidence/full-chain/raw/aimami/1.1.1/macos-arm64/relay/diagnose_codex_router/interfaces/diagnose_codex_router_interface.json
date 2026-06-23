@@ -1,0 +1,58 @@
+{
+  "command": "diagnose_codex_router",
+  "ipc_string": "diagnose_codex_router",
+  "ipc_string_va": "0x1011482ff",
+  "ipc_string_len": 21,
+  "is_upstream": false,
+  "module": "codexmate_lib::commands::relay",
+  "request": {
+    "arg_keys": [],
+    "description": "Zero arguments. RelayManager extracted from Tauri StateManager."
+  },
+  "response": {
+    "type": "CoreEnvelope<DiagnoseCodexRouterResult>",
+    "error_sentinel": "0x8000000000000000",
+    "struct_size_bytes": 400,
+    "fields_inferred": {
+      "stale_reason": {"type": "Option<String>", "note": "from codex_config_stale_reason; None=no stale, Some=stale message"},
+      "config_toml_has_model_provider_router": {"type": "bool", "note": "model_provider XOR check 0x616D6961|0x3169 == 'aimami1i'"},
+      "config_toml_has_model_catalog_json": {"type": "bool", "note": "model_catalog_json path comparison vs codex_router_catalog.json path"},
+      "catalog_exists": {"type": "bool", "note": "fs::metadata on codex_router_catalog.json path"},
+      "has_migration": {"type": "bool", "note": "exists: ~/.codex/codexmate/relay/thread-router-migrations/current.json"},
+      "user_profile": {"type": "Option<String>", "note": "from user_top_level_profile TOML parse of config.toml [profile] key"},
+      "active_providers_count": {"type": "usize", "note": "from RelayState provider clone count"},
+      "total_providers_count": {"type": "usize", "note": "from RelayState provider total"},
+      "port": {"type": "u16", "note": "from RelaySnapshot, displayed in healthy-state message"},
+      "diagnostic_message": {"type": "String", "note": "one of 6 Chinese state strings or format_inner healthy message"}
+    }
+  },
+  "diagnostic_states": {
+    "0_not_enabled": {"string_va": "0x101154405", "len": 124, "text": "未启用智能路由：Codex 桌面应用走原生官方通道；CLI 用户可用 codex --profile aimami_relay 走中转。"},
+    "1_proxy_not_running": {"string_va": "0x101154481", "len": 71, "text": "已启用但本地代理未运行：请重启 AiMaMi 让代理拉起。"},
+    "2_catalog_missing": {"string_va": "0x1011544C8", "len": 101, "text": "已启用但 catalog 缺失：可能写入失败，请检查 ~/.codex/codexmate/relay 目录权限。"},
+    "3_config_missing_model_catalog_json": {"string_va": "0x10115452D", "len": 153, "text": "已启用但 ~/.codex/config.toml 未写入 model_catalog_json：Codex GUI 无法读取中转模型完整能力，请关闭后重新启用智能路由。"},
+    "4_config_missing_model_provider_router": {"string_va": "0x1011545C6", "len": 148, "text": "已启用但 ~/.codex/config.toml 未写入 model_provider router：Codex 新版不会进入 AiMaMi router，请关闭后重新启用智能路由。"},
+    "5_no_active_providers": {"string_va": "0x10115465A", "len": 143, "text": "已启用但当前没有任何已启用的中转 Provider：Codex 菜单只会看到官方模型，请在 AiMaMi 中启用至少一个中转。"},
+    "6_healthy": {"string_va": "format_inner(0x1010B7915)", "note": "formatted string with active_count+total_count+port via format_inner"}
+  },
+  "config_reads": {
+    "config_toml_path": "~/.codex/config.toml (via CodexPaths::resolve_codex_home + from_home)",
+    "toml_keys": ["model_provider", "model_catalog_json", "openai_base_url", "profile"],
+    "xor_check": {"constant1": "0x616D6961", "constant2": "0x3169", "matches": "aimami + 1i (6 bytes of model_provider value)"},
+    "catalog_json_path": "codex_router_catalog.json (joined from CodexPaths base)",
+    "migration_path": "~/.codex/codexmate/relay/thread-router-migrations/current.json"
+  },
+  "side_effects": "read-only",
+  "error_paths": {
+    "config_read_fail": "v118=0, v117=0 → state 0 or degraded path",
+    "catalog_missing": "v23=1 → state 2 string",
+    "config_not_written": "v117=0 or v118=0 → state 3 or state 4 string",
+    "no_providers": "v105=0 → state 5 string"
+  },
+  "delta_vs_109": {
+    "module_change": "system → commands::relay",
+    "va_change": "0x1001e0d70 → 0x1005e9e00",
+    "size_change": "0x140B(5131B) → 0xd69(3433B)",
+    "logic_change": "core diagnostic logic preserved; same 6 state strings; same XOR constants; same config reads; helper functions extracted into separate callees"
+  }
+}

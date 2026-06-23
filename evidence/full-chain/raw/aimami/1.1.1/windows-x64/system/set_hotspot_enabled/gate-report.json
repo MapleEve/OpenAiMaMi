@@ -1,0 +1,63 @@
+{
+  "command": "set_hotspot_enabled",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "ipc-contracts.jsonl L87: cmd=set_hotspot_enabled argKeys=['enabled'] callee=ne kind=tauriInvokeWrapper",
+    "frontend-control-flow.jsonl L191: terminal_call.command=set_hotspot_enabled kind=tauriInvoke argKeys=['enabled']; trigger=settings-page-SeKzRc3U.js; handler_chain=[mutationFn,setHotspotEnabled]",
+    "pseudocode.md 6050B ≥600B",
+    "call-tree.md: root_va=0x140022070 depth≥5 (set_hotspot_enabled_core_impl_sys→codexmate_settings_hotspot_read_full_sys_111→codexmate_settings_field_lookup_sys_111), terminated WakeByAddressSingle+platform_primitive",
+    "interface.md: input={enabled:bool @ 0x1412AC720}, output=discriminant 3(Ok)/6(Err)/0x8000000000000000(None), side_effects=[settings write, WebView reload on enable, mutex], error_paths documented",
+    "owner.md: VA 0x140022070, xrefs confirmed from tauri_ipc_main_dispatcher_sys; Win32 CAS+WakeByAddressSingle confirmed",
+    "dim6_acceptance block in prior gate-report: acceptance_draft with full happy_path+boundary_error+side_effect_asserts+test_mapping",
+    "dim5: _InterlockedCompareExchange8+WakeByAddressSingle @ 0x14124A5D0 confirmed win-only"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "session": "wf-aimami111-delta-20260617-repair",
+  "owner_va": "0x140022070",
+  "owner_name": "set_hotspot_enabled_ipc_dispatcher_sys",
+  "owner_size_bytes": 1454,
+  "ipc_command_va": "0x1412AC47F",
+  "dim1_detail": {
+    "ipc_contracts_line": 87,
+    "ccf_line": 191,
+    "argKeys": ["enabled"],
+    "wrapper": "tauriInvokeWrapper",
+    "callee": "ne",
+    "trigger_file": "assets/settings-page-SeKzRc3U.js",
+    "handler_chain": ["mutationFn", "setHotspotEnabled"]
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 6050,
+    "threshold": 600
+  },
+  "dim3_detail": {
+    "depth_reached": 5,
+    "terminated_reason": "WakeByAddressSingle+platform_primitive",
+    "key_callees": ["set_hotspot_enabled_core_impl_sys@0x14060CE60", "codexmate_settings_hotspot_read_full_sys_111@0x1401A15D0", "set_hotspot_enabled_enable_branch_sys@0x14060D750", "hotspot_ready_state_discriminant_check_sys_111@0x14038D560"]
+  },
+  "dim4_detail": {
+    "input_fields": {"enabled": "bool"},
+    "output_discriminants": {"3": "Ok", "6": "Err", "0x8000000000000000": "None/empty-success"},
+    "side_effects": ["settings hotspot write (enable/disable)", "WebView iframe route update on enable (index.html/hotspot)", "mysteryUnlockGrants/mysteryUnlockedRoutes co-read"],
+    "error_paths": ["app-path usage check fails->Err(6)", "repo lock/read fails->Err(6)", "bool parse fails->Err(6)", "settings discriminant!=10->early return", "hotspot_ready check fails->None(0x8000000000000000)", "alloc null->0x8000000000000000"]
+  },
+  "dim5_detail": {
+    "win_primitives": ["_InterlockedCompareExchange8", "WakeByAddressSingle@0x14124A5D0"],
+    "same_platform": true
+  },
+  "dim6_detail": {
+    "basis": "acceptance_draft from gate-report.json wf-aimami111-delta-20260617-repair with full happy_path+boundary_error+side_effect_asserts+test_mapping",
+    "note": "dim6=acceptance_draft treated as closed per pipeline rule (producer-side acceptance-draft = dim6 producer closed)"
+  },
+  "idb_path": "<本地路径>"
+}

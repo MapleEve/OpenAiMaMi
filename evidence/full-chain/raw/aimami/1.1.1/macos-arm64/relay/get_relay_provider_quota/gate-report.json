@@ -1,0 +1,62 @@
+{
+  "command": "get_relay_provider_quota",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "relay/get_relay_provider_quota/evidence.md — Confirmed (all 40+ items), Inferred, Unknown",
+    "frontend/frontend-control-flow.jsonl line:131 col:120516 — static-terminal getQuota vt('get_relay_provider_quota') argKeys=['providerId']",
+    "frontend/frontend-control-flow.jsonl line:179 — callsite relay-page-CsHU7KuS.js:42 ft.getQuota(e.id)",
+    "relay/get_relay_provider_quota/ida/pseudocode/0001_get_relay_provider_quota_owner_b2a9e236.c (7567B)",
+    "relay/get_relay_provider_quota/call-trees/get_relay_provider_quota.jsonl — 20 edges",
+    "relay/get_relay_provider_quota/interfaces/dto.md",
+    "relay/get_relay_provider_quota/gate-report.json prior — dim5_win PASS (separate Windows session); dim6 acceptance-draft written 2026-06-19"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "dim1_detail": {
+    "source": "frontend-control-flow.jsonl line:131 static-terminal + line:179 callsite",
+    "col": 120516,
+    "wrapper": "getQuota",
+    "argKeys": ["providerId"],
+    "terminal_call_command": "get_relay_provider_quota",
+    "callsite_evidence": "relay-page-CsHU7KuS.js:42 col:163750 ft.getQuota(e.id)"
+  },
+  "dim2_detail": {
+    "owner_va": "0x100145890 (async poll state machine hb2a9e236313f08a5)",
+    "core_va": "0x1005d65c0 (RelayManager::ensure_provider_loaded)",
+    "quota_va": "0x1000af3c0 (fetch_async closure)",
+    "pseudocode_files": ["0001_get_relay_provider_quota_owner_b2a9e236.c (7567B)"]
+  },
+  "dim3_detail": {
+    "edges": 20,
+    "max_depth": 5,
+    "terminated_reason": "poll→ensure_provider_loaded→lazy_load_api_key→keychain→secrets.json_fs_leaf/mac_keychain_leaf"
+  },
+  "dim4_detail": {
+    "argKeys": ["providerId"],
+    "response": "CoreEnvelope<{remaining, quota, usage}>",
+    "error_paths": "provider_not_found; no_relay_provider_configured; relay_provider_not_found_catalog_stale; failed_to_build_async_relay_quota_client; invalid_extraHeaders_JSON; invalid_header_name; invalid_header_value; HTTP_request_failure",
+    "side_effects": "async HTTP GET {baseUrl}/v1/usage with Bearer auth; keychain read (lazy_load_api_key→secrets.json HMAC-SHA256 or mac_keychain); conditional quota history write on HTTP failure",
+    "provider_id_arg": "string — must match existing relay provider ID in RelayManager state"
+  },
+  "dim5_detail": {
+    "mac": "PASS — macOS arm64 IDB; async poll state machine 0x100145890; keychain VA 0x1006c86a0; ASYNC_CLIENT static 0x101442e80",
+    "win": "PASS — separate Windows 逆向分析 session confirmed; stride=232B matches mac; Windows lock pattern differs (ICEX8 vs parking_lot) per evidence Unknown"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft written 2026-06-19",
+    "happy_paths": 1,
+    "boundary_errors": 8,
+    "side_effect_asserts": 3,
+    "test_count": 5,
+    "note": "no accepted_unknown in dim1-5; cleanest full-PASS command in this shard"
+  }
+}

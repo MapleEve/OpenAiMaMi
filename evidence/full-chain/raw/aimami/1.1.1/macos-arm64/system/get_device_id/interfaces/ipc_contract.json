@@ -1,0 +1,46 @@
+{
+  "command": "get_device_id",
+  "module": "system",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "is_upstream": false,
+  "note": "C5-extra command; not in upstream codex-cli",
+  "ipc_pattern": "retained-IPC / native-bootstrap-substitute",
+  "tauri_dispatch_closure": "codexmate_lib::run::{{closure}}::{{closure}}::h01bbab0d6ee64cfe@0x10030c110",
+  "input": {
+    "args": "none",
+    "description": "No IPC parameters; pure getter/creator"
+  },
+  "output": {
+    "type": "Result<String, CoreError>",
+    "wire_format": "tagged-union at output buffer a1",
+    "ok_tag": "*(QWORD*)a1 = 0",
+    "ok_payload": "String at a1+8..a1+24 — UUID v4 lowercase hyphenated (e.g. '550e8400-e29b-41d4-a716-446655440000')",
+    "err_tag": "*(QWORD*)a1 = 1",
+    "err_payload": "formatted CoreError string at a1+8..a1+24",
+    "inner_ok_discriminant": 10
+  },
+  "settings_field": {
+    "name": "deviceId",
+    "type": "Option<String>",
+    "empty_sentinel": "0x8000000000000000",
+    "position_in_CodexMateSettings": "field index 2 (confirmed via rodata 0x10114cde0: hotspot[7]+usageRefreshInterval[20]+deviceId[8]...)",
+    "behavior": "get-or-create: if absent/empty-sentinel, generate UUID v4 + persist; else return existing"
+  },
+  "side_effects": [
+    "READ (always): load_settings → fs::read_to_string on settings JSON (CodexPaths data dir)",
+    "WRITE (conditional): save_settings → std::fs::write — only when deviceId was absent",
+    "IDEMPOTENT: subsequent calls with existing deviceId do no write"
+  ],
+  "error_paths": [
+    "CoreError from get_or_create_device_id — propagated via Result tag",
+    "Poisoned Mutex — 'poisoned lock: another task failed inside' (41B literal @0x10114c2e6)",
+    "fs::read_to_string failure — surfaces as CoreError via load_settings",
+    "fs::write / ensure_dirs failure — CoreError via save_settings (discriminant 2)",
+    "uuid::fmt panic path (unwrap_failed @0x100fbc780) — in practice unreachable"
+  ],
+  "no_http": true,
+  "no_process_spawn": true,
+  "no_keychain": true,
+  "no_ipc_external": true
+}

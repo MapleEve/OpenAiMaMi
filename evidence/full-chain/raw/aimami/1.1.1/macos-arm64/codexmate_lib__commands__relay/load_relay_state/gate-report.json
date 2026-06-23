@@ -1,0 +1,28 @@
+{
+  "command": "load_relay_state",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": ["dim5_win not judged in mac shard gate; per-platform rule: mac gate only requires mac dim5 closed"]
+  },
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:101 wrapper=loadState argKeys=[] callee=vt col=119446 kind=tauriInvokeWrapper",
+    "frontend/frontend-control-flow.jsonl:121 terminal_call command=load_relay_state argKeys=[]",
+    "frontend/frontend-control-flow.jsonl:148 callsite=Zt.loadState() queryFn:306 col=36054",
+    "codexmate_lib__commands__relay/load_relay_state/pseudocode.md 10172B",
+    "codexmate_lib__commands__relay/load_relay_state/call-trees/load_relay_state.jsonl 73 edges depth4 (depth-1=6 depth-2=10 depth-3=32 depth-4=26)",
+    "codexmate_lib__commands__relay/load_relay_state/evidence.md DELTA-1..6 documented: reconcile_api_login_auth/VirtualAuthMarker/enable_virtual_login/relay::storage::save/has_real_login_material SIMD",
+    "relay/load_relay_state/ACCEPTANCE.md gate_tier=readyToImplement dim1-5 all closed dim6=acceptance-draft",
+    "relay/load_relay_state/ida/ VirtualAuthMarker + enable_virtual_login decompiled",
+    "intermediate/version-delta/mac-same.txt: load_relay_state listed (mac-arm64 command confirmed)"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

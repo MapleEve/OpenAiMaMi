@@ -1,0 +1,68 @@
+{
+  "command": "set_image_compat",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "ipc-contracts.jsonl L11: cmd=set_image_compat argKeys=['enabled'] callee=ne kind=tauriInvokeWrapper",
+    "frontend-control-flow.jsonl L170: terminal_call.command=set_image_compat kind=tauriInvoke argKeys=['enabled']; trigger=maintenance-page-C2wkSNnk.js; handler_chain=[mutationFn,setImageCompat]",
+    "pseudocode.md 13874B ≥600B",
+    "call-tree.md: 18 edges depth 1-5, terminated CloseHandle@0x14124D788+WakeByAddressSingle@0x14124A5D0; toml_config_image_compat_writer_sys@0x1407868A0 confirmed FS write leaf",
+    "interface.md: input={enabled:bool@0x1412AC720}, output=CoreEnvelope<()>, TOML writes image_generation=false under [features], CREATE_ALWAYS truncate-rewrite",
+    "gate-report.json: dim1-6 all PASS; gate_tier=readyToImplement; gold_leaf=true; sha=d24e429a",
+    "dim5: __imp_CloseHandle@0x14124D788 Win32; WakeByAddressSingle@0x14124A5D0; _InterlockedCompareExchange8 confirmed",
+    "dim6_acceptance: acceptance_draft with full happy_path+boundary_error+side_effect_asserts; gate_upgrade=readyToImplement"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "session": "wf-aimami111-delta-20260618-goldleaf",
+  "owner_va": "0x1400173A0",
+  "owner_name": "set_image_compat_owner_sys",
+  "owner_size_bytes": 911,
+  "ipc_command_va": "0x1412AC1E1",
+  "dim1_detail": {
+    "ipc_contracts_line": 11,
+    "ccf_line": 170,
+    "argKeys": ["enabled"],
+    "wrapper": "tauriInvokeWrapper",
+    "callee": "ne",
+    "trigger_file": "assets/maintenance-page-C2wkSNnk.js",
+    "handler_chain": ["mutationFn", "setImageCompat"],
+    "frontend_file": "src/services/api/update/updateApi.tsx"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 13874,
+    "threshold": 600
+  },
+  "dim3_detail": {
+    "depth_reached": 5,
+    "edge_count": 18,
+    "terminated_reason": "CloseHandle@0x14124D788+WakeByAddressSingle@0x14124A5D0 platform_primitive",
+    "key_callees": ["toml_config_image_compat_writer_sys@0x1407868A0", "codex_home_resolver_sys@0x1406F29D0", "win32_file_read_bytes_111@0x141093260", "win32_file_write_bytes_111@0x141093710"]
+  },
+  "dim4_detail": {
+    "input_fields": {"enabled": "bool"},
+    "output": "CoreEnvelope<()> Ok(())",
+    "toml_write": {"section": "[features]", "key": "image_generation", "value": "false (hardcoded)", "string_va": "0x1412F37C8"},
+    "config_path": "CODEX_HOME/config.toml or $HOME/config.toml",
+    "note": "enabled arg controls insert branch only; written value always 'false'",
+    "side_effects": ["TOML config.toml CREATE_ALWAYS truncate-rewrite"],
+    "error_paths": ["enabled parse fail->Err(String)", "WriteFile fail->Err(IoError)"]
+  },
+  "dim5_detail": {
+    "win_primitives": ["__imp_CloseHandle@0x14124D788", "WakeByAddressSingle@0x14124A5D0", "_InterlockedCompareExchange8"],
+    "same_platform": true
+  },
+  "dim6_detail": {
+    "basis": "acceptance_draft from gate-report.json wf-aimami111-delta-20260618-goldleaf; gate_upgrade=readyToImplement",
+    "note": "dim6=acceptance_draft treated as closed per pipeline rule"
+  },
+  "idb_path": "<本地路径>"
+}

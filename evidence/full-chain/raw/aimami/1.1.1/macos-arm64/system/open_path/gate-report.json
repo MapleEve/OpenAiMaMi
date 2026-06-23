@@ -1,0 +1,30 @@
+{
+  "command": "open_path",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": ["dim5_win not judged in mac shard gate; per-platform rule: mac gate only requires mac dim5 closed; open_path on Windows uses ShellExecute not macOS open utility — Windows-specific impl needed separately"]
+  },
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:90 wrapper=openPath argKeys=[path] argObject={path:t} callee=ne col=31804 kind=tauriInvokeWrapper",
+    "frontend/frontend-control-flow.jsonl:6 callsite=W.openPath(https://chatgpt.com/) accounts-page:24",
+    "frontend/frontend-control-flow.jsonl:103 terminal_call command=open_path argKeys=[path]",
+    "frontend/frontend-control-flow.jsonl:161 callsite=Ge.openPath(t) mI:316",
+    "frontend/frontend-control-flow.jsonl:181 callsite=ou.openPath(https://woyao.pro) relay-page:43",
+    "system/open_path/ida/pseudocode/0001_open_path_owner_h8be2aab143185937.c 3899B owner_va=0x10061f810",
+    "system/open_path/ida/pseudocode/0002_open_path_ipc_dispatcher_h0316fdf0efc4ac23.c 2251B",
+    "system/open_path/call-trees/open_path.jsonl 9 entries depth3: Command::new(open)+arg+spawn+close_NOCANCEL+drop+respond",
+    "system/open_path/interfaces/open_path_interface.md argKeys=[path] fire-and-forget macOS open sidecar Result<(),String>",
+    "system/open_path/ACCEPTANCE.md acceptance-draft dim1-5 mac all closed",
+    "intermediate/version-delta/mac-same.txt: open_path listed (mac-arm64 command confirmed)"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

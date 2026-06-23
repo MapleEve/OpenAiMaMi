@@ -1,0 +1,15 @@
+{"depth":0,"addr":"0x140000000_dispatcher","name":"tauri_ipc_main_dispatcher_sys","type":"dispatcher","terminated_reason":null}
+{"depth":1,"addr":"0x14001B850","name":"sub_14001B850","type":"owner","terminated_reason":null}
+{"depth":1,"addr":"0x140006280","name":"pending_auto_switch_state_lock_acquire_111","type":"mutex_guard","terminated_reason":"new_111_guard: acquires auto-switch state mutex before analytics read"}
+{"depth":1,"addr":"0x1400083A0","name":"query_installed_skills_with_repo_111","type":"repo_validation","terminated_reason":"new_111_guard: validates installed skills repo before analytics read"}
+{"depth":2,"addr":"0x1401C9EF0","name":"sub_1401C9EF0","type":"usage_analytics_dispatch","terminated_reason":null}
+{"depth":2,"addr":"0x140836690","name":"sub_140836690","type":"analytics_response_builder","terminated_reason":null}
+{"depth":3,"addr":"0x140201AE0","name":"sub_140201AE0","type":"usage_analytics_core","terminated_reason":null}
+{"depth":3,"addr":"0x14084B990","name":"relay_config_check_parent_dirs_sys","type":"new_111_side_effect","terminated_reason":"new_111_delta: creates relay config parent directories; absent in 1.0.9 analytics path"}
+{"depth":3,"addr":"0x14083F260","name":"load_mcp_servers_read_existing_snapshot_111","type":"new_111_side_effect","terminated_reason":"new_111_delta: reads MCP server snapshot from disk; absent in 1.0.9 analytics path"}
+{"depth":3,"addr":"0x140843120","name":"serialize_skill_snapshot_json_111","type":"new_111_side_effect","terminated_reason":"new_111_delta: serializes skill snapshot to JSON; absent in 1.0.9 analytics path"}
+{"depth":3,"addr":"0x14107C990","name":"win32_file_write_bytes_111","type":"new_111_side_effect","terminated_reason":"new_111_delta: writes bytes to file via WriteFile/CreateFileW; absent in 1.0.9 analytics path"}
+{"depth":4,"addr":"0x14108C6F0","name":"sub_14108C6F0","type":"file_open","terminated_reason":null}
+{"depth":5,"addr":"0x14124d7b8","name":"CreateFileW","type":"external","terminated_reason":"external_call_recorded — Win32 CreateFileW for file write"}
+{"depth":4,"addr":"0x141219020","name":"sub_141219020","type":"json_serialize","terminated_reason":"external_call_recorded — serializes usage analytics to JSON"}
+{"depth":2,"addr":"0x140062230","name":"tauri_ipc_resolve_sys","type":"ipc_resolve","terminated_reason":"external_call_recorded — resolves IPC response to frontend"}

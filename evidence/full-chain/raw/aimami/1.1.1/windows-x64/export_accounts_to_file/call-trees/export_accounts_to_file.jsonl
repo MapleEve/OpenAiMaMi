@@ -1,0 +1,26 @@
+{"session":"wf-aimami111-win-samedepth-patch-20260619","machine":"<本地机器>","command":"export_accounts_to_file","platform":"windows-x64","version":"1.1.1","handler_addr":"0x1409711a0","handler_name":"sub_1409711A0","depth":5,"verdict":"partial","partial_reason":"1_0_9_baseline_uses_audits_not_call-trees_format"}
+{"depth":1,"addr":"0x1409711a0","name":"sub_1409711A0","role":"command_owner: IPC command='export_accounts_to_file' namespace='app'; async state machine","terminated_reason":null}
+{"depth":2,"addr":"0x140089a50","name":"confirm_pending_auto_switch_deserialize_request_sys","role":"app_scope_rate_check","terminated_reason":null}
+{"depth":2,"addr":"0x1402fed40","name":"remove_skill_parse_id_param_111","role":"param_extract: targetPath (str) from IPC args","terminated_reason":null}
+{"depth":3,"addr":"0x1402f9eb0","name":"sub_1402F9EB0","role":"string_map_lookup","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1402fcfb0","name":"sub_1402FCFB0","role":"param_extract: accountKeys (list/str) from IPC args","terminated_reason":null}
+{"depth":3,"addr":"0x14103a480","name":"sub_14103A480","role":"string_map_lookup","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140417370","name":"sub_140417370","role":"accountKeys_list_parse","terminated_reason":null}
+{"depth":4,"addr":"0x1401cef50","name":"sub_1401CEF50","role":"list_element_parse","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1400803e0","name":"sub_1400803E0","role":"validate_target_path: leaf (no callees)","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14023e7c0","name":"sub_14023E7C0","role":"async_dispatch: submit export task to executor","terminated_reason":null}
+{"depth":3,"addr":"0x140f050e0","name":"sub_140F050E0","role":"tokio_task_submit","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x140872990","name":"sub_140872990","role":"export_accounts_core: serialize accounts to file at targetPath","terminated_reason":null}
+{"depth":3,"addr":"0x140f00f00","name":"sub_140F00F00","role":"file_writer_builder","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x141091c50","name":"sub_141091C50","role":"serialization_helper","terminated_reason":null}
+{"depth":4,"addr":"0x14124adc0","name":"sub_14124ADC0","role":"alloc_helper","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x141099b40","name":"sub_141099B40","role":"str_slice_helper","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140f05c20","name":"sub_140F05C20","role":"json_serializer","terminated_reason":null}
+{"depth":4,"addr":"0x141091c50","name":"sub_141091C50","role":"serialization_sub","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140f03280","name":"sub_140F03280","role":"file_write_leaf: TERMINAL","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1408eae40","name":"sub_1408EAE40","role":"async_result_cleanup","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1410a1df0","name":"sub_1410A1DF0","role":"tokio_oneshot_wait","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14091a6d0","name":"sub_14091A6D0","role":"async_result_extract","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1408f06d0","name":"sub_1408F06D0","role":"ipc_response_dispatch","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14080c3c0","name":"has_notch_invoke_resolver_respond","role":"tauri_ipc_resolve","terminated_reason":"implementation_leaf"}
+{"compare_1_0_9":{"verdict":"partial","notes":"1.0.9 baseline for this command is in audits/ format (not call-trees/ JSONL). IPC DTO confirmed identical: targetPath(str), accountKeys(list). Side-effect confirmed: serialize selected accounts to JSON file at targetPath. 1.1.1 depth-5 reached internally. Pattern structurally matches expected export-accounts behavior. Partial because 1.0.9 depth comparison could not be done against standard call-tree format."}}

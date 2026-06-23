@@ -1,0 +1,69 @@
+{
+  "command": "get_image_compat",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": [
+      "Windows 1.1.1 IDB not analyzed this session; per mac per-platform gate rule: dim5_win unknown does not block mac readyToImplement"
+    ]
+  },
+  "evidence_refs": [
+    "system/get_image_compat/evidence.md — Confirmed §1-12",
+    "frontend/ipc-contracts.jsonl line:10 col:24582 — command=get_image_compat argKeys=[] wrapper=getImageCompat",
+    "frontend/frontend-control-flow.jsonl line:23 — static-terminal getImageCompat col:24600",
+    "frontend/frontend-control-flow.jsonl line:169 — callsite maintenance-page-C2wkSNnk.js:17 queryFn N.getImageCompat()",
+    "system/get_image_compat/ida/pseudocode/ — 4 files total 9253B",
+    "system/get_image_compat/call-trees/get_image_compat.jsonl — 12 edges",
+    "system/get_image_compat/interfaces/get_image_compat_interface.md",
+    "system/get_image_compat/gate-report.json prior — dim6 acceptance-draft written 2026-06-19 session wf-aimami111-dim6-20260619"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "dim1_detail": {
+    "source": "ipc-contracts.jsonl + frontend-control-flow.jsonl",
+    "col": 24582,
+    "wrapper": "getImageCompat",
+    "argKeys": [],
+    "terminal_call_command": "get_image_compat",
+    "callsite_evidence": "maintenance-page-C2wkSNnk.js:17 col:6861 N.getImageCompat() inside queryFn"
+  },
+  "dim2_detail": {
+    "owner_va": "0x100617f40",
+    "pseudocode_files": [
+      "0001_get_image_compat_owner_100617f40.c (2363B)",
+      "0002_image_compat_enabled_core_1006e7a60.c (2586B)",
+      "0003_read_image_compat_enabled_1006e8130.c (1796B)",
+      "0004_set_image_compat_companion_100618640.c (2508B)"
+    ]
+  },
+  "dim3_detail": {
+    "edges": 12,
+    "max_depth": 3,
+    "terminated_reason": "all_leaves_at_fs_read_to_string_or_stdlib"
+  },
+  "dim4_detail": {
+    "argKeys": [],
+    "response": "CoreEnvelope<bool>",
+    "error_paths": "IO failure on read_to_string → silent false (no Err surface to frontend)",
+    "side_effects": "none — pure read-only; reads config TOML [features] section for image_generation=false",
+    "key_behavior": "XOR-confirmed: image_generation=false in [features] → returns true; anything else or IO fail → false"
+  },
+  "dim5_detail": {
+    "mac": "PASS — macOS arm64 IDB SHA f34ff829... confirmed; owner VA 0x100617f40 xref chain confirmed",
+    "win": "accepted_unknown — Windows 1.1.1 not analyzed; non-blocking for mac gate per per-platform rule"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft written 2026-06-19",
+    "happy_paths": 3,
+    "boundary_errors": 4,
+    "side_effect_asserts": 1,
+    "test_count": 5
+  }
+}

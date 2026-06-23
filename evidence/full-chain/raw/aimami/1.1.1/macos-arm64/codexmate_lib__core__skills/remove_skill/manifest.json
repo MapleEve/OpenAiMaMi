@@ -1,0 +1,62 @@
+{
+  "command": "remove_skill",
+  "session": "wf-aimami111-delta-20260618-mac100",
+  "machine": "<本地机器>",
+  "role": "producer",
+  "produced_at": "2026-06-18",
+  "binary_version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "codexmate_lib__core__skills",
+  "leaf_status": "full_gold_leaf",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "functions": [
+    {
+      "role": "core",
+      "symbol": "codexmate_lib::core::skills::remove_skill::h56f6aaa545b87216",
+      "va": "0x1005e44a0",
+      "size_bytes": 1695,
+      "cfg_blocks": 60
+    },
+    {
+      "role": "command",
+      "symbol": "codexmate_lib::commands::skills::remove_skill::h79aa21510e4630e1",
+      "va": "0x10072c810",
+      "size_bytes": 1026,
+      "cfg_blocks": null
+    }
+  ],
+  "ipc_caller": {
+    "symbol": "codexmate_lib::run::{{closure}}",
+    "va": "0x100305aa0",
+    "call_site_va": "0x100306236"
+  },
+  "call_tree": {
+    "file": "call-trees/remove_skill.jsonl",
+    "edges": 18,
+    "max_depth": 7,
+    "terminated_reasons": ["external_call", "response_serialize"]
+  },
+  "delta_vs_109": {
+    "change_type": "new_callee_in_core",
+    "new_callee": "std::sys::fs::metadata::h32fa16d3052ea535",
+    "new_callee_va": "0x100f2b980",
+    "insertion_point": "between backup_skill_directory and remove_dir_all",
+    "behavioral_effect": "missing-directory path now returns Ok(payload) instead of Err(IoError)",
+    "risk": "medium"
+  },
+  "dto": {
+    "input": {"skill_id": "String"},
+    "output_type": "CoreEnvelope<SkillRemovePayload>",
+    "output_fields": ["removedSkillID", "backup", "remainingInstalledCount"],
+    "confirmed_from_rodata": true
+  },
+  "files": [
+    "evidence.md",
+    "manifest.json",
+    "ida/pseudocode/core_remove_skill.c",
+    "ida/pseudocode/command_remove_skill.c",
+    "ida/pseudocode-manifest.jsonl",
+    "call-trees/remove_skill.jsonl",
+    "interfaces/dto.md"
+  ]
+}

@@ -1,0 +1,65 @@
+{"depth":0,"va":"0x14001CA50","name":"import_skill_cmd_111","role":"IPC command handler","terminated_reason":null}
+{"depth":1,"va":"0x1402FED40","name":"path_string_parser","role":"parse 'path' arg from IPC param frame","terminated_reason":"leaf_shared_parser"}
+{"depth":1,"va":"0x14006EDC0","name":"pending_auto_switch_state_lock_acquire_111","role":"acquire shared state lock","terminated_reason":"leaf_named_func"}
+{"depth":1,"va":"0x141214620","name":"sub_141214620","role":"parse IPC params (repo+path) into typed Result","terminated_reason":"leaf_infrastructure"}
+{"depth":1,"va":"0x1407DB160","name":"async_install_wrapper","role":"async lock+dispatch wrapper for install path","terminated_reason":null}
+{"depth":2,"va":"0x14124A510","name":"sub_14124A510","role":"wait on poisoned lock (Rust mutex poison guard)","terminated_reason":"leaf_poison_guard_noise"}
+{"depth":2,"va":"0x14124B1D0","name":"sub_14124B1D0","role":"check Arc weak reference validity","terminated_reason":"leaf_infrastructure"}
+{"depth":2,"va":"0x1406EB800","name":"import_skill_resolve_path_install_111","role":"core: validate path, resolve type, orchestrate install","terminated_reason":null}
+{"depth":3,"va":"0x141082B80","name":"sub_141082B80","role":"os path canonicalize + validate","terminated_reason":"leaf_os_infra"}
+{"depth":3,"va":"0x14107A2D0","name":"sub_14107A2D0","role":"join path components (rope-style)","terminated_reason":"leaf_path_util"}
+{"depth":3,"va":"0x14108C6F0","name":"sub_14108C6F0","role":"stat() / metadata check on path","terminated_reason":"leaf_os_infra"}
+{"depth":3,"va":"0x14107A370","name":"sub_14107A370","role":"is_directory check","terminated_reason":"leaf_os_infra"}
+{"depth":3,"va":"0x14107A5E0","name":"sub_14107A5E0","role":"path filename component / file_name()","terminated_reason":"leaf_os_infra"}
+{"depth":3,"va":"0x14107A3E0","name":"sub_14107A3E0","role":"path parent directory / path.parent()","terminated_reason":"leaf_os_infra"}
+{"depth":3,"va":"0x141079810","name":"sub_141079810","role":"prepare dir path for iteration (ReadDir wrapper)","terminated_reason":"leaf_os_infra"}
+{"depth":3,"va":"0x14108C050","name":"sub_14108C050","role":"check existing skill path in repo (path join + stat)","terminated_reason":"leaf_os_infra"}
+{"depth":3,"va":"0x1407B2550","name":"sub_1407B2550","role":"compare installed skill content hash vs source","terminated_reason":"leaf_hash_compare"}
+{"depth":3,"va":"0x1406EB140","name":"import_skill_iter_dir_match_111","role":"recursive dir iterate + copy files","terminated_reason":null}
+{"depth":4,"va":"0x14108C7E0","name":"sub_14108C7E0","role":"open directory (FindFirstFile/ReadDir)","terminated_reason":"leaf_os_infra"}
+{"depth":4,"va":"0x140672D70","name":"sub_140672D70","role":"get next directory entry (FindNextFile)","terminated_reason":"leaf_os_infra"}
+{"depth":4,"va":"0x141082B60","name":"sub_141082B60","role":"get entry file name string","terminated_reason":"leaf_path_util"}
+{"depth":4,"va":"0x141082A50","name":"sub_141082A50","role":"get entry base name (for dot-dir skip)","terminated_reason":"leaf_path_util"}
+{"depth":4,"va":"0x14108C340","name":"sub_14108C340","role":"copy single file src->dst","terminated_reason":"leaf_os_infra"}
+{"depth":4,"va":"0x141030540","name":"sub_141030540","role":"drop Arc dir entry (Rust Arc::drop)","terminated_reason":"leaf_runtime_noise"}
+{"depth":4,"va":"0x1401D6AF0","name":"sub_1401D6AF0","role":"drop dir iterator state","terminated_reason":"leaf_runtime_noise"}
+{"depth":4,"va":"0x1406EB140","name":"import_skill_iter_dir_match_111","role":"RECURSIVE: subdir iteration","terminated_reason":"recursive_self"}
+{"depth":3,"va":"0x1406ECC10","name":"sub_1406ECC10","role":"build error result from path mismatch","terminated_reason":"leaf_error_builder"}
+{"depth":3,"va":"0x1406EE680","name":"import_skill_read_parse_skill_md_111","role":"read + parse SKILL.md, extract H1 title","terminated_reason":null}
+{"depth":4,"va":"0x141093260","name":"win32_file_read_bytes_111","role":"read all bytes of SKILL.md file (Win32 ReadFile)","terminated_reason":"leaf_os_infra"}
+{"depth":4,"va":"0x14107A3E0","name":"sub_14107A3E0","role":"path stem extraction","terminated_reason":"leaf_path_util"}
+{"depth":4,"va":"0x14066EA70","name":"sub_14066EA70","role":"markdown line iterator (get next line chunk)","terminated_reason":"leaf_parser"}
+{"depth":4,"va":"0x14070B280","name":"sub_14070B280","role":"trim trailing whitespace from line slice","terminated_reason":"leaf_parser"}
+{"depth":4,"va":"0x140300350","name":"sub_140300350","role":"check if line is H1 heading (starts with '# ')","terminated_reason":"leaf_parser"}
+{"depth":4,"va":"0x14010E700","name":"sub_14010E700","role":"allocate + copy heading line bytes","terminated_reason":"leaf_alloc"}
+{"depth":4,"va":"0x141079B50","name":"sub_141079B50","role":"get skill content bytes ptr","terminated_reason":"leaf_content"}
+{"depth":4,"va":"0x1410A1B60","name":"sub_1410A1B60","role":"open file handle for content read","terminated_reason":"leaf_os_infra"}
+{"depth":4,"va":"0x1410A9010","name":"sub_1410A9010","role":"build UUID path component from content","terminated_reason":"leaf_path_util"}
+{"depth":4,"va":"0x141095530","name":"sub_141095530","role":"format path component as string (uuid fmt)","terminated_reason":"leaf_format"}
+{"depth":3,"va":"0x1406F1360","name":"import_skill_build_record_db_write_111","role":"build InstalledSkillSummary DTO + write to SQLite registry","terminated_reason":null}
+{"depth":4,"va":"0x141082B80","name":"sub_141082B80","role":"validate dest path","terminated_reason":"leaf_os_infra"}
+{"depth":4,"va":"0x14107B7E0","name":"system_time_precise_u32_111","role":"get current system time (precise, u32 epoch)","terminated_reason":"leaf_os_infra"}
+{"depth":4,"va":"0x14107B790","name":"elapsed_since_ts_111","role":"compute elapsed time since epoch reference","terminated_reason":"leaf_time"}
+{"depth":4,"va":"0x1407180F0","name":"sub_1407180F0","role":"build staging path with '__' prefix","terminated_reason":"leaf_path_util"}
+{"depth":4,"va":"0x140F5A900","name":"uuid_v4_generate_raw_sys","role":"generate UUID v4 (16 raw bytes)","terminated_reason":"leaf_crypto"}
+{"depth":4,"va":"0x1410A1DF0","name":"sub_1410A1DF0","role":"format UUID bytes as hex string","terminated_reason":"leaf_format"}
+{"depth":4,"va":"0x140260580","name":"sub_140260580","role":"serialize string JSON field (key+value)","terminated_reason":"leaf_serde"}
+{"depth":4,"va":"0x1402662D0","name":"sub_1402662D0","role":"serialize title JSON field (string, special handling)","terminated_reason":"leaf_serde"}
+{"depth":4,"va":"0x140268180","name":"sub_140268180","role":"serialize createdAt JSON field (u64 timestamp)","terminated_reason":"leaf_serde"}
+{"depth":4,"va":"0x1401F7950","name":"sub_1401F7950","role":"close JSON object (write '}')","terminated_reason":"leaf_serde"}
+{"depth":4,"va":"0x1403A6410","name":"sub_1403A6410","role":"write skills registry record to SQLite","terminated_reason":"leaf_db"}
+{"depth":4,"va":"0x1406F7540","name":"import_skill_uuid_to_string_111","role":"convert raw UUID bytes to string (sub_141095530)","terminated_reason":"leaf_format"}
+{"depth":4,"va":"0x1401D6360","name":"sub_1401D6360","role":"cleanup source path strings on error return","terminated_reason":"leaf_cleanup"}
+{"depth":4,"va":"0x1406EB140","name":"import_skill_iter_dir_match_111","role":"copy all skill files to skills/<uuid>/ destination","terminated_reason":"recursive_see_above"}
+{"depth":3,"va":"0x1406ECD70","name":"skill_backup_replace_111","role":"backup existing skill to skill-backups/ before replace","terminated_reason":"leaf_backup"}
+{"depth":3,"va":"0x1406EFA10","name":"sub_1406EFA10","role":"backup listing / backup registry management","terminated_reason":"leaf_backup"}
+{"depth":3,"va":"0x1406F3770","name":"sub_1406F3770","role":"skill backup path builder (skill-backups/<skillID>)","terminated_reason":"leaf_backup"}
+{"depth":2,"va":"0x140809B30","name":"sub_140809B30","role":"drop async result state","terminated_reason":"leaf_cleanup"}
+{"depth":2,"va":"0x140215D60","name":"sub_140215D60","role":"build error result for async wrapper","terminated_reason":"leaf_error_builder"}
+{"depth":1,"va":"0x14082FD90","name":"sub_14082FD90","role":"success response formatter (InstalledSkillSummary -> response bytes)","terminated_reason":null}
+{"depth":2,"va":"0x140227D30","name":"sub_140227D30","role":"format InstalledSkillSummary for response wire format","terminated_reason":"leaf_serde"}
+{"depth":2,"va":"0x140807390","name":"sub_140807390","role":"cleanup formatted response buffer","terminated_reason":"leaf_cleanup"}
+{"depth":2,"va":"0x14080C3C0","name":"sub_14080C3C0","role":"InvokeResolver dispatch: send response to frontend via vtable fn at +24","terminated_reason":"leaf_ipc"}
+{"depth":1,"va":"0x14080C3C0","name":"sub_14080C3C0","role":"InvokeResolver dispatch (error path)","terminated_reason":"leaf_ipc"}
+{"depth":1,"va":"0x14033AB50","name":"sub_14033AB50","role":"drop resolver array entry (stride 96B, Rust Arc drop)","terminated_reason":"leaf_runtime_noise"}
+{"depth":1,"va":"0x140042650","name":"sub_140042650","role":"cleanup resolver buf","terminated_reason":"leaf_cleanup"}

@@ -1,0 +1,30 @@
+{
+  "command": "upsert_mcp_server",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "mcp/upsert_mcp_server/evidence.md (7726B, session=wf-aimami111-delta-20260617-repair)",
+    "mcp/upsert_mcp_server/interfaces/ipc_contract.md (1994B)",
+    "mcp/upsert_mcp_server/interfaces/McpServerConfig_layout.md (2101B)",
+    "mcp/upsert_mcp_server/call-trees/upsert_mcp_server.jsonl (3494B, 20 depth entries)",
+    "frontend/ipc-contracts.jsonl#L69: argKeys=[args,headers,environment] spread={...t,args:t.args??[],headers:t.headers??{},environment:t.environment??{}} wrapper=upsertMcpServer",
+    "frontend/frontend-control-flow.jsonl#L82: terminal_call=upsert_mcp_server col=30631",
+    "frontend/frontend-control-flow.jsonl#L176: callsite=mutationFn->upsertMcpServer (mcp-page-CGgOsRmy.js)",
+    "windows-x64/upsert_mcp_server/gate-report.json: gate_tier=readyToImplement full_gold_leaf sha=d24e429a (dim5_win closed)",
+    "commands_va=0x10072ae00 (0xa77B) core_va=0x1005a0d80 (0x1c3aB)",
+    "sync_command: no async wrapper (fastcall); OnceBox mutex in commands layer",
+    "section8b_two_marker_invariant: aimami-relay-managed-start @anon.c7777ab3e3e082d25560615475f0500f.309 + codex-router-top @.310 both preserved",
+    "atomic_write_va=0x10041e960 McpServerSummary_size=224B confirmed",
+    "ACCEPTANCE in evidence.md L64-L90 session=wf-aimami111-dim6-20260619"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

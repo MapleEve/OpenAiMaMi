@@ -1,0 +1,86 @@
+{
+  "command": "reveal_relay_api_key",
+  "session": "wf-aimami111-dim6-20260619",
+  "machine": "<本地机器>",
+  "role": "producer",
+  "produced_at": "2026-06-19",
+  "shard": "mac-shard-4",
+  "dim6": {
+    "status": "acceptance-draft",
+    "ccf_confirmed": "1.1.1 ipc-contracts.jsonl: command='reveal_relay_api_key', argKeys=['providerId'], argObject='{providerId:t}', wrapper='revealApiKey' (vt call). Resolves dim1 pending status from evidence.md.",
+    "happy_path": {
+      "input": {
+        "providerId": "my-provider-id"
+      },
+      "expected_response_cache_hit": "CoreEnvelope::ok(Some('<api_key_string>')) \u2014 discriminant 0x8000000000000000 with Some string",
+      "expected_response_not_found": "CoreEnvelope::ok(None) \u2014 None sentinel 0x8000000000000000",
+      "expected_side_effects": {
+        "cache_hit_tier1": "none \u2014 read-only mutex access",
+        "cache_miss_tier2_or_3": "write_key_file writes decrypted key to <data_dir>/relay/<provider_id>; chmod 0o777 dir + file permissions set"
+      }
+    },
+    "boundary_error": [
+      {
+        "trigger": "providerId not found in RelayManager providers Vec",
+        "condition": "memcmp scan of all providers finds no id match",
+        "expected_response": "CoreEnvelope::ok(None) \u2014 not an error",
+        "notes": "All 3 keychain tiers also return None if provider not in cache"
+      },
+      {
+        "trigger": "Tier 3 macOS Keychain returns errSecItemNotFound (-25300)",
+        "condition": "security_framework generic_password lookup returns -25300",
+        "expected_response": "CoreEnvelope::ok(None)"
+      },
+      {
+        "trigger": "Tier 3 macOS Keychain other error",
+        "condition": "non-25300 error from Keychain Services",
+        "expected_response": "CoreEnvelope::ok(None) \u2014 treated as None (error converted to None via SpecToString)"
+      },
+      {
+        "trigger": "RelayManager mutex poisoned",
+        "condition": "unwrap_failed on poisoned Mutex",
+        "expected_error": "panic via unwrap_failed; anon error string"
+      },
+      {
+        "trigger": "Missing providerId arg",
+        "condition": "IPC arg parse fails",
+        "expected_error": "InvokeResolver::return_result error (Tauri IPC layer)"
+      }
+    ],
+    "side_effect_asserts": [
+      "If Tier 2 or Tier 3 hit: <data_dir>/relay/<provider_id> file must be created with raw API key string",
+      "No HTTP/network calls; no process spawn",
+      "Response type is always CoreEnvelope<Option<String>>; never an Err variant for key-not-found"
+    ],
+    "test_mapping": [
+      {
+        "type": "e2e",
+        "description": "Call with providerId that has Tier 1 file; verify Some(api_key) response and no side effects",
+        "reason": "Primary happy path; read-only FS"
+      },
+      {
+        "type": "e2e",
+        "description": "Call with unknown providerId; verify CoreEnvelope::ok(None) \u2014 not an error",
+        "reason": "None-response semantics differ from error; must be handled distinctly in C5"
+      },
+      {
+        "type": "manual",
+        "description": "Test Tier 3 macOS Keychain path (GenericPassword lookup)",
+        "reason": "Requires macOS Keychain interaction; difficult to automate in CI"
+      },
+      {
+        "type": "unit",
+        "description": "Unit-test 3-tier fallback logic with mocked FS/keychain; verify write-through cache behavior on Tier 2/3 hit",
+        "reason": "Tier fallback logic is pure function composition; testable with mocks"
+      }
+    ],
+    "dim6_basis": "3-tier key retrieval confirmed from decompile: Tier1 (read_to_string), Tier2 (base64+SHA256 decrypt+json), Tier3 (mac_keychain::get via security_framework). write_key_file side-effect on cache miss confirmed. Error paths: -25300\u2192None, mutex poison\u2192panic, arg-missing\u2192IPC error. CCF now confirmed from 1.1.1 ipc-contracts.jsonl (resolves dim1 pending)."
+  },
+  "gate_upgrade": {
+    "previous": "strictImplementationUse_candidate",
+    "new": "readyToImplement",
+    "rationale": "dim1 NOW confirmed (1.1.1 ipc-contracts.jsonl: argKeys=['providerId'] PASS \u2014 resolves pending dim1 from evidence.md); dim2 PASS (4 decompiles: owner+dispatcher+get_api_key+mac_keychain::get); dim3 PASS (depth>=5, terminal: FS SYSCALL + macOS Keychain syscall + SHA256); dim4 PASS (CoreEnvelope<Option<String>>, 3-tier arch, write-through side-effect); dim5_mac PASS; dim5_win separate; dim6=acceptance-draft",
+    "implementation_use": "eligible",
+    "notes": "Tier 3 (macOS Keychain) side-effect requires manual acceptance; Tier 2 decrypt algorithm (XOR/SHA256) accepted_unknown but non-blocking for C5 implementation which will use its own storage"
+  }
+}

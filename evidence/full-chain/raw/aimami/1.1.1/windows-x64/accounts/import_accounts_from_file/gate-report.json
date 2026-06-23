@@ -1,0 +1,66 @@
+{
+  "command": "import_accounts_from_file",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl#L15: command='import_accounts_from_file', argKeys=['filePath','overwriteExisting','selectedKeys'], argObject='{filePath:t,overwriteExisting:e,selectedKeys:r??null}', wrapper='importAccountsFromFile', kind='tauriInvokeWrapper'",
+    "frontend/frontend-control-flow.jsonl#L3: terminal_call via importAccountsFromFile wrapper; callsite accounts-page-BFpAaIej.js mutationFn",
+    "accounts/import_accounts_from_file/manifest.json: owner_va=0x140961470 (import_accounts_from_file_state_machine_sys), size=6063B, arg_keys=[filePath/overwriteExisting/selectedKeys], response_dto=5 fields, errors=4 codes, file_constraints.max=10MB, side_effects=4 confirmed",
+    "manifest.json#response_dto: importedCount(u64), importedAccountKeys(Vec<String>), skipped(u64), registryAccountCount(u64), activeAccountKey(Option<String>)",
+    "manifest.json#errors: INVALID_FIELD/DUPLICATE_ID/KEYCHAIN_WRITE/RUNTIME_REFRESH_FAILED_AFTER_IMPORT all confirmed with string VAs",
+    "manifest.json#dim6_acceptance_mapping: session=wf-aimami111-dim6-20260619; happy_path/boundary_error/side_effect_asserts/test_mapping present",
+    "dim1 re-verification in gate-final session: ipc-contracts.jsonl live-confirmed argKeys=[filePath,overwriteExisting,selectedKeys] match manifest arg_keys (previously only 'migrated' status upgraded to live-confirmed)"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 15,
+    "wrapper": "importAccountsFromFile",
+    "argKeys": ["filePath", "overwriteExisting", "selectedKeys"],
+    "argObject": "{filePath:t,overwriteExisting:e,selectedKeys:r??null}",
+    "kind": "tauriInvokeWrapper",
+    "note": "dim1 was previously marked 'migrated'; re-verified live in gate-final session via 1.1.1 win ipc-contracts.jsonl"
+  },
+  "dim2_detail": {
+    "owner_va": "0x140961470",
+    "owner_name": "import_accounts_from_file_state_machine_sys",
+    "size_bytes": 6063,
+    "note": "async Future state machine; arg_keys confirmed via parser VAs in manifest; key VAs all named"
+  },
+  "dim3_detail": {
+    "leaf_paths_confirmed": [
+      "CopyFileExW (Win32 API) via snooze_file_backup_copy_111",
+      "sub_1403A6410 (SQLite write)",
+      "uuid_v4_generate_raw_sys (syscall)",
+      "win32_file_read_bytes_111 (Win32 ReadFile)",
+      "skill_store_get_all_111 (store read)"
+    ],
+    "call_trees_file": "accounts/import_accounts_from_file/call-trees/import_accounts_from_file.jsonl",
+    "note": "call-trees JSONL present; leaf_paths all terminated at Win32/SQLite/OS primitives"
+  },
+  "dim4_detail": {
+    "request_argkeys": ["filePath(String)", "overwriteExisting(bool)", "selectedKeys(Option<Vec<String>>)"],
+    "response_fields": ["importedCount(u64)", "importedAccountKeys(Vec<String>)", "skipped(u64)", "registryAccountCount(u64)", "activeAccountKey(Option<String>)"],
+    "errors": ["INVALID_FIELD", "DUPLICATE_ID", "KEYCHAIN_WRITE", "RUNTIME_REFRESH_FAILED_AFTER_IMPORT", "import file too large (>10MB)"],
+    "side_effects": ["keychain write per account (two-phase)", "relay providers config persisted to fs", "event emitted: 'import' + 'runtime-state-updated'", "conditional relay_post_login_state_sync_sys"],
+    "semantic_note": "command imports RelayExportFile (relay provider config JSON), NOT a CSV accounts file"
+  },
+  "dim5_detail": {
+    "windows_only": true,
+    "async_pattern": "discriminant_offset=4688, outer_states=[0,1,2,3]",
+    "idb_path": "<本地路径>"
+  },
+  "dim6_detail": {
+    "source": "manifest.json#dim6_acceptance_mapping (session wf-aimami111-dim6-20260619)",
+    "happy_path": "invoke('import_accounts_from_file', {filePath, overwriteExisting: true, selectedKeys: null}) => {success:true, data:{importedCount:N, importedAccountKeys:[...], skipped:0, registryAccountCount:M, activeAccountKey:'<key>'}}",
+    "critical_note": "File max 10MB; semantic surprise: imports relay provider config (RelayExportFile), not plain accounts CSV"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

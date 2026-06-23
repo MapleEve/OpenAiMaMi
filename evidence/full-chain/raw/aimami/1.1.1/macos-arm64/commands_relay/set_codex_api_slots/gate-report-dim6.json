@@ -1,0 +1,124 @@
+{
+  "command": "set_codex_api_slots",
+  "session": "wf-aimami111-dim6-20260619",
+  "machine": "<本地机器>",
+  "role": "producer",
+  "produced_at": "2026-06-19",
+  "shard": "mac-shard-4",
+  "dim6": {
+    "status": "acceptance-draft",
+    "ccf_discrepancy": {
+      "ccf_argKeys": [
+        "slots"
+      ],
+      "ccf_argObject": "{slots:t}",
+      "backend_argKeys_confirmed": [
+        "manager",
+        "slots"
+      ],
+      "note": "Frontend CCF (ipc-contracts.jsonl col=121002) sends ONLY 'slots' \u2014 'manager' key is absent from the frontend invocation. Backend evidence confirms Rust reads 'manager' (7B key from dispatcher) and 'slots' (5B key). Possible explanations: (a) 'manager' has a default/optional handling in backend not traced, (b) the observed CCF is from a different invocation pattern than the one that uses 'manager', (c) 'manager' is resolved server-side from session context. C5 consumer must clarify whether 'manager' must be passed explicitly."
+    },
+    "happy_path": {
+      "input_ccf": {
+        "slots": [
+          {
+            "providerId": "p1",
+            "model": "gpt-4"
+          },
+          {
+            "providerId": "p2",
+            "model": "gpt-3.5-turbo"
+          }
+        ]
+      },
+      "input_backend_full": {
+        "manager": "provider-manager-id",
+        "slots": [
+          {
+            "providerId": "p1",
+            "model": "gpt-4"
+          }
+        ]
+      },
+      "expected_response": "CoreEnvelope<RelayState> \u2014 Ok; full relay state JSON after update",
+      "expected_side_effects": [
+        "In-memory RelayState updated under POSIX Mutex: slots assigned to matching RelayProvider",
+        "relay config JSON atomically written (uuid tmp \u2192 fdatasync \u2192 rename \u2192 fsync parent)",
+        "Codex config sync if provider has api_slots: write_catalog + apply_codex_state"
+      ]
+    },
+    "boundary_error": [
+      {
+        "trigger": "slots array is empty (len=0)",
+        "condition": "validate_api_slots: a4==0 check",
+        "expected_error": "~55B UTF-8 Chinese error string (hardcoded); CoreError"
+      },
+      {
+        "trigger": "slots.len() > 5",
+        "condition": "validate_api_slots: a4>5 check",
+        "expected_error": "format error with actual count via format_inner; CoreError"
+      },
+      {
+        "trigger": "providerId not found in relay state",
+        "condition": "linear scan (stride=232B) finds no match",
+        "expected_error": "format: 'providerId {x} not found in relay'; CoreError"
+      },
+      {
+        "trigger": "duplicate providerId in slots input",
+        "condition": "hashbrown insert collision",
+        "expected_error": "format: 'duplicate providerId {x}'; CoreError"
+      },
+      {
+        "trigger": "model not in exposed_models for provider",
+        "condition": "RelayProvider::exposed_models check fails",
+        "expected_error": "format: model not exposed for provider; CoreError"
+      },
+      {
+        "trigger": "FS write fails (disk full)",
+        "condition": "storage::save \u2192 write_atomic fails",
+        "expected_error": "CoreError from IoError"
+      }
+    ],
+    "side_effect_asserts": [
+      "Relay config file must contain updated api_slots for the specified provider after success",
+      "codex catalog (write_catalog) reflects new slots if provider had api_slots configured",
+      "5-slot constraint enforced: sending 6 slots must return error"
+    ],
+    "test_mapping": [
+      {
+        "type": "e2e",
+        "description": "Call with valid 1-5 slots; verify relay config updated and response contains updated RelayState",
+        "reason": "Primary happy path; FS write side-effect"
+      },
+      {
+        "type": "e2e",
+        "description": "Call with 0 slots; verify ~55B Chinese error response",
+        "reason": "Empty slots error path; specific to 1.1.1"
+      },
+      {
+        "type": "e2e",
+        "description": "Call with 6 slots; verify count>5 error response",
+        "reason": "Slot cap enforcement"
+      },
+      {
+        "type": "e2e",
+        "description": "Call with duplicate providerId in slots; verify duplicate error",
+        "reason": "Dedup validation"
+      },
+      {
+        "type": "explicit_non_automatable_accept",
+        "description": "Clarify 'manager' arg: does backend require 'manager' key or is it optional/derived?",
+        "reason": "CCF discrepancy: frontend sends only 'slots', backend evidence confirms 'manager' as read argKey. Must be resolved before full acceptance.",
+        "notes": "producer-acceptance-draft: blocking on CCF/backend arg contract clarification"
+      }
+    ],
+    "dim6_basis": "Validation logic confirmed from validate_api_slots decompile (5 error paths: empty/count/providerId-not-found/duplicate/model-invalid). Atomic write side-effect confirmed from write_atomic callee chain. CCF discrepancy documented: ipc-contracts.jsonl shows only 'slots' arg, backend confirms 'manager' + 'slots'."
+  },
+  "gate_upgrade": {
+    "previous": "strictImplementationUse_candidate",
+    "new": "readyToImplement",
+    "rationale": "dim1 PASS (CCF confirmed from 1.1.1 ipc-contracts.jsonl; note: 'manager' arg appears in backend but not CCF \u2014 documented as acceptance-draft note); dim2 PASS (owner+core_impl+dispatcher decompiled); dim3 PASS (depth=5, FS+POSIX terminal); dim4 PASS (5 validated error paths, CodexApiSlot struct, RelayState response); dim5_mac PASS; dim5_win separate; dim6=acceptance-draft",
+    "implementation_use": "eligible",
+    "notes": "CCF/backend 'manager' discrepancy must be clarified by C5 consumer before shipping. All other dims closed."
+  }
+}

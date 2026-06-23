@@ -1,0 +1,41 @@
+{
+  "key": "aimami/1.1.1/windows-x64/system/set_hotspot_enabled",
+  "session": "wf-aimami111-delta-20260617-repair",
+  "machine": "<本地机器>",
+  "role": "producer",
+  "produced_at": "2026-06-17",
+  "claimed_at": "2026-06-17",
+  "completed_at": "2026-06-17",
+  "status": "complete",
+  "sha256_binary": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "files_written": [
+    "manifest.json",
+    "interface.md",
+    "pseudocode.md",
+    "call-tree.md",
+    "owner.md",
+    "gate-report.json",
+    "producer-ledger.json"
+  ],
+  "ida_ops": [
+    {"op": "decompile", "va": "0x140022070", "name": "set_hotspot_enabled_ipc_dispatcher_sys"},
+    {"op": "decompile", "va": "0x14060CE60", "name": "set_hotspot_enabled_core_impl_sys"},
+    {"op": "decompile", "va": "0x1402FF1A0", "name": "parse_bool_from_ipc_arg_sys"},
+    {"op": "decompile", "va": "0x14060D750", "name": "set_hotspot_enabled_enable_branch_sys"},
+    {"op": "decompile", "va": "0x1401A15D0", "name": "codexmate_settings_hotspot_read_full_sys_111"},
+    {"op": "xrefs_to", "va": "0x140022070"},
+    {"op": "xrefs_to", "va": "0x14060CE60"},
+    {"op": "find_regex", "pattern": "set_hotspot_enabled"},
+    {"op": "rename", "old": "sub_1402FF1A0", "new": "parse_bool_from_ipc_arg_sys"},
+    {"op": "set_comments", "addrs": ["0x140022070", "0x14060CE60", "0x14060D750"]},
+    {"op": "idb_save", "result": "ok"}
+  ],
+  "baseline_comparison": {
+    "version": "1.0.9",
+    "baseline_owner_va": "0x140285050",
+    "delta": "VA drift, behavioral semantics identical",
+    "mutex_pattern_match": true,
+    "two_phase_dispatch_match": true,
+    "bool_arg_field_match": true
+  }
+}

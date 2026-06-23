@@ -1,0 +1,138 @@
+{
+  "session": "wf-aimami111-dim6-20260619",
+  "machine": "<本地机器>",
+  "sha": "d24e429a",
+  "role": "producer",
+  "module": "AiMaMi 1.1.1 win64.exe",
+  "platform": "windows-x64",
+  "command": "load_pending_auto_switch",
+  "delta_class": "DELTA_ESCALATE",
+  "baseline": "1.0.9",
+  "timestamp_utc": "2026-06-19",
+  "gate_tier": "strictImplementationUse_candidate",
+  "owner": {
+    "va": "0x140788F20",
+    "name": "sub_140788F20",
+    "note": "inline dispatcher case in tauri_ipc_main_dispatcher_sys @ 0x14000D2A0; owner_core not fully decompiled at pseudocode level",
+    "ipc_registration": "tauri_ipc_main_dispatcher_sys @ 0x14000D2A0"
+  },
+  "side_effects": {
+    "file_read": "pending auto-switch file via win32_file_read_bytes_111 @ 0x14107C990 → CreateFileW @ depth 5 (DELTA vs 1.0.9: was SQLite state_5.sqlite read)",
+    "file_write": "serialized response write via depth-3 win32_file_write_bytes_111 @ 0x14107C990 → CreateFileW",
+    "http": "none",
+    "sidecar": "none",
+    "lock_acquire": "pending_auto_switch_state_lock_acquire_111 (new in 1.1.1, depth-1 inline case)"
+  },
+  "delta_vs_1_0_9": {
+    "status": "DELTA_ESCALATE",
+    "key_deltas": [
+      "L1: dispatcher changed from auto_switch_multiplex_dispatcher_sys @ 0x1402663E0 to tauri_ipc_main_dispatcher_sys @ 0x14000D2A0",
+      "L1: pending_auto_switch_state_lock_acquire_111 added (new mutex guard)",
+      "L1: query_installed_skills_with_repo_111 added (new repo validation)",
+      "L3: storage backend changed from SQLite (state_5.sqlite via sub_14104DEE0) to file system (win32_file_read_bytes_111 → CreateFileW at depth 5)"
+    ],
+    "storage_change": "SQLite → file system; app-level behavioral change"
+  },
+  "call_depth_analysis": {
+    "max_depth_reached": 5,
+    "call_tree_file": "call-trees/load_pending_auto_switch.jsonl",
+    "note": "same-depth recon escalated to escalate_delta; owner core (sub_140788F20) NOT fully decompiled at pseudocode level"
+  },
+  "dim_completeness": {
+    "dim1_frontend_ccf": {
+      "status": "PENDING",
+      "note": "Not verified in this session"
+    },
+    "dim2_arg_keys_extractor": {
+      "status": "PARTIAL",
+      "note": "No interface.md written; arg keys not fully extracted from 逆向分析; repo param inferred from L1 inline case but not confirmed from owner payload extraction"
+    },
+    "dim3_deep_call_tree": {
+      "status": "DONE",
+      "max_depth": 5,
+      "edges": "see jsonl",
+      "file": "call-trees/load_pending_auto_switch.jsonl"
+    },
+    "dim4_dto_struct_fields": {
+      "status": "MISSING",
+      "note": "No pseudocode.md for owner; no interface.md; pending auto-switch file format (JSON) inferred from sub_140004C80 JSON parse callee but field layout not confirmed"
+    },
+    "dim5_same_platform_gate": {
+      "status": "PARTIAL",
+      "note": "win32 CreateFileW confirmed at depth 5; but full platform-specific behavior (file path, JSON schema) not documented"
+    },
+    "dim6_acceptance": {
+      "status": "acceptance-draft",
+      "blocked_dims": [
+        "dim2_partial",
+        "dim4_missing"
+      ],
+      "dim6_basis": "call-tree jsonl (5 levels deep, CreateFileW at depth 5) + reverse.md escalation verdict + delta vs 1.0.9 SQLite→file storage change",
+      "happy_path": {
+        "input": "inferred: { repo: <valid-repo-id> } — exact params not confirmed from 逆向分析 pseudocode",
+        "expected_output": "pending auto-switch state read from file (not SQLite); JSON parsed via sub_140004C80; response serialized and written to response file via win32_file_write_bytes_111; IPC resolved via tauri_ipc_resolve_sys",
+        "side_effect_asserts": [
+          "pending_auto_switch mutex acquired then released",
+          "pending auto-switch file read via CreateFileW (file path unknown — not extracted from pseudocode)",
+          "response JSON written to file via CreateFileW (serialized response path unknown)",
+          "IPC response resolved to frontend via tauri_ipc_resolve_sys"
+        ],
+        "note": "Input params and response schema UNCONFIRMED — dim4 missing; cannot write grounded assertions without pseudocode.md/interface.md"
+      },
+      "boundary_error": [
+        {
+          "trigger": "pending auto-switch file missing or unreadable (CreateFileW fails at depth 5)",
+          "expected": "inferred: error propagated up call chain; exact error type/string unknown (no pseudocode)"
+        },
+        {
+          "trigger": "JSON parse fails (sub_140004C80 error path)",
+          "expected": "inferred: error response; exact error not confirmed"
+        },
+        {
+          "trigger": "mutex acquire fails",
+          "expected": "inferred from pattern: error response; exact path not confirmed without pseudocode"
+        }
+      ],
+      "test_mapping": [
+        {
+          "case": "happy_path: load pending auto-switch state from file",
+          "type": "e2e",
+          "reason": "Requires live binary with pending auto-switch file in place; producer-acceptance-draft — UNCONFIRMED params/schema"
+        },
+        {
+          "case": "error: pending auto-switch file missing",
+          "type": "e2e",
+          "reason": "Trigger by removing file; error path unconfirmed; producer-acceptance-draft"
+        },
+        {
+          "case": "STORAGE REGRESSION: data reads from file not SQLite (delta from 1.0.9)",
+          "type": "explicit_non_automatable_accept",
+          "reason": "Critical behavioral delta — 1.0.9 read SQLite, 1.1.1 reads file; consumer must verify no SQLite dependency in C5 implementation"
+        }
+      ],
+      "unblocked_when": "dim2 completed (interface.md with exact arg keys from 逆向分析) + dim4 completed (pseudocode.md for sub_140788F20 owner + file path constant extraction)"
+    }
+  },
+  "implementation_use": {
+    "eligible": false,
+    "note": "dim2 PARTIAL + dim4 MISSING — not eligible for readyToImplement. Acceptance draft only. Must complete owner pseudocode (sub_140788F20), extract file path constant, confirm arg keys and response schema before upgrade."
+  },
+  "gate": {
+    "pass": false,
+    "gate_tier": "acceptance_draft_only",
+    "blocking_issues": [
+      "dim2_partial: arg keys not confirmed from 逆向分析; no interface.md",
+      "dim4_missing: no pseudocode.md for owner (sub_140788F20); file path and response schema unknown"
+    ],
+    "notes": [
+      "same-depth recon (session wf-aimami111-same-depth-20260618) escalated verdict to escalate_delta",
+      "call-tree written to depth 5 (CreateFileW confirmed)",
+      "storage backend change SQLite→file confirmed as app-level behavioral delta",
+      "dim6 acceptance-draft written by session wf-aimami111-dim6-20260619",
+      "gate-report.json first written by wf-aimami111-dim6-20260619 (no prior gate-report existed)"
+    ]
+  },
+  "readyToImplement": false,
+  "gate_tier_revert_note": "dim1_frontend_ccf=PENDING + dim4 — gate-consolidate falsely promoted; reverted",
+  "reverted_by": "honest-recount-20260620"
+}

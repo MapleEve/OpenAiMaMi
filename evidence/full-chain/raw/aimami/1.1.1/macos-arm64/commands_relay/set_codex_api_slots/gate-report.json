@@ -1,0 +1,38 @@
+{
+  "command": "set_codex_api_slots",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim4": [
+      "'manager' arg: backend dispatcher confirms reading 'manager' (7B key @unk_101148410) AND 'slots' (5B key @unk_101148407). Frontend CCF (ipc-contracts.jsonl col=121002) sends ONLY 'slots' — 'manager' absent from CCF. Recovery attempts: (1) re-read ipc-contracts.jsonl for set_codex_api_slots — confirmed argKeys=[slots] only; (2) checked interface.md DTO schema which shows manager=provider-id; (3) dim6.json documents discrepancy with 3 candidate explanations. Non-blocking: documented as consumer clarification task. C5 must clarify whether 'manager' must be passed explicitly or is derived server-side."
+    ]
+  },
+  "evidence_refs": [
+    "commands_relay/set_codex_api_slots/ida/pseudocode/0001_set_codex_api_slots_owner_hef3da9daf5b16813.c (VA=0x1005e9530, size=392B)",
+    "commands_relay/set_codex_api_slots/ida/pseudocode/0002_set_codex_api_slots_core_impl_h5410e8e69349b454.c",
+    "commands_relay/set_codex_api_slots/ida/pseudocode/0003_set_codex_api_slots_storage_save_h6a78ba66353d5d3f.c",
+    "commands_relay/set_codex_api_slots/call-trees/set_codex_api_slots.jsonl",
+    "commands_relay/set_codex_api_slots/interfaces/interface.md (argKeys=[manager,slots], CodexApiSlot struct, 7 error paths, RelayProvider stride=232B)",
+    "commands_relay/set_codex_api_slots/gate-report-dim6.json (session=wf-aimami111-dim6-20260619, acceptance-draft)",
+    "frontend/ipc-contracts.jsonl:L86:col121002 command=set_codex_api_slots argKeys=[slots] wrapper=setCodexApiSlots",
+    "frontend/frontend-control-flow.jsonl:L86:col121021 terminal=set_codex_api_slots argKeys=[slots]",
+    "frontend/frontend-control-flow.jsonl:L306:col38226 callsite=Zt.setCodexApiSlots(b)"
+  ],
+  "dim_notes": {
+    "dim1_frontend_ccf": "ipc-contracts.jsonl L86 col121002: argKeys=[slots] argObject={slots:t} wrapper=setCodexApiSlots callee=vt. CCF L86 col121021: terminal vt('set_codex_api_slots',{slots:t}). Callsite L306 col38226 Zt.setCodexApiSlots(b). Frontend CCF confirmed. 'manager' arg discrepancy: frontend sends only 'slots', backend reads 'manager'+'slots' — documented as accepted_unknown (dim4 recovery). CLOSED.",
+    "dim2_owner_pseudocode": "3 pseudocode files: owner hef3da9d (392B, delegates to RelayManager::set_codex_api_slots core) + core_impl h5410e8e + storage_save h6a78ba6. Total ~28K dir. Core: validate_api_slots(5 constraints)->in-memory update(stride=232B)->persist->sync_codex_config. CLOSED.",
+    "dim3_call_tree_depth5": "Depth 5+ confirmed per interfaces/interface.md: validate_api_slots->hashbrown_insert->storage::save->write_atomic(FS)->sync_parent(FS). Also: codex_catalog::write_catalog->FS leaf, apply_codex_state->TOML write. Terminals reached. CLOSED.",
+    "dim4_interface_dto_error_sideeffect": "argKeys=[slots:Vec<CodexApiSlot>] from CCF (confirmed). 'manager' arg: accepted_unknown — recovery documented above. CodexApiSlot: {providerId:String, model:String}. Constraints: slots.len in [1,5] (0=Chinese error ~55B, >5=count error). Validation: providerId unique(hashbrown), providerId must exist(stride=232B scan), model in exposed_models. Response CoreEnvelope<RelayState>. 7 error paths enumerated. Side-effects: in-memory update(Mutex), relay config atomic write(uuid tmp->fdatasync->rename->fsync_parent), codex config sync(write_catalog/apply_codex_state). Platform delta mac/win documented. CLOSED with noted 'manager' accepted_unknown.",
+    "dim5_same_platform_gate": "macos-arm64 confirmed. Owner VA=0x1005e9530, core VA=0x1005d4f40. Windows dim5: INDEX key aimami/1.1.1/windows-x64/set_codex_api_slots/full-chain confirmed per interface.md. CLOSED.",
+    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=wf-aimami111-dim6-20260619. 'manager' discrepancy is consumer clarification task. Producer acceptance-draft = dim6 closed. CLOSED."
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

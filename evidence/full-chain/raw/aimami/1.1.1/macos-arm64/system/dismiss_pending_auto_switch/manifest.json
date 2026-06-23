@@ -1,0 +1,70 @@
+{
+  "schema": "c5cm.raw.bundle.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "binary_format": "macho-universal",
+  "module": "system",
+  "leaf": "dismiss_pending_auto_switch",
+  "status": "strictImplementationUse_candidate",
+  "source_binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "owner_addr": "0x10061b3e0",
+  "owner_symbol": "codexmate_lib::commands::system::dismiss_pending_auto_switch::h33e15699f40f5f79",
+  "owner_size_hex": "0x2dd",
+  "core_impl_addr": "0x1004cdb90",
+  "core_impl_symbol": "codexmate_lib::core::repository::Repository::dismiss_pending_auto_switch::hc6050fe08f5c1e1b",
+  "core_impl_size_hex": "0x7ac",
+  "ipc_dispatch_xref": "0x1003191a7",
+  "ipc_dispatch_fn": "0x1003190a0",
+  "ipc_registration_blob_addr": "0x10114801b",
+  "produced_at": "2026-06-16T00:00:00Z",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "role": "pure_producer",
+  "producer": "ida-pro-mcp-mac",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "idb_save": "ok",
+  "dim1_frontend_ccf": "accepted",
+  "dim2_backend_owner_pseudocode": "accepted",
+  "dim3_call_tree": "accepted",
+  "dim4_interface_dto_error": "accepted",
+  "dim5_platform_gate": "macos_confirmed_windows_unknown",
+  "dim6_test_acceptance_mapping": "unknown_c5_impl_side",
+  "gate_tier": "strictImplementationUse_candidate",
+  "migration_status": "migrated_no_behavior_diff",
+  "baseline_version": "1.0.9",
+  "baseline_sha256": "1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482",
+  "delta_classification": "interface_identical_impl_addr_changed",
+  "deep_recovery": {
+    "performed_at": "2026-06-16",
+    "fake_wall_taxonomy_checked": true,
+    "genuine_ceiling": false,
+    "recovery_attempts": "none_needed_synchronous_command_direct_decompile",
+    "taxonomy_exclusions": [
+      "drop_in_place_shim: not applicable, synchronous command",
+      "async_body: not applicable, no BlockingTask::poll pattern",
+      "architecture_only: not applicable, full body decompiled",
+      "wrong_VA: excluded, xrefs_to confirms 0x1003191a7 -> 0x10061b3e0",
+      "vtable_dynamic: not applicable, direct call to Repository::dismiss_pending_auto_switch",
+      "HTTP_terminal: not applicable, fs write only",
+      "library_internal: serde serialize entries are biz logic confirmed"
+    ],
+    "callee_bodies_decompiled": [
+      "Repository::load_pending_auto_switch@0x1004c8200",
+      "Repository::clear_auto_switch_snooze@0x1004c8120",
+      "CodexPaths::ensure_directories@0x1005582b0"
+    ],
+    "snooze_json_keys_confirmed_from_rodata": [
+      {"key": "currentAccountKey",   "addr": "0x10114ce56", "len": 17},
+      {"key": "candidateAccountKey", "addr": "0x10114ce67", "len": 19},
+      {"key": "dismissedAt",         "addr": "0x10114ce7a", "len": 11}
+    ]
+  },
+  "four_angle_completeness": {
+    "A_func_query": "PASS: func_query name_regex=.*dismiss_pending_auto_switch.* -> 2 hits (command + core, unique)",
+    "B_string_pool": "PASS: find_regex -> 0x10114801b IPC registration blob contains dismiss_pending_auto_switch",
+    "C_frontend_ipc": "PASS: ipc-contracts.jsonl argKeys=[], wrapper=ne('dismiss_pending_auto_switch'), params='()'",
+    "D_owner_map_index": "PASS: owner-map-111 status=shared/not_yet_queried -> now DONE; INDEX 0 prior 1.1.1 entries; ADDITIVE no collision"
+  },
+  "append_comments": "done (7 annotations: 0x10061b3e0 owner, 0x1004cdb90 core, 0x1004c8200 load_pending, 0x1004c8120 clear_snooze, 0x1005582b0 ensure_dirs, 0x1003190a0 IPC dispatch fn, 0x10114801b IPC reg blob)"
+}

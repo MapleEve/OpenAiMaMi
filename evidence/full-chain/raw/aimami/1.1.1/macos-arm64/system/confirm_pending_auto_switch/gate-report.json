@@ -1,0 +1,37 @@
+{
+  "command": "confirm_pending_auto_switch",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "accepted_unknown",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim4": [
+      "backend_serde_derive_decompile: failed — #[derive(Serialize)] on make_account_summary_from_item emits no named impl body; field accessors inlined into generic Serialize::serialize; no recoverable string literals at VA (mac-close-1.json evidence)",
+      "frontend_argKeys: argKeys=[] — confirms no input fields; SwitchPayload is response DTO not accessible via argKeys (argKeys are invoke args not response fields); ipc-contracts.jsonl: argKeys=[], argObject=null, params=\"()\"",
+      "frontend_response_destructuring_search: failed — confirmPendingAutoSwitch callsites do not destructure response (await Ge.confirmPendingAutoSwitch() with no result capture at CCF snippet); no field names accessible",
+      "json_output_string_search: failed — serde derive field strings not separately stored; field names embedded in macro-generated code eliminated by ICF; no distinct string literals found at make_account_summary_from_item callees"
+    ],
+    "dim4_interface_dto_error_sideeffect": [
+      "backend_serde_derive_decompile: failed — #[derive(Serialize)] on make_account_summary_from_item no impl body in binary",
+      "frontend_argKeys: argKeys=[] — input-only, response SwitchPayload fields not accessible via argKeys",
+      "frontend_response_destructuring_search: failed — callsite does not capture response; ne('confirm_pending_auto_switch') with no result variable",
+      "json_output_string_search: failed — serde derive field strings not in binary string pool; ICF eliminated"
+    ]
+  },
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:99 — command=confirm_pending_auto_switch, argKeys=[], argObject=null, wrapper=confirmPendingAutoSwitch, file=assets/index-DdcCOEJG.js:86:32286",
+    "frontend/frontend-control-flow.jsonl:112 — terminal_call confirm_pending_auto_switch argKeys=[] callee=ne col:32314",
+    "ida/pseudocode/0001_confirm_pending_auto_switch_owner_f34ff8291053.c — VA:0x10061ae70 size=0x4d5 owner; VA:0x1004cd9b0 Repository::confirm_pending_auto_switch; VA:0x1004c8200 load_pending_auto_switch; VA:0x1004c0350 switch_account; VA:0x100626f60 refresh_full_runtime_snapshot_with_source; 8690B total",
+    "call-trees/confirm_pending_auto_switch.jsonl — 23 edges depth4; load_pending_auto_switch(3)->switch_account(3:fs+registry+auth)->refresh_snapshot(2) all terminated",
+    "intermediate/dim6/mac-final.json — RTI: dim4 closed with SwitchPayload inner fields as genuine_ceiling accepted_unknown; 4 recovery attempts documented; outer CoreEnvelope fields confirmed; error codes 7/NotFound + 2/IoError confirmed; broadcast_runtime_snapshot side-effect = runtime-state-updated event (逆向分析 0x100620a82)",
+    "intermediate/dim6/mac-consolidated.json — readyToImplement: mac-close-1->mac-regrade->mac-final"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "recovery_synced_by": "honest-verify-20260620 (from gate-final shard)"
+}

@@ -1,0 +1,83 @@
+{
+  "command": "delete_skill_backup",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/delete_skill_backup/pseudocode.md (16010B, gold-leaf)",
+    "raw/aimami/1.1.1/windows-x64/delete_skill_backup/call-tree.md (7351B, depth=6, edges=42)",
+    "raw/aimami/1.1.1/windows-x64/delete_skill_backup/interface.md (3076B)",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl line 77: argKeys=[id] col=31096",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl lines 90,197: deleteSkillBackup + mutationFn callsite",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#delete_skill_backup (acceptance-draft)"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 77,
+    "wrapper": "deleteSkillBackup",
+    "argKeys": ["id"],
+    "snippet_col": 31096,
+    "ccf_lines": [90, 197],
+    "command_string_va": "0x1412AC1AA"
+  },
+  "dim2_detail": {
+    "owner_va": "0x140024D90",
+    "owner_name": "delete_skill_backup_owner_sys",
+    "owner_size_hex": "0x511",
+    "core_va": "0x1406EF5E0",
+    "async_wrapper_va": "0x1407DC490",
+    "response_ser_va": "0x140211890",
+    "session": "wf-aimami111-delta-20260618-goldleaf",
+    "delta_class": "integrity_recovered"
+  },
+  "dim3_detail": {
+    "depth": 6,
+    "edges": 42,
+    "terminated_reason": "all_paths_terminated",
+    "new_deep_callees_vs_109": [
+      "delete_skill_backup_response_ser_111@0x140211890 (NEW response serializer)",
+      "sub_140262BA0@0x140262BA0 (JSON comma+colon field sep)",
+      "sort path: insertion n<21 / pdq n>=21 (NEW 1.1.1 post-delete sort)",
+      "win32_file_read_bytes_111@0x141093260 (metadata.json read confirmed)",
+      "sub_140004AA0 (remove_dir_all adapter)"
+    ]
+  },
+  "dim4_detail": {
+    "input_params": [
+      {"name":"repo","type":"String","key_va":"0x1412AC6D1","key_len":4},
+      {"name":"id","type":"String","key_va":"0x1412AC77D","key_len":2}
+    ],
+    "response_dto_111": {
+      "deletedBackupID": {"type":"String","key_va":"0x1412C0992","key_len":15,"ser_fn":"sub_14025C400"},
+      "remainingBackupCount": {"type":"u32","key_va":"0x1412C09A1","key_len":20,"ser_fn":"sub_140261480"}
+    },
+    "response_dto_delta": "CHANGED vs 1.0.9 — new structured fields replace bare ok/Success",
+    "skill_backup_struct_size_bytes": 152,
+    "error": "Backup not found: <id> (18B prefix @ 0x1412EC064)",
+    "new_error_strings_111": ["Invalid skill source", "replaceSKILL.md (alternate backup content path)"],
+    "side_effects": [
+      "FS remove_dir_all on skill-backups/<repo>/<id>/",
+      "metadata.json reads per remaining entry (win32_file_read_bytes_111)",
+      "Vec<SkillBackup> rebuild and sort_unstable (insertion n<21, pdq n>=21 NEW 1.1.1)",
+      "WakeByAddressSingle (async future resolution)"
+    ]
+  },
+  "dim5_detail": {
+    "win_specifics": ["CreateFileW","ReadDirectoryChangesW","CloseHandle","WakeByAddressSingle"],
+    "idb": "<本地路径>",
+    "sha": "d24e429a"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "shard_ref": "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#delete_skill_backup"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

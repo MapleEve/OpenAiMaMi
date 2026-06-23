@@ -1,0 +1,69 @@
+{
+  "command": "load_quota_history",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl#L80: command='load_quota_history', argKeys=['accountKey'], argObject='{accountKey:t}', wrapper='loadQuotaHistory', kind='tauriInvokeWrapper'",
+    "frontend/frontend-control-flow.jsonl#L12: callsite analytics-panel-LbLPe_yT.js queryFn -> V.loadQuotaHistory(t??void 0)",
+    "load_quota_history/gate-report.json (prev): all dims DONE, call_depth_analysis.max_depth=5, call_tree_edges=54; full_gold_leaf; dim6_acceptance_mapping session=wf-aimami111-dim6-20260619",
+    "gate-report.json#time_filter: 7-day cutoff confirmed (quota_history_file_read_and_filter_111@0x1402002F0, days_param=7 literal); max_entries_before_trim=2000",
+    "gate-report.json#dto: QuotaHistoryPoint, 24 fields, size_bytes=953; confirmed via quota_history_point_deep_copy_111@0x1401EB870 last write at +952",
+    "gate-report.json#delta_vs_1_0_9: HIGH RISK — 1.1.1 returns only last 7 days; 1.0.9 returned all history; silent truncation"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 80,
+    "wrapper": "loadQuotaHistory",
+    "argKeys": ["accountKey"],
+    "argObject": "{accountKey:t}",
+    "kind": "tauriInvokeWrapper",
+    "note": "frontend sends {accountKey:t}; repo resolved server-side from skill store"
+  },
+  "dim2_detail": {
+    "owner_va": "0x140020E40",
+    "owner_name": "load_quota_history_owner_sys",
+    "size_hex": "0x511",
+    "delta_vs_109": "body_changed: 7-day filter (new), accountKey filter (new), 2000-entry trim-rewrite (new), larger DTO (953B)"
+  },
+  "dim3_detail": {
+    "max_depth": 5,
+    "total_edges": 54,
+    "call_trees_file": "load_quota_history/call-trees/load_quota_history.jsonl",
+    "terminated_reasons": ["platform_primitive", "implementation_leaf", "external_call", "response_serialize", "ipc_dispatch", "async_future_poll", "error_return", "named_shared_primitive"],
+    "leaf_functions": ["win32_file_read_bytes_111", "win32_file_write_bytes_111", "win32_path_canonicalize_111", "GetFullPathNameW", "CreateFile", "GetSystemTimeAsFileTime", "CloseHandle", "WakeByAddressSingle"]
+  },
+  "dim4_detail": {
+    "request_argkeys": ["accountKey(Option<String>)"],
+    "response_shape": "{schemaVersion, success, code, message, warnings, data: [QuotaHistoryPoint]}",
+    "dto": {
+      "name": "QuotaHistoryPoint",
+      "field_count": 24,
+      "size_bytes": 953,
+      "note": "24 string fields as (len:i64, ptr:*u8, cap:i64) triples; bool flags at interleaved offsets"
+    },
+    "time_filter": "7-day window (cutoff = now - 7*86400); entries older than 7 days SILENTLY DROPPED",
+    "trim_rewrite": "if entries >= 2000: sort oldest-first + slice + rewrite file (win32_file_write_bytes_111)",
+    "file_not_found": "treated as empty history (success=true, data=[]); NOT an error",
+    "side_effects": ["win32_file_read_bytes_111 (quota-history.jsonl read)", "win32_file_write_bytes_111 (trim rewrite only, conditional on >=2000 entries)"]
+  },
+  "dim5_detail": {
+    "windows_only": true,
+    "idb_saved": true,
+    "snooze_file_open_confirmed": "0x14108C6F0"
+  },
+  "dim6_detail": {
+    "source": "gate-report.json (prev)#dim6_acceptance_mapping (session wf-aimami111-dim6-20260619)",
+    "behavioral_delta_risk": "HIGH",
+    "critical_note": "1.1.1 returns ONLY last 7 days of quota history. 1.0.9 returned ALL history. C5 UI MUST communicate 7-day window to users. Silent truncation is a breaking behavioral change.",
+    "file_not_found_note": "Missing quota-history.jsonl returns success=true data=[] (not an error); callers must not treat empty response as error"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

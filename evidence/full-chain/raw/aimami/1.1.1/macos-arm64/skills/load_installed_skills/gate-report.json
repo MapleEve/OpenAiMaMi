@@ -1,0 +1,75 @@
+{
+  "command": "load_installed_skills",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "skills/load_installed_skills/evidence.md — Confirmed §1-12, Inferred §1-7, Unknown §1-7; leaf_status=full_gold_leaf session wf-aimami111-delta-20260618-mac100",
+    "frontend/ipc-contracts.jsonl line:72 col:30858 — command=load_installed_skills argKeys=[] wrapper=loadInstalledSkills",
+    "frontend/frontend-control-flow.jsonl line:85 — static-terminal loadInstalledSkills col:30881",
+    "frontend/frontend-control-flow.jsonl line:164 — callsite index-DdcCOEJG.js:316 col:160056 Ge.loadInstalledSkills() inside queryFn",
+    "frontend/frontend-control-flow.jsonl line:192 — callsite skills-page-CxV_IefY.js:7 col:857 i.loadInstalledSkills() inside queryFn",
+    "skills/load_installed_skills/ida/pseudocode/ — 4 files: commands(6633B) + core(1861B) + store_bootstrap(4276B) + bootstrap_cache_load(2937B)",
+    "skills/load_installed_skills/call-trees/load_installed_skills.jsonl — 15 edges",
+    "skills/load_installed_skills/interfaces/dto.json",
+    "skills/load_installed_skills/gate-report.json prior — readyToImplement=true (gold-leaf gate_accepted) 2026-06-19"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "dim1_detail": {
+    "source": "ipc-contracts.jsonl line:72 col:30858 + frontend-control-flow.jsonl line:85 static + line:164+192 callsites",
+    "col": 30858,
+    "wrapper": "loadInstalledSkills",
+    "argKeys": [],
+    "terminal_call_command": "load_installed_skills",
+    "callsite_evidence_1": "index-DdcCOEJG.js:316 col:160056 Ge.loadInstalledSkills() in queryFn",
+    "callsite_evidence_2": "skills-page-CxV_IefY.js:7 col:857 i.loadInstalledSkills() in queryFn"
+  },
+  "dim2_detail": {
+    "owner_va": "0x10072db50 (commands::skills::load_installed_skills, size 0x58a=1418B)",
+    "core_va": "0x1005e78d0 (core::skills::load_installed_skills, size 0x14f=335B)",
+    "delta_callee_va": "0x1004cf950 (Repository::store_bootstrap_installed_skills, size 0x1d4=468B)",
+    "pseudocode_files": [
+      "commands_skills_load_installed_skills.c (6633B)",
+      "core_skills_load_installed_skills.c (1861B)",
+      "repository_store_bootstrap_installed_skills.c (4276B)",
+      "bootstrap_cache_load.c (2937B)"
+    ]
+  },
+  "dim3_detail": {
+    "edges": 15,
+    "max_depth": 4,
+    "terminated_reason": "cmd→core→scan_skills_recursive→load_skill_summary→fs::read_to_string; delta_path: cmd→store_bootstrap→bootstrap_cache::load→serde_json"
+  },
+  "dim4_detail": {
+    "argKeys": [],
+    "response": "CoreEnvelope<SkillListPayload{skills: Vec<InstalledSkillSummary>, base_path: String, written_at: u64, schema_version: i32}>",
+    "error_discriminants": {"Ok": 10, "IoError": 2, "SerdeError": 3, "MutexPoison": "0x8000000000000000"},
+    "side_effects": "fs recursive scan of skills_dir (read-only) + store_bootstrap_installed_skills: read-modify-write bootstrap-cache.json via std::fs::write (non-atomic, read-modify-write preserving usageAnalytics/mcpServers/snapshotProgressive)",
+    "struct_InstalledSkillSummary": "184B stride, 8 fields (has_modified+modified_secs+title+relative_path+directory_path+skill_file_path+base_dir_str+field_7)",
+    "NEW_in_1.1.1": [
+      "store_bootstrap_installed_skills callee (0x1004cf950) — NEW, absent from 1.0.9",
+      "BootstrapStatePayload.installedSkills field (index 4) — NEW serde field",
+      "bootstrap-cache.json write side-effect — NEW",
+      "stable sort: driftsort_main for len>=21; insertion_sort_shift_left for 2<=len<21"
+    ]
+  },
+  "dim5_detail": {
+    "mac": "PASS — macOS arm64 IDB; owner 0x10072db50 + core 0x1005e78d0 + store_bootstrap 0x1004cf950; IDB annotated 6 VAs; idb_save confirmed",
+    "win": "PASS_INFERRED — prior gold-leaf gate_accepted=true carried; full gold-leaf passage implies Windows coverage"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft written 2026-06-19",
+    "happy_paths": 2,
+    "boundary_errors": 4,
+    "side_effect_asserts": 2,
+    "test_count": 6
+  }
+}

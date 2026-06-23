@@ -1,0 +1,34 @@
+{
+  "command": "set_mcp_server_enabled",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "mcp/set_mcp_server_enabled/ida/pseudocode/0001_set_mcp_server_enabled_owner_ha2f28bcc417a91a5.c (VA=0x10072bb90, size=1661B)",
+    "mcp/set_mcp_server_enabled/ida/pseudocode/0002_set_mcp_server_enabled_core_impl_h7968daf1798b61a2.c",
+    "mcp/set_mcp_server_enabled/ida/pseudocode/0003_set_mcp_server_enabled_dispatcher_h7764831ff1bebf82.c",
+    "mcp/set_mcp_server_enabled/call-trees/set_mcp_server_enabled.jsonl (depth=5, 20 entries, write_atomic terminal)",
+    "mcp/set_mcp_server_enabled/interfaces/interface.md (argKeys=[name,enabled], CoreEnvelope<Vec<McpServerSummary>>, error string @0x1010b6a09)",
+    "mcp/set_mcp_server_enabled/gate-report-dim6.json (session=wf-aimami111-dim6-20260619, acceptance-draft)",
+    "frontend/ipc-contracts.jsonl:L86:col30731 command=set_mcp_server_enabled argKeys=[name,enabled] wrapper=setMcpServerEnabled",
+    "frontend/frontend-control-flow.jsonl:L86:col30757 terminal=set_mcp_server_enabled argKeys=[name,enabled]",
+    "frontend/frontend-control-flow.jsonl:mcp-page-CGgOsRmy.js:L16 callsite=mutationFn->setMcpServerEnabled"
+  ],
+  "dim_notes": {
+    "dim1_frontend_ccf": "ipc-contracts.jsonl L86 col30731: argKeys=[name,enabled] argObject={name:t,enabled:e} wrapper=setMcpServerEnabled. CCF L86 col30757: terminal ne('set_mcp_server_enabled',{name:t,enabled:e}). Callsite mcp-page-CGgOsRmy.js:16 mutationFn. argKey 'name' (4B @0x10114a0d8), 'enabled' (7B @0x1011483c3) dual-confirmed dispatcher+CCF. CLOSED.",
+    "dim2_owner_pseudocode": "3 pseudocode files: owner ha2f28bcc (1661B) + core_impl h7968daf1 + dispatcher h7764831f. Total ~28K dir. load_mcp_servers->memcmp->clone->upsert_mcp_server->save_config_text->write_atomic path confirmed. CLOSED.",
+    "dim3_call_tree_depth5": "20 entries, depth=5 (call_tree_depth=5 in summary row). Terminal: read_to_string(FS_READ), memcmp(libc), write_atomic(FS_WRITE_ATOMIC), String::clone(alloc), McpServerSummary::clone, CoreEnvelope::ok, Mutex::lock/unlock. CLOSED.",
+    "dim4_interface_dto_error_sideeffect": "argKeys=[name:String, enabled:bool]. Response CoreEnvelope<Vec<McpServerSummary>> stride=224B. Error 'MCP server not found: <name>' (22B prefix @0x1010b6a09) + mutex_poison + fs_read_error + write_atomic_error. Side-effect: TOML config.toml atomic write with enabled flag update. sentinel-aware insert_mcp_block. No HTTP/spawn. CLOSED.",
+    "dim5_same_platform_gate": "macos-arm64 confirmed. Owner VA=0x10072bb90, core VA=0x1005a3760, dispatcher VA=0x100312de0. Binary sha256=f34ff829... CLOSED. dim5_win: separate session, non-blocking for mac gate.",
+    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=wf-aimami111-dim6-20260619. Producer acceptance-draft = dim6 closed. McpServerSummary exact field layout accepted_unknown (non-blocking). CLOSED."
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

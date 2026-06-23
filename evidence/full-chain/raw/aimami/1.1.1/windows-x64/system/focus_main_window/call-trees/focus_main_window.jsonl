@@ -1,0 +1,12 @@
+{"depth":1,"addr":"0x14001e560","name":"focus_main_window_handler_111","role":"command_owner","session":"wf-aimami111-same-depth-20260618","version":"1.1.1"}
+{"depth":2,"addr":"0x140089a50","name":"confirm_pending_auto_switch_deserialize_request_sys","role":"gate_check","parent":"0x14001e560","terminated_reason":null}
+{"depth":2,"addr":"0x14080c3c0","name":"has_notch_invoke_resolver_respond","role":"ipc_resolve","parent":"0x14001e560","terminated_reason":"response_serialize"}
+{"depth":2,"addr":"0x14060c8d0","name":"sub_14060C8D0","role":"window_focus_core","parent":"0x14001e560","terminated_reason":null}
+{"depth":2,"addr":"0x140832560","name":"sub_140832560","role":"error_respond","parent":"0x14001e560","terminated_reason":null}
+{"depth":3,"addr":"0x14038d560","name":"hotspot_ready_state_discriminant_check_sys_111","role":"state_check","parent":"0x14060c8d0","terminated_reason":null}
+{"depth":3,"addr":"0x14061dd90","name":"sub_14061DD90","role":"window_focus_impl","parent":"0x14060c8d0","terminated_reason":null}
+{"depth":3,"addr":"0x14080c3c0","name":"has_notch_invoke_resolver_respond","role":"error_ipc_resolve","parent":"0x140832560","terminated_reason":"response_serialize"}
+{"depth":4,"addr":"0x14124a510","name":"sub_14124A510","role":"sync_lock","parent":"0x14038d560","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x14124a5d0","name":"WakeByAddressSingle","role":"sync_notify","parent":"0x14038d560","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x14124b1d0","name":"sub_14124B1D0","role":"sync_wait","parent":"0x14038d560","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x14080c3c0","name":"has_notch_invoke_resolver_respond","role":"ipc_resolve_terminal","parent":"0x14061dd90","terminated_reason":"response_serialize"}

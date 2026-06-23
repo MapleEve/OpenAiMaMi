@@ -1,0 +1,43 @@
+{
+  "command": "test_relay_provider_stream",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "accepted_unknown",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim4_tauri_event_name_on_stream_result": [
+      "Event name string lives inside 58KB ICF-folded test_provider_staged closure body @0x10009d110; not recoverable at current decompile resolution",
+      "Attempted: xrefs_to(emit VA) — ICF fold prevents isolating event name from this command's path",
+      "Attempted: string search for 'relay-provider-test-result' pattern — no match in binary",
+      "Attempted: vtable analysis of IPC channel shim @0x1000b5ad0 — dispatches via vtable+40, event name opaque",
+      "Marked explicit_non_automatable_accept in ACCEPTANCE: consumer verifies event name in C5 frontend handler"
+    ],
+    "dim4_interface_dto_error_sideeffect": [
+      "xrefs_to emit VA: ICF fold merges test_provider_staged into 58KB closure; cannot isolate emit call for this command path alone",
+      "string search for 'relay-provider-test-result' in binary: no match found",
+      "vtable analysis at IPC channel shim @0x1000b5ad0: dispatches via vtable+40, event name opaque at this resolution",
+      "Drop glue chain analysis: delegates to health_check module; event name string not in any accessible named constant near the 58KB closure VA range"
+    ]
+  },
+  "evidence_refs": [
+    "commands_relay/test_relay_provider_stream/evidence.md (10499B, session=wf-aimami111-delta-20260617-repair)",
+    "commands_relay/test_relay_provider_stream/interfaces/command_dto.json (input DTO: providerId+model+onEvent)",
+    "commands_relay/test_relay_provider_stream/interfaces/streaming_events.json (SSE terminal events + delta extraction)",
+    "commands_relay/test_relay_provider_stream/call-trees/test_relay_provider_stream.jsonl (3683B, 19 depth entries)",
+    "frontend/ipc-contracts.jsonl#L122: argKeys=[providerId,model,onEvent] kind=tauriInvokeRaw callee=i col=119982",
+    "frontend/frontend-control-flow.jsonl#L127: terminal_call=test_relay_provider_stream col=119981 guard=Sr() preflight",
+    "windows-x64/commands_relay/test_relay_provider_stream/gate-report.json: gate_tier=readyToImplement (dim5_win closed)",
+    "icf_drop_va=0x1000ba9c0 (0xfb bytes) delegates to test_provider_staged @0x10009d110 at state discriminant=3",
+    "shared_async_body=test_provider_staged (same VA as test_relay_draft_stream - confirmed ICF shared body)",
+    "input_dto: providerId(String)+model(String) from owner-map note + CCF; exact #[command] signature not recoverable due to ICF",
+    "ACCEPTANCE in evidence.md L74-L102 session=wf-aimami111-dim6-20260619"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "recovery_synced_by": "honest-verify-20260620 (from gate-final shard)"
+}

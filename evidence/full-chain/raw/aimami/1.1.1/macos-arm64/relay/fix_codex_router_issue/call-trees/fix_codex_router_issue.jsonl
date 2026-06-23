@@ -1,0 +1,37 @@
+{"depth":0,"va":"0x1005eb070","symbol":"codexmate_lib::commands::relay::fix_codex_router_issue::he834a259ac1deef4","role":"tauri_cmd_owner","terminated_reason":null,"session":"wf-aimami111-delta-20260616"}
+{"depth":1,"va":"0x100558430","symbol":"codexmate_lib::platform::paths::CodexPaths::resolve_codex_home::h2e80808900649874","role":"paths_resolve","terminated_reason":"named_internal_leaf"}
+{"depth":1,"va":"0x100558e60","symbol":"codexmate_lib::platform::paths::CodexPaths::from_home::hc15f7449aa417b39","role":"paths_from_home","terminated_reason":"named_internal_leaf"}
+{"depth":1,"va":"0x1005e0330","symbol":"codexmate_lib::core::relay::manager::RelayManager::snapshot::h0ea44eefa71d8bf1","role":"relay_state_snapshot","terminated_reason":"named_leaf"}
+{"depth":1,"va":"0x10055b8c0","symbol":"codexmate_lib::platform::process::is_process_running::h98d625b1241eff54","role":"process_check","terminated_reason":"named_internal_leaf"}
+{"depth":1,"va":"0x100707610","symbol":"codexmate_lib::core::relay::codex_diagnostic::fix_all::hbcdecd6aef30f7d8","role":"fix_all_dispatch","branch":"itemId==all","terminated_reason":null}
+{"depth":2,"va":"0x1006ed610","symbol":"codexmate_lib::core::relay::codex_diagnostic::run_diagnostics::h9206dfdfca5aaa97","role":"run_diagnostics","terminated_reason":"named_internal_leaf"}
+{"depth":2,"va":"0x1006fcfb0","symbol":"codexmate_lib::core::relay::codex_diagnostic::fix_auth_integrity::hd623c88e62a6a8fb","role":"fix_auth_integrity","terminated_reason":null}
+{"depth":3,"va":"0x100f2b980","symbol":"std::sys::fs::metadata","role":"metadata_check","terminated_reason":"fs_read_leaf"}
+{"depth":3,"va":"0x100f2ba80","symbol":"std::sys::fs::read_dir","role":"dir_enumerate","terminated_reason":"fs_read_leaf"}
+{"depth":3,"va":"0x100f25740","symbol":"std::fs::read_to_string::inner","role":"file_read","terminated_reason":"fs_read_leaf"}
+{"depth":3,"va":"0x1002ea3f0","symbol":"serde_json::de::from_trait","role":"json_parse","terminated_reason":"serde_library_leaf"}
+{"depth":3,"va":"0x100ede640","symbol":"serde_json::value::Value::pointer(\"/tokens/access_token\")","role":"json_pointer","terminated_reason":"serde_library_leaf"}
+{"depth":3,"va":"0x100ee9d20","symbol":"serde_json::value::index_into(\"OPENAI_API_KEY\")","role":"json_index","terminated_reason":"serde_library_leaf"}
+{"depth":3,"va":"0x1007011a0","symbol":"codexmate_lib::core::relay::codex_diagnostic::is_known_placeholder_token","role":"placeholder_check","terminated_reason":"named_internal_leaf"}
+{"depth":3,"va":"0x100f2aa10","symbol":"std::sys::fs::copy","role":"auth_file_copy","terminated_reason":"fs_write_leaf"}
+{"depth":1,"va":"0x100709c80","symbol":"codexmate_lib::core::relay::codex_diagnostic::fix_issue::h0683c786a4aa6ac0","role":"fix_issue_dispatch","branch":"itemId==specific","terminated_reason":null}
+{"depth":2,"va":"0x1006fef30","symbol":"codexmate_lib::core::relay::codex_diagnostic::fix_config_stale_text::h35679f1e3842fade","role":"fix_config_stale","branch":"itemId=config_stale","terminated_reason":null}
+{"depth":3,"va":"0x100f25740","symbol":"std::fs::read_to_string::inner","role":"read_config","terminated_reason":"fs_read_leaf"}
+{"depth":3,"va":"0x10041e960","symbol":"codexmate_lib::core::relay::atomic_write::write_atomic","role":"write_fixed_config","terminated_reason":"fs_write_leaf"}
+{"depth":2,"va":"0x1006fe0e0","symbol":"codexmate_lib::core::relay::codex_diagnostic::resync_codex_config::h1900b62a5a4bda1d","role":"resync_config","branch":"itemId=config_* and others","terminated_reason":null}
+{"depth":3,"va":"0x1006e8950","symbol":"codexmate_lib::core::relay::codex_catalog::resolve_api_slots","role":"resolve_slots","terminated_reason":"named_internal_leaf"}
+{"depth":3,"va":"0x1006e8800","symbol":"codexmate_lib::core::relay::codex_catalog::remove_catalog","role":"remove_catalog","terminated_reason":"fs_write_leaf"}
+{"depth":3,"va":"0x1006e8450","symbol":"codexmate_lib::core::relay::codex_catalog::write_catalog","role":"write_catalog","terminated_reason":"fs_write_leaf"}
+{"depth":3,"va":"0x10075ae20","symbol":"codexmate_lib::core::relay::codex_writer::apply_codex_state","role":"apply_state","terminated_reason":"fs_write_leaf"}
+{"depth":2,"va":"0x1006fcfb0","symbol":"codexmate_lib::core::relay::codex_diagnostic::fix_auth_integrity::hd623c88e62a6a8fb","role":"fix_auth_integrity","branch":"itemId=auth_integrity","terminated_reason":"see fix_all branch above"}
+{"depth":1,"va":"0x10055c090","symbol":"codexmate_lib::platform::process::stop_codex_for_file_edit::h501f0cbf0ab7f98f","role":"stop_for_file_edit","branch":"v4==true AND result has residual_manifest entry","terminated_reason":null}
+{"depth":2,"va":"0x10055bc10","symbol":"codexmate_lib::platform::process::request_codex_app_quit::hfde9c9632e45400a","role":"graceful_quit","terminated_reason":"named_internal_leaf"}
+{"depth":2,"va":"0x100f35a00","symbol":"std::thread::functions::sleep(50ms)","role":"poll_sleep","terminated_reason":"std_library_leaf"}
+{"depth":2,"va":"0x10055e390","symbol":"codexmate_lib::platform::process::kill_codex_processes_until_clear","role":"force_kill_fallback","terminated_reason":"process_kill_leaf"}
+{"depth":1,"va":"0x10055afd0","symbol":"codexmate_lib::platform::process::launch_codex_app::he81a14556c2107c0","role":"launch_after_fix","branch":"stop succeeded (NEW in 1.1.1)","terminated_reason":null}
+{"depth":2,"va":"0x100f31ac0","symbol":"std::sys::process::unix::common::Command::new(\"open\")","role":"open_cmd","terminated_reason":"os_process_leaf"}
+{"depth":2,"va":"0x100f36130","symbol":"std::process::Command::output","role":"exec_open","terminated_reason":"os_process_leaf"}
+{"depth":2,"va":"0x100d4fc70","symbol":"dirs::home_dir","role":"home_dir_lookup","terminated_reason":"library_leaf"}
+{"depth":2,"va":"0x100f2b980","symbol":"std::sys::fs::metadata","role":"check_codex_app_exists","terminated_reason":"fs_read_leaf"}
+{"depth":2,"va":"0x100f35a00","symbol":"std::thread::functions::sleep(80ms)","role":"wait_for_launch","terminated_reason":"std_library_leaf"}
+{"depth":1,"va":"0x100557ba0","symbol":"codexmate_lib::core::models::CoreEnvelope::ok","role":"wrap_ok","terminated_reason":"library_leaf"}

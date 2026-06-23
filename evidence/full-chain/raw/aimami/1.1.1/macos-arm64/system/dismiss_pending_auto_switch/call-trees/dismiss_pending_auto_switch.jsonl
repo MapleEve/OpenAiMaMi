@@ -1,0 +1,19 @@
+{"depth": 0, "va": "0x10061b3e0", "symbol": "codexmate_lib::commands::system::dismiss_pending_auto_switch::h33e15699f40f5f79", "role": "tauri_cmd_wrapper", "terminated_reason": null, "session": "wf-aimami111-delta-20260616"}
+{"depth": 1, "va": "0x100f7c920", "symbol": "std::sys::sync::once_box::OnceBox::initialize", "role": "once_box_init", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x100f2e7a0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::lock", "role": "mutex_lock", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x1004cdb90", "symbol": "codexmate_lib::core::repository::Repository::dismiss_pending_auto_switch::hc6050fe08f5c1e1b", "role": "core_impl", "terminated_reason": null}
+{"depth": 2, "va": "0x1004c8200", "symbol": "codexmate_lib::core::repository::Repository::load_pending_auto_switch::h53e89c96b9475bba", "role": "pending_record_loader", "terminated_reason": null}
+{"depth": 3, "va": "0x100f25740", "symbol": "std::fs::read_to_string::inner", "role": "fs_read", "terminated_reason": "fs_read_leaf"}
+{"depth": 3, "va": "0x1002e9700", "symbol": "serde_json::de::from_trait", "role": "json_deserialize_pending_record", "terminated_reason": "serde_library_leaf"}
+{"depth": 2, "va": "0x100f34cf0", "symbol": "std::time::SystemTime::now", "role": "capture_dismissed_at_timestamp", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x100f34cb0", "symbol": "std::time::SystemTime::duration_since", "role": "to_unix_duration", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x1005582b0", "symbol": "codexmate_lib::platform::paths::CodexPaths::ensure_directories", "role": "ensure_snooze_dir_exists", "terminated_reason": null}
+{"depth": 3, "va": "0x100f24d00", "symbol": "std::fs::DirBuilder::_create", "role": "create_dir_all", "terminated_reason": "fs_mkdir_leaf"}
+{"depth": 2, "va": "0x1006779e0", "symbol": "serde_core::ser::SerializeMap::serialize_entry (x2)", "role": "serialize_currentAccountKey_candidateAccountKey", "terminated_reason": "serde_library_leaf"}
+{"depth": 2, "va": "0x100685e30", "symbol": "serde_core::ser::SerializeMap::serialize_entry", "role": "serialize_dismissedAt", "terminated_reason": "serde_library_leaf"}
+{"depth": 2, "va": "0x100201fe0", "symbol": "std::fs::write", "role": "write_snooze_json_to_file", "terminated_reason": "fs_write_leaf"}
+{"depth": 2, "va": "0x1004ecdf0", "symbol": "core::ptr::drop_in_place<AutoSwitchSnoozeRecord>", "role": "drop_snooze_record", "terminated_reason": "drop_leaf"}
+{"depth": 2, "va": "0x1004c8120", "symbol": "codexmate_lib::core::repository::Repository::clear_auto_switch_snooze::h970158a665510c19", "role": "remove_pending_request_file", "terminated_reason": null}
+{"depth": 3, "va": "0x100f2a550", "symbol": "std::sys::fs::remove_file", "role": "fs_remove_file", "terminated_reason": "fs_delete_leaf"}
+{"depth": 3, "va": "0x1004e5380", "symbol": "std::io::error::Error::kind", "role": "check_if_not_found", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x100f2e7c0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::unlock", "role": "mutex_unlock", "terminated_reason": "std_library_leaf"}

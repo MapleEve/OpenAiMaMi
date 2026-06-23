@@ -1,0 +1,43 @@
+{"depth": 0, "va": "0x1005d7950", "symbol": "RelayManager::set_codex_router_enabled", "callee_of": null, "terminal": false, "notes": "A-level owner; 7455B; Tauri command entrypoint via BlockingTask::poll @0x100599bc0"}
+{"depth": 1, "va": "0x1005d7950", "symbol": "emit_progress_event(stopping_codex)", "callee_of": "0x1005d7950", "terminal": false, "notes": "if event_window present; closure @0x1005e94a0; Tauri emit codex-router-toggle-progress"}
+{"depth": 2, "va": "0x1005e94a0", "symbol": "tauri::Emitter::emit", "callee_of": "0x1005e94a0", "terminal": true, "terminal_reason": "TAURI_RUNTIME", "notes": "fire-and-forget; drop tauri::Error on fail"}
+{"depth": 2, "va": "0x1005d9680", "symbol": "progress_closure", "callee_of": "0x1005e94a0", "terminal": false, "notes": "vtable[5]+40; alloc+copy step string"}
+{"depth": 3, "va": "vtable[5]+40", "symbol": "event_callback::invoke", "callee_of": "0x1005d9680", "terminal": true, "terminal_reason": "VTABLE_TERMINAL", "notes": "caller-provided callback; not further traced"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "stop_codex_for_file_edit", "callee_of": "0x1005d7950", "terminal": false, "notes": "OS process management; VA not recovered from decompile excerpt; called before enable/disable branch"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "codex_default_model", "callee_of": "0x1005d7950", "terminal": false, "notes": "called on both enable and disable paths; normalizes Codex model selection"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "rollback_threads_for_router", "callee_of": "0x1005d7950", "terminal": false, "notes": "disable path only; undo thread provider assignments"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "snapshot_relay_state", "callee_of": "0x1005d7950", "terminal": false, "notes": "called on both paths; captures current RelayManager state"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "persist_relay_state", "callee_of": "0x1005d7950", "terminal": false, "notes": "called on both paths; FS write of relay state"}
+{"depth": 1, "va": "0x1005daea0", "symbol": "sync_codex_config_with_outcome", "callee_of": "0x1005d7950", "terminal": false, "notes": "called on both paths; returns was_modified:bool"}
+{"depth": 2, "va": "UNRESOLVED", "symbol": "codex_catalog::resolve_api_slots", "callee_of": "0x1005daea0", "terminal": false, "notes": "enable+has_slots path only"}
+{"depth": 2, "va": "UNRESOLVED", "symbol": "codex_catalog::write_catalog", "callee_of": "0x1005daea0", "terminal": false, "notes": "enable path; writes catalog file"}
+{"depth": 3, "va": "SYSCALL", "symbol": "write/atomic_write", "callee_of": "codex_catalog::write_catalog", "terminal": true, "terminal_reason": "SYSCALL_FS", "notes": "FS terminal"}
+{"depth": 2, "va": "UNRESOLVED", "symbol": "codex_catalog::remove_catalog", "callee_of": "0x1005daea0", "terminal": false, "notes": "disable path; removes catalog file"}
+{"depth": 3, "va": "SYSCALL", "symbol": "unlink/remove", "callee_of": "codex_catalog::remove_catalog", "terminal": true, "terminal_reason": "SYSCALL_FS", "notes": "FS terminal"}
+{"depth": 2, "va": "UNRESOLVED", "symbol": "apply_codex_state", "callee_of": "0x1005daea0", "terminal": false, "notes": "writes TOML config block atomically; keys: codexRouterEnabled, codexApiLogin, codexApiSlots, displayTagGlobal, displayTagWoyao, CodexApiSlot (string pool @0x101150a09)"}
+{"depth": 3, "va": "SYSCALL", "symbol": "atomic_write_toml", "callee_of": "apply_codex_state", "terminal": true, "terminal_reason": "SYSCALL_FS", "notes": "TOML config write with markers # >>> aimami-relay codex-router top start / # <<< aimami-relay codex-router top end"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "virtual_auth::cleanup", "callee_of": "0x1005d7950", "terminal": false, "notes": "disable path and rollback path; removes virtual auth marker if exists"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "config_takeover::restore", "callee_of": "0x1005d7950", "terminal": false, "notes": "disable path and rollback path; removes TOML block markers"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "launch_codex_app_warning", "callee_of": "0x1005d7950", "terminal": false, "notes": "disable path, !was_modified branch; emits codexLaunchError warning"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "fix_config_preflight", "callee_of": "0x1005d7950", "terminal": false, "notes": "enable path only; validates+patches config before takeover"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "config_takeover::takeover", "callee_of": "0x1005d7950", "terminal": false, "notes": "enable path; inserts TOML block markers (start+end)"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "normalize_thread_providers_before_migration", "callee_of": "0x1005d7950", "terminal": false, "notes": "enable path; deduplicates/orders provider entries"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "resolve_api_login_slots", "callee_of": "0x1005d7950", "terminal": false, "notes": "enable path; maps api-login accounts to proxy slot assignments"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "virtual_auth::enable_virtual_login", "callee_of": "0x1005d7950", "terminal": false, "notes": "enable path; returns bool; on false -> rollback"}
+{"depth": 1, "va": "0x1005d6fa0", "symbol": "rollback_router_enabled", "callee_of": "0x1005d7950", "terminal": false, "notes": "enable path failure; 1614B; also called from ensure_proxy_started failure chain"}
+{"depth": 2, "va": "0x1005daea0", "symbol": "sync_codex_config_with_outcome", "callee_of": "0x1005d6fa0", "terminal": false, "notes": "disable state; same callee as above"}
+{"depth": 2, "va": "UNRESOLVED", "symbol": "apply_codex_state", "callee_of": "0x1005d6fa0", "terminal": false, "notes": "fallback if sync fails; cleared state"}
+{"depth": 2, "va": "UNRESOLVED", "symbol": "config_takeover::restore", "callee_of": "0x1005d6fa0", "terminal": false, "notes": "remove TOML block markers"}
+{"depth": 2, "va": "UNRESOLVED", "symbol": "virtual_auth::cleanup", "callee_of": "0x1005d6fa0", "terminal": false, "notes": "if marker exists"}
+{"depth": 1, "va": "0x1005d56f0", "symbol": "ensure_proxy_started", "callee_of": "0x1005d7950", "terminal": false, "notes": "enable path after router_enabled=1 set"}
+{"depth": 2, "va": "SYSCALL", "symbol": "connect_timeout(addr,300ms)", "callee_of": "0x1005d56f0", "terminal": true, "terminal_reason": "SYSCALL_TCP", "notes": "TCP liveness check; 2 attempts with 50ms sleep; @0x1005d56f0"}
+{"depth": 2, "va": "SYSCALL", "symbol": "close_NOCANCEL(fd)", "callee_of": "0x1005d56f0", "terminal": true, "terminal_reason": "SYSCALL_FD", "notes": "close TCP socket after liveness confirm"}
+{"depth": 2, "va": "UNRESOLVED", "symbol": "storage::save", "callee_of": "0x1005d56f0", "terminal": false, "notes": "on proxy fail: clear port, persist"}
+{"depth": 3, "va": "SYSCALL", "symbol": "write/atomic", "callee_of": "storage::save", "terminal": true, "terminal_reason": "SYSCALL_FS", "notes": "FS terminal"}
+{"depth": 2, "va": "UNRESOLVED", "symbol": "spawn_proxy_thread", "callee_of": "0x1005d56f0", "terminal": false, "notes": "tokio::block_on; spawns new proxy on port"}
+{"depth": 3, "va": "SYSCALL", "symbol": "bind/listen/accept", "callee_of": "spawn_proxy_thread", "terminal": true, "terminal_reason": "SYSCALL_TCP", "notes": "TCP server socket for proxy"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "migrate_threads_for_router_with_scope", "callee_of": "0x1005d7950", "terminal": false, "notes": "enable path, if has_proxy; rewrites thread-level provider bindings to relay proxy endpoint"}
+{"depth": 2, "va": "SYSCALL", "symbol": "write_thread_config", "callee_of": "migrate_threads_for_router_with_scope", "terminal": true, "terminal_reason": "SYSCALL_FS", "notes": "FS terminal; thread config files"}
+{"depth": 1, "va": "UNRESOLVED", "symbol": "snapshot_sanitized", "callee_of": "0x1005d7950", "terminal": false, "notes": "enable path end; produces redacted snapshot for logging (API keys stripped)"}
+{"depth": 2, "va": "UNRESOLVED", "symbol": "log_or_telemetry", "callee_of": "snapshot_sanitized", "terminal": true, "terminal_reason": "LOG_TERMINAL", "notes": "logging sink; no network in scope"}
+{"depth": 1, "va": "TAURI_ASYNC", "symbol": "BlockingTask::poll -> InvokeResolver::respond_async_serialized_inner", "callee_of": "0x1005d7950", "terminal": true, "terminal_reason": "TAURI_IPC_TERMINAL", "notes": "async Tauri dispatch confirmed via InvokeResolver xref @0x100161ad0; response drop vtable @0x1000d4690"}

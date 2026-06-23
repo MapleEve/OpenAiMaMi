@@ -1,0 +1,30 @@
+{
+  "command": "test_api_proxy_config",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "codexmate_lib__commands__system/test_api_proxy_config/evidence.md (8306B, Full Gold Leaf, session=wf-aimami111-delta-20260618-mac100)",
+    "codexmate_lib__commands__system/test_api_proxy_config/interfaces/dto.md (3305B)",
+    "codexmate_lib__commands__system/test_api_proxy_config/call-trees/test_api_proxy_config.jsonl (5455B, 15 edges depth-5 confirmed)",
+    "frontend/ipc-contracts.jsonl#L21: argKeys=[mode,url] wrapper=testApiProxyConfig callee=ne col=25420",
+    "frontend/frontend-control-flow.jsonl#L34: terminal_call=test_api_proxy_config col=25445",
+    "frontend/frontend-control-flow.jsonl#L159: callsite=mutationFn->testApiProxyConfig",
+    "windows-x64/relay-core/test_api_proxy_config/evidence/reverse: SAME-DEPTH-CONFIRM depth=5 session=wf-aimami111-same-depth-20260618 (dim5_win closed)",
+    "ipc_entry_va=0x100131f30 blocking_poll_va=0x100598740 module=codexmate_lib::commands::system",
+    "delta_vs_109=load_auth_file(0x10053ac80)+make_api_request_context(0x10053e690) new in 1.1.1",
+    "success_msg_format='Reached chatgpt.com via ' @0x1010B8ED5 confirmed",
+    "target_url='https://chatgpt.com/backend-api/accounts/check/v4-2023-04-27' @0x10115799C confirmed",
+    "proxy_schemes=http/https/socks5/socks5h from sanitize_proxy_config(0x1006E4D80)",
+    "ACCEPTANCE in evidence.md L52-L82 session=wf-aimami111-dim6-20260619"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "c5cm.producer.ledger.v1",
+  "command": "confirm_pending_auto_switch_and_restart_codex",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "system",
+  "session": "wf-aimami111-delta-20260616",
+  "produced_by": "<本地机器>",
+  "produced_at": "2026-06-16T00:00:00Z",
+  "completed_at": "2026-06-17T00:00:00Z",
+  "binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "gate": "strictImplementationUse",
+  "status": "done",
+  "owner_va": "0x10061e190",
+  "idb_save": true,
+  "idb_save_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "append_comments_applied": true,
+  "comment_vas": [
+    "0x10061e190",
+    "0x100621a40",
+    "0x10055c090",
+    "0x10055afd0",
+    "0x100621bb0",
+    "0x10061fd20"
+  ],
+  "index_key": "aimami/1.1.1/macos-arm64/system/confirm_pending_auto_switch_and_restart_codex/raw",
+  "artifacts": [
+    "evidence.md",
+    "manifest.json",
+    "ida/pseudocode/0001_confirm_pending_auto_switch_and_restart_codex_owner_c0c3be97c8c9.c",
+    "ida/pseudocode-manifest.jsonl",
+    "call-trees/confirm_pending_auto_switch_and_restart_codex.jsonl",
+    "interfaces/confirm_pending_auto_switch_and_restart_codex.md",
+    "producer-ledger.json"
+  ],
+  "four_angle": {
+    "A_func_query": "PASS",
+    "B_string_pool": "PASS",
+    "C_frontend_ipc": "PASS",
+    "D_owner_map_index": "PASS"
+  },
+  "fake_wall": {
+    "genuine_ceiling": false,
+    "taxonomy_all_excluded": true
+  },
+  "notes": "Idempotency: all artifacts were produced by prior session 2026-06-16. This session (2026-06-17) completed deferred idb_save and append_comments. No re-reverse performed."
+}

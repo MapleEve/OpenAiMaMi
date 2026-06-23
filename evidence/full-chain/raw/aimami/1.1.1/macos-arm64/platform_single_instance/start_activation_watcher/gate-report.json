@@ -1,0 +1,30 @@
+{
+  "func": "start_activation_watcher",
+  "va": "0x1005eed40",
+  "symbol": "codexmate_lib::platform::single_instance::start_activation_watcher::h08fb177e6ef4d611",
+  "module": "platform::single_instance",
+  "session": "wf-aimami111-backend-gap-close-20260622",
+  "machine": "<本地机器>",
+  "platform": "macos-arm64",
+  "version": "1.1.1",
+  "leaf_path": "raw/aimami/1.1.1/macos-arm64/platform_single_instance/start_activation_watcher/",
+  "gate": {
+    "pseudocode_present": true,
+    "call_tree_depth": 10,
+    "call_tree_terminated": true,
+    "evidence_grounded": true,
+    "callers_documented": true,
+    "accepted_unknown": false,
+    "genuine_ceiling": false,
+    "readyToImplement": true,
+    "gate_accepted": true,
+    "strictImplementationUse": true,
+    "implementation_use": true
+  },
+  "behavior_summary": "dim1 单实例激活守护线程启动入口：run() 调用，获取 activation_request_path，prepare_activation_dir，Arc<AppHandle> 打包后 spawn_unchecked 后台监视线程。目录失败透传 Err，spawn 失败 panic，无 IPC 暴露。",
+  "dim1_chain": "run() → start_activation_watcher() → spawn_unchecked(closure{AppHandle,path})",
+  "callers": [
+    "codexmate_lib::run @0x100301690"
+  ],
+  "evidence_files": ["pseudocode.md", "gate-report.json"]
+}

@@ -1,0 +1,27 @@
+{"depth":0,"addr":"0x10031aa60","symbol":"codexmate_lib::run::{{closure}}::{{closure}}::he24157ecd5dd30a8","role":"ipc_dispatcher","note":"ICF-merged command wrapper; sole xref from IPC router @0x10031abe2","terminal":false}
+{"depth":1,"addr":"0x100506160","symbol":"tauri::state::StateManager::try_get","role":"state_resolution","note":"resolve RelayManager from Tauri state","terminal":false}
+{"depth":1,"addr":"0x1006dad50","symbol":"_$LT$D$u20$as$u20$tauri..ipc..command..CommandArg$LT$R$GT$$GT$::from_command::hf4bb662b82c05125","role":"arg_extraction","note":"extract providerId (10B @0x101148415) from IPC message","terminal":false}
+{"depth":1,"addr":"0x1005d21a0","symbol":"codexmate_lib::core::relay::manager::RelayManager::reveal_api_key::h1a08440eda015f45","role":"owner","size_bytes":737,"terminal":false}
+{"depth":2,"addr":"0x100f2e7a0","symbol":"std::sys::pal::unix::sync::mutex::Mutex::lock","role":"mutex_lock","terminal":true,"terminated_reason":"stdlib sync primitive"}
+{"depth":2,"addr":"0x100fbd04c","symbol":"memcmp","role":"provider_id_comparison","note":"byte-compare provider_id against each cached provider","terminal":true,"terminated_reason":"libc"}
+{"depth":2,"addr":"0x100f656f0","symbol":"_$LT$alloc..string..String$u20$as$u20$core..clone..Clone$GT$::clone","role":"api_key_clone","note":"clone api_key String on cache hit","terminal":true,"terminated_reason":"alloc clone leaf"}
+{"depth":2,"addr":"0x100f2e7c0","symbol":"std::sys::pal::unix::sync::mutex::Mutex::unlock","role":"mutex_unlock","terminal":true,"terminated_reason":"stdlib sync primitive"}
+{"depth":2,"addr":"0x1006c86a0","symbol":"codexmate_lib::core::relay::keychain::get_api_key::h06ffa0ee9def7259","role":"keychain_fallback","note":"only on cache miss (None from in-memory scan)","terminal":false}
+{"depth":3,"addr":"0x100f33a00","symbol":"std::path::Path::_join","role":"path_construction","note":"build plain-file path: data_dir/relay/provider_id","terminal":true,"terminated_reason":"stdlib path leaf"}
+{"depth":3,"addr":"0x100f25740","symbol":"std::fs::read_to_string","role":"fs_read","note":"Tier 1: read plain-text key file","terminal":true,"terminated_reason":"fs SYSCALL leaf"}
+{"depth":3,"addr":"0x10057e620","symbol":"core::str::_$LT$impl$u20$str$GT$::trim_matches","role":"trim_whitespace","note":"trim api_key string from file","terminal":true,"terminated_reason":"stdlib str leaf"}
+{"depth":3,"addr":"0x1002e9390","symbol":"serde_json::de::from_trait","role":"json_parse","note":"Tier 2: parse encrypted key file as JSON HashMap","terminal":true,"terminated_reason":"serde_json leaf"}
+{"depth":3,"addr":"0x100528050","symbol":"base64::engine::Engine::decode::inner","role":"base64_decode","note":"Tier 2: decode encrypted api_key value","terminal":true,"terminated_reason":"base64 leaf"}
+{"depth":3,"addr":"0x10090e350","symbol":"hostname::get","role":"hostname_resolution","note":"Tier 2: get hostname for key derivation","terminal":true,"terminated_reason":"OS SYSCALL leaf"}
+{"depth":3,"addr":"0x100f28b60","symbol":"std::env::_var","role":"username_env","note":"Tier 2: get USERNAME env (fallback USERhttp -> USERNAME -> 'local')","terminal":true,"terminated_reason":"env SYSCALL leaf"}
+{"depth":3,"addr":"0x100942d40","symbol":"sha2::sha256::compress256","role":"sha256_key_derivation","note":"Tier 2: SHA256(hostname:username) as decryption key","terminal":true,"terminated_reason":"crypto leaf"}
+{"depth":3,"addr":"0x1006c9950","symbol":"codexmate_lib::core::relay::keychain::write_key_file","role":"write_through_cache","note":"write key to Tier 1 file after Tier 2 or Tier 3 hit","terminal":false}
+{"depth":4,"addr":"0x100f24d00","symbol":"std::fs::DirBuilder::_create","role":"mkdir","note":"create relay key dir (mode 511=0o777 but set_permissions follows)","terminal":true,"terminated_reason":"fs SYSCALL leaf"}
+{"depth":4,"addr":"0x100f2a7d0","symbol":"std::sys::fs::set_permissions","role":"chmod","note":"set directory permissions","terminal":true,"terminated_reason":"fs SYSCALL leaf"}
+{"depth":4,"addr":"0x100f25f70","symbol":"std::fs::write::inner","role":"fs_write","note":"write key bytes to plain-text file (Tier 1)","terminal":true,"terminated_reason":"fs SYSCALL leaf"}
+{"depth":3,"addr":"0x10041ee00","symbol":"codexmate_lib::core::relay::keychain::mac_keychain::get","role":"mac_keychain_get","note":"Tier 3: read from macOS Keychain Services","terminal":false}
+{"depth":4,"addr":"0x100947020","symbol":"security_framework::passwords_options::PasswordOptions::new_generic_password","role":"keychain_query_build","terminal":true,"terminated_reason":"security_framework leaf"}
+{"depth":4,"addr":"0x100947320","symbol":"security_framework::passwords_options::PasswordOptions::use_protected_keychain","role":"keychain_use_protected","terminal":true,"terminated_reason":"security_framework leaf"}
+{"depth":4,"addr":"0x100946180","symbol":"security_framework::passwords::generic_password","role":"keychain_read","note":"macOS SecItemCopyMatching; errSecItemNotFound=-25300 => None","terminal":true,"terminated_reason":"OS Keychain SYSCALL leaf"}
+{"depth":1,"addr":"0x100555400","symbol":"codexmate_lib::core::models::CoreEnvelope$LT$T$GT$::ok","role":"response_envelope","note":"wrap Option<String> in CoreEnvelope","terminal":true,"terminated_reason":"response envelope leaf"}
+{"depth":1,"addr":"0x10046f2a0","symbol":"tauri::ipc::InvokeResolver$LT$R$GT$::respond","role":"ipc_respond","terminal":true,"terminated_reason":"IPC layer leaf"}

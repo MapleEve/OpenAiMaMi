@@ -1,0 +1,28 @@
+{
+  "command": "restart_codex",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/restart_codex/README.md",
+    "raw/aimami/1.1.1/windows-x64/restart_codex/call-trees/restart_codex.jsonl",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl#L78,L113 command=restart_codex argKeys=[]",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl#L91,L135,L172",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-consolidated.json#readyToImplement"
+  ],
+  "dim1_evidence": "ipc-contracts.jsonl L78,L113: command=restart_codex, argKeys=[], argObject=null, callee=ne/vt, kind=tauriInvokeWrapper, file=assets/index-DdcCOEJG.js:86; CCF L91,L135,L172 confirmed; 4 CCF hits total",
+  "dim2_evidence": "restart_codex_cmd_wrapper_sys_111@0x14001AE30 (547B); restart_codex_quit_launch_coordinator_sys_111@0x1407838D0 (376B); quit_codex_poll_wait_sys_111@0x1407A39B0; quit_codex_fallback_kill_sys_111@0x1407A44D0; check_update_installability_launch_sys_111@0x1407A02E0; full chain in README.md",
+  "dim3_evidence": "call-tree jsonl depth=5+ terminated at WIN32 leaves: WakeByAddressSingle, CloseHandle, CreateToolhelp32Snapshot, Process32FirstW/NextW, GetCurrentProcessId, nanosleep; 17 jsonl entries; is_process_running_toolhelp_sys_111 full decompile; 5-depth chain: cmd_wrapper->coordinator->poll_quit->kill->launch",
+  "dim4_evidence": "no-args IPC; return: () success or error string; errors: 0x8000000000000000=CODEX_APP_QUIT_TIMEOUT, 'Codex.exe not found'(tag7); side-effects: terminates Codex process + relaunches Codex; 10 path scan + registry + where + powershell; signal_codex_quit_wake ABSENT in 1.1.1 win (pure poll)",
+  "dim5_evidence": "WIN-specific: signal_codex_quit_wake ABSENT; poll-based quit @50ms; taskkill /F /T /PID fallback; WakeByAddressSingle for launch-done; 10 Codex.exe path candidates confirmed WIN paths; registry HKCU/HKLM Codex.exe query",
+  "dim6_evidence": "acceptance-draft by wf-aimami111-dim6-20260619; promoted to readyToImplement in win-consolidated.json",
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

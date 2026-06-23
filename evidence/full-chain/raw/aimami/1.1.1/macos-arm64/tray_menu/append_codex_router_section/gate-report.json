@@ -1,0 +1,31 @@
+{
+  "func": "append_codex_router_section",
+  "va": "0x100629990",
+  "symbol": "codexmate_lib::commands::tray_menu::append_codex_router_section::h5a85d5964eb29fe3",
+  "module": "commands::tray_menu",
+  "session": "wf-aimami111-backend-gap-close-20260622",
+  "machine": "<本地机器>",
+  "platform": "macos-arm64",
+  "version": "1.1.1",
+  "leaf_path": "raw/aimami/1.1.1/macos-arm64/tray_menu/append_codex_router_section/",
+  "gate": {
+    "pseudocode_present": true,
+    "call_tree_depth": 5,
+    "call_tree_terminated": true,
+    "evidence_grounded": true,
+    "callers_documented": true,
+    "accepted_unknown": false,
+    "genuine_ceiling": false,
+    "readyToImplement": true,
+    "gate_accepted": true,
+    "strictImplementationUse": true,
+    "implementation_use": true
+  },
+  "behavior_summary": "向 tray MenuBuilder 追加 Codex Router 专区：分隔符 + relay状态项(id=tray_codex_router_status) + 账户动态项(id=tray_account:)。标签从 RelayManager::snapshot() 和账户数量动态生成。操作失败 panic，无持久化副作用。",
+  "menu_item_ids": ["tray_codex_router_status", "tray_account:"],
+  "callers": [
+    "create_bootstrap_tray_menu @0x100628930",
+    "create_tray_menu_from_snapshot @0x10062a470"
+  ],
+  "evidence_files": ["pseudocode.md", "gate-report.json"]
+}

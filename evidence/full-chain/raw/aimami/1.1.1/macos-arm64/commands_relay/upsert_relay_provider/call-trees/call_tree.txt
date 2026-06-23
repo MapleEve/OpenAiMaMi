@@ -1,0 +1,38 @@
+upsert_relay_provider [0x1005eae30] IPC command handler
+├── RelayManager::upsert [0x1005dd220]  ← CORE LOGIC (new in 1.1.1)
+│   ├── chrono::Utc::now [0x100954200]  — timestamp for created_at/updated_at fields
+│   ├── String::clone ×N [0x100f656f0]  — clone name/url/model_id/display_name/id
+│   ├── Vec<ModelEntry>::clone [0x1006602f0]  — clone env_vars
+│   ├── [INSERT path] uuid::Uuid::new_v4 [0x100e13930]  — generate provider id
+│   │   ├── uuid::fmt::LowerHex::fmt [0x100e13a20]  — format as hex string
+│   │   ├── str::replace [0x1005f9e60]  — strip hyphens from UUID
+│   │   └── String::from_iter [0x1006ddee0]  — collect chars
+│   ├── [BOTH paths] RelayProvider::clone [0x100605f20]  — clone into staging buffer
+│   ├── RawVec::grow_one [0x100f7a400]  — Vec capacity growth
+│   ├── Mutex::lock/unlock [0x100f2e7a0 / 0x100f2e7c0]  — RelayState guard
+│   ├── RelayState::clone [0x100605b90]  — read current state under lock
+│   ├── keychain::write_key_file [0x1006c9950]  ← SIDE-EFFECT: writes API key to disk
+│   │   ├── Path::_join [0x100f33a00]
+│   │   ├── DirBuilder::_create [0x100f24d00]  — mkdir (mode 0o777)
+│   │   ├── std::fs::set_permissions ×2 [0x100f2a7d0]  — restrict dir + file
+│   │   └── fs::write::inner [0x100f25f70]  ← WRITE: provider_id file in keys/ subdir
+│   ├── RelayManager::persist [0x1005dee20]  ← SIDE-EFFECT: serializes+saves RelayState
+│   │   ├── compose_proxy_status [0x1005d5450]  — read hotspot port under mutex
+│   │   └── relay::storage::save [0x1005e2c60]
+│   │       ├── CodexPaths::ensure_directories [0x1005582b0]
+│   │       ├── RelayState::serialize [0x10054afe0]  — serde_json
+│   │       └── atomic_write::write_atomic [0x10041e960]  ← WRITE: relay.json (atomic)
+│   └── sync_codex_config_with_outcome [0x1005daea0]  ← SIDE-EFFECT: rewrites Codex config
+│       ├── RelayManager::snapshot [0x1005e0330]
+│       ├── [if active+key] codex_catalog::resolve_api_slots [0x1006e8950]
+│       │   └── codex_catalog::write_catalog [0x1006e8450]  ← WRITE: catalog JSON
+│       ├── [else] codex_catalog::remove_catalog [0x1006e8800]  ← DELETE: catalog file
+│       └── codex_writer::apply_codex_state [0x10075ae20]  ← WRITE: Codex CLI config
+├── [on success] tray_menu::refresh_tray_menu [0x1006277c0]  ← SIDE-EFFECT: updates Tauri tray
+│   ├── create_tray_menu [0x100627250]
+│   ├── TrayManager::tray_by_id [0x100480050]  — lookup "main" tray
+│   └── TrayIcon::set_menu [0x1004781e0]  ← Tauri native tray update
+└── CoreEnvelope::ok / CoreEnvelope::err [0x100556ca0]
+
+CALL DEPTH: 5  (upsert -> write_key_file/persist/sync -> storage::save -> atomic_write -> terminated)
+TERMINATED REASONS: fs::write, atomic_write (OS write syscalls), TrayIcon::set_menu (Tauri runtime)

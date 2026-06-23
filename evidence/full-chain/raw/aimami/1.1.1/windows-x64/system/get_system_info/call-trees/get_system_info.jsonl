@@ -1,0 +1,14 @@
+{"depth":1,"addr":"0x14001d130","name":"get_system_info_ipc_dispatcher_branch_sys_111","role":"command_owner","session":"wf-aimami111-same-depth-20260618","version":"1.1.1"}
+{"depth":2,"addr":"0x140783aa0","name":"sub_140783AA0","role":"sysinfo_state_lock_acquire","parent":"0x14001d130","terminated_reason":null}
+{"depth":2,"addr":"0x140835cc0","name":"get_system_info_cmd_owner_sys_111","role":"cmd_execute","parent":"0x14001d130","terminated_reason":null}
+{"depth":3,"addr":"0x1407adac0","name":"get_system_info_field_builder_sys_111","role":"dto_field_builder","parent":"0x140835cc0","terminated_reason":null}
+{"depth":3,"addr":"0x14080c3c0","name":"has_notch_invoke_resolver_respond","role":"ipc_resolve","parent":"0x140835cc0","terminated_reason":"response_serialize"}
+{"depth":3,"addr":"0x140e30410","name":"sub_140E30410","role":"sysinfo_serialize","parent":"0x140835cc0","terminated_reason":null}
+{"depth":3,"addr":"0x140807390","name":"sub_140807390","role":"sysinfo_dto_drop","parent":"0x140835cc0","terminated_reason":"error_return"}
+{"depth":4,"addr":"0x14025c400","name":"sub_14025C400","role":"sysinfo_field_read","parent":"0x1407adac0","terminated_reason":null}
+{"depth":4,"addr":"0x14033fa00","name":"sub_14033FA00","role":"sysinfo_version_field","parent":"0x1407adac0","terminated_reason":null}
+{"depth":4,"addr":"0x14124a5d0","name":"WakeByAddressSingle","role":"sync_notify","parent":"0x140783aa0","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x14124a510","name":"sub_14124A510","role":"sync_lock","parent":"0x140783aa0","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x14124b1d0","name":"sub_14124B1D0","role":"sync_wait","parent":"0x140783aa0","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x14026a280","name":"sub_14026A280","role":"sysinfo_inner_field_extract","parent":"0x14025c400","terminated_reason":"error_return"}
+{"depth":5,"addr":"0x14124c220","name":"sub_14124C220","role":"sysinfo_version_alloc","parent":"0x14033fa00","terminated_reason":"error_return"}

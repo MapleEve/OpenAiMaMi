@@ -1,0 +1,38 @@
+{
+  "command": "set_codex_api_login",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim4": [
+      "CCF sends 'relaunch' (bool, default true) not confirmed as backend argKey from decompile. Attempts: (1) backend decompile of 11 pseudocode files — only 'enabled' confirmed as read param; (2) ipc-contracts CCF confirms 'relaunch' exists in frontend invocation; (3) interface.md documents 'relaunch' as unknown #5 (not decompiled). Recovery: documented as acceptance-draft note — C5 consumer must investigate. Non-blocking for readyToImplement: CCF discrepancy is consumer's clarification task, not a closed dim4 gap.",
+      "CodexApiLoginTogglePayload exact field list not decompiled. Confirmed via symbol drop_in_place<CodexApiLoginTogglePayload>. Recovery: (1) decompile payload type — skipped (non-blocking); (2) accepted_unknown with dim6 note."
+    ]
+  },
+  "evidence_refs": [
+    "commands_relay/set_codex_api_login/ida/pseudocode/0001_set_codex_api_login_owner_h83cdb12201a32c84.c (VA=0x1005d3a10, size=0x1467)",
+    "commands_relay/set_codex_api_login/ida/pseudocode/0002...0011 (11 files total; stop_codex, enable_virtual_login, cleanup, rollback, persist, sync_codex_config, progress_closure, launch_codex_app_warning, stop_codex_for_file_edit, full coverage)",
+    "commands_relay/set_codex_api_login/call-trees/set_codex_api_login.jsonl (30+ entries, depth>=3, terminal: osascript/kill/fs::write/remove_file syscalls)",
+    "commands_relay/set_codex_api_login/interfaces/interface.md (enable/disable paths, fast-path, 12 side-effects, 5 error conditions, progress events)",
+    "commands_relay/set_codex_api_login/gate-report-dim6.json (session=wf-aimami111-dim6-20260619, acceptance-draft)",
+    "frontend/ipc-contracts.jsonl:L86:col120925 command=set_codex_api_login argKeys=[enabled,relaunch] wrapper=setCodexApiLogin",
+    "frontend/frontend-control-flow.jsonl:L86:col120948 terminal=set_codex_api_login argKeys=[enabled,relaunch]",
+    "frontend/frontend-control-flow.jsonl:L306:col38101 callsite=mutationFn->Zt.setCodexApiLogin(b,C)"
+  ],
+  "dim_notes": {
+    "dim1_frontend_ccf": "ipc-contracts.jsonl L86 col120925: argKeys=[enabled,relaunch] argObject={enabled:t,relaunch:e??!0} wrapper=setCodexApiLogin callee=vt. CCF L86 col120948: terminal. Callsite L306 col38101 Zt.setCodexApiLogin(b,C). CLOSED.",
+    "dim2_owner_pseudocode": "11 pseudocode files total (~64K dir). Owner h83cdb12 (0x1467=5223B): full enable/disable/fast-path flow with all branches annotated. Plus 10 callee files: stop_codex_for_file_edit, enable_virtual_login, cleanup, rollback, persist, sync_codex_config, progress_closure, launch_codex_app_warning, blocking_task_poll, resolve_api_login_slots. CLOSED.",
+    "dim3_call_tree_depth5": "30+ entries. Depth 3+: IPC->owner(BlockingTask::poll)->callees->syscalls. Terminals: osascript(AppleScript), kill-9(POSIX), uuid::Builder::from_rng(entropy), atomic_write(FS), remove_file(FS), compose_proxy_status, security_framework leaves. All branches terminated. CLOSED.",
+    "dim4_interface_dto_error_sideeffect": "argKeys=[enabled:bool] (backend confirmed). 'relaunch' arg from CCF: frontend sends it (default=true), backend read unconfirmed — accepted_unknown with recovery documented above. Fast-path (enabled==current_state) returns Ok immediately. Progress events: stopping_codex(14B)/writing_auth(12B)/restoring_auth(14B)/writing_config(14B)/done\\a(4B). Side-effects: stop_codex(osascript+SIGKILL), virtual-auth-marker.json write/remove, Codex config write, RelayState persist, write_catalog/remove_catalog, apply_codex_state, launch Codex. Response CoreEnvelope<CodexApiLoginTogglePayload> — payload fields accepted_unknown. Errors: slot_cap(77B @0x101153b01), enable_virtual_login failure(rollback), persist failure(rollback), stop timeout(SIGKILL). CLOSED with noted accepted_unknowns.",
+    "dim5_same_platform_gate": "macos-arm64 confirmed. Owner VA=0x1005d3a10. Platform functions (osascript, launch paths) macos-specific. CLOSED. dim5_win: separate session — non-blocking for mac gate.",
+    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=wf-aimami111-dim6-20260619. CCF discrepancy ('relaunch' param) documented as consumer clarification task. Producer acceptance-draft = dim6 closed. CLOSED."
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

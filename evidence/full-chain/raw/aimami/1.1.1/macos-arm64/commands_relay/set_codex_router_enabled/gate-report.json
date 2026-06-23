@@ -1,0 +1,37 @@
+{
+  "command": "set_codex_router_enabled",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim4": [
+      "CCF sends 'relaunch' (bool, default true) and 'apiLogin' (nullable) but backend decompile confirms only 'enabled' as named param (a3). 'apiLogin' likely maps to mode byte a5 (0=direct-key, 1=api-login, 2=no-change). Recovery attempts: (1) backend decompile of owner (7455B) — only 'enabled' confirmed, mode is a5 not a named key; (2) ipc-contracts.jsonl confirms frontend sends {enabled,relaunch,apiLogin}; (3) interface.md gate-report-dim6 documents discrepancy. Non-blocking: consumer clarification task for 'apiLogin'->mode byte mapping.",
+      "CodexRouterTogglePayload field types: 15 field names confirmed from string pool @0x1011542f7. Types partially inferred (not all Rust types confirmed from decompile). Non-blocking for implementation — field names sufficient for C5 frontend contract."
+    ]
+  },
+  "evidence_refs": [
+    "commands_relay/set_codex_router_enabled/ida/pseudocode/0001_set_codex_router_enabled_owner_hbce68602ab47eb41.c (VA=0x1005d7950, size=7455B)",
+    "commands_relay/set_codex_router_enabled/call-trees/set_codex_router_enabled.jsonl (44 entries, depth 3+, TCP+FS+Tauri terminals)",
+    "commands_relay/set_codex_router_enabled/interfaces/interface.md (15 payload fields, TOML markers, 6 progress steps, rollback function)",
+    "commands_relay/set_codex_router_enabled/gate-report-dim6.json (session=wf-aimami111-dim6-20260619, acceptance-draft)",
+    "frontend/ipc-contracts.jsonl:L86:col120648 command=set_codex_router_enabled argKeys=[enabled,relaunch,apiLogin] wrapper=setCodexRouterEnabled",
+    "frontend/frontend-control-flow.jsonl:L86:col120678 terminal=set_codex_router_enabled argKeys=[enabled,relaunch,apiLogin]",
+    "frontend/frontend-control-flow.jsonl:L306:col37946 callsite=Zt.setCodexRouterEnabled(b,C,T)"
+  ],
+  "dim_notes": {
+    "dim1_frontend_ccf": "ipc-contracts.jsonl L86 col120648: argKeys=[enabled,relaunch,apiLogin] argObject={enabled:t,relaunch:e??!0,apiLogin:r??null} wrapper=setCodexRouterEnabled callee=vt. CCF L86 col120678: terminal. Callsite L306 col37946 Zt.setCodexRouterEnabled(b,C,T). CLOSED.",
+    "dim2_owner_pseudocode": "1 pseudocode file: owner hbce68602 (7455B). Full enable/disable path with: stop_codex_for_file_edit, config_takeover::takeover/restore, virtual_auth::enable/cleanup, persist, sync_codex_config_with_outcome, ensure_proxy_started (TCP), migrate_threads_for_router_with_scope, rollback_router_enabled(@0x1005d6fa0, 1614B decompiled). CLOSED.",
+    "dim3_call_tree_depth5": "44 entries. Depth 3+. Terminals: TAURI_RUNTIME(emit), VTABLE_TERMINAL(progress callback), SYSCALL_FS(write/atomic, unlink), SYSCALL_TCP(connect_timeout 300ms, close_NOCANCEL, bind/listen), SYSCALL_FD, LOG_TERMINAL, TAURI_IPC_TERMINAL. All branches terminal. CLOSED.",
+    "dim4_interface_dto_error_sideeffect": "argKeys=[enabled:bool] (backend confirmed). 'relaunch'+'apiLogin' from CCF: accepted_unknown (recovery documented above). CodexRouterTogglePayload: 15 fields named (router_enabled, proxy_running, proxy_port, activeCodexProviders, codex_provider_count, catalog_path, catalog_exists, config_toml_has_router, config_toml_has_catalog, user_top_level_profile, config_stale_reason, thread_migration_exists, state, migration, codexLaunchError). TOML block markers confirmed: '# >>> aimami-relay codex-router top start (DO NOT EDIT MANUALLY)' / '# <<< aimami-relay codex-router top end'. Progress event 'codex-router-toggle-progress' (28B). TOML keys: codexRouterEnabled/codexApiLogin/codexApiSlots/displayTagGlobal/displayTagWoyao/CodexApiSlot. Side-effects: stop Codex(osascript+kill), TOML write/remove, catalog write/remove, virtual-auth marker write/remove, thread config rewrite, RelayState persist, TCP proxy start. rollback_router_enabled on failure restores all. CLOSED with noted accepted_unknowns.",
+    "dim5_same_platform_gate": "macos-arm64 confirmed. Owner VA=0x1005d7950. Windows 1.0.9 baseline in REVERSE-STATUS.md line 3517. Windows 1.1.1 NOT yet reversed (noted in interface.md). dim5_win: open for 1.1.1 Windows — non-blocking for mac gate per per-platform rule. CLOSED for mac.",
+    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=wf-aimami111-dim6-20260619. CCF discrepancy and payload field type inference noted as consumer tasks. Producer acceptance-draft = dim6 closed. CLOSED."
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

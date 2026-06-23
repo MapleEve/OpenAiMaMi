@@ -1,0 +1,67 @@
+commands::system::rebuild_registry (0x1006182c0) [IPC handler, mutex-guarded]
+  └─ std::sys::sync::once_box::OnceBox::initialize (0x100f7c920) [init mutex on first call]
+  └─ std::sys::pal::unix::sync::mutex::Mutex::lock (0x100f2e7a0)
+  └─ std::panicking::panic_count::is_zero_slow_path (0x100fb7400) [Rust noise — filtered]
+  └─ core::repository::Repository::rebuild_registry (0x1004c40a0) [DEPTH-1: core impl]
+      ├─ platform::paths::CodexPaths::ensure_directories (0x1005582b0) [precondition gate]
+      ├─ core::repository::Repository::load_registry (0x1004bf8e0) [prev snapshot for carry-over]
+      │    └─ std::fs::read_to_string::inner (0x100f25740)
+      │    └─ serde_json::de::from_trait (0x1002ea550) [deserialize RegistryFile]
+      ├─ std::time::SystemTime::now (0x100f34cf0) [timestamp elapsed]
+      ├─ std::time::SystemTime::duration_since (0x100f34cb0)
+      ├─ core::auth::load_auth_file (0x10053ac80) [DEPTH-2: primary auth.json]
+      │    └─ std::fs::read_to_string::inner (0x100f25740)
+      │    └─ serde_json::de::from_trait (0x1002e89b0) [deserialize AuthData]
+      ├─ core::auth::make_auth_snapshot (0x10053b9f0) [DEPTH-2: build AuthSnapshot]
+      │    ├─ core::auth::decode_jwt_claims (0x10053aef0) [DEPTH-3: decode access JWT]
+      │    ├─ core::auth::decode_jwt_claims (0x10053aef0) [DEPTH-3: decode refresh JWT]
+      │    ├─ core::auth::nested_dict (0x10053a9b0) [DEPTH-3: lookup 'organization_id' in JWT payload]
+      │    ├─ core::auth::string_val (0x10053a7f0) [DEPTH-3: extract 'email', 'user_id', 'chatgpt_account_id']
+      │    │    └─ returns Option<&str> from JWT dict
+      │    ├─ core::plan_mapping::parse_chatgpt_plan_label (0x100536010) [DEPTH-3: map plan string to PlanType enum]
+      │    ├─ core::auth::parse_iso_timestamp (0x10053cf60) [DEPTH-3: parse 'chatgpt_subscription_active_until']
+      │    ├─ core::auth::int_val (0x100544c40) [DEPTH-3: extract iat/exp fields]
+      │    ├─ std::sys::fs::metadata (0x100f2b980) [DEPTH-3: check auth file mtime]
+      │    ├─ std::fs::Metadata::modified (0x100f26290)
+      │    ├─ std::time::SystemTime::duration_since (0x100f34cb0) [auth freshness check]
+      │    └─ [GUARD] rejects "AiMaMi virtual relay key" literal → returns Err(code=9, len=63)
+      ├─ core::account_io::make_snapshot_path (0x1004bd8d0) [DEPTH-2: compute backup path from a2[31]/a2[32]]
+      ├─ std::sys::fs::copy (0x100f2aa10) [SIDE-EFFECT: backup auth.json to snapshot path]
+      ├─ alloc::fmt::format (0x100f63980) [format PlanType debug string]
+      ├─ alloc::str::to_lowercase (0x100f63b30) [normalize plan_str, auth_mode_str]
+      ├─ std::sys::fs::metadata (0x100f2b980) [check if auth_dir is file or dir]
+      ├─ std::sys::fs::read_dir (0x100f2ba80) [SIDE-EFFECT: scan auth directory]
+      ├─ [FlattenCompat::next] (0x1004b6010) [iterate dir entries]
+      ├─ std::fs::DirEntry::path (0x100f26120)
+      ├─ std::path::Path::extension (0x100f33fb0) [filter: only *.json, magic 0x6E6F736A]
+      ├─ [per-file] core::auth::load_auth_file → make_auth_snapshot [same as primary above]
+      ├─ core::repository::carry_over_registry_state (0x1004d6230) [DEPTH-2: merge prev state]
+      │    └─ alloc::string::String::clone (x3-7) [clone carried strings: display_name, plan_str, auth_mode_str, proxy]
+      │    └─ [NO I/O, NO allocations beyond String clone]
+      ├─ alloc::raw_vec::RawVec::grow_one (0x100f79ec0) [Vec capacity growth]
+      ├─ core::slice::sort::stable::driftsort_main (0x1007440f0) [DEPTH-2: sort >=21 items]
+      ├─ core::slice::sort::shared::smallsort::insertion_sort_shift_left (0x1004f2ca0) [sort <21 items]
+      └─ core::repository::Repository::persist_registry (0x1004c3a00) [DEPTH-2: write registry.json]
+           ├─ platform::paths::CodexPaths::ensure_directories (0x1005582b0)
+           ├─ std::sys::fs::metadata (0x100f2b980) [check existing registry.json]
+           ├─ std::time::SystemTime::now [timestamped backup filename]
+           ├─ std::path::Path::_join (0x100f33a00) [build backup path]
+           ├─ std::sys::fs::copy (0x100f2aa10) [SIDE-EFFECT: backup existing registry.json]
+           ├─ alloc::string::String::clone [clone version string]
+           ├─ alloc::vec::Vec::clone [clone items Vec]
+           ├─ serde_json JSON serialization:
+           │    ├─ SerializeMap::serialize_entry (key: "version" [13 chars], i64)
+           │    ├─ SerializeMap::serialize_entry (key: "timestamp" [9 chars], u64)
+           │    ├─ SerializeMap::serialize_entry (key: "account_snapshot" [16 chars], Vec)
+           │    ├─ SerializeMap::serialize_entry (key: "items" [5 chars], &Vec)
+           │    ├─ Compound::serialize_field (auth_mode struct field)
+           │    ├─ Compound::serialize_field (disabled_flag struct field)
+           │    └─ Compound::end
+           └─ std::fs::write (0x100201fe0) [SIDE-EFFECT: write registry.json to a2+216 path]
+  └─ std::sys::pal::unix::sync::mutex::Mutex::unlock (0x100f2e7c0)
+
+TERMINATED_REASON: All branches terminate at leaf I/O (fs::write, fs::copy, serde_json)
+                   or at alloc/dealloc primitives. No further app-level callees.
+
+DEPTH REACHED: 5 (commands→rebuild_registry→persist_registry→fs::write /
+                   commands→rebuild_registry→make_auth_snapshot→parse_iso_timestamp→[leaf])

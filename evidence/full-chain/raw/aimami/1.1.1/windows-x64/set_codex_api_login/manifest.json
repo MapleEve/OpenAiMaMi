@@ -1,0 +1,75 @@
+{
+  "schema": "c5cm.raw.bundle.manifest.v1",
+  "command": "set_codex_api_login",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "binary_format": "pe",
+  "pe_machine": "x64",
+  "binary_sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "idb": "<本地路径>",
+  "ida_server": "<逆向工具通道> (<内部网络>)",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "model": "claude-sonnet-4-6",
+  "role": "纯生产者 (SOP steps 0-6)",
+  "produced_at": "2026-06-16",
+  "authoritative": true,
+  "gate_tier": "consumerStartReady",
+
+  "owner_va": "0x1406D8620",
+  "owner_name": "set_codex_api_login_core_sys",
+  "dispatch_hub_va": "0x14099D990",
+  "dispatch_hub_name": "set_codex_api_login_dispatch_hub_sys",
+  "task_runner_va": "0x1407D63E0",
+  "task_runner_name": "set_codex_api_login_task_runner_sys",
+
+  "params": [
+    "manager:String(7B)",
+    "enabled:bool",
+    "relaunch:bool"
+  ],
+
+  "source_module": "codexmate_lib::core::relay::manager",
+  "source_file": "src\\core\\relay\\manager.rs",
+
+  "key_struct_fields": {
+    "RelayManagerState.codexApiLogin": "+365 (bool)",
+    "RelayManagerState.codexRouterEnabled": "+364 (bool)",
+    "RelayManagerState.state_lock": "+16 (WIN atomic u8)",
+    "RelayManagerState.relaunch_marker": "+480 (u8, ==6 → relaunch)",
+    "RelayProvider.stride_bytes": 232
+  },
+
+  "named_leaves": [
+    "relay_providers_config_write_and_persist_sys@0x1406E6960",
+    "relay_get_active_providers_vec_sys@0x1406DBEC0",
+    "relay_post_login_state_sync_sys@0x1406E1750",
+    "relay_config_check_parent_dirs_sys@0x1406F2870",
+    "atomic_write_file_sys@0x140504310 (codexmate_lib::core::relay::atomic_write)",
+    "quit_codex_poll_wait_sys_111@0x1407A39B0",
+    "quit_codex_fallback_kill_sys_111@0x1407A44D0"
+  ],
+
+  "files": [
+    "owner.md",
+    "pseudocode.md",
+    "interface.md",
+    "call-tree.md",
+    "gate-report.json",
+    "manifest.json",
+    "producer-ledger.json"
+  ],
+
+  "collision_check": {
+    "index_key_present": false,
+    "raw_dir_existed": false,
+    "competing_producer": null,
+    "write_mode": "canonical_new",
+    "owner_session": "wf-aimami111-delta-20260616"
+  },
+
+  "win_mac_diff_note": "WIN: InterlockedCompareExchange8+WakeByAddressSingle for relay lock; pure busy-poll 50ms for Codex quit (no condvar); RelayProvider stride=232B WIN-confirmed; relaunch_marker@+480==6 WIN-only; atomic_write source=codexmate_lib::core::relay::atomic_write.",
+
+  "delta_from_109": "set_codex_api_login is NEW in 1.1.1 delta; not present in 1.0.9 baseline"
+}

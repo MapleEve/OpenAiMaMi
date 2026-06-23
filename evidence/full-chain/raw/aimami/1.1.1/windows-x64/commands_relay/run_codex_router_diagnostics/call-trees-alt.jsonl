@@ -1,0 +1,40 @@
+{"depth":0,"addr":"0x14000D2A0","name":"tauri_ipc_main_dispatcher_sys","call_site":"0x14000f0a2","note":"len=28 dispatch block @0x14000efd1; string ref aRunCodexRouter@0x14000f049"}
+{"depth":1,"addr":"0x14006F4B0","name":"run_codex_router_diagnostics_owner_sys","size":"0x1e7","call_site":"0x14000f0a2","note":"try-lock Tokio dispatcher; hash=0x945CA2F02A2B6F44; probes off_141899DC0; vtable[3]=sub_140031D80 (type-id clone)"}
+{"depth":1,"addr":"0x141214620","name":"sub_141214620","call_site":"0x14000f0c9","note":"Tokio async await helper; sets up runtime context; refs sub_140082100 (generic waker) x2"}
+{"depth":1,"addr":"0x14021C1A0","name":"run_codex_router_diagnostics_core_sys","size":"0x167","call_site":"0x14000f0f4","note":"CORE: result builder; module=codexmate_lib::core::relay::codex_diagnostic; src=src\\core\\relay\\codex_diagnostic.rs; DECOMPILED_FULL"}
+{"depth":2,"addr":"0x1406F29D0","name":"sub_1406F29D0","call_site":"0x14021c1ce","note":"CODEX_HOME env resolver; builds .codexsqlitestate path; reads CODEX_HOME env var"}
+{"depth":2,"addr":"0x1406F3770","name":"sub_1406F3770","call_site":"0x14021c1da","note":"relay section context initializer"}
+{"depth":2,"addr":"0x1406E8480","name":"sub_1406E8480","call_site":"0x14021c1ea","note":"relay state accessor from Tauri managed state; panic: 'relay state poisoned'; calls sub_14072A3A0"}
+{"depth":3,"addr":"0x14072A3A0","name":"sub_14072A3A0","call_site":"0x1406e84d7","note":"relay state data extractor"}
+{"depth":2,"addr":"0x1407456B0","name":"fix_all_sections_impl_full_sys","call_site":"0x14021c202","note":"MAIN DIAGNOSTIC ENGINE ~319KB; checks registry+disk+process+relay credentials+6 section fns"}
+{"depth":3,"addr":"0x14124D2A0","name":"RegOpenKeyExW","kind":"external","call_site":"(inside fix_all_sections_impl_full_sys)","note":"Windows registry read (HKCU Codex keys)"}
+{"depth":3,"addr":"0x14124D7A0","name":"GetDiskFreeSpaceExW","kind":"external","call_site":"(inside fix_all_sections_impl_full_sys)","note":"disk free space check on Codex home drive"}
+{"depth":3,"addr":"0x140504DA0","name":"is_process_running_toolhelp_sys_111","call_site":"(inside fix_all_sections_impl_full_sys)","note":"ToolHelp32 process enumeration; arg='Codex' len=5; DECOMPILED_FULL; SIMD lowercase+Process32FirstW/NextW loop"}
+{"depth":4,"addr":"0x14124D068","name":"CreateToolhelp32Snapshot","kind":"external","call_site":"0x14050501f","note":"TH32CS_SNAPPROCESS=2; called inside is_process_running_toolhelp_sys_111"}
+{"depth":4,"addr":"0x14124D070","name":"Process32FirstW","kind":"external","call_site":"0x14050505d","note":"called inside is_process_running_toolhelp_sys_111"}
+{"depth":4,"addr":"0x14124D080","name":"Process32NextW","kind":"external","call_site":"0x14050510f","note":"called inside is_process_running_toolhelp_sys_111"}
+{"depth":4,"addr":"0x14124D788","name":"CloseHandle","kind":"external","call_site":"0x1405051c7","note":"called inside is_process_running_toolhelp_sys_111"}
+{"depth":3,"addr":"0x1402EE7C0","name":"relay_keychain_lookup_for_quota_sys","call_site":"(inside fix_all_sections_impl_full_sys)","note":"relay credential/quota keychain lookup; reads secrets.json; SHA-256 credential; env USER/USERNAME fallback; DECOMPILED_FULL; module=codexmate_lib::core::relay::keychain"}
+{"depth":4,"addr":"0x14107A2D0","name":"sub_14107A2D0","call_site":"0x1402ee841","note":"builds secrets.json path from relay_state fields; called 2x (ext probe + secrets.json)"}
+{"depth":4,"addr":"0x140C35C40","name":"sub_140C35C40","call_site":"0x1402ef372","note":"SHA-256 compress block; called 2x for message padding; processes 64-byte block"}
+{"depth":4,"addr":"0x141089D90","name":"sub_141089D90","call_site":"0x1402ef1ef","note":"env var getter; called with 'USER'(4) and 'USERNAME'(8)"}
+{"depth":4,"addr":"0x1402F08B0","name":"import_accounts_keychain_write_sys","call_site":"0x1402ef7f6","note":"builds keychain entry with credential+identity; also called in error path"}
+{"depth":3,"addr":"0x140762820","name":"diag_config_section_toml_reader_sys","call_site":"(inside fix_all_sections_impl_full_sys)","note":"reads config.toml sections via TLS context; SIMD [model_providers.cc...] bracket detection; DECOMPILED_FULL"}
+{"depth":4,"addr":"0x141077010","name":"sub_141077010","call_site":"0x14076284c","note":"TLS context getter for TOML reader; Tokio thread-local state"}
+{"depth":4,"addr":"0x14036F240","name":"sub_14036F240","call_site":"0x1407629fc","note":"TOML section body extractor; extracts content between section brackets"}
+{"depth":3,"addr":"0x140761280","name":"diag_config_section_parser_profiles_sys","call_site":"(inside fix_all_sections_impl_full_sys)","note":"parses [profiles.*] sections; SIMD bracket detection; key=0x73656C69666F7270 ('profiles' LE); calls sub_14075F450 for name match; DECOMPILED_FULL"}
+{"depth":4,"addr":"0x14075F450","name":"sub_14075F450","call_site":"0x140761496","note":"profile name matcher; validates against configured profile list"}
+{"depth":3,"addr":"0x140761F80","name":"diag_config_switch_section_check_sys","call_site":"(inside fix_all_sections_impl_full_sys)","note":"validates switch section names against 7 known keys: cc-switch/cc_switch/ccswitch/codex-switch/[model_providers.cc/circuit_breaker/provider_router; DECOMPILED_FULL"}
+{"depth":3,"addr":"0x140762AB0","name":"diag_config_base_url_section_check_sys","call_site":"(inside fix_all_sections_impl_full_sys)","note":"validates [open_ai_base_url] value; checks aimami-relay managed markers; validates /codex/router/v1 suffix; DECOMPILED_FULL"}
+{"depth":4,"addr":"0x140763E00","name":"diag_config_json_unescape_sys","call_site":"0x140762e08","note":"JSON string unescape; handles UTF-8 multibyte + escape sequences \\b\\f\\n\\r\\t\\\"; DECOMPILED_FULL"}
+{"depth":3,"addr":"0x140762F10","name":"diag_config_mode_validator_sys","call_site":"(inside fix_all_sections_impl_full_sys)","note":"validates mode= field; accepts: free/paid/msft/team/demo/invalid/undefined/placeholder/cc-switch/cc_switch/ccswitch/decodex/sk-fake/sk-test; DECOMPILED_FULL"}
+{"depth":3,"addr":"0x140762820","name":"diag_config_section_toml_reader_sys","call_site":"(inside fix_all_sections_impl_full_sys)","note":"see depth:3 entry above; also called from codex_diagnostic_section_filter_sys"}
+{"depth":1,"addr":"0x140760890","name":"codex_diagnostic_section_filter_sys","size":"0x2e5","note":"called separately; scans 104-byte diag entries; filters type=18+name=ax+status!=ok; module=codex_diagnostic"}
+{"depth":2,"addr":"0x1407456B0","name":"fix_all_sections_impl_full_sys","call_site":"0x1407608bb","note":"called from section filter to repair/re-diagnose failing sections"}
+{"depth":2,"addr":"0x1407668C0","name":"diag_config_section_repair_and_write_sys","call_site":"0x140760a06","note":"config.toml section atomic repair; relay_atomic_write_leaf_sys; TOML re-build; rebuild marker 226-bytes bilingual; DECOMPILED_FULL"}
+{"depth":3,"addr":"0x140504310","name":"relay_atomic_write_leaf_sys","call_site":"0x140767043","note":"platform atomic file write; called 2x in repair+write loop"}
+{"depth":3,"addr":"0x140BD33E0","name":"sub_140BD33E0","call_site":"0x140766973","note":"TOML serializer; produces 104-byte TOML result struct"}
+{"depth":3,"addr":"0x140243DE0","name":"sub_140243DE0","call_site":"0x140766ac4","note":"TOML alternative serializer / fallback"}
+{"depth":3,"addr":"0x140231ED0","name":"sub_140231ED0","call_site":"0x140767026","note":"TOML finalizer; called before relay_atomic_write_leaf_sys"}
+{"depth":3,"addr":"0x140738A20","name":"sub_140738A20","call_site":"0x140766952","note":"TOML parser (intermediate); parses existing config content"}
+{"depth":3,"addr":"0x140761880","name":"sub_140761880","call_site":"0x140766bbe","note":"section re-parser after repair; re-reads repaired sections"}

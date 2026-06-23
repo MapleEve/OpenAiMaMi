@@ -1,0 +1,16 @@
+{"depth":0,"va":"0x1005ebb60","symbol":"codexmate_lib::commands::relay::deactivate_relay_provider","role":"tauri_cmd_thunk","terminated_reason":null,"decompiled":true}
+{"depth":1,"va":"0x1005d14b0","symbol":"codexmate_lib::core::relay::manager::RelayManager::deactivate","role":"core_manager_impl","terminated_reason":null,"decompiled":true}
+{"depth":2,"va":"0x1006468e0","symbol":"alloc::vec::Vec<T,A>::retain","role":"ide_deactivation_filter","terminated_reason":"std_library_leaf","decompiled":false}
+{"depth":2,"va":"0x1005dee20","symbol":"codexmate_lib::core::relay::manager::RelayManager::persist","role":"persistence_leaf","terminated_reason":null,"decompiled":true}
+{"depth":3,"va":"0x1005d5450","symbol":"codexmate_lib::core::relay::manager::RelayManager::compose_proxy_status","role":"proxy_status_builder","terminated_reason":"leaf_named_not_decompiled","decompiled":false}
+{"depth":3,"va":"0x1005e2c60","symbol":"codexmate_lib::core::relay::storage::save","role":"atomic_write_orchestrator","terminated_reason":null,"decompiled":true}
+{"depth":4,"va":"0x1005582b0","symbol":"codexmate_lib::platform::paths::CodexPaths::ensure_directories","role":"dir_ensure","terminated_reason":"leaf_named_not_decompiled","decompiled":false}
+{"depth":4,"va":"0x10054afe0","symbol":"codexmate_lib::core::relay::models::_::<impl serde_core::ser::Serialize for codexmate_lib::core::relay::models::RelayState>::serialize","role":"json_serialize","terminated_reason":"library_internal_serde","decompiled":false}
+{"depth":4,"va":"0x10041e960","symbol":"codexmate_lib::core::relay::atomic_write::write_atomic","role":"fs_atomic_write","terminated_reason":"fs_write_leaf","decompiled":false}
+{"depth":2,"va":"0x1005daea0","symbol":"codexmate_lib::core::relay::manager::RelayManager::sync_codex_config_with_outcome","role":"codex_config_sync","terminated_reason":null,"decompiled":true}
+{"depth":3,"va":"0x1005e0330","symbol":"codexmate_lib::core::relay::manager::RelayManager::snapshot","role":"state_snapshot","terminated_reason":"leaf_named_not_decompiled","decompiled":false}
+{"depth":3,"va":"0x1006e8950","symbol":"codexmate_lib::core::relay::codex_catalog::resolve_api_slots","role":"api_slot_resolver","terminated_reason":"leaf_named_not_decompiled","decompiled":false}
+{"depth":3,"va":"0x1006e8450","symbol":"codexmate_lib::core::relay::codex_catalog::write_catalog","role":"catalog_write","terminated_reason":"fs_write_leaf","decompiled":false}
+{"depth":3,"va":"0x1006e8800","symbol":"codexmate_lib::core::relay::codex_catalog::remove_catalog","role":"catalog_remove","terminated_reason":"fs_delete_leaf","decompiled":false}
+{"depth":3,"va":"0x10075ae20","symbol":"codexmate_lib::core::relay::codex_writer::apply_codex_state","role":"codex_state_apply","terminated_reason":"leaf_named_not_decompiled","decompiled":false}
+{"depth":1,"va":"0x100557920","symbol":"codexmate_lib::core::models::CoreEnvelope<T>::ok","role":"response_wrap_ok","terminated_reason":"library_internal_response","decompiled":false}

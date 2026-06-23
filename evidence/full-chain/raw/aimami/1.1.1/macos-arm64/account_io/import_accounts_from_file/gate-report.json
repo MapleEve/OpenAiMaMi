@@ -1,0 +1,77 @@
+{
+  "command": "import_accounts_from_file",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": [
+      "Windows 1.1.1 IDB not confirmed for this delta; per mac per-platform gate rule: dim5_win unknown does not block mac readyToImplement"
+    ]
+  },
+  "evidence_refs": [
+    "account_io/import_accounts_from_file/evidence.md — Owner VA, Delta summary §1-5, Noise filtered, Side effects, Interface/DTO, Error messages, Confirmed §1-10, Inferred §1-6, Gate verdict (full_gold_leaf 2026-06-18)",
+    "frontend/ipc-contracts.jsonl line:15 col:24947 — command=import_accounts_from_file argKeys=['filePath','overwriteExisting','selectedKeys'] wrapper=importAccountsFromFile",
+    "frontend/frontend-control-flow.jsonl line:3 — callsite accounts-page-BFpAaIej.js:22 mutationFn W.importAccountsFromFile(b,j,R)",
+    "frontend/frontend-control-flow.jsonl line:28 — static-terminal importAccountsFromFile col:24978",
+    "account_io/import_accounts_from_file/ida/pseudocode/ — import_accounts_core.c(4735B) + invoke_resolver_closure.c(4061B) + write_atomic.c(2207B)",
+    "account_io/import_accounts_from_file/call-trees/import_accounts_from_file.jsonl — 21 edges",
+    "account_io/import_accounts_from_file/interfaces/import_accounts_from_file.json",
+    "account_io/import_accounts_from_file/gate-report.json prior — dim6 acceptance-draft written 2026-06-19"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "dim1_detail": {
+    "source": "ipc-contracts.jsonl line:15 col:24947 + frontend-control-flow.jsonl line:3 callsite + line:28 static-terminal",
+    "col": 24947,
+    "wrapper": "importAccountsFromFile",
+    "argKeys": ["filePath", "overwriteExisting", "selectedKeys"],
+    "terminal_call_command": "import_accounts_from_file",
+    "callsite_evidence": "accounts-page-BFpAaIej.js:22 col:28501 W.importAccountsFromFile(b,j,R) inside mutationFn"
+  },
+  "dim2_detail": {
+    "owner_va": "0x1004bb0b0 (codexmate_lib::core::account_io::import_accounts)",
+    "owner_size": "7453B (0x1d1d)",
+    "invoke_resolver_va": "0x100139f20 (respond_async_serialized_inner closure)",
+    "pseudocode_files": [
+      "import_accounts_core.c (4735B)",
+      "invoke_resolver_closure.c (4061B)",
+      "write_atomic.c (2207B)"
+    ]
+  },
+  "dim3_detail": {
+    "edges": 21,
+    "max_depth": 4,
+    "terminated_reason": "InvokeResolver→import_accounts→make_auth_snapshot→parse_chatgpt_plan_label→tokens_contain(pure_string_op)"
+  },
+  "dim4_detail": {
+    "argKeys": ["filePath", "overwriteExisting", "selectedKeys"],
+    "response": "CoreEnvelope<RegistryFile>",
+    "error_codes": ["ACCOUNT_MISSING_TOKEN", "INVALID_ACCOUNT_KEY", "CONFLICT_SKIPPED", "ACTIVE_ACCOUNT_PROTECTED", "RUNTIME_REFRESH_FAILED_AFTER_IMPORT", "Backup contains no accounts", "atomic write: missing parent"],
+    "side_effects": "fs read (backup+auth.json+registry) + atomic write (registry, tmp→fsync→rename) + fs copy (auth snapshot per account) + mkdir (snapshot parent, mode=0777) + fsync + sync_parent_dir + broadcast_runtime_snapshot('import')",
+    "NEW_in_1.1.1": [
+      "parse_chatgpt_plan_label — 9 PlanType enum variants (0=free..8=unknown)",
+      "chatgpt_subscription_active_until field via parse_iso_timestamp",
+      "file size limit: >10MB (0xA00000) → error",
+      "accounts count cap: >500 (0x1F4) → error",
+      "stable sort: driftsort_main for >0x15 entries; insertion_sort_shift_left for ≤0x15"
+    ],
+    "selectedKeys_sentinel": "0x8000000000000000 → import all accounts"
+  },
+  "dim5_detail": {
+    "mac": "PASS — macOS arm64 IDB; full gold-leaf 2026-06-18; owner 0x1004bb0b0 + invoke_resolver 0x100139f20 + write_atomic 0x10041e960; IDB annotated 8 functions",
+    "win": "accepted_unknown — Windows 1.1.1 not analyzed; non-blocking for mac gate"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft written 2026-06-19",
+    "happy_paths": 3,
+    "boundary_errors": 9,
+    "side_effect_asserts": 7,
+    "test_count": 7
+  }
+}

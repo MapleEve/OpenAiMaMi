@@ -1,0 +1,26 @@
+{
+  "command": "fetch_relay_models_draft",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:107 — command=fetch_relay_models_draft, argKeys=[input], argObject={input:t}, wrapper=fetchModelsDraft, file=assets/index-DdcCOEJG.js:86:120386",
+    "frontend/frontend-control-flow.jsonl:129 — terminal_call fetch_relay_models_draft argKeys=[input] callee=vt col:120405",
+    "frontend/frontend-control-flow.jsonl:157 — callsite Q@index-DdcCOEJG.js:310:49300 Zt.fetchModelsDraft({providerId,baseUrl,apiKey,wireApi,extraHeaders}) guarded if(!t.baseUrl.trim())",
+    "ida/pseudocode/0001_fetch_relay_models_draft_owner_async_poll_793c6f17.c — VA:0x1001234d0 async poll state machine size=0xb51; 9 phases: fromCommand+StateManager->resolve_draft_api_key->sanitize->parse_headers->build_url->fetch_openai_async->bytes->parse_model_ids->is_transient_error->return; 2400B",
+    "ida/pseudocode/0002_resolve_draft_api_key_ce0880cb.c — VA:0x1005d6220 keychain fallback",
+    "call-trees/fetch_relay_models_draft.jsonl — 31 edges depth2; StateManager+fromCommand+resolve_api_key(mutex+memcmp+keychain)+sanitize(trim)+parse_headers(serde+HeaderMap)+build_url(format)+fetch_openai(reqwest)+bytes+parse_model_ids(serde+vec)+is_transient_error(lowercase+pattern)+return_result; all terminated",
+    "intermediate/dim6/mac-close-1.json — dim4 fully closed: input struct=RelayFetchModelsInput; 5 fields byte-confirmed @0x10058d440: providerId(10B,VA:0x101150a60), baseUrl(7B,VA:0x10114ff9f), apiKey(6B,VA:0x10114fdc4), wireApi(7B,VA:0x10114ffab), extraHeaders(12B,VA:0x10114ffbd); model field does NOT exist",
+    "intermediate/dim6/mac-regrade.json — RTI: mac-close-1 dim4 closed + per-platform rule",
+    "intermediate/dim6/mac-consolidated.json — readyToImplement: mac-close-1->mac-regrade"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

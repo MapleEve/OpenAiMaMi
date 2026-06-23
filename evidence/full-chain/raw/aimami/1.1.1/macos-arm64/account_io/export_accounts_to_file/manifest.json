@@ -1,0 +1,71 @@
+{
+  "key": "aimami/1.1.1/macos-arm64/account_io/export_accounts_to_file/raw",
+  "command": "export_accounts_to_file",
+  "module": "account_io",
+  "namespace": "codexmate_lib::commands::account_io",
+  "platform": "macos-arm64",
+  "version": "1.1.1",
+  "session": "wf-aimami111-delta-20260616",
+  "produced_by": "<本地机器>",
+  "produced_at": "2026-06-16",
+  "sha256_binary": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "gate": "strictImplementationUse_candidate",
+  "status": "raw_leaf_complete",
+  "delta_vs_baseline": "migrated_no_behavior_diff",
+  "baseline_version": "1.0.9",
+  "authoritative": true,
+  "owner": {
+    "ipc_dispatch_va": "0x10012a750",
+    "ipc_dispatch_symbol": "tauri::ipc::InvokeResolver<R>::respond_async_serialized_inner::{{closure}}",
+    "blocking_task_poll_va": "0x10059a820",
+    "blocking_task_poll_symbol": "tokio::runtime::blocking::task::BlockingTask<T>::poll::hf422307414dd3eed",
+    "core_impl_va": "0x1004b8b80",
+    "core_impl_symbol": "codexmate_lib::core::account_io::export_accounts::h93b5796fc5529cd9",
+    "core_impl_size_bytes": 7857,
+    "core_impl_basic_blocks": 247,
+    "serializer_va": "0x100550470",
+    "serializer_symbol": "AccountExportPayload::serialize::h635c32e680e03be8",
+    "terminal_leaf_va": "0x10041e960",
+    "terminal_leaf_symbol": "codexmate_lib::core::relay::atomic_write::write_atomic::haa4522197089ee4a",
+    "ipc_registration_blob_va": "0x1010e7311"
+  },
+  "async_pattern": "spawn_blocking / BlockingTask<T>::poll",
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "taxonomy_cleared": [
+      "drop_in_place_shim",
+      "architecture_budget",
+      "async_decompile_failed",
+      "wrong_va",
+      "vtable_dynamic_dispatch",
+      "http_terminal",
+      "library_internals",
+      "body_too_large"
+    ]
+  },
+  "dims": {
+    "dim1_ipc_dispatch": "confirmed",
+    "dim2_async_body": "confirmed",
+    "dim3_core_impl": "confirmed",
+    "dim4_dto_schema": "confirmed",
+    "dim5_mac": "confirmed",
+    "dim5_win": "unknown",
+    "dim6_acceptance": "unknown"
+  },
+  "four_angle_completeness": {
+    "A_func_query": "pass",
+    "B_string_pool": "pass",
+    "C_frontend_ipc": "pass",
+    "D_owner_map_index": "pass"
+  },
+  "idb_comments_written": [
+    "0x10012a750",
+    "0x10059a820",
+    "0x1004b8b80",
+    "0x100550470",
+    "0x10041e960",
+    "0x1010e7311"
+  ],
+  "idb_save": "ok"
+}

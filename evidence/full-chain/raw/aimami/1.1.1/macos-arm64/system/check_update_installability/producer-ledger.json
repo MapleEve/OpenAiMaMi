@@ -1,0 +1,41 @@
+{
+  "schema": "c5cm.producer_ledger.v1",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "model": "claude-sonnet-4-6",
+  "role": "纯生产者 (SOP steps 0-6)",
+  "produced_at": "2026-06-16",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "command": "check_update_installability",
+  "delta_number": "6/76",
+  "authoritative": true,
+  "owner_check": {
+    "index_prior_entries": 0,
+    "owner_map_status": "shared/not_yet_queried",
+    "competing_producer": false,
+    "collision_status": "none",
+    "write_mode": "ADDITIVE"
+  },
+  "ida_health": {
+    "status": "ok",
+    "uptime_sec": 21716,
+    "hexrays_ready": true,
+    "module": "AiMaMi",
+    "idb": "AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi.i64"
+  },
+  "deliverables": [
+    "evidence.md",
+    "manifest.json",
+    "ida/pseudocode/0001_check_update_installability_owner_52e96238.c",
+    "ida/pseudocode-manifest.jsonl",
+    "call-trees/check_update_installability.jsonl",
+    "interfaces/check_update_installability_interface.md",
+    "producer-ledger.json"
+  ],
+  "idb_comment_appended": true,
+  "idb_save_done": true,
+  "idb_save_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "index_key_appended": "aimami/1.1.1/macos-arm64/system/check_update_installability"
+}

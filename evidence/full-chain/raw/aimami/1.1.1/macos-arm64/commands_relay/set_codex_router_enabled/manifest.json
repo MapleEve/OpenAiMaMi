@@ -1,0 +1,108 @@
+{
+  "schema_version": "1",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "date": "2026-06-17",
+  "binary": {
+    "module": "AiMaMi",
+    "version": "1.1.1",
+    "platform": "macos-arm64",
+    "sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb"
+  },
+  "command": {
+    "name": "set_codex_router_enabled",
+    "module": "commands::relay",
+    "position_in_delta": 30,
+    "arg_keys": ["enabled"],
+    "arg_types": {"enabled": "bool"},
+    "response_type": "CoreEnvelope<CodexRouterTogglePayload>",
+    "is_async": true,
+    "dispatch_pattern": "ResultFutureTag via BlockingTask::poll"
+  },
+  "owner": {
+    "va": "0x1005d7950",
+    "symbol": "codexmate_lib::core::relay::manager::RelayManager::set_codex_router_enabled::hbce68602ab47eb41",
+    "size_bytes": 7455,
+    "has_type": true,
+    "icf": false,
+    "decompile_success": true
+  },
+  "key_callees": [
+    {"va": "0x1005d6fa0", "symbol": "rollback_router_enabled", "size_bytes": 1614},
+    {"va": "0x1005d56f0", "symbol": "ensure_proxy_started"},
+    {"va": "0x1005daea0", "symbol": "sync_codex_config_with_outcome"}
+  ],
+  "side_effects": [
+    "FS_write_codex_config_toml_atomic",
+    "OS_process_stop_codex",
+    "OS_process_launch_codex",
+    "catalog_write_or_remove",
+    "virtual_auth_marker_write_or_cleanup",
+    "tcp_proxy_liveness_check_or_spawn",
+    "thread_migration_write"
+  ],
+  "tauri_events_emitted": [
+    {"name": "codex-router-toggle-progress", "va": "0x1011542f7"}
+  ],
+  "progress_steps": [
+    "stopping_codex",
+    "rolling_back_threads",
+    "writing_config",
+    "starting_proxy",
+    "launching_codex",
+    "done"
+  ],
+  "toml_block_markers": {
+    "start": "# >>> aimami-relay codex-router top start (DO NOT EDIT MANUALLY)",
+    "end": "# <<< aimami-relay codex-router top end"
+  },
+  "payload_fields": [
+    "router_enabled",
+    "proxy_running",
+    "proxy_port",
+    "activeCodexProviders",
+    "codex_provider_count",
+    "catalog_path",
+    "catalog_exists",
+    "config_toml_has_router",
+    "config_toml_has_catalog",
+    "user_top_level_profile",
+    "config_stale_reason",
+    "thread_migration_exists",
+    "state",
+    "migration",
+    "codexLaunchError"
+  ],
+  "gate_candidate": "strictImplementationUse_candidate",
+  "gate_blockers": ["dim5_win_parity_unknown", "dim6_unknown_fields_partial"],
+  "anti_fake_wall": {
+    "genuine_ceiling": false,
+    "categories_excluded": [
+      "async_poll_resume",
+      "icf_on_owner",
+      "vtable_core_dispatch",
+      "http_terminal",
+      "wrong_va",
+      "decompile_failure",
+      "icf_merge_of_named_target"
+    ]
+  },
+  "four_angle_completeness": {
+    "A_func_query": {"status": "confirmed", "va": "0x1005d7950", "has_type": true},
+    "B_string_pool": {"status": "confirmed", "addr": "0x1010e7311", "n": 1},
+    "C_dispatcher": {"status": "partial", "note": "InvokeResolver xref confirmed, BlockingTask::poll wrapper confirmed, direct dispatch body not decompiled (ICF/unnamed), argKey confirmed from string pool"},
+    "D_manifest": {"status": "this_file"}
+  },
+  "artifacts": [
+    "evidence.md",
+    "manifest.json",
+    "ida/pseudocode/0001_set_codex_router_enabled_owner_hbce68602ab47eb41.c",
+    "ida/pseudocode-manifest.jsonl",
+    "call-trees/set_codex_router_enabled.jsonl",
+    "interfaces/interface.md"
+  ],
+  "idb_comments_appended": [
+    {"va": "0x1005d7950", "scope": "func"},
+    {"va": "0x1005d6fa0", "scope": "func"}
+  ]
+}

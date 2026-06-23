@@ -1,0 +1,76 @@
+{
+  "schema": "c5cm.raw.leaf.v1",
+  "command": "get_relay_provider_quota",
+  "module": "relay",
+  "platform": "macos-arm64",
+  "version": "1.1.1",
+  "session": "wf-aimami111-delta-20260616",
+  "produced_by": "<本地机器>",
+  "produced_at": "2026-06-17",
+  "binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "owner": {
+    "va": "0x100145890",
+    "symbol": "tauri::ipc::InvokeResolver<R>::respond_async_serialized_inner::{{closure}}::hb2a9e236313f08a5",
+    "size_bytes": 647,
+    "level": "A",
+    "kind": "async_poll_body",
+    "drop_shim_va": "0x1000ba6e0"
+  },
+  "callees": [
+    { "va": "0x1005d65c0", "symbol": "codexmate_lib::core::relay::manager::RelayManager::ensure_provider_loaded::he6df39bd23eaabd6", "level": "B", "role": "provider_lookup_and_clone" },
+    { "va": "0x1000af3c0", "symbol": "codexmate_lib::core::relay::quota::fetch_async::{{closure}}::h3adb3db2e9d8b160", "level": "B", "role": "http_quota_fetch_async" },
+    { "va": "0x1005e1c90", "symbol": "codexmate_lib::core::relay::storage::lazy_load_api_key::h50313c6efaf42105", "level": "C", "role": "api_key_lazy_load" },
+    { "va": "0x1006c86a0", "symbol": "codexmate_lib::core::relay::keychain::get_api_key::h06ffa0ee9def7259", "level": "C", "role": "keychain_api_key_resolve" },
+    { "va": "0x1000b5310", "symbol": "codexmate_lib::core::relay::quota::get_json::{{closure}}::h066ed84a3f888ab5", "level": "C", "role": "http_get_json_reqwest" },
+    { "va": "0x100784fe0", "symbol": "codexmate_lib::core::relay::quota::build_root_url::hbca2008ae175a263", "level": "C", "role": "url_builder_root" },
+    { "va": "0x100784dc0", "symbol": "codexmate_lib::core::relay::quota::build_v1_url::h0f05a89c8282e1bd", "level": "C", "role": "url_builder_v1" },
+    { "va": "0x100786570", "symbol": "codexmate_lib::core::relay::quota::failed::h74a54cf75466b063", "level": "C", "role": "quota_failure_record" },
+    { "va": "0x100762ef0", "symbol": "codexmate_lib::core::relay::quota::sanitize_api_key", "level": "D", "role": "api_key_trim_whitespace" },
+    { "va": "0x100763130", "symbol": "codexmate_lib::core::relay::quota::parse_extra_headers", "level": "D", "role": "extra_headers_json_to_headermap" },
+    { "va": "0x100554f40", "symbol": "codexmate_lib::ipc::envelope::CoreEnvelope::ok", "level": "D", "role": "ipc_response_wrap_ok" },
+    { "va": "0x100954200", "symbol": "chrono::offset::utc::Utc::now", "level": "D", "role": "timestamp_failed_record" }
+  ],
+  "arg_keys": [
+    { "name": "manager", "byte_len": 7, "source": "IPC blob 0x1010e7311" },
+    { "name": "providerId", "byte_len": 10, "source": "IPC blob 0x1010e7311" }
+  ],
+  "http": {
+    "method": "GET",
+    "url_pattern": "{baseUrl_trimmed}/v1/usage",
+    "url_string_va": "0x1010e7fb6",
+    "auth": "bearer",
+    "extra_headers": "from RelayProvider.extraHeaders field",
+    "response_fields": ["remaining", "quota", "usage"],
+    "client_static_va": "0x101442e80"
+  },
+  "relay_provider_struct": {
+    "stride_bytes": 232,
+    "provider_id_offset": 8,
+    "provider_id_len_offset": 16,
+    "api_key_offset": 72,
+    "loaded_flag_offset_in_array_word": 11
+  },
+  "gate": {
+    "tier": "strictImplementationUse_candidate",
+    "dim1": "unknown_frontend_CCF_not_verified",
+    "dim2": "pass",
+    "dim3": "pass",
+    "dim4": "pass",
+    "dim5_mac": "pass",
+    "dim5_win": "pass_separate_session",
+    "dim6": "pending_C5_implementation"
+  },
+  "idb_comments_written": [
+    "0x100145890",
+    "0x1005d65c0",
+    "0x1000af3c0",
+    "0x1005e1c90"
+  ],
+  "files": {
+    "evidence": "evidence.md",
+    "pseudocode": "ida/pseudocode/0001_get_relay_provider_quota_owner_b2a9e236.c",
+    "pseudocode_manifest": "ida/pseudocode-manifest.jsonl",
+    "call_tree": "call-trees/get_relay_provider_quota.jsonl",
+    "interfaces": "interfaces/dto.md"
+  }
+}

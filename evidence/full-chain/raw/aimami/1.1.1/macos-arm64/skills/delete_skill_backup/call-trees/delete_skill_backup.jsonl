@@ -1,0 +1,19 @@
+{"depth": 0, "va": "0x10072d290", "symbol": "codexmate_lib::commands::skills::delete_skill_backup", "role": "tauri_cmd_wrapper", "terminated_reason": null, "session": "wf-aimami111-delta-20260616"}
+{"depth": 1, "va": "0x100f2e7a0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::lock", "role": "mutex_acquire", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x1005e6750", "symbol": "codexmate_lib::core::skills::delete_skill_backup", "role": "core_impl", "terminated_reason": null}
+{"depth": 2, "va": "0x100f33a00", "symbol": "std::path::Path::_join", "role": "build_skill_backups_base_path", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x100f33a00", "symbol": "std::path::Path::_join", "role": "build_id_backup_path", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x100f2b980", "symbol": "std::sys::fs::metadata", "role": "existence_check", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x100f2a6a0", "symbol": "std::sys::fs::remove_dir_all", "role": "delete_backup_dir_recursive", "terminated_reason": "fs_delete_leaf"}
+{"depth": 2, "va": "0x1005e4c90", "symbol": "codexmate_lib::core::skills::load_skill_backups", "role": "reload_backup_list_post_delete", "terminated_reason": null}
+{"depth": 3, "va": "0x100f2b980", "symbol": "std::sys::fs::metadata", "role": "check_skill_backups_dir_exists", "terminated_reason": "std_library_leaf"}
+{"depth": 3, "va": "0x100f2ba80", "symbol": "std::sys::fs::read_dir", "role": "readdir_skill_backups", "terminated_reason": "std_library_leaf"}
+{"depth": 3, "va": "0x100f33a00", "symbol": "std::path::Path::_join", "role": "build_metadata_json_path", "terminated_reason": "std_library_leaf"}
+{"depth": 3, "va": "0x100f33b80", "symbol": "std::path::Path::is_dir", "role": "check_entry_is_dir", "terminated_reason": "std_library_leaf"}
+{"depth": 3, "va": "0x100f25740", "symbol": "std::fs::read_to_string::inner", "role": "read_metadata_json", "terminated_reason": "fs_read_leaf"}
+{"depth": 3, "va": "0x1002eac60", "symbol": "serde_json::de::from_trait", "role": "parse_SkillBackupMetadata_json", "terminated_reason": "serde_library_leaf"}
+{"depth": 3, "va": "0x100f33a00", "symbol": "std::path::Path::_join", "role": "build_skill_subpath", "terminated_reason": "std_library_leaf"}
+{"depth": 3, "va": "0x1007448c0", "symbol": "core::slice::sort::stable::driftsort_main", "role": "sort_backup_list_large", "terminated_reason": "std_library_leaf"}
+{"depth": 3, "va": "0x1004f2b90", "symbol": "core::slice::sort::shared::smallsort::insertion_sort_shift_left", "role": "sort_backup_list_small", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x100555dd0", "symbol": "codexmate_lib::core::models::CoreEnvelope<T>::ok", "role": "wrap_ok_response", "terminated_reason": "library_leaf"}
+{"depth": 1, "va": "0x100f2e7c0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::unlock", "role": "mutex_release", "terminated_reason": "std_library_leaf"}

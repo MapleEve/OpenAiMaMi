@@ -1,0 +1,26 @@
+{
+  "command": "delete_sessions",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:28 — command=delete_sessions, argKeys=[ids], argObject={ids:t}, wrapper=deleteSessions, file=assets/index-DdcCOEJG.js:86:25785",
+    "frontend/frontend-control-flow.jsonl:41 — terminal_call delete_sessions argKeys=[ids] callee=ne col:25802",
+    "frontend/frontend-control-flow.jsonl:186 — callsite sessions-page-GrXHFrri.js:6:10121 $.deleteSessions(r)",
+    "ida/pseudocode/0001_delete_sessions_owner_10072e1c0.c — VA:0x10072e1c0 size=0x431; mutex lock+poison; core::sessions::delete_sessions; ids.ptr/len from a3[1]/a3[2]; CoreEnvelope::ok 0x70 memcpy; dealloc 24B stride; 2361B",
+    "ida/pseudocode/0002_delete_sessions_core_100727410.c — VA:0x100727410; walkdir+SQLite DELETE threads+spawn_edges + remove rollout file + update global_state.json",
+    "call-trees/delete_sessions.jsonl — 25 edges depth4; walkdir(4)+sqlite(2)+fs_delete+json_rw+vec_collect all terminated as std/rusqlite/serde/fs leaves",
+    "dim4 confirmed: input=ids Vec<String> (a3[1]=ptr a3[2]=len 24B stride); output CoreEnvelope<Vec<String>> 0x70; error=poisoned_lock CoreError; side-effects: DELETE threads+spawn_edges WHERE id=?1 + remove rollout file + update global_state.json",
+    "intermediate/dim6/mac-regrade.json — RTI: dim5_win_Unknown only prior blocker; mac dim1-5 all closed",
+    "intermediate/dim6/mac-consolidated.json — readyToImplement: mac-regrade RTI"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "command": "configure_auto_switch",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "system",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-16T00:00:00+08:00",
+  "produced_by": "claude-sonnet-4-6",
+  "role": "pure_producer",
+  "authoritative": true,
+  "owner_check": {
+    "index_status": "ZERO_1.1.1_ENTRIES_FOR_CONFIGURE_AUTO_SWITCH",
+    "owner_map_111_status": "shared/not_yet_queried",
+    "collision_status": "ADDITIVE_NO_COLLISION",
+    "prewrite_gate": "PASS"
+  },
+  "idb_comments_written": [
+    {"addr": "0x100619b80", "appended": true, "scope": "func"},
+    {"addr": "0x1004c7280", "appended": true, "scope": "func"},
+    {"addr": "0x1010b4708", "appended": true, "scope": "line"},
+    {"addr": "0x1010b472b", "appended": true, "scope": "line"},
+    {"addr": "0x101147f2d", "appended": true, "scope": "line"},
+    {"addr": "0x10115116c", "appended": true, "scope": "line"}
+  ],
+  "idb_save": "ok",
+  "idb_save_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "source_binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "gate": "consumerStartReady",
+  "delta_status": "diff_reversed",
+  "leaf_path": "raw/aimami/1.1.1/macos-arm64/system/configure_auto_switch/"
+}

@@ -1,0 +1,110 @@
+{
+  "command": "load_change_analytics",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "dim_evidence": {
+    "dim1": {
+      "source": "frontend/ipc-contracts.jsonl line 86 col 31503 + frontend/frontend-control-flow.jsonl lines 11 (analytics-panel-LbLPe_yT.js queryFn→loadChangeAnalytics, hc_depth=2) and 97 (index-DdcCOEJG.js loadChangeAnalytics, hc_depth=1)",
+      "wrapper": "ne (tauriInvokeWrapper)",
+      "argKeys_from_frontend": ["range"],
+      "note": "repo is backend-internal context, not sent by frontend (argKeys=[range] confirmed in CCF snippet ne(\"load_change_analytics\",{range:t}))"
+    },
+    "dim2": {
+      "pseudocode_bytes": 11179,
+      "owner_va": "0x140016C70",
+      "owner_name": "sub_140016C70"
+    },
+    "dim3": {
+      "max_depth": 3,
+      "edges": 22,
+      "file": "call-trees/load_change_analytics.jsonl",
+      "terminated_reasons": ["platform_primitive", "implementation_leaf", "named_shared_primitive"]
+    },
+    "dim4": {
+      "request_params": {
+        "range": "string; parsed by remove_skill_parse_id_param_111 @ 0x1402FED40",
+        "repo": "backend-internal only; not sent by frontend"
+      },
+      "response_builder": "sub_140834FC0 @ 0x140834FC0",
+      "response_ctor": "sub_1402171C0 (change-specific; distinct from session/tool sub_1402168D0)",
+      "error_path": "has_notch_invoke_resolver_respond @ 0x14080C3C0; Err-tag 0x8000000000000000",
+      "side_effects": {
+        "file_write": "none",
+        "file_read": "quota history via spinlock + deep-copy (quota_history_point_deep_copy_111 @ 0x1401EB870)",
+        "lock_acquire": "pending_auto_switch_state_lock_acquire_111 @ 0x14006EDC0 (released before response)"
+      }
+    },
+    "dim5": {
+      "platform": "windows-x64",
+      "evidence": "WinAPI spinlock (_InterlockedCompareExchange8 / WakeByAddressSingle) confirmed; win32 pattern only"
+    },
+    "dim6": {
+      "status": "acceptance-draft",
+      "happy_path": {
+        "input": {"range": "<range-string>"},
+        "expected_output": "JSON via sub_140834FC0; inner data from sub_1402171C0 change response ctor; no file write; quota history deep-copied under spinlock then released",
+        "side_effect_asserts": [
+          "pending_auto_switch mutex acquired then released (no persistent state change)",
+          "quota history spinlock acquired, deep-copied, released — original unmodified",
+          "no file write"
+        ]
+      },
+      "boundary_errors": [
+        {
+          "trigger": "mutex acquire fails (pending_auto_switch_state_lock_acquire_111 non-zero)",
+          "expected": "error via has_notch_invoke_resolver_respond; no data access"
+        },
+        {
+          "trigger": "repo invalid — query_installed_skills_with_repo_111 discriminant != 6",
+          "expected": "error via has_notch_invoke_resolver_respond @ 0x14080C3C0"
+        },
+        {
+          "trigger": "range absent/unparseable — remove_skill_parse_id_param_111 discriminant != 6",
+          "expected": "error via has_notch_invoke_resolver_respond"
+        },
+        {
+          "trigger": "change range filter sub_1401CAD70 returns Err",
+          "expected": "Err-tag 0x8000000000000000; error string alloc; sub_140834FC0 error path; dealloc via sub_140001370"
+        },
+        {
+          "trigger": "OOM (sub_140001360 returns null)",
+          "expected": "sub_14124BCCB panic/abort"
+        }
+      ],
+      "test_mapping": [
+        {"case": "happy_path: valid range → change analytics data", "type": "e2e"},
+        {"case": "error: missing range param → error response", "type": "e2e"},
+        {"case": "side effect: no file write", "type": "explicit_non_automatable_accept"}
+      ]
+    }
+  },
+  "owner": {
+    "va": "0x140016C70",
+    "name": "sub_140016C70",
+    "string_ref_va": "0x1412ac44e",
+    "size_bytes": "0x511",
+    "delta_class": "NEW_IN_1.1.1"
+  },
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:line 86 col 31503",
+    "frontend/frontend-control-flow.jsonl:lines 11,97",
+    "raw/aimami/1.1.1/windows-x64/load_change_analytics/pseudocode.md (11179 bytes)",
+    "raw/aimami/1.1.1/windows-x64/load_change_analytics/call-tree.md (22 edges, max_depth=3)",
+    "raw/aimami/1.1.1/windows-x64/load_change_analytics/call-trees/load_change_analytics.jsonl",
+    "raw/aimami/1.1.1/windows-x64/load_change_analytics/interface.md"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "machine": "<本地机器>",
+  "module": "AiMaMi 1.1.1 win64.exe",
+  "sha": "d24e429a",
+  "timestamp_utc": "2026-06-20"
+}

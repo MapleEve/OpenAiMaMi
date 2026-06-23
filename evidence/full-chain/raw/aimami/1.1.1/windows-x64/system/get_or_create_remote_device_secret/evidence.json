@@ -1,0 +1,130 @@
+{
+  "schema": "c5cm.evidence.v1",
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-17",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "module": "commands",
+  "target": "get_or_create_remote_device_secret",
+  "delta_class": "integrity_recovered",
+  "baseline_version": "1.0.9",
+  "prior_sweep_classification": "same (incorrect — function was absent/missed in 1.0.9 sweep)",
+  "status": "done",
+  "gate_dims": {
+    "dim1_ccf": {
+      "status": "confirmed",
+      "source": "逆向分析 string 0x1412AC354",
+      "string_value": "get_or_create_remote_device_secretimport_remote_device_secret_if_empty",
+      "command": "get_or_create_remote_device_secret",
+      "note": "Rust type-path string confirms Tauri command export name; dispatcher xref @ tauri_ipc_main_dispatcher_sys 0x14000D2A0+0x1BD5"
+    },
+    "dim4_input_params": {
+      "status": "confirmed",
+      "frontend_args": "none (no argKeys in Tauri command)",
+      "backend_discriminants": [
+        {
+          "name": "lock_byte",
+          "addr": "a2[0]",
+          "meaning": "ICEX8 mutex state: 0=free, 1=locked, 2=waiters_parked",
+          "source": "async_handler L1 CAS logic"
+        },
+        {
+          "name": "remoteDeviceSecret_len",
+          "addr": "hotspot_buf+16 area",
+          "meaning": "0=missing→generate new; nonzero=return existing",
+          "source": "core L2 branch @ 0x1401B4FEB"
+        },
+        {
+          "name": "managed_state_gate",
+          "addr": "off_141899DC0",
+          "meaning": "dev.aimami.auto-switch global; guards sub_14124B1D0 check",
+          "source": "async_handler L1 @ 0x14078CDAF"
+        }
+      ]
+    },
+    "dim2_output": {
+      "status": "confirmed",
+      "ok_tag": 0,
+      "ok_payload": "String (ptr/len/cap at result_slot+8..+24) — the 32-char hex secret",
+      "err_tag_io": 2,
+      "err_tag_alloc": 3,
+      "err_builder": "sub_140243FC0 @ 0x140243FC0",
+      "err_drop": "sub_1407B1650 @ 0x1407B1650",
+      "note": "Ok tag=0 (not 10) at L1 handler output; core internal uses tag=10 for Ok propagation"
+    },
+    "dim3_body_completeness": {
+      "status": "full",
+      "layers_decompiled": 4,
+      "handler_size": "0x34B",
+      "core_size": "0x21E",
+      "serializer_size": "0x267",
+      "hotspot_reader_size": "0x609",
+      "accepted_unknown": false,
+      "genuine_ceiling": false,
+      "terminated_reason": "all L4 callees are platform/allocator/UUID leaves"
+    },
+    "dim5_delta_vs_1_0_9": {
+      "status": "confirmed",
+      "delta_items": [
+        {
+          "item": "NEW function: get_or_create_remote_device_secret_core_sys",
+          "detail": "Not present in 1.0.9 binary; entire function is delta"
+        },
+        {
+          "item": "NEW function: get_or_create_remote_device_secret_async_handler_sys",
+          "detail": "Not present in 1.0.9 binary"
+        },
+        {
+          "item": "NEW callee: uuid_v4_generate_raw_sys (x2) + uuid_v4_format_hex32_sys",
+          "detail": "UUID v4 generation + hex32 formatting for device secret — new in 1.1.1"
+        },
+        {
+          "item": "NEW callee: hotspot_config_serialize_5field_json_and_write_sys",
+          "detail": "5-field JSON serializer; 1.0.9 only wrote single-field; adds remoteDeviceSecret + notificationsSince + deviceId to persist set"
+        },
+        {
+          "item": "NEW JSON fields: remoteDeviceSecret, notificationsSince (in 5-field writer)",
+          "detail": "serde DTO key additions in written config — confirmed via string table 0x1412B6E74/0x1412B6E86"
+        },
+        {
+          "item": "NEW read fields in hotspot_read: mysteryUnlockGrants, mysteryUnlockedRoutes",
+          "detail": "Optional fields now read from CodexMateSettings hashmap in L3b; not present in 1.0.9 reader"
+        }
+      ],
+      "noise_filtered": [
+        "Mutex poison-guard strings (sub_1410B1930/sub_14124BFE0) — runtime infra, not app logic",
+        "GLOBAL_PANIC_COUNT / is_zero_slow_path — compiler intrinsics",
+        "sub_*/anon_ vtable renames — 逆向分析 name churn",
+        "rust_alloc size adjustments — struct layout noise",
+        "Register/stack offset changes in decompiler output"
+      ]
+    }
+  },
+  "platform_divergence": {
+    "windows_only_apis": [
+      "_InterlockedCompareExchange8 (mutex CAS at lock byte)",
+      "WakeByAddressSingle (wake parked waiters)",
+      "win32_file_read_bytes_111 @ 0x141093260",
+      "win32_file_write_bytes_111 @ 0x141093710"
+    ],
+    "note": "All async coordination and file I/O use Windows-specific APIs; macOS parallel requires separate reversal"
+  },
+  "side_effects_confirmed": [
+    {
+      "type": "local_file_write",
+      "description": "Writes 5-field JSON hotspot config when remoteDeviceSecret was absent",
+      "path_derivation": "config_ptr arg offsets +584/+592 (two QWORDs = Win32 path ptr+len)",
+      "no_http": true,
+      "no_sidecar": true,
+      "no_ipc_emit": true
+    }
+  ],
+  "idb_annotations": {
+    "set_comments": ["0x1401B4FB0", "0x14078CD70"],
+    "idb_saved": "<本地路径>"
+  },
+  "owner_va": "0x14078CD70 (async handler) / 0x1401B4FB0 (core)",
+  "leaf_path": "raw/aimami/1.1.1/windows-x64/commands/get_or_create_remote_device_secret/"
+}

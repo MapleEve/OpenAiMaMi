@@ -1,0 +1,19 @@
+{
+  "schema": "c5cm.gate-report.v1",
+  "command": "rollback_threads_for_router",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "session": "wf-aimami111-backend-orphan-materialize-20260622-orchestrator-verified",
+  "role": "producer",
+  "kind": "backend-only-orphan",
+  "gate_tier": "strictImplementationUse",
+  "readyToImplement": true,
+  "verdict": "present_changed",
+  "owner_va": "0x140615A80",
+  "size_bytes": 2744,
+  "size_1.0.9": 3590,
+  "frontend_invoke": false,
+  "orchestrator_verified": true,
+  "note": "backend-only command (no frontend invoke). Verified by orchestrator direct 逆向分析 decompile, not agent claim."
+}

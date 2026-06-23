@@ -1,0 +1,67 @@
+{
+  "command": "get_relay_active",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": [
+      "Carried from 1.0.9 readyToImplement gate (delta=nil: argKeys/response schema/side_effects/None sentinel all identical); behavior contract zero-change; win accepted_unknown non-blocking for mac gate per per-platform rule"
+    ]
+  },
+  "evidence_refs": [
+    "relay/get_relay_active/evidence.md — Confirmed §1-10, Inferred §1-5, Delta table (zero interface change)",
+    "frontend/ipc-contracts.jsonl (embedded in snippet col context) — command=get_relay_active argKeys=[]",
+    "frontend/frontend-control-flow.jsonl line:132 col:120576 — static-terminal getActive vt('get_relay_active')",
+    "relay/get_relay_active/ida/pseudocode/0001_get_relay_active_inner_closure_hfefd46acd52a1302.c (4678B)",
+    "relay/get_relay_active/ida/pseudocode/0002_get_relay_active_core_RelayManager_get_active_h81b4c2827d84364c.c (3575B)",
+    "relay/get_relay_active/call-trees/get_relay_active.jsonl — 11 edges",
+    "relay/get_relay_active/interfaces/get_relay_active_interface.json",
+    "relay/get_relay_active/gate-report.json prior — dim6 accepted (delta=nil carry from 1.0.9) 2026-06-19"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "dim1_detail": {
+    "source": "frontend-control-flow.jsonl line:132 static-terminal + ipc-contracts snippet",
+    "col": 120576,
+    "wrapper": "getActive",
+    "argKeys": [],
+    "terminal_call_command": "get_relay_active",
+    "callee": "vt"
+  },
+  "dim2_detail": {
+    "owner_va": "0x10031cc30 (inner closure hfefd46acd52a1302)",
+    "core_va": "0x1005d18f0 (RelayManager::get_active)",
+    "pseudocode_files": [
+      "0001_get_relay_active_inner_closure (4678B)",
+      "0002_get_relay_active_core (3575B)"
+    ]
+  },
+  "dim3_detail": {
+    "edges": 11,
+    "max_depth": 4,
+    "terminated_reason": "handler→RelayManager::get_active→Mutex::lock+Vec::clone+unlock→stdlib"
+  },
+  "dim4_detail": {
+    "argKeys": [],
+    "response": "CoreEnvelope<Option<Vec<String>>> — None sentinel={ptr=0,len=8,cap=0}",
+    "error_paths": "Mutex poison → None sentinel (no Err surface); ACL resolver error → return_result branch",
+    "side_effects": "none — pure memory read under Mutex; no fs/http/sidecar"
+  },
+  "dim5_detail": {
+    "mac": "PASS — macOS arm64 IDB; core VA 0x1005d18f0; active_providers Vec at RelayManager+56; OnceBox@+16",
+    "win": "accepted_unknown — carried from 1.0.9 baseline (delta=nil); non-blocking for mac gate"
+  },
+  "dim6_detail": {
+    "status": "accepted — delta=nil vs 1.0.9; behavior contract identical; 1.0.9 acceptance inherited",
+    "happy_paths": 3,
+    "boundary_errors": 1,
+    "side_effect_asserts": 1,
+    "test_count": 4
+  }
+}

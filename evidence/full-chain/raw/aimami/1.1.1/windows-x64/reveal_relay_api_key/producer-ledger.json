@@ -1,0 +1,64 @@
+{
+  "schema": "c5cm.producer.ledger.v1",
+  "session": "wf-aimami111-delta-20260616",
+  "session_gate_upgrade": "wf-aimami111-delta-20260617-win-reveal",
+  "machine": "<本地机器>",
+  "model": "claude-sonnet-4-6",
+  "role": "纯生产者 (SOP steps 0-6)",
+  "produced_at": "2026-06-16",
+  "gate_upgraded_at": "2026-06-17",
+  "command": "reveal_relay_api_key",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "authoritative": true,
+  "owner_check": {
+    "method": "PREWRITE_PRODUCER_COLLISION_GATE_V1",
+    "index_checked": true,
+    "index_hit": false,
+    "raw_dir_checked": true,
+    "raw_dir_existed": false,
+    "reverse_status_checked": true,
+    "agents_md_checked": true,
+    "collision_detected": false,
+    "write_mode": "canonical_new"
+  },
+  "ida_live_gate": {
+    "checked": true,
+    "status": "ok",
+    "uptime_sec": 20268,
+    "hexrays_ready": true,
+    "module": "AiMaMi 1.1.1 win64.exe",
+    "imagebase": "0x140000000"
+  },
+  "gate_initial": "consumerStartReady",
+  "gate_final": "strictImplementationUse",
+  "dims_closed": ["dim1", "dim2", "dim3", "dim4", "dim5"],
+  "dim1_upgrade": {
+    "ui_trigger": "relay-page-CsHU7KuS.js:43 Mc->ft.revealApiKey(b.id)",
+    "invoke_wrapper": "revealApiKey:t=>vt('reveal_relay_api_key',{providerId:t})",
+    "arg_keys": ["providerId"],
+    "manager_absent": true
+  },
+  "dim4_upgrade": {
+    "response_field_1": {"label": "ok", "bytes": 2, "hex": "6B6F"},
+    "response_field_2": {"label": "Success", "bytes": 7, "hex": "53756363657373"},
+    "confirmed_by": "byte-level decode response_build_sys@0x1402188F0"
+  },
+  "idb_write_back": {
+    "renames": 3,
+    "comments_initial": 4,
+    "comments_gate_upgrade": 2,
+    "idb_save_initial": "ok=true",
+    "idb_save_gate_upgrade": "ok=true (2026-06-17 uptime=57362s)",
+    "idb_path": "<本地路径>"
+  },
+  "evidence_files": [
+    "owner.md",
+    "pseudocode.md",
+    "interface.md",
+    "call-tree.md",
+    "gate-report.json",
+    "manifest.json",
+    "producer-ledger.json"
+  ]
+}

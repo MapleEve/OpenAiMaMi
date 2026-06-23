@@ -1,0 +1,35 @@
+{
+  "schema": "c5cm.producer-ledger.v1",
+  "key": "aimami/1.1.1/windows-x64/set_codex_api_login/full-chain",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_by": "claude-sonnet-4-6",
+  "sha256_binary": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "gate": "consumerStartReady",
+  "status": "complete",
+  "produced_at": "2026-06-16",
+
+  "steps_completed": [
+    "PREWRITE_PRODUCER_COLLISION_GATE_V1: PASS (no collision)",
+    "IDA_LIVE_GATE: PASS (status=ok, hexrays_ready=true, module=AiMaMi 1.1.1 win64.exe)",
+    "owner_location: find_regex 'set_codex_api_login' → xrefs_to → dispatch_hub@0x14099D990 → rollback-string xref chain → core@0x1406D8620",
+    "decompile_dispatch_hub: set_codex_api_login_dispatch_hub_sys@0x14099D990 (4664B, 138BB)",
+    "decompile_core_body: set_codex_api_login_core_sys@0x1406D8620 (5074B, 166BB)",
+    "decompile_task_runner: set_codex_api_login_task_runner_sys@0x1407D63E0 (289B)",
+    "decompile_get_providers: relay_get_active_providers_vec_sys@0x1406DBEC0 (1336B)",
+    "decompile_post_sync: relay_post_login_state_sync_sys@0x1406E1750",
+    "decompile_persist: relay_providers_config_write_and_persist_sys@0x1406E6960 (660B)",
+    "decompile_pre_write_check: relay_config_check_parent_dirs_sys@0x1406F2870",
+    "decompile_json_serialize: sub_14020A3E0@0x14020A3E0 (530B)",
+    "decompile_atomic_write: atomic_write_file_sys@0x140504310",
+    "decompile_quit_poll: quit_codex_poll_wait_sys_111@0x1407A39B0 (198B)",
+    "callees_leaf_depth: reached depth=6; all major branches terminated",
+    "idb_writeback_rename: 5 funcs renamed (5/5 OK)",
+    "idb_writeback_comments: 8 comments set",
+    "smb_raw_files: 7 files written to <来源位置>/raw/aimami/1.1.1/windows-x64/set_codex_api_login/",
+    "idb_save: OK (<本地路径>"
+  ],
+
+  "ipc_seq": "7/11 of aimami 1.1.1 delta command set",
+  "notes": "Source module confirmed via string evidence: codexmate_lib::core::relay::manager / src\\core\\relay\\manager.rs. WIN atomic write leaf uniquely named: codexmate_lib::core::relay::atomic_write. Shared leaf with reveal_relay_api_key: relay_providers_config_write_and_persist_sys@0x1406E6960."
+}

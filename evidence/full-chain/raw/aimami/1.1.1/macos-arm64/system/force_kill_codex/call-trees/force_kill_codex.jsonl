@@ -1,0 +1,19 @@
+{"depth":0,"addr":"0x100617d80","name":"codexmate_lib::commands::system::force_kill_codex","role":"command_owner","session":"wf-aimami111-same-depth-20260618","note":"No Mutex; calls force_kill_all_codex_processes directly; returns Vec<u32> (killed PIDs) via CoreEnvelope::ok"}
+{"depth":1,"addr":"0x10055dbc0","name":"codexmate_lib::platform::process::force_kill_all_codex_processes","role":"process_manager","terminated_reason":null}
+{"depth":1,"addr":"0x1005563e0","name":"codexmate_lib::core::models::CoreEnvelope::ok","role":"response_serialize","terminated_reason":"response_serialize"}
+{"depth":2,"addr":"0x10055c140","name":"codexmate_lib::platform::process::collect_codex_kill_targets","role":"target_collector","terminated_reason":null,"note":"Collects all Codex PIDs via ps subprocess + path matching"}
+{"depth":2,"addr":"0x10055e390","name":"codexmate_lib::platform::process::kill_codex_processes_until_clear","role":"kill_loop","terminated_reason":null,"note":"Retry loop: kill -9 each PID, sleep, re-collect until empty or timeout"}
+{"depth":3,"addr":"0x10055d610","name":"codexmate_lib::platform::process::list_codex_processes_matching","role":"ps_runner","terminated_reason":null,"note":"Spawns ps subprocess, parses stdout, filters by codex path substring"}
+{"depth":3,"addr":"0x100558430","name":"codexmate_lib::platform::paths::CodexPaths::resolve_codex_home","role":"path_resolver","terminated_reason":"named_leaf"}
+{"depth":3,"addr":"0x100558550","name":"codexmate_lib::platform::paths::CodexPaths::resolve_codex_state_db","role":"path_resolver","terminated_reason":"named_leaf"}
+{"depth":3,"addr":"0x100f2b980","name":"std::sys::fs::metadata","role":"fs_metadata","terminated_reason":"external_call_recorded"}
+{"depth":3,"addr":"0x10055ba30","name":"codexmate_lib::platform::process::extract_process_name","role":"name_extractor","terminated_reason":"named_leaf"}
+{"depth":3,"addr":"0x100f34d40","name":"std::time::Instant::now","role":"timeout_start","terminated_reason":"external_call_recorded"}
+{"depth":3,"addr":"0x100f35a00","name":"std::thread::functions::sleep","role":"sleep","terminated_reason":"external_call_recorded","note":"Between kill rounds"}
+{"depth":4,"addr":"0x100f31ac0","name":"std::sys::process::unix::common::Command::new","role":"cmd_new","terminated_reason":"external_call_recorded","note":"ps -ax subprocess"}
+{"depth":4,"addr":"0x100f31920","name":"std::sys::process::unix::common::Command::arg","role":"cmd_arg","terminated_reason":"external_call_recorded"}
+{"depth":4,"addr":"0x100f36130","name":"std::process::Command::output","role":"cmd_output","terminated_reason":"external_call_recorded","note":"Executes ps subprocess; collects stdout"}
+{"depth":4,"addr":"0x100f35fb0","name":"std::process::id","role":"self_pid","terminated_reason":"external_call_recorded","note":"Excludes self from kill list"}
+{"depth":4,"addr":"0x100f65430","name":"alloc::string::String::from_utf8_lossy","role":"utf8_decode","terminated_reason":"named_leaf"}
+{"depth":5,"addr":"0x100f31ac0","name":"std::sys::process::unix::common::Command::new","role":"kill_cmd_new","terminated_reason":"external_call_recorded","note":"Terminal: kill -9 <pid> subprocess inside kill_until_clear"}
+{"depth":5,"addr":"0x100f36130","name":"std::process::Command::output","role":"kill_cmd_output","terminated_reason":"external_call_recorded","note":"Terminal: executes kill -9; side-effect=SIGKILL to target process"}

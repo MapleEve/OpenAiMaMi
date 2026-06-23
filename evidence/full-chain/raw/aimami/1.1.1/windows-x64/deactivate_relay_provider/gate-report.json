@@ -1,0 +1,82 @@
+{
+  "command": "deactivate_relay_provider",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/deactivate_relay_provider/pseudocode.md (26201B, gold-leaf)",
+    "raw/aimami/1.1.1/windows-x64/deactivate_relay_provider/call-tree.md (10271B, depth=6, edges=25)",
+    "raw/aimami/1.1.1/windows-x64/deactivate_relay_provider/interface.md (5488B)",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl line 105: argKeys=[providerId,ide] col=119638",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl lines 125,152: deactivate wrapper + mutationFn callsite",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#deactivate_relay_provider (acceptance-draft)"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 105,
+    "wrapper": "deactivate",
+    "argKeys": ["providerId", "ide"],
+    "snippet_col": 119638,
+    "ccf_lines": [125, 152]
+  },
+  "dim2_detail": {
+    "owner_va": "0x14001F940",
+    "owner_name": "deactivate_relay_provider_owner_sys",
+    "owner_size_bytes": 1486,
+    "pseudocode_bytes": 26201,
+    "session": "wf-aimami111-delta-20260618-goldleaf",
+    "delta_class": "integrity_recovered"
+  },
+  "dim3_detail": {
+    "depth": 6,
+    "edges": 25,
+    "terminated_reason": "platform-primitive/persistence_commit/external_call",
+    "key_leaves": [
+      "relay_atomic_write_leaf_sys@0x140504310 (WIN32 fs terminal)",
+      "relay_config_check_parent_dirs_sys@0x1406F2870 (9x path_exists, NEW 1.1.1)",
+      "relay_draft_test_input_drop_sys@0x1401D6220 (memory_free stride=232, NEW 1.1.1)",
+      "relay_state_serialize_under_lock_sys@0x1406DA6B0 (WIN lock serializer)",
+      "GetCurrentProcessId/uuid_v4_generate_raw_sys/CloseHandle (WIN APIs)"
+    ]
+  },
+  "dim4_detail": {
+    "input_params": ["providerId(str,len10)", "ide(str,len3)"],
+    "guards": [
+      "router_enabled_block: codex_router_enabled==true → Err(9) + Chinese error 107B",
+      "last_active_provider_block: remaining active==0 → Err(9) + Chinese error 123B",
+      "poison_panic: mgr_inner+17==1 → panic 'relay state poisoned'",
+      "parent_dir_missing: serialize_err=2",
+      "atomic_write_missing_parent: IoError"
+    ],
+    "response": "{activated:false, relay_state:368B} (via set_codex_api_slots_ok_response_build_sys@0x140216BA0)",
+    "side_effects": [
+      "relay provider list compact-remove by providerId (relay_provider_list_remove_entry_sys@0x14033FB70)",
+      "mgr_inner+24 (368B) snapshot swap",
+      "relay config JSON atomic write (UUID-tmp + MoveFileEx, 9 JSON fields)",
+      "relay_draft_test_input_drop stride=232 per slot (NEW 1.1.1)",
+      "relay_post_login_state_sync re-drive",
+      "3x WIN lock acquisitions (ICEX8+WakeByAddressSingle)"
+    ],
+    "json_schema_fields": ["schemaVersion","providers","activeByIde","proxy","codexRouterEnabled","codexApiLogin","codexApiSlots","displayTagGlobal","displayTagWoyao"]
+  },
+  "dim5_detail": {
+    "win_lock": "ICEX8+WakeByAddressSingle (3 acquisition points)",
+    "win_fs": "CreateFile/WriteFile/MoveFileExW (relay_atomic_write_leaf_sys)",
+    "idb": "<本地路径>",
+    "sha": "d24e429a",
+    "delta_class": "integrity_recovered — 2 new callees vs 1.0.9 (relay_config_check_parent_dirs_sys, relay_draft_test_input_drop_sys)"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "shard_ref": "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#deactivate_relay_provider"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

@@ -1,0 +1,286 @@
+{
+  "schema_version": "1",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "date": "2026-06-17",
+  "binary": {
+    "module": "AiMaMi 1.1.1 win64.exe",
+    "version": "1.1.1",
+    "platform": "windows-x64",
+    "binary_format": "pe",
+    "pe_machine": "AMD64",
+    "sha256": "pending_sha256_win111",
+    "idb_path": "<本地路径>",
+    "stripped": true
+  },
+  "command": {
+    "name": "set_codex_router_enabled",
+    "module": "commands::relay",
+    "arg_keys": ["enabled"],
+    "arg_types": {"enabled": "bool"},
+    "secondary_arg_keys": ["relaunch", "apiLogin"],
+    "secondary_arg_note": "relaunch=bool(Option), apiLogin=Option<String>; confirmed from dispatcher sub_140963A40 secondary parser sub_1402FF330",
+    "response_type": "CoreEnvelope<CodexRouterTogglePayload>",
+    "is_async": true,
+    "dispatch_pattern": "ResultFutureTag via BlockingTask::poll",
+    "dispatcher_va": "0x140963A40",
+    "dispatcher_size_bytes": 4974
+  },
+  "owner": {
+    "va": "0x14067CA20",
+    "name": "set_codex_router_toml_section_write_win_sys",
+    "size_bytes": 7492,
+    "has_type": false,
+    "icf": false,
+    "decompile_success": true,
+    "rename_level": "A",
+    "mac_parity": {
+      "mac_va": "0x1005d7950",
+      "mac_symbol": "codexmate_lib::core::relay::manager::RelayManager::set_codex_router_enabled::hbce68602ab47eb41",
+      "mac_size_bytes": 7455,
+      "size_delta_bytes": 37,
+      "size_delta_pct": 0.5,
+      "parity": "strong"
+    }
+  },
+  "blocking_body": {
+    "va": "0x1401C59F0",
+    "name": "set_codex_router_enabled_blocking_body_win_sys",
+    "size_bytes": 2949,
+    "rename_level": "A",
+    "confirmed_markers": [
+      "WakeByAddressSingle (Windows futex)",
+      "poisoned lock: another task failed inside (RwLock PoisonError)"
+    ]
+  },
+  "orchestration": {
+    "va": "0x1406DD250",
+    "name": "relay_manager_set_codex_router_enabled_orchestration_win_sys",
+    "size_bytes": 8166,
+    "rename_level": "B"
+  },
+  "key_callees": [
+    {
+      "va": "0x140680220",
+      "name": "rollback_router_enabled_win_sys",
+      "size_bytes": 696,
+      "rename_level": "B",
+      "mac_equivalent": "rollback_router_enabled@0x1005d6fa0(1614B)",
+      "note": "searches config list by provider name, rewrites TOML section via set_codex_router_toml_section_write_win_sys"
+    },
+    {
+      "va": "0x1406CCC00",
+      "name": "sync_codex_config_with_outcome_win_sys",
+      "size_bytes": 9384,
+      "rename_level": "A",
+      "mac_equivalent": "sync_codex_config_with_outcome@0x1005daea0",
+      "calls": ["relay_atomic_write_leaf_sys@0x140504310"]
+    },
+    {
+      "va": "0x1406CFE30",
+      "name": "apply_relay_config_section_win_sys",
+      "size_bytes": 7750,
+      "rename_level": "A",
+      "calls": ["relay_atomic_write_leaf_sys@0x140504310"]
+    },
+    {
+      "va": "0x14067BE90",
+      "name": "sub_14067BE90",
+      "size_bytes": null,
+      "rename_level": "C",
+      "note": "atomic relay write wrapper; calls relay_atomic_write_leaf_sys directly"
+    },
+    {
+      "va": "0x1407A39B0",
+      "name": "quit_codex_poll_wait_sys_111",
+      "rename_level": "A_prior",
+      "note": "already named in prior win lane; OS_process_stop_codex entry point"
+    }
+  ],
+  "toml_block_markers": {
+    "codex_router_top_start": {
+      "text": "# >>> aimami-relay codex-router top start (DO NOT EDIT MANUALLY)",
+      "confirmed_in_binary": true,
+      "dim4_blocker_1_0_9": "CLOSED — this marker now confirmed in win 1.1.1 binary at set_codex_router_toml_section_write_win_sys"
+    },
+    "codex_router_top_end": {
+      "text": "# <<< aimami-relay codex-router top end",
+      "confirmed_in_binary": true
+    },
+    "managed_start": {
+      "text": "# >>> aimami-relay managed start (DO NOT EDIT MANUALLY)",
+      "confirmed_in_binary": true
+    },
+    "managed_start_top": {
+      "text": "# >>> aimami-relay managed start (top, DO NOT EDIT MANUALLY)",
+      "confirmed_in_binary": true
+    },
+    "managed_end": {
+      "text": "# <<< aimami-relay managed end",
+      "confirmed_in_binary": true
+    },
+    "managed_end_top": {
+      "text": "# <<< aimami-relay managed end (top)",
+      "confirmed_in_binary": true
+    }
+  },
+  "side_effects": [
+    "FS_write_codex_config_toml_atomic",
+    "OS_process_stop_codex",
+    "OS_process_launch_codex",
+    "catalog_write_or_remove",
+    "virtual_auth_marker_write_or_cleanup",
+    "tcp_proxy_liveness_check_or_spawn",
+    "thread_migration_write"
+  ],
+  "progress_steps_inferred": [
+    "stopping_codex",
+    "rolling_back_threads",
+    "writing_config",
+    "starting_proxy",
+    "launching_codex",
+    "done"
+  ],
+  "payload_fields_from_mac_parity": [
+    "router_enabled",
+    "proxy_running",
+    "proxy_port",
+    "activeCodexProviders",
+    "codex_provider_count",
+    "catalog_path",
+    "catalog_exists",
+    "config_toml_has_router",
+    "config_toml_has_catalog",
+    "user_top_level_profile",
+    "config_stale_reason",
+    "thread_migration_exists",
+    "state",
+    "migration",
+    "codexLaunchError"
+  ],
+  "payload_win_parity": "INFERRED from mac 1.1.1 manifest; win binary stripped, no field name strings found for response struct; structural parity expected (same codebase)",
+  "gate_candidate": "readyToImplement",
+  "gate": "readyToImplement",
+  "readyToImplement": true,
+  "implementation_use": true,
+  "gate_accepted": true,
+  "gate_upgraded_at": "2026-06-19",
+  "gate_upgrade_session": "wf-aimami111-dim6-20260619",
+  "dim4_blocker_1_0_9_closed": true,
+  "dim4_blocker_resolution": "TOML section markers confirmed in win 1.1.1 binary inside set_codex_router_toml_section_write_win_sys@0x14067CA20",
+  "gate_blockers_remaining": [],
+  "gate_notes": [
+    "dim1_frontend_ccf: CONFIRMED — ipc-contracts.jsonl direct hit: {command:'set_codex_router_enabled', argKeys:['enabled','relaunch','apiLogin'], kind:'tauriInvokeWrapper', file:'assets/index-DdcCOEJG.js'}; 原 'inherited/not_reassessed' 已补全",
+    "dim5_win_parity: CLOSED — win owner located, size parity strong (7492B vs mac 7455B)",
+    "dim6: acceptance-draft added 2026-06-19 by wf-aimami111-dim6-20260619"
+  ],
+  "dim6_test_acceptance_mapping": {
+    "status": "acceptance-draft",
+    "dim6_basis": "逆向证据：evidence.md Confirmed #3-6（TOML markers 全部确认）、#8（WakeByAddressSingle blocking body）、#11（quit_codex_poll_wait_sys_111 callees）、#12（rollback_router_enabled_win_sys）；interface.md 15字段 CodexRouterTogglePayload（mac parity，strong 0.5%）；manifest.json side_effects 7项；progress_steps_inferred 6阶段",
+    "happy_path": [
+      {
+        "desc": "启用 codex router：enabled=true，Codex 退出并重启，config.toml 写入 router 段",
+        "input": "{enabled: true}",
+        "expected_response": "CoreEnvelope<CodexRouterTogglePayload>（15字段：router_enabled/proxy_running/proxy_port/activeCodexProviders/...）",
+        "side_effect_asserts": [
+          "config.toml 写入 '# >>> aimami-relay codex-router top start (DO NOT EDIT MANUALLY)' 段",
+          "relay config JSON 原子写（relay_atomic_write_leaf_sys@0x140504310）",
+          "quit_codex_poll_wait_sys_111 执行（Codex 进程退出）",
+          "apply_relay_config_section_win_sys 执行（section 应用）",
+          "sync_codex_config_with_outcome_win_sys 执行（config 同步）"
+        ]
+      },
+      {
+        "desc": "禁用 codex router：enabled=false，rollback TOML 段",
+        "input": "{enabled: false}",
+        "expected_response": "CoreEnvelope<CodexRouterTogglePayload>（router_enabled=false）",
+        "side_effect_asserts": [
+          "rollback_router_enabled_win_sys 执行（搜索 provider 列表，重写 TOML 段）",
+          "relay config JSON 原子写"
+        ]
+      }
+    ],
+    "boundary_error": [
+      {"trigger": "enabled 参数缺失", "expected_error": "IPC error response（discriminant=6）", "test_type": "unit"},
+      {"trigger": "Codex quit 超时（5s poll + 3s kill deadline）", "expected_error": "codexLaunchError 字段含错误信息", "test_type": "manual", "reason": "需要顽固 Codex 进程"},
+      {"trigger": "RwLock PoisonError", "expected_error": "panic 'poisoned lock: another task failed inside'（blocking body@0x1401C59F0）", "test_type": "explicit_non_automatable_accept", "reason": "需 RwLock poison 注入"},
+      {"trigger": "rollback path（config write fail）", "expected_error": "rollback_router_enabled_win_sys 重写 TOML 恢复", "test_type": "manual", "reason": "需注入 config write failure"}
+    ],
+    "side_effect_asserts": [
+      "config.toml：enable 时包含 router 段 TOML markers；disable 时 router 段移除",
+      "relay config JSON：全量覆写（同其他 relay 命令）",
+      "Codex 进程：enable/disable 均经过 quit+relaunch 周期",
+      "thread_migration file：rollback path 时重写"
+    ],
+    "test_mapping": [
+      {"case": "enable happy path", "type": "manual", "reason": "需真实 Codex 进程和实机环境"},
+      {"case": "disable happy path", "type": "manual", "reason": "需真实环境"},
+      {"case": "enabled param missing", "type": "unit", "reason": "纯参数校验"},
+      {"case": "Codex quit timeout", "type": "manual", "reason": "需要不可终止进程"},
+      {"case": "RwLock PoisonError", "type": "explicit_non_automatable_accept", "reason": "RwLock poison 注入不可自动化"},
+      {"case": "rollback on config fail", "type": "manual", "reason": "需注入 fs write failure"}
+    ],
+    "producer_note": "dim6 acceptance-draft by producer session wf-aimami111-dim6-20260619; response payload 15字段来自 mac 1.1.1 parity（win binary stripped，字段名未直接确认）",
+    "payload_win_parity_caveat": "CodexRouterTogglePayload 15字段从 mac 1.1.1 parity 推断（size ratio 0.5%）；C5 消费者实现时若字段顺序/layout 与 mac 不同，请记录到 dim6 consumer notes"
+  },
+  "anti_fake_wall": {
+    "genuine_ceiling": false,
+    "categories_excluded": [
+      "async_poll_resume",
+      "icf_on_owner",
+      "vtable_core_dispatch",
+      "http_terminal",
+      "wrong_va",
+      "decompile_failure",
+      "icf_merge_of_named_target",
+      "accepted_unknown"
+    ],
+    "exhausted_before_ceiling": true
+  },
+  "four_angle_completeness": {
+    "A_func_query": {
+      "status": "partial_by_toml_marker",
+      "note": "stripped binary — no symbol found by func_query name_regex; located via TOML block marker string xref chain; VA confirmed 0x14067CA20 via set_codex_router_toml_section_write_win_sys identification",
+      "va": "0x14067CA20"
+    },
+    "B_string_pool": {
+      "status": "confirmed",
+      "toml_markers_found": 6,
+      "arg_key_confirmed": "enabled@0x1412faa7f via dispatcher",
+      "command_string_confirmed": "aSetCodexRouter@0x1412faa67"
+    },
+    "C_dispatcher": {
+      "status": "confirmed",
+      "dispatcher_va": "0x140963A40",
+      "size_bytes": 4974,
+      "arg_keys_confirmed": ["enabled", "relaunch", "apiLogin"]
+    },
+    "D_manifest": {
+      "status": "this_file"
+    }
+  },
+  "idb_renames_completed": [
+    {"va": "0x14067CA20", "old": "sub_14067CA20", "new": "set_codex_router_toml_section_write_win_sys", "level": "A"},
+    {"va": "0x1401C59F0", "old": "sub_1401C59F0", "new": "set_codex_router_enabled_blocking_body_win_sys", "level": "A"},
+    {"va": "0x1406CCC00", "old": "sub_1406CCC00", "new": "sync_codex_config_with_outcome_win_sys", "level": "A"},
+    {"va": "0x1406CFE30", "old": "sub_1406CFE30", "new": "apply_relay_config_section_win_sys", "level": "A"}
+  ],
+  "idb_comments_appended": [
+    {"va": "0x14067CA20", "scope": "func"},
+    {"va": "0x1401C59F0", "scope": "func"},
+    {"va": "0x1406CCC00", "scope": "func"},
+    {"va": "0x1406CFE30", "scope": "func"},
+    {"va": "0x140680220", "scope": "func"},
+    {"va": "0x1406DD250", "scope": "func"},
+    {"va": "0x140963A40", "scope": "func"}
+  ],
+  "idb_saved": true,
+  "idb_save_path": "<本地路径>",
+  "artifacts": [
+    "manifest.json",
+    "evidence.md",
+    "interfaces/interface.md",
+    "call-trees/set_codex_router_enabled.jsonl",
+    "ida/pseudocode-manifest.jsonl"
+  ]
+}

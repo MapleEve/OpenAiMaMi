@@ -1,0 +1,138 @@
+{
+  "command": "load_usage_analytics",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "dim_evidence": {
+    "dim1": {
+      "source": "frontend/ipc-contracts.jsonl line 86 col 31187 (argKeys=[]) + frontend/frontend-control-flow.jsonl lines 13 (analytics-panel-LbLPe_yT.js queryFn→loadUsageAnalytics, hc_depth=2), 92 (index-DdcCOEJG.js, hc_depth=1), 162 (index-DdcCOEJG.js queryFn, hc_depth=2), 184 (sessions-page-GrXHFrri.js queryFn, hc_depth=2)",
+      "wrapper": "ne (tauriInvokeWrapper)",
+      "argKeys_from_frontend": [],
+      "snippet": "ne(\"load_usage_analytics\")",
+      "note": "Frontend sends NO arguments; confirmed by both ipc-contracts argKeys=[] and CCF 4 entries all argKeys=[]"
+    },
+    "dim2": {
+      "pseudocode_bytes": 12072,
+      "owner_va": "0x14001B850",
+      "owner_name": "sub_14001B850"
+    },
+    "dim3": {
+      "max_depth": 3,
+      "edges": 29,
+      "file": "call-trees/load_usage_analytics.jsonl",
+      "terminated_reasons": ["platform_primitive", "implementation_leaf", "external_call (WinAPI)", "named_shared_primitive"],
+      "note": "UNIQUE: Only analytics command with write side effects (CreateFileW). Highest edge count in analytics family."
+    },
+    "dim4": {
+      "request_params": {
+        "note": "NO range param accepted — UNIQUE in analytics family (all other analytics accept range)",
+        "repo": "backend-internal only; not sent by frontend"
+      },
+      "response_builder": "sub_140836690 @ 0x140836690 (usage-specific)",
+      "response_ctor": "sub_140213F70 (builds usage response)",
+      "response_struct_size": "176 bytes (0xB0 copy via sub_141212FB0) — LARGEST in analytics family",
+      "error_path": "has_notch_invoke_resolver_respond @ 0x14080C3C0; Err-tag 0x8000000000000000",
+      "side_effects": {
+        "file_write": "win32_file_write_bytes_111 @ 0x141093710 — CreateFileW + WriteFile + CloseHandle (UNIQUE among analytics)",
+        "file_write_content": "serialized skill snapshot JSON (serialize_skill_snapshot_json_111 @ 0x140197420)",
+        "file_read": "quota history (spinlock+deep-copy) + MCP snapshot (load_mcp_servers_read_existing_snapshot_111 @ 0x1401BF000)",
+        "dir_create": "relay_config_check_parent_dirs_sys @ 0x1406F2870",
+        "lock_acquire": "pending_auto_switch_state_lock_acquire_111 @ 0x14006EDC0",
+        "error_cache_check": "sub_1401C21E0 — if cache hit (discriminant 1): skip fresh collection, return cached error immediately"
+      }
+    },
+    "dim5": {
+      "platform": "windows-x64",
+      "evidence": "CreateFileW + WriteFile + CloseHandle confirmed WinAPI; win32_file_write_bytes_111 @ 0x141093710 win32-only"
+    },
+    "dim6": {
+      "status": "acceptance-draft",
+      "happy_path": {
+        "input": {},
+        "expected_output": "JSON via sub_140836690; 176-byte inner struct from sub_140213F70; skill snapshot JSON written to disk; relay dir created if absent; MCP snapshot loaded",
+        "side_effect_asserts": [
+          "pending_auto_switch mutex acquired then released",
+          "quota history spinlock acquired, deep-copied, released",
+          "relay_config_check_parent_dirs_sys called — relay parent dir created if missing (observable: dir exists after call)",
+          "load_mcp_servers_read_existing_snapshot_111 called — MCP snapshot file read",
+          "serialize_skill_snapshot_json_111 called — skill list serialized to JSON buffer",
+          "win32_file_write_bytes_111 called — skill JSON written to file via CreateFileW+WriteFile+CloseHandle (observable: file mtime updated)",
+          "response struct is 176 bytes (0xB0 copy) — LARGEST in analytics family",
+          "if error cache hit (sub_1401C21E0 discriminant 1): no fresh data collection, cached error returned immediately (no relay dir / MCP / file write)"
+        ]
+      },
+      "boundary_errors": [
+        {
+          "trigger": "mutex acquire fails",
+          "expected": "error via has_notch_invoke_resolver_respond; no data access"
+        },
+        {
+          "trigger": "repo invalid — query_installed_skills_with_repo_111 discriminant != 6",
+          "expected": "error via has_notch_invoke_resolver_respond @ 0x14080C3C0"
+        },
+        {
+          "trigger": "error cache hit (sub_1401C21E0 returns 1) — previous fetch error cached",
+          "expected": "cached error serialized via sub_140243FC0; usage_fetch_error_drop_111 called; Err-tag 0x8000000000000000; NO fresh data collection (skip relay dir / MCP snapshot / file write)"
+        },
+        {
+          "trigger": "relay_config_check_parent_dirs_sys returns error",
+          "expected": "v82 discriminant 2 + error; usage_fetch_error_drop_111 called; no MCP snapshot read or file write"
+        },
+        {
+          "trigger": "serialize_skill_snapshot_json_111 returns error",
+          "expected": "v82 tag set to 3; sub_1401D6610 drops serialization ctx; no file write"
+        },
+        {
+          "trigger": "win32_file_write_bytes_111 returns non-null error (file write fails)",
+          "expected": "v82 discriminant 2 + error; JSON buffer freed; error accumulated; usage_fetch_error_drop_111 called"
+        },
+        {
+          "trigger": "OOM",
+          "expected": "sub_14124BCCB panic/abort"
+        }
+      ],
+      "critical_implementation_notes": [
+        "NO range param in request DTO — UNIQUE in analytics family. Implementation must NOT add range field.",
+        "FILE WRITE SIDE EFFECT — implementation must handle write errors. Only analytics command with CreateFileW write.",
+        "176-byte response struct — LARGEST in analytics family. Must use distinct response DTO type.",
+        "Error cache path (sub_1401C21E0) must be implemented — second call after error returns cached error without re-collecting.",
+        "Order of side effects: relay dir create → MCP snapshot read → skill JSON serialize → file write."
+      ],
+      "test_mapping": [
+        {"case": "happy_path: no args, relay dir pre-created, MCP snapshot exists → skill JSON written, 176-byte response", "type": "e2e"},
+        {"case": "error: relay dir creation fails → error, no file write", "type": "e2e"},
+        {"case": "error cache: consecutive failing calls return cached error without re-collecting", "type": "manual"},
+        {"case": "side effect: skill JSON file present and updated after success (CRITICAL — only write analytics)", "type": "e2e"},
+        {"case": "no range param accepted — request with range should have no distinct effect", "type": "e2e"}
+      ]
+    }
+  },
+  "owner": {
+    "va": "0x14001B850",
+    "name": "sub_14001B850",
+    "string_ref_va": "0x1412ac3eb",
+    "size_bytes": "0x38f",
+    "delta_class": "NEW_IN_1.1.1"
+  },
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:line 86 col 31187 (argKeys=[])",
+    "frontend/frontend-control-flow.jsonl:lines 13,92,162,184 (all argKeys=[])",
+    "raw/aimami/1.1.1/windows-x64/load_usage_analytics/pseudocode.md (12072 bytes)",
+    "raw/aimami/1.1.1/windows-x64/load_usage_analytics/call-tree.md (29 edges, max_depth=3)",
+    "raw/aimami/1.1.1/windows-x64/load_usage_analytics/call-trees/load_usage_analytics.jsonl",
+    "raw/aimami/1.1.1/windows-x64/load_usage_analytics/interface.md"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "machine": "<本地机器>",
+  "module": "AiMaMi 1.1.1 win64.exe",
+  "sha": "d24e429a",
+  "timestamp_utc": "2026-06-20"
+}

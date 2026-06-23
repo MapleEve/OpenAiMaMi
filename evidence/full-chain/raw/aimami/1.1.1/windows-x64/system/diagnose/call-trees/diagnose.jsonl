@@ -1,0 +1,17 @@
+{"depth":0,"va":"0x14000d2a0","symbol":"tauri_ipc_main_dispatcher_sys","role":"ipc_dispatcher","size":17870,"call_site":"0x14000dffc","terminated_reason":null,"note":"dispatcher; call to handler at 0x14000dffc after matching 'diagnose' string 0x1412ac28c"}
+{"depth":1,"va":"0x14078EE90","symbol":"diagnose_ipc_cmd_handler_win","role":"ipc_cmd_handler","size":901,"terminated_reason":null,"note":"Path A: sync task body path"}
+{"depth":2,"va":"0x14006EDC0","symbol":"sub_14006EDC0","role":"state_manager_lock_helper","size":487,"terminated_reason":"library_leaf","note":"StateManager lock helper"}
+{"depth":2,"va":"0x1401B8530","symbol":"diagnose_task_body_win","role":"task_body","size":1325,"terminated_reason":null,"note":"sync diagnose execution body"}
+{"depth":3,"va":"0x1401abc20","symbol":"state_manager_lock_and_assemble","role":"rwlock_read_and_assemble","size":839,"terminated_reason":"platform_leaf","note":"RwLock::read + fallback assemble; v21==10->sub_1401A5570; v21==2->Ok(T)"}
+{"depth":3,"va":"0x140214D00","symbol":"diagnose_ok_response_builder_win","role":"ok_response_builder","size":298,"terminated_reason":"response_leaf","note":"alloc 2B 'ok'(0x6B6F) + 7B scheduler tag; writes fields at +336..+400"}
+{"depth":1,"va":"0x140A751F0","symbol":"diagnose_async_poll_state_machine","role":"async_poll","size":593,"terminated_reason":null,"note":"Path B: tokio async executor; switch case 0/1/2/3"}
+{"depth":2,"va":"0x1409FA8B0","symbol":"sub_1409FA8B0","role":"async_task_spawner","size":null,"terminated_reason":null}
+{"depth":3,"va":"0x1407D24F0","symbol":"diagnose_blocking_task_runner_win","role":"block_in_place_wrapper","size":310,"terminated_reason":null,"note":"tokio blocking task; sub_140F03290=block_in_place"}
+{"depth":4,"va":"0x140790870","symbol":"repository_diagnose_core_win","role":"repository_diagnose_core","size":2978,"terminated_reason":null,"note":"full Repository::diagnose; contains PROGRESSIVE_STATE_SAVE_FAILED"}
+{"depth":5,"va":"0x1401abc20","symbol":"state_manager_lock_and_assemble","role":"rwlock_read_and_assemble","size":839,"terminated_reason":"platform_leaf"}
+{"depth":5,"va":"0x1401AF5C0","symbol":"sub_1401AF5C0","role":"progressive_state_save","size":null,"terminated_reason":null,"note":"if save fails: PROGRESSIVE_STATE_SAVE_FAILED path"}
+{"depth":5,"va":"0x1401B62F0","symbol":"sync_local_runtime_state_builder","role":"sync_local_runtime_state","size":935,"terminated_reason":null,"note":"hardcode bundle_id='dev.aimami.auto-switch'; a4==4->check_schtask_codexmate_autoswitch [WIN-SPECIFIC]"}
+{"depth":6,"va":"0x1401EB500","symbol":"sub_1401EB500","role":"account_state_helper","terminated_reason":"implementation_leaf"}
+{"depth":6,"va":"0x1401ED840","symbol":"sub_1401ED840","role":"provider_state_helper","terminated_reason":"implementation_leaf"}
+{"depth":5,"va":"0x1401B53F0","symbol":"sub_1401B53F0","role":"load_local_state_synced_equiv","size":2536,"terminated_reason":"implementation_leaf","note":"large state loading func; callees: sub_1401D6610,sub_1401F7A90,sub_1401BF000 etc"}
+{"depth":5,"va":"0x140213770","symbol":"schedule_full_runtime_refresh_builder","role":"ok_scheduler_builder","size":302,"terminated_reason":"response_leaf","note":"writes 'ok'(0x6B6F) + 7B scheduler tag at +680..+720; identical to Path A builder magic"}

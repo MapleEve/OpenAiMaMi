@@ -1,0 +1,35 @@
+{
+  "command": "restart_codex",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "system/restart_codex/ida/pseudocode/0001_restart_codex_owner_hed0488bc934334f0.c (VA=0x100616150, size=299B)",
+    "system/restart_codex/ida/pseudocode/0002_restart_codex_stop_codex_for_file_edit_h501f0cbf0ab7f98f.c",
+    "system/restart_codex/ida/pseudocode/0003_restart_codex_launch_codex_app_he81a14556c2107c0.c",
+    "system/restart_codex/call-trees/restart_codex.jsonl (depth=3+, 21 entries, pgrep/osascript/kill/open syscall terminals)",
+    "system/restart_codex/interfaces/interface.md (argKeys=[], unit Ok, 4 launch strategies, timing confirmed)",
+    "system/restart_codex/gate-report-dim6.json (session=wf-aimami111-dim6-20260619, acceptance-draft)",
+    "frontend/ipc-contracts.jsonl:L86:col31150 argKeys=[] wrapper=restartCodex (ne callee)",
+    "frontend/ipc-contracts.jsonl:L86:col120754 argKeys=[] wrapper=restartCodexApp (vt callee)",
+    "frontend/frontend-control-flow.jsonl:maintenance-page-C2wkSNnk.js:L17 callsite=N.restartCodex()",
+    "frontend/frontend-control-flow.jsonl:relay-page-CsHU7KuS.js:L43 callsite=ft.restartCodexApp()"
+  ],
+  "dim_notes": {
+    "dim1_frontend_ccf": "ipc-contracts.jsonl: 2 wrappers — restartCodex (ne callee, L86 col31150, argKeys=[]) and restartCodexApp (vt callee, L86 col120754, argKeys=[]). Callsites: maintenance-page-C2wkSNnk.js:17 + relay-page-CsHU7KuS.js:43. No args. CLOSED.",
+    "dim2_owner_pseudocode": "3 pseudocode files: owner hed0488bc (299B) + stop_codex_for_file_edit h501f0cbf + launch_codex_app he81a1455. Total ~28K dir. Owner: stop(5s) then launch — clear 2-phase flow. CLOSED.",
+    "dim3_call_tree_depth5": "21 entries, depth=3+ (IPC dispatcher->owner->platform fns->syscall leaves). Terminal: pgrep(UNIX syscall), osascript(AppleScript), kill-9(Command::new), open(4 paths), sleep(thread::sleep). Depth confirmed >= platform-fn+syscall = 3. CLOSED.",
+    "dim4_interface_dto_error_sideeffect": "argKeys=[] (no args). Response: CoreEnvelope::ok(()) unit on success (0x8000000000000000). Errors: tag=9 'Codex launch timed out' (22B) + io::Error. Side-effects: osascript quit->kill loop (300ms/3s)->open via 4 strategies (bundleId x2, ~/Apps/Codex.app, /Apps/Codex.app). No FS writes, no config changes, no HTTP. CLOSED.",
+    "dim5_same_platform_gate": "macos-arm64. Owner VA=0x100616150. platform::process functions confirmed. Windows dim5: separate session (INDEX line 1481 per dim6.json). CLOSED.",
+    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=wf-aimami111-dim6-20260619. OS process management side-effects: explicit_non_automatable_accept (manual test required). Producer acceptance-draft = dim6 closed. CLOSED."
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

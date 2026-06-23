@@ -1,0 +1,53 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "command": "activate_relay_provider",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "commands_relay",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-16T13:00:00Z",
+  "role": "pure_producer",
+  "source_binary_sha256": "985dae00be620b21f4d3a76b5b4fa4af2bfe5e0b6cc5bbf38a8e5e3a6c9b2f1",
+  "idb": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "ida_server": "<逆向工具通道>",
+  "owner_va": "0x1005eb760",
+  "owner_symbol": "codexmate_lib::commands::relay::activate_relay_provider",
+  "owner_size_bytes": 495,
+  "core_delegate_va": "0x1005dfab0",
+  "core_delegate_symbol": "codexmate_lib::core::relay::manager::RelayManager::activate",
+  "call_tree_depth": 5,
+  "call_tree_terminated_reason": "all leaves reached: fs_write(relay.json atomic), fs_write(codex catalog), network_probe(proxy port), async_runtime(proxy spawn), in_memory_state_mutation(RelayActiveByIde::add)",
+  "fs_write_leaves": [
+    "codexmate_lib::core::relay::atomic_write::write_atomic (0x10041e960)",
+    "codexmate_lib::core::relay::codex_catalog::write_catalog (0x1006e8450)"
+  ],
+  "fs_delete_leaves": [
+    "codexmate_lib::core::relay::codex_catalog::remove_catalog (0x1006e8800)"
+  ],
+  "network_leaves": [
+    "std::net::tcp::TcpStream::connect_timeout (0x100f29bd0) — 127.0.0.1:proxy_port, 300ms"
+  ],
+  "async_leaves": [
+    "tokio::runtime::Runtime::block_on (0x1002cf3a0) — proxy spawn future"
+  ],
+  "in_memory_leaves": [
+    "RelayActiveByIde::add (0x10054a8b0) — dedup insert ide_id to active sessions Vec"
+  ],
+  "gate_candidate": {
+    "dim1_frontend_ccf": "Unknown — not assessed this session (requires frontend CCF analysis)",
+    "dim2_backend_owner_pseudocode": "Confirmed — owner 0x1005eb760 decompiled, core 0x1005dfab0 decompiled",
+    "dim3_call_tree": "Confirmed — depth 5, all implementation leaves reached",
+    "dim4_interface_dto_error": "Confirmed — ide_id:String input, CoreEnvelope<RelayState> output, all error paths mapped",
+    "dim5_platform_gate": "macOS confirmed; Windows Unknown (shared status in owner-map but no VA/decompile)",
+    "dim6_test_acceptance": "Unknown — C5 implementation-side work",
+    "gate_status": "strictImplementationUse_candidate (dim2+dim3+dim4+dim5_mac confirmed; dim1+dim5_win+dim6 Unknown)",
+    "implementation_use": false,
+    "gate_accepted": false,
+    "readyToImplement": false
+  },
+  "idb_comment_written": true,
+  "idb_comment_addr": "0x1005eb760",
+  "owner_gate": "owner_first_no_collision",
+  "prewrite_collision_check": "INDEX.jsonl grep 1.1.1 macos-arm64 activate_relay_provider: no prior entry; owner session wf-aimami111-delta-20260616 is current session; no competing producer"
+}

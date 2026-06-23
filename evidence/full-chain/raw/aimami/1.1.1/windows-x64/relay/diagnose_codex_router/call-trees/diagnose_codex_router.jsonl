@@ -1,0 +1,18 @@
+{"depth": 0, "va": "0x140021AE0", "name": "diagnose_codex_router_cmd_owner_111", "role": "ipc_cmd_owner", "size_bytes": 911, "terminated_reason": null, "platform": "windows-x64", "session": "wf-aimami111-delta-20260616"}
+{"depth": 1, "va": "0x141214620", "name": "sub_141214620", "role": "relay_manager_arc_extract", "parent_va": "0x140021AE0", "terminated_reason": "tauri_state_library_leaf", "platform": "windows-x64"}
+{"depth": 1, "va": "0x140218E30", "name": "relay_health_check_core_sys_111", "role": "core_diagnostic_engine", "size_bytes": 4454, "parent_va": "0x140021AE0", "terminated_reason": null, "platform": "windows-x64"}
+{"depth": 2, "va": "0x1406E8480", "name": "relay_manager_state_extract_sys_111", "role": "relay_state_lock_extract", "size_bytes": 233, "parent_va": "0x140218E30", "terminated_reason": null, "platform": "windows-x64", "strings": ["relay state poisoned", "src\\core\\relay\\manager.rs"]}
+{"depth": 3, "va": "0x14072A3A0", "name": "relay_providers_enumerate_sys_111", "role": "relay_provider_struct_enumerate", "size_bytes": 1201, "parent_va": "0x1406E8480", "terminated_reason": "provider_struct_leaf"}
+{"depth": 3, "va": "0x14124A510", "name": "sub_14124A510", "role": "spinwait_condvar", "parent_va": "0x1406E8480", "terminated_reason": "winapi_sync_leaf", "platform": "windows-x64"}
+{"depth": 3, "va": "WakeByAddressSingle", "name": "WakeByAddressSingle", "role": "mutex_release", "parent_va": "0x1406E8480", "terminated_reason": "winapi_sync_leaf", "platform": "windows-x64"}
+{"depth": 2, "va": "0x14073AF50", "name": "sub_14073AF50", "role": "toml_json_key_search", "parent_va": "0x140218E30", "terminated_reason": "key_compare_leaf", "calls": ["model_catalog_json@0x1412c13c5", "model_provider@0x1412c13c5+18"]}
+{"depth": 2, "va": "0x14107A2D0", "name": "sub_14107A2D0", "role": "file_path_build_and_read", "size_bytes": 90, "parent_va": "0x140218E30", "call_sites": ["0x14021936a", "0x1402195ce"], "target_file": "codex_router_catalog.json@0x1412f006f", "terminated_reason": null}
+{"depth": 3, "va": "0x1410A1B60", "name": "sub_1410A1B60", "role": "pathbuf_builder", "parent_va": "0x14107A2D0", "terminated_reason": "path_leaf"}
+{"depth": 3, "va": "0x141088630", "name": "sub_141088630", "role": "fs_read", "parent_va": "0x14107A2D0", "terminated_reason": "fs_read_leaf"}
+{"depth": 2, "va": "0x1410795D0", "name": "sub_1410795D0", "role": "string_cmp_catalog_content", "parent_va": "0x140218E30", "terminated_reason": "string_compare_leaf"}
+{"depth": 2, "va": "0x1407B2550", "name": "sub_1407B2550", "role": "fuzzy_string_match_model_entry", "parent_va": "0x140218E30", "terminated_reason": "string_compare_leaf"}
+{"depth": 2, "va": "0x1405F9310", "name": "sub_1405F9310", "role": "provider_active_discriminant_check", "parent_va": "0x140218E30", "terminated_reason": "discriminant_check_leaf"}
+{"depth": 2, "va": "0x1406DF920", "name": "sub_1406DF920", "role": "relay_active_flag_read", "parent_va": "0x140218E30", "terminated_reason": "flag_read_leaf"}
+{"depth": 1, "va": "0x14082FA60", "name": "sub_14082FA60", "role": "core_envelope_builder", "size_bytes": 592, "parent_va": "0x140021AE0", "terminated_reason": null}
+{"depth": 2, "va": "0x14080C3C0", "name": "sub_14080C3C0", "role": "tauri_ipc_resolve", "parent_va": "0x14082FA60", "terminated_reason": "tauri_ipc_leaf", "strings": ["called Result::unwrap() on an Err value", "resolver consumed"], "platform": "windows-x64"}
+{"depth": 3, "va": "WakeByAddressSingle", "name": "WakeByAddressSingle", "role": "invoke_resolver_wake", "parent_va": "0x14080C3C0", "terminated_reason": "winapi_sync_leaf", "platform": "windows-x64"}

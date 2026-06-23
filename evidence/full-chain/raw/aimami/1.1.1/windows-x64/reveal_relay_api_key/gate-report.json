@@ -1,0 +1,29 @@
+{
+  "command": "reveal_relay_api_key",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/reveal_relay_api_key/pseudocode.md",
+    "raw/aimami/1.1.1/windows-x64/reveal_relay_api_key/call-tree.md",
+    "raw/aimami/1.1.1/windows-x64/reveal_relay_api_key/interface.md",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl#L108 command=reveal_relay_api_key argKeys=[providerId]",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl#L130,L183",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-consolidated.json#readyToImplement"
+  ],
+  "dim1_evidence": "ipc-contracts.jsonl L108: command=reveal_relay_api_key, argKeys=[providerId], argObject={providerId:t}, callee=vt; CCF L130,L183 confirmed; UI: relay-page ft.revealApiKey(b.id); wrapper=revealApiKey: t => vt('reveal_relay_api_key',{providerId:t}); manager NOT sent from frontend (Option<String>=None accepted)",
+  "dim2_evidence": "reveal_relay_api_key_owner_sys@0x140012820 (1297B) full decompile; relay_reveal_api_key_state_lookup_sys@0x1406D6E80; reveal_relay_api_key_response_build_sys@0x1402188F0; relay_keychain_lookup_for_quota_sys@0x1402EE7C0 (shared with get_relay_provider_quota); 逆向分析 renames A-grade; idb_save confirmed",
+  "dim3_evidence": "call-tree depth=5 terminated at all_leaves_reached; leaves: sub_141213640(str compare), sub_1410A2210(232B struct clone), sub_140001370(dealloc), WakeByAddressSingle(WIN sync), sub_141089D90('USER'), sub_141089D90('USERNAME'), sub_140C35C40(SHA256 compress); no accepted_unknown; genuine_ceiling=false",
+  "dim4_evidence": "params: manager=Option<String>(None from frontend), providerId=String(required); response: {ok:'<apiKey>'(2B=0x6B6F), Success:'<apiKey>'(7B=0x53756363657373)}; errors: keychain_err=0x8000000000000007, empty_ok={0,1,0}, relay_state_poisoned panic; side-effects: read-only relay state lock + optional secrets.json read; no writes no network",
+  "dim5_evidence": "_InterlockedCompareExchange8+WakeByAddressSingle WIN lock; relay_provider_stride=232B; env_fallback: USER(4B)/USERNAME(8B); SHA256 init constants@0x1412C8FB8/0x1412C8FC8; keychain_error_code=0x8000000000000007; debug_log_gate=*off_141899A88>2u",
+  "dim6_evidence": "acceptance-draft by wf-aimami111-dim6-20260619; promoted to readyToImplement in win-consolidated.json",
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

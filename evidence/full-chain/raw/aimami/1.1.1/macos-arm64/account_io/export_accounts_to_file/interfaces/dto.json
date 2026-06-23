@@ -1,0 +1,97 @@
+{
+  "command": "export_accounts_to_file",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "session": "wf-aimami111-delta-20260616",
+  "delta_status": "migrated_no_behavior_diff",
+
+  "ipc_contract": {
+    "command_name": "export_accounts_to_file",
+    "ipc_blob_va": "0x1010e7311",
+    "frontend_wrapper": "exportAccountsToFile(targetPath, accountKeys?)",
+    "invoke_call": "invoke('export_accounts_to_file', { targetPath, accountKeys: accountKeys ?? null })",
+    "arg_keys": ["targetPath"],
+    "arg_optional_body": "accountKeys (Option<Vec<String>>, null when absent)"
+  },
+
+  "request_dto": {
+    "targetPath": { "type": "String", "required": true, "rodata_key_bytes": 10, "rodata_va": "0x1010e7311+offset", "note": "target file path; .json suffix normalized by core" },
+    "accountKeys": { "type": "Option<Vec<String>>", "required": false, "note": "filter to specific account keys; null = export all" }
+  },
+
+  "response_dto": {
+    "type": "AccountExportPayload",
+    "serializer_va": "0x100550470",
+    "fields": {
+      "targetPath":   { "type": "String", "rodata_key_bytes": 10, "rodata_va": "0x101150f32" },
+      "accountCount": { "type": "u64",    "rodata_key_bytes": 12, "rodata_va": "0x101150d38" },
+      "exportedAt":   { "type": "u64",    "rodata_key_bytes": 10, "rodata_va": "0x10114ff2f", "note": "unix timestamp seconds" },
+      "skipped":      { "type": "Vec<String>", "rodata_key_bytes": 7, "rodata_va": "0x10114ff82", "note": "account keys for which auth load failed" }
+    }
+  },
+
+  "disk_export_dto": {
+    "type": "ExportFile",
+    "struct_metadata_va": "0x101148783",
+    "element_count": 7,
+    "fields": {
+      "schemaVersion":   { "type": "String", "value": "aimami-accounts-export", "rodata_key_bytes": 13, "rodata_key_va": "0x10114cb15" },
+      "kind":            { "type": "String", "value": "aimami-accounts-export", "rodata_key_bytes": 4,  "rodata_key_va": "0x10114cb22", "note": "confirmed from key 'kind'; value string from alloc in core" },
+      "appVersion":      { "type": "String", "value": "1.1.1", "rodata_key_bytes": 10, "rodata_key_va": "0x10114cb26", "note": "5B alloc bytes 0x31 0x2E 0x31 0x2E 0x31 = '1.1.1'" },
+      "exportedAt":      { "type": "String|u64", "rodata_key_bytes": 10, "rodata_key_va": "0x10114cb30", "note": "SystemTime::now duration" },
+      "exportedHostname":{ "type": "Option<String>", "rodata_key_bytes": 16, "rodata_key_va": "0x10114cb3a", "note": "hostname::get result; UTF-8 validated; None if OsString not UTF-8" },
+      "accountCount":    { "type": "u64", "rodata_key_bytes": 12, "rodata_key_va": "0x10114cb4a" },
+      "accounts":        { "type": "Vec<ExportedAccount>", "note": "key passed via ptr &__src[3]; not rodata literal" }
+    }
+  },
+
+  "exported_account_dto": {
+    "type": "ExportedAccount",
+    "struct_metadata_va": "0x101148783",
+    "element_count": 14,
+    "fields": [
+      "accountKey", "email", "alias", "accountName",
+      "workspaceName", "profileName", "plan", "authMode",
+      "hasActiveSubscription", "subscriptionExpiresAt", "subscriptionWillRenew",
+      "createdAt", "lastUsedAt", "auth"
+    ],
+    "note": "field names from 1.0.9 baseline; element count=14 confirmed from struct metadata rodata at 0x101148783; exact serde key bytes not individually confirmed for all 14 fields in 1.1.1"
+  },
+
+  "error_codes": {
+    "CoreError_7_NotFound":     { "discriminant": 7, "message": "No AiMaMi account registry found yet", "message_len": 36, "trigger": "registry metadata check fails" },
+    "CoreError_9_Other_empty":  { "discriminant": 9, "message": "No accounts to export", "message_len": 21, "trigger": "registry.accounts.len() == 0" },
+    "CoreError_9_Other_noauth": { "discriminant": 9, "message": "No exportable accounts: all snapshots are missing or unreadable.", "message_len": 64, "trigger": "all per-account auth loads fail" },
+    "CoreError_2_Io":           { "discriminant": 2, "message": "(OS error string from atomic_write)", "trigger": "write_atomic filesystem error" },
+    "CoreError_8_Serialization":{ "discriminant": 8, "message": "(serde_json error string)", "trigger": "JSON serialization error" }
+  },
+
+  "side_effects": [
+    {
+      "type": "filesystem_write",
+      "description": "atomic write to targetPath (temp+rename); output is ExportFile JSON",
+      "terminal_leaf_va": "0x10041e960",
+      "terminal_leaf_symbol": "codexmate_lib::core::relay::atomic_write::write_atomic"
+    },
+    {
+      "type": "filesystem_read",
+      "description": "read registry file + per-account auth files from CodexPaths",
+      "note": "read-only; does not modify registry or auth files"
+    },
+    {
+      "type": "mutex_lock",
+      "description": "AppState mutex held for entire operation duration",
+      "scope": "BlockingTask::poll at 0x10059a820"
+    },
+    {
+      "type": "syscall_hostname",
+      "description": "hostname::get() syscall to capture machine hostname for exportedHostname field"
+    },
+    {
+      "type": "syscall_time",
+      "description": "SystemTime::now() for exportedAt timestamp"
+    }
+  ],
+
+  "no_side_effects": ["http", "sidecar", "sqlite", "ipc_outbound", "process_spawn"]
+}

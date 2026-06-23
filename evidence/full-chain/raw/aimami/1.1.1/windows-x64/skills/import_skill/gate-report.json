@@ -1,0 +1,82 @@
+{
+  "command": "import_skill",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl#L74: command='import_skill', argKeys=['path'], argObject='{path:t}', wrapper='importSkill', kind='tauriInvokeWrapper'",
+    "frontend/frontend-control-flow.jsonl#L87: terminal_call.command='import_skill', argKeys=['path'], wrapper='importSkill'",
+    "frontend/frontend-control-flow.jsonl#L194: callsite skills-page-CxV_IefY.js mutationFn -> i.importSkill(B); guard if(typeof B=='string')",
+    "skills/import_skill/pseudocode.md: owner=import_skill_cmd_111@0x14001CA50, size=1217B; full body L0-L5; repo param is server-resolved (not frontend argKey); new callees vs 1.0.9 documented",
+    "skills/import_skill/call-tree.md: call tree documented with leaf paths",
+    "skills/import_skill/call-trees/import_skill.jsonl: call-trees JSONL present",
+    "skills/import_skill/gate-report.json (prev): status=readyToImplement, leaf_paths=[CopyFileExW/SQLite/uuid/win32_file_read/skill_store_get_all], delta_vs_1_0_9 documented; dim6_acceptance_mapping session=wf-aimami111-dim6-20260619"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 74,
+    "wrapper": "importSkill",
+    "argKeys": ["path"],
+    "argObject": "{path:t}",
+    "kind": "tauriInvokeWrapper",
+    "note": "frontend sends only 'path'; 'repo' is server-side resolved from skill store context (not a frontend argKey)"
+  },
+  "dim2_detail": {
+    "owner_va": "0x14001CA50",
+    "owner_name": "import_skill_cmd_111",
+    "size_bytes": 1217,
+    "delta_vs_109": "ADDED: repo param (server-side); pending_auto_switch_state_lock_acquire_111; query_installed_skills_with_repo_111 pre-gate; version-compare gate; sub_14108C150 event notify before DB write; file-size/content check"
+  },
+  "dim3_detail": {
+    "leaf_paths": [
+      "CopyFileExW (Win32 API) via snooze_file_backup_copy_111",
+      "sub_1403A6410 (SQLite write) - terminated at SQLite driver",
+      "uuid_v4_generate_raw_sys (syscall) - terminated at OS syscall",
+      "win32_file_read_bytes_111 (Win32 ReadFile) - terminated at Win32 primitive",
+      "skill_store_get_all_111 (store read) - terminated at store Arc read"
+    ],
+    "call_trees_file": "skills/import_skill/call-trees/import_skill.jsonl"
+  },
+  "dim4_detail": {
+    "request_argkeys": ["path(String)"],
+    "dto_response_fields": {
+      "backupID": "uuid string (uuid_v4_generate_raw_sys)",
+      "skillID": "string from SKILL.md metadata",
+      "name": "string from SKILL.md metadata",
+      "title": "H1 heading extracted from SKILL.md",
+      "relativePath": "relative install path string",
+      "createdAt": "u64 ms timestamp (elapsed_since_ts_111)"
+    },
+    "errors": [
+      "Directory must contain SKILL.md (0x1406EBA15)",
+      "Must be a directory with SKILL.md or a SKILL.md file (0x1406EBA8C)",
+      "Invalid skill source (0x1406F1422)"
+    ],
+    "side_effects": [
+      "filesystem_read: win32_file_read_bytes_111 reads SKILL.md bytes",
+      "filesystem_copy: snooze_file_backup_copy_111/CopyFileExW recursively copies skill files",
+      "sqlite_write: sub_1403A6410 writes InstalledSkillSummary JSON to installed_skills table",
+      "uuid_generate: uuid_v4_generate_raw_sys generates new backupID UUID per import",
+      "event_notify: sub_14108C150 fires after successful install (new in 1.1.1)",
+      "mutex_lock: pending_auto_switch_state_lock_acquire_111 held for duration"
+    ]
+  },
+  "dim5_detail": {
+    "windows_only": true,
+    "idb_path": "<本地路径>",
+    "idb_saved": true
+  },
+  "dim6_detail": {
+    "source": "gate-report.json (prev)#dim6_acceptance_mapping (session wf-aimami111-dim6-20260619)",
+    "happy_path": "invoke('import_skill', {path: '<skill_dir_or_SKILL.md_path>'}) => {backupID, skillID, name, title, relativePath, createdAt}",
+    "note": "version-compare gate new in 1.1.1: same/older version skips file-copy but SQLite update may still proceed"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

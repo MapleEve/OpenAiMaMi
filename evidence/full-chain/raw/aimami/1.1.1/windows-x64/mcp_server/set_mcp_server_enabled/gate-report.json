@@ -1,0 +1,68 @@
+{
+  "command": "set_mcp_server_enabled",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "ipc-contracts.jsonl L70: cmd=set_mcp_server_enabled argKeys=['name','enabled'] callee=ne kind=tauriInvokeWrapper",
+    "frontend-control-flow.jsonl L174: terminal_call.command=set_mcp_server_enabled kind=tauriInvoke argKeys=['name','enabled']; trigger=mcp-page-CGgOsRmy.js; handler_chain=[mutationFn,setMcpServerEnabled]",
+    "dim1 NOTE: backend handler also expects 'repo' param (aRepo@0x1412AC6D1, new in 1.1.1); frontend omits it; integration-contract gap documented in interface.md. dim1 confirmed_with_gap — frontend invoke exists and is confirmed.",
+    "pseudocode.md 23540B ≥600B",
+    "call-tree.md: depth_reached=7 (>5 requirement); relay_atomic_write_leaf_sys@0x140504310 is FS terminal leaf; 42 callees; all branches terminated",
+    "interface.md: input={name:str,enabled:bool,repo:str(gap)}, output=CoreEnvelope<McpServerMutationPayload>, side_effects=[RwLock,TOML read×2,atomic TOML write,managed markers], error_paths documented",
+    "gate-report.json wf-aimami111-delta-20260618-goldleaf: gate_tier=readyToImplement; all dim1-5 confirmed; depth=7; dim6_acceptance=acceptance_draft",
+    "dim5: _InterlockedCompareExchange8+WakeByAddressSingle@0x14124A5D0+WaitOnAddress+GetCurrentProcessId+CloseHandle all Windows-only",
+    "dim6_acceptance: acceptance_draft with full happy_path+boundary_error+side_effect_asserts; gate_upgrade=readyToImplement"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "session": "wf-aimami111-delta-20260618-goldleaf",
+  "owner_va": "0x14001dcc0",
+  "owner_name": "set_mcp_server_enabled_owner_sys",
+  "owner_size_bytes": 1486,
+  "ipc_command_va": "0x1412AC130",
+  "dim1_detail": {
+    "ipc_contracts_line": 70,
+    "ccf_line": 174,
+    "argKeys": ["name", "enabled"],
+    "wrapper": "tauriInvokeWrapper",
+    "callee": "ne",
+    "trigger_file": "assets/mcp-page-CGgOsRmy.js",
+    "handler_chain": ["mutationFn", "setMcpServerEnabled"],
+    "frontend_file": "src/services/api/mcp/mcpApi.tsx",
+    "gap": "repo param absent from frontend (1.1.1 backend expects {name,enabled,repo}); frontend sends {name,enabled} only; integration gap not backported"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 23540,
+    "threshold": 600
+  },
+  "dim3_detail": {
+    "depth_reached": 7,
+    "terminated_reason": "relay_atomic_write_leaf_sys@0x140504310 FS write terminal leaf; Win32 IO at depth 8 = noise floor",
+    "key_callees": ["pending_auto_switch_state_lock_acquire_111@0x14006edc0 (NEW)", "query_installed_skills_with_repo_111@0x141214620 (NEW)", "mcp_server_find_and_rewrite_toml_111@0x140680220", "set_codex_router_toml_section_write_win_sys@0x14067CA20", "relay_atomic_write_leaf_sys@0x140504310"]
+  },
+  "dim4_detail": {
+    "input_fields": {"name": "str", "enabled": "bool", "repo": "str (backend only, gap)"},
+    "output": "CoreEnvelope<McpServerMutationPayload>",
+    "McpConfigPayload_size": "0x150",
+    "managed_markers": ["# >>> aimami-relay codex-router top start (DO NOT EDIT MANUALLY)", "# <<< aimami-relay codex-router top end", "# >>> aimami-relay managed start (DO NOT EDIT MANUALLY)", "# <<< aimami-relay managed end", "# >>> aimami-relay managed start (top, DO NOT EDIT MANUALLY)", "# <<< aimami-relay managed end (top)"],
+    "side_effects": ["RwLock acquire/release on MCP config state", "TOML read (snooze_file_open_111+win32_file_read_bytes_111)", "TOML atomic write (relay_atomic_write_leaf_sys: pid+uuid temp)", "managed section markers preserved"],
+    "error_paths": ["pending_lock non-zero->IPC error (no FS)", "repo not found->IPC error (no FS)", "name parse fail->IPC error", "enabled parse fail->IPC error", "server not found in TOML->IPC error", "TOML parse Err->IPC error", "atomic write fail->Err(2) temp cleaned", "RwLock poison->panic"]
+  },
+  "dim5_detail": {
+    "win_primitives": ["_InterlockedCompareExchange8", "WakeByAddressSingle@0x14124A5D0", "WaitOnAddress via sub_14124A510", "GetCurrentProcessId", "CloseHandle", "WriteFile"],
+    "same_platform": true
+  },
+  "dim6_detail": {
+    "basis": "acceptance_draft from gate-report.json wf-aimami111-delta-20260618-goldleaf; gate_upgrade=readyToImplement; note=consumer must resolve repo-param integration gap",
+    "note": "dim6=acceptance_draft treated as closed per pipeline rule"
+  },
+  "idb_path": "<本地路径>"
+}

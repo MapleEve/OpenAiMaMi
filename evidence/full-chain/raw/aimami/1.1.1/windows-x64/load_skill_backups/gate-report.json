@@ -1,0 +1,70 @@
+{
+  "command": "load_skill_backups",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl: command=load_skill_backups, argKeys=[], kind=tauriInvokeWrapper, line=86, col=30910, wrapper=loadSkillBackups",
+    "frontend/frontend-control-flow.jsonl: handler_chain=[loadSkillBackups@86, queryFn@skills-page-CxV_IefY.js:7], terminal_call=ne('load_skill_backups'), argKeys=[]",
+    "pseudocode.md: 11378B, owner=load_skill_backups_owner_sys @0x140028120",
+    "call-tree.md: 52 edges, max_depth=6, all branches terminated (win32_file_read_bytes_111/skill_backup_entry_ser_111/WakeByAddressSingle/sort-leaves)",
+    "interface.md: SkillBackupEntry stride=152B NEW fields backupPath@+96@0x1412C0558 createdAt@+144@0x1412BFEC1; LoadSkillBackupsData NEW rootPath+lastScanAt; side-effects FS-read+mutex",
+    "owner.md: IPC string @0x1412ac16c, owner @0x140028120, delta=integrity_recovered, gold_leaf=true",
+    "gate.dim6_acceptance_mapping session=wf-aimami111-dim6-20260619 gate_tier=readyToImplement implementation_use=eligible",
+    "dim1: argKeys=[], wrapper=loadSkillBackups, callee=ne, line=86 col=30930, snippet=ne('load_skill_backups')",
+    "dim2: pseudocode 11378B >> 600B threshold",
+    "dim3: 52 edges depth=6 path load_skill_backups_owner_sys->wrap_and_dispatch->data_field_wrapper->response_ser->items_array_ser->entry_ser",
+    "dim4: NEW fields backupPath+createdAt per entry; NEW rootPath+lastScanAt in LoadSkillBackupsData; mutex pre-flight; FS read-only",
+    "dim5: win32_file_read_bytes_111@0x141093260 windows-only; WakeByAddressSingle@0x14124A5D0; _InterlockedCompareExchange8; _InterlockedDecrement64",
+    "dim6: acceptance_draft readyToImplement eligible wf-aimami111-dim6-20260619"
+  ],
+  "dim1_detail": {
+    "wrapper": "loadSkillBackups",
+    "callee": "ne",
+    "argKeys": [],
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "col": 30930,
+    "snippet": "ne(\"load_skill_backups\")"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 11378,
+    "owner_va": "0x140028120",
+    "owner_symbol": "load_skill_backups_owner_sys"
+  },
+  "dim3_detail": {
+    "edge_count": 52,
+    "max_depth": 6,
+    "depth_path": "load_skill_backups_owner_sys->wrap_and_dispatch->data_field_wrapper->response_ser->items_array_ser->entry_ser"
+  },
+  "dim4_detail": {
+    "SkillBackupEntry_stride_bytes": 152,
+    "SkillBackupEntry_fields_new_1_1_1": {
+      "backupPath": "+96 (@0x1412C0558)",
+      "createdAt": "+144 (@0x1412BFEC1)"
+    },
+    "LoadSkillBackupsData_fields_new_1_1_1": ["rootPath", "lastScanAt"],
+    "side_effects": ["FS-read backup root dir @snooze_file_open_111@0x14108C6F0", "FS-read metadata.json per subdir @win32_file_read_bytes_111@0x141093260", "mutex @pending_auto_switch_state_lock_acquire_111@0x14006EDC0"],
+    "error_paths": ["pending_auto_switch lock non-zero -> short-circuit", "discriminant==6 None -> wrap_and_dispatch empty", "snooze_file_open_111 code=2 -> empty vec discriminant=10", "JSON parse fail -> skip entry", "validate_entry fail -> panic @sub_14124BFE0"]
+  },
+  "dim5_detail": {
+    "platform_primitives": ["win32_file_read_bytes_111@0x141093260", "WakeByAddressSingle@0x14124A5D0", "_InterlockedCompareExchange8", "_InterlockedDecrement64", "snooze_file_open_111@0x14108C6F0"],
+    "note": "mac leaf uses platform-equivalent dir iter; no POSIX equivalents here"
+  },
+  "dim6_detail": {
+    "acceptance_status": "acceptance_draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "gate_tier": "readyToImplement",
+    "happy_path": "invoke('load_skill_backups') -> {items:[{id,skillID,name,relativePath,backupPath,title,createdAt},...], total:u64, rootPath:string, lastScanAt:DateTime}",
+    "delta_asserts": ["response.items[*].backupPath present (NEW 1.1.1 offset+96)", "response.items[*].createdAt present (NEW 1.1.1 offset+144)", "response.rootPath present (NEW 1.1.1)", "response.lastScanAt present (NEW 1.1.1)"]
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

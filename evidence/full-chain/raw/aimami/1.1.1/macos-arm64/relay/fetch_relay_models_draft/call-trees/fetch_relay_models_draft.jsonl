@@ -1,0 +1,31 @@
+{"depth": 0, "va": "0x1001234d0", "symbol": "tauri::ipc::InvokeResolver<R>::respond_async_serialized_inner::{{closure}}::h793c6f17c7ea92b3", "role": "async_poll_owner", "terminated_reason": null}
+{"depth": 1, "va": "0x100506160", "symbol": "tauri::state::StateManager::try_get", "role": "appstate_get", "terminated_reason": "tauri_library_leaf"}
+{"depth": 1, "va": "0x100f7c290", "symbol": "State<T> as CommandArg::from_command::{{closure}}", "role": "state_arg_extract", "terminated_reason": "tauri_library_leaf"}
+{"depth": 1, "va": "0x10058d440", "symbol": "D as CommandArg::from_command", "role": "input_struct_deserialize", "terminated_reason": "tauri_library_leaf"}
+{"depth": 1, "va": "0x1005d6220", "symbol": "codexmate_lib::core::relay::manager::RelayManager::resolve_draft_api_key", "role": "api_key_resolver", "terminated_reason": null}
+{"depth": 2, "va": "0x100f7c920", "symbol": "std::sys::sync::once_box::OnceBox::initialize", "role": "lazy_init", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x100f2e7a0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::lock", "role": "mutex_lock", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x100fbd04c", "symbol": "_memcmp", "role": "provider_id_comparison", "terminated_reason": "os_library_leaf"}
+{"depth": 2, "va": "0x100f656f0", "symbol": "String::clone", "role": "clone_found_key", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x100f2e7c0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::unlock", "role": "mutex_unlock", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x1006c86a0", "symbol": "codexmate_lib::core::relay::keychain::get_api_key", "role": "keychain_fallback", "terminated_reason": "keychain_leaf"}
+{"depth": 1, "va": "0x100762ef0", "symbol": "codexmate_lib::core::relay::quota::sanitize_api_key", "role": "key_sanitizer", "terminated_reason": null}
+{"depth": 2, "va": "0x10057e620", "symbol": "str::trim_matches", "role": "trim_whitespace", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x100763130", "symbol": "codexmate_lib::core::relay::quota::parse_extra_headers", "role": "extra_headers_parser", "terminated_reason": null}
+{"depth": 2, "va": "0x1002ea3f0", "symbol": "serde_json::de::from_trait", "role": "json_deserialize_extra_headers", "terminated_reason": "serde_library_leaf"}
+{"depth": 2, "va": "0x1004fefc0", "symbol": "http::header::map::HeaderMap::try_with_capacity", "role": "headermap_alloc", "terminated_reason": "library_leaf"}
+{"depth": 2, "va": "0x100eef760", "symbol": "http::header::name::HeaderName::from_bytes", "role": "validate_header_name", "terminated_reason": "library_leaf"}
+{"depth": 2, "va": "0x100ef7c80", "symbol": "bytes::Bytes::copy_from_slice", "role": "copy_header_value", "terminated_reason": "library_leaf"}
+{"depth": 2, "va": "0x1007a9b30", "symbol": "HeaderMap::try_insert2", "role": "insert_header", "terminated_reason": "library_leaf"}
+{"depth": 1, "va": "0x100763a80", "symbol": "codexmate_lib::core::relay::fetch_models::build_url", "role": "url_builder", "terminated_reason": null}
+{"depth": 2, "va": "0x100f63980", "symbol": "alloc::fmt::format::format_inner", "role": "string_format", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "fetch_openai_async_body", "symbol": "codexmate_lib::core::relay::fetch_models::fetch_openai_async::{{closure}} (async HTTP)", "role": "http_send", "terminated_reason": null, "note": "body inside poll state machine; not separately symbolized"}
+{"depth": 2, "va": "reqwest::async_impl::client::Pending", "symbol": "reqwest::Pending::poll", "role": "http_send_leaf", "terminated_reason": "http_terminal_leaf"}
+{"depth": 2, "va": "reqwest::Response::bytes::{{closure}}", "symbol": "reqwest::Response::bytes poll", "role": "body_read_leaf", "terminated_reason": "http_terminal_leaf"}
+{"depth": 1, "va": "0x100762d20", "symbol": "codexmate_lib::core::relay::fetch_models::parse_model_ids", "role": "response_parser", "terminated_reason": null}
+{"depth": 2, "va": "0x100ee9d20", "symbol": "serde_json Value::index str (\"data\")", "role": "json_index_data_field", "terminated_reason": "serde_library_leaf"}
+{"depth": 2, "va": "0x10060ee70", "symbol": "Vec::from_iter (model id strings)", "role": "collect_model_ids", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x100763050", "symbol": "codexmate_lib::core::relay::fetch_models::is_transient_error", "role": "retry_gate", "terminated_reason": null}
+{"depth": 2, "va": "0x100f63b30", "symbol": "str::to_lowercase", "role": "normalize_error_str", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x1007aa1a0", "symbol": "Pattern::is_contained_in (x4: request failed/timed out/timeout/connection)", "role": "transient_check", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x10046ad00", "symbol": "InvokeResolver::return_result", "role": "response_dispatch", "terminated_reason": "tauri_library_leaf"}

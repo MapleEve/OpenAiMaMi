@@ -1,0 +1,80 @@
+{
+  "command": "get_mystery_unlock_grants",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "get_mystery_unlock_grants/pseudocode.md — gold-leaf layers 1-5 session=wf-aimami111-delta-20260618-goldleaf",
+    "get_mystery_unlock_grants/call-tree.md — depth=7 edges=22 all terminated",
+    "get_mystery_unlock_grants/owner.md",
+    "get_mystery_unlock_grants/interface.md — DTO: HotspotConfigResponse + Vec<MysteryUnlockGrant> {route,expiresAtMs?}",
+    "frontend/ipc-contracts.jsonl — tauriInvokeWrapper wrapper=getMysteryUnlockGrants argKeys=[] index-DdcCOEJG.js:86",
+    "frontend/frontend-control-flow.jsonl — snippet=ne(\"get_mystery_unlock_grants\")"
+  ],
+  "dim1_detail": {
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "kind": "tauriInvokeWrapper",
+    "argKeys": [],
+    "wrapper": "getMysteryUnlockGrants",
+    "snippet": "ne(\"get_mystery_unlock_grants\")"
+  },
+  "dim2_detail": {
+    "owner_va": "0x140023560",
+    "owner_name": "get_mystery_unlock_grants_handler_111",
+    "size_bytes": 895,
+    "ipc_string_va": "0x1412AC39A",
+    "pseudocode_bytes": 13016,
+    "registered_in": "tauri_ipc_main_dispatcher_sys@0x14000D2A0",
+    "note": "gold-leaf; command absent in 1.0.9"
+  },
+  "dim3_detail": {
+    "depth": 7,
+    "edges": 22,
+    "terminated_reasons": ["OS primitive", "allocator", "formatter", "runtime glue"],
+    "key_path": "owner→hotspot_read_and_check_elapsed_111@0x1401AF310→codexmate_settings_hotspot_read_full_sys_111@0x1401A15D0→win32_file_read→grant_expiry_filter→mystery_unlock_grants_vec_serialize→mystery_unlock_grant_item_serialize@0x1401BA120"
+  },
+  "dim4_detail": {
+    "request": {},
+    "response": {
+      "shape": "{hotspot:bool, usageRefreshInterval:u64, deviceId:string, remoteDeviceSecret:string, notificationsSince:string, apiProxy:string|null, mysteryUnlockGrants:Array<{route:string, expiresAtMs?:number}>}",
+      "MysteryUnlockGrant_memory_layout": {"stride_bytes": 40, "offset_0": "u64 expiresAtMs (0=None)", "offset_16": "u64 route.ptr", "offset_24": "u64 route.len"},
+      "storage_keys": {"mysteryUnlockGrants": {"len": 19, "va": "0x1412B684A", "direction": "read+write-back"}, "mysteryUnlockedRoutes": {"len": 21, "va": "0x1412B685D", "direction": "read-companion-only"}}
+    },
+    "error_paths": [
+      "file read fail → zero-defaults struct (all sentinels 0x8000000000000000)",
+      "JSON parse fail → zero-defaults struct",
+      "CodexMateSettings field missing → memcpy(out, partial, 152)",
+      "poisoned Mutex → panic sub_14124BFE0",
+      "grant persist Err → propagate 96-byte Err oword",
+      "InvokeResolver consumed → panic sub_14124BF80"
+    ],
+    "side_effects": [
+      "File read: CodexMateSettings JSON via win32_file_read_bytes_111 on every call",
+      "File write (conditional): only when grant expiry filter changes grant count → hotspot_config_serialize_json_sys_111 writes 7-field JSON",
+      "WakeByAddressSingle (Windows futex on IPC resolver complete)",
+      "_InterlockedCompareExchange8 atomic CAS for resolver lock",
+      "No HTTP, no sidecar, no DB"
+    ]
+  },
+  "dim5_detail": {
+    "win_primitives": ["WakeByAddressSingle", "_InterlockedCompareExchange8", "win32_file_read_bytes_111@0x141093260"],
+    "is_new_in_1_1_1": true
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "happy_path": "invoke('get_mystery_unlock_grants') → read settings → filter expired grants (expiresAtMs<now) → conditional write-back → return 7-field HotspotConfigResponse",
+    "expiry_semantics": "expiresAtMs==0 means permanent; elapsed_since_ts_111(system_time_precise_u32_111(), 3577643008, 27111902)",
+    "test_mapping": "e2e: seed 2 grants (1 expired, 1 active); call getMysteryUnlockGrants(); assert 1 grant returned; assert settings file updated"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

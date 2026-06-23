@@ -1,0 +1,97 @@
+{
+  "schema": "c5cm.reverse.leaf.manifest.v1",
+  "command": "begin_add_account_attach_monitor",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "system",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-16T00:00:00+08:00",
+  "producer_role": "纯生产者 (SOP steps 0-6)",
+  "owner_va": "0x10061cc50",
+  "owner_symbol": "__ZN13codexmate_lib8commands6system32begin_add_account_attach_monitor17h7913ad9d66f0a797E",
+  "owner_size_bytes": 1614,
+  "thread_body_va": "0x100205da0",
+  "thread_body_symbol": "__ZN3std3sys9backtrace28__rust_begin_short_backtrace17ha055bcc9518e11f9E",
+  "thread_body_size_bytes": 1108,
+  "source_binary": "AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi",
+  "source_binary_sha256": "see_INDEX.jsonl_key_aimami/1.1.1/macos-arm64/binary",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "hexrays_ready": true,
+  "idb_save": "ok",
+  "append_comments": [
+    {"addr": "0x10061cc50", "appended": true},
+    {"addr": "0x100205da0", "appended": true}
+  ],
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 18068,
+    "hexrays_ready": true,
+    "module": "AiMaMi",
+    "checked_at_session_start": true
+  },
+  "prewrite_collision_gate": {
+    "status": "no_collision",
+    "index_key_check": "aimami/1.1.1/macos-arm64/system/begin_add_account_attach_monitor — absent from INDEX.jsonl",
+    "raw_dir_check": "raw/aimami/1.1.1/macos-arm64/system/ — did not exist before this session",
+    "owner_matrix": {
+      "target": "begin_add_account_attach_monitor",
+      "canonical_scope": "aimami/1.1.1/macos-arm64/system",
+      "current_producer": "wf-aimami111-delta-20260616",
+      "machine": "<本地机器>",
+      "index_row": "absent",
+      "write_mode": "additive_owner",
+      "collision_status": "none"
+    }
+  },
+  "arg_keys": [],
+  "response_type": "CoreEnvelope<CoreSnapshotPayload>",
+  "side_effects": [
+    "pthread_create (detached monitor thread, max 120ms lifetime)",
+    "schedule_full_runtime_refresh → tauri::async_runtime::spawn_blocking (conditional, on codex_path/usage_refresh_interval change)",
+    "Repository::persist_registry → fs::write (in sync_local_runtime_state within each poll)",
+    "quota_store::save → fs::write (in sync_local_runtime_state within each poll)",
+    "CodexPaths::ensure_directories → mkdir (in sync_local_runtime_state within each poll)"
+  ],
+  "error_paths": [
+    "load_snapshot_local Err(CoreError) → return CoreError envelope immediately, no thread spawn",
+    "StateManager::try_get None → panic_fmt abort",
+    "Thread poll: snapshot Err → drop CoreError, continue polling",
+    "spawn_unchecked OS fail → unwrap_failed panic",
+    "schedule_full_runtime_refresh throttled (< 8s) → skip, reset IN_FLIGHT=0"
+  ],
+  "change_detection_fields": [
+    {"field": "codex_path", "payload_offset": 68, "type": "Option<String>", "sentinel_none": "0x8000000000000000"},
+    {"field": "usage_refresh_interval", "payload_offset": 80, "type": "i32"}
+  ],
+  "global_atomics": [
+    {"symbol": "FULL_RUNTIME_REFRESH_IN_FLIGHT", "type": "static bool"},
+    {"symbol": "LAST_FULL_RUNTIME_REFRESH_REQUEST_AT", "type": "AtomicI64 (seconds)"}
+  ],
+  "call_tree_depth": 7,
+  "terminated_reason": "fs_leaf_reached + side_effect_spawn_blocking",
+  "fake_wall_taxonomy_checked": {
+    "drop_in_place_not_async_body": "excluded — 0x1002083c0/0x1003329d0/0x100336820 are closure destructor shims; true body is __rust_begin_short_backtrace@0x100205da0 found via func_query + thread_start vtable[3]",
+    "architecture_only_budget_rule": "excluded — full decompile obtained for owner (1614B), thread body (1108B), schedule_full_runtime_refresh (259B)",
+    "async_decompile_failed_hexrays_limit": "excluded — all key functions decompiled successfully; no truncation in owner or schedule_full_runtime_refresh",
+    "wrong_va_guess": "excluded — owner VA 0x10061cc50 confirmed by func_query demangled symbol exact match; owner-map reference to 0x100262db4 was caller VA from 1.0.9 era (stale)",
+    "vtable_dynamic_dispatch": "partially present — thread_start uses vtable[3] to call closure; resolved by tracing thread_start decompile to find the actual closure VA (0x100205da0)",
+    "http_terminal_external_only": "not applicable — no HTTP calls in this command path",
+    "library_internal_vs_config_callsite": "excluded — all key callees are codexmate_lib internal"
+  },
+  "gate_candidate": "consumerStartReady",
+  "gate_notes": "dim1 (frontend CCF) requires frontend verification for 1.1.1 (1.0.9 baseline: invoke with no args); dim2 confirmed; dim3 confirmed depth=7; dim4 confirmed; dim5 macOS only; dim6 C5 implementation side. strictImplementationUse and readyToImplement require Windows evidence and frontend CCF 1.1.1 confirmation.",
+  "platform_gate": {
+    "macos_arm64": "confirmed",
+    "windows_x64": "Unknown — not checked in this session"
+  },
+  "files": [
+    "evidence.md",
+    "manifest.json",
+    "ida/pseudocode/0001_begin_add_account_attach_monitor_owner_7913ad9d.c",
+    "ida/pseudocode/pseudocode-manifest.jsonl",
+    "call-trees/begin_add_account_attach_monitor.jsonl",
+    "interfaces/interface.md"
+  ]
+}

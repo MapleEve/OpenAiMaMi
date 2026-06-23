@@ -1,0 +1,14 @@
+{"session":"wf-aimami111-same-depth-20260618","machine":"<本地机器>","cmd":"preview_account_import","depth":0,"addr":"0x1004b8410","name":"codexmate_lib::core::account_io::preview_import","role":"core_owner"}
+{"depth":1,"addr":"0x1004bd300","name":"codexmate_lib::core::account_io::parse_import_file","role":"parse_export_file","terminated_reason":null}
+{"depth":2,"addr":"0x100f2b980","name":"std::sys::fs::metadata","role":"file_stat","terminated_reason":"external_call"}
+{"depth":2,"addr":"0x100f25cf0","name":"std::fs::read::inner","role":"file_read","terminated_reason":"external_call"}
+{"depth":2,"addr":"0x1002eaf20","name":"serde_json::de::from_trait","role":"parse_json","terminated_reason":"response_serialize"}
+{"depth":1,"addr":"0x1004bf3a0","name":"codexmate_lib::core::account_io::read_registry_or_empty_keys","role":"read_existing_keys","terminated_reason":null}
+{"depth":2,"addr":"0x100f2b980","name":"std::sys::fs::metadata","role":"registry_stat","terminated_reason":"external_call"}
+{"depth":2,"addr":"0x100f25740","name":"std::fs::read_to_string::inner","role":"registry_read","terminated_reason":"external_call"}
+{"depth":2,"addr":"0x1002ea550","name":"serde_json::de::from_trait","role":"registry_deserialize","terminated_reason":"response_serialize"}
+{"depth":1,"addr":"0x1004bf0d0","name":"codexmate_lib::core::account_io::read_active_account_key","role":"read_active_key","terminated_reason":null}
+{"depth":2,"addr":"0x100f2b980","name":"std::sys::fs::metadata","role":"active_file_stat","terminated_reason":"external_call"}
+{"depth":2,"addr":"0x100f25740","name":"std::fs::read_to_string::inner","role":"active_key_read","terminated_reason":"external_call"}
+{"depth":2,"addr":"0x1002ea550","name":"serde_json::de::from_trait","role":"active_key_parse","terminated_reason":"response_serialize"}
+{"depth":1,"addr":"0x100fbc780","name":"core::result::unwrap_failed","role":"error_path","terminated_reason":"error_return"}

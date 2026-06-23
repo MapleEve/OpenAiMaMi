@@ -1,0 +1,63 @@
+{
+  "key": "aimami/1.1.1/windows-x64/get_relay_provider_quota/full-chain",
+  "command": "get_relay_provider_quota",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "session_original": "wf-aimami111-delta-20260616",
+  "session_extension": "wf-aimami111-delta-20260617",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-16",
+  "extended_at": "2026-06-17",
+
+  "binary": {
+    "filename": "AiMaMi 1.1.1 win64.exe",
+    "sha256_binary": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+    "binary_format": "pe",
+    "pe_machine": "x64",
+    "imagebase": "0x140000000",
+    "idb": "<本地路径>",
+    "stripped": true
+  },
+
+  "owner": {
+    "va": "0x14093DEB0",
+    "name": "get_relay_provider_quota_coroutine_sys",
+    "size_bytes": 4746,
+    "type": "async_coroutine",
+    "string_locator_va": "0x1412fa981"
+  },
+
+  "artifacts": [
+    "owner.md",
+    "pseudocode.md",
+    "interface.md",
+    "call-tree.md",
+    "gate-report.json",
+    "manifest.json",
+    "producer-ledger.json",
+    "call-trees/get_relay_provider_quota.jsonl"
+  ],
+
+  "gate": "strictImplementationUse_candidate",
+  "status": "complete",
+
+  "renames_in_idb": 12,
+  "renames_original": 8,
+  "renames_extension": 4,
+  "idb_save": "ok (x2: original + extension)",
+
+  "extension_summary": {
+    "trigger": "relay_quota_http_request_builder_sys truncation resolution + call-trees/get_relay_provider_quota.jsonl requirement",
+    "resolved": [
+      "relay_quota_http_request_builder_sys: actual size=15931B (not truncated at 95177 chars), 47 callees, 591 basic_blocks",
+      "relay_quota_provider_url_classifier_sys@0x1406D5620 (B-rename): 11-provider URL→discriminant mapper",
+      "relay_minimax_quota_response_parser_sys@0x1408E2820 (B-rename): MiniMax response parser (6 response fields)",
+      "relay_quota_http_response_state_machine_sys@0x1408E34D0 (B-rename): HTTP phases 0-4 state machine",
+      "relay_http_request_cleanup_sys@0x140921FC0 (C-rename): Arc deref + 1424B free"
+    ],
+    "new_artifacts": ["call-trees/get_relay_provider_quota.jsonl (20 entries)"]
+  },
+
+  "delta_basis": "aimami/1.0.9/windows-x64 (baseline 100% complete)",
+  "delta_note": "get_relay_provider_quota is new command in 1.1.1 — not present in 1.0.9 baseline"
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "bundle": "aimami/1.1.1/windows-x64/delta-bundle",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "baseline_version": "1.0.9",
+  "binary_sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "idb_path": "<本地路径>",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "owner_gate": {
+    "result": "ALLOW",
+    "write_mode": "additive",
+    "basis": "no_prior_111_win_entries_in_INDEX",
+    "collision_detected": false,
+    "foreign_owners": "none",
+    "takeover_token": null
+  },
+  "gate_tier": "strictImplementationUse",
+  "status": "done",
+  "delta_scope": "windows-x64 delta vs 1.0.9",
+  "all_targets_done": true,
+  "in_progress_residuals": 0,
+  "index_bundle_key": "aimami/1.1.1/windows-x64/bundle/delta-session-wf-aimami111-delta-20260616",
+  "reverse_status_md_clean": true,
+  "four_angle_completeness": "PASS per-leaf",
+  "produced_at": "2026-06-17T00:00:00+08:00",
+  "authoritative": true
+}

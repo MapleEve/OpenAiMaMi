@@ -1,0 +1,23 @@
+session: wf-aimami111-delta-20260616
+machine: <本地机器>
+batch: macos-arm64-1.1.1-frontend-full-extract
+app: <来源位置>/raw/binary/AiMaMi 1.1.1 universal.app
+binary: <来源位置>/raw/binary/AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi
+created_at: 2026-06-16
+sha256: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
+
+step_A_lipo:
+  lipo -thin arm64 "<binary>" -output dumped/AiMaMi.arm64.thin
+  result: 25MB arm64 thin, exit 0
+
+step_B_tauri_dumper:
+  tauri-dumper: <本地路径>/.cargo/bin/tauri-dumper --input "<thin>" --output "<out>/dumped"
+  result: 30 assets found, exit 0
+
+step_C_frontend_contracts:
+  python3 extract_frontend_contracts.py --prefer-recovered-source --frontend "<out>/dumped" --out "<out>"
+  result: ipc-contracts.jsonl 127 lines (126 unique commands), http-hits.jsonl 172 lines, exit 0
+
+step_D_frontend_ast:
+  node extract_frontend_ast.mjs "<out>/dumped" "<out>/ast-facts.json" "<out>/frontend-control-flow.jsonl"
+  result: ast-facts.json 1726048 bytes, frontend-control-flow.jsonl 197 lines, exit 0

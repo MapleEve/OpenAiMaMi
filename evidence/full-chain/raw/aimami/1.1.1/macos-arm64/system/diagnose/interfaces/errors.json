@@ -1,0 +1,61 @@
+{
+  "schema": "c5cm.interface.errors.v1",
+  "command": "diagnose",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "session": "wf-aimami111-delta-20260616",
+  "error_keys": [
+    {
+      "key": "REGISTRY_MISSING",
+      "size_bytes": 16,
+      "source_va": "0x1004c28c0",
+      "source_fn": "load_local_state",
+      "severity": "warning",
+      "message": "No local account registry found yet.",
+      "message_size_bytes": 36,
+      "fatal": false,
+      "notes": "Non-fatal; appended to warnings vec; command still succeeds"
+    },
+    {
+      "key": "CURRENT_AUTH_SYNC_FAILED",
+      "size_bytes": 24,
+      "source_va": "0x1004c8ba0",
+      "source_fn": "sync_local_runtime_state",
+      "severity": "warning",
+      "fatal": false,
+      "notes": "Auth snapshot sync failure; non-fatal warning in diagnose context"
+    },
+    {
+      "key": "LEGACY_QUOTA_MIGRATION_FAILED",
+      "size_bytes": 29,
+      "source_va": "0x1004c8ba0",
+      "source_fn": "sync_local_runtime_state",
+      "severity": "warning",
+      "fatal": false,
+      "notes": "Quota persist failure; non-fatal warning"
+    },
+    {
+      "key": "AUTO_SWITCH_DAEMON_REPAIR_FAILED",
+      "size_bytes": 32,
+      "source_va": "0x1004c7b10",
+      "source_fn": "load_local_state_synced",
+      "severity": "warning",
+      "fatal": false,
+      "notes": "Daemon auto-install failure; non-fatal; only occurs if daemon_installed_flag set in state"
+    }
+  ],
+  "fatal_errors": [
+    {
+      "condition": "poisoned mutex",
+      "source": "codexmate_lib::commands::system::diagnose (cmd wrapper)",
+      "transport": "CoreEnvelope::err via CoreError Display",
+      "notes": "Mutex poison path; OnceLock already init but lock poisoned; returns error envelope to frontend"
+    },
+    {
+      "condition": "load_local_state_synced returns Err",
+      "source": "Repository::diagnose",
+      "transport": "CoreEnvelope discriminant=2",
+      "notes": "Propagates from sync_local_runtime_state or load_local_state if hard error"
+    }
+  ]
+}

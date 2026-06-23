@@ -1,0 +1,83 @@
+{
+  "command": "remove_skill",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl: command=remove_skill, argKeys=[id], kind=tauriInvokeWrapper, line=86, col=30999, wrapper=removeSkill",
+    "frontend/frontend-control-flow.jsonl: handler_chain=[removeSkill@86, mutationFn@skills-page-CxV_IefY.js:7], terminal_call=ne('remove_skill',{id:t}), argKeys=[id]",
+    "pseudocode.md: 9811B, owner=remove_skill_owner_sys @0x140022920",
+    "call-tree.md: depth=6 L1->L6 all branches terminated_reason annotated",
+    "interface.md: input {repo,id}; output {schemaVersion,success,code,message,warnings,removedSkillID,backup{backupID,timestamp,fileCount},remainingInstalledCount}; error paths documented; delta=backup-before-delete NEW 1.1.1",
+    "owner.md: IPC handler VA=0x140022920 size=0x4C1; dispatched from tauri_ipc_main_dispatcher_sys@0x14000D2A0 xref=0x14000EB7B; delta vs 1.0.9 noted",
+    "prior gate_tier=readyToImplement dim6_session=wf-aimami111-dim6-20260619 dim6_impl_readiness.status=acceptance_draft",
+    "dim1: argKeys=[id], wrapper=removeSkill, callee=ne, line=86 col=31013, snippet=ne('remove_skill',{id:t})",
+    "dim2: pseudocode 9811B >> 600B",
+    "dim3: depth=6 confirmed L1->L2->L3->L4->L5->L6 path owner->auto_switch_lock->WakeByAddressSingle(L3); owner->query_skills->skill_store_get_all->skill_store_iter->vtable.iter(L5); owner->async_mutex->skill_backup_replace->skill_list_db_query->snooze_file_open->win32_path_canonicalize_111(L6)",
+    "dim4: output {schemaVersion u32, success bool, code i32, message String, warnings [], removedSkillID String, backup{backupID uuid, timestamp u32, fileCount u32}, remainingInstalledCount u32}; side-effects SQLite read+write+FS delete; NEW backup-before-delete order in 1.1.1",
+    "dim5: WakeByAddressSingle@0x14124A5D0; win32_path_canonicalize_111@0x1410908E0; win32_file_open_rw_111@0x14108F6C0; all evidence from win64 IDB",
+    "dim6: acceptance_draft readyToImplement wf-aimami111-dim6-20260619 eligible"
+  ],
+  "dim1_detail": {
+    "wrapper": "removeSkill",
+    "callee": "ne",
+    "argKeys": ["id"],
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "col": 31013,
+    "snippet": "ne(\"remove_skill\",{id:t})"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 9811,
+    "owner_va": "0x140022920",
+    "owner_symbol": "remove_skill_owner_sys"
+  },
+  "dim3_detail": {
+    "max_depth": 6,
+    "depth_paths": [
+      "owner@L1->pending_auto_switch_lock@L2->WakeByAddressSingle@L3(LEAF)",
+      "owner@L1->query_skills@L2->skill_store_get_all@L3->skill_store_iter@L4->vtable@L5(LEAF)",
+      "owner@L1->async_mutex@L2->skill_backup_replace@L3->skill_list_db_query@L4->snooze_file_open@L5->win32_path_canonicalize@L6(LEAF)"
+    ]
+  },
+  "dim4_detail": {
+    "input_args": {"repo": "String (skill repo key)", "id": "String (skill id)"},
+    "output_dto": {
+      "schemaVersion": "u32",
+      "success": "bool",
+      "code": "i32",
+      "message": "String",
+      "warnings": "[]",
+      "removedSkillID": "String @0x1412C057D",
+      "backup": {"backupID": "uuid-string", "timestamp": "u32", "fileCount": "u32"},
+      "remainingInstalledCount": "u32 @0x1412C058B"
+    },
+    "side_effects": [
+      "SQLite SELECT skill list @skill_list_db_query_111@0x1406F0D80",
+      "SQLite INSERT backup record BEFORE delete @import_skill_build_record_db_write_111@0x1406F1360 (NEW ORDER 1.1.1)",
+      "FS directory delete @sub_14010E700 RemoveDirectoryW+DeleteFileW",
+      "SQLite SELECT re-query post-backup for remainingInstalledCount"
+    ],
+    "error_paths": ["auto-switch lock held -> error @has_notch_invoke_resolver_respond", "skill not found discriminant!=6 -> error @has_notch_invoke_resolver_respond", "id param missing -> error @sub_1402F9EB0", "skill_backup_replace code=7 -> {success:false,code:7,message:'Skill not found'}", "backup DB write fail -> Err propagated, skill NOT deleted", "dir open fail -> {success:false,code:2}"]
+  },
+  "dim5_detail": {
+    "platform_primitives": ["WakeByAddressSingle@0x14124A5D0", "win32_path_canonicalize_111@0x1410908E0 GetFullPathNameW", "win32_file_open_rw_111@0x14108F6C0 CreateFileW"],
+    "ipc_dispatch": "tauri_ipc_main_dispatcher_sys@0x14000D2A0 xref=0x14000EB7B"
+  },
+  "dim6_detail": {
+    "acceptance_status": "acceptance_draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "gate_tier": "readyToImplement",
+    "happy_path": "invoke('remove_skill',{repo:string,id:string}) -> {schemaVersion,success,code,message,warnings:[],removedSkillID,backup:{backupID,timestamp,fileCount},remainingInstalledCount}",
+    "delta_asserts": ["backup DB record created BEFORE FS delete (NEW 1.1.1 order)", "pending_auto_switch blocks remove if active (NEW 1.1.1)", "remainingInstalledCount decremented by 1"]
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

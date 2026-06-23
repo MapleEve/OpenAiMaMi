@@ -1,0 +1,69 @@
+{
+  "command": "test_relay_provider_stream",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "ipc-contracts.jsonl L122: cmd=test_relay_provider_stream argKeys=['providerId','model','onEvent'] callee=i kind=tauriInvokeRaw",
+    "frontend-control-flow.jsonl L127: terminal_call.command=test_relay_provider_stream kind=tauriInvoke argKeys=['providerId','model','onEvent']; trigger=index-DdcCOEJG.js L86 (minified-static-function); handler_chain=[testStream]",
+    "dim1 NOTE: backend interface.md also lists 'manager' param (7B@0x1412fa999). Frontend sends {providerId,model,onEvent} only. Integration gap: manager absent. dim1 confirmed_with_gap.",
+    "pseudocode.md 4776B ≥600B",
+    "call-tree.md: D0-D3 max depth via config write chain; all branches have explicit terminated_reason; 5 renames+7 set_comments+idb_save confirmed OK; fake wall taxonomy cleared (async poll/large body/stripped symbols/vtable all CLEARED)",
+    "interface.md: params={manager(gap),providerId,model,onEvent}; UNIQUE side effect=relay.json write-back after stream (relay_providers_config_write_and_persist_sys); provider quality score updated (latency-based 100/70/40/20); error_codes={0x8000000000000000,0x8000000000000007,9,2}",
+    "gate-report.json wf-aimami111-delta-20260616: all dim1-6 PASS; consumer_suggestion=readyToImplement; four_angle_completeness all PASS; dim6_acceptance=acceptance_draft",
+    "dim5: _InterlockedCompareExchange8+WakeByAddressSingle (vs parking_lot on mac); GetCurrentProcessId+CreateFile/WriteFile/CloseHandle atomic write; quota Vec stride=232B",
+    "dim6_acceptance: acceptance_draft; gate_upgrade=readyToImplement; UNIQUE=relay.json write-back+provider score update"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "session": "wf-aimami111-delta-20260616",
+  "owner_va": "0x1409C98D0",
+  "owner_name": "test_relay_provider_stream_owner_sys",
+  "owner_size_bytes": 7689,
+  "dim1_detail": {
+    "ipc_contracts_line": 122,
+    "ccf_line": 127,
+    "argKeys": ["providerId", "model", "onEvent"],
+    "wrapper": "tauriInvokeRaw",
+    "callee": "i",
+    "trigger_file": "assets/index-DdcCOEJG.js L86",
+    "handler_chain": ["testStream"],
+    "gap": "backend also parses 'manager' param (7B@0x1412fa999); frontend sends {providerId,model,onEvent} only; confirmed_with_gap"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 4776,
+    "threshold": 600
+  },
+  "dim3_detail": {
+    "depth_reached": 3,
+    "terminated_reason": "all branches terminated at D3 (relay_atomic_write_leaf_sys named_module_leaf; relay_quota_item_clone_sys leaf_named; relay_keychain_lookup_for_quota_sys std_library_leaf; etc.)",
+    "key_callees": ["relay_quota_state_lookup_sys@0x1406DB960", "relay_keychain_lookup_for_quota_sys@0x1402EE7C0", "relay_draft_stream_sse_executor_sys@0x1408BDE90", "relay_provider_score_update_sys@0x1406E8F50", "relay_providers_config_write_and_persist_sys@0x1406E6960 (SIDE EFFECT)", "relay_atomic_write_leaf_sys@0x140504310 (FS terminal)"],
+    "note": "depth requirement satisfied via all leaves having explicit terminated_reason"
+  },
+  "dim4_detail": {
+    "input_fields": {"manager": "String 7B (backend-only gap)", "providerId": "String 10B@0x1412fa9a0", "model": "String 5B@0x1412fab69", "onEvent": "Handler/Channel"},
+    "event_envelope": {"schemaVersion": "uint", "success": "bool", "code": "int", "message": "string", "warnings": "[]", "data": "{}"},
+    "unique_side_effect": "relay.json atomic write via relay_providers_config_write_and_persist_sys AFTER stream completes",
+    "relay_json_fields": ["schemaVersion", "providers", "activeByIde", "proxy", "codexRouterEnabled", "codexApiLogin", "codexApiSlots", "displayTagGlobal", "displayTagWoyao"],
+    "quality_score_update": {"<200ms": 100, "200-599ms": 70, "600-1499ms": 40, ">=1500ms": 20},
+    "error_codes": {"0x8000000000000000": "quota_miss (no relay.json write)", "0x8000000000000007": "keychain_miss", "9": "IoError persisting relay.json", "2": "serialize error"},
+    "key_distinguisher": "relay.json IS written after stream (differs from test_relay_draft_stream which does NOT write)"
+  },
+  "dim5_detail": {
+    "win_primitives": ["_InterlockedCompareExchange8+WakeByAddressSingle", "GetCurrentProcessId+CreateFile/WriteFile/CloseHandle in relay_atomic_write_leaf_sys"],
+    "same_platform": true,
+    "mac_diff": "mac uses parking_lot lock; POSIX rename pattern; config write-back trigger must be verified independently on mac"
+  },
+  "dim6_detail": {
+    "basis": "acceptance_draft from gate-report.json wf-aimami111-delta-20260616; gate_upgrade=readyToImplement; UNIQUE side effect (relay.json write+quality score) documented",
+    "note": "dim6=acceptance_draft treated as closed per pipeline rule"
+  },
+  "idb_path": "<本地路径>"
+}

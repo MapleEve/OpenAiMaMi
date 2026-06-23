@@ -1,0 +1,23 @@
+{"session":"wf-aimami111-win-samedepth-patch-20260619","machine":"<本地机器>","command":"configure_auto_switch","platform":"windows-x64","version":"1.1.1","handler_addr":"0x140014190","handler_name":"sub_140014190","depth":5,"verdict":"confirmed_same_depth5"}
+{"depth":1,"addr":"0x140014190","name":"sub_140014190","role":"command_owner: IPC command='configure_auto_switch' namespace='repo'","terminated_reason":null}
+{"depth":2,"addr":"0x14006edc0","name":"pending_auto_switch_state_lock_acquire_111","role":"state_lock_acquire + owner verify","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x141214620","name":"query_installed_skills_with_repo_111","role":"repo_state_check","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1402fc1e0","name":"sub_1402FC1E0","role":"param_extract: threshold5hPercent (u32) from IPC args","terminated_reason":null}
+{"depth":3,"addr":"0x14103a480","name":"sub_14103A480","role":"string_map_lookup","terminated_reason":null}
+{"depth":4,"addr":"0x141213640","name":"sub_141213640","role":"string_slice_helper","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140418de0","name":"sub_140418DE0","role":"u32_parse_from_str","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1402fc1e0","name":"sub_1402FC1E0","role":"param_extract: thresholdWeeklyPercent (u32) from IPC args","terminated_reason":null}
+{"depth":2,"addr":"0x1407882c0","name":"sub_1407882C0","role":"configure_auto_switch_core: write two u32 thresholds to bootstrap state + persist","terminated_reason":null}
+{"depth":3,"addr":"0x1401ab410","name":"sub_1401AB410","role":"state_write_and_persist","terminated_reason":null}
+{"depth":4,"addr":"0x1401a6c10","name":"auto_switch_state_persist_json_111","role":"persist threshold state to JSON file","terminated_reason":null}
+{"depth":5,"addr":"0x1406f2870","name":"relay_config_check_parent_dirs_sys","role":"ensure parent dirs exist before write","terminated_reason":"implementation_leaf"}
+{"depth":5,"addr":"0x14108c6f0","name":"snooze_file_open_111","role":"file_open","terminated_reason":"implementation_leaf"}
+{"depth":5,"addr":"0x1403a64f0","name":"hotspot_config_file_write_bytes_sys","role":"atomic file write","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x14079f5c0","name":"schtask_codexmate_autoswitch_query_111","role":"schtask_query: verify scheduled task for auto-switch","terminated_reason":null}
+{"depth":5,"addr":"0x1410828f0","name":"sub_1410828F0","role":"schtask_open","terminated_reason":"implementation_leaf"}
+{"depth":5,"addr":"0x1410827d0","name":"sub_1410827D0","role":"schtask_query_state","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x14124a5d0","name":"WakeByAddressSingle","role":"win32_sync_wake","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1408387d0","name":"auto_switch_ipc_response_dispatch_111","role":"ipc_response_dispatch","terminated_reason":null}
+{"depth":3,"addr":"0x14080c3c0","name":"has_notch_invoke_resolver_respond","role":"tauri_ipc_resolve","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14033ab50","name":"has_notch_arc_listener_drop_loop","role":"arc_drop_loop","terminated_reason":"implementation_leaf"}
+{"compare_1_0_9":{"baseline_handler":"configure_auto_switch_owner_sys@0x14027BE90","verdict":"confirmed_same_depth5","notes":"1.0.9 depth4: extract threshold5hPercent+thresholdWeeklyPercent → core_impl → sub_14055C740(write two u32 thresholds). 1.1.1: same two param keys (confirmed string refs aThreshold5hper+aThresholdweekly in decompile), same write-persist side-effect via auto_switch_state_persist_json_111, schtask_codexmate_autoswitch_query_111 at depth-4 confirms same task-check. All delta = infrastructure rename/refactor."}}

@@ -1,0 +1,72 @@
+{
+  "command": "load_sessions",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl: command=load_sessions, argKeys=[], kind=tauriInvokeWrapper, line=86, col=25748, wrapper=loadSessions",
+    "frontend/frontend-control-flow.jsonl: handler_chain=[loadSessions@86, queryFn@sessions-page-GrXHFrri.js:6], terminal_call=ne('load_sessions'), argKeys=[]",
+    "pseudocode.md: 18368B, owner=load_sessions_handler_111 @0x140992490",
+    "call-tree.md: edge_count=48, depth>=5 confirmed (handler->core->iter->mapper->deserializer=5), all branches terminated",
+    "interface.md: CodexHomePaths 9 fields incl. autoSwitchLogPath(NEW_1.1.1@+144@0x1412c0bfc); side-effects spinlock+skill_store+read_dir; error paths documented",
+    "owner.md: relay dispatchers 0x140a65470/0x140a9e990 both route to load_sessions_handler_111",
+    "dim6 acceptance_draft session=wf-aimami111-dim6-20260619 in prior gate-report",
+    "dim1: argKeys=[], wrapper=loadSessions, callee=ne, line=86 col=25764",
+    "dim2: pseudocode 18368B >> 600B",
+    "dim3: 48 edges, depth=5 path load_sessions_handler_111->load_sessions_core_111->sub_1401E77D0->sub_1401649D0->sub_1401EB7A0",
+    "dim4: autoSwitchLogPath NEW at offset+144 serde_discriminant=6 string_va=0x1412c0bfc; 3 bool fields exist+read_dir side-effect",
+    "dim5: relay dispatchers windows-x64 only; WakeByAddressSingle@0x14124A5D0; _InterlockedCompareExchange8",
+    "dim6: acceptance_draft readyToImplement eligible from wf-aimami111-dim6-20260619"
+  ],
+  "dim1_detail": {
+    "wrapper": "loadSessions",
+    "callee": "ne",
+    "argKeys": [],
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "col": 25764,
+    "snippet": "ne(\"load_sessions\")"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 18368,
+    "owner_va": "0x140992490",
+    "owner_symbol": "load_sessions_handler_111"
+  },
+  "dim3_detail": {
+    "edge_count": 48,
+    "max_depth": 5,
+    "depth_path": "load_sessions_handler_111->load_sessions_core_111->sub_1401E77D0->sub_1401649D0->sub_1401EB7A0"
+  },
+  "dim4_detail": {
+    "response_dto": {
+      "struct": "CodexHomePaths",
+      "fields_1_1_1": ["codexHome", "accountsPath", "authPath", "registryPath", "sessionsPath", "launchAgentPath", "autoSwitchLogPath(NEW@+144@0x1412c0bfc)", "authExists", "registryExists", "sessionsExists"],
+      "new_field": "autoSwitchLogPath",
+      "new_field_offset": 144,
+      "new_field_serde_key_va": "0x1412c0bfc"
+    },
+    "side_effects": ["pending_auto_switch spinlock InterlockedCompareExchange8+WakeByAddressSingle", "skill_store full iteration read-only", "fs::read_dir sessions dir @sub_1400467A0"],
+    "error_paths": ["pending_auto_switch active -> early return error", "skill_store discriminant=6 -> error via has_notch_invoke_resolver_respond", "session entry decode fail -> sentinel 0x8000000000000000", "Rust panic -> sub_14124BFE0"]
+  },
+  "dim5_detail": {
+    "relay_dispatchers": ["0x140a65470", "0x140a9e990"],
+    "both_route_to": "load_sessions_handler_111@0x140992490",
+    "platform_primitives": ["WakeByAddressSingle@0x14124A5D0", "_InterlockedCompareExchange8", "fs::read_dir via sub_1400467A0"]
+  },
+  "dim6_detail": {
+    "acceptance_status": "acceptance_draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "gate_tier": "readyToImplement",
+    "happy_path": "invoke('load_sessions') -> {codexHome, accountsPath, authPath, registryPath, sessionsPath, launchAgentPath, autoSwitchLogPath(new), authExists, registryExists, sessionsExists}",
+    "delta_assert": "response.autoSwitchLogPath field present (NEW 1.1.1, may be null)"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

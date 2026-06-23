@@ -1,0 +1,14 @@
+{"depth":0,"addr":"0x14000D2A0","name":"tauri_ipc_main_dispatcher_sys","type":"dispatcher","terminated_reason":null}
+{"depth":1,"addr":"0x140788F20","name":"sub_140788F20","type":"owner_core","note":"inline dispatcher case at 0x14000FD38 -> core","terminated_reason":null}
+{"depth":1,"addr":"0x14000FC8D_case","name":"pending_auto_switch_state_lock_acquire_111","type":"mutex_guard","terminated_reason":"new_111_guard: acquires auto-switch state mutex at depth-1 inline case"}
+{"depth":1,"addr":"0x14000FD0D_case","name":"query_installed_skills_with_repo_111","type":"repo_validation","terminated_reason":"new_111_guard: validates installed skills repo at depth-1 inline case"}
+{"depth":2,"addr":"0x14077E1A0","name":"pending_auto_switch_payload_read_111","type":"payload_reader","terminated_reason":null}
+{"depth":3,"addr":"0x14107C990","name":"win32_file_read_bytes_111","type":"file_read","terminated_reason":null,"note":"DELTA vs 1.0.9: 1.0.9 read from state_5.sqlite via sub_14104DEE0; 1.1.1 reads from file via win32_file_read_bytes_111"}
+{"depth":4,"addr":"0x141093260","name":"sub_141093260","type":"file_open_read","terminated_reason":null}
+{"depth":5,"addr":"0x14124D7B8","name":"CreateFileW","type":"external","terminated_reason":"external_call_recorded — Win32 CreateFileW for pending auto-switch file read"}
+{"depth":4,"addr":"0x140004C80","name":"sub_140004C80","type":"json_parse_auto_switch","terminated_reason":"external_call_recorded — JSON parse of pending auto-switch payload from file"}
+{"depth":2,"addr":"0x141077010","name":"sub_141077010","type":"serialize_response","terminated_reason":null}
+{"depth":3,"addr":"0x14107C990","name":"win32_file_write_bytes_111","type":"file_write","terminated_reason":null}
+{"depth":4,"addr":"0x14108C6F0","name":"sub_14108C6F0","type":"file_open_write","terminated_reason":null}
+{"depth":5,"addr":"0x14124D7B8","name":"CreateFileW","type":"external","terminated_reason":"external_call_recorded — Win32 CreateFileW for serialized response write"}
+{"depth":1,"addr":"0x140062230","name":"tauri_ipc_resolve_sys","type":"ipc_resolve","terminated_reason":"external_call_recorded — resolves IPC response to frontend"}

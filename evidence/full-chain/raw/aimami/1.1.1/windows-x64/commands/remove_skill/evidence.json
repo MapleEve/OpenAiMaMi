@@ -1,0 +1,158 @@
+{
+  "schema": "c5cm.evidence.v1",
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-17",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "module": "commands",
+  "target": "remove_skill",
+  "status": "done",
+  "delta_class": "integrity_recovered",
+  "baseline": "1.0.9",
+  "gate_dims": {
+    "dim1_ccf": {
+      "status": "confirmed",
+      "string_addr": "0x1412AC18A",
+      "string_value": "remove_skill",
+      "xref_from": "0x1400229A2",
+      "xref_fn": "remove_skill_handler_111 @ 0x140022920",
+      "note": "string xref method used (no frontend IPC contracts file for this session); command name confirmed"
+    },
+    "dim4_input_params": {
+      "status": "confirmed",
+      "params": [
+        {
+          "key": "repo",
+          "type": "String",
+          "string_addr": "0x1412AC6D1",
+          "extracted_by": "query_installed_skills_with_repo_111 @ 0x141214620",
+          "note": "filters installed skill list by repo path"
+        },
+        {
+          "key": "id",
+          "type": "String",
+          "string_addr": "0x1412AC77D",
+          "extracted_by": "remove_skill_parse_id_param_111 @ 0x1402FED40",
+          "note": "skill unique id; fast-path if tag==3, slow-path JSON deserialize"
+        }
+      ]
+    },
+    "dim2_output": {
+      "status": "confirmed",
+      "ok_tag": "0x8000000000000025",
+      "err_tag": "0x8000000000000005",
+      "reply_builder": "relay_response_build_remove_skill_reply_111 @ 0x140227320",
+      "reply_fields": ["schemaVersion", "success", "code", "message", "warnings"],
+      "error_codes": [
+        {"code": 7, "msg_addr": "0x1412EC037", "msg": "Skill not found"},
+        {"code": 2, "msg": "Internal DB/IO error"},
+        {"code": 3, "msg": "Serialization error"}
+      ],
+      "resolver": "sub_14080C3C0 (error/lock-fail paths)"
+    },
+    "dim3_body_completeness": {
+      "status": "full",
+      "layers_decompiled": 5,
+      "depth_reached": 5,
+      "handlers": [
+        {"name": "remove_skill_handler_111", "addr": "0x140022920", "size": "0x4C1"},
+        {"name": "sub_1407DB760 (async wrapper)", "addr": "0x1407DB760", "size": "~0x480"},
+        {"name": "skill_backup_replace_111", "addr": "0x1406ECD70", "size": "~0x700"},
+        {"name": "skill_list_db_query_111", "addr": "0x1406F0D80", "size": "~0x80"},
+        {"name": "import_skill_build_record_db_write_111", "addr": "0x1406F1360", "size": "0xCC0"}
+      ],
+      "accepted_unknown": false,
+      "genuine_ceiling": false,
+      "terminated_leaves": [
+        "snooze_file_open_111 (win32 IO x3)",
+        "uuid_v4_generate_raw_sys",
+        "system_time_precise_u32_111",
+        "elapsed_since_ts_111",
+        "sub_1403A6410 (SQLite write)",
+        "import_skill_read_parse_skill_md_111",
+        "import_skill_iter_dir_match_111",
+        "import_skill_uuid_to_string_111",
+        "relay_response_field_warnings_write_sys"
+      ]
+    }
+  },
+  "delta_analysis": {
+    "vs_baseline_1_0_9": {
+      "summary": "remove_skill in 1.1.1 now performs backup-before-remove via import_skill_build_record_db_write_111. In 1.0.9, skill_backup_replace_111 likely deleted the skill entry directly without creating a backup DB record first.",
+      "new_callees": [
+        {
+          "name": "import_skill_build_record_db_write_111",
+          "addr": "0x1406F1360",
+          "why_new": "Writes a structured backup record to SQLite before skill removal. Not called in remove_skill path in 1.0.9 (only in import_skill path).",
+          "side_effects": [
+            "SQLite write (sub_1403A6410) to installed_skills-adjacent table",
+            "uuid_v4_generate_raw_sys — RNG call",
+            "system_time_precise_u32_111 — syscall for createdAt",
+            "File read: import_skill_read_parse_skill_md_111 reads SKILL.md before delete",
+            "File read: import_skill_iter_dir_match_111 iterates skill dir before delete"
+          ],
+          "dto_fields": ["backupID", "skillID", "name", "title", "relativePath", "createdAt"]
+        }
+      ],
+      "unchanged_callees": [
+        "pending_auto_switch_state_lock_acquire_111 (same lock)",
+        "query_installed_skills_with_repo_111 (same param parse)",
+        "snooze_file_open_111 (same DB file open, now called 3x vs likely 2x)",
+        "relay_response_build_remove_skill_reply_111 (same reply schema)"
+      ],
+      "noise_filtered": [
+        "InterlockedCompareExchange8 / WakeByAddressSingle — Windows mutex primitives, compile-time noise",
+        "sub_141212FB0 — memmove/memcpy helper, no semantic change",
+        "nullsub_1 — Rust noop, compile artifact"
+      ],
+      "delta_confidence": "HIGH — import_skill_build_record_db_write_111 is a named, established function newly wired into the remove_skill path"
+    }
+  },
+  "side_effects": [
+    {
+      "type": "sqlite_write",
+      "fn": "sub_1403A6410",
+      "via": "import_skill_build_record_db_write_111",
+      "note": "Writes backup record BEFORE removing skill. DTO: {backupID, skillID, name, title, relativePath, createdAt}"
+    },
+    {
+      "type": "file_read",
+      "fn": "import_skill_read_parse_skill_md_111",
+      "target": "SKILL.md in skill directory",
+      "note": "Reads skill metadata for backup record construction"
+    },
+    {
+      "type": "file_read",
+      "fn": "snooze_file_open_111",
+      "target": "snooze skill DB file (win32_path_canonicalize_111 path)",
+      "note": "Called 3 times: initial query, post-backup-write re-query, post-removal verification"
+    },
+    {
+      "type": "file_delete_or_update",
+      "fn": "skill_backup_replace_111 via sub_14010E700 path",
+      "target": "skill directory entry in installed_skills list",
+      "note": "Removes skill record from in-memory list then writes back to DB"
+    }
+  ],
+  "platform_divergence": {
+    "windows_only_apis": [
+      "_InterlockedCompareExchange8 (async mutex CAS)",
+      "WakeByAddressSingle (futex-style wakeup)",
+      "win32_file_open_rw_111 / win32_path_canonicalize_111 (via snooze_file_open_111)"
+    ],
+    "note": "Core business logic (skill_backup_replace_111) identical structure expected on macOS; mutex primitives differ"
+  },
+  "idb_saved": "<本地路径>",
+  "idb_renames": [
+    {"old": "sub_140022920", "new": "remove_skill_handler_111"},
+    {"old": "sub_1402FED40", "new": "remove_skill_parse_id_param_111"},
+    {"old": "sub_140809B30", "new": "drop_result_inner_111"},
+    {"old": "sub_140227320", "new": "relay_response_build_remove_skill_reply_111"},
+    {"old": "sub_1406F0D80", "new": "skill_list_db_query_111"}
+  ],
+  "idb_comments_set": [
+    "0x140022920", "0x1406ECD70", "0x1406F1360", "0x1407DB760"
+  ]
+}

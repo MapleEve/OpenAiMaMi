@@ -1,0 +1,28 @@
+{
+  "command": "set_relay_display_tags",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "commands_relay/set_relay_display_tags/evidence.md (9713B, 16 confirmed facts)",
+    "commands_relay/set_relay_display_tags/interfaces/interface.md (3199B)",
+    "commands_relay/set_relay_display_tags/call-trees/set_relay_display_tags.jsonl (4975B, 24 depth entries)",
+    "frontend/ipc-contracts.jsonl#L118: argKeys=[global,woyao] wrapper=setRelayDisplayTags callee=vt col=121058",
+    "frontend/frontend-control-flow.jsonl#L140: terminal_call=set_relay_display_tags col=121084",
+    "frontend/frontend-control-flow.jsonl#L156: callsite=mutationFn->setRelayDisplayTags",
+    "windows-x64/set_relay_display_tags/gate-report.json: gate_tier=readyToImplement (dim5_win closed)",
+    "owner_va=0x1005eb5a0 core_va=0x1005d24d0 dispatcher_va=0x10031a360",
+    "argKeys dual-source: global(6B@0x101148466) woyao(5B@0x10114846c) from dispatcher decompile + packed blob",
+    "call-tree depth 6: dispatcher(0)->owner(1)->core_impl(2)->persist(3)->storage::save(4)->atomic_write(5)",
+    "ACCEPTANCE in evidence.md L93-L122 session=wf-aimami111-dim6-20260619"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

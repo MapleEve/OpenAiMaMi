@@ -1,0 +1,28 @@
+{"depth":0,"va":"0x1005eb760","symbol":"codexmate_lib::commands::relay::activate_relay_provider","size":495,"role":"tauri_command_handler","module":"commands::relay","session":"wf-aimami111-delta-20260616"}
+{"depth":1,"va":"0x1005dfab0","symbol":"codexmate_lib::core::relay::manager::RelayManager::activate","size":2080,"role":"core_orchestrator","caller":"0x1005eb760","call_type":"direct"}
+{"depth":2,"va":"0x1005e0330","symbol":"codexmate_lib::core::relay::manager::RelayManager::snapshot","role":"read_state_clone","caller":"0x1005dfab0","call_type":"direct"}
+{"depth":2,"va":"0x1005d65c0","symbol":"codexmate_lib::core::relay::manager::RelayManager::ensure_provider_loaded","role":"provider_lookup_by_ide_id","caller":"0x1005dfab0","call_type":"direct","error_path":"Err if ide_id not in providers Vec"}
+{"depth":3,"va":"0x1005e1c90","symbol":"codexmate_lib::core::relay::storage::lazy_load_api_key","role":"load_api_key_from_keychain_or_file","caller":"0x1005d65c0","call_type":"direct"}
+{"depth":2,"va":"0x10054a8b0","symbol":"codexmate_lib::core::relay::models::RelayActiveByIde::add","role":"add_ide_to_active_sessions_set_dedup","caller":"0x1005dfab0","call_type":"direct","leaf_type":"in_memory_state_mutation"}
+{"depth":2,"va":"0x1005dee20","symbol":"codexmate_lib::core::relay::manager::RelayManager::persist","role":"serialize_and_persist_state","caller":"0x1005dfab0","call_type":"direct"}
+{"depth":3,"va":"0x1005d5450","symbol":"codexmate_lib::core::relay::manager::RelayManager::compose_proxy_status","role":"compose_proxy_status_fields","caller":"0x1005dee20","call_type":"direct"}
+{"depth":3,"va":"0x1005e2c60","symbol":"codexmate_lib::core::relay::storage::save","role":"serialize_json_and_atomic_write","caller":"0x1005dee20","call_type":"direct"}
+{"depth":4,"va":"0x1005582b0","symbol":"codexmate_lib::platform::paths::CodexPaths::ensure_directories","role":"create_parent_dirs_if_missing","caller":"0x1005e2c60","call_type":"direct","leaf_type":"fs_mkdir"}
+{"depth":4,"va":"0x10054afe0","symbol":"codexmate_lib::core::relay::models::RelayState::serialize","role":"serde_json_serialization","caller":"0x1005e2c60","call_type":"direct","leaf_type":"serialization"}
+{"depth":4,"va":"0x10041e960","symbol":"codexmate_lib::core::relay::atomic_write::write_atomic","role":"atomic_file_write_tmpfile_rename","caller":"0x1005e2c60","call_type":"direct","leaf_type":"fs_write_terminal"}
+{"depth":5,"va":"0x100f24d00","symbol":"std::fs::DirBuilder::_create","role":"mkdir_parent","caller":"0x10041e960","leaf_type":"fs_syscall"}
+{"depth":5,"va":"0x100f25660","symbol":"std::fs::OpenOptions::_open","role":"open_tmpfile_O_CREAT_O_WRONLY","caller":"0x10041e960","leaf_type":"fs_syscall"}
+{"depth":5,"va":"0x100202930","symbol":"std::io::Write::write_all","role":"write_json_bytes_to_tmpfile","caller":"0x10041e960","leaf_type":"fs_write"}
+{"depth":5,"va":"0x100f25b80","symbol":"std::fs::File::sync_data","role":"fdatasync_tmpfile","caller":"0x10041e960","leaf_type":"fs_syscall"}
+{"depth":5,"va":"0x100f2b560","symbol":"std::sys::fs::rename","role":"atomic_rename_tmpfile_to_relay_json","caller":"0x10041e960","leaf_type":"fs_rename_terminal"}
+{"depth":5,"va":"0x10041ec70","symbol":"codexmate_lib::core::relay::atomic_write::sync_parent_dir","role":"fsync_parent_directory","caller":"0x10041e960","leaf_type":"fs_syscall"}
+{"depth":2,"va":"0x1005daea0","symbol":"codexmate_lib::core::relay::manager::RelayManager::sync_codex_config_with_outcome","role":"sync_codex_api_catalog","caller":"0x1005dfab0","call_type":"direct"}
+{"depth":3,"va":"0x1006e8950","symbol":"codexmate_lib::core::relay::codex_catalog::resolve_api_slots","role":"compute_api_slot_allocation","caller":"0x1005daea0","call_type":"conditional_port_nonzero"}
+{"depth":3,"va":"0x1006e8450","symbol":"codexmate_lib::core::relay::codex_catalog::write_catalog","role":"write_codex_catalog_file","caller":"0x1005daea0","call_type":"conditional_port_nonzero","leaf_type":"fs_write_terminal"}
+{"depth":3,"va":"0x1006e8800","symbol":"codexmate_lib::core::relay::codex_catalog::remove_catalog","role":"remove_codex_catalog_file","caller":"0x1005daea0","call_type":"conditional_port_zero","leaf_type":"fs_delete_terminal"}
+{"depth":3,"va":"0x10075ae20","symbol":"codexmate_lib::core::relay::codex_writer::apply_codex_state","role":"apply_final_codex_state","caller":"0x1005daea0","call_type":"always"}
+{"depth":2,"va":"0x1005d56f0","symbol":"codexmate_lib::core::relay::manager::RelayManager::ensure_proxy_started","role":"check_or_start_relay_proxy","caller":"0x1005dfab0","call_type":"conditional_not_found_in_providers","terminated_reason":"tcp_probe_connect_timeout_or_block_on_spawn"}
+{"depth":3,"va":"0x100f29bd0","symbol":"std::net::tcp::TcpStream::connect_timeout","role":"probe_proxy_port_127.0.0.1:proxy_port","caller":"0x1005d56f0","leaf_type":"network_probe"}
+{"depth":3,"va":"0x1002cf3a0","symbol":"tokio::runtime::Runtime::block_on","role":"async_spawn_proxy_process","caller":"0x1005d56f0","leaf_type":"async_runtime_terminal"}
+{"depth":2,"va":"0x100557920","symbol":"codexmate_lib::core::models::CoreEnvelope::ok","role":"wrap_ok_response","caller":"0x1005eb760","call_type":"success_path"}
+{"terminated_reason":"all leaves reached: fs_write (relay.json atomic), fs_write (codex catalog), network_probe (proxy port), async_runtime (proxy spawn), in_memory_state_mutation (RelayActiveByIde::add)","max_depth_reached":5,"session":"wf-aimami111-delta-20260616"}

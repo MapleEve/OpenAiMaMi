@@ -1,0 +1,205 @@
+{
+  "schema": "c5cm.call-tree.v1",
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "command": "remove_skill",
+  "platform": "windows-x64",
+  "version": "1.1.1",
+  "delta_class": "integrity_recovered",
+  "root": {
+    "name": "remove_skill_handler_111",
+    "addr": "0x140022920",
+    "size": "0x4C1",
+    "layer": "handler",
+    "children": [
+      {
+        "name": "pending_auto_switch_state_lock_acquire_111",
+        "addr": "0x14006EDC0",
+        "layer": "lock",
+        "note": "acquires global switch-lock; error → early reply",
+        "baseline_1_0_9": "same — named in baseline"
+      },
+      {
+        "name": "query_installed_skills_with_repo_111",
+        "addr": "0x141214620",
+        "layer": "db-query",
+        "note": "queries installed skill list filtered by 'repo' param",
+        "baseline_1_0_9": "same — named in baseline"
+      },
+      {
+        "name": "remove_skill_parse_id_param_111",
+        "addr": "0x1402FED40",
+        "layer": "param-parse",
+        "note": "parses 'id' string param from invoke args; fast-path tag==3, slow-path JSON deserialize",
+        "delta": "renamed from sub_ — logic unchanged vs 1.0.9"
+      },
+      {
+        "name": "sub_1407DB760",
+        "addr": "0x1407DB760",
+        "layer": "async-wrapper",
+        "note": "InterlockedCompareExchange8 mutex + WakeByAddressSingle; dispatches to skill_backup_replace_111",
+        "children": [
+          {
+            "name": "skill_backup_replace_111",
+            "addr": "0x1406ECD70",
+            "layer": "business",
+            "note": "DELTA: now calls import_skill_build_record_db_write_111 as pre-removal backup step",
+            "children": [
+              {
+                "name": "skill_list_db_query_111",
+                "addr": "0x1406F0D80",
+                "layer": "db",
+                "note": "reads snooze skill DB file; calls snooze_file_open_111 → win32_file_open_rw_111",
+                "children": [
+                  {
+                    "name": "snooze_file_open_111",
+                    "addr": "0x14108C6F0",
+                    "layer": "io",
+                    "note": "opens skill DB file via win32_path_canonicalize_111 + win32_file_open_rw_111",
+                    "terminated": true,
+                    "terminated_reason": "leaf: win32 file IO"
+                  }
+                ]
+              },
+              {
+                "name": "sub_141213640",
+                "addr": "0x141213640",
+                "layer": "util",
+                "note": "string equality for repo path matching in skill list scan",
+                "terminated": true,
+                "terminated_reason": "leaf: string compare"
+              },
+              {
+                "name": "sub_14107A2D0",
+                "addr": "0x14107A2D0",
+                "layer": "util",
+                "note": "path builder: concatenates base + suffix strings",
+                "terminated": true,
+                "terminated_reason": "leaf: string concat"
+              },
+              {
+                "name": "sub_1410A1B60",
+                "addr": "0x1410A1B60",
+                "layer": "io",
+                "note": "reads skill file content from record path (+96/+104)",
+                "terminated": true,
+                "terminated_reason": "leaf: file read"
+              },
+              {
+                "name": "import_skill_build_record_db_write_111",
+                "addr": "0x1406F1360",
+                "layer": "db-write",
+                "note": "DELTA NEW: writes backup DB record before removal. DTO: {backupID(uuid_v4), skillID, name, title, relativePath, createdAt}. Side-effect: SQLite write via sub_1403A6410",
+                "children": [
+                  {
+                    "name": "import_skill_read_parse_skill_md_111",
+                    "addr": "0x1406EE680",
+                    "layer": "io",
+                    "note": "reads SKILL.md from skill directory",
+                    "terminated": true,
+                    "terminated_reason": "leaf: file parse"
+                  },
+                  {
+                    "name": "uuid_v4_generate_raw_sys",
+                    "addr": "0x140F5A860",
+                    "layer": "util",
+                    "note": "generates UUID v4 for backupID field",
+                    "terminated": true,
+                    "terminated_reason": "leaf: OS RNG"
+                  },
+                  {
+                    "name": "system_time_precise_u32_111",
+                    "addr": "0x14107B7E0",
+                    "layer": "util",
+                    "note": "precise system time for createdAt",
+                    "terminated": true,
+                    "terminated_reason": "leaf: syscall"
+                  },
+                  {
+                    "name": "elapsed_since_ts_111",
+                    "addr": "0x14107B790",
+                    "layer": "util",
+                    "note": "elapsed duration since timestamp",
+                    "terminated": true,
+                    "terminated_reason": "leaf: math"
+                  },
+                  {
+                    "name": "import_skill_iter_dir_match_111",
+                    "addr": "0x1406EB140",
+                    "layer": "io",
+                    "note": "iterates skill dir to match files",
+                    "terminated": true,
+                    "terminated_reason": "leaf: dir walk"
+                  },
+                  {
+                    "name": "sub_1403A6410",
+                    "addr": "0x1403A6410",
+                    "layer": "db",
+                    "note": "SQLite write — persists backup record",
+                    "terminated": true,
+                    "terminated_reason": "leaf: SQLite write"
+                  },
+                  {
+                    "name": "import_skill_uuid_to_string_111",
+                    "addr": "0x1406F7540",
+                    "layer": "util",
+                    "note": "serializes UUID bytes to string for result",
+                    "terminated": true,
+                    "terminated_reason": "leaf: UUID fmt"
+                  }
+                ]
+              },
+              {
+                "name": "snooze_file_open_111",
+                "addr": "0x14108C6F0",
+                "layer": "io",
+                "note": "second call: re-read skill DB after backup write",
+                "terminated": true,
+                "terminated_reason": "leaf: file IO (second call)"
+              },
+              {
+                "name": "snooze_file_open_111",
+                "addr": "0x14108C6F0",
+                "layer": "io",
+                "note": "third call: read updated DB for deletion confirmation (sub_14010E700 path)",
+                "terminated": true,
+                "terminated_reason": "leaf: file IO (third call)"
+              }
+            ]
+          },
+          {
+            "name": "sub_140216750",
+            "addr": "0x140216750",
+            "layer": "error",
+            "note": "error path: builds Err result when skill_backup_replace_111 fails",
+            "terminated": true,
+            "terminated_reason": "leaf: error builder"
+          }
+        ]
+      },
+      {
+        "name": "relay_response_build_remove_skill_reply_111",
+        "addr": "0x140227320",
+        "layer": "reply",
+        "note": "builds JSON reply {schemaVersion, success, code, message, warnings}; delegates to relay_response_field_warnings_write_sys",
+        "children": [
+          {
+            "name": "relay_response_field_warnings_write_sys",
+            "addr": "0x1402494C0",
+            "layer": "reply-field",
+            "note": "writes warnings field to relay response",
+            "terminated": true,
+            "terminated_reason": "leaf: named sys fn"
+          }
+        ]
+      },
+      {
+        "name": "sub_14080C3C0",
+        "addr": "0x14080C3C0",
+        "layer": "reply-send",
+        "note": "sends reply on error/lock-fail paths",
+        "terminated": true,
+        "terminated_reason": "leaf: reply sender"
+      }
+    ]
+  }
+}

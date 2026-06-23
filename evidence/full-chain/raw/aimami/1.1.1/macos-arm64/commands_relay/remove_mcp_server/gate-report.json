@@ -1,0 +1,33 @@
+{
+  "command": "remove_mcp_server",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "commands_relay/remove_mcp_server/ida/pseudocode/0001_remove_mcp_server_owner_hf1ad73aa378558ad.c (VA=0x10072a660, size=1539B)",
+    "commands_relay/remove_mcp_server/ida/pseudocode/0002_remove_mcp_server_core_h360cb5a1f65874e9.c (VA=0x1005a0510, size=2042B)",
+    "commands_relay/remove_mcp_server/call-trees/remove_mcp_server.jsonl (depth=5, 26 entries, write_atomic terminal)",
+    "commands_relay/remove_mcp_server/interfaces/interface.md (argKeys=[name], CoreEnvelope<Vec<McpServerSummary>>, 4 error paths, atomic TOML side-effect)",
+    "commands_relay/remove_mcp_server/gate-report-dim6.json (session=wf-aimami111-dim6-20260619, acceptance-draft)",
+    "frontend/ipc-contracts.jsonl:L86:col30806 command=remove_mcp_server argKeys=[name] wrapper=removeMcpServer",
+    "frontend/frontend-control-flow.jsonl:L86:col30824 terminal=remove_mcp_server argKeys=[name]",
+    "frontend/frontend-control-flow.jsonl:mcp-page-CGgOsRmy.js:L16 callsite=mutationFn->removeMcpServer"
+  ],
+  "dim_notes": {
+    "dim1_frontend_ccf": "ipc-contracts.jsonl L86 col30806: argKeys=[name] wrapper=removeMcpServer. CCF L86 col30824: terminal ne('remove_mcp_server',{name:t}). Callsite in mcp-page-CGgOsRmy.js:16 mutationFn. CLOSED.",
+    "dim2_owner_pseudocode": "2 pseudocode files: owner ha2f28bcc (1539B) + core h360cb5a1 (2042B). Total ~24K dir. load_config_text->parse_mcp_document->hash_lookup->clone->splice->save. CLOSED.",
+    "dim3_call_tree_depth5": "26 entries, depth=5. Terminal: Mutex::lock/unlock(stdlib), read_to_string(fs), HashMap::insert(stdlib), write_atomic::rename(syscall), sync_parent_dir(fs). All branches reached. CLOSED.",
+    "dim4_interface_dto_error_sideeffect": "argKeys=[name:String]. Response CoreEnvelope<Vec<McpServerSummary>> stride=224B confirmed. 4 error paths: mutex_poison/load_config_io/name_not_found(format @0x1010B6A09)/save_config_io. Side-effect: TOML atomic write (tmp->fsync->rename->sync_parent). No HTTP/process. CLOSED.",
+    "dim5_same_platform_gate": "macos-arm64 binary sha256=f34ff829..., IDB confirmed, IPC VA=0x10072a660, core VA=0x1005a0510. CLOSED. dim5_win: requires separate Windows IDB — non-blocking for mac gate.",
+    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft. dim6 producer-side closed (acceptance-draft = producer done, consumer confirms C5 test coverage). CLOSED."
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

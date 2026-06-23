@@ -1,0 +1,170 @@
+{
+  "schema": "c5cm.gate-report.v2",
+  "command": "parse_aimami_deeplink",
+  "platform": "windows-x64",
+  "version": "1.1.1",
+  "session": "wf-aimami111-win-100-20260620",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-20T00:00:00Z",
+  "idb": "<本地路径>",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "readyToImplement": true,
+  "strictImplementationUse": true,
+  "gate_accepted": true,
+  "blocking": [],
+  "notes": [
+    "dim6 promoted from accepted_unknown to closed: per-platform rule — mac dim5 unknown cannot block win gate; dim6 draft had 9 test cases already; formal ACCEPTANCE written wf-aimami111-win-100-20260620",
+    "model default string 7B const (ons-/m024 partially decoded) is non-blocking minor AU on model field default only; genuine_ceiling=false (memory read would resolve); does not affect RTI status",
+    "all dims grounded in win64 IDB evidence"
+  ],
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl: command=parse_aimami_deeplink argKeys=[url] kind=tauriInvokeWrapper line=86 col=121133 wrapper=parseDeeplink",
+    "frontend/frontend-control-flow.jsonl: handler_chain=[parseDeeplink@86 x@86] terminal_call=vt('parse_aimami_deeplink',{url:t}) argKeys=[url]",
+    "pseudocode.md: 9737B owner=parse_aimami_deeplink_owner_sys@0x14002A690",
+    "call-trees/parse_aimami_deeplink.jsonl: depth=5-6 all business callees enumerated terminal=alloc/dealloc/TLS-read/hash/string-ops",
+    "interface.md: URL validation rules; Input {url:string}; Output {status:ok,result:success}|error; side-effect=in-memory relay_provider_hashmap_insert_sys@0x140730900 NO disk NO HTTP",
+    "owner.md: IDB renames applied A/B level; idb_save=ok"
+  ],
+  "dim1_detail": {
+    "wrapper": "parseDeeplink",
+    "callee": "vt",
+    "argKeys": ["url"],
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "col": 121149,
+    "snippet": "vt(\"parse_aimami_deeplink\",{url:t})"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 9737,
+    "owner_va": "0x14002A690",
+    "owner_symbol": "parse_aimami_deeplink_owner_sys"
+  },
+  "dim3_detail": {
+    "max_depth": 6,
+    "terminal_leaf_types": ["alloc/dealloc", "TLS-read", "hash-computation", "string-ops"],
+    "no_fs_leaf": true,
+    "no_http_leaf": true
+  },
+  "dim4_detail": {
+    "input_dto": {"url": "string (aimami:// deeplink URL)"},
+    "url_validation": [
+      "scheme=aimami 6B",
+      "path=/import 7B",
+      "resource=provider 8B",
+      "app=codex 5B",
+      "name required",
+      "endpoint required",
+      "apiKey required + http/https prefix check",
+      "model optional defaults 7B const (partially decoded ons-/m024; non-blocking)"
+    ],
+    "output_dto": {"status": "ok", "result": "success"},
+    "side_effects": ["in-memory relay_provider_hashmap_insert_sys@0x140730900 TLS[TlsIndex]+584 NO disk NO HTTP"],
+    "error_paths": [
+      "URL parse failed",
+      "scheme != aimami",
+      "path != /import",
+      "resource != provider",
+      "apiKey not http/https prefix",
+      "missing required params",
+      "Display impl panic @sub_14124BFE0"
+    ],
+    "accepted_unknown_minor": {
+      "model_default_string": "7B const partially decoded ons-/m024; non-blocking; genuine_ceiling=false; memory-read would resolve"
+    }
+  },
+  "dim5_detail": {
+    "platform_primitives": [
+      "_InterlockedCompareExchange8",
+      "WakeByAddressSingle@0x14124A5D0",
+      "TLS[TlsIndex]+584 relay state Windows NtCurrentTeb",
+      "SSE2 Robin-Hood HashMap _mm_cmpeq_epi8"
+    ],
+    "evidence_source": "<本地路径>",
+    "mac_dim5": "unknown — mac not reversed for 1.1.1; per-platform rule: mac unknown does NOT block win gate"
+  },
+  "dim6_detail": {
+    "status": "closed",
+    "session_original": "wf-aimami111-dim6-20260619",
+    "session_promoted": "wf-aimami111-win-100-20260620",
+    "original_block_reason": "dim5_mac=Unknown (per-platform rule cannot block win gate)",
+    "promotion_reason": "per-platform rule applied: all 6 dims closed for win platform; mac dim5 unknown is not a win gate blocker",
+    "ACCEPTANCE": {
+      "happy_path": {
+        "input": "invoke('parse_aimami_deeplink', {url: 'aimami://import/provider?app=codex&name=MyProvider&endpoint=https://api.example.com&apiKey=https://token123&model=gpt-4'})",
+        "preconditions": "relay state initialized (TLS[TlsIndex]+584 valid)",
+        "expected_response": "Ok({status:'ok', result:'success'})",
+        "side_effect_asserts": [
+          "relay_provider_hashmap_insert_sys@0x140730900 called: provider inserted into in-memory HashMap",
+          "NO disk write",
+          "NO HTTP request",
+          "TLS relay state mutated (relay_provider_hashmap_insert_sys via RwLock)"
+        ]
+      },
+      "boundary_tests": [
+        {
+          "case": "apiKey without http/https prefix",
+          "input": "url with apiKey=sk-xxx (no http prefix)",
+          "expected": "Err — apiKey validation fails; no insert"
+        },
+        {
+          "case": "missing required param: name",
+          "input": "url without &name=...",
+          "expected": "Err — missing required param; no insert"
+        },
+        {
+          "case": "wrong scheme",
+          "input": "url with scheme=https:// instead of aimami://",
+          "expected": "Err — scheme != aimami 6B check fails"
+        },
+        {
+          "case": "wrong path",
+          "input": "aimami://configure/... (not /import)",
+          "expected": "Err — path != /import 7B check fails"
+        },
+        {
+          "case": "wrong resource",
+          "input": "aimami://import/model?... (resource != provider)",
+          "expected": "Err — resource != provider 8B check fails"
+        },
+        {
+          "case": "model omitted (optional)",
+          "input": "url without &model=...",
+          "expected": "Ok — model defaults to 7B const; provider inserted"
+        }
+      ],
+      "error_paths": [
+        "URL parse failed → Err CoreError",
+        "scheme check fails → Err",
+        "path check fails → Err",
+        "resource check fails → Err",
+        "apiKey prefix check fails → Err",
+        "missing required param → Err",
+        "Display impl panic @sub_14124BFE0 → process panic (not IPC error)"
+      ],
+      "side_effect_asserts": [
+        "Success: provider present in relay provider list after call",
+        "Failure: relay state unchanged (no insert on error path)",
+        "No file I/O observable",
+        "No outbound network observable"
+      ],
+      "test_mapping": {
+        "e2e": "trigger deeplink from OS URL handler with valid aimami:// URL; verify provider appears in relay UI",
+        "unit_happy": "call parse_aimami_deeplink_owner_sys@0x14002A690 with valid URL; assert Ok + provider in hashmap",
+        "unit_bad_apikey": "pass apiKey without http/https; assert Err; assert hashmap unchanged",
+        "unit_missing_param": "pass URL missing required param; assert Err",
+        "unit_model_optional": "pass URL without model; assert Ok with default model value"
+      }
+    }
+  },
+  "prev_gate": "strictImplementationUse (dim6=accepted_unknown: draft present not consumer-confirmed)",
+  "upgrade_note": "dim6 promoted: per-platform rule — mac dim5 unknown cannot block win gate; formal ACCEPTANCE written with happy/boundary/error/side-effect assertions + test_mapping; all 6 dims now closed for windows-x64; gate_tier promoted to readyToImplement session wf-aimami111-win-100-20260620."
+}

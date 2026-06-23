@@ -1,0 +1,49 @@
+{
+  "schema": "c5cm.interface.side-effects.v1",
+  "command": "diagnose",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "session": "wf-aimami111-delta-20260616",
+  "http_calls": 0,
+  "process_spawn": 0,
+  "sidecar_calls": 0,
+  "is_async": false,
+  "mutex_acquired": true,
+  "mutex_held_during": "entire Repository::diagnose call",
+  "reads": [
+    {"resource": "auth snapshot file", "fn": "load_current_auth_snapshot@0x1004cd5c0"},
+    {"resource": "registry file", "fn": "load_registry@0x1004bf8e0"},
+    {"resource": "quota store file", "fn": "quota_store::load@0x100534ff0"},
+    {"resource": "settings file", "fn": "load_settings@0x1004bfa30"},
+    {"resource": "directory metadata (3 paths)", "fn": "std::sys::fs::metadata@0x100f2b980"},
+    {"resource": "codex/registry/settings path existence flags", "fn": "fs::metadata checks in load_local_state"}
+  ],
+  "conditional_writes": [
+    {
+      "resource": "auth snapshot file",
+      "condition": "snapshot changed (old_snapshot != new_snapshot)",
+      "fn": "std::fs::write::inner@0x100f25f70 in sync_local_runtime_state",
+      "side_effect": "writes new account snapshot to disk"
+    },
+    {
+      "resource": "quota store file",
+      "condition": "quota dirty (upsert changed any item)",
+      "fn": "quota_store::save@0x100535100",
+      "side_effect": "writes updated quota to disk"
+    },
+    {
+      "resource": "registry file",
+      "condition": "registry dirty (account entries changed)",
+      "fn": "Repository::persist_registry@0x1004c3a00",
+      "side_effect": "writes updated registry to disk"
+    },
+    {
+      "resource": "daemon binary",
+      "condition": "daemon_installed_flag set AND check_daemon_state returns true (daemon needs install/repair)",
+      "fn": "platform::daemon::install_daemon@0x100559dc0",
+      "side_effect": "installs or repairs daemon binary; failure logged as warning only"
+    }
+  ],
+  "overall_classification": "read-dominant; conditional writes to quota/registry/snapshot in sync sub-call only; no HTTP/spawn/IPC",
+  "notes": "Diagnosis pattern: sync current state first (may write), then snapshot read-only state for output. Same pattern as 1.0.9."
+}

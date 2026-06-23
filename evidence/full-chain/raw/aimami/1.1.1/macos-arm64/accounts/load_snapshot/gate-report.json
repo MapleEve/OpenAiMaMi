@@ -1,0 +1,30 @@
+{
+  "command": "load_snapshot",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": ["dim5_win not judged in mac shard gate; per-platform rule: mac gate only requires mac dim5 closed"]
+  },
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:1 wrapper=loadSnapshot argKeys=[localOnly] argObject={localOnly:t} callee=ne col=24147 kind=tauriInvokeWrapper",
+    "frontend/frontend-control-flow.jsonl:14 terminal_call command=load_snapshot argKeys=[localOnly]",
+    "frontend/frontend-control-flow.jsonl:114 callsite=Ge.loadSnapshot(!1) index-DdcCOEJG.js:86:35892",
+    "accounts/load_snapshot/ida/pseudocode/0001_load_snapshot_ipc_dispatcher_hd0f7bd206d5cf84c.c 1693B",
+    "accounts/load_snapshot/ida/pseudocode/0002_load_snapshot_async_closure_hadb9d09359062780.c 1583B",
+    "accounts/load_snapshot/ida/pseudocode/0003_load_snapshot_local_hb8d2ca20456473f2.c 1793B",
+    "accounts/load_snapshot/ida/pseudocode/0004_broadcast_runtime_snapshot_h2a2c0f2e1d4377e0.c 1964B",
+    "accounts/load_snapshot/call-trees/load_snapshot.jsonl 23 entries depth5: spawn_blocking+load_local_state_synced+broadcast_runtime_snapshot+emit",
+    "accounts/load_snapshot/interfaces/load_snapshot_interface.md argKeys=[localOnly] AppStatusPayload 4 warning codes 6 side-effects event=runtime-state-updated",
+    "accounts/load_snapshot/ACCEPTANCE.md acceptance-draft; dim1 closed per close_session wf-aimami111-dim6-100-20260619 (argKey localOnly byte-confirmed IPC blob 0x1010e7341; event=runtime-state-updated 逆向分析 0x100620a82)",
+    "intermediate/version-delta/mac-same.txt: load_snapshot listed (mac-arm64 command confirmed)"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

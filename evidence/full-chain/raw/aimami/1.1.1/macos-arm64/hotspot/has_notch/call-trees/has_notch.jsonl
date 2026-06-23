@@ -1,0 +1,14 @@
+{"session":"wf-aimami111-same-depth-20260618","cmd":"has_notch","version":"1.1.1","platform":"macos-arm64","produced_by":"<本地机器>","depth_reached":5,"terminated_reason":"external_call(NSScreen_auxiliaryTopLeftArea/TopRightArea_objc)","owner_addr":"0x1005ee5f0","owner_symbol":"codexmate_lib::commands::hotspot::has_notch::h72bcb533c0e1776c"}
+{"layer":0,"addr":"0x1005ee5f0","symbol":"codexmate_lib::commands::hotspot::has_notch","callees":["0x10041f670","0x100429560","0x1002407a0","0x100fbd052","0x1000014b0","0x1000014f0","0x100fbc780"]}
+{"layer":1,"addr":"0x10041f670","symbol":"codexmate_lib::platform::screen::has_notch_screen","callees":["0x100de86a0","0x100de8730","0x100de1f10","0x100de1e20","0x100de1e70","0x100fbd0dc","0x100fbd0f4","0x100fbd0fa","0x100fbd100","0x100fbd1c6","0x100faba30","0x100fabd10"]}
+{"layer":2,"addr":"0x100de86a0","symbol":"objc2_foundation::NSProcessInfo::processInfo","terminated_reason":"external_call(objc_runtime)"}
+{"layer":2,"addr":"0x100de8730","symbol":"objc2_foundation::NSProcessInfo::operatingSystemVersion","terminated_reason":"external_call(objc_runtime)"}
+{"layer":2,"addr":"0x100de1f10","symbol":"objc2_app_kit::NSScreen::screens","terminated_reason":"external_call(objc_runtime)"}
+{"layer":2,"addr":"0x100de1e20","symbol":"objc2_app_kit::NSScreen::auxiliaryTopLeftArea","terminated_reason":"external_call(objc_runtime)"}
+{"layer":2,"addr":"0x100de1e70","symbol":"objc2_app_kit::NSScreen::auxiliaryTopRightArea","terminated_reason":"external_call(objc_runtime)"}
+{"layer":2,"addr":"0x100429560","symbol":"tauri_runtime_wry::send_user_message","terminated_reason":"external_call(tauri_ipc_response)"}
+{"layer":2,"addr":"0x1002407a0","symbol":"std::sync::mpmc::Receiver<T>::recv","terminated_reason":"external_call(channel_recv)"}
+{"layer":3,"addr":"0x100faba30","symbol":"objc2::macro_helpers::cache::CachedSel::fetch","terminated_reason":"external_call(objc_selector_cache)"}
+{"layer":3,"addr":"0x100fabd10","symbol":"objc2::macro_helpers::retain_semantics::none_fail","terminated_reason":"external_call(objc_retain)"}
+{"layer":4,"addr":"0x100fbd0dc","symbol":"_objc_msgSend","terminated_reason":"external_call(objc_runtime)"}
+{"layer":5,"addr":"0x100fbd0f4","symbol":"_objc_release","terminated_reason":"external_call(objc_runtime)"}

@@ -1,0 +1,22 @@
+{"depth": 0, "va": "0x1005e9e00", "symbol": "codexmate_lib::commands::relay::diagnose_codex_router::h685f014e92d7bde3", "role": "tauri_cmd_owner", "terminated_reason": null, "type": "internal"}
+{"depth": 1, "va": "0x100319553", "symbol": "IPC call-site in codexmate_lib::run::{{closure}}::{{closure}}::hbec45e0c4863fd67", "role": "ipc_dispatch", "terminated_reason": "ipc_registration_site", "type": "internal"}
+{"depth": 1, "va": "0x1005e0330", "symbol": "codexmate_lib::core::relay::manager::RelayManager::snapshot::h0ea44eefa71d8bf1", "role": "relay_snapshot", "terminated_reason": "internal_leaf_prior_session", "type": "internal"}
+{"depth": 1, "va": "0x1005d9740", "symbol": "codexmate_lib::core::relay::manager::RelayManager::codex_config_stale_reason::h5382bb976ffc0c83", "role": "stale_reason_computer", "terminated_reason": null, "type": "internal"}
+{"depth": 2, "va": "0x1005e0330", "symbol": "RelayManager::snapshot (re-called from stale_reason)", "role": "relay_snapshot", "terminated_reason": "internal_leaf", "type": "internal"}
+{"depth": 2, "va": "0x100761f70", "symbol": "codexmate_lib::core::relay::codex_writer::read_top_level_string_value::h2547f115330858a1", "role": "toml_key_reader", "terminated_reason": "internal_leaf", "type": "internal"}
+{"depth": 2, "va": "0x1005e0f30", "symbol": "codexmate_lib::core::relay::manager::relay_ids_in_config::h34a5306c3ef448f2", "role": "relay_ids_reader", "terminated_reason": "internal_leaf", "type": "internal"}
+{"depth": 1, "va": "0x10075f040", "symbol": "codexmate_lib::core::relay::codex_writer::user_top_level_profile::h22ebebc2e44c59da", "role": "profile_reader", "terminated_reason": null, "type": "internal"}
+{"depth": 2, "va": "0x100f2b980", "symbol": "std::sys::fs::metadata::h32fa16d3052ea535", "role": "profile_file_exists_check", "terminated_reason": "fs_metadata_leaf", "type": "internal"}
+{"depth": 2, "va": "0x100f25740", "symbol": "std::fs::read_to_string::inner::hcce2334f4117b5b3", "role": "profile_file_reader", "terminated_reason": "fs_read_leaf", "type": "internal"}
+{"depth": 2, "va": "0x10075f610", "symbol": "codexmate_lib::core::relay::codex_writer::strip_all_managed_blocks::h4e6e10a199873f57", "role": "managed_block_stripper", "terminated_reason": "internal_leaf", "type": "internal"}
+{"depth": 2, "va": "0x1008f9320", "symbol": "toml_edit::de::Deserializer::from_str", "role": "toml_parser", "terminated_reason": "library_leaf", "type": "internal"}
+{"depth": 1, "va": "0x1007150e0", "symbol": "codexmate_lib::core::relay::codex_thread_visibility::has_router_thread_migration::h21ebdeb52f929c80", "role": "migration_checker", "terminated_reason": null, "type": "internal"}
+{"depth": 2, "va": "0x100f33a00", "symbol": "std::path::Path::_join::hb1a495d4f06b13b8", "role": "path_joiner (thread-router-migrations/current.json)", "terminated_reason": "std_library_leaf", "type": "internal"}
+{"depth": 2, "va": "0x100f2b980", "symbol": "std::sys::fs::metadata::h32fa16d3052ea535", "role": "migration_file_exists_check", "terminated_reason": "fs_metadata_leaf", "type": "internal"}
+{"depth": 1, "va": "0x100558430", "symbol": "codexmate_lib::platform::paths::CodexPaths::resolve_codex_home::h2e80808900649874", "role": "codex_home_resolver", "terminated_reason": "platform_leaf", "type": "internal"}
+{"depth": 1, "va": "0x100558e60", "symbol": "codexmate_lib::platform::paths::CodexPaths::from_home::hc15f7449aa417b39", "role": "codexpaths_builder", "terminated_reason": "platform_leaf", "type": "internal"}
+{"depth": 1, "va": "0x100f25740", "symbol": "std::fs::read_to_string::inner::hcce2334f4117b5b3", "role": "config_file_reader (config.toml)", "terminated_reason": "fs_read_leaf", "type": "internal"}
+{"depth": 1, "va": "0x100761f70", "symbol": "codexmate_lib::core::relay::codex_writer::read_top_level_string_value::h2547f115330858a1", "role": "toml_key_reader (model_provider, model_catalog_json, openai_base_url, profile)", "terminated_reason": "internal_leaf", "type": "internal"}
+{"depth": 1, "va": "0x100f33a00", "symbol": "std::path::Path::_join::hb1a495d4f06b13b8", "role": "path_joiner (codex_router_catalog.json)", "terminated_reason": "std_library_leaf", "type": "internal"}
+{"depth": 1, "va": "0x100f2b980", "symbol": "std::sys::fs::metadata::h32fa16d3052ea535", "role": "catalog_exists_check", "terminated_reason": "fs_metadata_leaf", "type": "internal"}
+{"depth": 1, "va": "0x100556a30", "symbol": "codexmate_lib::core::models::CoreEnvelope::ok::h8b3a83e2e12e6f57", "role": "response_wrapper", "terminated_reason": "library_leaf", "type": "internal"}

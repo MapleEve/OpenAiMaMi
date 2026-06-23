@@ -1,0 +1,31 @@
+{
+  "_comment": "SSE stream event handling — recovered from is_stream_terminal_event + extract_stream_text_delta",
+  "terminal_events_by_endpoint_type": {
+    "0_openai_chat": [
+      {"type": "message_stop", "len": 12}
+    ],
+    "1_responses_api": [
+      {"type": "response.failed", "len": 15},
+      {"type": "response.incomplete", "len": 19},
+      {"type": "response.done", "len": 18}
+    ],
+    "2_anthropic_direct": "_not handled by is_stream_terminal_event; separate path"
+  },
+  "delta_extraction_by_endpoint_type": {
+    "0_openai_chat": {
+      "path": "choices[0].delta.content",
+      "json_type": "String"
+    },
+    "1_responses_api": {
+      "triggers": [
+        {"type_match": "response.reasoning_summary_text.delta", "len": 37, "path": "item.text"},
+        {"type_match": "response.content_part.delta", "len": 26, "path": "item.text"}
+      ]
+    },
+    "2_anthropic_direct": {
+      "trigger": {"type_match": "content_block_delta", "len": 19, "path": "delta.text"}
+    }
+  },
+  "sentinel_no_delta": "a1[0] = 0x8000000000000000 (ISIZE::MIN as i64)",
+  "notes": "Both functions are new in AiMaMi 1.1.1; not present in 1.0.9 baseline"
+}

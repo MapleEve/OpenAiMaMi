@@ -1,0 +1,22 @@
+{
+  "schema": "c5cm.raw.producer_ledger.v1",
+  "command": "clear_custom_instruction_block",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "model": "claude-sonnet-4-6",
+  "produced_at": "2026-06-16T00:00:00+08:00",
+  "role": "纯生产者 (SOP steps 0-6)",
+  "owner_check": "PREWRITE_PRODUCER_COLLISION_GATE_V1 passed — INDEX had no 1.1.1 entry, owner-map-111 status was shared/not_yet_queried, no competing producer",
+  "authoritative": true,
+  "write_mode": "ADDITIVE",
+  "collision_status": "no_collision",
+  "index_key": "aimami/1.1.1/macos-arm64/custom_instructions/clear_custom_instruction_block",
+  "index_appended": true,
+  "idb_comment_written": true,
+  "idb_saved": true,
+  "status": "done",
+  "gate": "readyToImplement",
+  "migration_status": "migrated_no_behavior_diff"
+}

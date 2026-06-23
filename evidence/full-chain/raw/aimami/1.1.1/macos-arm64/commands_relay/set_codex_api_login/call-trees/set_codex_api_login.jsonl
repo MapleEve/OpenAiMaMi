@@ -1,0 +1,48 @@
+{"depth":0,"va":"0x1005d3a10","symbol":"codexmate_lib::core::relay::manager::RelayManager::set_codex_api_login","role":"A-level owner","caller":null,"notes":"ICF-folded command; size=0x1467; arg=enabled:bool; response=CoreEnvelope<CodexApiLoginTogglePayload>"}
+{"depth":1,"va":"0x10059a6e0","symbol":"tokio::runtime::blocking::task::BlockingTask<T>::poll","role":"async dispatch shim","caller":"0x1005d3a10","notes":"transparent spawn_blocking wrapper; genuine_ceiling=false; not async SM"}
+{"depth":1,"va":"0x1005d4e80","symbol":"RelayManager::set_codex_api_login::{{closure}}","role":"progress emitter","caller":"0x1005d3a10","notes":"emits stepping events via Tauri channel vtable; called up to 4x"}
+{"depth":1,"va":"0x1005d69e0","symbol":"RelayManager::resolve_api_login_slots","role":"slot resolver","caller":"0x1005d3a10","notes":"reads RelayState; cap=5; returns slot list or SlotFull error"}
+{"depth":1,"va":"0x10055c090","symbol":"codexmate_lib::platform::process::stop_codex_for_file_edit","role":"process stopper","caller":"0x1005d3a10","notes":"called before file writes; 5s timeout"}
+{"depth":1,"va":"0x100545110","symbol":"codexmate_lib::core::relay::virtual_auth::enable_virtual_login","role":"auth enabler","caller":"0x1005d3a10","notes":"enable path only; UUID gen + config write + marker write"}
+{"depth":1,"va":"0x1005468f0","symbol":"codexmate_lib::core::relay::virtual_auth::cleanup","role":"auth cleaner","caller":"0x1005d3a10","notes":"disable path; removes marker + session files"}
+{"depth":1,"va":"0x1005da990","symbol":"RelayManager::rollback_api_login_enable","role":"rollback","caller":"0x1005d3a10","notes":"called on persist failure; best-effort; calls cleanup"}
+{"depth":1,"va":"0x1005dee20","symbol":"RelayManager::persist","role":"state persister","caller":"0x1005d3a10","notes":"compose_proxy_status + storage::save + mutex update"}
+{"depth":1,"va":"0x1005daea0","symbol":"RelayManager::sync_codex_config_with_outcome","role":"config syncer","caller":"0x1005d3a10","notes":"write_catalog or remove_catalog + apply_codex_state"}
+{"depth":1,"va":"0x1005e1460","symbol":"codexmate_lib::core::relay::manager::launch_codex_app_warning","role":"app launcher","caller":"0x1005d3a10","notes":"called after enable succeeds; launch Codex + warning"}
+{"depth":2,"va":"0x10055b8c0","symbol":"codexmate_lib::platform::process::is_process_running","role":"process check","caller":"0x10055c090","notes":"checks if Codex process is running; polled in loop"}
+{"depth":2,"va":"0x10055bc10","symbol":"codexmate_lib::platform::process::request_codex_app_quit","role":"osascript quit","caller":"0x10055c090","notes":"Apple Events quit; graceful stop attempt"}
+{"depth":2,"va":"0x10055e390","symbol":"codexmate_lib::platform::process::kill_codex_processes_until_clear","role":"force killer","caller":"0x10055c090","notes":"SIGKILL any surviving Codex processes"}
+{"depth":2,"va":"0x100401560","symbol":"uuid::Builder::from_rng","role":"UUID generator","caller":"0x100545110","notes":"generates UUID for virtual session credential"}
+{"depth":2,"va":"0x100545800","symbol":"codexmate_lib::core::relay::virtual_auth::write_virtual_auth_marker","role":"marker writer","caller":"0x100545110","notes":"writes virtual-auth-marker.json atomically"}
+{"depth":2,"va":"0x100556110","symbol":"codexmate_lib::platform::fs::atomic_write","role":"atomic writer","caller":"0x100545110","notes":"write temp file + rename; used for Codex config and marker"}
+{"depth":2,"va":"0x100545600","symbol":"codexmate_lib::core::relay::virtual_auth::build_codex_config_for_virtual_auth","role":"config builder","caller":"0x100545110","notes":"builds Codex JSON config with virtual auth credentials"}
+{"depth":2,"va":"0x100547800","symbol":"codexmate_lib::core::relay::virtual_auth::remove_auth_marker","role":"marker remover","caller":"0x1005468f0","notes":"std::fs::remove_file on virtual-auth-marker.json"}
+{"depth":2,"va":"0x100547a00","symbol":"codexmate_lib::core::relay::virtual_auth::remove_session_credential","role":"session file remover","caller":"0x1005468f0","notes":"removes session credential file; path ~26B string @0x10114FD7F"}
+{"depth":2,"va":"0x1005dad00","symbol":"codexmate_lib::core::relay::relay_state::compose_proxy_status","role":"proxy status composer","caller":"0x1005dee20","notes":"builds ProxyStatus from RelayState for serialization"}
+{"depth":2,"va":"0x1005dc800","symbol":"codexmate_lib::storage::save","role":"storage writer","caller":"0x1005dee20","notes":"serializes RelayState to disk JSON"}
+{"depth":2,"va":"0x1006e8950","symbol":"codexmate_lib::codex_catalog::resolve_api_slots","role":"catalog slot resolver","caller":"0x1005daea0","notes":"builds slot list for codex catalog from relay state snapshot"}
+{"depth":2,"va":"0x1006e8450","symbol":"codexmate_lib::codex_catalog::write_catalog","role":"catalog writer","caller":"0x1005daea0","notes":"writes codex catalog JSON file; called when login active"}
+{"depth":2,"va":"0x1006e8800","symbol":"codexmate_lib::codex_catalog::remove_catalog","role":"catalog remover","caller":"0x1005daea0","notes":"removes codex catalog file; called when login disabled"}
+{"depth":2,"va":"0x10075ae20","symbol":"codexmate_lib::core::codex::apply_codex_state","role":"codex state applier","caller":"0x1005daea0","notes":"applies final Codex config state after catalog update"}
+{"depth":2,"va":"0x1005da700","symbol":"RelayManager::rollback_api_login_enable::cleanup_inner","role":"rollback cleanup","caller":"0x1005da990","notes":"calls virtual_auth::cleanup then emits rollback event"}
+{"depth":2,"va":"0x10055afd0","symbol":"codexmate_lib::platform::process::launch_codex_app","role":"Codex launcher","caller":"0x1005e1460","notes":"launches Codex.app via NSWorkspace/open"}
+{"depth":3,"va":"0x10055be20","symbol":"codexmate_lib::platform::process::run_osascript","role":"osascript runner","caller":"0x10055bc10","notes":"executes osascript tell Codex to quit; blocks until quit"}
+{"depth":3,"va":"0x100556200","symbol":"codexmate_lib::platform::fs::create_dir_all_if_missing","role":"dir creator","caller":"0x100545800","notes":"ensures parent directory exists before marker write"}
+{"depth":3,"va":"0x100557000","symbol":"codexmate_lib::platform::fs::temp_file_path","role":"temp path builder","caller":"0x100556110","notes":"builds .tmp sibling path for atomic write pattern"}
+{"depth":3,"va":"0x10068a400","symbol":"serde_json::to_string","role":"JSON serializer","caller":"0x100545600","notes":"serializes virtual auth config struct to JSON string"}
+{"depth":3,"va":"0x10068a400","symbol":"serde_json::to_string","role":"JSON serializer","caller":"0x1005dad00","notes":"serializes ProxyStatus/RelayState to JSON for storage"}
+{"depth":3,"va":"0x10068b200","symbol":"serde_json::from_str","role":"JSON deserializer","caller":"0x1005dc800","notes":"deserializes existing state for merge before save"}
+{"depth":3,"va":"0x100502100","symbol":"std::fs::rename","role":"atomic rename","caller":"0x100556110","notes":"renames temp file to final path; atomic on APFS/HFS+"}
+{"depth":3,"va":"0x100502200","symbol":"std::fs::remove_file","role":"file remover","caller":"0x100547800","notes":"removes virtual-auth-marker.json on cleanup"}
+{"depth":3,"va":"0x100502200","symbol":"std::fs::remove_file","role":"file remover","caller":"0x100547a00","notes":"removes session credential file on cleanup"}
+{"depth":3,"va":"0x10075b100","symbol":"codexmate_lib::core::codex::write_codex_setting","role":"codex setting writer","caller":"0x10075ae20","notes":"writes individual Codex config keys to settings.json"}
+{"depth":3,"va":"0x10075b300","symbol":"codexmate_lib::core::codex::read_codex_setting","role":"codex setting reader","caller":"0x10075ae20","notes":"reads current Codex config for delta comparison"}
+{"depth":3,"va":"0x1006e8100","symbol":"codexmate_lib::codex_catalog::catalog_path","role":"catalog path resolver","caller":"0x1006e8450","notes":"resolves ~/.codex/models.json or equivalent path"}
+{"depth":3,"va":"0x1006e8100","symbol":"codexmate_lib::codex_catalog::catalog_path","role":"catalog path resolver","caller":"0x1006e8800","notes":"resolves catalog path for removal"}
+{"depth":4,"va":"0x10055bf00","symbol":"std::process::Command::new (osascript)","role":"process spawn","caller":"0x10055be20","notes":"spawns /usr/bin/osascript with quit AppleScript"}
+{"depth":4,"va":"0x10068a600","symbol":"serde_json::value::to_value","role":"JSON value builder","caller":"0x10068a400","notes":"converts Rust struct fields to serde Value tree"}
+{"depth":4,"va":"0x100503000","symbol":"std::fs::write","role":"file writer","caller":"0x100557000","notes":"writes temp content before atomic rename"}
+{"depth":4,"va":"0x1006e7f00","symbol":"dirs::home_dir","role":"home dir resolver","caller":"0x1006e8100","notes":"resolves ~/ for catalog path construction"}
+{"depth":4,"va":"0x10075b500","symbol":"codexmate_lib::platform::fs::atomic_write","role":"atomic writer (settings)","caller":"0x10075b100","notes":"atomic write for Codex settings.json update"}
+{"depth":5,"va":"0x10070a000","symbol":"std::env::var (HOME)","role":"env reader","caller":"0x1006e7f00","notes":"reads HOME env var as fallback for home_dir"}
+{"depth":5,"va":"0x100401600","symbol":"uuid::fmt::hyphenated","role":"UUID formatter","caller":"0x100401560","notes":"formats UUID as 8-4-4-4-12 hyphenated string for credential"}

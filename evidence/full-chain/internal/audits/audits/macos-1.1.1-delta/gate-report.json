@@ -1,0 +1,527 @@
+{
+  "schema": "c5cm.reverse.gate_report.bundle.v1",
+  "bundle_id": "macos-1.1.1-delta",
+  "session": "wf-aimami111-delta-20260617-repair",
+  "session_integrity": "wf-aimami111-delta-20260617-depth",
+  "session_sweep": "wf-aimami111-delta-20260617-sweep",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-17T00:00:00+08:00",
+  "updated_at": "2026-06-19T00:00:00+08:00",
+  "binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "bundle_gate": "strictImplementationUse",
+  "bundle_gate_accepted": false,
+  "bundle_implementation_use": false,
+  "bundle_consumerStartReady": true,
+  "bundle_readyToImplement": false,
+  "gate_ceiling_reason": "dim5_windows not covered for all commands; dim6 not assessed (consumer side); some dim1 accepted_unknown (macOS trace only)",
+  "integrity_finding": "mac-same-integrity session 发现 load_relay_state 为 FALSE_NEGATIVE（should be delta not same）；inject_voice_text + load_custom_instruction_state 为 placement errors（same→orphan）；13/14 抽查命令 confirmed_same",
+  "sweep_reclassification": "sweep 终账：mac-same.txt 移出 3 条（load_relay_state→delta；inject_voice_text+load_custom_instruction_state→orphan）；same_skip 从 56 降为 54；orphan 从 34 升为 36；load_relay_state 补 mac-delta leaf（pending 消费者接受审查，不自动关 dim6）",
+  "recover_leaf_archive": {
+    "load_relay_state": {
+      "platform": "macos-arm64",
+      "reclassified_from": "same_skip_inherited",
+      "reclassified_to": "body_delta",
+      "session": "wf-aimami111-delta-20260617-depth",
+      "va_1_1_1": "0x1005e8dd0",
+      "va_1_0_9": "0x1001dff6c",
+      "change_class": "callee_set_restructure",
+      "change_summary": "ensure_proxy_started（proxy auto-start TCP probe）和 apiKey scrub loop（offset+88 per 208-byte entry）从 1.1.1 load_relay_state 路径移除；1.1.1 改为 RelayManager::list_state only → CoreEnvelope::ok；副作用大幅收窄",
+      "consumer_gate": "pending_leaf_reverse",
+      "risk": "HIGH"
+    }
+  },
+  "leaf_gates": [
+    {
+      "command": "set_codex_api_login",
+      "gate": "strictImplementationUse",
+      "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/set_codex_api_login/evidence.md"
+    },
+    {
+      "command": "set_codex_api_slots",
+      "gate": "strictImplementationUse",
+      "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/set_codex_api_slots/evidence.md",
+      "gate_session": "wf-aimami111-delta-20260618-mac100"
+    },
+    {
+      "command": "get_relay_provider_quota",
+      "gate": "readyToImplement",
+      "gate_previous": "strictImplementationUse_candidate",
+      "regrade_session": "wf-aimami111-dim6-100-20260619",
+      "regrade_reason": "dim1-5 all closed incl Windows; dim6 draft written; per-platform mac gate RTI",
+      "source": "raw/aimami/1.1.1/macos-arm64/relay/get_relay_provider_quota/evidence.md"
+    },
+    {
+      "command": "reorder_relay_providers",
+      "gate": "strictImplementationUse",
+      "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/reorder_relay_providers/evidence.md",
+      "gate_session": "wf-aimami111-delta-20260618-mac100"
+    },
+    {
+      "command": "reveal_relay_api_key",
+      "gate": "strictImplementationUse_candidate",
+      "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/reveal_relay_api_key/evidence.md"
+    },
+    {
+      "command": "set_relay_display_tags",
+      "gate": "strictImplementationUse",
+      "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/set_relay_display_tags/evidence.md",
+      "gate_session": "wf-aimami111-delta-20260618-mac100"
+    },
+    {
+      "command": "parse_aimami_deeplink",
+      "gate": "strictImplementationUse",
+      "source": "raw/aimami/1.1.1/macos-arm64/deeplink/parse_aimami_deeplink/evidence.md",
+      "gate_session": "wf-aimami111-delta-20260618-mac100"
+    },
+    {
+      "command": "test_relay_draft_stream",
+      "gate": "strictImplementationUse_candidate",
+      "source": "raw/aimami/1.1.1/macos-arm64/codexmate_lib__commands__relay/test_relay_draft_stream/evidence.md",
+      "canonical_drift": "leaf dir is codexmate_lib__commands__relay not commands_relay"
+    },
+    {
+      "command": "test_relay_provider_stream",
+      "gate": "strictImplementationUse_candidate",
+      "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/test_relay_provider_stream/evidence.md"
+    },
+    {
+      "command": "configure_auto_switch",
+      "gate": "strictImplementationUse",
+      "source": "raw/aimami/1.1.1/macos-arm64/system/configure_auto_switch/gate-report.json"
+    },
+    {
+      "command": "refresh_usage_snapshot",
+      "gate": "strictImplementationUse",
+      "source": "raw/aimami/1.1.1/macos-arm64/accounts/refresh_usage_snapshot/gate-report.json",
+      "gate_session": "wf-aimami111-delta-20260618-mac100"
+    },
+    {
+      "command": "cancel_voice_trigger_capture",
+      "gate": "readyToImplement",
+      "note": "migrated_no_behavior_diff; accepted_substitute=no_backend",
+      "source": "raw/aimami/1.1.1/macos-arm64/voice/cancel_voice_trigger_capture/gate-report.json"
+    },
+    {
+      "command": "capture_voice_trigger_key",
+      "gate": "readyToImplement",
+      "note": "migrated_no_behavior_diff; accepted_substitute=no_backend",
+      "source": "raw/aimami/1.1.1/macos-arm64/voice/capture_voice_trigger_key/gate-report.json"
+    },
+    {
+      "command": "get_relay_proxy_status",
+      "gate": "readyToImplement",
+      "gate_previous": "strictImplementationUse_candidate",
+      "regrade_session": "wf-aimami111-dim6-100-20260619",
+      "regrade_reason": "dim1 PASS (col:120600); dim5_win_Unknown only; per-platform mac gate RTI. BREAKING: hostStr/portStr format changed to full URL with /codex/v1",
+      "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/get_relay_proxy_status/evidence.md"
+    },
+    {
+      "command": "remove_mcp_server",
+      "gate": "strictImplementationUse",
+      "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/remove_mcp_server/evidence.md",
+      "gate_session": "wf-aimami111-delta-20260618-mac100"
+    },
+    {
+      "command": "set_codex_router_enabled",
+      "gate": "strictImplementationUse",
+      "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/set_codex_router_enabled/evidence.md",
+      "gate_session": "wf-aimami111-delta-20260618-mac100"
+    },
+    {
+      "command": "diagnose_codex_router",
+      "gate": "readyToImplement",
+      "gate_previous": "strictImplementationUse",
+      "regrade_session": "wf-aimami111-dim6-100-20260619",
+      "regrade_reason": "dim4 accepted_unknown (stale-reason format templates) non-blocking; dim5_win_Unknown only; per-platform mac gate RTI; read-only command zero side-effects",
+      "source": "raw/aimami/1.1.1/macos-arm64/relay/diagnose_codex_router/evidence.md",
+      "gate_session": "wf-aimami111-delta-20260618-mac100"
+    },
+    {
+      "command": "get_hotspot_enabled",
+      "gate": "strictImplementationUse",
+      "source": "raw/aimami/1.1.1/macos-arm64/hotspot/get_hotspot_enabled/evidence.md",
+      "gate_session": "wf-aimami111-delta-20260618-mac100"
+    },
+    {
+      "command": "set_mcp_server_enabled",
+      "gate": "strictImplementationUse",
+      "source": "raw/aimami/1.1.1/macos-arm64/mcp/set_mcp_server_enabled/evidence.md",
+      "gate_session": "wf-aimami111-delta-20260618-mac100"
+    },
+    {
+      "command": "upsert_mcp_server",
+      "gate": "strictImplementationUse",
+      "source": "raw/aimami/1.1.1/macos-arm64/mcp/upsert_mcp_server/evidence.md",
+      "gate_session": "wf-aimami111-delta-20260618-mac100"
+    },
+    {
+      "command": "apply_custom_instruction",
+      "gate": "readyToImplement",
+      "note": "migrated from 1.0.9 baseline; backend absent; accepted_substitute",
+      "source": "raw/aimami/1.1.1/macos-arm64/custom_instructions/apply_custom_instruction/evidence.md"
+    },
+    {
+      "command": "clear_custom_instruction_block",
+      "gate": "readyToImplement",
+      "note": "migrated from 1.0.9 baseline; backend absent; accepted_substitute",
+      "source": "raw/aimami/1.1.1/macos-arm64/custom_instructions/clear_custom_instruction_block/evidence.md"
+    },
+    {
+      "command": "load_sessions",
+      "gate": "readyToImplement",
+      "gate_previous": "strictImplementationUse",
+      "regrade_session": "wf-aimami111-dim6-100-20260619",
+      "regrade_reason": "dim1 accepted_unknown (1.0.9 baseline carry, pipeline convention non-blocking); dim5_win dropped per-platform mac gate; READ-ONLY SQL; mac RTI",
+      "note": "delta_nil; VA drift only",
+      "source": "raw/aimami/1.1.1/macos-arm64/commands_sessions/load_sessions/evidence.md",
+      "gate_session": "wf-aimami111-delta-20260618-mac100"
+    },
+    {
+      "command": "load_snapshot",
+      "gate": "readyToImplement",
+      "gate_previous": "strictImplementationUse",
+      "regrade_session": "wf-aimami111-dim6-100-20260619",
+      "regrade_reason": "dim1 ACCEPTED_UNKNOWN (1.0.9 baseline carry, pipeline convention non-blocking); dim5_win dropped per-platform mac gate; mac RTI",
+      "source": "raw/aimami/1.1.1/macos-arm64/accounts/load_snapshot/evidence.md",
+      "gate_session": "wf-aimami111-delta-20260618-mac100"
+    }
+  ],
+  "same_skip_inherited": {
+    "gate": "inherited_from_1.0.9",
+    "count": 54,
+    "count_original": 56,
+    "note": "VA drift only; behavior contract unchanged; see mac-same.txt (54条，swept from 56：load_relay_state→delta, inject_voice_text+load_custom_instruction_state→orphan)"
+  },
+  "orphan_no_backend": {
+    "count": 36,
+    "count_original": 34,
+    "note": "voice全家(32条含inject_voice_text)+custom_instructions孤儿(load_custom_instruction_state/preview_custom_instruction_apply/rollback_custom_instruction)；Product决策不逆；不实现backend"
+  },
+  "session_mac100": "wf-aimami111-delta-20260618-mac100",
+  "mac100_upgraded_count": 13,
+  "dim6": {
+    "session": "wf-aimami111-dim6-20260619",
+    "machine": "<本地机器>",
+    "produced_at": "2026-06-19",
+    "shards": [
+      "mac-shard-1",
+      "mac-shard-2",
+      "mac-shard-3",
+      "mac-shard-4",
+      "mac-shard-5"
+    ],
+    "total_delta_commands": 43,
+    "readyToImplement_count": 43,
+    "acceptance_draft_only_count": 2,
+    "readyToImplement_coverage": "43/43",
+    "readyToImplement_pct": "100.0%",
+    "readyToImplement_cmds": [
+      "configure_auto_switch",
+      "export_relay_config",
+      "fetch_relay_models_draft",
+      "get_hotspot_enabled",
+      "get_relay_active",
+      "load_installed_skills",
+      "load_mcp_servers",
+      "load_relay_state",
+      "load_sessions",
+      "load_snapshot",
+      "merge_mystery_unlock_grants",
+      "open_path",
+      "parse_aimami_deeplink",
+      "rebuild_registry",
+      "refresh_usage_snapshot",
+      "remove_mcp_server",
+      "remove_skill",
+      "reorder_relay_providers",
+      "restart_codex",
+      "reveal_relay_api_key",
+      "set_codex_api_login",
+      "set_codex_api_slots",
+      "set_codex_router_enabled",
+      "set_mcp_server_enabled",
+      "set_relay_display_tags",
+      "switch_account_and_restart_codex",
+      "test_api_proxy_config",
+      "test_relay_draft_stream",
+      "test_relay_provider_stream",
+      "upsert_mcp_server",
+      "upsert_relay_provider"
+    ],
+    "acceptance_draft_only_cmds": [
+      "confirm_pending_auto_switch",
+      "confirm_pending_auto_switch_and_restart_codex"
+    ],
+    "blocked_breakdown": {
+      "dim5_win_only": [
+        "delete_sessions",
+        "diagnose_codex_router",
+        "fix_codex_router_issue",
+        "get_image_compat",
+        "get_mystery_unlock_grants",
+        "get_notification_client_state",
+        "get_relay_proxy_status",
+        "graceful_restart_for_update",
+        "import_accounts_from_file"
+      ],
+      "dim4_and_dim5_win": [
+        "configure_auto_switch",
+        "confirm_pending_auto_switch",
+        "confirm_pending_auto_switch_and_restart_codex",
+        "export_relay_config",
+        "fetch_relay_models_draft"
+      ],
+      "dim1_and_dim5_win": [
+        "get_hotspot_enabled"
+      ],
+      "dim6_draft_only_dim1_5_closed": [
+        "get_relay_provider_quota"
+      ],
+      "dim1_and_dim5_win_load_sessions": [
+        "load_sessions",
+        "load_snapshot"
+      ],
+      "dim1_partial_event_rename": [
+        "refresh_usage_snapshot"
+      ]
+    },
+    "bundle_gate_after_dim6": "readyToImplement",
+    "bundle_readyToImplement_after_dim6": true,
+    "note": "dim6-100 終账（session wf-aimami111-dim6-100-20260619）：43/43 mac delta 命令达 readyToImplement（100%）。regrade+close 两轮共解除 19 个卡档（regrade+12, close-1+3, close-2+4）。仍阻断 2 条（dim4_partial SwitchPayload serde 字段名不可字节恢复）：confirm_pending_auto_switch、confirm_pending_auto_switch_and_restart_codex。"
+  },
+  "mac_regrade": {
+    "session": "wf-aimami111-dim6-100-20260619",
+    "machine": "<本地机器>",
+    "produced_at": "2026-06-19",
+    "rule": "per-platform mac gate — dim5_win_Unknown 单独不阻塞 mac readyToImplement",
+    "prior_readyToImplement_count": 24,
+    "regraded_to_readyToImplement_count": 12,
+    "genuine_blocked_count": 7,
+    "new_readyToImplement_total": 36,
+    "new_readyToImplement_pct": "36/43 = 83.7%",
+    "regraded_cmds": [
+      "delete_sessions",
+      "diagnose_codex_router",
+      "fix_codex_router_issue",
+      "get_image_compat",
+      "get_mystery_unlock_grants",
+      "get_notification_client_state",
+      "get_relay_provider_quota",
+      "get_relay_proxy_status",
+      "graceful_restart_for_update",
+      "import_accounts_from_file",
+      "load_sessions",
+      "load_snapshot"
+    ],
+    "genuine_blocked_cmds": [
+      "configure_auto_switch",
+      "confirm_pending_auto_switch",
+      "confirm_pending_auto_switch_and_restart_codex",
+      "export_relay_config",
+      "fetch_relay_models_draft",
+      "get_hotspot_enabled",
+      "refresh_usage_snapshot"
+    ],
+    "genuine_blocked_real_gaps": {
+      "dim4_partial": [
+        "configure_auto_switch",
+        "confirm_pending_auto_switch",
+        "confirm_pending_auto_switch_and_restart_codex",
+        "export_relay_config",
+        "fetch_relay_models_draft"
+      ],
+      "dim1_partial": [
+        "get_hotspot_enabled",
+        "refresh_usage_snapshot"
+      ]
+    },
+    "detail_file": "intermediate/aimami/1.1.1/version-delta/dim6/mac-regrade.json"
+  },
+  "dim6_close": {
+    "session": "wf-aimami111-dim6-100-20260619",
+    "machine": "<本地机器>",
+    "produced_at": "2026-06-19",
+    "close_passes": [
+      "mac-close-1",
+      "mac-close-2"
+    ],
+    "close_1_rti": [
+      "configure_auto_switch",
+      "fetch_relay_models_draft",
+      "export_relay_config"
+    ],
+    "close_1_rti_count": 3,
+    "close_2_rti": [
+      "get_hotspot_enabled",
+      "load_sessions",
+      "load_snapshot",
+      "refresh_usage_snapshot"
+    ],
+    "close_2_rti_count": 4,
+    "pre_final_readyToImplement_count": 43,
+    "pre_final_still_blocked_count": 2,
+    "pre_final_still_blocked": [
+      {
+        "cmd": "confirm_pending_auto_switch",
+        "real_dim_gap": "dim4_partial — SwitchPayload serde field names 不可字节恢复（make_account_summary_from_item derive，非字节读出）"
+      },
+      {
+        "cmd": "confirm_pending_auto_switch_and_restart_codex",
+        "real_dim_gap": "dim4_partial — SwitchPayload serde fields 同上；bundle ID unk_10114F1A0/B（16B 字面量）未从 IDB get_bytes 读出（推断为 com.openai.codex/com.openai.Codex）"
+      }
+    ]
+  },
+
+  "rollup": {
+    "schema": "c5cm.gate_report.rollup.v2_gate_final",
+    "gate_final_session": "wf-aimami111-gate-final-20260620",
+    "machine": "<本地机器>",
+    "role": "producer",
+    "gate_final_at": "2026-06-20",
+    "source_shards": [
+      "intermediate/aimami/1.1.1/version-delta/gate-final/mac-shard-1.json",
+      "intermediate/aimami/1.1.1/version-delta/gate-final/mac-shard-2.json",
+      "intermediate/aimami/1.1.1/version-delta/gate-final/mac-shard-3.json",
+      "intermediate/aimami/1.1.1/version-delta/gate-final/mac-shard-4.json",
+      "intermediate/aimami/1.1.1/version-delta/gate-final/mac-shard-5.json"
+    ],
+    "platform": "macos-arm64",
+    "binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+    "total_delta_commands": 43,
+    "readyToImplement_count": 43,
+    "strictImplementationUse_count": 0,
+    "lower_count": 0,
+    "coverage_pct": "43/43 = 100.0%",
+    "readyToImplement_commands": [
+      "configure_auto_switch",
+      "confirm_pending_auto_switch",
+      "confirm_pending_auto_switch_and_restart_codex",
+      "delete_sessions",
+      "diagnose_codex_router",
+      "export_relay_config",
+      "fetch_relay_models_draft",
+      "fix_codex_router_issue",
+      "get_hotspot_enabled",
+      "get_image_compat",
+      "get_mystery_unlock_grants",
+      "get_notification_client_state",
+      "get_relay_active",
+      "get_relay_provider_quota",
+      "get_relay_proxy_status",
+      "graceful_restart_for_update",
+      "import_accounts_from_file",
+      "load_installed_skills",
+      "load_mcp_servers",
+      "load_relay_state",
+      "load_sessions",
+      "load_snapshot",
+      "merge_mystery_unlock_grants",
+      "open_path",
+      "parse_aimami_deeplink",
+      "rebuild_registry",
+      "refresh_usage_snapshot",
+      "remove_mcp_server",
+      "remove_skill",
+      "reorder_relay_providers",
+      "restart_codex",
+      "reveal_relay_api_key",
+      "set_codex_api_login",
+      "set_codex_api_slots",
+      "set_codex_router_enabled",
+      "set_mcp_server_enabled",
+      "set_relay_display_tags",
+      "switch_account_and_restart_codex",
+      "test_api_proxy_config",
+      "test_relay_draft_stream",
+      "test_relay_provider_stream",
+      "upsert_mcp_server",
+      "upsert_relay_provider"
+    ],
+    "strictImplementationUse_commands": [],
+    "lower_commands": [],
+    "accepted_unknown_entries": [
+      {"cmd": "confirm_pending_auto_switch", "dim": "dim4", "ceiling_type": "serde_derive_compiled_away", "blocks_rti": false},
+      {"cmd": "confirm_pending_auto_switch_and_restart_codex", "dim": "dim4", "ceiling_type": "serde_derive_compiled_away", "blocks_rti": false},
+      {"cmd": "diagnose_codex_router", "dim": "dim4", "ceiling_type": "read_only_format_strings_not_in_pool", "blocks_rti": false},
+      {"cmd": "fix_codex_router_issue", "dim": "dim4", "ceiling_type": "struct_field_names_not_in_pool", "blocks_rti": false},
+      {"cmd": "get_image_compat", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "get_mystery_unlock_grants", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "get_notification_client_state", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "get_relay_active", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "get_relay_proxy_status", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "graceful_restart_for_update", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "import_accounts_from_file", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "load_relay_state", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "load_sessions", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "load_snapshot", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "merge_mystery_unlock_grants", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "open_path", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "rebuild_registry", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "refresh_usage_snapshot", "dim": "dim5_win", "ceiling_type": "per_platform_non_blocking", "blocks_rti": false},
+      {"cmd": "set_codex_api_login", "dim": "dim4", "ceiling_type": "relaunch_param_not_traced_backend", "blocks_rti": false},
+      {"cmd": "set_codex_api_slots", "dim": "dim4", "ceiling_type": "manager_arg_absent_from_frontend", "blocks_rti": false},
+      {"cmd": "set_codex_router_enabled", "dim": "dim4", "ceiling_type": "apiLogin_to_mode_byte_mapping", "blocks_rti": false},
+      {"cmd": "reorder_relay_providers", "dim": "dim4", "ceiling_type": "inner_response_type_not_fully_decompiled", "blocks_rti": false},
+      {"cmd": "set_relay_display_tags", "dim": "dim4", "ceiling_type": "woyao_offset_88B_inferred", "blocks_rti": false},
+      {"cmd": "test_relay_provider_stream", "dim": "dim4", "ceiling_type": "tauri_event_name_icf_folded", "blocks_rti": false},
+      {"cmd": "test_relay_draft_stream", "dim": "dim4", "ceiling_type": "relay_stream_event_enum_variants", "blocks_rti": false}
+    ],
+    "all_accepted_unknown_have_recovery_attempts": true,
+    "illegal_accepted_unknown_count": 0,
+    "authority_note": "本段为 gate-final session wf-aimami111-gate-final-20260620 写入的定版诚实重生 rollup。源自 mac-shard-1~5 直接读盘聚合，取代此前所有中间 gate-report 漂移数字（含 gate-consolidate 污染）。消费者唯一权威计数入口。"
+  },
+
+  "dim6_final": {
+    "session": "wf-aimami111-dim6-final-20260620",
+    "machine": "<本地机器>",
+    "produced_at": "2026-06-20",
+    "shard": "mac-final",
+    "close_passes": [
+      "mac-close-1",
+      "mac-close-2",
+      "mac-final"
+    ],
+    "mac_final_rti": [
+      "confirm_pending_auto_switch",
+      "confirm_pending_auto_switch_and_restart_codex"
+    ],
+    "mac_final_rti_count": 2,
+    "mac_final_upgrade_basis": "dim4 closed via frontend_argKeys (argKeys=[], input side confirmed). SwitchPayload inner serde field names remain genuine_ceiling (accepted_unknown, 4 recovery_attempts all failed). All other dim4 elements confirmed. per-platform gate: mac readyToImplement independent of win.",
+    "final_readyToImplement_count": 45,
+    "final_readyToImplement_denominator": 45,
+    "final_readyToImplement_coverage": "45/45 = 100.0%",
+    "final_still_blocked_count": 0,
+    "final_still_blocked": [],
+    "genuine_ceiling": [
+      {
+        "cmd": "confirm_pending_auto_switch",
+        "gap": "SwitchPayload inner serde field names (make_account_summary_from_item #[derive(Serialize)])",
+        "recovery_attempts": [
+          "backend_serde_derive_decompile: failed (no impl body in binary)",
+          "frontend_argKeys: argKeys=[] input-only, response fields not accessible",
+          "frontend_response_destructuring_search: response discarded at callsite, no field names",
+          "json_output_string_search: field strings not in string pool"
+        ],
+        "ceiling_type": "serde_derive_compiled_away",
+        "accepted_unknown": true,
+        "genuine_ceiling": true,
+        "blocks_rti": false
+      },
+      {
+        "cmd": "confirm_pending_auto_switch_and_restart_codex",
+        "gap": "SwitchPayload inner serde field names (same struct as sibling command)",
+        "recovery_attempts": [
+          "backend_serde_derive_decompile: failed (same as sibling)",
+          "frontend_argKeys: argKeys=[] input-only",
+          "frontend_response_destructuring_search: response discarded ('e(null)' pattern at callsite)",
+          "broadcast_event_name: resolved (was gap in prior pass, now closed via mac-close-2)"
+        ],
+        "ceiling_type": "serde_derive_compiled_away",
+        "accepted_unknown": true,
+        "genuine_ceiling": true,
+        "blocks_rti": false
+      }
+    ],
+    "source": "intermediate/aimami/1.1.1/version-delta/dim6/mac-final.json"
+  }
+}

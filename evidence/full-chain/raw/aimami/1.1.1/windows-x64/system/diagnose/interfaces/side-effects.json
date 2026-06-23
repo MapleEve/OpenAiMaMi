@@ -1,0 +1,31 @@
+{
+  "command": "diagnose",
+  "platform": "windows-x64",
+  "version": "1.1.1",
+  "side_effects": [
+    {
+      "type": "read_only_happy_path",
+      "description": "Path A (sync task body): state_manager_lock_and_assemble is read-only; ok_builder only allocates response struct",
+      "mutations": []
+    },
+    {
+      "type": "windows_scheduled_task_check",
+      "description": "sync_local_runtime_state_builder with a4=4 calls check_schtask_codexmate_autoswitch — reads Windows Task Scheduler state for 'dev.aimami.auto-switch'",
+      "bundle_id": "dev.aimami.auto-switch",
+      "is_read_only": true,
+      "note": "Win-specific; mac equivalent uses launchd/launchctl plist check"
+    },
+    {
+      "type": "conditional_state_write",
+      "description": "Path B only: repository_diagnose_core_win may write to quota/registry/snapshot via sub_1401AF5C0 if state change detected (PROGRESSIVE_STATE_SAVE_FAILED on failure)",
+      "trigger": "non-10 discriminant from sub_1401AF5C0",
+      "storage": "fs-based state files (same as mac)"
+    },
+    {
+      "type": "atomic_lock_state",
+      "description": "InterlockedCompareExchange8 on mutex state byte; WakeByAddressSingle on lock release",
+      "note": "Win-specific atomic ops for lock management; mac uses arm64 atomics"
+    }
+  ],
+  "parity_with_mac": "Semantically equivalent: read-only in happy path, conditional writes on state change detection. Win-specific: Windows scheduled task check replaces launchd, Win32 atomics"
+}

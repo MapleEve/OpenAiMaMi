@@ -1,0 +1,67 @@
+{
+  "command": "set_usage_refresh_interval",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "ipc-contracts.jsonl L20: cmd=set_usage_refresh_interval argKeys=['interval'] callee=ne kind=tauriInvokeWrapper",
+    "frontend-control-flow.jsonl L118: terminal_call.command=set_usage_refresh_interval kind=tauriInvoke argKeys=['interval']; trigger=index-DdcCOEJG.js L86; handler_chain=[l,setUsageRefreshInterval]",
+    "pseudocode.md 11138B ≥600B",
+    "call-tree.md: depth=7; win32_file_write_bytes_111@0x141093710 is deepest terminal (platform-primitive); all branches terminated; 4 NEW callees vs 1.0.9",
+    "interface.md: input={app:String,interval:'30s'|'1m'|'3m'|'5m'}, output={ok:bool,interval_seconds:u64}, persistence=5-field hotspot JSON (hotspot/usageRefreshInterval/deviceId/remoteDeviceSecret/notificationsSince), global_state=qword_1418930D0",
+    "gate-report.json gold_leaf wf-aimami111-delta-20260618-goldleaf: dim1-5 all CLOSED; dim6_acceptance=acceptance_draft; gate_tier=readyToImplement",
+    "dim1 goldleaf closure: string anchor 0x1412ac243; dispatcher xref 0x14000FE91 from tauri_ipc_main_dispatcher_sys confirmed",
+    "dim5: WakeByAddressSingle is Windows API; win32_file_write_bytes_111 Win32-only; no mac divergence for this command",
+    "dim6_acceptance: acceptance_draft; gate_upgrade=readyToImplement; full happy_path+boundary_error+side_effect_asserts"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "session": "wf-aimami111-delta-20260618-goldleaf",
+  "owner_va": "0x140018760",
+  "owner_name": "set_usage_refresh_interval_handler_111",
+  "owner_size_bytes": 1502,
+  "ipc_command_va": "0x1412ac243",
+  "dim1_detail": {
+    "ipc_contracts_line": 20,
+    "ccf_line": 118,
+    "argKeys": ["interval"],
+    "wrapper": "tauriInvokeWrapper",
+    "callee": "ne",
+    "trigger_file": "assets/index-DdcCOEJG.js L86",
+    "handler_chain": ["l", "setUsageRefreshInterval"]
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 11138,
+    "threshold": 600
+  },
+  "dim3_detail": {
+    "depth_reached": 7,
+    "terminated_reason": "win32_file_write_bytes_111@0x141093710 platform-primitive terminal",
+    "new_callees_vs_109": ["query_installed_skills_with_repo_111@0x141214620", "hotspot_interval_parse_and_write_sys_111@0x1401B2600", "interval_str_to_seconds_111@0x1401BCE00", "usage_refresh_notify_global_state_111@0x14078BF40"],
+    "key_persistence_chain": "hotspot_config_serialize_5field_json_and_write_sys@0x1401A1D90->hotspot_config_file_write_bytes_sys@0x1403A64F0->win32_file_write_bytes_111@0x141093710 (TERMINAL)"
+  },
+  "dim4_detail": {
+    "input_fields": {"app": "String (scope param)", "interval": "'30s'|'1m'|'3m'|'5m'"},
+    "output": "{ok:bool, interval_seconds:u64 (30|60|180|300)}",
+    "persistence": "5-field hotspot JSON: {hotspot, usageRefreshInterval (new_field_1.1.1), deviceId, remoteDeviceSecret, notificationsSince}",
+    "global_state": {"qword_1418930D0": "stores u64 interval_seconds after persist", "byte_1418930C8": "mutex byte", "WakeByAddressSingle": "wakes polling threads"},
+    "side_effects": ["5-field hotspot JSON disk write (hotspot_config_file_write_bytes_sys)", "global qword_1418930D0 set + WakeByAddressSingle notify"],
+    "error_paths": ["v19==3->early cached response (no disk write)", "skill query disc!=6->IPC error", "interval parse fail->IPC error", "hotspot write IoError disc==10->Err(10)", "Repository lock poisoned->panic"]
+  },
+  "dim5_detail": {
+    "win_primitives": ["WakeByAddressSingle (Windows API)", "win32_file_write_bytes_111@0x141093710"],
+    "same_platform": true
+  },
+  "dim6_detail": {
+    "basis": "acceptance_draft from gate-report.json goldleaf; gate_upgrade=readyToImplement; full happy_path+boundary_error+side_effect_asserts",
+    "note": "dim6=acceptance_draft treated as closed per pipeline rule"
+  },
+  "idb_path": "<本地路径>"
+}

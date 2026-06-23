@@ -1,0 +1,112 @@
+{
+  "command": "set_codex_router_enabled",
+  "session": "wf-aimami111-dim6-20260619",
+  "machine": "<本地机器>",
+  "role": "producer",
+  "produced_at": "2026-06-19",
+  "shard": "mac-shard-4",
+  "dim6": {
+    "status": "acceptance-draft",
+    "ccf_discrepancy": {
+      "ccf_argKeys": [
+        "enabled",
+        "relaunch",
+        "apiLogin"
+      ],
+      "ccf_argObject": "{enabled:t,relaunch:e??!0,apiLogin:r??null}",
+      "backend_argKeys_confirmed": [
+        "enabled"
+      ],
+      "note": "Frontend sends 'relaunch' (bool, default true) and 'apiLogin' (nullable) that are NOT confirmed as read by backend. Backend decompile confirms only 'enabled' and inferred 'mode' byte (a5) not directly named in CCF. The 'apiLogin' param likely maps to the 'mode' byte (a5) controlling virtual auth path. C5 consumer must verify whether 'apiLogin' is deserialized by backend as a separate arg."
+    },
+    "happy_path": {
+      "input_enable": {
+        "enabled": true,
+        "relaunch": true,
+        "apiLogin": null
+      },
+      "input_disable": {
+        "enabled": false,
+        "relaunch": true,
+        "apiLogin": null
+      },
+      "expected_response": "CoreEnvelope<CodexRouterTogglePayload> \u2014 15 fields; key fields: router_enabled, proxy_running, proxy_port, activeCodexProviders, codexLaunchError",
+      "expected_side_effects_enable": [
+        "Progress events emitted via 'codex-router-toggle-progress' Tauri event",
+        "TOML config block written with markers: '# >>> aimami-relay codex-router top start (DO NOT EDIT MANUALLY)' / '# <<< aimami-relay codex-router top end'",
+        "TOML keys written: codexRouterEnabled, codexApiLogin, codexApiSlots, displayTagGlobal, displayTagWoyao, CodexApiSlot",
+        "Catalog file written (write_catalog) if api_slots configured",
+        "Virtual auth marker written (enable_virtual_login) if apiLogin path",
+        "Thread config files rewritten (migrate_threads_for_router_with_scope) if proxy started",
+        "Codex process stopped then relaunched",
+        "TCP proxy started or liveness-checked (connect_timeout 300ms)"
+      ],
+      "expected_side_effects_disable": [
+        "TOML block removed (config_takeover::restore)",
+        "Catalog removed (remove_catalog)",
+        "Virtual auth marker removed (virtual_auth::cleanup)",
+        "RelayState persisted with router_enabled=false",
+        "apply_codex_state applied with cleared state"
+      ]
+    },
+    "boundary_error": [
+      {
+        "trigger": "virtual_auth::enable_virtual_login fails on enable path",
+        "condition": "UUID/write/config error during enable",
+        "expected_error": "rollback_router_enabled triggered; CoreEnvelope ok=false"
+      },
+      {
+        "trigger": "any critical failure during enable",
+        "condition": "persist/sync/proxy failure",
+        "expected_error": "rollback_router_enabled restores TOML/catalog; CoreEnvelope ok=false"
+      },
+      {
+        "trigger": "Codex launch fails",
+        "condition": "launch_codex_app_warning fails",
+        "expected_response": "CoreEnvelope ok=true with codexLaunchError field populated (Chinese/localized error string)"
+      }
+    ],
+    "side_effect_asserts": [
+      "After enable: TOML config must contain aimami-relay codex-router block with correct markers",
+      "After enable: codexRouterEnabled=true in TOML serialization keys",
+      "After disable: TOML block must be absent",
+      "Progress events 'codex-router-toggle-progress' must fire in order if window handle present",
+      "Rollback: on failure, TOML must be restored to pre-call state"
+    ],
+    "test_mapping": [
+      {
+        "type": "manual",
+        "description": "Enable codex router; verify TOML block written with correct markers; verify catalog created; verify Codex relaunched",
+        "reason": "Complex multi-file FS + OS process + TCP proxy; not automatable in C5 CI"
+      },
+      {
+        "type": "manual",
+        "description": "Disable codex router; verify TOML block removed; verify catalog removed; verify virtual auth marker removed",
+        "reason": "File removal side-effects require real FS state"
+      },
+      {
+        "type": "e2e",
+        "description": "Trigger enable and observe 'codex-router-toggle-progress' Tauri events in correct order",
+        "reason": "Progress event contract is automatable via Tauri event listener"
+      },
+      {
+        "type": "e2e",
+        "description": "Trigger rollback path (simulate enable failure); verify TOML restored to original state",
+        "reason": "Rollback is critical for data integrity; should be covered in C5"
+      },
+      {
+        "type": "explicit_non_automatable_accept",
+        "description": "Clarify 'apiLogin' and 'relaunch' CCF params: how do they map to backend 'mode' byte (a5)?",
+        "reason": "CCF discrepancy: 3 frontend args vs 1 confirmed backend arg. Must be resolved before full acceptance."
+      }
+    ],
+    "dim6_basis": "15-field CodexRouterTogglePayload confirmed from string pool @0x1011542f7. Progress events confirmed at @0x101153abd. TOML block markers confirmed from string pool (dim4 baseline from 1.0.9 Windows REVERSE-STATUS.md line 3517). Rollback function (rollback_router_enabled @0x1005d6fa0, 1614B) decompiled. CCF discrepancy: frontend sends 'enabled'+'relaunch'+'apiLogin', backend confirms only 'enabled' read."
+  },
+  "gate_upgrade": {
+    "previous": "strictImplementationUse_candidate",
+    "new": "readyToImplement",
+    "rationale": "dim1 PASS (CCF confirmed from 1.1.1 ipc-contracts.jsonl; 'relaunch'+'apiLogin' extra args noted as acceptance-draft); dim2 PASS (owner 7455B + rollback decompiled); dim3 PASS (depth>=5, terminal FS+TCP+POSIX); dim4 PASS (15 payload fields named, TOML markers, progress events, rollback); dim5_mac PASS; dim5_win unknown for 1.1.1 (1.0.9 win done); dim6=acceptance-draft",
+    "implementation_use": "eligible",
+    "notes": "dim5_win for 1.1.1 not yet reversed (noted blocker in original evidence); CCF 'apiLogin'+'relaunch' mapping to backend 'mode' must be clarified. Full payload field types partially inferred."
+  }
+}

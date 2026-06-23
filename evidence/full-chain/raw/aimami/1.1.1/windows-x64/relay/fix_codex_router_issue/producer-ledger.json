@@ -1,0 +1,42 @@
+{
+  "schema": "c5cm.producer-ledger.v1",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "producer": "claude-sonnet-4-6",
+  "produced_at": "2026-06-17T00:00:00Z",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "module": "relay",
+  "command": "fix_codex_router_issue",
+  "index_key": "aimami/1.1.1/windows-x64/relay/fix_codex_router_issue",
+  "source_binary": "AiMaMi 1.1.1 win64.exe",
+  "source_binary_sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "idb": "<本地路径>",
+  "idb_save_ok": true,
+  "idb_save_path": "<本地路径>",
+  "owner_gate": "ADDITIVE",
+  "delta_vs_baseline": "1.0.9",
+  "migration_status": "diff_reversed",
+  "gate_tier": "strictImplementationUse_candidate",
+  "ida_health_at_start": {
+    "status": "ok",
+    "uptime_sec": 51901,
+    "hexrays_ready": true,
+    "module": "AiMaMi 1.1.1 win64.exe"
+  },
+  "renames_applied": [
+    {"addr": "0x1400246b0", "old": "sub_1400246B0", "new": "fix_codex_router_issue_owner_sys"},
+    {"addr": "0x14021aca0", "old": "sub_14021ACA0", "new": "fix_codex_router_issue_core_dispatch_sys"},
+    {"addr": "0x14076a490", "old": "sub_14076A490", "new": "fix_all_sections_sys"},
+    {"addr": "0x14076e220", "old": "sub_14076E220", "new": "fix_single_section_sys"},
+    {"addr": "0x1407456b0", "old": "fix_all_sections_impl_full_sys", "new": "fix_all_sections_impl_full_sys"}
+  ],
+  "comments_set": 4,
+  "pseudocode_files": 4,
+  "call_tree_file": "call-trees/fix_codex_router_issue.jsonl",
+  "call_tree_entries": 10,
+  "status": "done",
+  "owner_collision": "none_additive",
+  "no_competing_producer": true
+}

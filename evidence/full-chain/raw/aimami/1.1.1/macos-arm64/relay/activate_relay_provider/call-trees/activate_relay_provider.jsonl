@@ -1,0 +1,29 @@
+{"depth":0,"addr":"0x1005eb760","label":"codexmate_lib::commands::relay::activate_relay_provider","role":"command_owner","size":"0x1ef","terminated_reason":null}
+{"depth":1,"addr":"0x1005dfab0","label":"codexmate_lib::core::relay::manager::RelayManager::activate","role":"core_impl","parent":"0x1005eb760","terminated_reason":null}
+{"depth":2,"addr":"0x1005e0330","label":"RelayManager::snapshot","role":"state_read","parent":"0x1005dfab0","terminated_reason":null}
+{"depth":2,"addr":"0x1005d65c0","label":"RelayManager::ensure_provider_loaded","role":"provider_load","parent":"0x1005dfab0","terminated_reason":null}
+{"depth":2,"addr":"0x1005d56f0","label":"RelayManager::ensure_proxy_started","role":"proxy_start","parent":"0x1005dfab0","terminated_reason":null}
+{"depth":2,"addr":"0x10054a8b0","label":"RelayActiveByIde::add","role":"active_set_mutate","parent":"0x1005dfab0","terminated_reason":null}
+{"depth":2,"addr":"0x1005dee20","label":"RelayManager::persist","role":"persistence_commit","parent":"0x1005dfab0","terminated_reason":null}
+{"depth":2,"addr":"0x1005daea0","label":"RelayManager::sync_codex_config_with_outcome","role":"config_sync","parent":"0x1005dfab0","terminated_reason":null}
+{"depth":3,"addr":"0x1005e2c60","label":"relay::storage::save","role":"file_write","parent":"0x1005dee20","terminated_reason":null}
+{"depth":3,"addr":"0x1005e1c90","label":"relay::storage::lazy_load_api_key","role":"keychain_read","parent":"0x1005d65c0","terminated_reason":null}
+{"depth":3,"addr":"0x1005e0330","label":"RelayManager::snapshot (called from sync)","role":"state_read","parent":"0x1005daea0","terminated_reason":null}
+{"depth":3,"addr":"0x1006e8950","label":"relay::codex_catalog::resolve_api_slots","role":"slot_resolve","parent":"0x1005daea0","terminated_reason":null}
+{"depth":3,"addr":"0x1006e8450","label":"relay::codex_catalog::write_catalog","role":"persistence_commit","parent":"0x1005daea0","terminated_reason":null}
+{"depth":3,"addr":"0x10075ae20","label":"relay::codex_writer::apply_codex_state","role":"file_write","parent":"0x1005daea0","terminated_reason":null}
+{"depth":4,"addr":"0x1005582b0","label":"CodexPaths::ensure_directories","role":"fs_setup","parent":"0x1005e2c60","terminated_reason":null}
+{"depth":4,"addr":"0x10041e960","label":"relay::atomic_write::write_atomic","role":"persistence_commit","parent":"0x1005e2c60","terminated_reason":"persistence_commit"}
+{"depth":4,"addr":"0x10054afe0","label":"RelayState::serialize (serde)","role":"serialization","parent":"0x1005e2c60","terminated_reason":null}
+{"depth":4,"addr":"0x1005582b0","label":"CodexPaths::ensure_directories","role":"fs_setup","parent":"0x1006e8450","terminated_reason":null}
+{"depth":4,"addr":"0x10041e960","label":"relay::atomic_write::write_atomic","role":"persistence_commit","parent":"0x1006e8450","terminated_reason":"persistence_commit"}
+{"depth":4,"addr":"0x10075b3e0","label":"codex_writer::compose_from_original","role":"toml_compose","parent":"0x10075ae20","terminated_reason":null}
+{"depth":5,"addr":"0x100f24d00","label":"std::fs::DirBuilder::_create","role":"fs_create_dir","parent":"0x1005582b0","terminated_reason":"external_call_recorded:fs_mkdir"}
+{"depth":5,"addr":"0x100f33d60","label":"std::path::Path::parent","role":"path_op","parent":"0x10041e960","terminated_reason":"stdlib_path_op"}
+{"depth":5,"addr":"0x100f25660","label":"std::fs::OpenOptions::_open","role":"file_open","parent":"0x10041e960","terminated_reason":"external_call_recorded:fs_open"}
+{"depth":5,"addr":"0x100f25b80","label":"std::fs::File::sync_data","role":"file_sync","parent":"0x10041e960","terminated_reason":"external_call_recorded:fsync"}
+{"depth":5,"addr":"0x100f2b560","label":"std::sys::fs::rename","role":"atomic_rename","parent":"0x10041e960","terminated_reason":"external_call_recorded:rename"}
+{"depth":5,"addr":"0x10075f610","label":"codex_writer::strip_all_managed_blocks","role":"toml_strip","parent":"0x10075b3e0","terminated_reason":null}
+{"depth":5,"addr":"0x100762730","label":"codex_writer::strip_stale_router_top_level_model","role":"toml_strip","parent":"0x10075b3e0","terminated_reason":"external_call_recorded:string_ops"}
+{"depth":1,"addr":"0x100557920","label":"CoreEnvelope::ok","role":"response_serialize","parent":"0x1005eb760","terminated_reason":"response_serialize"}
+{"depth":1,"addr":"0x1000014c0","label":"rust_dealloc","role":"memory","parent":"0x1005eb760","terminated_reason":"drop_leaf"}

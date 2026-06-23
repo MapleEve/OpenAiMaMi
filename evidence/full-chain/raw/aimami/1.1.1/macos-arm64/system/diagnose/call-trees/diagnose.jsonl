@@ -1,0 +1,22 @@
+{"depth":0,"addr":"0x10061f4b0","name":"codexmate_lib::commands::system::diagnose","role":"command_owner","session":"wf-aimami111-same-depth-20260618","note":"Mutex/OnceBox pattern; acquires Repo lock, calls Repository::diagnose, memcpy 0x1A0 output struct on Ok, CoreError on Err"}
+{"depth":1,"addr":"0x1004d25c0","name":"codexmate_lib::core::repository::Repository::diagnose","role":"core_impl","terminated_reason":null,"note":"Calls load_local_state_synced; assembles DiagnoseResult (0x1A0B struct); builds model strings (api9/ains/code); CoreEnvelope::ok wraps Ok; memcpy 0x1A0 to output"}
+{"depth":1,"addr":"0x100f2e7a0","name":"std::sys::pal::unix::sync::mutex::Mutex::lock","role":"mutex_lock","terminated_reason":"external_call_recorded"}
+{"depth":1,"addr":"0x100f2e7c0","name":"std::sys::pal::unix::sync::mutex::Mutex::unlock","role":"mutex_unlock","terminated_reason":"external_call_recorded"}
+{"depth":1,"addr":"0x100fb7400","name":"std::panicking::panic_count::is_zero_slow_path","role":"poison_guard","terminated_reason":"compile_noise"}
+{"depth":2,"addr":"0x1004c7b10","name":"codexmate_lib::core::repository::Repository::load_local_state_synced","role":"state_loader","terminated_reason":null}
+{"depth":2,"addr":"0x100557a50","name":"codexmate_lib::core::models::CoreEnvelope::ok","role":"response_serialize","terminated_reason":"response_serialize"}
+{"depth":3,"addr":"0x1004c8ba0","name":"codexmate_lib::core::repository::Repository::sync_local_runtime_state","role":"sync_state","terminated_reason":null}
+{"depth":3,"addr":"0x1004c28c0","name":"codexmate_lib::core::repository::Repository::load_local_state","role":"load_state","terminated_reason":null}
+{"depth":3,"addr":"0x10055a310","name":"codexmate_lib::platform::daemon::check_daemon_state","role":"daemon_check","terminated_reason":"leaf_named"}
+{"depth":4,"addr":"0x1004cd5c0","name":"codexmate_lib::core::repository::Repository::load_current_auth_snapshot","role":"auth_reader","terminated_reason":"named_leaf"}
+{"depth":4,"addr":"0x1004bf8e0","name":"codexmate_lib::core::repository::Repository::load_registry","role":"registry_reader","terminated_reason":"named_leaf"}
+{"depth":4,"addr":"0x1004c3a00","name":"codexmate_lib::core::repository::Repository::persist_registry","role":"registry_writer","terminated_reason":"persistence_commit"}
+{"depth":4,"addr":"0x100534ff0","name":"codexmate_lib::core::quota_store::load","role":"quota_reader","terminated_reason":"named_leaf"}
+{"depth":4,"addr":"0x1005582b0","name":"codexmate_lib::platform::paths::CodexPaths::ensure_directories","role":"dir_ensurer","terminated_reason":"fs_leaf"}
+{"depth":4,"addr":"0x1004bd8d0","name":"codexmate_lib::core::account_io::make_snapshot_path","role":"path_builder","terminated_reason":"named_leaf"}
+{"depth":4,"addr":"0x100f25cf0","name":"std::fs::read::inner","role":"fs_read","terminated_reason":"fs_read_leaf"}
+{"depth":4,"addr":"0x100f25f70","name":"std::fs::write::inner","role":"fs_write","terminated_reason":"persistence_commit"}
+{"depth":4,"addr":"0x1004bfa30","name":"codexmate_lib::core::repository::Repository::load_settings","role":"settings_reader","terminated_reason":"named_leaf"}
+{"depth":4,"addr":"0x100f2b980","name":"std::sys::fs::metadata","role":"fs_metadata","terminated_reason":"external_call_recorded"}
+{"depth":5,"addr":"0x100f25740","name":"std::fs::read_to_string::inner","role":"fs_read_leaf","terminated_reason":"external_call_recorded","note":"Terminal leaf: reads settings/registry/auth files from disk"}
+{"depth":5,"addr":"0x100201fe0","name":"std::fs::write","role":"fs_write_leaf","terminated_reason":"persistence_commit","note":"Terminal leaf: writes registry JSON to disk"}

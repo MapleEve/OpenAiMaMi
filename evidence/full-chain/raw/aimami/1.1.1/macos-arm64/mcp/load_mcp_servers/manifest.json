@@ -1,0 +1,48 @@
+{
+  "command": "load_mcp_servers",
+  "platform": "macos-arm64",
+  "version": "1.1.1",
+  "baseline": "1.0.9",
+  "delta_class": "integrity_recovered",
+  "session": "wf-aimami111-delta-20260618-mac100",
+  "machine": "<本地机器>",
+  "date": "2026-06-18",
+  "module": "codexmate_lib::commands::mcp",
+  "owner_va": "0x10072a000",
+  "owner_symbol": "codexmate_lib::commands::mcp::load_mcp_servers::h3fb2226cfdd0b4d3",
+  "owner_size_bytes": 1406,
+  "core_va": "0x10059e470",
+  "core_symbol": "codexmate_lib::core::mcp::load_mcp_servers::he76d107bf22802d1",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "source_binary": "AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi",
+  "call_tree_depth": 6,
+  "call_tree_edges": 7,
+  "terminated_reasons": [
+    "stdlib_leaf: std::fs::write::inner (_write syscall)",
+    "external_call: serde_json::ser::to_vec (serde serialise)",
+    "external_call: serde_json::de::from_trait (serde deserialise)",
+    "stdlib_leaf: std::fs::read_to_string::inner",
+    "stdlib_leaf: CodexPaths::ensure_directories → std::fs::DirBuilder::_create"
+  ],
+  "new_side_effects": [
+    "read CODEX_HOME/bootstrap-cache.json on every load_mcp_servers invocation",
+    "write CODEX_HOME/bootstrap-cache.json on every successful load_mcp_servers invocation"
+  ],
+  "error_handling": "store_bootstrap_mcp_servers errors are fire-and-forget; command always returns CoreEnvelope::ok(payload) on parse success regardless of persist result",
+  "gate_status": "pass",
+  "readyToImplement": true,
+  "strictImplementationUse": true,
+  "implementation_use": true,
+  "gate_accepted": true,
+  "idb_annotated": true,
+  "idb_saved": true,
+  "pseudocode_files": [
+    "ida/pseudocode/commands_mcp_load_mcp_servers.c",
+    "ida/pseudocode/core_mcp_load_mcp_servers.c",
+    "ida/pseudocode/repository_store_bootstrap_mcp_servers.c",
+    "ida/pseudocode/bootstrap_cache_load.c",
+    "ida/pseudocode/mcp_parse_mcp_section_header.c"
+  ],
+  "call_tree_file": "call-trees/load_mcp_servers.jsonl",
+  "interfaces_file": "interfaces/dto.md"
+}

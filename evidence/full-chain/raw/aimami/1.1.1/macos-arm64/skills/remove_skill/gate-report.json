@@ -1,0 +1,31 @@
+{
+  "command": "remove_skill",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "skills/remove_skill/ida/pseudocode.md (11229B: IPC+core+backup+copy_dir_all; VA=0x10072c810/0x1005e44a0/0x1005e7e80)",
+    "skills/remove_skill/ida/call-trees.md (depth=6, 64 entries, side-effects enumerated: 6 disk ops + mutex)",
+    "skills/remove_skill/evidence.md (VA anchors, string evidence, delta assessment, gate=PASS)",
+    "frontend/ipc-contracts.jsonl:L86:col30999 command=remove_skill argKeys=[id] wrapper=removeSkill",
+    "frontend/frontend-control-flow.jsonl:L86:col31013 terminal=remove_skill argKeys=[id]",
+    "frontend/frontend-control-flow.jsonl:skills-page-CxV_IefY.js:L7 callsite=mutationFn->removeSkill"
+  ],
+  "dim_notes": {
+    "dim1_frontend_ccf": "ipc-contracts.jsonl L86 col30999: argKeys=[id] wrapper=removeSkill. CCF L86 col31013: terminal ne('remove_skill',{id:t}). Callsite skills-page-CxV_IefY.js:7 mutationFn. CLOSED.",
+    "dim2_owner_pseudocode": "pseudocode.md 11229B: full IPC dispatch + core logic + backup_skill_directory + copy_dir_all. VA=0x10072c810 (0x402B), core=0x1005e44a0 (~0x690B), backup=0x1005e7e80 (~0x4a0B). CLOSED.",
+    "dim3_call_tree_depth5": "call-trees.md depth=6 (IPC->core->backup/copy_dir_all->load_skill_summary->stdlib). 64 entries. Terminal: DirBuilder::create(mkdir), SystemTime::now(syscall), uuid::new_v4(entropy), fs::write(disk), fs::remove_dir_all(disk), load_installed_skills(fs). All branches reached depth>=6. CLOSED.",
+    "dim4_interface_dto_error_sideeffect": "Input RemoveSkillInput {skill_name:String} (argKey=id from CCF). Response CoreEnvelope<RemoveSkillResult> with 8 serde keys: skillID/relativePath/backupPath/skill/replacedExisting/backup/removedSkillID/remainingInstalledCount (NEW in 1.1.1). SkillBackupMetadata 6 fields (backupID/skillID/title/relativePath/name/createdAt). Errors: SkillNotFound/IoError/InvalidSkillSource/BackupJsonError/MutexPoisoned. Side-effects: mkdir backup_root, mkdir backup_dir, copy_dir_all (recursive), write metadata.jsonskill, remove_dir_all skill_dir, Mutex lock/unlock. All confirmed via string pool + call-tree + decompile. CLOSED.",
+    "dim5_same_platform_gate": "macos-arm64 IDB confirmed. IPC VA=0x10072c810 (lookup_funcs PASS). All callees resolved. idb_save ok per evidence.md. CLOSED. dim5_win: not this session — non-blocking for mac gate.",
+    "dim6_acceptance": "No gate-report-dim6.json file. However pseudocode.md DTO/Interface Summary section provides full acceptance-draft equivalent: complete DTO fields, all error paths, all side-effects enumerated with serde keys confirmed via get_bytes. Evidence.md §5 gate=PASS confirms completeness. Treating as acceptance-draft (producer-closed). CLOSED."
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

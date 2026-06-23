@@ -1,0 +1,84 @@
+{
+  "command": "confirm_pending_auto_switch_and_restart_codex",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/confirm_pending_auto_switch_and_restart_codex/pseudocode.md (15941B)",
+    "raw/aimami/1.1.1/windows-x64/confirm_pending_auto_switch_and_restart_codex/call-tree.md (6524B, depth=5)",
+    "raw/aimami/1.1.1/windows-x64/confirm_pending_auto_switch_and_restart_codex/interface.md (4739B)",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl line 100: argKeys=[] col=32349",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl lines 113,166: confirmPendingAutoSwitchAndRestartCodex + guarded callsite",
+    "intermediate/aimami/1.1.1/version-delta/dim6/mac-final.json#confirm_pending_auto_switch_and_restart_codex (RTI confirmed on mac, dim5_win closed in win leaf)",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#confirm_pending_auto_switch_and_restart_codex (acceptance-draft)"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 100,
+    "wrapper": "confirmPendingAutoSwitchAndRestartCodex",
+    "argKeys": [],
+    "snippet_col": 32349,
+    "ccf_lines": [113, 166],
+    "ipc_dispatcher_va": "0x14000d2a0",
+    "command_string_va": "0x1412ac311"
+  },
+  "dim2_detail": {
+    "owner_va": "0x140952070",
+    "owner_name": "confirm_pending_auto_switch_and_restart_codex_owner_sys",
+    "owner_size_bytes": 2970,
+    "pseudocode_bytes": 15941,
+    "session": "wf-aimami111-delta-20260617-sweep"
+  },
+  "dim3_detail": {
+    "depth": 5,
+    "terminated_reason": "OS/runtime leaf (Win32 API + tokio scheduler + allocator)",
+    "key_leaves": [
+      "_InterlockedIncrement64 (a1+3384, a1+3392, refcount)",
+      "WakeByAddressSingle (response notify)",
+      "__imp_CloseHandle (task cleanup)",
+      "__fastfail(7)/BUG() (refcount abort)",
+      "tokio channel enqueue via sub_140F050E0",
+      "vtable dispatch *(v5+16+24) (relay future poll)"
+    ]
+  },
+  "dim4_detail": {
+    "input_params": [],
+    "note": "zero-param command; confirm_pending_auto_switch_deserialize_request_sys@0x140089a50 reads a2+32 but extracts no body fields",
+    "response_envelope": "{schemaVersion,success,code,message,+optional fields} via sub_140225110",
+    "error_sentinels": ["0x8000000000000025ULL (switch_provider_unavailable)", "BUG()/__fastfail(7) (refcount underflow)", "panic resolver consumed", "coroutine returns 1 (Pending/yield)"],
+    "side_effects": ["_InterlockedIncrement64 x2 (refcount)", "relay provider vtable dispatch (stride 472 or 704)", "tokio task push + WakeByAddressSingle", "provider 1520B snapshot copy", "provider Arc ref cleanup"],
+    "coroutine_state_offsets": {
+      "outer": "a1+3440",
+      "inner": "a1+3424",
+      "relay_load": "a1+3416",
+      "relay_sub": "a1+3408",
+      "relay_future_handle": "a1+3400",
+      "refcount_ptr1": "a1+3384",
+      "refcount_ptr2": "a1+3392"
+    }
+  },
+  "dim5_detail": {
+    "win_confirmed": true,
+    "win_specifics": ["_InterlockedIncrement64", "WakeByAddressSingle", "CloseHandle", "RtlFailFast", "off_141899420 vtable stride 472/704"],
+    "idb": "<本地路径>",
+    "sha": "d24e429a",
+    "note": "WIN dim5 closed by own-platform decompile. mac-final.json confirms RTI on mac side separately."
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "shard_ref": "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#confirm_pending_auto_switch_and_restart_codex",
+    "mac_final_ref": "intermediate/aimami/1.1.1/version-delta/dim6/mac-final.json#confirm_pending_auto_switch_and_restart_codex",
+    "mac_final_gate": "readyToImplement",
+    "note": "acceptance-draft counts as closed for producer-side. gate_tier=strictImplementationUse because dim6 acceptance-draft (not full consumer confirmed)."
+  },
+  "gate_tier_reasoning": "dim1-5 all closed on win platform. dim6 acceptance-draft = producer-side closed per task mandate. Per schema rule: dim1-5 全 closed + dim6 closed (acceptance-draft) → readyToImplement. mac-final.json independently confirms RTI on mac side. WIN dim5 closed by own-platform 逆向分析 decompile.",
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

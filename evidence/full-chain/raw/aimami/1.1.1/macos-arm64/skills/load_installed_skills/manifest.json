@@ -1,0 +1,63 @@
+{
+  "command": "load_installed_skills",
+  "module": "codexmate_lib::commands::skills",
+  "platform": "macos-arm64",
+  "version": "1.1.1",
+  "baseline": "1.0.9",
+  "session": "wf-aimami111-delta-20260618-mac100",
+  "machine": "<本地机器>",
+  "role": "producer",
+  "delta_class": "integrity_recovered",
+  "leaf_status": "full_gold_leaf",
+  "source_binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "owner_vas": {
+    "commands_handler": "0x10072db50",
+    "core_impl": "0x1005e78d0",
+    "scan_skills_recursive": "0x1005e7a70",
+    "load_skill_summary": "0x1005e5870",
+    "store_bootstrap_installed_skills": "0x1004cf950",
+    "bootstrap_cache_load": "0x1004d88c0"
+  },
+  "call_tree_edges": 15,
+  "call_tree_max_depth": 4,
+  "ida_pseudocode_files": [
+    "ida/pseudocode/commands_skills_load_installed_skills.c",
+    "ida/pseudocode/core_skills_load_installed_skills.c",
+    "ida/pseudocode/repository_store_bootstrap_installed_skills.c",
+    "ida/pseudocode/bootstrap_cache_load.c"
+  ],
+  "gate": {
+    "readyToImplement": true,
+    "strictImplementationUse": true,
+    "implementation_use": true,
+    "gate_accepted": true,
+    "full_leaf_100_definition_v2": {
+      "owner_va_located": true,
+      "decompile_depth_ge5_or_terminated": true,
+      "terminated_reason_documented": true,
+      "delta_vs_baseline_identified": true,
+      "dto_keys_extracted": true,
+      "side_effects_confirmed": true
+    }
+  },
+  "delta_vs_1_0_9": [
+    "NEW callee: Repository::store_bootstrap_installed_skills (0x1004cf950) — absent from 1.0.9",
+    "NEW DTO field: BootstrapStatePayload.installedSkills (serde key index 4)",
+    "NEW file write: bootstrap-cache.json updated unconditionally on success path",
+    "NEW timing: SystemTime::now() + duration_since() to compute elapsed (added for logging + writtenAt stamp)"
+  ],
+  "created_at": "2026-06-18",
+  "files": {
+    "evidence.md": "full evidence with Confirmed/Inferred/Unknown sections",
+    "call-trees.md": "markdown call tree (legacy, kept for reference)",
+    "call-trees/load_installed_skills.jsonl": "structured call-tree edges (15 edges, depth 4)",
+    "pseudocode.md": "annotated pseudocode (legacy sweep session)",
+    "ida/pseudocode/commands_skills_load_installed_skills.c": "逆向分析 raw pseudocode — command handler",
+    "ida/pseudocode/core_skills_load_installed_skills.c": "逆向分析 raw pseudocode — core impl",
+    "ida/pseudocode/repository_store_bootstrap_installed_skills.c": "逆向分析 raw pseudocode — delta callee",
+    "ida/pseudocode/bootstrap_cache_load.c": "逆向分析 raw pseudocode — cache reader",
+    "ida/pseudocode-manifest.jsonl": "per-function decompile metadata",
+    "interfaces/dto.json": "DTO schemas, error discriminants, side-effects"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "command": "remove_skill",
+  "session": "wf-aimami111-dim6-20260619",
+  "machine": "<本地机器>",
+  "role": "producer",
+  "produced_at": "2026-06-19",
+  "shard": "mac-shard-4",
+  "dim6": {
+    "status": "acceptance-draft",
+    "ccf_note": "Frontend CCF (ipc-contracts.jsonl) confirmed: argKey='id' (not 'skill_id'). Backend IPC caller receives it via v32[1]+v32[2] ptr+len. The Tauri deserialization key from JS is 'id'; backend Rust parameter name is skill_id. These refer to the same value. C5 must use 'id' as the JSON key in IPC call.",
+    "delta_note": "1.1.1 behavioral change: missing skill directory now returns Ok(payload) instead of Err. Backup is created even for non-existent directories. C5 acceptance must verify this silent-success path.",
+    "happy_path": {
+      "input": {
+        "id": "my-skill"
+      },
+      "expected_response": "CoreEnvelope<SkillRemovePayload> \u2014 Ok; fields: {removedSkillID: 'my-skill', backup: <SkillBackupSummary>, remainingInstalledCount: <u32>}",
+      "expected_side_effects": [
+        "Backup directory created at <app_data>/skill-backups/<uuid>/ unconditionally",
+        "stat() check on skill_path (1.1.1 delta guard)",
+        "remove_dir_all on skill_path ONLY if stat() succeeds (directory exists)",
+        "load_installed_skills called twice: once for ID scan, once for remainingInstalledCount"
+      ]
+    },
+    "boundary_error": [
+      {
+        "trigger": "skill directory does not exist (1.1.1 delta)",
+        "condition": "stat() returns Err (ENOENT); remove_dir_all skipped",
+        "expected_response": "Ok(SkillRemovePayload) with removedSkillID set \u2014 silent success, no error",
+        "notes": "behavioral change from 1.0.9 which returned Err on missing dir; backup created even in this path"
+      },
+      {
+        "trigger": "skill ID not found in installed list",
+        "condition": "load_installed_skills scan finds no match",
+        "expected_error": "CoreError error_code=7; format! at unk_1010B785E with skill_id",
+        "expected_discriminant": "0x8000000000000000"
+      },
+      {
+        "trigger": "backup_skill_directory fails",
+        "condition": "UUID gen / directory create / copy fails",
+        "expected_error": "CoreError propagated from backup_skill_directory (error code unknown for backup failure path)",
+        "notes": "error_code for backup failure not decoded; non-blocking for happy-path test"
+      },
+      {
+        "trigger": "remove_dir_all fails",
+        "condition": "stat() Ok but remove_dir_all returns Err (permission denied etc)",
+        "expected_error": "CoreError error_code=2; Err path drops error and falls through to Ok in 1.1.1",
+        "notes": "Confirmed: pseudocode shows Err(IoError) path drops error and returns Ok(payload)"
+      },
+      {
+        "trigger": "store mutex poisoned",
+        "condition": "panic during prior critical section set poison byte at *(store+8)",
+        "expected_error": "Static string 'Skills store is poisoned' (41 bytes, anon.627)"
+      }
+    ],
+    "side_effect_asserts": [
+      "Backup directory must exist at <app_data>/skill-backups/<uuid>/ after call (even if skill dir did not exist)",
+      "If skill dir existed: it must be absent after successful call",
+      "If skill dir did not exist: call must return Ok with removedSkillID set (not error)",
+      "remainingInstalledCount must equal count of installed skills after operation"
+    ],
+    "test_mapping": [
+      {
+        "type": "e2e",
+        "description": "remove existing skill; verify skill dir removed, backup dir created, response has correct fields",
+        "reason": "Requires FS and IPC; core happy path"
+      },
+      {
+        "type": "e2e",
+        "description": "remove non-existent skill dir (id registered but dir missing); verify Ok response not error (1.1.1 delta)",
+        "reason": "Silent-success behavioral delta from 1.0.9; must be explicitly tested in C5"
+      },
+      {
+        "type": "e2e",
+        "description": "remove with non-existent skill id; verify error_code=7 response",
+        "reason": "Error path requires IPC dispatch"
+      },
+      {
+        "type": "unit",
+        "description": "Unit-test backup_skill_directory + conditional remove_dir_all logic with fixture skill dir",
+        "reason": "Pure FS logic; testable without full IPC"
+      }
+    ],
+    "dim6_basis": "Happy path from confirmed decompile: backup_skill_directory \u2192 metadata guard (1.1.1 delta, callees confirmed) \u2192 conditional remove_dir_all. Error paths from interfaces/dto.md error variants. Silent-success delta confirmed from delta_vs_109 in manifest. CCF argKey='id' confirmed from 1.1.1 ipc-contracts.jsonl line col=30999"
+  },
+  "gate_upgrade": {
+    "previous": "full_gold_leaf (no explicit gate_tier in manifest)",
+    "new": "readyToImplement",
+    "rationale": "dim1 confirmed (CCF argKey=id from 1.1.1 ipc-contracts.jsonl); dim2 PASS (owner+core VA decompiled, 60 CFG blocks); dim3 PASS (18 call-tree edges, max_depth=7, terminal: _stat$INODE64 + _unlinkat syscalls); dim4 PASS (input skill_id/id, output SkillRemovePayload 3 fields confirmed from rodata, 5 error variants); dim5_mac PASS; dim5_win separate; dim6=acceptance-draft",
+    "implementation_use": "eligible",
+    "notes": "CCF uses 'id' key; C5 implementation must use 'id' not 'skill_id' as IPC arg key. 1.1.1 silent-success delta must be covered by C5 tests."
+  }
+}

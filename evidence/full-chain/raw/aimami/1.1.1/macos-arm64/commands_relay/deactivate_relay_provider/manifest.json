@@ -1,0 +1,93 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "command": "deactivate_relay_provider",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "commands_relay",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-16T00:00:00Z",
+  "role": "pure_producer",
+  "source_binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "idb": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "ida_server": "<逆向工具通道>",
+  "ida_health_at_start": "status=ok,uptime=25665s,hexrays_ready=true,module=AiMaMi",
+  "owner_va": "0x1005ebb60",
+  "owner_symbol": "codexmate_lib::commands::relay::deactivate_relay_provider",
+  "owner_mangled": "__ZN13codexmate_lib8commands5relay25deactivate_relay_provider17h154508a429c3b229E",
+  "owner_size_bytes": 495,
+  "core_delegate_va": "0x1005d14b0",
+  "core_delegate_symbol": "codexmate_lib::core::relay::manager::RelayManager::deactivate",
+  "ipc_dispatch_xref": "0x100314dc3",
+  "ipc_dispatch_fn": "codexmate_lib::run::{{closure}}::{{closure}}",
+  "call_tree_depth": 5,
+  "call_tree_file": "call-trees/deactivate_relay_provider.jsonl",
+  "call_tree_terminated_reason": "all leaves reached: fs_write(relay.json atomic), fs_delete/write(codex catalog), codex_state_apply, Vec::retain(std_library), mutex_lock_unlock(std_library)",
+  "delta_status": "diff_reversed",
+  "delta_base": "1.0.9",
+  "breaking_changes": [
+    "argKeys: ['providerId'] → ['providerId','ide'] — new ide parameter required",
+    "error_strings: English 'Provider is still active in other IDE' → Chinese 2-guard system",
+    "guard_logic: multi-IDE retain → router_enabled_guard + last_provider_guard"
+  ],
+  "interface": {
+    "command_name": "deactivate_relay_provider",
+    "argKeys": ["providerId", "ide"],
+    "argTypes": {
+      "providerId": "String",
+      "ide": "String"
+    },
+    "argObject": "{providerId:t, ide:e}",
+    "frontend_params": "(t, e)",
+    "response_ok": "CoreEnvelope<RelayState> — full relay state after deactivation",
+    "response_err_1": "CoreError::Other (discriminant=9) — 107B: '当前 Codex 智能路由已开启，禁止操作中转模型，如需操作请关闭 Codex 智能路由。' (router_enabled guard)",
+    "response_err_2": "CoreError::Other (discriminant=9) — 123B: '无法停用最后一个 Codex 中转模型：请先关闭 Codex 智能路由，或先启用另一个 Codex 中转模型。' (last_provider guard)",
+    "response_err_3": "CoreError::IoError (discriminant=2) — persist/sync IO failure"
+  },
+  "error_strings": [
+    {"va": "0x1011541DD", "size_bytes": 107, "text": "当前 Codex 智能路由已开启，禁止操作中转模型，如需操作请关闭 Codex 智能路由。", "guard": "router_enabled", "variant": "new_in_1.1.1"},
+    {"va": "0x101153A2B", "size_bytes": 123, "text": "无法停用最后一个 Codex 中转模型：请先关闭 Codex 智能路由，或先启用另一个 Codex 中转模型。", "guard": "last_provider", "variant": "changed_from_1.0.9_english"}
+  ],
+  "side_effects": [
+    "Mutex-guarded read of RelayState",
+    "Vec::retain: removes ide from provider RelayActiveByIde active sessions set",
+    "GUARD: router_enabled pre-check — blocks if codex_router_enabled=true",
+    "GUARD: last-provider post-check — blocks if removing ide leaves zero active providers",
+    "RelayManager::persist: serialize RelayState → atomic write to relay.json",
+    "sync_codex_config_with_outcome: snapshot→resolve_api_slots→write/remove_catalog→apply_codex_state"
+  ],
+  "fs_write_leaves": [
+    "codexmate_lib::core::relay::atomic_write::write_atomic (0x10041e960) — relay.json atomic update",
+    "codexmate_lib::core::relay::codex_catalog::write_catalog (0x1006e8450)"
+  ],
+  "fs_delete_leaves": [
+    "codexmate_lib::core::relay::codex_catalog::remove_catalog (0x1006e8800)"
+  ],
+  "gate_candidate": {
+    "dim1_frontend_ccf": "Confirmed — ipc-contracts.jsonl argKeys=['providerId','ide'] confirmed; BREAKING CHANGE vs 1.0.9; column=119638 line=86 file=index-DdcCOEJG.js",
+    "dim2_backend_owner_pseudocode": "Confirmed — owner 0x1005ebb60 decompiled, core 0x1005d14b0 decompiled, HexRays non-failed",
+    "dim3_call_tree": "Confirmed — depth 5, all implementation leaves reached (fs_write, catalog, codex_state_apply, Vec::retain, mutex)",
+    "dim4_interface_dto_error": "Confirmed — argKeys=['providerId','ide'], CoreEnvelope<RelayState> output, 3 error paths mapped with exact strings, side effects fully mapped",
+    "dim5_platform_gate": "macOS confirmed (same IDB, same session); Windows Unknown (not assessed this session)",
+    "dim6_test_acceptance": "Unknown — C5 implementation-side work",
+    "gate_status": "strictImplementationUse_candidate (dim1+dim2+dim3+dim4+dim5_mac confirmed; dim5_win+dim6 Unknown)",
+    "implementation_use": false,
+    "gate_accepted": false,
+    "readyToImplement": false
+  },
+  "four_angle_completeness": {
+    "A_func_query": "PASS — func_query name_regex=deactivate_relay → unique 0x1005ebb60",
+    "B_string_pool": "PASS — find_regex deactivate_relay_provider → 0x101148166 registration blob",
+    "C_frontend_ipc": "PASS — ipc-contracts.jsonl confirmed argKeys=['providerId','ide'] (BREAKING CHANGE flagged)",
+    "D_owner_map_index": "PASS — owner-map-111.jsonl confirmed; INDEX grep 1.1.1 deactivate_relay = 0 entries; ADDITIVE write"
+  },
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "recovery_attempts": "not_needed",
+    "all_7_taxonomy_excluded": true
+  },
+  "idb_comment_written": true,
+  "idb_comment_addr": "0x1005ebb60",
+  "owner_gate": "ADDITIVE_no_collision",
+  "prewrite_collision_check": "INDEX.jsonl: no 1.1.1 macos-arm64 deactivate_relay_provider entry; owner-map-111.jsonl: status=shared, module=commands::relay, va=0x1005ebb60; current session wf-aimami111-delta-20260616 is owner; no competing producer"
+}

@@ -1,0 +1,113 @@
+{
+  "schema": "c5cm.gate-report.v2",
+  "command": "force_kill_codex",
+  "platform": "windows-x64",
+  "version": "1.1.1",
+  "session": "wf-aimami111-win-100-20260620",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-20T00:00:00Z",
+  "idb": "<本地路径>",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "readyToImplement": true,
+  "strictImplementationUse": true,
+  "gate_accepted": true,
+  "blocking": [],
+  "notes": [
+    "OS-level native-substitute command: dim1 closed via ipc-contracts.jsonl invoke (argKeys=[]) confirming frontend wire-up — not native-substitute-only path",
+    "dim6 closed via native-callback reversal path: two-phase kill (Phase1 taskkill /IM; Phase2 ToolHelp32 PID-enum 300ms/3s deadline) fully reversed from pseudocode; integration test mapping via fix_codex_router_issue",
+    "per win-regrade wf-aimami111-dim6-100-20260619: user override — not gated on dim6 integration-test-only; OS-level native-substitute rules apply",
+    "1.1.1 delta vs 1.0.9: two-phase soft+PID-enum vs single-shot taskkill /F"
+  ],
+  "evidence_refs": [
+    "force_kill_codex/pseudocode.md — Phase1@0x14079FF10 (taskkill /IM no /F) + Phase2@0x1407A44D0 (PID-enum loop /F/T/PID 300ms 3s deadline)",
+    "force_kill_codex/call-tree.md — depth=4 edges=12 all leaves terminated",
+    "frontend/ipc-contracts.jsonl: command=force_kill_codex argKeys=[] kind=tauriInvokeWrapper wrapper=forceKillCodex file=index-DdcCOEJG.js line=86 col=24540 snippet=ne(\"force_kill_codex\")",
+    "frontend/frontend-control-flow.jsonl: callsite=maintenance-page-C2wkSNnk.js line=17 fn=mutationFn",
+    "win-regrade.json: cmd=force_kill_codex prev_gate=acceptance_draft_only new_gate=readyToImplement regrade_basis=user_override OS-level native-substitute"
+  ],
+  "dim1_detail": {
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "col": 24540,
+    "kind": "tauriInvokeWrapper",
+    "argKeys": [],
+    "wrapper": "forceKillCodex",
+    "callsite_file": "assets/maintenance-page-C2wkSNnk.js",
+    "callsite_line": 17,
+    "snippet": "ne(\"force_kill_codex\")",
+    "note": "IPC invoke confirmed in ipc-contracts.jsonl; dim1 closed (normal IPC path confirmed)"
+  },
+  "dim2_detail": {
+    "owner_va": "0x14079FF10",
+    "owner_name": "quit_codex_taskkill_imagename_sys_111",
+    "size_bytes": 761,
+    "pseudocode_bytes": 2812,
+    "note": "Two-phase kill: Phase1=soft taskkill /IM Codex.exe; Phase2=ToolHelp32 PID-enum + taskkill /F/T/PID per-PID 300ms sleep 3s deadline"
+  },
+  "dim3_detail": {
+    "depth": 4,
+    "edges": 12,
+    "terminated_reasons": ["Win32_ToolHelp32", "CreateProcess", "WakeByAddressSingle"],
+    "key_path": "owner→taskkill_imagename→get_codex_pids_toolhelp(CreateToolhelp32Snapshot)→quit_codex_fallback_kill",
+    "all_leaves_terminated": true
+  },
+  "dim4_detail": {
+    "request": {},
+    "response": "Ok(()) tag=10 | Err(String) tag=9",
+    "error_paths": [
+      "Phase1 taskkill fails exit_status!=0 → Err(String) 'taskkill Codex failed: <status>'",
+      "Phase2 ToolHelp32 still returns PIDs after 3s deadline → Err '\\CODEX_FORCE_KILL_FAILED: <pids>' @0x1412F444A",
+      "ToolHelp32Snapshot fails → Err propagated from get_codex_pids_toolhelp_sys_111"
+    ],
+    "side_effects": [
+      "WakeByAddressSingle (quit_codex_send_signal_wakebya_sys_111@0x1407A3C60) — Windows futex signal",
+      "taskkill /IM Codex.exe (Phase1 soft kill)",
+      "CreateToolhelp32Snapshot + Process32FirstW/NextW (Phase2 PID enumeration)",
+      "taskkill /F /T /PID <pid> per-pid (Phase2 hard kill)",
+      "no persistent state written — kill-only operation"
+    ]
+  },
+  "dim5_detail": {
+    "win_primitives": [
+      "CreateToolhelp32Snapshot",
+      "Process32FirstW",
+      "Process32NextW",
+      "WakeByAddressSingle",
+      "_InterlockedCompareExchange8"
+    ],
+    "delta_vs_109": "CHANGED: 1.0.9 single-shot taskkill /F; 1.1.1 two-phase soft+PID-enum loop"
+  },
+  "dim6_detail": {
+    "status": "closed",
+    "path": "native-callback: OS-level two-phase kill fully reversed; no IPC-direct acceptance required for native kill command",
+    "session_original": "wf-aimami111-dim6-20260619",
+    "session_promoted": "wf-aimami111-win-100-20260620",
+    "happy_path": "Codex.exe running → Phase1 taskkill /IM Codex.exe (soft) → exits within poll window → Ok(())",
+    "boundary_errors": [
+      "Phase2: Codex.exe still alive after 3s deadline → CODEX_FORCE_KILL_FAILED: <pids> @0x1412F444A",
+      "taskkill spawn fails → Err(String) 'taskkill Codex failed: <status>'"
+    ],
+    "side_effect_asserts": [
+      "After Ok(): Codex.exe process no longer visible in task list",
+      "WakeByAddressSingle called before kill signal",
+      "no files written; no registry modified"
+    ],
+    "test_mapping": {
+      "integration": "trigger fix_codex_router_issue with itemId requiring Codex restart while Codex.exe running; verify Codex.exe killed",
+      "unit_phase1_success": "mock CreateProcess for taskkill returning exit_status=0; assert Ok(())",
+      "unit_phase2_timeout": "mock CreateToolhelp32Snapshot returning PIDs still alive after 3s; assert Err(CODEX_FORCE_KILL_FAILED)",
+      "unit_snapshot_fail": "mock CreateToolhelp32Snapshot → INVALID_HANDLE_VALUE; assert Err propagated"
+    }
+  },
+  "prev_gate": "strictImplementationUse (dim6=acceptance-draft)",
+  "upgrade_note": "Promoted to readyToImplement per win-regrade wf-aimami111-dim6-100-20260619 user override: IPC invoke confirmed (argKeys=[]); dim6 closed via native-callback evidence path (two-phase kill fully reversed from pseudocode Phase1@0x14079FF10 + Phase2@0x1407A44D0 + integration test mapping). Session wf-aimami111-win-100-20260620."
+}

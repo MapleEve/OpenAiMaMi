@@ -1,0 +1,21 @@
+{"session":"wf-aimami111-win-samedepth-patch-20260619","machine":"<本地机器>","command":"clean","platform":"windows-x64","version":"1.1.1","handler_addr":"0x1400152b0","handler_name":"clean_handler_111","depth":5,"verdict":"confirmed_same_depth5"}
+{"depth":1,"addr":"0x1400152b0","name":"clean_handler_111","role":"command_owner: IPC command='clean' namespace='repo'","terminated_reason":null}
+{"depth":2,"addr":"0x14006edc0","name":"pending_auto_switch_state_lock_acquire_111","role":"state_lock_acquire: replaces 1.0.9 repo_mutex_lock","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x141214620","name":"query_installed_skills_with_repo_111","role":"repo_state_check + owner_verify","terminated_reason":null}
+{"depth":3,"addr":"0x141212fb0","name":"sub_141212FB0","role":"memcpy_helper","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14078ea20","name":"sub_14078EA20","role":"clean_core_async_executor: wraps cleanup impl","terminated_reason":null}
+{"depth":3,"addr":"0x1401b6da0","name":"sub_1401B6DA0","role":"clean_impl_core: reads account registry, iterates records, cleans orphan threads","terminated_reason":null}
+{"depth":4,"addr":"0x1401a1480","name":"sub_1401A1480","role":"account_registry_file_read","terminated_reason":null}
+{"depth":5,"addr":"0x141093260","name":"win32_file_read_bytes_111","role":"win32_file_read: TERMINAL","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x1401a6c10","name":"auto_switch_state_persist_json_111","role":"persist_state_to_json: writes cleaned state","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x14108c6f0","name":"snooze_file_open_111","role":"file_open_helper","terminated_reason":null}
+{"depth":5,"addr":"0x1410908e0","name":"win32_path_canonicalize_111","role":"path_canonicalize","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x1401d4c70","name":"usage_fetch_error_drop_111","role":"error_drop_cleanup","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x14107b7e0","name":"system_time_precise_u32_111","role":"timestamp_read","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x14107b790","name":"elapsed_since_ts_111","role":"elapsed_time_check","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x1407b1650","name":"sub_1407B1650","role":"drop_helper","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x14124a5d0","name":"WakeByAddressSingle","role":"win32_sync_wake","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x140836020","name":"sub_140836020","role":"ipc_response_dispatch: serialize result + respond","terminated_reason":null}
+{"depth":3,"addr":"0x14080c3c0","name":"has_notch_invoke_resolver_respond","role":"tauri_ipc_resolve","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14033ab50","name":"has_notch_arc_listener_drop_loop","role":"arc_drop_loop: cleanup listeners","terminated_reason":"implementation_leaf"}
+{"compare_1_0_9":{"baseline_handler":"clean_handler_sys@0x140280DE0","verdict":"confirmed_same_depth5","notes":"1.0.9 used sub_1411CE640(json_state_dispatcher)+clean_impl_async_lock_sys; 1.1.1 uses query_installed_skills_with_repo_111+sub_14078EA20. Core behavior identical: read account registry via win32_file_read_bytes_111, iterate records, clean orphan threads DB, persist state. Lock mechanism renamed pending_auto_switch_state_lock_acquire_111. All delta is infrastructure rename/refactor, no new app-level DTO/error/side-effect. Prior 逆向分析 annotation on clean_handler_111 corroborates same verdict."}}

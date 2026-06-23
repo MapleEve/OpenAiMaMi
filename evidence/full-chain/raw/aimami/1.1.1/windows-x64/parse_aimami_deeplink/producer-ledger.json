@@ -1,0 +1,51 @@
+{
+  "schema": "c5cm.producer.ledger.v1",
+  "session": "wf-aimami111-delta-20260616",
+  "session_extension": "wf-aimami111-delta-20260617-win-parsedeeplink",
+  "machine": "<本地机器>",
+  "model": "claude-sonnet-4-6",
+  "role": "producer_only",
+  "produced_at": "2026-06-16",
+  "extended_at": "2026-06-17",
+  "command": "parse_aimami_deeplink",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "binary_sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "owner_check": {
+    "index_hits": 1,
+    "index_line": 1477,
+    "index_key": "aimami/1.1.1/windows-x64/parse_aimami_deeplink/full-chain",
+    "index_status": "done",
+    "index_session": "wf-aimami111-delta-20260616",
+    "raw_dir_existed": true,
+    "reverse_status_session": "wf-aimami111-delta-20260616",
+    "collision_status": "no_collision_same_session_extension",
+    "write_mode": "canonical_additive_extension",
+    "authoritative": true,
+    "extension_reason": "gate_upgrade_consumerStartReady_to_strictImplementationUse_candidate: dim1 CCF confirmed + call-trees JSONL added"
+  },
+  "idb_save": {
+    "ok": true,
+    "path": "<本地路径>",
+    "original_pass": "2026-06-16",
+    "extension_pass": "2026-06-17"
+  },
+  "renames_written": 8,
+  "comments_written": 8,
+  "files_written": [
+    "owner.md",
+    "pseudocode.md",
+    "interface.md",
+    "call-tree.md",
+    "gate-report.json",
+    "manifest.json",
+    "producer-ledger.json",
+    "call-trees/parse_aimami_deeplink.jsonl"
+  ],
+  "gate_tier": "strictImplementationUse_candidate",
+  "gate_tier_upgraded_from": "consumerStartReady",
+  "index_key": "aimami/1.1.1/windows-x64/parse_aimami_deeplink/full-chain",
+  "smb_root": "<来源位置>",
+  "smb_path": "raw/aimami/1.1.1/windows-x64/parse_aimami_deeplink/"
+}

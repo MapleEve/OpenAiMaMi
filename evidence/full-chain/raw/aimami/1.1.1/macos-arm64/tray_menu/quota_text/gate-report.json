@@ -1,0 +1,29 @@
+{
+  "func": "quota_text",
+  "va": "0x100627190",
+  "symbol": "codexmate_lib::commands::tray_menu::quota_text::h3bae01cab641e16d",
+  "module": "commands::tray_menu",
+  "session": "wf-aimami111-backend-gap-close-20260622",
+  "machine": "<本地机器>",
+  "platform": "macos-arm64",
+  "version": "1.1.1",
+  "leaf_path": "raw/aimami/1.1.1/macos-arm64/tray_menu/quota_text/",
+  "gate": {
+    "pseudocode_present": true,
+    "call_tree_depth": 5,
+    "call_tree_terminated": true,
+    "evidence_grounded": true,
+    "callers_documented": true,
+    "accepted_unknown": false,
+    "genuine_ceiling": false,
+    "readyToImplement": true,
+    "gate_accepted": true,
+    "strictImplementationUse": true,
+    "implementation_use": true
+  },
+  "behavior_summary": "纯计算函数：读 runtime snapshot 两账户 type+usage 字段，按 4 种组合（双到期/主到期次有效/主有效次到期/双有效）返回 quota 显示 String。无副作用，不触网络，不写状态。",
+  "callers": [
+    "create_tray_menu_from_snapshot @0x10062a470"
+  ],
+  "evidence_files": ["pseudocode.md", "gate-report.json"]
+}

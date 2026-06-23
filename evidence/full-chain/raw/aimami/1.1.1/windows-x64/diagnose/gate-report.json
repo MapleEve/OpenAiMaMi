@@ -1,0 +1,73 @@
+{
+  "command": "diagnose",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/diagnose/gate-report.json (schema c5cm.gate-report.v2, session wf-aimami111-dim6-100-20260619)",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl line 26: argKeys=[] col=25720",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl line 39: diagnose minified-static-terminal-call",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#diagnose (acceptance-draft)"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 26,
+    "wrapper": "diagnose",
+    "argKeys": [],
+    "snippet_col": 25720,
+    "ccf_line": 39,
+    "source": "ipc-contracts.jsonl hit: argKeys=[] argObject=null callee=ne"
+  },
+  "dim2_detail": {
+    "handler_dispatch_va": "0x14000df51",
+    "handler_inline": "within tauri_ipc_main_dispatcher_sys@0x14000D2A0",
+    "core_va": "0x140218E30",
+    "core_name": "relay_health_check_core_sys_111",
+    "core_size_bytes": 4454,
+    "note": "diagnose has no standalone owner function — dispatcher inline. Shares core with diagnose_codex_router.",
+    "session": "wf-aimami111-dim6-100-20260619"
+  },
+  "dim3_detail": {
+    "depth_reached": 5,
+    "terminated_reason": "OS/runtime leaf",
+    "tree": [
+      {"depth":1,"va":"0x14000D2A0","name":"tauri_ipc_main_dispatcher_sys","role":"inline case for diagnose"},
+      {"depth":2,"va":"0x14006EDC0","name":"pending_auto_switch_state_lock_acquire_111","role":"repo namespace lookup"},
+      {"depth":2,"va":"0x141214620","name":"query_installed_skills_with_repo_111","role":"async dispatch router"},
+      {"depth":3,"va":"0x140218E30","name":"relay_health_check_core_sys_111","role":"reads relay state, checks catalog/config.toml/model_provider"},
+      {"depth":4,"va":"0x1406E8480","name":"relay_state_read_lock_snapshot_sys"},
+      {"depth":4,"va":"0x1406F3770","name":"diagnostic_data_builder_sys"},
+      {"depth":5,"va":"0x141093260","name":"win32_file_read_bytes_111","terminated_reason":"WIN32 file read (OS API)"}
+    ]
+  },
+  "dim4_detail": {
+    "input_params": [],
+    "namespace": "repo",
+    "response": {
+      "type": "DiagnoseReport struct (serializer sub_14082FA60)",
+      "fields": ["relay_enabled:bool","provider_count:usize","active_provider:Option<String>","codex_router_catalog_ok:bool","model_catalog_ok:bool","config_toml_router_ok:bool","xhigh_supported:bool","version_str:Option<String>","detail_messages:Vec<String> (Chinese error strings)"]
+    },
+    "diagnostic_flags": {"v75":"relay_enabled","v67":"proxy_running","v124":"catalog_present","v22":"provider_active","v5":"catalog_aimami_match","v3":"model_catalog_json_in_config","v119":"model_provider_in_config"},
+    "error_sentinels": ["0x8000000000000000 (relay_state_read_lock fails)","0x8000000000000001 (catalog path build fails)"],
+    "xhigh_check": "aAt@0x1412c723a = 'autominimallowmediumhighxhighmax' (confirms xhigh in win 1.1.1)",
+    "side_effects": ["READ-ONLY: codex_router_catalog.json, config.toml, RelayManager in-memory state","WIN-ONLY: snooze_file_open_111@0x14108C6F0"]
+  },
+  "dim5_detail": {
+    "win_specifics": ["win32_file_read_bytes_111@0x141093260 (WIN32 API not POSIX read)","snooze_file_open_111@0x14108C6F0 (WIN-SPECIFIC locked-file retry)","_InterlockedCompareExchange8+WakeByAddressSingle (relay state lock)"],
+    "idb": "<本地路径>",
+    "sha": "d24e429a"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-100-20260619",
+    "shard_ref": "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#diagnose"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

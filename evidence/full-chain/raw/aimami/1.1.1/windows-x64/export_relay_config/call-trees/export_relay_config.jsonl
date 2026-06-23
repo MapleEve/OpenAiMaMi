@@ -1,0 +1,21 @@
+{"session":"wf-aimami111-win-samedepth-patch-20260619","machine":"<本地机器>","command":"export_relay_config","platform":"windows-x64","version":"1.1.1","handler_addr":"0x140015e00","handler_name":"sub_140015E00","depth":5,"verdict":"confirmed_same_depth5"}
+{"depth":1,"addr":"0x140015e00","name":"sub_140015E00","role":"command_owner: IPC command='export_relay_config' namespace='manager'","terminated_reason":null}
+{"depth":2,"addr":"0x14006f4b0","name":"run_codex_router_diagnostics_owner_sys","role":"manager_scope_lock_acquire","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x141214620","name":"query_installed_skills_with_repo_111","role":"repo_state_check","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1402fed40","name":"remove_skill_parse_id_param_111","role":"param_extract: filePath (str) from IPC args","terminated_reason":null}
+{"depth":3,"addr":"0x1402f9eb0","name":"sub_1402F9EB0","role":"string_map_lookup","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1402ff1a0","name":"parse_bool_from_ipc_arg_sys","role":"param_extract: includeApiKeys (bool) from IPC args","terminated_reason":null}
+{"depth":3,"addr":"0x1402f9eb0","name":"sub_1402F9EB0","role":"string_map_lookup","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x140217840","name":"sub_140217840","role":"export_relay_config_core: serialize relay config + write to filePath","terminated_reason":null}
+{"depth":3,"addr":"0x1406e8480","name":"relay_state_read_lock_snapshot_sys","role":"read-lock snapshot of relay state","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140205b90","name":"sub_140205B90","role":"relay_config_export_serialize_sanitize: serialize providers, optionally include apiKeys","terminated_reason":null}
+{"depth":4,"addr":"0x1402ee7c0","name":"relay_keychain_lookup_for_quota_sys","role":"lookup apiKey from keychain if includeApiKeys=true","terminated_reason":null}
+{"depth":5,"addr":"0x141093260","name":"win32_file_read_bytes_111","role":"read keychain file","terminated_reason":"implementation_leaf"}
+{"depth":5,"addr":"0x140625680","name":"sub_140625680","role":"keychain_decrypt","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x140504310","name":"relay_atomic_write_leaf_sys","role":"atomic file write: TERMINAL","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x140364880","name":"sub_140364880","role":"json_serialize_provider_entry","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140234ac0","name":"relay_state_snapshot_drop_sys","role":"release read lock","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1408380f0","name":"sub_1408380F0","role":"ipc_response_dispatch: serialize Ok/Err + respond","terminated_reason":null}
+{"depth":3,"addr":"0x14080c3c0","name":"has_notch_invoke_resolver_respond","role":"tauri_ipc_resolve","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14033ab50","name":"has_notch_arc_listener_drop_loop","role":"arc_drop_loop","terminated_reason":"implementation_leaf"}
+{"compare_1_0_9":{"baseline_handler":"export_relay_config_owner_sys@0x14027a740","baseline_depth":6,"verdict":"confirmed_same_depth5","notes":"1.0.9 DTO: filePath(str) + includeApiKeys(bool). 1.1.1 DTO: identical (remove_skill_parse_id_param_111→filePath, parse_bool_from_ipc_arg_sys→includeApiKeys). 1.0.9 core: relay_config_export_serialize_sanitize_sys → relay_config_export_json_write_sys → relay_atomic_write_file_sys. 1.1.1 core: sub_140205B90(serialize+sanitize) → relay_atomic_write_leaf_sys(atomic write) at depth-4. relay_keychain_lookup_for_quota_sys at depth-4 maps to sub_140571180(decrypt apiKey) in 1.0.9. Side-effects identical. relay_state_read_lock_snapshot_sys + relay_state_snapshot_drop_sys present in both."}}

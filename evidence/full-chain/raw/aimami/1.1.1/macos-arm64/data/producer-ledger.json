@@ -1,0 +1,30 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "bundle": "aimami/1.1.1/macos-arm64/delta-bundle",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "baseline_version": "1.0.9",
+  "binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "owner_gate": {
+    "result": "ALLOW",
+    "write_mode": "additive",
+    "basis": "no_prior_111_mac_entries_in_INDEX",
+    "collision_detected": false,
+    "foreign_owners": "none",
+    "takeover_token": null
+  },
+  "gate_tier": "strictImplementationUse_candidate",
+  "status": "done",
+  "delta_scope": "35-target mac delta vs 1.0.9",
+  "all_targets_done": true,
+  "in_progress_residuals": 0,
+  "index_bundle_key": "aimami/1.1.1/macos-arm64/bundle/delta-session-wf-aimami111-delta-20260616",
+  "reverse_status_md_clean": true,
+  "four_angle_completeness": "PASS per-leaf",
+  "produced_at": "2026-06-17T00:00:00+08:00",
+  "authoritative": true
+}

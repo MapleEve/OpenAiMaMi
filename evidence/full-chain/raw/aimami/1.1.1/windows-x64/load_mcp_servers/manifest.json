@@ -1,0 +1,29 @@
+{
+  "command": "load_mcp_servers",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "delta_class": "integrity_recovered",
+  "session_sweep": "wf-aimami111-delta-20260617-sweep",
+  "session_goldleaf": "wf-aimami111-delta-20260618-goldleaf",
+  "machine": "<本地机器>",
+  "role": "producer",
+  "sha": "d24e429a",
+  "gate_tier": "gold",
+  "files": [
+    "pseudocode.c",
+    "pseudocode.md",
+    "call-tree.md",
+    "call-trees/load_mcp_servers.jsonl",
+    "owner.md",
+    "interface.md",
+    "evidence.md",
+    "gate-report.json",
+    "manifest.json"
+  ],
+  "status": "gold-leaf-complete",
+  "idb_saved": true,
+  "idb_renames": [
+    {"va": "0x14001c4c0", "name": "load_mcp_servers_owner_sys"},
+    {"va": "0x140361ef0", "name": "mcp_server_array_clone_stride224_sys"}
+  ]
+}

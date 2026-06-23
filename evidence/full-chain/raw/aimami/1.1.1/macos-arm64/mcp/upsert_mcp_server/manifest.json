@@ -1,0 +1,37 @@
+{
+  "schema": "c5cm.raw.leaf.v2",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "mcp",
+  "command": "upsert_mcp_server",
+  "session": "wf-aimami111-delta-20260617-repair",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-17T00:00:00+08:00",
+  "gate": "A_level_owner_full_call_tree",
+  "status": "not_gate_promotion",
+  "sha256_binary": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "owner_va_commands": "0x10072ae00",
+  "owner_va_core": "0x1005a0d80",
+  "owner_symbol_commands": "codexmate_lib::commands::mcp::upsert_mcp_server",
+  "owner_symbol_core": "codexmate_lib::core::mcp::upsert_mcp_server",
+  "call_tree_depth": 5,
+  "wall_broke": true,
+  "wall_broke_detail": "No async wrapper found; previous session false-positive on async shim. Both functions are direct sync __fastcall.",
+  "two_marker_invariant_confirmed": true,
+  "atomic_write_confirmed": true,
+  "files": {
+    "evidence": "evidence.md",
+    "manifest": "manifest.json",
+    "pseudocode_manifest": "ida/pseudocode-manifest.jsonl",
+    "call_tree": "call-trees/upsert_mcp_server.jsonl",
+    "interfaces": ["interfaces/McpServerConfig_layout.md", "interfaces/ipc_contract.md"],
+    "pseudocode": [
+      "ida/pseudocode/commands_mcp_upsert_mcp_server_0x10072ae00.c",
+      "ida/pseudocode/core_mcp_upsert_mcp_server_0x1005a0d80.c",
+      "ida/pseudocode/core_mcp_insert_mcp_block_0x10059def0.c",
+      "ida/pseudocode/core_relay_write_atomic_0x10041e960.c"
+    ]
+  }
+}

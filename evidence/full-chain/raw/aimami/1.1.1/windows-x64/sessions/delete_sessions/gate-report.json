@@ -1,0 +1,83 @@
+{
+  "command": "delete_sessions",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/sessions/delete_sessions/pseudocode.md (gold-leaf)",
+    "raw/aimami/1.1.1/windows-x64/sessions/delete_sessions/call-tree.md (depth=6, edges=26)",
+    "raw/aimami/1.1.1/windows-x64/sessions/delete_sessions/interface.md",
+    "raw/aimami/1.1.1/windows-x64/sessions/delete_sessions/owner.md",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl line 28: argKeys=[ids] col=25785",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl lines 41,186: deleteSessions + mutationFn callsite",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#delete_sessions (acceptance-draft)"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 28,
+    "wrapper": "deleteSessions",
+    "argKeys": ["ids"],
+    "snippet_col": 25785,
+    "ccf_lines": [41, 186],
+    "command_string_va": "0x1412ac1bd"
+  },
+  "dim2_detail": {
+    "owner_va": "0x140023f80",
+    "owner_name": "delete_sessions_owner_sys",
+    "owner_size_hex": "0x511",
+    "session": "wf-aimami111-delta-20260618-goldleaf",
+    "delta_class": "integrity_recovered"
+  },
+  "dim3_detail": {
+    "depth": 6,
+    "edges": 26,
+    "terminated_reason": "external_call/OS_leaf/allocator",
+    "key_leaves": [
+      "FindFirstFileExW@0x14124d188 depth=6 (WIN32 OS)",
+      "DeleteFileW@0x14124d830 depth=5 (WIN32 OS)",
+      "SetFileInformationByHandle@0x14124d118 depth=5 (WIN32 OS)",
+      "GetLastError@0x14124d708 depth=5 (WIN32 OS)",
+      "sub_1405AB1E0@depth=6 (hash leaf)"
+    ]
+  },
+  "dim4_detail": {
+    "input_params": [
+      {"name":"repo","type":"String","type_tag":15,"string_va":"0x1412ac6d1"},
+      {"name":"ids","type":"Vec<String>","type_tag":3,"string_va":"0x1412ac78f"}
+    ],
+    "response": "Result<Vec<SessionResult>> (96B per element)",
+    "new_sql_111": "DELETE FROM thread_spawn_edges WHERE child_thread_id=?1 OR parent_thread_id=?1 (cascade before DELETE FROM threads)",
+    "error_handling": {
+      "row_not_found": "0x8000000000000016 silently skipped",
+      "other_sql": "Err(9,error_string)",
+      "empty_ids": "early return Ok([])",
+      "mutex_poison": "panic 'poisoned lock: another task failed inside'",
+      "alloc_fail": "OOM panic"
+    },
+    "side_effects": [
+      "thread_spawn_edges cascade DELETE (NEW 1.1.1)",
+      "threads DELETE",
+      "thread state file read+write (win32_file_read/write_bytes_111)",
+      "-rollout.json files deleted (build_session_list NEW 1.1.1)",
+      "snooze_file_delete (DeleteFileW+SetFileInformationByHandle)"
+    ]
+  },
+  "dim5_detail": {
+    "win_specifics": ["FindFirstFileExW","DeleteFileW","SetFileInformationByHandle","GetLastError","SSE2 SIMD xmmword_1412EF4B0 (backslash→fwdslash normalize)"],
+    "idb": "<本地路径>",
+    "sha": "d24e429a"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "shard_ref": "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#delete_sessions"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

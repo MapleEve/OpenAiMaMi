@@ -1,0 +1,11 @@
+{"depth":0,"addr":"0x10031cc30","symbol":"codexmate_lib::run::{{closure}}::{{closure}}::hfefd46acd52a1302","role":"command_owner_inner_closure","note":"tauri dispatch; no standalone get_relay_active symbol in 1.1.1"}
+{"depth":1,"addr":"0x100506160","symbol":"tauri::state::StateManager::try_get::hf9805fe798a157ec","role":"state_injection","terminal":"external_call_recorded:StateManager_try_get"}
+{"depth":1,"addr":"0x100f7c290","symbol":"<tauri::state::State<T> as tauri::ipc::command::CommandArg<R>>::from_command::{{closure}}::h752283a8effd6d0c","role":"command_arg_extraction","terminal":"external_call_recorded:tauri_CommandArg_from_command"}
+{"depth":1,"addr":"0x1005d18f0","symbol":"codexmate_lib::core::relay::manager::RelayManager::get_active::h81b4c2827d84364c","role":"core_implementation","note":"pure read; mutex+clone"}
+{"depth":2,"addr":"0x100f7c920","symbol":"std::sys::sync::once_box::OnceBox<T>::initialize::hc8348cc501211af6","role":"mutex_lazy_init","terminal":"external_call_recorded:OnceBox_initialize"}
+{"depth":2,"addr":"0x100f2e7a0","symbol":"std::sys::pal::unix::sync::mutex::Mutex::lock::h6b8bb4259dcc18d0","role":"mutex_lock","terminal":"external_call_recorded:Mutex_lock"}
+{"depth":2,"addr":"0x10065e520","symbol":"<alloc::vec::Vec<T,A> as core::clone::Clone>::clone::h922ea2c993836b1c","role":"implementation_leaf","note":"clones active_providers Vec<String> from RelayManager@+56","terminal":"implementation_leaf:Vec_String_clone(active_providers@state+56)"}
+{"depth":2,"addr":"0x100f2e7c0","symbol":"std::sys::pal::unix::sync::mutex::Mutex::unlock::hb9acd26a137dd78d","role":"mutex_unlock","terminal":"external_call_recorded:Mutex_unlock"}
+{"depth":1,"addr":"0x100555530","symbol":"codexmate_lib::core::models::CoreEnvelope<T>::ok::h62e52414c5cb980f","role":"envelope_wrap","terminal":"external_call_recorded:CoreEnvelope_ok"}
+{"depth":1,"addr":"0x100470600","symbol":"tauri::ipc::InvokeResolver<R>::respond::h2cf05754f6f76c7c","role":"ipc_respond_sync","terminal":"implementation_leaf:ipc_response_frame(sync_respond_no_spawn)"}
+{"depth":1,"addr":"0x10046ad00","symbol":"tauri::ipc::InvokeResolver<R>::return_result::h524249f7676c5245","role":"ipc_error_path","terminal":"external_call_recorded:InvokeResolver_return_result(error_path_only)"}

@@ -1,0 +1,24 @@
+{"depth":1,"va":"0x10061cc50","symbol":"codexmate_lib::commands::system::begin_add_account_attach_monitor","role":"owner","size":1614,"callers":["codexmate_lib::run::{{closure}}::{{closure}}@0x100318010"],"session":"wf-aimami111-delta-20260616"}
+{"depth":2,"va":"0x100f7c920","symbol":"std::sys::sync::once_box::OnceBox<T>::initialize","role":"singleton_init","parent":"0x10061cc50","notes":"lazy Tauri state init"}
+{"depth":2,"va":"0x1004c6480","symbol":"codexmate_lib::core::repository::Repository::load_snapshot_local","role":"persistence_read","parent":"0x10061cc50","size":658}
+{"depth":3,"va":"0x1004c7b10","symbol":"codexmate_lib::core::repository::Repository::load_local_state_synced","role":"state_sync","parent":"0x1004c6480","size":1413}
+{"depth":4,"va":"0x1004c28c0","symbol":"codexmate_lib::core::repository::Repository::load_local_state","role":"fs_read_aggregate","parent":"0x1004c7b10","size":3596}
+{"depth":5,"va":"0x100f2b980","symbol":"std::sys::fs::metadata","role":"fs_leaf","parent":"0x1004c28c0","leaf_type":"fs","terminated_reason":"fs_syscall"}
+{"depth":5,"va":"0x100f25cf0","symbol":"std::fs::read::inner","role":"fs_leaf","parent":"0x1004c8ba0","leaf_type":"fs","terminated_reason":"fs_read"}
+{"depth":5,"va":"0x100f25f70","symbol":"std::fs::write::inner","role":"fs_leaf","parent":"0x1004c8ba0","leaf_type":"fs","terminated_reason":"fs_write_persistence"}
+{"depth":5,"va":"0x1004cd5c0","symbol":"codexmate_lib::core::repository::Repository::load_current_auth_snapshot","role":"auth_snapshot_read","parent":"0x1004c28c0","leaf_type":"persistence"}
+{"depth":5,"va":"0x1004bf8e0","symbol":"codexmate_lib::core::repository::Repository::load_registry","role":"registry_read","parent":"0x1004c28c0","leaf_type":"persistence"}
+{"depth":5,"va":"0x1004bd8d0","symbol":"codexmate_lib::core::account_io::make_snapshot_path","role":"path_construction","parent":"0x1004c8ba0","leaf_type":"path"}
+{"depth":5,"va":"0x100534ff0","symbol":"codexmate_lib::core::quota_store::load","role":"quota_read","parent":"0x1004c28c0","leaf_type":"persistence"}
+{"depth":4,"va":"0x1004c8ba0","symbol":"codexmate_lib::core::repository::Repository::sync_local_runtime_state","role":"daemon_state_sync","parent":"0x1004c7b10","size":6240}
+{"depth":5,"va":"0x1004c3a00","symbol":"codexmate_lib::core::repository::Repository::persist_registry","role":"fs_write","parent":"0x1004c8ba0","leaf_type":"fs_write"}
+{"depth":5,"va":"0x100534bf0","symbol":"codexmate_lib::core::quota_store::upsert_item","role":"quota_write","parent":"0x1004c8ba0","leaf_type":"persistence_write"}
+{"depth":5,"va":"0x100535100","symbol":"codexmate_lib::core::quota_store::save","role":"quota_persist","parent":"0x1004c8ba0","leaf_type":"persistence_write"}
+{"depth":5,"va":"0x1005582b0","symbol":"codexmate_lib::platform::paths::CodexPaths::ensure_directories","role":"fs_mkdir","parent":"0x1004c8ba0","leaf_type":"fs_side_effect"}
+{"depth":3,"va":"0x100848a4d32952f49d6","symbol":"codexmate_lib::core::repository::Repository::make_status_payload_with_service_state","role":"payload_builder","parent":"0x1004c6480"}
+{"depth":2,"va":"0x100328ce0","symbol":"std::thread::lifecycle::spawn_unchecked","role":"thread_spawn","parent":"0x10061cc50","size":1102}
+{"depth":3,"va":"0x100f2f2a0","symbol":"std::sys::thread::unix::Thread::new","role":"pthread_create_wrapper","parent":"0x100328ce0","size":380}
+{"depth":4,"va":"0x100f2f080","symbol":"std::sys::thread::unix::Thread::new::thread_start","role":"pthread_entry","parent":"0x100f2f2a0","size":444,"notes":"calls closure via vtable[3]"}
+{"depth":5,"va":"0x100205da0","symbol":"std::sys::backtrace::__rust_begin_short_backtrace [begin_add_account_attach_monitor closure]","role":"thread_body","parent":"0x100f2f080","size":1108,"leaf_type":"business_logic","notes":"poll loop 2ms x 120ms; detects codex_path/usage_refresh_interval change"}
+{"depth":6,"va":"0x10061ca30","symbol":"codexmate_lib::commands::system::schedule_full_runtime_refresh","role":"side_effect_trigger","parent":"0x100205da0","size":259,"leaf_type":"side_effect"}
+{"depth":7,"va":"0x1005050","symbol":"tauri::async_runtime::spawn_blocking","role":"async_spawn","parent":"0x10061ca30","leaf_type":"tauri_runtime","terminated_reason":"external_tauri_leaf"}

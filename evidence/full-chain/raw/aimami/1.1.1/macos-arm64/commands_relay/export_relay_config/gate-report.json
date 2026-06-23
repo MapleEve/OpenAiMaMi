@@ -1,0 +1,208 @@
+{
+  "schema": "c5cm.reverse.gate_report.consumer_gate.v1",
+  "command": "export_relay_config",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "commands_relay",
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "produced_at": "2026-06-17T00:00:00+08:00",
+  "dim6_session": "wf-aimami111-dim6-20260619",
+  "gate": "readyToImplement",
+  "gate_accepted": true,
+  "implementation_use": true,
+  "readyToImplement": true,
+  "readyToImplement_upgraded_at": "2026-06-19",
+  "readyToImplement_upgrade_session": "wf-aimami111-dim6-100-20260619",
+  "readyToImplement_upgrade_reason": "U1 resolved: RelayExportProvider apiKey field confirmed — included when includeApiKeys=true AND key non-empty (Serialize impl at 0x100548c30 shows conditional serialize_entry for apiKey). U2 resolved: ExportResult response DTO is RelayExportSummary (not ExportResult), serde key providerCount (camelCase, not provider_count) byte-confirmed from Serialize impl at 0x10054888a — 3 fields: filePath, providerCount, includeApiKeys. RelayExportProvider full serde keys confirmed: id, ide, name, baseUrl, apiKey[conditional], model, extraHeaders. dim4 now accepted. dim5 mac confirmed. Per-platform gate: win=Unknown does not block mac RTI. Mac RTI unblocked.",
+  "strictImplementationUse": true,
+  "consumerStartReady": true,
+  "dim1_frontend_ccf": {
+    "status": "accepted",
+    "evidence": "evidence.md IPC Contract: argKeys=[filePath, includeApiKeys]; IPC registration xref 0x100316160"
+  },
+  "dim2_backend_owner_pseudocode": {
+    "status": "accepted",
+    "note": "evidence.md Gate status: PASS (integrity_recovered); export_to_file body decompiled depth 3; keychain::get_api_key 0x1006c86a0 callees confirmed; atomic_write 0x10041e960 confirmed",
+    "decompile_status": "depth_3_complete"
+  },
+  "dim3_call_tree": {
+    "status": "accepted",
+    "depth": 3,
+    "leaves_reached": [
+      "atomic_write::write_atomic (fdatasync + rename)",
+      "sync_parent_dir (fsync parent)",
+      "std::sys::fs::set_permissions (chmod)",
+      "keychain::get_api_key → mac_keychain::get (macOS Keychain)",
+      "keychain::write_key_file (key cache write)",
+      "sha2::sha256::compress256"
+    ]
+  },
+  "dim4_interface_dto_error": {
+    "status": "accepted",
+    "accepted": [
+      "argKeys=[filePath, includeApiKeys] confirmed",
+      "response DTO is RelayExportSummary (not ExportResult) — Serialize impl at 0x10054888a byte-confirmed 3 fields: filePath, providerCount(camelCase), includeApiKeys",
+      "5 top-level export file serde keys confirmed (exportedAt, exportedBy, includeApiKeys, providers, filePath)",
+      "RelayExportProvider Serialize impl at 0x100548c30 byte-confirmed fields: id, ide, name, baseUrl, apiKey[conditional on key exists], model, extraHeaders",
+      "apiKey field included when includeApiKeys=true AND key non-empty — conditional serialize confirmed",
+      "atomic write behavior (tmpfile rename) confirmed",
+      "set_permissions post-write confirmed",
+      "keychain get/cache path confirmed"
+    ],
+    "gaps": [],
+    "accepted_unknown_residuals": [
+      "set_permissions exact mode（推断 0o600, U3）"
+    ],
+    "correction_note": "Prior gaps U1 (apiKey conditionality) and U2 (provider_count key name) both resolved. Response struct name is RelayExportSummary not ExportResult. Response serde key is providerCount (camelCase) not provider_count (snake_case)."
+  },
+  "dim5_platform_gate": {
+    "status": "partial",
+    "macos_arm64": "confirmed",
+    "windows_x64": "Unknown"
+  },
+  "dim6_test_acceptance": {
+    "status": "acceptance-draft",
+    "produced_at": "2026-06-19",
+    "session": "wf-aimami111-dim6-20260619",
+    "happy_path": {
+      "description": "导出 relay 配置（包含 API keys）",
+      "input": {
+        "filePath": "/tmp/aimami-export.json",
+        "includeApiKeys": true
+      },
+      "expected_response": {
+        "type": "CoreEnvelope<RelayExportSummary>",
+        "fields": {
+          "filePath": "/tmp/aimami-export.json",
+          "providerCount": "<usize, 已配置 provider 数量>",
+          "includeApiKeys": true
+        },
+        "correction_note": "Struct is RelayExportSummary. All 3 serde keys are camelCase: filePath/providerCount/includeApiKeys. Prior inferences file_path/provider_count/include_api_keys (snake_case) were wrong."
+      },
+      "expected_file_content": {
+        "exportedAt": "<i64 ms timestamp>",
+        "exportedBy": "AiMaMi 1.1.1",
+        "includeApiKeys": true,
+        "providers": "[{ide: ..., baseUrl: ..., apiKey: ...}]",
+        "filePath": "/tmp/aimami-export.json"
+      },
+      "side_effects_ordered": [
+        "1. 读取 relay_config_path/keys/<provider_id> (JSON file, base64 decode, sha256 key derivation) — 每个有 key 的 provider",
+        "2. macOS Keychain Services get (fallback, if file miss)",
+        "3. keychain::write_key_file — cache write-back",
+        "4. atomic_write::write_atomic: create tmpfile (<stem>.<pid>.<uuid_v4>), write, fdatasync, rename → filePath, sync_parent_dir",
+        "5. set_permissions (chmod) on filePath — only when includeApiKeys=true",
+        "6. Log WARN to codexmate_lib::core::relay::io if set_permissions fails（soft failure）",
+        "7. Log DEBUG to codexmate_lib::core::relay::keychain on key write-back"
+      ]
+    },
+    "boundary_errors": [
+      {
+        "trigger": "filePath 父目录不存在且无法创建",
+        "expected_error": "CoreEnvelope<Err(CoreError::String)>（atomic_write 创建父目录失败）",
+        "evidence": "evidence.md Delta 2: atomic_write creates parent dir recursively"
+      },
+      {
+        "trigger": "rename (tmpfile → dest) 失败",
+        "expected_error": "CoreEnvelope<Err>（atomic_write removes tmpfile on rename failure）",
+        "evidence": "evidence.md Delta 2: removes tmpfile on rename failure"
+      },
+      {
+        "trigger": "set_permissions 失败",
+        "expected_response": "仍返回 Ok（soft failure：only logged at WARN, not propagated）",
+        "evidence": "evidence.md Delta 3"
+      },
+      {
+        "trigger": "includeApiKeys=false",
+        "side_effect_delta": "不触发 keychain get/set，不触发 set_permissions；仅 atomic_write export JSON"
+      }
+    ],
+    "side_effect_asserts": [
+      "export 后目标文件 filePath 存在，JSON 包含 exportedBy=AiMaMi 1.1.1",
+      "filePath 写入是原子操作（tmpfile rename），中途不产生损坏文件",
+      "includeApiKeys=true 时文件权限被 chmod（0o600 推断，exact mode unknown）",
+      "keychain::write_key_file 在 includeApiKeys=true 且 key lookup 成功时产生 key cache 文件",
+      "includeApiKeys=false 时无 keychain 访问，无 set_permissions"
+    ],
+    "test_mapping": [
+      {
+        "type": "unit",
+        "target": "relay::io::export_to_file (mocked atomic_write + mocked keychain)",
+        "reason": "atomic_write 和 keychain 可 mock，验证 exportedBy 版本字符串 + serde DTO 序列化",
+        "coverage": [
+          "exportedBy=AiMaMi 1.1.1",
+          "includeApiKeys=false path（无 keychain）",
+          "providers sub-DTO ide+baseUrl 字段存在"
+        ]
+      },
+      {
+        "type": "e2e",
+        "target": "export_relay_config IPC → 真实文件系统（不含 Keychain）",
+        "reason": "验证 atomic_write 临时文件机制 + rename + fdatasync 完整链，包含 provider 数据真实序列化",
+        "coverage": [
+          "atomic rename 完整流程",
+          "响应 provider_count 确认",
+          "文件 JSON 结构 top-level keys"
+        ]
+      },
+      {
+        "type": "explicit_non_automatable_accept",
+        "target": "macOS Keychain Services get + write_key_file",
+        "reason": "macOS Keychain 需要 entitlements + 用户授权，不可在 CI 自动化",
+        "note": "producer-acceptance-draft：手动验证 includeApiKeys=true 时 export JSON 中 apiKey 字段非空"
+      }
+    ],
+    "dim6_basis": "evidence.md Delta 1-5 节（keychain VA 0x1006c86a0, atomic_write VA 0x10041e960, set_permissions, exportedBy 字符串 0x100547617）; Side-Effects Summary 表（8 条 side-effect）; IPC Contract 节（argKeys + ExportResult 字段）",
+    "blocked_dims": [
+      "dim5 win=Unknown（per-platform gate 不阻塞 mac RTI）"
+    ],
+    "promotion_note": "dim4 accepted: U1 (apiKey conditionality) + U2 (providerCount key name) both byte-confirmed this session. dim5 mac confirmed. Win=Unknown per per-platform gate rule — does not block mac RTI. readyToImplement=true.",
+    "note_on_missing_artifacts": "该命令缺少 gate-report.json、interfaces/、manifest.json——本 pass 首次创建 gate-report.json；原 evidence 已标注 Gate status: PASS (integrity_recovered)，dim2-3 从 evidence.md 推断"
+  },
+  "unknowns": [
+    {
+      "id": "U1",
+      "category": "resolved",
+      "description": "RESOLVED 2026-06-19 session wf-aimami111-dim6-100-20260619: RelayExportProvider apiKey field confirmed from Serialize impl at 0x100548c30. apiKey included when includeApiKeys=true AND key non-empty (conditional serialize_entry). Full provider serde fields confirmed: id, ide, name, baseUrl, apiKey[conditional], model, extraHeaders."
+    },
+    {
+      "id": "U2",
+      "category": "resolved",
+      "description": "RESOLVED 2026-06-19 session wf-aimami111-dim6-100-20260619: Response DTO is RelayExportSummary (not ExportResult). Serialize impl at 0x10054888a byte-confirmed 3 JSON fields: filePath, providerCount (camelCase, not provider_count), includeApiKeys."
+    },
+    {
+      "id": "U3",
+      "category": "accepted_unknown",
+      "description": "set_permissions 设置的 exact mode（推断 0o600）"
+    },
+    {
+      "id": "U4",
+      "category": "accepted_unknown",
+      "description": "Windows behavior"
+    },
+    {
+      "id": "U5",
+      "category": "resolved",
+      "description": "dim6 填写于本 pass"
+    }
+  ],
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "7_taxonomy_all_excluded": true,
+    "evidence": "evidence.md Noise-Filtered Items 和 Gate status PASS 节；depth 3 callees 全部 decompile 成功"
+  },
+  "four_angle_completeness": {
+    "A_func_query": "PASS — IPC registration xref 0x100316160",
+    "B_string_pool": "PASS — exportedBy AiMaMi 1.1.1 at 0x100547617; export_relay_config in IPC blob",
+    "C_frontend_ipc": "PASS — argKeys=[filePath,includeApiKeys] from evidence IPC Contract",
+    "D_owner_map_index": "PASS — integrity_recovered delta class"
+  },
+  "gate_tier": "readyToImplement",
+  "consolidated_by": "wf-aimami111-gate-consolidate-20260620",
+  "consolidated_at": "2026-06-20",
+  "consolidated_gate_tier": "readyToImplement",
+  "consolidated_dim1_5_status": "all closed (dim4 closed: RelayExportSummary 3 fields @0x10054888a + RelayExportProvider with conditional apiKey @0x100548c30; dim5_mac confirmed; dim5_win accepted_unknown)",
+  "consolidated_accepted_unknowns": "dim5_win",
+  "consolidated_note": "close-1 closed dim4 U1+U2",
+  "per_platform_rule": "mac gate: dim5_win_Unknown does not block mac readyToImplement; mac dim1-5 all closed + dim6 acceptance written = readyToImplement"
+}

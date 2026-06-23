@@ -1,0 +1,23 @@
+{
+  "key": "aimami/1.1.1/windows-x64/system/get_hotspot_enabled",
+  "session": "wf-aimami111-delta-20260616",
+  "produced_by": "<本地机器>",
+  "sha256_binary": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "gate": "pass",
+  "status": "strictImplementationUse_candidate",
+  "module": "system",
+  "command": "get_hotspot_enabled",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "binary_format": "pe",
+  "pe_machine": "x64",
+  "owner_va": "0x140021570",
+  "produced_at": "2026-06-17",
+  "idb_path": "<本地路径>",
+  "idb_save": "ok",
+  "delta_status": "diff_reversed",
+  "baseline_version": "1.0.9",
+  "baseline_owner_va": "0x140285050",
+  "notes": "VA drift from 1.0.9 baseline; same behavioral semantics. namespace=repo. mutex pattern: _InterlockedCompareExchange8 + WakeByAddressSingle (same as 1.0.9). key=hotspot confirmed at 0x1412B6E51."
+}

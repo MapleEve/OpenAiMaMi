@@ -1,0 +1,21 @@
+{
+  "command": "rebuild_registry",
+  "module": "codexmate_lib::commands::system",
+  "version": "1.1.1",
+  "arch": "macos-arm64",
+  "session": "wf-aimami111-delta-20260618-mac100",
+  "machine": "<本地机器>",
+  "leaf_status": "full_gold_leaf",
+  "owner_va": "0x1006182c0",
+  "core_impl_va": "0x1004c40a0",
+  "delta_vs_109": "new_command",
+  "call_tree_edges": 31,
+  "call_tree_max_depth": 5,
+  "pseudocode_files": [
+    "ida/pseudocode/commands_system_rebuild_registry.c",
+    "ida/pseudocode/core_repository_rebuild_registry.c"
+  ],
+  "call_tree_file": "call-trees/rebuild_registry.jsonl",
+  "interfaces_file": "interfaces/dto.md",
+  "evidence_file": "evidence.md"
+}

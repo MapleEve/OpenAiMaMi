@@ -1,0 +1,68 @@
+{
+  "command": "set_relay_display_tags",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "ipc-contracts.jsonl L118: cmd=set_relay_display_tags argKeys=['global','woyao'] callee=vt kind=tauriInvokeWrapper",
+    "frontend-control-flow.jsonl L156: terminal_call.command=set_relay_display_tags kind=tauriInvoke argKeys=['global','woyao']; trigger=index-DdcCOEJG.js L306; handler_chain=[mutationFn,setRelayDisplayTags]",
+    "dim1 NOTE: backend also parses 'manager' param (7-byte, sub_14006F4B0 extractor). Frontend sends {global,woyao} only — no manager. Integration gap similar to set_mcp_server_enabled/repo. dim1 confirmed_with_gap: frontend invoke confirmed.",
+    "pseudocode.md 8077B ≥600B",
+    "call-tree.md: depth=6, terminated WIN OS syscall leaves (GetCurrentProcessId/CloseHandle/CAS/WakeByAddressSingle/IPC resolver). genuine_ceiling=false, all fake wall taxonomy cleared.",
+    "interface.md: input={manager:String(backend-only gap),global:Option<String>,woyao:Option<String>}, output='ok' (2-byte), side_effects=[in-memory displayTagGlobal/Woyao update (stride=232B), relay.json atomic write, conditional post_login_state_sync (global=Some), WIN lock]",
+    "gate-report.json wf-aimami111-delta-20260616: all dim1-5 PASS (dim1 was accepted_unknown for wrapper name, now closed via CCF confirmation); dim4_side_effects PASS; dim6_acceptance=acceptance_draft; idb_save=ok",
+    "dim5: _InterlockedCompareExchange8+WakeByAddressSingle@0x14124A5D0+GetCurrentProcessId confirmed WIN-only",
+    "dim6_acceptance: acceptance_draft with full happy_path+boundary_error+side_effect_asserts"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "session": "wf-aimami111-delta-20260616",
+  "owner_va": "0x14001F080",
+  "owner_name": "set_relay_display_tags_owner_sys",
+  "owner_size_bytes": 1518,
+  "ipc_command_va": "0x1412ac5c5",
+  "dim1_detail": {
+    "ipc_contracts_line": 118,
+    "ccf_line": 156,
+    "argKeys": ["global", "woyao"],
+    "wrapper": "tauriInvokeWrapper",
+    "callee": "vt",
+    "trigger_file": "assets/index-DdcCOEJG.js L306",
+    "handler_chain": ["mutationFn", "setRelayDisplayTags"],
+    "gap": "backend also parses 'manager' param (7B, required); frontend sends {global,woyao} only; confirmed_with_gap"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 8077,
+    "threshold": 600
+  },
+  "dim3_detail": {
+    "depth_reached": 6,
+    "terminated_reason": "WIN OS syscall leaves (GetCurrentProcessId/CloseHandle/CAS/WakeByAddressSingle/heap/IPC resolver)",
+    "key_callees": ["set_relay_display_tags_core_dispatch_sys@0x14021B780", "set_relay_display_tags_write_and_sync_sys@0x1406D71D0", "relay_providers_config_write_and_persist_sys@0x1406E6960", "relay_post_login_state_sync_sys@0x1406E1750 (conditional)", "sub_140504310 (atomic_write)"],
+    "fake_wall_taxonomy": "all 7 categories cleared; genuine_ceiling=false"
+  },
+  "dim4_detail": {
+    "input_fields": {"manager": "String (backend-only gap)", "global": "Option<String>", "woyao": "Option<String>"},
+    "output": "'ok' (2-byte string, set_codex_api_slots_ok_response_build_sys@0x140216BA0)",
+    "relay_config_json_fields": ["schemaVersion", "providers", "activeByIde", "proxy", "codexRouterEnabled", "codexApiLogin", "codexApiSlots", "displayTagGlobal", "displayTagWoyao"],
+    "side_effects": ["RelayProvider in-memory: displayTagGlobal+displayTagWoyao updated (stride=232B)", "relay.json full atomic rewrite (relay_providers_config_write_and_persist_sys)", "relay_post_login_state_sync_sys triggered when global=Some", "WIN lock: _InterlockedCompareExchange8(lock_byte+16)+WakeByAddressSingle"],
+    "error_paths": ["manager parse fail->IPC error (no write)", "global parse fail (tag not 6/3)->IPC error", "woyao parse fail->IPC error", "relay mutex poison->panic 'relay state poisoned'@0x1412ea5ed", "persist fail->error return", "post-login sync fail (if global=Some)->error"]
+  },
+  "dim5_detail": {
+    "win_primitives": ["_InterlockedCompareExchange8", "WakeByAddressSingle@0x14124A5D0", "GetCurrentProcessId", "CloseHandle"],
+    "same_platform": true,
+    "mac_diff": "mac uses pthread_mutex/std::sync::Mutex and POSIX std::fs::write; stride=232B same"
+  },
+  "dim6_detail": {
+    "basis": "acceptance_draft from gate-report.json wf-aimami111-delta-20260616; full happy_path+boundary_error+side_effect_asserts+test_mapping; gate_upgrade=blocked_on_dim1 (now resolved via CCF)",
+    "note": "dim6=acceptance_draft treated as closed per pipeline rule"
+  },
+  "idb_path": "<本地路径>"
+}

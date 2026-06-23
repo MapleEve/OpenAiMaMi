@@ -1,0 +1,33 @@
+{
+  "command": "upsert_relay_provider",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "commands_relay/upsert_relay_provider/evidence.md (6220B, delta_class=integrity_recovered, session=wf-aimami111-delta-20260617-sweep)",
+    "commands_relay/upsert_relay_provider/interfaces/dto.md (3192B)",
+    "commands_relay/upsert_relay_provider/call-trees/call_tree.txt (38 lines, depth 5+ explicit in tree)",
+    "commands_relay/upsert_relay_provider/evidence/ (subdir with additional evidence)",
+    "frontend/ipc-contracts.jsonl#L102: argKeys=[input] argObject={input:t} wrapper=upsert callee=vt col=119470",
+    "frontend/frontend-control-flow.jsonl#L122: terminal_call=upsert_relay_provider col=119479",
+    "frontend/frontend-control-flow.jsonl#L149: callsite=mutationFn->Zt.upsert col=36632",
+    "windows-x64/commands/upsert_relay_provider/gate-report.json: gate_tier=readyToImplement (dim5_win closed)",
+    "owner_va=0x1005eae30 (483B) core_va=0x1005dd220 registered at 0x100311780",
+    "DELTA1=write_key_file(0x1006c9950) mode=0600 keys/<provider_id>",
+    "DELTA2=uuid::new_v4(0x100e13930)+str::replace hyphens on INSERT path",
+    "DELTA3=refresh_tray_menu(0x1006277c0) after RelayManager::upsert Ok",
+    "DELTA4=sync_codex_config(0x1005daea0) resolve_api_slots+write_catalog/remove_catalog+apply_codex_state",
+    "DELTA5=compose_proxy_status(0x1005d5450) overlay in persist path",
+    "RelayProvider_stride=232B api_key_stored_offset=BYTE4([28])",
+    "ACCEPTANCE in evidence.md L96-L129 session=wf-aimami111-dim6-20260619"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

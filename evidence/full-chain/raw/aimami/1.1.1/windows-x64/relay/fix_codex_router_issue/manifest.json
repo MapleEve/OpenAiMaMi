@@ -1,0 +1,310 @@
+{
+  "schema": "c5cm.raw.bundle.manifest.v1",
+  "produced_at": "2026-06-17T00:00:00Z",
+  "producer": "claude-sonnet-4-6",
+  "machine": "<本地机器>",
+  "session": "wf-aimami111-delta-20260616",
+  "key": "aimami/1.1.1/windows-x64/relay/fix_codex_router_issue",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "binary_format": "pe",
+  "pe_machine": "x86_64",
+  "module": "relay",
+  "command": "fix_codex_router_issue",
+  "command_index": "5/22 (win delta)",
+  "leaf": "command_backend_owner_body_itemid_dispatch_new_process_lifecycle",
+  "kind": "clean_raw_command_leaf_backend_owner_body_helper_pseudocode",
+  "status": "strictImplementationUse_candidate",
+  "bundle_path": "raw/aimami/1.1.1/windows-x64/relay/fix_codex_router_issue",
+  "source_binary": "AiMaMi 1.1.1 win64.exe",
+  "source_binary_sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "idb": "<本地路径>",
+  "idb_save": "ok (path=<本地路径>",
+  "tool": "ida-pro-mcp-win + HexRays",
+  "owner_gate": "ADDITIVE",
+  "owner_collision": "none",
+  "delta_vs_baseline": "1.0.9",
+  "migration_status": "diff_reversed",
+  "targets": [
+    {
+      "address": "0x1400246b0",
+      "label": "fix_codex_router_issue_owner_sys",
+      "size": "0x4c1",
+      "role": "command_owner",
+      "file": "ida/pseudocode/0001_fix_codex_router_issue_owner_sys.c",
+      "status": "decompiled",
+      "rename_done": true,
+      "comment_done": true
+    },
+    {
+      "address": "0x14021aca0",
+      "label": "fix_codex_router_issue_core_dispatch_sys",
+      "size": "0x6c4",
+      "role": "fix_issue_core_dispatch",
+      "file": "ida/pseudocode/0002_fix_codex_router_issue_core_dispatch_sys.c",
+      "status": "decompiled",
+      "rename_done": true,
+      "comment_done": true,
+      "note": "itemId=all → fix_all_sections_sys; else → fix_single_section_sys; is_running + quit+launch lifecycle"
+    },
+    {
+      "address": "0x14076a490",
+      "label": "fix_all_sections_sys",
+      "size": "0x24dc",
+      "role": "fix_all_dispatch",
+      "file": null,
+      "status": "callees_confirmed + rename_done + comment_done",
+      "rename_done": true,
+      "comment_done": true
+    },
+    {
+      "address": "0x14076e220",
+      "label": "fix_single_section_sys",
+      "size": "0x5266",
+      "role": "fix_single_dispatch",
+      "file": null,
+      "status": "callees_confirmed + rename_done + comment_done",
+      "rename_done": true,
+      "comment_done": true
+    },
+    {
+      "address": "0x1407456b0",
+      "label": "fix_all_sections_impl_full_sys",
+      "size": "0xce07",
+      "role": "fix_all_full_impl",
+      "file": null,
+      "status": "callees_confirmed",
+      "note": "auth_integrity inlined (win-only); RegOpenKeyExW + GetDiskFreeSpaceExW as external Win32 leaves; relay_keychain_lookup_for_quota_sys callee"
+    },
+    {
+      "address": "0x14067ca20",
+      "label": "fix_config_stale_text_sys",
+      "size": "0x1d44",
+      "role": "fix_config_stale",
+      "file": null,
+      "status": "xref_confirmed",
+      "note": "refs config_marker_start@0x1412e941c + config_marker_end@0x1412ea00d; mac equivalent 0x1006fef30"
+    },
+    {
+      "address": "0x1406ccc00",
+      "label": "resync_codex_config_sys",
+      "size": "0x24a8",
+      "role": "resync_config",
+      "file": null,
+      "status": "xref_confirmed",
+      "note": "refs config_marker_start/end; mac equivalent 0x1006fe0e0"
+    },
+    {
+      "address": "0x1407a39b0",
+      "label": "quit_codex_poll_wait_sys_111",
+      "size": "0xc6",
+      "role": "process_quit_wait",
+      "file": "ida/pseudocode/0003_quit_codex_poll_wait_sys_111.c",
+      "status": "decompiled_annotated",
+      "note": "poll sub_140504DA0(Codex,5) @50ms; 5000ms total timeout; fallback→quit_codex_fallback_kill_sys_111@0x1407a44d0; NO WakeByAddressSingle (macOS-only signal absent)"
+    },
+    {
+      "address": "0x1407a02e0",
+      "label": "check_update_installability_launch_sys_111",
+      "size": "0x21d2",
+      "role": "launch_codex_app",
+      "file": "ida/pseudocode/0004_check_update_installability_launch_sys_111.c",
+      "status": "decompiled_annotated",
+      "note": "10-path scan: %LOCALAPPDATA%\\Programs\\Codex\\Codex.exe + Codex\\Codex.exe + %PROGRAMFILES% OpenAI* + %PROGRAMFILES(X86)%*; reg query HKCU/HKLM App Paths Codex.exe; where Codex.exe; powershell -NoProfile -WindowStyle Hidden; poll @80ms 5s; err='Codex.exe not found'"
+    },
+    {
+      "address": "0x1412ac59c",
+      "label": "aFixCodexRouter (string)",
+      "role": "ipc_command_string",
+      "file": null,
+      "status": "confirmed"
+    },
+    {
+      "address": "0x14000d2a0",
+      "label": "tauri_ipc_main_dispatcher_sys",
+      "role": "ipc_main_dispatcher",
+      "file": null,
+      "status": "named_caller",
+      "note": "code xref from 0x140011724 → fix_codex_router_issue_owner_sys"
+    }
+  ],
+  "call_tree": "call-trees/fix_codex_router_issue.jsonl",
+  "call_tree_depth": 3,
+  "call_tree_complete": true,
+  "terminal_leaves": [
+    "process_kill_leaf:quit_codex_poll_wait_sys_111 → quit_codex_fallback_kill_sys_111@0x1407a44d0",
+    "process_spawn_leaf:check_update_installability_launch_sys_111 (CreateProcess/ShellExecute via 10-path scan)",
+    "fs_write_leaf:fix_config_stale_text_sys (atomic_write pattern)",
+    "fs_write_leaf:resync_codex_config_sys (write_catalog/apply_codex_state)",
+    "registry_leaf:RegOpenKeyExW (HKCU/HKLM App Paths Codex.exe in launch fn)",
+    "disk_leaf:GetDiskFreeSpaceExW (in fix_all_sections_impl_full_sys)"
+  ],
+  "itemid_dispatch_decoded": true,
+  "known_itemid_keys": [
+    "all", "config_stale", "auth_integrity", "config_third_party", "config_omit_syntax",
+    "db_orphan_providers", "catalog_path_validity", "config_profile_conflict",
+    "thread-router-migrations", "relay-state-cache.json", "residual_manifest",
+    "residual_cache", "current.json"
+  ],
+  "new_in_1_1_1_vs_1_0_9": [
+    "thread-router-migrations", "relay-state-cache.json", "residual_manifest",
+    "residual_cache", "current.json",
+    "quit_codex_poll_wait_sys_111 (renamed from 1.0.9 quit_codex_wait_fallback_kill_sys)",
+    "check_update_installability_launch_sys_111 (was absent in 1.0.9 win; new launch capability)"
+  ],
+  "interface": {
+    "command_name": "fix_codex_router_issue",
+    "argKeys": ["manager", "itemId"],
+    "manager_note": "internal Tauri AppHandle/StateManager injected by IPC layer",
+    "itemId_type": "String",
+    "itemId_known_values": ["all", "config_stale", "auth_integrity", "config_third_party", "config_omit_syntax", "db_orphan_providers", "catalog_path_validity", "config_profile_conflict", "thread-router-migrations", "relay-state-cache.json", "residual_manifest", "residual_cache", "current.json"],
+    "response_ok": "Vec<FixResultItem>",
+    "response_err": "error envelope (discriminant=0x8000000000000000)",
+    "fix_result_item": {
+      "section": "String",
+      "success": "bool",
+      "detail": "String | null"
+    }
+  },
+  "config_marker_start": "# >>> aimami-relay codex-router top start (DO NOT EDIT MANUALLY)",
+  "config_marker_end": "# <<< aimami-relay codex-router top end",
+  "windows_platform_differences_vs_mac": [
+    "launch_codex_app: Win uses 10-path %LOCALAPPDATA%/%PROGRAMFILES% scan + reg query + where + powershell; mac uses open /Applications/Codex.app (~2 paths)",
+    "launch_codex_app poll: Win @80ms for 5s; mac timeout pattern via WakeByAddressSingle absent on win",
+    "quit_codex: Win poll @50ms 5s + fallback kill (SIGTERM-equivalent); mac WakeByAddressSingle condvar absent on win",
+    "fix_auth_integrity: Win inlined into fix_all_sections_impl_full_sys (no standalone VA); mac has dedicated fix_auth_integrity@0x1006fcfb0",
+    "disk check: Win fix_all_sections_impl_full_sys calls GetDiskFreeSpaceExW; mac absent",
+    "registry: RegOpenKeyExW for Codex.exe App Paths lookup (win only)"
+  ],
+  "side_effects": [
+    "CodexPaths resolution (pure)",
+    "RelayManager state snapshot (read-only mutex)",
+    "is_process_running check: sub_140504DA0(Codex,5) (read-only)",
+    "fix_config_stale_text_sys: read_to_string + atomic_write (FS write)",
+    "resync_codex_config_sys: write_catalog + apply_codex_state (FS write)",
+    "fix_all_sections_impl_full_sys: fix_auth_integrity inlined (conditional FS copy/write), RegOpenKeyExW, GetDiskFreeSpaceExW",
+    "Conditional: quit_codex_poll_wait_sys_111 (process kill, poll @50ms 5s, fallback kill) when process was running AND residual_manifest-type result in output",
+    "Conditional: check_update_installability_launch_sys_111 (process spawn 10-path scan, poll @80ms 5s) after quit success"
+  ],
+  "error_paths": [
+    "manager extraction failure → IPC error envelope",
+    "itemId extraction failure → arg error",
+    "Codex quit timeout: 'CODEX_APP_QUIT_TIMEOUT: Codex did not quit in time; please quit Codex manually and try again'",
+    "Codex launch path not found: 'Codex.exe not found' (tag7)",
+    "Config section fix failure → per-item error in FixResultItem.detail",
+    "Unknown itemId → default case (likely no-op result)",
+    "Registry query failure (HKCU/HKLM) → falls through to where/powershell fallback"
+  ],
+  "ipc_command_string_va": "0x1412ac59c",
+  "ipc_main_dispatcher_va": "0x14000d2a0",
+  "rename_done": {
+    "0x1400246b0": "fix_codex_router_issue_owner_sys",
+    "0x14021aca0": "fix_codex_router_issue_core_dispatch_sys",
+    "0x14076a490": "fix_all_sections_sys",
+    "0x14076e220": "fix_single_section_sys"
+  },
+  "comments_set": {
+    "0x1400246b0": "owner comment with argKeys/session",
+    "0x14021aca0": "core_dispatch comment with itemId routing + lifecycle",
+    "0x14076a490": "fix_all comment with string refs",
+    "0x14076e220": "fix_single comment with string refs"
+  },
+  "four_angle_completeness": {
+    "A_func_query": "PASS — owner at 0x1400246b0 (stripped, sub_ prefix); string xref confirms fix_codex_router_issue@0x1412ac59c; unique command string n=1",
+    "B_string_pool": "PASS — fix_codex_router_issue@0x1412ac59c; all 13 itemId strings confirmed in binary (config_stale/auth_integrity/config_third_party/config_omit_syntax/db_orphan_providers/catalog_path_validity/config_profile_conflict/thread-router-migrations/relay-state-cache.json/residual_manifest/residual_cache/current.json); config_marker_start/end@0x1412e941c/0x1412ea00d",
+    "C_frontend_ipc": "PASS (migrated from 1.0.9 CCF; argKeys=[itemId]; win frontend same invoke wrapper)",
+    "D_owner_map_index": "PASS — INDEX grep 0 prior 1.1.1 windows-x64 fix_codex_router_issue entries; ADDITIVE no collision; session=wf-aimami111-delta-20260616"
+  },
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "recovery_attempts": "none_needed",
+    "taxonomy_categories_checked": 7,
+    "result": "no_fake_walls",
+    "note": "stripped PE; owner found via string xref to fix_codex_router_issue; decompile succeeded; no async poll body (synchronous command at owner level); no ICF collapse detected; no vtable dispatch at command level; all 7 taxonomy categories excluded"
+  },
+  "consumerStartReady": true,
+  "strictImplementationUse": true,
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "dims_closed": ["dim2_backend_owner", "dim3_call_tree", "dim4_interface", "dim5_windows"],
+  "dims_open": ["dim1_frontend_ccf_migrated_from_109", "dim6_test_acceptance_mapping"],
+  "dim1_note": "migrated from 1.0.9 CCF: invoke('fix_codex_router_issue', {itemId}); argKeys=[itemId]; win frontend same wrapper pattern",
+  "dim5_windows_note": "CONFIRMED — 逆向分析 win1.1.1 live decompile; PE stripped x86_64; owner@0x1400246b0; all itemId strings confirmed; process lifecycle confirmed",
+  "dim6": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "machine": "<本地机器>",
+    "dim6_basis": "manifest.json interface block (argKeys, itemId_known_values, response_ok, error_paths, side_effects); manifest.json terminal_leaves; new_in_1_1_1 list; 逆向分析 decompile 4 pseudocode files; 13 itemId strings confirmed in binary",
+    "happy_path": {
+      "input": "invoke('fix_codex_router_issue', { itemId: 'all' })",
+      "precondition": "No Codex process running (or itemId does not trigger kill); valid relay config path",
+      "expected_output": "Vec<FixResultItem> — each item: { section: string, success: bool, detail: string|null }",
+      "all_sections_fixed_ok": "FixResultItem for each of: config_stale, auth_integrity, config_third_party, config_omit_syntax, db_orphan_providers, catalog_path_validity, config_profile_conflict, thread-router-migrations, relay-state-cache.json, residual_manifest, residual_cache, current.json; each success:true, detail:null"
+    },
+    "boundary_error": [
+      {
+        "condition": "itemId=thread-router-migrations or residual_* or current.json and Codex.exe still running after 5s quit timeout",
+        "expected": "IPC error: 'CODEX_APP_QUIT_TIMEOUT: Codex did not quit in time; please quit Codex manually and try again'"
+      },
+      {
+        "condition": "itemId=thread-router-migrations etc. and Codex.exe launch path not found after quit",
+        "expected": "IPC error: 'Codex.exe not found' (tag=7); 10-path scan exhausted + reg query + where + powershell all failed"
+      },
+      {
+        "condition": "Registry query failure (HKCU/HKLM App Paths Codex.exe)",
+        "expected": "Fallback to where.exe/powershell path; not a fatal error by itself"
+      },
+      {
+        "condition": "Config section fix failure for specific itemId",
+        "expected": "FixResultItem.success=false; FixResultItem.detail contains error description; other sections unaffected"
+      },
+      {
+        "condition": "Unknown itemId",
+        "expected": "Default case: likely no-op FixResultItem with detail=null (inferred from dispatcher)"
+      },
+      {
+        "condition": "manager arg extraction failure",
+        "expected": "IPC error envelope (arg error)"
+      }
+    ],
+    "side_effect_asserts": [
+      "config_stale/auth_integrity/config_profile_conflict: reads relay config file + atomic write after patch (fix_config_stale_text_sys@0x14067CA20)",
+      "resync_codex_config_sys@0x1406CCC00: write_catalog + apply_codex_state (FS write to relay config)",
+      "fix_all_sections_impl_full_sys@0x1407456B0: fix_auth_integrity inlined (conditional FS copy/write of auth file), RegOpenKeyExW, GetDiskFreeSpaceExW",
+      "Conditional: when itemId triggers residual items — quit_codex_poll_wait_sys_111 kills Codex.exe (poll @50ms/5s + fallback kill); then check_update_installability_launch_sys_111 respawns Codex.exe via 10-path scan (poll @80ms/5s)",
+      "config_marker_start '# >>> aimami-relay codex-router top start (DO NOT EDIT MANUALLY)' must be present in relay config for stale-text fix to succeed"
+    ],
+    "test_mapping": [
+      {
+        "type": "e2e",
+        "scenario": "Prepare relay config with stale router text; call fixCodexRouterIssue({itemId:'config_stale'}); assert response FixResultItem.success=true; assert config_marker_start block replaced correctly",
+        "label": "producer-acceptance-draft"
+      },
+      {
+        "type": "e2e",
+        "scenario": "Call fixCodexRouterIssue({itemId:'thread-router-migrations'}) with Codex running; verify Codex.exe quit triggered; verify re-launch attempted; verify FixResultItem returned",
+        "label": "producer-acceptance-draft"
+      },
+      {
+        "type": "e2e",
+        "scenario": "Call fixCodexRouterIssue({itemId:'all'}); verify Vec<FixResultItem> length matches known section count; all success:true",
+        "label": "producer-acceptance-draft"
+      },
+      {
+        "type": "manual",
+        "scenario": "Windows-only: verify RegOpenKeyExW path used for Codex.exe HKCU/HKLM App Paths lookup during launch; verify 10-path scan covers %LOCALAPPDATA%\\Programs\\Codex and %PROGRAMFILES% OpenAI* patterns",
+        "label": "producer-acceptance-draft"
+      }
+    ],
+    "gate_tier": "acceptance-draft",
+    "blocked_dim": "dim1_migrated_from_109 (not re-verified against 1.1.1 win frontend bundle)",
+    "upgrade_note": "dim1 migrated-only from 1.0.9 CCF; argKeys=[itemId] same; C5 frontier re-verify 1.1.1 win frontend bundle to close dim1 for strictImplementationUse. dim6=acceptance-draft. readyToImplement requires dim1 re-verify + C5 test confirmation."
+  },
+  "no_gate_promotion_to_ready": true,
+  "no_index_shard": true,
+  "no_version_span_path_components": true,
+  "clean_raw_leaf_bundle": true
+}

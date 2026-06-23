@@ -1,0 +1,29 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "model": "claude-sonnet-4-6",
+  "role": "纯生产者",
+  "produced_at": "2026-06-16",
+  "command": "reorder_relay_providers",
+  "platform": "windows-x64",
+  "version": "1.1.1",
+  "authoritative": true,
+  "owner_check": {
+    "index_prior_entry": false,
+    "raw_dir_prior_exists": false,
+    "reverse_status_prior_claim": false,
+    "collision_status": "NO_COLLISION",
+    "takeover_token": null
+  },
+  "idb_writebacks": {
+    "renames_a_level": 4,
+    "comments_b_level": 8,
+    "idb_save": true,
+    "idb_path": "<本地路径>"
+  },
+  "gate": "consumerStartReady",
+  "gate_accepted": false,
+  "index_key": "aimami/1.1.1/windows-x64/reorder_relay_providers/full-chain",
+  "status": "DONE"
+}

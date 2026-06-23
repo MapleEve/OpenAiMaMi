@@ -1,0 +1,47 @@
+{
+  "key": "aimami/1.1.1/windows-x64/test_relay_draft_stream/full-chain",
+  "command": "test_relay_draft_stream",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-16",
+
+  "binary": {
+    "filename": "AiMaMi 1.1.1 win64.exe",
+    "sha256_binary": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+    "binary_format": "pe",
+    "pe_machine": "x64",
+    "imagebase": "0x140000000",
+    "idb": "<本地路径>",
+    "stripped": true
+  },
+
+  "owner": {
+    "va": "0x14094F2E0",
+    "name": "test_relay_draft_stream_owner_sys",
+    "size_bytes": 4621,
+    "type": "async_coroutine",
+    "string_locator_va": "0x1412fa9c8",
+    "string_locator_content": "test_relay_draft_stream"
+  },
+
+  "artifacts": [
+    "owner.md",
+    "pseudocode.md",
+    "interface.md",
+    "call-tree.md",
+    "gate-report.json",
+    "manifest.json",
+    "producer-ledger.json"
+  ],
+
+  "gate": "consumerStartReady",
+  "status": "complete",
+
+  "renames_in_idb": 10,
+  "idb_save": "ok",
+
+  "delta_basis": "aimami/1.0.9/windows-x64 (baseline 100% complete)",
+  "delta_note": "test_relay_draft_stream is new command in 1.1.1 — not present in 1.0.9 baseline. Delta cmd 10/11 win."
+}

@@ -1,0 +1,112 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v2",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "mcp",
+  "command": "set_mcp_server_enabled",
+  "kind": "command",
+  "produced_at": "2026-06-17T00:00:00+08:00",
+  "producer": "claude-sonnet-4-6",
+  "machine": "<本地机器>",
+  "session": "wf-aimami111-delta-20260616",
+  "role": "纯生产者 (SOP steps 0-6)",
+  "delta_count": "31/35 mac delta",
+  "source_binary_path": "<来源位置>/raw/binary/AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi",
+  "source_binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "idb": {
+    "path": "<来源位置>/raw/binary/AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi.i64",
+    "idb_modified": true,
+    "idb_saved": true
+  },
+  "owner": {
+    "addr": "0x10072bb90",
+    "symbol": "codexmate_lib::commands::mcp::set_mcp_server_enabled::ha2f28bcc417a91a5",
+    "size": 1661,
+    "has_type": true,
+    "decompile_ok": true
+  },
+  "core_impl": {
+    "addr": "0x1005a3760",
+    "symbol": "codexmate_lib::core::mcp::set_mcp_server_enabled::h7968daf1798b61a2",
+    "size": 653,
+    "has_type": true,
+    "decompile_ok": true
+  },
+  "ipc_dispatcher": {
+    "addr": "0x100312de0",
+    "symbol": "codexmate_lib::run::{{closure}}::{{closure}}::h7764831ff1bebf82",
+    "sole_xref": true,
+    "decompile_ok": true
+  },
+  "argKeys": ["name", "enabled"],
+  "argKey_evidence": {
+    "name": {"len": 4, "source": "dispatcher v26[2]=namekill...@0x10114a0d8, v26[3]=4"},
+    "enabled": {"len": 7, "source": "dispatcher v26[2]=&0x1011483c3, v26[3]=7; bytes: 65 6e 61 62 6c 65 64"}
+  },
+  "response": "CoreEnvelope<Vec<McpServerSummary>>",
+  "response_ok_discriminant": "0x8000000000000000",
+  "McpServerSummary_stride": 224,
+  "threading_model": "sync mutex (OnceBox + Mutex::lock/unlock); no async/spawn/HTTP",
+  "side_effect": "TOML config.toml durable write via write_atomic(0x10041e960); same FS leaf as remove_mcp_server/reorder_relay_providers",
+  "error_strings": [
+    {"addr": "0x1010b6a09", "len": 22, "text": "MCP server not found: "}
+  ],
+  "call_tree_depth": ">=5",
+  "terminal_leaves": [
+    "memcmp(libc) — name match",
+    "read_to_string(fs) — load_mcp_servers FS READ",
+    "write_atomic(0x10041e960) — save_config_text FS WRITE terminal",
+    "String::clone(alloc)",
+    "McpServerSummary::clone(codexmate_lib)"
+  ],
+  "delta_status": "diff_reversed — 1.0.9 baseline owner 0x10015d360 (macos); 1.1.1 VA drifted to 0x10072bb90; behavioral contract identical (argKeys/threading/side-effect/response unchanged); module=mcp unchanged",
+  "baseline_1_0_9": {
+    "owner_va": "0x10015d360",
+    "INDEX_line": 916,
+    "platform": "macos",
+    "gate": "readyToImplement/full_leaf_100=true"
+  },
+  "idb_comments_appended": [
+    {"addr": "0x10072bb90", "note": "A-level owner"},
+    {"addr": "0x1005a3760", "note": "A-level core impl"},
+    {"addr": "0x100312de0", "note": "A-level IPC dispatcher"}
+  ],
+  "idb_save_ok": true,
+  "anti_fake_wall": {
+    "genuine_ceiling": false,
+    "all_functions_synchronous": true,
+    "no_async_sm_poll_resume": true,
+    "no_icf": true,
+    "no_vtable": true,
+    "http_terminal_na": true,
+    "taxonomy_categories_excluded": 7,
+    "notes": "owner/core/dispatcher all decompile succeeded; no async; no ICF (unique demangled symbols); no vtable dispatch; HTTP-terminal N/A (FS+TOML only); all 7 fake-wall categories excluded"
+  },
+  "gate": {
+    "consumerStartReady": true,
+    "strictImplementationUse": false,
+    "readyToImplement": false,
+    "implementation_use": false,
+    "gate_accepted": false,
+    "full_leaf_100": false,
+    "gate_tier": "strictImplementationUse_candidate",
+    "dim1_frontend_ccf": "Unknown — frontend CCF not re-verified in 1.1.1 this session; 1.0.9 baseline dim1 accepted; cross-platform CCF likely unchanged (same JS bundle pattern observed in other commands)",
+    "dim2_owner_pseudocode": "Accepted — 0x10072bb90 decompile ok, 1661B",
+    "dim3_call_tree": "Accepted — depth>=5; terminal leaves: memcmp+read_to_string+write_atomic",
+    "dim4_interface": "Accepted — argKeys=[name,enabled] confirmed; response CoreEnvelope<Vec<McpServerSummary>>; error MCP server not found",
+    "dim5_mac": "Accepted — same-platform macos-arm64 逆向分析 evidence",
+    "dim5_win": "Unknown — Windows IDB required separately",
+    "dim6_test": "Unknown — C5 implementation side"
+  },
+  "output_files": [
+    "evidence.md",
+    "manifest.json",
+    "ida/pseudocode/0001_set_mcp_server_enabled_owner_ha2f28bcc417a91a5.c",
+    "ida/pseudocode/0002_set_mcp_server_enabled_core_impl_h7968daf1798b61a2.c",
+    "ida/pseudocode/0003_set_mcp_server_enabled_dispatcher_h7764831ff1bebf82.c",
+    "ida/pseudocode-manifest.jsonl",
+    "call-trees/set_mcp_server_enabled.jsonl",
+    "interfaces/interface.md"
+  ]
+}

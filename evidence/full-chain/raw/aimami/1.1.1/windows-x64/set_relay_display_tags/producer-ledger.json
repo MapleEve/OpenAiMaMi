@@ -1,0 +1,40 @@
+{
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "role": "纯生产者 (SOP steps 0-6)",
+  "produced_at": "2026-06-16",
+  "command": "set_relay_display_tags",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "authoritative": true,
+  "owner_check": {
+    "gate": "PREWRITE_PRODUCER_COLLISION_GATE_V1",
+    "index_hit_prior": false,
+    "raw_dir_prior": false,
+    "collision": "none",
+    "write_mode": "ADDITIVE"
+  },
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 22423,
+    "hexrays_ready": true,
+    "module_match": "AiMaMi 1.1.1 win64.exe"
+  },
+  "idb_writebacks": {
+    "renames": [
+      {"va": "0x14001F080", "old": "sub_14001F080", "new": "set_relay_display_tags_owner_sys"},
+      {"va": "0x14021B780", "old": "sub_14021B780", "new": "set_relay_display_tags_core_dispatch_sys"},
+      {"va": "0x1406D71D0", "old": "sub_1406D71D0", "new": "set_relay_display_tags_write_and_sync_sys"}
+    ],
+    "comments": [
+      {"va": "0x14001F080", "grade": "B"},
+      {"va": "0x14021B780", "grade": "B"},
+      {"va": "0x1406D71D0", "grade": "B"},
+      {"va": "0x14073D5C0", "grade": "B"}
+    ],
+    "idb_save": true,
+    "idb_save_path": "<本地路径>"
+  },
+  "gate_result": "consumerStartReady",
+  "index_key": "aimami/1.1.1/windows-x64/set_relay_display_tags/full-chain"
+}

@@ -1,0 +1,17 @@
+{"depth":0,"va":"0x1005e9c30","symbol":"codexmate_lib::commands::relay::delete_relay_provider::h2840286684de365e","type":"command_wrapper","session":"wf-aimami111-delta-20260616"}
+{"depth":1,"va":"0x1005dc530","symbol":"codexmate_lib::core::relay::manager::RelayManager::delete::h9b58a2ee146a5438","type":"core_impl","parent":"0x1005e9c30"}
+{"depth":2,"va":"0x10071dd20","symbol":"codexmate_lib::core::relay::codex_thread_visibility::router_thread_migration_target_model::h0b11b4bb91a172bd","type":"guard","parent":"0x1005dc530","terminated_reason":"reads_manifest_file","leaf":true}
+{"depth":3,"va":"0x100710b50","symbol":"codexmate_lib::core::relay::codex_thread_visibility::read_manifest::h2ac84970b40cd809","type":"fs_read_leaf","parent":"0x10071dd20","leaf":true}
+{"depth":2,"va":"0x1006c9790","symbol":"codexmate_lib::core::relay::keychain::delete_api_key::h6c33b1a28fd29c6d","type":"keychain_fs_leaf","parent":"0x1005dc530"}
+{"depth":3,"va":"0x100f2a550","symbol":"std::sys::fs::remove_file::hd3c2fb9b7e0710ac","type":"fs_leaf","parent":"0x1006c9790","leaf":true}
+{"depth":3,"va":"0x10041f040","symbol":"codexmate_lib::core::relay::keychain::mac_keychain::delete::hd625dead22043b14","type":"keychain_leaf","parent":"0x1006c9790"}
+{"depth":4,"va":"0x1009464b0","symbol":"security_framework::passwords::delete_generic_password_options::hfc33e7a789b5d926","type":"security_framework_leaf","parent":"0x10041f040","leaf":true,"platform":"macOS_only","note":"errSecItemNotFound=-25300 treated as success"}
+{"depth":2,"va":"0x1005dee20","symbol":"codexmate_lib::core::relay::manager::RelayManager::persist::h2d67d7249be86cfa","type":"persistence","parent":"0x1005dc530"}
+{"depth":3,"va":"0x1005e2c60","symbol":"codexmate_lib::core::relay::storage::save::h6a78ba66353d5d3f","type":"file_write","parent":"0x1005dee20"}
+{"depth":4,"va":"0x10041e960","symbol":"codexmate_lib::core::relay::atomic_write::write_atomic::haa4522197089ee4a","type":"fs_write_leaf","parent":"0x1005e2c60","leaf":true,"note":"atomic relay.json write"}
+{"depth":2,"va":"0x1005daea0","symbol":"codexmate_lib::core::relay::manager::RelayManager::sync_codex_config_with_outcome::h01f8eb5872ddada2","type":"config_sync","parent":"0x1005dc530"}
+{"depth":3,"va":"0x1006e8800","symbol":"codexmate_lib::core::relay::codex_catalog::remove_catalog::h3b462ff5682430fa","type":"catalog_leaf","parent":"0x1005daea0","leaf":true}
+{"depth":3,"va":"0x1006e8450","symbol":"codexmate_lib::core::relay::codex_catalog::write_catalog::hf1f34fb9b8a22ad5","type":"catalog_write_leaf","parent":"0x1005daea0","leaf":true,"note":"conditional: only if active api slots"}
+{"depth":3,"va":"0x10075ae20","symbol":"codexmate_lib::core::relay::codex_writer::apply_codex_state::h94748c52c4b8c052","type":"config_toml_write_leaf","parent":"0x1005daea0","leaf":true,"note":"config.toml write"}
+{"depth":1,"va":"0x1006277c0","symbol":"codexmate_lib::commands::tray_menu::refresh_tray_menu::h81bee3bc832aa9ec","type":"tray_ui_leaf","parent":"0x1005e9c30","leaf":true,"note":"Tauri TrayIcon::set_menu id=main"}
+{"depth":1,"va":"0x100555910","symbol":"codexmate_lib::core::models::CoreEnvelope<T>::ok::h2a6ffe9b96ccc661","type":"response_constructor","parent":"0x1005e9c30","leaf":true}

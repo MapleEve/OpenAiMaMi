@@ -1,0 +1,76 @@
+{
+  "command": "reorder_relay_providers",
+  "session": "wf-aimami111-dim6-20260619",
+  "machine": "<本地机器>",
+  "role": "producer",
+  "produced_at": "2026-06-19",
+  "shard": "mac-shard-4",
+  "dim6": {
+    "status": "acceptance-draft",
+    "happy_path": {
+      "input": {
+        "orderedIds": [
+          "provider-b",
+          "provider-a",
+          "provider-c"
+        ]
+      },
+      "expected_response": "CoreEnvelope::ok wrapping reorder_result (RelayState or Vec<RelayProvider>; inner type accepted_unknown); Ok discriminant 0x8000000000000000",
+      "expected_side_effects": [
+        "Relay config file atomically rewritten: RelayState JSON with providers in new order",
+        "Temp file named {pid}-{uuid4}, written \u2192 fdatasync \u2192 rename \u2192 sync_parent_dir",
+        "Codex CLI config updated if persist succeeded AND active relay port is set: write_catalog / apply_codex_state",
+        "In-memory RelayState updated under mutex"
+      ]
+    },
+    "boundary_error": [
+      {
+        "trigger": "RelayState snapshot invalid",
+        "condition": "mutex lock returns poisoned state or snapshot error",
+        "expected_error": "CoreError string ~107B from unk_1011541DD",
+        "expected_response": "CoreEnvelope wrapping CoreError string"
+      },
+      {
+        "trigger": "persist fails (storage::save error)",
+        "condition": "write_atomic fails (disk full, permissions)",
+        "expected_error": "CoreError propagated from storage::save"
+      },
+      {
+        "trigger": "sync_codex_config fails",
+        "condition": "write_catalog / apply_codex_state fails; logged via log::error",
+        "expected_error": "Logged error; return behavior depends on whether sync is fatal",
+        "notes": "sync_codex_config_with_outcome conditional on persist success; may return partial success"
+      }
+    ],
+    "side_effect_asserts": [
+      "Relay config file must have providers in the order matching orderedIds after successful call",
+      "Codex CLI config (apply_codex_state) must reflect new provider order",
+      "Providers not in orderedIds: behavior accepted_unknown (dropped or appended per driftsort filter)"
+    ],
+    "test_mapping": [
+      {
+        "type": "e2e",
+        "description": "Call with valid orderedIds array; verify relay config file has providers in specified order",
+        "reason": "FS side-effect; requires full IPC + config read-back"
+      },
+      {
+        "type": "e2e",
+        "description": "Call with empty orderedIds or single provider; verify no crash and config updated",
+        "reason": "Boundary on sort algorithm (insertion_sort for n<21)"
+      },
+      {
+        "type": "unit",
+        "description": "Unit-test driftsort/insertion_sort ordering logic with Vec<RelayProvider> fixture",
+        "reason": "Pure sort logic testable in isolation"
+      }
+    ],
+    "dim6_basis": "Side effects and error paths from evidence.md confirmed callees: write_atomic (FS terminal), sync_codex_config_with_outcome (Codex CLI write), driftsort/insertion_sort (sort algorithm), RelayManager::persist. Error paths from evidence.md: snapshot invalid 107B string + persist failure + sync_config failure."
+  },
+  "gate_upgrade": {
+    "previous": "strictImplementationUse_candidate",
+    "new": "readyToImplement",
+    "rationale": "dim1+dim2+dim3+dim4+dim5_mac all accepted per evidence.md gate assessment; dim5_win separate INDEX entry confirmed; dim6=acceptance-draft",
+    "implementation_use": "eligible",
+    "notes": "dim6=acceptance-draft; inner response type (RelayState field names) accepted_unknown \u2014 consumer to verify against actual JSON response"
+  }
+}

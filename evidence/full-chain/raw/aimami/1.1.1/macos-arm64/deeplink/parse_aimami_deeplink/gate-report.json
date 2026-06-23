@@ -1,0 +1,26 @@
+{
+  "command": "parse_aimami_deeplink",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:119 wrapper=parseDeeplink argKeys=[url] argObject={url:t} callee=vt col=121133 kind=tauriInvokeWrapper",
+    "frontend/frontend-control-flow.jsonl:141 terminal_call command=parse_aimami_deeplink argKeys=[url]",
+    "frontend/frontend-control-flow.jsonl:142 callsite=Zt.parseDeeplink(S) fn=x guard=startsWith(aimami://) index-DdcCOEJG.js:86",
+    "deeplink/parse_aimami_deeplink/ida/pseudocode/0001_parse_aimami_deeplink_owner_h8d31a2917e010213.c 8608B owner_va=0x1004dade0",
+    "deeplink/parse_aimami_deeplink/ida/pseudocode/0002_ipc_dispatcher_h79d1252cb7f3ff2b.c 2754B",
+    "deeplink/parse_aimami_deeplink/call-trees/parse_aimami_deeplink.jsonl 21 entries depth2: url-parse+host_str+path+query+hashmap+take_required+trim_end_matches+CoreEnvelope::ok",
+    "deeplink/parse_aimami_deeplink/interfaces/parse_aimami_deeplink_interface.md argKeys=[url] DeeplinkResult 5-field pure-parse 6-validation-branches byte-confirmed model-default gpt-5.4 no-side-effects",
+    "deeplink/parse_aimami_deeplink/ACCEPTANCE.md acceptance-draft readyToImplement dim1-5 all closed including dim5_win confirmed per INDEX line 1477",
+    "intermediate/version-delta/mac-same.txt: parse_aimami_deeplink listed (mac-arm64 command confirmed)"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

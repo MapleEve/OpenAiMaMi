@@ -1,0 +1,19 @@
+{"depth":1,"addr":"0x1004dc0b0","name":"codexmate_lib::commands::analytics::load_tool_analytics","module":"commands::analytics"}
+{"depth":2,"addr":"0x100538390","name":"codexmate_lib::core::session_analytics::compute_tool_analytics","caller":"0x1004dc0b0","terminated_reason":null}
+{"depth":2,"addr":"0x100508030","name":"codexmate_lib::platform::paths::CodexPaths::clone","caller":"0x1004dc0b0","terminated_reason":"response_serialize"}
+{"depth":2,"addr":"0x100556520","name":"codexmate_lib::core::models::CoreEnvelope::ok","caller":"0x1004dc0b0","terminated_reason":"response_serialize"}
+{"depth":3,"addr":"0x100536b30","name":"codexmate_lib::core::session_analytics::parse_all_sessions","caller":"0x100538390","terminated_reason":null}
+{"depth":3,"addr":"0x100f656f0","name":"alloc::string::String::clone","caller":"0x100538390","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x1004eee50","name":"core::hash::BuildHasher::hash_one","caller":"0x100538390","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100fbd04c","name":"memcmp","caller":"0x100538390","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100585080","name":"str::is_contained_in","caller":"0x100538390","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100744f60","name":"core::slice::sort::stable::driftsort_main","caller":"0x100538390","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x100f2b980","name":"std::sys::fs::metadata","caller":"0x100536b30","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x10053a3e0","name":"codexmate_lib::core::session_analytics::visit_dir","caller":"0x100536b30","terminated_reason":null}
+{"depth":4,"addr":"0x1002ea3f0","name":"serde_json::de::from_trait","caller":"0x100536b30","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x100f25660","name":"std::fs::OpenOptions::_open","caller":"0x100536b30","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x100f2ba80","name":"std::sys::fs::read_dir","caller":"0x10053a3e0","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x100f26120","name":"std::fs::DirEntry::path","caller":"0x10053a3e0","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x10053a3e0","name":"codexmate_lib::core::session_analytics::visit_dir [recursive]","caller":"0x10053a3e0","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x100f26150","name":"std::fs::DirEntry::metadata","caller":"0x10053a3e0","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x100f26290","name":"std::fs::Metadata::modified","caller":"0x10053a3e0","terminated_reason":"external_call"}

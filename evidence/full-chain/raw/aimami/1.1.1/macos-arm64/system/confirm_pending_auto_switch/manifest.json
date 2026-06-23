@@ -1,0 +1,37 @@
+{
+  "command": "confirm_pending_auto_switch",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "system",
+  "module_path": "codexmate_lib::commands::system",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-16",
+  "key": "aimami/1.1.1/macos-arm64/system/confirm_pending_auto_switch/raw",
+  "produced_by": "wf-aimami111-delta-20260616/<本地机器>",
+  "sha256_binary": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "owner_va": "0x10061ae70",
+  "owner_symbol": "codexmate_lib::commands::system::confirm_pending_auto_switch",
+  "owner_size_bytes": 1237,
+  "repository_va": "0x1004cd9b0",
+  "repository_symbol": "codexmate_lib::core::repository::Repository::confirm_pending_auto_switch",
+  "gate": {
+    "status": "strictImplementationUse",
+    "readyToImplement": false,
+    "consumerStartReady": true,
+    "implementation_use": false,
+    "gate_accepted": false,
+    "notes": "All 5 call-tree depths decompiled. ArgKeys=[] confirmed. Response fields: ok=CoreEnvelope<SwitchPayload>+warning CLIENT_RESTART_RECOMMENDED, err=CoreError(NotFound/IoError). Side effects: read pending-auto-switch.json, read+write registry.json, copy auth files, clear snooze state, broadcast Tauri event. Unknowns: exact SwitchPayload inner JSON field names (serde derive level), pending-auto-switch.json schema field names, clear_auto_switch_snooze implementation. No HTTP, no sidecar, no Codex restart. Gate stays strictImplementationUse pending SwitchPayload field name confirmation."
+  },
+  "evidence_files": [
+    "evidence.md",
+    "manifest.json",
+    "ida/pseudocode/0001_confirm_pending_auto_switch_owner_f34ff8291053.c",
+    "ida/pseudocode/pseudocode-manifest.jsonl",
+    "call-trees/confirm_pending_auto_switch.jsonl",
+    "interfaces/ipc-contract.json"
+  ],
+  "fake_wall_audit": "PASSED — no accepted_unknown, no genuine_ceiling. All unknowns are serde derive field name gaps (not 逆向分析 analysis failures). recovery_attempts=not_needed.",
+  "delta_vs_109": "NEW command in 1.1.1 — not present in 1.0.9 macOS baseline. Windows 1.0.9 had confirm_pending_auto_switch_owner_sys@0x14026ea00 (separate symbol, Windows-only). This is the macOS arm64 canonical owner.",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb"
+}

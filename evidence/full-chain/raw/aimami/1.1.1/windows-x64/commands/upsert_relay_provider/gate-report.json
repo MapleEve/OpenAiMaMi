@@ -1,0 +1,81 @@
+{
+  "command": "upsert_relay_provider",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "ipc-contracts.jsonl L102: cmd=upsert_relay_provider argKeys=['input'] callee=vt kind=tauriInvokeWrapper",
+    "frontend-control-flow.jsonl L149: terminal_call.command=upsert_relay_provider kind=tauriInvoke argKeys=['input']; trigger=index-DdcCOEJG.js L306; handler_chain=[mutationFn,upsert]",
+    "pseudocode.md 23237B ≥600B (real HexRays obtained 2026-06-18)",
+    "call-tree.md: max depth=5 (owner=0, relay_atomic_write_leaf_sys@0x140504310 at depth 5 terminated); all depth-5 leaves have explicit terminated_reason; IDB 1 rename+6 comments+idb_save OK",
+    "interface.md: RelayUpsertInput 10 fields (baseUrl/apiKey/wireApi/brand/models/extraHeaders/providerId/providerName/schemaVersion/routeExpiresAtMs); output=RelayUpsertResponse {schemaVersion,success,code:10=Ok,message,warnings}; enum VAs: RelayWireApi@0x1412bfe06, RelayBrand@0x1412bfc60; delta: tray rebuild chain NEW in 1.1.1",
+    "gate-report.json wf-aimami111-delta-20260618-goldleaf: gate_tier=full_gold_leaf→readyToImplement; all dim1-5 PASS; dim6_acceptance=acceptance_draft; idb saved",
+    "dim5: windows-x64→windows-x64 same platform; no cross-platform DTO delta; CAS spinlock (state+16) + WakeByAddressSingle; relay state lock poison string@0x1412ea5ed",
+    "dim6_acceptance: acceptance_draft; gate_upgrade=readyToImplement; CRITICAL NEW 1.1.1 side effect=tray rebuild chain (5-callee deep, absent in 1.0.9)"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "session": "wf-aimami111-delta-20260618-goldleaf",
+  "owner_va": "0x1400149d0",
+  "owner_name": "upsert_relay_provider_cmd_handler_111",
+  "owner_size_bytes": 1502,
+  "ipc_command_va": "0x1412ac4c0",
+  "dim1_detail": {
+    "ipc_contracts_line": 102,
+    "ccf_line": 149,
+    "argKeys": ["input"],
+    "wrapper": "tauriInvokeWrapper",
+    "callee": "vt",
+    "trigger_file": "assets/index-DdcCOEJG.js L306",
+    "handler_chain": ["mutationFn", "upsert"]
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 23237,
+    "threshold": 600
+  },
+  "dim3_detail": {
+    "depth_reached": 5,
+    "terminated_reason": "all depth-5 leaves have explicit terminated_reason: relay_config_check_parent_dirs_sys@0x1406f2870 (fs dir check), sub_14020A3E0 (JSON pretty-print serde leaf), relay_atomic_write_leaf_sys@0x140504310 (atomic fs write+WIN API leaf)",
+    "new_callees_vs_109": ["relay_post_login_state_sync_sys@0x1406e1750", "relay_post_upsert_tray_refresh_bridge_sys@0x1407989f0", "tray_rebuild_on_relay_state_change_sys@0x1407981a0", "tray_menu_rebuild_active_sys@0x14079bde0", "load_mcp_servers_read_existing_snapshot_111@0x1401bf000", "pending_auto_switch_state_lock_acquire_111@0x14006edc0", "sub_140799E00@0x140799e00"],
+    "key_callees": ["relay_provider_upsert_wrapper_sys@0x14021A880", "relay_provider_upsert_core_sys@0x1406e4500", "relay_providers_config_write_and_persist_sys@0x1406e6960", "import_accounts_keychain_write_sys@0x1402f08b0 (conditional v130)", "relay_atomic_write_leaf_sys@0x140504310 (FS terminal)"]
+  },
+  "dim4_detail": {
+    "input_struct": "RelayUpsertInput",
+    "input_fields": {
+      "baseUrl": "String (field 0)",
+      "apiKey": "Option<String> (field 1)",
+      "wireApi": "RelayWireApi enum@0x1412bfe06 (field 2)",
+      "brand": "RelayBrand enum@0x1412bfc60 (field 3)",
+      "models": "Vec<String> (field 4)",
+      "extraHeaders": "Map<String,String> (field 5)",
+      "providerId": "Option<String> (field 6; None=new,Some=update)",
+      "providerName": "String (field 7; lookup key for update)",
+      "schemaVersion": "u32 (field 8)",
+      "routeExpiresAtMs": "Option<i64> (field 9)"
+    },
+    "output": "RelayUpsertResponse {schemaVersion, success:bool, code:u32 (10=Ok), message:String, warnings:Vec<String>}",
+    "side_effects": [
+      "relay.json atomic write (relay_providers_config_write_and_persist_sys): all 9 fields",
+      "keychain write (import_accounts_keychain_write_sys) CONDITIONAL on v130 keychain_flag",
+      "tray rebuild chain NEW 1.1.1: relay_post_login_state_sync_sys->relay_post_upsert_tray_refresh_bridge_sys->tray_rebuild_on_relay_state_change_sys->[tray_menu_rebuild_active_sys or sub_140799E00 based on relay_state+mcp.tag]",
+      "MCP snapshot read (load_mcp_servers_read_existing_snapshot_111) CONDITIONAL on relay_state==3"
+    ],
+    "error_paths": ["confirm_pending_auto_switch fail->IPC error (no write)", "run_codex_router_diagnostics fail->IPC error", "RelayUpsertInput serde fail->IPC error", "relay.json persist fail->IPC error (json NOT written)", "keychain write fail->error (relay.json already written)", "tray rebuild fail->error after successful persist", "relay state lock poisoned->panic@0x1412ea5ed"]
+  },
+  "dim5_detail": {
+    "win_primitives": ["CAS spinlock (state+16 byte) + WakeByAddressSingle", "relay_atomic_write_leaf_sys (GetCurrentProcessId+tmp rename+CloseHandle)", "relay state lock poison string@0x1412ea5ed"],
+    "same_platform": true
+  },
+  "dim6_detail": {
+    "basis": "acceptance_draft from gate-report.json goldleaf; gate_upgrade=readyToImplement; CRITICAL 1.1.1 delta=tray rebuild chain (5 new callees); keychain_flag (v130) conditional path; Mac config write-back trigger must be verified independently",
+    "note": "dim6=acceptance_draft treated as closed per pipeline rule"
+  },
+  "idb_path": "<本地路径>"
+}

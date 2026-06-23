@@ -1,0 +1,39 @@
+{
+  "command": "rebuild_registry",
+  "module": "commands::system",
+  "binary": "AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi",
+  "platform": "macos-arm64",
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "machine": "<本地机器>",
+  "delta_class": "integrity_recovered",
+  "baseline": "1.0.9",
+  "baseline_has_command": false,
+  "handler_va": "0x1006182c0",
+  "handler_size": "0x2F7",
+  "impl_va": "0x1004c40a0",
+  "impl_size": "0x1507",
+  "callee_depth": 5,
+  "terminated_reason": "all branches terminate at leaf I/O (fs::write, fs::copy) or alloc primitives",
+  "side_effects": [
+    "fs::copy (auth.json -> snapshot_path)",
+    "fs::copy (registry.json -> timestamped_backup)",
+    "std::fs::write (registry.json)",
+    "fs::read_dir (auth directory scan)"
+  ],
+  "new_callees_count": 15,
+  "idb_comments_written": 6,
+  "idb_saved": true,
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "gate_status": "PASS",
+  "readyToImplement": true,
+  "strictImplementationUse": true,
+  "files": [
+    "ida/pseudocode/commands_system_rebuild_registry.pseudo",
+    "ida/pseudocode/core_repository_rebuild_registry.pseudo",
+    "ida/pseudocode/carry_over_registry_state.pseudo",
+    "call-trees/rebuild_registry_calltree.txt",
+    "interfaces/dto.md",
+    "evidence.md",
+    "manifest.json"
+  ]
+}

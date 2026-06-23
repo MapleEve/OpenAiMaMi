@@ -1,0 +1,35 @@
+{
+  "command": "set_codex_router_enabled",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim4": [
+      "payload_win_field_order: 15 fields inferred from mac 1.1.1 parity (size delta 37B/0.5%); win binary stripped no response struct field strings located; recovery_attempts: tried get_bytes on owner dispatcher sub_140963A40 response region - field labels not recoverable from stripped binary; tried string_pool scan for CodexRouterTogglePayload field names - not present (stripped); mac parity accepted as best available evidence",
+      "codex_router_toggle_progress_event_va_win: mac@0x1011542f7 confirmed; win string not found (stripped); recovery_attempts: find_regex('codex-router-toggle-progress') in win binary - 0 hits; orchestration pattern structurally identical to mac; event emission inferred from orchestration context"
+    ]
+  },
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/commands_relay/set_codex_router_enabled/evidence.md",
+    "raw/aimami/1.1.1/windows-x64/commands_relay/set_codex_router_enabled/interfaces/interface.md",
+    "raw/aimami/1.1.1/windows-x64/commands_relay/set_codex_router_enabled/call-trees/set_codex_router_enabled.jsonl",
+    "raw/aimami/1.1.1/windows-x64/commands_relay/set_codex_router_enabled/ida/pseudocode/owner_sub_140963A40.c",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl#L112 command=set_codex_router_enabled argKeys=[enabled,relaunch,apiLogin]",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl#L134,L153",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-consolidated.json#readyToImplement"
+  ],
+  "dim1_evidence": "ipc-contracts.jsonl L112: command=set_codex_router_enabled, argKeys=[enabled,relaunch,apiLogin], argObject={enabled:t,relaunch:e??!0,apiLogin:r??null}, callee=vt, kind=tauriInvokeWrapper, file=assets/index-DdcCOEJG.js:86; CCF L134,L153 confirmed; arg strings enabled@0x1412faa7f, relaunch@0x1412faa86, apiLogin@0x1412faa8e confirmed in dispatcher sub_140963A40",
+  "dim2_evidence": "dispatcher sub_140963A40@0x140963A40 (4974B) full decompile written to ida/pseudocode/owner_sub_140963A40.c; set_codex_router_enabled_blocking_body_win_sys@0x1401C59F0 (2949B) confirmed; set_codex_router_toml_section_write_win_sys@0x14067CA20 (7492B; mac parity 7455B, delta 37B/0.5%); 4x A-level IDB renames; idb_save confirmed; 20 Confirmed items in evidence.md",
+  "dim3_evidence": "call-tree jsonl 30 entries depth=4+; blocking_body->TOML_writer->atomic_write->GetCurrentProcessId/CloseHandle (WIN32-LEAF); orchestration@0x1406DD250->quit_codex_poll_wait_sys_111@0x1407A39B0->taskkill_imagename/fallback_kill/WakeByAddressSingle (WIN32-LEAF); relay_atomic_write_leaf_sys called from 3 independent paths; rollback_router_enabled_win_sys@0x140680220 confirmed; depth≥5 from dispatcher through all paths",
+  "dim4_evidence": "params: enabled(bool via parse_bool_from_ipc_arg_sys@0x1402FF1A0), relaunch(Option<bool> via sub_1402FF330), apiLogin(Option<bool> via sub_1402FF330); TOML markers all 6 confirmed in win binary; response: CoreEnvelope<CodexRouterTogglePayload> (15 fields from mac parity, 2 accepted_unknown on field order+event VA); side-effects: FS_write_codex_config_toml_atomic(3 paths), OS_process_stop_codex(quit_codex_poll_wait_sys_111), OS_process_launch_codex(orchestration), TOML_section_write, thread_migration_write(rollback), RwLock_acquire_relay_state; RwLock PoisonError string confirmed in blocking_body@0x1401C59F0",
+  "dim5_evidence": "WINDOWS-ONLY: WakeByAddressSingle in blocking_body; 'poisoned lock: another task failed inside' in blocking_body@0x1401C59F0; quit_codex_poll_wait_sys_111@0x1407A39B0 WIN poll pattern; set_codex_router_toml_section_write_win_sys WIN-specific TOML writer; relay_atomic_write_leaf_sys(CloseHandle/GetCurrentProcessId) WIN fs primitive; relay_manager_set_codex_router_enabled_orchestration_win_sys@0x1406DD250 WIN orchestration",
+  "dim6_evidence": "acceptance-draft by wf-aimami111-dim6-20260619; promoted to readyToImplement in win-consolidated.json",
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

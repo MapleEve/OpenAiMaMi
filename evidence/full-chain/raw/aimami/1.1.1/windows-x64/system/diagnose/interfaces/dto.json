@@ -1,0 +1,55 @@
+{
+  "command": "diagnose",
+  "platform": "windows-x64",
+  "version": "1.1.1",
+  "session": "wf-aimami111-delta-20260616",
+  "request": {
+    "arg_keys": [],
+    "note": "zero arguments; same as macOS"
+  },
+  "response": {
+    "type": "CoreEnvelope<DiagnoseResult>",
+    "ok_builder_path_A": {
+      "function": "diagnose_ok_response_builder_win (0x140214D00)",
+      "fields": {
+        "+336": "u64 = 2 (ok discriminant)",
+        "+344": "ptr to 2-byte string 'ok' (0x6B6F)",
+        "+352": "u64 = 2 (len 'ok')",
+        "+360": "u64 = 7 (len scheduler tag)",
+        "+368": "ptr to 7-byte scheduler tag",
+        "+376": "u64 = 7",
+        "+384": "u64 = 0",
+        "+392": "u64 = 8",
+        "+400": "u64 = 0",
+        "+408": "i32 = 1",
+        "+412": "u8 = 1"
+      }
+    },
+    "ok_builder_path_B": {
+      "function": "schedule_full_runtime_refresh_builder (0x140213770)",
+      "fields": {
+        "+680": "u64 = 2",
+        "+688": "ptr to 2-byte 'ok'",
+        "+696": "u64 = 2",
+        "+704": "u64 = 7",
+        "+712": "ptr to 7-byte scheduler tag",
+        "+720": "u64 = 7",
+        "+728..+744": "sub_1401B53F0 result copy (16 bytes)",
+        "+752": "i32 = 1",
+        "+756": "u8 = 1"
+      }
+    },
+    "scheduler_tag_magic": {
+      "byte_0_3": "1667462483 (0x63_6F_64_65 = 'edoc' or 'code'?)",
+      "byte_4_6": "1936942435 written at +3 offset, partial overlap: combined 7B tag",
+      "note": "Identical magic constants in both path A and path B builders"
+    },
+    "parity_with_mac": {
+      "return_type_match": true,
+      "arg_keys_match": true,
+      "ok_string_match": "both use 'ok' (0x6B6F) 2-byte string",
+      "scheduler_tag_match": "same 7-byte tag magic in both platforms",
+      "PROGRESSIVE_STATE_SAVE_FAILED": "present in win repository_diagnose_core_win (same as mac)"
+    }
+  }
+}

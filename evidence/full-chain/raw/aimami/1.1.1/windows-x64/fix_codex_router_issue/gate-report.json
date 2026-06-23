@@ -1,0 +1,24 @@
+{
+  "command": "fix_codex_router_issue",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "canonical_leaf": "relay/fix_codex_router_issue/",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "relay/fix_codex_router_issue/gate-report.json — full evidence (canonical leaf)",
+    "frontend/ipc-contracts.jsonl — tauriInvokeRaw argKeys=[itemId] maintenance-page-C2wkSNnk.js:17",
+    "frontend/frontend-control-flow.jsonl — snippet=s(\"fix_codex_router_issue\",{itemId:d})",
+    "relay/fix_codex_router_issue/ida/pseudocode/0001_fix_codex_router_issue_owner_sys.c",
+    "relay/fix_codex_router_issue/ida/pseudocode/0002_fix_codex_router_issue_core_dispatch_sys.c",
+    "relay/fix_codex_router_issue/call-trees/fix_codex_router_issue.jsonl"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

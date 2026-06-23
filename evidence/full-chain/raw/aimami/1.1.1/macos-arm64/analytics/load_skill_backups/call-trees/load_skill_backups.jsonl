@@ -1,0 +1,18 @@
+{"depth":1,"addr":"0x10072ccb0","name":"codexmate_lib::commands::skills::load_skill_backups","module":"commands::skills"}
+{"depth":2,"addr":"0x1005e4c90","name":"codexmate_lib::core::skills::load_skill_backups","caller":"0x10072ccb0","terminated_reason":null}
+{"depth":2,"addr":"0x100554de0","name":"codexmate_lib::core::models::CoreEnvelope::ok","caller":"0x10072ccb0","terminated_reason":"response_serialize"}
+{"depth":2,"addr":"0x100f34cf0","name":"std::time::SystemTime::now","caller":"0x10072ccb0","terminated_reason":"external_call"}
+{"depth":2,"addr":"0x100f34cb0","name":"std::time::SystemTime::duration_since","caller":"0x10072ccb0","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100f2b980","name":"std::sys::fs::metadata","caller":"0x1005e4c90","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100f2ba80","name":"std::sys::fs::read_dir","caller":"0x1005e4c90","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100f33a00","name":"std::path::Path::_join","caller":"0x1005e4c90","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100f25740","name":"std::fs::read_to_string::inner","caller":"0x1005e4c90","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x1002eac60","name":"serde_json::de::from_trait [SkillBackupMetadata]","caller":"0x1005e4c90","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100f45e50","name":"std::path::Display::fmt","caller":"0x1005e4c90","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x1007448c0","name":"core::slice::sort::stable::driftsort_main","caller":"0x1005e4c90","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x10059d980","name":"core::iter::adapters::flatten::FlattenCompat::next","caller":"0x1005e4c90","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x100f26120","name":"std::fs::DirEntry::path","caller":"0x1005e4c90","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x100f33b80","name":"std::path::Path::is_dir","caller":"0x1005e4c90","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x100f4b610","name":"alloc::sync::Arc::drop_slow","caller":"0x10059d980","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x1005f1f30","name":"core::ptr::drop_in_place [Result<SkillBackupMetadata>]","caller":"0x1005e4c90","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x100f79e50","name":"alloc::raw_vec::RawVec::grow_one","caller":"0x1005e4c90","terminated_reason":"external_call"}

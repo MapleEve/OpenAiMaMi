@@ -1,0 +1,10 @@
+{"depth":1,"addr":"0x100619f10","name":"codexmate_lib::commands::system::load_pending_auto_switch","module":"commands::system"}
+{"depth":2,"addr":"0x1004c8200","name":"codexmate_lib::core::repository::Repository::load_pending_auto_switch","caller":"0x100619f10","terminated_reason":null}
+{"depth":3,"addr":"0x100f25740","name":"std::fs::read_to_string::inner","caller":"0x1004c8200","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x1002e9700","name":"serde_json::de::from_trait [PendingAutoSwitch]","caller":"0x1004c8200","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100fbd052","name":"memcpy","caller":"0x1004c8200","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x1004e8640","name":"core::ptr::drop_in_place [std::io::error::Error]","caller":"0x1004c8200","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x100f7c920","name":"std::sys::sync::once_box::OnceBox::initialize","caller":"0x100f25740","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x100f2e7a0","name":"std::sys::pal::unix::sync::mutex::Mutex::lock","caller":"0x100f25740","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x100fbd04c","name":"memcmp","caller":"0x1002e9700","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x100fbce72","name":"close$NOCANCEL","caller":"0x100f25740","terminated_reason":"external_call"}

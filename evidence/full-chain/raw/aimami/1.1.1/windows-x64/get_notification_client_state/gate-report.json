@@ -1,0 +1,80 @@
+{
+  "command": "get_notification_client_state",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "get_notification_client_state/pseudocode.md — gold-leaf owner@0x140122010 (6160B) + 9 poll steps + hotspot_ready_state_discriminant_check_sys_111@0x14038D560",
+    "get_notification_client_state/call-tree.md — depth=7 (dispatcher→async_exec→poll_step→owner→9poll_steps→discriminant_check→focus_dispatch)",
+    "get_notification_client_state/owner.md",
+    "get_notification_client_state/interface.md — 5-field DTO, poll discriminants 18/3/38",
+    "frontend/ipc-contracts.jsonl — tauriInvokeWrapper wrapper=getNotificationClientState argKeys=[] index-DdcCOEJG.js:86",
+    "frontend/frontend-control-flow.jsonl — wrapper callsite Ge.getNotificationClientState() fn=f preflight guard"
+  ],
+  "dim1_detail": {
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "kind": "tauriInvokeWrapper",
+    "argKeys": [],
+    "wrapper": "getNotificationClientState",
+    "snippet": "ne(\"get_notification_client_state\")",
+    "guard": "if(!l.current||!c.current){const y=await Ge.getNotificationClientState()...}"
+  },
+  "dim2_detail": {
+    "owner_va": "0x140122010",
+    "owner_name": "get_notification_client_state_async_poll_sys_111",
+    "size_bytes": 6160,
+    "dispatcher_string_va": "0x1412AC3CE",
+    "dispatcher_block": "0x14000D47E",
+    "pseudocode_bytes": 13509,
+    "note": "gold-leaf; command wholly absent in 1.0.9"
+  },
+  "dim3_detail": {
+    "depth": 7,
+    "poll_steps": 9,
+    "terminated_reasons": ["platform_primitive", "async_vtable_leaf", "process_spawn_leaf", "tauri_event_leaf"],
+    "key_path": "dispatcher→sub_140068DC0→notification_client_state_executor_wrapper@0x1400354B0→async_executor@0x140058620→poll_step@0x1403473E0→owner@0x140122010→hotspot_ready_state_discriminant_check_sys_111@0x14038D560→focus_main_window_dispatch@0x14038E240"
+  },
+  "dim4_detail": {
+    "request": {},
+    "response": {
+      "type": "NotificationClientStatePayload",
+      "fields": ["hotspot:bool", "usageRefreshInterval:u64", "deviceId:string|null", "remoteDeviceSecret:string|null", "notificationsSince:string|null"],
+      "serializer_va": "0x1401A1D90",
+      "json_field_order": ["hotspot", "usageRefreshInterval", "deviceId", "remoteDeviceSecret", "notificationsSince"]
+    },
+    "error_paths": [
+      "Hotspot discriminant returns 3 (NotReady) on all 8 poll steps → Poll::Pending 0x8000000000000010",
+      "settings file unreadable → all fields null/sentinel (0x8000000000000000); no IPC error",
+      "Mutex poisoned → panic sub_14124BFE0",
+      "Window menu resolution fails → IPC error envelope propagated"
+    ],
+    "side_effects": [
+      "File read: CodexMateSettings JSON (hotspot + mysteryUnlockGrants/Routes optional) via win32_file_read_bytes_111",
+      "File write (conditional): hotspot_config_serialize_5field_json_and_write_sys@0x1401A1D90 on poll completion",
+      "WakeByAddressSingle at 0x1403473E0 on poll Ready",
+      "Window focus dispatch: focus_main_window_dispatch@0x14038E240 on window-ID match",
+      "Tauri menu resolution: sub_14012E940 resolves __tauri_window_menu__+__tauri_help_menu__"
+    ]
+  },
+  "dim5_detail": {
+    "win_primitives": ["WakeByAddressSingle@0x1403473E0", "win32_file_read_bytes_111@0x141093260", "_InterlockedCompareExchange8", "_InterlockedDecrement64", "_InterlockedIncrement64"],
+    "hotspot_discriminants": {"18": "Ready", "3": "NotReady", "38": "in-flight treated as Ready"},
+    "poll_sentinels": {"0x8000000000000025": "Poll::Ready", "0x8000000000000010": "Poll::Pending/NotReady", "0x8000000000000000": "awaiting"}
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "happy_path": "invoke('get_notification_client_state') → 8-step async poll → hotspot ready (disc=18/38) → read settings → serialize 5-field JSON → WakeByAddressSingle → return payload",
+    "test_mapping": "e2e: call getNotificationClientState() with hotspot ready; assert 5-field JSON with correct types; manual: trigger while hotspot not ready → verify eventually resolves after hotspot becomes ready"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

@@ -1,0 +1,73 @@
+{
+  "command": "graceful_restart_for_update",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": [
+      "Net-new command; Windows implementation unknown (win has no 'open' command, likely 'start'/'explorer'); Windows IDB required for win gate; per mac per-platform rule: non-blocking for mac readyToImplement"
+    ]
+  },
+  "evidence_refs": [
+    "system/graceful_restart_for_update/evidence.md — Delta判定, 三角验证, DTO/Interface/Error, Confirmed §1-8, Inferred §1-6",
+    "frontend/frontend-control-flow.jsonl line:120 col:116704 — tauriInvokeRaw k('graceful_restart_for_update') argKeys=[] inside fn=w with check_update_installability guards",
+    "system/graceful_restart_for_update/ida/pseudocode/graceful_restart_for_update.c (8980B)",
+    "system/graceful_restart_for_update/call-trees/graceful_restart_for_update.jsonl — 14 edges",
+    "system/graceful_restart_for_update/call-trees/call-trees.md",
+    "system/graceful_restart_for_update/interfaces/dto.rs",
+    "system/graceful_restart_for_update/interfaces/side-effects.md",
+    "system/graceful_restart_for_update/gate-report.json prior — dim6 acceptance-draft written 2026-06-19"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "dim1_detail": {
+    "source": "frontend-control-flow.jsonl line:120 — minified-static-function fn=w",
+    "col": 116704,
+    "wrapper": "w (update flow function, not SDK wrapper)",
+    "argKeys": [],
+    "terminal_call_command": "graceful_restart_for_update",
+    "callee": "k (dynamic import inside update flow)",
+    "guards": [
+      "if(S) — update-in-progress guard",
+      "check_update_installability().canInstall check — blocks if update not installable"
+    ],
+    "kind": "tauriInvokeRaw (direct dynamic invoke, not tauriInvokeWrapper)"
+  },
+  "dim2_detail": {
+    "owner_va": "0x10061b740",
+    "owner_size": "1347B (0x543)",
+    "basic_blocks": 56,
+    "pseudocode_files": ["graceful_restart_for_update.c (8980B)"],
+    "delta_class": "net-new command (not present in 1.0.9)"
+  },
+  "dim3_detail": {
+    "edges": 14,
+    "max_depth": 4,
+    "terminated_reason": "owner→Command::new+spawn→posix_spawnp+AppHandle::exit→std/libc_leaves"
+  },
+  "dim4_detail": {
+    "argKeys": [],
+    "response": "Result<(),String> — frontend NEVER receives Ok response because process self-exits after successful spawn",
+    "error_paths": "current_exe() Err→CoreEnvelope{ok:false}; Path::parent()×3 None→'cannot resolve app bundle path'; Command::spawn() fail→io::Error",
+    "side_effects": "posix_spawnp('sh -c sleep 1 && open <bundle_root>') + close(stdin/stdout/stderr) + std::process::exit(0) on spawn success; none on error paths",
+    "bundle_path": "current_exe() + parent()×3 → .app root; macOS-specific pattern"
+  },
+  "dim5_detail": {
+    "mac": "PASS — macOS arm64 IDB; posix_spawnp via _posix_spawnp syscall; 56 basic blocks; IDB annotations written; idb_save confirmed",
+    "win": "accepted_unknown — net-new command; Windows binary not analyzed; Windows has no 'open' cmd; per mac per-platform rule: non-blocking"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft written 2026-06-19",
+    "happy_paths": 1,
+    "boundary_errors": 3,
+    "side_effect_asserts": 3,
+    "test_count": 4,
+    "critical_note": "Frontend must handle invoke timeout/rejection since Ok is never delivered on success path (process terminates)"
+  }
+}

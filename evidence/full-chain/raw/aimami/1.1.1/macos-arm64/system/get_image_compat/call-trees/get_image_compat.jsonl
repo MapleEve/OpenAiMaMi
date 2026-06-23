@@ -1,0 +1,12 @@
+{"depth": 0, "va": "0x100617f40", "symbol": "codexmate_lib::commands::system::get_image_compat", "role": "tauri_cmd_owner", "terminated_reason": null}
+{"depth": 1, "va": "0x100558430", "symbol": "codexmate_lib::platform::paths::CodexPaths::resolve_codex_home", "role": "codex_home_resolver", "terminated_reason": "platform_leaf"}
+{"depth": 1, "va": "0x100558e60", "symbol": "codexmate_lib::platform::paths::CodexPaths::from_home", "role": "codexpaths_builder", "terminated_reason": "platform_leaf"}
+{"depth": 1, "va": "0x100f25740", "symbol": "std::fs::read_to_string::inner", "role": "config_file_reader", "terminated_reason": "fs_read_leaf"}
+{"depth": 1, "va": "0x1000014c0", "symbol": "__rust_dealloc", "role": "alloc_cleanup", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x100661d50", "symbol": "<core::str::pattern::CharSearcher as core::str::pattern::Searcher>::next_match", "role": "line_tokenizer_newline", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x10057e620", "symbol": "core::str::<impl str>::trim_matches", "role": "whitespace_trimmer", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x10057eec0", "symbol": "core::str::<impl str>::trim_start_matches", "role": "key_prefix_trimmer", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x100554bb0", "symbol": "codexmate_lib::core::models::CoreEnvelope::ok", "role": "response_wrapper", "terminated_reason": "library_leaf"}
+{"depth": 1, "va": "0x100635b20", "symbol": "core::ptr::drop_in_place<codexmate_lib::platform::paths::CodexPaths>", "role": "codexpaths_drop", "terminated_reason": "drop_in_place_leaf"}
+{"depth": 0, "va": "0x10030f620", "symbol": "codexmate_lib::run::{{closure}}::{{closure}} (IPC dispatch)", "role": "ipc_dispatcher", "terminated_reason": null, "note": "xref caller; calls get_image_compat then tauri::ipc::InvokeResolver::respond"}
+{"depth": 1, "va": "null", "symbol": "tauri::ipc::InvokeResolver::respond", "role": "ipc_responder", "terminated_reason": "tauri_library_leaf"}

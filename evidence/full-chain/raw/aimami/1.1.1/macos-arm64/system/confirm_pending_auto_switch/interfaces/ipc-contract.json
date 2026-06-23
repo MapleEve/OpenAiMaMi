@@ -1,0 +1,117 @@
+{
+  "command": "confirm_pending_auto_switch",
+  "module": "codexmate_lib::commands::system",
+  "platform": "macos-arm64",
+  "version": "1.1.1",
+  "source": "ida_full_chain + frontend_control_flow",
+  "session": "wf-aimami111-delta-20260616",
+  "request": {
+    "args": [],
+    "argKeys": [],
+    "note": "No arguments. Frontend calls ne('confirm_pending_auto_switch') with zero params."
+  },
+  "response": {
+    "type": "Result<CoreEnvelope<SwitchPayload | AppStatusPayload>, CoreError>",
+    "ok_variants": [
+      {
+        "type": "CoreEnvelope<SwitchPayload>",
+        "fields": {
+          "schemaVersion": "int",
+          "success": true,
+          "code": 0,
+          "message": "string (optional)",
+          "warnings": [
+            {
+              "code": "CLIENT_RESTART_RECOMMENDED",
+              "message": "Restart Codex clients for the new auth snapshot to take effect."
+            }
+          ],
+          "data": {
+            "type": "SwitchPayload",
+            "note": "Contains AccountSummary for switched account (make_account_summary_from_item result)",
+            "fields": {
+              "accountKey": "String",
+              "activeAccountKey": "String (new active key)",
+              "updatedAt": "i64 (timestamp)",
+              "authSnapshot": "AuthSnapshot (derived tokens)",
+              "quotaItem": "Option<QuotaItem>"
+            }
+          }
+        }
+      }
+    ],
+    "err_variants": [
+      {
+        "code": 7,
+        "kind": "NotFound",
+        "message": "No pending auto-switch request",
+        "trigger": "no pending-auto-switch.json file or parse failure"
+      },
+      {
+        "code": 7,
+        "kind": "NotFound",
+        "message": "No AiMaMi registry exists yet",
+        "trigger": "registry.json not found"
+      },
+      {
+        "code": 2,
+        "kind": "IoError",
+        "message": "dynamic (formatted path + io error)",
+        "trigger": "fs::copy auth file failure or fs::write registry failure"
+      },
+      {
+        "code": 2,
+        "kind": "OtherError",
+        "message": "ensure_directories failure or persist_registry serialization error",
+        "trigger": "CodexPaths::ensure_directories or serde_json serialization"
+      }
+    ]
+  },
+  "side_effects": {
+    "reads": [
+      "{repo}/pending-auto-switch.json (a2+488..496 path)",
+      "{repo}/registry.json (a2[28..29] path)"
+    ],
+    "writes": [
+      "{repo}/registry.json (updated activeAccountKey + updatedAt + items[n].active=1)",
+      "{repo}/backups/<timestamp> (backup of previous active auth file)"
+    ],
+    "copies": [
+      "target account auth file → active auth file path",
+      "active auth file → timestamped backup"
+    ],
+    "clears": [
+      "auto-switch snooze state (two paths: a2[61..62] and a2[64..65])"
+    ],
+    "emits": [
+      "Tauri runtime-snapshot event (broadcast_runtime_snapshot -> load_full_runtime_snapshot)"
+    ],
+    "http": "NONE",
+    "sidecar": "NONE",
+    "codex_restart": "NONE (sync variant only — restart is in confirm_pending_auto_switch_and_restart_codex)"
+  },
+  "registry_schema_confirmed": {
+    "fields_from_persist_registry_serde_entry": [
+      "schemaVersion",
+      "updatedAt",
+      "activeAccountKey",
+      "items",
+      "autoSwitch (struct field)",
+      "flags (byte field)"
+    ],
+    "serde_key_vas": {
+      "schemaVersion": "0x10114cb15 (13B)",
+      "updatedAt": "0x10114cd0d (9B)",
+      "activeAccountKey": "0x10114cd16 (16B)",
+      "items": "0x10114cd26 (5B)"
+    }
+  },
+  "caller_registration": {
+    "tauri_invoke_fn": "codexmate_lib::run::{{closure}}::{{closure}} @ 0x100314190",
+    "command_string_pool_va": "0x10114801b (composite string)",
+    "frontend_file": "assets/index-DdcCOEJG.js",
+    "frontend_line": 86,
+    "frontend_wrapper": "confirmPendingAutoSwitch",
+    "snippet": "ne(\"confirm_pending_auto_switch\")"
+  }
+}

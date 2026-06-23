@@ -1,0 +1,23 @@
+{"session":"wf-aimami111-win-samedepth-patch-20260619","machine":"<本地机器>","command":"detect_api_proxy_config","platform":"windows-x64","version":"1.1.1","handler_addr":"0x140929b40","handler_name":"sub_140929B40","depth":5,"verdict":"partial","partial_reason":"no_1_0_9_windows_baseline_found"}
+{"depth":1,"addr":"0x140929b40","name":"sub_140929B40","role":"command_owner: IPC command='detect_api_proxy_config' namespace='app'; async state machine (multiple phases)","terminated_reason":null}
+{"depth":2,"addr":"0x140089a50","name":"confirm_pending_auto_switch_deserialize_request_sys","role":"app_scope_rate_check","terminated_reason":null}
+{"depth":2,"addr":"0x140921810","name":"sub_140921810","role":"async_state_machine_wake: cancel/wake mechanism for async op","terminated_reason":null}
+{"depth":3,"addr":"0x140920880","name":"sub_140920880","role":"async_cancel_notify","terminated_reason":null}
+{"depth":4,"addr":"0x140e21e40","name":"sub_140E21E40","role":"notify_sender","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x1405a4490","name":"sub_1405A4490","role":"channel_drop","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14023ff40","name":"sub_14023FF40","role":"async_dispatch: submit detect-proxy task to executor","terminated_reason":null}
+{"depth":3,"addr":"0x140f050e0","name":"sub_140F050E0","role":"tokio_task_submit","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x140871c10","name":"sub_140871C10","role":"proxy_detect_http_client: attempt HTTP connection through proxy to detect config","terminated_reason":null}
+{"depth":3,"addr":"0x140f00f00","name":"sub_140F00F00","role":"http_client_builder: leaf (no callees)","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140f05c20","name":"sub_140F05C20","role":"proxy_url_parse","terminated_reason":null}
+{"depth":4,"addr":"0x141091c50","name":"sub_141091C50","role":"url_parse_tls_layer","terminated_reason":null}
+{"depth":5,"addr":"0x14124adc0","name":"sub_14124ADC0","role":"tls_alloc","terminated_reason":"implementation_leaf"}
+{"depth":5,"addr":"0x141099b40","name":"sub_141099B40","role":"url_scheme_check","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140f03280","name":"sub_140F03280","role":"http_connect_attempt: leaf (no callees)","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14022b780","name":"sub_14022B780","role":"proxy_detect_result_parse: parse HTTP response to extract proxy config","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x140e30410","name":"sub_140E30410","role":"result_serialize","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1410a1df0","name":"sub_1410A1DF0","role":"tokio_oneshot_wait","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14091a6d0","name":"sub_14091A6D0","role":"async_result_extract","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1408f1450","name":"sub_1408F1450","role":"ipc_response_dispatch","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14080c3c0","name":"has_notch_invoke_resolver_respond","role":"tauri_ipc_resolve","terminated_reason":"implementation_leaf"}
+{"compare_1_0_9":{"verdict":"partial","notes":"No 1.0.9 call-tree baseline found for detect_api_proxy_config in windows/ or windows-x64/. Cannot confirm same-depth5 by baseline comparison. 1.1.1 tree reaches depth 5 internally (sub_140929B40→sub_14023FF40→sub_140871C10→sub_140F05C20→sub_141091C50). IPC DTO: namespace='app', no extra args visible. Side-effect: detect proxy config via HTTP probe, return proxy settings. Escalation not warranted — structural pattern matches expected proxy detection. Marked partial pending 1.0.9 windows baseline."}}

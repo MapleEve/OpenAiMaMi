@@ -1,0 +1,23 @@
+{
+  "key": "aimami/1.1.1/windows-x64/system/get_device_id",
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "produced_by": "<本地机器>",
+  "sha256_binary": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "gate": "pass",
+  "status": "strictImplementationUse_candidate",
+  "module": "system",
+  "command": "get_device_id",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "binary_format": "pe",
+  "pe_machine": "x64",
+  "owner_va": "0x1400208C0",
+  "produced_at": "2026-06-17",
+  "idb_path": "<本地路径>",
+  "idb_save": "ok",
+  "delta_class": "integrity_recovered",
+  "baseline_version": "1.0.9",
+  "baseline_owner_va": "0x140279550",
+  "notes": "1.1.1 structural delta confirmed: response type changed from Option<String> (single deviceId) to full HotspotConfig JSON (5 fields: hotspot, usageRefreshInterval, deviceId, remoteDeviceSecret, notificationsSince). Data source changed from auth.json repo/OnceLock to CodexMateSettings file. New optional Settings fields: mysteryUnlockGrants, mysteryUnlockedRoutes (not in response DTO). Side effects: none (read-only). Originally mis-classified as 'same' in prior sweep — integrity_recovered via full decompile."
+}

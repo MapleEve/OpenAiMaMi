@@ -1,0 +1,79 @@
+{
+  "command": "upsert_mcp_server",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "ipc-contracts.jsonl L69: cmd=upsert_mcp_server argKeys=['args','headers','environment'] callee=ne kind=tauriInvokeWrapper (frontend spreads full payload: {...t,args:t.args??[],headers:t.headers??{},environment:t.environment??{}})",
+    "frontend-control-flow.jsonl L176: terminal_call.command=upsert_mcp_server kind=tauriInvoke argKeys=['args','headers','environment']; trigger=mcp-page-CGgOsRmy.js L20; handler_chain=[mutationFn,upsertMcpServer]",
+    "pseudocode.md 23464B ≥600B (195 lines, real 逆向分析 bodies for owner+3 delta callees)",
+    "call-tree.md: depth=5 (counting from owner=0); relay_atomic_write_leaf_sys@0x140504310 depth 4 terminated sys-write-leaf; 28 edges; all branches terminated",
+    "interface.md: full DTO (repo/name/transport/enabled/command/args/url/headers/environment); transport enum (sse→2,http→1,stdio→0); 6 managed TOML markers; CoreEnvelope<McpServerMutationPayload> output; all error paths documented",
+    "gate-report.json wf-aimami111-delta-20260618-goldleaf: gate_tier=readyToImplement; gate_pass=true; dim1-5 all confirmed; dim6_acceptance=acceptance_draft; idb_save_ok=true",
+    "dim5: WakeByAddressSingle@0x14124A5D0+win32_file_read_bytes_111@0x141093260+_InterlockedCompareExchange8 confirmed WIN-only; TOML writer +37 bytes vs mac (7492 vs 7455)",
+    "dim6_acceptance: acceptance_draft; gate_upgrade=readyToImplement; transport enum mapping and managed markers documented"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "session": "wf-aimami111-delta-20260618-goldleaf",
+  "owner_va": "0x140019720",
+  "owner_name": "upsert_mcp_server_owner_sys",
+  "owner_size_bytes": 3388,
+  "ipc_command_va": "0x1412AC11F",
+  "dim1_detail": {
+    "ipc_contracts_line": 69,
+    "ccf_line": 176,
+    "argKeys": ["args", "headers", "environment"],
+    "wrapper": "tauriInvokeWrapper",
+    "callee": "ne",
+    "trigger_file": "assets/mcp-page-CGgOsRmy.js L20",
+    "handler_chain": ["mutationFn", "upsertMcpServer"],
+    "frontend_file": "src/services/api/mcp/mcpApi.tsx L9",
+    "note": "frontend spreads full McpServerUpsertInput payload as {input:{...payload,args:??[],headers:??{},environment:??{}}}"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 23464,
+    "threshold": 600
+  },
+  "dim3_detail": {
+    "depth_reached": 5,
+    "edge_count": 28,
+    "terminated_reason": "relay_atomic_write_leaf_sys@0x140504310 sys-write-leaf; skill_store_get_all_111@0x14106D960 thunk-8B; snooze_file_open_111 sys-open; win32_file_read_bytes_111 sys-read; WakeByAddressSingle win32-api",
+    "delta_callees": ["pending_auto_switch_state_lock_acquire_111@0x14006EDC0 (NEW)", "query_installed_skills_with_repo_111@0x141214620 (NEW)", "mcp_config_toml_parse_and_remove_111@0x1406790D0 (NEW in upsert path)"],
+    "modified_callees": ["set_codex_router_enabled_blocking_body_win_sys@0x1401C59F0 (MODIFIED)", "set_codex_router_toml_section_write_win_sys@0x14067CA20 (MODIFIED, +37B vs mac)"]
+  },
+  "dim4_detail": {
+    "input_fields": {
+      "repo": "String (remove_skill_parse_id_param_111@0x1402FED40)",
+      "name": "String",
+      "transport": "String (sse→2/http→1/stdio→0/other→3)",
+      "enabled": "bool (parse_bool_from_ipc_arg_sys@0x1402FF1A0)",
+      "command": "Option<String> (sub_1402FBB30)",
+      "args": "Option<Vec<String>> (sub_140360DA0)",
+      "url": "Option<String>",
+      "headers": "Option<HashMap<String,String>> (sub_1407CB570)",
+      "environment": "Option<HashMap<String,String>>"
+    },
+    "output": "CoreEnvelope<McpServerMutationPayload>; McpConfigPayload: tag@8=0x6B2F, field='enabled\\0'@32, sections@40 (0x100B), disc@328=1, disc@332=1",
+    "managed_markers": ["# >>> aimami-relay codex-router top start (DO NOT EDIT MANUALLY)@0x1412E941C", "# <<< aimami-relay codex-router top end@0x1412EA00D", "# >>> aimami-relay managed start (DO NOT EDIT MANUALLY)@0x1412E9348", "# <<< aimami-relay managed end@0x1412E9FCB", "# >>> aimami-relay managed start (top, DO NOT EDIT MANUALLY)@0x1412E93E0", "# <<< aimami-relay managed end (top)@0x1412E9FE9"],
+    "side_effects": ["pending-auto-switch futex spinlock acquired for write duration", "skill store read (skill_store_get_all_111)", "codex-router TOML [mcp_servers.<name>] section write via relay_atomic_write_leaf_sys (pid+uuid temp then rename)", "mcp_config_toml_parse_and_remove_111 removes existing matching section before upsert"],
+    "error_paths": ["pending_lock non-zero->IPC error (no TOML write)", "skill query Err->IPC error", "any DTO field parse fail->IPC error", "set_codex_router_enabled_blocking_body_win_sys Err->IPC error", "relay_atomic_write_leaf_sys fail->Err propagated+temp cleaned", "transport not in {sse,http,stdio}->fallback=3", "RwLock poison->panic"]
+  },
+  "dim5_detail": {
+    "win_primitives": ["WakeByAddressSingle@0x14124A5D0", "win32_file_read_bytes_111@0x141093260", "_InterlockedCompareExchange8"],
+    "toml_writer_size_delta": "win=7492B vs mac=7455B (+37B, 0.5%)",
+    "same_platform": true
+  },
+  "dim6_detail": {
+    "basis": "acceptance_draft from gate-report.json goldleaf; gate_upgrade=readyToImplement; transport enum (sse→2,http→1,stdio→0) and managed markers fully documented",
+    "note": "dim6=acceptance_draft treated as closed per pipeline rule"
+  },
+  "idb_path": "<本地路径>"
+}

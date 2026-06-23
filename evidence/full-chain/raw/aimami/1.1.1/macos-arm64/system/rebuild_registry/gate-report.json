@@ -1,0 +1,29 @@
+{
+  "command": "rebuild_registry",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": ["dim5_win not judged in mac shard gate; per-platform rule: mac gate only requires mac dim5 closed; rebuild_registry is NET-NEW (not in 1.0.9)"]
+  },
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:8 wrapper=rebuildRegistry argKeys=[] callee=ne col=24497 kind=tauriInvokeWrapper",
+    "frontend/frontend-control-flow.jsonl:21 terminal_call command=rebuild_registry argKeys=[]",
+    "system/rebuild_registry/ida/pseudocode/commands_system_rebuild_registry.pseudo 1466B handler_va=0x1006182c0",
+    "system/rebuild_registry/ida/pseudocode/core_repository_rebuild_registry.pseudo 3107B impl_va=0x1004c40a0 size=0x1507",
+    "system/rebuild_registry/ida/pseudocode/carry_over_registry_state.pseudo 1756B total_pseudocode=6329B",
+    "system/rebuild_registry/call-trees/rebuild_registry_calltree.txt depth5 branches terminated at fs::write/fs::copy/serde/alloc",
+    "system/rebuild_registry/interfaces/dto.md argKeys=[] CoreEnvelope<RegistryFile> RegistryItem stride=360B CoreError codes 2/3/9 4-side-effects",
+    "system/rebuild_registry/evidence.md delta_class=integrity_recovered NET-NEW in 1.1.1; 15 new callees; JWT decode pipeline; registry.json persistence",
+    "system/rebuild_registry/ACCEPTANCE.md acceptance-draft dim1-5 all closed readyToImplement",
+    "intermediate/version-delta/mac-same.txt: rebuild_registry listed (mac-arm64 command confirmed)"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

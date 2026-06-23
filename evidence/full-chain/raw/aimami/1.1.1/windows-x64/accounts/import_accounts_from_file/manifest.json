@@ -1,0 +1,228 @@
+{
+  "schema": "c5cm.reverse.raw.leaf.v1",
+  "command": "import_accounts_from_file",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "module": "accounts",
+  "binary_format": "pe",
+  "pe_machine": "x86_64",
+  "binary_name": "AiMaMi 1.1.1 win64.exe",
+  "idb_path": "<本地路径>",
+  "session": "wf-aimami111-delta-20260616",
+  "produced_by": "<本地机器>",
+  "produced_at": "2026-06-17T00:00:00Z",
+  "gate_tier": "strictImplementationUse_candidate",
+  "gate_notes": "dim1=CCF_migrated_not_reverified; dim2=argkeys_confirmed; dim3=response_dto_confirmed; dim4=errors_confirmed; dim5_win=async_state_machine_confirmed; dim6=not_applicable_producer",
+
+  "owner_va": "0x140961470",
+  "owner_name": "import_accounts_from_file_state_machine_sys",
+  "owner_size_bytes": 6063,
+
+  "command_string": "import_accounts_from_file",
+  "command_string_va": "0x1412faa31",
+
+  "semantic_note": "Despite name, imports RelayExportFile (relay provider config JSON), NOT a CSV accounts file. RelayExportFile has 5 elements; RelayExportProvider has 10 elements.",
+
+  "arg_keys": [
+    {"key": "filePath",          "type": "String",              "parser_va": "0x1402FED40"},
+    {"key": "overwriteExisting", "type": "bool",                "parser_va": "0x1402FF1A0"},
+    {"key": "selectedKeys",      "type": "Option<Vec<String>>", "parser_va": "0x1402FCFB0", "note": "BTreeSet-based lookup via sub_14103A480"}
+  ],
+
+  "response_dto": {
+    "full_serializer_va": "0x14020F630",
+    "full_serializer_name": "import_accounts_result_serializer_full_sys",
+    "simple_serializer_va": "0x1402078D0",
+    "simple_serializer_name": "import_accounts_result_serializer_simple_sys",
+    "fields": [
+      {"field": "importedCount",        "type": "u64",            "va": "0x1412bf099"},
+      {"field": "importedAccountKeys",  "type": "Vec<String>",    "va": "0x1412c0618"},
+      {"field": "skipped",              "type": "u64",            "va": "0x1412bf0a6"},
+      {"field": "registryAccountCount", "type": "u64",            "va": "0x1412c062b"},
+      {"field": "activeAccountKey",     "type": "Option<String>", "va": "0x1412c03ec"}
+    ]
+  },
+
+  "errors": [
+    {"code": "INVALID_FIELD",                    "bytes": 13, "context": "per-account field validation in import_accounts_core_process_sys"},
+    {"code": "DUPLICATE_ID",                     "bytes": 12, "context": "duplicate provider id detection"},
+    {"code": "KEYCHAIN_WRITE",                   "bytes": 14, "context": "keychain write failure in import_accounts_keychain_write_sys"},
+    {"code": "RUNTIME_REFRESH_FAILED_AFTER_IMPORT", "bytes": 35, "context": "post-import relay state refresh failure in state machine"}
+  ],
+
+  "file_constraints": {
+    "max_size_bytes": 10485760,
+    "max_size_check_va": "0x140206FE0",
+    "error_template": "import file too large: {actual} bytes (max {max} bytes); is this really a relay backup?",
+    "error_string_va": "0x1412bef79"
+  },
+
+  "key_vas": {
+    "0x140961470": {"name": "import_accounts_from_file_state_machine_sys",         "rename_level": "A", "role": "async Future state machine, cmd owner"},
+    "0x1406D65D0": {"name": "import_accounts_from_file_relay_config_apply_sys",    "rename_level": "B", "role": "integration orchestrator"},
+    "0x140206FE0": {"name": "import_accounts_read_and_deser_relay_export_file_sys","rename_level": "B", "role": "file read + RelayExportFile deserialization"},
+    "0x140207C20": {"name": "import_accounts_core_process_sys",                    "rename_level": "B", "role": "per-account processing loop, stride=176B"},
+    "0x1402F08B0": {"name": "import_accounts_keychain_write_sys",                  "rename_level": "B", "role": "two-phase keychain write leaf"},
+    "0x14020F630": {"name": "import_accounts_result_serializer_full_sys",          "rename_level": "B", "role": "full response DTO serializer"},
+    "0x1402078D0": {"name": "import_accounts_result_serializer_simple_sys",        "rename_level": "B", "role": "simple result serializer"},
+    "0x1401CEBE0": {"name": "relay_export_provider_array_parser_sys",              "rename_level": "C", "role": "Vec<RelayExportProvider> JSON deserializer"},
+    "0x1402FED40": {"name": null,                                                  "rename_level": "C", "role": "filePath String parser"},
+    "0x1402FF1A0": {"name": null,                                                  "rename_level": "C", "role": "overwriteExisting bool parser"},
+    "0x1402FCFB0": {"name": null,                                                  "rename_level": "C", "role": "selectedKeys Option<Vec<String>> parser"}
+  },
+
+  "source_module_hint": "codexmate_lib::core::relay::io (import_accounts_core_process_sys log strings), codexmate_lib::command::relay (state machine dispatch)",
+
+  "async_pattern": {
+    "discriminant_offset": 4688,
+    "outer_states": [0, 1, 2, 3],
+    "poll_mechanism": "_InterlockedIncrement64 on Arc refcounts"
+  },
+
+  "relay_export_structs": {
+    "RelayExportFile":     {"elements": 5, "string_va": "0x1412acebb"},
+    "RelayExportProvider": {"elements": 10, "string_va": "0x1412ad060", "stride_bytes": 176}
+  },
+
+  "companion_commands": {
+    "import_relay_config": "0x1412ac5ee",
+    "export_relay_config": "0x1412ac5db"
+  },
+
+  "side_effects": [
+    "keychain write per imported account (two-phase)",
+    "relay providers config persisted to fs (relay_providers_config_write_and_persist_sys)",
+    "conditional relay_post_login_state_sync_sys if provider count changed",
+    "event emitted: 'import' + 'runtime-state-updated' via sub_140790230"
+  ],
+
+  "dim6_acceptance_mapping": {
+    "session": "wf-aimami111-dim6-20260619",
+    "machine": "<本地机器>",
+    "dim6_basis": "manifest.json: arg_keys=[filePath, overwriteExisting, selectedKeys] confirmed; response_dto fields (importedCount, importedAccountKeys, skipped, registryAccountCount, activeAccountKey) confirmed; errors (INVALID_FIELD, DUPLICATE_ID, KEYCHAIN_WRITE, RUNTIME_REFRESH_FAILED_AFTER_IMPORT) confirmed; file_constraints.max_size_bytes=10485760; semantic_note: imports RelayExportFile not CSV accounts; side_effects confirmed",
+    "blocked_dim_note": "dim1 CCF migrated (not re-verified in 1.1.1 win lane); dim2 body confirmed via async state machine disassembly; dim3 call-tree terminated (leaf_paths); dim4 DTO confirmed; dim5 win-only confirmed. Gate tier = strictImplementationUse_candidate (not gold). dim1 CCF migration gap is the only unverified dim.",
+
+    "happy_path": [
+      {
+        "scenario": "Valid RelayExportFile JSON, overwriteExisting=true, all accounts importable",
+        "input": "invoke('import_accounts_from_file', { filePath: '<path>', overwriteExisting: true, selectedKeys: null })",
+        "precondition": "File <= 10MB; valid RelayExportFile JSON with RelayExportProvider array",
+        "expected_response": "{ success: true, data: { importedCount: N, importedAccountKeys: [...], skipped: 0, registryAccountCount: M, activeAccountKey: '<key>' } }",
+        "side_effects_asserted": [
+          "Keychain write per imported account (two-phase: KEYCHAIN_WRITE sub_1402F08B0)",
+          "relay providers config persisted to filesystem (relay_providers_config_write_and_persist_sys)",
+          "Event emitted: 'import' + 'runtime-state-updated' (sub_140790230 broadcast)",
+          "Tray icon refreshed (event bus emit)"
+        ]
+      },
+      {
+        "scenario": "selectedKeys provided — only selected accounts imported",
+        "input": "invoke('import_accounts_from_file', { filePath: '<path>', overwriteExisting: false, selectedKeys: ['key1', 'key2'] })",
+        "expected_response": "importedCount only counts selected accounts; others in skipped",
+        "side_effects_asserted": ["BTreeSet lookup via sub_14103A480 for selectedKeys filter"]
+      }
+    ],
+
+    "boundary_error": [
+      {
+        "scenario": "File too large (> 10MB)",
+        "trigger": "file_constraints.max_size_check_va 0x140206FE0 check: actual > 10485760",
+        "expected_response": "IPC error: 'import file too large: {actual} bytes (max {max} bytes); is this really a relay backup?'",
+        "error_string_va": "0x1412bef79"
+      },
+      {
+        "scenario": "Invalid field in RelayExportProvider",
+        "trigger": "per-account field validation fails in import_accounts_core_process_sys",
+        "expected_response": "Per-entry INVALID_FIELD error in response",
+        "error_code": "INVALID_FIELD"
+      },
+      {
+        "scenario": "Duplicate provider id in import file",
+        "trigger": "Duplicate detection in import_accounts_core_process_sys",
+        "expected_response": "DUPLICATE_ID error for that entry; other entries continue",
+        "error_code": "DUPLICATE_ID"
+      },
+      {
+        "scenario": "Keychain write failure",
+        "trigger": "import_accounts_keychain_write_sys sub_1402F08B0 fails",
+        "expected_response": "KEYCHAIN_WRITE error for that account",
+        "error_code": "KEYCHAIN_WRITE"
+      },
+      {
+        "scenario": "Post-import relay state refresh failure",
+        "trigger": "state machine post-import relay refresh fails",
+        "expected_response": "RUNTIME_REFRESH_FAILED_AFTER_IMPORT (35 bytes, error string confirmed)",
+        "error_code": "RUNTIME_REFRESH_FAILED_AFTER_IMPORT"
+      },
+      {
+        "scenario": "overwriteExisting=false and account already exists",
+        "trigger": "sub_140872C70 overwrite decision: rdi=0x8000000000000001, writes [rax+0x105A]=1",
+        "expected_response": "Account skipped; skipped count incremented"
+      }
+    ],
+
+    "side_effect_asserts": [
+      {
+        "effect": "Event broadcast",
+        "assertion": "After successful import, 'runtime-state-updated' event received by frontend event listeners; tray icon updates"
+      },
+      {
+        "effect": "Keychain state",
+        "assertion": "Each imported account's credentials accessible via keychain after import"
+      },
+      {
+        "effect": "relay_providers_config persisted",
+        "assertion": "Provider config file on disk updated with imported providers after call"
+      },
+      {
+        "effect": "No HTTP outbound",
+        "assertion": "No network calls (all writes are local fs + keychain)"
+      }
+    ],
+
+    "test_mapping": [
+      {
+        "type": "e2e",
+        "scenario": "happy_path — full relay export file import with keychain write + config persist + event broadcast",
+        "reason": "Requires real keychain, real filesystem, real event bus; not unit-mockable end-to-end"
+      },
+      {
+        "type": "unit",
+        "scenario": "File size gate — file > 10MB rejected with expected error string",
+        "reason": "File read mock with size > 10485760; assert error message format"
+      },
+      {
+        "type": "unit",
+        "scenario": "overwriteExisting=false — existing account skipped",
+        "reason": "Mockable via fake existing account registry + import file"
+      },
+      {
+        "type": "unit",
+        "scenario": "selectedKeys filter — only selected accounts processed",
+        "reason": "BTreeSet lookup mockable; assert importedAccountKeys subset of selectedKeys"
+      },
+      {
+        "type": "manual",
+        "scenario": "Post-import tray icon refresh visible in UI",
+        "reason": "Requires real desktop app window; cannot assert tray state in unit/e2e"
+      }
+    ],
+
+    "gate_upgrade": {
+      "dim1_ccf_note": "CCF migrated from 1.0.9 — not live-reverified in 1.1.1 win lane. Gap does not block acceptance-draft but blocks full readyToImplement upgrade.",
+      "dim1_5_closed_except_dim1_migration": true,
+      "gate_tier_current": "strictImplementationUse_candidate",
+      "gate_tier_upgrade": "acceptance_draft_only",
+      "blocked_dim": "dim1 (CCF migrated, not re-verified in 1.1.1 win binary; frontend CCF not live-confirmed for windows-x64 1.1.1)",
+      "implementation_use": "not_eligible",
+      "note": "dim6=acceptance-draft; dim1 CCF re-verification required before readyToImplement"
+    }
+  },
+
+  "four_angle_completeness": {
+    "A_func_query_symbol_enum": "confirmed: find_regex('import_accounts_from_file') -> unique xref -> 0x140961470",
+    "B_string_pool_xref":       "confirmed: all error strings + struct strings + field name strings verified",
+    "C_frontend_ccf":           "migrated from 1.0.9 (not re-verified in 1.1.1 win lane; shared CCF)",
+    "D_manifest_coverage":      "this manifest"
+  }
+}

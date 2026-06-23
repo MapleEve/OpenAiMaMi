@@ -1,0 +1,25 @@
+{"depth":1,"addr":"0x1004dca30","name":"codexmate_lib::commands::analytics::load_usage_analytics","module":"commands::analytics"}
+{"depth":2,"addr":"0x1004d9010","name":"codexmate_lib::core::analytics::compute_usage_analytics","caller":"0x1004dca30","terminated_reason":null}
+{"depth":2,"addr":"0x100508030","name":"codexmate_lib::platform::paths::CodexPaths::clone","caller":"0x1004dca30","terminated_reason":"response_serialize"}
+{"depth":2,"addr":"0x100557e00","name":"codexmate_lib::core::models::CoreEnvelope::ok","caller":"0x1004dca30","terminated_reason":"response_serialize"}
+{"depth":2,"addr":"0x1005582b0","name":"codexmate_lib::platform::paths::CodexPaths::ensure_directories","caller":"0x1004dca30","terminated_reason":null}
+{"depth":2,"addr":"0x1004d88c0","name":"codexmate_lib::core::bootstrap_cache::load","caller":"0x1004dca30","terminated_reason":null}
+{"depth":2,"addr":"0x100f34cf0","name":"std::time::SystemTime::now","caller":"0x1004dca30","terminated_reason":"external_call"}
+{"depth":2,"addr":"0x1004b5d40","name":"serde_json::ser::to_vec","caller":"0x1004dca30","terminated_reason":"external_call"}
+{"depth":2,"addr":"0x100f25f70","name":"std::fs::write::inner [bootstrap-cache.json]","caller":"0x1004dca30","terminated_reason":"persistence_commit"}
+{"depth":3,"addr":"0x100f2b980","name":"std::sys::fs::metadata","caller":"0x1004d9010","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x1004da540","name":"codexmate_lib::core::analytics::visit_dir","caller":"0x1004d9010","terminated_reason":null}
+{"depth":3,"addr":"0x1004da240","name":"codexmate_lib::core::analytics::timestamp_to_date_string","caller":"0x1004d9010","terminated_reason":null}
+{"depth":3,"addr":"0x1006678f0","name":"hashbrown::map::HashMap::rustc_entry","caller":"0x1004d9010","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100f34cf0","name":"std::time::SystemTime::now","caller":"0x1004d9010","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100f25740","name":"std::fs::read_to_string::inner","caller":"0x1004d88c0","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x1002e8ee0","name":"serde_json::de::from_trait [BootstrapStatePayload]","caller":"0x1004d88c0","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x100f2ba80","name":"std::sys::fs::read_dir","caller":"0x1004da540","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x100f26120","name":"std::fs::DirEntry::path","caller":"0x1004da540","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x100f33b80","name":"std::path::Path::is_dir","caller":"0x1004da540","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x1004da540","name":"codexmate_lib::core::analytics::visit_dir [recursive]","caller":"0x1004da540","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x100f26150","name":"std::fs::DirEntry::metadata","caller":"0x1004da540","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x100f26290","name":"std::fs::Metadata::modified","caller":"0x1004da540","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x100f34cb0","name":"std::time::SystemTime::duration_since","caller":"0x1004da540","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x1004b6010","name":"core::iter::adapters::flatten::FlattenCompat::next","caller":"0x1004da540","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x100f4b610","name":"alloc::sync::Arc::drop_slow","caller":"0x1004da540","terminated_reason":"external_call"}

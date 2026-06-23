@@ -1,0 +1,31 @@
+{"depth":0,"va":"0x1005e8f90","symbol":"codexmate_lib::commands::relay::export_relay_config::h24e4c326ee7bc644","role":"tauri_cmd_wrapper","terminated_reason":null,"session":"wf-aimami111-delta-20260616"}
+{"depth":1,"va":"0x1005e0330","symbol":"codexmate_lib::core::relay::manager::RelayManager::snapshot::h0ea44eefa71d8bf1","role":"relay_state_snapshot","terminated_reason":null,"parent":"0x1005e8f90"}
+{"depth":2,"va":"0x100f7c920","symbol":"std::sys::sync::once_box::OnceBox::initialize","role":"once_box_init","terminated_reason":"std_library_leaf","parent":"0x1005e0330"}
+{"depth":2,"va":"0x100f2e7a0","symbol":"std::sys::pal::unix::sync::mutex::Mutex::lock","role":"mutex_lock","terminated_reason":"std_library_leaf","parent":"0x1005e0330"}
+{"depth":2,"va":"0x100605b90","symbol":"codexmate_lib::core::relay::models::RelayState::clone","role":"state_clone","terminated_reason":"clone_leaf","parent":"0x1005e0330"}
+{"depth":2,"va":"0x100f2e7c0","symbol":"std::sys::pal::unix::sync::mutex::Mutex::unlock","role":"mutex_unlock","terminated_reason":"std_library_leaf","parent":"0x1005e0330"}
+{"depth":1,"va":"0x100547150","symbol":"codexmate_lib::core::relay::io::export_to_file::h3c1b02825c28a7c5","role":"core_export_impl","terminated_reason":null,"parent":"0x1005e8f90"}
+{"depth":2,"va":"0x1006c86a0","symbol":"codexmate_lib::core::relay::keychain::get_api_key::h06ffa0ee9def7259","role":"keychain_read_conditional","terminated_reason":"keychain_leaf","condition":"includeApiKeys=true AND provider.hasKey","parent":"0x100547150"}
+{"depth":2,"va":"0x100954200","symbol":"chrono::offset::utc::Utc::now","role":"timestamp_capture","terminated_reason":"std_library_leaf","parent":"0x100547150"}
+{"depth":2,"va":"0x10067d980","symbol":"serde_core::ser::SerializeMap::serialize_entry (schemaVersion)","role":"serialize_schemaVersion","terminated_reason":"serde_library_leaf","parent":"0x100547150"}
+{"depth":2,"va":"0x100685e30","symbol":"serde_core::ser::SerializeMap::serialize_entry (exportedAt)","role":"serialize_exportedAt","terminated_reason":"serde_library_leaf","parent":"0x100547150"}
+{"depth":2,"va":"0x1006779e0","symbol":"serde_core::ser::SerializeMap::serialize_entry (exportedBy)","role":"serialize_exportedBy_AiMaMi_1.1.1","terminated_reason":"serde_library_leaf","parent":"0x100547150"}
+{"depth":2,"va":"0x100686970","symbol":"serde_core::ser::SerializeMap::serialize_entry (includeApiKeys)","role":"serialize_includeApiKeys","terminated_reason":"serde_library_leaf","parent":"0x100547150"}
+{"depth":2,"va":"0x100594e20","symbol":"serde_json::ser::Compound::serialize_field (providers)","role":"serialize_providers_array","terminated_reason":"serde_library_leaf","parent":"0x100547150"}
+{"depth":2,"va":"0x100595a80","symbol":"serde_json::ser::Compound::end","role":"json_end","terminated_reason":"serde_library_leaf","parent":"0x100547150"}
+{"depth":2,"va":"0x100f33090","symbol":"std::path::Path::to_path_buf","role":"path_normalize","terminated_reason":"std_library_leaf","parent":"0x100547150"}
+{"depth":2,"va":"0x100f343c0","symbol":"std::path::PathBuf::_set_file_name","role":"set_filename_normalized","terminated_reason":"std_library_leaf","note":"trim .js/.aimami-relay, append .aimami-relay.json","parent":"0x100547150"}
+{"depth":2,"va":"0x10041e960","symbol":"codexmate_lib::core::relay::atomic_write::write_atomic::haa4522197089ee4a","role":"fs_atomic_write","terminated_reason":"fs_write_leaf","parent":"0x100547150"}
+{"depth":3,"va":"0x100f33d60","symbol":"std::path::Path::parent","role":"get_parent_dir","terminated_reason":"std_library_leaf","parent":"0x10041e960"}
+{"depth":3,"va":"0x100f24d00","symbol":"std::fs::DirBuilder::_create","role":"create_parent_dir","terminated_reason":"fs_mkdir_leaf","parent":"0x10041e960"}
+{"depth":3,"va":"0x100f35fb0","symbol":"std::process::id","role":"get_pid","terminated_reason":"os_leaf","parent":"0x10041e960"}
+{"depth":3,"va":"0x100e13930","symbol":"uuid::v4::Uuid::new_v4","role":"gen_temp_uuid","terminated_reason":"library_leaf","parent":"0x10041e960"}
+{"depth":3,"va":"0x100f25660","symbol":"std::fs::OpenOptions::_open","role":"open_temp_file","terminated_reason":"fs_open_leaf","parent":"0x10041e960"}
+{"depth":3,"va":"0x100202930","symbol":"std::io::Write::write_all","role":"write_json_bytes","terminated_reason":"fs_write_leaf","parent":"0x10041e960"}
+{"depth":3,"va":"0x100f25b80","symbol":"std::fs::File::sync_data","role":"fsync_data","terminated_reason":"os_leaf","parent":"0x10041e960"}
+{"depth":3,"va":"0x100fbce72","symbol":"close$NOCANCEL","role":"close_temp_fd","terminated_reason":"os_leaf","parent":"0x10041e960"}
+{"depth":3,"va":"0x100f2b560","symbol":"std::sys::fs::rename","role":"atomic_rename","terminated_reason":"fs_rename_leaf","parent":"0x10041e960"}
+{"depth":3,"va":"0x100f2a550","symbol":"std::sys::fs::remove_file","role":"cleanup_on_rename_fail","terminated_reason":"fs_delete_leaf","parent":"0x10041e960"}
+{"depth":3,"va":"0x10041ec70","symbol":"codexmate_lib::core::relay::atomic_write::sync_parent_dir","role":"sync_parent_dir","terminated_reason":"named_leaf","parent":"0x10041e960"}
+{"depth":2,"va":"0x100f2a7d0","symbol":"std::sys::fs::set_permissions","role":"chmod_0o600_if_includeApiKeys","terminated_reason":"fs_chmod_leaf","condition":"includeApiKeys=true","parent":"0x100547150"}
+{"depth":1,"va":"0x1005567c0","symbol":"codexmate_lib::core::models::CoreEnvelope::ok","role":"wrap_ok_response","terminated_reason":"library_leaf","parent":"0x1005e8f90"}

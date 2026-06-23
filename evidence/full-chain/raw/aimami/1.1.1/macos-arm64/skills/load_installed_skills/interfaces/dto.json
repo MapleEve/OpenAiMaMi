@@ -1,0 +1,87 @@
+{
+  "command": "load_installed_skills",
+  "ipc_handler": {
+    "va": "0x10072db50",
+    "module": "codexmate_lib::commands::skills",
+    "signature": "fn load_installed_skills(state: &AppState) -> CoreEnvelope<SkillListPayload>"
+  },
+  "request": {
+    "params": [],
+    "description": "No parameters — reads state.skills_dir_ptr / state.skills_dir_len from AppState"
+  },
+  "response": {
+    "type": "CoreEnvelope<SkillListPayload>",
+    "size_bytes": 144,
+    "success_discriminant": 10,
+    "error_discriminant": "0x8000000000000000"
+  },
+  "dtos": {
+    "SkillListPayload": {
+      "fields": 4,
+      "confirmed_fields": {
+        "skills": "Vec<InstalledSkillSummary>",
+        "base_path": "String",
+        "written_at": "u64",
+        "schema_version_or_extra": "TBD (4th field from 'struct SkillListPayload with 4 elements')"
+      },
+      "source_string_va": "0x10115221a",
+      "note": "struct SkillListPayload with 4 elements"
+    },
+    "InstalledSkillSummary": {
+      "fields": 8,
+      "size_bytes": 184,
+      "confirmed_fields": {
+        "0": {"name": "has_modified", "type": "bool"},
+        "1": {"name": "modified_secs", "type": "u64"},
+        "2-4": {"name": "title", "type": "String (3 words: ptr+len+cap)"},
+        "5-7": {"name": "relative_path", "type": "String"},
+        "8-10": {"name": "directory_path", "type": "String"},
+        "11-13": {"name": "skill_file_path", "type": "String"},
+        "14-16": {"name": "base_dir_str", "type": "String (inferred from Display fmt calls)"},
+        "17": {"name": "field_7_tbd", "type": "TBD (8th field)"}
+      },
+      "stride_evidence": "memcpy((void *)(v17[1] + 184 * v18), v26, 0xB8u) in scan_skills_recursive @ 0x1005e7d11",
+      "source_string_va": "0x10114d603",
+      "note": "struct InstalledSkillSummary with 8 elements"
+    },
+    "BootstrapStatePayload": {
+      "serde_fields": {
+        "0": {"key": "writtenAt", "type": "u64"},
+        "1": {"key": "snapshotProgressive", "type": "bool"},
+        "2": {"key": "usageAnalytics", "type": "UsageAnalytics (nested struct)"},
+        "3": {"key": "mcpServers", "type": "Vec<McpServerSummary>"},
+        "4": {"key": "installedSkills", "type": "Vec<InstalledSkillSummary>", "delta": "NEW IN 1.1.1"}
+      },
+      "internal_layout_offsets": {
+        "107": "SkillListPayload (Option<SkillListPayload>) — installedSkills slot",
+        "87": "Option<u64> None sentinel (usageAnalytics timestamp)",
+        "99": "Option<u64> None sentinel (mcpServers timestamp)"
+      },
+      "default_schema_version": 3,
+      "serde_field_blob_va": "0x10114ce82",
+      "note": "a mapstruct BootstrapCacheFile contains .state: BootstrapStatePayload"
+    },
+    "BootstrapCacheFile": {
+      "description": "top-level JSON envelope",
+      "fields": {"state": "BootstrapStatePayload"},
+      "source_string_va": "0x10114d9d2",
+      "note": "a mapstruct BootstrapCacheFile"
+    }
+  },
+  "errors": {
+    "IoError": {"discriminant": 2, "description": "ensure_directories failed or fs::write failed"},
+    "SerdeError": {"discriminant": 3, "description": "serde_json::to_vec serialization failure"},
+    "PoisonGuardError": {"discriminant": "0x8000000000000000", "description": "Mutex poisoned (GLOBAL_PANIC_COUNT guard), static error string via anon_91b23c3e0afeec67b869976d9683aaed_627 @ 0x10114c2e6, len=41"}
+  },
+  "side_effects": [
+    {
+      "type": "persistence_commit",
+      "file": "bootstrap-cache.json",
+      "path_source": "Repository.paths[58..59]",
+      "path_literal_va": "0x1011514d1",
+      "operation": "read-modify-write",
+      "fields_updated": ["writtenAt", "installedSkills"],
+      "condition": "only on Ok path from core::skills::load_installed_skills"
+    }
+  ]
+}

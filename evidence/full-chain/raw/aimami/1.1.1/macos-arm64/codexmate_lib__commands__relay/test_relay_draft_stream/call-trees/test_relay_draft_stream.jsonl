@@ -1,0 +1,17 @@
+{"depth": 0, "va": "ICF_FOLDED", "symbol": "codexmate_lib::commands::relay::test_relay_draft_stream", "note": "ICF-folded into codexmate_lib::run::{{closure}} at 0x100305aa0; no standalone VA"}
+{"depth": 1, "va": "0x100305aa0", "symbol": "codexmate_lib::run::{{closure}} (Tauri invoke_handler registration)", "note": "registers test_relay_draft_stream string at 0x1011482a6"}
+{"depth": 1, "va": "0x1000b5ad0", "symbol": "codexmate_lib::commands::relay::test_relay_draft_stream::{{closure}}::{{closure}} (IPC response shim)", "size": "0xc3", "note": "calls IpcResponse::body(0x100789fa0), dispatches via vtable+40"}
+{"depth": 1, "va": "0x1000ba490", "symbol": "codexmate_lib::commands::relay::test_relay_draft_stream::{{closure}} drop_in_place", "size": "0x75", "note": "outer async state machine drop; delegates to RelayManager::test_draft_stream::{{closure}} drop at 0x1000bd900"}
+{"depth": 2, "va": "0x1000bd900", "symbol": "codexmate_lib::core::relay::manager::RelayManager::test_draft_stream::{{closure}} drop_in_place", "size": "0x88", "note": "calls health_check::test_provider_staged::{{closure}} drop at 0x1000bc080 (state=3), drops RelayProvider at 0x1000e75f0"}
+{"depth": 3, "va": "0x10009d110", "symbol": "codexmate_lib::core::relay::health_check::test_provider_staged::{{closure}} [ASYNC POLL BODY]", "size": "0xbb0", "basic_blocks": 310, "note": "A-level owner; full streaming state machine"}
+{"depth": 4, "va": "0x100766a30", "symbol": "codexmate_lib::core::relay::health_check::resolve_responses_urls", "note": "resolves {base}/v1/responses and {base}/v1/chat/completions from baseUrl"}
+{"depth": 4, "va": "0x100763dc0", "symbol": "codexmate_lib::core::relay::health_check::responses_payload", "note": "builds Responses API JSON payload with model/input/text/stream fields"}
+{"depth": 4, "va": "0x1007662e0", "symbol": "codexmate_lib::core::relay::health_check::build_openai_headers", "note": "builds HeaderMap for OpenAI-wire providers; sets Authorization, content-type, optional accept/X-Accel-Buffering"}
+{"depth": 5, "va": "0x100765560", "symbol": "codexmate_lib::core::relay::health_check::apply_extra_headers", "note": "merges RelayProvider.extraHeaders into HeaderMap"}
+{"depth": 4, "va": "0x100766ca0", "symbol": "codexmate_lib::core::relay::health_check::build_anthropic_headers", "note": "builds HeaderMap for Anthropic-wire providers; sets x-api-key, anthropic-version, content-type"}
+{"depth": 4, "va": "0x100767d20", "symbol": "codexmate_lib::core::relay::health_check::classify_openai_chat_endpoint", "note": "returns bool: true if endpoint is chat (not embedding). Detects embed/m3e/bge- substrings"}
+{"depth": 4, "va": "0x100764800", "symbol": "codexmate_lib::core::relay::health_check::build_test_request", "note": "builds POST body JSON: model/messages/stream/stream_options/max_tokens"}
+{"depth": 4, "va": "0x100767e10", "symbol": "codexmate_lib::core::relay::health_check::build_url", "note": "normalizes URL: strips trailing slash, deduplicates /v1 suffix"}
+{"depth": 4, "va": "0x101442e70", "symbol": "codexmate_lib::core::relay::health_check::ASYNC_CLIENT [STATIC]", "note": "OnceLock<reqwest::Client>; initialized at 0x100f7735a on first call"}
+{"depth": 4, "va": "0x100fbc820", "symbol": "core::panicking::panic_const_async_fn_resumed", "note": "guard: panics if async fn polled after Ready"}
+{"depth": 4, "va": "0x100fbc840", "symbol": "core::panicking::panic_const_async_fn_resumed_panic", "note": "guard: panics if async fn polled after panic"}

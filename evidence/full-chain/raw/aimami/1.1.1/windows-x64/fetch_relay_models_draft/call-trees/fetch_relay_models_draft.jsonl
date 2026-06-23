@@ -1,0 +1,44 @@
+{"session":"wf-aimami111-win-samedepth-patch-20260619","machine":"<本地机器>","command":"fetch_relay_models_draft","platform":"windows-x64","version":"1.1.1","handler_addr":"0x140925280","handler_name":"sub_140925280","depth":5,"verdict":"confirmed_same_depth5"}
+{"depth":1,"addr":"0x140925280","name":"sub_140925280","role":"command_owner: IPC command='fetch_relay_models_draft' namespace='manager'; large async state machine (0x2e13 bytes)","terminated_reason":null}
+{"depth":2,"addr":"0x14006f4b0","name":"run_codex_router_diagnostics_owner_sys","role":"manager_scope_lock_acquire","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x141214620","name":"query_installed_skills_with_repo_111","role":"repo_state_check","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x140240f10","name":"sub_140240F10","role":"param_extract: input (draft relay config object) from IPC args","terminated_reason":null}
+{"depth":3,"addr":"0x14041b030","name":"sub_14041B030","role":"draft_relay_input_deserialize: parse input object fields","terminated_reason":null}
+{"depth":4,"addr":"0x14088e050","name":"sub_14088E050","role":"json_field_parse","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x14020b3a0","name":"sub_14020B3A0","role":"relay_url_parse","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x140254180","name":"sub_140254180","role":"api_key_parse","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140232000","name":"sub_140232000","role":"input_drop_helper","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1406db590","name":"sub_1406DB590","role":"relay_keychain_lookup_for_quota_sys_variant: lookup apiKey for draft provider","terminated_reason":null}
+{"depth":3,"addr":"0x1402ee7c0","name":"relay_keychain_lookup_for_quota_sys","role":"keychain_lookup_core","terminated_reason":null}
+{"depth":4,"addr":"0x141093260","name":"win32_file_read_bytes_111","role":"read keychain","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x140625680","name":"sub_140625680","role":"keychain_decrypt","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x14124a5d0","name":"WakeByAddressSingle","role":"win32_sync_wake","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1403150d0","name":"sub_1403150D0","role":"http_client_build: build reqwest client for draft relay","terminated_reason":null}
+{"depth":3,"addr":"0x14070b280","name":"sub_14070B280","role":"http_client_init: leaf","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140301890","name":"sub_140301890","role":"tls_config_build","terminated_reason":null}
+{"depth":4,"addr":"0x1410a9220","name":"sub_1410A9220","role":"tls_alloc: leaf","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x140315340","name":"sub_140315340","role":"http_GET_send: send GET /v1/models with x-api-key + anthropic-version headers","terminated_reason":null}
+{"depth":3,"addr":"0x14070b280","name":"sub_14070B280","role":"http_send_leaf","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140629e40","name":"sub_140629E40","role":"header_build: x-api-key + anthropic-version","terminated_reason":null}
+{"depth":4,"addr":"0x14124bccb","name":"sub_14124BCCB","role":"str_alloc","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x1410462d0","name":"sub_1410462D0","role":"request_body_build","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x14104d850","name":"sub_14104D850","role":"reqwest_send","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x14033dde0","name":"sub_14033DDE0","role":"response_read","terminated_reason":null}
+{"depth":4,"addr":"0x140629b20","name":"sub_140629B20","role":"response_body_accumulate","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x1406281f0","name":"sub_1406281F0","role":"chunk_read","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x14062a2f0","name":"sub_14062A2F0","role":"status_check","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x140c632a0","name":"sub_140C632A0","role":"model_list_parse: parse /v1/models JSON response body","terminated_reason":null}
+{"depth":3,"addr":"0x14104e1b0","name":"sub_14104E1B0","role":"json_deserialize","terminated_reason":null}
+{"depth":4,"addr":"0x14105c9f0","name":"sub_14105C9F0","role":"json_model_entry_parse","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140c64150","name":"sub_140C64150","role":"model_id_extract","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140c63990","name":"sub_140C63990","role":"model_name_extract","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x140c8cad0","name":"sub_140C8CAD0","role":"response_serialize: build model list result for IPC response","terminated_reason":null}
+{"depth":3,"addr":"0x140c8cf80","name":"sub_140C8CF80","role":"model_entry_serialize","terminated_reason":null}
+{"depth":4,"addr":"0x14104ea70","name":"sub_14104EA70","role":"json_field_write","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x14104f070","name":"sub_14104F070","role":"json_field_write","terminated_reason":"implementation_leaf"}
+{"depth":5,"addr":"0x14106d3d0","name":"sub_14106D3D0","role":"string_write","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140cf30a0","name":"sub_140CF30A0","role":"result_envelope_build","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x140921fc0","name":"relay_http_request_cleanup_sys","role":"cleanup HTTP request resources","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14080c3c0","name":"has_notch_invoke_resolver_respond","role":"tauri_ipc_resolve","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14033ab50","name":"has_notch_arc_listener_drop_loop","role":"arc_drop_loop","terminated_reason":"implementation_leaf"}
+{"compare_1_0_9":{"baseline_handler":"fetch_relay_models_draft_owner_sys@0x1408E0870","verdict":"confirmed_same_depth5","notes":"1.0.9 DTO: manager(str) + input(draft relay config object). 1.1.1 DTO: manager(aManager_0) + input(aInput_2) identical. 1.0.9: HTTP GET /v1/models with x-api-key+anthropic-version headers, model list JSON parse. 1.1.1: same headers confirmed via sub_140629E40(header_build), sub_140315340(GET /v1/models), sub_140C632A0(model_list_parse). relay_keychain_lookup_for_quota_sys at depth-3 maps to 1.0.9 API key lookup. sub_14104E1B0→sub_14105C9F0 maps to sub_1401134F0/sub_1401133E0 in 1.0.9. No new DTO fields, no new HTTP endpoints, no new side-effects."}}

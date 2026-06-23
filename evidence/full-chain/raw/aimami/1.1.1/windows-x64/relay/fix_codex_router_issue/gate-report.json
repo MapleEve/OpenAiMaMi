@@ -1,0 +1,75 @@
+{
+  "command": "fix_codex_router_issue",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "relay/fix_codex_router_issue/ida/pseudocode/0001_fix_codex_router_issue_owner_sys.c — owner@0x1400246b0 argKeys=[manager,itemId]",
+    "relay/fix_codex_router_issue/ida/pseudocode/0002_fix_codex_router_issue_core_dispatch_sys.c — core@0x14021aca0 itemId dispatch, residual_cache SSE check",
+    "relay/fix_codex_router_issue/ida/pseudocode/0003_quit_codex_poll_wait_sys_111.c — poll@0x1407a39b0 50ms, 5000ms timeout",
+    "relay/fix_codex_router_issue/ida/pseudocode/0004_check_update_installability_launch_sys_111.c — 10-path Win CreateProcess scan",
+    "relay/fix_codex_router_issue/call-trees/fix_codex_router_issue.jsonl — depth=5, terminated",
+    "frontend/ipc-contracts.jsonl — tauriInvokeRaw argKeys=[itemId] file=maintenance-page-C2wkSNnk.js line=17",
+    "frontend/frontend-control-flow.jsonl — trigger=T fn argKeys=[itemId] col=1887",
+    "fix_codex_router_issue/gate-report.json — wf-aimami111-dim6-100-20260619 all 6 dims CLOSED"
+  ],
+  "dim1_detail": {
+    "file": "assets/maintenance-page-C2wkSNnk.js",
+    "line": 17,
+    "kind": "tauriInvokeRaw",
+    "argKeys": ["itemId"],
+    "wrapper": null,
+    "snippet": "s(\"fix_codex_router_issue\",{itemId:d})"
+  },
+  "dim2_detail": {
+    "owner_va": "0x1400246b0",
+    "owner_name": "fix_codex_router_issue_owner_sys",
+    "size_bytes": 1217,
+    "core_va": "0x14021aca0",
+    "core_name": "fix_codex_router_issue_core_dispatch_sys",
+    "pseudocode_bytes": 3952,
+    "arg_keys_backend": ["manager", "itemId"]
+  },
+  "dim3_detail": {
+    "depth": 5,
+    "edges": 11,
+    "terminated_reasons": ["process_spawn_leaf", "process_kill_leaf", "fs_write_leaf", "impl_body_confirmed"],
+    "key_path": "dispatcher→owner→core_dispatch→fix_all_sections_sys→fix_all_sections_impl_full_sys"
+  },
+  "dim4_detail": {
+    "request": {"itemId": "String", "manager": "internal handle (server-resolved)"},
+    "frontend_actual_args": ["itemId"],
+    "response": "FixReport (Ok: {fixed_items:Vec<String>, required_restart:bool, status:string})",
+    "error_paths": [
+      "manager handle lookup fails → sub_14080C3C0 IPC error",
+      "itemId parse fails → sub_14080C3C0 IPC error",
+      "fix_single_section_sys fails → Err sentinel → error response",
+      "quit_codex_poll_wait_sys_111 timeout → fix aborted"
+    ],
+    "side_effects": [
+      "Codex process detection via ToolHelp32 (WIN-SPECIFIC)",
+      "taskkill /IM Codex.exe if running (quit phase)",
+      "10-path scan + CreateProcess/ShellExecute to relaunch Codex",
+      "config sections fixed on disk (fs writes)"
+    ]
+  },
+  "dim5_detail": {
+    "win_primitives": ["ToolHelp32 is_process_running", "taskkill soft+hard kill", "10-path CreateProcess scan", "WakeByAddressSingle"],
+    "is_new_in_1_1_1": true
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-100-20260619",
+    "happy_path": "invoke('fix_codex_router_issue',{itemId}) → quit Codex if running → apply fix → relaunch → return FixReport",
+    "test_mapping": "e2e: call with valid itemId while Codex running; assert Codex relaunched; assert section fixed"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

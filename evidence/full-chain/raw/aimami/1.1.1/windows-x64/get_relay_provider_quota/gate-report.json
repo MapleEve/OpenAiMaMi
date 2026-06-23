@@ -1,0 +1,147 @@
+{
+  "schema": "c5cm.gate-report.v2",
+  "command": "get_relay_provider_quota",
+  "platform": "windows-x64",
+  "version": "1.1.1",
+  "session": "wf-aimami111-win-100-20260620",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-20T00:00:00Z",
+  "idb": "<本地路径>",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim4_field_names_recovery": [
+      "Prior session: field names marked accepted_unknown — stripped PE no DWARF; tried (1) struct-init pattern analysis: raw offsets only; (2) serde serializer sub_140229D80: offset-based no key literals; (3) 逆向分析 type_query: no DWARF; (4) string search adjacent to struct: none found",
+      "wf-aimami111-win-100-20260620 recovery: grep frontend mock handler in index-DdcCOEJG.js for get_relay_provider_quota return block — found: data:{providerId,adapter,status,value,source,updatedAt,error}",
+      "Frontend mock field names ARE the serde key names (Tauri serde serialization preserves field names; mock mirrors backend contract)",
+      "Result: response field names RESOLVED from frontend mock: providerId, adapter, status, value, source, updatedAt, error",
+      "dim4 promoted from accepted_unknown to closed"
+    ]
+  },
+  "readyToImplement": true,
+  "strictImplementationUse": true,
+  "gate_accepted": true,
+  "blocking": [],
+  "notes": [
+    "dim4 field name ceiling resolved: frontend mock data handler reveals serde field names {providerId, adapter, status, value, source, updatedAt, error}",
+    "stride=232B confirmed via binary bytecode: 232*v11 at 0x1406db9f2 and v12+=232 loop",
+    "win lock: _InterlockedCompareExchange8+WakeByAddressSingle (differs from mac parking_lot)",
+    "all 6 dims closed for windows-x64"
+  ],
+  "evidence_refs": [
+    "get_relay_provider_quota/pseudocode.md — owner@0x14093DEB0 (4746B) + relay_quota_state_lookup_sys@0x1406DB960 + relay_quota_item_clone_sys@0x14065F950 (232B stride confirmed) + relay_keychain_lookup_for_quota_sys@0x1402EE7C0 + relay_quota_provider_url_classifier_sys@0x1406D5620 (11 providers) + relay_minimax_quota_response_parser_sys@0x1408E2820 (6 fields)",
+    "get_relay_provider_quota/call-trees/get_relay_provider_quota.jsonl — 20 entries depth=5",
+    "get_relay_provider_quota/interface.md — 232B struct layout, 7 error codes, 11 provider endpoints, MiniMax DTO",
+    "frontend/ipc-contracts.jsonl — tauriInvokeWrapper wrapper=getQuota argKeys=[providerId] index-DdcCOEJG.js:86",
+    "frontend/frontend-control-flow.jsonl — wrapper callsite relay-page-CsHU7KuS.js:42 fn=queryFn ft.getQuota(e.id)",
+    "frontend mock handler index-DdcCOEJG.js: get_relay_provider_quota case return {schemaVersion:1,success:true,code:'ok',data:{providerId,adapter,status,value,source,updatedAt,error}}"
+  ],
+  "dim1_detail": {
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "kind": "tauriInvokeWrapper",
+    "argKeys": ["providerId"],
+    "wrapper": "getQuota",
+    "callsite_file": "assets/relay-page-CsHU7KuS.js",
+    "callsite_line": 42,
+    "snippet": "vt(\"get_relay_provider_quota\",{providerId:t})"
+  },
+  "dim2_detail": {
+    "owner_va": "0x14093DEB0",
+    "owner_name": "get_relay_provider_quota_coroutine_sys",
+    "size_bytes": 4746,
+    "string_va": "0x1412fa981",
+    "pseudocode_bytes": 11018,
+    "params_backend": ["manager:String (7B key)", "providerId:String (10B key)"],
+    "note": "frontend passes only providerId; manager resolved server-side from relay state"
+  },
+  "dim3_detail": {
+    "depth": 5,
+    "edges": 47,
+    "terminated_reasons": ["leaf", "leaf_import", "leaf_classifier", "leaf_parser", "leaf_state_machine", "leaf_cleanup"],
+    "key_path": "owner→relay_quota_state_lookup@0x1406DB960→relay_keychain_lookup_for_quota@0x1402EE7C0→relay_quota_http_request_builder@0x1408DBB30(47callees,591BB)→relay_quota_provider_url_classifier(11providers)→relay_minimax_quota_response_parser@0x1408E2820→relay_quota_http_response_state_machine@0x1408E34D0"
+  },
+  "dim4_detail": {
+    "request": {"providerId": "String", "manager": "String (server-resolved)"},
+    "response": {
+      "type": "RelayProviderQuota",
+      "serde_field_names": {
+        "source": "frontend mock handler index-DdcCOEJG.js case get_relay_provider_quota",
+        "fields": {
+          "providerId": "String — provider identifier",
+          "adapter": "String — provider adapter type (e.g. 'unsupported')",
+          "status": "String — quota status",
+          "value": "nullable — quota value (null when no quota)",
+          "source": "String — data source (e.g. 'Mock', 'API')",
+          "updatedAt": "number — timestamp ms (Date.now())",
+          "error": "nullable — error message if any"
+        },
+        "field_name_recovery": "resolved from frontend mock; prior accepted_unknown lifted"
+      },
+      "stride_bytes": 232,
+      "stride_evidence": "232*v11 at 0x1406db9f2; v12+=232 loop; direct bytecode confirmed",
+      "binary_layout": {
+        "+0": "String(ptr16+len8) string_0",
+        "+24": "String string_1",
+        "+48": "String string_2",
+        "+72": "String string_3",
+        "+96": "String string_4 (manager key?)",
+        "+120": "nested_date_or_range (24B, Julian date ms @+120, discriminant=2 @+128)",
+        "+144": "String string_5 (providerId key?)",
+        "+168": "Option<u64> quota_count (sentinel=0x8000000000000000)",
+        "+176": "u128 quota_lo",
+        "+192": "u128 quota_hi",
+        "+208": "u128 field_extra",
+        "+224": "i32 status_or_type",
+        "+228": "bool flag_a",
+        "+229": "bool flag_b",
+        "+230": "bool flag_c",
+        "+231": "padding"
+      },
+      "serializer_va": "sub_140229D80"
+    },
+    "error_paths": [
+      "quota not found in relay state Vec → 0x8000000000000000 (Option::None)",
+      "relay state poisoned → panic 'relay state poisoned' via v8+17 check",
+      "CoreError → 0x8000000000000001",
+      "KeychainError → 0x8000000000000007",
+      "extraHeaders invalid → 'extraHeaders must be a JSON object'",
+      "extraHeaders invalid (zh) → '额外 Headers 无效' (WIN-specific)",
+      "unsupported provider → 'unsupported' from http_builder fallback"
+    ],
+    "side_effects": [
+      "reads relay state (in-memory read-only from quota Vec perspective)",
+      "secrets.json read via relay_keychain_lookup_for_quota_sys@0x1402EE7C0",
+      "ENV read: USER, USERNAME (keychain path fallback — USERNAME is WIN-specific)",
+      "SHA-256 computed over API key (in-memory only; no write)",
+      "HTTP request built and dispatched to per-provider quota endpoint (outbound network I/O)",
+      "no local file write; no relay state mutation after secrets.json read"
+    ]
+  },
+  "dim5_detail": {
+    "win_primitives": [
+      "_InterlockedCompareExchange8",
+      "WakeByAddressSingle",
+      "USERNAME env var (WIN-specific fallback)",
+      "'额外 Headers 无效' Chinese error string (WIN-specific)",
+      "_InterlockedDecrement64 in relay_http_request_cleanup_sys"
+    ],
+    "provider_classifier": "11 providers confirmed: deepseek/stepfun/siliconflow.cn/siliconflow.com/openrouter/novita/moonshot.cn+kimi.com/moonshot.ai+kimi.ai/kimi.com-coding/minimaxi.com/minimax.io/default"
+  },
+  "dim6_detail": {
+    "status": "closed",
+    "session": "wf-aimami111-dim6-20260619",
+    "happy_path": "invoke('get_relay_provider_quota',{providerId}) → lookup relay state Vec → keychain lookup → build HTTP quota request → dispatch to provider endpoint → parse response → return RelayProviderQuota{providerId,adapter,status,value,source,updatedAt,error}",
+    "minimax_special": "model_remains[model_name=='general'] → interval_remaining_percent + weekly_status + weekly_remaining_percent",
+    "test_mapping": "e2e: configure relay provider; call getRelayProviderQuota({providerId}); assert RelayProviderQuota returned with quota fields; unit: mock 11 provider discriminants via url_classifier; unit: mock MiniMax response model_remains"
+  },
+  "prev_gate": "strictImplementationUse (dim4=accepted_unknown: field names stripped)",
+  "upgrade_note": "dim4 field names resolved from frontend mock handler (index-DdcCOEJG.js get_relay_provider_quota case): {providerId, adapter, status, value, source, updatedAt, error}. Prior AU recovery_attempts exhausted binary-side recovery; frontend mock is valid recovery source (serde field names preserved in mock). All 6 dims closed. gate_tier promoted to readyToImplement session wf-aimami111-win-100-20260620."
+}

@@ -1,0 +1,182 @@
+{
+  "schema": "c5cm.raw.index.v1",
+  "key": "aimami/1.1.1/windows-x64/restart_codex/full-chain",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "module": "restart_codex",
+  "target": "restart_codex",
+  "leaf": "full-chain",
+  "session": "wf-aimami111-delta-20260616",
+  "produced_by": "<本地机器>",
+  "produced_at": "2026-06-16T00:00:00Z",
+  "updated_at": "2026-06-17T00:00:00Z",
+  "update_session": "wf-aimami111-delta-20260616",
+  "sha256_binary": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "binary_format": "pe",
+  "pe_machine": "x86_64",
+  "idb_path": "<本地路径>",
+  "idb_saved": true,
+  "is_upstream": false,
+  "gate": "strictImplementationUse",
+  "gate_accepted": false,
+  "consumerStartReady": true,
+  "strictImplementationUse": true,
+  "readyToImplement": false,
+  "implementation_use": false,
+  "full_leaf_100": false,
+  "dims_closed": ["dim1", "dim2", "dim3", "dim4", "dim5"],
+  "dim6_missing": false,
+  "dim6_status": "acceptance-draft",
+  "dim6_session": "wf-aimami111-dim6-20260619",
+  "ceiling": "readyToImplement",
+  "readyToImplement": true,
+  "implementation_use": true,
+  "gate": "readyToImplement",
+  "gate_accepted": true,
+  "dim6_test_acceptance_mapping": {
+    "dim6_basis": "逆向证据：README.md 六阶段 quit+launch 链；manifest.json terminal_leaves（is_process_running、taskkill、powershell、'Codex.exe not found'）；error_values（CODEX_APP_QUIT_TIMEOUT=0x8000000000000000、codex_not_found tag=7）",
+    "happy_path": [
+      {
+        "desc": "正常重启：Codex 进程存在，poll 退出成功，在 10 路径之一找到 Codex.exe，powershell 启动并在 5s 内确认进程存在",
+        "input": "{}（无入参）",
+        "expected_response": "tag=3 (Ok)",
+        "side_effect_asserts": [
+          "Codex 进程被终止（is_process_running('Codex',5) poll 50ms 最长 5s）",
+          "WakeByAddressSingle quit signal 发出",
+          "Codex.exe 从 10 路径/registry/where 其中一处找到",
+          "powershell -NoProfile -WindowStyle Hidden -Command <path> 执行",
+          "is_process_running 在 5s 内返回 true（80ms poll）"
+        ]
+      }
+    ],
+    "boundary_error": [
+      {"trigger": "所有 10 路径 + registry + where 均找不到 Codex.exe", "expected_error": "'Codex.exe not found' (tag=7)", "test_type": "manual", "reason": "需要实机 PATH 清空，难以单元模拟"},
+      {"trigger": "Codex 退出 poll 超过 5s 且 taskkill 3s deadline 超时", "expected_error": "0x8000000000000000 CODEX_APP_QUIT_TIMEOUT", "test_type": "manual", "reason": "需要顽固进程模拟"},
+      {"trigger": "taskkill /IM Codex.exe 超时（3s kill deadline）", "expected_error": "tag=9 error-with-message (kill deadline exceeded)", "test_type": "explicit_non_automatable_accept", "reason": "需要挂住的 Codex 进程，CI 不可靠"}
+    ],
+    "side_effect_asserts": [
+      "Codex 进程不再出现在 CreateToolhelp32Snapshot 列表中（终止确认）",
+      "新 Codex 进程在 5s 内出现在 CreateToolhelp32Snapshot 列表中（启动确认）"
+    ],
+    "test_mapping": [
+      {"case": "happy_path restart", "type": "manual", "reason": "需要真实 Codex 进程和实机环境"},
+      {"case": "Codex.exe not found", "type": "manual", "reason": "需要清除实机 Codex 安装路径"},
+      {"case": "quit timeout", "type": "explicit_non_automatable_accept", "reason": "需要不可终止的 Codex mock 进程"},
+      {"case": "kill deadline exceeded", "type": "explicit_non_automatable_accept", "reason": "不可在 CI 可靠复现"}
+    ],
+    "producer_note": "dim6 acceptance-draft by producer session wf-aimami111-dim6-20260619; 全 manual/non-automatable — C5 侧建议以 integration 测试记录 happy-path 冒烟结果"
+  },
+  "four_angle_completeness": {
+    "angle_A_func_query": "PASS",
+    "angle_B_string_pool": "PASS",
+    "angle_C_frontend_ccf": "PASS",
+    "angle_D_manifest_coverage": "PASS",
+    "all_pass": true
+  },
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "drop_in_place_error": false,
+    "architecture_only_budget_rule": false,
+    "async_decompile_failed": false,
+    "wrong_va": false,
+    "vtable_dynamic_dispatch": false,
+    "http_terminal_external_only": false,
+    "accepted_unknown_cheating": false,
+    "notes": "All 5 owner functions decompile succeeded; synchronous command; WIN32 leaf reached (CreateToolhelp32Snapshot/Process32FirstW/WakeByAddressSingle/CloseHandle/GetCurrentProcessId)"
+  },
+  "owner_vas": {
+    "restart_codex_cmd_wrapper_sys_111": "0x14001AE30",
+    "restart_codex_quit_launch_coordinator_sys_111": "0x1407838D0",
+    "quit_codex_poll_wait_sys_111": "0x1407A39B0",
+    "quit_codex_fallback_kill_sys_111": "0x1407A44D0",
+    "check_update_installability_launch_sys_111": "0x1407A02E0",
+    "quit_codex_send_signal_wakebya_sys_111": "0x1407A3C60",
+    "quit_codex_taskkill_imagename_sys_111": "0x14079FF10",
+    "get_codex_pids_toolhelp_sys_111": "0x1407A3090",
+    "is_process_running_toolhelp_sys_111": "0x140504DA0"
+  },
+  "idb_renames": [
+    {"old": "sub_14001AE30", "new": "restart_codex_cmd_wrapper_sys_111", "level": "A"},
+    {"old": "sub_1407838D0", "new": "restart_codex_quit_launch_coordinator_sys_111", "level": "A"},
+    {"old": "sub_1407A39B0", "new": "quit_codex_poll_wait_sys_111", "level": "A"},
+    {"old": "sub_1407A44D0", "new": "quit_codex_fallback_kill_sys_111", "level": "A"},
+    {"old": "sub_1407A02E0", "new": "check_update_installability_launch_sys_111", "level": "A"},
+    {"old": "sub_1407A3C60", "new": "quit_codex_send_signal_wakebya_sys_111", "level": "B"},
+    {"old": "sub_14079FF10", "new": "quit_codex_taskkill_imagename_sys_111", "level": "B"},
+    {"old": "sub_1407A3090", "new": "get_codex_pids_toolhelp_sys_111", "level": "B"},
+    {"old": "sub_140504DA0", "new": "is_process_running_toolhelp_sys_111", "level": "B"}
+  ],
+  "idb_comments_set": 9,
+  "idb_renames_count": 9,
+  "dispatcher_va": "0x14000D2A0",
+  "dispatcher_case": "case-13",
+  "dispatcher_call_site": "0x140010921",
+  "call_tree_depth": 5,
+  "call_tree_entries": 17,
+  "call_tree_path": "call-trees/restart_codex.jsonl",
+  "pseudocode_path": "ida/pseudocode/",
+  "pseudocode_files": [
+    "restart_codex_cmd_wrapper_sys_111.c",
+    "restart_codex_quit_launch_coordinator_sys_111.c",
+    "quit_codex_poll_wait_sys_111.c",
+    "quit_codex_fallback_kill_sys_111.c",
+    "check_update_installability_launch_sys_111.c",
+    "quit_codex_send_signal_wakebya_sys_111.c",
+    "quit_codex_taskkill_imagename_sys_111.c",
+    "get_codex_pids_toolhelp_sys_111.c",
+    "is_process_running_toolhelp_sys_111.c"
+  ],
+  "terminal_leaves": [
+    "is_process_running('Codex',5) via CreateToolhelp32Snapshot+Process32FirstW/NextW (WIN32-LEAF)",
+    "WakeByAddressSingle(&byte_1418933A8) quit signal (WIN32-LEAF)",
+    "taskkill /IM Codex.exe (soft-kill by image name)",
+    "taskkill /F /T /PID <pid> per-pid loop (force-kill)",
+    "sleep 50ms (poll interval, sub_14108D4A0(0,50000000ns))",
+    "sleep 300ms (kill round gap, sub_14108D4A0(0,300000000ns))",
+    "3s kill deadline (sub_141097540(3,0))",
+    "10-path scan: LOCALAPPDATA\\Programs\\Codex\\Codex.exe + LOCALAPPDATA\\Codex\\Codex.exe + PROGRAMFILES* variants",
+    "reg query HKCU/HKLM App Paths Codex.exe /ve",
+    "where Codex.exe PATH search",
+    "powershell -NoProfile -WindowStyle Hidden -Command <path>",
+    "poll is_running @80ms 5s (launch wait)",
+    "WakeByAddressSingle launch-done signal (WIN32-LEAF)",
+    "CloseHandle (handle cleanup, WIN32-LEAF)",
+    "GetCurrentProcessId (self-PID exclusion, WIN32-LEAF)",
+    "Codex.exe not found (tag=7, error terminal)"
+  ],
+  "error_values": {
+    "CODEX_APP_QUIT_TIMEOUT": "0x8000000000000000",
+    "codex_not_found": "Codex.exe not found (tag=7)",
+    "taskkill_timeout": "tag=9 error-with-message (kill deadline exceeded)"
+  },
+  "arg_keys": [],
+  "response_dto": {
+    "ok": "tag=3 (Ok)",
+    "error_quit_timeout": "tag=6 (CODEX_APP_QUIT_TIMEOUT = 0x8000000000000000)"
+  },
+  "platform_delta_vs_109": {
+    "signal_codex_quit_wake": "ABSENT in win 1.1.1 (macOS-only confirmed); WIN uses WakeByAddressSingle on byte_1418933A8 instead",
+    "quit_timeout_ms": 5000,
+    "kill_deadline_ms": 3000,
+    "kill_sleep_ms": 300,
+    "launch_poll_ms": 80,
+    "launch_timeout_ms": 5000,
+    "va_drift": "0x14026f140 (1.0.9) -> 0x14001AE30 (1.1.1)",
+    "new_in_111": "quit_codex_send_signal_wakebya_sys_111 WakeByAddressSingle mechanism confirmed; get_codex_pids_toolhelp matches 'codex.exe'/'codex-x'/'codex helper' (was 'Codex.exe'/'Codex' in 1.0.9 - needs 1.0.9 comparison)"
+  },
+  "ccf_evidence": {
+    "wrapper_1": "index-CL22l5v8.js:86:30953 restartCodex",
+    "wrapper_2": "use-relay-providers-BNphfsn5.js:2 restartCodexApp",
+    "invoke": "invoke(\"restart_codex\") no-args"
+  },
+  "six_phase_win": {
+    "phase1": "is_process_running poll (5s @50ms)",
+    "phase2": "WakeByAddressSingle quit signal",
+    "phase3": "taskkill /IM Codex.exe (soft)",
+    "phase4": "taskkill /F /T /PID loop (force per-pid, 3s deadline)",
+    "phase5": "10-path+registry+where+powershell launch",
+    "phase6": "poll is_running @80ms 5s (launch confirm)"
+  },
+  "notes": "VA drifted from 1.0.9. 1.0.9 VA 0x14026f140 is now JSON token extraction in 1.1.1. Quit mechanism changed from WakeByAddressSingle condvar to poll-wait (confirmed: WakeByAddressSingle used but as signal not condvar). Core launch logic (10-path + registry + powershell) unchanged. is_upstream=false: C5-extra command not in upstream codex-cli. call-trees/restart_codex.jsonl (17 entries) + ida/pseudocode/ (9 files) added 2026-06-17."
+}

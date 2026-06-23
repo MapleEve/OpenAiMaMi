@@ -1,0 +1,85 @@
+{
+  "command": "set_mcp_server_enabled",
+  "session": "wf-aimami111-dim6-20260619",
+  "machine": "<本地机器>",
+  "role": "producer",
+  "produced_at": "2026-06-19",
+  "shard": "mac-shard-4",
+  "dim6": {
+    "status": "acceptance-draft",
+    "ccf_confirmed": "1.1.1 ipc-contracts.jsonl: command='set_mcp_server_enabled', argKeys=['name','enabled'], argObject='{name:t,enabled:e}'. Fully matches backend confirmed argKeys. dim1 fully closed.",
+    "happy_path": {
+      "input_enable": {
+        "name": "my-server",
+        "enabled": true
+      },
+      "input_disable": {
+        "name": "my-server",
+        "enabled": false
+      },
+      "expected_response": "CoreEnvelope<Vec<McpServerSummary>> \u2014 Ok (discriminant 0x8000000000000000); Vec contains all MCP servers with 'my-server' enabled field updated",
+      "expected_side_effects": [
+        "TOML config.toml atomically written: enabled flag updated for named server section",
+        "Atomic FS write via write_atomic @0x10041e960 (same as remove_mcp_server)",
+        "No HTTP, no process spawn, no Tauri event emit"
+      ]
+    },
+    "boundary_error": [
+      {
+        "trigger": "Server not found by name",
+        "condition": "memcmp loop over all 224B-stride entries finds no name match",
+        "expected_error": "'MCP server not found: <name>' \u2014 22B prefix string @0x1010b6a09 + name arg"
+      },
+      {
+        "trigger": "Mutex poisoned",
+        "condition": "prior panic during critical section",
+        "expected_error": "CoreError from fmt panic string"
+      },
+      {
+        "trigger": "load_mcp_servers FS read error",
+        "condition": "config file unreadable",
+        "expected_error": "CoreError propagated from fs::read_to_string"
+      },
+      {
+        "trigger": "upsert_mcp_server write error",
+        "condition": "write_atomic fails (disk full, permissions)",
+        "expected_error": "CoreError from write_atomic IoError"
+      }
+    ],
+    "side_effect_asserts": [
+      "TOML config: named server's enabled field must match input after successful call",
+      "Vec<McpServerSummary> in response must include entry for named server with updated enabled field",
+      "aimami-relay managed sentinel comment boundary respected (insert_mcp_block sentinel-aware)"
+    ],
+    "test_mapping": [
+      {
+        "type": "e2e",
+        "description": "Call set_mcp_server_enabled(name='x', enabled=true); verify TOML has enabled=true for that server; verify response Vec includes x as enabled",
+        "reason": "FS side-effect; requires full IPC + TOML read-back"
+      },
+      {
+        "type": "e2e",
+        "description": "Call with enabled=false; verify disabled state in TOML and response",
+        "reason": "Toggle in both directions"
+      },
+      {
+        "type": "e2e",
+        "description": "Call with non-existent name; verify 'MCP server not found: <name>' error response",
+        "reason": "Error path confirmed with exact error prefix"
+      },
+      {
+        "type": "unit",
+        "description": "Unit-test upsert_mcp_server logic with fixture TOML; verify enabled flag correctly updated in TOML output",
+        "reason": "Pure TOML transformation; testable without IPC"
+      }
+    ],
+    "dim6_basis": "argKeys confirmed dual-source from dispatcher decompile + ipc-contracts.jsonl. Error string 'MCP server not found: ' (22B) confirmed at @0x1010b6a09. TOML write via write_atomic confirmed (call chain: load_mcp_servers \u2192 memcmp \u2192 clone \u2192 upsert_mcp_server \u2192 save_config_text \u2192 write_atomic). Response CoreEnvelope<Vec<McpServerSummary>> with stride=224B confirmed. Behavioral contract identical to 1.0.9 (VA change only per diff_reversed)."
+  },
+  "gate_upgrade": {
+    "previous": "strictImplementationUse_candidate",
+    "new": "readyToImplement",
+    "rationale": "dim1 PASS (CCF confirmed from 1.1.1 ipc-contracts.jsonl: argKeys=['name','enabled'] exact match); dim2 PASS (owner+core_impl+dispatcher decompiled); dim3 PASS (depth>=5, FS terminal); dim4 PASS (argKeys, response, error string, TOML side-effect); dim5_mac PASS; dim5_win separate; dim6=acceptance-draft",
+    "implementation_use": "eligible",
+    "notes": "Behavioral contract identical to 1.0.9 (diff_reversed VA-only). McpServerSummary exact field layout accepted_unknown but non-blocking."
+  }
+}

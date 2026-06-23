@@ -1,0 +1,54 @@
+{
+  "schema": "c5cm.raw.manifest.v1",
+  "command": "set_codex_api_slots",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "binary_format": "pe",
+  "pe_machine": "x64",
+  "binary_sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "binary_path_sot": "raw/binary/AiMaMi 1.1.1 win64.exe",
+  "idb_path": "<本地路径>",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "model": "claude-sonnet-4-6",
+  "role": "producer_only",
+  "produced_at": "2026-06-16",
+  "authoritative": true,
+  "gate": "consumerStartReady",
+  "owner_va": "0x14001BDE0",
+  "owner_name": "set_codex_api_slots_owner_sys",
+  "string_locator_va": "0x1412ac5b2",
+  "string_locator_value": "set_codex_api_slots",
+  "dispatcher_va": "0x14000D2A0",
+  "dispatcher_name": "tauri_ipc_main_dispatcher_sys",
+  "params": [
+    {"key": "manager", "key_len": 7, "type": "String"},
+    {"key": "slots", "key_len": 5, "type": "Vec<CodexApiSlot>", "constraint": "len<=5"}
+  ],
+  "codex_api_slot_fields": [
+    {"name": "providerId", "type": "String", "key_len": 10},
+    {"name": "model", "type": "String", "key_len": 5}
+  ],
+  "response": {"success": "\"ok\""},
+  "side_effects": [
+    "relay_state_in_memory_update",
+    "relay_config_json_atomic_write",
+    "relay_post_login_state_sync_optional",
+    "win_lock_acquire_release"
+  ],
+  "relay_provider_stride_bytes": 232,
+  "max_slots_per_provider": 5,
+  "shared_leaves": [
+    "relay_providers_config_write_and_persist_sys@0x1406E6960",
+    "relay_post_login_state_sync_sys@0x1406E1750"
+  ],
+  "call_tree_depth": 6,
+  "terminal_leaves": ["GetCurrentProcessId", "CloseHandle", "WakeByAddressSingle", "IPC_resolver"],
+  "idb_writeback": {
+    "renames_A": 3,
+    "comments_B": 4,
+    "idb_save_ok": true
+  },
+  "files": ["owner.md", "pseudocode.md", "interface.md", "call-tree.md", "gate-report.json", "manifest.json", "producer-ledger.json"]
+}

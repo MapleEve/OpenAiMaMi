@@ -1,0 +1,67 @@
+{
+  "command": "load_snapshot",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl: command=load_snapshot, argKeys=[localOnly], kind=tauriInvokeWrapper, line=86, col=24147, wrapper=loadSnapshot",
+    "frontend/frontend-control-flow.jsonl: handler_chain=[loadSnapshot@86, d@86], terminal_call=ne('load_snapshot',{localOnly:t}), argKeys=[localOnly]",
+    "pseudocode.md: 21417B, async body owner=load_snapshot_async_body_111 @0x140796310",
+    "call-tree.md: max_depth=8, path IPC->async-SM->poll->async-body->write-if-changed->read-existing->deserialize-json->serde-visitor-cases=LEAF",
+    "interface.md: BootstrapStatePayload NEW field snapshotProgressive; Account +88B NEW optional timestamps; QuotaHistoryPoint 168B; dim4 CONFIRMED; dim5 Win32 file I/O confirmed; dim6 READY",
+    "owner.md: IPC dispatch @0x1409656E0, async body @0x140796310, write-if-changed @0x1401B53F0, parallel refresh @0x1401BD570 NEW_1.1.1",
+    "interface.md dim6 status READY - implementation-level gold-leaf confirmed",
+    "dim1: argKeys=[localOnly], wrapper=loadSnapshot, callee=ne, line=86 col=24167, snippet=ne('load_snapshot',{localOnly:t})",
+    "dim2: pseudocode 21417B >> 600B",
+    "dim3: max_depth=8, all_paths_terminated=true, TOO_LARGE dispatch @0x1409656E0 resolved via async SM tracing",
+    "dim4: snapshotProgressive bool NEW in BootstrapStatePayload CASE 1; Account 336B stride +88B vs 1.0.9; quota_history_persist_file_111 NEW disk write; diff gate extended",
+    "dim5: win32_file_read_bytes_111@0x141093260, win32_file_write_bytes_111@0x141093710, quota_history_persist_file_111 CreateFile+WriteFile+CloseHandle; relay_config_check_parent_dirs_sys@0x1406F2870",
+    "dim6: interface.md explicitly states dim6 READY; acceptance_draft note in prior gate confirms readyToImplement"
+  ],
+  "dim1_detail": {
+    "wrapper": "loadSnapshot",
+    "callee": "ne",
+    "argKeys": ["localOnly"],
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "col": 24167,
+    "snippet": "ne(\"load_snapshot\",{localOnly:t})"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 21417,
+    "owner_va": "0x140796310",
+    "owner_symbol": "load_snapshot_async_body_111"
+  },
+  "dim3_detail": {
+    "max_depth": 8,
+    "depth_path": "IPC_dispatch(0)->async_SM(1)->poll(2)->async_body(3)->write_if_changed(4)->read_existing(5)->deserialize_json(6)->serde_visitor(7)->cases(8=LEAF)",
+    "all_paths_terminated": true
+  },
+  "dim4_detail": {
+    "BootstrapStatePayload_new_1_1_1": "snapshotProgressive bool CASE 1 at a1+912",
+    "Account_stride_1_1_1": "336 bytes (+88 vs 1.0.9)",
+    "Account_new_fields": ["lastUsageAt? Option<DateTime> @+248", "subscriptionExpiresAt? Option<DateTime> @+272", "createdAt? Option<DateTime> @+296"],
+    "QuotaHistoryPoint_size": "168 bytes (0xA8)",
+    "side_effects_new_1_1_1": ["refresh_usage_snapshot_core_111 parallel @0x1401BD570 HTTP+quota persist", "quota_history_append_dedup_111@0x1401FF820 in-mem ring max21", "quota_history_persist_file_111@0x140200EA0 disk write"],
+    "error_codes": {"10": "Ok/no-op", "2": "io_error", "3": "serialize_error"}
+  },
+  "dim5_detail": {
+    "platform_primitives": ["win32_file_read_bytes_111@0x141093260", "win32_file_write_bytes_111@0x141093710", "quota_history_persist_file_111 CreateFile+WriteFile+CloseHandle", "relay_config_check_parent_dirs_sys@0x1406F2870"]
+  },
+  "dim6_detail": {
+    "acceptance_status": "READY",
+    "stated_in": "interface.md dim6 section",
+    "gate_tier": "readyToImplement",
+    "happy_path": "invoke('load_snapshot',{localOnly:bool}) -> diff-gate -> conditional write + parallel usage refresh",
+    "delta_asserts": ["snapshotProgressive field in DTO (NEW 1.1.1)", "Account struct 336B stride (NEW)", "quota history disk persistence on each usage refresh (NEW)"]
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

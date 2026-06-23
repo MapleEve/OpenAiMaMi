@@ -1,0 +1,68 @@
+{
+  "command": "import_accounts_from_file",
+  "module": "codexmate_lib::commands::account_io",
+  "ipc_layer": "tauri_v2_invoke",
+  "va_invoke_resolver": "0x100139f20",
+  "va_core_impl": "0x1004bb0b0",
+  "input_params": [
+    {
+      "name": "filePath",
+      "ipc_key": "filePathapiLogin",
+      "type": "String",
+      "required": true,
+      "note": "Absolute path to .json export file; max 10 MB; max 500 accounts"
+    },
+    {
+      "name": "overwriteExisting",
+      "ipc_key": "overwriteExistingimport_accounts_from_file...",
+      "type": "bool",
+      "required": true,
+      "note": "If false: skip conflicting keys; if true: overwrite except active account"
+    },
+    {
+      "name": "selectedKeys",
+      "ipc_key": "selectedKeyslogout",
+      "type": "Vec<String>",
+      "required": false,
+      "sentinel": "0x8000000000000000 (import all if absent)",
+      "note": "Filter: only import accounts whose key is in this set"
+    }
+  ],
+  "output": {
+    "type": "CoreEnvelope<AccountImportResult>",
+    "on_success": {
+      "tag": 10,
+      "fields": ["written_keys: Vec<String>", "errors: Vec<ImportError>", "registry_file: RegistryFile", "active_key_count: u32", "active_key_index: u32"]
+    },
+    "on_phase2_partial_fail": {
+      "accumulator": "RUNTIME_REFRESH_FAILED_AFTER_IMPORT pushed to error Vec at a1+4552",
+      "message_template": "Accounts imported, but local snapshot refresh failed: {detail}"
+    }
+  },
+  "error_codes": [
+    {"code": "ACCOUNT_MISSING_TOKEN", "description": "Account has no api_login, no org_id, and no user_id"},
+    {"code": "INVALID_ACCOUNT_KEY", "description": "Account key fails character-set validation"},
+    {"code": "CONFLICT_SKIPPED", "description": "Key exists in registry and overwriteExisting=false"},
+    {"code": "ACTIVE_ACCOUNT_PROTECTED", "description": "Key matches active account and overwrite would change active session"},
+    {"code": "AUTH_SNAPSHOT_MISMATCH", "description": "Decoded JWT key does not match account.key field"},
+    {"code": "WRITE_ERROR", "description": "atomic_write failed (I/O error on tmp file or rename)"},
+    {"code": "SERIALIZE_ERROR", "description": "serde_json::to_vec_pretty failed on AuthSnapshot"}
+  ],
+  "side_effects": [
+    "read: <codex_dir>/auth.json (load_auth_file per account)",
+    "read: <codex_dir>/registry.json (read_registry_or_empty_keys)",
+    "read: <codex_dir>/active_account_key (read_active_account_key)",
+    "write(atomic): <codex_dir>/snapshots/<sanitized_key>.json (write_atomic: tmp+fdatasync+rename)",
+    "write(atomic): <codex_dir>/registry.json (rebuild_registry → persist_registry)",
+    "mkdir: snapshot parent dirs (DirBuilder, mode 0777)",
+    "emit: tauri event runtime-snapshot with tag 'import' (broadcast_runtime_snapshot)"
+  ],
+  "no_side_effects": [
+    "No HTTP",
+    "No IPC to sidecar",
+    "No keychain",
+    "No database (SQLite or similar)"
+  ],
+  "execution_model": "two_phase_blocking",
+  "execution_notes": "Phase 1 (spawn_blocking h9efac85a744a648d): account write + registry rebuild. Phase 2 (spawn_blocking h66ee38b58283f7f1): broadcast_runtime_snapshot. Both polled in same InvokeResolver future state machine. NEW in 1.1.1 vs 1.0.9 single-phase pattern."
+}

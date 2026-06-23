@@ -1,0 +1,28 @@
+{
+  "command": "set_relay_display_tags",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "binary_format": "pe",
+  "pe_machine": "x64",
+  "binary_sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "idb_path": "<本地路径>",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-16",
+  "authoritative": true,
+  "owner_check": "PREWRITE_PRODUCER_COLLISION_GATE_V1 — no collision (INDEX无此key，raw目录不存在，本轮owner)",
+  "files": [
+    "owner.md",
+    "pseudocode.md",
+    "interface.md",
+    "call-tree.md",
+    "gate-report.json",
+    "manifest.json",
+    "producer-ledger.json"
+  ],
+  "gate": "consumerStartReady",
+  "delta_type": "new_command_in_1.1.1",
+  "baseline": "1.0.9",
+  "notes": "set_relay_display_tags is a new delta command in AiMaMi 1.1.1 (not present in 1.0.9). Sets displayTagGlobal and displayTagWoyao fields on RelayProvider identified by manager param. Shares relay_providers_config_write_and_persist_sys and relay_post_login_state_sync_sys with set_codex_api_slots and reorder_relay_providers. Also shares ok response builder (0x140216BA0) with set_codex_api_slots."
+}

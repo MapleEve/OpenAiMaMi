@@ -1,0 +1,75 @@
+{
+  "command": "get_hotspot_enabled",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "system/get_hotspot_enabled/pseudocode.md — owner@0x140021570 (879B) + get_hotspot_config_core_read_sys_111@0x14060CBC0 + codexmate_settings_hotspot_read_full_sys_111@0x1401A15D0",
+    "system/get_hotspot_enabled/call-tree.md (from gate-report dim3 depth=5)",
+    "system/get_hotspot_enabled/gate-report.json — wf-aimami111-dim6-100-20260619 all 6 dims CLOSED",
+    "system/get_hotspot_enabled/interface.md — bool response, no side effects",
+    "system/get_hotspot_enabled/owner.md",
+    "frontend/ipc-contracts.jsonl — tauriInvokeWrapper wrapper=getHotspotEnabled argKeys=[] index-DdcCOEJG.js:86",
+    "frontend/frontend-control-flow.jsonl — wrapper callsite settings-page-SeKzRc3U.js:7 fn=queryFn"
+  ],
+  "dim1_detail": {
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "kind": "tauriInvokeWrapper",
+    "argKeys": [],
+    "wrapper": "getHotspotEnabled",
+    "callsite_file": "assets/settings-page-SeKzRc3U.js",
+    "callsite_line": 7,
+    "snippet": "ne(\"get_hotspot_enabled\")"
+  },
+  "dim2_detail": {
+    "owner_va": "0x140021570",
+    "owner_name": "get_hotspot_enabled_owner_sys_111",
+    "size_bytes": 879,
+    "core_va": "0x14060CBC0",
+    "core_name": "get_hotspot_config_core_read_sys_111",
+    "pseudocode_bytes": 4919,
+    "string_ref": "aGetHotspotEnab@0x1412ac46c='get_hotspot_enabled'(19B)",
+    "win_backend_note": "CLAIM REFUTED: previously misclassified as macOS-only. Win 1.1.1 has full backend at 0x140021570."
+  },
+  "dim3_detail": {
+    "depth": 5,
+    "terminated_reasons": ["hashmap_lookup_leaf", "mutex_primitive_leaf", "platform_io_leaf"],
+    "key_path": "dispatcher→owner@0x140021570→lock_acquire@0x14006EDC0→core_read@0x14060CBC0→settings_read_full@0x1401A15D0→win32_file_read@0x141093260"
+  },
+  "dim4_detail": {
+    "request": {},
+    "response": "bool (hotspot field from CodexMateSettings hashmap key='hotspot'(7B)@0x1412B6E51)",
+    "error_paths": [
+      "repo lock fails → async dispatch check != 6 → error via sub_14080C3C0",
+      "core returns Err (v26 != 1) → BYTE1(v30)=v27; LOBYTE=6 → error via has_notch_error_response_serializer@0x14082F2D0",
+      "settings file missing → Err(2) → 0x8000000000000000 sentinel (None/false)",
+      "poisoned mutex → sub_1410B1930 panic handler (not recoverable IPC error)"
+    ],
+    "side_effects": [
+      "File read: CodexMateSettings via codexmate_settings_hotspot_read_full_sys_111 (mysteryUnlockGrants/Routes optional reads included)",
+      "Mutex: _InterlockedCompareExchange8 acquire → read → WakeByAddressSingle release",
+      "No file write — pure read-only"
+    ]
+  },
+  "dim5_detail": {
+    "win_primitives": ["WakeByAddressSingle@0x14124A5D0", "win32_file_read_bytes_111@0x141093260", "_InterlockedCompareExchange8"],
+    "mac_diff": "mac uses parking_lot/pthread condvar; win uses _InterlockedCompareExchange8+WakeByAddressSingle"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-100-20260619",
+    "happy_path": "invoke('get_hotspot_enabled') → read CodexMateSettings key='hotspot' → return bool",
+    "boundary_errors": ["mutex poisoned → panic", "hotspot key missing → Err(2) → sentinel None/false"],
+    "test_mapping": "e2e: seed settings hotspot=true; getHotspotEnabled()→true; seed hotspot=false→false; remove key→sentinel (no crash)"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

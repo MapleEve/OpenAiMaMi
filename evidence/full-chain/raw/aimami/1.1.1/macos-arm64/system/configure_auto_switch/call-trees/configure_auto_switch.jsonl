@@ -1,0 +1,27 @@
+{"depth":0,"va":"0x100619b80","symbol":"codexmate_lib::commands::system::configure_auto_switch","role":"command_wrapper","type":"internal","size_bytes":786,"notes":"Tauri IPC entry; acquires Repository OnceBox mutex; delegates to core impl"}
+{"depth":1,"va":"0x100f7c920","symbol":"std::sys::sync::once_box::OnceBox::initialize","role":"mutex_init","type":"internal","terminal":false}
+{"depth":1,"va":"0x100f2e7a0","symbol":"std::sys::pal::unix::sync::mutex::Mutex::lock","role":"mutex_lock","type":"internal","terminal":true,"leaf_kind":"os_sync"}
+{"depth":1,"va":"0x1004c7280","symbol":"codexmate_lib::core::repository::Repository::configure_auto_switch","role":"core_impl","type":"internal","size_bytes":914}
+{"depth":2,"va":"0x1004bf8e0","symbol":"codexmate_lib::core::repository::Repository::load_registry","role":"registry_read","type":"internal","terminal":false}
+{"depth":3,"va":"0x100f2b980","symbol":"std::sys::fs::metadata","role":"fs_metadata","type":"internal","terminal":true,"leaf_kind":"fs_syscall"}
+{"depth":3,"va":"[read_to_string_inner]","symbol":"std::sys::fs::File::read_to_string (inner)","role":"fs_read","type":"internal","terminal":true,"leaf_kind":"fs_syscall","notes":"reads registry.json"}
+{"depth":3,"va":"[serde_json::de::from_trait]","symbol":"serde_json::de::from_trait","role":"json_deserialize","type":"external","terminal":true,"leaf_kind":"json_parse"}
+{"depth":2,"va":"0x100f34cf0","symbol":"std::time::SystemTime::now","role":"time_read","type":"internal","terminal":true,"leaf_kind":"os_time","notes":"clock_gettime syscall"}
+{"depth":2,"va":"0x100f34cb0","symbol":"std::time::SystemTime::duration_since","role":"time_calc","type":"internal","terminal":false}
+{"depth":2,"va":"[validate_threshold5h]","symbol":"[inline validation] threshold5hPercent >= 101 → format error","role":"validation","type":"inline","terminal":true,"leaf_kind":"error_return","notes":"error string: 0x1010B4708"}
+{"depth":2,"va":"[validate_weekly]","symbol":"[inline validation] thresholdWeeklyPercent >= 101 → format error","role":"validation","type":"inline","terminal":true,"leaf_kind":"error_return","notes":"error string: 0x1010B472B; only if has_schedule flag set"}
+{"depth":2,"va":"0x1004c3a00","symbol":"codexmate_lib::core::repository::Repository::persist_registry","role":"persist_leaf","type":"internal","terminal":false}
+{"depth":3,"va":"0x1005582b0","symbol":"codexmate_lib::platform::paths::CodexPaths::ensure_directories","role":"dir_create","type":"internal","terminal":false}
+{"depth":4,"va":"[DirBuilder::create x9]","symbol":"DirBuilder::create (×9 dirs)","role":"fs_mkdir","type":"internal","terminal":true,"leaf_kind":"fs_syscall"}
+{"depth":3,"va":"0x100f2aa10","symbol":"std::sys::fs::copy","role":"fs_backup","type":"internal","terminal":true,"leaf_kind":"fs_syscall","notes":"copy registry.json → timestamped backup (conditional on a4=1 flag)"}
+{"depth":3,"va":"0x100f33a00","symbol":"std::path::Path::_join","role":"path_build","type":"internal","terminal":false}
+{"depth":3,"va":"[serde_json write]","symbol":"serde_json SerializeMap/SerializeStruct → write JSON buffer","role":"json_serialize","type":"external","terminal":false}
+{"depth":4,"va":"0x100201fe0","symbol":"std::fs::write","role":"fs_write","type":"internal","terminal":true,"leaf_kind":"fs_syscall","notes":"writes registry.json — implementation leaf"}
+{"depth":2,"va":"0x10055a310","symbol":"codexmate_lib::platform::daemon::check_daemon_state","role":"daemon_probe","type":"internal","terminal":false}
+{"depth":3,"va":"0x100f2b980","symbol":"std::sys::fs::metadata","role":"fs_stat","type":"internal","terminal":true,"leaf_kind":"fs_syscall","notes":"stat daemon state file"}
+{"depth":3,"va":"0x100f31ac0","symbol":"std::sys::process::unix::common::Command::new","role":"process_spawn","type":"internal","terminal":false}
+{"depth":3,"va":"0x100f36130","symbol":"std::process::Command::output","role":"subprocess_wait","type":"internal","terminal":true,"leaf_kind":"os_process","notes":"runs lsof to detect daemon; waitpid syscall"}
+{"depth":2,"va":"0x1000014b0","symbol":"__rust_alloc(22, 1)","role":"heap_alloc","type":"internal","terminal":true,"leaf_kind":"heap","notes":"allocates 22 bytes for 'dev.aimami.auto-switch' label"}
+{"depth":2,"va":"0x1005567c0","symbol":"codexmate_lib::core::models::CoreEnvelope::ok","role":"response_build","type":"internal","terminal":true,"leaf_kind":"response"}
+{"depth":2,"va":"0x1004eb620","symbol":"drop_in_place<RegistryFile>","role":"destructor","type":"internal","terminal":true,"leaf_kind":"drop_shim"}
+{"depth":1,"va":"0x100f2e7c0","symbol":"std::sys::pal::unix::sync::mutex::Mutex::unlock","role":"mutex_unlock","type":"internal","terminal":true,"leaf_kind":"os_sync"}

@@ -1,0 +1,33 @@
+{
+  "schema": "c5cm.interface.dto.v1",
+  "command": "diagnose",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "session": "wf-aimami111-delta-20260616",
+  "input": {
+    "ipc_string": "diagnose",
+    "arg_keys": [],
+    "arg_object": null,
+    "params": "()",
+    "frontend_ccf": "ne('diagnose') at index-DdcCOEJG.js:86:25720",
+    "frontend_wrapper": "zero-argument invoke wrapper"
+  },
+  "output": {
+    "envelope_type": "CoreEnvelope<DiagnoseResult>",
+    "discriminant_ok": 0,
+    "discriminant_err": 2,
+    "result_type": "DiagnoseResult",
+    "result_size_bytes": 416,
+    "result_struct_notes": "0x1A0=416 bytes; fields include accounts (Vec<AccountSummary>), registry (RegistryFile), settings (CodexMateSettings), plugins (Vec<PluginEntry>), sessions_count, warnings (Vec<DiagnoseWarning>), version string, platform string, arch string; field names from 1.0.9 baseline (serde derive, not in string pool)",
+    "delta_111_fields": [
+      {"field": "version", "type": "String", "value": "1.1.1", "encoding": "inline alloc via 774975025+49", "note": "new in 1.1.1; was static or absent in 1.0.9"},
+      {"field": "platform", "type": "String", "value": "macos", "encoding": "inline alloc via 1868783981+115"},
+      {"field": "arch", "type": "String", "value": "x86_64", "encoding": "inline alloc via 1597388920+13366", "note": "embedded as x86_64 even on ARM64 binary — compile-time or Tauri target string"}
+    ]
+  },
+  "error": {
+    "type": "CoreError",
+    "format": "Display fmt string",
+    "transport": "CoreEnvelope Err variant (discriminant=2)"
+  }
+}

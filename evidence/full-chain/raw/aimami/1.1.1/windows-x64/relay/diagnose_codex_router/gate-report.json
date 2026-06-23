@@ -1,0 +1,97 @@
+{
+  "command": "diagnose_codex_router",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/relay/diagnose_codex_router/manifest.json (session wf-aimami111-delta-20260616)",
+    "raw/aimami/1.1.1/windows-x64/relay/diagnose_codex_router/call-trees/diagnose_codex_router.jsonl (19 entries, depth 3 in jsonl = 4 levels owner→core→subFn→leaf)",
+    "raw/aimami/1.1.1/windows-x64/relay/diagnose_codex_router/ida/ (pseudocode owner + core)",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl line 127: tauriInvokeRaw relay-page-CsHU7KuS.js col=32467",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl line 182: diagnose_codex_router tauriInvoke argKeys=[]",
+    "intermediate/aimami/1.1.1/version-delta/dim6/mac-regrade.json#diagnose_codex_router (RTI: dim5_win_Unknown non-blocking)",
+    "diagnose leaf: dim3 depth=5 via shared relay_health_check_core_sys_111@0x140218E30"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 127,
+    "wrapper": null,
+    "kind": "tauriInvokeRaw",
+    "argKeys": [],
+    "file": "assets/relay-page-CsHU7KuS.js",
+    "snippet_col": 32467,
+    "ccf_line": 182,
+    "callee": "zn"
+  },
+  "dim2_detail": {
+    "owner_va": "0x140021AE0",
+    "owner_name": "diagnose_codex_router_cmd_owner_111",
+    "owner_size_bytes": 911,
+    "core_va": "0x140218E30",
+    "core_name": "relay_health_check_core_sys_111",
+    "core_size_bytes": 4454,
+    "ipc_string_va": "0x1412ac56b",
+    "ipc_string": "diagnose_codex_router",
+    "manager_key_va": "0x1412ac6c0",
+    "session": "wf-aimami111-delta-20260616"
+  },
+  "dim3_detail": {
+    "depth": 5,
+    "depth_note": "manifest call_tree_depth=3 counts edges in JSONL; actual depth counting from owner: depth0=owner, depth1=core_engine/envelope/relay_mgr_arc, depth2=sub-callees, depth3=leaves(WakeByAddressSingle/relay_providers_enumerate). Shared core relay_health_check_core_sys_111 reaches depth5 as confirmed in diagnose leaf gate-report (relay_state_read_lock_snapshot_sys→win32_file_read_bytes_111).",
+    "terminated_reason": "winapi_sync_leaf / fs_read_leaf / string_compare_leaf",
+    "jsonl_entries": 19,
+    "shared_core_depth_ref": "raw/aimami/1.1.1/windows-x64/diagnose/gate-report.json#dim3_detail depth_reached=5"
+  },
+  "dim4_detail": {
+    "input_params": [],
+    "manager_key": "manager(len=7) resolved server-side",
+    "response": "CoreEnvelope<DiagnoseCodexRouterResult>",
+    "diagnostic_flags": {
+      "v75": "relay_enabled",
+      "v67": "proxy_running",
+      "v124": "catalog_present",
+      "v22": "provider_active (XOR 0x616D6961|0x3169 aimami check)",
+      "v5": "catalog_aimami_match",
+      "v3": "model_catalog_json_in_config",
+      "v119": "model_provider_in_config"
+    },
+    "diagnostic_strings": {
+      "0x1412c0ec7": "未启用智能路由：... (124B)",
+      "0x1412c0f43": "已启用但本地代理未运行：... (71B)",
+      "0x1412c0fd2": "已启用但 catalog 缺失：... (101B)",
+      "0x1412c1037": "已启用但 ~/.codex/config.toml 未写入 model_catalog_json：... (153B)",
+      "0x1412c10d0": "已启用但 ~/.codex/config.toml 未写入 model_provider router：... (148B)",
+      "0x1412c1164": "已启用但当前没有任何已启用的中转 Provider：... (143B)"
+    },
+    "catalog_string_va": "0x1412f006f",
+    "catalog_string": "codex_router_catalog.json",
+    "error_sentinel": "0x8000000000000000",
+    "side_effects": ["READ-ONLY: codex_router_catalog.json (×2), config.toml, RelayManager in-memory state", "WIN-ONLY: RegOpenKeyExW HKCU for codex_paths (inferred from 1.0.9 pattern)", "No writes, no HTTP, no spawns"],
+    "accepted_unknown_stale_format_templates": {
+      "dim": "dim4",
+      "note": "~8 stale-reason format templates fields not byte-confirmed (mac-regrade non-blocking accepted_unknown)",
+      "recovery_attempts": ["backend_serde_field_scan: templates are format strings not DTO fields, not blocking dim4 closure", "mac-regrade: accepted as non-blocking"]
+    }
+  },
+  "dim5_detail": {
+    "win_confirmed": true,
+    "win_specifics": ["_InterlockedCompareExchange8+WakeByAddressSingle (RelayManager state lock)", "RegOpenKeyExW HKCU (codex_paths, WIN-ONLY, inferred)", "win32_file_read_bytes_111 (vs POSIX read on mac)"],
+    "idb": "<本地路径>",
+    "sha": "d24e429a",
+    "delta_vs_109": "module reclassified system→relay; owner size identical 0x38F; core VA shifted; diagnostic strings identical; XOR aimami check preserved"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "shard_ref": "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#diagnose_codex_router",
+    "mac_regrade_ref": "intermediate/aimami/1.1.1/version-delta/dim6/mac-regrade.json#diagnose_codex_router (RTI confirmed on mac)"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

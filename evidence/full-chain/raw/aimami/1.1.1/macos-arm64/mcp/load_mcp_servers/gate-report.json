@@ -1,0 +1,31 @@
+{
+  "command": "load_mcp_servers",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:68 wrapper=loadMcpServers argKeys=[] callee=ne col=30571 kind=tauriInvokeWrapper",
+    "frontend/frontend-control-flow.jsonl:81 terminal_call command=load_mcp_servers argKeys=[]",
+    "frontend/frontend-control-flow.jsonl:163 callsite=Ge.loadMcpServers() queryFn:316 col=159932",
+    "frontend/frontend-control-flow.jsonl:173 callsite=A.loadMcpServers() mcp-page-CGgOsRmy.js:16",
+    "mcp/load_mcp_servers/pseudocode.md 6872B",
+    "mcp/load_mcp_servers/ida/pseudocode/commands_mcp_load_mcp_servers.c 2820B",
+    "mcp/load_mcp_servers/ida/pseudocode/core_mcp_load_mcp_servers.c 1869B",
+    "mcp/load_mcp_servers/ida/pseudocode/bootstrap_cache_load.c 1447B",
+    "mcp/load_mcp_servers/ida/pseudocode/mcp_parse_mcp_section_header.c 1410B",
+    "mcp/load_mcp_servers/ida/pseudocode/repository_store_bootstrap_mcp_servers.c 3536B total_pseudocode=17954B",
+    "mcp/load_mcp_servers/call-trees/load_mcp_servers.jsonl 13 edges depth3 terminated stdlib/serde/syscall leaves",
+    "mcp/load_mcp_servers/interfaces/dto.md McpServerListPayload stride=224B BootstrapStatePayload+0x318 CoreError tags 2/3/10 fire-and-forget bootstrap-cache.json",
+    "mcp/load_mcp_servers/ACCEPTANCE.md acceptance-draft happy_path + 7 boundary + 4 side_effect_asserts + 7 test_mapping",
+    "intermediate/version-delta/mac-same.txt: load_mcp_servers listed (mac-arm64 command confirmed)"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

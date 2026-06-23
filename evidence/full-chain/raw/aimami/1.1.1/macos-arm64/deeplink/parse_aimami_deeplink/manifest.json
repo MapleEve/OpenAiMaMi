@@ -1,0 +1,68 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v2",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "deeplink",
+  "command": "parse_aimami_deeplink",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "model": "claude-sonnet-4-6",
+  "role": "pure_producer",
+  "produced_at": "2026-06-17",
+  "source_binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "binary_path": "raw/binary/AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "delta_status": "diff_reversed",
+  "delta_note": "new module=deeplink in 1.1.1; command=parse_aimami_deeplink is 22/35 mac delta; new in 1.1.1 (not present in 1.0.9)",
+  "owner": {
+    "va": "0x1004dade0",
+    "symbol": "codexmate_lib::commands::deeplink::parse_aimami_deeplink::h8d31a2917e010213",
+    "size_bytes": 3178,
+    "decompile_status": "ok"
+  },
+  "ipc_dispatcher": {
+    "va": "0x100313b10",
+    "symbol": "codexmate_lib::run::{{closure}}::{{closure}}::h79d1252cb7f3ff2b",
+    "size_bytes": 804,
+    "decompile_status": "ok"
+  },
+  "argKeys": ["url"],
+  "argObject": {"url": "String"},
+  "response_type": "CoreEnvelope<DeeplinkResult>",
+  "side_effects": "none",
+  "gate_tier": "strictImplementationUse_candidate",
+  "gate_accepted": false,
+  "implementation_use": false,
+  "four_angle": {
+    "A_func_query": "PASS",
+    "B_string_pool": "PASS",
+    "C_frontend_ccf": "PASS_cross_platform",
+    "D_manifest_index": "PASS"
+  },
+  "fake_wall": {
+    "genuine_ceiling": false,
+    "all_7_taxonomy_excluded": true,
+    "recovery_attempts": "N/A"
+  },
+  "accepted_unknowns": [
+    "dim5_win (separate producer task, INDEX line 1477 done)",
+    "dim6 test/acceptance mapping (consumer side)",
+    "frontend_ccf_macos_explicit (Windows CCF accepted, same JS bundle)",
+    "app_param_semantics (intermediate check, non-blocking)",
+    "DeeplinkResult_rust_struct_name (fields confirmed)",
+    "model_validation_downstream (relay side)"
+  ],
+  "idb_comments": ["0x1004dade0", "0x100313b10", "0x1004dab50", "0x1004daa00", "0x1004daa60"],
+  "files": {
+    "evidence": "evidence.md",
+    "manifest": "manifest.json",
+    "pseudocode": [
+      "ida/pseudocode/0001_parse_aimami_deeplink_owner_h8d31a2917e010213.c",
+      "ida/pseudocode/0002_ipc_dispatcher_h79d1252cb7f3ff2b.c"
+    ],
+    "pseudocode_manifest": "ida/pseudocode-manifest.jsonl",
+    "call_trees": "call-trees/parse_aimami_deeplink.jsonl",
+    "interface": "interfaces/parse_aimami_deeplink_interface.md"
+  }
+}

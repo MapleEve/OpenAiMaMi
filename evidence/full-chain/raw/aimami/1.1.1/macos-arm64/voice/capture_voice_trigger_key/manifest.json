@@ -1,0 +1,95 @@
+{
+  "schema": "c5cm.raw.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "voice",
+  "command": "capture_voice_trigger_key",
+  "produced_at": "2026-06-16T00:00:00+08:00",
+  "producer": "claude-sonnet-4-6",
+  "machine": "<本地机器>",
+  "session": "wf-aimami111-delta-20260616",
+  "role": "pure_producer",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "input_binary": "<来源位置>/raw/binary/AiMaMi-1.1.1-binary",
+  "idb_module": "AiMaMi",
+  "idb_imagebase": "0x100000000",
+  "idb_uptime_sec": 20943,
+  "hexrays_ready": true,
+  "source_binary_sha256": null,
+  "source_binary_sha256_note": "1.1.1 universal arm64 — SHA not extracted this session; IDB module=AiMaMi imagebase=0x100000000 confirms correct binary",
+  "migration_status": "migrated_no_behavior_diff",
+  "migration_baseline": "aimami/1.0.9/macos/voice/capture_voice_trigger_key",
+  "migration_baseline_sha256": "1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482",
+  "migration_baseline_machine": "<本地机器>",
+  "migration_baseline_produced_at": "2026-06-03T03:48:32+08:00",
+  "arg_keys": ["style"],
+  "arg_keys_source": "1.0.9 baseline manifest + cmd-same-macos-arm64.txt (frontend unchanged)",
+  "ida_findings": {
+    "command_string_match_count": 0,
+    "command_string_query": "capture_voice_trigger_key",
+    "backend_owner": "absent",
+    "backend_wrapper": "absent",
+    "decompile_status": "not_applicable_backend_command_absent",
+    "func_query_capture_voice": 0,
+    "func_query_voice_trigger": 0,
+    "string_search_voice_trigger": 0,
+    "string_search_voice_trigger_key": 0,
+    "voice_anchors_1_1_1": [
+      "0x1010e8aea: voice-overlay UI string (not command handler)",
+      "0x1010e9bef: hotspotvoice-search-overlay UI string",
+      "0x1011514d1: path blob with voice-workspace.json/voice-runtime.json",
+      "0x10115990e: voice-volume-marker.json path string"
+    ],
+    "idb_comments_written": true,
+    "idb_comment_addresses": ["0x1010e8aea", "0x1011514d1", "0x10115990e"],
+    "idb_saved": true,
+    "threading_model": "no backend thread model; frontend orphan wrapper only"
+  },
+  "four_angle_completeness": {
+    "angle_A_func_query": "0 hits for capture.*voice.* and voice.*trigger.*",
+    "angle_B_frontend_ipc": "cmd-same-macos-arm64.txt confirms frontend unchanged; arg_keys=[style] per 1.0.9 baseline",
+    "angle_C_string_pool": "0 hits for capture_voice_trigger_key, voice_trigger, voice.*trigger, capture.*voice",
+    "angle_D_owner_map": "owner-map-111.jsonl: status=shared, owner_va=null, note=not_yet_queried"
+  },
+  "fake_wall_exclusion_notes": {
+    "drop_in_place_not_async_body": "inapplicable — no VA exists",
+    "architecture_only_budget_rule": "inapplicable — genuinely absent, not self-limited",
+    "async_decompile_failed_hexrays": "inapplicable — no async body",
+    "wrong_VA": "inapplicable — no VA",
+    "vtable_dynamic_dispatch": "inapplicable — no vtable entry",
+    "HTTP_terminal_external_only": "inapplicable — entirely absent",
+    "library_internal_vs_config_callsite": "inapplicable — command string itself absent"
+  },
+  "interface_error_side_effect": {
+    "input_dto": ["style"],
+    "output_dto": "no upstream backend response; command absent",
+    "error_envelope": "no backend error envelope; no registered handler",
+    "side_effect_boundary": "no upstream backend side effect leaf"
+  },
+  "gate": {
+    "consumerStartReady": true,
+    "strictImplementationUse": true,
+    "readyToImplement": true,
+    "implementation_use": true,
+    "gate_accepted": true,
+    "full_leaf_100": true,
+    "moduleExitAllowed": true,
+    "accepted_substitute": "migrated_no_behavior_diff — same-platform 逆向分析 backend command absence identity with 1.0.9 baseline",
+    "not_upstream_backend_parity": true,
+    "gate_basis": "backend absent in both 1.0.9 and 1.1.1 macOS IDB; 4-channel 逆向分析 search confirms absence; frontend unchanged (cmd-same); migration gate preserved"
+  },
+  "acceptance_mapping": {
+    "consumer_action": "do not implement upstream backend owner; C5 native voice implementation is product decision",
+    "acceptance": "verify C5 gates restored voice as product decision, not upstream backend parity"
+  },
+  "prewrite_owner_gate": {
+    "gate": "PREWRITE_PRODUCER_COLLISION_GATE_V1",
+    "mode": "ADDITIVE",
+    "index_check": "no aimami/1.1.1/macos-arm64/voice/capture_voice_trigger_key in INDEX.jsonl",
+    "raw_dir_check": "raw/aimami/1.1.1/macos-arm64/voice/capture_voice_trigger_key/ did not exist before write",
+    "competing_producer": null,
+    "write_mode": "canonical_new",
+    "authoritative": true
+  }
+}

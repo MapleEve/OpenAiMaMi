@@ -1,0 +1,66 @@
+{
+  "schema": "c5cm.raw.leaf.v1",
+  "key": "aimami/1.1.1/macos-arm64/system/clean",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "system",
+  "command": "clean",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-16",
+  "authoritative": true,
+  "owner_va": "0x10061f140",
+  "owner_symbol": "codexmate_lib::commands::system::clean::h15e98879baa99b36",
+  "owner_size_bytes": 744,
+  "core_va": "0x1004d1210",
+  "core_symbol": "codexmate_lib::core::repository::Repository::clean::h0f5b3f1c3175ee29",
+  "core_size_bytes": 15348,
+  "dispatcher_xref_va": "0x100305c34",
+  "dispatcher_fn": "codexmate_lib::run::{{closure}}",
+  "arg_keys": [],
+  "response_fields": {
+    "files_deleted": "u32 (count of files removed from two data directories)",
+    "accounts_removed": "i32 (original_registry_count - retained_registry_count)"
+  },
+  "response_envelope": "CoreEnvelope<{files_deleted: u32, accounts_removed: i32}>",
+  "side_effects": [
+    "fs::remove_file on each entry in sessions_dir (repository+272)",
+    "fs::remove_file on each entry in second_data_dir (repository+296)",
+    "registry.json rewritten via std::fs::write (activeAccountKey, items, schemaVersion, updatedAt)",
+    "quota.json rewritten via std::fs::write (schemaVersion, updatedAt, items filtered to retained accounts)",
+    "Mutex lock held for duration of entire operation"
+  ],
+  "error_behavior": "CoreError propagated on persist_registry failure; file-delete errors silently swallowed per-file",
+  "mutex_pattern": "OnceBox::initialize + Mutex::lock / unlock; panic-count guard",
+  "idb_comments_written": [
+    "0x10061f140", "0x1004d1210", "0x1004bf8e0", "0x1004c3a00",
+    "0x100647050", "0x100534ff0", "0x100535100"
+  ],
+  "idb_save": "ok",
+  "idb_path": "AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi.i64",
+  "four_angle_completeness": {
+    "A_func_query": "PASS - clean hit at 0x10061f140 (codexmate_lib::commands::system::clean); codexmate_lib::commands::clean pattern 1 hit same VA",
+    "B_string_pool": "PASS (no rodata IPC string for 'clean' - consistent with dispatcher-closure routing, same as other commands; string pool has 'clean' only in log/relay/translator contexts, not as IPC command name)",
+    "C_frontend_IPC": "accepted_unknown (backend-only pass; arg_keys=[] inferred from zero-arity wrapper; no frontend CCF checked this pass)",
+    "D_owner_map": "PASS - owner-map-111.jsonl status=shared/not_yet_queried; INDEX had no prior 1.1.1 clean entry; this session sets owner; no collision"
+  },
+  "fake_wall_taxonomy": {
+    "drop_in_place_shim": "excluded - only destructor shims for CoreError/RegistryFile, not async bodies",
+    "architecture_only": "not applicable",
+    "async_decompile_failed": "not applicable - function is synchronous",
+    "wrong_va": "not applicable - demangled symbol confirmed",
+    "vtable_dynamic": "not applicable",
+    "http_terminal_external": "not applicable - pure fs operations",
+    "library_internal": "std::sys::fs calls are OS syscall leaves, correctly terminated",
+    "genuine_ceiling": false,
+    "caller_disambiguation_tried": "N/A - no genuine ceiling found"
+  },
+  "gate_candidate": "consumerStartReady",
+  "dim1_frontend_ccf": "accepted_unknown (backend-only pass)",
+  "dim2_owner_pseudocode": "PASS",
+  "dim3_call_tree": "PASS - depth 5, terminated at fs::read_to_string, fs::read_dir, fs::remove_file, fs::write leaves",
+  "dim4_interface_dte": "PASS - arg_keys=[], response fields confirmed, error envelope confirmed",
+  "dim5_platform_gate": "macOS ARM64 confirmed; Windows Unknown",
+  "dim6_acceptance_mapping": "not in scope (producer pass)"
+}

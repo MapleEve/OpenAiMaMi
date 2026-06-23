@@ -1,0 +1,80 @@
+{
+  "command": "remove_mcp_server",
+  "session": "wf-aimami111-dim6-20260619",
+  "machine": "<本地机器>",
+  "role": "producer",
+  "produced_at": "2026-06-19",
+  "shard": "mac-shard-4",
+  "dim6": {
+    "status": "acceptance-draft",
+    "happy_path": {
+      "input": {
+        "name": "my-server"
+      },
+      "expected_response": "CoreEnvelope<Vec<McpServerSummary>> \u2014 Ok (discriminant 0x8000000000000000); Vec contains all remaining MCP servers after removal",
+      "expected_side_effects": [
+        "TOML config file: [[my-server]] section and all its key lines spliced out",
+        "Atomic FS write: parent/<filename>.<pid>.<uuid4> \u2192 fsync \u2192 rename \u2192 sync_parent_dir",
+        "In-memory state: mutex-protected; subsequent load_mcp_servers returns list without removed entry"
+      ]
+    },
+    "boundary_error": [
+      {
+        "trigger": "name does not exist in TOML config",
+        "condition": "hash lookup misses; no matching section found",
+        "expected_error": "format_inner with name arg; error string based on format @0x1010B6A09; pattern: '[name] not found' or similar",
+        "notes": "exact error string text unknown (format addr only), non-blocking"
+      },
+      {
+        "trigger": "config file unreadable (IO error)",
+        "condition": "load_config_text \u2192 read_to_string fails",
+        "expected_error": "CoreError wrapping IO error string"
+      },
+      {
+        "trigger": "atomic write fails (disk full, permission)",
+        "condition": "write_atomic OpenOptions/write_all/sync_data/rename fails",
+        "expected_error": "CoreError wrapping IoError string"
+      },
+      {
+        "trigger": "mutex poisoned",
+        "condition": "prior panic inside critical section set poison flag",
+        "expected_error": "CoreError via fmt Display; string from anon symbol @0x10114c2e6"
+      }
+    ],
+    "side_effect_asserts": [
+      "TOML config file must NOT contain [[<name>]] section after successful call",
+      "Vec<McpServerSummary> in response must not include entry with matching name field",
+      "Atomic write: temp file must not persist on success (rename succeeded); parent dir synced"
+    ],
+    "test_mapping": [
+      {
+        "type": "e2e",
+        "description": "Call remove_mcp_server with existing server name; verify TOML config no longer has that server; verify response list excludes it",
+        "reason": "Requires real TOML config + FS write; verifies atomic write side-effect"
+      },
+      {
+        "type": "unit",
+        "description": "Unit-test parse_mcp_document + splice logic with fixture TOML; verify correct lines removed",
+        "reason": "Pure data transformation, no IPC required"
+      },
+      {
+        "type": "e2e",
+        "description": "Call with non-existent name; verify error response with name in message",
+        "reason": "Error path requires IPC dispatch; not easily unit-testable in C5 without mock"
+      },
+      {
+        "type": "manual",
+        "description": "Verify atomic write doesn't leave temp file on disk after success",
+        "reason": "Temp file cleanup is a FS timing concern; hard to assert in automated test"
+      }
+    ],
+    "dim6_basis": "Side effects and error paths derived from evidence.md confirmed callees: write_atomic leaf (FS terminal), parse_mcp_document TOML splice, 4 error paths from decompile (mutex poison / load_config / name-not-found / save_config), response CoreEnvelope<Vec<McpServerSummary>> confirmed via drop_in_place stride=224B"
+  },
+  "gate_upgrade": {
+    "previous": "strictImplementationUse_candidate",
+    "new": "readyToImplement",
+    "rationale": "dim1+dim2+dim3+dim4+dim5_mac all accepted; dim5_win separate (non-blocking for mac implementation); dim6=acceptance-draft (producer-acceptance-draft, consumer to confirm test landing)",
+    "implementation_use": "eligible",
+    "notes": "dim6=acceptance-draft; readyToImplement conditioned on consumer confirming C5 test coverage"
+  }
+}

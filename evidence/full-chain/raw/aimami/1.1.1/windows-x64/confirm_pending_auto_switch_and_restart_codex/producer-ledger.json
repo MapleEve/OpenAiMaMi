@@ -1,0 +1,53 @@
+{
+  "schema": "c5cm.producer.ledger.v1",
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "machine": "<本地机器>",
+  "command": "confirm_pending_auto_switch_and_restart_codex",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "produced_at": "2026-06-17T00:00:00Z",
+  "role": "pure_producer",
+  "prior_session": "wf-aimami111-delta-20260616",
+  "delta_purpose": "补全 dim1 CCF (前端 invoke 确认) + dim4 输入参数确认 (零参数) + pseudocode.md full body + gate 升级 consumerStartReady+strictImplementationUse",
+  "steps_completed": {
+    "step0_ida_health_gate": "ok | hexrays_ready=true | module=AiMaMi 1.1.1 win64.exe | uptime=114492s",
+    "step1_owner_locate": "func_query name_regex=confirm_pending → 0x140952070 (owner_sys) + 0x140089a50 (deserialize)",
+    "step2_decompile_owner": "0x140952070 SUCCESS full body 2970B BB=111 cyclomatic=29",
+    "step3_decompile_deserialize": "0x140089a50 SUCCESS 0xce bytes — zero-param confirmed",
+    "step4_xrefs_owner": "tauri_ipc_main_dispatcher_sys@0x14000d2a0 xref@0x14000f16f; 2 caller wrappers",
+    "step5_decompile_caller1": "sub_140A7AED0@0x140a7aed0 SUCCESS",
+    "step6_decompile_caller2": "sub_140A94080@0x140a94080 SUCCESS (identical structure)",
+    "step7_decompile_dispatch": "sub_14023DC00@0x14023dc00 SUCCESS — relay executor confirmed",
+    "step8_decompile_poll": "sub_140871EA0@0x140871ea0 SUCCESS — poll returns 4/3/2/other",
+    "step9_decompile_finalizer": "sub_14080C3C0@0x14080c3c0 SUCCESS — InvokeResolver vtable+24",
+    "step10_decompile_serializer": "sub_140225110@0x140225110 SUCCESS — response JSON fields confirmed",
+    "step11_decompile_switch_account": "switch_account_restart_codex_coroutine_win_sys_111@0x14096a2d0 SUCCESS — cross-ref for vtable pattern confirmation",
+    "step12_find_regex": "CCF string chain confirmed: 0x1412ac311 + 0x1412fab37 + related auto_switch strings",
+    "step13_idb_comments": "set_comments × 4 addrs (owner_sys, deserialize, dispatch, serializer)",
+    "step14_idb_save": "<本地路径>",
+    "step15_smb_verify": "<来源位置> mounted (ls verified)",
+    "step16_pseudocode_write": "pseudocode.md full body written — dim1+dim4+state machine+offsets+call table+error paths",
+    "step17_gate_report_update": "dim1→Accepted, dim4→Accepted, consumerStartReady→true, strictImplementationUse→true",
+    "step18_producer_ledger_update": "this file"
+  },
+  "owner_va": "0x140952070",
+  "binary_sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "idb_path": "<本地路径>",
+  "idb_save_confirmed": true,
+  "gate_status": "consumerStartReady=true | strictImplementationUse=true | readyToImplement=false (mac+dim6 pending)",
+  "authoritative": true,
+  "collision_status": "NO_COLLISION",
+  "takeover_token": null,
+  "dim1_result": {
+    "dispatcher_va": "0x14000d2a0",
+    "xref_va": "0x14000f16f",
+    "command_string_va": "0x1412ac311",
+    "caller_wrappers": ["0x140a7aed0", "0x140a94080"]
+  },
+  "dim4_result": {
+    "param_count": 0,
+    "zero_param_confirmed": true,
+    "deserialize_va": "0x140089a50",
+    "note": "frontend sends no body fields; uses previously-stored pending auto-switch config"
+  }
+}

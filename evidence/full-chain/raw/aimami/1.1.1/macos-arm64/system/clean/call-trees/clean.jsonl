@@ -1,0 +1,38 @@
+{"depth": 0, "va": "0x10061f140", "symbol": "codexmate_lib::commands::system::clean", "role": "command_wrapper", "terminated": false, "arg_keys": [], "callers": ["0x100305c34 in codexmate_lib::run::{{closure}}"]}
+{"depth": 1, "va": "0x100f2e7a0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::lock", "role": "mutex_primitive", "terminated": true, "terminated_reason": "OS syscall leaf"}
+{"depth": 1, "va": "0x100f7c920", "symbol": "std::sys::sync::once_box::OnceBox::initialize", "role": "lazy_init", "terminated": true, "terminated_reason": "OS once primitive"}
+{"depth": 1, "va": "0x1004d1210", "symbol": "codexmate_lib::core::repository::Repository::clean", "role": "core_implementation", "terminated": false}
+{"depth": 2, "va": "0x1004bf8e0", "symbol": "codexmate_lib::core::repository::Repository::load_registry", "role": "fs_read", "terminated": false}
+{"depth": 3, "va": "0x100f25740", "symbol": "std::fs::read_to_string::inner", "role": "fs_read_leaf", "terminated": true, "terminated_reason": "fs syscall leaf (read registry.json)"}
+{"depth": 3, "va": "0x1002ea550", "symbol": "serde_json::de::from_trait", "role": "json_parse_leaf", "terminated": true, "terminated_reason": "JSON deserialize RegistryFile"}
+{"depth": 2, "va": "0x100647050", "symbol": "alloc::vec::Vec<RegistryItem>::retain", "role": "filter_accounts", "terminated": false}
+{"depth": 3, "va": "0x100f2b980", "symbol": "std::sys::fs::metadata", "role": "fs_stat_leaf", "terminated": true, "terminated_reason": "fstat syscall — checks if codex_path exists; drop items where stat fails"}
+{"depth": 2, "va": "0x100fad0c0", "symbol": "hashbrown::raw::RawTable::reserve_rehash", "role": "hashmap_internal", "terminated": true, "terminated_reason": "stdlib hashmap resize leaf"}
+{"depth": 2, "va": "0x10066a5e0", "symbol": "hashbrown::map::HashMap::insert", "role": "hashmap_insert", "terminated": true, "terminated_reason": "stdlib hashmap insert leaf (account key strings)"}
+{"depth": 2, "va": "0x100f2b980", "symbol": "std::sys::fs::metadata", "role": "dir_existence_check_1", "terminated": true, "terminated_reason": "fstat syscall leaf — check sessions_dir exists (repository+272)"}
+{"depth": 2, "va": "0x100f2ba80", "symbol": "std::sys::fs::read_dir", "role": "dir_iter_1", "terminated": true, "terminated_reason": "opendir syscall leaf — iterate sessions_dir entries"}
+{"depth": 3, "va": "0x100f26120", "symbol": "std::fs::DirEntry::path", "role": "path_build_1", "terminated": true, "terminated_reason": "path construction leaf"}
+{"depth": 3, "va": "0x100f2a550", "symbol": "std::sys::fs::remove_file", "role": "fs_delete_leaf_1", "terminated": true, "terminated_reason": "unlink syscall leaf — delete file in sessions_dir; error swallowed"}
+{"depth": 2, "va": "0x100f2b980", "symbol": "std::sys::fs::metadata", "role": "dir_existence_check_2", "terminated": true, "terminated_reason": "fstat syscall leaf — check second_data_dir exists (repository+296)"}
+{"depth": 2, "va": "0x100f2ba80", "symbol": "std::sys::fs::read_dir", "role": "dir_iter_2", "terminated": true, "terminated_reason": "opendir syscall leaf — iterate second_data_dir entries"}
+{"depth": 3, "va": "0x100f26120", "symbol": "std::fs::DirEntry::path", "role": "path_build_2", "terminated": true, "terminated_reason": "path construction leaf"}
+{"depth": 3, "va": "0x100f2a550", "symbol": "std::sys::fs::remove_file", "role": "fs_delete_leaf_2", "terminated": true, "terminated_reason": "unlink syscall leaf — delete file in second_data_dir; error swallowed"}
+{"depth": 2, "va": "0x1004c3a00", "symbol": "codexmate_lib::core::repository::Repository::persist_registry", "role": "registry_persist", "terminated": false}
+{"depth": 3, "va": "0x1005582b0", "symbol": "codexmate_lib::platform::paths::CodexPaths::ensure_directories", "role": "dir_create", "terminated": false}
+{"depth": 4, "va": "0x100f24d00", "symbol": "std::fs::DirBuilder::_create", "role": "fs_mkdir_leaf", "terminated": true, "terminated_reason": "mkdir syscall leaf (x9 calls for all CodexPaths dirs)"}
+{"depth": 3, "va": "0x100f2aa10", "symbol": "std::sys::fs::copy", "role": "fs_backup_leaf", "terminated": true, "terminated_reason": "fs::copy syscall leaf — optional registry backup (a4=false in clean, skipped)"}
+{"depth": 3, "va": "0x10067d980", "symbol": "serde_core::ser::SerializeMap::serialize_entry (schemaVersion)", "role": "json_ser_leaf", "terminated": true, "terminated_reason": "JSON serialize leaf"}
+{"depth": 3, "va": "0x100685e30", "symbol": "serde_core::ser::SerializeMap::serialize_entry (updatedAt)", "role": "json_ser_leaf", "terminated": true, "terminated_reason": "JSON serialize leaf"}
+{"depth": 3, "va": "0x1006897b0", "symbol": "serde_core::ser::SerializeMap::serialize_entry (activeAccountKey)", "role": "json_ser_leaf", "terminated": true, "terminated_reason": "JSON serialize leaf"}
+{"depth": 3, "va": "0x100688c10", "symbol": "serde_core::ser::SerializeMap::serialize_entry (items)", "role": "json_ser_leaf", "terminated": true, "terminated_reason": "JSON serialize leaf"}
+{"depth": 3, "va": "0x100201fe0", "symbol": "std::fs::write", "role": "fs_write_leaf", "terminated": true, "terminated_reason": "write syscall leaf — writes registry.json atomically"}
+{"depth": 2, "va": "0x100534ff0", "symbol": "codexmate_lib::core::quota_store::load", "role": "quota_load", "terminated": false}
+{"depth": 3, "va": "0x100f25740", "symbol": "std::fs::read_to_string::inner", "role": "fs_read_leaf", "terminated": true, "terminated_reason": "read syscall leaf — reads quota JSON file"}
+{"depth": 3, "va": "0x1002e9520", "symbol": "serde_json::de::from_trait (QuotaFile)", "role": "json_parse_leaf", "terminated": true, "terminated_reason": "JSON deserialize QuotaFile"}
+{"depth": 2, "va": "0x100646bb0", "symbol": "alloc::vec::Vec<QuotaItem>::retain", "role": "filter_quota", "terminated": true, "terminated_reason": "retain predicate: keep only items whose key is in HashMap of retained accounts"}
+{"depth": 2, "va": "0x100535100", "symbol": "codexmate_lib::core::quota_store::save", "role": "quota_persist", "terminated": false}
+{"depth": 3, "va": "0x100f33d60", "symbol": "std::path::Path::parent", "role": "path_leaf", "terminated": true, "terminated_reason": "path manipulation leaf"}
+{"depth": 3, "va": "0x100f24d00", "symbol": "std::fs::DirBuilder::_create", "role": "fs_mkdir_leaf", "terminated": true, "terminated_reason": "mkdir syscall leaf — ensure quota parent dir"}
+{"depth": 3, "va": "0x100201f70", "symbol": "std::fs::write (quota)", "role": "fs_write_leaf", "terminated": true, "terminated_reason": "write syscall leaf — writes quota JSON file"}
+{"depth": 2, "va": "0x100556190", "symbol": "codexmate_lib::core::models::CoreEnvelope::ok", "role": "response_build", "terminated": true, "terminated_reason": "response serialization leaf"}
+{"depth": 1, "va": "0x100f2e7c0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::unlock", "role": "mutex_primitive", "terminated": true, "terminated_reason": "OS syscall leaf"}

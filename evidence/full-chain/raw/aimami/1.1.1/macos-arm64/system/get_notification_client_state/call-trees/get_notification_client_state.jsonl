@@ -1,0 +1,24 @@
+{"depth": 0, "va": "0x10061c690", "symbol": "codexmate_lib::commands::system::get_notification_client_state::h8be04846c951d28f", "role": "tauri_cmd_owner", "terminated_reason": null, "session": "wf-aimami111-delta-20260616"}
+{"depth": 1, "va": "0x100f7c920", "symbol": "std::sys::sync::once_box::OnceBox<T>::initialize", "role": "lazy_mutex_init_cold", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x100f2e7a0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::lock", "role": "acquire_lock", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x100fb7400", "symbol": "std::panicking::panic_count::is_zero_slow_path", "role": "poison_check", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x1004d0e90", "symbol": "codexmate_lib::core::repository::Repository::get_or_create_notification_client_state::h8134728ae9614858", "role": "core_get_or_create", "terminated_reason": null}
+{"depth": 2, "va": "0x1004bfa30", "symbol": "codexmate_lib::core::repository::Repository::load_settings", "role": "settings_reader", "terminated_reason": null}
+{"depth": 3, "va": "0x100f25740", "symbol": "std::fs::read_to_string::inner", "role": "config_file_reader", "terminated_reason": "fs_read_leaf"}
+{"depth": 3, "va": "0x1002ea3f0", "symbol": "serde_json::de::from_trait", "role": "json_deserializer", "terminated_reason": "serde_library_leaf"}
+{"depth": 2, "va": "0x100f656f0", "symbol": "alloc::string::String::clone", "role": "clone_device_id", "terminated_reason": "alloc_library_leaf"}
+{"depth": 2, "va": "0x10057e620", "symbol": "core::str::trim_matches", "role": "whitespace_trim", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x100e13930", "symbol": "uuid::v4::Uuid::new_v4", "role": "uuid_generator_create_path", "terminated_reason": "uuid_library_leaf"}
+{"depth": 2, "va": "0x100e13a20", "symbol": "uuid::fmt::LowerHex::fmt", "role": "uuid_hex_formatter", "terminated_reason": "uuid_library_leaf"}
+{"depth": 2, "va": "0x1000014c0", "symbol": "__rust_dealloc", "role": "dealloc_old_device_id", "terminated_reason": "allocator_leaf"}
+{"depth": 2, "va": "0x100f34cf0", "symbol": "std::time::SystemTime::now", "role": "epoch_seed_create_path", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x100f34cb0", "symbol": "std::time::SystemTime::duration_since", "role": "compute_epoch_secs", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x1004c00c0", "symbol": "codexmate_lib::core::repository::Repository::save_settings", "role": "settings_writer_create_path", "terminated_reason": null}
+{"depth": 3, "va": "0x1005582b0", "symbol": "codexmate_lib::platform::paths::CodexPaths::ensure_directories", "role": "ensure_dirs", "terminated_reason": "platform_leaf"}
+{"depth": 3, "va": "0x100201fe0", "symbol": "std::fs::write", "role": "config_file_writer", "terminated_reason": "fs_write_leaf"}
+{"depth": 2, "va": "0x1004eca70", "symbol": "core::ptr::drop_in_place<codexmate_lib::core::repository::CodexMateSettings>", "role": "settings_drop", "terminated_reason": "drop_leaf"}
+{"depth": 1, "va": "0x10058fda0", "symbol": "_<codexmate_lib::core::models::CoreError as core::fmt::Display>::fmt", "role": "error_formatter", "terminated_reason": "fmt_library_leaf"}
+{"depth": 1, "va": "0x100635190", "symbol": "core::ptr::drop_in_place<codexmate_lib::core::models::CoreError>", "role": "coreerror_drop", "terminated_reason": "drop_leaf"}
+{"depth": 1, "va": "0x100f2e7c0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::unlock", "role": "release_lock", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x100fbc780", "symbol": "core::result::unwrap_failed", "role": "panic_poison_path", "terminated_reason": "panic_leaf"}
+{"depth": "ipc_dispatch", "va": "0x1003154f0", "symbol": "codexmate_lib::run::{{closure}}::{{closure}}::h93268f8fdbedf229", "role": "ipc_dispatch_closure", "call_site_to_owner": "0x1003155fa", "terminated_reason": "ipc_framework_leaf"}

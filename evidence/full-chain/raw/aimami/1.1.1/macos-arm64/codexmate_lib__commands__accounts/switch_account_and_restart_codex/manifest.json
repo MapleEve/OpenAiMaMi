@@ -1,0 +1,31 @@
+{
+  "command": "switch_account_and_restart_codex",
+  "module": "codexmate_lib::commands::accounts",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "session": "wf-aimami111-delta-20260618-mac100",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-18",
+  "leaf_status": "full_gold_leaf",
+  "binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "owner": {
+    "va": "0x100624e90",
+    "size": "0x989",
+    "demangled": "codexmate_lib::commands::accounts::switch_account_and_restart_sync"
+  },
+  "call_tree_edges": 21,
+  "call_tree_depth": 3,
+  "pseudocode_files": 5,
+  "baseline_version": "1.0.9",
+  "delta_classification": "delta",
+  "delta_confirmed_by": ["mac-delta.txt", "mac-need-goldleaf.txt", "body-compare sweep"],
+  "key_changes_vs_109": [
+    "clear_auto_switch_transient_state added inside Repository::switch_account (new callee 0x1004cfc50)",
+    "retry-relaunch after rollback restore (relaunch_codex_after_success called twice in failure path vs once in 1.0.9)",
+    "VA addresses all changed (1.0.9 owner was 0x1001e6be4, 1.1.1 is 0x100624e90)",
+    "stop_codex_for_file_edit replaces stop_codex_app_gracefully (renamed/refactored with kill_until_clear added)",
+    "capture_switch_rollback_state signature unchanged but mutex fields layout may differ",
+    "confirm_pending_auto_switch_and_restart_codex new sibling command added in same module"
+  ]
+}

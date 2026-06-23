@@ -1,0 +1,14 @@
+{"depth":0,"addr":"0x1006162b0","name":"codexmate_lib::commands::system::get_system_info","role":"command_owner","session":"wf-aimami111-same-depth-20260618","note":"No Mutex; direct impl in command fn; returns {os_name,os_version,arch,hostname} JSON DTO"}
+{"depth":1,"addr":"0x10090e350","name":"hostname::get","role":"hostname_reader","terminated_reason":"external_call_recorded","note":"Reads system hostname via libc gethostname()"}
+{"depth":1,"addr":"0x100f65430","name":"alloc::string::String::from_utf8_lossy","role":"utf8_decode","terminated_reason":"named_leaf"}
+{"depth":1,"addr":"0x100f31ac0","name":"std::sys::process::unix::common::Command::new","role":"cmd_new","terminated_reason":"external_call_recorded","note":"sw_vers subprocess"}
+{"depth":1,"addr":"0x100f31920","name":"std::sys::process::unix::common::Command::arg","role":"cmd_arg","terminated_reason":"external_call_recorded","note":"-productVersion argument"}
+{"depth":1,"addr":"0x100f36130","name":"std::process::Command::output","role":"cmd_output","terminated_reason":"external_call_recorded","note":"Executes sw_vers -productVersion; parses stdout for os_version"}
+{"depth":1,"addr":"0x100f736c0","name":"core::str::converts::from_utf8","role":"utf8_validate","terminated_reason":"named_leaf"}
+{"depth":1,"addr":"0x10057e620","name":"core::str::<impl str>::trim_matches","role":"string_trim","terminated_reason":"named_leaf","note":"Strips newline from sw_vers output"}
+{"depth":2,"addr":"0x100fbd052","name":"_memcpy","role":"memcpy","terminated_reason":"compile_noise"}
+{"depth":2,"addr":"0x100fbc3a1","name":"alloc::raw_vec::handle_error","role":"alloc_error","terminated_reason":"compile_noise"}
+{"depth":3,"addr":"0x1000014b0","name":"___rust_alloc","role":"alloc","terminated_reason":"compile_noise"}
+{"depth":3,"addr":"0x1000014c0","name":"___rust_dealloc","role":"dealloc","terminated_reason":"compile_noise"}
+{"depth":4,"addr":"0x1000014f0","name":"___rust_no_alloc_shim_is_unstable_v2","role":"alloc_shim","terminated_reason":"compile_noise"}
+{"depth":5,"addr":"0x100f36130","name":"std::process::Command::output","role":"sw_vers_output_leaf","terminated_reason":"external_call_recorded","note":"Terminal: subprocess execution; os_name hardcoded='macos', arch hardcoded='aarch64'"}

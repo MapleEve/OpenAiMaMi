@@ -1,0 +1,63 @@
+{
+  "schema": "c5cm.gate_report.v1",
+  "command": "cancel_voice_trigger_capture",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-16T00:00:00+08:00",
+  "gate": "readyToImplement",
+  "gate_accepted": true,
+  "implementation_use": true,
+  "consumerStartReady": true,
+  "strictImplementationUse": true,
+  "readyToImplement": true,
+  "full_leaf_100": true,
+  "accepted_substitute": "same-platform 逆向分析 backend command absence substitute — migrated from 1.0.9 no-behavior-diff",
+  "not_upstream_backend_parity": true,
+  "migration_status": "migrated_no_behavior_diff",
+  "dim1_frontend_ccf": {
+    "status": "pass",
+    "evidence": "wrapper=cancelVoiceTriggerCapture:()=>ne('cancel_voice_trigger_capture'), argKeys=[], file=assets/index-DdcCOEJG.js:86:28600, kind=tauriInvokeWrapper"
+  },
+  "dim2_backend_owner_pseudocode": {
+    "status": "accepted_substitute",
+    "evidence": "backend absent — 逆向分析 string pool 0 hits, func_query 0 hits; accepted_substitute=same-platform 逆向分析 absence"
+  },
+  "dim3_call_tree": {
+    "status": "accepted_substitute",
+    "evidence": "no backend owner → no call tree applicable; substitute accepted per 1.0.9 baseline pattern"
+  },
+  "dim4_interface_dto": {
+    "status": "pass",
+    "evidence": "argKeys=[], no params, no backend response; interface fully documented as absent"
+  },
+  "dim5_platform_gate": {
+    "status": "partial",
+    "macos_arm64": "confirmed",
+    "windows_x64": "Unknown — not checked this session",
+    "note": "macOS gate passes with absence substitute; Windows requires independent verification"
+  },
+  "dim6_acceptance_mapping": {
+    "status": "pass",
+    "evidence": "migrated from 1.0.9: consumer_action=do not implement backend owner; C5 test: verify zero-arg invoke and null response handling"
+  },
+  "unknowns": [
+    {"id": "u1", "description": "Windows 1.1.1 backend presence", "classification": "accepted_unknown", "gate_impact": "blocks Windows gate only; macOS gate unaffected"},
+    {"id": "u2", "description": "Frontend runtime behavior on unregistered invoke (Tauri 2.x error vs null)", "classification": "accepted_unknown", "gate_impact": "none — product decision acceptable"},
+    {"id": "u3", "description": "OS-level voice capture cancellation mechanism (CGEventTap etc)", "classification": "accepted_unknown", "gate_impact": "none — frontend/OS-level only"}
+  ],
+  "fake_wall_check": {
+    "taxonomy_checked": true,
+    "result": "all_7_inapplicable",
+    "genuine_ceiling": false,
+    "note": "No VA exists to examine; backend command genuinely absent from binary"
+  },
+  "four_angle_completeness": {
+    "A_func_query": "pass (0 hits)",
+    "B_string_pool": "pass (0 hits)",
+    "C_frontend_ipc": "pass (argKeys=[], wrapper confirmed)",
+    "D_migration_diff": "pass (no-behavior-diff confirmed)"
+  }
+}

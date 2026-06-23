@@ -1,0 +1,62 @@
+{
+  "schema": "c5cm.evidence.v1",
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-17",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "module": "accounts",
+  "target": "begin_add_account_attach_monitor",
+  "status": "done",
+  "gate_dims": {
+    "dim1_ccf": {
+      "status": "confirmed",
+      "source": "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl",
+      "command": "begin_add_account_attach_monitor",
+      "wrapper": "beginAddAccountAttachMonitor",
+      "argKeys": [],
+      "argObject": null,
+      "params": "()",
+      "file": "assets/index-DdcCOEJG.js",
+      "line": 86,
+      "col": 25608,
+      "cross_platform_match": true,
+      "note": "mac ipc-contracts 同条目 col=25608 完全一致"
+    },
+    "dim4_input_params": {
+      "status": "confirmed",
+      "frontend_args": "none (argKeys=[], argObject=null)",
+      "backend_discriminants": [
+        {"name": "v17", "source": "arg_parser return", "value_ok": 3, "note": "v17==3 → cached snapshot fast path"},
+        {"name": "a3_byte0", "source": "core CAS", "meaning": "monitor lock state (0=free,1=locked,2=waiters)"},
+        {"name": "a3_byte1", "source": "core", "meaning": "waiter_flag"},
+        {"name": "v14", "source": "state_manager_lock_and_assemble", "value_ok": 2, "note": "v14==2 → cached T fast path"},
+        {"name": "sync_a4", "source": "business L3b call", "value": 4, "note": "fixed constant, triggers check_schtask_codexmate_autoswitch"}
+      ]
+    },
+    "dim2_output": {
+      "status": "confirmed",
+      "ok_tag": 3,
+      "pending_tag": "0x8000000000000000",
+      "err_tag": 6,
+      "resolver": "sub_14080C3C0",
+      "error_sender": "sub_140832560"
+    },
+    "dim3_body_completeness": {
+      "status": "full",
+      "layers_decompiled": 3,
+      "handler_size": "0x48f",
+      "core_size": "0x74b",
+      "business_size": "0x33a",
+      "accepted_unknown": false,
+      "genuine_ceiling": false,
+      "recovery_attempts": "N/A — all three layers decompiled without obstruction"
+    }
+  },
+  "platform_divergence": {
+    "windows_only_apis": ["_InterlockedCompareExchange8", "WakeByAddressSingle", "CloseHandle"],
+    "note": "core 层 CAS + wake + thread handle close 为 Windows 独占；macOS 对应层需单独逆向"
+  },
+  "idb_saved": "<本地路径>"
+}

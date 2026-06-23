@@ -1,0 +1,25 @@
+{
+  "schema": "c5cm.producer_ledger.v1",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "producer": "claude-sonnet-4-6",
+  "role": "pure_producer_sop_steps_0_6",
+  "produced_at": "2026-06-16T00:00:00+08:00",
+  "command": "cancel_voice_trigger_capture",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "authoritative": true,
+  "owner_check": {
+    "index_pre_check": "INDEX.jsonl grep 1.1.1 — no prior entry for aimami/1.1.1/macos-arm64/voice/cancel_voice_trigger_capture",
+    "raw_dir_pre_check": "raw/aimami/1.1.1/macos-arm64/ existed but no voice/cancel_voice_trigger_capture subdirectory",
+    "owner_map_status": "status=shared, module=null, owner_va=null, note=not_yet_queried — no competing producer",
+    "collision_status": "no_collision",
+    "write_mode": "ADDITIVE — new leaf, no existing owner",
+    "takeover_token": "not_required"
+  },
+  "prewrite_producer_collision_gate": "PASSED — no existing owner for this target in INDEX.jsonl or raw directory",
+  "sop_steps_completed": ["0_ledger_rebuild", "1_owner_locate", "2_decompile_callees", "3_interface_dto_error", "4_fake_wall_check", "5_idb_comments", "6_raw_leaf_write"],
+  "idb_save_status": "pending — called after this write",
+  "index_entry_status": "pending — appended after leaf write complete"
+}

@@ -1,0 +1,90 @@
+{
+  "command": "get_or_create_remote_device_secret",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "system/get_or_create_remote_device_secret/pseudocode.md — gold-leaf layers 1-5: owner@0x14078CD70 + core@0x1401B4FB0 + uuid_v4_generate_raw_sys@0x140F5A860 (ProcessPrng+RFC4122) + uuid hex32 formatter + settings write",
+    "system/get_or_create_remote_device_secret/call-tree.md — depth=5 edges=42 all terminated",
+    "system/get_or_create_remote_device_secret/gate-report.json — wf-aimami111-delta-20260618-goldleaf dims confirmed",
+    "system/get_or_create_remote_device_secret/interface.md",
+    "system/get_or_create_remote_device_secret/evidence.json",
+    "frontend/ipc-contracts.jsonl — tauriInvokeRaw argKeys=[] index-DdcCOEJG.js:86 fn=Co",
+    "frontend/frontend-control-flow.jsonl — fn=Co with if-preflight guards; snippet=s(\"get_or_create_remote_device_secret\")"
+  ],
+  "dim1_detail": {
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "kind": "tauriInvokeRaw",
+    "argKeys": [],
+    "wrapper": null,
+    "fn": "Co",
+    "snippet": "s(\"get_or_create_remote_device_secret\")",
+    "guards": [
+      "if(Sr()){...} — Tauri runtime check",
+      "if(l){await s(\"import_remote_device_secret_if_empty\",{secret:l})...} — migration",
+      "if(t)return t — localStorage fast-path"
+    ]
+  },
+  "dim2_detail": {
+    "owner_va": "0x14078CD70",
+    "owner_name": "get_or_create_remote_device_secret_owner_sys",
+    "core_va": "0x1401B4FB0",
+    "core_name": "get_or_create_remote_device_secret_core_sys",
+    "pseudocode_bytes": 10569,
+    "note": "gold-leaf; delta vs 1.0.9: managed-state key changed to 'dev.aimami.auto-switch'(22B); UUID format changed 73→65 chars"
+  },
+  "dim3_detail": {
+    "depth": 5,
+    "edges": 42,
+    "terminated_reasons": ["platform-primitive", "external_call", "hex_encoding_leaf", "json_serialization_leaf", "persistence_commit"],
+    "key_path": "dispatcher→owner@0x14078CD70→core@0x1401B4FB0→codexmate_settings_hotspot_read_full→uuid_v4_generate_raw(ProcessPrng)→uuid_bytes_to_hex32_lowercase→hotspot_config_serialize_5field→win32_file_write"
+  },
+  "dim4_detail": {
+    "request": {},
+    "response": "String — remoteDeviceSecret value",
+    "critical_format_change": {
+      "v109": "{uuid_hyphen}-{uuid_hyphen} (73 chars, hyphens inside)",
+      "v111": "{hex32}-{hex32} (65 chars, NO hyphens inside segments)",
+      "regex": "/^[0-9a-f]{32}-[0-9a-f]{32}$/",
+      "note": "C5 must handle both formats or enforce re-generation if stored 1.0.9 secret (73-char) is found"
+    },
+    "error_paths": [
+      "directory check fails (relay_config_check_parent_dirs_sys) → Err tag=2; no write",
+      "JSON serialize fails during write-back → Err tag=3; partial write possible",
+      "Mutex poisoned → panic 'poisoned lock: another task failed inside'",
+      "ProcessPrng returns 0 (CSPRNG failure) → panic sub_14124C240",
+      "repo unavailable → Err tag=6"
+    ],
+    "side_effects": [
+      "File read: CodexMateSettings JSON via codexmate_settings_hotspot_read_full_sys_111 (incl. mysteryUnlockGrants/Routes optional reads)",
+      "File write (conditional): ONLY when secret absent/empty → hotspot_config_serialize_5field_json_and_write_sys@0x1401A1D90 writes 5-field JSON",
+      "ProcessPrng (Windows CSPRNG) for UUID generation",
+      "No HTTP, no sidecar, no DB"
+    ]
+  },
+  "dim5_detail": {
+    "win_primitives": ["ProcessPrng (Windows CSPRNG)", "WakeByAddressSingle", "_InterlockedCompareExchange8", "win32_file_write_bytes_111@0x141093710"],
+    "managed_state_key_change": "1.0.9: 'repo'(4B) → 1.1.1: 'dev.aimami.auto-switch'(22B)"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "happy_path_existing": "remoteDeviceSecret present + non-empty after trim → return existing value; NO file write",
+    "happy_path_create": "secret absent/empty → ProcessPrng 16B → RFC4122 bitmask → hex32 lowercase → '{hex32}-{hex32}' (65 chars) → write settings → return new secret",
+    "test_mapping": [
+      "e2e: empty settings → call → assert regex /^[0-9a-f]{32}-[0-9a-f]{32}$/ → assert settings written",
+      "e2e: settings has existing secret → call → assert same value returned → assert NO write",
+      "e2e: verify 1.0.9 73-char format not returned by 1.1.1 binary"
+    ]
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "c5cm.reverse.gate_report.consumer_gate.v1",
+  "command": "rebuild_registry",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "rebuild_registry",
+  "session": "wf-aimami111-dim6-20260619",
+  "produced_at": "2026-06-19",
+  "gate": "readyToImplement",
+  "gate_accepted": true,
+  "implementation_use": true,
+  "readyToImplement": true,
+  "strictImplementationUse": true,
+  "gate_tier": "readyToImplement",
+  "consolidated_by": "wf-aimami111-gate-consolidate-20260620",
+  "consolidated_at": "2026-06-20",
+  "consolidated_gate_tier": "readyToImplement",
+  "consolidated_dim1_5_status": "all closed (dim1 rebuildRegistry CCF col=24516; dim2 14-step pipeline; dim4 RegistryFile DTO; 4 side-effects; dim5_mac confirmed)",
+  "consolidated_accepted_unknowns": "dim5_win (separate win shard)",
+  "consolidated_note": "shard-3",
+  "per_platform_rule": "mac gate: dim5_win_Unknown does not block mac readyToImplement; mac dim1-5 all closed + dim6 acceptance written = readyToImplement"
+}

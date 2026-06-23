@@ -1,0 +1,116 @@
+{
+  "schema": "c5cm.raw.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "voice",
+  "command": "cancel_voice_trigger_capture",
+  "produced_at": "2026-06-16T00:00:00+08:00",
+  "producer": "claude-sonnet-4-6",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "role": "pure_producer_sop_steps_0_6",
+  "source_binary_sha256": "pending_sha_from_idb_path",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "input_binary": "<来源位置>/raw/binary/AiMaMi-1.1.1-binary",
+  "ida_module": "AiMaMi",
+  "ida_imagebase": "0x100000000",
+  "ida_hexrays_ready": true,
+  "ida_uptime_sec": 19307,
+  "frontend_contract_file": "raw/aimami/1.1.1/macos-arm64/frontend/ipc-contracts.jsonl",
+  "frontend_contract_hit": {
+    "command": "cancel_voice_trigger_capture",
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "column": 28600,
+    "kind": "tauriInvokeWrapper",
+    "callee": "ne",
+    "argKeys": [],
+    "argObject": null,
+    "params": "",
+    "wrapper": "cancelVoiceTriggerCapture"
+  },
+  "arg_keys": [],
+  "migration": {
+    "status": "migrated_no_behavior_diff",
+    "baseline_version": "1.0.9",
+    "baseline_platform": "macos",
+    "baseline_producer": "Codex",
+    "baseline_machine": "<本地机器>",
+    "baseline_manifest": "raw/aimami/1.0.9/macos/voice/cancel_voice_trigger_capture/manifest.json",
+    "baseline_source_binary_sha256": "1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482",
+    "diff_basis": "逆向分析 string pool + func_query + find_regex — all 0 hits in 1.1.1; frontend wrapper unchanged (argKeys=[], zero-arity invoke); voice anchor addresses differ in 1.1.1 (0x1010e8aea, 0x1011514d1) vs 1.0.9 but are UI/path only",
+    "behavior_diff_detected": false,
+    "backend_presence_diff": false
+  },
+  "ida_findings": {
+    "command_string_match_count": 0,
+    "func_query_cancel_voice_hits": 0,
+    "func_query_voice_trigger_hits": 0,
+    "find_regex_voice_trigger_hits": 0,
+    "backend_owner": "absent",
+    "backend_wrapper": "absent",
+    "decompile_status": "not_applicable_backend_command_absent",
+    "voice_anchors_1_1_1": [
+      "0x1010e8aea voice-overlay UI string",
+      "0x1011514d1 path blob (voice-workspace.json/voice-runtime.json/CODEX_HOME paths)"
+    ],
+    "four_angle_completeness": {
+      "A_func_query_symbol_enum": "pass (0 hits)",
+      "B_string_pool": "pass (0 hits)",
+      "C_frontend_ipc": "pass (argKeys=[], wrapper confirmed)",
+      "D_migration_diff": "pass (no-behavior-diff, backend absence identical)"
+    },
+    "fake_wall_taxonomy": {
+      "drop_in_place_shim": "inapplicable — no function body exists",
+      "async_poll_resume": "inapplicable — no owner to find async body for",
+      "vtable_dynamic_dispatch": "inapplicable — no owner",
+      "icf_fold": "inapplicable — no function to be folded",
+      "http_terminal": "inapplicable — no backend owner at all",
+      "architecture_budget_rule": "inapplicable — not self-limited",
+      "wrong_va": "inapplicable — no VA candidates"
+    },
+    "genuine_ceiling": false,
+    "accepted_unknown": false,
+    "recovery_attempts": "N/A — no fake wall; backend command is genuinely absent from binary"
+  },
+  "interface_error_side_effect": {
+    "input_dto": [],
+    "output_dto": "no upstream backend response owner present in 1.1.1 binary; frontend invoke returns null/no-op",
+    "error_envelope": "no backend error envelope; no registered upstream backend owner for this command",
+    "side_effect_boundary": "no upstream backend side effect leaf; voice path/UI anchors (0x1010e8aea, 0x1011514d1) are not command owners"
+  },
+  "gate": {
+    "consumerStartReady": true,
+    "strictImplementationUse": true,
+    "readyToImplement": true,
+    "implementation_use": true,
+    "gate_accepted": true,
+    "full_leaf_100": true,
+    "moduleExitAllowed": true,
+    "gate_tier": "readyToImplement",
+    "accepted_substitute": "same-platform 逆向分析 backend command absence substitute — migrated from 1.0.9 no-behavior-diff",
+    "not_upstream_backend_parity": true,
+    "dim1_frontend_ccf": "confirmed (wrapper cancelVoiceTriggerCapture:()=>ne('cancel_voice_trigger_capture'), argKeys=[], file=assets/index-DdcCOEJG.js:86:28600)",
+    "dim2_backend_owner_pseudocode": "accepted_substitute (backend absent — same-platform 逆向分析 absence substitute)",
+    "dim3_call_tree": "accepted_substitute (no backend owner → no call tree; substitute accepted)",
+    "dim4_interface_dto": "confirmed (argKeys=[], no params, no response owner)",
+    "dim5_platform_gate": "macOS arm64 confirmed; Windows 1.1.1 Unknown (not checked this session)",
+    "dim6_acceptance_mapping": "migrated from 1.0.9: do not implement backend owner; verify C5 removes voice surface or gates as product decision"
+  },
+  "acceptance_mapping": {
+    "consumer_action": "do not implement an upstream backend owner for this command; if C5 restores voice trigger capture cancellation backend, that is a Product decision, not upstream parity",
+    "c5_test_implication": "verify frontend invokes cancel_voice_trigger_capture() with zero args and handles null/undefined response gracefully",
+    "platform_scope": "macOS arm64 confirmed; Windows Unknown"
+  },
+  "idb_comments": {
+    "written": true,
+    "targets": [
+      {"addr": "0x1010e8aea", "comment": "voice-overlay UI anchor — not cancel_voice_trigger_capture owner; migrated_no_behavior_diff 1.0.9→1.1.1; session wf-aimami111-delta-20260616"},
+      {"addr": "0x1011514d1", "comment": "path blob anchor (voice-workspace.json/voice-runtime.json) — not cancel_voice_trigger_capture owner; backend absent; session wf-aimami111-delta-20260616"}
+    ]
+  },
+  "index_key": "aimami/1.1.1/macos-arm64/voice/cancel_voice_trigger_capture",
+  "index_status": "migrated_no_behavior_diff_backend_absent",
+  "index_gate": "promotion_full_leaf_100_accepted_substitute_ida_absence_migrated"
+}

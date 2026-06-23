@@ -1,0 +1,41 @@
+{
+  "command": "test_api_proxy_config",
+  "module": "codexmate_lib::commands::system",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "session": "wf-aimami111-delta-20260618-mac100",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-18",
+  "status": "full_gold_leaf",
+  "va_ipc_entry": "0x100131f30",
+  "va_blocking_poll": "0x100598740",
+  "owner_module": "codexmate_lib::commands::system",
+  "risk": "medium-high",
+  "call_tree_edges": 15,
+  "call_tree_depth": 5,
+  "pseudocode_files": [
+    "ida/pseudocode/blocking_task_poll_0x100598740.c",
+    "ida/pseudocode/ipc_handler_closure_0x100131f30.c",
+    "ida/pseudocode/load_api_request_context_from_repo_0x10061d900.c",
+    "ida/pseudocode/test_api_connectivity_0x1006e5290.c",
+    "ida/pseudocode/load_auth_file_0x10053ac80.c",
+    "ida/pseudocode/make_api_request_context_0x10053e690.c",
+    "ida/pseudocode/sanitize_proxy_config_0x1006e4d80.c",
+    "ida/pseudocode/http_client_0x1006e3670.c",
+    "ida/pseudocode/core_envelope_ok_0x100557180.c"
+  ],
+  "call_tree_file": "call-trees/test_api_proxy_config.jsonl",
+  "interfaces_file": "interfaces/dto.md",
+  "evidence_file": "evidence.md",
+  "delta_vs_109": {
+    "change_1": "token_source_changed: 1.0.9 cloned token from in-memory repo state; 1.1.1 reads auth JSON file via load_auth_file (fs::read_to_string + serde_json) then make_api_request_context (JWT decode, chatgpt_account_id lookup)",
+    "change_2": "success_message_format: 1.0.9 returned raw proxy URL or 'direct connection'; 1.1.1 formats 'Reached chatgpt.com via {url} HTTP {status_code}' using format template at 0x1010B8ED5",
+    "unchanged": ["code field = 'ok'", "status field 0/1", "status_code u16", "error code strings", "top-level callee structure"]
+  },
+  "terminated_reasons": {
+    "std::fs::read_to_string::inner@0x100f25740": "external_call",
+    "serde_json::de::from_trait@0x1002e89b0": "external_call",
+    "RequestBuilder::send@0x100b08440": "external_call",
+    "CoreEnvelope::ok@0x100557180": "response_serialize"
+  }
+}

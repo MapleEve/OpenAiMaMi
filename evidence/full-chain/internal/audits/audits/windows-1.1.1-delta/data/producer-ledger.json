@@ -1,0 +1,114 @@
+{
+  "schema": "c5cm.producer-ledger.v1",
+  "bundle": "windows-1.1.1-delta",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "binary_sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "sessions": [
+    {
+      "session_id": "wf-aimami111-delta-20260616",
+      "machine": "<本地机器>",
+      "date": "2026-06-16",
+      "tasks": [
+        "set_codex_api_login deep",
+        "set_codex_api_slots recon",
+        "get_relay_provider_quota initial",
+        "reorder_relay_providers initial",
+        "reveal_relay_api_key initial",
+        "set_relay_display_tags recon",
+        "parse_aimami_deeplink deep",
+        "test_relay_draft_stream deep",
+        "test_relay_provider_stream recon",
+        "confirm_pending body-delta analysis",
+        "win-divergence-111 analysis (hotspot/notch/restart_codex/import_accounts)"
+      ]
+    },
+    {
+      "session_id": "wf-aimami111-delta-20260617",
+      "machine": "<本地机器>",
+      "date": "2026-06-17",
+      "tasks": [
+        "get_relay_provider_quota extension (truncation resolved, 4 new callees)",
+        "reorder_relay_providers extension (gate upgraded to strictImplementationUse_candidate)",
+        "reveal_relay_api_key gate upgrade to strictImplementationUse",
+        "win-divergence-111.json produced"
+      ]
+    },
+    {
+      "session_id": "wf-aimami111-delta-20260617-repair",
+      "machine": "<本地机器>",
+      "date": "2026-06-17",
+      "tasks": [
+        "reduce phase: build windows-1.1.1-delta conclusion bundle",
+        "VERSION-DIFF five-class classification",
+        "CHANGELOG-CROSSMAP 5-entry mapping",
+        "gate-report aggregation",
+        "producer-ledger update",
+        "INDEX.jsonl update"
+      ]
+    },
+    {
+      "session_id": "wf-aimami111-delta-20260617-depth",
+      "machine": "<本地机器>",
+      "date": "2026-06-17",
+      "role": "depth+integrity 纯生产者",
+      "tasks": [
+        "win leaf depth-fill: has_notch (gate=strictImplementationUse_candidate), begin_add_account_attach_monitor (gate=strictImplementationUse), diagnose_codex_router (gate upgraded to strictImplementationUse), fix_codex_router_issue (gate upgraded to strictImplementationUse_candidate), diagnose (gate=strictImplementationUse_candidate)",
+        "win-same-integrity.json: 33/70 核查，20 confirmed_same，10 FALSE_NEGATIVE（integrity-recovered to delta），1 not_locatable，39 inference_only remaining",
+        "mac-same-integrity.json: 14/57 核查，13 confirmed_same，1 FALSE_NEGATIVE（load_relay_state to mac-delta），2 placement errors（inject_voice_text/load_custom_instruction_state to mac-orphan）",
+        "gate-report.json 更新：5 win leaf 补入，diagnose_codex_router/fix_codex_router_issue gate 升档",
+        "VERSION-DIFF.md 更新：新增 ③-B integrity-recovered 段，④ same-skip 更正",
+        "COVERAGE-AUDIT.md 创建",
+        "INDEX.jsonl 追加 depth+integrity session"
+      ]
+    },
+    {
+      "session_id": "wf-aimami111-delta-20260617-sweep",
+      "machine": "<本地机器>",
+      "date": "2026-06-17",
+      "role": "闭环重分类终账，纯读盘归约",
+      "tasks": [
+        "win-same.txt: 移出 10 integrity-recovered FALSE_NEGATIVE + check_update_installability. 70→59",
+        "win-delta.txt: 移入 7 impl_replaced 命令（activate/deactivate/upsert_relay_provider, upsert/load/set/remove_mcp_server）. 22→29",
+        "removed.txt: 补入 apply/clear/load_custom_instruction（command_removed）+ check_update_installability. 10→14",
+        "VERSION-DIFF.md: ② 删除段 10→14；新增 win custom_instructions 3 条删除说明；④ same-skip 60→59",
+        "gate-report.json: sweep_reclassification + integrity_recovered_delta_archive + integrity_recovered_removed_archive",
+        "producer-ledger.json: 计数更新",
+        "COVERAGE-AUDIT.md: 改写为 v2 终账",
+        "INDEX.jsonl: 追加 sweep 闭环条目"
+      ]
+    }
+  ],
+  "produced_artifacts": [
+    "internal-reverse/audits/windows-1.1.1-delta/README.md",
+    "internal-reverse/audits/windows-1.1.1-delta/AI.md",
+    "internal-reverse/audits/windows-1.1.1-delta/SYSTEM-DIFF.md",
+    "internal-reverse/audits/windows-1.1.1-delta/VERSION-DIFF.md",
+    "internal-reverse/audits/windows-1.1.1-delta/CHANGELOG-CROSSMAP.md",
+    "internal-reverse/audits/windows-1.1.1-delta/manifest.json",
+    "internal-reverse/audits/windows-1.1.1-delta/gate-report.json",
+    "internal-reverse/audits/windows-1.1.1-delta/data/producer-ledger.json",
+    "internal-reverse/audits/windows-1.1.1-delta/pointers/evidence-paths.md",
+    "internal-reverse/audits/windows-1.1.1-delta/logic/set_codex_api_login.md",
+    "internal-reverse/audits/windows-1.1.1-delta/logic/set_codex_api_slots.md",
+    "internal-reverse/audits/windows-1.1.1-delta/logic/get_relay_provider_quota.md",
+    "internal-reverse/audits/windows-1.1.1-delta/logic/reorder_relay_providers.md",
+    "internal-reverse/audits/windows-1.1.1-delta/logic/reveal_relay_api_key.md",
+    "internal-reverse/audits/windows-1.1.1-delta/logic/set_relay_display_tags.md",
+    "internal-reverse/audits/windows-1.1.1-delta/logic/parse_aimami_deeplink.md",
+    "internal-reverse/audits/windows-1.1.1-delta/logic/test_relay_draft_stream.md",
+    "internal-reverse/audits/windows-1.1.1-delta/logic/test_relay_provider_stream.md",
+    "internal-reverse/audits/windows-1.1.1-delta/logic/confirm_pending_auto_switch_and_restart_codex.md",
+    "internal-reverse/audits/windows-1.1.1-delta/logic/import_accounts_from_file.md"
+  ],
+  "sop_coverage": {
+    "step0_claim": "claimed via INDEX.jsonl",
+    "step1_recon": "win-divergence + frontend-delta + version-delta analysis",
+    "step2_deep": "逆向分析 deep per new command leaf (14 gate-reports)",
+    "step3_validate": "win-divergence-111.json cross-validation",
+    "step4_idb": "IDB writebacks done per leaf (tracked in individual gate-reports)",
+    "step5_gate": "gate tiers assigned per command",
+    "step6_reduce": "this session (repair)"
+  }
+}

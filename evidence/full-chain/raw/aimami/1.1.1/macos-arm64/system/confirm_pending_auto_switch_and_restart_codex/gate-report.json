@@ -1,0 +1,40 @@
+{
+  "command": "confirm_pending_auto_switch_and_restart_codex",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "accepted_unknown",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim4": [
+      "backend_serde_derive_decompile: failed — same as confirm_pending_auto_switch sibling; make_account_summary_from_item #[derive(Serialize)] no visible Serialize impl body in binary (mac-close-1.json still_blocked evidence: U1 SwitchPayload field names accepted_unknown)",
+      "frontend_argKeys: argKeys=[] — confirms no input fields only; SwitchPayload response field names not exposed by argKeys; ipc-contracts.jsonl: argKeys=[], argObject=null, params=\"()\"",
+      "frontend_response_destructuring_search: failed — CCF callsite at 316:177160 shows \"await Ge.confirmPendingAutoSwitchAndRestartCodex(),e(null)\" — response discarded; no field names accessible",
+      "broadcast_event_name_confirmation: RESOLVED — event name is \"runtime-state-updated\" confirmed in mac-close-2.json; 逆向分析 0x100620a82 emits \"runtime-state-updated\" (21-char); this dim4 sub-gap is now closed"
+    ],
+    "dim4_interface_dto_error_sideeffect": [
+      "backend_serde_derive_decompile: failed — same as sibling command; make_account_summary_from_item no impl body",
+      "frontend_argKeys: argKeys=[] — input-only; SwitchPayload response fields not accessible",
+      "frontend_response_destructuring_search: failed — callsite at 316:177160 discards response 'e(null)'; no field names",
+      "broadcast_event_name_confirmation: RESOLVED — this was a prior sub-gap; event name confirmed as 'runtime-state-updated' via mac-close-2.json 逆向分析 0x100620a82"
+    ]
+  },
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:100 — command=confirm_pending_auto_switch_and_restart_codex, argKeys=[], argObject=null, wrapper=confirmPendingAutoSwitchAndRestartCodex, file=assets/index-DdcCOEJG.js:86:32349",
+    "frontend/frontend-control-flow.jsonl:113 — terminal_call argKeys=[] callee=ne col:32392",
+    "frontend/frontend-control-flow.jsonl:166 — callsite index-DdcCOEJG.js:316:177160 guarded if(!(!t||r))",
+    "ida/pseudocode/0001_confirm_pending_auto_switch_and_restart_codex_owner_c0c3be97c8c9.c — VA:0x10061e190 size=0xd9b; 8 phases: rollback_capture->mutex->confirm->relaunch(stop_5s+launch_3path)->rollback_on_fail->snapshot_broadcast->warning_append; 6368B",
+    "call-trees/confirm_pending_auto_switch_and_restart_codex.jsonl — 20 edges depth3; capture_rollback->confirm->relaunch(stop+launch)->FileRestoreState->snapshot->warning all terminated",
+    "intermediate/dim6/mac-close-1.json — bundle IDs byte-confirmed: 0x10114F1A0=com.openai.codex, 0x10114F1B0=com.openai.Codex (U2 resolved); SwitchPayload still_blocked (U1)",
+    "intermediate/dim6/mac-close-2.json — event name runtime-state-updated confirmed 逆向分析 0x100620a82",
+    "intermediate/dim6/mac-final.json — RTI: dim4 closed with SwitchPayload genuine_ceiling accepted_unknown (4 recovery attempts); bundle IDs U2 resolved; broadcast event name resolved",
+    "intermediate/dim6/mac-consolidated.json — readyToImplement: mac-close-1->mac-regrade->mac-final"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "recovery_synced_by": "honest-verify-20260620 (from gate-final shard)"
+}

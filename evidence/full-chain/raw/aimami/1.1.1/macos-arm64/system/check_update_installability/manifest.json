@@ -1,0 +1,113 @@
+{
+  "schema": "c5cm.raw.bundle.manifest.v1",
+  "produced_at": "2026-06-16T00:00:00+08:00",
+  "session": "wf-aimami111-delta-20260616",
+  "producer": "claude-sonnet-4-6",
+  "machine": "<本地机器>",
+  "key": "aimami/1.1.1/macos-arm64/system/check_update_installability",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "system",
+  "command": "check_update_installability",
+  "delta_number": "6/76",
+  "leaf": "platform_implementation_translocation_inlined",
+  "kind": "clean_raw_command_leaf_backend_owner_body_delta_migrated_no_behavior_diff",
+  "migration_status": "migrated_no_behavior_diff",
+  "migration_from": "aimami/1.0.9/macos/system/check_update_installability",
+  "migration_note": "is_app_translocation_path (0x100578020 in 1.0.9) inlined into owner body in 1.1.1 (+482B); behavior semantically identical",
+  "status": "strictImplementationUse_dim1_5_closed_migrated_no_behavior_diff",
+  "bundle_path": "raw/aimami/1.1.1/macos-arm64/system/check_update_installability",
+  "source_binary_sha256": "see raw/binary/AiMaMi 1.1.1 universal.app IDB",
+  "idb": "raw/binary/AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi.i64",
+  "tool": "ida-pro-mcp-mac + HexRays (hexrays_ready=true, uptime=21716s at session start)",
+  "targets": [
+    {
+      "address": "0x10055a520",
+      "label": "codexmate_lib::platform::update::check_update_installability::h52e962388544d063",
+      "mangled": "__ZN13codexmate_lib8platform6update27check_update_installability17h52e962388544d063E",
+      "size_bytes": 2078,
+      "role": "platform_owner",
+      "file": "ida/pseudocode/0001_check_update_installability_owner_52e96238.c"
+    },
+    {
+      "address": "0x100313ef0",
+      "label": "codexmate_lib::run::{{closure}}::{{closure}}::h7cfd9a18cc906f52",
+      "mangled": "__ZN13codexmate_lib3run28_$u7b$$u7b$closure$u7d$$u7d$28_$u7b$$u7b$closure$u7d$$u7d$17h7cfd9a18cc906f52E",
+      "size_bytes": 479,
+      "role": "tauri_ipc_dispatcher_closure",
+      "decompiled": "inline_in_evidence",
+      "note": "single xref caller — verified via xrefs_to(0x10055a520)"
+    }
+  ],
+  "interface": {
+    "command_name": "check_update_installability",
+    "command_name_rodata_confirmed": false,
+    "argKeys": [],
+    "response_ok_fields": {
+      "status_tag": "String — one of: ok | read_only_location | app_translocation",
+      "exe_path": "Option<String> — .app bundle parent dir (None if exe path walk fails or no .app found)",
+      "app_path": "Option<String> — candidate install path (None if no .app extension found)",
+      "can_install": "bool — !(is_translocation | is_volumes_read_only)",
+      "is_translocation": "bool — path contains /AppTranslocation/ (18 bytes)",
+      "quarantine_cleared": "bool — xattr exit_code==0 (attribute IS present; naming is inverted)"
+    },
+    "response_err": "none — all errors handled silently with fallback values",
+    "side_effects": [
+      "read-only subprocess: xattr -p com.apple.quarantine <app_path>",
+      "no file writes, no config changes, no network calls"
+    ]
+  },
+  "string_constants": {
+    "translocation_needle": {"addr": "0x1011519EA", "value": "/AppTranslocation/", "len": 18},
+    "read_only_location_tag": {"addr": "0x1011519FC", "value": "read_only_location", "len": 17},
+    "app_translocation_tag": {"addr": "0x101151A0E", "value": "app_translocation", "len": 17},
+    "volumes_prefix_xor": "0x73656D756C6F562FLL + byte[8]=0x2F = <来源位置>"
+  },
+  "call_tree": "call-trees/check_update_installability.jsonl",
+  "call_tree_depth": 4,
+  "call_tree_complete": true,
+  "terminal_leaves": [
+    "os_api_call: fork+exec for xattr subprocess (via Command::spawn)",
+    "os_api_call: __NSGetExecutablePath (via current_exe)",
+    "response_serialize: tauri::ipc::InvokeResolver::respond",
+    "drop_leaf: core::ptr::drop_in_place<std::process::Command>",
+    "drop_leaf: core::ptr::drop_in_place<tauri::ipc::InvokeMessage>"
+  ],
+  "four_angle_completeness": {
+    "A_func_query": "check_update.*: 1 hit at 0x10055a520; installability.*: 1 hit same VA — PASS",
+    "B_string_pool": "find_regex check_update_installability: 0 matches — consistent with 1.0.9 (no rodata string); IPC routing via dispatcher confirmed",
+    "C_frontend_ipc": "accepted_unknown — frontend CCF not in scope for this backend-only pass",
+    "D_owner_map": "owner-map-111.jsonl: status=shared, module=null, owner_va=null, note=not_yet_queried → this session sets owner; INDEX has no prior 1.1.1 entry"
+  },
+  "fake_wall_check": {
+    "passed": true,
+    "genuine_ceiling": false,
+    "categories_checked": [
+      "drop_in_place: 1 drop (Command destructor) excluded as ICF shim, not async body",
+      "architecture_only: inapplicable",
+      "budget_rule: inapplicable",
+      "async_decompile_failed: inapplicable (synchronous function)",
+      "wrong_VA: VA confirmed via func_query demangled symbol",
+      "vtable_dynamic: inapplicable",
+      "HTTP_terminal: inapplicable (no HTTP calls)",
+      "lib_internal_vs_callsite: Command::output tracked to spawn OS leaf"
+    ]
+  },
+  "owner_gate": "ADDITIVE — no prior 1.1.1 macOS entry in INDEX.jsonl for this command; owner-map-111.jsonl status=shared/not_yet_queried; no competing producer",
+  "idb_comment_written": true,
+  "idb_comment_addr": "0x10055a520",
+  "consumerStartReady": true,
+  "consumerStartBlocked": false,
+  "strictImplementationUse": true,
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "no_gate_promotion_to_ready": true,
+  "no_index_shard": true,
+  "no_version_span_path_components": true,
+  "no_internal_reverse_upstream": true,
+  "no_forbidden_path_tokens": true,
+  "clean_raw_leaf_bundle": true
+}

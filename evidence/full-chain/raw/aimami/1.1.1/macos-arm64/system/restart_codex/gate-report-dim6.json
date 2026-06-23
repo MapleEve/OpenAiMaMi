@@ -1,0 +1,69 @@
+{
+  "command": "restart_codex",
+  "session": "wf-aimami111-dim6-20260619",
+  "machine": "<本地机器>",
+  "role": "producer",
+  "produced_at": "2026-06-19",
+  "shard": "mac-shard-4",
+  "dim6": {
+    "status": "acceptance-draft",
+    "happy_path": {
+      "input": "no args \u2014 invoke('restart_codex')",
+      "expected_response": "CoreEnvelope::ok(()) \u2014 discriminant 0x8000000000000000; unit Ok",
+      "expected_side_effects": [
+        "osascript -e 'tell application \"Codex\" to quit' (graceful quit attempt, non-fatal if fails)",
+        "pgrep-based process kill loop: up to 3s deadline, 300ms sleep per round",
+        "Codex.app launched via: open -b <bundleId1>, then open -b <bundleId2>, then ~/Applications/Codex.app, then /Applications/Codex.app",
+        "No file writes, no config changes, no network calls"
+      ]
+    },
+    "boundary_error": [
+      {
+        "trigger": "Codex launch times out across all 4 launch strategies",
+        "condition": "All open attempts fail; 3s poll timeout per attempt exhausted",
+        "expected_error": "CoreEnvelope::err('Codex launch timed out') \u2014 22B string; tag=9 (CoreError)"
+      },
+      {
+        "trigger": "Codex launch fails with IO error",
+        "condition": "open command returns non-zero with IO error",
+        "expected_error": "CoreEnvelope::err(io::Error::Display) \u2014 tag=9"
+      },
+      {
+        "trigger": "Codex process not running at call time",
+        "condition": "pgrep -x Codex returns non-zero (process absent); is_process_running=false",
+        "expected_response": "Still attempts launch; quit phase skipped or no-op",
+        "notes": "quit error is non-fatal by design"
+      }
+    ],
+    "side_effect_asserts": [
+      "After successful call: Codex process must be running (pgrep confirms)",
+      "No relay config file or TOML modifications",
+      "No HTTP requests observable"
+    ],
+    "test_mapping": [
+      {
+        "type": "manual",
+        "description": "Trigger restart_codex from maintenance-page UI; observe Codex quits and re-launches",
+        "reason": "Side effect is OS process management; hard to automate without process introspection"
+      },
+      {
+        "type": "manual",
+        "description": "Trigger restartCodexApp from relay-page after API slots mutation; verify Codex relaunches",
+        "reason": "Verifies the relay-page guard path (t=true after mutateAsync success)"
+      },
+      {
+        "type": "explicit_non_automatable_accept",
+        "description": "No-args IPC contract verified; response is unit Ok \u2014 test that IPC call does not error on healthy system",
+        "reason": "OS process management side-effects cannot be deterministically asserted in C5 automated test suite without process introspection infrastructure; manual accept required"
+      }
+    ],
+    "dim6_basis": "Happy path and error paths from evidence.md confirmed decompile of 6 functions: stop_codex_for_file_edit, launch_codex_app (4-path strategy), request_codex_app_quit (osascript), kill_codex_processes_until_clear (3s deadline), is_process_running (pgrep). Error strings: 'Codex launch timed out' (22B) confirmed in evidence. Frontend CCF confirmed from 1.1.1 ipc-contracts.jsonl: 2 wrappers, argKeys=[]."
+  },
+  "gate_upgrade": {
+    "previous": "strictImplementationUse_candidate",
+    "new": "readyToImplement",
+    "rationale": "dim1 confirmed (CCF argKeys=[] dual-source in 1.1.1 ipc-contracts.jsonl); dim2 PASS (owner + 5 platform functions decompiled); dim3 PASS (depth>=6, terminal: pgrep/kill/open syscalls); dim4 PASS (no args, unit Ok response, 2 error strings, OS process side-effects); dim5_mac PASS; dim5_win separate (INDEX line 1481); dim6=acceptance-draft",
+    "implementation_use": "eligible",
+    "notes": "OS process management side-effects are not automatable in C5 test suite; manual acceptance required per test_mapping"
+  }
+}

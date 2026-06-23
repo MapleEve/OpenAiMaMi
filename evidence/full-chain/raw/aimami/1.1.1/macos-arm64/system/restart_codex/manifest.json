@@ -1,0 +1,112 @@
+{
+  "schema": "c5cm.raw.index.v1",
+  "key": "aimami/1.1.1/macos-arm64/system/restart_codex/full-chain",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "system",
+  "target": "restart_codex",
+  "leaf": "full-chain",
+  "session": "wf-aimami111-delta-20260616",
+  "produced_by": "<本地机器>",
+  "produced_at": "2026-06-17T00:00:00Z",
+  "sha256_binary": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "binary_path": "raw/binary/AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "idb_save_ok": true,
+  "is_upstream": false,
+  "gate": "strictImplementationUse_candidate",
+  "gate_accepted": false,
+  "consumerStartReady": true,
+  "strictImplementationUse": true,
+  "readyToImplement": false,
+  "implementation_use": false,
+  "full_leaf_100": false,
+  "dims_closed": ["dim1", "dim2", "dim3", "dim4", "dim5_mac"],
+  "dim5_win_separate": true,
+  "dim5_win_index_key": "aimami/1.1.1/windows-x64/restart_codex/full-chain",
+  "dim6_missing": true,
+  "dim6_note": "C5 implementation side responsibility per GATE-SPEC",
+  "ceiling": "strictImplementationUse_candidate",
+  "four_angle_completeness": {
+    "angle_A_func_query": "PASS",
+    "angle_B_string_pool": "PASS",
+    "angle_B_note": "No standalone restart_codex string in packed blob; confirmed via ipc-contracts.jsonl (JS bundle ground truth)",
+    "angle_C_frontend_ccf": "PASS",
+    "angle_D_manifest_coverage": "PASS",
+    "all_pass": true
+  },
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "drop_in_place_error": false,
+    "architecture_only_budget_rule": false,
+    "async_decompile_failed": false,
+    "wrong_va": false,
+    "vtable_dynamic_dispatch": false,
+    "http_terminal_external_only": false,
+    "accepted_unknown_cheating": false,
+    "notes": "Synchronous command (dispatcher calls owner directly, no async SM); all 6 decompile succeeded; no HTTP; no ICF"
+  },
+  "owner_va": "0x100616150",
+  "owner_symbol": "codexmate_lib::commands::system::restart_codex::hed0488bc934334f0",
+  "owner_size_bytes": 299,
+  "ipc_dispatcher_va": "0x100315290",
+  "ipc_dispatcher_symbol": "codexmate_lib::run::{{closure}}::{{closure}}::h8b52f0eeb6cae796",
+  "ipc_dispatcher_size_bytes": 416,
+  "ipc_dispatcher_type": "synchronous",
+  "xrefs_to_owner": 1,
+  "arg_keys": [],
+  "arg_object": null,
+  "response_ok_tag": "0x8000000000000000",
+  "response_err_tag": "9 (CoreError Err(String))",
+  "error_messages": [
+    "Codex launch timed out (22B, launch all paths polled timeout)",
+    "io::Error::Display (launch open command spawn failure)",
+    "CoreError::Display (stop phase error propagation)"
+  ],
+  "side_effects": [
+    "pgrep -x Codex (process check)",
+    "osascript -e 'tell application Codex to quit' (graceful quit)",
+    "kill -9 <pids> (force kill via collect_codex_kill_targets)",
+    "open -b <bundleId1> (launch attempt 1)",
+    "open -b <bundleId2> (launch attempt 2)",
+    "open ~/Applications/Codex.app (launch attempt 3)",
+    "open /Applications/Codex.app (launch attempt 4)"
+  ],
+  "call_tree_depth": 3,
+  "call_tree_entries": 20,
+  "call_tree_path": "call-trees/restart_codex.jsonl",
+  "pseudocode_files": [
+    "ida/pseudocode/0001_restart_codex_owner_hed0488bc934334f0.c",
+    "ida/pseudocode/0002_restart_codex_stop_codex_for_file_edit_h501f0cbf0ab7f98f.c",
+    "ida/pseudocode/0003_restart_codex_launch_codex_app_he81a14556c2107c0.c"
+  ],
+  "pseudocode_manifest": "ida/pseudocode-manifest.jsonl",
+  "idb_comments_appended": 7,
+  "idb_comments_vas": [
+    "0x100616150 (owner)",
+    "0x100315290 (dispatcher)",
+    "0x10055c090 (stop_codex_for_file_edit)",
+    "0x10055afd0 (launch_codex_app)",
+    "0x10055bc10 (request_codex_app_quit)",
+    "0x10055e390 (kill_codex_processes_until_clear)",
+    "0x10055b8c0 (is_process_running)"
+  ],
+  "platform_delta_vs_109": {
+    "note": "1.0.9 macos-arm64/system/restart_codex exists at INDEX line 1252; VA likely drifted (1.1.1 = 0x100616150); behavioral contract stable (same two-phase stop+launch); platform mechanism unchanged (osascript+pgrep+kill+open)"
+  },
+  "frontend_ccf": {
+    "wrapper_1": "restartCodex:()=>ne('restart_codex') col=31166 assets/index-DdcCOEJG.js:86",
+    "wrapper_2": "restartCodexApp:()=>vt('restart_codex') col=120773 assets/index-DdcCOEJG.js:86",
+    "callsite_1": "N.restartCodex() assets/maintenance-page-C2wkSNnk.js:17 mutationFn",
+    "callsite_2": "ft.restartCodexApp() assets/relay-page-CsHU7KuS.js:43 (with guard: after mutateAsync+t=true)"
+  },
+  "accepted_unknowns": [
+    "bundleId exact values at 0x10114F1A0 and 0x10114F1B0 (non-blocking, launch-by-path fallback exists)",
+    "collect_codex_kill_targets internals (0x10055c140, not decompiled; behavior confirmed terminal)",
+    "dim5_win: separate platform, done independently",
+    "dim6: C5 impl side",
+    "osascript race with already-quit Codex (non-blocking: kill follows regardless)",
+    "launch retry exact count (timeout path confirmed)"
+  ]
+}

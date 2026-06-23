@@ -1,0 +1,120 @@
+{
+  "command": "load_token_analytics",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "dim_evidence": {
+    "dim1": {
+      "source": "frontend/ipc-contracts.jsonl line 86 col 31369 + frontend/frontend-control-flow.jsonl lines 9 (analytics-panel-LbLPe_yT.js queryFn→loadTokenAnalytics, hc_depth=2) and 95 (index-DdcCOEJG.js loadTokenAnalytics, hc_depth=1)",
+      "wrapper": "ne (tauriInvokeWrapper)",
+      "argKeys_from_frontend": ["range"],
+      "snippet": "ne(\"load_token_analytics\",{range:t})"
+    },
+    "dim2": {
+      "pseudocode_bytes": 9007,
+      "owner_va": "0x140027A40",
+      "owner_name": "sub_140027A40"
+    },
+    "dim3": {
+      "max_depth": 3,
+      "edges": 23,
+      "file": "call-trees/load_token_analytics.jsonl",
+      "terminated_reasons": ["platform_primitive", "implementation_leaf", "named_shared_primitive"],
+      "note": "token_range_filter uses DISTINCT range matcher (sub_140203BB0) and response ctor (sub_140215050) vs all other analytics"
+    },
+    "dim4": {
+      "request_params": {
+        "range": "string; parsed by remove_skill_parse_id_param_111 @ 0x1402FED40",
+        "repo": "backend-internal only; not sent by frontend"
+      },
+      "response_builder": "sub_140837DC0 @ 0x140837DC0 (token-specific; distinct from all other analytics)",
+      "response_ctor": "sub_140215050 (DISTINCT: token-only; NOT sub_1402168D0 used by session/tool; NOT sub_1402171C0 used by change)",
+      "response_struct_size": "168 bytes (0xA8 copy pattern via sub_141212FB0; larger than session/tool 112-byte result)",
+      "range_filter": "sub_1401C98B0 (token-specific) with sub_140203BB0 token range matcher",
+      "error_path": "has_notch_invoke_resolver_respond @ 0x14080C3C0; Err-tag 0x8000000000000000",
+      "side_effects": {
+        "file_write": "none",
+        "file_read": "quota history via spinlock + deep-copy",
+        "lock_acquire": "pending_auto_switch_state_lock_acquire_111 @ 0x14006EDC0"
+      }
+    },
+    "dim5": {
+      "platform": "windows-x64",
+      "evidence": "WinAPI spinlock pattern confirmed"
+    },
+    "dim6": {
+      "status": "acceptance-draft",
+      "happy_path": {
+        "input": {"range": "<range-string>"},
+        "expected_output": "JSON via sub_140837DC0 (token-specific builder); inner data from sub_140215050 token ctor; 168-byte response struct; token-specific sub_140203BB0 range matcher applied to quota history deep-copy",
+        "side_effect_asserts": [
+          "pending_auto_switch mutex acquired then released",
+          "quota history spinlock acquired, deep-copied, released — original unmodified",
+          "no file write",
+          "response struct is 168 bytes — DISTINCT from session/tool (larger) and must use separate DTO type"
+        ]
+      },
+      "boundary_errors": [
+        {
+          "trigger": "mutex acquire fails",
+          "expected": "error via has_notch_invoke_resolver_respond; no data access"
+        },
+        {
+          "trigger": "repo invalid — discriminant != 6",
+          "expected": "error via has_notch_invoke_resolver_respond @ 0x14080C3C0"
+        },
+        {
+          "trigger": "range absent/unparseable — discriminant != 6",
+          "expected": "error via has_notch_invoke_resolver_respond; v26 set to range parse result"
+        },
+        {
+          "trigger": "sub_1401C98B0 token filter Err (discriminant 0x8000000000000000 in v21)",
+          "expected": "error string alloc from v22/v23/v24; Err-tag set; sub_140837DC0 error path"
+        },
+        {
+          "trigger": "OOM",
+          "expected": "sub_14124BCCB panic/abort"
+        }
+      ],
+      "critical_implementation_notes": [
+        "Token response DTO MUST be distinct from session/tool — sub_140215050 ctor is different from sub_1402168D0",
+        "168-byte response struct vs 112-byte for session/tool — implementation must not share DTO type",
+        "sub_140837DC0 response builder is unique to token (not shared with any other analytics command)"
+      ],
+      "test_mapping": [
+        {"case": "happy_path: valid range → token analytics data (168-byte response)", "type": "e2e"},
+        {"case": "error: missing range → error response", "type": "e2e"},
+        {"case": "response shape differs from session/tool (distinct sub_140215050 ctor)", "type": "manual"},
+        {"case": "side effect: no file write", "type": "explicit_non_automatable_accept"}
+      ]
+    }
+  },
+  "owner": {
+    "va": "0x140027A40",
+    "name": "sub_140027A40",
+    "string_ref_va": "0x1412ac427",
+    "size_bytes": "0x4c1",
+    "delta_class": "NEW_IN_1.1.1"
+  },
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:line 86 col 31369",
+    "frontend/frontend-control-flow.jsonl:lines 9,95",
+    "raw/aimami/1.1.1/windows-x64/load_token_analytics/pseudocode.md (9007 bytes)",
+    "raw/aimami/1.1.1/windows-x64/load_token_analytics/call-tree.md (23 edges, max_depth=3)",
+    "raw/aimami/1.1.1/windows-x64/load_token_analytics/call-trees/load_token_analytics.jsonl",
+    "raw/aimami/1.1.1/windows-x64/load_token_analytics/interface.md"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "machine": "<本地机器>",
+  "module": "AiMaMi 1.1.1 win64.exe",
+  "sha": "d24e429a",
+  "timestamp_utc": "2026-06-20"
+}

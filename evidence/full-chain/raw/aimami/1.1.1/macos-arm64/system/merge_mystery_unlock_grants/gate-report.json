@@ -1,0 +1,28 @@
+{
+  "command": "merge_mystery_unlock_grants",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": ["dim5_win not judged in mac shard gate; per-platform rule: mac gate only requires mac dim5 closed"]
+  },
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:93 wrapper=mergeMysteryUnlockGrants argKeys=[grants] argObject={grants:t} callee=ne col=31936 kind=tauriInvokeWrapper",
+    "frontend/frontend-control-flow.jsonl:106 terminal_call command=merge_mystery_unlock_grants argKeys=[grants]",
+    "system/merge_mystery_unlock_grants/ida/pseudocode/0001_merge_mystery_unlock_grants_owner_10061be20.c 3739B owner_va=0x10061be20",
+    "system/merge_mystery_unlock_grants/ida/pseudocode/0002_merge_mystery_unlock_grants_core_1004ce6a0.c 3541B",
+    "system/merge_mystery_unlock_grants/ida/pseudocode/0003_mystery_route_allowed_1004c7650.c 3059B",
+    "system/merge_mystery_unlock_grants/call-trees/merge_mystery_unlock_grants.jsonl 14 entries depth3: load_settings+mystery_route_allowed+hashmap_insert+sort+save_settings",
+    "system/merge_mystery_unlock_grants/interfaces/merge_mystery_unlock_grants_interface.md argKeys=[grants] MysteryUnlockGrant stride=40B 9-route allowlist CoreEnvelope<Vec<MysteryUnlockGrant>>",
+    "system/merge_mystery_unlock_grants/ACCEPTANCE.md acceptance-draft dim1-5 all closed",
+    "intermediate/version-delta/mac-same.txt: merge_mystery_unlock_grants listed (mac-arm64 command confirmed)"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

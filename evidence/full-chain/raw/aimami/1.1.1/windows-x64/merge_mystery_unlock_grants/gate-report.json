@@ -1,0 +1,67 @@
+{
+  "command": "merge_mystery_unlock_grants",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl: command=merge_mystery_unlock_grants, argKeys=[grants], kind=tauriInvokeWrapper, line=86, col=31936, wrapper=mergeMysteryUnlockGrants",
+    "frontend/frontend-control-flow.jsonl: handler_chain=[mergeMysteryUnlockGrants@86], terminal_call=ne('merge_mystery_unlock_grants',{grants:t}), argKeys=[grants]",
+    "pseudocode.md: 29418B, owner=merge_mystery_unlock_grants_owner_sys @0x1400254C0",
+    "call-tree.md: 47 unique edges, max_depth=6 (SipHash round function), all branches terminated",
+    "interface.md: grants argKeys=[grants]; MysteryRouteGrant on-stack stride=40B; customInstructions NEW 18-char key SSE2 SIMD; hotspot config 7-field schema; side-effects mutex+file-read+file-write+timing",
+    "owner.md: IPC string @0x1412AC3B3, owner @0x1400254C0 size=0x4B1, IDB renamed",
+    "prior gate readyToImplement consolidated_prev_gate=readyToImplement + acceptance_draft from wf-aimami111-dim6-20260619",
+    "dim1: argKeys=[grants], wrapper=mergeMysteryUnlockGrants, callee=ne, line=86 col=31963, snippet=ne('merge_mystery_unlock_grants',{grants:t})",
+    "dim2: pseudocode 29418B >> 600B",
+    "dim3: 47 edges depth=6 path owner->mystery_grant_mutex->hotspot_merge->codexmate_settings_hotspot_read->win32_file_read_bytes_111=external_call",
+    "dim4: MysteryRouteGrant 40B stride 5 qwords; customInstructions NEW 18-char SSE2 key @xmmword_1412B5240; hotspot 7-field JSON write; side-effects mutex InterlockedCompareExchange8+WakeByAddressSingle file-read win32+file-write @sub_1403A64F0; timing GetSystemTimePreciseAsFileTime",
+    "dim5: _InterlockedCompareExchange8 Windows-only; WakeByAddressSingle; GetSystemTimePreciseAsFileTime@0x14124D178; no POSIX equivalents",
+    "dim6: acceptance_draft from wf-aimami111-dim6-20260619 in prior consolidated gate readyToImplement"
+  ],
+  "dim1_detail": {
+    "wrapper": "mergeMysteryUnlockGrants",
+    "callee": "ne",
+    "argKeys": ["grants"],
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "col": 31963,
+    "snippet": "ne(\"merge_mystery_unlock_grants\",{grants:t})"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 29418,
+    "owner_va": "0x1400254C0",
+    "owner_symbol": "merge_mystery_unlock_grants_owner_sys"
+  },
+  "dim3_detail": {
+    "unique_edges": 47,
+    "max_depth": 6,
+    "depth_path": "owner@0x1400254C0->mystery_grant_mutex@0x14078AEB0->hotspot_merge@0x1401B3630->codexmate_settings_read@0x1401A15D0->win32_file_read@0x141093260(depth5)->SipHash_round@0x1405AB1E0(depth6=LEAF)"
+  },
+  "dim4_detail": {
+    "MysteryRouteGrant_stride_bytes": 40,
+    "new_grant_key_1_1_1": "customInstructions (18-char, SSE2 SIMD match @xmmword_1412B5240)",
+    "hotspot_json_fields_1_1_1": ["hotspot", "usageRefreshInterval", "deviceId", "remoteDeviceSecret", "notificationsSince", "mysteryUnlockGrants", "mysteryUnlockedRoutes"],
+    "side_effects": ["mutex InterlockedCompareExchange8+WakeByAddressSingle on mystery_grant_mutex_byte", "file-read hotspot config win32_file_read_bytes_111@0x141093260", "file-write hotspot config @sub_1403A64F0", "timing GetSystemTimePreciseAsFileTime@0x14124D178", "auto-switch gate pending_auto_switch_state_lock_acquire_111@0x14006EDC0"],
+    "error_discriminants": {"10": "Ok(merge_success)", "2": "dir_not_found (relay_config_check_parent_dirs_sys)", "3": "write_error", "1": "poisoned_mutex", "6": "deserialization_error"}
+  },
+  "dim5_detail": {
+    "platform_primitives": ["_InterlockedCompareExchange8", "WakeByAddressSingle@0x14124A5D0", "GetSystemTimePreciseAsFileTime@0x14124D178"],
+    "note": "Windows-x64 exclusive binary; no cross-platform callees"
+  },
+  "dim6_detail": {
+    "acceptance_status": "acceptance_draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "gate_tier": "readyToImplement",
+    "happy_path": "invoke('merge_mystery_unlock_grants',{grants:[...]}) -> {elapsed_ms:number}",
+    "delta_asserts": ["customInstructions key now accepted (NEW 1.1.1 SSE2 branch)", "hotspot config written with 7 fields (vs 1-field in 1.0.9)", "pending_auto_switch gate blocks merge if active (NEW 1.1.1)"]
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

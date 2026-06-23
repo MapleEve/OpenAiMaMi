@@ -1,0 +1,19 @@
+{"depth": 0, "va": "0x10061a140", "symbol": "codexmate_lib::commands::system::get_mystery_unlock_grants::he2859bd20e05ce5a", "role": "tauri_cmd_owner", "terminated_reason": null, "session": "wf-aimami111-delta-20260616"}
+{"depth": 1, "va": "0x100f7c920", "symbol": "std::sys::sync::once_box::OnceBox::initialize", "role": "lazy_init", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x100f2e7a0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::lock", "role": "mutex_lock", "terminated_reason": "std_library_leaf"}
+{"depth": 1, "va": "0x1004ca780", "symbol": "codexmate_lib::core::repository::Repository::get_mystery_unlock_grants", "role": "repository_impl", "terminated_reason": null}
+{"depth": 2, "va": "0x1004bfa30", "symbol": "codexmate_lib::core::repository::Repository::load_settings", "role": "settings_reader", "terminated_reason": null}
+{"depth": 3, "va": "0x100f25740", "symbol": "std::fs::read_to_string::inner", "role": "file_read", "terminated_reason": "fs_read_leaf"}
+{"depth": 3, "va": "0x1002ea3f0", "symbol": "serde_json::de::from_trait", "role": "json_deserialize", "terminated_reason": "serde_library_leaf"}
+{"depth": 3, "va": "0x100ee9d20", "symbol": "serde_json::value::index::Index::index_into (str)", "role": "json_field_access_mysteryUnlockGrants", "terminated_reason": "serde_library_leaf"}
+{"depth": 3, "va": "0x100ee9f40", "symbol": "serde_json::value::index::Index::index_or_insert (str)", "role": "json_field_migration_mysteryUnlockGrants", "terminated_reason": "serde_library_leaf"}
+{"depth": 2, "va": "0x100f34cf0", "symbol": "std::time::SystemTime::now", "role": "timestamp_capture", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x100f34cb0", "symbol": "std::time::SystemTime::duration_since", "role": "elapsed_since_epoch", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x1003442e0", "symbol": "alloc::vec::in_place_collect::from_iter_in_place", "role": "grant_filter_collect", "terminated_reason": null}
+{"depth": 3, "va": "0x10060a070", "symbol": "alloc::vec::into_iter::IntoIter::try_fold", "role": "grant_filter_fold", "terminated_reason": null}
+{"depth": 4, "va": "0x1004c7650", "symbol": "codexmate_lib::core::repository::Repository::mystery_route_allowed", "role": "route_allowlist_gate", "terminated_reason": "implementation_leaf_allowlist_xor_check"}
+{"depth": 4, "va": "0x10057e620", "symbol": "core::str::impl::trim_matches", "role": "route_whitespace_trim", "terminated_reason": "std_library_leaf"}
+{"depth": 2, "va": "0x1004c00c0", "symbol": "codexmate_lib::core::repository::Repository::save_settings", "role": "settings_writer_conditional", "terminated_reason": null}
+{"depth": 3, "va": "0x1005582b0", "symbol": "codexmate_lib::platform::paths::CodexPaths::ensure_directories", "role": "dir_ensure", "terminated_reason": "platform_leaf"}
+{"depth": 3, "va": "0x100201fe0", "symbol": "std::fs::write", "role": "file_write_non_atomic", "terminated_reason": "fs_write_leaf"}
+{"depth": 1, "va": "0x100f2e7c0", "symbol": "std::sys::pal::unix::sync::mutex::Mutex::unlock", "role": "mutex_unlock", "terminated_reason": "std_library_leaf"}

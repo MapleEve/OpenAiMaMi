@@ -1,0 +1,97 @@
+{
+  "schema": "c5cm.raw.manifest.v1",
+  "command": "confirm_pending_auto_switch_and_restart_codex",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "system",
+  "session": "wf-aimami111-delta-20260616",
+  "produced_by": "<本地机器>",
+  "produced_at": "2026-06-16T00:00:00Z",
+  "binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "owner_va": "0x10061e190",
+  "owner_symbol": "codexmate_lib::commands::system::confirm_pending_auto_switch_and_restart_sync::he04fa4955b6ac11d",
+  "owner_size": "0xd9b",
+  "owner_module_actual": "codexmate_lib::commands::system",
+  "owner_module_ownermap_note": "owner-map-111 annotated commands::relay — incorrect; live 逆向分析 confirms commands::system",
+  "ipc_dispatch_xref": "0x10059a097",
+  "dispatcher_fn": "tokio::runtime::blocking::task::BlockingTask::poll",
+  "dispatcher_pattern": "spawn_blocking(sync_thunk)",
+  "gate": "strictImplementationUse",
+  "delta_status": "new_command_variant",
+  "delta_note": "extend of confirm_pending_auto_switch (cmd 10/76) with Codex process restart; absent in 1.0.9 macOS (same as Windows variant confirm_pending_auto_switch_owner_sys@0x14026ea00)",
+  "arg_keys": [],
+  "response_type": "CoreEnvelope<SwitchPayload>",
+  "idb_save": true,
+  "idb_save_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "idb_save_session": "wf-aimami111-delta-20260616",
+  "idb_save_completed_at": "2026-06-17",
+  "append_comments": true,
+  "append_comments_applied": true,
+  "comment_vas": [
+    "0x10061e190",
+    "0x100621a40",
+    "0x10055c090",
+    "0x10055afd0",
+    "0x100621bb0",
+    "0x10061fd20"
+  ],
+  "call_tree_depth": 5,
+  "call_tree_terminated_reasons": ["std_library_leaf", "os_process_leaf"],
+  "key_callees": {
+    "capture_switch_rollback_state": "0x100621bb0",
+    "Repository::confirm_pending_auto_switch": "0x1004cd9b0",
+    "relaunch_codex_after_success": "0x100621a40",
+    "stop_codex_for_file_edit": "0x10055c090",
+    "launch_codex_app": "0x10055afd0",
+    "FileRestoreState::restore": "0x10061fd20",
+    "FileRestoreState::capture": "0x10061fa80",
+    "refresh_full_runtime_snapshot_with_source": "0x100626f60",
+    "append_switch_warning": "0x1006205f0",
+    "is_process_running": "0x10055b8c0",
+    "request_codex_app_quit": "0x10055bc10",
+    "kill_codex_processes_until_clear": "0x10055e390"
+  },
+  "side_effects": [
+    "READ {repo}/pending-auto-switch.json",
+    "READ {repo}/registry.json",
+    "COPY active auth -> timestamped backup",
+    "COPY target account auth -> active auth path",
+    "WRITE {repo}/registry.json (updated activeAccountKey, updatedAt, items[n].active=1)",
+    "CLEAR auto-switch snooze state (two paths)",
+    "OS process: request_codex_app_quit (SIGTERM/osascript)",
+    "OS process: kill_codex_processes_until_clear (fallback kill)",
+    "OS process: open -b <bundle_id> / open ~/Applications/Codex.app / open /Applications/Codex.app",
+    "ROLLBACK: FileRestoreState::restore (remove or re-write each snapshot entry) on relaunch failure",
+    "EMIT Tauri runtime-snapshot event (broadcast_runtime_snapshot)"
+  ],
+  "errors": [
+    "CoreError(7/NotFound='No pending auto-switch request')",
+    "CoreError(7/NotFound='No AiMaMi registry exists yet')",
+    "CoreError(2/IoError=dynamic path+io_error)",
+    "CoreError(9/Other='Codex launch timed out')",
+    "CoreError joined ' | ' on rollback failure"
+  ],
+  "unknowns": {
+    "accepted_unknown": [
+      "SwitchPayload serde field names (make_account_summary_from_item derive)",
+      "pending-auto-switch.json field names",
+      "broadcast_runtime_snapshot Tauri event name string",
+      "clear_auto_switch_snooze implementation (0x1004c8120)",
+      "launch bundle ID exact string (unk_10114F1A0/B)"
+    ],
+    "blocks_start": [],
+    "product_decision": []
+  },
+  "four_angle": {
+    "A_func_query": "PASS — confirm_pending.*restart regex -> 0x10061e190 unique",
+    "B_string_pool": "PASS — 0x1010e7311 (reg blob) + 0x10114801b (load blob)",
+    "C_frontend_ipc": "PASS — ipc-contracts.jsonl line 86 col 32349 argKeys=[]",
+    "D_owner_map_index": "PASS — ADDITIVE no collision"
+  },
+  "fake_wall": {
+    "genuine_ceiling": false,
+    "recovery_attempts": "not_needed",
+    "taxonomy_all_excluded": true
+  }
+}

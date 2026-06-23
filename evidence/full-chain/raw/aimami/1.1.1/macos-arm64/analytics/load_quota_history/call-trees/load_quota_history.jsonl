@@ -1,0 +1,16 @@
+{"depth":1,"addr":"0x1004dbc30","name":"codexmate_lib::commands::analytics::load_quota_history","module":"commands::analytics"}
+{"depth":2,"addr":"0x1006e6ae0","name":"codexmate_lib::core::quota_history::load_history","caller":"0x1004dbc30","terminated_reason":null}
+{"depth":2,"addr":"0x100508030","name":"codexmate_lib::platform::paths::CodexPaths::clone","caller":"0x1004dbc30","terminated_reason":"response_serialize"}
+{"depth":2,"addr":"0x100557550","name":"codexmate_lib::core::models::CoreEnvelope::ok","caller":"0x1004dbc30","terminated_reason":"response_serialize"}
+{"depth":3,"addr":"0x100f2b980","name":"std::sys::fs::metadata","caller":"0x1006e6ae0","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100f25660","name":"std::fs::OpenOptions::_open","caller":"0x1006e6ae0","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x10036fe40","name":"std::io::Lines::next","caller":"0x1006e6ae0","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x1002e99d0","name":"serde_json::de::from_trait [quota variant]","caller":"0x1006e6ae0","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100f25f70","name":"std::fs::write::inner","caller":"0x1006e6ae0","terminated_reason":"persistence_commit"}
+{"depth":3,"addr":"0x100f34cf0","name":"std::time::SystemTime::now","caller":"0x1006e6ae0","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x100744310","name":"core::slice::sort::stable::driftsort_main","caller":"0x1006e6ae0","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x1005f9620","name":"alloc::str::join_generic_copy","caller":"0x1006e6ae0","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x100fbce72","name":"close$NOCANCEL","caller":"0x100f25660","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x100fbd04c","name":"memcmp","caller":"0x1006e6ae0","terminated_reason":"external_call"}
+{"depth":4,"addr":"0x10057e620","name":"str::trim_matches","caller":"0x1006e6ae0","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x100f25f70","name":"std::fs::write::inner [7-day compaction rewrite]","caller":"0x1006e6ae0","terminated_reason":"persistence_commit"}

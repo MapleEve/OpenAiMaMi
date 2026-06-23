@@ -1,0 +1,15 @@
+{"depth":0,"addr":"0x14000D2A0","name":"tauri_ipc_main_dispatcher_sys","type":"dispatcher","terminated_reason":null}
+{"depth":1,"addr":"0x14097B270","name":"sub_14097B270","type":"owner_tokio_spawn","note":"tokio spawn wrapper; analogous to 1.0.9 sub_1408D8790","terminated_reason":null}
+{"depth":2,"addr":"0x1408E3F20","name":"sub_1408E3F20","type":"async_task_body","terminated_reason":null}
+{"depth":2,"addr":"0x140871750","name":"broadcast_runtime_state_updated_111","type":"runtime_event","terminated_reason":null}
+{"depth":3,"addr":"0x14023F670","name":"sub_14023F670","type":"state_serializer","terminated_reason":null}
+{"depth":4,"addr":"0x14023F960","name":"sub_14023F960","type":"registry_persist","terminated_reason":null}
+{"depth":5,"addr":"0x140F050E0","name":"sub_140F050E0","type":"tokio_futex_wake","terminated_reason":"external_call_recorded — WakeByAddressSingle (tokio async wake primitive) + CloseHandle; scheduler machinery only, no app-level delta"}
+{"depth":5,"addr":"0x14124A5D0","name":"WakeByAddressSingle","type":"external","terminated_reason":"external_call_recorded — Win32 WakeByAddressSingle for tokio futex"}
+{"depth":5,"addr":"0x14124D788","name":"CloseHandle","type":"external","terminated_reason":"external_call_recorded — Win32 CloseHandle in scheduler cleanup"}
+{"depth":3,"addr":"0x1400AF970","name":"sub_1400AF970","type":"runtime_state_updated_event","terminated_reason":"external_call_recorded — emits runtime-state-updated / PROGRESSIVE_STATE_SAVE_FAILED event"}
+{"depth":2,"addr":"0x140332540","name":"relay_atomic_write_file_sys","type":"atomic_file_persist","terminated_reason":null}
+{"depth":3,"addr":"0x14124D7E0","name":"MoveFileExW","type":"external","terminated_reason":"external_call_recorded — atomic rename/replace for persistent state file"}
+{"depth":3,"addr":"0x14124D7B8","name":"CreateFileW","type":"external","terminated_reason":"external_call_recorded — creates temp file for atomic write"}
+{"depth":3,"addr":"0x14124D788","name":"CloseHandle","type":"external","terminated_reason":"external_call_recorded — closes handles after atomic write"}
+{"depth":2,"addr":"0x140062230","name":"tauri_ipc_resolve_sys","type":"ipc_resolve","terminated_reason":"external_call_recorded — resolves IPC response to frontend"}

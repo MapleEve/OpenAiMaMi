@@ -1,0 +1,81 @@
+{
+  "command": "graceful_restart_for_update",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl#L120: command='graceful_restart_for_update', argKeys=[], callee='k', kind='tauriInvokeRaw', line=86",
+    "frontend/frontend-control-flow.jsonl#L120: terminal_call.command='graceful_restart_for_update', argKeys=[]",
+    "pseudocode.md: owner=graceful_restart_for_update_owner_sys@0x14001AE30, size=547B, Layer0-5 full trace, max_depth=5",
+    "call-tree.md: max_depth=5, all branches terminated (OS kernel imports at L5: CreateToolhelp32Snapshot/Process32FirstW/Process32NextW/CloseHandle/GetCurrentProcessId)",
+    "interface.md: no-args command, response_tags=tag3(Ok)/tag6(QUIT_TIMEOUT)/tag7(NotFound)/tag9(SpawnFail), win-only confirmed",
+    "owner.md: session=wf-aimami111-delta-20260618-goldleaf, IDB renames applied, saved <本地路径>",
+    "pseudocode.md#ACCEPTANCE: dim6_basis=Layer1-4 full trace, happy_path/boundary/side_effect_asserts/test_mapping all present; gate=readyToImplement eligible"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 120,
+    "wrapper": null,
+    "argKeys": [],
+    "kind": "tauriInvokeRaw",
+    "ccf_line": 120,
+    "terminal_call_command": "graceful_restart_for_update"
+  },
+  "dim2_detail": {
+    "owner_va": "0x14001AE30",
+    "owner_name": "graceful_restart_for_update_owner_sys",
+    "size_bytes": 547,
+    "body_quality": "full_pseudocode_L0-L5_coordinator_quit_launch"
+  },
+  "dim3_detail": {
+    "max_depth": 5,
+    "terminated_reasons": [
+      "OS_kernel_imports: CreateToolhelp32Snapshot/Process32FirstW/Process32NextW/CloseHandle/GetCurrentProcessId (L5)",
+      "deadline_exceeded: 3s fallback kill timeout (L4)",
+      "Codex_not_found: all 10 paths + reg + where exhausted (L3b)"
+    ],
+    "key_leaves": [
+      "get_codex_pids_toolhelp_sys_111@0x1407A3090(depth=5)",
+      "quit_codex_fallback_kill_sys_111@0x1407A44D0(depth=4)",
+      "check_update_installability_launch_sys_111@0x1407A02E0(depth=3)"
+    ]
+  },
+  "dim4_detail": {
+    "request_dto": "none (no-args command)",
+    "response_tags": {
+      "tag3": "Ok (Codex relaunched, launch_info_string)",
+      "tag6": "Err CODEX_APP_QUIT_TIMEOUT (sentinel 0x8000000000000000; body=128B buffer magic 0x6C6C756E)",
+      "tag7": "Err Codex.exe not found (all 10 FS paths + HKCU/HKLM App Paths + Uninstall + where exhausted)",
+      "tag9": "Err process spawn/launch failure (stderr from powershell/taskkill captured)"
+    },
+    "side_effects": [
+      "WakeByAddressSingle condvar (quit_codex_send_signal_wakebya_sys_111@0x1407A3C60)",
+      "taskkill /IM Codex.exe (soft kill, quit_codex_taskkill_imagename_sys_111@0x14079FF10)",
+      "taskkill /F /T /PID <pid> (per-pid forced kill, quit_codex_fallback_kill_sys_111@0x1407A44D0)",
+      "reg query App Paths x2 (HKCU+HKLM, read-only)",
+      "reg query Uninstall x2 (HKCU+HKLM via powershell -NoProfile -Command)",
+      "where Codex.exe + where Codex",
+      "CreateProcessW Codex.exe direct launch OR powershell -WindowStyle Hidden fallback"
+    ]
+  },
+  "dim5_detail": {
+    "windows_only": true,
+    "not_in_macos": "confirmed absent in macOS arm64 sweep; macOS uses separate quit mechanism",
+    "caller": "tauri_ipc_main_dispatcher_sys@0x14000D2A0"
+  },
+  "dim6_detail": {
+    "source": "pseudocode.md#ACCEPTANCE section (session wf-aimami111-dim6-20260619)",
+    "happy_path": "invoke('graceful_restart_for_update') no-args; Codex quits within 5s; CreateProcessW on known path; Codex appears in ToolHelp32 within 5s; Ok(tag3)",
+    "boundary_errors": "tag6=quit_timeout, tag7=Codex_not_found, tag9=spawn_but_not_visible",
+    "test_mapping_present": true,
+    "gate_note": "acceptance-draft = dim6 producer-side closed; C5 consumer confirms upon test landing"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

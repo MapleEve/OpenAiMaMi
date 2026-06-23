@@ -1,0 +1,51 @@
+{
+  "_comment": "Inferred from 逆向分析 decompile + owner-map note + string list",
+  "command": "test_relay_provider_stream",
+  "handler_module": "codexmate_lib::commands::relay",
+  "core_module": "codexmate_lib::core::relay::health_check",
+  "delta_note": "new in 1.1.1; replaces test_relay_provider; adds streaming=true to HTTP request",
+  "input_dto": {
+    "model": "String",
+    "providerId": "String",
+    "_inferred": "from string list position and owner-map note; exact Tauri #[command] signature not recovered due to ICF fold"
+  },
+  "output_dto_inferred": {
+    "success": "bool",
+    "streaming": true,
+    "delta": "Option<String> — first non-empty text delta accumulated from SSE stream",
+    "error": "Option<String>"
+  },
+  "side_effects": [
+    "emits Tauri window event on result (event name not confirmed)",
+    "reads ASYNC_CLIENT global reqwest::Client OnceLock",
+    "sends HTTP POST to provider endpoint with stream:true"
+  ],
+  "http_request": {
+    "method": "POST",
+    "path_chat": "/v1/chat/completions",
+    "path_embeddings": "/v1/embeddings (for embedding endpoints)",
+    "path_responses": "/v1/responses (for reasoning endpoints)",
+    "body_stream_flag": "stream: true",
+    "body_stream_options": "stream_options: {include_usage: true}",
+    "body_messages": "[{role: 'user', content: 'hi'}]",
+    "body_max_tokens_default": 16,
+    "body_max_tokens_claude": 50,
+    "body_max_tokens_gemini": 3000,
+    "body_max_completion_tokens_o_series": 16
+  },
+  "headers_openai": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer {api_key}",
+    "Accept_when_streaming": "text/event-stream",
+    "Cache-Control_when_streaming": "no-cache",
+    "x-originator_when_codex": "codex_cli_rs",
+    "User-Agent_when_codex": "codex_cli_rs/0.80.0 AiMaMi"
+  },
+  "headers_anthropic": {
+    "Content-Type": "application/json",
+    "x-api-key": "{api_key}",
+    "anthropic-version": "2023-06-01",
+    "Accept_when_streaming": "text/event-stream",
+    "Cache-Control_when_streaming": "no-cache"
+  }
+}

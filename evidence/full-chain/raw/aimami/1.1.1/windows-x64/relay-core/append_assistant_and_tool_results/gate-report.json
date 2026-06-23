@@ -1,0 +1,20 @@
+{
+  "schema": "c5cm.gate-report.v1",
+  "command": "append_assistant_and_tool_results",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "session": "wf-aimami111-backend-orphan-materialize-20260622-orchestrator-verified",
+  "role": "producer",
+  "kind": "backend-only-orphan",
+  "gate_tier": "strictImplementationUse",
+  "readyToImplement": true,
+  "verdict": "present_icf_merged",
+  "owner_va": "0x14027EF10",
+  "size_bytes": 51490,
+  "size_1.0.9": 24576,
+  "frontend_invoke": false,
+  "orchestrator_verified": true,
+  "note": "backend-only command (no frontend invoke). Verified by orchestrator direct 逆向分析 decompile, not agent claim.",
+  "icf_merged_with": "execute_proxy_tools"
+}

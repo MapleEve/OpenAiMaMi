@@ -1,0 +1,30 @@
+{"depth": 0, "va": "0x1005eb9a0", "symbol": "codexmate_lib::commands::relay::reorder_relay_providers::h1d619ab89f18f087", "type": "owner", "terminal_reason": null}
+{"depth": -1, "va": "0x10031c6f0", "symbol": "codexmate_lib::run::{{closure}}::{{closure}}::hfec56b4b9e0f4353", "type": "ipc_dispatcher", "terminal_reason": "sole_xref_confirmed"}
+{"depth": 1, "va": "0x1005df110", "symbol": "codexmate_lib::core::relay::manager::RelayManager::reorder::h2dd46f2b08c57b96", "type": "core_impl", "terminal_reason": null}
+{"depth": 2, "va": "0x1005e0330", "symbol": "codexmate_lib::core::relay::manager::RelayManager::snapshot::h0ea44eefa71d8bf1", "type": "read_state", "terminal_reason": "mutex_protected_clone"}
+{"depth": 2, "va": "0x100605b90", "symbol": "_$LT$codexmate_lib..core..relay..models..RelayState$u20$as$u20$core..clone..Clone$GT$::clone::h4e35032fd19d5e15", "type": "clone", "terminal_reason": "stdlib_clone"}
+{"depth": 2, "va": "0x100534750", "symbol": "std::collections::hash::map::HashMap::from_iter::h6d7bc62269a39c2b", "type": "position_map_build", "terminal_reason": "stdlib"}
+{"depth": 2, "va": "0x100744c10", "symbol": "core::slice::sort::stable::driftsort_main::hc96234de0d8c9e60", "type": "sort_large", "terminal_reason": "stdlib_sort"}
+{"depth": 2, "va": "0x1004f1d80", "symbol": "core::slice::sort::shared::smallsort::insertion_sort_shift_left::h159770585b886627", "type": "sort_small", "terminal_reason": "stdlib_sort"}
+{"depth": 2, "va": "0x10066a5e0", "symbol": "hashbrown::map::HashMap::insert::h4291a64541ba81e5", "type": "index_build", "terminal_reason": "stdlib_hashbrown"}
+{"depth": 2, "va": "0x100612540", "symbol": "alloc::vec::Vec::from_iter::hcb1815b7f4056177", "type": "sorted_list_build", "terminal_reason": "stdlib"}
+{"depth": 2, "va": "0x1005dee20", "symbol": "codexmate_lib::core::relay::manager::RelayManager::persist::h2d67d7249be86cfa", "type": "persist", "terminal_reason": null}
+{"depth": 3, "va": "0x1005d5450", "symbol": "codexmate_lib::core::relay::manager::RelayManager::compose_proxy_status::h4de0c421b533e58d", "type": "proxy_status_update", "terminal_reason": "accepted_unknown_non_blocking"}
+{"depth": 3, "va": "0x1005e2c60", "symbol": "codexmate_lib::core::relay::storage::save::h6a78ba66353d5d3f", "type": "storage_save", "terminal_reason": null}
+{"depth": 4, "va": "0x1005582b0", "symbol": "codexmate_lib::platform::paths::CodexPaths::ensure_directories::hb16ec12a90cb0ad9", "type": "fs_ensure_dirs", "terminal_reason": "fs_leaf"}
+{"depth": 4, "va": "0x10054afe0", "symbol": "codexmate_lib::core::relay::models::RelayState::serialize::h8c8924505a5c447a", "type": "serde_serialize", "terminal_reason": "serde_leaf"}
+{"depth": 4, "va": "0x10041e960", "symbol": "codexmate_lib::core::relay::atomic_write::write_atomic::haa4522197089ee4a", "type": "atomic_write", "terminal_reason": null}
+{"depth": 5, "va": "0x100e13930", "symbol": "uuid::v4::Uuid::new_v4::h0d422edb31edb566", "type": "temp_name_gen", "terminal_reason": "stdlib_uuid"}
+{"depth": 5, "va": "0x100f24d00", "symbol": "std::fs::DirBuilder::_create::h099c6e2853c95452", "type": "fs_mkdir", "terminal_reason": "syscall_leaf"}
+{"depth": 5, "va": "0x100f25660", "symbol": "std::fs::OpenOptions::_open::h1dad73452047b8aa", "type": "fs_open_tempfile", "terminal_reason": "syscall_leaf", "note": "perm=0o600 (438)"}
+{"depth": 5, "va": "0x100202930", "symbol": "std::io::Write::write_all::hf85e7c28c0e461a3", "type": "fs_write", "terminal_reason": "syscall_leaf"}
+{"depth": 5, "va": "0x100f25b80", "symbol": "std::fs::File::sync_data::hd1ab389c8b7cfd2f", "type": "fs_fsync", "terminal_reason": "syscall_leaf"}
+{"depth": 5, "va": "0x100f2b560", "symbol": "std::sys::fs::rename::h7934e6142c921014", "type": "fs_rename_atomic", "terminal_reason": "syscall_leaf"}
+{"depth": 5, "va": "0x10041ec70", "symbol": "codexmate_lib::core::relay::atomic_write::sync_parent_dir::h73f7e725697a5b32", "type": "fs_parent_fsync", "terminal_reason": null}
+{"depth": 6, "va": "0x100f25660", "symbol": "std::fs::OpenOptions::_open (parent dir)", "type": "fs_open_parent", "terminal_reason": "syscall_leaf"}
+{"depth": 6, "va": "0x100f25b80", "symbol": "std::fs::File::sync_data (parent)", "type": "fs_fsync_parent", "terminal_reason": "syscall_leaf"}
+{"depth": 2, "va": "0x1005daea0", "symbol": "codexmate_lib::core::relay::manager::RelayManager::sync_codex_config_with_outcome::h01f8eb5872ddada2", "type": "codex_config_sync", "terminal_reason": null}
+{"depth": 3, "va": "0x1006e8950", "symbol": "codexmate_lib::core::relay::codex_catalog::resolve_api_slots::h293b9617dee6be70", "type": "api_slots_resolve", "terminal_reason": "accepted_unknown_non_blocking"}
+{"depth": 3, "va": "0x1006e8450", "symbol": "codexmate_lib::core::relay::codex_catalog::write_catalog::hf1f34fb9b8a22ad5", "type": "catalog_write", "terminal_reason": "accepted_unknown_non_blocking"}
+{"depth": 3, "va": "0x1006e8800", "symbol": "codexmate_lib::core::relay::codex_catalog::remove_catalog::h3b462ff5682430fa", "type": "catalog_remove", "terminal_reason": "accepted_unknown_non_blocking"}
+{"depth": 3, "va": "0x10075ae20", "symbol": "codexmate_lib::core::relay::codex_writer::apply_codex_state::h94748c52c4b8c052", "type": "codex_state_apply", "terminal_reason": "accepted_unknown_non_blocking"}

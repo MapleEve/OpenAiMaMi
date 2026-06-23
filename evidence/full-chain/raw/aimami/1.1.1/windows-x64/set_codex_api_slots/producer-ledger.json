@@ -1,0 +1,30 @@
+{
+  "schema": "c5cm.producer_ledger.v1",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "command": "set_codex_api_slots",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "produced_at": "2026-06-16",
+  "authoritative": true,
+  "owner_check": {
+    "index_prior_entry": false,
+    "reverse_status_collision": false,
+    "collision_resolution": "ADDITIVE — no prior 1.1.1 windows-x64 owner for set_codex_api_slots; no competing producer",
+    "write_mode": "canonical",
+    "takeover_token": null
+  },
+  "gate": "consumerStartReady",
+  "idb_save_ok": true,
+  "files_written": [
+    "raw/aimami/1.1.1/windows-x64/set_codex_api_slots/owner.md",
+    "raw/aimami/1.1.1/windows-x64/set_codex_api_slots/pseudocode.md",
+    "raw/aimami/1.1.1/windows-x64/set_codex_api_slots/interface.md",
+    "raw/aimami/1.1.1/windows-x64/set_codex_api_slots/call-tree.md",
+    "raw/aimami/1.1.1/windows-x64/set_codex_api_slots/gate-report.json",
+    "raw/aimami/1.1.1/windows-x64/set_codex_api_slots/manifest.json",
+    "raw/aimami/1.1.1/windows-x64/set_codex_api_slots/producer-ledger.json"
+  ],
+  "index_key": "aimami/1.1.1/windows-x64/set_codex_api_slots/full-chain"
+}

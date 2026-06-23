@@ -1,0 +1,39 @@
+{"depth":0,"va":"0x14002A690","name":"parse_aimami_deeplink_owner_sys","rename_level":"A","size_bytes":895,"role":"tauri_cmd_owner","terminated_reason":null,"session":"wf-aimami111-delta-20260616","produced_by":"<本地机器>"}
+{"depth":1,"va":"0x141212FB0","name":"sub_141212FB0","rename_level":null,"role":"memory_copy_helper","terminated_reason":"std_library_leaf","parent_va":"0x14002A690"}
+{"depth":1,"va":"0x1402FED40","name":"sub_1402FED40","rename_level":null,"role":"tauri_serde_param_deserialize_url_string","terminated_reason":"framework_internal_tauri2","parent_va":"0x14002A690"}
+{"depth":1,"va":"0x1401C7B90","name":"parse_aimami_deeplink_core_sys","rename_level":"A","size_bytes":3164,"role":"business_core_url_validate_and_relay_insert","terminated_reason":null,"parent_va":"0x14002A690"}
+{"depth":2,"va":"0x14104E1B0","name":"sub_14104E1B0","rename_level":null,"role":"url_parser_scheme_path_query_tokenize","terminated_reason":"pure_computation_leaf","parent_va":"0x1401C7B90"}
+{"depth":2,"va":"0x1410518F0","name":"sub_1410518F0","rename_level":null,"role":"url_path_component_accessor","terminated_reason":"pure_computation_leaf","parent_va":"0x1401C7B90"}
+{"depth":2,"va":"0x141051690","name":"sub_141051690","rename_level":null,"role":"url_scheme_part_accessor","terminated_reason":"pure_computation_leaf","parent_va":"0x1401C7B90"}
+{"depth":2,"va":"0x141051750","name":"sub_141051750","rename_level":null,"role":"url_query_string_accessor","terminated_reason":"pure_computation_leaf","parent_va":"0x1401C7B90"}
+{"depth":2,"va":"0x140730900","name":"relay_provider_hashmap_insert_sys","rename_level":"B","size_bytes":351,"role":"query_string_parse_and_relay_hashmap_insert_tls","terminated_reason":null,"parent_va":"0x1401C7B90"}
+{"depth":3,"va":"0x141077010","name":"sub_141077010","rename_level":null,"role":"tls_accessor_relay_providers_hashmap_offset584","terminated_reason":"tls_read_leaf_windows_NtCurrentTeb","parent_va":"0x140730900"}
+{"depth":3,"va":"0x14108CEE0","name":"sub_14108CEE0","rename_level":null,"role":"relay_hashmap_lazy_init_once","terminated_reason":"std_once_leaf","parent_va":"0x140730900"}
+{"depth":3,"va":"0x14106CA00","name":"sub_14106CA00","rename_level":null,"role":"query_string_kv_iterator","terminated_reason":"string_parsing_pure_computation_leaf","parent_va":"0x140730900"}
+{"depth":3,"va":"0x1403703F0","name":"sub_1403703F0","rename_level":null,"role":"hashmap_insert_simd_robin_hood_probe","terminated_reason":null,"parent_va":"0x140730900"}
+{"depth":4,"va":"0x140624F90","name":"sub_140624F90","rename_level":null,"role":"hash_fn_relay_provider_key","terminated_reason":"hash_computation_leaf","parent_va":"0x1403703F0"}
+{"depth":4,"va":"0x141242E30","name":"sub_141242E30","rename_level":null,"role":"hashmap_resize_grow","terminated_reason":"memory_realloc_leaf","parent_va":"0x1403703F0"}
+{"depth":4,"va":"0x141213640","name":"sub_141213640","rename_level":null,"role":"str_equality_memcmp","terminated_reason":"memcmp_leaf","parent_va":"0x1403703F0"}
+{"depth":2,"va":"0x140375340","name":"sub_140375340","rename_level":null,"role":"hashmap_get_simd_probe_validate_resource_app","terminated_reason":null,"parent_va":"0x1401C7B90","note":"called x3: validate resource=provider, app=codex, then resource lookup"}
+{"depth":3,"va":"0x140625680","name":"sub_140625680","rename_level":null,"role":"hash_fn","terminated_reason":"hash_computation_leaf","parent_va":"0x140375340"}
+{"depth":3,"va":"0x141213640","name":"sub_141213640","rename_level":null,"role":"str_equality_memcmp","terminated_reason":"memcmp_leaf","parent_va":"0x140375340"}
+{"depth":2,"va":"0x1401C7900","name":"deeplink_query_param_extract_sys","rename_level":"B","size_bytes":266,"role":"extract_named_query_param_with_error","terminated_reason":null,"parent_va":"0x1401C7B90","note":"called x3: name, endpoint, apiKey"}
+{"depth":3,"va":"0x140625680","name":"sub_140625680","rename_level":null,"role":"hash_fn","terminated_reason":"hash_computation_leaf","parent_va":"0x1401C7900"}
+{"depth":3,"va":"0x1400D48E0","name":"sub_1400D48E0","rename_level":null,"role":"hashmap_get_with_error_format","terminated_reason":"probe_plus_error_string_build_leaf","parent_va":"0x1401C7900"}
+{"depth":2,"va":"0x1410A1DF0","name":"sub_1410A1DF0","rename_level":null,"role":"rust_core_fmt_display_error_message_builder","terminated_reason":"string_formatting_leaf","parent_va":"0x1401C7B90"}
+{"depth":2,"va":"0x1410A8340","name":"sub_1410A8340","rename_level":null,"role":"url_scheme_validate_eq_aimami","terminated_reason":"string_compare_leaf","parent_va":"0x1401C7B90"}
+{"depth":2,"va":"0x14070B500","name":"str_trim_end_matches_char_sys","rename_level":"B","size_bytes":80,"role":"trim_slash_from_apiKey_url","terminated_reason":"utf8_scan_pure_computation_leaf","parent_va":"0x1401C7B90"}
+{"depth":2,"va":"0x14010E700","name":"sub_14010E700","rename_level":null,"role":"vec_capacity_alloc_buffer_size_check","terminated_reason":"arithmetic_conditional_alloc_leaf","parent_va":"0x1401C7B90"}
+{"depth":2,"va":"0x1401C7780","name":"deeplink_endpoint_str_clone_sys","rename_level":"B","role":"clone_endpoint_url_string","terminated_reason":null,"parent_va":"0x1401C7B90"}
+{"depth":3,"va":"0x1410518F0","name":"sub_1410518F0","rename_level":null,"role":"url_path_accessor","terminated_reason":"pure_computation_leaf","parent_va":"0x1401C7780"}
+{"depth":3,"va":"0x140001360","name":"sub_140001360","rename_level":null,"role":"alloc","terminated_reason":"allocator_leaf","parent_va":"0x1401C7780"}
+{"depth":2,"va":"0x1401C78A0","name":"deeplink_model_default_none_sys","rename_level":"B","size_bytes":68,"role":"alloc_default_model_string_7B_when_model_param_absent","terminated_reason":null,"parent_va":"0x1401C7B90"}
+{"depth":3,"va":"0x140001360","name":"sub_140001360","rename_level":null,"role":"alloc_7B","terminated_reason":"allocator_leaf","parent_va":"0x1401C78A0","note":"7B alloc: LE-constant encoded string; exact content accepted_unknown (not critical)"}
+{"depth":2,"va":"0x140214EA0","name":"deeplink_success_response_build_sys","rename_level":"B","size_bytes":321,"role":"build_success_response_status_ok_result_success","terminated_reason":null,"parent_va":"0x1401C7B90"}
+{"depth":3,"va":"0x140001360","name":"sub_140001360","rename_level":null,"role":"alloc_2B_ok","terminated_reason":"allocator_leaf","parent_va":"0x140214EA0"}
+{"depth":3,"va":"0x140001360","name":"sub_140001360","rename_level":null,"role":"alloc_7B_success","terminated_reason":"allocator_leaf","parent_va":"0x140214EA0"}
+{"depth":2,"va":"0x140082DE0","name":"sub_140082DE0","rename_level":null,"role":"drop_free_query_hashmap","terminated_reason":"dealloc_leaf","parent_va":"0x1401C7B90"}
+{"depth":1,"va":"0x14083A250","name":"sub_14083A250","rename_level":null,"role":"InvokeResolver_return_result_send_ok_to_frontend","terminated_reason":"framework_internal_tauri2","parent_va":"0x14002A690"}
+{"depth":1,"va":"0x14080C3C0","name":"sub_14080C3C0","rename_level":null,"role":"InvokeResolver_finalize_error_WakeByAddressSingle","terminated_reason":"windows_ipc_resolver_leaf","parent_va":"0x14002A690"}
+{"depth":1,"va":"0x14033AB50","name":"sub_14033AB50","rename_level":null,"role":"tauri_arg_extract_helper","terminated_reason":"framework_internal_tauri2","parent_va":"0x14002A690"}
+{"depth":1,"va":"0x140042650","name":"sub_140042650","rename_level":null,"role":"tauri_error_propagate","terminated_reason":"framework_internal_tauri2","parent_va":"0x14002A690"}

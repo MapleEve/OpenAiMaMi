@@ -1,0 +1,111 @@
+{
+  "command": "set_codex_api_login",
+  "session": "wf-aimami111-dim6-20260619",
+  "machine": "<本地机器>",
+  "role": "producer",
+  "produced_at": "2026-06-19",
+  "shard": "mac-shard-4",
+  "dim6": {
+    "status": "acceptance-draft",
+    "ccf_discrepancy": {
+      "ccf_argKeys": [
+        "enabled",
+        "relaunch"
+      ],
+      "ccf_argObject": "{enabled:t,relaunch:e??!0}",
+      "backend_argKeys_confirmed": [
+        "enabled"
+      ],
+      "note": "Frontend sends 'relaunch' (bool, default true) that is NOT confirmed as read by backend. Backend decompile confirms only 'enabled' (bool) parameter. Possible: 'relaunch' is a frontend-only flag ignored by backend, OR backend has additional param handling not traced in this session. C5 must investigate and verify actual server-side behavior with 'relaunch' param."
+    },
+    "happy_path": {
+      "input_enable": {
+        "enabled": true,
+        "relaunch": true
+      },
+      "input_disable": {
+        "enabled": false,
+        "relaunch": true
+      },
+      "expected_response": "CoreEnvelope<CodexApiLoginTogglePayload> \u2014 Ok sentinel 0x8000000000000000; exact payload fields unknown (accepted_unknown)",
+      "expected_side_effects_enable": [
+        "Progress events emitted: stopping_codex \u2192 writing_auth \u2192 writing_config \u2192 done\\a",
+        "Codex process stopped (osascript quit + SIGKILL fallback)",
+        "virtual-auth-marker.json written (uuid + timestamp + api_key_path fields)",
+        "Codex config JSON written with virtual auth (OPENAI_API_KEY field)",
+        "RelayState persisted to disk (atomic write)",
+        "codex catalog written (write_catalog)",
+        "Codex.app launched (launch_codex_app_warning)",
+        "In-memory RelayState updated"
+      ],
+      "expected_side_effects_disable": [
+        "Progress events: stopping_codex \u2192 restoring_auth \u2192 writing_config \u2192 done\\a",
+        "virtual-auth-marker.json removed",
+        "session credential file removed",
+        "RelayState persisted",
+        "codex catalog removed (remove_catalog)",
+        "apply_codex_state applied"
+      ],
+      "fast_path": "If enabled == current state: return Ok immediately with no file writes or process stop"
+    },
+    "boundary_error": [
+      {
+        "trigger": "slot cap reached (>=5 providers already have api_login)",
+        "condition": "resolve_api_login_slots finds cap=5 reached",
+        "expected_error": "77B error string @0x101153b01 \u2014 content unknown but semantically 'login slot cap reached'",
+        "notes": "Exact error text not extracted; non-blocking for C5 implementation awareness"
+      },
+      {
+        "trigger": "enable_virtual_login fails (write/config error)",
+        "condition": "atomic_write or ensure_directories fails during enable",
+        "expected_error": "rollback_api_login_enable triggered; CoreError propagated"
+      },
+      {
+        "trigger": "persist fails (storage::save error)",
+        "condition": "relay config atomic write fails",
+        "expected_error": "rollback_api_login_enable triggered; CoreError"
+      },
+      {
+        "trigger": "Codex process stop timeout (5s)",
+        "condition": "SIGKILL fallback triggered; process survives 5s",
+        "expected_error": "SIGKILL via kill_codex_processes_until_clear (non-fatal to operation; continues)"
+      }
+    ],
+    "side_effect_asserts": [
+      "After enable: virtual-auth-marker.json must exist; relay config must be persisted; Codex must be running",
+      "After disable: virtual-auth-marker.json must be absent; session credential file must be absent",
+      "Progress events must be emitted in correct order and observable by frontend listener"
+    ],
+    "test_mapping": [
+      {
+        "type": "manual",
+        "description": "Enable api_login; verify virtual-auth-marker.json created, Codex relaunched, relay config updated",
+        "reason": "Complex OS process management + multi-file writes; not automatable in C5 CI"
+      },
+      {
+        "type": "manual",
+        "description": "Disable api_login; verify virtual-auth-marker.json removed, session credential removed",
+        "reason": "Requires real FS state to verify removal"
+      },
+      {
+        "type": "e2e",
+        "description": "Trigger fast-path (enabled == current state); verify no FS writes and Ok response",
+        "reason": "Fast-path is automatable; no OS process side-effects"
+      },
+      {
+        "type": "explicit_non_automatable_accept",
+        "description": "Verify 'relaunch' CCF param behavior: does backend use it or ignore it?",
+        "reason": "CCF discrepancy: frontend sends relaunch param; backend evidence only confirms 'enabled'. Must be resolved before full acceptance.",
+        "notes": "producer-acceptance-draft: C5 consumer must investigate relaunch param handling"
+      }
+    ],
+    "dim6_basis": "Enable/disable paths confirmed from evidence.md decompile (11 pseudocode files in manifest). Progress event strings confirmed at offsets (stopping_codex 14B, restoring_auth 14B, writing_auth 12B, writing_config 14B, done\\a 4B). Error paths: slot cap (77B string), enable_virtual_login failure, persist failure, rollback confirmed. CCF discrepancy noted: 'relaunch' arg from ipc-contracts.jsonl not confirmed in backend."
+  },
+  "gate_upgrade": {
+    "previous": "strictImplementationUse_candidate",
+    "new": "readyToImplement",
+    "rationale": "dim1 PASS (CCF confirmed: argKeys=['enabled','relaunch'] with 'enabled' being the backend-confirmed key); dim2 PASS (11 pseudocode files, owner+10 callees decompiled); dim3 PASS (depth=5, terminal FS+POSIX+OS process leaves); dim4 PASS (argKeys, CodexApiLoginTogglePayload response type confirmed, full side-effect map, error paths); dim5_mac PASS; dim5_win separate; dim6=acceptance-draft with CCF discrepancy note",
+    "implementation_use": "eligible",
+    "notes": "dim6=acceptance-draft. 'relaunch' param from CCF is unconfirmed in backend \u2014 C5 consumer must clarify. CodexApiLoginTogglePayload exact fields unknown (accepted_unknown). Fast-path behavior must be tested."
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "schema": "c5cm.reverse.raw.leaf.v1",
+  "command": "import_skill",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "module": "skills",
+  "binary_format": "pe",
+  "pe_machine": "x86_64",
+  "binary_name": "AiMaMi 1.1.1 win64.exe",
+  "idb_path": "<本地路径>",
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "produced_by": "<本地机器>",
+  "produced_at": "2026-06-17T00:00:00Z",
+  "delta_class": "integrity_recovered",
+  "delta_note": "Previously mis-classified as same-sweep vs 1.0.9. Confirmed delta: entire import_skill command chain is NEW in 1.1.1 — no equivalent exists in 1.0.9 baseline. Full call-tree reversed in this session.",
+
+  "gate_tier": "strictImplementationUse_candidate",
+  "gate_notes": "dim1=func_symbol_enum_confirmed; dim2=arg_keys_confirmed(repo+path); dim3=response_dto_confirmed(InstalledSkillSummary fields); dim4=errors_confirmed(Invalid_skill_source+path_type_errors); dim5_win=async_lock_wrapper_confirmed; dim6=not_applicable_producer",
+
+  "owner_va": "0x14001CA50",
+  "owner_name": "import_skill_cmd_111",
+  "owner_size_bytes": 1217,
+
+  "command_string": "import_skill",
+  "command_string_va": "0x1412AC17E",
+
+  "arg_keys": [
+    {"key": "repo", "type": "String", "parser_va": "0x141214620", "note": "shared IPC param parser, not standalone"},
+    {"key": "path", "type": "String", "parser_va": "0x1402FED40", "note": "shared path String parser (same VA as import_accounts filePath parser)"}
+  ],
+
+  "response_dto": {
+    "name": "InstalledSkillSummary",
+    "struct_string_va": "0x1412B7E2C",
+    "elements": 8,
+    "formatter_va": "0x14082FD90",
+    "fields": [
+      {"field": "skillID",      "type": "String (UUID v4)",    "serde_key_va": "0x1412EC080"},
+      {"field": "name",         "type": "String",              "serde_key_va": "0x1412E9680"},
+      {"field": "title",        "type": "String (H1 from SKILL.md)", "serde_key_va": "0x1412EC087"},
+      {"field": "relativePath", "type": "String",              "serde_key_va": "0x1412EC08C"},
+      {"field": "createdAt",    "type": "u64 (epoch ms)",      "serde_key_va": "0x1412EC098"},
+      {"field": "backupID",     "type": "String",              "serde_key_va": "0x1412EC078"}
+    ]
+  },
+
+  "errors": [
+    {"code": "INVALID_SKILL_SOURCE", "bytes": 20, "string": "Invalid skill source", "context": "import_skill_build_record_db_write_111: sub_1406EE680 fails"},
+    {"code": "DIRECTORY_MUST_CONTAIN_SKILL_MD", "bytes": 31, "string": "Directory must contain SKILL.md", "context": "import_skill_resolve_path_install_111: dir path missing SKILL.md"},
+    {"code": "MUST_BE_DIR_OR_SKILL_MD_FILE", "bytes": 52, "string": "Must be a directory with SKILL.md or a SKILL.md file", "context": "import_skill_resolve_path_install_111: file path is not SKILL.md"},
+    {"code": "OS_ERROR_2", "bytes": 0, "context": "stat() returns 2 (ENOENT / not-found) on path"}
+  ],
+
+  "key_vas": {
+    "0x14001CA50": {"name": "import_skill_cmd_111",                    "rename_level": "A", "role": "IPC command handler, param parse + dispatch"},
+    "0x1406EB800": {"name": "import_skill_resolve_path_install_111",   "rename_level": "A", "role": "path validation + install orchestration"},
+    "0x1406F1360": {"name": "import_skill_build_record_db_write_111",  "rename_level": "A", "role": "UUID gen + file copy + JSON record + DB write"},
+    "0x1406EE680": {"name": "import_skill_read_parse_skill_md_111",    "rename_level": "A", "role": "read SKILL.md, extract H1 title"},
+    "0x1406EB140": {"name": "import_skill_iter_dir_match_111",         "rename_level": "A", "role": "recursive dir iterator, file copy leaf"},
+    "0x1407DB160": {"name": "async_install_lock_wrapper",              "rename_level": "B", "role": "async Mutex wrapper for install path"},
+    "0x14082FD90": {"name": "import_skill_response_formatter",         "rename_level": "B", "role": "format InstalledSkillSummary + dispatch via InvokeResolver"},
+    "0x1406ECD70": {"name": "skill_backup_replace_111",                "rename_level": "B", "role": "backup existing skill before replace"},
+    "0x1406F7540": {"name": "import_skill_uuid_to_string_111",         "rename_level": "C", "role": "UUID bytes -> string helper"},
+    "0x140F5A900": {"name": "uuid_v4_generate_raw_sys",               "rename_level": "C", "role": "UUID v4 raw bytes generator"},
+    "0x1403A6410": {"name": "skills_registry_db_write",               "rename_level": "C", "role": "write InstalledSkillSummary to SQLite registry"},
+    "0x1402FED40": {"name": null,                                      "rename_level": "C", "role": "path String parser (shared)"},
+    "0x141093260": {"name": "win32_file_read_bytes_111",              "rename_level": "C", "role": "Win32 ReadFile wrapper, reads all bytes"}
+  },
+
+  "source_module_hint": "codexmate_lib::core::skills (import_skill_resolve_path_install_111), codexmate_lib::command::skills (import_skill_cmd_111 dispatch)",
+
+  "async_pattern": {
+    "type": "Mutex-wrapped async dispatch",
+    "lock_va": "0x1407DB160",
+    "lock_type": "_InterlockedCompareExchange8 on volatile i8",
+    "wake_fn": "WakeByAddressSingle (0x14124A5D0)"
+  },
+
+  "path_segments": {
+    "skill_backups_dir": {"string": "skill-backups", "len": 13, "va": "0x1412EBFED"},
+    "skill_md_filename": {"string": "SKILL.md",      "len": 8,  "va": "0x1412EC001"},
+    "skills_subdir":     {"string": "skills",         "len": 5,  "va": "0x1412EC05E"},
+    "staging_prefix":    {"string": "__",             "len": 2,  "va": "0x1412EC13C"}
+  },
+
+  "persistence": {
+    "registry_path":  ".codex/skills/registry.json",
+    "db_path":        ".codex/state_5.sqlite",
+    "skill_dir":      ".codex/skills/<skillID>/",
+    "backup_dir":     ".codex/skills/skill-backups/<skillID>/"
+  },
+
+  "side_effects": [
+    "copies all files from source dir to .codex/skills/<uuid>/ (recursive, no extension filter)",
+    "if existing skill at same path: backup existing to .codex/skills/skill-backups/<skillID>/",
+    "generates UUID v4 as skillID (uuid_v4_generate_raw_sys)",
+    "records {backupID, skillID, name, title, relativePath, createdAt} JSON to skills registry SQLite",
+    "reads SKILL.md and extracts first H1 heading as 'title'",
+    "no HTTP calls, no sidecar, no event emission observed"
+  ],
+
+  "companion_commands": {
+    "load_installed_skills": {"va": "0x14002A100", "string_va": "0x1412AC157"},
+    "load_skill_backups":    {"string_va": "0x1412AC16C"},
+    "restore_skill_backup":  {"string_va": "0x1412AC196"},
+    "delete_skill_backup":   {"string_va": "0x1412AC1AA", "fn_va": "0x1406EF5E0"}
+  },
+
+  "struct_strings": {
+    "InstalledSkillSummary_8el":  "0x1412B7E2C",
+    "InstalledSkillSummary":      "0x1412C1972",
+    "SkillBackupMetadata_6el":    "0x1412ACDA0",
+    "SkillBackupMetadata":        "0x1412EC305"
+  },
+
+  "four_angle_completeness": {
+    "A_func_query_symbol_enum": "confirmed: find_regex('import_skill') -> xref 0x1412AC17E -> owner 0x14001CA50; find_regex('load_installed_skills') -> xref 0x1412AC157 -> companion 0x14002A100",
+    "B_string_pool_xref":       "confirmed: error strings (Directory must contain SKILL.md / Must be a directory with SKILL.md or a SKILL.md file / Invalid skill source) + field key strings (backupID/skillID/name/title/relativePath/createdAt) + path segments (skill-backups/skills/__) all verified with xrefs",
+    "C_frontend_ccf":           "not re-verified in this session (windows-only lane, CCF is frontend side)",
+    "D_manifest_coverage":      "this manifest"
+  }
+}

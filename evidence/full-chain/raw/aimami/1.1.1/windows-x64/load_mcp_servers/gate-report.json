@@ -1,0 +1,69 @@
+{
+  "command": "load_mcp_servers",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl#L68: command='load_mcp_servers', argKeys=[], wrapper='loadMcpServers', kind='tauriInvokeWrapper'",
+    "frontend/frontend-control-flow.jsonl#L163: callsite index-DdcCOEJG.js queryFn -> Ge.loadMcpServers(); L173: mcp-page-CGgOsRmy.js queryFn -> A.loadMcpServers()",
+    "load_mcp_servers/gate-report.json (prev): dims all PASS, call_tree_stats.total_edges=29, max_depth=5, new callees vs 1.0.9 documented; dim6_acceptance_mapping session=wf-aimami111-dim6-20260619",
+    "load_mcp_servers/gate-report.json#call_tree_stats.side_effects: win32_file_read_bytes_111(TOML read), relay_atomic_write_leaf_sys(TOML atomic rewrite), win32_file_write_bytes_111(snapshot write)",
+    "load_mcp_servers/gate-report.json#delta_vs_109: load_mcp_servers_write_snapshot_111 entire branch is new; new_dto_fields=[McpServer.transport+217, McpServer.enabled+216, InstalledSkill.title+136, InstalledSkill.summary+160, SkillSnapshot.usageAnalytics+696]",
+    "load_mcp_servers/gate-report.json#dim6_acceptance_mapping: happy_path/boundary_error/side_effect_asserts/test_mapping all present"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 68,
+    "wrapper": "loadMcpServers",
+    "argKeys": [],
+    "kind": "tauriInvokeWrapper",
+    "callsites": ["index-DdcCOEJG.js queryFn@L316", "mcp-page-CGgOsRmy.js queryFn@L16"]
+  },
+  "dim2_detail": {
+    "owner_va": "0x14001c4c0",
+    "owner_name": "load_mcp_servers_owner_sys",
+    "delta_vs_109": "load_mcp_servers_write_snapshot_111 entire branch new; new_dto_fields confirmed; pending_auto_switch_state_lock_acquire_111 new mutex; elapsed_since_ts_111 500ms freshness check x2"
+  },
+  "dim3_detail": {
+    "max_depth": 5,
+    "total_edges": 29,
+    "key_new_callees": ["mcp_config_toml_parse_and_remove_111@0x1406790d0", "mcp_server_array_clone_stride224_sys@0x140361ef0"],
+    "terminated_reasons": ["platform_primitive", "response_serialize_leaf", "persistence_commit", "external_call"]
+  },
+  "dim4_detail": {
+    "request_dto": "none (argKeys=[])",
+    "response_shape": "SkillSnapshot JSON with mcpServers + installedSkills + usageAnalytics",
+    "new_1_1_1_dto_fields": {
+      "McpServer.transport": "u8 enum offset+217",
+      "McpServer.enabled": "bool offset+216",
+      "InstalledSkill.title": "Option<String> offset+136",
+      "InstalledSkill.summary": "Option<String> offset+160",
+      "SkillSnapshot.usageAnalytics": "NEW in 1.1.1"
+    },
+    "side_effects": [
+      "win32_file_read_bytes_111: existing snapshot JSON read from disk",
+      "mcp_config_toml_parse_and_remove_111 -> relay_atomic_write_leaf_sys: TOML config atomic rewrite",
+      "win32_file_write_bytes_111: new snapshot JSON written to disk",
+      "elapsed_since_ts_111 x2: 500ms freshness threshold checks"
+    ],
+    "path_gate": "relay_config_check_parent_dirs_sys: canonicalize + starts_with security check before write"
+  },
+  "dim5_detail": {
+    "windows_only": true,
+    "idb_saved": true,
+    "new_mutex": "pending_auto_switch_state_lock_acquire_111 with _InterlockedCompareExchange8 + WakeByAddressSingle"
+  },
+  "dim6_detail": {
+    "source": "gate-report.json (prev)#dim6_acceptance_mapping (session wf-aimami111-dim6-20260619)",
+    "happy_path": "invoke('load_mcp_servers') => SkillSnapshot JSON with mcpServers array including new 1.1.1 fields (transport, enabled, usageAnalytics)",
+    "critical_note": "McpServer.transport and McpServer.enabled are NEW in 1.1.1 — C5 UI must handle these fields; callers expecting 1.0.9 shape will see extra fields"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

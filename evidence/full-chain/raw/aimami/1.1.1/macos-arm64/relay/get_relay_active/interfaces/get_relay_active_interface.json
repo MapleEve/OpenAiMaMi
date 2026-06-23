@@ -1,0 +1,22 @@
+{
+  "command_name": "get_relay_active",
+  "argKeys": [],
+  "state_injection": "AppState (tauri::State) via StateManager::try_get at __dst[64]+16",
+  "response_ok": "Option<Vec<String>> — active provider IDs; Vec<String> cloned from RelayManager.active_providers @ state+56",
+  "response_none_sentinel": {"ptr": 0, "len": 8, "cap": 0},
+  "response_some_encoding": "CoreEnvelope::ok wrapper, serialized via InvokeResolver::respond (sync, no spawn)",
+  "response_err": "Mutex poisoned -> None sentinel (poison_byte @ state+24 set to 1); OOM -> abort via alloc::raw_vec::handle_error",
+  "side_effects": [],
+  "http_calls": [],
+  "persistence": [],
+  "async": false,
+  "delta_vs_109": {
+    "interface_change": "none",
+    "behavior_change": "none",
+    "arg_keys_change": "none — both versions take no args",
+    "response_schema_change": "none — same Option<Vec<String>>",
+    "none_sentinel_change": "none — {0,8,0} same",
+    "symbol_change": "1.0.9 had standalone codexmate_lib::commands::relay::get_relay_active; 1.1.1 inlines into run closure inner closure hfefd46acd52a1302",
+    "core_va_change": "1.0.9 core=0x1001c83a4; 1.1.1 core=0x1005d18f0 (recompiled, semantics identical)"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "struct": "CodexMateSettings",
+  "version_from": "1.0.9",
+  "version_to": "1.1.1",
+  "platform": "macos-arm64",
+  "session": "wf-aimami111-delta-20260616",
+  "serialize_fields_1_1_1": [
+    {"index": 0, "name": "hotspot", "key_len": 7},
+    {"index": 1, "name": "usageRefreshInterval", "key_len": 20},
+    {"index": 2, "name": "deviceId", "key_len": 8, "type": "Option<String>", "empty_sentinel": "0x8000000000000000"},
+    {"index": 3, "name": "remoteDeviceSecret", "key_len": 18},
+    {"index": 4, "name": "notificationsSince", "key_len": 18},
+    {"index": 5, "name": "apiProxy", "key_len": 8},
+    {"index": 6, "name": "MysteryRouteGrant", "key_len": 17},
+    {"index": 7, "name": "routeexpiresAtMs", "key_len": 16, "delta": "NEW in 1.1.1"}
+  ],
+  "serialize_field_rodata_base": "0x10114cde0",
+  "delta_vs_1_0_9": {
+    "added_fields": ["routeexpiresAtMs"],
+    "removed_fields": [],
+    "changed_fields": [],
+    "note": "1.0.9 had 7 serialize fields; 1.1.1 adds routeexpiresAtMs as field index 7"
+  },
+  "load_settings_migration_1_1_1": {
+    "description": "load_settings now has a migration path for mysteryUnlockGrants/mysteryUnlockedRoutes rename",
+    "migration_key_old": "mysteryUnlockedRoutes",
+    "migration_key_new": "mysteryUnlockGrantsmysteryUnlockedRoutes (concatenated rodata @0x10114cc78)",
+    "migration_logic": "if mysteryUnlockGrants key absent but mysteryUnlockedRoutes present: read value, convert, write back under new key via index_or_insert",
+    "migration_rodata": "0x10114cc78: 'mysteryUnlockGrantsmysteryUnlockedRoutes'",
+    "migration_search_key_1": "mysteryUnlockGrantsmysteryUnlockedRoutes (len=40, split: mysteryUnlockGrants[19]+mysteryUnlockedRoutes[21])",
+    "migration_search_key_2": "mysteryUnlockedRoutes (len=21)",
+    "serde_json_migration": "reads JSON Value, checks for old key, converts via from_iter/to_value, inserts under new key, then deserializes struct"
+  }
+}

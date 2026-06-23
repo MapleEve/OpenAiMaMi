@@ -1,0 +1,73 @@
+{
+  "command": "refresh_usage_snapshot",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl: command=refresh_usage_snapshot, argKeys=[], kind=tauriInvokeWrapper, line=86, col=24202, wrapper=refreshUsageSnapshot",
+    "frontend/frontend-control-flow.jsonl: handler_chain=[refreshUsageSnapshot@86, k@86], terminal_call=ne('refresh_usage_snapshot'), argKeys=[]",
+    "pseudocode.md: 26020B, owner=refresh_usage_snapshot_owner_sys @0x140984C40",
+    "call-tree.md: depth>=5, fetch_wham_usage_http_111 NEW side-effect HTTP, quota_history_persist_file_111 NEW disk write, broadcast_runtime_state_updated_111 event bus, all branches terminated",
+    "interface.md: response={usageAttemptCount,usageSuccessCount,lastUsageFailure,lastUsageFailureAccount} NEW 4 fields; side-effects HTTP+disk+in-mem-ring+event-broadcast; pre-checks documented",
+    "owner.md: refresh_usage_snapshot_owner_sys @0x140984C40 size=0xF9E; decompile_status=FAILED_hex_rays body reconstructed via callees+BB+string-xrefs; gold-leaf",
+    "prior gate consolidated_prev_gate=full_gold_leaf readyToImplement from wf-aimami111-dim6-20260619",
+    "dim1: argKeys=[], wrapper=refreshUsageSnapshot, callee=ne, line=86 col=24226, snippet=ne('refresh_usage_snapshot')",
+    "dim2: pseudocode 26020B >> 600B",
+    "dim3: depth>=5 fetch_wham_usage_http_111 side-effect at depth=2 sub_140C8D540; quota_history_persist_file_111 depth=3 CreateFile+WriteFile; broadcast_runtime_state_updated depth=1",
+    "dim4: 4 NEW response fields; fetch_wham_usage_http_111 GET chatgpt.com/backend-api/wham/usage; quota_history_persist_file_111 disk write per account; quota_history_append_dedup_111 max21 ring; broadcast_runtime_state_updated_111 event bus; pending_auto_switch early-return; usageRefreshEnabled guard",
+    "dim5: CreateFile+WriteFile+CloseHandle in quota_history_persist_file_111; WakeByAddressSingle@0x14124A5D0; sub_140C8D540 HTTP client Windows",
+    "dim6: full_gold_leaf acceptance consolidated prior; readyToImplement; dim6_session=wf-aimami111-dim6-20260619"
+  ],
+  "dim1_detail": {
+    "wrapper": "refreshUsageSnapshot",
+    "callee": "ne",
+    "argKeys": [],
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "col": 24226,
+    "snippet": "ne(\"refresh_usage_snapshot\")"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 26020,
+    "owner_va": "0x140984C40",
+    "owner_symbol": "refresh_usage_snapshot_owner_sys",
+    "decompile_status": "FAILED_hex_rays_reconstructed_via_callees_BB_string_xrefs"
+  },
+  "dim3_detail": {
+    "max_depth": ">=5",
+    "key_callees": ["fetch_wham_usage_http_111@0x140673CC0(HTTP)", "quota_history_persist_file_111@0x140200EA0(disk)", "broadcast_runtime_state_updated_111@0x140790230(event)"],
+    "all_branches_terminated": true
+  },
+  "dim4_detail": {
+    "response_dto_new_1_1_1": {"usageAttemptCount": "u32", "usageSuccessCount": "u32", "lastUsageFailure": "string|null", "lastUsageFailureAccount": "string|null"},
+    "side_effects_new_1_1_1": [
+      "HTTP GET https://chatgpt.com/backend-api/wham/usage?account_id=<id> @fetch_wham_usage_http_111@0x140673CC0",
+      "disk write quota history per account @quota_history_persist_file_111@0x140200EA0 CreateFile+WriteFile+CloseHandle",
+      "in-memory ring quota_history_append_dedup_111@0x1401FF820 max 21 entries",
+      "event broadcast runtime-state-updated @broadcast_runtime_state_updated_111@0x140790230",
+      "tray refresh @sub_14078B420 throttled"
+    ],
+    "pre_check_guards_new_1_1_1": ["confirm_pending_auto_switch_deserialize_request_sys@0x140089a50 early-return", "usageRefreshEnabled==false early-return"],
+    "error_discriminants": {"6": "network_error error_class=1", "9": "HTTP_3xx-5xx error_class=2"}
+  },
+  "dim5_detail": {
+    "platform_primitives": ["CreateFile+WriteFile+CloseHandle in quota_history_persist_file_111", "WakeByAddressSingle@0x14124A5D0", "sub_140C8D540 HTTP client Win64"],
+    "note": "Windows-x64 binary all evidence from win IDB"
+  },
+  "dim6_detail": {
+    "acceptance_status": "full_gold_leaf_acceptance",
+    "session": "wf-aimami111-dim6-20260619",
+    "gate_tier": "readyToImplement",
+    "happy_path": "invoke('refresh_usage_snapshot') -> {usageAttemptCount, usageSuccessCount, lastUsageFailure, lastUsageFailureAccount}",
+    "delta_asserts": ["4 new response fields present", "quota history disk file written per account", "pending_auto_switch active -> early return without HTTP"]
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

@@ -1,0 +1,67 @@
+{
+  "command": "load_relay_state",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl: command=load_relay_state, argKeys=[], kind=tauriInvokeWrapper, line=86, col=119433, wrapper=loadState",
+    "frontend/frontend-control-flow.jsonl: handler_chain=[loadState@86,queryFn@306], terminal_call=vt('load_relay_state'), argKeys=[]",
+    "pseudocode.md: 24750B, owner=load_relay_state_ipc_handler_111 @0x140015870",
+    "call-tree.md: max_depth=6, total_unique_callees=42, named_callees=16, all branches terminated",
+    "interface.md: response DTO fields schemaVersion/success/code/message/warnings(NEW_1.1.1)/data confirmed; side-effects TCP+disk both branches",
+    "owner.md: IDB renamed load_relay_state_ipc_handler_111 @0x140015870, string anchor @0x1412AC4B0",
+    "gate.dim6_acceptance_mapping session=wf-aimami111-dim6-20260619 acceptance_draft + test_mapping present",
+    "dim1: argKeys=[] confirmed, wrapper=loadState, callee=vt, line=86 col=119446",
+    "dim2: pseudocode 24750B >> 600B threshold",
+    "dim3: depth=6 (GetCurrentProcessId/WriteFile/CloseHandle @ relay_atomic_write_leaf_sys), terminated_reason on all branches",
+    "dim4: warnings field NEW @0x1412C06DA via relay_response_field_warnings_write_sys@0x1402494C0; TCP+disk side-effects from relay_config_connection_refresh_and_write_sys@0x1406DA970",
+    "dim5: Win32-only callees WakeByAddressSingle, closesocket, GetCurrentProcessId, __imp_CloseHandle, relay_atomic_write_leaf_sys",
+    "dim6: acceptance_draft present in prior gate-report, test_mapping defined, implementation_use=eligible"
+  ],
+  "dim1_detail": {
+    "wrapper": "loadState",
+    "callee": "vt",
+    "argKeys": [],
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "col": 119446,
+    "snippet": "vt(\"load_relay_state\")"
+  },
+  "dim2_detail": {
+    "pseudocode_bytes": 24750,
+    "owner_va": "0x140015870",
+    "owner_symbol": "load_relay_state_ipc_handler_111"
+  },
+  "dim3_detail": {
+    "max_depth": 6,
+    "total_unique_callees": 42,
+    "named_callees": 16,
+    "new_delta_edges": 4,
+    "terminated_count": 10
+  },
+  "dim4_detail": {
+    "response_dto": ["schemaVersion", "success", "code", "message", "warnings(NEW_1.1.1@0x1412C06DA)", "data"],
+    "side_effects": ["TCP connect probe 300ms timeout @sub_141077F30", "disk write aimami-relay.json atomic (both branches) @relay_atomic_write_leaf_sys@0x140504310"],
+    "error_paths": ["discriminant==6 skill_store None -> has_notch_invoke_resolver_respond", "relay_state_poisoned @0x1412EA5ED", "Display impl error @0x1412C23F0", "atomic write missing parent @0x1412D9476"]
+  },
+  "dim5_detail": {
+    "platform_primitives": ["WakeByAddressSingle@0x14124A5D0", "closesocket@0x14124DED8", "GetCurrentProcessId@0x14108B3B0", "__imp_CloseHandle@0x14124D788", "CreateFile/WriteFile via relay_atomic_write_leaf_sys@0x140504310"],
+    "note": "All callees in win64 IDB; no cross-platform fork needed"
+  },
+  "dim6_detail": {
+    "acceptance_status": "acceptance_draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "gate_tier": "readyToImplement",
+    "happy_path": "invoke('load_relay_state') -> {schemaVersion, success, code, message, warnings[], data}",
+    "delta_assert": "response.warnings array present (NEW 1.1.1); aimami-relay.json updated atomically on every success path"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

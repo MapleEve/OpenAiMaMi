@@ -1,0 +1,29 @@
+{
+  "command": "set_codex_api_login",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/set_codex_api_login/pseudocode.md",
+    "raw/aimami/1.1.1/windows-x64/set_codex_api_login/call-tree.md",
+    "raw/aimami/1.1.1/windows-x64/set_codex_api_login/interface.md",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl#L116 command=set_codex_api_login argKeys=[enabled,relaunch]",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl#L138,L154",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-consolidated.json#readyToImplement"
+  ],
+  "dim1_evidence": "ipc-contracts.jsonl L116: command=set_codex_api_login, argKeys=[enabled,relaunch], argObject={enabled:t,relaunch:e??!0}, callee=vt, kind=tauriInvokeWrapper, file=assets/index-DdcCOEJG.js:86; CCF L138,L154 confirmed",
+  "dim2_evidence": "set_codex_api_login_dispatch_hub_sys@0x14099D990 (Tokio coroutine hub); set_codex_api_login_task_runner_sys@0x1407D63E0; set_codex_api_login_core_sys@0x1406D8620 (5074B full decompile); relay_get_active_providers_vec_sys@0x1406DBEC0; relay_post_login_state_sync_sys@0x1406E1750; async poll pattern with outer FSM state fields 3506/3507/3508/3512/3520/3536-3539",
+  "dim3_evidence": "call-tree depth=6; terminated at: atomic_write_file_sys@0x140504310(codexmate_lib::core::relay::atomic_write), quit_codex_fallback_kill_sys_111@0x1407A44D0, _InterlockedCompareExchange8, WakeByAddressSingle, CloseHandle, GetCurrentProcessId, WriteFile, platform-primitive/WIN-fs/stdlib-alloc/panic/runtime-internal",
+  "dim4_evidence": "params: manager(String,7B), enabled(bool), relaunch(bool,default=true); key struct: RelayManagerState+365=codexApiLogin(bool); ENABLE: writing_auth->persist(codexApiLogin=true)->auth_fields clear+provider_flag=1->sync->rollback(sub_1406E1040 on fail); DISABLE: restoring_auth->persist(false)->sync; relaunch=true: quit_codex_poll_wait_sys_111(50ms,5s)+fallback_kill; side-effects: relay config atomic_write x2(enable) + optional process restart",
+  "dim5_evidence": "InterlockedCompareExchange8+WakeByAddressSingle WIN relay lock; Codex quit: poll 50ms (NO WakeByAddressSingle condvar - pure poll, vs macOS signal); blocking_task_reentry panic='[internal exception] blocking task ran twice.'; RelayProvider stride=232B confirmed WIN",
+  "dim6_evidence": "acceptance-draft by wf-aimami111-dim6-20260619; promoted to readyToImplement in win-consolidated.json",
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

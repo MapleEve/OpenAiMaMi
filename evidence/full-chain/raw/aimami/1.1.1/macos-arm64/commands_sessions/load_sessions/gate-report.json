@@ -1,0 +1,28 @@
+{
+  "command": "load_sessions",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": ["dim5_win not judged in mac shard gate; per-platform rule: mac gate only requires mac dim5 closed"]
+  },
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:27 wrapper=loadSessions argKeys=[] callee=ne col=25748 kind=tauriInvokeWrapper",
+    "frontend/frontend-control-flow.jsonl:40 terminal_call command=load_sessions argKeys=[]",
+    "frontend/frontend-control-flow.jsonl:185 callsite=$.loadSessions() sessions-page-GrXHFrri.js:6:9281",
+    "commands_sessions/load_sessions/ida/pseudocode/0721_load_sessions_core_6efd1054.c 4342B owner_va=0x100721c70 size=17942B",
+    "commands_sessions/load_sessions/call-trees/load_sessions.jsonl 23 entries depth4: open_codex_db+build_rollout_index+sqlite3_step+is_codex_visible_session",
+    "commands_sessions/load_sessions/interfaces/load_sessions_interface.md argKeys=[] CodexSession 15 fields READ-ONLY SQL confirmed @0x101159710",
+    "commands_sessions/load_sessions/ACCEPTANCE.md acceptance-draft dim6 closed; dim1 closed per close_session wf-aimami111-dim6-100-20260619",
+    "ipc-contracts.jsonl dim1 confirmed: argKeys=[] wrapper=loadSessions params=() — 1.1.1 byte-confirmed; CCF callsite sessions-page-GrXHFrri.js confirmed",
+    "intermediate/version-delta/mac-same.txt: load_sessions listed (mac-arm64 command confirmed)"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

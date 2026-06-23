@@ -1,0 +1,110 @@
+{
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-17",
+  "target": "get_or_create_remote_device_secret",
+  "platform": "windows-x64",
+  "version": "1.1.1",
+  "delta_class": "integrity_recovered",
+  "layers": [
+    {
+      "layer": "L1",
+      "name": "get_or_create_remote_device_secret_async_handler_sys",
+      "addr": "0x14078CD70",
+      "size": "0x34B",
+      "type": "async_handler",
+      "dispatched_from": "tauri_ipc_main_dispatcher_sys @ 0x14000D2A0",
+      "mutex_mechanism": "WIN32 _InterlockedCompareExchange8 + WakeByAddressSingle",
+      "callees": [
+        {"addr": "0x14124A510", "name": "sub_14124A510", "role": "spin_wait_on_contention", "type": "noise_runtime"},
+        {"addr": "0x14124B1D0", "name": "sub_14124B1D0", "role": "managed_state_query (key=dev.aimami.auto-switch)", "type": "app_logic"},
+        {"addr": "0x1410B1930", "name": "sub_1410B1930", "role": "poison_lock_guard_check", "type": "noise_runtime"},
+        {"addr": "0x14124BFE0", "name": "sub_14124BFE0", "role": "panic_display_impl_error", "type": "noise_runtime"},
+        {"addr": "0x1401B4FB0", "name": "get_or_create_remote_device_secret_core_sys", "role": "CORE", "type": "app_logic"},
+        {"addr": "0x140243FC0", "name": "sub_140243FC0", "role": "build_error_enum_variant", "type": "app_logic"},
+        {"addr": "0x1407B1650", "name": "sub_1407B1650", "role": "drop_error_payload", "type": "noise_runtime"},
+        {"addr": "0x14124A5D0", "name": "WakeByAddressSingle", "role": "wake_parked_waiters", "type": "win32_api"}
+      ]
+    },
+    {
+      "layer": "L2",
+      "name": "get_or_create_remote_device_secret_core_sys",
+      "addr": "0x1401B4FB0",
+      "size": "0x21E",
+      "type": "core",
+      "callees": [
+        {"addr": "0x1401A15D0", "name": "codexmate_settings_hotspot_read_full_sys_111", "role": "read_hotspot_config_from_disk", "type": "app_logic", "depth_continue": true},
+        {"addr": "0x14070B280", "name": "sub_14070B280", "role": "string_clone (existing secret fast-path)", "type": "noise_runtime"},
+        {"addr": "0x140001360", "name": "sub_140001360", "role": "rust_alloc", "type": "noise_alloc"},
+        {"addr": "0x14124BCCB", "name": "sub_14124BCCB", "role": "alloc_oom_panic", "type": "noise_runtime"},
+        {"addr": "0x141212FB0", "name": "sub_141212FB0", "role": "memcpy_result_slot", "type": "noise_runtime"},
+        {"addr": "0x140F5A860", "name": "uuid_v4_generate_raw_sys", "role": "generate_raw_uuid_v4_bytes (x2)", "type": "app_logic_leaf"},
+        {"addr": "0x140610610", "name": "uuid_v4_format_hex32_sys", "role": "format_uuid_as_16char_hex (x2, combined=32char)", "type": "app_logic_leaf"},
+        {"addr": "0x1410A1DF0", "name": "sub_1410A1DF0", "role": "string_concat (join two hex16 → hex32)", "type": "noise_runtime"},
+        {"addr": "0x1410A2210", "name": "sub_1410A2210", "role": "string_clone_or_move", "type": "noise_runtime"},
+        {"addr": "0x140001370", "name": "sub_140001370", "role": "rust_dealloc", "type": "noise_alloc"},
+        {"addr": "0x1401A1D90", "name": "hotspot_config_serialize_5field_json_and_write_sys", "role": "write_5field_json_to_disk", "type": "app_logic", "depth_continue": true},
+        {"addr": "0x1400013A0", "name": "nullsub_1", "role": "nop", "type": "noise_runtime"},
+        {"addr": "0x1400485A0", "name": "sub_1400485A0", "role": "drop_hotspot_struct", "type": "noise_runtime"}
+      ]
+    },
+    {
+      "layer": "L3a",
+      "name": "hotspot_config_serialize_5field_json_and_write_sys",
+      "addr": "0x1401A1D90",
+      "size": "0x267",
+      "type": "serializer_writer",
+      "delta_note": "NEW in 1.1.1: 5-field JSON (1.0.9 had single-field write)",
+      "json_fields_in_order": [
+        {"key": "hotspot", "dto_offset": "a3+144", "serializer": "sub_14025A8C0"},
+        {"key": "usageRefreshInterval", "dto_offset": "a3+16", "serializer": "sub_140260580"},
+        {"key": "deviceId", "dto_offset": "a3+64", "serializer": "sub_1402662D0"},
+        {"key": "remoteDeviceSecret", "dto_offset": "a3+88", "serializer": "sub_1402662D0"},
+        {"key": "notificationsSince", "dto_offset": "a3+0", "serializer": "sub_140267450"},
+        {"key": "<extra1>", "dto_offset": "a3+112", "serializer": "sub_1401F7930"},
+        {"key": "<extra2>", "dto_offset": "a3+40", "serializer": "sub_1401F7910"}
+      ],
+      "callees": [
+        {"addr": "0x1406F2870", "name": "relay_config_check_parent_dirs_sys", "role": "ensure_parent_dirs_exist", "type": "app_logic_leaf"},
+        {"addr": "0x1403A64F0", "name": "sub_1403A64F0", "role": "write_json_buf_to_file (→ win32_file_write_bytes_111)", "type": "platform_leaf"},
+        {"addr": "0x141248EC0", "name": "sub_141248EC0", "role": "json_incomplete_error", "type": "noise_runtime"}
+      ]
+    },
+    {
+      "layer": "L3b",
+      "name": "codexmate_settings_hotspot_read_full_sys_111",
+      "addr": "0x1401A15D0",
+      "size": "0x609",
+      "type": "config_reader",
+      "delta_note": "NEW fields in 1.1.1 vs 1.0.9: mysteryUnlockGrants (len=19) + mysteryUnlockedRoutes (len=21)",
+      "callees": [
+        {"addr": "0x141093260", "name": "win32_file_read_bytes_111", "role": "read_hotspot_file_bytes", "type": "platform_leaf"},
+        {"addr": "0x14040CC30", "name": "codexmate_settings_field_lookup_sys_111", "role": "hashmap_field_lookup (key='CodexMateSettings')", "type": "app_logic_leaf"},
+        {"addr": "0x14103A480", "name": "sub_14103A480", "role": "lookup_optional_field (mysteryUnlockGrants/Routes)", "type": "app_logic_leaf"},
+        {"addr": "0x14103A580", "name": "sub_14103A580", "role": "insert_field_into_settings", "type": "app_logic_leaf"}
+      ],
+      "terminated_reason": "domain_leaf (file I/O + hashmap ops, no further app callees)"
+    },
+    {
+      "layer": "L4",
+      "name": "uuid_v4_generate_raw_sys + uuid_v4_format_hex32_sys",
+      "addr": "0x140F5A860 + 0x140610610",
+      "type": "leaf",
+      "note": "UUID v4 RNG (opaque OS entropy), hex formatting — platform leaf, no app callees",
+      "terminated_reason": "domain_leaf"
+    }
+  ],
+  "terminated_reason": "depth_5_reached_all_domain_leaves",
+  "side_effects": [
+    {
+      "type": "local_file_write",
+      "description": "Writes 5-field JSON to hotspot config file",
+      "path_source": "config_ptr+584/592 (Win32 path QWORDS)",
+      "writer": "win32_file_write_bytes_111 @ 0x141093710",
+      "triggered_when": "remoteDeviceSecret field was empty on read"
+    }
+  ],
+  "no_http": true,
+  "no_sidecar": true,
+  "no_ipc_emit": true
+}

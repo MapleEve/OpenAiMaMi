@@ -1,0 +1,16 @@
+{"depth":0,"addr":"0x100615dd0","name":"codexmate_lib::commands::system::get_device_id::h01dc7e7292edc62a","role":"owner","size_bytes":771,"type":"command_handler"}
+{"depth":1,"caller":"0x100615dd0","addr":"0x1004c7900","name":"codexmate_lib::core::repository::Repository::get_or_create_device_id::hd02566ffe90e96b1","role":"impl_core","type":"internal"}
+{"depth":2,"caller":"0x1004c7900","addr":"0x1004bfa30","name":"codexmate_lib::core::repository::Repository::load_settings::he4534577dc3a0f23","role":"persistence_read","type":"internal","note":"1.1.1 DELTA: added mysteryUnlockGrants→mysteryUnlockedRoutes migration logic"}
+{"depth":2,"caller":"0x1004c7900","addr":"0x100e13930","name":"uuid::v4::Uuid::new_v4::h0d422edb31edb566","role":"uuid_gen","type":"internal","condition":"deviceId absent (empty-sentinel 0x8000000000000000)"}
+{"depth":2,"caller":"0x1004c7900","addr":"0x100e13a20","name":"uuid::fmt::LowerHex::fmt::h318954c16e5fd96c","role":"uuid_format","type":"internal"}
+{"depth":2,"caller":"0x1004c7900","addr":"0x100f656f0","name":"alloc::string::String::clone::h1ed93fb7d98ec2c1","role":"clone_return_value","type":"internal"}
+{"depth":2,"caller":"0x1004c7900","addr":"0x1004c00c0","name":"codexmate_lib::core::repository::Repository::save_settings::h4d706b2a9995d619","role":"persistence_write","type":"internal","condition":"deviceId was absent (new UUID path only)","note":"1.1.1 DELTA: now serializes routeexpiresAtMs field"}
+{"depth":2,"caller":"0x1004c7900","addr":"0x1004eca70","name":"core::ptr::drop_in_place<CodexMateSettings>::hc79bca4b67e7dc18","role":"cleanup","type":"internal"}
+{"depth":3,"caller":"0x1004bfa30","addr":"0x100f25740","name":"std::fs::read_to_string::inner::hcce2334f4117b5b3","role":"fs_read","type":"internal","terminal":"false"}
+{"depth":3,"caller":"0x1004bfa30","addr":"0x1002ea3f0","name":"serde_json::de::from_trait::hb5738e4a768d5965","role":"json_deserialize","type":"internal"}
+{"depth":3,"caller":"0x1004c00c0","addr":"0x1005582b0","name":"codexmate_lib::platform::paths::CodexPaths::ensure_directories::hb16ec12a90cb0ad9","role":"ensure_dirs","type":"internal"}
+{"depth":3,"caller":"0x1004c00c0","addr":"0x100201fe0","name":"std::fs::write::hfb9be4fe94ddd05f","role":"persistence_commit","type":"internal","terminal":"true","terminated_reason":"persistence_commit"}
+{"depth":1,"caller":"0x100615dd0","addr":"0x10030c110","name":"codexmate_lib::run::{{closure}}::{{closure}}::h01bbab0d6ee64cfe","role":"dispatch_closure","type":"internal","note":"xref confirmed: Tauri invoke_handler dispatch closure"}
+{"depth":1,"caller":"0x100615dd0","addr":"0x100f7c920","name":"std::sys::sync::once_box::OnceBox<T>::initialize","role":"lazy_init","type":"internal"}
+{"depth":1,"caller":"0x100615dd0","addr":"0x100f2e7a0","name":"std::sys::pal::unix::sync::mutex::Mutex::lock","role":"mutex_lock","type":"internal"}
+{"depth":1,"caller":"0x100615dd0","addr":"0x100f2e7c0","name":"std::sys::pal::unix::sync::mutex::Mutex::unlock","role":"mutex_unlock","type":"internal"}

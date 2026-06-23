@@ -1,0 +1,23 @@
+{"session":"wf-aimami111-win-samedepth-patch-20260619","machine":"<本地机器>","command":"confirm_pending_auto_switch","platform":"windows-x64","version":"1.1.1","handler_addr":"0x140027300","handler_name":"sub_140027300","depth":5,"verdict":"confirmed_same_depth5"}
+{"depth":1,"addr":"0x140027300","name":"sub_140027300","role":"command_owner: IPC command='confirm_pending_auto_switch' namespace='app'+'repo'","terminated_reason":null}
+{"depth":2,"addr":"0x140089a50","name":"confirm_pending_auto_switch_deserialize_request_sys","role":"app_scope_rate_check + DTO deserialize","terminated_reason":null}
+{"depth":3,"addr":"0x141212fb0","name":"sub_141212FB0","role":"memcpy_helper","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14006edc0","name":"pending_auto_switch_state_lock_acquire_111","role":"state_lock_acquire","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x141214620","name":"query_installed_skills_with_repo_111","role":"repo_state_check","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14078a270","name":"sub_14078A270","role":"confirm_pending_auto_switch_core: promote pending→active account","terminated_reason":null}
+{"depth":3,"addr":"0x140797e70","name":"diagnose_execute_with_repo_win","role":"execute_with_repo_guard: locks repo, executes confirm op","terminated_reason":null}
+{"depth":4,"addr":"0x140790870","name":"repository_diagnose_core_win","role":"repo_core_exec: assembles state, calls confirm impl","terminated_reason":null}
+{"depth":5,"addr":"0x1401abc20","name":"state_manager_lock_and_assemble","role":"assemble_bootstrap_state for confirm","terminated_reason":"implementation_leaf"}
+{"depth":5,"addr":"0x1401b62f0","name":"sync_local_runtime_state_builder","role":"sync runtime state after confirm","terminated_reason":"implementation_leaf"}
+{"depth":5,"addr":"0x140213770","name":"schedule_full_runtime_refresh_builder","role":"schedule full refresh post-confirm","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x1401abff0","name":"pending_auto_switch_payload_read_111","role":"read pendingSwitchAccountKey from disk","terminated_reason":null}
+{"depth":5,"addr":"0x141093260","name":"win32_file_read_bytes_111","role":"file_read: TERMINAL","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x140790230","name":"broadcast_runtime_state_updated_111","role":"broadcast state update to frontend after confirm","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x1401b2850","name":"sub_1401B2850","role":"payload_read_and_verify: reads+verifies pending payload","terminated_reason":null}
+{"depth":4,"addr":"0x1401abff0","name":"pending_auto_switch_payload_read_111","role":"same payload read","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x1401a2040","name":"sub_1401A2040","role":"state_update_commit: promote pending→active in state file","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140041870","name":"sub_140041870","role":"drop_request_state","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1408369c0","name":"sub_1408369C0","role":"ipc_response_dispatch: serialize + respond","terminated_reason":null}
+{"depth":3,"addr":"0x14080c3c0","name":"has_notch_invoke_resolver_respond","role":"tauri_ipc_resolve","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14033ab50","name":"has_notch_arc_listener_drop_loop","role":"arc_drop_loop","terminated_reason":"implementation_leaf"}
+{"compare_1_0_9":{"baseline_handler":"confirm_pending_auto_switch_owner_sys@0x14026EA00","verdict":"confirmed_same_depth5","notes":"1.0.9: reads pendingSwitchAccountKey, calls core_impl(promote pending→active+clear), optionally spawns confirm_and_restart coroutine. 1.1.1: pending_auto_switch_payload_read_111(same DTO read at depth-4), diagnose_execute_with_repo_win+broadcast_runtime_state_updated_111(same confirm+broadcast pattern), state_update_commit at depth-4. No new DTO fields, no new side-effects. restart_codex path still routed via separate confirm_pending_auto_switch_and_restart_codex command."}}

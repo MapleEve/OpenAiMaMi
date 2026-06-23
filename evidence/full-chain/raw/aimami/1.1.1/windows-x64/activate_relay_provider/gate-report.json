@@ -1,0 +1,67 @@
+{
+  "command": "activate_relay_provider",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/activate_relay_provider/pseudocode.md (17166B, gold-leaf)",
+    "raw/aimami/1.1.1/windows-x64/activate_relay_provider/call-tree.md (10658B, depth=6, edges=29)",
+    "raw/aimami/1.1.1/windows-x64/activate_relay_provider/interface.md (3657B)",
+    "raw/aimami/1.1.1/windows-x64/activate_relay_provider/owner.md",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl line 104: argKeys=[providerId,ide] col=119571",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl lines 124,150: activate wrapper + mutationFn callsite",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#activate_relay_provider (acceptance-draft)",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-consolidated.json"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 104,
+    "wrapper": "activate",
+    "argKeys": ["providerId", "ide"],
+    "snippet_col": 119571,
+    "ccf_lines": [124, 150]
+  },
+  "dim2_detail": {
+    "owner_va": "0x140017EC0",
+    "owner_name": "activate_relay_provider_owner_sys",
+    "owner_size_bytes": 1486,
+    "pseudocode_bytes": 17166,
+    "session": "wf-aimami111-delta-20260618-goldleaf"
+  },
+  "dim3_detail": {
+    "depth": 6,
+    "edges": 29,
+    "terminated_reason": "all_branches_hit_known_leaves",
+    "key_leaves": [
+      "relay_atomic_write_leaf_sys@0x140504310 (WIN32 fs terminal x3 paths)",
+      "relay_keychain_lookup_for_quota_sys@0x1402EE7C0 (secrets.json read)",
+      "relay_state_serialize_under_lock_sys@0x1406DA6B0 (WIN ICEX8 platform-primitive)"
+    ]
+  },
+  "dim4_detail": {
+    "input_params": ["manager(String,len7)", "providerId(u64/str,len10)", "ide(String,len3)"],
+    "response": "{activated:true, relay_state:368B}",
+    "error_codes": {"10":"ok","9":"IoError","2":"serialize_err","3":"other","0x8000000000000000":"not_found/gate_fail"},
+    "side_effects": ["WIN lock ICEX8+WakeByAddressSingle","providers Vec mutation (stride=232B)","relay_config JSON atomic write (9 fields)","relay_post_login_state_sync re-drive","keychain read secrets.json"]
+  },
+  "dim5_detail": {
+    "win_lock": "ICEX8+WakeByAddressSingle",
+    "win_fs": "CreateFile/WriteFile/MoveFileExW",
+    "idb": "<本地路径>",
+    "sha": "d24e429a"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft",
+    "session": "wf-aimami111-dim6-20260619",
+    "shard_ref": "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#activate_relay_provider",
+    "note": "acceptance-draft counts as closed for producer-side per task mandate"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

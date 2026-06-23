@@ -1,0 +1,54 @@
+{
+  "schema": "c5cm.reverse.audit.manifest.v1",
+  "bundle_id": "macos-1.1.1-delta",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "session": "wf-aimami111-delta-20260617-repair",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-17T00:00:00+08:00",
+  "binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "binary_path": "raw/binary/AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi",
+  "baseline_version": "1.0.9",
+  "baseline_sha256": "1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482",
+  "idb_path": "raw/binary/AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi.i64",
+  "command_counts": {
+    "total_109": 127,
+    "total_111": 126,
+    "added_new": 9,
+    "removed": 10,
+    "body_delta": 18,
+    "same_skip": 56,
+    "orphan_no_backend": 34
+  },
+  "added_commands": [
+    {"command": "set_codex_api_login", "module": "commands_relay", "owner_va": "0x1005d3a10", "gate": "strictImplementationUse"},
+    {"command": "set_codex_api_slots", "module": "commands_relay", "owner_va": "0x1005e9530", "gate": "strictImplementationUse_candidate"},
+    {"command": "get_relay_provider_quota", "module": "relay", "owner_va": "0x100145890", "gate": "strictImplementationUse_candidate"},
+    {"command": "reorder_relay_providers", "module": "commands_relay", "owner_va": "0x1005eb9a0", "gate": "strictImplementationUse_candidate"},
+    {"command": "reveal_relay_api_key", "module": "commands_relay", "owner_va": "0x1005d21a0", "gate": "strictImplementationUse_candidate"},
+    {"command": "set_relay_display_tags", "module": "commands_relay", "owner_va": "0x1005eb5a0", "gate": "strictImplementationUse_candidate"},
+    {"command": "parse_aimami_deeplink", "module": "deeplink", "owner_va": "0x1004dade0", "gate": "strictImplementationUse_candidate"},
+    {"command": "test_relay_draft_stream", "module": "codexmate_lib__commands__relay", "owner_va": "0x10009d110", "gate": "strictImplementationUse_candidate", "canonical_drift": true},
+    {"command": "test_relay_provider_stream", "module": "commands_relay", "owner_va": "0x10009d110", "gate": "strictImplementationUse_candidate", "note": "shared async body with test_relay_draft_stream"}
+  ],
+  "removed_commands": [
+    "get_plugin_config", "list_plugins", "toggle_plugin", "update_plugin_config",
+    "get_passthrough_audit_log", "set_block_official_passthrough",
+    "set_relay_provider_network", "test_relay_draft", "test_relay_provider", "reset_codex_config"
+  ],
+  "key_body_delta_commands": [
+    {"command": "configure_auto_switch", "delta": "DTO_breaking_change", "detail": "hasSchedule+scheduleMin removed; thresholdWeeklyPercent=Option<u32>"},
+    {"command": "set_codex_router_enabled", "delta": "major_extension", "detail": "new argKey apiLogin; 15-field payload; rollback; thread_migration"},
+    {"command": "get_relay_proxy_status", "delta": "dto_format_change", "detail": "hostStr now full URL with /codex/v1 path"},
+    {"command": "refresh_usage_snapshot", "delta": "event_rename", "detail": "Tauri event load_snapshot -> runtime-state-updated"},
+    {"command": "load_snapshot", "delta": "semantic_upgrade", "detail": "now triggers refresh_full_runtime_snapshot_async"}
+  ],
+  "gate_summary": {
+    "readyToImplement": 2,
+    "strictImplementationUse": 3,
+    "strictImplementationUse_candidate": 13,
+    "inherited_baseline": 56,
+    "orphan_no_backend": 34
+  }
+}

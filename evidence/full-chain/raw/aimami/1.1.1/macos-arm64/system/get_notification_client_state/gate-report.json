@@ -1,0 +1,70 @@
+{
+  "command": "get_notification_client_state",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": [
+      "Windows 1.1.1 IDB not analyzed this session; per mac per-platform gate rule: dim5_win unknown does not block mac readyToImplement"
+    ]
+  },
+  "evidence_refs": [
+    "system/get_notification_client_state/evidence.md — Confirmed §1-18, Anti-cheat gate, Four-angle completeness, Delta vs 1.0.9",
+    "frontend/ipc-contracts.jsonl line:94 col:32009 — command=get_notification_client_state argKeys=[] wrapper=getNotificationClientState",
+    "frontend/frontend-control-flow.jsonl line:107 — static-terminal getNotificationClientState col:32039",
+    "frontend/frontend-control-flow.jsonl line:147 — callsite inside fn=f col:127044 with guard preflight: lazy-init on first poll",
+    "system/get_notification_client_state/ida/pseudocode/ — 0001 4282B owner + 0002 3091B core",
+    "system/get_notification_client_state/call-trees/get_notification_client_state.jsonl — 24 edges",
+    "system/get_notification_client_state/interfaces/dto.md",
+    "system/get_notification_client_state/gate-report.json prior — dim6 acceptance-draft written 2026-06-19"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "dim1_detail": {
+    "source": "ipc-contracts.jsonl line:94 col:32009 + frontend-control-flow.jsonl line:107 static + line:147 callsite",
+    "col": 32009,
+    "wrapper": "getNotificationClientState",
+    "argKeys": [],
+    "terminal_call_command": "get_notification_client_state",
+    "callsite_guard": "if(!l.current||!c.current) lazy-init guard before invoke"
+  },
+  "dim2_detail": {
+    "owner_va": "0x10061c690",
+    "owner_size": "791B (0x317)",
+    "core_va": "0x1004d0e90",
+    "core_size": "720B (0x2d0)",
+    "pseudocode_files": [
+      "0001_get_notification_client_state_owner_h8be04846.c (4282B)",
+      "0002_get_or_create_notification_client_state_core_h8134728.c (3091B)"
+    ]
+  },
+  "dim3_detail": {
+    "edges": 24,
+    "max_depth": 3,
+    "terminated_reason": "owner→core→load_settings/uuid::new_v4/save_settings/SystemTime::now→fs/std/uuid_leaves"
+  },
+  "dim4_detail": {
+    "argKeys": [],
+    "response": "CoreEnvelope<{deviceId: String(UUID-v4), notificationsSince: u64(epoch_secs)}>",
+    "error_paths": "save_settings IO fail→Err; Mutex poison→Err (5 error paths total)",
+    "side_effects": "read-only if existing valid state; CREATE PATH: uuid::new_v4 + SystemTime::now + save_settings (full CodexMateSettings JSON write, non-atomic)",
+    "guard": "((v13>0)&non-empty_deviceId_after_trim)!=0 → READ path; else → CREATE path"
+  },
+  "dim5_detail": {
+    "mac": "PASS — macOS arm64 IDB; owner 0x10061c690 + core 0x1004d0e90; ipc closure 0x1003154f0; all VAs confirmed",
+    "win": "accepted_unknown — Windows 1.1.1 not analyzed; non-blocking for mac gate"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft written 2026-06-19",
+    "happy_paths": 2,
+    "boundary_errors": 4,
+    "side_effect_asserts": 2,
+    "test_count": 4
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "schema": "c5cm.gate-report.v2",
+  "command": "import_chatgpt_session_account",
+  "platform": "windows-x64",
+  "version": "1.1.1",
+  "session": "wf-aimami111-win-100-20260620",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-20T00:00:00Z",
+  "idb": "<本地路径>",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "readyToImplement": true,
+  "strictImplementationUse": true,
+  "gate_accepted": true,
+  "blocking": [],
+  "notes": [
+    "poll body decompile failed (HexRays limit 0x14D3=5331B); ceiling_cracked via disasm 939 instructions/160BB + 逆向分析 callees",
+    "dim3 closed: call-trees/import_chatgpt_session_account.jsonl produced session wf-aimami111-win-100-20260620; 52 entries depth=4; dispatcher(0)→async_wrapper(1)→poll(2)→semantic_callees(3)→leaves(4); all 34 direct callees have terminated_reason",
+    "dim1 live-confirmed: ipc-contracts.jsonl#L12 command=import_chatgpt_session_account argKeys=[sessionJson,overwriteExisting]",
+    "not accepted_unknown: wrapper+callees provide full contract; all dims grounded"
+  ],
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl#L12: command=import_chatgpt_session_account argKeys=[sessionJson,overwriteExisting] argObject={sessionJson:t,overwriteExisting:e} wrapper=importChatGptSessionAccount kind=tauriInvokeWrapper",
+    "frontend/frontend-control-flow.jsonl#L7: callsite accounts-page-BFpAaIej.js S@24 -> importChatGptSessionAccount(f,d); guard if(!f||u)return",
+    "import_chatgpt_session_account/reverse.md: owner_va=0x140953280 size=0x14D3 160BB method=ceiling_cracked; argKeys confirmed via callees; DTO offsets sessionJson@+0xBF8 overwriteExisting@+0xCA8; error_rdi=0x8000...001/002/025",
+    "import_chatgpt_session_account/call-trees/import_chatgpt_session_account.jsonl: 52 entries depth=4; 逆向分析 callees(0x140953280)=34 confirmed; session wf-aimami111-win-100-20260620"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 12,
+    "wrapper": "importChatGptSessionAccount",
+    "argKeys": ["sessionJson", "overwriteExisting"],
+    "argObject": "{sessionJson:t,overwriteExisting:e}",
+    "kind": "tauriInvokeWrapper",
+    "file": "assets/index-DdcCOEJG.js",
+    "line": 86,
+    "callsite_file": "assets/accounts-page-BFpAaIej.js",
+    "callsite_line": 24,
+    "live_confirmed": true
+  },
+  "dim2_detail": {
+    "owner_va": "0x140953280",
+    "owner_name": "import_chatgpt_session_account_poll_111",
+    "async_wrapper_va": "0x140A84DF0",
+    "size_bytes": 5331,
+    "basic_blocks": 160,
+    "method": "ceiling_cracked: decompile failed HexRays limit; disasm 939 instructions 3-segment coverage full BB enumeration"
+  },
+  "dim3_detail": {
+    "depth": 4,
+    "total_entries": 52,
+    "terminated_count": 48,
+    "non_terminated_semantic": ["0x140953280 poll root", "0x140A84DF0 async_wrapper", "0x1408ed1d0 account_import_core", "0x140872110 account_write_persist"],
+    "terminal_leaf_types": ["leaf_param_parse", "leaf_storage", "leaf_ipc (WakeByAddressSingle)", "leaf_panic", "leaf_future", "leaf_alloc/dealloc/drop/memcpy/noop"],
+    "key_paths": [
+      "dispatcher→async_wrapper→poll→confirm_pending_auto_switch_deserialize_request_sys (leaf_param_parse)",
+      "poll→remove_skill_parse_id_param_111→sub_1402F9EB0 (leaf Option<String> decoder)",
+      "poll→sub_1408ED1D0→sub_140EFCAF0 (leaf 0 callees: provider check)",
+      "poll→sub_140872110→sub_140F00F00 (leaf_storage: account persist)",
+      "poll→broadcast_runtime_state_updated_111→has_notch_arc_listener_drop_loop (leaf Arc drop)",
+      "poll→has_notch_invoke_resolver_respond (leaf_ipc WakeByAddressSingle terminal)"
+    ],
+    "jsonl_path": "call-trees/import_chatgpt_session_account.jsonl"
+  },
+  "dim4_detail": {
+    "request_argkeys": ["sessionJson (Option<String>)", "overwriteExisting (Option<bool>)"],
+    "response": "Ok(()) tag=0x25 fast-success | Ok(()) write-success | Err(CoreError)",
+    "errors": {
+      "rdi_0x8000000000000002": "early bail — chatgpt provider unavailable (sub_140EFCAF0 false) or parse fail; no account write",
+      "rdi_0x8000000000000001": "overwriteExisting=false and account exists → skipped; [rax+0x105A]=1",
+      "rdi_0x8000000000000025": "fast success xor edi — empty ok loc_140953FC8"
+    },
+    "side_effects": [
+      "sub_140872110 account write (rdx=&[r14+0x1060])",
+      "broadcast_runtime_state_updated_111@0x140790230 on success → runtime-state-updated event → tray refresh",
+      "import_in_progress flag [r14+0x105A] set during write then restored",
+      "Arc listener drop loops at loc_140953B6E and loc_1409544DE (stride=0x60)"
+    ]
+  },
+  "dim5_detail": {
+    "windows_only": true,
+    "idb_path": "<本地路径>",
+    "method": "ceiling_cracked 逆向分析 disasm; WakeByAddressSingle in has_notch_invoke_resolver_respond confirms Win32 lock primitive"
+  },
+  "dim6_detail": {
+    "status": "closed",
+    "source": "reverse.md#dim6 session wf-aimami111-dim6-20260619 + promoted wf-aimami111-win-100-20260620",
+    "happy_path": "invoke('import_chatgpt_session_account',{sessionJson:'<json>',overwriteExisting:true}) → sub_140EFCAF0 true → sub_1408ED1D0 core → sub_140872110 account write → broadcast_runtime_state_updated_111 → Ok(())",
+    "boundary_errors": [
+      "provider unavailable → Err tag=0x8000000000000002 no account write",
+      "overwriteExisting=false + account exists → Err tag=0x8000000000000001",
+      "sessionJson=None → discriminant mismatch → bail out param parse stage"
+    ],
+    "side_effect_asserts": [
+      "import success: runtime-state-updated event received by frontend listener",
+      "import success: account visible in account list IPC",
+      "no HTTP; no file write beyond account storage"
+    ],
+    "test_mapping": {
+      "e2e": "invoke with valid sessionJson + overwriteExisting:true; assert Ok(); assert runtime-state-updated received; assert account in list",
+      "unit_provider_unavailable": "mock sub_140EFCAF0→false; assert Err 0x8000000000000002; assert no broadcast",
+      "unit_no_overwrite": "mock sub_140872C70 reject; assert Err 0x8000000000000001",
+      "unit_no_session_json": "pass sessionJson=null/undefined; assert parse fail bail"
+    }
+  },
+  "prev_gate": "strictImplementationUse_candidate (dim3 open)",
+  "upgrade_note": "dim3 closed by producing call-trees/import_chatgpt_session_account.jsonl (52 entries depth=4) via 逆向分析 callees() on 0x140953280 → 34 direct callees confirmed → per-callee callees() for depth-3→4 key semantic nodes. All leaves terminated with reason. Promoted to readyToImplement session wf-aimami111-win-100-20260620."
+}

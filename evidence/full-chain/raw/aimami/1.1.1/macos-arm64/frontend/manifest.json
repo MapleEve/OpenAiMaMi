@@ -1,0 +1,65 @@
+{
+  "schema": "c5cm.reverse.frontend.manifest.v1",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-16",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "baseline_version": "1.0.9",
+  "source_binary": {
+    "path": "<来源位置>/raw/binary/AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi",
+    "sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+    "sha12": "f34ff82910539",
+    "type": "macho-universal",
+    "thin_arm64": "AiMaMi.arm64.thin"
+  },
+  "dump_tool": "tauri-dumper",
+  "dump_assets_count": 30,
+  "dump_output_dir": "dumped/",
+  "sourcemap_available": false,
+  "recovered_source": false,
+  "extraction_tools": [
+    "extract_frontend_contracts.py (--prefer-recovered-source)",
+    "extract_frontend_ast.mjs"
+  ],
+  "outputs": {
+    "ipc-contracts.jsonl": {"lines": 127, "unique_commands": 126},
+    "frontend-control-flow.jsonl": {"lines": 197},
+    "http-hits.jsonl": {"lines": 172},
+    "ast-facts.json": {"bytes": 1726048},
+    "frontend-files.txt": "present",
+    "source-map-refs.txt": "empty (no sourcemaps)",
+    "source-map-recovered.jsonl": {"lines": 0}
+  },
+  "delta_vs_baseline": {
+    "baseline_unique_commands": 127,
+    "current_unique_commands": 126,
+    "added_commands": [
+      "get_relay_provider_quota",
+      "parse_aimami_deeplink",
+      "reorder_relay_providers",
+      "reveal_relay_api_key",
+      "set_codex_api_login",
+      "set_codex_api_slots",
+      "set_relay_display_tags",
+      "test_relay_draft_stream",
+      "test_relay_provider_stream"
+    ],
+    "removed_commands": [
+      "get_passthrough_audit_log",
+      "get_plugin_config",
+      "list_plugins",
+      "reset_codex_config",
+      "set_block_official_passthrough",
+      "set_relay_provider_network",
+      "test_relay_draft",
+      "test_relay_provider",
+      "toggle_plugin",
+      "update_plugin_config"
+    ]
+  },
+  "authoritative": true,
+  "write_mode": "new-version-raw",
+  "owner_gate": "ALLOW/first (no prior 1.1.1 producer)"
+}

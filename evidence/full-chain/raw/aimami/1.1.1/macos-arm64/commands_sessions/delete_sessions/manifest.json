@@ -1,0 +1,83 @@
+{
+  "schema": "c5cm.reverse.raw_leaf.v1",
+  "command": "delete_sessions",
+  "module": "commands_sessions",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "prior_session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-17",
+  "binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "owner_va": "0x10072e1c0",
+  "owner_symbol": "codexmate_lib::commands::sessions::delete_sessions",
+  "owner_size": "0x431",
+  "core_impl_va": "0x100727410",
+  "core_impl_symbol": "codexmate_lib::core::sessions::delete_sessions",
+  "core_impl_size": "0x134c",
+  "ipc_dispatch_xref": "0x100308af8",
+  "gate_candidate": "strictImplementationUse_candidate",
+  "dim1_frontend_ccf": "PASS",
+  "dim2_backend_owner_pseudocode": "PASS",
+  "dim3_call_tree": "PASS",
+  "dim4_interface_dto_error": "PASS",
+  "dim5_platform_gate": "macOS confirmed; Windows Unknown",
+  "dim6_test_acceptance": "Unknown",
+  "owner_gate": "ADDITIVE",
+  "collision_status": "none",
+  "write_mode": "canonical",
+  "idb_save": "ok",
+  "append_comments": "done",
+  "four_angle_completeness": {
+    "A_func_query": "PASS",
+    "B_string_pool": "PASS",
+    "C_frontend_ipc": "PASS",
+    "D_owner_map_index": "PASS"
+  },
+  "argKeys": ["ids"],
+  "response_type": "CoreEnvelope<Vec<(path_string, mtime_float)>>",
+  "error_types": [
+    "CoreError(9/Other='sqlite delete spawn edge: <rusqlite_error>')",
+    "CoreError(9/Other='sqlite delete thread: <rusqlite_error>')",
+    "CoreError(2/IoError=dynamic) for fs::remove_file and fs::write"
+  ],
+  "sql_statements": [
+    "DELETE FROM thread_spawn_edges WHERE child_thread_id = ?1 OR parent_thread_id = ?1",
+    "DELETE FROM threads WHERE id = ?1"
+  ],
+  "side_effects": [
+    "AppState mutex lock (held for full duration)",
+    "rusqlite::Connection open (read-write, busy_timeout=5s) if DB exists",
+    "SQL DELETE thread_spawn_edges per session id",
+    "SQL DELETE threads per session id",
+    "rusqlite::Connection close (drop)",
+    "std::fs::remove_file per matched rollout file",
+    "std::fs::write (rewrite codex-global-state.json filtering deleted ids)"
+  ],
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "recovery_attempts": "not_needed",
+    "taxonomy_exclusions": [
+      "drop_in_place_not_async_body: N/A (synchronous command thunk)",
+      "architecture_only_budget_rule: N/A",
+      "async_decompile_failed: N/A (HexRays full decompile success on all 5 functions)",
+      "wrong_VA: N/A (4-angle verified, unique hits)",
+      "vtable_dynamic: N/A (all callees static named)",
+      "HTTP_terminal: N/A (no HTTP; SQLite+fs+process only)",
+      "library_internal: rusqlite/std::fs/hashbrown correctly classified as leaf"
+    ]
+  },
+  "delta_class": "integrity_recovered",
+  "delta_vs_109": "same_behavior — thread_spawn_edges deletion + build_rollout_index + open_codex_db + walkdir + fs::remove_file + global-state JSON rewrite all present in 1.0.9 binary (confirmed via 1.0.9 load_sessions deep-reverify m3max audit and Windows string pool); 1.0.9 逆向分析 closure was too shallow (zero sub-callees listed); no app-level callee additions or deletions detected; VA relayout and symbol hash changes are compiler noise not app delta",
+  "delta_noise_filtered": [
+    "VA addresses changed (compiler relayout): 1.0.9 owner 0x1005759ec -> 1.1.1 0x10072e1c0",
+    "Rust symbol hash suffix changed: open_codex_db hffedd49680e6747a -> h757fb42a93d6f5e2",
+    "build_rollout_index hash: h12a196a1d1e19410 -> hf1126ab3b46549e6",
+    "walkdir::visit hash: h611088df4f2d3580 -> h968f8024d021219a",
+    "Stack frame / register allocations: decompiler noise"
+  ],
+  "idb_save_20260617": "ok",
+  "append_comments_20260617": "done"
+}

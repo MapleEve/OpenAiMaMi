@@ -1,0 +1,32 @@
+{
+  "command": "fix_codex_router_issue",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "accepted_unknown",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim4": [
+      "FixResult_field_names: FixResult struct serde field names not byte-confirmed from binary string pool; 13 itemId values all confirmed from binary dispatch (all, config_stale, auth_integrity, config_third_party, config_omit_syntax, db_orphan_providers, catalog_path_validity, config_profile_conflict, thread-router-migrations, relay-state-cache.json, residual_manifest, residual_cache, restore-rollback); non-blocking accepted_unknown per mac-regrade.json (dim5_win was prior only real blocker)"
+    ],
+    "dim4_interface_dto_error_sideeffect": [
+      "FixResult_field_names_string_pool: FixResult struct serde field names not byte-confirmed from string pool; 13 itemId dispatch values all confirmed from binary (string compare logic: 'all' len=3 inline compare, fix_all VA:0x100707610, fix_issue VA:0x100709c80); all itemId variants confirmed; FixResult field names non-blocking"
+    ]
+  },
+  "evidence_refs": [
+    "frontend/frontend-control-flow.jsonl:168 — terminal_call fix_codex_router_issue argKeys=[itemId] callee=s kind=tauriInvokeRaw file=assets/maintenance-page-C2wkSNnk.js:17:1887",
+    "ipc-contracts grep: command=fix_codex_router_issue argKeys=[itemId] argObject={itemId:d} file=maintenance-page-C2wkSNnk.js:17:1888",
+    "ida/pseudocode/0001_fix_codex_router_issue_owner_he834a259.c — VA:0x1005eb070 size=0x468; CodexPaths::resolve+from_home+RelayManager::snapshot+is_process_running; dispatch: itemId==all->fix_all(0x100707610) else fix_issue(0x100709c80); residual_manifest(len==17) triggers stop_codex_for_file_edit+launch_codex_app; CoreEnvelope::ok 0x98; 4531B",
+    "call-trees/fix_codex_router_issue.jsonl — 37 edges depth3; CodexPaths+snapshot+process_check+fix_all(run_diagnostics+fix_auth_integrity(3))+fix_issue(config_stale+resync+auth_integrity)+stop_codex(quit+kill)+launch_codex(open+check+sleep)+wrap_ok; all terminals confirmed",
+    "dim4 confirmed: input=itemId(String); 13 dispatch values all confirmed; output CoreEnvelope<Vec<FixResult>> 0x98; side-effects: stop+relaunch Codex on residual_manifest; fs writes per fix type; error via CoreError fmt",
+    "intermediate/dim6/mac-regrade.json — RTI: dim5_win_Unknown only blocker; 13 itemId all confirmed; FixResult field names accepted_unknown non-blocking",
+    "intermediate/dim6/mac-consolidated.json — readyToImplement: mac-regrade RTI"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "recovery_synced_by": "honest-verify-20260620 (from gate-final shard)"
+}

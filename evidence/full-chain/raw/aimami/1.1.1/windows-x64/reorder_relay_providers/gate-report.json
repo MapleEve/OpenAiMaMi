@@ -1,0 +1,29 @@
+{
+  "command": "reorder_relay_providers",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "raw/aimami/1.1.1/windows-x64/reorder_relay_providers/pseudocode.md",
+    "raw/aimami/1.1.1/windows-x64/reorder_relay_providers/call-tree.md",
+    "raw/aimami/1.1.1/windows-x64/reorder_relay_providers/interface.md",
+    "raw/aimami/1.1.1/windows-x64/frontend/ipc-contracts.jsonl#L106 command=reorder_relay_providers argKeys=[orderedIds]",
+    "raw/aimami/1.1.1/windows-x64/frontend/frontend-control-flow.jsonl#L126,L151",
+    "intermediate/aimami/1.1.1/version-delta/dim6/win-consolidated.json#readyToImplement"
+  ],
+  "dim1_evidence": "ipc-contracts.jsonl L106: command=reorder_relay_providers, argKeys=[orderedIds], argObject={orderedIds:t}, callee=vt, wrapper=reorderProviders, file=assets/index-DdcCOEJG.js:86; CCF L126,L151 confirmed",
+  "dim2_evidence": "reorder_relay_providers_owner_sys@0x14001D5E0 (1217B) full decompile; relay_providers_reorder_vec_validate_sys@0x14021BC90; relay_providers_reorder_and_persist_sys@0x1406E6D20; relay_providers_config_write_and_persist_sys@0x1406E6960",
+  "dim3_evidence": "call-tree depth=6 terminated at atomic_write WIN fs leaf (GetCurrentProcessId+CloseHandle); 15 jsonl entries; all leaves: WIN lock, TLS id-index rebuild, SIMD Vec reorder stride=232B, JSON serialize, atomic_write",
+  "dim4_evidence": "params: manager(String)+orderedIds(Vec<String>); len-match constraint; null response on success; CoreError oword on error; 3 side-effects: in-memory reorder + atomic_write 9-field relay config + TLS HashMap rebuild",
+  "dim5_evidence": "_InterlockedCompareExchange8+WakeByAddressSingle WIN lock confirmed; GetCurrentProcessId in atomic_write; relay state poisoned panic@0x1412EA5ED; WIN atomic file write with CloseHandle",
+  "dim6_evidence": "acceptance-draft by wf-aimami111-dim6-20260619; promoted to readyToImplement in win-consolidated.json",
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

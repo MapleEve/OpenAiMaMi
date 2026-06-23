@@ -1,0 +1,13 @@
+{"depth":1,"addr":"0x14000d2a0","name":"tauri_ipc_main_dispatcher_sys","role":"dispatcher_case_26_branch","note":"get_usage_refresh_interval inline case at 0x14000F219","session":"wf-aimami111-same-depth-20260618","version":"1.1.1"}
+{"depth":2,"addr":"0x14006edc0","name":"pending_auto_switch_state_lock_acquire_111","role":"gate_check","parent":"0x14000d2a0","terminated_reason":null}
+{"depth":2,"addr":"0x141214620","name":"query_installed_skills_with_repo_111","role":"repo_state_check","parent":"0x14000d2a0","terminated_reason":null}
+{"depth":2,"addr":"0x140789660","name":"sub_140789660","role":"usage_refresh_interval_read_owner","parent":"0x14000d2a0","terminated_reason":null}
+{"depth":3,"addr":"0x14124a5d0","name":"WakeByAddressSingle","role":"sync_notify","parent":"0x14006edc0","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x14124a510","name":"sub_14124A510","role":"sync_lock","parent":"0x14006edc0","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x14124b1d0","name":"sub_14124B1D0","role":"sync_wait","parent":"0x14006edc0","terminated_reason":"external_call"}
+{"depth":3,"addr":"0x1410b1930","name":"sub_1410B1930","role":"async_task_spawn","parent":"0x140789660","terminated_reason":null}
+{"depth":3,"addr":"0x1401b22f0","name":"sub_1401B22F0","role":"hotspot_interval_read","parent":"0x140789660","terminated_reason":null}
+{"depth":4,"addr":"0x1401a15d0","name":"codexmate_settings_hotspot_read_full_sys_111","role":"settings_file_read","parent":"0x1401b22f0","terminated_reason":null}
+{"depth":4,"addr":"0x1400485a0","name":"sub_1400485A0","role":"interval_value_extract","parent":"0x1401b22f0","terminated_reason":null}
+{"depth":5,"addr":"0x141093260","name":"win32_file_read_bytes_111","role":"file_io_read","parent":"0x1401a15d0","terminated_reason":"external_call"}
+{"depth":5,"addr":"0x14040cc30","name":"codexmate_settings_field_lookup_sys_111","role":"settings_field_lookup","parent":"0x1401a15d0","terminated_reason":null}

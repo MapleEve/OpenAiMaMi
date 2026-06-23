@@ -1,0 +1,64 @@
+{
+  "command": "load_snapshot",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "accounts",
+  "session": "wf-aimami111-delta-20260616",
+  "produced_by": "<本地机器>",
+  "produced_at": "2026-06-17",
+  "binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "gate": "strictImplementationUse_candidate",
+  "delta_status": "delta_pending_win_verification",
+  "owner_va": "0x1000b5ba0",
+  "owner_symbol": "codexmate_lib::commands::accounts::refresh_full_runtime_snapshot_async::{{closure}}::hadb9d09359062780",
+  "ipc_dispatcher_va": "0x10015a2d0",
+  "blocking_core_va": "0x1004c6480",
+  "blocking_core_symbol": "codexmate_lib::core::repository::Repository::load_snapshot_local::hb8d2ca20456473f2",
+  "spawn_blocking_va": "0x1007acb20",
+  "cmd_string_va": "0x1010e7311",
+  "arg_parser_va": "0x1006d78b0",
+  "argKeys": [],
+  "response_type": "CoreEnvelope<AppStatusPayload>",
+  "event_emitted": "runtime-state-updated",
+  "event_va": "0x101154e6d",
+  "broadcast_va": "0x100620750",
+  "broadcast_symbol": "codexmate_lib::commands::accounts::broadcast_runtime_snapshot::h2a2c0f2e1d4377e0",
+  "side_effects": [
+    "persist_registry (conditional, if registry diffs vs snapshot)",
+    "quota_store::save (conditional, if quota items changed)",
+    "platform::daemon::install_daemon (conditional, if auto-switch daemon repair needed)",
+    "tray_menu::refresh_tray_menu_with_snapshot",
+    "note_usage_refresh_activity (conditional on source_kind)",
+    "tauri::Emitter::emit runtime-state-updated"
+  ],
+  "error_codes": [
+    "REGISTRY_MISSING (16B) — no local account registry found",
+    "CURRENT_AUTH_SYNC_FAILED (24B) — auth snapshot sync failure",
+    "LEGACY_QUOTA_MIGRATION_FAILED (29B) — quota migration failure",
+    "AUTO_SWITCH_DAEMON_REPAIR_FAILED (32B) — daemon auto-repair failure",
+    "Blocking command task failed (30B) — spawn_blocking error wrapper"
+  ],
+  "four_angle_completeness": {
+    "A_func_query": "func_query name_regex=.*load_snapshot.* -> 5 hits: 3 BlockingTask drop shims + 1 outer closure drop shim (0x1000e92b0) + 1 core Repository method (0x1004c6480); no ICF folding; unique core symbol — PASS",
+    "B_string_pool": "find_regex load_snapshot -> n=1 in packed command blob 0x1010e7311; error strings confirmed via decompile refs — PASS",
+    "C_frontend_CCF": "ipc-contracts.jsonl confirms argKeys=[]; delta_nil for args; full UI trigger unknown (consistent with 1.0.9 baseline) — ACCEPTED_UNKNOWN",
+    "D_manifest_coverage": "owner-map-111.jsonl updated; INDEX appended; ADDITIVE no collision — PASS"
+  },
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "recovery_attempts": "N/A — no ceiling hit; all functions decompiled successfully",
+    "async_body_check": "async outer closure 0x1000b5ba0 fully decompiled (4 outer states, spawn_blocking confirmed); no ::poll/resume needed (blocking bridge pattern, not native async); drop_in_place 0x1000e92b0 correctly identified as RAII not async body",
+    "body_too_large": "all functions single-pass decompile: owner 5KB, sync_local_runtime_state 8KB+, load_local_state 7KB+ — all within HexRays capacity",
+    "vtable": "all callees direct demangled static symbols; no vtable dispatch",
+    "http_terminal": "N/A — pure fs/sqlite/keychain side-effects; no HTTP",
+    "icf_folding": "not detected; unique symbols per function"
+  },
+  "idb_write": {
+    "append_comments": 6,
+    "idb_save": true,
+    "idb_save_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb"
+  },
+  "covered_commands": ["load_snapshot"],
+  "status": "complete"
+}

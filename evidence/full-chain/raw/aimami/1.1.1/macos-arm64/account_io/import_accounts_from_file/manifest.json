@@ -1,0 +1,30 @@
+{
+  "command": "import_accounts_from_file",
+  "module": "codexmate_lib::commands::account_io",
+  "binary": "AiMaMi 1.1.1 macOS arm64 (universal)",
+  "binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "session": "wf-aimami111-delta-20260618-mac100",
+  "machine": "<本地机器>",
+  "producer": "pure (no consumer)",
+  "date": "2026-06-18",
+  "leaf_status": "full_gold_leaf",
+  "delta_class": "confirmed_delta",
+  "owner_va": "0x1004bb0b0",
+  "owner_size_bytes": 7453,
+  "invoke_resolver_va": "0x100139f20",
+  "call_tree_edges": 21,
+  "call_tree_max_depth": 4,
+  "pseudocode_files": [
+    "ida/pseudocode/invoke_resolver_closure.c",
+    "ida/pseudocode/import_accounts_core.c",
+    "ida/pseudocode/write_atomic.c"
+  ],
+  "interfaces": ["interfaces/import_accounts_from_file.json"],
+  "call_trees": ["call-trees/import_accounts_from_file.jsonl"],
+  "evidence": "evidence.md",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "gate_verdict": "PASS",
+  "strictImplementationUse": false,
+  "readyToImplement": false,
+  "notes": "Full gold-leaf completed 2026-06-18. call-tree depth=4 (InvokeResolver->import_accounts->make_auth_snapshot->parse_chatgpt_plan_label->tokens_contain). Two-phase spawn_blocking pattern is primary behavioral delta vs 1.0.9."
+}

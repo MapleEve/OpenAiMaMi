@@ -1,0 +1,33 @@
+{
+  "command": "reorder_relay_providers",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "commands_relay/reorder_relay_providers/ida/pseudocode/0001_reorder_relay_providers_owner_h1d619ab89f18f087.c (VA=0x1005eb9a0, size=392B)",
+    "commands_relay/reorder_relay_providers/ida/pseudocode/0002_reorder_relay_providers_core_impl_h2dd46f2b08c57b96.c",
+    "commands_relay/reorder_relay_providers/call-trees/reorder_relay_providers.jsonl",
+    "commands_relay/reorder_relay_providers/interfaces/interface.md (argKeys=[orderedIds], depth>=7 confirmed, RelayProvider stride=232B)",
+    "commands_relay/reorder_relay_providers/gate-report-dim6.json (session=wf-aimami111-dim6-20260619, acceptance-draft)",
+    "frontend/ipc-contracts.jsonl:L86:col119709 command=reorder_relay_providers argKeys=[orderedIds] wrapper=reorderProviders",
+    "frontend/frontend-control-flow.jsonl:L86:col119728 terminal=reorder_relay_providers argKeys=[orderedIds]",
+    "frontend/frontend-control-flow.jsonl:L306:col37060 callsite=mutationFn->reorderProviders"
+  ],
+  "dim_notes": {
+    "dim1_frontend_ccf": "ipc-contracts.jsonl L86 col119709: argKeys=[orderedIds] argObject={orderedIds:t} wrapper=reorderProviders callee=vt. CCF L86 col119728: terminal vt('reorder_relay_providers',{orderedIds:t}). Callsite L306 col37060 mutationFn->Zt.reorderProviders(b). get_bytes @0x101148471 + string_pool @0x1011482ff confirmed argKey. CLOSED.",
+    "dim2_owner_pseudocode": "2 pseudocode files: owner h1d619ab8 (392B) + core_impl h2dd46f2b. Total ~24K dir. Owner delegates to RelayManager::reorder->CoreEnvelope::ok or CoreError::fmt path. CLOSED.",
+    "dim3_call_tree_depth5": "Depth>=7 confirmed per interfaces/interface.md. Terminals: write_atomic (FS), sync_codex_config_with_outcome->write_catalog->syscall, driftsort_main (sort algo leaf), insertion_sort_shift_left (n<21 branch). CLOSED.",
+    "dim4_interface_dto_error_sideeffect": "argKeys=[orderedIds:string[]]. Response CoreEnvelope<reorder_result> — inner type (RelayState/Vec<RelayProvider>) accepted_unknown (documented non-blocking). Error: snapshot invalid 107B string @0x1011541DD + persist failure + sync_config failure. Side-effects: relay config atomic write (tmp->fdatasync->rename->sync_parent), sync_codex_config_with_outcome (write_catalog/apply_codex_state). RelayProvider stride=232B. CLOSED.",
+    "dim5_same_platform_gate": "macos-arm64 confirmed. Owner VA=0x1005eb9a0. Windows dim5: INDEX key windows-x64/reorder_relay_providers confirmed per interface.md. CLOSED. dim5_win: Windows INDEX entry confirmed (non-blocking for mac gate).",
+    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=wf-aimami111-dim6-20260619. Inner response type accepted_unknown (consumer to verify JSON). Producer-acceptance-draft = dim6 closed. CLOSED."
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

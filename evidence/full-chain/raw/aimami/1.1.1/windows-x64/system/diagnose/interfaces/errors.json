@@ -1,0 +1,40 @@
+{
+  "command": "diagnose",
+  "platform": "windows-x64",
+  "version": "1.1.1",
+  "errors": [
+    {
+      "type": "poisoned_lock",
+      "string": "poisoned lock: another task failed inside",
+      "string_va": "0x1412e6bb3",
+      "len": 41,
+      "propagation": "panic via sub_1410B1930 + sub_14124BFE0 (Display fmt panic)",
+      "trigger": "Mutex<Repository> poisoned",
+      "present_in": ["diagnose_ipc_cmd_handler_win", "repository_diagnose_core_win"]
+    },
+    {
+      "type": "progressive_state_save_failed",
+      "string": "PROGRESSIVE_STATE_SAVE_FAILED",
+      "string_len": 29,
+      "propagation": "error path via sub_1410A1DF0; alloc 29B, stored in error envelope",
+      "trigger": "sub_1401AF5C0 save returns error (non-10 discriminant)",
+      "present_in": ["repository_diagnose_core_win"]
+    },
+    {
+      "type": "display_fmt_error",
+      "string": "a Display implementation returned an error unexpectedly",
+      "string_va": "0x1412f4e88",
+      "len": 55,
+      "propagation": "sub_14124BFE0 called in LABEL_5 branch",
+      "trigger": "formatter error during poisoned lock display"
+    },
+    {
+      "type": "tokio_blocking_task_double_run",
+      "string": "[internal exception] blocking task ran twice.",
+      "source": "tokio-1.50.0 src/runtime/blocking/task.rs",
+      "trigger": "diagnose_blocking_task_runner_win called twice (safety check)",
+      "present_in": ["diagnose_blocking_task_runner_win"]
+    }
+  ],
+  "parity_with_mac": "All error types semantically equivalent to macOS; WIN adds tokio blocking task double-run error"
+}

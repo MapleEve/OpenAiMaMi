@@ -1,0 +1,69 @@
+{
+  "command": "get_relay_proxy_status",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": [
+      "Windows 1.1.1 IDB not confirmed for this delta; per mac per-platform gate rule: dim5_win unknown does not block mac readyToImplement"
+    ]
+  },
+  "evidence_refs": [
+    "commands_relay/get_relay_proxy_status/evidence.md — Confirmed §1-13, Inferred §1-5, Baseline Diff 1.0.9→1.1.1",
+    "frontend/frontend-control-flow.jsonl line:133 col:120618 — static-terminal getProxyStatus vt('get_relay_proxy_status') argKeys=[]",
+    "commands_relay/get_relay_proxy_status/ida/pseudocode/0001_get_relay_proxy_status_owner_2a436f5f.c (4236B)",
+    "commands_relay/get_relay_proxy_status/ida/pseudocode/0002_compose_proxy_status_4de0c421.c (5161B)",
+    "commands_relay/get_relay_proxy_status/call-trees/get_relay_proxy_status.jsonl — 11 edges",
+    "commands_relay/get_relay_proxy_status/interfaces/dto.md",
+    "commands_relay/get_relay_proxy_status/gate-report.json prior — dim6 acceptance-draft written 2026-06-19"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "dim1_detail": {
+    "source": "frontend-control-flow.jsonl line:133 static-terminal",
+    "col": 120618,
+    "wrapper": "getProxyStatus",
+    "argKeys": [],
+    "terminal_call_command": "get_relay_proxy_status",
+    "callee": "vt"
+  },
+  "dim2_detail": {
+    "owner_va": "0x10030ee90 (inner closure h2a436f5f36893ed1)",
+    "core_va": "0x1005d5450 (RelayManager::compose_proxy_status h4de0c421b533e58d)",
+    "pseudocode_files": [
+      "0001_get_relay_proxy_status_owner_2a436f5f.c (4236B)",
+      "0002_compose_proxy_status_4de0c421.c (5161B)"
+    ]
+  },
+  "dim3_detail": {
+    "edges": 11,
+    "max_depth": 2,
+    "terminated_reason": "owner→compose_proxy_status→Mutex::lock/unlock/format_inner/OnceBox::init→std_library_leaf"
+  },
+  "dim4_detail": {
+    "argKeys": [],
+    "response": "CoreEnvelope<{hostStr: String, portStr: String, port: u16, active: bool, proxyAddr: Option(always None)}>",
+    "error_paths": "Mutex poison → active=false (no Err surface)",
+    "side_effects": "none — pure Mutex-protected memory read + string formatting",
+    "CRITICAL_BEHAVIOR_CHANGE_vs_1.0.9": "hostStr: 1.0.9='127.0.0.1:<PORT>' → 1.1.1='http://127.0.0.1:<PORT>/codex/v1'; portStr: 1.0.9='<PORT>' → 1.1.1='http://127.0.0.1:<PORT>'; proxyAddr: always None in both versions",
+    "struct_layout": "proxy_running@+32 (QWORD), port@+40 (u16), active@+74 (BYTE)"
+  },
+  "dim5_detail": {
+    "mac": "PASS — macOS arm64 IDB; owner 0x10030ee90 via string xref 0x1011482e1; compose 0x1005d5450 direct call confirmed",
+    "win": "accepted_unknown — Windows 1.1.1 not analyzed for this specific delta; non-blocking for mac gate"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft written 2026-06-19",
+    "happy_paths": 2,
+    "boundary_errors": 2,
+    "side_effect_asserts": 1,
+    "test_count": 4,
+    "critical_note": "BEHAVIOR CHANGE: C5 implementation must use new full-URL hostStr/portStr format, not bare IP:port"
+  }
+}

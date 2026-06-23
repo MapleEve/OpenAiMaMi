@@ -1,0 +1,83 @@
+{
+  "schema": "c5cm.audit.manifest.v1",
+  "bundle": "windows-1.1.1-delta",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "baseline_version": "1.0.9",
+  "binary_sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+  "binary_format": "pe",
+  "pe_machine": "x64",
+  "session": "wf-aimami111-delta-20260617-repair",
+  "session_chain": [
+    "wf-aimami111-delta-20260616",
+    "wf-aimami111-delta-20260617",
+    "wf-aimami111-delta-20260617-repair"
+  ],
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-17",
+  "idb": "<本地路径>",
+  "ida_server": "<逆向工具通道> (<内部网络>)",
+  "role": "pure_producer",
+  "sop_steps_covered": "0-6",
+
+  "stats": {
+    "new_commands_with_backend": 10,
+    "removed_commands": 10,
+    "body_delta_commands": 5,
+    "same_skip_frontend_count": 117,
+    "orphan_no_backend_count": 43,
+    "gate_reports_collected": 14
+  },
+
+  "gate_summary": {
+    "readyToImplement": [],
+    "strictImplementationUse": ["reveal_relay_api_key"],
+    "strictImplementationUse_candidate": [
+      "get_relay_provider_quota",
+      "reorder_relay_providers",
+      "parse_aimami_deeplink"
+    ],
+    "consumerStartReady": [
+      "set_codex_api_login",
+      "set_codex_api_slots",
+      "set_relay_display_tags",
+      "test_relay_draft_stream",
+      "test_relay_provider_stream"
+    ],
+    "below_consumerStartReady": [
+      "confirm_pending_auto_switch_and_restart_codex"
+    ]
+  },
+
+  "artifacts": {
+    "README.md": "包结构与索引",
+    "AI.md": "消费者快速入口",
+    "SYSTEM-DIFF.md": "系统级架构差异",
+    "VERSION-DIFF.md": "诚实五分类差异清单",
+    "CHANGELOG-CROSSMAP.md": "官方 changelog 逐条命中映射",
+    "manifest.json": "本文件",
+    "gate-report.json": "聚合 gate-report",
+    "data/producer-ledger.json": "生产者账本",
+    "pointers/evidence-paths.md": "原始 leaf 路径索引",
+    "logic/": "关键变更命令逻辑文档",
+    "interfaces/": "接口合约文档",
+    "reviews/": "审查备注"
+  },
+
+  "raw_leaf_roots": {
+    "new_commands_root": "raw/aimami/1.1.1/windows-x64/",
+    "canonical_drift_note": "test_relay_provider_stream 在 commands_relay/ 子目录，非根目录",
+    "canonical_drift_commands": {
+      "test_relay_provider_stream": "raw/aimami/1.1.1/windows-x64/commands_relay/test_relay_provider_stream/",
+      "diagnose_codex_router": "raw/aimami/1.1.1/windows-x64/relay/diagnose_codex_router/",
+      "fix_codex_router_issue": "raw/aimami/1.1.1/windows-x64/relay/fix_codex_router_issue/",
+      "get_hotspot_enabled": "raw/aimami/1.1.1/windows-x64/system/get_hotspot_enabled/",
+      "set_hotspot_enabled": "raw/aimami/1.1.1/windows-x64/system/set_hotspot_enabled/",
+      "has_notch": "raw/aimami/1.1.1/windows-x64/system/has_notch/",
+      "hotspot_ready": "raw/aimami/1.1.1/windows-x64/system/hotspot_ready/",
+      "diagnose": "raw/aimami/1.1.1/windows-x64/system/diagnose/",
+      "begin_add_account_attach_monitor": "raw/aimami/1.1.1/windows-x64/system/begin_add_account_attach_monitor/"
+    }
+  }
+}

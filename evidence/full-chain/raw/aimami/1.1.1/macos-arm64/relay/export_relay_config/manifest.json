@@ -1,0 +1,86 @@
+{
+  "schema": "c5cm.raw.leaf.v1",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "export_relay_config",
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "machine": "<本地机器>",
+  "produced_at": "2026-06-17T00:00:00Z",
+  "binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "role": "producer_only",
+  "gate_tier": "strictImplementationUse_candidate",
+  "migration_status": "integrity_recovered",
+  "migration_base": "1.0.9",
+  "delta_confirmed": [
+    "exportedBy string: AiMaMi 1.0.9 -> AiMaMi 1.1.1",
+    "set_permissions(output_file, mode) NEW when includeApiKeys=true @ 0x100547c2c",
+    "get_api_key 3-path cascade with write_key_file cache-writeback (fs::write + chmod x2)",
+    "mac_keychain::get via SecItemCopyMatching NEW side effect path"
+  ],
+  "owner_va": "0x1005e8f90",
+  "owner_symbol": "codexmate_lib::commands::relay::export_relay_config::h24e4c326ee7bc644",
+  "core_impl_va": "0x100547150",
+  "core_impl_symbol": "codexmate_lib::core::relay::io::export_to_file::h3c1b02825c28a7c5",
+  "ipc_dispatch_va": "0x100316160",
+  "ipc_reg_blob_va": "0x1011482ff",
+  "call_tree_depth": 5,
+  "terminated_reason": "OS_security_framework_SecItemCopyMatching + OS_chmod_leaf + fs_write_atomic_rename",
+  "four_angle_completeness": {
+    "A_func_query": "PASS",
+    "B_string_pool": "PASS",
+    "C_frontend_ipc": "PASS_via_migration",
+    "D_owner_map_index": "PASS_additive"
+  },
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "recovery_attempts": "none_needed",
+    "async_body_found": false,
+    "synchronous_command": true
+  },
+  "dim1_frontend_ccf": "migrated_from_1.0.9",
+  "dim2_backend_owner_decompile": "confirmed",
+  "dim3_call_tree_leaves": "confirmed",
+  "dim4_interface_dto_error": "confirmed",
+  "dim5_mac": "confirmed_integrity_recovered",
+  "dim5_win": "Unknown",
+  "dim6_acceptance": "Unknown",
+  "append_comments_done": true,
+  "idb_save_done": true,
+  "index_key": "aimami/1.1.1/macos-arm64/relay/export_relay_config/raw",
+  "delta_class": "integrity_recovered",
+  "prior_session": "wf-aimami111-delta-20260616",
+  "prior_delta_class": "same_sweep_false_positive",
+  "new_callees_vs_109": [
+    "write_key_file @ 0x1006c9950",
+    "mac_keychain::get @ 0x10041ee00",
+    "base64::decode::inner @ 0x100528050",
+    "sha2::compress256 @ 0x100942d40",
+    "hostname::get @ 0x10090e350",
+    "std::env::_var @ 0x100f28b60",
+    "serde_json::from_trait @ 0x1002e9390",
+    "security_framework::passwords::generic_password @ 0x100946180",
+    "std::sys::fs::set_permissions @ 0x100f2a7d0"
+  ],
+  "new_side_effects_vs_109": [
+    "chmod(output_file, mode) when includeApiKeys=true",
+    "fs::create_dir(relay/keys/) on key retrieval",
+    "fs::write(relay/keys/<provider_id>, key_bytes) on key retrieval",
+    "chmod(relay/keys/, mode) on key retrieval",
+    "chmod(relay/keys/<provider_id>, mode) on key retrieval",
+    "SecItemCopyMatching (macOS Keychain read) on fallback path"
+  ],
+  "pseudocode_files": [
+    "0001_export_relay_config_owner_f34ff8291053.c",
+    "0002_export_to_file_depth1_f34ff8291053.c",
+    "0003_get_api_key_depth2_f34ff8291053.c",
+    "0004_write_key_file_depth3_f34ff8291053.c",
+    "0005_mac_keychain_get_depth3_f34ff8291053.c"
+  ],
+  "call_tree_files": [
+    "export_relay_config.jsonl",
+    "export_relay_config_integrity_recovered.jsonl"
+  ]
+}

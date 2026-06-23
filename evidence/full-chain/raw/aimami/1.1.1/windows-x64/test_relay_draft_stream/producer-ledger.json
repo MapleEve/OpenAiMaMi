@@ -1,0 +1,39 @@
+{
+  "key": "aimami/1.1.1/windows-x64/test_relay_draft_stream/full-chain",
+  "session": "wf-aimami111-delta-20260616",
+  "produced_by": "<本地机器>",
+  "role": "producer",
+  "authoritative": true,
+  "produced_at": "2026-06-16",
+  "model": "claude-sonnet-4-6",
+
+  "collision_gate": {
+    "checked": true,
+    "index_check": "grep 1.1.1 INDEX.jsonl → no entry for test_relay_draft_stream before write",
+    "status_check": "REVERSE-STATUS.md read in chunks — no test_relay_draft_stream entry",
+    "bundle_check": "ls windows-x64/ → no test_relay_draft_stream/ dir pre-write",
+    "verdict": "ADDITIVE — no collision, no overwrite of canonical"
+  },
+
+  "sop_steps_completed": [
+    "step0: SMB mount verified (ls <来源位置>)",
+    "step1: fresh read AGENTS.md + REVERSE-STATUS.md + GATE-SPEC.md + OUTPUT-SPEC.md",
+    "step1: IDA_LIVE_GATE: server_health ok, status=ok, hexrays_ready=true, module=AiMaMi 1.1.1 win64.exe",
+    "step2: owner locate — find_regex(test_relay_draft_stream) → 0x1412fa9c8 → xrefs_to → 0x14094F2E0",
+    "step3: full-chain decompile — owner + all key callees depth≥4",
+    "step3: RelayDraftTestInput 8 fields confirmed (Visitor case 0-7)",
+    "step3: event payload 6 fields confirmed (warnings+data from sub_1402494C0/sub_1402495E0)",
+    "step3: upstream HTTP POST /v1/chat/completions confirmed",
+    "step3: Authorization:Bearer injection confirmed",
+    "step3: relay_keychain_lookup_for_quota_sys shared leaf confirmed",
+    "step4: IDB write-back — 10 renames + 4 set_comments",
+    "step4: idb_save mid-work — ok",
+    "step5: raw leaf files written to SMB (7 files)",
+    "step6: idb_save final (pending)"
+  ],
+
+  "binary": {
+    "sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
+    "filename": "AiMaMi 1.1.1 win64.exe"
+  }
+}

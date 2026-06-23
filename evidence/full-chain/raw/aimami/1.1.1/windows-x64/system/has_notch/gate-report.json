@@ -1,0 +1,64 @@
+{
+  "command": "has_notch",
+  "platform": "windows-x64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl#L85: command='has_notch', argKeys=[], kind='tauriInvokeWrapper', wrapper='hasNotch', callee='ne', col=31573",
+    "frontend/frontend-control-flow.jsonl#L98: terminal_call.command='has_notch', argKeys=[], wrapper='hasNotch'",
+    "frontend/frontend-control-flow.jsonl#L189: callsite settings-page-SeKzRc3U.js queryFn -> hasNotch()",
+    "system/has_notch/pseudocode.md: owner=has_notch_owner_sys@0x140023000, size=863B, 32BB, CC=9; fixed return v28=1 (bool true constant); full call tree depth=6",
+    "system/has_notch/interface.md: argKeys=[], return=bool true (fixed), no IO, no side effects; macOS uses NSScreen hardware check vs Win fixed-true",
+    "system/has_notch/gate-report.json (prev): all dims PASS, call_tree_max_depth=6, idb_save=ok; dim6_acceptance_mapping session=wf-aimami111-dim6-20260619",
+    "gate-report.json#dim6_acceptance_mapping: happy_path=invoke('has_notch')=>Ok(true); boundary=param_parse_fail; side_effects=none; test_mapping=[unit: Windows always true]"
+  ],
+  "dim1_detail": {
+    "ipc_contracts_line": 85,
+    "wrapper": "hasNotch",
+    "argKeys": [],
+    "kind": "tauriInvokeWrapper",
+    "callsite_file": "assets/settings-page-SeKzRc3U.js",
+    "callsite_fn": "queryFn"
+  },
+  "dim2_detail": {
+    "owner_va": "0x140023000",
+    "owner_name": "has_notch_owner_sys",
+    "size_bytes": 863,
+    "basic_blocks": 32,
+    "key_finding": "v28=1 fixed constant at 0x14002314f; no system API; no hardware notch check on Windows"
+  },
+  "dim3_detail": {
+    "max_depth": 6,
+    "terminated_reasons": [
+      "windows_api_terminal: WakeByAddressSingle@d2 (happy path)",
+      "allocation_terminal: sub_1405A4A90@d6 (cleanup arc chain)",
+      "panic_terminal: sub_14124BFE0@d2 ('Result::unwrap() on Err'), sub_14124BF80@d2 ('resolver consumed')",
+      "impl_body_confirmed: v28=1 fixed constant (no callee)",
+      "param_resolver_terminal: sub_140089A50@d1 (argKeys=[], always v19=3)"
+    ]
+  },
+  "dim4_detail": {
+    "request_dto": "none (argKeys=[])",
+    "response": "bool true (fixed constant on Windows)",
+    "error_cases": "param parse failure only (v19!=3, not expected in normal use)",
+    "side_effects": "none (pure constant return; no file/registry/process/sidecar activity)"
+  },
+  "dim5_detail": {
+    "caller": "tauri_ipc_main_dispatcher_sys@0x14000D2A0",
+    "platform_divergence": "Windows=fixed true constant; macOS=NSScreen hardware display geometry check"
+  },
+  "dim6_detail": {
+    "source": "gate-report.json#dim6_acceptance_mapping (session wf-aimami111-dim6-20260619)",
+    "happy_path": "invoke('has_notch') => always Ok(true) on Windows",
+    "note": "C5 UI must not cache as cross-platform invariant; macOS may return false (hardware-dependent)"
+  },
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

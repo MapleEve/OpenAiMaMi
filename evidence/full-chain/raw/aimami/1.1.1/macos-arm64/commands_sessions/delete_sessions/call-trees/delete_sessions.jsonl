@@ -1,0 +1,25 @@
+{"depth":0,"va":"0x10072e1c0","symbol":"codexmate_lib::commands::sessions::delete_sessions","role":"tauri_cmd_thunk","terminated_reason":null,"size":"0x431"}
+{"depth":1,"va":"0x100727410","symbol":"codexmate_lib::core::sessions::delete_sessions","role":"core_impl","terminated_reason":null,"size":"0x134c"}
+{"depth":2,"va":"0x100728940","symbol":"codexmate_lib::core::sessions::build_rollout_index","role":"rollout_index_builder","terminated_reason":null,"size":null}
+{"depth":3,"va":"0x100f2b980","symbol":"std::sys::fs::metadata","role":"dir_metadata_check","terminated_reason":"std_library_leaf","size":null}
+{"depth":3,"va":"0x100729ac0","symbol":"codexmate_lib::core::sessions::walkdir::visit","role":"recursive_readdir","terminated_reason":null,"size":null}
+{"depth":4,"va":"0x100f2ba80","symbol":"std::sys::fs::read_dir","role":"readdir","terminated_reason":"std_library_leaf","size":null}
+{"depth":4,"va":"0x100f26120","symbol":"std::fs::DirEntry::path","role":"path_extract","terminated_reason":"std_library_leaf","size":null}
+{"depth":4,"va":"0x100f33b80","symbol":"std::path::Path::is_dir","role":"is_dir_check","terminated_reason":"std_library_leaf","size":null}
+{"depth":4,"va":"0x100729ac0","symbol":"codexmate_lib::core::sessions::walkdir::visit","role":"recursive_visit","terminated_reason":"self_recursion_leaf","size":null}
+{"depth":4,"va":"0x100f26150","symbol":"std::fs::DirEntry::metadata","role":"file_metadata","terminated_reason":"std_library_leaf","size":null}
+{"depth":4,"va":"0x100f26290","symbol":"std::fs::Metadata::modified","role":"mtime_extract","terminated_reason":"std_library_leaf","size":null}
+{"depth":2,"va":"0x100f2b980","symbol":"std::sys::fs::metadata","role":"db_path_exists_check","terminated_reason":"std_library_leaf","size":null}
+{"depth":2,"va":"0x100726df0","symbol":"codexmate_lib::core::sessions::open_codex_db","role":"db_open","terminated_reason":null,"size":null}
+{"depth":3,"va":"0x100753dc0","symbol":"rusqlite::Connection::open_with_flags","role":"sqlite_open","terminated_reason":"rusqlite_library_leaf","size":null}
+{"depth":3,"va":"0x100960b80","symbol":"rusqlite::busy::impl_Connection::busy_timeout","role":"sqlite_busy_timeout_5s","terminated_reason":"rusqlite_library_leaf","size":null}
+{"depth":2,"va":"0x100754560","symbol":"rusqlite::Connection::execute","role":"sql_delete_spawn_edges","terminated_reason":"rusqlite_library_leaf","size":null,"sql":"DELETE FROM thread_spawn_edges WHERE child_thread_id = ?1 OR parent_thread_id = ?1"}
+{"depth":2,"va":"0x100754560","symbol":"rusqlite::Connection::execute","role":"sql_delete_threads","terminated_reason":"rusqlite_library_leaf","size":null,"sql":"DELETE FROM threads WHERE id = ?1"}
+{"depth":2,"va":"0x100f2b980","symbol":"std::sys::fs::metadata","role":"rollout_file_exists_check","terminated_reason":"std_library_leaf","size":null}
+{"depth":2,"va":"0x100f2a550","symbol":"std::sys::fs::remove_file","role":"rollout_file_delete","terminated_reason":"fs_delete_leaf","size":null}
+{"depth":2,"va":"0x100f2b980","symbol":"std::sys::fs::metadata","role":"global_state_json_exists_check","terminated_reason":"std_library_leaf","size":null}
+{"depth":2,"va":"0x100f25740","symbol":"std::fs::read_to_string::inner","role":"global_state_json_read","terminated_reason":"fs_read_leaf","size":null}
+{"depth":2,"va":"0x1002ea3f0","symbol":"serde_json::de::from_trait","role":"json_line_parse","terminated_reason":"serde_library_leaf","size":null}
+{"depth":2,"va":"0x100ee9d20","symbol":"_<str as serde_json::value::index::Index>::index_into","role":"json_id_field_access","terminated_reason":"serde_library_leaf","size":null}
+{"depth":2,"va":"0x100f25f70","symbol":"std::fs::write::inner","role":"global_state_json_write","terminated_reason":"fs_write_leaf","size":null}
+{"depth":2,"va":"0x100612370","symbol":"alloc::vec::Vec::from_iter","role":"result_vec_collect","terminated_reason":"std_library_leaf","size":null}

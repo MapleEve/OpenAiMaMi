@@ -1,0 +1,23 @@
+{"session":"wf-aimami111-win-samedepth-patch-20260619","machine":"<本地机器>","command":"delete_relay_provider","platform":"windows-x64","version":"1.1.1","handler_addr":"0x1400297e0","handler_name":"sub_1400297E0","depth":5,"verdict":"confirmed_same_depth5"}
+{"depth":1,"addr":"0x1400297e0","name":"sub_1400297E0","role":"command_owner: IPC command='delete_relay_provider' namespace='app'+'manager'","terminated_reason":null}
+{"depth":2,"addr":"0x140089a50","name":"confirm_pending_auto_switch_deserialize_request_sys","role":"app_scope_rate_check (LODWORD==3 → rate-limited early return)","terminated_reason":null}
+{"depth":2,"addr":"0x14006f4b0","name":"run_codex_router_diagnostics_owner_sys","role":"manager_scope_lock_acquire","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x141214620","name":"query_installed_skills_with_repo_111","role":"repo_state_check","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1402fed40","name":"remove_skill_parse_id_param_111","role":"param_extract: providerId string from IPC args","terminated_reason":null}
+{"depth":3,"addr":"0x1402f9eb0","name":"sub_1402F9EB0","role":"string_map_lookup","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x140218ad0","name":"sub_140218AD0","role":"delete_relay_provider_core: provider_lookup + delete + persist","terminated_reason":null}
+{"depth":3,"addr":"0x1406e34c0","name":"sub_1406E34C0","role":"provider_lookup_and_delete: find provider by id, validate not-last-enabled, remove from list","terminated_reason":null}
+{"depth":4,"addr":"0x14033fb70","name":"relay_provider_list_remove_entry_sys","role":"remove entry from relay provider list","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x1406e6960","name":"relay_providers_config_write_and_persist_sys","role":"serialize updated provider list + write to disk","terminated_reason":null}
+{"depth":5,"addr":"0x1406da6b0","name":"relay_state_serialize_under_lock_sys","role":"serialize relay state under write lock","terminated_reason":"implementation_leaf"}
+{"depth":5,"addr":"0x1406eaed0","name":"relay_config_serialize_and_atomic_write_sys","role":"atomic write serialized config to disk","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x1406e8480","name":"relay_state_read_lock_snapshot_sys","role":"read-lock snapshot before mutation","terminated_reason":"implementation_leaf"}
+{"depth":4,"addr":"0x1406e1750","name":"relay_post_login_state_sync_sys","role":"sync login state after deletion","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x1407989f0","name":"relay_post_upsert_tray_refresh_bridge_sys","role":"tray refresh after provider delete","terminated_reason":null}
+{"depth":4,"addr":"0x1407981a0","name":"tray_rebuild_on_relay_state_change_sys","role":"rebuild tray menu","terminated_reason":"implementation_leaf"}
+{"depth":3,"addr":"0x140232b30","name":"sub_140232B30","role":"cleanup_drop_provider_data","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x1408311a0","name":"sub_1408311A0","role":"ipc_response_dispatch: serialize Ok/Err + respond","terminated_reason":null}
+{"depth":3,"addr":"0x14080c3c0","name":"has_notch_invoke_resolver_respond","role":"tauri_ipc_resolve","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x140041870","name":"sub_140041870","role":"drop_request_state","terminated_reason":"implementation_leaf"}
+{"depth":2,"addr":"0x14033ab50","name":"has_notch_arc_listener_drop_loop","role":"arc_drop_loop","terminated_reason":"implementation_leaf"}
+{"compare_1_0_9":{"baseline_handler":"delete_relay_provider_owner_sys@0x140274710","verdict":"confirmed_same_depth5","notes":"1.0.9: providerId param → sub_14014F540(provider_lookup_and_delete) → relay_manager_reset_codex_config_impl_sys + sub_1401523E0(persistence_commit). 1.1.1: providerId param(remove_skill_parse_id_param_111) → sub_1406E34C0(lookup+delete, same guard: cannot delete last enabled relay) → relay_providers_config_write_and_persist_sys(maps to sub_1401523E0) + relay_post_login_state_sync_sys. Tray refresh present in both. No new DTO fields. relay_providers_config_write_and_persist_sys→relay_config_serialize_and_atomic_write_sys at depth-5 is same atomic write pattern."}}

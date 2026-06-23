@@ -1,0 +1,255 @@
+{
+  "leaf": "run_codex_router_diagnostics",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "windows-x64",
+  "session": "wf-aimami111-delta-20260617-sweep",
+  "machine": "<本地机器>",
+  "role": "纯生产者",
+  "date": "2026-06-17",
+  "source_binary": "AiMaMi 1.1.1 win64.exe",
+  "idb_path": "<本地路径>",
+  "imagebase": "0x140000000",
+
+  "functions": {
+    "owner_sys": {
+      "addr": "0x14006f4b0",
+      "name": "run_codex_router_diagnostics_owner_sys",
+      "size_bytes": "0x1e7",
+      "has_type": true,
+      "role": "Tokio try-lock dispatcher wrapper",
+      "hash": "0x945CA2F02A2B6F44",
+      "hashmap_global": "off_141899DC0 (0x141899dc0)",
+      "decompile_status": "complete"
+    },
+    "core_sys": {
+      "addr": "0x14021c1a0",
+      "name": "run_codex_router_diagnostics_core_sys",
+      "size_bytes": "0x167",
+      "has_type": true,
+      "role": "IPC handler core; codexmate_lib::core::relay::codex_diagnostic",
+      "source_module": "src\\core\\relay\\codex_diagnostic.rs",
+      "decompile_status": "complete"
+    },
+    "codex_home_resolver_sys": {
+      "addr": "0x1406f29d0",
+      "size_bytes": "0x103",
+      "role": "reads CODEX_HOME env var; builds .codexsqlitestate_5.sqlite + accounts path",
+      "decompile_status": "complete"
+    },
+    "diagnostic_data_builder_sys": {
+      "addr": "0x1406f3770",
+      "size_bytes": "0x82d",
+      "role": "builds DiagnosticPaths; joins 29 path segments; fs::exists on each",
+      "decompile_status": "complete"
+    },
+    "relay_state_read_lock_snapshot_sys": {
+      "addr": "0x1406e8480",
+      "role": "read-lock relay state snapshot; src\\core\\relay\\manager.rs",
+      "panic_msg": "relay state poisoned",
+      "decompile_status": "complete"
+    },
+    "fix_all_sections_impl_full_sys": {
+      "addr": "0x1407456b0",
+      "size_approx": "~320KB",
+      "role": "main diagnostic engine; config.toml parser + path checks + keychain + registry",
+      "decompile_status": "truncated_but_callee_chain_complete",
+      "named_callees": [
+        "diag_config_section_toml_reader_sys @ 0x140762820",
+        "diag_config_section_parser_profiles_sys @ 0x140761280",
+        "diag_config_switch_section_check_sys @ 0x140761f80",
+        "diag_config_base_url_section_check_sys @ 0x140762ab0",
+        "diag_config_mode_validator_sys @ 0x140762f10",
+        "relay_keychain_lookup_for_quota_sys @ 0x1402ee7c0",
+        "win32_file_read_bytes_111 @ 0x141093260"
+      ]
+    },
+    "relay_state_snapshot_drop_sys": {
+      "addr": "0x140234ac0",
+      "previous_name": "sub_140234AC0",
+      "role": "Drop impl for RelayStateSnapshot; iterates relay_draft_test_input at stride=232B",
+      "decompile_status": "complete"
+    },
+    "diagnostic_paths_drop_sys": {
+      "addr": "0x140046870",
+      "previous_name": "sub_140046870",
+      "role": "Drop impl for DiagnosticPaths; frees 29 Option<PathBuf> at stride-4 offsets",
+      "decompile_status": "complete"
+    }
+  },
+
+  "dim1_ccf": {
+    "confirmed": true,
+    "evidence_type": "ipc-contracts.jsonl direct grep hit",
+    "component_file": "assets/maintenance-page-C2wkSNnk.js",
+    "trigger_fn": "y",
+    "line": 17,
+    "column": 1473,
+    "invoke_command": "run_codex_router_diagnostics",
+    "arg_keys": [],
+    "arg_object": null,
+    "kind": "tauriInvokeRaw",
+    "snippet": "s(\"run_codex_router_diagnostics\")"
+  },
+
+  "dim4_input_params": {
+    "confirmed": true,
+    "params": [],
+    "note": "argKeys=[] — 无入参 DTO; argObject null confirmed in ipc-contracts.jsonl"
+  },
+
+  "return_value": {
+    "type": "TauriResult::Ok",
+    "variant_tag": 2,
+    "fields": {
+      "status": {
+        "value": "ok",
+        "encoding": "LE u16 = 27503 (0x6B6F)",
+        "heap_alloc_size": 2,
+        "heap_alloc_align": 1
+      },
+      "kind": {
+        "value": "Success",
+        "encoding": "two overlapping LE u32: *(u32*)ptr=0x63637553('ccuS'), *(u32*)(ptr+3)=0x73736563('sseS')",
+        "heap_alloc_size": 7,
+        "heap_alloc_align": 1
+      },
+      "data": {
+        "type": "DiagnosticData",
+        "source": "fix_all_sections_impl_full_sys output (v16[2], 32 bytes at out_result+72)",
+        "contents": "config.toml section parse results + path existence + base_url check + mode validation + relay keychain status"
+      }
+    },
+    "result_offset_map": {
+      "+0":   "Ok tag (=2)",
+      "+8":   "status &str ptr",
+      "+16":  "status len (=2)",
+      "+24":  "kind len (=7)",
+      "+32":  "kind &str ptr",
+      "+40":  "kind len mirror (=7)",
+      "+48":  "diagnostic_data field0 (=0)",
+      "+56":  "field1 size (=8)",
+      "+64":  "field2 (=0)",
+      "+72":  "DiagnosticData oword[0] from v16[0]",
+      "+88":  "DiagnosticData oword[1] from v16[1]",
+      "+104": "success flag (u32=1)",
+      "+108": "success byte (u8=1)"
+    }
+  },
+
+  "path_segments": {
+    "source_addr": "0x1412ec185",
+    "symbol": "aCodexsqlitesta",
+    "count": 29,
+    "segments": [
+      {"offset": 1,   "len": 26, "value": ".codexsqlitestate_5.sqlite"},
+      {"offset": 26,  "len": 8,  "value": "accounts"},
+      {"offset": 34,  "len": 9,  "value": "codexmate"},
+      {"offset": 43,  "len": 19, "value": "custom-instructions"},
+      {"offset": 62,  "len": 5,  "value": "relay"},
+      {"offset": 67,  "len": 8,  "value": "aionsale"},
+      {"offset": 75,  "len": 9,  "value": "auth.json"},
+      {"offset": 84,  "len": 11, "value": "config.toml"},
+      {"offset": 95,  "len": 19, "value": "session_index.jsonl"},
+      {"offset": 114, "len": 8,  "value": "sessions"},
+      {"offset": 122, "len": 17, "value": "archived_sessions"},
+      {"offset": 139, "len": 6,  "value": "skills"},
+      {"offset": 145, "len": 13, "value": "registry.json"},
+      {"offset": 158, "len": 9,  "value": "snapshots"},
+      {"offset": 167, "len": 7,  "value": "backups"},
+      {"offset": 174, "len": 16, "value": "registry-backups"},
+      {"offset": 190, "len": 15, "value": "auto-switch.log"},
+      {"offset": 205, "len": 19, "value": "quota-history.jsonl"},
+      {"offset": 224, "len": 16, "value": "quota-store.json"},
+      {"offset": 240, "len": 13, "value": "settings.json"},
+      {"offset": 253, "len": 20, "value": "bootstrap-cache.json"},
+      {"offset": 273, "len": 24, "value": "auto-switch-pending.json"},
+      {"offset": 297, "len": 23, "value": "auto-switch-snooze.json"},
+      {"offset": 320, "len": 20, "value": "voice-workspace.json"},
+      {"offset": 340, "len": 18, "value": "voice-runtime.json"},
+      {"offset": 358, "len": 10, "value": "state.json"},
+      {"offset": 368, "len": 9,  "value": "AGENTS.md"},
+      {"offset": 377, "len": 7,  "value": "history"}
+    ]
+  },
+
+  "diag_config_mode_valid_values": [
+    {"len": 4, "values": ["free", "paid", "demo", "msft", "team"]},
+    {"len": 7, "values": ["invalid", "sk-fake", "sk-test"]},
+    {"len": 8, "values": ["ccswitch", "decodex"]},
+    {"len": 9, "values": ["undefined", "cc-switch", "cc_switch"]},
+    {"len": 11, "values": ["placeholder"]},
+    {"len": "<10", "note": "fallback: a2 < 0xA → true (permissive short mode)"}
+  ],
+
+  "diag_config_switch_known_keys": [
+    "cc-switch", "cc_switch", "ccswitch", "codex-switch",
+    "[model_providers.cc", "circuit_breaker", "provider_router"
+  ],
+
+  "diag_config_base_url_markers": {
+    "managed_start": "# >>> aimami-relay managed start (top, DO NOT EDIT MANUALLY)",
+    "managed_end": "# <<< aimami-relay managed end (top)",
+    "required_suffix": "/codex/router/v1"
+  },
+
+  "side_effects": [
+    "relay_state read-lock snapshot (read-only, no write)",
+    "fs::exists checks on 29 CODEX_HOME sub-paths (read-only)",
+    "config.toml read + parse (read-only)",
+    "relay keychain lookup (read-only)",
+    "heap alloc: 'ok' (2B) + 'Success' (7B)",
+    "NO persistent write side-effects confirmed"
+  ],
+
+  "error_paths": [
+    {
+      "location": "owner_sys @ 0x14006f4b0",
+      "condition": "2 * *off_141899DC0 == 0 (Tokio runtime hashmap not ready)",
+      "action": "sub_14124BFE0(\"called `Result::unwrap()` on an `Err` value\", 43, ...)",
+      "type": "panic/diverge"
+    },
+    {
+      "location": "core_sys alloc status_str",
+      "condition": "alloc(2, 1) returns null",
+      "action": "sub_14124BCCB(1, 2)",
+      "type": "alloc failure panic"
+    },
+    {
+      "location": "core_sys alloc kind_str",
+      "condition": "alloc(7, 1) returns null",
+      "action": "sub_14124BCCB(1, 7)",
+      "type": "alloc failure panic"
+    },
+    {
+      "location": "relay_state_read_lock_snapshot_sys",
+      "condition": "relay state mutex poisoned (*v4[17] == 1)",
+      "action": "sub_14124BFE0(\"relay state poisoned\", 20, ...)",
+      "type": "panic/diverge"
+    }
+  ],
+
+  "xrefs": {
+    "string_0x1412ac580": {
+      "xref_from": "tauri_ipc_main_dispatcher_sys @ 0x14000f049",
+      "type": "data"
+    },
+    "core_sys_vtable": [
+      {"addr": "0x1415589cc", "type": "data", "note": "command dispatch table slot"},
+      {"addr": "0x1418b71a8", "type": "data", "note": "secondary vtable ref"}
+    ]
+  },
+
+  "gate_status": {
+    "dim1_ccf": "PASS",
+    "dim4_input_params": "PASS",
+    "dim2_output_schema": "PASS",
+    "dim3_error_paths": "PASS",
+    "dim5_side_effects": "PASS",
+    "dim6_full_leaf": "PASS",
+    "overall": "readyToImplement",
+    "implementation_use": true,
+    "gate_accepted": true,
+    "notes": "fix_all_sections body ~320KB truncated by HexRays but callee chain + all 5 named diag sub-fns fully reversed; sufficient for implementation"
+  }
+}

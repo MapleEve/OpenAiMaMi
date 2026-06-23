@@ -1,0 +1,85 @@
+{
+  "schema": "c5cm.raw.bundle.manifest.v1",
+  "produced_at": "2026-06-17T00:00:00+08:00",
+  "producer": "claude-sonnet-4-6",
+  "machine": "<本地机器>",
+  "session": "wf-aimami111-delta-20260616",
+  "key": "aimami/1.1.1/macos-arm64/relay/get_relay_active",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "get_relay_active",
+  "leaf": "command_inner_closure_owner_pure_read_active_providers",
+  "kind": "clean_raw_command_leaf_backend_owner_body_core_pseudocode",
+  "status": "readyToImplement_dim1_6_closed",
+  "bundle_path": "raw/aimami/1.1.1/macos-arm64/relay/get_relay_active",
+  "path": "raw/aimami/1.1.1/macos-arm64/relay/get_relay_active/manifest.json",
+  "source_binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "app_sot": "raw/binary/AiMaMi 1.1.1 universal.app",
+  "idb": "raw/binary/AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi.i64",
+  "tool": "ida-pro-mcp-mac + HexRays",
+  "targets": [
+    {
+      "address": "0x10031cc30",
+      "label": "codexmate_lib::run::{{closure}}::{{closure}}::hfefd46acd52a1302",
+      "role": "command_owner_inner_closure",
+      "size_bytes": 820,
+      "note": "1.1.1 inlines get_relay_active into run closure; no standalone symbol",
+      "file": "ida/pseudocode/0001_get_relay_active_inner_closure_hfefd46acd52a1302.c"
+    },
+    {
+      "address": "0x1005d18f0",
+      "label": "codexmate_lib::core::relay::manager::RelayManager::get_active::h81b4c2827d84364c",
+      "role": "core_read_business_logic",
+      "file": "ida/pseudocode/0002_get_relay_active_core_RelayManager_get_active_h81b4c2827d84364c.c"
+    }
+  ],
+  "call_tree": "call-trees/get_relay_active.jsonl",
+  "call_tree_depth": 4,
+  "call_tree_complete": true,
+  "terminal_leaves": [
+    "external_call_recorded:StateManager_try_get",
+    "external_call_recorded:tauri_CommandArg_from_command",
+    "external_call_recorded:OnceBox_initialize(lazy_mutex_init)",
+    "external_call_recorded:Mutex_lock",
+    "implementation_leaf:Vec_String_clone(active_providers@state+56)",
+    "external_call_recorded:Mutex_unlock",
+    "external_call_recorded:CoreEnvelope_ok",
+    "implementation_leaf:ipc_response_frame(sync_respond_no_spawn)"
+  ],
+  "interface": {
+    "command_name": "get_relay_active",
+    "argKeys": [],
+    "response_ok": "Option<Vec<String>> — active provider IDs; None sentinel {ptr=0,len=8,cap=0}",
+    "response_err": "Mutex_poisoned -> None sentinel; OOM -> abort"
+  },
+  "side_effects": [],
+  "delta_vs_baseline": {
+    "baseline_version": "1.0.9",
+    "baseline_path": "raw/aimami/1.0.9/macos/relay/get_relay_active",
+    "interface_changed": false,
+    "behavior_changed": false,
+    "arg_keys_changed": false,
+    "response_schema_changed": false,
+    "symbol_visibility_changed": true,
+    "symbol_note": "1.0.9 had standalone codexmate_lib::commands::relay::get_relay_active::h454ae021e982c96c; 1.1.1 inlines into run closure inner closure"
+  },
+  "proof_summary": {
+    "gate": "readyToImplement",
+    "dim1_frontend_ccf": "Unknown (accepted_unknown — pure read, non-critical; consistent with 1.0.9 accepted_unknown)",
+    "dim2_backend_owner": "Accepted (inner closure + core both decompiled; xref chain confirmed)",
+    "dim3_call_tree_implementation_leaves": "Accepted (depth=4; all leaves terminal or external_call_recorded)",
+    "dim4_interface_dto_error_side_effect": "Accepted (argKeys=[]; Option<Vec<String>>; None sentinel proven; side_effects=[])",
+    "dim5_platform_gate_macos": "Accepted (macos-arm64 IDB; HexRays confirmed)",
+    "dim6_test_acceptance": "Accepted — delta=nil; 1.0.9 gate carries forward; no new implementation required"
+  },
+  "consumerStartReady": true,
+  "strictImplementationUse": true,
+  "readyToImplement": true,
+  "implementation_use": true,
+  "gate_accepted": true,
+  "gate_status": "readyToImplement",
+  "no_index_shard": true,
+  "no_version_span_path_components": true
+}

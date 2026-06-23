@@ -1,0 +1,56 @@
+{
+  "schema": "c5cm.raw.leaf.v1",
+  "command": "get_relay_proxy_status",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "commands_relay",
+  "session": "wf-aimami111-delta-20260616",
+  "machine": "<本地机器>",
+  "model": "claude-sonnet-4-6",
+  "role": "纯生产者",
+  "produced_at": "2026-06-17",
+  "source_binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+  "owner_va": "0x10030ee90",
+  "owner_symbol": "codexmate_lib::run::{{closure}}::{{closure}}::h2a436f5f36893ed1",
+  "core_impl_va": "0x1005d5450",
+  "core_impl_symbol": "codexmate_lib::core::relay::manager::RelayManager::compose_proxy_status::h4de0c421b533e58d",
+  "cmd_str_va": "0x1011482e1",
+  "gate_tier": "strictImplementationUse_candidate",
+  "gate_accepted": false,
+  "implementation_use": false,
+  "readyToImplement": false,
+  "strictImplementationUse": false,
+  "consumerStartReady": true,
+  "delta_status": "diff_reversed",
+  "baseline_version": "1.0.9",
+  "baseline_path": "raw/aimami/1.0.9/macos/relay/get_relay_proxy_status/",
+  "key_changes_vs_baseline": [
+    "hostStr format changed: '127.0.0.1:<PORT>' -> 'http://127.0.0.1:<PORT>/codex/v1'",
+    "portStr format changed: '<PORT>' -> 'http://127.0.0.1:<PORT>'"
+  ],
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "all_7_taxonomy_excluded": true,
+    "recovery_attempts": []
+  },
+  "four_angle_completeness": {
+    "A_func_query": "PASS - string xref to 0x1011482e1 -> owner closure 0x10030ee90",
+    "B_string_pool": "PASS - cmd string n=1 confirmed; format templates byte-confirmed at 0x1010bb1d4 and 0x1010bb1f2",
+    "C_frontend_ipc": "PASS - ipc-contracts.jsonl: argKeys=[], getProxyStatus wrapper, col=120600",
+    "D_manifest_coverage": "PASS - call-trees/get_relay_proxy_status.jsonl 11 entries; manifest updated"
+  },
+  "dim_coverage": {
+    "dim1_frontend_ccf": "accepted_unknown (invoke wrapper confirmed; full UI trace pending)",
+    "dim2_backend_owner": "accepted",
+    "dim3_callees_impl_leaf": "accepted (depth=2, all std_library_leaf)",
+    "dim4_interface_dto_error": "accepted",
+    "dim5_macos": "accepted",
+    "dim5_windows": "unknown",
+    "dim6_test_acceptance": "unknown"
+  },
+  "idb_save": "ok",
+  "append_comments_ok": true,
+  "covered_commands": ["get_relay_proxy_status"]
+}

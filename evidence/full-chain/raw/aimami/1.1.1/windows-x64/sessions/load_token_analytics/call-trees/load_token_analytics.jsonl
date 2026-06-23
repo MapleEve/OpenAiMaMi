@@ -1,0 +1,12 @@
+{"depth":0,"addr":"0x140000000_dispatcher","name":"tauri_ipc_main_dispatcher_sys","type":"dispatcher","terminated_reason":null}
+{"depth":1,"addr":"0x140027A40","name":"sub_140027A40","type":"owner","terminated_reason":null}
+{"depth":1,"addr":"0x140006280","name":"pending_auto_switch_state_lock_acquire_111","type":"mutex_guard","terminated_reason":"new_111_guard: acquires auto-switch state mutex before analytics read"}
+{"depth":1,"addr":"0x1400083A0","name":"query_installed_skills_with_repo_111","type":"repo_validation","terminated_reason":"new_111_guard: validates installed skills repo before analytics read"}
+{"depth":2,"addr":"0x1401C98B0","name":"sub_1401C98B0","type":"token_analytics_dispatch","terminated_reason":null}
+{"depth":2,"addr":"0x140837DC0","name":"sub_140837DC0","type":"analytics_response_builder","terminated_reason":null}
+{"depth":3,"addr":"0x140203BB0","name":"sub_140203BB0","type":"token_analytics_core","terminated_reason":null}
+{"depth":4,"addr":"0x14036DFC0","name":"sub_14036DFC0","type":"analytics_query_builder","terminated_reason":null}
+{"depth":5,"addr":"0x140624F90","name":"sub_140624F90","type":"sqlite_query_exec","terminated_reason":"external_call_recorded — executes SQLite SELECT for token analytics rows"}
+{"depth":5,"addr":"0x1405AB1E0","name":"sub_1405AB1E0","type":"sqlite_stmt_step","terminated_reason":"external_call_recorded — sqlite3_step iterator for result rows"}
+{"depth":4,"addr":"0x141214710","name":"sub_141214710","type":"json_serialize_token_analytics","terminated_reason":"external_call_recorded — serializes token analytics to JSON"}
+{"depth":2,"addr":"0x140062230","name":"tauri_ipc_resolve_sys","type":"ipc_resolve","terminated_reason":"external_call_recorded — resolves IPC response to frontend"}

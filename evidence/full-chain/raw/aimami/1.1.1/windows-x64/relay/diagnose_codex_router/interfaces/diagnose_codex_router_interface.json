@@ -1,0 +1,67 @@
+{
+  "schema": "c5cm.raw.interface.v1",
+  "command": "diagnose_codex_router",
+  "platform": "windows-x64",
+  "version": "1.1.1",
+  "module": "relay",
+  "session": "wf-aimami111-delta-20260616",
+  "produced_at": "2026-06-17",
+  "request": {
+    "arg_keys": [],
+    "note": "Zero arguments — reads all state from RelayManager + CodexPaths"
+  },
+  "response": {
+    "type": "CoreEnvelope<DiagnoseCodexRouterResult>",
+    "error_sentinel": "0x8000000000000000",
+    "discriminant_ok": 2,
+    "payload_size_bytes": 400,
+    "fields": {
+      "relay_enabled": "bool — outer enabled guard (RelayManager state)",
+      "proxy_running": "bool — local proxy running flag (RelayProvider offset +122)",
+      "catalog_present": "bool — codex_router_catalog.json readable + non-empty",
+      "catalog_aimami_match": "bool — XOR 0x616D6961|0x3169 match in catalog first entry",
+      "model_catalog_json_in_config": "bool — TOML key 'model_catalog_json' present in config.toml",
+      "model_provider_in_config": "bool — TOML key 'model_provider' present in config.toml",
+      "provider_count": "u64 — number of enabled relay providers (0x8000000000000000 if none)",
+      "summary": "Option<String> — diagnostic string (one of 6 Chinese strings based on flag state)"
+    },
+    "error_variants": [
+      {"condition": "RelayManager state error (discriminant=6)", "sentinel": "0x8000000000000000", "path": "owner fallback"},
+      {"condition": "alloc failure in string copy", "sentinel": "OOM panic via sub_14124BCCB"},
+      {"condition": "IO error on catalog/config read", "effect": "silent flag=false, continues"},
+      {"condition": "XOR check fail (not aimami catalog)", "effect": "catalog_aimami_match=false"}
+    ]
+  },
+  "side_effects": {
+    "reads": ["codex_router_catalog.json", "config.toml", "RelayManager in-memory state"],
+    "writes": [],
+    "http": false,
+    "process_spawn": false,
+    "registry": "RegOpenKeyExW HKCU (via codex_paths path resolution, Windows-only)"
+  },
+  "diagnostic_string_selection": {
+    "logic": "5-level condition tree",
+    "outcomes": [
+      {"condition": "!relay_enabled", "len": 124, "text_prefix": "未启用智能路由"},
+      {"condition": "relay_enabled && !proxy_running", "len": 71, "text_prefix": "已启用但本地代理未运行"},
+      {"condition": "relay_enabled && proxy_running && !catalog_present", "len": 101, "text_prefix": "已启用但 catalog 缺失"},
+      {"condition": "relay_enabled && proxy_running && catalog_present && !model_catalog_json_in_config", "len": 153, "text_prefix": "已启用但 ~/.codex/config.toml 未写入 model_catalog_json"},
+      {"condition": "relay_enabled && proxy_running && catalog_present && model_catalog_json_in_config && !model_provider_in_config", "len": 148, "text_prefix": "已启用但 ~/.codex/config.toml 未写入 model_provider router"},
+      {"condition": "all ok but no enabled providers", "len": 143, "text_prefix": "已启用但当前没有任何已启用的中转 Provider"}
+    ]
+  },
+  "platform_differences_vs_macos": {
+    "mutex": "Win: _InterlockedCompareExchange8 + WakeByAddressSingle vs macOS: Mutex::lock/unlock",
+    "registry": "Win only: RegOpenKeyExW HKCU for path resolution",
+    "core_structure": "Win: separate 4454B function; macOS: inlined in 3433B owner",
+    "dispatcher": "Win: standalone (not in multiplex dispatcher); macOS: relay dispatcher-based",
+    "string_content": "identical (6 Chinese diagnostic strings)"
+  },
+  "frontier_unknowns": [
+    {"field": "dim5_mac", "status": "Unknown", "reason": "macOS platform gate not in scope for this win leaf"},
+    {"field": "dim6", "status": "Unknown", "reason": "C5 test/acceptance mapping is consumer-side work"},
+    {"field": "exact_provider_count_field_offset", "status": "accepted_unknown", "reason": "field packed in 320B struct; precise offset not extracted (low implementation risk)"},
+    {"field": "exact_catalog_path_string", "status": "accepted_unknown", "reason": "constructed by CodexPaths from registry; path pattern known from 1.0.9 win"},
+    {"field": "DiagnoseCodexRouterResult_full_struct_layout", "status": "accepted_unknown", "reason": "320B payload layout partially known; 5 bool + summary string sufficient for implementation"}
+  ]
+}

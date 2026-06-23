@@ -1,0 +1,25 @@
+{
+  "command": "get_hotspot_enabled",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:86 — command=get_hotspot_enabled, argKeys=[], argObject=null, wrapper=getHotspotEnabled, file=assets/index-DdcCOEJG.js:86:31616 col:31616",
+    "frontend/frontend-control-flow.jsonl:99 — terminal_call get_hotspot_enabled argKeys=[] callee=ne col:31637",
+    "frontend/frontend-control-flow.jsonl:190 — callsite settings-page-SeKzRc3U.js:7:2033 queryFn u.getHotspotEnabled()",
+    "ida/pseudocode/0001_get_hotspot_enabled_owner_e4159a44.c — VA:0x1005ec340 size=0x1e9; OnceBox::initialize+Mutex::lock+panic_check; Repository::load_settings->HotspotConfig.enabled @offset0x48; mutex poisoned path returns CoreError; mutex unlock; ipc_respond; 3777B",
+    "call-trees/get_hotspot_enabled.jsonl — 12 edges depth2; OnceBox+lock+panic_check+load_settings(read_to_string+serde_json_from+index_into+deserialize_struct)+drop_settings+unlock+ipc_respond; all terminated",
+    "intermediate/dim6/mac-close-2.json — dim1 closed: 1.1.1 ipc-contracts.jsonl getHotspotEnabled wrapper confirmed; dim4 accepted: response=bool (NOT CoreEnvelope), HotspotConfig.enabled offset=0x48, serde keys \"hotspot\"/\"enabled\" XOR-confirmed; dim3 depth=4 confirmed",
+    "intermediate/dim6/mac-final.json — already_closed=true RTI; dim1_evidence: terminal_call_confirmed=true, callsite u.getHotspotEnabled() in settings-page-SeKzRc3U.js:7:2033",
+    "intermediate/dim6/mac-consolidated.json — readyToImplement: mac-close-2->mac-final"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

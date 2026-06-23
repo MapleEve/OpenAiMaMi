@@ -1,0 +1,31 @@
+{
+  "command": "refresh_usage_snapshot",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": ["dim5_win not judged in mac shard gate; per-platform rule: mac gate only requires mac dim5 closed"]
+  },
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:2 wrapper=refreshUsageSnapshot argKeys=[] callee=ne col=24202 kind=tauriInvokeWrapper",
+    "frontend/frontend-control-flow.jsonl:15 terminal_call command=refresh_usage_snapshot argKeys=[]",
+    "frontend/frontend-control-flow.jsonl:115 callsite=Ge.refreshUsageSnapshot() fn=k index-DdcCOEJG.js:86",
+    "accounts/refresh_usage_snapshot/ida/pseudocode/0001_refresh_usage_snapshot_owner_haad2b996156be92a.c 4769B owner_va=0x1006266d0",
+    "accounts/refresh_usage_snapshot/ida/pseudocode/0002_note_usage_refresh_activity_h64dcace2c46f2569.c 2431B",
+    "accounts/refresh_usage_snapshot/ida/pseudocode/0003_refresh_tray_menu_with_snapshot_hcac8d3fbe76dcf5e.c 1888B",
+    "accounts/refresh_usage_snapshot/ida/pseudocode/0004_http_client_hed025cf597a5229e.c 2631B",
+    "accounts/refresh_usage_snapshot/call-trees/refresh_usage_snapshot.jsonl 31 edges depth5 meta.call_tree_complete=true",
+    "accounts/refresh_usage_snapshot/interfaces/interface.md argKeys=[] CoreEnvelope<CoreSnapshotPayload> 680B retry-logic 11 side-effects event=runtime-state-updated BREAKING-from-load_snapshot",
+    "accounts/refresh_usage_snapshot/ACCEPTANCE.md acceptance-draft; dim1 closed: argKeys=[] CCF refreshUsageSnapshot confirmed; event=runtime-state-updated both 逆向分析 0x100620a82 and frontend bA literal confirmed",
+    "accounts/refresh_usage_snapshot/producer-ledger.json",
+    "intermediate/version-delta/mac-same.txt: refresh_usage_snapshot listed (mac-arm64 command confirmed)"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

@@ -1,0 +1,36 @@
+{
+  "command": "test_relay_draft_stream",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim4_RelayStreamEvent_variant_names": [
+      "逆向分析 vtable analysis at 0x1013ae7c0 shows 4 entries but variant name strings not in symbol table",
+      "Inferred Chunk/Done/Error from drop glue and IPC channel shim pattern",
+      "Marked explicit_non_automatable_accept in ACCEPTANCE: consumer validates in C5 Channel<> type"
+    ]
+  },
+  "evidence_refs": [
+    "codexmate_lib__commands__relay/test_relay_draft_stream/evidence.md (10185B, session=wf-aimami111-delta-20260617-repair)",
+    "codexmate_lib__commands__relay/test_relay_draft_stream/interfaces/RelayDraftTestInput.rs (8 fields reconstructed from serde visitor @0x100566900)",
+    "codexmate_lib__commands__relay/test_relay_draft_stream/interfaces/command_signature.rs (Channel<RelayStreamEvent> signature)",
+    "codexmate_lib__commands__relay/test_relay_draft_stream/call-trees/test_relay_draft_stream.jsonl (3488B, 17 depth entries)",
+    "frontend/ipc-contracts.jsonl#L121: argKeys=[input,onEvent] kind=tauriInvokeRaw callee=r col=120299",
+    "frontend/frontend-control-flow.jsonl#L128: terminal_call=test_relay_draft_stream col=120298 guard=Sr() preflight",
+    "windows-x64/test_relay_draft_stream/gate-report.json: gate_tier=readyToImplement (dim5_win closed)",
+    "async_poll_body_va=0x10009d110 (2992B test_provider_staged closure, 310 basic blocks)",
+    "icf_fold_confirmed: outer command ICF-merged into run::{{closure}} state machine",
+    "streaming_confirmed: build_test_request writes stream:true+stream_options.include_usage:true",
+    "is_stream_terminal_event=0x1007677a0 extract_stream_text_delta=0x1007678a0 new in 1.1.1",
+    "RelayDraftTestInput_8_fields: providerId/ide/atMs/baseUrl/apiKey/model/wireApi/extraHeaders",
+    "ACCEPTANCE in evidence.md L89-L118 session=wf-aimami111-dim6-20260619"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

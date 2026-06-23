@@ -1,0 +1,26 @@
+{
+  "command": "configure_auto_switch",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {},
+  "evidence_refs": [
+    "frontend/ipc-contracts.jsonl:17 — command=configure_auto_switch, argKeys=[threshold5hPercent,thresholdWeeklyPercent], wrapper=configureAutoSwitch, file=assets/index-DdcCOEJG.js:86:25116",
+    "frontend/frontend-control-flow.jsonl:30 — terminal_call configure_auto_switch argKeys=[threshold5hPercent,thresholdWeeklyPercent]",
+    "frontend/frontend-control-flow.jsonl:188 — callsite settings-page-SeKzRc3U.js:7:1432 mutationFn",
+    "ida/pseudocode/0001_configure_auto_switch_owner_100619b80.c — VA:0x100619b80 size=786B owner wrapper",
+    "ida/pseudocode/0002_configure_auto_switch_core_1004c7280.c — VA:0x1004c7280 size=914B core impl; threshold5hPercent/thresholdWeeklyPercent validation 0-100; load_registry+persist_registry+check_daemon_state",
+    "call-trees/configure_auto_switch.jsonl — 27 edges depth4; fs_syscall+json_parse+serde_write+subprocess terminals",
+    "intermediate/dim6/mac-close-1.json — dim4 closed: AutoSwitchStatusPayload 5 fields byte-confirmed @0x1005522c7: enabled(bool,+32), threshold5hPercent(i32,+24), thresholdWeeklyPercent(i32,+28), serviceState(bool,+33), serviceLabel(String,+0)",
+    "intermediate/dim6/mac-regrade.json — RTI via per-platform rule: dim5_win_Unknown not mac blocker",
+    "intermediate/dim6/mac-consolidated.json — readyToImplement confirmed"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620"
+}

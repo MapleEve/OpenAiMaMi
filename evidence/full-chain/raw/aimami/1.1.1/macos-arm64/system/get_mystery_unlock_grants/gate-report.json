@@ -1,0 +1,64 @@
+{
+  "command": "get_mystery_unlock_grants",
+  "platform": "macos-arm64",
+  "gate_tier": "readyToImplement",
+  "dims": {
+    "dim1_frontend_ccf": "closed",
+    "dim2_owner_pseudocode": "closed",
+    "dim3_call_tree_depth5": "closed",
+    "dim4_interface_dto_error_sideeffect": "closed",
+    "dim5_same_platform_gate": "closed",
+    "dim6_acceptance": "closed"
+  },
+  "accepted_unknown_recovery": {
+    "dim5_win": [
+      "Windows 1.1.1 IDB not analyzed this session; per mac per-platform gate rule: dim5_win unknown does not block mac readyToImplement"
+    ]
+  },
+  "evidence_refs": [
+    "system/get_mystery_unlock_grants/evidence.md — Confirmed §1-15, Fake-wall check, Four-angle completeness",
+    "frontend/ipc-contracts.jsonl line:92 col:31877 — command=get_mystery_unlock_grants argKeys=[] wrapper=getMysteryUnlockGrants",
+    "frontend/frontend-control-flow.jsonl line:105 — static-terminal getMysteryUnlockGrants col:31903",
+    "system/get_mystery_unlock_grants/ida/pseudocode/0001_get_mystery_unlock_grants_owner_10061a140.c (5534B)",
+    "system/get_mystery_unlock_grants/call-trees/get_mystery_unlock_grants.jsonl — 19 edges",
+    "system/get_mystery_unlock_grants/interfaces/get_mystery_unlock_grants.md",
+    "system/get_mystery_unlock_grants/gate-report.json prior — dim6 acceptance-draft written 2026-06-19 session wf-aimami111-dim6-20260619"
+  ],
+  "regen_by": "wf-aimami111-gate-final-20260620",
+  "dim1_detail": {
+    "source": "ipc-contracts.jsonl + frontend-control-flow.jsonl",
+    "col": 31877,
+    "wrapper": "getMysteryUnlockGrants",
+    "argKeys": [],
+    "terminal_call_command": "get_mystery_unlock_grants"
+  },
+  "dim2_detail": {
+    "owner_va": "0x10061a140",
+    "owner_size": "0x303 (771B)",
+    "pseudocode_files": ["0001_get_mystery_unlock_grants_owner_10061a140.c (5534B)"]
+  },
+  "dim3_detail": {
+    "edges": 19,
+    "max_depth": 4,
+    "terminated_reason": "owner→Repository::get_mystery_unlock_grants→load_settings/mystery_route_allowed/save_settings→fs/std_leaves"
+  },
+  "dim4_detail": {
+    "argKeys": [],
+    "response": "CoreEnvelope<Vec<MysteryUnlockGrant>>",
+    "error_paths": "IO err→empty(silent); JSON parse err→empty(silent); save_settings err→*a1=2/*a1=3 Err to frontend",
+    "side_effects": "settings file read (every call) + conditional write-back when grants pruned (non-atomic std::fs::write)",
+    "key_behavior": "expiry filter (bit0+expiresAt<=now) + route allowlist gate (9 routes XOR confirmed) + mysteryUnlockedRoutes migration",
+    "allowlist_routes": ["mcp","skills","overview","accounts","sessions","settings","maintenance","subscription","customInstructions"]
+  },
+  "dim5_detail": {
+    "mac": "PASS — macOS arm64 IDB; owner 0x10061a140 IPC dispatch confirmed xref 0x10030d7e0",
+    "win": "accepted_unknown — Windows 1.1.1 not analyzed; non-blocking for mac gate"
+  },
+  "dim6_detail": {
+    "status": "acceptance-draft written 2026-06-19",
+    "happy_paths": 3,
+    "boundary_errors": 5,
+    "side_effect_asserts": 2,
+    "test_count": 6
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v2",
+  "product": "aimami",
+  "version": "1.1.1",
+  "platform": "macos-arm64",
+  "module": "commands_relay",
+  "command": "remove_mcp_server",
+  "kind": "command",
+  "produced_at": "2026-06-17T00:00:00+08:00",
+  "producer": "claude-sonnet-4-6",
+  "machine": "<本地机器>",
+  "session": "wf-aimami111-delta-20260616",
+  "role": "纯生产者 (SOP steps 0-6)",
+  "source_binary_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-binary",
+  "source_binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
+  "idb": {
+    "path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
+    "idb_modified": true,
+    "idb_saved": true
+  },
+  "owner": {
+    "addr": "0x10072a660",
+    "symbol": "codexmate_lib::commands::mcp::remove_mcp_server::hf1ad73aa378558ad",
+    "size": 1539,
+    "decompile_ok": true
+  },
+  "core_impl": {
+    "addr": "0x1005a0510",
+    "symbol": "codexmate_lib::core::mcp::remove_mcp_server::h360cb5a1f65874e9",
+    "size": 2042,
+    "decompile_ok": true
+  },
+  "ipc_dispatcher": {
+    "addr": "0x10030db80",
+    "symbol": "codexmate_lib::run::{{closure}}::{{closure}}::h2309811c3176cdec",
+    "xref_type": "sole"
+  },
+  "threading_model": "sync mutex (std::sys::pal::unix::sync::mutex::Mutex); no async/spawn",
+  "important_callees": [
+    "0x10072a660",
+    "0x1005a0510",
+    "0x10030db80",
+    "0x10059e330",
+    "0x1005a2db0",
+    "0x1005a03d0",
+    "0x10041e960",
+    "0x10059e470"
+  ],
+  "interface": {
+    "arguments": "name",
+    "argKeys": ["name"],
+    "dto_boundary": "name: String (required); response: CoreEnvelope<Vec<McpServerSummary>>; McpServerSummary stride=224B",
+    "error_envelope": "CoreError/poisoned-lock/not-found/IO/atomic-write failures formatted through invoke-visible IPC resolve envelope; Ok returns CoreEnvelope ok payload (discriminant 0x8000000000000000, memcpy 0x88B)"
+  },
+  "terminal_side_effect_classes": "remove MCP server section from TOML config → atomic durable write (tmpfile→rename→fsync); no HTTP/sidecar/DB",
+  "delta_status": "diff_reversed — VA changed (1.0.9 owner 0x10015c300 → 1.1.1 0x10072a660); behavioral contract identical (argKeys, thread model, TOML pattern, response type all unchanged)",
+  "gate": {
+    "consumerStartReady": true,
+    "strictImplementationUse": true,
+    "strictImplementationUse_note": "candidate — dim5_win + dim6 Unknown",
+    "readyToImplement": false,
+    "implementation_use": false,
+    "gate_accepted": false,
+    "full_leaf_100": false,
+    "moduleExitAllowed": false,
+    "platformScopeDeclared": true,
+    "platformScopeDeclaredValue": "macOS confirmed; Windows Unknown",
+    "allowedImplementationMode": "Implement macOS AiMaMi 1.1.1 MCP remove behavior from same-platform 逆向分析 owner/callee/DTO/error/side-effect evidence. Windows behavior requires separate Windows IDB evidence.",
+    "dim1": "Accepted (cross-platform via ipc-contracts; argKeys=[name] confirmed from dispatcher)",
+    "dim2": "Accepted (0x10072a660 + 0x1005a0510 decompile ok)",
+    "dim3": "Accepted (depth>=5; FS terminal leaves: write_atomic/sync_data/rename/sync_parent_dir)",
+    "dim4": "Accepted (argKeys, CoreEnvelope<Vec<McpServerSummary>>, 4 error paths, TOML+atomic_write side effect)",
+    "dim5_mac": "Accepted",
+    "dim5_win": "Unknown (separate producer task)",
+    "dim6": "Unknown (C5 implementation side)"
+  },
+  "output_files": [
+    "evidence.md",
+    "manifest.json",
+    "ida/pseudocode/0001_remove_mcp_server_owner_hf1ad73aa378558ad.c",
+    "ida/pseudocode/0002_remove_mcp_server_core_h360cb5a1f65874e9.c",
+    "ida/pseudocode-manifest.jsonl",
+    "call-trees/remove_mcp_server.jsonl",
+    "interfaces/interface.md"
+  ],
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "all_7_categories_excluded": true,
+    "note": "both functions synchronous; decompile succeeded all layers; no async/vtable/HTTP/ICF"
+  },
+  "idb_save_ok": true
+}
