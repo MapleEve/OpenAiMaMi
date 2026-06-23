@@ -1,6 +1,6 @@
 ﻿# rebuild_registry — dim6 ACCEPTANCE MAPPING
 # version: 1.1.1 | platform: macos-arm64 | shard: mac-3/5
-# authored: 2026-06-19 | session: wf-aimami111-dim6-20260619
+# authored: 2026-06-19 | session: <审计会话>
 
 ## gate_tier: readyToImplement (dim1-5 all closed; dim6=acceptance-draft)
 ## Note: dim1 confirmed — rebuildRegistry fn → ne("rebuild_registry") argKeys:[] at col=24516

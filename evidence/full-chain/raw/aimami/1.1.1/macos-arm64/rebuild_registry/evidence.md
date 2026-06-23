@@ -1,5 +1,5 @@
 ﻿# rebuild_registry — Evidence & Delta Analysis
-# session=wf-aimami111-delta-20260617-sweep  machine=<本地机器>
+# session=<审计会话>  machine=<本地机器>
 # delta_class=integrity_recovered  platform=macos-arm64
 # baseline=1.0.9  target=1.1.1
 # date=2026-06-17

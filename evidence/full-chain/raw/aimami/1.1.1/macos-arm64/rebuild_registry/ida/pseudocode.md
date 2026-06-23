@@ -1,5 +1,5 @@
 ﻿# rebuild_registry — 逆向分析 Pseudocode
-# session=wf-aimami111-delta-20260617-sweep  machine=<本地机器>
+# session=<审计会话>  machine=<本地机器>
 # delta_class=integrity_recovered  platform=macos-arm64
 # IDB=<来源位置>/raw/binary/AiMaMi-1.1.1-idb
 

@@ -1,7 +1,7 @@
 ﻿# load_relay_state — Pseudocode (macos-arm64, AiMaMi 1.1.1)
 
 delta_class: integrity_recovered
-session: wf-aimami111-delta-20260617-sweep
+session: <审计会话>
 machine: <本地机器>
 produced: 2026-06-17
 
