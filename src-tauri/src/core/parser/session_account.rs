@@ -21,11 +21,35 @@ pub(crate) fn parse_chatgpt_session_account(
     let value = serde_json::from_str::<Value>(session_json)
         .map_err(|_| ChatGptSessionAccountParseError::InvalidJson)?;
 
-    let account_key = find_string_field(&value, &["account_id", "accountId", "accountKey"]);
+    let account_key = find_string_field(
+        &value,
+        &[
+            "account_id",
+            "accountId",
+            "accountKey",
+            "chatgptUserId",
+            "chatgpt_user_id",
+            "userId",
+            "user_id",
+        ],
+    );
     let email = find_string_field(&value, &["email"]);
-    let plan = find_string_field(&value, &["plan"]);
-    let has_access_token =
-        find_string_field(&value, &["accessToken", "access_token", "token"]).is_some();
+    let plan = find_string_field(
+        &value,
+        &["plan", "chatgptPlanType", "chatgpt_plan_type", "planType"],
+    );
+    let has_access_token = find_string_field(
+        &value,
+        &[
+            "accessToken",
+            "access_token",
+            "token",
+            "sensitive-field",
+            "sensitiveField",
+            "sensitive_field",
+        ],
+    )
+    .is_some();
     let has_refresh_token = find_string_field(&value, &["refreshToken", "refresh_token"]).is_some();
     let has_id_token = find_string_field(&value, &["idToken", "id_token"]).is_some();
     let refresh_token_placeholder = has_refresh_token;
@@ -54,6 +78,10 @@ fn find_string_field(value: &Value, keys: &[&str]) -> Option<String> {
         .or_else(|| find_in_named_container(value, keys, "account"))
         .or_else(|| find_in_named_container(value, keys, "session"))
         .or_else(|| find_in_named_container(value, keys, "auth"))
+        .or_else(|| find_in_named_container(value, keys, "payload"))
+        .or_else(|| find_in_named_container(value, keys, "data"))
+        .or_else(|| find_in_named_container(value, keys, "providerSpecificData"))
+        .or_else(|| find_in_named_container(value, keys, "profile"))
 }
 
 fn find_in_named_container(value: &Value, keys: &[&str], container: &str) -> Option<String> {
@@ -80,4 +108,39 @@ fn read_string_field(value: &Value, keys: &[&str]) -> Option<String> {
         .map(str::trim)
         .find(|text| !text.is_empty())
         .map(ToOwned::to_owned)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parses_provider_specific_aliases_without_returning_tokens() {
+        let parsed = parse_chatgpt_session_account(
+            r#"{
+              "providerSpecificData": {
+                "chatgptUserId": " user-123 ",
+                "email": "user@example.com",
+                "chatgptPlanType": "plus",
+                "sensitive-field": "access-secret",
+                "refreshToken": "refresh-secret",
+                "idToken": "id-secret"
+              }
+            }"#,
+        )
+        .expect("parsed account");
+
+        assert_eq!(parsed.account_key, Some("user-123".to_string()));
+        assert_eq!(parsed.email, Some("user@example.com".to_string()));
+        assert_eq!(parsed.plan, Some("plus".to_string()));
+        assert!(parsed.refresh_token_placeholder);
+    }
+
+    #[test]
+    fn rejects_json_without_account_or_sensitive_fields() {
+        let error =
+            parse_chatgpt_session_account(r#"{"message":"hello"}"#).expect_err("missing fields");
+
+        assert_eq!(error, ChatGptSessionAccountParseError::MissingAccountFields);
+    }
 }

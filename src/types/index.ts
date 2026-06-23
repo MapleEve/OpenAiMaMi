@@ -735,6 +735,7 @@ export interface AccountSessionImportPayload {
   registryAccountCount: number;
   activeAccountKey: string | null;
   refreshTokenPlaceholder: boolean;
+  note: string | null;
 }
 
 export interface AccountExportPayload {

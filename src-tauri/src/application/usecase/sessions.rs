@@ -129,6 +129,7 @@ pub fn import_chatgpt_session_account(
             .as_ref()
             .map(|value| value.refresh_token_placeholder)
             .unwrap_or(false),
+        note: Some(note.to_string()),
     }
 }
 

@@ -59,4 +59,5 @@ pub struct AccountSessionImportPayload {
     pub registry_account_count: i32,
     pub active_account_key: Option<String>,
     pub refresh_token_placeholder: bool,
+    pub note: Option<String>,
 }

@@ -908,6 +908,12 @@ function validateAccountsMockPayloadHandlers() {
     "accountMonitorHandler",
     "accountSwitchHandler",
     "accountSessionImportHandler",
+    "parseSessionImportFixture",
+    "readNestedString",
+    "providerSpecificData",
+    "chatgptUserId",
+    "chatgptPlanType",
+    "note: parsed.note",
     "accountPreviewImportHandler",
     "emptyAccountImportPayload",
   ]);

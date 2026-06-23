@@ -944,19 +944,82 @@ const accountImportHandler: IpcCommandHandler = (context) => {
 
 const accountSessionImportHandler: IpcCommandHandler = (context) => {
   const envelope = createRaceAwareIpcEnvelope(context);
+  const sessionJson = readArgString(context.args, "sessionJson", "");
+  const parsed = parseSessionImportFixture(sessionJson);
   const data: AccountSessionImportPayload = {
     backendStatus: envelope.data.status,
     imported: false,
-    accountKey: null,
-    email: null,
-    plan: null,
+    accountKey: parsed.accountKey,
+    email: parsed.email,
+    plan: parsed.plan,
     snapshotPath: null,
     registryAccountCount: 0,
     activeAccountKey: null,
-    refreshTokenPlaceholder: false,
+    refreshTokenPlaceholder: parsed.refreshTokenPlaceholder,
+    note: parsed.note,
   };
   return { ...envelope, data };
 };
+
+function parseSessionImportFixture(sessionJson: string): Pick<
+  AccountSessionImportPayload,
+  "accountKey" | "email" | "plan" | "refreshTokenPlaceholder" | "note"
+> {
+  try {
+    const value = JSON.parse(sessionJson) as unknown;
+    return {
+      accountKey: readNestedString(value, [
+        "accountKey",
+        "accountId",
+        "account_id",
+        "chatgptUserId",
+        "chatgpt_user_id",
+        "userId",
+        "user_id",
+      ]),
+      email: readNestedString(value, ["email"]),
+      plan: readNestedString(value, [
+        "plan",
+        "chatgptPlanType",
+        "chatgpt_plan_type",
+        "planType",
+      ]),
+      refreshTokenPlaceholder:
+        readNestedString(value, ["refreshToken", "refresh_token"]) !== null,
+      note: null,
+    };
+  } catch {
+    return {
+      accountKey: null,
+      email: null,
+      plan: null,
+      refreshTokenPlaceholder: false,
+      note: null,
+    };
+  }
+}
+
+function readNestedString(value: unknown, keys: string[]): string | null {
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      const nested = readNestedString(item, keys);
+      if (nested !== null) return nested;
+    }
+    return null;
+  }
+  if (!value || typeof value !== "object") return null;
+
+  const record = value as Record<string, unknown>;
+  for (const key of keys) {
+    const raw = record[key];
+    if (typeof raw === "string" && raw.trim()) return raw.trim();
+  }
+  for (const key of ["user", "account", "session", "auth", "payload", "data", "providerSpecificData", "profile"]) {
+    const nested = readNestedString(record[key], keys);
+    if (nested !== null) return nested;
+  }
+  return null;
+}
 
 const accountExportHandler: IpcCommandHandler = (context) => {
   const envelope = createRaceAwareIpcEnvelope(context);

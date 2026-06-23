@@ -423,6 +423,16 @@ for (const field of [
     failures.push(`core/parser/session_account.rs 缺少 ${field} 强类型解析字段`);
   }
 }
+for (const alias of [
+  "chatgptUserId",
+  "chatgptPlanType",
+  "providerSpecificData",
+  "sensitive-field",
+]) {
+  if (!sessionAccountParserContent.includes(alias)) {
+    failures.push(`core/parser/session_account.rs 缺少 ${alias} 只读字段别名`);
+  }
+}
 assertNoPattern("core/parser/session_account.rs parse_chatgpt_session_account", sessionAccountParserBody, [
   /\bstd::fs\b/,
   /\bwrite_string\s*\(/,
@@ -438,7 +448,7 @@ const accountSessionImportPayloadBody = requireStructBody(
   contractsFile,
   "AccountSessionImportPayload",
 );
-for (const field of ["backend_status", "account_key", "email", "plan", "refresh_token_placeholder"]) {
+for (const field of ["backend_status", "account_key", "email", "plan", "refresh_token_placeholder", "note"]) {
   if (!new RegExp(`\\b${field}\\b`).test(accountSessionImportPayloadBody)) {
     failures.push(`contracts/sessions.rs AccountSessionImportPayload 缺少 ${field}`);
   }
@@ -464,7 +474,7 @@ if (!/\bparse_chatgpt_session_account\s*\(\s*&?session_json\s*\)/.test(importCha
 if (!/\bpending_status\s*\(\s*"sessions"\s*,\s*"import_chatgpt_session_account"\s*,/.test(importChatGptSessionAccountBody)) {
   failures.push("application/usecase/sessions.rs import_chatgpt_session_account backend_status 必须保持 pending");
 }
-for (const field of ["account_key", "email", "plan", "refresh_token_placeholder"]) {
+for (const field of ["account_key", "email", "plan", "refresh_token_placeholder", "note"]) {
   if (!new RegExp(`\\b${field}\\b`).test(importChatGptSessionAccountBody)) {
     failures.push(`application/usecase/sessions.rs import_chatgpt_session_account payload 缺少 ${field}`);
   }
