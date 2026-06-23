@@ -168,6 +168,31 @@ pub fn set_codex_router_enabled(
 }
 
 #[tauri::command]
+pub fn set_relay_display_tags(
+    repo: State<'_, Mutex<Repository>>,
+    manager: String,
+    global: Option<String>,
+    woyao: Option<String>,
+) -> Result<CoreEnvelope<()>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::relay::set_relay_display_tags(&repo, manager, global, woyao)
+        .map(with_warning)
+        .map_err(|error| error.to_string())
+}
+
+#[tauri::command]
+pub fn reorder_relay_providers(
+    repo: State<'_, Mutex<Repository>>,
+    manager: String,
+    ordered_ids: Vec<String>,
+) -> Result<CoreEnvelope<()>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::relay::reorder_relay_providers(&repo, manager, ordered_ids)
+        .map(with_warning)
+        .map_err(|error| error.to_string())
+}
+
+#[tauri::command]
 pub fn set_block_official_passthrough(
     repo: State<'_, Mutex<Repository>>,
     blocked: bool,

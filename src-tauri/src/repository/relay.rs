@@ -63,6 +63,10 @@ struct RelayConfigDocument {
     #[serde(default)]
     codex_router_enabled: bool,
     #[serde(default)]
+    display_tag_global: Option<String>,
+    #[serde(default)]
+    display_tag_woyao: Option<String>,
+    #[serde(default)]
     block_official_passthrough: bool,
 }
 
@@ -217,6 +221,27 @@ pub fn record_provider_health(
 pub fn set_router_enabled(repo: &Repository, enabled: bool) -> Result<RelayStateDomain, CoreError> {
     let mut state = load_relay_state(repo)?;
     state.codex_router_enabled = enabled;
+    save_relay_state(repo, &state)?;
+    Ok(state)
+}
+
+pub fn set_relay_display_tags(
+    repo: &Repository,
+    global: Option<Option<String>>,
+    woyao: Option<Option<String>>,
+) -> Result<RelayStateDomain, CoreError> {
+    let mut state = load_relay_state(repo)?;
+    relay_core::apply_display_tag_updates(&mut state, global, woyao);
+    save_relay_state(repo, &state)?;
+    Ok(state)
+}
+
+pub fn reorder_relay_providers(
+    repo: &Repository,
+    ordered_ids: &[String],
+) -> Result<RelayStateDomain, CoreError> {
+    let mut state = load_relay_state(repo)?;
+    relay_core::reorder_relay_providers(&mut state, ordered_ids)?;
     save_relay_state(repo, &state)?;
     Ok(state)
 }
@@ -379,6 +404,8 @@ impl RelayConfigDocument {
             active_by_ide: state.active_by_ide.clone(),
             proxy: state.proxy.clone(),
             codex_router_enabled: state.codex_router_enabled,
+            display_tag_global: state.display_tag_global.clone(),
+            display_tag_woyao: state.display_tag_woyao.clone(),
             block_official_passthrough: state.block_official_passthrough,
         }
     }
@@ -390,6 +417,8 @@ impl RelayConfigDocument {
             active_by_ide: normalize_active_by_ide(self.active_by_ide),
             proxy: self.proxy,
             codex_router_enabled: self.codex_router_enabled,
+            display_tag_global: self.display_tag_global,
+            display_tag_woyao: self.display_tag_woyao,
             block_official_passthrough: self.block_official_passthrough,
             source_path,
         }
@@ -403,6 +432,8 @@ fn empty_state(source_path: String) -> RelayStateDomain {
         active_by_ide: normalize_active_by_ide(HashMap::new()),
         proxy: RelayProxyDomain::default(),
         codex_router_enabled: false,
+        display_tag_global: None,
+        display_tag_woyao: None,
         block_official_passthrough: false,
         source_path,
     }
@@ -484,5 +515,56 @@ mod tests {
         assert_eq!(entries[0].event, "response");
         assert_eq!(entries[1].event, "blocked");
         assert!(entries[1].blocked);
+    }
+
+    fn provider_fixture(id: &str) -> RelayProviderDomain {
+        RelayProviderDomain {
+            id: id.to_string(),
+            ide: RELAY_DEFAULT_IDE.to_string(),
+            name: format!("Provider {id}"),
+            base_url: "https://relay.example/v1".to_string(),
+            api_key_stored: false,
+            model: "model-a".to_string(),
+            wire_api: "openai-chat".to_string(),
+            network: "system".to_string(),
+            health_score: None,
+            latency_ms: None,
+            last_tested_at: None,
+            last_error: None,
+            models_sample: Vec::new(),
+        }
+    }
+
+    #[test]
+    fn relay_display_tags_persist_to_config_document() {
+        let repo = Repository::with_temp_file_system("relay-display-tags-persist");
+
+        set_relay_display_tags(&repo, Some(Some("Global Tag".to_string())), Some(None))
+            .expect("save display tags");
+
+        let state = load_relay_state(&repo).expect("load display tags");
+        assert_eq!(state.display_tag_global, Some("Global Tag".to_string()));
+        assert_eq!(state.display_tag_woyao, None);
+    }
+
+    #[test]
+    fn reorder_relay_providers_persists_order() {
+        let repo = Repository::with_temp_file_system("relay-reorder-persist");
+        upsert_provider(&repo, provider_fixture("a")).expect("save a");
+        upsert_provider(&repo, provider_fixture("b")).expect("save b");
+        upsert_provider(&repo, provider_fixture("c")).expect("save c");
+
+        reorder_relay_providers(&repo, &["c".to_string(), "a".to_string(), "b".to_string()])
+            .expect("persist reorder");
+
+        let state = load_relay_state(&repo).expect("load reordered state");
+        assert_eq!(
+            state
+                .providers
+                .iter()
+                .map(|provider| provider.id.as_str())
+                .collect::<Vec<_>>(),
+            vec!["c", "a", "b"]
+        );
     }
 }

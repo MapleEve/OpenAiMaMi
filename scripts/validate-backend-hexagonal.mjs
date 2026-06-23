@@ -82,7 +82,11 @@ const sourceSidecarDaemonCommands = [
   "start_usage_refresh_watcher",
   "update_usage_refresh_schedule",
 ];
-const versionDeltaRelayCommands = ["parse_aimami_deeplink"];
+const versionDeltaRelayCommands = [
+  "parse_aimami_deeplink",
+  "set_relay_display_tags",
+  "reorder_relay_providers",
+];
 const expectedNonVoiceIpcCommandCount =
   98 + sourceSidecarDaemonCommands.length + versionDeltaRelayCommands.length;
 
@@ -120,6 +124,8 @@ const ipcCommandModuleOverrides = new Map([
   ["hotspot_ready", "hotspot"],
   ["get_image_compat", "relay"],
   ["set_image_compat", "relay"],
+  ["set_relay_display_tags", "relay"],
+  ["reorder_relay_providers", "relay"],
   ["get_mystery_unlock_grants", "mystery"],
   ["merge_mystery_unlock_grants", "mystery"],
 ]);

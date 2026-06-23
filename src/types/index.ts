@@ -874,6 +874,8 @@ export interface RelayStatePayload {
   proxy: RelayProxyPayload;
   codexRouterEnabled: boolean;
   blockOfficialPassthrough: boolean;
+  displayTagGlobal: string | null;
+  displayTagWoyao: string | null;
   lastCodexRoute: string | null;
   enabled?: boolean;
   activeProviderId?: string | null;

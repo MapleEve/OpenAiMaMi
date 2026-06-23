@@ -52,6 +52,7 @@ export type RelayImportDialogInput = {
 export type RelayRouterToggleProgressHandler = (payload: unknown) => void;
 
 const CODEX_ROUTER_TOGGLE_PROGRESS_EVENT = "codex-router-toggle-progress";
+const DEFAULT_RELAY_MANAGER = "codex";
 type RelayProviderDraftArgs = Record<string, IpcArgValue>;
 
 function subscribeRouterToggleProgress(
@@ -131,6 +132,21 @@ export const relayService = {
     invokeIpc<CoreEnvelope<RelayRouterTogglePayload>>("set_codex_router_enabled", {
       enabled,
       relaunch,
+    }),
+  setDisplayTags: (
+    global?: string | null,
+    woyao?: string | null,
+    manager = DEFAULT_RELAY_MANAGER,
+  ) =>
+    invokeIpc<CoreEnvelope<null>>("set_relay_display_tags", {
+      manager,
+      global,
+      woyao,
+    }),
+  reorderProviders: (orderedIds: string[], manager = DEFAULT_RELAY_MANAGER) =>
+    invokeIpc<CoreEnvelope<null>>("reorder_relay_providers", {
+      manager,
+      orderedIds,
     }),
   restartCodexApp: () => systemService.restartCodex(),
   setBlockOfficialPassthrough: (blocked: boolean) =>

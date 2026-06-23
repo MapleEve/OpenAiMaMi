@@ -92,6 +92,8 @@ pub struct RelayStateDomain {
     pub active_by_ide: HashMap<String, Vec<String>>,
     pub proxy: RelayProxyDomain,
     pub codex_router_enabled: bool,
+    pub display_tag_global: Option<String>,
+    pub display_tag_woyao: Option<String>,
     pub block_official_passthrough: bool,
     pub source_path: String,
 }

@@ -602,6 +602,19 @@ export const IPC_COMMAND_DEFINITIONS = [
   },
   {
     "domain": "relay",
+    "command": "reorder_relay_providers",
+    "wrapperNames": [
+      "reorderProviders"
+    ],
+    "argKeys": [
+      "manager",
+      "orderedIds"
+    ],
+    "source": "minified",
+    "tier": "P1"
+  },
+  {
+    "domain": "relay",
     "command": "run_codex_router_diagnostics",
     "wrapperNames": [],
     "argKeys": [],
@@ -629,6 +642,20 @@ export const IPC_COMMAND_DEFINITIONS = [
     "argKeys": [
       "enabled",
       "relaunch"
+    ],
+    "source": "minified",
+    "tier": "P1"
+  },
+  {
+    "domain": "relay",
+    "command": "set_relay_display_tags",
+    "wrapperNames": [
+      "setDisplayTags"
+    ],
+    "argKeys": [
+      "manager",
+      "global",
+      "woyao"
     ],
     "source": "minified",
     "tier": "P1"

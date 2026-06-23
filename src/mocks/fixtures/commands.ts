@@ -2000,6 +2000,16 @@ function relayProxyFromStatus(
   };
 }
 
+const relayMockState = {
+  providers: [] as RelayProviderPayload[],
+  activeByIde: { codex: [] } as RelayStatePayload["activeByIde"],
+  codexRouterEnabled: false,
+  blockOfficialPassthrough: false,
+  displayTagGlobal: null as string | null,
+  displayTagWoyao: null as string | null,
+  lastCodexRoute: null as string | null,
+};
+
 function relayStateFromStatus(
   backendStatus: RelayStatePayload["backendStatus"],
   overrides: Partial<RelayStatePayload> = {},
@@ -2008,18 +2018,65 @@ function relayStateFromStatus(
   return {
     backendStatus,
     schemaVersion: 4,
-    providers: [],
-    activeByIde: { codex: [] },
+    providers: relayMockState.providers.map(cloneRelayProvider),
+    activeByIde: cloneRelayActiveByIde(relayMockState.activeByIde),
     proxy,
-    codexRouterEnabled: false,
-    blockOfficialPassthrough: false,
-    lastCodexRoute: null,
-    enabled: false,
-    activeProviderId: null,
+    codexRouterEnabled: relayMockState.codexRouterEnabled,
+    blockOfficialPassthrough: relayMockState.blockOfficialPassthrough,
+    displayTagGlobal: relayMockState.displayTagGlobal,
+    displayTagWoyao: relayMockState.displayTagWoyao,
+    lastCodexRoute: relayMockState.lastCodexRoute,
+    enabled: relayMockState.codexRouterEnabled,
+    activeProviderId: relayMockState.activeByIde.codex?.[0] ?? null,
     proxyStatus: proxy,
     sourcePath: "",
     ...overrides,
   };
+}
+
+function cloneRelayActiveByIde(activeByIde: RelayStatePayload["activeByIde"]) {
+  return Object.fromEntries(
+    Object.entries(activeByIde).map(([ide, providerIds]) => [
+      ide,
+      [...providerIds],
+    ]),
+  );
+}
+
+function cloneRelayProvider(provider: RelayProviderPayload): RelayProviderPayload {
+  return {
+    ...provider,
+    extraHeaders: cloneRelayExtraHeaders(provider.extraHeaders),
+    modelsSample: provider.modelsSample ? [...provider.modelsSample] : undefined,
+  };
+}
+
+function cloneRelayExtraHeaders(extraHeaders: RelayExtraHeaders): RelayExtraHeaders {
+  if (!extraHeaders || typeof extraHeaders === "string") return extraHeaders;
+  return { ...extraHeaders };
+}
+
+function upsertRelayMockProvider(provider: RelayProviderPayload) {
+  const index = relayMockState.providers.findIndex((item) => item.id === provider.id);
+  const nextProvider = cloneRelayProvider(provider);
+  if (index >= 0) {
+    relayMockState.providers[index] = nextProvider;
+    return nextProvider;
+  }
+  relayMockState.providers = [...relayMockState.providers, nextProvider];
+  return nextProvider;
+}
+
+function removeRelayMockProvider(providerId: string) {
+  relayMockState.providers = relayMockState.providers.filter(
+    (provider) => provider.id !== providerId,
+  );
+  relayMockState.activeByIde = Object.fromEntries(
+    Object.entries(relayMockState.activeByIde).map(([ide, providerIds]) => [
+      ide,
+      providerIds.filter((id) => id !== providerId),
+    ]),
+  );
 }
 
 function readArgRecord(args: IpcArgs | undefined, key: string) {
@@ -2093,9 +2150,27 @@ const loadRelayStateHandler: IpcCommandHandler = (context) => {
 
 const relayProviderHandler: IpcCommandHandler = (context) => {
   const envelope = createRaceAwareIpcEnvelope(context);
+  const provider = relayProviderFromArgs(context);
+  let data = provider;
+
+  if (context.command === "upsert_relay_provider") {
+    data = upsertRelayMockProvider(provider);
+  }
+
+  if (context.command === "set_relay_provider_network") {
+    const providerId = readArgString(context.args, "providerId", provider.id);
+    const network = readArgString(context.args, "network", provider.network);
+    const existing = relayMockState.providers.find((item) => item.id === providerId);
+    data = upsertRelayMockProvider({
+      ...(existing ?? provider),
+      id: providerId,
+      network,
+    });
+  }
+
   return {
     ...envelope,
-    data: relayProviderFromArgs(context),
+    data,
   };
 };
 
@@ -2103,16 +2178,31 @@ const relayStateMutationHandler: IpcCommandHandler = (context) => {
   const envelope = createRaceAwareIpcEnvelope(context);
   const providerId = readArgString(context.args, "providerId", "");
   const ide = readArgString(context.args, "ide", "codex");
-  const activeByIde =
-    context.command === "activate_relay_provider" && providerId
-      ? { [ide]: [providerId] }
-      : { [ide]: [] };
+
+  if (context.command === "delete_relay_provider" && providerId) {
+    removeRelayMockProvider(providerId);
+  }
+
+  if (context.command === "activate_relay_provider" && providerId) {
+    relayMockState.activeByIde = {
+      ...relayMockState.activeByIde,
+      [ide]: [providerId],
+    };
+    relayMockState.lastCodexRoute = providerId;
+  }
+
+  if (context.command === "deactivate_relay_provider") {
+    relayMockState.activeByIde = {
+      ...relayMockState.activeByIde,
+      [ide]: [],
+    };
+    relayMockState.lastCodexRoute = null;
+  }
+
   return {
     ...envelope,
     data: relayStateFromStatus(envelope.data.status, {
-      activeByIde,
-      activeProviderId: activeByIde[ide][0] ?? null,
-      lastCodexRoute: activeByIde[ide][0] ?? null,
+      activeProviderId: relayMockState.activeByIde[ide]?.[0] ?? null,
     }),
   };
 };
@@ -2153,13 +2243,17 @@ const relayModelsHandler: IpcCommandHandler = (context) => {
 
 const relayActiveHandler: IpcCommandHandler = (context) => {
   const envelope = createRaceAwareIpcEnvelope(context);
+  const activeProviderId = relayMockState.activeByIde.codex?.[0] ?? null;
+  const activeProvider = relayMockState.providers.find(
+    (provider) => provider.id === activeProviderId,
+  );
   return {
     ...envelope,
     data: {
       backendStatus: envelope.data.status,
-      enabled: false,
-      activeProvider: null,
-      activeProviderId: null,
+      enabled: Boolean(activeProviderId),
+      activeProvider: activeProvider?.name ?? activeProviderId,
+      activeProviderId,
       ide: "codex",
     },
   };
@@ -2176,12 +2270,10 @@ const relayProxyHandler: IpcCommandHandler = (context) => {
 const relayRouterToggleHandler: IpcCommandHandler = (context) => {
   const envelope = createRaceAwareIpcEnvelope(context);
   const enabled = context.args?.enabled === true;
+  relayMockState.codexRouterEnabled = enabled;
   const data: RelayRouterTogglePayload = {
     backendStatus: envelope.data.status,
-    state: relayStateFromStatus(envelope.data.status, {
-      codexRouterEnabled: enabled,
-      enabled,
-    }),
+    state: relayStateFromStatus(envelope.data.status),
     migration: {
       action: enabled ? "preserve" : "none",
       migratedCount: 0,
@@ -2194,6 +2286,114 @@ const relayRouterToggleHandler: IpcCommandHandler = (context) => {
     codexLaunchError: null,
   };
   return { ...envelope, data };
+};
+
+function readArgNullableString(args: IpcArgs | undefined, key: string) {
+  if (!args || !(key in args)) return undefined;
+  const value = args?.[key];
+  if (value === null || value === undefined) return undefined;
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  return trimmed ? trimmed : null;
+}
+
+function readRelayOrderedIds(args: IpcArgs | undefined) {
+  return readArgStringArray(args, "orderedIds").map((value) => value.trim());
+}
+
+function relayContractError(
+  context: Parameters<IpcCommandHandler>[0],
+  code: string,
+  message: string,
+): CoreEnvelope<null> {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  return {
+    ...envelope,
+    success: false,
+    code,
+    message,
+    data: null,
+  };
+}
+
+function validateRelayOrderedIds(orderedIds: string[]) {
+  if (orderedIds.length !== relayMockState.providers.length) {
+    return {
+      code: "RELAY_ORDER_LENGTH_MISMATCH",
+      message: mockCopy("relay.mock.reorder.lengthMismatch"),
+    };
+  }
+
+  if (new Set(orderedIds).size !== orderedIds.length) {
+    return {
+      code: "RELAY_ORDER_DUPLICATE_ID",
+      message: mockCopy("relay.mock.reorder.duplicateId"),
+    };
+  }
+
+  const providerIds = new Set(relayMockState.providers.map((provider) => provider.id));
+  if (orderedIds.some((providerId) => !providerIds.has(providerId))) {
+    return {
+      code: "RELAY_ORDER_UNKNOWN_ID",
+      message: mockCopy("relay.mock.reorder.unknownId"),
+    };
+  }
+
+  return null;
+}
+
+const relayDisplayTagsHandler: IpcCommandHandler = (context) => {
+  const manager = readArgString(context.args, "manager", "");
+  if (!manager) {
+    return relayContractError(
+      context,
+      "RELAY_MANAGER_REQUIRED",
+      mockCopy("relay.mock.managerRequired"),
+    );
+  }
+
+  const envelope = createRaceAwareIpcEnvelope(context);
+  const global = readArgNullableString(context.args, "global");
+  const woyao = readArgNullableString(context.args, "woyao");
+  if (global !== undefined) relayMockState.displayTagGlobal = global;
+  if (woyao !== undefined) relayMockState.displayTagWoyao = woyao;
+  return {
+    ...envelope,
+    data: null,
+  };
+};
+
+const relayReorderProvidersHandler: IpcCommandHandler = (context) => {
+  const manager = readArgString(context.args, "manager", "");
+  if (!manager) {
+    return relayContractError(
+      context,
+      "RELAY_MANAGER_REQUIRED",
+      mockCopy("relay.mock.managerRequired"),
+    );
+  }
+
+  const orderedIds = readRelayOrderedIds(context.args);
+  const validationError = validateRelayOrderedIds(orderedIds);
+  if (validationError) {
+    return relayContractError(
+      context,
+      validationError.code,
+      validationError.message,
+    );
+  }
+
+  const envelope = createRaceAwareIpcEnvelope(context);
+  const providerById = new Map(
+    relayMockState.providers.map((provider) => [provider.id, provider]),
+  );
+  relayMockState.providers = orderedIds.map((providerId) =>
+    cloneRelayProvider(providerById.get(providerId) as RelayProviderPayload),
+  );
+  return {
+    ...envelope,
+    data: null,
+  };
 };
 
 const relayExportHandler: IpcCommandHandler = (context) => {
@@ -2620,9 +2820,11 @@ const relayCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> =
   import_relay_config: relayImportHandler,
   load_relay_state: loadRelayStateHandler,
   parse_aimami_deeplink: relayDeeplinkImportHandler,
+  reorder_relay_providers: relayReorderProvidersHandler,
   run_codex_router_diagnostics: relayDiagnosticHandler,
   set_block_official_passthrough: writeBooleanArgHandler,
   set_codex_router_enabled: relayRouterToggleHandler,
+  set_relay_display_tags: relayDisplayTagsHandler,
   set_relay_provider_network: relayProviderHandler,
   test_relay_draft: relayTestHandler,
   test_relay_provider: relayTestHandler,

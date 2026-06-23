@@ -79,7 +79,11 @@ const sourceSidecarFiles = {
   ),
 };
 
-const implementedVersionDeltaCommands = ["parse_aimami_deeplink"];
+const implementedVersionDeltaCommands = [
+  "parse_aimami_deeplink",
+  "reorder_relay_providers",
+  "set_relay_display_tags",
+];
 
 const ipcContractPath = join(repoRoot, "src", "contracts", "ipc", "commands.ts");
 const servicesRoot = join(repoRoot, "src", "services");

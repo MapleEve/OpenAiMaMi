@@ -144,6 +144,8 @@ pub(super) fn state_payload_from_domain(
         active_by_ide: state.active_by_ide,
         proxy: proxy.clone(),
         codex_router_enabled: state.codex_router_enabled,
+        display_tag_global: state.display_tag_global,
+        display_tag_woyao: state.display_tag_woyao,
         block_official_passthrough: state.block_official_passthrough,
         last_codex_route: None,
         enabled: active_provider_id.is_some(),
@@ -570,6 +572,8 @@ fn relay_repository_effect(command: &str) -> Option<BackendEffect> {
         | "deactivate_relay_provider"
         | "set_relay_provider_network"
         | "set_codex_router_enabled"
+        | "set_relay_display_tags"
+        | "reorder_relay_providers"
         | "set_block_official_passthrough"
         | "test_relay_provider"
         | "export_relay_config"

@@ -544,6 +544,7 @@
     "title": "Relay Models",
     "description": "Configure relay models for Codex; switch freely from the menu when smart router is on.",
     "mock": {
+      "managerRequired": "Relay manager is required",
       "audit": {
         "ok": "Normal",
         "officialPassthroughBlocked": "Official passthrough blocked"
@@ -555,6 +556,11 @@
       "deeplink": {
         "invalid": "Invalid AiMaMi import link.",
         "parsed": "AiMaMi import link parsed without exposing the secret."
+      },
+      "reorder": {
+        "lengthMismatch": "Relay ordering count mismatch",
+        "duplicateId": "Relay ordering contains a duplicate ID",
+        "unknownId": "Relay ordering contains an unknown ID"
       },
       "diagnostic": {
         "missingRouterBlock": {

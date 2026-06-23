@@ -712,9 +712,11 @@ function validateRelayMockPayloadHandlers() {
     "commands.ts",
   );
   const ipcCommandsPath = path.join(repoRoot, "src", "contracts", "ipc", "commands.ts");
+  const relayServicePath = path.join(repoRoot, "src", "services", "relay", "index.ts");
   const typesPath = path.join(repoRoot, "src", "types", "index.ts");
   const commandFixtureText = readRequired(commandFixturePath);
   const ipcCommandsText = readRequired(ipcCommandsPath);
+  const relayServiceText = readRequired(relayServicePath);
   const typesText = readRequired(typesPath);
   const relayCommands = [
     ...ipcCommandsText.matchAll(
@@ -754,6 +756,40 @@ function validateRelayMockPayloadHandlers() {
     "diagnosticBoundary: \"relay.repository.diagnostic\"",
     "repositoryState: diagnosticSkeletonState()",
     "platformState: diagnosticSkeletonState()",
+    "const relayMockState",
+    "displayTagGlobal: relayMockState.displayTagGlobal",
+    "displayTagWoyao: relayMockState.displayTagWoyao",
+    "relayDisplayTagsHandler",
+    "relayReorderProvidersHandler",
+    "set_relay_display_tags: relayDisplayTagsHandler",
+    "reorder_relay_providers: relayReorderProvidersHandler",
+    "RELAY_ORDER_LENGTH_MISMATCH",
+    "RELAY_ORDER_DUPLICATE_ID",
+    "RELAY_ORDER_UNKNOWN_ID",
+    "relayMockState.providers = orderedIds.map",
+    "data: null",
+  ]);
+
+  assertIncludes("src/contracts/ipc/commands.ts", ipcCommandsText, [
+    '"command": "set_relay_display_tags"',
+    '"command": "reorder_relay_providers"',
+    '"manager"',
+    '"global"',
+    '"woyao"',
+    '"orderedIds"',
+    '"setDisplayTags"',
+    '"reorderProviders"',
+  ]);
+
+  assertIncludes("src/services/relay/index.ts", relayServiceText, [
+    'setDisplayTags: (',
+    'invokeIpc<CoreEnvelope<null>>("set_relay_display_tags", {',
+    "manager,",
+    "global,",
+    "woyao,",
+    'reorderProviders: (orderedIds: string[], manager = DEFAULT_RELAY_MANAGER) =>',
+    'invokeIpc<CoreEnvelope<null>>("reorder_relay_providers", {',
+    "orderedIds,",
   ]);
 
   assertIncludes("src/types/index.ts", typesText, [
@@ -768,7 +804,17 @@ function validateRelayMockPayloadHandlers() {
     "config_toml_has_catalog?: boolean;",
     "repositoryState?: DiagnosticSkeletonStatePayload;",
     "platformState?: DiagnosticSkeletonStatePayload;",
+    "displayTagGlobal: string | null;",
+    "displayTagWoyao: string | null;",
   ]);
+
+  for (const [command, handler] of [
+    ["set_relay_display_tags", "relayDisplayTagsHandler"],
+    ["reorder_relay_providers", "relayReorderProvidersHandler"],
+  ]) {
+    assertCommandHandler(commandFixtureText, command, handler);
+    assertNotGenericHandler(commandFixtureText, command);
+  }
 
   if (commandFixtureText.includes("input.extraHeaders as string | Record<string, string>")) {
     failures.push("src/mocks/fixtures/commands.ts relay mock 不得用 inline headers union 回退 typed 合同");

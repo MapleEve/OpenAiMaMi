@@ -113,6 +113,8 @@ mod tests {
                 )]),
                 proxy: RelayProxyDomain::default(),
                 codex_router_enabled: false,
+                display_tag_global: None,
+                display_tag_woyao: None,
                 block_official_passthrough: false,
                 source_path: repo
                     .paths()

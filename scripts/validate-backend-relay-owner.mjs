@@ -305,6 +305,18 @@ assertContainsRaw(
   /\bpub\s+fn\s+parse_aimami_deeplink\s*\([\s\S]*\busecase::relay::parse_aimami_deeplink\s*\(\s*&repo\s*,\s*url\s*,?\s*\)/,
   "parse_aimami_deeplink 必须归属 relay command 并只调用 relay usecase",
 );
+assertContainsRaw(
+  files.commands,
+  commandContent,
+  /\bpub\s+fn\s+set_relay_display_tags\s*\([\s\S]*\bmanager:\s*String[\s\S]*\bglobal:\s*Option<String>[\s\S]*\bwoyao:\s*Option<String>[\s\S]*\busecase::relay::set_relay_display_tags\s*\(\s*&repo\s*,\s*manager\s*,\s*global\s*,\s*woyao\s*,?\s*\)/,
+  "set_relay_display_tags 必须归属 relay command 并只调用 relay usecase",
+);
+assertContainsRaw(
+  files.commands,
+  commandContent,
+  /\bpub\s+fn\s+reorder_relay_providers\s*\([\s\S]*\bmanager:\s*String[\s\S]*\bordered_ids:\s*Vec<String>[\s\S]*\busecase::relay::reorder_relay_providers\s*\(\s*&repo\s*,\s*manager\s*,\s*ordered_ids\s*,?\s*\)/,
+  "reorder_relay_providers 必须归属 relay command 并只调用 relay usecase",
+);
 
 const usecaseNoPatternRules = [
   {
@@ -413,10 +425,28 @@ assertContains(
   "parse_aimami_deeplink usecase 必须只调 core parser 并返回脱敏成功/失败 payload",
 );
 assertContains(
+  files.usecase,
+  usecaseContent,
+  /\bpub\s+fn\s+set_relay_display_tags\s*\([\s\S]*\)\s*->\s*Result<\(\(\),\s*CoreWarning\),\s*CoreError>[\s\S]*relay_repository::set_relay_display_tags\s*\([\s\S]*relay_core::normalize_display_tag_update\s*\(\s*global\s*\)[\s\S]*relay_core::normalize_display_tag_update\s*\(\s*woyao\s*\)[\s\S]*Ok\s*\(\s*\(\s*\(\s*\)\s*,\s*repository_warning\s*\(\s*command\s*\)\s*\)\s*\)/,
+  "set_relay_display_tags usecase 必须在 core 归一化后委托 repository 写入并按证据返回 unit payload",
+);
+assertContains(
+  files.usecase,
+  usecaseContent,
+  /\bpub\s+fn\s+reorder_relay_providers\s*\([\s\S]*ordered_ids:\s*Vec<String>[\s\S]*\)\s*->\s*Result<\(\(\),\s*CoreWarning\),\s*CoreError>[\s\S]*relay_repository::reorder_relay_providers\s*\(\s*repo\s*,\s*&ordered_ids\s*\)[\s\S]*Ok\s*\(\s*\(\s*\(\s*\)\s*,\s*repository_warning\s*\(\s*command\s*\)\s*\)\s*\)/,
+  "reorder_relay_providers usecase 必须委托 repository/core 校验写入并按证据返回 unit payload",
+);
+assertContains(
   files.usecasePayload,
   usecasePayloadContent,
   /\bfn\s+relay_repository_effect\s*\([\s\S]*"parse_aimami_deeplink"\s*=>\s*BackendEffect::NoOp/,
   "parse_aimami_deeplink 必须标记为 NoOp，不得写 repository 或调用 platform",
+);
+assertContains(
+  files.usecasePayload,
+  usecasePayloadContent,
+  /\bfn\s+relay_repository_effect\s*\([\s\S]*"set_relay_display_tags"[\s\S]*"reorder_relay_providers"[\s\S]*=>\s*BackendEffect::RepositoryWrite/,
+  "set_relay_display_tags / reorder_relay_providers 必须标记为 RepositoryWrite",
 );
 assertContains(
   files.usecasePayload,
@@ -712,6 +742,18 @@ assertContains(
 assertContains(
   files.repository,
   repositoryContent,
+  /\bpub\s+fn\s+set_relay_display_tags\s*\([\s\S]*load_relay_state\s*\(\s*repo\s*\)[\s\S]*relay_core::apply_display_tag_updates\s*\([\s\S]*save_relay_state\s*\(\s*repo\s*,\s*&state\s*\)/,
+  "repository 必须 owning set_relay_display_tags 文件状态读写并把归一化修改委托给 core",
+);
+assertContains(
+  files.repository,
+  repositoryContent,
+  /\bpub\s+fn\s+reorder_relay_providers\s*\([\s\S]*load_relay_state\s*\(\s*repo\s*\)[\s\S]*relay_core::reorder_relay_providers\s*\(\s*&mut state\s*,\s*ordered_ids\s*\)[\s\S]*save_relay_state\s*\(\s*repo\s*,\s*&state\s*\)/,
+  "repository 必须 owning reorder_relay_providers 文件状态读写并把校验重排委托给 core",
+);
+assertContains(
+  files.repository,
+  repositoryContent,
   /\bconfig_toml_syntax_valid:\s*analysis\.config_toml_syntax_valid[\s\S]*\bconfig_profile_conflict:\s*analysis\.config_profile_conflict/,
   "repository diagnostic skeleton 必须只搬运 core 产生的 config_toml_syntax/config_profile_conflict 事实",
 );
@@ -786,6 +828,18 @@ assertContains(
   coreContent,
   /\bpub\s+fn\s+parse_aimami_deeplink\s*\([\s\S]*required_deeplink_field\(&query,\s*"provider"\)[\s\S]*required_deeplink_field\(&query,\s*"name"\)[\s\S]*required_deeplink_field\(&query,\s*"endpoint"\)[\s\S]*required_deeplink_field\(&query,\s*"apiKey"\)[\s\S]*required_deeplink_field\(&query,\s*"model"\)/,
   "core 必须 owning aimami://v1/import 字段校验",
+);
+assertContains(
+  files.core,
+  coreContent,
+  /\bpub\s+fn\s+normalize_display_tag_update\s*\([\s\S]*\bfn\s+normalize_display_tag\s*\([\s\S]*trim\s*\(\s*\)[\s\S]*is_empty\s*\(\s*\)/,
+  "core 必须 owning relay display tag trim/empty 归一化",
+);
+assertContains(
+  files.core,
+  coreContent,
+  /\bpub\s+fn\s+reorder_relay_providers\s*\([\s\S]*ordered_ids\.len\(\)\s*!=\s*state\.providers\.len\(\)[\s\S]*重复 id[\s\S]*未知 id[\s\S]*state\.providers\s*=\s*reordered/,
+  "core 必须 owning reorder_relay_providers 长度、重复、未知 id 校验和重排",
 );
 assertContains(
   files.core,
@@ -909,6 +963,18 @@ assertContains(
   /\bcommands::relay::parse_aimami_deeplink\b/,
   "Tauri 注册表必须注册 parse_aimami_deeplink relay command",
 );
+assertContains(
+  files.tauriLib,
+  tauriLibContent,
+  /\bcommands::relay::set_relay_display_tags\b/,
+  "Tauri 注册表必须注册 set_relay_display_tags relay command",
+);
+assertContains(
+  files.tauriLib,
+  tauriLibContent,
+  /\bcommands::relay::reorder_relay_providers\b/,
+  "Tauri 注册表必须注册 reorder_relay_providers relay command",
+);
 assertNoPatterns(files.tauriLib, tauriLibContent, [
   {
     label: "system image compat registration",
@@ -929,12 +995,30 @@ assertContains(
   /\["set_image_compat",\s*"relay"\]/,
   "后端六边形 IPC 映射必须把 set_image_compat 归属 relay",
 );
+assertContains(
+  files.hexagonalValidator,
+  hexagonalValidatorContent,
+  /\["set_relay_display_tags",\s*"relay"\]/,
+  "后端六边形 IPC 映射必须把 set_relay_display_tags 归属 relay",
+);
+assertContains(
+  files.hexagonalValidator,
+  hexagonalValidatorContent,
+  /\["reorder_relay_providers",\s*"relay"\]/,
+  "后端六边形 IPC 映射必须把 reorder_relay_providers 归属 relay",
+);
 
 assertContains(
   files.contracts,
   contractsContent,
   /\bpub\s+struct\s+RelayDeeplinkImportPayload\s*\{[\s\S]*pub\s+valid:\s*bool[\s\S]*pub\s+api_key_present:\s*bool[\s\S]*pub\s+message:\s*Option<String>/,
   "Rust relay contract 必须定义脱敏 deeplink payload",
+);
+assertContains(
+  files.contracts,
+  contractsContent,
+  /\bpub\s+struct\s+RelayStatePayload\s*\{[\s\S]*pub\s+display_tag_global:\s*Option<String>[\s\S]*pub\s+display_tag_woyao:\s*Option<String>/,
+  "Rust relay state contract 必须输出 displayTagGlobal / displayTagWoyao",
 );
 assertContains(
   files.tsTypes,

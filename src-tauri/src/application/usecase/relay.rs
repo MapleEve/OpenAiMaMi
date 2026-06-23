@@ -205,6 +205,33 @@ pub fn set_codex_router_enabled(
     )
 }
 
+pub fn set_relay_display_tags(
+    repo: &Repository,
+    _manager: String,
+    global: Option<String>,
+    woyao: Option<String>,
+) -> Result<((), CoreWarning), CoreError> {
+    let command = "set_relay_display_tags";
+    relay_repository::set_relay_display_tags(
+        repo,
+        relay_core::normalize_display_tag_update(global),
+        relay_core::normalize_display_tag_update(woyao),
+    )?;
+
+    Ok(((), repository_warning(command)))
+}
+
+pub fn reorder_relay_providers(
+    repo: &Repository,
+    _manager: String,
+    ordered_ids: Vec<String>,
+) -> Result<((), CoreWarning), CoreError> {
+    let command = "reorder_relay_providers";
+    relay_repository::reorder_relay_providers(repo, &ordered_ids)?;
+
+    Ok(((), repository_warning(command)))
+}
+
 pub fn export_relay_config(
     repo: &Repository,
     file_path: String,

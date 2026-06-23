@@ -8,7 +8,7 @@ use crate::core::{
     },
 };
 use serde_json::Value;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 mod request_builder;
 mod router_config;
@@ -40,6 +40,77 @@ pub fn relay_operation_key(
     subject: Option<String>,
 ) -> RelayOperationKey {
     RelayOperationKey::new(kind, command, subject)
+}
+
+pub fn normalize_display_tag_update(value: Option<String>) -> Option<Option<String>> {
+    value.map(|tag| normalize_display_tag(&tag))
+}
+
+pub fn apply_display_tag_updates(
+    state: &mut RelayStateDomain,
+    global: Option<Option<String>>,
+    woyao: Option<Option<String>>,
+) {
+    if let Some(global) = global {
+        state.display_tag_global = global;
+    }
+    if let Some(woyao) = woyao {
+        state.display_tag_woyao = woyao;
+    }
+}
+
+pub fn reorder_relay_providers(
+    state: &mut RelayStateDomain,
+    ordered_ids: &[String],
+) -> Result<(), CoreError> {
+    if ordered_ids.len() != state.providers.len() {
+        return Err(CoreError::InvalidInput(
+            "relay 供应商重排数量不一致".to_string(),
+        ));
+    }
+
+    let mut seen = HashSet::new();
+    for id in ordered_ids {
+        if !seen.insert(id.as_str()) {
+            return Err(CoreError::InvalidInput(
+                "relay 供应商重排包含重复 id".to_string(),
+            ));
+        }
+    }
+
+    let provider_ids = state
+        .providers
+        .iter()
+        .map(|provider| provider.id.as_str())
+        .collect::<HashSet<_>>();
+    for id in ordered_ids {
+        if !provider_ids.contains(id.as_str()) {
+            return Err(CoreError::InvalidInput(format!(
+                "relay 供应商重排包含未知 id：{id}"
+            )));
+        }
+    }
+
+    let mut remaining = std::mem::take(&mut state.providers);
+    let mut reordered = Vec::with_capacity(ordered_ids.len());
+    for id in ordered_ids {
+        let index = remaining
+            .iter()
+            .position(|provider| provider.id == *id)
+            .ok_or_else(|| CoreError::InvalidInput(format!("relay 供应商重排包含未知 id：{id}")))?;
+        reordered.push(remaining.remove(index));
+    }
+    state.providers = reordered;
+    Ok(())
+}
+
+fn normalize_display_tag(value: &str) -> Option<String> {
+    let trimmed = value.trim();
+    if trimmed.is_empty() {
+        None
+    } else {
+        Some(trimmed.to_string())
+    }
 }
 
 pub fn provider_from_draft(
@@ -474,6 +545,8 @@ fn empty_state(repo_view: &RelayCoreRepositoryView) -> RelayStateDomain {
             last_error: None,
         },
         codex_router_enabled: false,
+        display_tag_global: None,
+        display_tag_woyao: None,
         block_official_passthrough: false,
         source_path: repo_view.relay_config_path.clone(),
     }
@@ -547,12 +620,109 @@ fn cluster(
 mod tests {
     use super::*;
     use serde_json::json;
+    use std::collections::HashMap;
 
     fn invalid_input_message(error: CoreError) -> String {
         match error {
             CoreError::InvalidInput(message) => message,
             other => panic!("expected invalid input error, got {other:?}"),
         }
+    }
+
+    fn relay_display_tags_state(ids: &[&str]) -> RelayStateDomain {
+        RelayStateDomain {
+            schema_version: RELAY_SCHEMA_VERSION,
+            providers: ids
+                .iter()
+                .map(|id| RelayProviderDomain {
+                    id: (*id).to_string(),
+                    ide: RELAY_DEFAULT_IDE.to_string(),
+                    name: format!("Provider {id}"),
+                    base_url: "https://relay.example/v1".to_string(),
+                    api_key_stored: false,
+                    model: "model-a".to_string(),
+                    wire_api: "openai-chat".to_string(),
+                    network: "system".to_string(),
+                    health_score: None,
+                    latency_ms: None,
+                    last_tested_at: None,
+                    last_error: None,
+                    models_sample: Vec::new(),
+                })
+                .collect(),
+            active_by_ide: HashMap::new(),
+            proxy: RelayProxyDomain::default(),
+            codex_router_enabled: false,
+            display_tag_global: Some("old-global".to_string()),
+            display_tag_woyao: Some("old-woyao".to_string()),
+            block_official_passthrough: false,
+            source_path: "relay-config.json".to_string(),
+        }
+    }
+
+    #[test]
+    fn relay_display_tags_trim_and_empty_updates() {
+        let mut state = relay_display_tags_state(&[]);
+
+        apply_display_tag_updates(
+            &mut state,
+            normalize_display_tag_update(Some("  Global Tag  ".to_string())),
+            normalize_display_tag_update(Some(" \t ".to_string())),
+        );
+
+        assert_eq!(state.display_tag_global, Some("Global Tag".to_string()));
+        assert_eq!(state.display_tag_woyao, None);
+
+        apply_display_tag_updates(&mut state, None, normalize_display_tag_update(None));
+
+        assert_eq!(state.display_tag_global, Some("Global Tag".to_string()));
+        assert_eq!(state.display_tag_woyao, None);
+    }
+
+    #[test]
+    fn reorder_relay_providers_success_reorders_in_place() {
+        let mut state = relay_display_tags_state(&["a", "b", "c"]);
+        reorder_relay_providers(
+            &mut state,
+            &["c".to_string(), "a".to_string(), "b".to_string()],
+        )
+        .expect("valid reorder");
+
+        assert_eq!(
+            state
+                .providers
+                .iter()
+                .map(|provider| provider.id.as_str())
+                .collect::<Vec<_>>(),
+            vec!["c", "a", "b"]
+        );
+    }
+
+    #[test]
+    fn reorder_relay_providers_rejects_length_mismatch() {
+        let mut state = relay_display_tags_state(&["a", "b"]);
+        let error = reorder_relay_providers(&mut state, &["a".to_string()])
+            .expect_err("length mismatch must fail");
+
+        assert!(invalid_input_message(error).contains("数量不一致"));
+    }
+
+    #[test]
+    fn reorder_relay_providers_rejects_duplicate_ids() {
+        let mut state = relay_display_tags_state(&["a", "b"]);
+        let error = reorder_relay_providers(&mut state, &["a".to_string(), "a".to_string()])
+            .expect_err("duplicate ids must fail");
+
+        assert!(invalid_input_message(error).contains("重复 id"));
+    }
+
+    #[test]
+    fn reorder_relay_providers_rejects_unknown_ids() {
+        let mut state = relay_display_tags_state(&["a", "b"]);
+        let error = reorder_relay_providers(&mut state, &["a".to_string(), "missing".to_string()])
+            .expect_err("unknown ids must fail");
+
+        assert!(invalid_input_message(error).contains("未知 id：missing"));
     }
 
     #[test]

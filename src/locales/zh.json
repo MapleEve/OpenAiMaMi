@@ -544,6 +544,7 @@
     "title": "中转模型",
     "description": "为 Codex 配置中转模型，启用智能路由后菜单可自由切换。",
     "mock": {
+      "managerRequired": "relay manager 不能为空",
       "audit": {
         "ok": "正常",
         "officialPassthroughBlocked": "官方透传已拦截"
@@ -555,6 +556,11 @@
       "deeplink": {
         "invalid": "无效的 AiMami 导入链接。",
         "parsed": "AiMami 导入链接已完成脱敏解析。"
+      },
+      "reorder": {
+        "lengthMismatch": "中转排序数量不一致",
+        "duplicateId": "中转排序包含重复 ID",
+        "unknownId": "中转排序包含未知 ID"
       },
       "diagnostic": {
         "missingRouterBlock": {
