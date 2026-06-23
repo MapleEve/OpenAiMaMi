@@ -194,6 +194,8 @@ export const api = {
   getRelayActive: relayService.getActive,
   getRelayProxyStatus: relayService.getProxyStatus,
   setCodexRouterEnabled: relayService.setCodexRouterEnabled,
+  setCodexApiLogin: relayService.setCodexApiLogin,
+  setCodexApiSlots: relayService.setCodexApiSlots,
   setBlockOfficialPassthrough: relayService.setBlockOfficialPassthrough,
   getPassthroughAuditLog: relayService.getPassthroughAuditLog,
   exportRelayConfig: relayService.exportConfig,

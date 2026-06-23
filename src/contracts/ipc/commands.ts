@@ -635,6 +635,31 @@ export const IPC_COMMAND_DEFINITIONS = [
   },
   {
     "domain": "relay",
+    "command": "set_codex_api_login",
+    "wrapperNames": [
+      "setCodexApiLogin"
+    ],
+    "argKeys": [
+      "enabled",
+      "relaunch"
+    ],
+    "source": "minified",
+    "tier": "P1"
+  },
+  {
+    "domain": "relay",
+    "command": "set_codex_api_slots",
+    "wrapperNames": [
+      "setCodexApiSlots"
+    ],
+    "argKeys": [
+      "slots"
+    ],
+    "source": "minified",
+    "tier": "P1"
+  },
+  {
+    "domain": "relay",
     "command": "set_codex_router_enabled",
     "wrapperNames": [
       "setCodexRouterEnabled"

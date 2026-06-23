@@ -1,15 +1,16 @@
 use crate::application::service::{default_relay_platform, pending_status, restored_status};
 use crate::contracts::{
     BackendEffect, BackendSkeletonStatus, CoreWarning, RelayActivePayload,
-    RelayDeeplinkImportPayload, RelayDiagnosticIssuePayload, RelayDiagnosticPayload,
-    RelayProviderDraftInput, RelayProviderPayload, RelayProxyPayload, RelayStatePayload,
-    RelayTestPayload,
+    RelayCodexApiSlotPayload, RelayDeeplinkImportPayload, RelayDiagnosticIssuePayload,
+    RelayDiagnosticPayload, RelayProviderDraftInput, RelayProviderPayload, RelayProxyPayload,
+    RelayStatePayload, RelayTestPayload,
 };
 use crate::core::{
     error::CoreError,
     model::relay::{
-        RelayCoreRepositoryView, RelayDiagnosticDomain, RelayDraftDomain, RelayProviderDomain,
-        RelayProxyDomain, RelayStateDomain, RelayTestDomain, RELAY_DEFAULT_IDE,
+        RelayCodexApiSlotDomain, RelayCoreRepositoryView, RelayDiagnosticDomain, RelayDraftDomain,
+        RelayProviderDomain, RelayProxyDomain, RelayStateDomain, RelayTestDomain,
+        RELAY_DEFAULT_IDE,
     },
     relay as relay_core,
 };
@@ -83,6 +84,15 @@ pub(super) fn draft_from_provider(provider: &RelayProviderDomain) -> RelayDraftD
     }
 }
 
+pub(super) fn relay_codex_api_slot_from_payload(
+    payload: RelayCodexApiSlotPayload,
+) -> RelayCodexApiSlotDomain {
+    RelayCodexApiSlotDomain {
+        provider_id: payload.provider_id,
+        model: payload.model,
+    }
+}
+
 pub(super) fn load_provider_for_test(
     repo: &Repository,
     provider_id: &str,
@@ -144,6 +154,15 @@ pub(super) fn state_payload_from_domain(
         active_by_ide: state.active_by_ide,
         proxy: proxy.clone(),
         codex_router_enabled: state.codex_router_enabled,
+        codex_api_login: state.codex_api_login,
+        codex_api_slots: state
+            .codex_api_slots
+            .into_iter()
+            .map(|slot| RelayCodexApiSlotPayload {
+                provider_id: slot.provider_id,
+                model: slot.model,
+            })
+            .collect(),
         display_tag_global: state.display_tag_global,
         display_tag_woyao: state.display_tag_woyao,
         block_official_passthrough: state.block_official_passthrough,
@@ -572,6 +591,8 @@ fn relay_repository_effect(command: &str) -> Option<BackendEffect> {
         | "deactivate_relay_provider"
         | "set_relay_provider_network"
         | "set_codex_router_enabled"
+        | "set_codex_api_login"
+        | "set_codex_api_slots"
         | "set_relay_display_tags"
         | "reorder_relay_providers"
         | "set_block_official_passthrough"

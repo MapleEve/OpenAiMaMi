@@ -82,6 +82,8 @@ pub fn run() {
             commands::relay::parse_aimami_deeplink,
             commands::relay::run_codex_router_diagnostics,
             commands::relay::set_codex_router_enabled,
+            commands::relay::set_codex_api_login,
+            commands::relay::set_codex_api_slots,
             commands::relay::set_relay_display_tags,
             commands::relay::reorder_relay_providers,
             commands::relay::set_block_official_passthrough,

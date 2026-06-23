@@ -545,6 +545,11 @@
     "description": "为 Codex 配置中转模型，启用智能路由后菜单可自由切换。",
     "mock": {
       "managerRequired": "relay manager 不能为空",
+      "codexApiSlots": {
+        "required": "Codex API slots 至少需要 1 项",
+        "tooMany": "Codex API slots 最多支持 5 项",
+        "slotRequired": "Codex API slot 必须包含 providerId 和 model"
+      },
       "audit": {
         "ok": "正常",
         "officialPassthroughBlocked": "官方透传已拦截"

@@ -66,6 +66,14 @@ pub struct RelayProxyPayload {
     pub last_error: Option<String>,
 }
 
+/// Codex API slot DTO 只承接公开证据确认的 providerId/model 字段。
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct RelayCodexApiSlotPayload {
+    pub provider_id: String,
+    pub model: String,
+}
+
 /// relay 当前激活信息 DTO 当前只保留空状态边界。
 #[derive(Debug, Clone, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
@@ -87,6 +95,8 @@ pub struct RelayStatePayload {
     pub active_by_ide: RelayActiveByIdePayload,
     pub proxy: RelayProxyPayload,
     pub codex_router_enabled: bool,
+    pub codex_api_login: bool,
+    pub codex_api_slots: Vec<RelayCodexApiSlotPayload>,
     pub display_tag_global: Option<String>,
     pub display_tag_woyao: Option<String>,
     pub block_official_passthrough: bool,

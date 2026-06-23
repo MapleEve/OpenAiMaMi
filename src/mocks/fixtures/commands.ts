@@ -38,6 +38,7 @@ import type {
   NotificationClientStatePayload,
   QuotaHistoryPayload,
   RelayActivePayload,
+  RelayCodexApiSlotPayload,
   RelayDeeplinkImportPayload,
   RelayDiagnosticIssuePayload,
   RelayDiagnosticPayload,
@@ -2004,6 +2005,8 @@ const relayMockState = {
   providers: [] as RelayProviderPayload[],
   activeByIde: { codex: [] } as RelayStatePayload["activeByIde"],
   codexRouterEnabled: false,
+  codexApiLogin: false,
+  codexApiSlots: [] as RelayCodexApiSlotPayload[],
   blockOfficialPassthrough: false,
   displayTagGlobal: null as string | null,
   displayTagWoyao: null as string | null,
@@ -2022,6 +2025,8 @@ function relayStateFromStatus(
     activeByIde: cloneRelayActiveByIde(relayMockState.activeByIde),
     proxy,
     codexRouterEnabled: relayMockState.codexRouterEnabled,
+    codexApiLogin: relayMockState.codexApiLogin,
+    codexApiSlots: cloneRelayCodexApiSlots(relayMockState.codexApiSlots),
     blockOfficialPassthrough: relayMockState.blockOfficialPassthrough,
     displayTagGlobal: relayMockState.displayTagGlobal,
     displayTagWoyao: relayMockState.displayTagWoyao,
@@ -2041,6 +2046,15 @@ function cloneRelayActiveByIde(activeByIde: RelayStatePayload["activeByIde"]) {
       [...providerIds],
     ]),
   );
+}
+
+function cloneRelayCodexApiSlots(
+  slots: RelayCodexApiSlotPayload[],
+): RelayCodexApiSlotPayload[] {
+  return slots.map((slot) => ({
+    providerId: slot.providerId,
+    model: slot.model,
+  }));
 }
 
 function cloneRelayProvider(provider: RelayProviderPayload): RelayProviderPayload {
@@ -2301,6 +2315,23 @@ function readRelayOrderedIds(args: IpcArgs | undefined) {
   return readArgStringArray(args, "orderedIds").map((value) => value.trim());
 }
 
+function readRelayCodexApiSlots(args: IpcArgs | undefined) {
+  const value = args?.slots;
+  if (!Array.isArray(value)) return [];
+
+  return value.map((slot): RelayCodexApiSlotPayload => {
+    if (!slot || typeof slot !== "object" || Array.isArray(slot)) {
+      return { providerId: "", model: "" };
+    }
+    const record = slot as Record<string, unknown>;
+    return {
+      providerId:
+        typeof record.providerId === "string" ? record.providerId.trim() : "",
+      model: typeof record.model === "string" ? record.model.trim() : "",
+    };
+  });
+}
+
 function relayContractError(
   context: Parameters<IpcCommandHandler>[0],
   code: string,
@@ -2341,6 +2372,63 @@ function validateRelayOrderedIds(orderedIds: string[]) {
 
   return null;
 }
+
+function validateRelayCodexApiSlots(slots: RelayCodexApiSlotPayload[]) {
+  if (slots.length === 0) {
+    return {
+      code: "RELAY_CODEX_API_SLOTS_REQUIRED",
+      message: mockCopy("relay.mock.codexApiSlots.required"),
+    };
+  }
+
+  if (slots.length > 5) {
+    return {
+      code: "RELAY_CODEX_API_SLOTS_TOO_MANY",
+      message: mockCopy("relay.mock.codexApiSlots.tooMany"),
+    };
+  }
+
+  if (slots.some((slot) => !slot.providerId || !slot.model)) {
+    return {
+      code: "RELAY_CODEX_API_SLOT_INVALID",
+      message: mockCopy("relay.mock.codexApiSlots.slotRequired"),
+    };
+  }
+
+  return null;
+}
+
+const relayCodexApiLoginHandler: IpcCommandHandler = (context) => {
+  const envelope = createRaceAwareIpcEnvelope(context);
+  relayMockState.codexApiLogin = readArgBoolean(
+    context.args,
+    "enabled",
+    relayMockState.codexApiLogin,
+  );
+  return {
+    ...envelope,
+    data: null,
+  };
+};
+
+const relayCodexApiSlotsHandler: IpcCommandHandler = (context) => {
+  const slots = readRelayCodexApiSlots(context.args);
+  const validationError = validateRelayCodexApiSlots(slots);
+  if (validationError) {
+    return relayContractError(
+      context,
+      validationError.code,
+      validationError.message,
+    );
+  }
+
+  const envelope = createRaceAwareIpcEnvelope(context);
+  relayMockState.codexApiSlots = cloneRelayCodexApiSlots(slots);
+  return {
+    ...envelope,
+    data: "ok",
+  };
+};
 
 const relayDisplayTagsHandler: IpcCommandHandler = (context) => {
   const manager = readArgString(context.args, "manager", "");
@@ -2823,6 +2911,8 @@ const relayCommandHandlers: Partial<Record<IpcCommandName, IpcCommandHandler>> =
   reorder_relay_providers: relayReorderProvidersHandler,
   run_codex_router_diagnostics: relayDiagnosticHandler,
   set_block_official_passthrough: writeBooleanArgHandler,
+  set_codex_api_login: relayCodexApiLoginHandler,
+  set_codex_api_slots: relayCodexApiSlotsHandler,
   set_codex_router_enabled: relayRouterToggleHandler,
   set_relay_display_tags: relayDisplayTagsHandler,
   set_relay_provider_network: relayProviderHandler,

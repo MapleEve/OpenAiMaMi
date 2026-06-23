@@ -1,10 +1,11 @@
 use crate::core::{
     error::CoreError,
     model::relay::{
-        RelayCoreCluster, RelayCoreClusterBoundary, RelayCoreRepositoryView, RelayCoreSnapshot,
-        RelayDiagnosticDomain, RelayDraftDomain, RelayOperationKey, RelayOperationKind,
-        RelayOwnerLayer, RelayProviderDomain, RelayProxyDomain, RelayStateDomain, RelayTestDomain,
-        RELAY_DEFAULT_IDE, RELAY_SCHEMA_VERSION,
+        RelayCodexApiSlotDomain, RelayCoreCluster, RelayCoreClusterBoundary,
+        RelayCoreRepositoryView, RelayCoreSnapshot, RelayDiagnosticDomain, RelayDraftDomain,
+        RelayOperationKey, RelayOperationKind, RelayOwnerLayer, RelayProviderDomain,
+        RelayProxyDomain, RelayStateDomain, RelayTestDomain, RELAY_DEFAULT_IDE,
+        RELAY_SCHEMA_VERSION,
     },
 };
 use serde_json::Value;
@@ -57,6 +58,41 @@ pub fn apply_display_tag_updates(
     if let Some(woyao) = woyao {
         state.display_tag_woyao = woyao;
     }
+}
+
+pub fn normalize_codex_api_slots(
+    slots: Vec<RelayCodexApiSlotDomain>,
+) -> Result<Vec<RelayCodexApiSlotDomain>, CoreError> {
+    if slots.is_empty() {
+        return Err(CoreError::InvalidInput(
+            "codexApiSlots 不能为空".to_string(),
+        ));
+    }
+    if slots.len() > 5 {
+        return Err(CoreError::InvalidInput(
+            "codexApiSlots 最多只能配置 5 个 slot".to_string(),
+        ));
+    }
+
+    slots
+        .into_iter()
+        .map(|slot| {
+            let provider_id = slot.provider_id.trim().to_string();
+            let model = slot.model.trim().to_string();
+            if provider_id.is_empty() {
+                return Err(CoreError::InvalidInput(
+                    "codexApiSlots providerId 不能为空".to_string(),
+                ));
+            }
+            if model.is_empty() {
+                return Err(CoreError::InvalidInput(
+                    "codexApiSlots model 不能为空".to_string(),
+                ));
+            }
+
+            Ok(RelayCodexApiSlotDomain { provider_id, model })
+        })
+        .collect()
 }
 
 pub fn reorder_relay_providers(
@@ -545,6 +581,8 @@ fn empty_state(repo_view: &RelayCoreRepositoryView) -> RelayStateDomain {
             last_error: None,
         },
         codex_router_enabled: false,
+        codex_api_login: false,
+        codex_api_slots: Vec::new(),
         display_tag_global: None,
         display_tag_woyao: None,
         block_official_passthrough: false,
@@ -653,6 +691,8 @@ mod tests {
             active_by_ide: HashMap::new(),
             proxy: RelayProxyDomain::default(),
             codex_router_enabled: false,
+            codex_api_login: false,
+            codex_api_slots: Vec::new(),
             display_tag_global: Some("old-global".to_string()),
             display_tag_woyao: Some("old-woyao".to_string()),
             block_official_passthrough: false,
@@ -677,6 +717,57 @@ mod tests {
 
         assert_eq!(state.display_tag_global, Some("Global Tag".to_string()));
         assert_eq!(state.display_tag_woyao, None);
+    }
+
+    #[test]
+    fn normalize_codex_api_slots_trims_valid_entries() {
+        let slots = normalize_codex_api_slots(vec![RelayCodexApiSlotDomain {
+            provider_id: "  provider-a  ".to_string(),
+            model: "  model-a  ".to_string(),
+        }])
+        .expect("valid slots");
+
+        assert_eq!(
+            slots,
+            vec![RelayCodexApiSlotDomain {
+                provider_id: "provider-a".to_string(),
+                model: "model-a".to_string(),
+            }]
+        );
+    }
+
+    #[test]
+    fn normalize_codex_api_slots_rejects_empty_or_too_many_slots() {
+        let empty = normalize_codex_api_slots(Vec::new()).expect_err("empty slots must fail");
+        assert!(invalid_input_message(empty).contains("不能为空"));
+
+        let too_many = normalize_codex_api_slots(
+            (0..6)
+                .map(|index| RelayCodexApiSlotDomain {
+                    provider_id: format!("provider-{index}"),
+                    model: "model-a".to_string(),
+                })
+                .collect(),
+        )
+        .expect_err("too many slots must fail");
+        assert!(invalid_input_message(too_many).contains("最多"));
+    }
+
+    #[test]
+    fn normalize_codex_api_slots_rejects_blank_fields() {
+        let blank_provider = normalize_codex_api_slots(vec![RelayCodexApiSlotDomain {
+            provider_id: "  ".to_string(),
+            model: "model-a".to_string(),
+        }])
+        .expect_err("blank provider must fail");
+        assert!(invalid_input_message(blank_provider).contains("providerId"));
+
+        let blank_model = normalize_codex_api_slots(vec![RelayCodexApiSlotDomain {
+            provider_id: "provider-a".to_string(),
+            model: "  ".to_string(),
+        }])
+        .expect_err("blank model must fail");
+        assert!(invalid_input_message(blank_model).contains("model"));
     }
 
     #[test]

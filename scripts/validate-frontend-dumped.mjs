@@ -77,11 +77,24 @@ const sourceSidecarFiles = {
     "CHAIN-DIFF-LADDER",
     "06-target-1.1.1.md",
   ),
+  versionDelta111FrontendIpcContracts: join(
+    repoRoot,
+    "evidence",
+    "full-chain",
+    "raw",
+    "aimami",
+    "1.1.1",
+    "windows-x64",
+    "frontend",
+    "ipc-contracts.jsonl",
+  ),
 };
 
 const implementedVersionDeltaCommands = [
   "parse_aimami_deeplink",
   "reorder_relay_providers",
+  "set_codex_api_login",
+  "set_codex_api_slots",
   "set_relay_display_tags",
 ];
 
@@ -586,6 +599,69 @@ function extractArgKeysForCommand(source, command) {
     nextCommandIndex === -1 ? source.length : nextCommandIndex,
   );
   return extractStringArray(block, "argKeys");
+}
+
+function validateVersionDelta111RelayCodexApiContracts(ipcContract, serviceText) {
+  const before = failures.length;
+  const rawContracts = parseJsonlFile(sourceSidecarFiles.versionDelta111FrontendIpcContracts);
+  const rawByCommand = new Map(
+    rawContracts
+      .filter((row) => typeof row.command === "string")
+      .map((row) => [row.command, row]),
+  );
+  const checks = [
+    {
+      command: "set_codex_api_login",
+      expectedArgKeys: ["enabled", "relaunch"],
+      serviceSnippets: [
+        'invokeIpc<CoreEnvelope<null>>("set_codex_api_login", {',
+        "enabled,",
+        "relaunch,",
+      ],
+    },
+    {
+      command: "set_codex_api_slots",
+      expectedArgKeys: ["slots"],
+      serviceSnippets: [
+        'invokeIpc<CoreEnvelope<string>>("set_codex_api_slots", {',
+        "slots: toRelayCodexApiSlotsArgs(slots)",
+      ],
+    },
+  ];
+
+  for (const check of checks) {
+    const rawRow = rawByCommand.get(check.command);
+    const rawArgKeys = [...(rawRow?.argKeys ?? [])].sort();
+    const contractArgKeys = extractArgKeysForCommand(ipcContract, check.command);
+    const rawDiff = diffValues(check.expectedArgKeys, rawArgKeys);
+    const contractDiff = diffValues(check.expectedArgKeys, contractArgKeys);
+
+    if (!rawRow) {
+      failures.push(`1.1.1 frontend IPC evidence 缺少 ${check.command}`);
+      continue;
+    }
+    if (rawDiff.missing.length > 0 || rawDiff.extra.length > 0) {
+      failures.push(
+        `${check.command} raw frontend argKeys 不符合证据锁定值：missing=${rawDiff.missing.join(", ")} extra=${rawDiff.extra.join(", ")}`,
+      );
+    }
+    if (contractDiff.missing.length > 0 || contractDiff.extra.length > 0) {
+      failures.push(
+        `${check.command} src/contracts/ipc/commands.ts argKeys 漂移：missing=${contractDiff.missing.join(", ")} extra=${contractDiff.extra.join(", ")}`,
+      );
+    }
+    for (const snippet of check.serviceSnippets) {
+      if (!serviceText.includes(snippet)) {
+        failures.push(`${check.command} service wrapper 缺少后端兼容片段：${snippet}`);
+      }
+    }
+  }
+
+  if (failures.length === before) {
+    logPass("1.1.1 relay Codex API frontend argKeys", `${checks.length}/${checks.length}`);
+  } else {
+    logFail("1.1.1 relay Codex API frontend argKeys", "存在合同漂移");
+  }
 }
 
 function extractVoiceGapCommands() {
@@ -1810,6 +1886,7 @@ const serviceRequiredCommands = contractRequiredCommands.filter(
 
 assertExactSet("IPC 合同覆盖 raw dumped 和 source sidecar 命令", contractRequiredCommands, contractCommands);
 assertCommandsMentioned("service wrapper 覆盖 raw dumped 和 source sidecar 命令", serviceRequiredCommands, serviceText);
+validateVersionDelta111RelayCodexApiContracts(readRequired(ipcContractPath), serviceText);
 assertFeatureContracts(rawCommands);
 validatePluginsDumpedContract();
 validatePluginsRestorationMatrix(frontendManifest);

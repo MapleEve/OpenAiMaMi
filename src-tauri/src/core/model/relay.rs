@@ -85,6 +85,14 @@ impl Default for RelayProxyDomain {
     }
 }
 
+/// Codex API slot 领域模型只保存公开证据确认的 providerId/model 配置字段。
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct RelayCodexApiSlotDomain {
+    pub provider_id: String,
+    pub model: String,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RelayStateDomain {
     pub schema_version: i32,
@@ -92,6 +100,8 @@ pub struct RelayStateDomain {
     pub active_by_ide: HashMap<String, Vec<String>>,
     pub proxy: RelayProxyDomain,
     pub codex_router_enabled: bool,
+    pub codex_api_login: bool,
+    pub codex_api_slots: Vec<RelayCodexApiSlotDomain>,
     pub display_tag_global: Option<String>,
     pub display_tag_woyao: Option<String>,
     pub block_official_passthrough: bool,

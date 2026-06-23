@@ -3,9 +3,10 @@ use crate::application::{
     service::{current_timestamp, default_relay_platform},
 };
 use crate::contracts::{
-    CoreWarning, RelayActivePayload, RelayDeeplinkImportPayload, RelayExportPayload,
-    RelayImportPayload, RelayPassthroughAuditEntryPayload, RelayProviderDraftInput,
-    RelayProxyPayload, RelayRouterTogglePayload, RelayStatePayload, RelayTestPayload,
+    CoreWarning, RelayActivePayload, RelayCodexApiSlotPayload, RelayDeeplinkImportPayload,
+    RelayExportPayload, RelayImportPayload, RelayPassthroughAuditEntryPayload,
+    RelayProviderDraftInput, RelayProxyPayload, RelayRouterTogglePayload, RelayStatePayload,
+    RelayTestPayload,
 };
 use crate::core::{
     error::CoreError,
@@ -29,9 +30,9 @@ use self::payload::{
     active_payload_from_state, core_state_from_repo, deeplink_payload_from_domain,
     deeplink_warning, draft_from_input, draft_from_provider, invalid_deeplink_payload,
     load_provider_for_test, provider_payload_from_domain, proxy_payload_from_domain,
-    relay_test_error, relay_test_error_warning, relay_test_warning, repository_error_warning,
-    repository_status, repository_warning, skeleton_status, state_payload_from_domain,
-    state_payload_from_repo, test_payload_from_domain,
+    relay_codex_api_slot_from_payload, relay_test_error, relay_test_error_warning,
+    relay_test_warning, repository_error_warning, repository_status, repository_warning,
+    skeleton_status, state_payload_from_domain, state_payload_from_repo, test_payload_from_domain,
 };
 pub use self::provider::{
     activate_relay_provider, deactivate_relay_provider, delete_relay_provider,
@@ -203,6 +204,35 @@ pub fn set_codex_router_enabled(
         },
         warning,
     )
+}
+
+pub fn set_codex_api_login(
+    repo: &Repository,
+    _manager: Option<String>,
+    enabled: bool,
+    _relaunch: bool,
+) -> Result<((), CoreWarning), CoreError> {
+    let command = "set_codex_api_login";
+    // 当前公开后端只恢复本地配置事务，进程关闭和重启副作用等待独立证据闭合后再接入平台层。
+    relay_repository::set_codex_api_login(repo, enabled)?;
+
+    Ok(((), repository_warning(command)))
+}
+
+pub fn set_codex_api_slots(
+    repo: &Repository,
+    _manager: Option<String>,
+    slots: Vec<RelayCodexApiSlotPayload>,
+) -> Result<(String, CoreWarning), CoreError> {
+    let command = "set_codex_api_slots";
+    let slots = slots
+        .into_iter()
+        .map(relay_codex_api_slot_from_payload)
+        .collect();
+    let slots = relay_core::normalize_codex_api_slots(slots)?;
+    relay_repository::set_codex_api_slots(repo, slots)?;
+
+    Ok(("ok".to_string(), repository_warning(command)))
 }
 
 pub fn set_relay_display_tags(
@@ -506,6 +536,51 @@ mod tests {
         );
         assert_eq!(payload.imported_count, 0);
         assert_eq!(payload.skipped_count, 1);
+    }
+
+    #[test]
+    fn set_codex_api_slots_rejects_empty_slots() {
+        let repo = Repository::with_temp_file_system("relay-codex-api-slots-empty");
+
+        assert!(matches!(
+            set_codex_api_slots(&repo, None, Vec::new()),
+            Err(CoreError::InvalidInput(_))
+        ));
+    }
+
+    #[test]
+    fn set_codex_api_slots_returns_ok_payload() {
+        let repo = Repository::with_temp_file_system("relay-codex-api-slots-ok");
+
+        let (payload, warning) = set_codex_api_slots(
+            &repo,
+            None,
+            vec![RelayCodexApiSlotPayload {
+                provider_id: "provider-a".to_string(),
+                model: "model-a".to_string(),
+            }],
+        )
+        .expect("set slots");
+
+        assert_eq!(payload, "ok");
+        assert_eq!(
+            warning.code,
+            "relay.set_codex_api_slots.repository_restored"
+        );
+    }
+
+    #[test]
+    fn set_codex_api_login_persists_without_process_side_effect() {
+        let repo = Repository::with_temp_file_system("relay-codex-api-login-usecase");
+
+        let (_, warning) = set_codex_api_login(&repo, None, true, true).expect("set login");
+
+        assert_eq!(
+            warning.code,
+            "relay.set_codex_api_login.repository_restored"
+        );
+        let state = relay_repository::load_relay_state(&repo).expect("load relay state");
+        assert!(state.codex_api_login);
     }
 
     #[test]

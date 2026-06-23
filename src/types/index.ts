@@ -866,6 +866,11 @@ export interface RelayActivePayload {
   ide: string;
 }
 
+export interface RelayCodexApiSlotPayload {
+  providerId: string;
+  model: string;
+}
+
 export interface RelayStatePayload {
   backendStatus?: BackendSkeletonStatus;
   schemaVersion: number;
@@ -873,6 +878,8 @@ export interface RelayStatePayload {
   activeByIde: RelayActiveByIdePayload;
   proxy: RelayProxyPayload;
   codexRouterEnabled: boolean;
+  codexApiLogin: boolean;
+  codexApiSlots: RelayCodexApiSlotPayload[];
   blockOfficialPassthrough: boolean;
   displayTagGlobal: string | null;
   displayTagWoyao: string | null;

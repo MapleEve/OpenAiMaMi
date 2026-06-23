@@ -545,6 +545,11 @@
     "description": "Configure relay models for Codex; switch freely from the menu when smart router is on.",
     "mock": {
       "managerRequired": "Relay manager is required",
+      "codexApiSlots": {
+        "required": "Codex API slots require at least 1 item",
+        "tooMany": "Codex API slots support at most 5 items",
+        "slotRequired": "Codex API slots must include providerId and model"
+      },
       "audit": {
         "ok": "Normal",
         "officialPassthroughBlocked": "Official passthrough blocked"

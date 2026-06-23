@@ -714,10 +714,14 @@ function validateRelayMockPayloadHandlers() {
   const ipcCommandsPath = path.join(repoRoot, "src", "contracts", "ipc", "commands.ts");
   const relayServicePath = path.join(repoRoot, "src", "services", "relay", "index.ts");
   const typesPath = path.join(repoRoot, "src", "types", "index.ts");
+  const zhLocalePath = path.join(repoRoot, "src", "locales", "zh.json");
+  const enLocalePath = path.join(repoRoot, "src", "locales", "en.json");
   const commandFixtureText = readRequired(commandFixturePath);
   const ipcCommandsText = readRequired(ipcCommandsPath);
   const relayServiceText = readRequired(relayServicePath);
   const typesText = readRequired(typesPath);
+  const zhLocaleText = readRequired(zhLocalePath);
+  const enLocaleText = readRequired(enLocalePath);
   const relayCommands = [
     ...ipcCommandsText.matchAll(
       /\{\s*"domain":\s*"relay"[\s\S]*?"command":\s*"([^"]+)"/g,
@@ -757,22 +761,42 @@ function validateRelayMockPayloadHandlers() {
     "repositoryState: diagnosticSkeletonState()",
     "platformState: diagnosticSkeletonState()",
     "const relayMockState",
+    "codexApiLogin: relayMockState.codexApiLogin",
+    "codexApiSlots: cloneRelayCodexApiSlots(relayMockState.codexApiSlots)",
     "displayTagGlobal: relayMockState.displayTagGlobal",
     "displayTagWoyao: relayMockState.displayTagWoyao",
+    "relayCodexApiLoginHandler",
+    "relayCodexApiSlotsHandler",
     "relayDisplayTagsHandler",
     "relayReorderProvidersHandler",
+    "set_codex_api_login: relayCodexApiLoginHandler",
+    "set_codex_api_slots: relayCodexApiSlotsHandler",
     "set_relay_display_tags: relayDisplayTagsHandler",
     "reorder_relay_providers: relayReorderProvidersHandler",
+    "RELAY_CODEX_API_SLOTS_REQUIRED",
+    "RELAY_CODEX_API_SLOTS_TOO_MANY",
+    "RELAY_CODEX_API_SLOT_INVALID",
+    "mockCopy(\"relay.mock.codexApiSlots.required\")",
+    "mockCopy(\"relay.mock.codexApiSlots.tooMany\")",
+    "mockCopy(\"relay.mock.codexApiSlots.slotRequired\")",
     "RELAY_ORDER_LENGTH_MISMATCH",
     "RELAY_ORDER_DUPLICATE_ID",
     "RELAY_ORDER_UNKNOWN_ID",
     "relayMockState.providers = orderedIds.map",
     "data: null",
+    "data: \"ok\"",
   ]);
 
   assertIncludes("src/contracts/ipc/commands.ts", ipcCommandsText, [
+    '"command": "set_codex_api_login"',
+    '"command": "set_codex_api_slots"',
     '"command": "set_relay_display_tags"',
     '"command": "reorder_relay_providers"',
+    '"setCodexApiLogin"',
+    '"setCodexApiSlots"',
+    '"enabled"',
+    '"relaunch"',
+    '"slots"',
     '"manager"',
     '"global"',
     '"woyao"',
@@ -782,6 +806,15 @@ function validateRelayMockPayloadHandlers() {
   ]);
 
   assertIncludes("src/services/relay/index.ts", relayServiceText, [
+    "RelayCodexApiSlotPayload",
+    'setCodexApiLogin: (',
+    'invokeIpc<CoreEnvelope<null>>("set_codex_api_login", {',
+    "enabled,",
+    "relaunch,",
+    'setCodexApiSlots: (',
+    'invokeIpc<CoreEnvelope<string>>("set_codex_api_slots", {',
+    "slots: toRelayCodexApiSlotsArgs(slots)",
+    "function toRelayCodexApiSlotsArgs(",
     'setDisplayTags: (',
     'invokeIpc<CoreEnvelope<null>>("set_relay_display_tags", {',
     "manager,",
@@ -804,11 +837,31 @@ function validateRelayMockPayloadHandlers() {
     "config_toml_has_catalog?: boolean;",
     "repositoryState?: DiagnosticSkeletonStatePayload;",
     "platformState?: DiagnosticSkeletonStatePayload;",
+    "export interface RelayCodexApiSlotPayload",
+    "providerId: string;",
+    "model: string;",
+    "codexApiLogin: boolean;",
+    "codexApiSlots: RelayCodexApiSlotPayload[];",
     "displayTagGlobal: string | null;",
     "displayTagWoyao: string | null;",
   ]);
 
+  assertIncludes("src/locales/zh.json", zhLocaleText, [
+    "\"codexApiSlots\"",
+    "\"required\"",
+    "\"tooMany\"",
+    "\"slotRequired\"",
+  ]);
+  assertIncludes("src/locales/en.json", enLocaleText, [
+    "\"codexApiSlots\"",
+    "\"required\"",
+    "\"tooMany\"",
+    "\"slotRequired\"",
+  ]);
+
   for (const [command, handler] of [
+    ["set_codex_api_login", "relayCodexApiLoginHandler"],
+    ["set_codex_api_slots", "relayCodexApiSlotsHandler"],
     ["set_relay_display_tags", "relayDisplayTagsHandler"],
     ["reorder_relay_providers", "relayReorderProvidersHandler"],
   ]) {

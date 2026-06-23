@@ -1,7 +1,7 @@
 use crate::application::usecase;
 use crate::contracts::{
-    CoreEnvelope, CoreWarning, RelayActivePayload, RelayDeeplinkImportPayload,
-    RelayDiagnosticPayload, RelayExportPayload, RelayImportPayload,
+    CoreEnvelope, CoreWarning, RelayActivePayload, RelayCodexApiSlotPayload,
+    RelayDeeplinkImportPayload, RelayDiagnosticPayload, RelayExportPayload, RelayImportPayload,
     RelayPassthroughAuditEntryPayload, RelayProviderDraftInput, RelayProviderPayload,
     RelayProxyPayload, RelayRouterIssueFixPayload, RelayRouterTogglePayload, RelayStatePayload,
     RelayTestPayload,
@@ -165,6 +165,31 @@ pub fn set_codex_router_enabled(
     Ok(with_warning(usecase::relay::set_codex_router_enabled(
         &repo, enabled, relaunch,
     )))
+}
+
+#[tauri::command]
+pub fn set_codex_api_login(
+    repo: State<'_, Mutex<Repository>>,
+    manager: Option<String>,
+    enabled: bool,
+    relaunch: bool,
+) -> Result<CoreEnvelope<()>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::relay::set_codex_api_login(&repo, manager, enabled, relaunch)
+        .map(with_warning)
+        .map_err(|error| error.to_string())
+}
+
+#[tauri::command]
+pub fn set_codex_api_slots(
+    repo: State<'_, Mutex<Repository>>,
+    manager: Option<String>,
+    slots: Vec<RelayCodexApiSlotPayload>,
+) -> Result<CoreEnvelope<String>, String> {
+    let repo = repo.lock().map_err(|error| error.to_string())?;
+    usecase::relay::set_codex_api_slots(&repo, manager, slots)
+        .map(with_warning)
+        .map_err(|error| error.to_string())
 }
 
 #[tauri::command]

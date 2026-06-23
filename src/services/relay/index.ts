@@ -7,6 +7,7 @@ import { systemService } from "@/services/system";
 import type {
   CoreEnvelope,
   RelayActivePayload,
+  RelayCodexApiSlotPayload,
   RelayDeeplinkImportPayload,
   RelayDiagnosticPayload,
   RelayExportPayload,
@@ -54,6 +55,7 @@ export type RelayRouterToggleProgressHandler = (payload: unknown) => void;
 const CODEX_ROUTER_TOGGLE_PROGRESS_EVENT = "codex-router-toggle-progress";
 const DEFAULT_RELAY_MANAGER = "codex";
 type RelayProviderDraftArgs = Record<string, IpcArgValue>;
+type RelayCodexApiSlotArgs = Record<string, IpcArgValue>;
 
 function subscribeRouterToggleProgress(
   handler: RelayRouterToggleProgressHandler,
@@ -132,6 +134,15 @@ export const relayService = {
     invokeIpc<CoreEnvelope<RelayRouterTogglePayload>>("set_codex_router_enabled", {
       enabled,
       relaunch,
+    }),
+  setCodexApiLogin: (enabled: boolean, relaunch = true) =>
+    invokeIpc<CoreEnvelope<null>>("set_codex_api_login", {
+      enabled,
+      relaunch,
+    }),
+  setCodexApiSlots: (slots: RelayCodexApiSlotPayload[]) =>
+    invokeIpc<CoreEnvelope<string>>("set_codex_api_slots", {
+      slots: toRelayCodexApiSlotsArgs(slots),
     }),
   setDisplayTags: (
     global?: string | null,
@@ -231,4 +242,13 @@ function toRelayExtraHeadersArg(value: RelayExtraHeaders | undefined): IpcArgVal
     return value;
   }
   return { ...value };
+}
+
+function toRelayCodexApiSlotsArgs(
+  slots: RelayCodexApiSlotPayload[],
+): RelayCodexApiSlotArgs[] {
+  return slots.map((slot) => ({
+    providerId: slot.providerId,
+    model: slot.model,
+  }));
 }

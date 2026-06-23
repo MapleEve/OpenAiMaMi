@@ -33,6 +33,7 @@ export type RelayMutationDataPayload =
   | RelayProviderPayload
   | RelayStatePayload
   | RelayTestPayload
+  | string
   | string[]
   | RelayRouterTogglePayload
   | boolean

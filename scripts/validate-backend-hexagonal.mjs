@@ -84,6 +84,8 @@ const sourceSidecarDaemonCommands = [
 ];
 const versionDeltaRelayCommands = [
   "parse_aimami_deeplink",
+  "set_codex_api_login",
+  "set_codex_api_slots",
   "set_relay_display_tags",
   "reorder_relay_providers",
 ];
@@ -675,7 +677,10 @@ function validateIpcCommandRegistration() {
       );
     }
 
-    if (!expectedPaths.has(handler.key) && !isAllowedExistingDaemonCommand(handler.module, handler.command)) {
+    if (
+      !expectedPaths.has(handler.key) &&
+      !isAllowedExistingDaemonCommand(handler.module, handler.command)
+    ) {
       failures.push(`${toRelative(tauriLibFile)} 注册了非 TS IPC 合同 command：commands::${handler.key}`);
     }
   }
@@ -687,7 +692,10 @@ function validateIpcCommandRegistration() {
 
     for (const [command, location] of moduleCommands.entries()) {
       const key = commandPathKey(module, command);
-      if (expectedPaths.has(key) || isAllowedExistingDaemonCommand(module, command)) {
+      if (
+        expectedPaths.has(key) ||
+        isAllowedExistingDaemonCommand(module, command)
+      ) {
         continue;
       }
 

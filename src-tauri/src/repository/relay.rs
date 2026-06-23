@@ -1,7 +1,7 @@
 use crate::contracts::RelayPassthroughAuditEntryPayload;
 use crate::core::model::relay::{
-    RelayProviderDomain, RelayProxyDomain, RelayStateDomain, RelayTestDomain, RELAY_DEFAULT_IDE,
-    RELAY_SCHEMA_VERSION,
+    RelayCodexApiSlotDomain, RelayProviderDomain, RelayProxyDomain, RelayStateDomain,
+    RelayTestDomain, RELAY_DEFAULT_IDE, RELAY_SCHEMA_VERSION,
 };
 use crate::core::{error::CoreError, relay as relay_core};
 use crate::repository::Repository;
@@ -62,6 +62,10 @@ struct RelayConfigDocument {
     proxy: RelayProxyDomain,
     #[serde(default)]
     codex_router_enabled: bool,
+    #[serde(default)]
+    codex_api_login: bool,
+    #[serde(default)]
+    codex_api_slots: Vec<RelayCodexApiSlotDomain>,
     #[serde(default)]
     display_tag_global: Option<String>,
     #[serde(default)]
@@ -221,6 +225,26 @@ pub fn record_provider_health(
 pub fn set_router_enabled(repo: &Repository, enabled: bool) -> Result<RelayStateDomain, CoreError> {
     let mut state = load_relay_state(repo)?;
     state.codex_router_enabled = enabled;
+    save_relay_state(repo, &state)?;
+    Ok(state)
+}
+
+pub fn set_codex_api_login(
+    repo: &Repository,
+    enabled: bool,
+) -> Result<RelayStateDomain, CoreError> {
+    let mut state = load_relay_state(repo)?;
+    state.codex_api_login = enabled;
+    save_relay_state(repo, &state)?;
+    Ok(state)
+}
+
+pub fn set_codex_api_slots(
+    repo: &Repository,
+    slots: Vec<RelayCodexApiSlotDomain>,
+) -> Result<RelayStateDomain, CoreError> {
+    let mut state = load_relay_state(repo)?;
+    state.codex_api_slots = slots;
     save_relay_state(repo, &state)?;
     Ok(state)
 }
@@ -404,6 +428,8 @@ impl RelayConfigDocument {
             active_by_ide: state.active_by_ide.clone(),
             proxy: state.proxy.clone(),
             codex_router_enabled: state.codex_router_enabled,
+            codex_api_login: state.codex_api_login,
+            codex_api_slots: state.codex_api_slots.clone(),
             display_tag_global: state.display_tag_global.clone(),
             display_tag_woyao: state.display_tag_woyao.clone(),
             block_official_passthrough: state.block_official_passthrough,
@@ -417,6 +443,8 @@ impl RelayConfigDocument {
             active_by_ide: normalize_active_by_ide(self.active_by_ide),
             proxy: self.proxy,
             codex_router_enabled: self.codex_router_enabled,
+            codex_api_login: self.codex_api_login,
+            codex_api_slots: self.codex_api_slots,
             display_tag_global: self.display_tag_global,
             display_tag_woyao: self.display_tag_woyao,
             block_official_passthrough: self.block_official_passthrough,
@@ -432,6 +460,8 @@ fn empty_state(source_path: String) -> RelayStateDomain {
         active_by_ide: normalize_active_by_ide(HashMap::new()),
         proxy: RelayProxyDomain::default(),
         codex_router_enabled: false,
+        codex_api_login: false,
+        codex_api_slots: Vec::new(),
         display_tag_global: None,
         display_tag_woyao: None,
         block_official_passthrough: false,
@@ -545,6 +575,42 @@ mod tests {
         let state = load_relay_state(&repo).expect("load display tags");
         assert_eq!(state.display_tag_global, Some("Global Tag".to_string()));
         assert_eq!(state.display_tag_woyao, None);
+    }
+
+    #[test]
+    fn codex_api_config_fields_persist_and_survive_other_relay_writes() {
+        let repo = Repository::with_temp_file_system("relay-codex-api-config-persist");
+
+        set_codex_api_login(&repo, true).expect("save api login");
+        set_codex_api_slots(
+            &repo,
+            vec![RelayCodexApiSlotDomain {
+                provider_id: "provider-a".to_string(),
+                model: "model-a".to_string(),
+            }],
+        )
+        .expect("save api slots");
+        set_router_enabled(&repo, true).expect("save router enabled");
+
+        let state = load_relay_state(&repo).expect("load relay state");
+        assert!(state.codex_api_login);
+        assert_eq!(
+            state.codex_api_slots,
+            vec![RelayCodexApiSlotDomain {
+                provider_id: "provider-a".to_string(),
+                model: "model-a".to_string(),
+            }]
+        );
+
+        let snapshot = load_relay_repository_snapshot(&repo);
+        let raw = repo
+            .fs()
+            .read_to_string(Path::new(&snapshot.relay_config_path))
+            .expect("read relay config");
+        let json: serde_json::Value = serde_json::from_str(&raw).expect("parse relay config");
+        assert_eq!(json["codexApiLogin"], true);
+        assert_eq!(json["codexApiSlots"][0]["providerId"], "provider-a");
+        assert_eq!(json["codexApiSlots"][0]["model"], "model-a");
     }
 
     #[test]
