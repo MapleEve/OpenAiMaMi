@@ -270,6 +270,8 @@ function validateSkillsCommandMirror() {
     "deleteSkillBackupHandler",
     "skillSummaryFromId",
     "skillBackupFromId",
+    "const removed = removeInstalledSkill(id)",
+    "backup: removed ? skillBackupFromId(id) : null",
   ]);
 
   for (const command of skillsCommands) {

@@ -62,7 +62,7 @@ pub struct SkillRemovePayload {
     pub status: BackendSkeletonStatus,
     #[serde(rename = "removedSkillID")]
     pub removed_skill_id: String,
-    pub backup: SkillBackupSummary,
+    pub backup: Option<SkillBackupSummary>,
     pub remaining_installed_count: i32,
 }
 

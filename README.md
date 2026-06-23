@@ -25,7 +25,7 @@ README 只保留长期有效的归纳状态：已做什么、未做什么或边�
 | --- | --- | --- | --- |
 | 公开材料 | 已收敛许可、匿名化、证据来源、公开禁区和贡献边界，明确 Apache License 与隐私边界。 | 未脱敏资料、个人环境、凭据、会话、密钥、账号私密值和外部猜测不进入公开范围。 | `npm run validate:public-boundary` |
 | 前端 | 已按 `raw/internal` 证据链、重建说明和验证脚本约束入口、路由、服务门面、缓存、文案、模拟数据和页面可见面，并通过 current-source 专名验证、source-only 边界验证和 map 绑定验证约束来源与边界。 | 不声明完成百分比；根 README 不替代模块验收或功能完成证明。 | `npm run validate:frontend`、`npm run validate:frontend-visible-copy`、`npm run validate:frontend-leaf-copy` |
-| 后端 | 已保留原开源能力和公开证据支撑能力，按六边形边界组织命令、用例、核心、平台、仓储、DTO 和错误语义；平台探针和进程能力通过窄端口收敛。 | 闭源业务不全量恢复；无公开证据的诊断、修复、平台动作和数据检查只保留边界、接口、占位或可替换实现。 | `npm run validate:backend`、`npm run validate:backend-cargo` |
+| 后端 | 已把公开证据支撑的本地文件事务、平台探针、进程能力和版本差异语义，通过六边形边界、DTO、mock/validator 收敛。 | 闭源业务不全量恢复；无证据业务只保留边界、接口、占位或可替换实现。 | `npm run validate:backend`、`npm run validate:backend-cargo` |
 | voice | 已保留空骨架和中文说明。 | 不接入口、不调用、不阻塞；不作为前端、后端或 IPC 能力完成证明。 | `npm run validate:frontend`、`npm run validate:backend` |
 | 验收 | 已把公开边界、前端、后端、构建面和 Rust 环境检查收敛到固定入口。 | 工具链、`link.exe`、Rust 编译或测试环境、平台依赖缺口按环境边界判断，不写成业务完成或失败结论。 | `npm run validate:all`、`npm run validate:build-surface`、`npm run validate:backend-cargo` |
 

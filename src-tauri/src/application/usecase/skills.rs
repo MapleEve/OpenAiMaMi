@@ -85,10 +85,15 @@ pub fn import_skill(repo: &Repository, path: String) -> Result<SkillImportPayloa
 
 pub fn remove_skill(repo: &Repository, id: String) -> Result<SkillRemovePayload, CoreError> {
     let installed = skills::load_installed(repo.fs(), &repo.paths().skills_dir)?;
-    let skill = installed
-        .iter()
-        .find(|skill| skill.id == id)
-        .ok_or_else(|| CoreError::NotFound(format!("技能不存在：{id}")))?;
+    let skill = installed.iter().find(|skill| skill.id == id);
+    let Some(skill) = skill else {
+        return Ok(SkillRemovePayload {
+            status: restored_status("skills", "remove_skill", BackendEffect::RepositoryRead),
+            removed_skill_id: id,
+            backup: None,
+            remaining_installed_count: installed.len() as i32,
+        });
+    };
     let backup = skills::backup_installed_skill(
         repo.fs(),
         &repo.paths().skills_dir,
@@ -102,7 +107,7 @@ pub fn remove_skill(repo: &Repository, id: String) -> Result<SkillRemovePayload,
     Ok(SkillRemovePayload {
         status: restored_status("skills", "remove_skill", BackendEffect::RepositoryWrite),
         removed_skill_id: id,
-        backup,
+        backup: Some(backup),
         remaining_installed_count,
     })
 }

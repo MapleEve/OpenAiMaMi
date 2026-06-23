@@ -145,6 +145,8 @@ for (const required of [
   "remove_skill",
   "restore_skill_backup",
   "delete_skill_backup",
+  "缺失 skill 目录返回成功 payload",
+  "`backup` 为 null",
   "src-tauri/src/commands/skills.rs",
   "src-tauri/src/application/usecase/skills.rs",
   "src-tauri/src/contracts/skills.rs",
@@ -170,6 +172,8 @@ for (const required of [
   "remove_skill",
   "restore_skill_backup",
   "delete_skill_backup",
+  "缺失 skill 目录返回成功 payload",
+  "`backup` 为 null",
   "command/usecase/repository/path_guard owner",
   "不声明执行 skill",
   "不新增 `voice` 入口",
@@ -263,7 +267,10 @@ requirePattern("restore_backup 删除覆盖目标", files.usecase, usecase, /del
 requirePattern("restore_backup 复制备份内容", files.usecase, usecase, /copy_skill_directory\s*\(/g, "恢复复制只能通过 repository 窄文件操作完成");
 requirePattern("restore_backup 读取恢复结果", files.usecase, usecase, /恢复后的技能无效|load_skill_from_dir[\s\S]*restore\.target/g, "恢复后的 DTO 必须由 usecase 读取文件状态组装");
 requirePattern("remove_skill 读取安装快照", files.usecase, usecase, /load_installed\s*\(\s*repo\.fs\(\)\s*,\s*&repo\.paths\(\)\.skills_dir\s*\)/g, "remove_skill 用户动作事务必须由 usecase 读取当前安装快照");
-requirePattern("remove_skill 选择目标技能", files.usecase, usecase, /\.find\s*\(\s*\|skill\|\s*skill\.id\s*==\s*id\s*\)/g, "usecase 必须 owning 删除目标选择和 NotFound 语义");
+requirePattern("remove_skill 选择目标技能", files.usecase, usecase, /\.find\s*\(\s*\|skill\|\s*skill\.id\s*==\s*id\s*\)/g, "usecase 必须 owning 删除目标选择和缺失成功语义");
+requirePattern("remove_skill 缺失目标成功 payload", files.usecase, usecase, /let\s+Some\s*\(\s*skill\s*\)\s*=\s*skill\s*else\s*\{[\s\S]*backup\s*:\s*None[\s\S]*remaining_installed_count\s*:\s*installed\.len\(\)\s+as\s+i32/g, "缺失 skill 目录必须返回成功 payload，且不伪造备份");
+requirePattern("remove_skill 正常删除返回备份", files.usecase, usecase, /backup\s*:\s*Some\s*\(\s*backup\s*\)/g, "正常删除仍必须返回真实备份");
+rejectPattern("remove_skill 缺失目标 NotFound", files.usecase, usecase, /技能不存在/g, "1.1.1 delta 要求缺失 skill 目录返回成功而不是错误");
 requirePattern("remove_skill 备份目标技能", files.usecase, usecase, /skills\s*::\s*backup_installed_skill\s*\(/g, "删除前备份必须由 usecase 编排 repository 窄文件操作");
 requirePattern("remove_skill 删除目标目录", files.usecase, usecase, /skills\s*::\s*delete_installed_skill_dir\s*\(/g, "删除目录只能通过 repository 窄文件操作完成");
 requirePattern("remove_skill 重新计数", files.usecase, usecase, /remaining_installed_count[\s\S]*load_installed\s*\(/g, "删除后的安装数量必须由 usecase 重新读取文件状态组装 DTO");

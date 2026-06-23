@@ -1606,13 +1606,13 @@ const importSkillHandler: IpcCommandHandler = (context) => {
 const removeSkillHandler: IpcCommandHandler = (context) => {
   const envelope = createRaceAwareIpcEnvelope(context);
   const id = readArgString(context.args, "id", "mock-skill");
-  removeInstalledSkill(id);
+  const removed = removeInstalledSkill(id);
   return {
     ...envelope,
     data: {
       status: envelope.data.status,
       removedSkillID: id,
-      backup: skillBackupFromId(id),
+      backup: removed ? skillBackupFromId(id) : null,
       remainingInstalledCount: readInstalledSkillSummaries().length,
     },
   };
@@ -1671,7 +1671,9 @@ function upsertInstalledSkill(skill: InstalledSkillSummary) {
 }
 
 function removeInstalledSkill(id: string) {
+  const previousLength = skillsMockState.installed.length;
   skillsMockState.installed = skillsMockState.installed.filter((item) => item.id !== id);
+  return skillsMockState.installed.length !== previousLength;
 }
 
 function syncBootstrapInstalledSkills() {

@@ -22,7 +22,7 @@
 | `load_installed_skills` | `commands/skills.rs` -> `application/usecase/skills.rs` -> `repository/skills.rs` | 扫描本地 skills 目录中的 `SKILL.md`，返回公开 summary，并写 bootstrap installed skills cache。 |
 | `load_skill_backups` | `commands/skills.rs` -> `application/usecase/skills.rs` -> `repository/skills.rs` | 扫描技能备份目录，读取 `metadata.json` 和 staged skill 目录。 |
 | `import_skill` | `application/usecase/skills.rs` owning 事务，`repository/skills.rs` owning 路径和文件操作 | 解析导入源，判断同源导入，覆盖前备份旧目录，通过可替换 FS 复制技能目录并重新读取结果。 |
-| `remove_skill` | `application/usecase/skills.rs` owning 事务，`repository/skills.rs` owning 备份和删除 | 从已安装列表选择目标，删除前备份，删除安装目录，再重新扫描剩余数量。 |
+| `remove_skill` | `application/usecase/skills.rs` owning 事务，`repository/skills.rs` owning 备份和删除 | 从已安装列表选择目标；目标存在时删除前备份、删除安装目录并重新扫描剩余数量；缺失 skill 目录返回成功 payload，`backup` 为 null，不创建备份、不执行删除。 |
 | `restore_skill_backup` | `application/usecase/skills.rs` owning 事务，`repository/skills.rs` owning 备份解析和复制 | 解析备份，覆盖前写 rollback 备份，复制 staged 目录到安装目录，再读取恢复后的技能 summary。 |
 | `delete_skill_backup` | `application/usecase/skills.rs` owning 事务，`repository/skills.rs` owning 删除 | 删除指定备份目录，再重新扫描备份数量。 |
 

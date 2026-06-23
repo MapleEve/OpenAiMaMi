@@ -433,7 +433,7 @@ export interface SkillImportPayload {
 export interface SkillRemovePayload {
   status: BackendSkeletonStatus;
   removedSkillID: string;
-  backup: SkillBackupSummary;
+  backup: SkillBackupSummary | null;
   remainingInstalledCount: number;
 }
 
