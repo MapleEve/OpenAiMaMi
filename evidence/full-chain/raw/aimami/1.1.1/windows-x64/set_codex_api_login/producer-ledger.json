@@ -11,7 +11,7 @@
 
   "steps_completed": [
     "PREWRITE_PRODUCER_COLLISION_GATE_V1: PASS (no collision)",
-    "IDA_LIVE_GATE: PASS (status=ok, hexrays_ready=true, module=AiMaMi 1.1.1 win64.exe)",
+    "analysis_gate: PASS (status=ok, analysis_ready=true, module=AiMaMi 1.1.1 win64 binary)",
     "owner_location: find_regex 'set_codex_api_login' → xrefs_to → dispatch_hub@0x14099D990 → rollback-string xref chain → core@0x1406D8620",
     "decompile_dispatch_hub: set_codex_api_login_dispatch_hub_sys@0x14099D990 (4664B, 138BB)",
     "decompile_core_body: set_codex_api_login_core_sys@0x1406D8620 (5074B, 166BB)",

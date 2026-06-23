@@ -18,7 +18,7 @@
   "sop_steps_completed": [
     "step0: SMB mount verified (ls <来源位置>)",
     "step1: fresh read AGENTS.md + REVERSE-STATUS.md + GATE-SPEC.md + OUTPUT-SPEC.md",
-    "step1: IDA_LIVE_GATE: server_health ok, status=ok, hexrays_ready=true, module=AiMaMi 1.1.1 win64.exe",
+    "step1: analysis_gate: status=ok, analysis_ready=true, module=AiMaMi 1.1.1 win64 binary",
     "step2: owner locate — find_regex(test_relay_draft_stream) → 0x1412fa9c8 → xrefs_to → 0x14094F2E0",
     "step3: full-chain decompile — owner + all key callees depth≥4",
     "step3: RelayDraftTestInput 8 fields confirmed (Visitor case 0-7)",

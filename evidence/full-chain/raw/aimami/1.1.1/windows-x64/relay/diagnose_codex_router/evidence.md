@@ -13,9 +13,9 @@
 
 ---
 
-## IDA_LIVE_GATE 结果
+## analysis_gate 结果
 
-- status=ok, uptime=51395s, hexrays_ready=true, module="AiMaMi 1.1.1 win64.exe", imagebase=0x140000000
+- status=ok, analysis_ready=true, module="AiMaMi 1.1.1 win64 binary", imagebase=0x140000000
 - strings_cache_ready=true, strings_cache_size=21003
 
 ---
