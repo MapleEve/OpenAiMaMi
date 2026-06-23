@@ -1,6 +1,6 @@
 # SYSTEM-DIFF.md — AiMaMi 1.0.9 → 1.1.1 系统级行为变更对照
 
-**session**: wf-aimami111-delta-20260617-repair
+**session**: <审计会话>
 **binary_sha256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 
 ---

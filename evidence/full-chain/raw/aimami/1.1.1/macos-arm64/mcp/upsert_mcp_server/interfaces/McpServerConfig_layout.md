@@ -3,7 +3,7 @@
 Recovered from `core::mcp::upsert_mcp_server` (0x1005a0d80) field access offsets.
 
 ## Session
-wf-aimami111-delta-20260617-repair
+<审计会话>
 
 ## Struct Fields (inferred)
 

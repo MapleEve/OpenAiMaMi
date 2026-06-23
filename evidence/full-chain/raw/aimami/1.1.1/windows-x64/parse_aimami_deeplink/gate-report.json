@@ -3,7 +3,7 @@
   "command": "parse_aimami_deeplink",
   "platform": "windows-x64",
   "version": "1.1.1",
-  "session": "wf-aimami111-win-100-20260620",
+  "session": "<审计会话>",
   "machine": "<本地机器>",
   "produced_at": "2026-06-20T00:00:00Z",
   "idb": "<本地路径>",
@@ -22,7 +22,7 @@
   "gate_accepted": true,
   "blocking": [],
   "notes": [
-    "dim6 promoted from accepted_unknown to closed: per-platform rule — mac dim5 unknown cannot block win gate; dim6 draft had 9 test cases already; formal ACCEPTANCE written wf-aimami111-win-100-20260620",
+    "dim6 promoted from accepted_unknown to closed: per-platform rule — mac dim5 unknown cannot block win gate; dim6 draft had 9 test cases already; formal ACCEPTANCE written <审计会话>",
     "model default string 7B const (ons-/m024 partially decoded) is non-blocking minor AU on model field default only; genuine_ceiling=false (memory read would resolve); does not affect RTI status",
     "all dims grounded in win64 IDB evidence"
   ],
@@ -93,8 +93,8 @@
   },
   "dim6_detail": {
     "status": "closed",
-    "session_original": "wf-aimami111-dim6-20260619",
-    "session_promoted": "wf-aimami111-win-100-20260620",
+    "session_original": "<审计会话>",
+    "session_promoted": "<审计会话>",
     "original_block_reason": "dim5_mac=Unknown (per-platform rule cannot block win gate)",
     "promotion_reason": "per-platform rule applied: all 6 dims closed for win platform; mac dim5 unknown is not a win gate blocker",
     "ACCEPTANCE": {
@@ -166,5 +166,5 @@
     }
   },
   "prev_gate": "strictImplementationUse (dim6=accepted_unknown: draft present not consumer-confirmed)",
-  "upgrade_note": "dim6 promoted: per-platform rule — mac dim5 unknown cannot block win gate; formal ACCEPTANCE written with happy/boundary/error/side-effect assertions + test_mapping; all 6 dims now closed for windows-x64; gate_tier promoted to readyToImplement session wf-aimami111-win-100-20260620."
+  "upgrade_note": "dim6 promoted: per-platform rule — mac dim5 unknown cannot block win gate; formal ACCEPTANCE written with happy/boundary/error/side-effect assertions + test_mapping; all 6 dims now closed for windows-x64; gate_tier promoted to readyToImplement session <审计会话>."
 }

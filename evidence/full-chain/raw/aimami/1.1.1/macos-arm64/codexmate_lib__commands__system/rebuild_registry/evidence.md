@@ -1,6 +1,6 @@
 # rebuild_registry — Reverse Evidence
 
-**session**: wf-aimami111-delta-20260618-mac100
+**session**: <审计会话>
 **machine**: <本地机器>
 **version**: AiMaMi 1.1.1 macOS ARM64
 **completed**: 2026-06-18

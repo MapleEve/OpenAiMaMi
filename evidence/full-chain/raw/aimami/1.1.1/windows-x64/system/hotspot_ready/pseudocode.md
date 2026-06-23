@@ -1,5 +1,5 @@
 # pseudocode.md — hotspot_ready (Windows x64 1.1.1)
-# Gold-leaf session: wf-aimami111-delta-20260618-goldleaf
+# Gold-leaf session: <审计会话>
 # Machine: <本地机器>
 # SHA binary: d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610
 # Owner VA: 0x140016720 | size: 847B | BBs: 32
@@ -19,7 +19,7 @@ Key structural difference: 1.1.1 hotspot state now co-located with full AppState
 ```c
 // IPC cmd="hotspot_ready" tag="app" argKeys=[] | caller=tauri_ipc_main_dispatcher_sys@0x14000d2a0
 // size=847B BBs=32 cyclomatic=9 | synchronous | no async coroutine twin
-// session wf-aimami111-delta-20260616
+// session <审计会话>
 __int64 __fastcall hotspot_ready_owner_sys_111(__int64 a1)
 {
   // a1 = Tauri IPC context / AppState snapshot struct (≥944B)
@@ -186,7 +186,7 @@ _QWORD *__fastcall hotspot_combined_state_check_sys_111(_QWORD *a1, __int64 a2)
 
 ```c
 // size=304B BBs=19 | window_id match check | *a1=18(Ready) if match; else alt-dispatch
-// renamed: level-B, session wf-aimami111-delta-20260616
+// renamed: level-B, session <审计会话>
 __int64 *__fastcall hotspot_ready_state_discriminant_check_sys_111(
     __int64 *a1, __int64 a2, __int64 a3)
 {
@@ -248,7 +248,7 @@ __int64 *__fastcall hotspot_ready_state_discriminant_check_sys_111(
 ```c
 // size=2482B | PostMessageW(HWND,msg,0,0) + lock-free ring-buffer channel send
 // 184B slot stride, 176B payload; *a1=38 on success
-// renamed from sub_1403C0BD0 in gold-leaf session wf-aimami111-delta-20260618-goldleaf
+// renamed from sub_1403C0BD0 in gold-leaf session <审计会话>
 _BYTE *__fastcall hotspot_alternate_focus_dispatch_sys_111(_BYTE *a1, __int64 *a2, __int64 a3)
 {
   // a2[2] = HWND of hotspot window

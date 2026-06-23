@@ -1,5 +1,5 @@
 # pseudocode — load_installed_skills
-# AiMaMi 1.1.1 macOS arm64 | session wf-aimami111-delta-20260617-sweep
+# AiMaMi 1.1.1 macOS arm64 | session <审计会话>
 # delta_class: integrity_recovered
 
 ---

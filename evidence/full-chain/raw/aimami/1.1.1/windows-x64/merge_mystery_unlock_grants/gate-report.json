@@ -18,13 +18,13 @@
     "call-tree.md: 47 unique edges, max_depth=6 (SipHash round function), all branches terminated",
     "interface.md: grants argKeys=[grants]; MysteryRouteGrant on-stack stride=40B; customInstructions NEW 18-char key SSE2 SIMD; hotspot config 7-field schema; side-effects mutex+file-read+file-write+timing",
     "owner.md: IPC string @0x1412AC3B3, owner @0x1400254C0 size=0x4B1, IDB renamed",
-    "prior gate readyToImplement consolidated_prev_gate=readyToImplement + acceptance_draft from wf-aimami111-dim6-20260619",
+    "prior gate readyToImplement consolidated_prev_gate=readyToImplement + acceptance_draft from <审计会话>",
     "dim1: argKeys=[grants], wrapper=mergeMysteryUnlockGrants, callee=ne, line=86 col=31963, snippet=ne('merge_mystery_unlock_grants',{grants:t})",
     "dim2: pseudocode 29418B >> 600B",
     "dim3: 47 edges depth=6 path owner->mystery_grant_mutex->hotspot_merge->codexmate_settings_hotspot_read->win32_file_read_bytes_111=external_call",
     "dim4: MysteryRouteGrant 40B stride 5 qwords; customInstructions NEW 18-char SSE2 key @xmmword_1412B5240; hotspot 7-field JSON write; side-effects mutex InterlockedCompareExchange8+WakeByAddressSingle file-read win32+file-write @sub_1403A64F0; timing GetSystemTimePreciseAsFileTime",
     "dim5: _InterlockedCompareExchange8 Windows-only; WakeByAddressSingle; GetSystemTimePreciseAsFileTime@0x14124D178; no POSIX equivalents",
-    "dim6: acceptance_draft from wf-aimami111-dim6-20260619 in prior consolidated gate readyToImplement"
+    "dim6: acceptance_draft from <审计会话> in prior consolidated gate readyToImplement"
   ],
   "dim1_detail": {
     "wrapper": "mergeMysteryUnlockGrants",
@@ -58,10 +58,10 @@
   },
   "dim6_detail": {
     "acceptance_status": "acceptance_draft",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "gate_tier": "readyToImplement",
     "happy_path": "invoke('merge_mystery_unlock_grants',{grants:[...]}) -> {elapsed_ms:number}",
     "delta_asserts": ["customInstructions key now accepted (NEW 1.1.1 SSE2 branch)", "hotspot config written with 7 fields (vs 1-field in 1.0.9)", "pending_auto_switch gate blocks merge if active (NEW 1.1.1)"]
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

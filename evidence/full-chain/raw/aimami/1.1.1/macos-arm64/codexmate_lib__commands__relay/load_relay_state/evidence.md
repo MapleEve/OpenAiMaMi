@@ -1,7 +1,7 @@
 # load_relay_state — Delta Evidence (macos-arm64, AiMaMi 1.1.1 vs 1.0.9)
 
 delta_class: integrity_recovered
-session: wf-aimami111-delta-20260617-sweep
+session: <审计会话>
 machine: <本地机器>
 produced: 2026-06-17
 
@@ -201,7 +201,7 @@ Comments appended at:
 
 ## Call-Tree JSONL Completion Record
 
-session: wf-aimami111-delta-20260618-consumer
+session: <审计会话>
 machine: <本地机器>
 produced: 2026-06-18
 

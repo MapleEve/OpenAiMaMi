@@ -1,5 +1,5 @@
 # get_mystery_unlock_grants — Owner Record (gold-leaf)
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 sha: d24e429a
 
@@ -54,4 +54,4 @@ It is NOT the IPC dispatch entry. Confirmed by:
   kept as generic shim, gold-leaf comment added at owner VA instead)
 - IDB comment set at `0x140023560`: gold-leaf evidence line (this session)
 
-*gold-leaf; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf*
+*gold-leaf; sha d24e429a; session <审计会话>*

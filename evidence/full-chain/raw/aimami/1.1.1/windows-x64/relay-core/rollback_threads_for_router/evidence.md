@@ -1,6 +1,6 @@
 # rollback_threads_for_router — win 1.1.1 backend-only orphan (orchestrator-verified)
 
-**session**: wf-aimami111-backend-orphan-materialize-20260622-orchestrator-verified
+**session**: <审计会话>
 **verdict**: present_changed
 **owner_va**: 0x140615A80
 **size_bytes**: 2744 (1.0.9: 3590)

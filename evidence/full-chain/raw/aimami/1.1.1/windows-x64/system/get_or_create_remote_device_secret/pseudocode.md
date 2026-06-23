@@ -1,5 +1,5 @@
 # get_or_create_remote_device_secret — Windows x64 Pseudocode
-**session**: wf-aimami111-delta-20260617-sweep
+**session**: <审计会话>
 **machine**: <本地机器>
 **binary**: AiMaMi 1.1.1 win64.exe (imagebase 0x140000000)
 **delta_class**: integrity_recovered (vs baseline 1.0.9)

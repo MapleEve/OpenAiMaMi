@@ -1,7 +1,7 @@
 # pseudocode — remove_skill (macos-arm64, AiMaMi 1.1.1)
 
 delta_class: integrity_recovered
-session: wf-aimami111-delta-20260617-sweep
+session: <审计会话>
 machine: <本地机器>
 idb: <来源位置>/raw/binary/AiMaMi-1.1.1-idb
 imagebase: 0x100000000

@@ -3,7 +3,7 @@
   "command": "force_kill_codex",
   "platform": "windows-x64",
   "version": "1.1.1",
-  "session": "wf-aimami111-win-100-20260620",
+  "session": "<审计会话>",
   "machine": "<本地机器>",
   "produced_at": "2026-06-20T00:00:00Z",
   "idb": "<本地路径>",
@@ -24,7 +24,7 @@
   "notes": [
     "OS-level native-substitute command: dim1 closed via ipc-contracts.jsonl invoke (argKeys=[]) confirming frontend wire-up — not native-substitute-only path",
     "dim6 closed via native-callback reversal path: two-phase kill (Phase1 taskkill /IM; Phase2 ToolHelp32 PID-enum 300ms/3s deadline) fully reversed from pseudocode; integration test mapping via fix_codex_router_issue",
-    "per win-regrade wf-aimami111-dim6-100-20260619: user override — not gated on dim6 integration-test-only; OS-level native-substitute rules apply",
+    "per win-regrade <审计会话>: user override — not gated on dim6 integration-test-only; OS-level native-substitute rules apply",
     "1.1.1 delta vs 1.0.9: two-phase soft+PID-enum vs single-shot taskkill /F"
   ],
   "evidence_refs": [
@@ -89,8 +89,8 @@
   "dim6_detail": {
     "status": "closed",
     "path": "native-callback: OS-level two-phase kill fully reversed; no IPC-direct acceptance required for native kill command",
-    "session_original": "wf-aimami111-dim6-20260619",
-    "session_promoted": "wf-aimami111-win-100-20260620",
+    "session_original": "<审计会话>",
+    "session_promoted": "<审计会话>",
     "happy_path": "Codex.exe running → Phase1 taskkill /IM Codex.exe (soft) → exits within poll window → Ok(())",
     "boundary_errors": [
       "Phase2: Codex.exe still alive after 3s deadline → CODEX_FORCE_KILL_FAILED: <pids> @0x1412F444A",
@@ -109,5 +109,5 @@
     }
   },
   "prev_gate": "strictImplementationUse (dim6=acceptance-draft)",
-  "upgrade_note": "Promoted to readyToImplement per win-regrade wf-aimami111-dim6-100-20260619 user override: IPC invoke confirmed (argKeys=[]); dim6 closed via native-callback evidence path (two-phase kill fully reversed from pseudocode Phase1@0x14079FF10 + Phase2@0x1407A44D0 + integration test mapping). Session wf-aimami111-win-100-20260620."
+  "upgrade_note": "Promoted to readyToImplement per win-regrade <审计会话> user override: IPC invoke confirmed (argKeys=[]); dim6 closed via native-callback evidence path (two-phase kill fully reversed from pseudocode Phase1@0x14079FF10 + Phase2@0x1407A44D0 + integration test mapping). Session <审计会话>."
 }

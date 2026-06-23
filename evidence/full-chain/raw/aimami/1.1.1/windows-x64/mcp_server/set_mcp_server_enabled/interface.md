@@ -1,5 +1,5 @@
 # set_mcp_server_enabled — Interface Contract (Windows x64)
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 platform: windows-x64
 binary: AiMaMi 1.1.1 win64.exe
 idb: <本地路径>

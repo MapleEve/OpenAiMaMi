@@ -1,6 +1,6 @@
 # restart_codex — Interface / DTO / Error Envelope / Side-Effect Boundary
 ## Platform: macos-arm64  Version: 1.1.1
-## Session: wf-aimami111-delta-20260616
+## Session: <审计会话>
 
 ## Command Registration
 - IPC command name: `restart_codex`

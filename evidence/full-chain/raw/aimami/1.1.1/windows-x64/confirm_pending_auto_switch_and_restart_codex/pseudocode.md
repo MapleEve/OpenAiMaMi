@@ -3,7 +3,7 @@
 **Source**: 逆向分析 HexRays decompile of `confirm_pending_auto_switch_and_restart_codex_owner_sys`
 **VA**: 0x140952070 | **Size**: 0xb9a = 2970B | **BB**: 111 | **Cyclomatic**: 29
 **逆向分析 server**: <逆向工具通道> | **IDB**: AiMaMi 1.1.1 win64.exe.i64
-**Session**: wf-aimami111-delta-20260617-sweep | **Machine**: <本地机器> | **Date**: 2026-06-17
+**Session**: <审计会话> | **Machine**: <本地机器> | **Date**: 2026-06-17
 **Decompile status**: COMPLETE — full body, dim1+dim4 补全
 
 ---

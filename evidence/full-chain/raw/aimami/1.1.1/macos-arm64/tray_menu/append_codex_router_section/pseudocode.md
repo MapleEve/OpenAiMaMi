@@ -3,7 +3,7 @@
 **VA**: 0x100629990
 **Symbol**: `codexmate_lib::commands::tray_menu::append_codex_router_section::h5a85d5964eb29fe3`
 **Module**: commands::tray_menu
-**Session**: wf-aimami111-backend-gap-close-20260622
+**Session**: <审计会话>
 **Machine**: <本地机器>
 
 ## 函数职责

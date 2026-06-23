@@ -18,13 +18,13 @@
     "call-tree.md: max_depth=6, all branches terminated via WIN32/LEAF",
     "interface.md: argKeys=[name]; response 0x88=136B; side-effect atomic write config.toml; no HTTP; frontend missing repo note",
     "owner.md: IDB renamed 3 funcs, gold_leaf=true; delta=pending_auto_switch lock+repo gate+spinlock",
-    "prior gate.gate.dim6_session=wf-aimami111-dim6-20260619 gate.ready_to_implement=true",
+    "prior gate.gate.dim6_session=<审计会话> gate.ready_to_implement=true",
     "dim1: argKeys=[name], wrapper=removeMcpServer, callee=ne, line=86 col=30824; note: frontend sends only {name} not {repo}",
     "dim2: pseudocode 14348B >> 600B",
     "dim3: depth=6 owner->exec->mcp_config_read->relay_atomic->uuid_v4->WIN32-ops",
     "dim4: response 136B {ok,success,McpServerSummary}; atomic write config.toml GetCurrentProcessId+RtlGenRandom+CreateFile+WriteFile+rename; no HTTP no sidecar",
     "dim5: _InterlockedCompareExchange8 Win32-only; win32_path_canonicalize_111@0x1410908E0; relay_atomic_write_leaf_sys@0x140504310",
-    "dim6: acceptance_draft readyToImplement wf-aimami111-dim6-20260619 confirmed in gate.gate"
+    "dim6: acceptance_draft readyToImplement <审计会话> confirmed in gate.gate"
   ],
   "dim1_detail": {
     "wrapper": "removeMcpServer",
@@ -60,10 +60,10 @@
   },
   "dim6_detail": {
     "acceptance_status": "acceptance_draft",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "gate_tier": "readyToImplement",
     "happy_path": "invoke('remove_mcp_server',{name:string}) -> {status:'ok',message:'success',McpServerSummary}",
     "delta_asserts": ["pending_auto_switch blocks remove if active (NEW 1.1.1)", "backend repo gate present (frontend absent -> None path)", "spinlock on config.toml write (NEW 1.1.1)"]
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

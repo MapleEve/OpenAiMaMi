@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "session": "wf-aimami111-delta-20260616",
+  "session": "<审计会话>",
   "machine": "<本地机器>",
   "date": "2026-06-17",
   "binary": {
@@ -165,14 +165,14 @@
   "implementation_use": true,
   "gate_accepted": true,
   "gate_upgraded_at": "2026-06-19",
-  "gate_upgrade_session": "wf-aimami111-dim6-20260619",
+  "gate_upgrade_session": "<审计会话>",
   "dim4_blocker_1_0_9_closed": true,
   "dim4_blocker_resolution": "TOML section markers confirmed in win 1.1.1 binary inside set_codex_router_toml_section_write_win_sys@0x14067CA20",
   "gate_blockers_remaining": [],
   "gate_notes": [
     "dim1_frontend_ccf: CONFIRMED — ipc-contracts.jsonl direct hit: {command:'set_codex_router_enabled', argKeys:['enabled','relaunch','apiLogin'], kind:'tauriInvokeWrapper', file:'assets/index-DdcCOEJG.js'}; 原 'inherited/not_reassessed' 已补全",
     "dim5_win_parity: CLOSED — win owner located, size parity strong (7492B vs mac 7455B)",
-    "dim6: acceptance-draft added 2026-06-19 by wf-aimami111-dim6-20260619"
+    "dim6: acceptance-draft added 2026-06-19 by <审计会话>"
   ],
   "dim6_test_acceptance_mapping": {
     "status": "acceptance-draft",
@@ -220,7 +220,7 @@
       {"case": "RwLock PoisonError", "type": "explicit_non_automatable_accept", "reason": "RwLock poison 注入不可自动化"},
       {"case": "rollback on config fail", "type": "manual", "reason": "需注入 fs write failure"}
     ],
-    "producer_note": "dim6 acceptance-draft by producer session wf-aimami111-dim6-20260619; response payload 15字段来自 mac 1.1.1 parity（win binary stripped，字段名未直接确认）",
+    "producer_note": "dim6 acceptance-draft by producer session <审计会话>; response payload 15字段来自 mac 1.1.1 parity（win binary stripped，字段名未直接确认）",
     "payload_win_parity_caveat": "CodexRouterTogglePayload 15字段从 mac 1.1.1 parity 推断（size ratio 0.5%）；C5 消费者实现时若字段顺序/layout 与 mac 不同，请记录到 dim6 consumer notes"
   },
   "anti_fake_wall": {

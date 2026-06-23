@@ -1,7 +1,7 @@
 # Evidence: load_relay_state — AiMaMi 1.1.1 macos-arm64
 
 ```
-session:        wf-aimami111-delta-20260617-sweep
+session:        <审计会话>
 machine:        <本地机器>
 delta_class:    integrity_recovered
 baseline:       1.0.9 (relay/ dir absent in 1.0.9 macos-arm64 — no prior reverse)
@@ -148,5 +148,5 @@ covered_dimensions:
 
 ## IDB Annotations Written
 
-All 8 functions annotated via `append_comments` in session wf-aimami111-delta-20260617-sweep.
+All 8 functions annotated via `append_comments` in session <审计会话>.
 IDB saved: `<来源位置>/raw/binary/AiMaMi-1.1.1-idb`

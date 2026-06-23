@@ -1,5 +1,5 @@
 # Evidence: deactivate_relay_provider — AiMaMi 1.1.1 macOS arm64
-session: wf-aimami111-delta-20260616 | machine: <本地机器> | produced: 2026-06-16
+session: <审计会话> | machine: <本地机器> | produced: 2026-06-16
 
 ## ## Confirmed
 
@@ -55,4 +55,4 @@ session: wf-aimami111-delta-20260616 | machine: <本地机器> | produced: 2026-
 - **A (func_query symbol enum)**: `func_query {"name_regex":"deactivate_relay","count":20}` → unique result `0x1005ebb60`, mangled name confirmed. PASS
 - **B (string pool)**: `find_regex "deactivate_relay_provider"` → found at `0x101148166` in command registration blob. PASS
 - **C (frontend IPC)**: `ipc-contracts.jsonl` command=deactivate_relay_provider → argKeys=["providerId","ide"], column=119638, wrapper=vt. PASS (also reveals BREAKING interface change)
-- **D (owner-map + INDEX)**: owner-map-111.jsonl confirms `0x1005ebb60`; INDEX.jsonl grep 1.1.1 deactivate_relay_provider = 0 entries (no collision); current session wf-aimami111-delta-20260616 is owner. PASS — ADDITIVE write
+- **D (owner-map + INDEX)**: owner-map-111.jsonl confirms `0x1005ebb60`; INDEX.jsonl grep 1.1.1 deactivate_relay_provider = 0 entries (no collision); current session <审计会话> is owner. PASS — ADDITIVE write

@@ -1,6 +1,6 @@
 # force_kill_codex — Call Tree (1.1.1 Windows x64)
 
-**Session**: wf-aimami111-delta-20260618-finish
+**Session**: <审计会话>
 
 ```
 [force_kill_codex — internal, no IPC string]

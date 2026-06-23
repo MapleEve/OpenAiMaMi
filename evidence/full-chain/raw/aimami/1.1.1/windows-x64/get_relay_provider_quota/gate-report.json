@@ -3,7 +3,7 @@
   "command": "get_relay_provider_quota",
   "platform": "windows-x64",
   "version": "1.1.1",
-  "session": "wf-aimami111-win-100-20260620",
+  "session": "<审计会话>",
   "machine": "<本地机器>",
   "produced_at": "2026-06-20T00:00:00Z",
   "idb": "<本地路径>",
@@ -19,7 +19,7 @@
   "accepted_unknown_recovery": {
     "dim4_field_names_recovery": [
       "Prior session: field names marked accepted_unknown — stripped PE no DWARF; tried (1) struct-init pattern analysis: raw offsets only; (2) serde serializer sub_140229D80: offset-based no key literals; (3) 逆向分析 type_query: no DWARF; (4) string search adjacent to struct: none found",
-      "wf-aimami111-win-100-20260620 recovery: grep frontend mock handler in index-DdcCOEJG.js for get_relay_provider_quota return block — found: data:{providerId,adapter,status,value,source,updatedAt,error}",
+      "<审计会话> recovery: grep frontend mock handler in index-DdcCOEJG.js for get_relay_provider_quota return block — found: data:{providerId,adapter,status,value,source,updatedAt,error}",
       "Frontend mock field names ARE the serde key names (Tauri serde serialization preserves field names; mock mirrors backend contract)",
       "Result: response field names RESOLVED from frontend mock: providerId, adapter, status, value, source, updatedAt, error",
       "dim4 promoted from accepted_unknown to closed"
@@ -137,11 +137,11 @@
   },
   "dim6_detail": {
     "status": "closed",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "happy_path": "invoke('get_relay_provider_quota',{providerId}) → lookup relay state Vec → keychain lookup → build HTTP quota request → dispatch to provider endpoint → parse response → return RelayProviderQuota{providerId,adapter,status,value,source,updatedAt,error}",
     "minimax_special": "model_remains[model_name=='general'] → interval_remaining_percent + weekly_status + weekly_remaining_percent",
     "test_mapping": "e2e: configure relay provider; call getRelayProviderQuota({providerId}); assert RelayProviderQuota returned with quota fields; unit: mock 11 provider discriminants via url_classifier; unit: mock MiniMax response model_remains"
   },
   "prev_gate": "strictImplementationUse (dim4=accepted_unknown: field names stripped)",
-  "upgrade_note": "dim4 field names resolved from frontend mock handler (index-DdcCOEJG.js get_relay_provider_quota case): {providerId, adapter, status, value, source, updatedAt, error}. Prior AU recovery_attempts exhausted binary-side recovery; frontend mock is valid recovery source (serde field names preserved in mock). All 6 dims closed. gate_tier promoted to readyToImplement session wf-aimami111-win-100-20260620."
+  "upgrade_note": "dim4 field names resolved from frontend mock handler (index-DdcCOEJG.js get_relay_provider_quota case): {providerId, adapter, status, value, source, updatedAt, error}. Prior AU recovery_attempts exhausted binary-side recovery; frontend mock is valid recovery source (serde field names preserved in mock). All 6 dims closed. gate_tier promoted to readyToImplement session <审计会话>."
 }

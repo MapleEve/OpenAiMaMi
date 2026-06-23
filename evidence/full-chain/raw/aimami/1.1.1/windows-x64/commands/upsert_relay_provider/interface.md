@@ -1,6 +1,6 @@
 # upsert_relay_provider — interface.md (gold-leaf)
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 produced_at: 2026-06-18
 
 ---

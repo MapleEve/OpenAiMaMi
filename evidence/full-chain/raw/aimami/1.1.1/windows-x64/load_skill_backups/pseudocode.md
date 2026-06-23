@@ -1,5 +1,5 @@
 # load_skill_backups — AiMaMi 1.1.1 win64 — Pseudocode (Gold-Leaf)
-<!-- session=wf-aimami111-delta-20260618-goldleaf machine=<本地机器> sha=d24e429a delta_class=integrity_recovered -->
+<!-- session=<审计会话> machine=<本地机器> sha=d24e429a delta_class=integrity_recovered -->
 
 ## Owner
 

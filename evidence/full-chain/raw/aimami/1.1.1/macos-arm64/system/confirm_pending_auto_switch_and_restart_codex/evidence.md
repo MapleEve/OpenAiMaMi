@@ -1,5 +1,5 @@
 # evidence: confirm_pending_auto_switch_and_restart_codex
-**session**: wf-aimami111-delta-20260616 | **machine**: <本地机器>
+**session**: <审计会话> | **machine**: <本地机器>
 **binary**: AiMaMi 1.1.1 universal (macOS ARM64)
 **binary_sha256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 **produced_at**: 2026-06-16
@@ -76,7 +76,7 @@ genuine_ceiling=false; recovery_attempts=not_needed
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate**: strictImplementationUse → acceptance-draft（dim4 partial bundle ID + dim5 win Unknown 阻塞升档）
 

@@ -1,5 +1,5 @@
 # import_relay_config — 1.1.1 Windows x64 Reverse Evidence
-session: wf-aimami111-same-depth-20260618
+session: <审计会话>
 machine: <本地机器>
 producer: win-shard-2
 

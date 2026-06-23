@@ -7,7 +7,7 @@
   "pe_machine": "x86_64",
   "module": "system",
   "command": "hotspot_ready",
-  "session": "wf-aimami111-delta-20260616",
+  "session": "<审计会话>",
   "produced_by": "<本地机器>",
   "produced_at": "2026-06-17",
   "sha256_binary": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
@@ -48,11 +48,11 @@
     {"va": "0x14038D560", "name": "hotspot_ready_state_discriminant_check_sys_111", "level": "B"}
   ],
   "idb_save": "ok",
-  "sweep_session": "wf-aimami111-delta-20260617-sweep",
+  "sweep_session": "<审计会话>",
   "sweep_completed": "2026-06-17",
   "sweep_machine": "<本地机器>",
   "sweep_actions": ["dim1_ccf_live_confirm_find_regex", "dim4_input_params_live_decompile", "gate_tier_upgrade_candidate_to_final", "idb_comment_appended", "idb_save_ok"],
-  "sweep2_session": "wf-aimami111-delta-20260617-sweep",
+  "sweep2_session": "<审计会话>",
   "sweep2_completed": "2026-06-17",
   "sweep2_machine": "<本地机器>",
   "sweep2_actions": [
@@ -71,11 +71,11 @@
     "va": "0x140089A50",
     "original_name": "get_usage_refresh_interval_read_sys_111",
     "current_idb_name": "confirm_pending_auto_switch_deserialize_request_sys",
-    "overwritten_by_session": "wf-aimami111-delta-20260617-depth",
+    "overwritten_by_session": "<审计会话>",
     "note": "VA shared/reused by later session rename; usage_refresh_interval_read role in hotspot_ready call context unaffected"
   },
   "artifacts": ["manifest.json", "owner.md", "pseudocode.md", "gate-report.json", "ida/pseudocode.c", "ida/evidence.md", "call-trees/hotspot_ready.jsonl", "interface.md"],
-  "gold_leaf_session": "wf-aimami111-delta-20260618-goldleaf",
+  "gold_leaf_session": "<审计会话>",
   "gold_leaf_machine": "<本地机器>",
   "gold_leaf_completed": "2026-06-18",
   "gold_leaf_actions": [

@@ -1,6 +1,6 @@
 # evidence.md — diagnose_codex_router (AiMaMi 1.1.1 macOS ARM64)
 
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 **Machine**: <本地机器>
 **Date**: 2026-06-17
 **Binary**: AiMaMi 1.1.1 universal (macOS ARM64)
@@ -144,13 +144,13 @@
 ## 逆向分析 annotations
 
 - `append_comments` done:
-  - 0x1005e9e00 (func scope): "A-level owner for diagnose_codex_router; range 0x1005e9e00-0x1005eabe9; sha f34ff82910539964; session wf-aimami111-delta-20260616; not gate promotion"
-  - 0x100319553 (line scope): "IPC dispatch call-site for diagnose_codex_router cmd; string@0x1011482FF; closure@0x100319440; session wf-aimami111-delta-20260616"
-  - 0x1011482ff (line scope): "IPC command name blob: diagnose_codex_router(21B)+run_codex_router_diagnostics(25B)+...; session wf-aimami111-delta-20260616"
+  - 0x1005e9e00 (func scope): "A-level owner for diagnose_codex_router; range 0x1005e9e00-0x1005eabe9; sha f34ff82910539964; session <审计会话>; not gate promotion"
+  - 0x100319553 (line scope): "IPC dispatch call-site for diagnose_codex_router cmd; string@0x1011482FF; closure@0x100319440; session <审计会话>"
+  - 0x1011482ff (line scope): "IPC command name blob: diagnose_codex_router(21B)+run_codex_router_diagnostics(25B)+...; session <审计会话>"
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate**: strictImplementationUse → acceptance-draft（dim5 win Unknown 唯一缺口；dim1-4 全闭合）
 

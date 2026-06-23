@@ -1,5 +1,5 @@
 # has_notch — Interface / DTO / Error / Side-Effect Boundary
-# Platform: windows-x64 | Version: 1.1.1 | Session: wf-aimami111-delta-20260616
+# Platform: windows-x64 | Version: 1.1.1 | Session: <审计会话>
 
 ## Command
 - IPC command string: `"has_notch"` @ `0x1412ac463`

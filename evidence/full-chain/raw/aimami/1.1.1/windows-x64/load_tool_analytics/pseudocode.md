@@ -1,5 +1,5 @@
 # load_tool_analytics — Windows x64 Pseudocode (Delta Leaf)
-# session: wf-aimami111-win-samedepth-patch-20260619
+# session: <审计会话>
 # machine: <本地机器>
 # sha: d24e429a
 # gate_tier: full_delta_leaf
@@ -20,7 +20,7 @@ VA: 0x1400264A0 | Size: 0x511 bytes | String ref: aLoadToolAnalyt @ 0x1412ac43b
 - 响应构建: `sub_140837390` (tool analytics response builder)
 - 注意: tool 响应与 session 结构最相似 (都用 sub_1402168D0 response constructor)，但 range matcher 不同 (sub_140203160 vs sub_140204F00)
 
-### 逆向分析 Pseudocode (verbatim, session wf-aimami111-win-samedepth-patch-20260619)
+### 逆向分析 Pseudocode (verbatim, session <审计会话>)
 
 ```c
 // load_tool_analytics: tool usage analytics, accepts repo+range
@@ -195,7 +195,7 @@ __int64 __fastcall sub_1401C9280(__int64 a1, _BYTE *a2, _QWORD *a3)
 
 ---
 
-## ACCEPTANCE (dim6, session wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6, session <审计会话>)
 
 ### Happy Path
 - Input: `{ repo: "<valid-installed-repo-id>", range: "<range-string>" }`

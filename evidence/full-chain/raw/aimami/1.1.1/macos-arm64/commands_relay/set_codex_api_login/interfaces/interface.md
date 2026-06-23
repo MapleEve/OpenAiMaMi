@@ -1,6 +1,6 @@
 # Interface: set_codex_api_login — macOS arm64 / AiMaMi 1.1.1
 
-Session: wf-aimami111-delta-20260616
+Session: <审计会话>
 Owner VA: 0x1005d3a10 (RelayManager::set_codex_api_login, size=0x1467)
 Gate: strictImplementationUse_candidate
 

@@ -1,5 +1,5 @@
 # get_mystery_unlock_grants — Call Tree (gold-leaf)
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 delta_class: integrity_recovered
 sha: d24e429a
@@ -125,4 +125,4 @@ get_mystery_unlock_grants_handler_111        0x140023560  [owner, depth=1]
 | `"expiresAtMs"` | 0x1412B6EB6 | Grant field key (11B) |
 | `"CodexMateSettings"` | 0x1412B6E40 | outer JSON key |
 
-*gold-leaf; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf*
+*gold-leaf; sha d24e429a; session <审计会话>*

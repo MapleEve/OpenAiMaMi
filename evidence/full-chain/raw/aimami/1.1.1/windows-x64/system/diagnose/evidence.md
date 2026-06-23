@@ -1,6 +1,6 @@
 # AiMaMi 1.1.1 Windows-x64 — system/diagnose Evidence
 
-**Session**: wf-aimami111-delta-20260616 | **Machine**: <本地机器> | **Model**: claude-sonnet-4-6
+**Session**: <审计会话> | **Machine**: <本地机器> | **Model**: claude-sonnet-4-6
 **Date**: 2026-06-17 | **Role**: 纯生产者 (SOP steps 0-6)
 **Binary**: AiMaMi 1.1.1 win64.exe (PE/x64 stripped) | **IDB**: AiMaMi 1.1.1 win64.exe.i64
 **逆向分析 gate**: status=ok, uptime=50077s, hexrays_ready=true, module=AiMaMi 1.1.1 win64.exe

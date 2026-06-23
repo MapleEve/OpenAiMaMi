@@ -1,7 +1,7 @@
 # get_notification_client_state — Interface / DTO / Error / Side-Effect
 
 **Version**: AiMaMi 1.1.1 macOS arm64
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 
 ## Request

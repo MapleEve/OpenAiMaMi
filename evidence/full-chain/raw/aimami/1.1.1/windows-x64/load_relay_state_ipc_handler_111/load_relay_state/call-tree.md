@@ -1,6 +1,6 @@
 # load_relay_state — Call Tree (windows-x64, 1.1.1)
-<!-- session=wf-aimami111-delta-20260618-goldleaf | machine=<本地机器> | producer -->
-<!-- prev_session=wf-aimami111-delta-20260617-sweep | upgraded=gold-leaf -->
+<!-- session=<审计会话> | machine=<本地机器> | producer -->
+<!-- prev_session=<审计会话> | upgraded=gold-leaf -->
 <!-- delta_class=callee_set_restructure+DTO_field_addition | baseline=1.0.9 | sha=d24e429a -->
 
 ## Call Tree Table (depth ≥ 5, all branches)
@@ -94,7 +94,7 @@
 | named_callees | 16 |
 | NEW_IN_1.1.1 edges | 4 (query_installed_skills_with_repo_111, relay_config_connection_refresh_and_write_sys, relay_config_serialize_and_atomic_write_sys×2-branches, relay_response_field_warnings_write_sys) |
 | terminated_branches | 10 named leaf-terminated functions |
-| session_upgraded_from | wf-aimami111-delta-20260617-sweep |
+| session_upgraded_from | <审计会话> |
 
 ## Delta Edges (1.1.1 vs 1.0.9)
 

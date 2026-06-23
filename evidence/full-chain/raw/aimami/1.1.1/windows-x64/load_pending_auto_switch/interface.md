@@ -1,5 +1,5 @@
 # load_pending_auto_switch — IPC Interface (Windows x64)
-# session: wf-aimami111-win-samedepth-patch-20260619
+# session: <审计会话>
 
 ## IPC Registration
 - Command string: `"load_pending_auto_switch"` (len=24) @ 0x1412ac2c3

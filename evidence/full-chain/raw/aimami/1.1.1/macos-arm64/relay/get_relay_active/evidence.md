@@ -1,6 +1,6 @@
 # evidence.md — get_relay_active (AiMaMi 1.1.1 macos-arm64)
 
-session: wf-aimami111-delta-20260616
+session: <审计会话>
 machine: <本地机器>
 produced_at: 2026-06-17
 baseline: 1.0.9 macos (relay/get_relay_active, gate=readyToImplement)

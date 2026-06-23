@@ -1,6 +1,6 @@
 # Pseudocode — load_mcp_servers (AiMaMi 1.1.1 win64)
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 sha: d24e429a
 source: 逆向分析 HexRays decompile (hexrays_ready=true)
@@ -16,7 +16,7 @@ source: 逆向分析 HexRays decompile (hexrays_ready=true)
  * String anchor: aLoadMcpServers @ 0x1412ac10f (xref 0x14001c547)
  * CalledFrom: tauri_ipc_main_dispatcher_sys @ 0x14000d2a0 → branch 0x14000fb74
  * delta_class: integrity_recovered vs baseline 1.0.9
- * session: wf-aimami111-delta-20260618-goldleaf
+ * session: <审计会话>
  */
 __int64 __fastcall load_mcp_servers_owner_sys(__int64 a1)
 {

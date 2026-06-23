@@ -1,6 +1,6 @@
 # set_relay_display_tags — Interface / DTO / Error / Side-Effect Boundary (windows-x64, AiMaMi 1.1.1)
 
-**Session**: wf-aimami111-delta-20260616 | **Date**: 2026-06-16
+**Session**: <审计会话> | **Date**: 2026-06-16
 
 ## IPC Command
 

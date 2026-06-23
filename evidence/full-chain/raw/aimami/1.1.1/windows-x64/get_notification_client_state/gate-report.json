@@ -72,9 +72,9 @@
   },
   "dim6_detail": {
     "status": "acceptance-draft",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "happy_path": "invoke('get_notification_client_state') → 8-step async poll → hotspot ready (disc=18/38) → read settings → serialize 5-field JSON → WakeByAddressSingle → return payload",
     "test_mapping": "e2e: call getNotificationClientState() with hotspot ready; assert 5-field JSON with correct types; manual: trigger while hotspot not ready → verify eventually resolves after hotspot becomes ready"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

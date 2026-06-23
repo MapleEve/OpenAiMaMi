@@ -1,5 +1,5 @@
 # load_quota_history — Interface Contract (Windows x64)
-# session: wf-aimami111-delta-20260618-goldleaf
+# session: <审计会话>
 # gate_tier: full_gold_leaf
 
 ## IPC Signature

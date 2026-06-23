@@ -1,4 +1,4 @@
-{"session":"wf-aimami111-win-samedepth-patch-20260619","machine":"<本地机器>","command":"clean","platform":"windows-x64","version":"1.1.1","handler_addr":"0x1400152b0","handler_name":"clean_handler_111","depth":5,"verdict":"confirmed_same_depth5"}
+{"session":"<审计会话>","machine":"<本地机器>","command":"clean","platform":"windows-x64","version":"1.1.1","handler_addr":"0x1400152b0","handler_name":"clean_handler_111","depth":5,"verdict":"confirmed_same_depth5"}
 {"depth":1,"addr":"0x1400152b0","name":"clean_handler_111","role":"command_owner: IPC command='clean' namespace='repo'","terminated_reason":null}
 {"depth":2,"addr":"0x14006edc0","name":"pending_auto_switch_state_lock_acquire_111","role":"state_lock_acquire: replaces 1.0.9 repo_mutex_lock","terminated_reason":"implementation_leaf"}
 {"depth":2,"addr":"0x141214620","name":"query_installed_skills_with_repo_111","role":"repo_state_check + owner_verify","terminated_reason":null}

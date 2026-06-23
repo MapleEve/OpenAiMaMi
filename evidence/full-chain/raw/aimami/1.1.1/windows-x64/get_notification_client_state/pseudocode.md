@@ -1,5 +1,5 @@
 # get_notification_client_state — Windows x64 Pseudocode (gold-leaf)
-## session: wf-aimami111-delta-20260618-goldleaf | machine: <本地机器> | producer-only
+## session: <审计会话> | machine: <本地机器> | producer-only
 ## sha: d24e429a | delta_class: integrity_recovered | baseline: 1.0.9 (command absent)
 ## owner_va: 0x140122010 | owner_name: get_notification_client_state_owner_sys | owner_size: 6160 bytes
 

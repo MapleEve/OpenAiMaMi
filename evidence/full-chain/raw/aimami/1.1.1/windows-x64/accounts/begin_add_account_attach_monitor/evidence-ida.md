@@ -1,5 +1,5 @@
 # Evidence — begin_add_account_attach_monitor
-session: wf-aimami111-delta-20260617-depth
+session: <审计会话>
 machine: <本地机器>
 date: 2026-06-17
 binary: AiMaMi 1.1.1 win64.exe (PE x86_64, stripped)

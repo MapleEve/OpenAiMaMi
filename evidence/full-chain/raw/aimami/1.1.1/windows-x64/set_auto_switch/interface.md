@@ -1,5 +1,5 @@
 # set_auto_switch — Interface Contract (GOLD LEAF)
-# session: wf-aimami111-delta-20260618-goldleaf / machine: <本地机器>
+# session: <审计会话> / machine: <本地机器>
 
 ## dim1 — Frontend CCF (confirmed)
 

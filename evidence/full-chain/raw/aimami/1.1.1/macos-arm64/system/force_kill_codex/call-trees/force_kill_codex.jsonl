@@ -1,4 +1,4 @@
-{"depth":0,"addr":"0x100617d80","name":"codexmate_lib::commands::system::force_kill_codex","role":"command_owner","session":"wf-aimami111-same-depth-20260618","note":"No Mutex; calls force_kill_all_codex_processes directly; returns Vec<u32> (killed PIDs) via CoreEnvelope::ok"}
+{"depth":0,"addr":"0x100617d80","name":"codexmate_lib::commands::system::force_kill_codex","role":"command_owner","session":"<审计会话>","note":"No Mutex; calls force_kill_all_codex_processes directly; returns Vec<u32> (killed PIDs) via CoreEnvelope::ok"}
 {"depth":1,"addr":"0x10055dbc0","name":"codexmate_lib::platform::process::force_kill_all_codex_processes","role":"process_manager","terminated_reason":null}
 {"depth":1,"addr":"0x1005563e0","name":"codexmate_lib::core::models::CoreEnvelope::ok","role":"response_serialize","terminated_reason":"response_serialize"}
 {"depth":2,"addr":"0x10055c140","name":"codexmate_lib::platform::process::collect_codex_kill_targets","role":"target_collector","terminated_reason":null,"note":"Collects all Codex PIDs via ps subprocess + path matching"}

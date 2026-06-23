@@ -1,6 +1,6 @@
 # Owner — load_mcp_servers (AiMaMi 1.1.1 win64)
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 role: producer
 sha: d24e429a
@@ -51,5 +51,5 @@ Caller passes single pointer `ctx` (a1). Stack layout extracted from decompile:
 ## IDB write-back
 
 - Renamed to `load_mcp_servers_owner_sys` (was `load_mcp_servers_handler_111`)
-- Comment at `0x14001c4c0`: `gold-leaf for load_mcp_servers; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion`
+- Comment at `0x14001c4c0`: `gold-leaf for load_mcp_servers; sha d24e429a; session <审计会话>; not gate promotion`
 - `idb_save` confirmed ok in this session

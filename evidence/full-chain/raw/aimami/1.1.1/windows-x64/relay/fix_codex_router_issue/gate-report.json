@@ -19,7 +19,7 @@
     "relay/fix_codex_router_issue/call-trees/fix_codex_router_issue.jsonl — depth=5, terminated",
     "frontend/ipc-contracts.jsonl — tauriInvokeRaw argKeys=[itemId] file=maintenance-page-C2wkSNnk.js line=17",
     "frontend/frontend-control-flow.jsonl — trigger=T fn argKeys=[itemId] col=1887",
-    "fix_codex_router_issue/gate-report.json — wf-aimami111-dim6-100-20260619 all 6 dims CLOSED"
+    "fix_codex_router_issue/gate-report.json — <审计会话> all 6 dims CLOSED"
   ],
   "dim1_detail": {
     "file": "assets/maintenance-page-C2wkSNnk.js",
@@ -67,9 +67,9 @@
   },
   "dim6_detail": {
     "status": "acceptance-draft",
-    "session": "wf-aimami111-dim6-100-20260619",
+    "session": "<审计会话>",
     "happy_path": "invoke('fix_codex_router_issue',{itemId}) → quit Codex if running → apply fix → relaunch → return FixReport",
     "test_mapping": "e2e: call with valid itemId while Codex running; assert Codex relaunched; assert section fixed"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

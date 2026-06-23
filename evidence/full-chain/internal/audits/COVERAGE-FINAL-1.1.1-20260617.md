@@ -69,17 +69,17 @@
 - **8 个双目录都有内容**（需人工合并判定，禁盲删——两侧均为有效证据，来自不同 pass）：`delete_sessions`(flat 30.9K vs sessions/ 15.7K)、`get_or_create_remote_device_secret`(flat/system/commands 三份)、`import_skill`(skills/ 28.9K vs flat 12.5K)、`load_sessions`、`remove_mcp_server`、`remove_skill`、`set_mcp_server_enabled`、`upsert_relay_provider`。处置：按 §5 把 pseudocode 最全者归位到 canonical `<module>/<cmd>/`、合并另一份独有证据后再删冗余——**未自动执行（避免误删共享证据），留人工/单独 dedup 工作单**。
 不影响 diff 结论与证据完整性（每命令至少一份 full leaf）。
 
-**gold-leaf 收口记录（session wf-aimami111-delta-20260618-goldleaf，2026-06-18）**：win full-leaf 从 20 升至 38，新增 18 条（activate_relay_provider、begin_add_account_attach_monitor、confirm_pending_auto_switch_and_restart_codex、deactivate_relay_provider、delete_sessions、delete_skill_backup、dismiss_pending_auto_switch、get_device_id、get_mystery_unlock_grants、get_notification_client_state、get_relay_provider_quota、graceful_restart_for_update、load_installed_skills、load_mcp_servers、load_relay_state、load_skill_backups、load_snapshot、merge_mystery_unlock_grants、refresh_usage_snapshot、remove_mcp_server、remove_skill、reorder_relay_providers、restore_skill_backup、set_auto_switch、set_codex_api_login、set_codex_api_slots、set_image_compat、set_relay_display_tags、set_usage_refresh_interval、upsert_relay_provider 等）；INDEX.jsonl 追加 goldleaf session 收口行。
+**gold-leaf 收口记录（session <审计会话>，2026-06-18）**：win full-leaf 从 20 升至 38，新增 18 条（activate_relay_provider、begin_add_account_attach_monitor、confirm_pending_auto_switch_and_restart_codex、deactivate_relay_provider、delete_sessions、delete_skill_backup、dismiss_pending_auto_switch、get_device_id、get_mystery_unlock_grants、get_notification_client_state、get_relay_provider_quota、graceful_restart_for_update、load_installed_skills、load_mcp_servers、load_relay_state、load_skill_backups、load_snapshot、merge_mystery_unlock_grants、refresh_usage_snapshot、remove_mcp_server、remove_skill、reorder_relay_providers、restore_skill_backup、set_auto_switch、set_codex_api_login、set_codex_api_slots、set_image_compat、set_relay_display_tags、set_usage_refresh_interval、upsert_relay_provider 等）；INDEX.jsonl 追加 goldleaf session 收口行。
 
 ---
 
-## 6. win-100 终账（session wf-aimami111-win-100-20260620）
+## 6. win-100 终账（session <审计会话>）
 
 > **本节为 win-100 终账，取代 §6 此前所有版本（gate-final v2 = 55/60 = 91.7% 为旧漂移数字）。**
 > 权威来源：`raw/aimami/1.1.1/windows-x64/force_kill_codex/gate-report.json` + `raw/aimami/1.1.1/windows-x64/parse_aimami_deeplink/gate-report.json` + `intermediate/aimami/1.1.1/version-delta/dim6/win-final-a.json` + `win-final-b.json`。
 > 消费者实现依据唯一入口：`internal-reverse/audits/windows-1.1.1-delta/gate-report.json` → `rollup` 段（schema=c5cm.gate_report.rollup.v3_win100_final）。
 
-**produced_at**: 2026-06-20 · **session**: wf-aimami111-win-100-20260620 · **机器**: <本地机器> · **role**: producer
+**produced_at**: 2026-06-20 · **session**: <审计会话> · **机器**: <本地机器> · **role**: producer
 
 ### 6.1 readyToImplement 覆盖率（per-platform 最终终态）
 
@@ -176,7 +176,7 @@ activate_relay_provider · begin_add_account_attach_monitor · confirm_pending_a
 
 ---
 
-## 8. 后端完整性四角度终账（session wf-aimami111-backend-complete-20260620 初账 + wf-aimami111-backend-gap-close-20260622 收口，2026-06-22）
+## 8. 后端完整性四角度终账（session <审计会话> 初账 + <审计会话> 收口，2026-06-22）
 
 > **本节补全之前账目未覆盖的后端符号面**。§1–§7 以前端 126 命令宇宙为分母；本节补充角度 A（func_query 全符号枚举）+ 角度 C（export_funcs 孤儿扫描），覆盖前端命令宇宙之外的后端命令和孤儿符号。
 > 证据位置：`intermediate/aimami/1.1.1/version-delta/backend-complete/`
@@ -250,7 +250,7 @@ activate_relay_provider · begin_add_account_attach_monitor · confirm_pending_a
 
 ---
 
-### 8.2 1.0.9 §3.3 六个 orphan 在 1.1.1 的逐个状态（最终定论，含 gap-close wf-aimami111-backend-gap-close-20260622）
+### 8.2 1.0.9 §3.3 六个 orphan 在 1.1.1 的逐个状态（最终定论，含 gap-close <审计会话>）
 
 | 1.0.9 孤儿命令 | 1.1.1 win 状态 | 1.1.1 mac 状态 | 最终处置 |
 |---|---|---|---|
@@ -272,7 +272,7 @@ activate_relay_provider · begin_add_account_attach_monitor · confirm_pending_a
 | already_covered | 29 | core::relay 内部 impl、proxy_server closures、keychain、atomic_write、repository 状态同步等；均被 relay/* / commands_relay/* reversed leaf 覆盖 |
 | truly_undone | **3** | 见下表 |
 
-**macOS truly_undone（3 条）— 已全部逆完（wf-aimami111-backend-gap-close-20260622）**
+**macOS truly_undone（3 条）— 已全部逆完（<审计会话>）**
 
 | 函数 | VA | 性质 | 逆向状态 |
 |---|---|---|---|
@@ -280,9 +280,9 @@ activate_relay_provider · begin_add_account_attach_monitor · confirm_pending_a
 | `codexmate_lib::commands::tray_menu::quota_text` | 0x100627190 | 纯计算函数：读 snapshot 两账户 type+usage 字段，按4种组合返回 quota 显示 String（双到期='--'，单到期=单值，双有效=两值格式化）。无副作用 | **readyToImplement=true，gate_accepted=true，accepted_unknown=false** |
 | `codexmate_lib::commands::tray_menu::append_codex_router_section` | 0x100629990 | 向 tray MenuBuilder 追加 Codex Router 专区：分隔符 + relay状态项(id=tray_codex_router_status) + 账户动态项(id=tray_account:)，标签从 RelayManager::snapshot() 和账户数量动态生成。失败 panic | **readyToImplement=true，gate_accepted=true，accepted_unknown=false** |
 
-**mac truly_undone 定性（更新）**：三条均为**非 IPC 命令面**的平台内部函数（tray menu assembly / OS single-instance watcher），均已于 wf-aimami111-backend-gap-close-20260622 逆完（readyToImplement=true）。不构成消费者实现缺口——这些函数控制本地 UI 行为，不属于前端 invoke 协约范围。leaf 路径：`raw/aimami/1.1.1/macos-arm64/tray_menu/quota_text/`、`raw/aimami/1.1.1/macos-arm64/tray_menu/append_codex_router_section/`、`raw/aimami/1.1.1/macos-arm64/platform_single_instance/start_activation_watcher/`。
+**mac truly_undone 定性（更新）**：三条均为**非 IPC 命令面**的平台内部函数（tray menu assembly / OS single-instance watcher），均已于 <审计会话> 逆完（readyToImplement=true）。不构成消费者实现缺口——这些函数控制本地 UI 行为，不属于前端 invoke 协约范围。leaf 路径：`raw/aimami/1.1.1/macos-arm64/tray_menu/quota_text/`、`raw/aimami/1.1.1/macos-arm64/tray_menu/append_codex_router_section/`、`raw/aimami/1.1.1/macos-arm64/platform_single_instance/start_activation_watcher/`。
 
-#### Windows x64（16 个孤儿候选，四分类）— 含 gap-close 收口（wf-aimami111-backend-gap-close-20260622）
+#### Windows x64（16 个孤儿候选，四分类）— 含 gap-close 收口（<审计会话>）
 
 | 分类 | 数量 | 命令 |
 |---|---|---|
@@ -291,7 +291,7 @@ activate_relay_provider · begin_add_account_attach_monitor · confirm_pending_a
 | different_machine_owner | 12 | remove_mcp_server、get_mystery_unlock_grants、set_hotspot_enabled、load_relay_state、upsert_relay_provider、delete_relay_provider、get_relay_active、get_relay_proxy_status、fix_codex_router_issue、export_relay_config、import_relay_config、diagnose_codex_router |
 | truly_undone | **0（已清零）** | ~~remove_data_store~~ → 已逆完 |
 
-**Windows truly_undone — 已清零（wf-aimami111-backend-gap-close-20260622）**
+**Windows truly_undone — 已清零（<审计会话>）**
 
 | 命令 | 逆向状态 |
 |---|---|
@@ -317,7 +317,7 @@ activate_relay_provider · begin_add_account_attach_monitor · confirm_pending_a
 
 **后端四角度终结论**：
 
-> **后端已真全。** mac 四角度全过；win 四角度全过（remove_data_store gap 已由 wf-aimami111-backend-gap-close-20260622 关闭）。
+> **后端已真全。** mac 四角度全过；win 四角度全过（remove_data_store gap 已由 <审计会话> 关闭）。
 >
 > **前端 126 命令宇宙**（B 角度）：两平台 100% RTI，无缺口。
 > **后端符号面**（A+C+D 角度）：mac 全过；win 全过。
@@ -325,7 +325,7 @@ activate_relay_provider · begin_add_account_attach_monitor · confirm_pending_a
 >
 > **待逆缺口清单**：**0 条。** 后端完整性四角度全部通过，truly_undone=0。
 
-**produced**: 2026-06-22 · **session**: wf-aimami111-backend-complete-20260620（初账）+ **wf-aimami111-backend-gap-close-20260622（gap-close 收口）** · **producer**: <本地机器> · **role**: producer（纯生产者，grounded 直接读盘聚合）
+**produced**: 2026-06-22 · **session**: <审计会话>（初账）+ **<审计会话>（gap-close 收口）** · **producer**: <本地机器> · **role**: producer（纯生产者，grounded 直接读盘聚合）
 
 ---
 

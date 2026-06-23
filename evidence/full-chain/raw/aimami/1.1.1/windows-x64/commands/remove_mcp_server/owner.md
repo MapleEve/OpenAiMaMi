@@ -1,6 +1,6 @@
 # remove_mcp_server — owner.md
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器> (纯生产者)
 binary: AiMaMi 1.1.1 win64.exe
 idb: <本地路径>
@@ -47,7 +47,7 @@ tauri_ipc_main_dispatcher_sys   VA:0x14000d2a0  (xref caller → 0x14001026c)
 
 ## IDB 备注（已写入）
 
-- 0x140019040: `gold-leaf for remove_mcp_server; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion`
+- 0x140019040: `gold-leaf for remove_mcp_server; sha d24e429a; session <审计会话>; not gate promotion`
 - 0x1401C4F40: executor gold-leaf comment
 - 0x1402161B0: ok_builder gold-leaf comment
 - 0x141214620: delta-new gate gold-leaf comment

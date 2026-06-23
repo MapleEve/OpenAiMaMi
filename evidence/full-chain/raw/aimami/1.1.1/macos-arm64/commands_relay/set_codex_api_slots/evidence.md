@@ -1,6 +1,6 @@
 # Evidence: set_codex_api_slots — AiMaMi 1.1.1 macOS ARM64
 
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 **Machine**: <本地机器>
 **Binary**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi
 **Source binary SHA256**: (from IDB idb_path <来源位置>/raw/binary/AiMaMi-1.1.1-binary)

@@ -1,5 +1,5 @@
 # graceful_restart_for_update — Interface Contract (Windows x64)
-<!-- session=wf-aimami111-delta-20260618-goldleaf machine=<本地机器> -->
+<!-- session=<审计会话> machine=<本地机器> -->
 
 ## IPC Contract
 

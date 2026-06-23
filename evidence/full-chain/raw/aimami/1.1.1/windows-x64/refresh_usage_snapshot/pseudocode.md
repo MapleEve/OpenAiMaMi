@@ -1,6 +1,6 @@
 # refresh_usage_snapshot — Windows x64 pseudocode
-# session: wf-aimami111-delta-20260618-goldleaf (gold-leaf update) | machine: <本地机器>
-# prior session: wf-aimami111-delta-20260617-sweep | sha: d24e429a
+# session: <审计会话> (gold-leaf update) | machine: <本地机器>
+# prior session: <审计会话> | sha: d24e429a
 # delta_class: integrity_recovered | baseline: 1.0.9
 # decompile_status: PARTIAL — owner 0x140984C40 (123 BB) still fails HexRays;
 #   core + http_executor + success_handler + quota_append fully decompiled this pass.
@@ -324,7 +324,7 @@ char __fastcall quota_history_append_dedup_111(_QWORD *a1, const __m128i *a2, __
 
 ## Quota History File Persist: quota_history_persist_file_111
 - VA: 0x140200EA0
-- Decompile: OK (HexRays, gold-leaf session wf-aimami111-delta-20260618-goldleaf)
+- Decompile: OK (HexRays, gold-leaf session <审计会话>)
 - DELTA vs 1.0.9: NEW function (disk side-effect)
 
 ```c
@@ -365,7 +365,7 @@ _QWORD *__fastcall quota_history_persist_file_111(
 
 ## New DTO Serializer: serialize_usage_attempt_stats_111
 - VA: 0x14020DF30
-- Decompile: OK (HexRays, gold-leaf session wf-aimami111-delta-20260618-goldleaf)
+- Decompile: OK (HexRays, gold-leaf session <审计会话>)
 - DELTA vs 1.0.9: NEW struct and serializer
 
 ```c
@@ -396,7 +396,7 @@ __int64 __fastcall serialize_usage_attempt_stats_111(
 
 ## Post-Loop State Finalize: refresh_usage_snapshot_post_loop_finalize_111
 - VA: 0x1401BCE90  (was sub_1401BCE90, renamed gold-leaf session)
-- Decompile: OK (HexRays, gold-leaf session wf-aimami111-delta-20260618-goldleaf)
+- Decompile: OK (HexRays, gold-leaf session <审计会话>)
 - Role: called after the per-account loop in refresh_usage_snapshot_core_111 completes
 
 ```c
@@ -433,7 +433,7 @@ __int64 __fastcall refresh_usage_snapshot_post_loop_finalize_111(_QWORD *a1)
 
 ## Per-Account State Update: refresh_usage_snapshot_account_state_update_111
 - VA: 0x1401ED840  (was sub_1401ED840, renamed gold-leaf session)
-- Decompile: OK (HexRays, gold-leaf session wf-aimami111-delta-20260618-goldleaf)
+- Decompile: OK (HexRays, gold-leaf session <审计会话>)
 - Role: copies WhamResponse fields into the account struct at fixed offsets
 
 ```c
@@ -478,7 +478,7 @@ __int64 __fastcall refresh_usage_snapshot_account_state_update_111(__int64 a1, _
 
 ## Subscription Active Check: check_subscription_active_jwt_111
 - VA: 0x140678480  (was sub_140678480, renamed gold-leaf session)
-- Decompile: OK (HexRays, gold-leaf session wf-aimami111-delta-20260618-goldleaf)
+- Decompile: OK (HexRays, gold-leaf session <审计会话>)
 - Depth: 3 callee of refresh_usage_snapshot_core_111
 
 ```c
@@ -523,7 +523,7 @@ __int64 __fastcall check_subscription_active_jwt_111(unsigned __int64 a1, unsign
 
 ## Event Bus Broadcast: broadcast_runtime_state_updated_111
 - VA: 0x140790230  (was sub_140790230, renamed gold-leaf session)
-- Decompile: OK (HexRays, gold-leaf session wf-aimami111-delta-20260618-goldleaf)
+- Decompile: OK (HexRays, gold-leaf session <审计会话>)
 - Role: post-loop broadcast "runtime-state-updated"; also handles tray refresh throttling
 
 ```c

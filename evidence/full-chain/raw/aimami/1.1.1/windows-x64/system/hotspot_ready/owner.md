@@ -1,5 +1,5 @@
 # owner.md — hotspot_ready (Windows x64 1.1.1)
-# Gold-leaf session: wf-aimami111-delta-20260618-goldleaf
+# Gold-leaf session: <审计会话>
 # Machine: <本地机器>
 
 ## Owner Summary
@@ -15,7 +15,7 @@
 | Basic blocks | 32 |
 | Cyclomatic complexity | 9 |
 | Synchronous | yes (no async twin) |
-| IDB rename | applied level-A; wf-aimami111-delta-20260616 |
+| IDB rename | applied level-A; <审计会话> |
 | Caller | `tauri_ipc_main_dispatcher_sys @ 0x14000d2a0` |
 | IPC string VA | `0x1412ac4a3` ("hotspot_ready", 13B) |
 | Tag string VA | `0x1412ac6d5` ("app", 3B) |
@@ -89,7 +89,7 @@ Total struct size inferred: ≥944B.
 
 ## IDB Rename Conflict Note
 
-VA `0x140089A50` was renamed `get_usage_refresh_interval_read_sys_111` by session `wf-aimami111-delta-20260616` but then overwritten to `confirm_pending_auto_switch_deserialize_request_sys` by `wf-aimami111-delta-20260617-depth`. The role in the `hotspot_ready` call context (usage-refresh JSON-parse + Arc refcount cleanup) is unaffected by this rename conflict.
+VA `0x140089A50` was renamed `get_usage_refresh_interval_read_sys_111` by session `<审计会话>` but then overwritten to `confirm_pending_auto_switch_deserialize_request_sys` by `<审计会话>`. The role in the `hotspot_ready` call context (usage-refresh JSON-parse + Arc refcount cleanup) is unaffected by this rename conflict.
 
 ## IDB Annotations Applied (gold-leaf)
 

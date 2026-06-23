@@ -1,5 +1,5 @@
 # load_sessions — Windows x64 Pseudocode (Gold Leaf)
-**session**: wf-aimami111-delta-20260618-goldleaf
+**session**: <审计会话>
 **machine**: <本地机器> (producer)
 **delta_class**: integrity_recovered
 **baseline**: 1.0.9 (load_sessions command absent in 1.0.9 windows)

@@ -1,6 +1,6 @@
 # Interface — load_mcp_servers (AiMaMi 1.1.1 win64)
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 sha: d24e429a
 

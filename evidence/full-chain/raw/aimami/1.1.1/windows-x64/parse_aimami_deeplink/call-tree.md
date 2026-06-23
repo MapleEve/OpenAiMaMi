@@ -1,6 +1,6 @@
 # parse_aimami_deeplink — Call Tree (Windows x64, AiMaMi 1.1.1)
 
-## session: wf-aimami111-delta-20260616 | date: 2026-06-16
+## session: <审计会话> | date: 2026-06-16
 
 ## Full Call Tree
 

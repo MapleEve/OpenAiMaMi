@@ -1,5 +1,5 @@
 # cancel_voice_trigger_capture — Evidence
-## AiMaMi 1.1.1 macOS arm64 | session wf-aimami111-delta-20260616
+## AiMaMi 1.1.1 macOS arm64 | session <审计会话>
 
 **Migration basis**: 1.0.9 macos `migrated_no_behavior_diff` (same-platform backend absence)
 **Gate**: migrated_no_behavior_diff → readyToImplement (accepted_substitute: same-platform 逆向分析 backend command absence)

@@ -20,10 +20,10 @@
     "intermediate/aimami/1.1.1/version-delta/dim6/win-consolidated.json#readyToImplement"
   ],
   "dim1_evidence": "ipc-contracts.jsonl L16: command=set_auto_switch, argKeys=[enabled], argObject={enabled:t}, callee=ne, kind=tauriInvokeWrapper; CCF L29,L187 confirmed; frontend binding: setAutoSwitch:(enabled:boolean)=>invoke('set_auto_switch',{enabled}); mock confirms return AutoSwitchRecord",
-  "dim2_evidence": "set_auto_switch_owner_sys@0x1400286B0 (0x501B=1281B) full 逆向分析 decompile gold-leaf; pending_auto_switch_state_lock_acquire_111@0x14006EDC0; auto_switch_pending_state_resolve_111@0x140785980; auto_switch_apply_core_111@0x1401A4EB0; auto_switch_state_persist_json_111@0x1401A6C10; session=wf-aimami111-delta-20260618-goldleaf",
+  "dim2_evidence": "set_auto_switch_owner_sys@0x1400286B0 (0x501B=1281B) full 逆向分析 decompile gold-leaf; pending_auto_switch_state_lock_acquire_111@0x14006EDC0; auto_switch_pending_state_resolve_111@0x140785980; auto_switch_apply_core_111@0x1401A4EB0; auto_switch_state_persist_json_111@0x1401A6C10; session=<审计会话>",
   "dim3_evidence": "call-tree depth=7, 52 edges, all leaves terminated at Win32 syscall/IPC vtable/opaque leaf; key DELTA callees: schtask_codexmate_autoswitch_delete_111/query_111/register_sys; snooze_file_delete_win32_111; snooze_file_backup_copy_111; CopyFileExW; GetModuleFileNameW; exe_path_get_for_schtask_111",
   "dim4_evidence": "input: {enabled:bool}; output: AutoSwitchRecord{bundle_name:'dev.aimami.auto-switch', enabled:bool, schtask_running:u8, updatedAt_low:u32, updatedAt_high:u32}; persist JSON: {updatedAt,activeAccountKey,items} to relay_manager_state+36; serde keys confirmed@0x1412B6C28/31/41; 6 DELTA-NEW side-effects: schtask CRUD + snooze ops + JSON persist",
   "dim5_evidence": "WINDOWS-ONLY callees: daemon_schtasks_register_sys@0x14079EF00(schtasks /Create), schtask_codexmate_autoswitch_query_111@0x14079F5C0(schtasks /Query), schtask_codexmate_autoswitch_delete_111@0x14079F480(schtasks /Delete), snooze_file_delete_win32_111@0x14108F810(DeleteFileW+SetFileInformationByHandle), CopyFileExW; not_present_in_macos_build=true",
-  "dim6_evidence": "acceptance-draft by wf-aimami111-dim6-20260619; promoted to readyToImplement in win-consolidated.json",
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "dim6_evidence": "acceptance-draft by <审计会话>; promoted to readyToImplement in win-consolidated.json",
+  "regen_by": "<审计会话>"
 }

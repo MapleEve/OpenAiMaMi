@@ -1,6 +1,6 @@
 # Evidence — switch_account_and_restart_codex (AiMaMi 1.1.1 macOS)
 
-session: wf-aimami111-delta-20260618-mac100
+session: <审计会话>
 machine: <本地机器>
 produced_at: 2026-06-18
 binary: AiMaMi 1.1.1 universal.app / macOS arm64

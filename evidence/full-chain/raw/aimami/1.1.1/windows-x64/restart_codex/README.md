@@ -1,6 +1,6 @@
 # restart_codex — AiMaMi 1.1.1 Windows x64
 
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 **Machine**: <本地机器>
 **Date**: 2026-06-16
 **Binary SHA256**: d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610

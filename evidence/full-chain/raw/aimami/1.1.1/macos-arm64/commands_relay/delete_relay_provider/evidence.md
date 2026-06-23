@@ -5,7 +5,7 @@
 **binary_sha256**: (AiMaMi 1.1.1 universal — IDB loaded as AiMaMi.i64)
 **source_binary**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi
 **platform**: macos-arm64
-**session**: wf-aimami111-delta-20260616
+**session**: <审计会话>
 **machine**: <本地机器>
 **baseline**: 1.0.9 (readyToImplement; strictImplementationUse)
 
@@ -21,7 +21,7 @@
 | Size | 0x173 bytes (371 bytes) |
 | Demangled | `codexmate_lib::commands::relay::delete_relay_provider` |
 | Registration xref | `0x100316aca` in `codexmate_lib::run::{{closure}}::{{closure}}::ha9570ff2e2b6c2c5` |
-| IDB comment | appended `wf-aimami111-delta-20260616` |
+| IDB comment | appended `<审计会话>` |
 
 ### Owner Pseudocode (1.1.1)
 ```c

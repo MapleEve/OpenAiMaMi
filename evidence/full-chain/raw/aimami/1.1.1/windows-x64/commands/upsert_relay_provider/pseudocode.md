@@ -1,6 +1,6 @@
 # upsert_relay_provider — AiMaMi 1.1.1 win64 gold-leaf pseudocode
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 delta_class: integrity_recovered
 platform: windows-x64

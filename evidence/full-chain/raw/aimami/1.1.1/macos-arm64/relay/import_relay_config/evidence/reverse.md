@@ -1,6 +1,6 @@
 ## SAME-DEPTH-CONFIRM — import_relay_config — 1.1.1 vs 1.0.9
 
-session: wf-aimami111-same-depth-20260618
+session: <审计会话>
 machine: <本地机器>
 shard: mac-shard-3/6
 produced_at: 2026-06-19

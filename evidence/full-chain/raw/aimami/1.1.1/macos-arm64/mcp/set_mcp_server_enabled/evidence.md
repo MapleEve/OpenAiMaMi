@@ -1,6 +1,6 @@
 # evidence.md — set_mcp_server_enabled (AiMaMi 1.1.1 macos-arm64)
 
-**session**: wf-aimami111-delta-20260616
+**session**: <审计会话>
 **machine**: <本地机器>
 **produced_at**: 2026-06-17
 **binary_sha256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
@@ -24,7 +24,7 @@
 10. **error path**: server not found → format string "MCP server not found: " (22B @0x1010b6a09) → CoreError → CoreEnvelope err
 11. **response type**: `CoreEnvelope<Vec<McpServerSummary>>` — cmd_handler load_mcp_servers on success path returns updated server list; ok discriminant 0x8000000000000000
 12. **threading model**: sync mutex (OnceBox + Mutex::lock/unlock); no async/spawn; no HTTP; pure TOML config file mutation
-13. **IDB comments appended**: ×3 (0x10072bb90 owner, 0x1005a3760 core impl, 0x100312de0 dispatcher); "not gate promotion"; session wf-aimami111-delta-20260616
+13. **IDB comments appended**: ×3 (0x10072bb90 owner, 0x1005a3760 core impl, 0x100312de0 dispatcher); "not gate promotion"; session <审计会话>
 14. **1.0.9 baseline VA**: 0x10015d360 (macos) — VA drifted in 1.1.1 to 0x10072bb90; behavioral contract identical (argKeys, threading, side-effect, response all unchanged)
 15. **module归属**: `codexmate_lib::commands::mcp` (not commands::relay) — confirmed by demangled symbol; leaf dir = mcp/
 

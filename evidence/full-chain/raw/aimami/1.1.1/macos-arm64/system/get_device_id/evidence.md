@@ -1,6 +1,6 @@
 # get_device_id — macOS 逆向分析 Evidence (1.1.1 Delta Pass)
-<!-- session: wf-aimami111-delta-20260616 | machine: <本地机器> | sha: (aimami-1.1.1) | produced: 2026-06-17 -->
-<!-- baseline: 1.0.9 wf-aimami109-fullsurface-audit -->
+<!-- session: <审计会话> | machine: <本地机器> | sha: (aimami-1.1.1) | produced: 2026-06-17 -->
+<!-- baseline: 1.0.9 <审计会话> -->
 
 ## Summary
 
@@ -95,7 +95,7 @@ Rodata evidence: concatenated string `mysteryUnlockGrantsmysteryUnlockedRoutes` 
 - **Owner**: `codexmate_lib::commands::system::get_device_id::h01dc7e7292edc62a` @ `0x100615dd0`
 - **Size**: 0x303 = 771 bytes
 - **Decompile status**: SUCCESS — full pseudocode recovered, A-level
-- **逆向分析 session**: wf-aimami111-delta-20260616
+- **逆向分析 session**: <审计会话>
 - **IDB saved**: yes (see step 7)
 
 ### Pseudocode Summary

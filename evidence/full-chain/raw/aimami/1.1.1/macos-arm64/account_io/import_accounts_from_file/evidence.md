@@ -1,6 +1,6 @@
 # evidence.md — import_accounts_from_file delta (AiMaMi 1.1.1 vs 1.0.9)
 
-session: wf-aimami111-delta-20260617-sweep
+session: <审计会话>
 machine: <本地机器>
 producer: pure (no consumer)
 delta_class: integrity_recovered

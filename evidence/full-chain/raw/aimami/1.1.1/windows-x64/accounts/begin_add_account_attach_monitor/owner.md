@@ -1,6 +1,6 @@
 # owner.md — begin_add_account_attach_monitor (win x64, 1.1.1)
 
-**session**: wf-aimami111-delta-20260618-goldleaf
+**session**: <审计会话>
 **produced_at**: 2026-06-18
 **machine**: <本地机器>
 **IDB**: <本地路径>
@@ -17,7 +17,7 @@
 | 大小 | 0x48f bytes |
 | 角色 | L1 Tauri IPC entry point |
 | 命令字符串 VA | `0x1412ac25d` ("begin_add_account_attach_monitor", len=32) |
-| IDB 注释 | "gold-leaf for begin_add_account_attach_monitor; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion" |
+| IDB 注释 | "gold-leaf for begin_add_account_attach_monitor; sha d24e429a; session <审计会话>; not gate promotion" |
 
 ## 调用来源
 

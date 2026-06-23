@@ -1,6 +1,6 @@
 # Pseudocode — test_relay_provider_stream (Windows x64, AiMaMi 1.1.1)
 
-session: wf-aimami111-delta-20260616
+session: <审计会话>
 machine: <本地机器>
 date: 2026-06-16
 

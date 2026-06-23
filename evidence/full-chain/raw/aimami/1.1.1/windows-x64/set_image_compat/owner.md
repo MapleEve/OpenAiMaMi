@@ -1,6 +1,6 @@
 # set_image_compat — Owner (Windows x64, AiMaMi 1.1.1)
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 sha: d24e429a
 
@@ -60,5 +60,5 @@ tauri_ipc_main_dispatcher_sys @ 0x14000D2A0
 
 delta_class: `integrity_recovered`
 Reason: command is wholly new in 1.1.1; not present in 1.0.9 binary.
-The body-compare that triggered this leaf (sweep session wf-aimami111-delta-20260617-sweep)
+The body-compare that triggered this leaf (sweep session <审计会话>)
 confirmed: string "set_image_compat" at 0x1412AC1E1 exists in 1.1.1, absent from 1.0.9 binary.

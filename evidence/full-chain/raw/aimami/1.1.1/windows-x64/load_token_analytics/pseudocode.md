@@ -1,5 +1,5 @@
 # load_token_analytics — Windows x64 Pseudocode (Delta Leaf)
-# session: wf-aimami111-win-samedepth-patch-20260619
+# session: <审计会话>
 # machine: <本地机器>
 # sha: d24e429a
 # gate_tier: full_delta_leaf
@@ -20,7 +20,7 @@ VA: 0x140027A40 | Size: 0x4c1 bytes | String ref: aLoadTokenAnaly @ 0x1412ac427
 - 注意: token 响应格式不同于 session/change — `sub_140215050` 构建 token 响应 (不同于 change @ sub_1402171C0 / session @ sub_1402168D0)
 - 响应: `sub_140837DC0` (token analytics response builder)
 
-### 逆向分析 Pseudocode (verbatim, session wf-aimami111-win-samedepth-patch-20260619)
+### 逆向分析 Pseudocode (verbatim, session <审计会话>)
 
 ```c
 // load_token_analytics: token consumption analytics, accepts repo+range
@@ -196,7 +196,7 @@ __int64 __fastcall sub_1401C98B0(__int64 a1, _BYTE *a2, _QWORD *a3)
 
 ---
 
-## ACCEPTANCE (dim6, session wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6, session <审计会话>)
 
 ### Happy Path
 - Input: `{ repo: "<valid-installed-repo-id>", range: "<range-string>" }`

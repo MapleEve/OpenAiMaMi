@@ -1,6 +1,6 @@
 # interface.md — begin_add_account_attach_monitor (win x64, 1.1.1)
 
-**session**: wf-aimami111-delta-20260618-goldleaf
+**session**: <审计会话>
 **produced_at**: 2026-06-18
 
 ---

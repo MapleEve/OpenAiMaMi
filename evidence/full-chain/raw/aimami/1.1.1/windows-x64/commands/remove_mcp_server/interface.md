@@ -1,6 +1,6 @@
 # remove_mcp_server — interface.md
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器> (纯生产者)
 binary: AiMaMi 1.1.1 win64.exe
 gold_leaf: true

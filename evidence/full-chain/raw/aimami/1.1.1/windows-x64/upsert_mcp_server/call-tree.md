@@ -1,5 +1,5 @@
 # upsert_mcp_server — Win64 Call Tree
-## session: wf-aimami111-delta-20260617-sweep | machine: <本地机器>
+## session: <审计会话> | machine: <本地机器>
 ## delta_class: integrity_recovered | depth_reached: 5
 
 ---

@@ -1,6 +1,6 @@
 # upsert_relay_provider — owner.md (gold-leaf)
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 produced_at: 2026-06-18
 platform: windows-x64

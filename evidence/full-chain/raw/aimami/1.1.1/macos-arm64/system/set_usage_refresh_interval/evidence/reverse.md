@@ -1,6 +1,6 @@
 # set_usage_refresh_interval — SAME-DEPTH-CONFIRM — 1.1.1 vs 1.0.9
 
-**session**: wf-aimami111-same-depth-20260618
+**session**: <审计会话>
 **machine**: <本地机器>
 **shard**: mac-shard-6/6
 **owner_1.1.1**: codexmate_lib::commands::system::set_usage_refresh_interval @ 0x10061a6e0

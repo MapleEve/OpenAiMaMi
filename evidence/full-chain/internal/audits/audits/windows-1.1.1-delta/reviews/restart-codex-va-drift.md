@@ -1,6 +1,6 @@
 # 审查备注：restart_codex VA 漂移
 
-**session**: wf-aimami111-delta-20260617
+**session**: <审计会话>
 **发现来源**: win-divergence-111.json changed[0]
 
 ## 漂移内容

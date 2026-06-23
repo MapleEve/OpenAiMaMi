@@ -1,6 +1,6 @@
 # refresh_usage_snapshot — Call Tree (Windows x64)
-# session: wf-aimami111-delta-20260618-goldleaf (gold-leaf update) | sha: d24e429a
-# prior session: wf-aimami111-delta-20260617-sweep | delta_class: integrity_recovered
+# session: <审计会话> (gold-leaf update) | sha: d24e429a
+# prior session: <审计会话> | delta_class: integrity_recovered
 # IDB renames applied this session: refresh_usage_snapshot_owner_sys, post_loop_finalize, account_state_update,
 #   check_subscription_active_jwt, broadcast_runtime_state_updated, serialize_usage_attempt_stats
 

@@ -1,6 +1,6 @@
 # Evidence: load_snapshot — AiMaMi 1.1.1 macos-arm64
 
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 **Machine**: <本地机器>
 **Date**: 2026-06-17
 **Binary**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi (macos-arm64)

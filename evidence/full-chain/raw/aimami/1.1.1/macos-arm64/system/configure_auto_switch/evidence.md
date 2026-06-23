@@ -1,6 +1,6 @@
 # configure_auto_switch — AiMaMi 1.1.1 macOS ARM64 Evidence
 
-**session**: wf-aimami111-delta-20260616
+**session**: <审计会话>
 **machine**: <本地机器>
 **produced_at**: 2026-06-16
 **binary**: AiMaMi 1.1.1 universal (macOS ARM64)
@@ -141,7 +141,7 @@ Not in scope for this producer pass. Remains empty per 1.0.9 precedent.
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate**: strictImplementationUse → acceptance-draft（dim4 partial U1 + dim5 win Unknown 阻塞升档）
 

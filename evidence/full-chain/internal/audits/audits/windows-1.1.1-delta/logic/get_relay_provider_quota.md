@@ -2,7 +2,7 @@
 
 **版本**: 1.1.1 windows-x64 新增命令
 **gate**: strictImplementationUse_candidate
-**session_extension**: wf-aimami111-delta-20260617（截断解决版）
+**session_extension**: <审计会话>（截断解决版）
 **binary SHA256**: d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610
 
 ## IPC 合约

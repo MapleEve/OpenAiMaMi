@@ -1,5 +1,5 @@
 # call-tree.md — has_notch · windows-x64 · AiMaMi 1.1.1
-<!-- session=wf-aimami111-delta-20260618-goldleaf | machine=<本地机器> -->
+<!-- session=<审计会话> | machine=<本地机器> -->
 <!-- produced_at: 2026-06-18T00:00:00+08:00 | producer: claude-sonnet-4-6 -->
 <!-- extends has_notch.jsonl (d0-d2) with full depth=6 cleanup chain -->
 

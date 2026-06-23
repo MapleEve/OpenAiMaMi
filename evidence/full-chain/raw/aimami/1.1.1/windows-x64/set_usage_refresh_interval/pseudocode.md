@@ -1,5 +1,5 @@
 # set_usage_refresh_interval — AiMaMi 1.1.1 Windows x64
-<!-- session=wf-aimami111-delta-20260617-sweep | machine=<本地机器> | delta_class=integrity_recovered -->
+<!-- session=<审计会话> | machine=<本地机器> | delta_class=integrity_recovered -->
 <!-- baseline=1.0.9 | produced=2026-06-17 -->
 
 ## Owner Function
@@ -17,7 +17,7 @@
 ## Pseudocode — set_usage_refresh_interval_handler_111 (0x140018760)
 
 ```c
-// [wf-aimami111-delta-20260617 | delta_class=integrity_recovered]
+// [<审计会话> | delta_class=integrity_recovered]
 // IPC COMMAND HANDLER: set_usage_refresh_interval
 // PARAMS: {command:"set_usage_refresh_interval", app:str, interval:str("30s"|"1m"|"3m"|"5m")}
 __int64 __fastcall set_usage_refresh_interval_handler_111(__int64 a1 /*IpcContext*/)
@@ -247,7 +247,7 @@ void usage_refresh_notify_global_state_111(__int64 a1 /*seconds*/) {
 ---
 
 ## Pseudocode — hotspot_config_serialize_5field_json_and_write_sys (0x1401A1D90)
-<!-- gold-leaf addition: session=wf-aimami111-delta-20260618-goldleaf -->
+<!-- gold-leaf addition: session=<审计会话> -->
 
 ```c
 // Serializes 5-field hotspot config as JSON and writes to disk.
@@ -324,7 +324,7 @@ LABEL_8:  // serialization error
 ---
 
 ## Pseudocode — hotspot_config_file_write_bytes_sys (0x1403A64F0)
-<!-- gold-leaf addition: session=wf-aimami111-delta-20260618-goldleaf -->
+<!-- gold-leaf addition: session=<审计会话> -->
 
 ```c
 // Terminal disk-write leaf. Calls win32_file_write_bytes_111.

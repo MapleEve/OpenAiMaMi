@@ -14,7 +14,7 @@
   "evidence_refs": [
     "system/get_hotspot_enabled/pseudocode.md — owner@0x140021570 (879B) + get_hotspot_config_core_read_sys_111@0x14060CBC0 + codexmate_settings_hotspot_read_full_sys_111@0x1401A15D0",
     "system/get_hotspot_enabled/call-tree.md (from gate-report dim3 depth=5)",
-    "system/get_hotspot_enabled/gate-report.json — wf-aimami111-dim6-100-20260619 all 6 dims CLOSED",
+    "system/get_hotspot_enabled/gate-report.json — <审计会话> all 6 dims CLOSED",
     "system/get_hotspot_enabled/interface.md — bool response, no side effects",
     "system/get_hotspot_enabled/owner.md",
     "frontend/ipc-contracts.jsonl — tauriInvokeWrapper wrapper=getHotspotEnabled argKeys=[] index-DdcCOEJG.js:86",
@@ -66,10 +66,10 @@
   },
   "dim6_detail": {
     "status": "acceptance-draft",
-    "session": "wf-aimami111-dim6-100-20260619",
+    "session": "<审计会话>",
     "happy_path": "invoke('get_hotspot_enabled') → read CodexMateSettings key='hotspot' → return bool",
     "boundary_errors": ["mutex poisoned → panic", "hotspot key missing → Err(2) → sentinel None/false"],
     "test_mapping": "e2e: seed settings hotspot=true; getHotspotEnabled()→true; seed hotspot=false→false; remove key→sentinel (no crash)"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

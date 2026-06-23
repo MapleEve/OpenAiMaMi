@@ -1,6 +1,6 @@
 # interface — load_installed_skills (AiMaMi 1.1.1 win64)
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 date: 2026-06-18
 

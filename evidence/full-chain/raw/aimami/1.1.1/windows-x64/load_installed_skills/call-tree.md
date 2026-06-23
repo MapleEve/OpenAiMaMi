@@ -1,6 +1,6 @@
 # call-tree — load_installed_skills (AiMaMi 1.1.1 win64)
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 date: 2026-06-18
 delta_class: integrity_recovered
 baseline: 1.0.9

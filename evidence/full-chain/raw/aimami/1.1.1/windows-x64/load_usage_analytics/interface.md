@@ -1,5 +1,5 @@
 # load_usage_analytics — IPC Interface (Windows x64)
-# session: wf-aimami111-win-samedepth-patch-20260619
+# session: <审计会话>
 
 ## IPC Registration
 - Command string: `"load_usage_analytics"` (len=20) @ 0x1412ac3eb

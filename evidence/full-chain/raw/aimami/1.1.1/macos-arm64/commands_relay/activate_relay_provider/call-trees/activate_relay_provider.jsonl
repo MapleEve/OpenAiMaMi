@@ -1,4 +1,4 @@
-{"depth":0,"va":"0x1005eb760","symbol":"codexmate_lib::commands::relay::activate_relay_provider","size":495,"role":"tauri_command_handler","module":"commands::relay","session":"wf-aimami111-delta-20260616"}
+{"depth":0,"va":"0x1005eb760","symbol":"codexmate_lib::commands::relay::activate_relay_provider","size":495,"role":"tauri_command_handler","module":"commands::relay","session":"<审计会话>"}
 {"depth":1,"va":"0x1005dfab0","symbol":"codexmate_lib::core::relay::manager::RelayManager::activate","size":2080,"role":"core_orchestrator","caller":"0x1005eb760","call_type":"direct"}
 {"depth":2,"va":"0x1005e0330","symbol":"codexmate_lib::core::relay::manager::RelayManager::snapshot","role":"read_state_clone","caller":"0x1005dfab0","call_type":"direct"}
 {"depth":2,"va":"0x1005d65c0","symbol":"codexmate_lib::core::relay::manager::RelayManager::ensure_provider_loaded","role":"provider_lookup_by_ide_id","caller":"0x1005dfab0","call_type":"direct","error_path":"Err if ide_id not in providers Vec"}
@@ -25,4 +25,4 @@
 {"depth":3,"va":"0x100f29bd0","symbol":"std::net::tcp::TcpStream::connect_timeout","role":"probe_proxy_port_127.0.0.1:proxy_port","caller":"0x1005d56f0","leaf_type":"network_probe"}
 {"depth":3,"va":"0x1002cf3a0","symbol":"tokio::runtime::Runtime::block_on","role":"async_spawn_proxy_process","caller":"0x1005d56f0","leaf_type":"async_runtime_terminal"}
 {"depth":2,"va":"0x100557920","symbol":"codexmate_lib::core::models::CoreEnvelope::ok","role":"wrap_ok_response","caller":"0x1005eb760","call_type":"success_path"}
-{"terminated_reason":"all leaves reached: fs_write (relay.json atomic), fs_write (codex catalog), network_probe (proxy port), async_runtime (proxy spawn), in_memory_state_mutation (RelayActiveByIde::add)","max_depth_reached":5,"session":"wf-aimami111-delta-20260616"}
+{"terminated_reason":"all leaves reached: fs_write (relay.json atomic), fs_write (codex catalog), network_probe (proxy port), async_runtime (proxy spawn), in_memory_state_mutation (RelayActiveByIde::add)","max_depth_reached":5,"session":"<审计会话>"}

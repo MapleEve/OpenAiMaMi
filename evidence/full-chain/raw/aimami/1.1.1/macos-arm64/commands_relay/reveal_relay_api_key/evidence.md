@@ -1,5 +1,5 @@
 # Evidence: reveal_relay_api_key
-## AiMaMi 1.1.1 | macos-arm64 | session wf-aimami111-delta-20260616
+## AiMaMi 1.1.1 | macos-arm64 | session <审计会话>
 ## Machine: <本地机器> | Date: 2026-06-17
 
 ---

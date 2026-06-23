@@ -14,7 +14,7 @@
   "evidence_refs": [
     "system/get_or_create_remote_device_secret/pseudocode.md — gold-leaf layers 1-5: owner@0x14078CD70 + core@0x1401B4FB0 + uuid_v4_generate_raw_sys@0x140F5A860 (ProcessPrng+RFC4122) + uuid hex32 formatter + settings write",
     "system/get_or_create_remote_device_secret/call-tree.md — depth=5 edges=42 all terminated",
-    "system/get_or_create_remote_device_secret/gate-report.json — wf-aimami111-delta-20260618-goldleaf dims confirmed",
+    "system/get_or_create_remote_device_secret/gate-report.json — <审计会话> dims confirmed",
     "system/get_or_create_remote_device_secret/interface.md",
     "system/get_or_create_remote_device_secret/evidence.json",
     "frontend/ipc-contracts.jsonl — tauriInvokeRaw argKeys=[] index-DdcCOEJG.js:86 fn=Co",
@@ -77,7 +77,7 @@
   },
   "dim6_detail": {
     "status": "acceptance-draft",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "happy_path_existing": "remoteDeviceSecret present + non-empty after trim → return existing value; NO file write",
     "happy_path_create": "secret absent/empty → ProcessPrng 16B → RFC4122 bitmask → hex32 lowercase → '{hex32}-{hex32}' (65 chars) → write settings → return new secret",
     "test_mapping": [
@@ -86,5 +86,5 @@
       "e2e: verify 1.0.9 73-char format not returned by 1.1.1 binary"
     ]
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

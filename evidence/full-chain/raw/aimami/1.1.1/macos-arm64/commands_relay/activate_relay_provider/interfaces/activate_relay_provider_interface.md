@@ -1,6 +1,6 @@
 # Interface / DTO / Error / Side-Effect Boundary
 # activate_relay_provider — AiMaMi 1.1.1 macOS arm64
-# session: wf-aimami111-delta-20260616
+# session: <审计会话>
 
 ## Command Name
 `activate_relay_provider`

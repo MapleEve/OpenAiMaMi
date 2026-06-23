@@ -1,6 +1,6 @@
 # data_store_identifiers — win 1.1.1 backend-only orphan (orchestrator-verified)
 
-**session**: wf-aimami111-backend-orphan-materialize-20260622-orchestrator-verified
+**session**: <审计会话>
 **verdict**: present_same
 **owner_va**: 0x14094D300
 **size_bytes**: 1968 (1.0.9: 1968)

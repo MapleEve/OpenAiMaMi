@@ -1,6 +1,6 @@
 # activate_relay_provider — Call Tree (Windows x64)
 
-**session**: wf-aimami111-delta-20260618-goldleaf
+**session**: <审计会话>
 **binary**: AiMaMi 1.1.1 win64.exe
 **delta_class**: integrity_recovered
 **produced**: 2026-06-18

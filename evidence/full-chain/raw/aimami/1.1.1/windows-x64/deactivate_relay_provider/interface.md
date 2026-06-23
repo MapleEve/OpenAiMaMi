@@ -1,5 +1,5 @@
 # deactivate_relay_provider — Interface & DTO (Windows x64, Gold Leaf)
-**Session**: wf-aimami111-delta-20260618-goldleaf
+**Session**: <审计会话>
 
 ---
 

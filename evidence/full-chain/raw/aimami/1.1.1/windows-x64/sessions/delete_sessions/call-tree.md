@@ -1,5 +1,5 @@
 # delete_sessions — call tree (windows-x64, AiMaMi 1.1.1)
-session: wf-aimami111-delta-20260618-goldleaf  (upgraded from wf-aimami111-delta-20260617-sweep)
+session: <审计会话>  (upgraded from <审计会话>)
 delta_class: integrity_recovered
 gate_tier: gold-leaf
 

@@ -3,7 +3,7 @@
   "command": "get_image_compat",
   "platform": "windows-x64",
   "version": "1.1.1",
-  "session": "wf-aimami111-win-100-20260620",
+  "session": "<审计会话>",
   "machine": "<本地机器>",
   "produced_at": "2026-06-20T00:00:00Z",
   "idb": "<本地路径>",
@@ -27,7 +27,7 @@
     "1.0.9 had tauri_cmd_get_image_compat_handler@0x1402779B0; absent in 1.1.1",
     "Only set_image_compat_owner_sys@0x1400173A0 remains (write direction only); read direction removed",
     "Frontend still has invoke call (getImageCompat in ipc-contracts.jsonl) — dead code; will error at runtime against 1.1.1 backend",
-    "Moved from win-delta.txt to removed.txt (win-only-removed) session wf-aimami111-win-100-20260620",
+    "Moved from win-delta.txt to removed.txt (win-only-removed) session <审计会话>",
     "Consumer action: remove frontend invoke('get_image_compat') calls; command no longer implemented"
   ],
   "evidence_refs": [
@@ -44,5 +44,5 @@
     "consumer_action": "Remove frontend invoke('get_image_compat') calls; do NOT implement a new handler matching 1.0.9 behavior unless explicitly re-added to spec"
   },
   "prev_gate": "consumerStartReady (dim2/dim3/dim4/dim5 open; command_removed verdict)",
-  "reclassification_note": "Reclassified from win-delta to removed (win-only-removed) session wf-aimami111-win-100-20260620. Not a gate downgrade — a delta classification correction: binary 0-hit confirmed command removal; should never have been in delta. Leaf retained for audit trail."
+  "reclassification_note": "Reclassified from win-delta to removed (win-only-removed) session <审计会话>. Not a gate downgrade — a delta classification correction: binary 0-hit confirmed command removal; should never have been in delta. Leaf retained for audit trail."
 }

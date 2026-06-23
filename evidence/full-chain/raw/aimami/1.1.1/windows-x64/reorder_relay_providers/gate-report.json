@@ -24,6 +24,6 @@
   "dim3_evidence": "call-tree depth=6 terminated at atomic_write WIN fs leaf (GetCurrentProcessId+CloseHandle); 15 jsonl entries; all leaves: WIN lock, TLS id-index rebuild, SIMD Vec reorder stride=232B, JSON serialize, atomic_write",
   "dim4_evidence": "params: manager(String)+orderedIds(Vec<String>); len-match constraint; null response on success; CoreError oword on error; 3 side-effects: in-memory reorder + atomic_write 9-field relay config + TLS HashMap rebuild",
   "dim5_evidence": "_InterlockedCompareExchange8+WakeByAddressSingle WIN lock confirmed; GetCurrentProcessId in atomic_write; relay state poisoned panic@0x1412EA5ED; WIN atomic file write with CloseHandle",
-  "dim6_evidence": "acceptance-draft by wf-aimami111-dim6-20260619; promoted to readyToImplement in win-consolidated.json",
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "dim6_evidence": "acceptance-draft by <审计会话>; promoted to readyToImplement in win-consolidated.json",
+  "regen_by": "<审计会话>"
 }

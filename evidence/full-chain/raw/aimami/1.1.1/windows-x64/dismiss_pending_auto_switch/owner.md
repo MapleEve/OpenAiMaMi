@@ -1,5 +1,5 @@
 # dismiss_pending_auto_switch — Owner Summary (Windows x64)
-# AiMaMi 1.1.1 win64.exe · gold-leaf session = wf-aimami111-delta-20260618-goldleaf
+# AiMaMi 1.1.1 win64.exe · gold-leaf session = <审计会话>
 # sha d24e429a · machine = <本地机器>
 
 ## Owner Function Registry

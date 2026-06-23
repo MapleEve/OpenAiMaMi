@@ -1,9 +1,9 @@
 {
   "schema": "c5cm.reverse.gate_report.bundle.v1",
   "bundle_id": "macos-1.1.1-delta",
-  "session": "wf-aimami111-delta-20260617-repair",
-  "session_integrity": "wf-aimami111-delta-20260617-depth",
-  "session_sweep": "wf-aimami111-delta-20260617-sweep",
+  "session": "<审计会话>",
+  "session_integrity": "<审计会话>",
+  "session_sweep": "<审计会话>",
   "machine": "<本地机器>",
   "produced_at": "2026-06-17T00:00:00+08:00",
   "updated_at": "2026-06-19T00:00:00+08:00",
@@ -21,7 +21,7 @@
       "platform": "macos-arm64",
       "reclassified_from": "same_skip_inherited",
       "reclassified_to": "body_delta",
-      "session": "wf-aimami111-delta-20260617-depth",
+      "session": "<审计会话>",
       "va_1_1_1": "0x1005e8dd0",
       "va_1_0_9": "0x1001dff6c",
       "change_class": "callee_set_restructure",
@@ -40,13 +40,13 @@
       "command": "set_codex_api_slots",
       "gate": "strictImplementationUse",
       "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/set_codex_api_slots/evidence.md",
-      "gate_session": "wf-aimami111-delta-20260618-mac100"
+      "gate_session": "<审计会话>"
     },
     {
       "command": "get_relay_provider_quota",
       "gate": "readyToImplement",
       "gate_previous": "strictImplementationUse_candidate",
-      "regrade_session": "wf-aimami111-dim6-100-20260619",
+      "regrade_session": "<审计会话>",
       "regrade_reason": "dim1-5 all closed incl Windows; dim6 draft written; per-platform mac gate RTI",
       "source": "raw/aimami/1.1.1/macos-arm64/relay/get_relay_provider_quota/evidence.md"
     },
@@ -54,7 +54,7 @@
       "command": "reorder_relay_providers",
       "gate": "strictImplementationUse",
       "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/reorder_relay_providers/evidence.md",
-      "gate_session": "wf-aimami111-delta-20260618-mac100"
+      "gate_session": "<审计会话>"
     },
     {
       "command": "reveal_relay_api_key",
@@ -65,13 +65,13 @@
       "command": "set_relay_display_tags",
       "gate": "strictImplementationUse",
       "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/set_relay_display_tags/evidence.md",
-      "gate_session": "wf-aimami111-delta-20260618-mac100"
+      "gate_session": "<审计会话>"
     },
     {
       "command": "parse_aimami_deeplink",
       "gate": "strictImplementationUse",
       "source": "raw/aimami/1.1.1/macos-arm64/deeplink/parse_aimami_deeplink/evidence.md",
-      "gate_session": "wf-aimami111-delta-20260618-mac100"
+      "gate_session": "<审计会话>"
     },
     {
       "command": "test_relay_draft_stream",
@@ -93,7 +93,7 @@
       "command": "refresh_usage_snapshot",
       "gate": "strictImplementationUse",
       "source": "raw/aimami/1.1.1/macos-arm64/accounts/refresh_usage_snapshot/gate-report.json",
-      "gate_session": "wf-aimami111-delta-20260618-mac100"
+      "gate_session": "<审计会话>"
     },
     {
       "command": "cancel_voice_trigger_capture",
@@ -111,7 +111,7 @@
       "command": "get_relay_proxy_status",
       "gate": "readyToImplement",
       "gate_previous": "strictImplementationUse_candidate",
-      "regrade_session": "wf-aimami111-dim6-100-20260619",
+      "regrade_session": "<审计会话>",
       "regrade_reason": "dim1 PASS (col:120600); dim5_win_Unknown only; per-platform mac gate RTI. BREAKING: hostStr/portStr format changed to full URL with /codex/v1",
       "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/get_relay_proxy_status/evidence.md"
     },
@@ -119,40 +119,40 @@
       "command": "remove_mcp_server",
       "gate": "strictImplementationUse",
       "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/remove_mcp_server/evidence.md",
-      "gate_session": "wf-aimami111-delta-20260618-mac100"
+      "gate_session": "<审计会话>"
     },
     {
       "command": "set_codex_router_enabled",
       "gate": "strictImplementationUse",
       "source": "raw/aimami/1.1.1/macos-arm64/commands_relay/set_codex_router_enabled/evidence.md",
-      "gate_session": "wf-aimami111-delta-20260618-mac100"
+      "gate_session": "<审计会话>"
     },
     {
       "command": "diagnose_codex_router",
       "gate": "readyToImplement",
       "gate_previous": "strictImplementationUse",
-      "regrade_session": "wf-aimami111-dim6-100-20260619",
+      "regrade_session": "<审计会话>",
       "regrade_reason": "dim4 accepted_unknown (stale-reason format templates) non-blocking; dim5_win_Unknown only; per-platform mac gate RTI; read-only command zero side-effects",
       "source": "raw/aimami/1.1.1/macos-arm64/relay/diagnose_codex_router/evidence.md",
-      "gate_session": "wf-aimami111-delta-20260618-mac100"
+      "gate_session": "<审计会话>"
     },
     {
       "command": "get_hotspot_enabled",
       "gate": "strictImplementationUse",
       "source": "raw/aimami/1.1.1/macos-arm64/hotspot/get_hotspot_enabled/evidence.md",
-      "gate_session": "wf-aimami111-delta-20260618-mac100"
+      "gate_session": "<审计会话>"
     },
     {
       "command": "set_mcp_server_enabled",
       "gate": "strictImplementationUse",
       "source": "raw/aimami/1.1.1/macos-arm64/mcp/set_mcp_server_enabled/evidence.md",
-      "gate_session": "wf-aimami111-delta-20260618-mac100"
+      "gate_session": "<审计会话>"
     },
     {
       "command": "upsert_mcp_server",
       "gate": "strictImplementationUse",
       "source": "raw/aimami/1.1.1/macos-arm64/mcp/upsert_mcp_server/evidence.md",
-      "gate_session": "wf-aimami111-delta-20260618-mac100"
+      "gate_session": "<审计会话>"
     },
     {
       "command": "apply_custom_instruction",
@@ -170,20 +170,20 @@
       "command": "load_sessions",
       "gate": "readyToImplement",
       "gate_previous": "strictImplementationUse",
-      "regrade_session": "wf-aimami111-dim6-100-20260619",
+      "regrade_session": "<审计会话>",
       "regrade_reason": "dim1 accepted_unknown (1.0.9 baseline carry, pipeline convention non-blocking); dim5_win dropped per-platform mac gate; READ-ONLY SQL; mac RTI",
       "note": "delta_nil; VA drift only",
       "source": "raw/aimami/1.1.1/macos-arm64/commands_sessions/load_sessions/evidence.md",
-      "gate_session": "wf-aimami111-delta-20260618-mac100"
+      "gate_session": "<审计会话>"
     },
     {
       "command": "load_snapshot",
       "gate": "readyToImplement",
       "gate_previous": "strictImplementationUse",
-      "regrade_session": "wf-aimami111-dim6-100-20260619",
+      "regrade_session": "<审计会话>",
       "regrade_reason": "dim1 ACCEPTED_UNKNOWN (1.0.9 baseline carry, pipeline convention non-blocking); dim5_win dropped per-platform mac gate; mac RTI",
       "source": "raw/aimami/1.1.1/macos-arm64/accounts/load_snapshot/evidence.md",
-      "gate_session": "wf-aimami111-delta-20260618-mac100"
+      "gate_session": "<审计会话>"
     }
   ],
   "same_skip_inherited": {
@@ -197,10 +197,10 @@
     "count_original": 34,
     "note": "voice全家(32条含inject_voice_text)+custom_instructions孤儿(load_custom_instruction_state/preview_custom_instruction_apply/rollback_custom_instruction)；Product决策不逆；不实现backend"
   },
-  "session_mac100": "wf-aimami111-delta-20260618-mac100",
+  "session_mac100": "<审计会话>",
   "mac100_upgraded_count": 13,
   "dim6": {
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "machine": "<本地机器>",
     "produced_at": "2026-06-19",
     "shards": [
@@ -287,10 +287,10 @@
     },
     "bundle_gate_after_dim6": "readyToImplement",
     "bundle_readyToImplement_after_dim6": true,
-    "note": "dim6-100 終账（session wf-aimami111-dim6-100-20260619）：43/43 mac delta 命令达 readyToImplement（100%）。regrade+close 两轮共解除 19 个卡档（regrade+12, close-1+3, close-2+4）。仍阻断 2 条（dim4_partial SwitchPayload serde 字段名不可字节恢复）：confirm_pending_auto_switch、confirm_pending_auto_switch_and_restart_codex。"
+    "note": "dim6-100 終账（session <审计会话>）：43/43 mac delta 命令达 readyToImplement（100%）。regrade+close 两轮共解除 19 个卡档（regrade+12, close-1+3, close-2+4）。仍阻断 2 条（dim4_partial SwitchPayload serde 字段名不可字节恢复）：confirm_pending_auto_switch、confirm_pending_auto_switch_and_restart_codex。"
   },
   "mac_regrade": {
-    "session": "wf-aimami111-dim6-100-20260619",
+    "session": "<审计会话>",
     "machine": "<本地机器>",
     "produced_at": "2026-06-19",
     "rule": "per-platform mac gate — dim5_win_Unknown 单独不阻塞 mac readyToImplement",
@@ -338,7 +338,7 @@
     "detail_file": "intermediate/aimami/1.1.1/version-delta/dim6/mac-regrade.json"
   },
   "dim6_close": {
-    "session": "wf-aimami111-dim6-100-20260619",
+    "session": "<审计会话>",
     "machine": "<本地机器>",
     "produced_at": "2026-06-19",
     "close_passes": [
@@ -374,7 +374,7 @@
 
   "rollup": {
     "schema": "c5cm.gate_report.rollup.v2_gate_final",
-    "gate_final_session": "wf-aimami111-gate-final-20260620",
+    "gate_final_session": "<审计会话>",
     "machine": "<本地机器>",
     "role": "producer",
     "gate_final_at": "2026-06-20",
@@ -468,11 +468,11 @@
     ],
     "all_accepted_unknown_have_recovery_attempts": true,
     "illegal_accepted_unknown_count": 0,
-    "authority_note": "本段为 gate-final session wf-aimami111-gate-final-20260620 写入的定版诚实重生 rollup。源自 mac-shard-1~5 直接读盘聚合，取代此前所有中间 gate-report 漂移数字（含 gate-consolidate 污染）。消费者唯一权威计数入口。"
+    "authority_note": "本段为 gate-final session <审计会话> 写入的定版诚实重生 rollup。源自 mac-shard-1~5 直接读盘聚合，取代此前所有中间 gate-report 漂移数字（含 gate-consolidate 污染）。消费者唯一权威计数入口。"
   },
 
   "dim6_final": {
-    "session": "wf-aimami111-dim6-final-20260620",
+    "session": "<审计会话>",
     "machine": "<本地机器>",
     "produced_at": "2026-06-20",
     "shard": "mac-final",

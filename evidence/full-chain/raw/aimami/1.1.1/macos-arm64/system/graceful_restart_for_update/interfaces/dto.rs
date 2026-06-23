@@ -1,7 +1,7 @@
 // IPC Interface — graceful_restart_for_update
 // Module: codexmate_lib::commands::system
 // VA: 0x10061b740 (AiMaMi 1.1.1 macOS arm64)
-// Session: wf-aimami111-delta-20260618-mac100
+// Session: <审计会话>
 //
 // IPC 命令名: "graceful_restart_for_update"
 // 字符串地址: 0x101147ff5

@@ -1,6 +1,6 @@
 # mystery_unlock — win 1.1.1 backend-only orphan (orchestrator-verified)
 
-**session**: wf-aimami111-backend-orphan-materialize-20260622-orchestrator-verified
+**session**: <审计会话>
 **verdict**: removed_direct_cmd
 **owner_va**: None
 **size_bytes**: 0 (1.0.9: 0)

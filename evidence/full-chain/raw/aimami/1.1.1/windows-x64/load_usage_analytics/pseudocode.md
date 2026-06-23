@@ -1,5 +1,5 @@
 # load_usage_analytics — Windows x64 Pseudocode (Delta Leaf)
-# session: wf-aimami111-win-samedepth-patch-20260619
+# session: <审计会话>
 # machine: <本地机器>
 # sha: d24e429a
 # gate_tier: full_delta_leaf
@@ -24,7 +24,7 @@ VA: 0x14001B850 | Size: 0x38f bytes | String ref: aLoadUsageAnaly @ 0x1412ac3eb
 - **注意**: 此命令不接受 range 参数（与其他 analytics 命令不同），直接调用 `sub_1401C9EF0`
 - 响应: `sub_140836690` (usage analytics response builder)
 
-### 逆向分析 Pseudocode (verbatim, session wf-aimami111-win-samedepth-patch-20260619)
+### 逆向分析 Pseudocode (verbatim, session <审计会话>)
 
 ```c
 // load_usage_analytics: combined usage report with FILE WRITE SIDE EFFECTS
@@ -242,7 +242,7 @@ LABEL_63:
 
 ---
 
-## ACCEPTANCE (dim6, session wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6, session <审计会话>)
 
 ### Happy Path
 - Input: `{ repo: "<valid-installed-repo-id>" }` — NO range param

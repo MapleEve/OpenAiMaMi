@@ -1,6 +1,6 @@
 # load_mcp_servers — Interface & DTO Record
 ## AiMaMi 1.1.1 macOS arm64
-## session: wf-aimami111-delta-20260618-mac100
+## session: <审计会话>
 ## date: 2026-06-18
 
 ---

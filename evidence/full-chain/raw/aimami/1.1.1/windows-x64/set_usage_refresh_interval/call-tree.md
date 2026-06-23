@@ -1,5 +1,5 @@
 # Call Tree — set_usage_refresh_interval (AiMaMi 1.1.1 win64)
-<!-- session=wf-aimami111-delta-20260618-goldleaf | delta_class=integrity_recovered | 2026-06-18 | gold-leaf extension -->
+<!-- session=<审计会话> | delta_class=integrity_recovered | 2026-06-18 | gold-leaf extension -->
 
 ```
 set_usage_refresh_interval_handler_111 [0x140018760] (owner, size=0x5DE)
@@ -59,7 +59,7 @@ set_usage_refresh_interval_handler_111 [0x140018760] (owner, size=0x5DE)
 
 terminated_reason: all branches reach IPC response dispatch, platform-primitive, or goto LABEL_22 cleanup
 depth_reached: 7 (win32_file_write_bytes_111 is deepest — Windows platform primitive)
-gold_leaf_session: wf-aimami111-delta-20260618-goldleaf (extended from depth=5 to depth=7, added hotspot_config_file_write_bytes_sys + win32_file_write_bytes_111)
+gold_leaf_session: <审计会话> (extended from depth=5 to depth=7, added hotspot_config_file_write_bytes_sys + win32_file_write_bytes_111)
 ```
 
 ## Legend

@@ -1,5 +1,5 @@
 # load_session_analytics — Call Tree (Windows x64)
-# session: wf-aimami111-win-samedepth-patch-20260619
+# session: <审计会话>
 # owner VA: 0x140026BD0 | size: 0x511 | IDB name: load_session_analytics_impl_111
 
 ## Depth-annotated tree

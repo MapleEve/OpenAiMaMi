@@ -17,7 +17,7 @@
     "commands_relay/reveal_relay_api_key/ida/pseudocode/0003_reveal_relay_api_key_keychain_get_api_key_h06ffa0ee9def7259.c",
     "commands_relay/reveal_relay_api_key/call-trees/reveal_relay_api_key.jsonl (depth=4+, 25 entries, Keychain syscall terminal)",
     "commands_relay/reveal_relay_api_key/interfaces/interface.md (3-tier arch, argKeys=[providerId], CoreEnvelope<Option<String>>)",
-    "commands_relay/reveal_relay_api_key/gate-report-dim6.json (session=wf-aimami111-dim6-20260619, acceptance-draft, dim1 confirmed)",
+    "commands_relay/reveal_relay_api_key/gate-report-dim6.json (session=<审计会话>, acceptance-draft, dim1 confirmed)",
     "frontend/ipc-contracts.jsonl:L86:col120447 command=reveal_relay_api_key argKeys=[providerId] wrapper=revealApiKey",
     "frontend/frontend-control-flow.jsonl:L86:col120462 terminal=reveal_relay_api_key argKeys=[providerId]",
     "frontend/frontend-control-flow.jsonl:relay-page-CsHU7KuS.js:L43 callsite=Mc->ft.revealApiKey(b.id)"
@@ -28,7 +28,7 @@
     "dim3_call_tree_depth5": "25 entries. Depth 4 in call tree, but terminal leaves include: Mutex::lock/unlock(stdlib), memcmp(libc), String::clone(alloc), fs::read_to_string(FS leaf), serde_json::from_trait(serde leaf), base64::decode(leaf), sha2::compress256(crypto leaf), hostname::get(OS syscall), std::env::_var(syscall), security_framework::generic_password(macOS Keychain syscall), DirBuilder::create(fs), set_permissions(fs), fs::write(fs). All branches terminal. depth from IPC dispatcher = 5 total (dispatcher->owner->get_api_key->mac_keychain::get->security_framework). CLOSED.",
     "dim4_interface_dto_error_sideeffect": "argKeys=[providerId:String]. Response CoreEnvelope<Option<String>>: Some(api_key) on cache hit; None on all-tiers miss (not an error). 3-tier architecture: T1(read_to_string plain file), T2(JSON+base64+SHA256(hostname:username) decrypt), T3(macOS Keychain Services generic_password -25300=None). Side-effect on cache miss: write_key_file (mkdir+chmod+fs::write Tier1). Mutex poisoned -> unwrap_failed panic. CLOSED.",
     "dim5_same_platform_gate": "macos-arm64 confirmed. Owner VA=0x1005d21a0. Dispatcher ICF-merged @0x10031aa60. security_framework::generic_password (macOS-specific Keychain). CLOSED. dim5_win: separate session required for Windows Keychain impl — non-blocking for mac gate.",
-    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, dim1 resolved per note, session=wf-aimami111-dim6-20260619. Tier3 macOS Keychain path: manual acceptance required per test_mapping. Producer acceptance-draft = dim6 closed. CLOSED."
+    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, dim1 resolved per note, session=<审计会话>. Tier3 macOS Keychain path: manual acceptance required per test_mapping. Producer acceptance-draft = dim6 closed. CLOSED."
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

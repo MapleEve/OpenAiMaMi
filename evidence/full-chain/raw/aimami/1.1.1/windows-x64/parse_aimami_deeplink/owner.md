@@ -1,7 +1,7 @@
 # parse_aimami_deeplink — Owner / VA Table (Windows x64, AiMaMi 1.1.1)
 
 ## Session
-- session: wf-aimami111-delta-20260616
+- session: <审计会话>
 - machine: <本地机器>
 - model: claude-sonnet-4-6
 - date: 2026-06-16

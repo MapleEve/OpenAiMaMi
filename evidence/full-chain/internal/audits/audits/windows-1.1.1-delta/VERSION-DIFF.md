@@ -5,7 +5,7 @@
 **基线**: 1.0.9（100% 逆完，full_gold_leaf 全部已落）
 **目标**: 1.1.1
 **binary SHA256**: d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610
-**session**: wf-aimami111-delta-20260618-mac100
+**session**: <审计会话>
 **machine**: <本地机器>
 **produced_at**: 2026-06-18
 **权威来源**: intermediate/aimami/1.1.1/version-delta/win-delta.txt（54 条全量 delta）
@@ -639,9 +639,9 @@ win-delta.txt 54 条均为 delta。第一节 17 条为新增命令（1.0.9 win �
 
 ---
 
-## dim6 消费者接受度评估（session wf-aimami111-dim6-20260619）
+## dim6 消费者接受度评估（session <审计会话>）
 
-**produced_at**: 2026-06-19 · **session**: wf-aimami111-dim6-20260619 · **机器**: <本地机器> · **shards**: win-shard-1 ～ win-shard-7
+**produced_at**: 2026-06-19 · **session**: <审计会话> · **机器**: <本地机器> · **shards**: win-shard-1 ～ win-shard-7
 
 ### 整体结论
 

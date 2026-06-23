@@ -1,4 +1,4 @@
-{"depth":0,"addr":"0x1006162b0","name":"codexmate_lib::commands::system::get_system_info","role":"command_owner","session":"wf-aimami111-same-depth-20260618","note":"No Mutex; direct impl in command fn; returns {os_name,os_version,arch,hostname} JSON DTO"}
+{"depth":0,"addr":"0x1006162b0","name":"codexmate_lib::commands::system::get_system_info","role":"command_owner","session":"<审计会话>","note":"No Mutex; direct impl in command fn; returns {os_name,os_version,arch,hostname} JSON DTO"}
 {"depth":1,"addr":"0x10090e350","name":"hostname::get","role":"hostname_reader","terminated_reason":"external_call_recorded","note":"Reads system hostname via libc gethostname()"}
 {"depth":1,"addr":"0x100f65430","name":"alloc::string::String::from_utf8_lossy","role":"utf8_decode","terminated_reason":"named_leaf"}
 {"depth":1,"addr":"0x100f31ac0","name":"std::sys::process::unix::common::Command::new","role":"cmd_new","terminated_reason":"external_call_recorded","note":"sw_vers subprocess"}

@@ -1,6 +1,6 @@
 # owner — load_installed_skills (AiMaMi 1.1.1 win64)
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 date: 2026-06-18
 delta_class: integrity_recovered
@@ -109,5 +109,5 @@ dim5: PASS
 
 ```
 rename: sub_14002A100 → load_installed_skills_cmd_111
-set_comments @ 0x14002A100: "gold-leaf for load_installed_skills; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion"
+set_comments @ 0x14002A100: "gold-leaf for load_installed_skills; sha d24e429a; session <审计会话>; not gate promotion"
 ```

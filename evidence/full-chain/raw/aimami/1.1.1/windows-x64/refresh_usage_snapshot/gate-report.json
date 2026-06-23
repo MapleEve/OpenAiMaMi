@@ -18,13 +18,13 @@
     "call-tree.md: depth>=5, fetch_wham_usage_http_111 NEW side-effect HTTP, quota_history_persist_file_111 NEW disk write, broadcast_runtime_state_updated_111 event bus, all branches terminated",
     "interface.md: response={usageAttemptCount,usageSuccessCount,lastUsageFailure,lastUsageFailureAccount} NEW 4 fields; side-effects HTTP+disk+in-mem-ring+event-broadcast; pre-checks documented",
     "owner.md: refresh_usage_snapshot_owner_sys @0x140984C40 size=0xF9E; decompile_status=FAILED_hex_rays body reconstructed via callees+BB+string-xrefs; gold-leaf",
-    "prior gate consolidated_prev_gate=full_gold_leaf readyToImplement from wf-aimami111-dim6-20260619",
+    "prior gate consolidated_prev_gate=full_gold_leaf readyToImplement from <审计会话>",
     "dim1: argKeys=[], wrapper=refreshUsageSnapshot, callee=ne, line=86 col=24226, snippet=ne('refresh_usage_snapshot')",
     "dim2: pseudocode 26020B >> 600B",
     "dim3: depth>=5 fetch_wham_usage_http_111 side-effect at depth=2 sub_140C8D540; quota_history_persist_file_111 depth=3 CreateFile+WriteFile; broadcast_runtime_state_updated depth=1",
     "dim4: 4 NEW response fields; fetch_wham_usage_http_111 GET chatgpt.com/backend-api/wham/usage; quota_history_persist_file_111 disk write per account; quota_history_append_dedup_111 max21 ring; broadcast_runtime_state_updated_111 event bus; pending_auto_switch early-return; usageRefreshEnabled guard",
     "dim5: CreateFile+WriteFile+CloseHandle in quota_history_persist_file_111; WakeByAddressSingle@0x14124A5D0; sub_140C8D540 HTTP client Windows",
-    "dim6: full_gold_leaf acceptance consolidated prior; readyToImplement; dim6_session=wf-aimami111-dim6-20260619"
+    "dim6: full_gold_leaf acceptance consolidated prior; readyToImplement; dim6_session=<审计会话>"
   ],
   "dim1_detail": {
     "wrapper": "refreshUsageSnapshot",
@@ -64,10 +64,10 @@
   },
   "dim6_detail": {
     "acceptance_status": "full_gold_leaf_acceptance",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "gate_tier": "readyToImplement",
     "happy_path": "invoke('refresh_usage_snapshot') -> {usageAttemptCount, usageSuccessCount, lastUsageFailure, lastUsageFailureAccount}",
     "delta_asserts": ["4 new response fields present", "quota history disk file written per account", "pending_auto_switch active -> early return without HTTP"]
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

@@ -1,5 +1,5 @@
 # get_mystery_unlock_grants — Windows x64 Pseudocode (gold-leaf)
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 producer: pure
 delta_class: integrity_recovered
@@ -373,4 +373,4 @@ CLOSE:
 
 ---
 
-*gold-leaf; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; machine <本地机器>*
+*gold-leaf; sha d24e429a; session <审计会话>; machine <本地机器>*

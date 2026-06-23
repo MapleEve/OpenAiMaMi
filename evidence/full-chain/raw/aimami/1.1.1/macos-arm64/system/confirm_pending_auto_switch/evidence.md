@@ -1,6 +1,6 @@
 # Evidence: confirm_pending_auto_switch
 **Version**: AiMaMi 1.1.1 macOS arm64
-**Session**: wf-aimami111-delta-20260616 / Machine: <本地机器>
+**Session**: <审计会话> / Machine: <本地机器>
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 **Date**: 2026-06-16
 **Module**: codexmate_lib::commands::system
@@ -124,7 +124,7 @@ Depth: 4 levels, terminated_reason at all leaves: std_library_leaf / library_int
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate**: strictImplementationUse → acceptance-draft（dim4 partial SwitchPayload field names + dim5 win Unknown 阻塞升档）
 

@@ -66,7 +66,7 @@ test_relay_draft_stream_owner_sys (0x14094F2E0)
 
 ## 会话信息
 
-- Session: `wf-aimami111-delta-20260616`
+- Session: `<审计会话>`
 - Machine: `<本地机器>`
 - Role: 纯生产者 (SOP steps 0-6)
 - 逆向分析 server: `<逆向工具通道>` @ <内部网络>

@@ -9,7 +9,7 @@
   "binary_sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
   "idb": "<本地路径>",
   "ida_server": "<逆向工具通道> (<内部网络>)",
-  "session": "wf-aimami111-delta-20260616",
+  "session": "<审计会话>",
   "machine": "<本地机器>",
   "model": "claude-sonnet-4-6",
   "role": "纯生产者 (SOP steps 0-6)",
@@ -37,7 +37,7 @@
     "raw_dir_existed": false,
     "competing_producer": null,
     "write_mode": "canonical_new",
-    "owner_session": "wf-aimami111-delta-20260616"
+    "owner_session": "<审计会话>"
   },
   "shared_leaves": ["relay_keychain_lookup_for_quota_sys@0x1402EE7C0"],
   "win_mac_diff_note": "WIN uses _InterlockedCompareExchange8+WakeByAddressSingle; MAC uses parking_lot. RelayProvider stride=232B confirmed WIN only."

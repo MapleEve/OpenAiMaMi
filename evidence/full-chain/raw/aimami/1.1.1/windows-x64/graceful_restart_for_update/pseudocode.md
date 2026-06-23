@@ -1,6 +1,6 @@
 # graceful_restart_for_update — Windows x64 Pseudocode
-<!-- session=wf-aimami111-delta-20260618-goldleaf machine=<本地机器> gate_tier=gold -->
-<!-- prior-session=wf-aimami111-delta-20260617-sweep (integrity_recovered); this session adds L5 + full dim1-6 closure -->
+<!-- session=<审计会话> machine=<本地机器> gate_tier=gold -->
+<!-- prior-session=<审计会话> (integrity_recovered); this session adds L5 + full dim1-6 closure -->
 
 ## Meta
 
@@ -362,7 +362,7 @@ volatile int64_t* send_ipc_response(__int64 channel_ctx, __int128 *tag_payload)
 
 ---
 
-## ACCEPTANCE — dim6 mapping (session wf-aimami111-dim6-20260619)
+## ACCEPTANCE — dim6 mapping (session <审计会话>)
 
 **dim6_basis**: pseudocode Layer 1-4 full trace; IPC tagged enum tag3/6/7/9 confirmed in gate-report.json ipc_contract; all 10-path Codex launch search paths confirmed via string VA evidence.
 

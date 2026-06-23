@@ -15,7 +15,7 @@
     "frontend/ipc-contracts.jsonl#L72: command='load_installed_skills', argKeys=[], wrapper='loadInstalledSkills', kind='tauriInvokeWrapper'",
     "frontend/frontend-control-flow.jsonl#L164: callsite index-DdcCOEJG.js queryFn -> Ge.loadInstalledSkills(); L192: skills-page-CxV_IefY.js queryFn -> i.loadInstalledSkills()",
     "load_installed_skills/pseudocode.md: owner=load_installed_skills_cmd_111@0x14002A100, size=911B; PATH_A (normal read via skill store) + PATH_B (bootstrap write-back via sub_1407DD060) fully documented",
-    "load_installed_skills/gate-report.json (prev): all dims PASS; call_chain max_depth=6; PATH_B is new 1.1.1 win-only side effect (win32_file_write_bytes_111); dim6_acceptance_mapping session=wf-aimami111-dim6-20260619",
+    "load_installed_skills/gate-report.json (prev): all dims PASS; call_chain max_depth=6; PATH_B is new 1.1.1 win-only side effect (win32_file_write_bytes_111); dim6_acceptance_mapping session=<审计会话>",
     "load_installed_skills/interface.md: InstalledSkillSummary 8 fields (7 confirmed/1 unresolved), SkillListPayload 4 fields (1 confirmed), SkillSnapshot 6 fields all confirmed",
     "gate-report.json#dim4_dto_struct: PASS_PARTIAL acknowledged; field_8 unresolved but graceful-ignore applies; does not block readyToImplement"
   ],
@@ -59,9 +59,9 @@
     "idb_saved": true
   },
   "dim6_detail": {
-    "source": "gate-report.json (prev)#dim6_acceptance_mapping (session wf-aimami111-dim6-20260619)",
+    "source": "gate-report.json (prev)#dim6_acceptance_mapping (session <审计会话>)",
     "happy_paths": ["PATH_A normal read", "PATH_B auto-switch pending triggers snapshot file write"],
     "critical_behavior": "PATH_B triggers disk write; C5 caller must account for non-pure-read behavior on Windows 1.1.1"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

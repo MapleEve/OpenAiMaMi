@@ -1,5 +1,5 @@
 # get_notification_client_state — Call Tree (Windows x64) [gold-leaf]
-## session: wf-aimami111-delta-20260618-goldleaf | sha: d24e429a | delta_class: integrity_recovered
+## session: <审计会话> | sha: d24e429a | delta_class: integrity_recovered
 ## depth: 7 confirmed | terminated_reason: per-node notes below
 
 ```

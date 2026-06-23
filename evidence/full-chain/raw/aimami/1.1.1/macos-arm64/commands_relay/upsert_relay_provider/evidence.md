@@ -5,7 +5,7 @@
 **binary_sha256**: (AiMaMi 1.1.1 universal — IDB loaded as AiMaMi.i64)
 **source_binary**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi
 **platform**: macos-arm64
-**session**: wf-aimami111-delta-20260617-sweep
+**session**: <审计会话>
 **machine**: <本地机器>
 **delta_class**: integrity_recovered
 **baseline**: 1.0.9 (previously mis-classified as same-sweep; actual delta confirmed)
@@ -93,7 +93,7 @@
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate tier**: readyToImplement (dim6=acceptance-draft)
 **Delta class**: integrity_recovered — 5 new behaviors vs 1.0.9 (write_key_file, uuid, tray, catalog dispatch, compose_proxy_status overlay)

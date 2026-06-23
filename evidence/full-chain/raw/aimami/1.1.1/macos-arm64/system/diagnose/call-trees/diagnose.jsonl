@@ -1,4 +1,4 @@
-{"depth":0,"addr":"0x10061f4b0","name":"codexmate_lib::commands::system::diagnose","role":"command_owner","session":"wf-aimami111-same-depth-20260618","note":"Mutex/OnceBox pattern; acquires Repo lock, calls Repository::diagnose, memcpy 0x1A0 output struct on Ok, CoreError on Err"}
+{"depth":0,"addr":"0x10061f4b0","name":"codexmate_lib::commands::system::diagnose","role":"command_owner","session":"<审计会话>","note":"Mutex/OnceBox pattern; acquires Repo lock, calls Repository::diagnose, memcpy 0x1A0 output struct on Ok, CoreError on Err"}
 {"depth":1,"addr":"0x1004d25c0","name":"codexmate_lib::core::repository::Repository::diagnose","role":"core_impl","terminated_reason":null,"note":"Calls load_local_state_synced; assembles DiagnoseResult (0x1A0B struct); builds model strings (api9/ains/code); CoreEnvelope::ok wraps Ok; memcpy 0x1A0 to output"}
 {"depth":1,"addr":"0x100f2e7a0","name":"std::sys::pal::unix::sync::mutex::Mutex::lock","role":"mutex_lock","terminated_reason":"external_call_recorded"}
 {"depth":1,"addr":"0x100f2e7c0","name":"std::sys::pal::unix::sync::mutex::Mutex::unlock","role":"mutex_unlock","terminated_reason":"external_call_recorded"}

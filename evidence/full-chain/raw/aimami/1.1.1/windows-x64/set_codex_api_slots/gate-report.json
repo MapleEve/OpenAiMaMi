@@ -24,6 +24,6 @@
   "dim3_evidence": "call-tree depth=6 terminated at WIN OS leaf (GetCurrentProcessId+CloseHandle); terminal leaves: _InterlockedCompareExchange8, WakeByAddressSingle@0x14124A5D0, GetCurrentProcessId@0x14108B3B0, CloseHandle@0x14124D788, sub_14080C3C0(Tauri IPC resolver); genuine_ceiling=false",
   "dim4_evidence": "params: manager(String,7B), slots(Vec<CodexApiSlot>,5B); CodexApiSlot{providerId:String(10B), model:String(5B)}; constraint: slots.len<=5 (hard-validated in sub_1406D7860); slots.len==0 → error code 8; response: 'ok'(2B 0x6B6F); side-effects: relay state in-memory update(stride=232B) + relay config JSON atomic_write(9 fields) + relay_post_login_state_sync(conditional); WIN lock _InterlockedCompareExchange8+WakeByAddressSingle",
   "dim5_evidence": "windows confirmed: _InterlockedCompareExchange8+WakeByAddressSingle lock; atomic_write GetCurrentProcessId+CloseHandle pattern; RelayProvider stride=232B confirmed; relay state poisoned panic@0x1412ea5ed; shared leaf relay_providers_config_write_and_persist_sys also confirmed in reorder_relay_providers win leaf",
-  "dim6_evidence": "acceptance-draft by wf-aimami111-dim6-20260619; promoted to readyToImplement in win-consolidated.json",
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "dim6_evidence": "acceptance-draft by <审计会话>; promoted to readyToImplement in win-consolidated.json",
+  "regen_by": "<审计会话>"
 }

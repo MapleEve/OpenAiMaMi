@@ -1,5 +1,5 @@
 # load_relay_state — Owner Record (windows-x64, 1.1.1)
-<!-- session=wf-aimami111-delta-20260618-goldleaf | machine=<本地机器> | producer -->
+<!-- session=<审计会话> | machine=<本地机器> | producer -->
 <!-- module=load_relay_state_ipc_handler_111 | platform=windows-x64 | version=1.1.1 -->
 <!-- baseline=1.0.9 | sha=d24e429a | gate_tier=gold-leaf -->
 

@@ -1,6 +1,6 @@
 # run_codex_router_diagnostics — Interface Contract
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 date: 2026-06-18
 source_binary: AiMaMi 1.1.1 win64.exe

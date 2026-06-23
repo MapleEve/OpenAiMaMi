@@ -1,5 +1,5 @@
 # owner.md — delete_sessions (windows-x64, AiMaMi 1.1.1)
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 platform: windows-x64
 binary: AiMaMi 1.1.1 win64.exe

@@ -1,7 +1,7 @@
 # Evidence — hotspot_ready (Windows x64 1.1.1)
 
-session: wf-aimami111-delta-20260617-sweep (dim1+dim4 confirm sweep added 2026-06-17)
-prior_session: wf-aimami111-delta-20260617-depth
+session: <审计会话> (dim1+dim4 confirm sweep added 2026-06-17)
+prior_session: <审计会话>
 producer: <本地机器>
 completed: 2026-06-17
 owner_va: 0x140016720
@@ -10,7 +10,7 @@ gate_tier: strictImplementationUse (upgraded from candidate — dim1 CCF + dim4 
 
 ---
 
-## dim1 CCF — Live Confirmation (wf-aimami111-delta-20260617-sweep)
+## dim1 CCF — Live Confirmation (<审计会话>)
 
 **Method**: `<逆向工具通道>` pattern `hotspot_ready` on live IDB (AiMaMi 1.1.1 win64.exe.i64, hexrays_ready=true, module confirmed).
 
@@ -22,7 +22,7 @@ gate_tier: strictImplementationUse (upgraded from candidate — dim1 CCF + dim4 
 - Frontend source invoke: **migrated from 1.0.9 win** — win binary has no embedded frontend source map. Invoke wrapper `hotspotReady` from `assets/index-CL22l5v8.js:86` carried forward (same frontend bundle migration path as `get_hotspot_enabled` 1.1.1 win).
 - **dim1 status: CLOSED** — ipc_string+tag confirmed live in binary; frontend CCF migrated from baseline.
 
-## dim4 Input Parameters — Live Confirmation (wf-aimami111-delta-20260617-sweep)
+## dim4 Input Parameters — Live Confirmation (<审计会话>)
 
 **Method**: Live decompile of `hotspot_ready_owner_sys_111` @ `0x140016720` (847B, 32BB).
 

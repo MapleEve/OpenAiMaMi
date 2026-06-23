@@ -1,6 +1,6 @@
 # Evidence: set_codex_api_login — macOS arm64 — AiMaMi 1.1.1
 
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 **Machine**: <本地机器>
 **Binary**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi (macos-arm64)
 **IDB**: AiMaMi.i64 (hexrays_ready=true, uptime 62205s at session start)

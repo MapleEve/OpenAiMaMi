@@ -1,5 +1,5 @@
 # focus_main_window — Interface / DTO / Error / Side-effect
-## AiMaMi 1.1.1 macOS arm64 | Session wf-aimami111-delta-20260616
+## AiMaMi 1.1.1 macOS arm64 | Session <审计会话>
 
 ---
 

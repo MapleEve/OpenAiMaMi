@@ -11,7 +11,7 @@
 | core symbol | `get_or_create_remote_device_secret_core_sys` |
 | owner size | 0x34B bytes |
 | core size | 0x21E bytes |
-| session | wf-aimami111-delta-20260618-goldleaf |
+| session | <审计会话> |
 | sha | d24e429a |
 | machine | <本地机器> |
 

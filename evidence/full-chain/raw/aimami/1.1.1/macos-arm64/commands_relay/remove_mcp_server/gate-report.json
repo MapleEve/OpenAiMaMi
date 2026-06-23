@@ -16,7 +16,7 @@
     "commands_relay/remove_mcp_server/ida/pseudocode/0002_remove_mcp_server_core_h360cb5a1f65874e9.c (VA=0x1005a0510, size=2042B)",
     "commands_relay/remove_mcp_server/call-trees/remove_mcp_server.jsonl (depth=5, 26 entries, write_atomic terminal)",
     "commands_relay/remove_mcp_server/interfaces/interface.md (argKeys=[name], CoreEnvelope<Vec<McpServerSummary>>, 4 error paths, atomic TOML side-effect)",
-    "commands_relay/remove_mcp_server/gate-report-dim6.json (session=wf-aimami111-dim6-20260619, acceptance-draft)",
+    "commands_relay/remove_mcp_server/gate-report-dim6.json (session=<审计会话>, acceptance-draft)",
     "frontend/ipc-contracts.jsonl:L86:col30806 command=remove_mcp_server argKeys=[name] wrapper=removeMcpServer",
     "frontend/frontend-control-flow.jsonl:L86:col30824 terminal=remove_mcp_server argKeys=[name]",
     "frontend/frontend-control-flow.jsonl:mcp-page-CGgOsRmy.js:L16 callsite=mutationFn->removeMcpServer"
@@ -29,5 +29,5 @@
     "dim5_same_platform_gate": "macos-arm64 binary sha256=f34ff829..., IDB confirmed, IPC VA=0x10072a660, core VA=0x1005a0510. CLOSED. dim5_win: requires separate Windows IDB — non-blocking for mac gate.",
     "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft. dim6 producer-side closed (acceptance-draft = producer done, consumer confirms C5 test coverage). CLOSED."
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

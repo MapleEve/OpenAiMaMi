@@ -1,6 +1,6 @@
 # AI.md — AiMaMi 1.1.1 macOS arm64 Delta 消费交接
 
-**session**: wf-aimami111-delta-20260617-repair
+**session**: <审计会话>
 **produced_at**: 2026-06-17
 **role**: 消费者 intake 交接（本机 <本地机器> = 消费者+生产者）
 

@@ -102,10 +102,10 @@ Resolved via `tauri_ipc_main_dispatcher_sys` → `hotspot_ready_owner_sys_111` �
 | dim5 | CLOSED — caller tauri_ipc_main_dispatcher_sys confirmed; win/mac divergence noted |
 | dim6 | unknown (C5 consumer side) |
 
-**gate_tier: strictImplementationUse** (upgraded from candidate — session wf-aimami111-delta-20260617-sweep, 2026-06-17)
+**gate_tier: strictImplementationUse** (upgraded from candidate — session <审计会话>, 2026-06-17)
 genuine_ceiling: false | accepted_unknown: false | real_body_found: true
 
-## Live Confirmations (session wf-aimami111-delta-20260617-sweep, 2026-06-17)
+## Live Confirmations (session <审计会话>, 2026-06-17)
 
 - **逆向分析 server_health**: status=ok, uptime_sec=114862, hexrays_ready=true, module=AiMaMi 1.1.1 win64.exe — PASS
 - **dim1 CCF live re-confirm**: find_regex "hotspot_ready" → n=1, addr=0x1412ac4a3 — CLOSED

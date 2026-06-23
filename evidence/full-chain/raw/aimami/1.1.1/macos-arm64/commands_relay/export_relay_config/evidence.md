@@ -1,6 +1,6 @@
 # export_relay_config — evidence.md
 <!-- delta_class: integrity_recovered -->
-<!-- session: wf-aimami111-delta-20260617-sweep -->
+<!-- session: <审计会话> -->
 <!-- machine: <本地机器> -->
 <!-- producer: macos only (this file) -->
 <!-- baseline: 1.0.9 (previously swept; was mis-classified same) -->
@@ -142,12 +142,12 @@ IPC registration xref: 0x100316160 (single caller)
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate**: strictImplementationUse → acceptance-draft（dim4 partial RelayExportProvider sub-DTO + dim5 win Unknown 阻塞升档）
 
 ### happy_path
-- 输入 `{filePath:"/tmp/out.json", includeApiKeys:true}`
+- 输入 `{filePath:"<临时路径>/out.json", includeApiKeys:true}`
 - 返回 CoreEnvelope<ExportResult> {file_path, provider_count, include_api_keys}
 - 导出 JSON 顶层 keys：exportedAt / exportedBy="AiMaMi 1.1.1" / includeApiKeys / providers / filePath
 - 副作用：读 keys/<provider_id>（sha256 + base64 decode）→ macOS Keychain fallback → write_key_file → atomic_write (tmpfile→rename) → set_permissions → log

@@ -3,7 +3,7 @@
 **command**: `confirm_pending_auto_switch_and_restart_codex`
 **module**: codexmate_lib::commands::system
 **version**: AiMaMi 1.1.1 macOS ARM64
-**session**: wf-aimami111-delta-20260616
+**session**: <审计会话>
 
 ---
 

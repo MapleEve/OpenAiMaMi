@@ -1,5 +1,5 @@
 # cancel_voice_trigger_capture — Interface / DTO / Error / Side-Effect
-## AiMaMi 1.1.1 macOS arm64 | session wf-aimami111-delta-20260616
+## AiMaMi 1.1.1 macOS arm64 | session <审计会话>
 
 ## Input Parameters (DTO)
 

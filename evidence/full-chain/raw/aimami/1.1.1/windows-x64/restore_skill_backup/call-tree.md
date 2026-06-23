@@ -1,7 +1,7 @@
 # restore_skill_backup — Call Tree (Windows x64, Gold Leaf)
-<!-- session=wf-aimami111-delta-20260618-goldleaf machine=<本地机器> platform=windows-x64 -->
+<!-- session=<审计会话> machine=<本地机器> platform=windows-x64 -->
 <!-- sha=d24e429a binary="AiMaMi 1.1.1 win64.exe" imagebase=0x140000000 -->
-<!-- prior-session=wf-aimami111-delta-20260617-sweep; this session: full decompile verified, depth confirmed ≥6 -->
+<!-- prior-session=<审计会话>; this session: full decompile verified, depth confirmed ≥6 -->
 
 ```
 restore_skill_backup_owner_sys @ 0x1400201E0  [COMMAND ENTRY; renamed from restore_skill_backup_handler_111]

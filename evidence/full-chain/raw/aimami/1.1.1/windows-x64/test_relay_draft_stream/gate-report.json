@@ -18,12 +18,12 @@
     "pseudocode.md 4567B ≥600B",
     "call-tree.md: D0-D4; all D1-D2 callees have explicit terminated_reason; D3 relay/http leaves; no genuine ceiling; fake wall taxonomy cleared (async_poll/large_body/inlined/shared_leaf/enum_dispatch all CLEARED)",
     "interface.md: RelayDraftTestInput 8 fields (providerId/ide/name/baseUrl/apiKey/model/wireApi/extraHeaders); upstream POST /v1/chat/completions or /v1/messages; event payload={schemaVersion,success,code,message,warnings,data}; secrets.json read (SHA-256 key derivation); NO relay.json write (distinguishes from test_relay_provider_stream)",
-    "gate-report.json wf-aimami111-delta-20260616: all consumerStartReady dims PASS; dim6_acceptance=acceptance_draft; gate_tier=readyToImplement; idb_writes=10 renames+4 comments+save ok",
+    "gate-report.json <审计会话>: all consumerStartReady dims PASS; dim6_acceptance=acceptance_draft; gate_tier=readyToImplement; idb_writes=10 renames+4 comments+save ok",
     "dim5: _InterlockedCompareExchange8+WakeByAddressSingle WIN-specific; USERNAME env (vs USER on mac); PE x64 stripped",
     "dim6_acceptance: acceptance_draft; gate_upgrade=readyToImplement; key distinguishing behavior=NO relay.json write"
   ],
-  "regen_by": "wf-aimami111-gate-final-20260620",
-  "session": "wf-aimami111-delta-20260616",
+  "regen_by": "<审计会话>",
+  "session": "<审计会话>",
   "owner_va": "0x14094F2E0",
   "owner_name": "test_relay_draft_stream_owner_sys",
   "owner_size_bytes": 4621,
@@ -72,7 +72,7 @@
     "same_platform": true
   },
   "dim6_detail": {
-    "basis": "acceptance_draft from gate-report.json wf-aimami111-delta-20260616; gate_upgrade=readyToImplement; key: NO relay.json write distinguishes from test_relay_provider_stream",
+    "basis": "acceptance_draft from gate-report.json <审计会话>; gate_upgrade=readyToImplement; key: NO relay.json write distinguishes from test_relay_provider_stream",
     "note": "dim6=acceptance_draft treated as closed per pipeline rule"
   },
   "idb_path": "<本地路径>"

@@ -1,5 +1,5 @@
 # refresh_usage_snapshot — Owner (Windows x64)
-# session: wf-aimami111-delta-20260618-goldleaf | machine: <本地机器>
+# session: <审计会话> | machine: <本地机器>
 # sha: d24e429a | delta_class: integrity_recovered | baseline: 1.0.9
 # not gate promotion
 
@@ -34,12 +34,12 @@
 ## Reconstruction Method
 
 HexRays decompile failed (function too large/complex for single-pass ICF). Reconstruction:
-1. callees() — full callee list captured at sweep session wf-aimami111-delta-20260617-sweep
+1. callees() — full callee list captured at sweep session <审计会话>
 2. basic_blocks() — 123 blocks, branching patterns identified
 3. string xrefs — "refresh_usage_snapshot" string xref confirms command dispatch string at 0x1412fa968
-4. Named callees decompiled individually this gold-leaf session (wf-aimami111-delta-20260618-goldleaf)
+4. Named callees decompiled individually this gold-leaf session (<审计会话>)
 
 ## Produced-by
 
-Sweep: wf-aimami111-delta-20260617-sweep (initial delta + callee capture)
-Gold-leaf: wf-aimami111-delta-20260618-goldleaf (decompile of callees, body expansion, dim1-5 closure, idb writes)
+Sweep: <审计会话> (initial delta + callee capture)
+Gold-leaf: <审计会话> (decompile of callees, body expansion, dim1-5 closure, idb writes)

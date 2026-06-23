@@ -1,7 +1,7 @@
 # COVERAGE-AUDIT.md — windows-1.1.1-delta【v2 终账】
 
-**session**: wf-aimami111-delta-20260617-depth
-**session_sweep**: wf-aimami111-delta-20260617-sweep（闭环重分类终账）
+**session**: <审计会话>
+**session_sweep**: <审计会话>（闭环重分类终账）
 **machine**: <本地机器>
 **produced_at**: 2026-06-17
 **scope**: delta leaf 深度审计 + same 集完整性核查 + orphan 分类确认 + sweep 闭环终账
@@ -159,11 +159,11 @@ win 侧 custom-instructions 三条（apply/clear/load）为 command_removed，�
 
 ---
 
-## SAME-DEPTH-CONFIRM（session: wf-aimami111-same-depth-20260618 + patch wf-aimami111-win-samedepth-patch-20260619，2026-06-19）
+## SAME-DEPTH-CONFIRM（session: <审计会话> + patch <审计会话>，2026-06-19）
 
 same 集（win-same.txt 中划入此 session 的命令）已逆到 depth≥5 确认。本段记录终数、escalated 命令和 partial 卡点。
 
-patch session（wf-aimami111-win-samedepth-patch-20260619）补齐 win-shard-1（8 条命令：clean、configure_auto_switch、confirm_pending_auto_switch、delete_relay_provider、detect_api_proxy_config、export_accounts_to_file、export_relay_config、fetch_relay_models_draft）。
+patch session（<审计会话>）补齐 win-shard-1（8 条命令：clean、configure_auto_switch、confirm_pending_auto_switch、delete_relay_provider、detect_api_proxy_config、export_accounts_to_file、export_relay_config、fetch_relay_models_draft）。
 
 ### win 平台终数（含 patch）
 
@@ -202,4 +202,4 @@ win-shard-4：preview_account_import、rebuild_registry、remove_accounts、run_
 
 ### 残留缺口说明
 
-win-same.txt inference_only（未 逆向分析 核查）命令约 39 条，不在本 session 范围，见 §5 残留缺口表。win-shard-1 已由 patch session wf-aimami111-win-samedepth-patch-20260619 补齐，本 same-depth-confirm 覆盖范围现已全量覆盖 win-same.txt 中 32 条（shard 1-4 各 8 条），inference_only 残留 39 条不含上述命令。
+win-same.txt inference_only（未 逆向分析 核查）命令约 39 条，不在本 session 范围，见 §5 残留缺口表。win-shard-1 已由 patch session <审计会话> 补齐，本 same-depth-confirm 覆盖范围现已全量覆盖 win-same.txt 中 32 条（shard 1-4 各 8 条），inference_only 残留 39 条不含上述命令。

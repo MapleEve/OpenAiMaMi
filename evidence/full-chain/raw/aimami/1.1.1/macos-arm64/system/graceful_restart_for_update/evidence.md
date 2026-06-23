@@ -4,7 +4,7 @@
 
 | 字段 | 值 |
 |---|---|
-| session | wf-aimami111-delta-20260617-sweep |
+| session | <审计会话> |
 | machine | <本地机器> |
 | role | producer |
 | delta_class | integrity_recovered |

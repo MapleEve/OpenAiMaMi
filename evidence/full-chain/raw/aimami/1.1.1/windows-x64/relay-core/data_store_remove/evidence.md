@@ -1,6 +1,6 @@
 # data_store_remove — win 1.1.1 backend-only orphan (orchestrator-verified)
 
-**session**: wf-aimami111-backend-orphan-materialize-20260622-orchestrator-verified
+**session**: <审计会话>
 **verdict**: present_same
 **owner_va**: 0x140933610
 **size_bytes**: 1899 (1.0.9: 1899)

@@ -17,7 +17,7 @@
     "accounts/import_accounts_from_file/manifest.json: owner_va=0x140961470 (import_accounts_from_file_state_machine_sys), size=6063B, arg_keys=[filePath/overwriteExisting/selectedKeys], response_dto=5 fields, errors=4 codes, file_constraints.max=10MB, side_effects=4 confirmed",
     "manifest.json#response_dto: importedCount(u64), importedAccountKeys(Vec<String>), skipped(u64), registryAccountCount(u64), activeAccountKey(Option<String>)",
     "manifest.json#errors: INVALID_FIELD/DUPLICATE_ID/KEYCHAIN_WRITE/RUNTIME_REFRESH_FAILED_AFTER_IMPORT all confirmed with string VAs",
-    "manifest.json#dim6_acceptance_mapping: session=wf-aimami111-dim6-20260619; happy_path/boundary_error/side_effect_asserts/test_mapping present",
+    "manifest.json#dim6_acceptance_mapping: session=<审计会话>; happy_path/boundary_error/side_effect_asserts/test_mapping present",
     "dim1 re-verification in gate-final session: ipc-contracts.jsonl live-confirmed argKeys=[filePath,overwriteExisting,selectedKeys] match manifest arg_keys (previously only 'migrated' status upgraded to live-confirmed)"
   ],
   "dim1_detail": {
@@ -58,9 +58,9 @@
     "idb_path": "<本地路径>"
   },
   "dim6_detail": {
-    "source": "manifest.json#dim6_acceptance_mapping (session wf-aimami111-dim6-20260619)",
+    "source": "manifest.json#dim6_acceptance_mapping (session <审计会话>)",
     "happy_path": "invoke('import_accounts_from_file', {filePath, overwriteExisting: true, selectedKeys: null}) => {success:true, data:{importedCount:N, importedAccountKeys:[...], skipped:0, registryAccountCount:M, activeAccountKey:'<key>'}}",
     "critical_note": "File max 10MB; semantic surprise: imports relay provider config (RelayExportFile), not plain accounts CSV"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

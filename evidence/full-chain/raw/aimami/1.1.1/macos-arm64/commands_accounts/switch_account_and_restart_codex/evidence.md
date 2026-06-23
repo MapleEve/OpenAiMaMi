@@ -1,6 +1,6 @@
 # evidence — switch_account_and_restart_codex delta (AiMaMi 1.1.1 macOS arm64)
 
-session: wf-aimami111-delta-20260617-sweep
+session: <审计会话>
 machine: <本地机器>
 delta_class: integrity_recovered
 baseline: AiMaMi 1.0.9 (fully reversed)

@@ -1,5 +1,5 @@
 # set_mcp_server_enabled — Owner Record (Windows x64)
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 platform: windows-x64
 binary: AiMaMi 1.1.1 win64.exe
 idb: <本地路径>
@@ -12,8 +12,8 @@ sha: d24e429a
 | name | `set_mcp_server_enabled_handler_111` |
 | VA | `0x14001dcc0` |
 | size | 0x5CE (1486 bytes) |
-| 逆向分析 rename | done (wf-aimami111-delta-20260617-sweep) |
-| 逆向分析 comment | "gold-leaf for set_mcp_server_enabled; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion" |
+| 逆向分析 rename | done (<审计会话>) |
+| 逆向分析 comment | "gold-leaf for set_mcp_server_enabled; sha d24e429a; session <审计会话>; not gate promotion" |
 | decompile status | full body recovered |
 
 ## Core Function
@@ -23,7 +23,7 @@ sha: d24e429a
 | name | `set_mcp_server_enabled_core_111` |
 | VA | `0x1401c6c70` |
 | size | 0x796 (1942 bytes) |
-| 逆向分析 comment | set (wf-aimami111-delta-20260617-sweep) |
+| 逆向分析 comment | set (<审计会话>) |
 | decompile status | full body recovered |
 
 ## Key Callees Summary
@@ -55,4 +55,4 @@ Comments written to IDB:
 - `0x14006edc0` — pending_auto_switch lock (gold-leaf session)
 - `0x141214620` — query_installed_skills (gold-leaf session)
 
-idb_save: confirmed (wf-aimami111-delta-20260617-sweep + wf-aimami111-delta-20260618-goldleaf)
+idb_save: confirmed (<审计会话> + <审计会话>)

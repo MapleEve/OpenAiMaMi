@@ -1,5 +1,5 @@
 # load_token_analytics — Call Tree (Windows x64)
-# session: wf-aimami111-win-samedepth-patch-20260619
+# session: <审计会话>
 # owner VA: 0x140027A40 | size: 0x4c1
 
 ## Depth-annotated tree

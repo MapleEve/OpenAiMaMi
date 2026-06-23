@@ -5,12 +5,12 @@
   "version": "1.1.1",
   "platform": "windows-x64",
   "binary_sha256": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
-  "session": "wf-aimami111-delta-20260617-repair",
-  "regrade_session": "wf-aimami111-dim6-100-20260619",
+  "session": "<审计会话>",
+  "regrade_session": "<审计会话>",
   "regrade_note": "去跨平台污染：4 条命令从 acceptance_draft_only 升为 readyToImplement（confirm_pending_auto_switch_and_restart_codex/diagnose_codex_router/parse_aimami_deeplink/force_kill_codex）。per-platform 铁律：mac 端未逆不得卡 win 端；force_kill_codex=OS-level 非 IPC，用户本轮明确不卡档。详见 intermediate/aimami/1.1.1/version-delta/dim6/win-regrade.json",
-  "session_depth_integrity": "wf-aimami111-delta-20260617-depth",
-  "session_sweep": "wf-aimami111-delta-20260617-sweep",
-  "session_goldleaf": "wf-aimami111-delta-20260618-goldleaf",
+  "session_depth_integrity": "<审计会话>",
+  "session_sweep": "<审计会话>",
+  "session_goldleaf": "<审计会话>",
   "produced_at": "2026-06-17",
   "updated_at": "2026-06-19T00:00:00+08:00",
   "aggregate_gate_tier": "strictImplementationUse",
@@ -102,7 +102,7 @@
       "readyToImplement": false,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/set_codex_api_login/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/set_codex_api_login/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260616"
+      "session_original": "<审计会话>"
     },
     {
       "command": "set_codex_api_slots",
@@ -112,7 +112,7 @@
       "readyToImplement": false,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/set_codex_api_slots/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/set_codex_api_slots/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260616"
+      "session_original": "<审计会话>"
     },
     {
       "command": "get_relay_provider_quota",
@@ -122,8 +122,8 @@
       "readyToImplement": false,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/get_relay_provider_quota/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/get_relay_provider_quota/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260616",
-      "session_extension": "wf-aimami111-delta-20260617"
+      "session_original": "<审计会话>",
+      "session_extension": "<审计会话>"
     },
     {
       "command": "reorder_relay_providers",
@@ -134,8 +134,8 @@
       "gate_accepted": false,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/reorder_relay_providers/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/reorder_relay_providers/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260616",
-      "session_extension": "wf-aimami111-delta-20260617-win-reorder"
+      "session_original": "<审计会话>",
+      "session_extension": "<审计会话>"
     },
     {
       "command": "reveal_relay_api_key",
@@ -146,8 +146,8 @@
       "gate_accepted": false,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/reveal_relay_api_key/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/reveal_relay_api_key/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260616",
-      "session_gate_upgrade": "wf-aimami111-delta-20260617-win-reveal"
+      "session_original": "<审计会话>",
+      "session_gate_upgrade": "<审计会话>"
     },
     {
       "command": "set_relay_display_tags",
@@ -157,13 +157,13 @@
       "readyToImplement": false,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/set_relay_display_tags/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/set_relay_display_tags/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260616"
+      "session_original": "<审计会话>"
     },
     {
       "command": "parse_aimami_deeplink",
       "gate": "readyToImplement",
       "gate_prior": "strictImplementationUse_candidate (dim5_mac_parse_aimami — 已撤销跨平台污染)",
-      "gate_upgraded_by": "wf-aimami111-dim6-100-20260619",
+      "gate_upgraded_by": "<审计会话>",
       "consumerStartReady": true,
       "strictImplementationUse": true,
       "readyToImplement": true,
@@ -171,7 +171,7 @@
       "regrade_note": "win dim1-5 全闭合（dim5.windows_1_1_1=confirmed），dim6 extended_test_mapping 5项存在，四角度全 PASS。原卡档 dim5_mac_parse_aimami 属跨平台污染，按 per-platform 铁律撤销。accepted_unknown 中 model 7B default 为 non-blocking。",
       "leaf_path": "raw/aimami/1.1.1/windows-x64/parse_aimami_deeplink/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/parse_aimami_deeplink/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260616"
+      "session_original": "<审计会话>"
     },
     {
       "command": "test_relay_draft_stream",
@@ -181,7 +181,7 @@
       "readyToImplement": false,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/test_relay_draft_stream/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/test_relay_draft_stream/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260616"
+      "session_original": "<审计会话>"
     },
     {
       "command": "test_relay_provider_stream",
@@ -193,13 +193,13 @@
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/commands_relay/test_relay_provider_stream/gate-report.json",
       "canonical_drift": true,
       "canonical_drift_note": "leaf 位于 commands_relay/ 子目录，非 windows-x64 根目录",
-      "session_original": "wf-aimami111-delta-20260616"
+      "session_original": "<审计会话>"
     },
     {
       "command": "confirm_pending_auto_switch_and_restart_codex",
       "gate": "readyToImplement",
       "gate_prior": "acceptance_draft_only (dim5_macos_not_reversed — 已撤销跨平台污染)",
-      "gate_upgraded_by": "wf-aimami111-dim6-100-20260619",
+      "gate_upgraded_by": "<审计会话>",
       "consumerStartReady": true,
       "strictImplementationUse": true,
       "readyToImplement": true,
@@ -207,7 +207,7 @@
       "regrade_note": "win dim1-5 全闭合，dim6 acceptance-draft 存在。原卡档 dim5_macos_not_reversed 属跨平台污染，按 per-platform 铁律撤销。leaf gate-report dims_closed 确认 dim1+dim2+dim3+dim4+dim5_win。",
       "leaf_path": "raw/aimami/1.1.1/windows-x64/confirm_pending_auto_switch_and_restart_codex/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/confirm_pending_auto_switch_and_restart_codex/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260616"
+      "session_original": "<审计会话>"
     },
     {
       "command": "get_hotspot_enabled",
@@ -219,7 +219,7 @@
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/system/get_hotspot_enabled/gate-report.json",
       "canonical_drift": true,
       "canonical_drift_note": "leaf 位于 system/ 子目录",
-      "session_original": "wf-aimami111-delta-20260616",
+      "session_original": "<审计会话>",
       "note": "旧结论 macOS-only 已推翻，win 1.1.1 有实体 backend handler@0x140021570"
     },
     {
@@ -229,14 +229,14 @@
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/system/set_hotspot_enabled/gate-report.json",
       "canonical_drift": true,
       "canonical_drift_note": "leaf 位于 system/ 子目录",
-      "session_original": "wf-aimami111-delta-20260616",
+      "session_original": "<审计会话>",
       "note": "旧结论 macOS-only 已推翻，win 1.1.1 有实体 backend handler@0x140022070"
     },
     {
       "command": "diagnose_codex_router",
       "gate": "readyToImplement",
       "gate_prior": "strictImplementationUse (acceptance_draft_only, dim5_mac_not_reversed — 已撤销跨平台污染)",
-      "gate_upgraded_by": "wf-aimami111-dim6-100-20260619",
+      "gate_upgraded_by": "<审计会话>",
       "consumerStartReady": true,
       "strictImplementationUse": true,
       "readyToImplement": true,
@@ -252,7 +252,7 @@
       "command": "fix_codex_router_issue",
       "gate": "strictImplementationUse_candidate",
       "gate_prior": "dispatcher_confirmed_only",
-      "gate_upgraded_by": "wf-aimami111-delta-20260617-depth",
+      "gate_upgraded_by": "<审计会话>",
       "consumerStartReady": true,
       "strictImplementationUse": true,
       "readyToImplement": false,
@@ -274,7 +274,7 @@
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/system/has_notch/manifest.json",
       "canonical_drift": true,
       "canonical_drift_note": "leaf 位于 system/ 子目录",
-      "session_depth": "wf-aimami111-delta-20260617-depth",
+      "session_depth": "<审计会话>",
       "note": "depth session 新增：win 固定返回 bool true（与 macOS 平台分叉）；owner@0x140023000(863B)；dim1 migrated 1.0.9；dim5 windows_confirmed；fake_wall=false；mac/win 行为分叉已记录"
     },
     {
@@ -288,8 +288,8 @@
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/system/begin_add_account_attach_monitor/manifest.json",
       "canonical_drift": true,
       "canonical_drift_note": "leaf 位于 system/ 子目录；accounts/ 子目录有 goldleaf 版本",
-      "session_depth": "wf-aimami111-delta-20260617-depth",
-      "session_goldleaf": "wf-aimami111-delta-20260618-goldleaf",
+      "session_depth": "<审计会话>",
+      "session_goldleaf": "<审计会话>",
       "goldleaf_path": "raw/aimami/1.1.1/windows-x64/accounts/begin_add_account_attach_monitor/gate-report.json",
       "note": "depth session 新增：handler@0x140013A60(1167B)；dim2/3/4/5 全闭合；dim1 pending frontend CCF（same-skip 类别，1.0.9 继承）；dim6 pending consumer；account_stride=360B；win 独立证据（schtasks.exe, CloseHandle, WakeByAddressSingle）；goldleaf session 补完 accounts/ 版本 gate_tier=gold_leaf"
     },
@@ -304,7 +304,7 @@
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/system/diagnose/manifest.json",
       "canonical_drift": true,
       "canonical_drift_note": "leaf 位于 system/ 子目录",
-      "session_depth": "wf-aimami111-delta-20260617-depth",
+      "session_depth": "<审计会话>",
       "note": "depth session 新增：gate=strictImplementationUse_candidate；call_tree_depth=4"
     },
     {
@@ -320,7 +320,7 @@
       "call_tree_edges": 29,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/activate_relay_provider/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/activate_relay_provider/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全：owner(1486B)+build_response+core_and_persist+write_persist+serialize_under_lock+atomic_write 全量逆向；call_tree depth=6 edges=29；6新callee vs sweep已记录；ipc_params=[manager,providerId,ide]；stride 232B；idb renamed+commented+saved"
     },
     {
@@ -336,7 +336,7 @@
       "call_tree_edges": 25,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/deactivate_relay_provider/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/deactivate_relay_provider/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全：全 6 dim 闭合；2 new callees vs 1.0.9（relay_config_check_parent_dirs_sys/relay_draft_test_input_drop_sys）；3 guards documented；ipc_params=[manager,providerId,ide]；stride 232B；readyToImplement=true"
     },
     {
@@ -351,7 +351,7 @@
       "call_tree_depth": 6,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/delete_sessions/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/delete_sessions/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "also_at": "raw/aimami/1.1.1/windows-x64/sessions/delete_sessions/ (sweep session)",
       "note": "goldleaf 补全：新增 DELETE FROM thread_spawn_edges cascade SQL + delete_sessions_build_session_list_111(rollout.json scan)；SSE2 SIMD path-normalize confirmed；ipc_params=[repo,ids]；depth=6 all branches terminated"
     },
@@ -368,7 +368,7 @@
       "call_tree_edges": 42,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/delete_skill_backup/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/delete_skill_backup/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全：response DTO 变更（bare ok/Success → deletedBackupID+remainingBackupCount）；新 response serializer@0x140211890；sort_unstable post-delete(n<21:insertion/n≥21:pdq)；ipc_params=[repo,id]"
     },
     {
@@ -383,7 +383,7 @@
       "call_tree_depth": 7,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/dismiss_pending_auto_switch/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/dismiss_pending_auto_switch/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全：5 new callees vs 1.0.9（snooze_file_delete/win32_file_write/GetSystemTimePreciseAsFileTime/elapsed_since_ts/io_error_classify）；new persistence artifact auto-switch-snooze.json；新 return variant RestartNeeded；new ipc param 'repo'；depth=7"
     },
     {
@@ -399,7 +399,7 @@
       "call_tree_edges": 22,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/get_mystery_unlock_grants/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/get_mystery_unlock_grants/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全：NEW command (absent 1.0.9)；response DTO={hotspot,usageRefreshInterval,deviceId,remoteDeviceSecret,notificationsSince,apiProxy,mysteryUnlockGrants}；MysteryUnlockGrant stride=40B；grant expiry filter conditional write；dim6 pass"
     },
     {
@@ -414,7 +414,7 @@
       "call_tree_depth": 7,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/get_notification_client_state/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/get_notification_client_state/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全：NEW command (absent 1.0.9 dispatcher)；5 gold_leaf dims (no dim6 explicit)；dispatch_chain depth=5 to owner；zero argKeys；depth=7；gate_verdict=PASS；dim6 not closed → gate=gold_leaf not strictImplementationUse"
     },
     {
@@ -429,7 +429,7 @@
       "call_tree_depth": 6,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/load_installed_skills/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/load_installed_skills/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全：PATH_B (sub_1407DD060 bootstrap-cache write-back) was missing from sweep；1.1.1 NOT pure read-only when pending_auto_switch active；new callees pending_auto_switch_state_lock_acquire+sub_1407DD060；dim4 PASS_PARTIAL（2 fields unresolved）"
     },
     {
@@ -445,7 +445,7 @@
       "call_tree_edges": 29,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/load_mcp_servers/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/load_mcp_servers/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全：整条 load_mcp_servers_write_snapshot_111 branch 是 1.1.1 新增；new DTO fields McpServer.transport/enabled InstalledSkill.title/summary SkillSnapshot.usageAnalytics；mcp_config_toml_parse_and_remove_111@0x1406790D0 new callee；TOML+snapshot double write new side-effects"
     },
     {
@@ -461,7 +461,7 @@
       "call_tree_edges": 54,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/load_quota_history/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/load_quota_history/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全；delta_class 从 integrity_recovered 修正为 body_changed：新增 7-day retention filter + accountKey filter + max-2000 trim-rewrite；QuotaHistoryPoint 953B/24 fields；ipc_params=[accountKey(frontend),repo(server-side)]；HIGH risk（消费者静默丢失7天前数据）"
     },
     {
@@ -479,7 +479,7 @@
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/load_relay_state_ipc_handler_111/load_relay_state/gate-report.json",
       "canonical_drift": true,
       "canonical_drift_note": "leaf 位于 load_relay_state_ipc_handler_111/ 子目录",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全；4 new callees vs 1.0.9（query_installed_skills_with_repo/relay_config_connection_refresh_and_write/relay_config_serialize_and_atomic_write/relay_response_field_warnings_write）；new DTO field 'warnings'@a2+48；新 side-effects：disk_write(relay JSON每次load触发)+TCP_connect_probe(300ms)；readyToImplement=true dim6 pass"
     },
     {
@@ -495,7 +495,7 @@
       "call_tree_edges": 48,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/load_sessions/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/load_sessions/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "also_at": "raw/aimami/1.1.1/windows-x64/sessions/load_sessions/ (sweep session, rTI=true, sIU=true)",
       "note": "goldleaf 补全；NEW command in 1.1.1 windows；CodexHomePaths struct 9 fields（1.0.9=8）；new field autoSwitchLogPath@offset144；new callees: pending_auto_switch_state_lock/query_installed_skills_with_repo/skill_store_get_all/load_session_analytics_impl；dim4 dto confirmed"
     },
@@ -512,7 +512,7 @@
       "call_tree_edges": 52,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/load_skill_backups/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/load_skill_backups/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全；new DTO fields SkillBackupEntry.backupPath@+96/createdAt@+144 + LoadSkillBackupsData.rootPath/lastScanAt；stride=152B；5 new callees vs 1.0.9（query_installed_skills_with_repo/skill_store_get_all/iter/system_time_precise/elapsed_since）；pre-flight repo validation gate added"
     },
     {
@@ -527,7 +527,7 @@
       "call_tree_depth": 8,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/load_snapshot/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/load_snapshot/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全；4 delta findings：snapshotProgressive field NEW, Account struct 336B(3 new optional timestamps), refresh_usage_snapshot_core_111 整条新并行管道(HTTP fetch+dedup+disk persist quota history)；owner decompile failed hex-rays但 async body 0x140796310 fully decompiled；depth=8 all paths terminated"
     },
     {
@@ -543,7 +543,7 @@
       "call_tree_edges": 47,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/merge_mystery_unlock_grants/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/merge_mystery_unlock_grants/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全；sweep 误分类 same；实际6大 app-level changes：pending_auto_switch gate NEW/mystery_grant_mutex NEW/hotspot_merge_grants NEW(atomic read-modify-write)/customInstructions grant key NEW(18chars)/mysteryUnlockedRoutes DTO field NEW/elapsed telemetry NEW；hotspot config 扩展为7字段文档"
     },
     {
@@ -558,7 +558,7 @@
       "call_tree_depth": 5,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/refresh_usage_snapshot/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/refresh_usage_snapshot/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "note": "goldleaf 补全；sweep 误分类 same；6 new callees fully decompiled this session（quota_history_persist_file/serialize_usage_attempt_stats/post_loop_finalize/account_state_update/check_subscription_active_jwt/broadcast_runtime_state_updated）；new side-effects：HTTP GET chatgpt wham/usage, disk write quota history, broadcast runtime-state-updated；owner hex-rays failed但 all key callees decompiled；4 new DTO fields"
     },
     {
@@ -572,7 +572,7 @@
       "owner_va": "0x140019040",
       "leaf_path": "raw/aimami/1.1.1/windows-x64/remove_mcp_server/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/remove_mcp_server/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "also_at": "raw/aimami/1.1.1/windows-x64/commands/remove_mcp_server/ (alternate path)"
     },
     {
@@ -584,7 +584,7 @@
       "readyToImplement": false,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/remove_skill/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/remove_skill/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf"
+      "session_original": "<审计会话>"
     },
     {
       "command": "restore_skill_backup",
@@ -596,7 +596,7 @@
       "delta_class": "integrity_recovered",
       "leaf_path": "raw/aimami/1.1.1/windows-x64/restore_skill_backup/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/restore_skill_backup/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf"
+      "session_original": "<审计会话>"
     },
     {
       "command": "run_codex_router_diagnostics",
@@ -607,7 +607,7 @@
       "readyToImplement": true,
       "leaf_path": "raw/aimami/1.1.1/windows-x64/run_codex_router_diagnostics/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/run_codex_router_diagnostics/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "also_at": "raw/aimami/1.1.1/windows-x64/commands_relay/run_codex_router_diagnostics/manifest.json (session=20260616)"
     },
     {
@@ -632,7 +632,7 @@
       "delta_class": "integrity_recovered",
       "leaf_path": "raw/aimami/1.1.1/windows-x64/set_image_compat/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/set_image_compat/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf"
+      "session_original": "<审计会话>"
     },
     {
       "command": "set_mcp_server_enabled",
@@ -645,7 +645,7 @@
       "owner_va": "0x14001DCC0",
       "leaf_path": "raw/aimami/1.1.1/windows-x64/set_mcp_server_enabled/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/set_mcp_server_enabled/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "also_at": "raw/aimami/1.1.1/windows-x64/mcp_server/set_mcp_server_enabled/ (sweep session, call_tree_depth=5)",
       "note": "goldleaf root version；delta=relay guard comment fencing (aimami-relay managed start/end strings) NEW vs 1.0.9"
     },
@@ -660,7 +660,7 @@
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/commands_relay/set_codex_router_enabled/manifest.json",
       "canonical_drift": true,
       "canonical_drift_note": "leaf 位于 commands_relay/ 子目录",
-      "session_original": "wf-aimami111-delta-20260616",
+      "session_original": "<审计会话>",
       "note": "gate_candidate=strictImplementationUse；arg_keys=[enabled(bool)]+secondary[relaunch,apiLogin]；dispatcher@0x140963A40(4974B)；response=CoreEnvelope<CodexRouterTogglePayload>"
     },
     {
@@ -673,7 +673,7 @@
       "delta_class": "integrity_recovered",
       "leaf_path": "raw/aimami/1.1.1/windows-x64/set_usage_refresh_interval/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/set_usage_refresh_interval/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260617-sweep"
+      "session_original": "<审计会话>"
     },
     {
       "command": "upsert_mcp_server",
@@ -686,7 +686,7 @@
       "owner_va": "0x140019720",
       "leaf_path": "raw/aimami/1.1.1/windows-x64/upsert_mcp_server/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/upsert_mcp_server/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf"
+      "session_original": "<审计会话>"
     },
     {
       "command": "upsert_relay_provider",
@@ -698,7 +698,7 @@
       "delta_class": "integrity_recovered",
       "leaf_path": "raw/aimami/1.1.1/windows-x64/upsert_relay_provider/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/upsert_relay_provider/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf",
+      "session_original": "<审计会话>",
       "also_at": "raw/aimami/1.1.1/windows-x64/commands/upsert_relay_provider/ (alternate path)"
     },
     {
@@ -715,7 +715,7 @@
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/system/get_device_id/gate-report.json",
       "canonical_drift": true,
       "canonical_drift_note": "leaf 位于 system/ 子目录",
-      "session_original": "wf-aimami111-delta-20260617-sweep",
+      "session_original": "<审计会话>",
       "note": "sweep session；gate_result=pass；5 response fields: hotspot/usageRefreshInterval/deviceId/remoteDeviceSecret/notificationsSince；call_tree_depth=5"
     },
     {
@@ -732,7 +732,7 @@
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/system/get_or_create_remote_device_secret/gate-report.json",
       "canonical_drift": true,
       "canonical_drift_note": "leaf 位于 system/ 子目录；root版本 gate_tier=full_leaf (goldleaf session)",
-      "session_original": "wf-aimami111-delta-20260617-sweep",
+      "session_original": "<审计会话>",
       "canonical_goldleaf_path": "raw/aimami/1.1.1/windows-x64/get_or_create_remote_device_secret/gate-report.json",
       "note": "C5-extra command (not upstream codex)；previously mis-classified same；managed_state_key=dev.aimami.auto-switch；UUID format + settings write scope changed；gate_result=PASS；root goldleaf version gate_tier=full_leaf"
     },
@@ -747,7 +747,7 @@
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/system/hotspot_ready/gate-report.json",
       "canonical_drift": true,
       "canonical_drift_note": "leaf 位于 system/ 子目录",
-      "session_original": "wf-aimami111-delta-20260618-goldleaf"
+      "session_original": "<审计会话>"
     },
     {
       "command": "import_skill",
@@ -760,13 +760,13 @@
       "owner_va": "0x14001CA50",
       "leaf_path": "raw/aimami/1.1.1/windows-x64/import_skill/",
       "gate_report_path": "raw/aimami/1.1.1/windows-x64/import_skill/gate-report.json",
-      "session_original": "wf-aimami111-delta-20260617-sweep",
+      "session_original": "<审计会话>",
       "also_at": "raw/aimami/1.1.1/windows-x64/skills/import_skill/manifest.json (gate_tier=strictImplementationUse_candidate)",
       "note": "status=readyToImplement；interface_delta: 1.0.9={path:string} → 1.1.1={repo:string,path:string}；ADDED repo parameter"
     }
   ],
   "dim6": {
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "machine": "<本地机器>",
     "produced_at": "2026-06-19",
     "shards": [
@@ -791,7 +791,7 @@
     "consumerStartReady_count": 0,
     "readyToImplement_coverage": "56/59",
     "readyToImplement_pct": "94.9%",
-    "regrade_session": "wf-aimami111-dim6-100-20260619",
+    "regrade_session": "<审计会话>",
     "regrade_delta": "+4 (confirm_pending_auto_switch_and_restart_codex/diagnose_codex_router/parse_aimami_deeplink/force_kill_codex 从 acceptance_draft_only 升为 readyToImplement，去跨平台污染)",
     "readyToImplement_cmds": [
       "activate_relay_provider",
@@ -894,10 +894,10 @@
     },
     "bundle_gate_after_dim6": "readyToImplement",
     "bundle_readyToImplement_after_dim6": true,
-    "note": "dim6-100 終账（session wf-aimami111-dim6-100-20260619）：56/59 win delta 命令达 readyToImplement（94.9%）。regrade+close 两轮共解除 11 个卡档（regrade+4, close-1+4, close-3+3）。仍阻断 3 条（均 dim1 CCF 未在 win 1.1.1 验证）：import_accounts_from_file、set_hotspot_enabled、set_relay_display_tags。"
+    "note": "dim6-100 終账（session <审计会话>）：56/59 win delta 命令达 readyToImplement（94.9%）。regrade+close 两轮共解除 11 个卡档（regrade+4, close-1+4, close-3+3）。仍阻断 3 条（均 dim1 CCF 未在 win 1.1.1 验证）：import_accounts_from_file、set_hotspot_enabled、set_relay_display_tags。"
   },
   "dim6_close": {
-    "session": "wf-aimami111-dim6-100-20260619",
+    "session": "<审计会话>",
     "machine": "<本地机器>",
     "produced_at": "2026-06-19",
     "close_passes": [
@@ -940,8 +940,8 @@
 
   "rollup": {
     "schema": "c5cm.gate_report.rollup.v3_win100_final",
-    "gate_final_session": "wf-aimami111-gate-final-20260620",
-    "win100_session": "wf-aimami111-win-100-20260620",
+    "gate_final_session": "<审计会话>",
+    "win100_session": "<审计会话>",
     "machine": "<本地机器>",
     "role": "producer",
     "gate_final_at": "2026-06-20",
@@ -1041,7 +1041,7 @@
         "cmd": "force_kill_codex",
         "from": "strictImplementationUse",
         "to": "readyToImplement",
-        "session": "wf-aimami111-win-100-20260620",
+        "session": "<审计会话>",
         "leaf": "raw/aimami/1.1.1/windows-x64/force_kill_codex/gate-report.json",
         "basis": "all 6 dims closed; dim6 closed via native-callback reversal (two-phase kill Phase1@0x14079FF10 + Phase2@0x1407A44D0 fully reversed from pseudocode); IPC invoke confirmed ipc-contracts.jsonl argKeys=[]"
       },
@@ -1049,7 +1049,7 @@
         "cmd": "parse_aimami_deeplink",
         "from": "strictImplementationUse",
         "to": "readyToImplement",
-        "session": "wf-aimami111-win-100-20260620",
+        "session": "<审计会话>",
         "leaf": "raw/aimami/1.1.1/windows-x64/parse_aimami_deeplink/gate-report.json",
         "basis": "dim6 promoted: per-platform rule — mac dim5 unknown cannot block win gate; formal ACCEPTANCE written with 9 test cases; model default 7B const minor accepted_unknown non-blocking"
       },
@@ -1057,7 +1057,7 @@
         "cmd": "get_relay_provider_quota",
         "from": "strictImplementationUse (rollup v2)",
         "to": "readyToImplement",
-        "session": "wf-aimami111-dim6-final-20260620",
+        "session": "<审计会话>",
         "leaf": "intermediate/aimami/1.1.1/version-delta/dim6/win-final-b.json",
         "basis": "quota_stride genuine_ceiling REFUTED: stride=232 bytecode confirmed at 4 independent 逆向分析 sites (0x1406db9f2/0x1406dba00/0x1406dbcd9/0x1406dbce5); field names not stripped"
       },
@@ -1065,7 +1065,7 @@
         "cmd": "import_chatgpt_session_account",
         "from": "strictImplementationUse_candidate (rollup v2)",
         "to": "readyToImplement",
-        "session": "wf-aimami111-dim6-final-20260620",
+        "session": "<审计会话>",
         "leaf": "intermediate/aimami/1.1.1/version-delta/dim6/win-final-a.json",
         "basis": "all dims closed; wrapper@0x140A84DF0 + poll@0x140953280 + core@0x1408ED1D0 decompiled; CCF confirmed via shared_ccf_1.1.1_verified"
       }
@@ -1110,11 +1110,11 @@
       "win": "confirmed — win-final-b idb_saved=true (<本地路径>",
       "mac": "confirmed — mac idb_save recorded in mac gate-report sessions"
     },
-    "authority_note": "本段为 win-100 终账 rollup（session wf-aimami111-win-100-20260620，schema v3_win100_final）。源自 win-shard-1~7 + win-final-a/b + win-100 leaf gate-reports 直接读盘聚合。win delta 59 条（分母 59，get_image_compat 归 removed）全部达 readyToImplement（59/59=100.0%）。v2_gate_final(55/60=91.7%) 为被 win-final-a/b 和 win-100 session 超越的旧数字，本段取代。mac 43/43=100.0% 不变。idb_save 双端已确认。消费者唯一权威计数入口。"
+    "authority_note": "本段为 win-100 终账 rollup（session <审计会话>，schema v3_win100_final）。源自 win-shard-1~7 + win-final-a/b + win-100 leaf gate-reports 直接读盘聚合。win delta 59 条（分母 59，get_image_compat 归 removed）全部达 readyToImplement（59/59=100.0%）。v2_gate_final(55/60=91.7%) 为被 win-final-a/b 和 win-100 session 超越的旧数字，本段取代。mac 43/43=100.0% 不变。idb_save 双端已确认。消费者唯一权威计数入口。"
   },
 
   "dim6_final": {
-    "session": "wf-aimami111-dim6-final-20260620",
+    "session": "<审计会话>",
     "machine": "<本地机器>",
     "produced_at": "2026-06-20",
     "shards": [

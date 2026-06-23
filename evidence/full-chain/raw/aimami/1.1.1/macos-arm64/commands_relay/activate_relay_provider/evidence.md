@@ -1,6 +1,6 @@
 # Evidence — activate_relay_provider
 # AiMaMi 1.1.1 macOS arm64
-# session: wf-aimami111-delta-20260616  machine: <本地机器>
+# session: <审计会话>  machine: <本地机器>
 # source_binary_sha256: 985dae00be620b21f4d3a76b5b4fa4af2bfe5e0b6cc5bbf38a8e5e3a6c9b2f1
 # IDB: <来源位置>/raw/binary/AiMaMi-1.1.1-idb
 

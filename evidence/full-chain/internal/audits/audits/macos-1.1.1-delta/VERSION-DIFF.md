@@ -1,11 +1,11 @@
 # VERSION-DIFF.md — AiMaMi 1.1.1 macOS arm64 Delta 五分类（完整终账）
 
-**session_initial**: wf-aimami111-delta-20260616
-**session_repair**: wf-aimami111-delta-20260617-repair
-**session_integrity**: wf-aimami111-delta-20260617-depth
-**session_sweep**: wf-aimami111-delta-20260617-sweep（sweep false_negative 补录）
-**session_goldleaf**: wf-aimami111-delta-20260618-mac100（全量 gold-leaf 收尾）
-**regenerated_by**: wf-aimami111-delta-20260618-mac100
+**session_initial**: <审计会话>
+**session_repair**: <审计会话>
+**session_integrity**: <审计会话>
+**session_sweep**: <审计会话>（sweep false_negative 补录）
+**session_goldleaf**: <审计会话>（全量 gold-leaf 收尾）
+**regenerated_by**: <审计会话>
 **regenerated_at**: 2026-06-18
 **binary_sha256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 **baseline**: 1.0.9 macOS（100% 逆完）
@@ -94,7 +94,7 @@
 
 ---
 
-### ③-B integrity-recovered（1 条，从 same 升级至 delta，wf-aimami111-delta-20260617-depth）
+### ③-B integrity-recovered（1 条，从 same 升级至 delta，<审计会话>）
 
 > mac-same-integrity.json 抽查 57 条 mac-same.txt 中的 14 条，发现 1 条 FALSE_NEGATIVE。
 
@@ -115,7 +115,7 @@
 
 ---
 
-### ③-D sweep false_negative 补录（11 条，wf-aimami111-delta-20260617-sweep）
+### ③-D sweep false_negative 补录（11 条，<审计会话>）
 
 > 旧版 VERSION-DIFF 遗漏这 11 条。sweep 六个 macos-shard-*.json false_negative 字段逐条确认。
 
@@ -185,9 +185,9 @@ load_custom_instruction_state, preview_custom_instruction_apply
 
 ---
 
-## dim6 消费者接受度评估（session wf-aimami111-dim6-20260619）
+## dim6 消费者接受度评估（session <审计会话>）
 
-**produced_at**: 2026-06-19 · **session**: wf-aimami111-dim6-20260619 · **机器**: <本地机器> · **shards**: mac-shard-1 ～ mac-shard-5
+**produced_at**: 2026-06-19 · **session**: <审计会话> · **机器**: <本地机器> · **shards**: mac-shard-1 ～ mac-shard-5
 
 ### 整体结论
 

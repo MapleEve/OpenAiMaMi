@@ -1,7 +1,7 @@
 # IPC Contract: upsert_mcp_server (AiMaMi 1.1.1 macOS arm64)
 
 ## Session
-wf-aimami111-delta-20260617-repair
+<审计会话>
 
 ## Tauri Command Entry
 - Symbol: `codexmate_lib::commands::mcp::upsert_mcp_server`

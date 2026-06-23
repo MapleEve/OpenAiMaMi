@@ -1,7 +1,7 @@
 # Interface / DTO / Error Envelope: fetch_relay_models_draft
 
 version: 1.1.1 | platform: macos-arm64 | module: relay
-session: wf-aimami111-delta-20260616
+session: <审计会话>
 binary_sha256: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 
 ---

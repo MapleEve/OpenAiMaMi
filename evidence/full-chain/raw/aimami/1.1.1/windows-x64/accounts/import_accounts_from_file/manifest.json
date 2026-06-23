@@ -8,7 +8,7 @@
   "pe_machine": "x86_64",
   "binary_name": "AiMaMi 1.1.1 win64.exe",
   "idb_path": "<本地路径>",
-  "session": "wf-aimami111-delta-20260616",
+  "session": "<审计会话>",
   "produced_by": "<本地机器>",
   "produced_at": "2026-06-17T00:00:00Z",
   "gate_tier": "strictImplementationUse_candidate",
@@ -97,7 +97,7 @@
   ],
 
   "dim6_acceptance_mapping": {
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "machine": "<本地机器>",
     "dim6_basis": "manifest.json: arg_keys=[filePath, overwriteExisting, selectedKeys] confirmed; response_dto fields (importedCount, importedAccountKeys, skipped, registryAccountCount, activeAccountKey) confirmed; errors (INVALID_FIELD, DUPLICATE_ID, KEYCHAIN_WRITE, RUNTIME_REFRESH_FAILED_AFTER_IMPORT) confirmed; file_constraints.max_size_bytes=10485760; semantic_note: imports RelayExportFile not CSV accounts; side_effects confirmed",
     "blocked_dim_note": "dim1 CCF migrated (not re-verified in 1.1.1 win lane); dim2 body confirmed via async state machine disassembly; dim3 call-tree terminated (leaf_paths); dim4 DTO confirmed; dim5 win-only confirmed. Gate tier = strictImplementationUse_candidate (not gold). dim1 CCF migration gap is the only unverified dim.",

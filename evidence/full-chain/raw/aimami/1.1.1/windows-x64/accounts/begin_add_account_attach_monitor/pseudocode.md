@@ -1,6 +1,6 @@
 # begin_add_account_attach_monitor — Win x64 pseudocode (gold-leaf)
 
-**session**: wf-aimami111-delta-20260618-goldleaf
+**session**: <审计会话>
 **machine**: <本地机器>
 **produced_at**: 2026-06-18
 **product/version/platform**: aimami / 1.1.1 / windows-x64

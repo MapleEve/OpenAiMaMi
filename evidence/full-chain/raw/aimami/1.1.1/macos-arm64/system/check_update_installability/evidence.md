@@ -1,6 +1,6 @@
 # evidence.md — check_update_installability (AiMaMi 1.1.1 macOS ARM64)
 
-Session: wf-aimami111-delta-20260616 | Machine: <本地机器> | Date: 2026-06-16
+Session: <审计会话> | Machine: <本地机器> | Date: 2026-06-16
 Owner VA: 0x10055a520 | Symbol: codexmate_lib::platform::update::check_update_installability::h52e962388544d063
 
 ---

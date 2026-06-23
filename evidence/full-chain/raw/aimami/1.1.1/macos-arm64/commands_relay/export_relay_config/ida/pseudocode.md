@@ -1,6 +1,6 @@
 # export_relay_config — pseudocode
 <!-- delta_class: integrity_recovered -->
-<!-- session: wf-aimami111-delta-20260617-sweep -->
+<!-- session: <审计会话> -->
 <!-- machine: <本地机器> -->
 <!-- baseline: 1.0.9 (previously reversed) -->
 

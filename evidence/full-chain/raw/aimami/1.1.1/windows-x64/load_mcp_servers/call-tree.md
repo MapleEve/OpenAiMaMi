@@ -1,6 +1,6 @@
 # Call Tree — load_mcp_servers (win64 1.1.1)
 
-session: wf-aimami111-delta-20260617-sweep
+session: <审计会话>
 machine: <本地机器>
 delta_class: integrity_recovered
 

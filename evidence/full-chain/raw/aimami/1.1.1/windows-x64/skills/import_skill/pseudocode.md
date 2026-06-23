@@ -1,6 +1,6 @@
 # import_skill — AiMaMi 1.1.1 windows-x64 pseudocode
 
-session: wf-aimami111-delta-20260617-sweep
+session: <审计会话>
 machine: <本地机器> (producer)
 delta_class: integrity_recovered
 baseline: 1.0.9 macos (readyToImplement)

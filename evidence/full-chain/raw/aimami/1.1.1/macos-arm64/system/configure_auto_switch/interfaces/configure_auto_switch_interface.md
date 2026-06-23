@@ -3,7 +3,7 @@
 **version**: 1.1.1
 **platform**: macOS ARM64
 **module**: codexmate_lib::commands::system
-**session**: wf-aimami111-delta-20260616
+**session**: <审计会话>
 
 ---
 
@@ -19,7 +19,7 @@
 configureAutoSwitch:(t,e)=>ne("configure_auto_switch",{threshold5hPercent:t,thresholdWeeklyPercent:e})
 ```
 
-**Backend param mapping (U3 RESOLVED — session wf-aimami111-delta-20260616, 2026-06-17)**:
+**Backend param mapping (U3 RESOLVED — session <审计会话>, 2026-06-17)**:
 
 The frontend sends exactly `{threshold5hPercent: u32, thresholdWeeklyPercent: u32}`. No hidden params. The 4-arg Repository call is explained by **Tauri `Option<u32>` ABI deserialization**:
 

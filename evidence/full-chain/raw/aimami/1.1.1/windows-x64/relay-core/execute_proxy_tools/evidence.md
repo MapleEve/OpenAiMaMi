@@ -1,6 +1,6 @@
 # execute_proxy_tools — win 1.1.1 backend-only orphan (orchestrator-verified)
 
-**session**: wf-aimami111-backend-orphan-materialize-20260622-orchestrator-verified
+**session**: <审计会话>
 **verdict**: present_icf_merged
 **owner_va**: 0x14027EF10
 **size_bytes**: 51490 (1.0.9: 33280)

@@ -1,6 +1,6 @@
 # activate_relay_provider — Interface Contract (Windows x64)
 
-**session**: wf-aimami111-delta-20260618-goldleaf
+**session**: <审计会话>
 **binary**: AiMaMi 1.1.1 win64.exe
 **produced**: 2026-06-18
 **gate_tier**: gold_leaf

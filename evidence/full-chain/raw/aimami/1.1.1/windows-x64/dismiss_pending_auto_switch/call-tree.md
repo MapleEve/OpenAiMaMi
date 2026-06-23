@@ -1,6 +1,6 @@
 # dismiss_pending_auto_switch — Call Tree (Windows x64)
 # AiMaMi 1.1.1 · delta_class = integrity_recovered
-# gold-leaf session = wf-aimami111-delta-20260618-goldleaf · sha = d24e429a
+# gold-leaf session = <审计会话> · sha = d24e429a
 
 ```
 tauri_ipc_main_dispatcher_sys (0x14000D2A0)

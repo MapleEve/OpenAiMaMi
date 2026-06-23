@@ -1,6 +1,6 @@
 # run_codex_router_diagnostics — Owner
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 role: 纯生产者
 date: 2026-06-18
@@ -22,7 +22,7 @@ baseline_version: 1.0.9
 | hashmap | off_141899DC0 (0x141899dc0) |
 | hash_key | 0x945CA2F02A2B6F44 |
 | vtable_slot | (entry - 8)[+24] → core_sys fn ptr |
-| idb_comment | gold-leaf for run_codex_router_diagnostics; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion |
+| idb_comment | gold-leaf for run_codex_router_diagnostics; sha d24e429a; session <审计会话>; not gate promotion |
 
 ## 函数签名
 

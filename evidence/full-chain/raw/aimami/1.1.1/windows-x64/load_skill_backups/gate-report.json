@@ -18,13 +18,13 @@
     "call-tree.md: 52 edges, max_depth=6, all branches terminated (win32_file_read_bytes_111/skill_backup_entry_ser_111/WakeByAddressSingle/sort-leaves)",
     "interface.md: SkillBackupEntry stride=152B NEW fields backupPath@+96@0x1412C0558 createdAt@+144@0x1412BFEC1; LoadSkillBackupsData NEW rootPath+lastScanAt; side-effects FS-read+mutex",
     "owner.md: IPC string @0x1412ac16c, owner @0x140028120, delta=integrity_recovered, gold_leaf=true",
-    "gate.dim6_acceptance_mapping session=wf-aimami111-dim6-20260619 gate_tier=readyToImplement implementation_use=eligible",
+    "gate.dim6_acceptance_mapping session=<审计会话> gate_tier=readyToImplement implementation_use=eligible",
     "dim1: argKeys=[], wrapper=loadSkillBackups, callee=ne, line=86 col=30930, snippet=ne('load_skill_backups')",
     "dim2: pseudocode 11378B >> 600B threshold",
     "dim3: 52 edges depth=6 path load_skill_backups_owner_sys->wrap_and_dispatch->data_field_wrapper->response_ser->items_array_ser->entry_ser",
     "dim4: NEW fields backupPath+createdAt per entry; NEW rootPath+lastScanAt in LoadSkillBackupsData; mutex pre-flight; FS read-only",
     "dim5: win32_file_read_bytes_111@0x141093260 windows-only; WakeByAddressSingle@0x14124A5D0; _InterlockedCompareExchange8; _InterlockedDecrement64",
-    "dim6: acceptance_draft readyToImplement eligible wf-aimami111-dim6-20260619"
+    "dim6: acceptance_draft readyToImplement eligible <审计会话>"
   ],
   "dim1_detail": {
     "wrapper": "loadSkillBackups",
@@ -61,10 +61,10 @@
   },
   "dim6_detail": {
     "acceptance_status": "acceptance_draft",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "gate_tier": "readyToImplement",
     "happy_path": "invoke('load_skill_backups') -> {items:[{id,skillID,name,relativePath,backupPath,title,createdAt},...], total:u64, rootPath:string, lastScanAt:DateTime}",
     "delta_asserts": ["response.items[*].backupPath present (NEW 1.1.1 offset+96)", "response.items[*].createdAt present (NEW 1.1.1 offset+144)", "response.rootPath present (NEW 1.1.1)", "response.lastScanAt present (NEW 1.1.1)"]
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

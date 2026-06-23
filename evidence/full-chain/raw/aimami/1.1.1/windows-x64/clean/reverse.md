@@ -1,7 +1,7 @@
 # clean — windows-x64 1.1.1 逆向证据
 
 ## 元信息
-- session: wf-aimami111-delta-20260618-goldleaf
+- session: <审计会话>
 - machine: <本地机器>
 - idb: <本地路径>
 - produced: 2026-06-18

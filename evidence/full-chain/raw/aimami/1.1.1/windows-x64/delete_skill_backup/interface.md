@@ -1,6 +1,6 @@
 # interface — delete_skill_backup (AiMaMi 1.1.1 win64) — GOLD LEAF
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 platform: windows-x64
 sha: d24e429a
 

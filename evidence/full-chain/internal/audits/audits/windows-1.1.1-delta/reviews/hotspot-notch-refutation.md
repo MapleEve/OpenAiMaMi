@@ -1,6 +1,6 @@
 # 审查备注：hotspot/notch macOS-only 旧结论推翻
 
-**session**: wf-aimami111-delta-20260617
+**session**: <审计会话>
 **发现来源**: win-divergence-111.json
 
 ## 推翻内容

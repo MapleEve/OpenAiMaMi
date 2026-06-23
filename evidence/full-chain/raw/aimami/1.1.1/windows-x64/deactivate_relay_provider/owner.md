@@ -1,5 +1,5 @@
 # deactivate_relay_provider — Owner (Windows x64, Gold Leaf)
-**Session**: wf-aimami111-delta-20260618-goldleaf
+**Session**: <审计会话>
 **delta_class**: integrity_recovered
 
 ## Owner Function
@@ -17,7 +17,7 @@
 
 ## IDB Annotation
 - **Renamed**: `sub_14001F940` → `deactivate_relay_provider_owner_sys` (逆向分析 Win, 2026-06-18)
-- **Comment set** at 0x14001F940: `"gold-leaf for deactivate_relay_provider; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion"`
+- **Comment set** at 0x14001F940: `"gold-leaf for deactivate_relay_provider; sha d24e429a; session <审计会话>; not gate promotion"`
 - **IDB saved**: `<本地路径>
 
 ## Call Chain (depth=6)

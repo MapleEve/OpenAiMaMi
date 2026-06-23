@@ -1,6 +1,6 @@
 # Evidence: upsert_mcp_server — AiMaMi 1.1.1 macOS arm64
 
-**Session**: wf-aimami111-delta-20260617-repair
+**Session**: <审计会话>
 **Machine**: <本地机器>
 **Date**: 2026-06-17
 **Binary SHA256**: d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610
@@ -61,7 +61,7 @@
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate tier**: readyToImplement (dim6=acceptance-draft)
 

@@ -1,5 +1,5 @@
 # load_pending_auto_switch — Windows x64 Pseudocode (Delta Leaf)
-# session: wf-aimami111-win-samedepth-patch-20260619
+# session: <审计会话>
 # machine: <本地机器>
 # sha: d24e429a
 # gate_tier: full_delta_leaf

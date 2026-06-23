@@ -83,7 +83,7 @@ Note: exact Rust field names not recoverable from stripped WIN PE (no DWARF). Se
 
 ---
 
-## HTTP Quota Endpoints by Provider (Extended — session wf-aimami111-delta-20260617)
+## HTTP Quota Endpoints by Provider (Extended — session <审计会话>)
 
 `relay_quota_provider_url_classifier_sys@0x1406D5620` routes quota fetch to per-provider endpoints.
 

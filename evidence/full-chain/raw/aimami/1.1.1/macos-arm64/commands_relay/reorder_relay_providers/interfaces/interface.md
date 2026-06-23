@@ -54,7 +54,7 @@ CoreEnvelope wrapping CoreError string
 ## Platform
 
 - **macOS arm64**: confirmed from 逆向分析 decompile, binary f34ff829...
-- **Windows x64**: confirmed in separate session (wf-aimami111-delta-20260617-win-reorder, INDEX keys windows-x64/reorder_relay_providers/full-chain + gate-upgrade)
+- **Windows x64**: confirmed in separate session (<审计会话>, INDEX keys windows-x64/reorder_relay_providers/full-chain + gate-upgrade)
 
 ## Gate
 

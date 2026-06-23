@@ -34,7 +34,7 @@
     "owner_name": "confirm_pending_auto_switch_and_restart_codex_owner_sys",
     "owner_size_bytes": 2970,
     "pseudocode_bytes": 15941,
-    "session": "wf-aimami111-delta-20260617-sweep"
+    "session": "<审计会话>"
   },
   "dim3_detail": {
     "depth": 5,
@@ -73,12 +73,12 @@
   },
   "dim6_detail": {
     "status": "acceptance-draft",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "shard_ref": "intermediate/aimami/1.1.1/version-delta/dim6/win-shard-1.json#confirm_pending_auto_switch_and_restart_codex",
     "mac_final_ref": "intermediate/aimami/1.1.1/version-delta/dim6/mac-final.json#confirm_pending_auto_switch_and_restart_codex",
     "mac_final_gate": "readyToImplement",
     "note": "acceptance-draft counts as closed for producer-side. gate_tier=strictImplementationUse because dim6 acceptance-draft (not full consumer confirmed)."
   },
   "gate_tier_reasoning": "dim1-5 all closed on win platform. dim6 acceptance-draft = producer-side closed per task mandate. Per schema rule: dim1-5 全 closed + dim6 closed (acceptance-draft) → readyToImplement. mac-final.json independently confirms RTI on mac side. WIN dim5 closed by own-platform 逆向分析 decompile.",
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

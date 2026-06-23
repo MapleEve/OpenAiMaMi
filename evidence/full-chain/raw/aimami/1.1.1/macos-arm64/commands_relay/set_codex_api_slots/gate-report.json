@@ -21,7 +21,7 @@
     "commands_relay/set_codex_api_slots/ida/pseudocode/0003_set_codex_api_slots_storage_save_h6a78ba66353d5d3f.c",
     "commands_relay/set_codex_api_slots/call-trees/set_codex_api_slots.jsonl",
     "commands_relay/set_codex_api_slots/interfaces/interface.md (argKeys=[manager,slots], CodexApiSlot struct, 7 error paths, RelayProvider stride=232B)",
-    "commands_relay/set_codex_api_slots/gate-report-dim6.json (session=wf-aimami111-dim6-20260619, acceptance-draft)",
+    "commands_relay/set_codex_api_slots/gate-report-dim6.json (session=<审计会话>, acceptance-draft)",
     "frontend/ipc-contracts.jsonl:L86:col121002 command=set_codex_api_slots argKeys=[slots] wrapper=setCodexApiSlots",
     "frontend/frontend-control-flow.jsonl:L86:col121021 terminal=set_codex_api_slots argKeys=[slots]",
     "frontend/frontend-control-flow.jsonl:L306:col38226 callsite=Zt.setCodexApiSlots(b)"
@@ -32,7 +32,7 @@
     "dim3_call_tree_depth5": "Depth 5+ confirmed per interfaces/interface.md: validate_api_slots->hashbrown_insert->storage::save->write_atomic(FS)->sync_parent(FS). Also: codex_catalog::write_catalog->FS leaf, apply_codex_state->TOML write. Terminals reached. CLOSED.",
     "dim4_interface_dto_error_sideeffect": "argKeys=[slots:Vec<CodexApiSlot>] from CCF (confirmed). 'manager' arg: accepted_unknown — recovery documented above. CodexApiSlot: {providerId:String, model:String}. Constraints: slots.len in [1,5] (0=Chinese error ~55B, >5=count error). Validation: providerId unique(hashbrown), providerId must exist(stride=232B scan), model in exposed_models. Response CoreEnvelope<RelayState>. 7 error paths enumerated. Side-effects: in-memory update(Mutex), relay config atomic write(uuid tmp->fdatasync->rename->fsync_parent), codex config sync(write_catalog/apply_codex_state). Platform delta mac/win documented. CLOSED with noted 'manager' accepted_unknown.",
     "dim5_same_platform_gate": "macos-arm64 confirmed. Owner VA=0x1005e9530, core VA=0x1005d4f40. Windows dim5: INDEX key aimami/1.1.1/windows-x64/set_codex_api_slots/full-chain confirmed per interface.md. CLOSED.",
-    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=wf-aimami111-dim6-20260619. 'manager' discrepancy is consumer clarification task. Producer acceptance-draft = dim6 closed. CLOSED."
+    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=<审计会话>. 'manager' discrepancy is consumer clarification task. Producer acceptance-draft = dim6 closed. CLOSED."
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

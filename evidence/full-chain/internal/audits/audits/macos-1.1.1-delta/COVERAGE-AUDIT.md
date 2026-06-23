@@ -1,7 +1,7 @@
 # COVERAGE-AUDIT.md — macos-1.1.1-delta【v2 终账】
 
-**session**: wf-aimami111-delta-20260617-depth（完整性核查；mac delta 主体由 repair session 完成）
-**session_sweep**: wf-aimami111-delta-20260617-sweep（闭环重分类终账）
+**session**: <审计会话>（完整性核查；mac delta 主体由 repair session 完成）
+**session_sweep**: <审计会话>（闭环重分类终账）
 **machine**: <本地机器>
 **produced_at**: 2026-06-17
 **scope**: mac same 集完整性核查 + delta leaf gate 状态记录 + sweep 闭环终账
@@ -29,7 +29,7 @@
 
 ## 1. mac delta leaf 覆盖状态
 
-> 完整 delta leaf 逆向由 wf-aimami111-delta-20260616/wf-aimami111-delta-20260617-repair 完成。本节汇总 gate 状态。
+> 完整 delta leaf 逆向由 <审计会话>/<审计会话> 完成。本节汇总 gate 状态。
 
 | 命令 | gate | DEEP_OK | 说明 |
 |---|---|---|---|
@@ -148,7 +148,7 @@ activate_relay_provider, begin_add_account_attach_monitor, check_update_installa
 
 ---
 
-## SAME-DEPTH-CONFIRM（session: wf-aimami111-same-depth-20260618，2026-06-19）
+## SAME-DEPTH-CONFIRM（session: <审计会话>，2026-06-19）
 
 same 集（mac-same.txt 中划入此 session 的命令）已逆到 depth≥5 确认。本段记录终数和 partial 卡点。
 

@@ -1,6 +1,6 @@
 # Interface: set_codex_router_enabled — Windows x64 — AiMaMi 1.1.1
 
-Session: wf-aimami111-delta-20260616 | Date: 2026-06-17 | Platform: windows-x64
+Session: <审计会话> | Date: 2026-06-17 | Platform: windows-x64
 
 ---
 

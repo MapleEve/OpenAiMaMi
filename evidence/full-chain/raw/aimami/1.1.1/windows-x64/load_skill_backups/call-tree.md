@@ -1,5 +1,5 @@
 # load_skill_backups — Call Tree (Gold-Leaf)
-<!-- session=wf-aimami111-delta-20260618-goldleaf machine=<本地机器> sha=d24e429a depth=6 -->
+<!-- session=<审计会话> machine=<本地机器> sha=d24e429a depth=6 -->
 
 ```
 load_skill_backups_owner_sys  [0x140028120]  ← IPC entry "load_skill_backups"@0x1412ac16c

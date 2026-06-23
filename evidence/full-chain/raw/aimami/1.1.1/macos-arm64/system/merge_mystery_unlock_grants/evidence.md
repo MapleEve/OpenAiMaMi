@@ -1,6 +1,6 @@
 # Evidence — merge_mystery_unlock_grants (macos-arm64 1.1.1)
 
-**Session**: wf-aimami111-delta-20260616 | **Machine**: <本地机器>
+**Session**: <审计会话> | **Machine**: <本地机器>
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 **Module**: codexmate_lib::commands::system
 **Owner VA**: 0x10061be20 (906B) | **Core VA**: 0x1004ce6a0

@@ -1,6 +1,6 @@
 # Evidence: test_relay_draft_stream (macOS arm64, AiMaMi 1.1.1)
 
-session: wf-aimami111-delta-20260617-repair
+session: <审计会话>
 machine: <本地机器>
 binary sha256: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 imagebase: 0x100000000
@@ -86,7 +86,7 @@ idb: <来源位置>/raw/binary/AiMaMi-1.1.1-idb
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate tier**: readyToImplement (dim6=acceptance-draft)
 **Delta class**: new_in_1_1_1 — streaming SSE variant of test_relay_draft

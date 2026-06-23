@@ -1,5 +1,5 @@
 # evidence.md — run_codex_router_diagnostics
-## Session: wf-aimami111-delta-20260617
+## Session: <审计会话>
 ## Platform: windows-x64 · AiMaMi 1.1.1 · IDB: AiMaMi 1.1.1 win64.exe.i64
 
 ---

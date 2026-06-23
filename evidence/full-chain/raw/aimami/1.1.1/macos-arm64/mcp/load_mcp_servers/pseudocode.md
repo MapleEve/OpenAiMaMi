@@ -1,5 +1,5 @@
 # load_mcp_servers — macOS arm64 pseudocode
-## AiMaMi 1.1.1 | delta_class = integrity_recovered | session = wf-aimami111-delta-20260617-sweep
+## AiMaMi 1.1.1 | delta_class = integrity_recovered | session = <审计会话>
 
 ---
 
@@ -173,4 +173,4 @@ Element stride = 224 bytes per `McpServerSummary`.
 +0x358  Option<SkillListPayload>      a1[107] = 0x8000000000000000 (None) [skill slot]
 ```
 Absolute offsets: mcp @ a1[99] = +0x318, skills @ a1[107] = +0x358.
-Live-verified 2026-06-17 wf-aimami111-delta-20260617-sweep, idb_save ok.
+Live-verified 2026-06-17 <审计会话>, idb_save ok.

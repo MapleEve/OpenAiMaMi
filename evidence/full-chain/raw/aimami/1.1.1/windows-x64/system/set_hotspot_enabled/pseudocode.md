@@ -1,6 +1,6 @@
 # set_hotspot_enabled — Pseudocode (Windows x64 1.1.1)
 
-**session**: wf-aimami111-delta-20260617-repair
+**session**: <审计会话>
 **owner_va**: 0x140022070
 
 ---

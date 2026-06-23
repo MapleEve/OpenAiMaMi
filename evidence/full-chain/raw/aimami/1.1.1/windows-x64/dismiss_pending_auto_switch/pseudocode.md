@@ -1,6 +1,6 @@
 # dismiss_pending_auto_switch — Windows x64 Pseudocode
 # AiMaMi 1.1.1 win64.exe · delta_class = integrity_recovered
-# session = wf-aimami111-delta-20260617-sweep · gold-leaf = wf-aimami111-delta-20260618-goldleaf
+# session = <审计会话> · gold-leaf = <审计会话>
 # machine = <本地机器> · sha = d24e429a
 
 ## Owner Functions

@@ -1,5 +1,5 @@
 # graceful_restart_for_update — Call Tree (Windows x64)
-<!-- session=wf-aimami111-delta-20260618-goldleaf gate_tier=gold prior=wf-aimami111-delta-20260617-sweep -->
+<!-- session=<审计会话> gate_tier=gold prior=<审计会话> -->
 
 ```
 tauri_ipc_main_dispatcher_sys @ 0x14000D2A0                            [L0]

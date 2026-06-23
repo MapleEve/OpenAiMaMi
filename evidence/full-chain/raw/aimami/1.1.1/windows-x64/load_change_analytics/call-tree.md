@@ -1,5 +1,5 @@
 # load_change_analytics — Call Tree (Windows x64)
-# session: wf-aimami111-win-samedepth-patch-20260619
+# session: <审计会话>
 # owner VA: 0x140016C70 | size: 0x511
 
 ## Depth-annotated tree

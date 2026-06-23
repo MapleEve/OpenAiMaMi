@@ -1,6 +1,6 @@
 # evidence — switch_account_and_restart_codex (macOS arm64, AiMaMi 1.1.1)
 
-session: wf-aimami111-delta-20260617-sweep
+session: <审计会话>
 machine: <本地机器>
 producer: subagent (pure producer mode)
 delta_class: integrity_recovered
@@ -124,7 +124,7 @@ Tauri command string in binary: `switch_account_and_restart_codex` @ 0x1010e7311
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate tier**: readyToImplement (dim6=acceptance-draft)
 **Delta class**: integrity_recovered — significant new behavior vs 1.0.9

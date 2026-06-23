@@ -4,7 +4,7 @@
 **Platform**: macOS arm64
 **Module**: commands_relay
 **Status**: 1.1.1 new command (not in 1.0.9)
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 
 ## IPC Invocation
 

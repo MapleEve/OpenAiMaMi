@@ -1,7 +1,7 @@
 # Evidence: set_codex_router_enabled — Windows x64 — AiMaMi 1.1.1
 
-Session: wf-aimami111-delta-20260616 → wf-aimami111-delta-20260617 | Machine: <本地机器> | Date: 2026-06-17
-Last-updated-session: wf-aimami111-delta-20260617
+Session: <审计会话> → <审计会话> | Machine: <本地机器> | Date: 2026-06-17
+Last-updated-session: <审计会话>
 逆向分析 Server: <逆向工具通道> | Binary: AiMaMi 1.1.1 win64.exe (PE AMD64 stripped)
 
 ---
@@ -38,15 +38,15 @@ Last-updated-session: wf-aimami111-delta-20260617
 
 15. **Dispatcher callers**: sub_140A98A10@0x140A98A10(size=0x235) and sub_140AA5A00@0x140AA5A00(size=0x235) — two callers of dispatcher, both same size (likely command router slots, typical Tauri Win64 IPC registration pattern).
 
-16. **Owner dispatcher pseudocode body confirmed** (session wf-aimami111-delta-20260617): Full HexRays decompile of `sub_140963A40@0x140963A40` (4974 B) obtained and written to `ida/pseudocode/owner_sub_140963A40.c`. Outer FSM resume discriminant at a1+3536 (4 stages). Arg parse order confirmed: manager(string) → enabled(bool via parse_bool_from_ipc_arg_sys@0x1402FF1A0) → relaunch(bool via sub_1402FF330@0x1402FF330) → apiLogin(bool via sub_1402FF330). State pack layout a1+2504..2835 confirmed. Coroutine dispatch via `sub_1408711F0@0x1408711F0`. Reply via `sub_14080C3C0@0x14080C3C0`. Error path via `run_codex_router_diagnostics_owner_sys@0x14006F4B0` (Tokio dispatcher lock, hashmap probe pattern). 34 direct callees confirmed.
+16. **Owner dispatcher pseudocode body confirmed** (session <审计会话>): Full HexRays decompile of `sub_140963A40@0x140963A40` (4974 B) obtained and written to `ida/pseudocode/owner_sub_140963A40.c`. Outer FSM resume discriminant at a1+3536 (4 stages). Arg parse order confirmed: manager(string) → enabled(bool via parse_bool_from_ipc_arg_sys@0x1402FF1A0) → relaunch(bool via sub_1402FF330@0x1402FF330) → apiLogin(bool via sub_1402FF330). State pack layout a1+2504..2835 confirmed. Coroutine dispatch via `sub_1408711F0@0x1408711F0`. Reply via `sub_14080C3C0@0x14080C3C0`. Error path via `run_codex_router_diagnostics_owner_sys@0x14006F4B0` (Tokio dispatcher lock, hashmap probe pattern). 34 direct callees confirmed.
 
-17. **apiLogin coroutine true body confirmed** (session wf-aimami111-delta-20260617): Full HexRays decompile of `sub_14096A2D0@0x14096A2D0` (3696 B) obtained and written to `ida/pseudocode/apilogin_coroutine_sub_14096A2D0.c`. Command string `aSwitchAccountA="switch_account_and_restart_codex"@0x1412FA9F1`, arg key `aAccountkey_2="accountKey"@0x1412FAA11`. Parsed via `sub_1402FED40@0x1402FED40` (string IPC arg reader). Poll via `sub_140871EA0@0x140871EA0` (DIFFERENT from owner's sub_1408711F0). Spawn via `sub_140240810@0x140240810` (DIFFERENT from owner's sub_140240520). Finalizer via `sub_1408EF790@0x1408EF790`. FSM offsets at a1+4688/4672/4664/4656/4648 (separate coroutine state from owner). 26 direct callees confirmed.
+17. **apiLogin coroutine true body confirmed** (session <审计会话>): Full HexRays decompile of `sub_14096A2D0@0x14096A2D0` (3696 B) obtained and written to `ida/pseudocode/apilogin_coroutine_sub_14096A2D0.c`. Command string `aSwitchAccountA="switch_account_and_restart_codex"@0x1412FA9F1`, arg key `aAccountkey_2="accountKey"@0x1412FAA11`. Parsed via `sub_1402FED40@0x1402FED40` (string IPC arg reader). Poll via `sub_140871EA0@0x140871EA0` (DIFFERENT from owner's sub_1408711F0). Spawn via `sub_140240810@0x140240810` (DIFFERENT from owner's sub_140240520). Finalizer via `sub_1408EF790@0x1408EF790`. FSM offsets at a1+4688/4672/4664/4656/4648 (separate coroutine state from owner). 26 direct callees confirmed.
 
-18. **parse_bool_from_ipc_arg_sys body confirmed** (session wf-aimami111-delta-20260617): Full decompile of `0x1402FF1A0` (named `parse_bool_from_ipc_arg_sys`). Pattern: calls `sub_1402F9EB0` (IPC arg type check). If type discriminant==1 → direct bool copy to `a1+1`. If type!=1 → `sub_1412233C0` (string parse). Result packed at `a1+0` (discriminant 3=Ok, 6=Err) + `a1+1` (bool value). Confirms `enabled` arg parsing path.
+18. **parse_bool_from_ipc_arg_sys body confirmed** (session <审计会话>): Full decompile of `0x1402FF1A0` (named `parse_bool_from_ipc_arg_sys`). Pattern: calls `sub_1402F9EB0` (IPC arg type check). If type discriminant==1 → direct bool copy to `a1+1`. If type!=1 → `sub_1412233C0` (string parse). Result packed at `a1+0` (discriminant 3=Ok, 6=Err) + `a1+1` (bool value). Confirms `enabled` arg parsing path.
 
-19. **sub_1402FF330 body confirmed** (session wf-aimami111-delta-20260617): Full decompile of `0x1402FF330` (used for relaunch + apiLogin args). If `*(v7+480)==6` → wrap via `sub_1410A1DF0` (async-aware path). Else → `sub_14103A480` (direct extract), if type==1 returns bool directly, else `sub_1412233C0` string parse. Returns discriminant 3=Ok / 6=Err. Confirms relaunch and apiLogin are optional bool-or-absent args.
+19. **sub_1402FF330 body confirmed** (session <审计会话>): Full decompile of `0x1402FF330` (used for relaunch + apiLogin args). If `*(v7+480)==6` → wrap via `sub_1410A1DF0` (async-aware path). Else → `sub_14103A480` (direct extract), if type==1 returns bool directly, else `sub_1412233C0` string parse. Returns discriminant 3=Ok / 6=Err. Confirms relaunch and apiLogin are optional bool-or-absent args.
 
-20. **run_codex_router_diagnostics_owner_sys body confirmed** (session wf-aimami111-delta-20260617): Full decompile of `0x14006F4B0`. Pattern: `_InterlockedCompareExchange8` (try-acquire spinlock). On success: probes `off_141899DC0` hashmap using hash `0x945CA2F02A2B6F44` with SIMD xmm search. On hit: calls vtable[3] (`sub_140031D80`). On fail: `sub_14124B1D0` (Tokio runtime check). Uses `WakeByAddressSingle` (already confirmed in `sub_14124A5D0`). Returns 0 if entry not found (fast path for dispatcher lock). This is the Tokio channel/dispatcher liveness check gate before command routing.
+20. **run_codex_router_diagnostics_owner_sys body confirmed** (session <审计会话>): Full decompile of `0x14006F4B0`. Pattern: `_InterlockedCompareExchange8` (try-acquire spinlock). On success: probes `off_141899DC0` hashmap using hash `0x945CA2F02A2B6F44` with SIMD xmm search. On hit: calls vtable[3] (`sub_140031D80`). On fail: `sub_14124B1D0` (Tokio runtime check). Uses `WakeByAddressSingle` (already confirmed in `sub_14124A5D0`). Returns 0 if entry not found (fast path for dispatcher lock). This is the Tokio channel/dispatcher liveness check gate before command routing.
 
 ---
 
@@ -96,11 +96,11 @@ Last-updated-session: wf-aimami111-delta-20260617
 
 10. **apiLogin coroutine ownership boundary**: sub_14096A2D0 is referenced by owner dispatcher xref chain; unclear if it is invoked as a nested coroutine poll or as a separate Tauri command entry point sharing dispatcher routing logic. String evidence ("switch_account_and_restart_codex") suggests separate command, but both strings appear in same dispatcher decompile (sub_140963A40). Routing mechanism accepted_unknown pending caller xref decompile.
 
-## Gate-Report Supplement (wf-aimami111-delta-20260617)
+## Gate-Report Supplement (<审计会话>)
 
 - dim1 (pseudocode): UPDATED — owner_sub_140963A40.c + apilogin_coroutine_sub_14096A2D0.c written to ida/pseudocode/; pseudocode-manifest.jsonl indices 8+9 appended
 - dim2 (call-tree): existing set_codex_router_enabled.jsonl retained; callees of owner (34) and apiLogin coroutine (26) confirmed live this session
 - dim3 (evidence): this file — 20 Confirmed / 10 Inferred / 10 Unknown
-- dim4 (IDB inline): renames from wf-aimami111-delta-20260616 retained; new session will add 2 renames (owner dispatcher + apiLogin coroutine) and idb_save
+- dim4 (IDB inline): renames from <审计会话> retained; new session will add 2 renames (owner dispatcher + apiLogin coroutine) and idb_save
 - dim5 (interface): interfaces/ dir — not modified this session
 - dim6 (impl boundary): N/A — production role

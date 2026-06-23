@@ -1,6 +1,6 @@
 # refresh_usage_snapshot — dim6 ACCEPTANCE MAPPING
 # version: 1.1.1 | platform: macos-arm64 | shard: mac-3/5
-# authored: 2026-06-19 | session: wf-aimami111-dim6-20260619
+# authored: 2026-06-19 | session: <审计会话>
 
 ## gate_tier: acceptance_draft_only
 ## blocked_dim: dim1 (partial — Tauri event name changed from "load_snapshot" to "runtime-state-updated"; frontend must update event listener; argKeys confirmed but event listener delta is a breaking CCF change requiring explicit 1.1.1 frontend verification), dim5_win (Unknown)

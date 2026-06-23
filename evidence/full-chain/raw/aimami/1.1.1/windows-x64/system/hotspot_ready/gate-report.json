@@ -16,7 +16,7 @@
     "frontend/frontend-control-flow.jsonl#L102: terminal_call.command='hotspot_ready', argKeys=[], wrapper='hotspotReady'",
     "system/hotspot_ready/pseudocode.md: owner=hotspot_ready_owner_sys_111@0x140016720, size=847B, 32BB, CC=9; L0-L3b full trace; discriminant_map={18=Ready,3=not_ready,38=in_flight,6=error}",
     "system/hotspot_ready/interface.md: argKeys=[], discriminant_map, side_effects (PostMessageW+ring_buffer conditional), all callees listed; dim1-5 all PASS confirmed",
-    "system/hotspot_ready/gate-report.json (prev): dims all closed, call_tree_depth=5, call_tree_edges=18, idb_save=ok; dim6_acceptance_mapping session=wf-aimami111-dim6-20260619",
+    "system/hotspot_ready/gate-report.json (prev): dims all closed, call_tree_depth=5, call_tree_edges=18, idb_save=ok; dim6_acceptance_mapping session=<审计会话>",
     "gate-report.json#dim6_acceptance_mapping: 3 happy_path scenarios (disc=18/disc=3/focus_dispatch), boundary_errors, side_effect_asserts, test_mapping"
   ],
   "dim1_detail": {
@@ -65,9 +65,9 @@
     "win_only_side_effect": "PostMessageW + ring-buffer dispatch (no AppKit NSWindow counterpart on win); mac uses NSWindow setLevel/orderFrontRegardless"
   },
   "dim6_detail": {
-    "source": "gate-report.json#dim6_acceptance_mapping (session wf-aimami111-dim6-20260619)",
+    "source": "gate-report.json#dim6_acceptance_mapping (session <审计会话>)",
     "happy_path_count": 3,
     "key_note": "PostMessageW side-effect is conditional on window ID match; not every call dispatches focus"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

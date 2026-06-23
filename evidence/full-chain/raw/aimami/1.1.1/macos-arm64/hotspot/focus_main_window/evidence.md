@@ -1,5 +1,5 @@
 # focus_main_window — Evidence
-## AiMaMi 1.1.1 macOS arm64 | Session wf-aimami111-delta-20260616 | Machine <本地机器>
+## AiMaMi 1.1.1 macOS arm64 | Session <审计会话> | Machine <本地机器>
 
 ---
 
@@ -11,7 +11,7 @@
 - **Product / Version**: AiMaMi 1.1.1
 - **Binary SHA-256**: `f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb` (first 12: `f34ff8291053`)
 - **IDB**: `<来源位置>/raw/binary/AiMaMi-1.1.1-idb`
-- **Session**: `wf-aimami111-delta-20260616`
+- **Session**: `<审计会话>`
 - **Machine**: `<本地机器>`
 - **Produced**: `2026-06-17`
 - **Baseline**: 1.0.9 macOS VA=`0x10032e820` (module=window-path, gate=strictImplementationUse)
@@ -31,7 +31,7 @@
 9. **Return type confirmed**: `Result<(), tauri::Error>` — Ok sentinel `*a1 = 0x8000000000000000`. JS Promise resolves `undefined` on success.
 10. **No persistence / no HTTP / no sidecar**: Call tree exhausted; all leaves are: WryHandle clone, atomic refcount ops, heap alloc, send_user_message → Wry/NSApp. No file I/O, no network, no DB.
 11. **IDB saved**: `<逆向工具通道>` returned `ok=true`, path confirmed.
-12. **append_comments written**: Comment `"A-level owner for focus_main_window; range 0x1005ec060-0x1005ec1aa; sha he42a9e4c93c10f67; session wf-aimami111-delta-20260616; not gate promotion"` at `0x1005ec060`.
+12. **append_comments written**: Comment `"A-level owner for focus_main_window; range 0x1005ec060-0x1005ec1aa; sha he42a9e4c93c10f67; session <审计会话>; not gate promotion"` at `0x1005ec060`.
 
 ---
 

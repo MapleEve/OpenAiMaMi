@@ -1,6 +1,6 @@
 # call-tree.md — remove_skill (win64, AiMaMi 1.1.1)
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 sha: d24e429a
 depth: 6 edges (L1→L6), terminated_reason annotated per leaf
 

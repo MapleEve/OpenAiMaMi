@@ -1,6 +1,6 @@
 # remove_mcp_server 调用树 — AiMaMi 1.1.1 win64
 
-session: wf-aimami111-delta-20260618-goldleaf (gold-leaf补满; prior: wf-aimami111-delta-20260617-sweep)
+session: <审计会话> (gold-leaf补满; prior: <审计会话>)
 delta_class: integrity_recovered
 terminated_reason: terminal_leaf_reached (depth ≥ 6 on all branches)
 gold_leaf: true

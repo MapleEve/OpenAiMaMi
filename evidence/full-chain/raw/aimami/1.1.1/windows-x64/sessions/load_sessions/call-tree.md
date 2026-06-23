@@ -1,5 +1,5 @@
 # load_sessions — Call Tree (Windows x64) — Gold Leaf
-**session**: wf-aimami111-delta-20260618-goldleaf
+**session**: <审计会话>
 **delta_class**: integrity_recovered
 **depth**: ≥5 edges confirmed
 **date**: 2026-06-18

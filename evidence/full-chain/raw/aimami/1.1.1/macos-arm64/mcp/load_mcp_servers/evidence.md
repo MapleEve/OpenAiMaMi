@@ -1,8 +1,8 @@
 # load_mcp_servers — evidence record
 ## AiMaMi 1.1.1 macOS arm64
 ## delta_class = integrity_recovered → full_gold_leaf
-## session_initial = wf-aimami111-delta-20260617-sweep
-## session_goldleaf = wf-aimami111-delta-20260618-mac100
+## session_initial = <审计会话>
+## session_goldleaf = <审计会话>
 ## machine = <本地机器> (producer)
 ## date_initial = 2026-06-17
 ## date_goldleaf = 2026-06-18
@@ -67,7 +67,7 @@ The command handler `commands::mcp::load_mcp_servers` now calls `Repository::sto
 ---
 
 ## 4. 逆向分析 annotation status
-`append_comments` applied — session wf-aimami111-delta-20260617-sweep (integrity_recovered pass):
+`append_comments` applied — session <审计会话> (integrity_recovered pass):
 - `0x10059e470` (core::mcp::load_mcp_servers) ✓
 - `0x10072a000` (commands::mcp::load_mcp_servers) ✓
 - `0x1004cecd0` (store_bootstrap_mcp_servers NEW) ✓
@@ -103,7 +103,7 @@ The command handler `commands::mcp::load_mcp_servers` now calls `Repository::sto
   "version": "1.1.1",
   "baseline": "1.0.9",
   "delta_class": "integrity_recovered",
-  "session": "wf-aimami111-delta-20260618-mac100",
+  "session": "<审计会话>",
   "owner_va": "0x10072a000",
   "core_va": "0x10059e470",
   "new_callees": [
@@ -138,7 +138,7 @@ The command handler `commands::mcp::load_mcp_servers` now calls `Repository::sto
 
 ---
 
-## 8. Gold-leaf completion record (session wf-aimami111-delta-20260618-mac100)
+## 8. Gold-leaf completion record (session <审计会话>)
 
 ### 8.1 Files added in this session
 

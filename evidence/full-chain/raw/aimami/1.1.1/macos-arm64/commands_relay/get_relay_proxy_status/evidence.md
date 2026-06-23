@@ -2,7 +2,7 @@
 ## AiMaMi 1.1.1 macOS ARM64
 
 **produced_at**: 2026-06-17
-**session**: wf-aimami111-delta-20260616
+**session**: <审计会话>
 **machine**: <本地机器>
 **model**: claude-sonnet-4-6
 **role**: 纯生产者 (SOP steps 0-6)

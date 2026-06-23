@@ -1,5 +1,5 @@
 # restore_skill_backup — Owner Record (Windows x64)
-<!-- session=wf-aimami111-delta-20260618-goldleaf machine=<本地机器> platform=windows-x64 -->
+<!-- session=<审计会话> machine=<本地机器> platform=windows-x64 -->
 <!-- sha=d24e429a binary="AiMaMi 1.1.1 win64.exe" imagebase=0x140000000 -->
 
 ## Identity
@@ -14,7 +14,7 @@
 | binary | AiMaMi 1.1.1 win64.exe |
 | imagebase | `0x140000000` |
 | analysis_date | 2026-06-18 |
-| session | wf-aimami111-delta-20260618-goldleaf |
+| session | <审计会话> |
 | delta_class | integrity_recovered |
 | baseline_version | 1.0.9 |
 
@@ -24,7 +24,7 @@
 - xref from `tauri_ipc_main_dispatcher_sys` @ `0x14000D2A0` code-ref `0x14000F4C4`
 - Static data refs: `0x1414FCF54`, `0x14189E77C` (command table entries)
 - rename in IDB: `restore_skill_backup_handler_111` → `restore_skill_backup_owner_sys`
-- IDB comment set @ `0x1400201E0`: `gold-leaf for restore_skill_backup; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion`
+- IDB comment set @ `0x1400201E0`: `gold-leaf for restore_skill_backup; sha d24e429a; session <审计会话>; not gate promotion`
 
 ## Stack Layout Summary
 

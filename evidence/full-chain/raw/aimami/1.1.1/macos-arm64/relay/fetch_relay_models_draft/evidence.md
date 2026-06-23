@@ -1,6 +1,6 @@
 # Evidence: fetch_relay_models_draft (AiMaMi 1.1.1 macOS ARM64)
 
-session: wf-aimami111-delta-20260616
+session: <审计会话>
 machine: <本地机器>
 produced_at: 2026-06-16
 binary_sha256: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
@@ -59,7 +59,7 @@ command_number: 22/76
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate**: strictImplementationUse → acceptance-draft（dim4 partial FetchModelsDraftInput field names inferred + dim5 win Unknown）
 

@@ -1,6 +1,6 @@
 # evidence.md — clear_custom_instruction_block
 ## AiMaMi 1.1.1 / macOS ARM64 / module: custom_instructions
-## Session: wf-aimami111-delta-20260616 | Machine: <本地机器> | Date: 2026-06-16
+## Session: <审计会话> | Machine: <本地机器> | Date: 2026-06-16
 
 ---
 

@@ -18,7 +18,7 @@
     "call-tree.md: max_depth=6, total_unique_callees=42, named_callees=16, all branches terminated",
     "interface.md: response DTO fields schemaVersion/success/code/message/warnings(NEW_1.1.1)/data confirmed; side-effects TCP+disk both branches",
     "owner.md: IDB renamed load_relay_state_ipc_handler_111 @0x140015870, string anchor @0x1412AC4B0",
-    "gate.dim6_acceptance_mapping session=wf-aimami111-dim6-20260619 acceptance_draft + test_mapping present",
+    "gate.dim6_acceptance_mapping session=<审计会话> acceptance_draft + test_mapping present",
     "dim1: argKeys=[] confirmed, wrapper=loadState, callee=vt, line=86 col=119446",
     "dim2: pseudocode 24750B >> 600B threshold",
     "dim3: depth=6 (GetCurrentProcessId/WriteFile/CloseHandle @ relay_atomic_write_leaf_sys), terminated_reason on all branches",
@@ -58,10 +58,10 @@
   },
   "dim6_detail": {
     "acceptance_status": "acceptance_draft",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "gate_tier": "readyToImplement",
     "happy_path": "invoke('load_relay_state') -> {schemaVersion, success, code, message, warnings[], data}",
     "delta_assert": "response.warnings array present (NEW 1.1.1); aimami-relay.json updated atomically on every success path"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

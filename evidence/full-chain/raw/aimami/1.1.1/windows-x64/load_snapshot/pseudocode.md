@@ -1,5 +1,5 @@
 # load_snapshot — Windows x64 Pseudocode (GOLD-LEAF)
-session=wf-aimami111-delta-20260618-goldleaf  machine=<本地机器>
+session=<审计会话>  machine=<本地机器>
 delta_class=integrity_recovered  baseline=1.0.9
 sha=d24e429a
 

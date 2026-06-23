@@ -1,7 +1,7 @@
 # capture_voice_trigger_key — Interface / DTO / Error / Side-Effect
 
 **Version**: 1.1.1 macOS ARM64
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 **Migration**: migrated_no_behavior_diff from 1.0.9
 
 ## Input DTO

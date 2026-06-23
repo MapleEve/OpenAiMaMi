@@ -16,7 +16,7 @@
     "commands_relay/reorder_relay_providers/ida/pseudocode/0002_reorder_relay_providers_core_impl_h2dd46f2b08c57b96.c",
     "commands_relay/reorder_relay_providers/call-trees/reorder_relay_providers.jsonl",
     "commands_relay/reorder_relay_providers/interfaces/interface.md (argKeys=[orderedIds], depth>=7 confirmed, RelayProvider stride=232B)",
-    "commands_relay/reorder_relay_providers/gate-report-dim6.json (session=wf-aimami111-dim6-20260619, acceptance-draft)",
+    "commands_relay/reorder_relay_providers/gate-report-dim6.json (session=<审计会话>, acceptance-draft)",
     "frontend/ipc-contracts.jsonl:L86:col119709 command=reorder_relay_providers argKeys=[orderedIds] wrapper=reorderProviders",
     "frontend/frontend-control-flow.jsonl:L86:col119728 terminal=reorder_relay_providers argKeys=[orderedIds]",
     "frontend/frontend-control-flow.jsonl:L306:col37060 callsite=mutationFn->reorderProviders"
@@ -27,7 +27,7 @@
     "dim3_call_tree_depth5": "Depth>=7 confirmed per interfaces/interface.md. Terminals: write_atomic (FS), sync_codex_config_with_outcome->write_catalog->syscall, driftsort_main (sort algo leaf), insertion_sort_shift_left (n<21 branch). CLOSED.",
     "dim4_interface_dto_error_sideeffect": "argKeys=[orderedIds:string[]]. Response CoreEnvelope<reorder_result> — inner type (RelayState/Vec<RelayProvider>) accepted_unknown (documented non-blocking). Error: snapshot invalid 107B string @0x1011541DD + persist failure + sync_config failure. Side-effects: relay config atomic write (tmp->fdatasync->rename->sync_parent), sync_codex_config_with_outcome (write_catalog/apply_codex_state). RelayProvider stride=232B. CLOSED.",
     "dim5_same_platform_gate": "macos-arm64 confirmed. Owner VA=0x1005eb9a0. Windows dim5: INDEX key windows-x64/reorder_relay_providers confirmed per interface.md. CLOSED. dim5_win: Windows INDEX entry confirmed (non-blocking for mac gate).",
-    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=wf-aimami111-dim6-20260619. Inner response type accepted_unknown (consumer to verify JSON). Producer-acceptance-draft = dim6 closed. CLOSED."
+    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=<审计会话>. Inner response type accepted_unknown (consumer to verify JSON). Producer-acceptance-draft = dim6 closed. CLOSED."
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

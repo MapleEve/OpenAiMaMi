@@ -1,6 +1,6 @@
 # get_hotspot_enabled — Evidence
 
-**session**: wf-aimami111-delta-20260616
+**session**: <审计会话>
 **machine**: <本地机器>
 **platform**: macos-arm64
 **version**: 1.1.1
@@ -72,7 +72,7 @@
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate**: strictImplementationUse → acceptance-draft（dim1 partial frontend wrapper deferred + dim5 win Unknown）
 

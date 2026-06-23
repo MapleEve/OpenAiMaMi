@@ -23,6 +23,6 @@
   "dim3_evidence": "call-tree jsonl depth=5+ terminated at WIN32 leaves: WakeByAddressSingle, CloseHandle, CreateToolhelp32Snapshot, Process32FirstW/NextW, GetCurrentProcessId, nanosleep; 17 jsonl entries; is_process_running_toolhelp_sys_111 full decompile; 5-depth chain: cmd_wrapper->coordinator->poll_quit->kill->launch",
   "dim4_evidence": "no-args IPC; return: () success or error string; errors: 0x8000000000000000=CODEX_APP_QUIT_TIMEOUT, 'Codex.exe not found'(tag7); side-effects: terminates Codex process + relaunches Codex; 10 path scan + registry + where + powershell; signal_codex_quit_wake ABSENT in 1.1.1 win (pure poll)",
   "dim5_evidence": "WIN-specific: signal_codex_quit_wake ABSENT; poll-based quit @50ms; taskkill /F /T /PID fallback; WakeByAddressSingle for launch-done; 10 Codex.exe path candidates confirmed WIN paths; registry HKCU/HKLM Codex.exe query",
-  "dim6_evidence": "acceptance-draft by wf-aimami111-dim6-20260619; promoted to readyToImplement in win-consolidated.json",
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "dim6_evidence": "acceptance-draft by <审计会话>; promoted to readyToImplement in win-consolidated.json",
+  "regen_by": "<审计会话>"
 }

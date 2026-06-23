@@ -1,7 +1,7 @@
 # AiMaMi 1.1.1 Windows-x64 Delta 消费结论包
 
 **Bundle 版本**: 1.0
-**产出 session**: wf-aimami111-delta-20260617-repair
+**产出 session**: <审计会话>
 **机器**: <本地机器>
 **角色**: 纯生产者（SOP 步骤 0-6）
 **平台**: windows-x64

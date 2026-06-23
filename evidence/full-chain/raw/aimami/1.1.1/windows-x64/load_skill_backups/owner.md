@@ -1,5 +1,5 @@
 # load_skill_backups — Owner
-<!-- session=wf-aimami111-delta-20260618-goldleaf machine=<本地机器> sha=d24e429a -->
+<!-- session=<审计会话> machine=<本地机器> sha=d24e429a -->
 
 ## Identity
 
@@ -18,7 +18,7 @@
 ## IDB Rename
 
 Renamed → `load_skill_backups_owner_sys` at `0x140028120`
-Comment: `gold-leaf for load_skill_backups; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion`
+Comment: `gold-leaf for load_skill_backups; sha d24e429a; session <审计会话>; not gate promotion`
 
 ## Structural Role
 

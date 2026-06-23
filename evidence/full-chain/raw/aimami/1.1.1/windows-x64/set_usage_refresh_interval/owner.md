@@ -1,5 +1,5 @@
 # Owner — set_usage_refresh_interval (AiMaMi 1.1.1 Windows x64)
-<!-- session=wf-aimami111-delta-20260618-goldleaf | machine=<本地机器> | delta_class=integrity_recovered -->
+<!-- session=<审计会话> | machine=<本地机器> | delta_class=integrity_recovered -->
 <!-- produced=2026-06-18 | sha=d24e429a -->
 
 | 属性 | 值 |

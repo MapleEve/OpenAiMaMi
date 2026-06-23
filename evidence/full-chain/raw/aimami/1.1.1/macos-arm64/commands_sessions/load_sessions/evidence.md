@@ -1,6 +1,6 @@
 # Evidence: load_sessions — AiMaMi 1.1.1 macOS ARM64
 
-**session**: wf-aimami111-delta-20260616
+**session**: <审计会话>
 **machine**: <本地机器>
 **model**: claude-sonnet-4-6
 **role**: 纯生产者 (SOP steps 0-6)
@@ -48,7 +48,7 @@
 
 ## ## Unknown
 
-1. **dim1 Frontend CCF** (UI trigger, invoke wrapper, state mutation on return) — `owner-map-111.jsonl` status=shared/not_yet_queried for load_sessions dim1; blocks full readyToImplement promotion; consistent with 1.0.9 baseline (session=wf-aimami109-sessions-analytics established dim1 `consumerStartReady` via ipc-contracts.jsonl).
+1. **dim1 Frontend CCF** (UI trigger, invoke wrapper, state mutation on return) — `owner-map-111.jsonl` status=shared/not_yet_queried for load_sessions dim1; blocks full readyToImplement promotion; consistent with 1.0.9 baseline (session=<审计会话> established dim1 `consumerStartReady` via ipc-contracts.jsonl).
 2. **Exact load_sessions IPC closure VA** — no standalone `codexmate_lib::commands::sessions::load_sessions` symbol in 1.1.1; shared dispatcher pattern means no per-command closure VA assignable; closest proxy is `respond_async_serialized_inner @0x1001234d0`.
 3. **CodexPaths exact paths** (home1, home2 string values): constructed dynamically from `~/.codex` + platform paths; not decoded in this session.
 4. **Full rollout-*.jsonl JSON schema** delta vs 1.0.9: new pointer paths `/payload/source/subagent/thread_spawn/parent_thread_id` and `/payload/source/subagent/thread_spawn/depth` suggest new subagent spawn fields; whether these were in 1.0.9 unknown.

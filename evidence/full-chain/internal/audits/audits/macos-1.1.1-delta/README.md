@@ -1,7 +1,7 @@
 # AiMaMi 1.1.1 macOS arm64 Delta — 消费结论包
 
 **bundle_id**: macos-1.1.1-delta
-**session**: wf-aimami111-delta-20260617-repair
+**session**: <审计会话>
 **machine**: <本地机器>
 **produced_at**: 2026-06-17
 **role**: 纯生产者（SOP steps 0-6）

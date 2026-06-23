@@ -1,5 +1,5 @@
 # load_pending_auto_switch — Call Tree (Windows x64)
-# session: wf-aimami111-win-samedepth-patch-20260619
+# session: <审计会话>
 # owner VA: 0x14000D2A0 (tauri_ipc_main_dispatcher_sys, inline case)
 # case string ref: 0x14000fc8d | "load_pending_auto_switch" @ 0x1412ac2c3
 

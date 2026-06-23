@@ -1,6 +1,6 @@
 # Evidence: detect_api_proxy_config (1.1.1 macOS ARM64)
 
-**session**: wf-aimami111-delta-20260616 | **machine**: <本地机器> | **date**: 2026-06-16
+**session**: <审计会话> | **machine**: <本地机器> | **date**: 2026-06-16
 **binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 
 ---

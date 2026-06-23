@@ -1,6 +1,6 @@
 # delete_skill_backup — Reverse Evidence
 ## Version: AiMaMi 1.1.1 / macOS ARM64
-## Session: wf-aimami111-delta-20260616
+## Session: <审计会话>
 ## Machine: <本地机器>
 ## Binary SHA256: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 ## IDB: <来源位置>/raw/binary/AiMaMi-1.1.1-idb
@@ -93,10 +93,10 @@ All 7 taxonomy categories excluded. No accepted_unknown justified without proof 
 
 | VA | Comment |
 |---|---|
-| 0x10072d290 | A-level owner for delete_skill_backup; range 0x10072d290-0x10072d61e; sha f34ff829; session wf-aimami111-delta-20260616; not gate promotion |
-| 0x1005e6750 | B-level core impl for delete_skill_backup; path-join skill-backups/<id> + remove_dir_all + load_skill_backups reload; sha f34ff829; session wf-aimami111-delta-20260616; not gate promotion |
-| 0x1005e4c90 | load_skill_backups - reads skill-backups dir, deserializes SkillBackupMetadata per subdir, returns sorted Vec<SkillBackupSummary>; called post-delete; session wf-aimami111-delta-20260616 |
-| 0x101147e82 | IPC registration blob: delete_skill_backup command string anchor; session wf-aimami111-delta-20260616 |
-| 0x1010B7872 | error strings for delete_skill_backup core: 'Backup not found: '(18B) / 'Path not found: '(16B) / 'Backup corrupted: '(18B); session wf-aimami111-delta-20260616 |
+| 0x10072d290 | A-level owner for delete_skill_backup; range 0x10072d290-0x10072d61e; sha f34ff829; session <审计会话>; not gate promotion |
+| 0x1005e6750 | B-level core impl for delete_skill_backup; path-join skill-backups/<id> + remove_dir_all + load_skill_backups reload; sha f34ff829; session <审计会话>; not gate promotion |
+| 0x1005e4c90 | load_skill_backups - reads skill-backups dir, deserializes SkillBackupMetadata per subdir, returns sorted Vec<SkillBackupSummary>; called post-delete; session <审计会话> |
+| 0x101147e82 | IPC registration blob: delete_skill_backup command string anchor; session <审计会话> |
+| 0x1010B7872 | error strings for delete_skill_backup core: 'Backup not found: '(18B) / 'Path not found: '(16B) / 'Backup corrupted: '(18B); session <审计会话> |
 
 idb_save: ok (path=<来源位置>/raw/binary/AiMaMi-1.1.1-idb)

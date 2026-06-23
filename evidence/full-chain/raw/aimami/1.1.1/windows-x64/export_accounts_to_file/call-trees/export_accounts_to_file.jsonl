@@ -1,4 +1,4 @@
-{"session":"wf-aimami111-win-samedepth-patch-20260619","machine":"<本地机器>","command":"export_accounts_to_file","platform":"windows-x64","version":"1.1.1","handler_addr":"0x1409711a0","handler_name":"sub_1409711A0","depth":5,"verdict":"partial","partial_reason":"1_0_9_baseline_uses_audits_not_call-trees_format"}
+{"session":"<审计会话>","machine":"<本地机器>","command":"export_accounts_to_file","platform":"windows-x64","version":"1.1.1","handler_addr":"0x1409711a0","handler_name":"sub_1409711A0","depth":5,"verdict":"partial","partial_reason":"1_0_9_baseline_uses_audits_not_call-trees_format"}
 {"depth":1,"addr":"0x1409711a0","name":"sub_1409711A0","role":"command_owner: IPC command='export_accounts_to_file' namespace='app'; async state machine","terminated_reason":null}
 {"depth":2,"addr":"0x140089a50","name":"confirm_pending_auto_switch_deserialize_request_sys","role":"app_scope_rate_check","terminated_reason":null}
 {"depth":2,"addr":"0x1402fed40","name":"remove_skill_parse_id_param_111","role":"param_extract: targetPath (str) from IPC args","terminated_reason":null}

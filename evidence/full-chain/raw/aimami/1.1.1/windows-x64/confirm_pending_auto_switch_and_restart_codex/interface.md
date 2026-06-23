@@ -1,6 +1,6 @@
 # Interface / DTO / Error / Side-effect — confirm_pending_auto_switch_and_restart_codex (win 1.1.1)
 
-**Source**: 逆向分析 decompile (wf-aimami111-delta-20260616) | **Platform**: windows-x64
+**Source**: 逆向分析 decompile (<审计会话>) | **Platform**: windows-x64
 
 ## 前端 Invoke 签名（从 ipc-contracts.jsonl + string evidence）
 

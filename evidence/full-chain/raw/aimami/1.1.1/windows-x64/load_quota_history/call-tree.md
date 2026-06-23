@@ -1,5 +1,5 @@
 # load_quota_history — Call Tree (Windows x64)
-# session: wf-aimami111-delta-20260617-sweep
+# session: <审计会话>
 # delta_class: integrity_recovered
 
 ```

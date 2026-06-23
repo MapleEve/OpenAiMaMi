@@ -18,7 +18,7 @@
     "skills/import_skill/pseudocode.md: owner=import_skill_cmd_111@0x14001CA50, size=1217B; full body L0-L5; repo param is server-resolved (not frontend argKey); new callees vs 1.0.9 documented",
     "skills/import_skill/call-tree.md: call tree documented with leaf paths",
     "skills/import_skill/call-trees/import_skill.jsonl: call-trees JSONL present",
-    "skills/import_skill/gate-report.json (prev): status=readyToImplement, leaf_paths=[CopyFileExW/SQLite/uuid/win32_file_read/skill_store_get_all], delta_vs_1_0_9 documented; dim6_acceptance_mapping session=wf-aimami111-dim6-20260619"
+    "skills/import_skill/gate-report.json (prev): status=readyToImplement, leaf_paths=[CopyFileExW/SQLite/uuid/win32_file_read/skill_store_get_all], delta_vs_1_0_9 documented; dim6_acceptance_mapping session=<审计会话>"
   ],
   "dim1_detail": {
     "ipc_contracts_line": 74,
@@ -74,9 +74,9 @@
     "idb_saved": true
   },
   "dim6_detail": {
-    "source": "gate-report.json (prev)#dim6_acceptance_mapping (session wf-aimami111-dim6-20260619)",
+    "source": "gate-report.json (prev)#dim6_acceptance_mapping (session <审计会话>)",
     "happy_path": "invoke('import_skill', {path: '<skill_dir_or_SKILL.md_path>'}) => {backupID, skillID, name, title, relativePath, createdAt}",
     "note": "version-compare gate new in 1.1.1: same/older version skips file-copy but SQLite update may still proceed"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

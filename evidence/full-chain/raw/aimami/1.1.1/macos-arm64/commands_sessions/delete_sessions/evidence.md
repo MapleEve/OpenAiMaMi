@@ -1,9 +1,9 @@
 # evidence.md — delete_sessions (AiMaMi 1.1.1 macOS ARM64)
 
-**Session**: wf-aimami111-delta-20260617-sweep (integrity_recovered — supersedes wf-aimami111-delta-20260616)
+**Session**: <审计会话> (integrity_recovered — supersedes <审计会话>)
 **Machine**: <本地机器>
 **Date**: 2026-06-17
-**Prior Session**: wf-aimami111-delta-20260616 (2026-06-16) — misclassified as same-sweep; delta_vs_109 was deferred
+**Prior Session**: <审计会话> (2026-06-16) — misclassified as same-sweep; delta_vs_109 was deferred
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 **IDB**: AiMaMi.i64 (hexrays_ready=true, uptime=82534s)
 **Module**: codexmate_lib::commands::sessions
@@ -70,7 +70,7 @@
 
 ## ## Delta Analysis vs 1.0.9 (integrity_recovered)
 
-**Classification**: `integrity_recovered` — prior session wf-aimami111-delta-20260616 deferred `delta_vs_109` without completing analysis; this session closes the loop.
+**Classification**: `integrity_recovered` — prior session <审计会话> deferred `delta_vs_109` without completing analysis; this session closes the loop.
 
 **Evidence basis**:
 - 1.0.9 macOS 逆向分析 closure (`delete_sessions-ida-closure.json`): single callee listed = owner `0x1005759ec` only; threading_model="sync selected-id destructive mutator; no async/spawn"; side_effect_boundary_closed=true; conclusion=accepted_full_leaf_100. The 1.0.9 closure was **too shallow** — it did not enumerate sub-callees, SQL statements, or file operations.
@@ -95,7 +95,7 @@
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate**: strictImplementationUse → acceptance-draft（dim5 win Unknown 唯一缺口；dim4 全闭合）
 

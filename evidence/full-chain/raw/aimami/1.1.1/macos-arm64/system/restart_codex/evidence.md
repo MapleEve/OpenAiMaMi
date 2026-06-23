@@ -1,6 +1,6 @@
 # restart_codex — Evidence File
 ## Platform: macos-arm64  Version: 1.1.1  Module: system
-## Session: wf-aimami111-delta-20260616  Machine: <本地机器>
+## Session: <审计会话>  Machine: <本地机器>
 ## Binary: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi
 ## Binary SHA256: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 ## IDB: <来源位置>/raw/binary/AiMaMi-1.1.1-idb
@@ -132,5 +132,5 @@
 ### Angle D — manifest + INDEX coverage
 - All files written to `raw/aimami/1.1.1/macos-arm64/system/restart_codex/`
 - manifest.json, evidence.md, pseudocode ×3, pseudocode-manifest.jsonl, call-trees/restart_codex.jsonl, interfaces/interface.md
-- INDEX.jsonl entry appended (session wf-aimami111-delta-20260616)
+- INDEX.jsonl entry appended (session <审计会话>)
 - **PASS**

@@ -1,6 +1,6 @@
 # owner.md — remove_skill (win64, AiMaMi 1.1.1)
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 sha: d24e429a
 produced: 2026-06-18

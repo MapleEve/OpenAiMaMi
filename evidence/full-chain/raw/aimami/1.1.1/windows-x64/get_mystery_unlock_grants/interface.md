@@ -1,5 +1,5 @@
 # get_mystery_unlock_grants — Interface Contract (gold-leaf)
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 sha: d24e429a
 
@@ -114,4 +114,4 @@ Command entirely absent in 1.0.9. No equivalent IPC existed.
 Closest 1.0.9 callee: none — `mysteryUnlockGrants` field, hotspot timer, and grant
 expiry filter logic are all net-new surface in 1.1.1.
 
-*gold-leaf; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf*
+*gold-leaf; sha d24e429a; session <审计会话>*

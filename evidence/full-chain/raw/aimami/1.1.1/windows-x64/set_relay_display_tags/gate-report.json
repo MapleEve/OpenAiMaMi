@@ -18,12 +18,12 @@
     "pseudocode.md 8077B ≥600B",
     "call-tree.md: depth=6, terminated WIN OS syscall leaves (GetCurrentProcessId/CloseHandle/CAS/WakeByAddressSingle/IPC resolver). genuine_ceiling=false, all fake wall taxonomy cleared.",
     "interface.md: input={manager:String(backend-only gap),global:Option<String>,woyao:Option<String>}, output='ok' (2-byte), side_effects=[in-memory displayTagGlobal/Woyao update (stride=232B), relay.json atomic write, conditional post_login_state_sync (global=Some), WIN lock]",
-    "gate-report.json wf-aimami111-delta-20260616: all dim1-5 PASS (dim1 was accepted_unknown for wrapper name, now closed via CCF confirmation); dim4_side_effects PASS; dim6_acceptance=acceptance_draft; idb_save=ok",
+    "gate-report.json <审计会话>: all dim1-5 PASS (dim1 was accepted_unknown for wrapper name, now closed via CCF confirmation); dim4_side_effects PASS; dim6_acceptance=acceptance_draft; idb_save=ok",
     "dim5: _InterlockedCompareExchange8+WakeByAddressSingle@0x14124A5D0+GetCurrentProcessId confirmed WIN-only",
     "dim6_acceptance: acceptance_draft with full happy_path+boundary_error+side_effect_asserts"
   ],
-  "regen_by": "wf-aimami111-gate-final-20260620",
-  "session": "wf-aimami111-delta-20260616",
+  "regen_by": "<审计会话>",
+  "session": "<审计会话>",
   "owner_va": "0x14001F080",
   "owner_name": "set_relay_display_tags_owner_sys",
   "owner_size_bytes": 1518,
@@ -61,7 +61,7 @@
     "mac_diff": "mac uses pthread_mutex/std::sync::Mutex and POSIX std::fs::write; stride=232B same"
   },
   "dim6_detail": {
-    "basis": "acceptance_draft from gate-report.json wf-aimami111-delta-20260616; full happy_path+boundary_error+side_effect_asserts+test_mapping; gate_upgrade=blocked_on_dim1 (now resolved via CCF)",
+    "basis": "acceptance_draft from gate-report.json <审计会话>; full happy_path+boundary_error+side_effect_asserts+test_mapping; gate_upgrade=blocked_on_dim1 (now resolved via CCF)",
     "note": "dim6=acceptance_draft treated as closed per pipeline rule"
   },
   "idb_path": "<本地路径>"

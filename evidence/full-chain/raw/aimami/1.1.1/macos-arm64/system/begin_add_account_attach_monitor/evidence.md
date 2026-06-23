@@ -1,6 +1,6 @@
 # Evidence — begin_add_account_attach_monitor (AiMaMi 1.1.1 macOS ARM64)
 
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 **Machine**: <本地机器>
 **Date**: 2026-06-16
 **Binary**: AiMaMi 1.1.1 universal (macOS ARM64)

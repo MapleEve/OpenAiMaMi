@@ -1,5 +1,5 @@
 # upsert_mcp_server — Win64 Pseudocode (Gold Leaf)
-## session: wf-aimami111-delta-20260618-goldleaf | machine: <本地机器>
+## session: <审计会话> | machine: <本地机器>
 ## delta_class: integrity_recovered | baseline: 1.0.9-win
 ## gate_tier: full_gold_leaf | sha: d24e429a
 ## idb_save: <本地路径>
@@ -34,7 +34,7 @@
 ## Real 逆向分析 Pseudocode — Owner (upsert_mcp_server_111)
 
 ```c
-// [wf-aimami111-delta-20260618-goldleaf | integrity_recovered]
+// [<审计会话> | integrity_recovered]
 // upsert_mcp_server_111 — IPC command handler for 'upsert_mcp_server'
 // SIZE: 0xd3c (3388 bytes) | WIN64
 // DELTA vs 1.0.9:
@@ -330,7 +330,7 @@ Callees: `skill_store_get_all_111` @ `0x14106D960` (8B thunk — terminal),
 **VA**: `0x1401C59F0` | **Size**: `0xB85` (2949B) | **Status**: DELTA:MODIFIED
 
 ```c
-// [wf-aimami111-delta-20260616] set_codex_router_enabled_blocking_body_win_sys
+// [<审计会话>] set_codex_router_enabled_blocking_body_win_sys
 // Blocking Tauri task closure body — called via BlockingTask::poll
 // DELTA 1.1.1: calls set_codex_router_toml_section_write_win_sys (NEW)
 //              then mcp_config_toml_parse_and_remove_111 (NEW)
@@ -500,7 +500,7 @@ Key behaviors (from existing sweep analysis, confirmed via callees):
 Real 逆向分析 pseudocode (key path only — full body is dense TOML tokenizer):
 
 ```c
-// [wf-aimami111-delta-20260617] mcp_config_toml_parse_and_remove_111
+// [<审计会话>] mcp_config_toml_parse_and_remove_111
 // Reads MCP config TOML, parses [mcp_servers.<name>] sections (subkeys:
 // command/transport/env/headers), removes matching section, writes back.
 // Returns Ok(McpServerListPayload) tag=10 | Err(...)

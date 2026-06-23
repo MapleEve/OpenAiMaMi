@@ -1,6 +1,6 @@
 # parse_aimami_deeplink — Interface / DTO / Side-Effect Closure
 
-**session**: wf-aimami111-delta-20260616
+**session**: <审计会话>
 **machine**: <本地机器>
 **platform**: macos-arm64
 **version**: 1.1.1

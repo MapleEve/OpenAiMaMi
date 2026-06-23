@@ -1,7 +1,7 @@
 # load_relay_state — Call Trees (macos-arm64, AiMaMi 1.1.1)
 
 delta_class: integrity_recovered
-session: wf-aimami111-delta-20260617-sweep
+session: <审计会话>
 produced: 2026-06-17
 
 ## Primary Call Tree

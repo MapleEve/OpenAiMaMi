@@ -1,6 +1,6 @@
 # Evidence — fix_codex_router_issue (AiMaMi 1.1.1 macOS ARM64)
 
-session: wf-aimami111-delta-20260616
+session: <审计会话>
 machine: <本地机器>
 model: claude-sonnet-4-6
 role: 纯生产者 (SOP steps 0-6)
@@ -83,7 +83,7 @@ delta_vs_1.0.9: diff_reversed
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate**: strictImplementationUse → acceptance-draft（dim5 win Unknown 唯一缺口；dim1-4 全闭合）
 

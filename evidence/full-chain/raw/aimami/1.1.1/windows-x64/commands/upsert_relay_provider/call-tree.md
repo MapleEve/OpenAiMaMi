@@ -1,6 +1,6 @@
 # upsert_relay_provider call-tree — AiMaMi 1.1.1 win64
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 delta_class: integrity_recovered
 produced_at: 2026-06-18
 note: upgraded from sweep-level to gold-leaf (real HexRays, all VAs verified)

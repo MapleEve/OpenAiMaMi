@@ -1,5 +1,5 @@
 # graceful_restart_for_update — Owner Record (Windows x64)
-<!-- session=wf-aimami111-delta-20260618-goldleaf machine=<本地机器> -->
+<!-- session=<审计会话> machine=<本地机器> -->
 
 ## Identity
 
@@ -10,7 +10,7 @@
 | Owner VA | `0x14001AE30` |
 | Owner size | 547 bytes (0x223) |
 | IDB name (current) | `graceful_restart_for_update_owner_sys` |
-| Session | `wf-aimami111-delta-20260618-goldleaf` |
+| Session | `<审计会话>` |
 | sha ref | `d24e429a` |
 | Platform | windows-x64 |
 | Module | AiMaMi 1.1.1 win64.exe |

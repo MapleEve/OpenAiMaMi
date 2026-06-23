@@ -1,5 +1,5 @@
 # get_relay_provider_quota — Interface & DTO Spec
-platform=macos-arm64 version=1.1.1 session=wf-aimami111-delta-20260616
+platform=macos-arm64 version=1.1.1 session=<审计会话>
 
 ## IPC Command
 

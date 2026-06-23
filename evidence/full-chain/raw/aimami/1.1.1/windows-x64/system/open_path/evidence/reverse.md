@@ -1,5 +1,5 @@
 # open_path — 1.1.1 windows-x64 reverse evidence
-session: wf-aimami111-same-depth-20260618  machine: <本地机器>  produced: 2026-06-19
+session: <审计会话>  machine: <本地机器>  produced: 2026-06-19
 
 ## SAME-DEPTH-CONFIRM
 

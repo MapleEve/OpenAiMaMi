@@ -1,6 +1,6 @@
 # Interface: load_sessions — AiMaMi 1.1.1 macOS ARM64
 
-**session**: wf-aimami111-delta-20260616
+**session**: <审计会话>
 **source_binary_sha256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 **delta_vs_109**: NO CHANGE — argKeys/DTO/error/side-effects identical to 1.0.9
 

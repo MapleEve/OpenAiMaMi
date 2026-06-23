@@ -1,5 +1,5 @@
 # set_mcp_server_enabled — Call Tree (Windows x64, Gold Leaf)
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 delta_class: integrity_recovered
 depth_reached: 8 (extended from 6; additional callee bodies recovered in gold-leaf)
 terminated_reason: relay_atomic_write_leaf_sys is FS write terminal leaf; Win32 IO primitives below are noise

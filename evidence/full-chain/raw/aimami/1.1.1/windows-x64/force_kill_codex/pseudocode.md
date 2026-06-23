@@ -1,6 +1,6 @@
 # force_kill_codex — 1.1.1 Windows x64 Pseudocode
 
-**Session**: wf-aimami111-delta-20260618-finish
+**Session**: <审计会话>
 **Machine**: <本地机器>
 **Role**: producer
 **Binary**: AiMaMi 1.1.1 win64.exe

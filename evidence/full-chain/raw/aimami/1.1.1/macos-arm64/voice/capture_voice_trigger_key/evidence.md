@@ -1,6 +1,6 @@
 # capture_voice_trigger_key — 1.1.1 macOS ARM64 Evidence
 
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 **Machine**: <本地机器>
 **Model**: claude-sonnet-4-6
 **Role**: 纯生产者 (SOP steps 0-6)
@@ -37,7 +37,7 @@
    - `HTTP_terminal_external_only`: no HTTP leaf; entirely absent
    - `library_internal_vs_config_callsite`: not applicable; command string itself absent
 9. **Owner-map delta classification**: `status=shared`, `owner_va=null`, `note=not_yet_queried` — placed in mac_delta P3 voice series for "confirm absent" triage, confirmed absent by exhaustive 4-channel search.
-10. **IDB comments written**: `0x1010e8aea`, `0x1011514d1`, `0x10115990e` annotated as absent-owner voice anchors (session wf-aimami111-delta-20260616).
+10. **IDB comments written**: `0x1010e8aea`, `0x1011514d1`, `0x10115990e` annotated as absent-owner voice anchors (session <审计会话>).
 
 ---
 

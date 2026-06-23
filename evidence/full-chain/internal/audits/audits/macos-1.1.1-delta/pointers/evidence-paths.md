@@ -1,6 +1,6 @@
 # evidence-paths.md — Raw Leaf 证据路径指针
 
-**session**: wf-aimami111-delta-20260617-repair
+**session**: <审计会话>
 **base**: <来源位置>/raw/aimami/1.1.1/macos-arm64/
 
 > canonical drift 说明：`test_relay_draft_stream` 的 leaf 目录在 `codexmate_lib__commands__relay/`（双下划线），不在 `commands_relay/`；如实记录，非错误。

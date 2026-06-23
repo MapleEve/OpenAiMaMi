@@ -1,6 +1,6 @@
 # pseudocode — switch_account_and_restart_codex (AiMaMi 1.1.1 macOS arm64)
 
-session: wf-aimami111-delta-20260617-sweep
+session: <审计会话>
 machine: <本地机器>
 delta_class: integrity_recovered
 idb: <来源位置>/raw/binary/AiMaMi-1.1.1-idb

@@ -1,7 +1,7 @@
 # Evidence — export_relay_config (AiMaMi 1.1.1 macOS ARM64)
 
-**Session**: wf-aimami111-delta-20260617-sweep (integrity_recovered re-sweep; supersedes wf-aimami111-delta-20260616)
-**Prior session**: wf-aimami111-delta-20260616 (same_sweep false-positive, call tree depth=3, missed keychain subtree)
+**Session**: <审计会话> (integrity_recovered re-sweep; supersedes <审计会话>)
+**Prior session**: <审计会话> (same_sweep false-positive, call tree depth=3, missed keychain subtree)
 **Machine**: <本地机器>
 **Date**: 2026-06-17
 **Binary**: AiMaMi 1.1.1 universal (macOS ARM64)

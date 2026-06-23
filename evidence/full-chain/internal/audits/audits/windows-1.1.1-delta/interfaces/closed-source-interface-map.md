@@ -1,6 +1,6 @@
 # closed-source-interface-map.md — AiMaMi 1.1.1 Windows-x64 Delta
 
-**session**: wf-aimami111-delta-20260618-consumer
+**session**: <审计会话>
 **source bundle**: windows-1.1.1-delta
 **produced**: 2026-06-18
 **machine**: <本地机器>
@@ -879,7 +879,7 @@
 
 **note**: goldleaf 补全；delta_class 从 integrity_recovered 修正为 body_changed：新增 7-day retention filter + accountKey filter + max-2000 trim-rewrite；QuotaHistoryPoint 953B/24 fields；ipc_params=[accountKey(frontend),repo(server-side)]；HIGH risk（消费者静默丢失7天前数据）
 
-**逆向分析 symbols**: `handler@0x140020E40`, `handler@{'va': '0x140020E40', 'name_renamed': 'load_quota_history_owner_sys', 'idb_comment': 'gold-leaf for load_quota_history; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion', 'size_bytes': '0x511', 'ipc_registration': 'tauri_ipc_main_dispatcher_sys @ 0x14000db63', 'vtable_entries': ['0x1414fd1e4', '0x14189e824']}`
+**逆向分析 symbols**: `handler@0x140020E40`, `handler@{'va': '0x140020E40', 'name_renamed': 'load_quota_history_owner_sys', 'idb_comment': 'gold-leaf for load_quota_history; sha d24e429a; session <审计会话>; not gate promotion', 'size_bytes': '0x511', 'ipc_registration': 'tauri_ipc_main_dispatcher_sys @ 0x14000db63', 'vtable_entries': ['0x1414fd1e4', '0x14189e824']}`
 
 ---
 
@@ -1120,7 +1120,7 @@
   - filesystem_write (codex-router TOML)
   - SQLite_write
 
-**逆向分析 symbols**: `handler@0x140019040`, `handler@{'ipc_handler': {'name': 'remove_mcp_server_owner_sys', 'idb_original_name': 'remove_mcp_server_ipc_handler_111', 'va': '0x140019040', 'size_bytes': '0x4C1', 'idb_comment': 'gold-leaf for remove_mcp_server; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion'}, 'exec': {'name': 'remove_mcp_server_exec_111', 'va': '0x1401C4F40', 'size_bytes': '0x755'}, 'ok_builder': {'name': 'build_remove_mcp_server_ok_result_111', 'va': '0x1402161B0', 'size_bytes': '0x115'}}`
+**逆向分析 symbols**: `handler@0x140019040`, `handler@{'ipc_handler': {'name': 'remove_mcp_server_owner_sys', 'idb_original_name': 'remove_mcp_server_ipc_handler_111', 'va': '0x140019040', 'size_bytes': '0x4C1', 'idb_comment': 'gold-leaf for remove_mcp_server; sha d24e429a; session <审计会话>; not gate promotion'}, 'exec': {'name': 'remove_mcp_server_exec_111', 'va': '0x1401C4F40', 'size_bytes': '0x755'}, 'ok_builder': {'name': 'build_remove_mcp_server_ok_result_111', 'va': '0x1402161B0', 'size_bytes': '0x115'}}`
 
 ---
 
@@ -1313,7 +1313,7 @@
 - **delta_class**: `integrity_recovered`
 - **readyToImplement**: `False`
 - **strictImplementationUse**: `True`
-- **owner VA**: `{'name': 'set_auto_switch_owner_sys', 'name_prev': 'cmd_set_auto_switch_111', 'renamed_in_idb': True, 'va': '0x1400286B0', 'size_bytes': '0x501', 'string_anchor': '0x1412AC1F1', 'xref_from': '0x140028732', 'idb_comment': 'gold-leaf for set_auto_switch; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion'}`
+- **owner VA**: `{'name': 'set_auto_switch_owner_sys', 'name_prev': 'cmd_set_auto_switch_111', 'renamed_in_idb': True, 'va': '0x1400286B0', 'size_bytes': '0x501', 'string_anchor': '0x1412AC1F1', 'xref_from': '0x140028732', 'idb_comment': 'gold-leaf for set_auto_switch; sha d24e429a; session <审计会话>; not gate promotion'}`
 - **evidence**: `interface.md, gate-report.json`
 
 **argKeys (dim2)**:
@@ -1331,7 +1331,7 @@
 
 **note**: gate_tier=full_leaf (not gold_leaf)；sIU=true rTI=false
 
-**逆向分析 symbols**: `handler@{'name': 'set_auto_switch_owner_sys', 'name_prev': 'cmd_set_auto_switch_111', 'renamed_in_idb': True, 'va': '0x1400286B0', 'size_bytes': '0x501', 'string_anchor': '0x1412AC1F1', 'xref_from': '0x140028732', 'idb_comment': 'gold-leaf for set_auto_switch; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion'}`
+**逆向分析 symbols**: `handler@{'name': 'set_auto_switch_owner_sys', 'name_prev': 'cmd_set_auto_switch_111', 'renamed_in_idb': True, 'va': '0x1400286B0', 'size_bytes': '0x501', 'string_anchor': '0x1412AC1F1', 'xref_from': '0x140028732', 'idb_comment': 'gold-leaf for set_auto_switch; sha d24e429a; session <审计会话>; not gate promotion'}`
 
 ---
 

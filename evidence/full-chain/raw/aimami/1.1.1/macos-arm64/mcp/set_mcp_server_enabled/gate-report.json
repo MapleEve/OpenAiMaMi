@@ -17,7 +17,7 @@
     "mcp/set_mcp_server_enabled/ida/pseudocode/0003_set_mcp_server_enabled_dispatcher_h7764831ff1bebf82.c",
     "mcp/set_mcp_server_enabled/call-trees/set_mcp_server_enabled.jsonl (depth=5, 20 entries, write_atomic terminal)",
     "mcp/set_mcp_server_enabled/interfaces/interface.md (argKeys=[name,enabled], CoreEnvelope<Vec<McpServerSummary>>, error string @0x1010b6a09)",
-    "mcp/set_mcp_server_enabled/gate-report-dim6.json (session=wf-aimami111-dim6-20260619, acceptance-draft)",
+    "mcp/set_mcp_server_enabled/gate-report-dim6.json (session=<审计会话>, acceptance-draft)",
     "frontend/ipc-contracts.jsonl:L86:col30731 command=set_mcp_server_enabled argKeys=[name,enabled] wrapper=setMcpServerEnabled",
     "frontend/frontend-control-flow.jsonl:L86:col30757 terminal=set_mcp_server_enabled argKeys=[name,enabled]",
     "frontend/frontend-control-flow.jsonl:mcp-page-CGgOsRmy.js:L16 callsite=mutationFn->setMcpServerEnabled"
@@ -28,7 +28,7 @@
     "dim3_call_tree_depth5": "20 entries, depth=5 (call_tree_depth=5 in summary row). Terminal: read_to_string(FS_READ), memcmp(libc), write_atomic(FS_WRITE_ATOMIC), String::clone(alloc), McpServerSummary::clone, CoreEnvelope::ok, Mutex::lock/unlock. CLOSED.",
     "dim4_interface_dto_error_sideeffect": "argKeys=[name:String, enabled:bool]. Response CoreEnvelope<Vec<McpServerSummary>> stride=224B. Error 'MCP server not found: <name>' (22B prefix @0x1010b6a09) + mutex_poison + fs_read_error + write_atomic_error. Side-effect: TOML config.toml atomic write with enabled flag update. sentinel-aware insert_mcp_block. No HTTP/spawn. CLOSED.",
     "dim5_same_platform_gate": "macos-arm64 confirmed. Owner VA=0x10072bb90, core VA=0x1005a3760, dispatcher VA=0x100312de0. Binary sha256=f34ff829... CLOSED. dim5_win: separate session, non-blocking for mac gate.",
-    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=wf-aimami111-dim6-20260619. Producer acceptance-draft = dim6 closed. McpServerSummary exact field layout accepted_unknown (non-blocking). CLOSED."
+    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=<审计会话>. Producer acceptance-draft = dim6 closed. McpServerSummary exact field layout accepted_unknown (non-blocking). CLOSED."
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

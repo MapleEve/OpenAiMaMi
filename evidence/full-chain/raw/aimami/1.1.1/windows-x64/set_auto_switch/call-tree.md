@@ -1,5 +1,5 @@
 # set_auto_switch — Windows x64 Call Tree (GOLD LEAF)
-# session: wf-aimami111-delta-20260618-goldleaf / machine: <本地机器>
+# session: <审计会话> / machine: <本地机器>
 # delta_class: integrity_recovered
 # max_depth: 7   terminated_reason: Win32 syscall / IPC vtable / opaque leaf
 

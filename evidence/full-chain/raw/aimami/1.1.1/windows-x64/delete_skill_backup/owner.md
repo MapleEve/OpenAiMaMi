@@ -1,6 +1,6 @@
 # owner — delete_skill_backup (AiMaMi 1.1.1 win64) — GOLD LEAF
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 platform: windows-x64
 idb: <本地路径>

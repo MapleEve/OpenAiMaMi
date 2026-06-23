@@ -12,7 +12,7 @@
   },
   "accepted_unknown_recovery": {},
   "evidence_refs": [
-    "get_mystery_unlock_grants/pseudocode.md — gold-leaf layers 1-5 session=wf-aimami111-delta-20260618-goldleaf",
+    "get_mystery_unlock_grants/pseudocode.md — gold-leaf layers 1-5 session=<审计会话>",
     "get_mystery_unlock_grants/call-tree.md — depth=7 edges=22 all terminated",
     "get_mystery_unlock_grants/owner.md",
     "get_mystery_unlock_grants/interface.md — DTO: HotspotConfigResponse + Vec<MysteryUnlockGrant> {route,expiresAtMs?}",
@@ -71,10 +71,10 @@
   },
   "dim6_detail": {
     "status": "acceptance-draft",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "happy_path": "invoke('get_mystery_unlock_grants') → read settings → filter expired grants (expiresAtMs<now) → conditional write-back → return 7-field HotspotConfigResponse",
     "expiry_semantics": "expiresAtMs==0 means permanent; elapsed_since_ts_111(system_time_precise_u32_111(), 3577643008, 27111902)",
     "test_mapping": "e2e: seed 2 grants (1 expired, 1 active); call getMysteryUnlockGrants(); assert 1 grant returned; assert settings file updated"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

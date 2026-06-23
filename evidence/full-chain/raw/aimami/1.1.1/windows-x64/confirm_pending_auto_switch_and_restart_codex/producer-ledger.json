@@ -1,13 +1,13 @@
 {
   "schema": "c5cm.producer.ledger.v1",
-  "session": "wf-aimami111-delta-20260617-sweep",
+  "session": "<审计会话>",
   "machine": "<本地机器>",
   "command": "confirm_pending_auto_switch_and_restart_codex",
   "version": "1.1.1",
   "platform": "windows-x64",
   "produced_at": "2026-06-17T00:00:00Z",
   "role": "pure_producer",
-  "prior_session": "wf-aimami111-delta-20260616",
+  "prior_session": "<审计会话>",
   "delta_purpose": "补全 dim1 CCF (前端 invoke 确认) + dim4 输入参数确认 (零参数) + pseudocode.md full body + gate 升级 consumerStartReady+strictImplementationUse",
   "steps_completed": {
     "step0_ida_health_gate": "ok | hexrays_ready=true | module=AiMaMi 1.1.1 win64.exe | uptime=114492s",

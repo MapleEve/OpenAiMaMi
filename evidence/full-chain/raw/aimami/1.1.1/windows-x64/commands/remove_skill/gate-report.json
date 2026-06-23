@@ -18,13 +18,13 @@
     "call-tree.md: depth=6 L1->L6 all branches terminated_reason annotated",
     "interface.md: input {repo,id}; output {schemaVersion,success,code,message,warnings,removedSkillID,backup{backupID,timestamp,fileCount},remainingInstalledCount}; error paths documented; delta=backup-before-delete NEW 1.1.1",
     "owner.md: IPC handler VA=0x140022920 size=0x4C1; dispatched from tauri_ipc_main_dispatcher_sys@0x14000D2A0 xref=0x14000EB7B; delta vs 1.0.9 noted",
-    "prior gate_tier=readyToImplement dim6_session=wf-aimami111-dim6-20260619 dim6_impl_readiness.status=acceptance_draft",
+    "prior gate_tier=readyToImplement dim6_session=<审计会话> dim6_impl_readiness.status=acceptance_draft",
     "dim1: argKeys=[id], wrapper=removeSkill, callee=ne, line=86 col=31013, snippet=ne('remove_skill',{id:t})",
     "dim2: pseudocode 9811B >> 600B",
     "dim3: depth=6 confirmed L1->L2->L3->L4->L5->L6 path owner->auto_switch_lock->WakeByAddressSingle(L3); owner->query_skills->skill_store_get_all->skill_store_iter->vtable.iter(L5); owner->async_mutex->skill_backup_replace->skill_list_db_query->snooze_file_open->win32_path_canonicalize_111(L6)",
     "dim4: output {schemaVersion u32, success bool, code i32, message String, warnings [], removedSkillID String, backup{backupID uuid, timestamp u32, fileCount u32}, remainingInstalledCount u32}; side-effects SQLite read+write+FS delete; NEW backup-before-delete order in 1.1.1",
     "dim5: WakeByAddressSingle@0x14124A5D0; win32_path_canonicalize_111@0x1410908E0; win32_file_open_rw_111@0x14108F6C0; all evidence from win64 IDB",
-    "dim6: acceptance_draft readyToImplement wf-aimami111-dim6-20260619 eligible"
+    "dim6: acceptance_draft readyToImplement <审计会话> eligible"
   ],
   "dim1_detail": {
     "wrapper": "removeSkill",
@@ -74,10 +74,10 @@
   },
   "dim6_detail": {
     "acceptance_status": "acceptance_draft",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "gate_tier": "readyToImplement",
     "happy_path": "invoke('remove_skill',{repo:string,id:string}) -> {schemaVersion,success,code,message,warnings:[],removedSkillID,backup:{backupID,timestamp,fileCount},remainingInstalledCount}",
     "delta_asserts": ["backup DB record created BEFORE FS delete (NEW 1.1.1 order)", "pending_auto_switch blocks remove if active (NEW 1.1.1)", "remainingInstalledCount decremented by 1"]
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

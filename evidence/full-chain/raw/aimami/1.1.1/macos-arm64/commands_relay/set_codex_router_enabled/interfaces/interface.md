@@ -1,6 +1,6 @@
 # Interface: set_codex_router_enabled (AiMaMi 1.1.1 macOS ARM64)
 
-session: wf-aimami111-delta-20260616
+session: <审计会话>
 date: 2026-06-17
 gate_candidate: strictImplementationUse_candidate
 

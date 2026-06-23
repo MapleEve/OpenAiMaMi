@@ -1,5 +1,5 @@
 # load_change_analytics — Windows x64 Pseudocode (Delta Leaf)
-# session: wf-aimami111-win-samedepth-patch-20260619
+# session: <审计会话>
 # machine: <本地机器>
 # sha: d24e429a
 # gate_tier: full_delta_leaf
@@ -19,7 +19,7 @@ VA: 0x140016C70 | Size: 0x511 bytes | String ref: aLoadChangeAnal @ 0x1412ac44e
 - **L3**: 读文件系统变更历史（`remove_skill_parse_id_param_111` 解析 range 参数 → `sub_1401CAD70` 执行变更数据范围过滤）
 - 响应序列化: `sub_140834FC0` (change analytics response builder)
 
-### 逆向分析 Pseudocode (verbatim, session wf-aimami111-win-samedepth-patch-20260619)
+### 逆向分析 Pseudocode (verbatim, session <审计会话>)
 
 ```c
 // load_change_analytics: analytics sub-path, accepts repo+range params
@@ -241,7 +241,7 @@ __int64 __fastcall sub_1401CAD70(__int64 a1, _BYTE *a2, _QWORD *a3)
 
 ---
 
-## ACCEPTANCE (dim6, session wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6, session <审计会话>)
 
 ### Happy Path
 - Input: `{ repo: "<valid-installed-repo-id>", range: "<range-string>" }`

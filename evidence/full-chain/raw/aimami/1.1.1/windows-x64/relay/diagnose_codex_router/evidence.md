@@ -1,6 +1,6 @@
 # diagnose_codex_router — Windows x64 1.1.1 Raw Evidence
 
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 **Machine**: <本地机器>
 **Binary**: AiMaMi 1.1.1 win64.exe
 **SHA256 binary**: d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610

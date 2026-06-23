@@ -14,7 +14,7 @@
   "evidence_refs": [
     "frontend/ipc-contracts.jsonl#L80: command='load_quota_history', argKeys=['accountKey'], argObject='{accountKey:t}', wrapper='loadQuotaHistory', kind='tauriInvokeWrapper'",
     "frontend/frontend-control-flow.jsonl#L12: callsite analytics-panel-LbLPe_yT.js queryFn -> V.loadQuotaHistory(t??void 0)",
-    "load_quota_history/gate-report.json (prev): all dims DONE, call_depth_analysis.max_depth=5, call_tree_edges=54; full_gold_leaf; dim6_acceptance_mapping session=wf-aimami111-dim6-20260619",
+    "load_quota_history/gate-report.json (prev): all dims DONE, call_depth_analysis.max_depth=5, call_tree_edges=54; full_gold_leaf; dim6_acceptance_mapping session=<审计会话>",
     "gate-report.json#time_filter: 7-day cutoff confirmed (quota_history_file_read_and_filter_111@0x1402002F0, days_param=7 literal); max_entries_before_trim=2000",
     "gate-report.json#dto: QuotaHistoryPoint, 24 fields, size_bytes=953; confirmed via quota_history_point_deep_copy_111@0x1401EB870 last write at +952",
     "gate-report.json#delta_vs_1_0_9: HIGH RISK — 1.1.1 returns only last 7 days; 1.0.9 returned all history; silent truncation"
@@ -60,10 +60,10 @@
     "snooze_file_open_confirmed": "0x14108C6F0"
   },
   "dim6_detail": {
-    "source": "gate-report.json (prev)#dim6_acceptance_mapping (session wf-aimami111-dim6-20260619)",
+    "source": "gate-report.json (prev)#dim6_acceptance_mapping (session <审计会话>)",
     "behavioral_delta_risk": "HIGH",
     "critical_note": "1.1.1 returns ONLY last 7 days of quota history. 1.0.9 returned ALL history. C5 UI MUST communicate 7-day window to users. Silent truncation is a breaking behavioral change.",
     "file_not_found_note": "Missing quota-history.jsonl returns success=true data=[] (not an error); callers must not treat empty response as error"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

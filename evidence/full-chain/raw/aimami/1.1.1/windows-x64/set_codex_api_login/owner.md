@@ -26,4 +26,4 @@
 
 ## IDB 写回状态
 
-已完成：5 rename + 8 set_comments（session=wf-aimami111-delta-20260616）
+已完成：5 rename + 8 set_comments（session=<审计会话>）

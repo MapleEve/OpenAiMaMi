@@ -1,6 +1,6 @@
 // RelayDraftTestInput — reconstructed from serde_json Deserialize impl visitor (VA 0x100566900)
 // and string constant at 0x101148783 ("struct RelayDraftTestInput with 8 elements")
-// session: wf-aimami111-delta-20260617-repair
+// session: <审计会话>
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]

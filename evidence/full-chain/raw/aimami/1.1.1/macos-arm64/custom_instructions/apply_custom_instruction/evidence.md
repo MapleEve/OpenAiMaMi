@@ -1,6 +1,6 @@
 # evidence.md — apply_custom_instruction (macOS ARM64 1.1.1)
 
-**session**: wf-aimami111-delta-20260616
+**session**: <审计会话>
 **machine**: <本地机器>
 **produced_at**: 2026-06-16
 **binary**: AiMaMi 1.1.1 universal (macOS ARM64 slice)

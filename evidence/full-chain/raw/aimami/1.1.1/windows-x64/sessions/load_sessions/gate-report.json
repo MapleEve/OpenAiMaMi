@@ -18,13 +18,13 @@
     "call-tree.md: edge_count=48, depth>=5 confirmed (handler->core->iter->mapper->deserializer=5), all branches terminated",
     "interface.md: CodexHomePaths 9 fields incl. autoSwitchLogPath(NEW_1.1.1@+144@0x1412c0bfc); side-effects spinlock+skill_store+read_dir; error paths documented",
     "owner.md: relay dispatchers 0x140a65470/0x140a9e990 both route to load_sessions_handler_111",
-    "dim6 acceptance_draft session=wf-aimami111-dim6-20260619 in prior gate-report",
+    "dim6 acceptance_draft session=<审计会话> in prior gate-report",
     "dim1: argKeys=[], wrapper=loadSessions, callee=ne, line=86 col=25764",
     "dim2: pseudocode 18368B >> 600B",
     "dim3: 48 edges, depth=5 path load_sessions_handler_111->load_sessions_core_111->sub_1401E77D0->sub_1401649D0->sub_1401EB7A0",
     "dim4: autoSwitchLogPath NEW at offset+144 serde_discriminant=6 string_va=0x1412c0bfc; 3 bool fields exist+read_dir side-effect",
     "dim5: relay dispatchers windows-x64 only; WakeByAddressSingle@0x14124A5D0; _InterlockedCompareExchange8",
-    "dim6: acceptance_draft readyToImplement eligible from wf-aimami111-dim6-20260619"
+    "dim6: acceptance_draft readyToImplement eligible from <审计会话>"
   ],
   "dim1_detail": {
     "wrapper": "loadSessions",
@@ -63,10 +63,10 @@
   },
   "dim6_detail": {
     "acceptance_status": "acceptance_draft",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "gate_tier": "readyToImplement",
     "happy_path": "invoke('load_sessions') -> {codexHome, accountsPath, authPath, registryPath, sessionsPath, launchAgentPath, autoSwitchLogPath(new), authExists, registryExists, sessionsExists}",
     "delta_assert": "response.autoSwitchLogPath field present (NEW 1.1.1, may be null)"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

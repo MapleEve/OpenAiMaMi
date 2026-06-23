@@ -1,6 +1,6 @@
 # detect_api_proxy_config — SAME-DEPTH-CONFIRM
 
-## session: wf-aimami111-same-depth-20260618 / machine: <本地机器>
+## session: <审计会话> / machine: <本地机器>
 
 ### SAME-DEPTH-CONFIRM
 

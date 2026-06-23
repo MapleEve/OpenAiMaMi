@@ -1,5 +1,5 @@
 # delete_sessions — AiMaMi 1.1.1 win64 pseudocode
-session: wf-aimami111-delta-20260618-goldleaf  (upgraded from wf-aimami111-delta-20260617-sweep)
+session: <审计会话>  (upgraded from <审计会话>)
 machine: <本地机器>
 platform: windows-x64
 delta_class: integrity_recovered

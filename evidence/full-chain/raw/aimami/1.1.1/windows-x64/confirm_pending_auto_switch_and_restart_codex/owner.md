@@ -1,6 +1,6 @@
 # Owner — confirm_pending_auto_switch_and_restart_codex (win 1.1.1)
 
-**Session**: wf-aimami111-delta-20260616 | **Machine**: <本地机器> | **Date**: 2026-06-16
+**Session**: <审计会话> | **Machine**: <本地机器> | **Date**: 2026-06-16
 **Binary SHA256**: d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610
 **逆向分析 Server**: <逆向工具通道> (<内部网络>)
 

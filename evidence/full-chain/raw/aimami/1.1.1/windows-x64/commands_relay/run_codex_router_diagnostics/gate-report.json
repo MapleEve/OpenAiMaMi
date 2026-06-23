@@ -25,6 +25,6 @@
   "dim3_evidence": "call-tree depth=6 terminated at Win32 leaves: WaitOnAddress, WakeByAddressSingle, ReadFile, RegOpenKeyExW, GetDiskFreeSpaceExW, CreateToolhelp32Snapshot; 10 evidence_ida.md confirmed items + 5 decompiled diagnostic fns; 29 fs::exists checks via snooze_file_open_111; keychain SHA256 leaf confirmed",
   "dim4_evidence": "argKeys=[]; return: {status:'ok'(2B), kind:'Success'(7B), data:DiagnosticData(32B)}; layout offsets confirmed at +0..+108; side-effects: relay_state read-lock only, fs::exists x29, config.toml read, keychain read; NO writes NO network; new command (1.0.9 absent)",
   "dim5_evidence": "dim5 N/A=new command (1.0.9 absent); win confirmed: _InterlockedCompareExchange8, WakeByAddressSingle, snooze_file_open_111 WIN file ops, TOML section markers confirmed in binary@0x1412e941c/0x1412ea00d etc; IDB renames+comments confirmed",
-  "dim6_evidence": "acceptance-draft by wf-aimami111-dim6-20260619; promoted to readyToImplement in win-consolidated.json",
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "dim6_evidence": "acceptance-draft by <审计会话>; promoted to readyToImplement in win-consolidated.json",
+  "regen_by": "<审计会话>"
 }

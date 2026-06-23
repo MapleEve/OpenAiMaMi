@@ -1,6 +1,6 @@
 # surface-traps.md — AiMaMi 1.1.1 delta 表面陷阱
 
-**session**: wf-aimami111-delta-20260617-repair
+**session**: <审计会话>
 **produced_at**: 2026-06-17
 
 ---

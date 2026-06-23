@@ -1,6 +1,6 @@
 # evidence.md — parse_aimami_deeplink (macOS arm64, 1.1.1)
 
-**session**: wf-aimami111-delta-20260616
+**session**: <审计会话>
 **machine**: <本地机器>
 **platform**: macos-arm64
 **version**: AiMaMi 1.1.1
@@ -67,7 +67,7 @@
 
 - **A (func_query symbol enumeration)**: `lookup_funcs {"queries":["0x1004dade0"]}` → `__ZN13codexmate_lib8commands8deeplink21parse_aimami_deeplink17h8d31a2917e010213E` unique hit; module=deeplink confirmed — **PASS**
 - **B (string pool / find_regex)**: `find_regex("parse_aimami_deeplink")` n=1 in packed command blob `0x1011482ff`; command string at `0x1011483A8` (21B) confirmed in dispatcher — **PASS**
-- **C (frontend CCF)**: Windows CCF confirmed (wf-aimami111-delta-20260617-win-parsedeeplink): `parseDeeplink(url)` → `vt("parse_aimami_deeplink",{url:t})` col=121149; same JS bundle for mac/win; cross-platform CCF — **PASS (cross-platform accepted)**
+- **C (frontend CCF)**: Windows CCF confirmed (<审计会话>): `parseDeeplink(url)` → `vt("parse_aimami_deeplink",{url:t})` col=121149; same JS bundle for mac/win; cross-platform CCF — **PASS (cross-platform accepted)**
 - **D (manifest+call-trees+INDEX)**: manifest.json + call-trees/parse_aimami_deeplink.jsonl (20 entries) + pseudocode 2 files + evidence.md + interfaces/ written; INDEX entry appended — **PASS**
 
 ---

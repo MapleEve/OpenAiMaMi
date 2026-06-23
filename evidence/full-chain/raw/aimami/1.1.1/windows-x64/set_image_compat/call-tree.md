@@ -1,9 +1,9 @@
 # set_image_compat — Call Tree (Windows x64, AiMaMi 1.1.1)
 
-session: wf-aimami111-delta-20260618-goldleaf
+session: <审计会话>
 machine: <本地机器>
 sha: d24e429a
-prev_session: wf-aimami111-delta-20260617-sweep
+prev_session: <审计会话>
 
 edges: 18
 max_depth: 5

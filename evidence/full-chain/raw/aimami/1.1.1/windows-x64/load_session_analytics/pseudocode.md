@@ -1,5 +1,5 @@
 # load_session_analytics — Windows x64 Pseudocode (Delta Leaf)
-# session: wf-aimami111-win-samedepth-patch-20260619
+# session: <审计会话>
 # machine: <本地机器>
 # sha: d24e429a
 # gate_tier: full_delta_leaf
@@ -20,7 +20,7 @@ String ref: aLoadSessionAna @ 0x1412ac411
 - **L3**: `session_range_filter_111` @ 0x1401CB3A0 — acquires spinlock, deep-copies history, applies session range bounds via sub_140204F00
 - 响应: `analytics_response_builder_111` @ 0x140838B40
 
-### 逆向分析 Pseudocode (verbatim, session wf-aimami111-win-samedepth-patch-20260619)
+### 逆向分析 Pseudocode (verbatim, session <审计会话>)
 
 ```c
 // load_session_analytics_impl_111: analytics sub-path for session data
@@ -197,7 +197,7 @@ __int64 __fastcall session_range_filter_111(__int64 a1, _BYTE *a2, _QWORD *a3)
 
 ---
 
-## ACCEPTANCE (dim6, session wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6, session <审计会话>)
 
 ### Happy Path
 - Input: `{ repo: "<valid-installed-repo-id>", range: "<range-string>" }`

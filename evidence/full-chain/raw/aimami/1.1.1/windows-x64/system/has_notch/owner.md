@@ -1,5 +1,5 @@
 # owner.md — has_notch · windows-x64 · AiMaMi 1.1.1
-<!-- session=wf-aimami111-delta-20260618-goldleaf | machine=<本地机器> -->
+<!-- session=<审计会话> | machine=<本地机器> -->
 <!-- produced_at: 2026-06-18T00:00:00+08:00 | producer: claude-sonnet-4-6 -->
 
 ## Identity
@@ -25,7 +25,7 @@
 ## Location Method
 
 Located via string cross-reference: `xrefs_to(0x1412AC463)` returns exactly 1 caller at `0x140023000`.
-Owner renamed `has_notch_owner_sys` (level A rename) in session `wf-aimami111-delta-20260616`.
+Owner renamed `has_notch_owner_sys` (level A rename) in session `<审计会话>`.
 
 ## Business Logic
 
@@ -52,7 +52,7 @@ Divergence is architectural. macOS performs real display hardware detection; Win
 
 | Address | Type | Content |
 |---|---|---|
-| `0x140023000` | Comment | `gold-leaf for has_notch; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion` |
+| `0x140023000` | Comment | `gold-leaf for has_notch; sha d24e429a; session <审计会话>; not gate promotion` |
 | `0x140023087` | Comment (prior session) | `has_notch string load` |
 | `0x14002314F` | Comment (prior session) | `v28=1 fixed bool true` |
 | `0x14002317A` | Comment (prior session) | `InvokeResolver response dispatch` |

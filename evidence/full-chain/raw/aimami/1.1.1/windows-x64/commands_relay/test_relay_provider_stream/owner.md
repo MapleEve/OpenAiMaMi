@@ -1,6 +1,6 @@
 # Owner — test_relay_provider_stream (Windows x64, AiMaMi 1.1.1)
 
-session: wf-aimami111-delta-20260616
+session: <审计会话>
 machine: <本地机器>
 date: 2026-06-16
 platform: windows-x64
@@ -45,4 +45,4 @@ WIN PE stripped binary. No Rust symbol names preserved. Owner function is the Ru
 
 ## IDB Write-back Summary
 
-All A/B renames applied 2026-06-16 via wf-aimami111-delta-20260616. idb_save confirmed OK at <本地路径>
+All A/B renames applied 2026-06-16 via <审计会话>. idb_save confirmed OK at <本地路径>

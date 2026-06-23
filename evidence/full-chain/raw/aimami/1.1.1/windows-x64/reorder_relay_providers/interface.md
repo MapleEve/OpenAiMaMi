@@ -1,6 +1,6 @@
 # reorder_relay_providers — Interface / DTO / Error / Side-Effect (Win x64 1.1.1)
 
-session: wf-aimami111-delta-20260616
+session: <审计会话>
 produced_at: 2026-06-16
 
 ## Command Registration

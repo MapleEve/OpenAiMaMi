@@ -1,5 +1,5 @@
 # rebuild_registry — Interface & DTO Contract
-## AiMaMi 1.1.1 macOS ARM64 | session: wf-aimami111-delta-20260617-sweep
+## AiMaMi 1.1.1 macOS ARM64 | session: <审计会话>
 
 ## IPC Command
 

@@ -1,6 +1,6 @@
 # Evidence — remove_skill (macOS arm64, 1.1.1)
 
-**Session:** wf-aimami111-delta-20260618-mac100
+**Session:** <审计会话>
 **Machine:** <本地机器>
 **Role:** pure producer
 **IDB:** <来源位置>/raw/binary/AiMaMi-1.1.1-idb

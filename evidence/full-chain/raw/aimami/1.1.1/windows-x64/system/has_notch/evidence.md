@@ -1,5 +1,5 @@
 # evidence.md — has_notch · windows-x64 · AiMaMi 1.1.1
-<!-- gate-report dim1-6 | session=wf-aimami111-delta-20260617-depth | machine=<本地机器> -->
+<!-- gate-report dim1-6 | session=<审计会话> | machine=<本地机器> -->
 <!-- produced_at: 2026-06-17T00:00:00+08:00 | producer: claude-sonnet-4-6 -->
 
 ---
@@ -24,7 +24,7 @@
 
 9. **No async body / no vtable at command level** — owner is a synchronous `__fastcall` function. No `Future::poll`, no `async_trait`, no separate state machine struct identified. The Tauri command is sync (`#[command]` without `async`). Fake-wall check passed: no ICF collapse, no inlined thunk pattern.
 
-10. **IDB inline evidence committed** — 逆向分析 `set_comments` and `rename` operations applied in prior session `wf-aimami111-delta-20260616`: owner renamed `has_notch_owner_sys`; comments at `0x140023000`, `0x140023087`, `0x14002314f`, `0x14002317a`. Verified by decompile output showing comment text inline. `idb_save` executed (confirmed in manifest).
+10. **IDB inline evidence committed** — 逆向分析 `set_comments` and `rename` operations applied in prior session `<审计会话>`: owner renamed `has_notch_owner_sys`; comments at `0x140023000`, `0x140023087`, `0x14002314f`, `0x14002317a`. Verified by decompile output showing comment text inline. `idb_save` executed (confirmed in manifest).
 
 ---
 

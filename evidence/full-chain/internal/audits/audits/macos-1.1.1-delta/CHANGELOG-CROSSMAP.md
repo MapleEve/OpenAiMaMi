@@ -1,6 +1,6 @@
 # CHANGELOG-CROSSMAP.md — 官方 1.1.1 更新日志命中映射
 
-**session**: wf-aimami111-delta-20260617-repair
+**session**: <审计会话>
 **produced_at**: 2026-06-17
 **binary_sha256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 

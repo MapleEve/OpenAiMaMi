@@ -1,6 +1,6 @@
 # evidence — get_mystery_unlock_grants (AiMaMi 1.1.1 macOS ARM64)
 
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 **Machine**: <本地机器>
 **Produced**: 2026-06-17
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb

@@ -7,7 +7,7 @@
 | `manager` | `Option<String>` | 否 | 7B（键名长度） | relay provider manager 过滤标识；前端不传（`None`），backend 接受缺失作为 None |
 | `providerId` | `String` | 是 | 10B | 要获取 API key 的 relay provider ID |
 
-**manager 参数澄清（本轮新增，wf-aimami111-delta-20260616 gate upgrade）**：
+**manager 参数澄清（本轮新增，<审计会话> gate upgrade）**：
 - 前端实际调用：`vt("reveal_relay_api_key", {providerId: t})` — 只传 `providerId`，不传 `manager`
 - Backend `sub_14006F4B0` 提取 `manager` 失败时（`!v4`），走 `sub_141214620` optional fallback path
 - `v38[0] == 6`（Ok variant）= optional absent accepted，`v4 = v38[1]`（None repr），继续执行

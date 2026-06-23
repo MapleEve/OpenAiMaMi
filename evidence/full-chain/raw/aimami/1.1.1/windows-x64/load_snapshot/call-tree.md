@@ -1,5 +1,5 @@
 # load_snapshot — Call Tree (Windows x64)
-session=wf-aimami111-delta-20260617-sweep  machine=<本地机器>
+session=<审计会话>  machine=<本地机器>
 delta_class=integrity_recovered  baseline=1.0.9
 
 ---

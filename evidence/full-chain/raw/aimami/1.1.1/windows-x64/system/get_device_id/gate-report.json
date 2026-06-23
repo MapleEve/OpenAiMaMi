@@ -14,7 +14,7 @@
   "evidence_refs": [
     "system/get_device_id/pseudocode.md — owner@0x1400208C0 (895B) + get_device_id_exec_hotspot_sys_111@0x1401AB9A0 + codexmate_settings_hotspot_read_full_sys_111@0x1401A15D0",
     "system/get_device_id/call-tree.md — depth=6 (dispatcher→owner→lock→exec→settings_read→hashmap_leaf), terminated",
-    "system/get_device_id/gate-report.json — wf-aimami111-dim6-100-20260619 all 6 dims CLOSED",
+    "system/get_device_id/gate-report.json — <审计会话> all 6 dims CLOSED",
     "frontend/ipc-contracts.jsonl — tauriInvokeWrapper wrapper=getDeviceId argKeys=[] index-DdcCOEJG.js:86",
     "frontend/frontend-control-flow.jsonl — wrapper callsite Ge.getDeviceId() col=126195"
   ],
@@ -64,10 +64,10 @@
   },
   "dim6_detail": {
     "status": "acceptance-draft",
-    "session": "wf-aimami111-dim6-100-20260619",
+    "session": "<审计会话>",
     "happy_path": "invoke('get_device_id') → read CodexMateSettings → return HotspotConfigJson 5 fields",
     "boundary_errors": ["settings file missing → zero-defaults (null fields), no IPC error", "settings Err tag=6 → IPC Err", "JSON serde error tag=3 → IPC Err"],
     "test_mapping": "e2e: seed settings with known values; call getDeviceId(); assert 5-field response; e2e: corrupt settings; assert zero-defaults without crash"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

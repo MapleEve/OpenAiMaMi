@@ -1,5 +1,5 @@
 # load_sessions — Interface Contract (Windows x64)
-**session**: wf-aimami111-delta-20260618-goldleaf
+**session**: <审计会话>
 **date**: 2026-06-18
 
 ## IPC Command

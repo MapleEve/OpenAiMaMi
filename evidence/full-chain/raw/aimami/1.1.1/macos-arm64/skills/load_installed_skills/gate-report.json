@@ -12,7 +12,7 @@
   },
   "accepted_unknown_recovery": {},
   "evidence_refs": [
-    "skills/load_installed_skills/evidence.md — Confirmed §1-12, Inferred §1-7, Unknown §1-7; leaf_status=full_gold_leaf session wf-aimami111-delta-20260618-mac100",
+    "skills/load_installed_skills/evidence.md — Confirmed §1-12, Inferred §1-7, Unknown §1-7; leaf_status=full_gold_leaf session <审计会话>",
     "frontend/ipc-contracts.jsonl line:72 col:30858 — command=load_installed_skills argKeys=[] wrapper=loadInstalledSkills",
     "frontend/frontend-control-flow.jsonl line:85 — static-terminal loadInstalledSkills col:30881",
     "frontend/frontend-control-flow.jsonl line:164 — callsite index-DdcCOEJG.js:316 col:160056 Ge.loadInstalledSkills() inside queryFn",
@@ -22,7 +22,7 @@
     "skills/load_installed_skills/interfaces/dto.json",
     "skills/load_installed_skills/gate-report.json prior — readyToImplement=true (gold-leaf gate_accepted) 2026-06-19"
   ],
-  "regen_by": "wf-aimami111-gate-final-20260620",
+  "regen_by": "<审计会话>",
   "dim1_detail": {
     "source": "ipc-contracts.jsonl line:72 col:30858 + frontend-control-flow.jsonl line:85 static + line:164+192 callsites",
     "col": 30858,

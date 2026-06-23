@@ -1,6 +1,6 @@
 # get_hotspot_enabled — Windows x64 1.1.1 Call Tree
 
-**session**: wf-aimami111-delta-20260616
+**session**: <审计会话>
 **platform**: windows-x64 | **version**: 1.1.1
 **max_depth**: 4 | **terminated_reason**: hashmap_lookup_leaf / mutex_primitive_leaf / ipc_response_leaf
 

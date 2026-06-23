@@ -1,6 +1,6 @@
 # set_hotspot_enabled — Interface Contract (Windows x64 1.1.1)
 
-**session**: wf-aimami111-delta-20260617-repair
+**session**: <审计会话>
 **platform**: windows-x64
 **module**: system
 **command**: set_hotspot_enabled

@@ -1,6 +1,6 @@
 # AiMaMi 1.1.1 macOS ARM64 — system/diagnose — Evidence
 
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 **Machine**: <本地机器>
 **Model**: claude-sonnet-4-6
 **Role**: 纯生产者 (SOP steps 0-6)
@@ -200,9 +200,9 @@
 
 ## IDB annotations
 
-- 0x10061f4b0: `A-level owner for diagnose; range 0x10061f4b0-0x10061f790; sha f34ff82910539964; session wf-aimami111-delta-20260616; not gate promotion`
-- 0x1004d25c0: `core-impl for diagnose; Repository::diagnose; version/platform/arch strings: 1.1.1/macos/x86_64 embedded; calls load_local_state_synced; session wf-aimami111-delta-20260616`
-- 0x10030e1c9: `IPC registration xref for diagnose command; in codexmate_lib::run::closure::closure; session wf-aimami111-delta-20260616`
-- 0x1004c7b10: `load_local_state_synced for diagnose chain; calls sync_local_runtime_state+load_local_state+check_daemon_state; session wf-aimami111-delta-20260616`
-- 0x1004c8ba0: `sync_local_runtime_state for diagnose chain; loads auth+registry+quota+account; persists on change; error keys: CURRENT_AUTH_SYNC_FAILED LEGACY_QUOTA_MIGRATION_FAILED AUTO_SWITCH_DAEMON_REPAIR_FAILED; session wf-aimami111-delta-20260616`
-- 0x1004c28c0: `load_local_state: loads auth+settings+registry+quota+account summary; error key REGISTRY_MISSING; session wf-aimami111-delta-20260616`
+- 0x10061f4b0: `A-level owner for diagnose; range 0x10061f4b0-0x10061f790; sha f34ff82910539964; session <审计会话>; not gate promotion`
+- 0x1004d25c0: `core-impl for diagnose; Repository::diagnose; version/platform/arch strings: 1.1.1/macos/x86_64 embedded; calls load_local_state_synced; session <审计会话>`
+- 0x10030e1c9: `IPC registration xref for diagnose command; in codexmate_lib::run::closure::closure; session <审计会话>`
+- 0x1004c7b10: `load_local_state_synced for diagnose chain; calls sync_local_runtime_state+load_local_state+check_daemon_state; session <审计会话>`
+- 0x1004c8ba0: `sync_local_runtime_state for diagnose chain; loads auth+registry+quota+account; persists on change; error keys: CURRENT_AUTH_SYNC_FAILED LEGACY_QUOTA_MIGRATION_FAILED AUTO_SWITCH_DAEMON_REPAIR_FAILED; session <审计会话>`
+- 0x1004c28c0: `load_local_state: loads auth+settings+registry+quota+account summary; error key REGISTRY_MISSING; session <审计会话>`

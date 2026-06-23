@@ -1,5 +1,5 @@
 # pseudocode.md — has_notch · windows-x64 · AiMaMi 1.1.1
-<!-- session=wf-aimami111-delta-20260618-goldleaf | machine=<本地机器> -->
+<!-- session=<审计会话> | machine=<本地机器> -->
 <!-- produced_at: 2026-06-18T00:00:00+08:00 | producer: claude-sonnet-4-6 -->
 <!-- binary_sha256: d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610 -->
 <!-- IDB: <本地路径>| imagebase: 0x140000000 -->
@@ -13,9 +13,9 @@
 **Business logic**: Returns fixed `bool true` (v28=1). No system API. No hardware notch check.
 
 ```c
-// [wf-aimami111-delta-20260616 | 2026-06-17]
+// [<审计会话> | 2026-06-17]
 // has_notch_owner_sys @ 0x140023000 (AiMaMi 1.1.1 win64.exe, PE x86_64 stripped)
-// SESSION: wf-aimami111-delta-20260616 | MACHINE: <本地机器>
+// SESSION: <审计会话> | MACHINE: <本地机器>
 // SHA256_BINARY: d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610
 // IDB: <本地路径>
 //
@@ -194,7 +194,7 @@ LABEL_14:
 **Terminated by**: `WakeByAddressSingle` (Windows kernel API) @ d2.
 
 ```c
-// [wf-aimami111-delta-20260618-goldleaf]
+// [<审计会话>]
 // InvokeResolver::respond — sends Ok(true) to frontend webview
 // Confirmed depth-2 terminal: WakeByAddressSingle (Windows synch.h API)
 

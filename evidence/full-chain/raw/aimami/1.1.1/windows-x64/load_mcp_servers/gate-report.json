@@ -14,7 +14,7 @@
   "evidence_refs": [
     "frontend/ipc-contracts.jsonl#L68: command='load_mcp_servers', argKeys=[], wrapper='loadMcpServers', kind='tauriInvokeWrapper'",
     "frontend/frontend-control-flow.jsonl#L163: callsite index-DdcCOEJG.js queryFn -> Ge.loadMcpServers(); L173: mcp-page-CGgOsRmy.js queryFn -> A.loadMcpServers()",
-    "load_mcp_servers/gate-report.json (prev): dims all PASS, call_tree_stats.total_edges=29, max_depth=5, new callees vs 1.0.9 documented; dim6_acceptance_mapping session=wf-aimami111-dim6-20260619",
+    "load_mcp_servers/gate-report.json (prev): dims all PASS, call_tree_stats.total_edges=29, max_depth=5, new callees vs 1.0.9 documented; dim6_acceptance_mapping session=<审计会话>",
     "load_mcp_servers/gate-report.json#call_tree_stats.side_effects: win32_file_read_bytes_111(TOML read), relay_atomic_write_leaf_sys(TOML atomic rewrite), win32_file_write_bytes_111(snapshot write)",
     "load_mcp_servers/gate-report.json#delta_vs_109: load_mcp_servers_write_snapshot_111 entire branch is new; new_dto_fields=[McpServer.transport+217, McpServer.enabled+216, InstalledSkill.title+136, InstalledSkill.summary+160, SkillSnapshot.usageAnalytics+696]",
     "load_mcp_servers/gate-report.json#dim6_acceptance_mapping: happy_path/boundary_error/side_effect_asserts/test_mapping all present"
@@ -61,9 +61,9 @@
     "new_mutex": "pending_auto_switch_state_lock_acquire_111 with _InterlockedCompareExchange8 + WakeByAddressSingle"
   },
   "dim6_detail": {
-    "source": "gate-report.json (prev)#dim6_acceptance_mapping (session wf-aimami111-dim6-20260619)",
+    "source": "gate-report.json (prev)#dim6_acceptance_mapping (session <审计会话>)",
     "happy_path": "invoke('load_mcp_servers') => SkillSnapshot JSON with mcpServers array including new 1.1.1 fields (transport, enabled, usageAnalytics)",
     "critical_note": "McpServer.transport and McpServer.enabled are NEW in 1.1.1 — C5 UI must handle these fields; callers expecting 1.0.9 shape will see extra fields"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

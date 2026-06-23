@@ -1,5 +1,5 @@
 # load_quota_history — Windows x64 Pseudocode (Gold-Leaf)
-# session: wf-aimami111-delta-20260618-goldleaf
+# session: <审计会话>
 # machine: <本地机器>
 # sha: d24e429a
 # gate_tier: full_gold_leaf
@@ -12,10 +12,10 @@
 ## Owner Function — load_quota_history_handler_111
 VA: 0x140020E40 | Size: 0x511 bytes | IDB name: load_quota_history_handler_111
 
-### 逆向分析 Decompile (verbatim, session wf-aimami111-delta-20260618-goldleaf)
+### 逆向分析 Decompile (verbatim, session <审计会话>)
 
 ```c
-// [wf-aimami111-delta-20260617 | load_quota_history]
+// [<审计会话> | load_quota_history]
 // IPC command handler. Registered in tauri_ipc_main_dispatcher_sys.
 // Extracts (repo, accountKey) from payload; acquires pending_auto_switch lock;
 // calls query_installed_skills_with_repo_111 then quota_history_file_read_and_filter_111.

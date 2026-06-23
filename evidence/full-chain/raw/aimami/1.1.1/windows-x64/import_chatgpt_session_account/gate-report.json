@@ -3,7 +3,7 @@
   "command": "import_chatgpt_session_account",
   "platform": "windows-x64",
   "version": "1.1.1",
-  "session": "wf-aimami111-win-100-20260620",
+  "session": "<审计会话>",
   "machine": "<本地机器>",
   "produced_at": "2026-06-20T00:00:00Z",
   "idb": "<本地路径>",
@@ -23,7 +23,7 @@
   "blocking": [],
   "notes": [
     "poll body decompile failed (HexRays limit 0x14D3=5331B); ceiling_cracked via disasm 939 instructions/160BB + 逆向分析 callees",
-    "dim3 closed: call-trees/import_chatgpt_session_account.jsonl produced session wf-aimami111-win-100-20260620; 52 entries depth=4; dispatcher(0)→async_wrapper(1)→poll(2)→semantic_callees(3)→leaves(4); all 34 direct callees have terminated_reason",
+    "dim3 closed: call-trees/import_chatgpt_session_account.jsonl produced session <审计会话>; 52 entries depth=4; dispatcher(0)→async_wrapper(1)→poll(2)→semantic_callees(3)→leaves(4); all 34 direct callees have terminated_reason",
     "dim1 live-confirmed: ipc-contracts.jsonl#L12 command=import_chatgpt_session_account argKeys=[sessionJson,overwriteExisting]",
     "not accepted_unknown: wrapper+callees provide full contract; all dims grounded"
   ],
@@ -31,7 +31,7 @@
     "frontend/ipc-contracts.jsonl#L12: command=import_chatgpt_session_account argKeys=[sessionJson,overwriteExisting] argObject={sessionJson:t,overwriteExisting:e} wrapper=importChatGptSessionAccount kind=tauriInvokeWrapper",
     "frontend/frontend-control-flow.jsonl#L7: callsite accounts-page-BFpAaIej.js S@24 -> importChatGptSessionAccount(f,d); guard if(!f||u)return",
     "import_chatgpt_session_account/reverse.md: owner_va=0x140953280 size=0x14D3 160BB method=ceiling_cracked; argKeys confirmed via callees; DTO offsets sessionJson@+0xBF8 overwriteExisting@+0xCA8; error_rdi=0x8000...001/002/025",
-    "import_chatgpt_session_account/call-trees/import_chatgpt_session_account.jsonl: 52 entries depth=4; 逆向分析 callees(0x140953280)=34 confirmed; session wf-aimami111-win-100-20260620"
+    "import_chatgpt_session_account/call-trees/import_chatgpt_session_account.jsonl: 52 entries depth=4; 逆向分析 callees(0x140953280)=34 confirmed; session <审计会话>"
   ],
   "dim1_detail": {
     "ipc_contracts_line": 12,
@@ -91,7 +91,7 @@
   },
   "dim6_detail": {
     "status": "closed",
-    "source": "reverse.md#dim6 session wf-aimami111-dim6-20260619 + promoted wf-aimami111-win-100-20260620",
+    "source": "reverse.md#dim6 session <审计会话> + promoted <审计会话>",
     "happy_path": "invoke('import_chatgpt_session_account',{sessionJson:'<json>',overwriteExisting:true}) → sub_140EFCAF0 true → sub_1408ED1D0 core → sub_140872110 account write → broadcast_runtime_state_updated_111 → Ok(())",
     "boundary_errors": [
       "provider unavailable → Err tag=0x8000000000000002 no account write",
@@ -111,5 +111,5 @@
     }
   },
   "prev_gate": "strictImplementationUse_candidate (dim3 open)",
-  "upgrade_note": "dim3 closed by producing call-trees/import_chatgpt_session_account.jsonl (52 entries depth=4) via 逆向分析 callees() on 0x140953280 → 34 direct callees confirmed → per-callee callees() for depth-3→4 key semantic nodes. All leaves terminated with reason. Promoted to readyToImplement session wf-aimami111-win-100-20260620."
+  "upgrade_note": "dim3 closed by producing call-trees/import_chatgpt_session_account.jsonl (52 entries depth=4) via 逆向分析 callees() on 0x140953280 → 34 direct callees confirmed → per-callee callees() for depth-3→4 key semantic nodes. All leaves terminated with reason. Promoted to readyToImplement session <审计会话>."
 }

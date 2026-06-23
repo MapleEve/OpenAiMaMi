@@ -1,5 +1,5 @@
 # load_snapshot — Owner (Windows x64, GOLD-LEAF)
-session=wf-aimami111-delta-20260618-goldleaf  machine=<本地机器>
+session=<审计会话>  machine=<本地机器>
 sha=d24e429a  date=2026-06-18
 
 ## Owner Function

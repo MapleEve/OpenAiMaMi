@@ -17,7 +17,7 @@
     "system/restart_codex/ida/pseudocode/0003_restart_codex_launch_codex_app_he81a14556c2107c0.c",
     "system/restart_codex/call-trees/restart_codex.jsonl (depth=3+, 21 entries, pgrep/osascript/kill/open syscall terminals)",
     "system/restart_codex/interfaces/interface.md (argKeys=[], unit Ok, 4 launch strategies, timing confirmed)",
-    "system/restart_codex/gate-report-dim6.json (session=wf-aimami111-dim6-20260619, acceptance-draft)",
+    "system/restart_codex/gate-report-dim6.json (session=<审计会话>, acceptance-draft)",
     "frontend/ipc-contracts.jsonl:L86:col31150 argKeys=[] wrapper=restartCodex (ne callee)",
     "frontend/ipc-contracts.jsonl:L86:col120754 argKeys=[] wrapper=restartCodexApp (vt callee)",
     "frontend/frontend-control-flow.jsonl:maintenance-page-C2wkSNnk.js:L17 callsite=N.restartCodex()",
@@ -29,7 +29,7 @@
     "dim3_call_tree_depth5": "21 entries, depth=3+ (IPC dispatcher->owner->platform fns->syscall leaves). Terminal: pgrep(UNIX syscall), osascript(AppleScript), kill-9(Command::new), open(4 paths), sleep(thread::sleep). Depth confirmed >= platform-fn+syscall = 3. CLOSED.",
     "dim4_interface_dto_error_sideeffect": "argKeys=[] (no args). Response: CoreEnvelope::ok(()) unit on success (0x8000000000000000). Errors: tag=9 'Codex launch timed out' (22B) + io::Error. Side-effects: osascript quit->kill loop (300ms/3s)->open via 4 strategies (bundleId x2, ~/Apps/Codex.app, /Apps/Codex.app). No FS writes, no config changes, no HTTP. CLOSED.",
     "dim5_same_platform_gate": "macos-arm64. Owner VA=0x100616150. platform::process functions confirmed. Windows dim5: separate session (INDEX line 1481 per dim6.json). CLOSED.",
-    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=wf-aimami111-dim6-20260619. OS process management side-effects: explicit_non_automatable_accept (manual test required). Producer acceptance-draft = dim6 closed. CLOSED."
+    "dim6_acceptance": "gate-report-dim6.json status=acceptance-draft, session=<审计会话>. OS process management side-effects: explicit_non_automatable_accept (manual test required). Producer acceptance-draft = dim6 closed. CLOSED."
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

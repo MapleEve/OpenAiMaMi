@@ -145,7 +145,7 @@ Builds HTTP request for quota fetch endpoint:
 
 ---
 
-## Extended Pseudocode (session wf-aimami111-delta-20260617)
+## Extended Pseudocode (session <审计会话>)
 
 ### relay_quota_provider_url_classifier_sys @ 0x1406D5620 (742B)
 

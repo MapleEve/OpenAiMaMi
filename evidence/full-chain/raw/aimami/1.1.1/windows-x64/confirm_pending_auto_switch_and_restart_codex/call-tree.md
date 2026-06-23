@@ -1,7 +1,7 @@
 # Call Tree — confirm_pending_auto_switch_and_restart_codex (win 1.1.1)
 
 **Depth**: 5+ levels | **Terminated reason**: reached runtime/OS leaves
-**Source**: 逆向分析 callees + analyze_function (wf-aimami111-delta-20260616)
+**Source**: 逆向分析 callees + analyze_function (<审计会话>)
 
 ## Full Call Tree
 

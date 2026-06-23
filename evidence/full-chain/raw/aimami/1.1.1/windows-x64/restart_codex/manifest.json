@@ -7,11 +7,11 @@
   "module": "restart_codex",
   "target": "restart_codex",
   "leaf": "full-chain",
-  "session": "wf-aimami111-delta-20260616",
+  "session": "<审计会话>",
   "produced_by": "<本地机器>",
   "produced_at": "2026-06-16T00:00:00Z",
   "updated_at": "2026-06-17T00:00:00Z",
-  "update_session": "wf-aimami111-delta-20260616",
+  "update_session": "<审计会话>",
   "sha256_binary": "d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610",
   "binary_format": "pe",
   "pe_machine": "x86_64",
@@ -28,7 +28,7 @@
   "dims_closed": ["dim1", "dim2", "dim3", "dim4", "dim5"],
   "dim6_missing": false,
   "dim6_status": "acceptance-draft",
-  "dim6_session": "wf-aimami111-dim6-20260619",
+  "dim6_session": "<审计会话>",
   "ceiling": "readyToImplement",
   "readyToImplement": true,
   "implementation_use": true,
@@ -65,7 +65,7 @@
       {"case": "quit timeout", "type": "explicit_non_automatable_accept", "reason": "需要不可终止的 Codex mock 进程"},
       {"case": "kill deadline exceeded", "type": "explicit_non_automatable_accept", "reason": "不可在 CI 可靠复现"}
     ],
-    "producer_note": "dim6 acceptance-draft by producer session wf-aimami111-dim6-20260619; 全 manual/non-automatable — C5 侧建议以 integration 测试记录 happy-path 冒烟结果"
+    "producer_note": "dim6 acceptance-draft by producer session <审计会话>; 全 manual/non-automatable — C5 侧建议以 integration 测试记录 happy-path 冒烟结果"
   },
   "four_angle_completeness": {
     "angle_A_func_query": "PASS",

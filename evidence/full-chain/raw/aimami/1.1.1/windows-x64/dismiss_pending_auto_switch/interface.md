@@ -1,5 +1,5 @@
 # dismiss_pending_auto_switch — Interface Contract (Windows x64)
-# AiMaMi 1.1.1 win64.exe · gold-leaf session = wf-aimami111-delta-20260618-goldleaf
+# AiMaMi 1.1.1 win64.exe · gold-leaf session = <审计会话>
 
 ## dim1 — Frontend CCF (Confirmed)
 

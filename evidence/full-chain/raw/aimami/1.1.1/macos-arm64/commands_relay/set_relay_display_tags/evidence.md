@@ -1,6 +1,6 @@
 # Evidence: set_relay_display_tags — AiMaMi 1.1.1 macOS arm64
 
-**Session**: wf-aimami111-delta-20260616
+**Session**: <审计会话>
 **Machine**: <本地机器>
 **Model**: claude-sonnet-4-6
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
@@ -85,12 +85,12 @@
 
 - `strictImplementationUse_candidate` — owner + core_impl + dispatcher all decompiled; call-tree depth ≥ 5; terminal leaves confirmed; argKeys dual-source confirmed; response type confirmed (CoreEnvelope<RelayState>); error strings extracted
 - `readyToImplement` — NOT yet (dim6 Unknown: "woyao" field semantics, RelayProvider layout, Windows not independently confirmed in this session)
-- `dim5_win` — DONE separately (windows-x64 INDEX entry gate=consumerStartReady, produced by same session wf-aimami111-delta-20260616)
+- `dim5_win` — DONE separately (windows-x64 INDEX entry gate=consumerStartReady, produced by same session <审计会话>)
 - `dim6` — Unknown (full struct layout / field names not recovered)
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate tier**: readyToImplement (dim6=acceptance-draft)
 

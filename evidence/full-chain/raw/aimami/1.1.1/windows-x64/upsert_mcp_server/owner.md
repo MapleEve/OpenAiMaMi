@@ -1,5 +1,5 @@
 # upsert_mcp_server — Owner Record (Win64)
-## session: wf-aimami111-delta-20260618-goldleaf | machine: <本地机器>
+## session: <审计会话> | machine: <本地机器>
 ## role: producer | sha: d24e429a | gate_tier: full_gold_leaf
 
 ---

@@ -1,5 +1,5 @@
 # get_notification_client_state — Interface Contract (Windows x64) [gold-leaf]
-## session: wf-aimami111-delta-20260618-goldleaf | sha: d24e429a
+## session: <审计会话> | sha: d24e429a
 
 ---
 

@@ -5,7 +5,7 @@
 **size**: 0x43d (1085 bytes)
 **binary**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi (macos-arm64)
 **binary_sha_module**: AiMaMi 1.1.1
-**session**: wf-aimami111-delta-20260618-mac100 (full-gold-leaf pass; base: wf-aimami111-delta-20260616)
+**session**: <审计会话> (full-gold-leaf pass; base: <审计会话>)
 **machine**: <本地机器>
 **produced_at**: 2026-06-18
 **module**: codexmate_lib::commands::accounts → leaf dir: accounts/
@@ -59,7 +59,7 @@
 - HTTP headers set: Authorization, ChatGPT-Account-Id, Accept, User-Agent (`AiMaMi/1.1.1`)
 - `is_connect` + `is_timeout` checks in enrich_active_account_usage_via_api — these set error category for frontend display
 
-## Confirmed (full-gold-leaf additions — session wf-aimami111-delta-20260618-mac100)
+## Confirmed (full-gold-leaf additions — session <审计会话>)
 
 - call-trees/refresh_usage_snapshot.jsonl: 31 edges, edge-per-line format, max_depth=5, call_tree_complete=true
 - `note_usage_refresh_activity` (0x10061c240) decompiled: acquires usage_refresh_watcher_state::STATE Mutex (0x101442AC0/AD8/AE0), writes a1 (elapsed_seconds as u64) to `qword_101442AD8`, calls `Condvar::notify_all` (0x100f34bd0) on `unk_101442AE0` — wakes background watcher thread

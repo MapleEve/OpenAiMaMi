@@ -1,6 +1,6 @@
 # deactivate_relay_provider — Windows x64 Pseudocode (Gold Leaf)
 **Binary**: AiMaMi 1.1.1 win64.exe (imagebase 0x140000000)
-**Session**: wf-aimami111-delta-20260618-goldleaf / machine=<本地机器>
+**Session**: <审计会话> / machine=<本地机器>
 **delta_class**: integrity_recovered
 **gate_tier**: gold-leaf (full real decompile bodies, call-tree depth≥5, all dims 1-5 closed)
 **sha**: d24e429a

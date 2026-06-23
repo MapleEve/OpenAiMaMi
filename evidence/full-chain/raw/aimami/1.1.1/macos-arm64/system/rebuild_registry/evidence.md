@@ -1,6 +1,6 @@
 # Evidence: rebuild_registry — AiMaMi 1.1.1 macOS ARM64
 
-**Session**: wf-aimami111-delta-20260617-sweep
+**Session**: <审计会话>
 **Machine**: <本地机器> (producer)
 **Binary**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi
 **IDB**: <来源位置>/raw/binary/AiMaMi-1.1.1-idb

@@ -1,5 +1,5 @@
 # restore_skill_backup — Interface Contract (Windows x64)
-<!-- session=wf-aimami111-delta-20260618-goldleaf machine=<本地机器> platform=windows-x64 -->
+<!-- session=<审计会话> machine=<本地机器> platform=windows-x64 -->
 <!-- sha=d24e429a binary="AiMaMi 1.1.1 win64.exe" imagebase=0x140000000 -->
 
 ## dim1 — Frontend CCF (Command Call Frame)

@@ -1,6 +1,6 @@
 # run_codex_router_diagnostics — Win x64 Pseudocode
 
-session: wf-aimami111-delta-20260617-sweep
+session: <审计会话>
 machine: <本地机器>
 role: 纯生产者
 date: 2026-06-17
@@ -694,7 +694,7 @@ LABEL_26:
 
 ## 状态（更新：gold-leaf 补全）
 
-session_updated: wf-aimami111-delta-20260618-goldleaf
+session_updated: <审计会话>
 date_updated: 2026-06-18
 status: gold-leaf-complete
 gate_tier: gold-leaf

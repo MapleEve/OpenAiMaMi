@@ -9,7 +9,7 @@
 | 版本 | 1.1.1 |
 | Binary SHA256 | d24e429ab16a9b683c1c23212555c7d1d59a3e2e6ee24a9f3a16acd7f8231610 |
 | IDB | <本地路径>|
-| session | wf-aimami111-delta-20260616 |
+| session | <审计会话> |
 | machine | <本地机器> |
 
 ## String Locator
@@ -37,7 +37,7 @@ String 常量验证：
 ## Dispatcher 确认
 
 主 dispatcher: `sub_14000D2A0` (0x14000D2A0, 41-case string-length switch, 17870B)
-`reveal_relay_api_key` 在 session wf-aimami111-delta-20260616 的 Win Divergence Confirmation 阶段已确认存在于 delta 命令集（9条新增命令之一）。
+`reveal_relay_api_key` 在 session <审计会话> 的 Win Divergence Confirmation 阶段已确认存在于 delta 命令集（9条新增命令之一）。
 
 ## 调用关系
 
@@ -57,4 +57,4 @@ reveal_relay_api_key_owner_sys(0x140012820)
 PREWRITE_PRODUCER_COLLISION_GATE_V1 — no collision:
 - INDEX.jsonl: 无 reveal_relay_api_key 条目
 - raw/aimami/1.1.1/windows-x64/reveal_relay_api_key: 目录不存在
-- 本轮 session=wf-aimami111-delta-20260616 为 owner
+- 本轮 session=<审计会话> 为 owner

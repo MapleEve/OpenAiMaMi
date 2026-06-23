@@ -1,7 +1,7 @@
 # restore_skill_backup — Windows x64 Pseudocode (Gold Leaf)
-<!-- session=wf-aimami111-delta-20260618-goldleaf machine=<本地机器> platform=windows-x64 -->
+<!-- session=<审计会话> machine=<本地机器> platform=windows-x64 -->
 <!-- sha=d24e429a binary="AiMaMi 1.1.1 win64.exe" imagebase=0x140000000 delta_class=integrity_recovered -->
-<!-- prior-session=wf-aimami111-delta-20260617-sweep; this session adds full decompile bodies + dim1 CCF -->
+<!-- prior-session=<审计会话>; this session adds full decompile bodies + dim1 CCF -->
 
 ## Module: restore_skill_backup
 Binary: AiMaMi 1.1.1 win64.exe
@@ -12,7 +12,7 @@ Analysis date: 2026-06-18
 
 ## Owner: restore_skill_backup_owner_sys @ 0x1400201E0
 <!-- IDB rename: restore_skill_backup_handler_111 → restore_skill_backup_owner_sys -->
-<!-- IDB comment: gold-leaf for restore_skill_backup; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion -->
+<!-- IDB comment: gold-leaf for restore_skill_backup; sha d24e429a; session <审计会话>; not gate promotion -->
 
 ```c
 // Command handler — invoked when IPC command == "restore_skill_backup"
@@ -712,7 +712,7 @@ _QWORD* __fastcall uuid_v4_generate_raw_sys(_QWORD* a1)
 
 ## restore_skill_backup_response_ser_111 @ 0x14020F2A0
 <!-- DELTA-5: NEW structured response vs 1.0.9 bare {status,message} -->
-<!-- IDB comment set: gold-leaf, DELTA-5, session wf-aimami111-delta-20260618-goldleaf -->
+<!-- IDB comment set: gold-leaf, DELTA-5, session <审计会话> -->
 
 ```c
 // Serializes restore_skill_backup response to JSON writer.

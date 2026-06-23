@@ -1,6 +1,6 @@
 # get_device_id — Windows x64 1.1.1 Call Tree
 
-**session**: wf-aimami111-delta-20260617-sweep
+**session**: <审计会话>
 **platform**: windows-x64 | **version**: 1.1.1
 **delta_class**: integrity_recovered
 **max_depth**: 6 | **terminated_reason**: hashmap_lookup_leaf / mutex_primitive_leaf / ipc_response_leaf / serde_leaf

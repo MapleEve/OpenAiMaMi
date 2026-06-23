@@ -1,5 +1,5 @@
 # set_auto_switch — Windows x64 Pseudocode (GOLD LEAF)
-# session: wf-aimami111-delta-20260618-goldleaf / machine: <本地机器>
+# session: <审计会话> / machine: <本地机器>
 # delta_class: integrity_recovered
 # base: AiMaMi 1.0.9 (already reversed) — covers 1.1.1 delta to gold-leaf standard
 # sha: d24e429a  idb: <本地路径>

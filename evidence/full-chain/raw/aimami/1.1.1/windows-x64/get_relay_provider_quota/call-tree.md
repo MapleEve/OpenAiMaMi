@@ -110,7 +110,7 @@ No fake walls encountered. All accepted_unknowns classified and logged.
 
 ---
 
-## Deep-Reverse Extension (session wf-aimami111-delta-20260617)
+## Deep-Reverse Extension (session <审计会话>)
 
 ### relay_quota_http_request_builder_sys — Truncation Resolved
 

@@ -1,7 +1,7 @@
 # import_chatgpt_session_account — windows-x64 1.1.1 逆向证据
 
 ## 元信息
-- session: wf-aimami111-delta-20260618-goldleaf
+- session: <审计会话>
 - machine: <本地机器>
 - idb: <本地路径>
 - produced: 2026-06-18
@@ -133,7 +133,7 @@ sub_14124BFE0(0x14124BFE0)、sub_14124C3A0(0x14124C3A0)、sub_14124C380(0x14124C
 
 ---
 
-## dim 状态评估（wf-aimami111-dim6-20260619）
+## dim 状态评估（<审计会话>）
 
 | dim | 状态 | 证据来源 |
 |-----|------|---------|

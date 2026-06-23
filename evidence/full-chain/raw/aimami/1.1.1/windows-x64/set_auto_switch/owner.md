@@ -1,5 +1,5 @@
 # set_auto_switch — Owner Record (GOLD LEAF)
-# session: wf-aimami111-delta-20260618-goldleaf / machine: <本地机器>
+# session: <审计会话> / machine: <本地机器>
 
 ## Identity
 
@@ -57,5 +57,5 @@ All 10 callees listed in `call-tree.md` prefixed `DELTA-NEW` are absent in 1.0.9
 ```
 ; set_auto_switch_owner_sys (renamed from cmd_set_auto_switch_111)
 ; [0x1400286B0] gold-leaf for set_auto_switch; sha d24e429a;
-;               session wf-aimami111-delta-20260618-goldleaf; not gate promotion
+;               session <审计会话>; not gate promotion
 ```

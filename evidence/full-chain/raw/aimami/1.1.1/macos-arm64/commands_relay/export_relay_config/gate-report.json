@@ -4,15 +4,15 @@
   "version": "1.1.1",
   "platform": "macos-arm64",
   "module": "commands_relay",
-  "session": "wf-aimami111-delta-20260617-sweep",
+  "session": "<审计会话>",
   "produced_at": "2026-06-17T00:00:00+08:00",
-  "dim6_session": "wf-aimami111-dim6-20260619",
+  "dim6_session": "<审计会话>",
   "gate": "readyToImplement",
   "gate_accepted": true,
   "implementation_use": true,
   "readyToImplement": true,
   "readyToImplement_upgraded_at": "2026-06-19",
-  "readyToImplement_upgrade_session": "wf-aimami111-dim6-100-20260619",
+  "readyToImplement_upgrade_session": "<审计会话>",
   "readyToImplement_upgrade_reason": "U1 resolved: RelayExportProvider apiKey field confirmed — included when includeApiKeys=true AND key non-empty (Serialize impl at 0x100548c30 shows conditional serialize_entry for apiKey). U2 resolved: ExportResult response DTO is RelayExportSummary (not ExportResult), serde key providerCount (camelCase, not provider_count) byte-confirmed from Serialize impl at 0x10054888a — 3 fields: filePath, providerCount, includeApiKeys. RelayExportProvider full serde keys confirmed: id, ide, name, baseUrl, apiKey[conditional], model, extraHeaders. dim4 now accepted. dim5 mac confirmed. Per-platform gate: win=Unknown does not block mac RTI. Mac RTI unblocked.",
   "strictImplementationUse": true,
   "consumerStartReady": true,
@@ -63,17 +63,17 @@
   "dim6_test_acceptance": {
     "status": "acceptance-draft",
     "produced_at": "2026-06-19",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "happy_path": {
       "description": "导出 relay 配置（包含 API keys）",
       "input": {
-        "filePath": "/tmp/aimami-export.json",
+        "filePath": "<临时路径>/aimami-export.json",
         "includeApiKeys": true
       },
       "expected_response": {
         "type": "CoreEnvelope<RelayExportSummary>",
         "fields": {
-          "filePath": "/tmp/aimami-export.json",
+          "filePath": "<临时路径>/aimami-export.json",
           "providerCount": "<usize, 已配置 provider 数量>",
           "includeApiKeys": true
         },
@@ -84,7 +84,7 @@
         "exportedBy": "AiMaMi 1.1.1",
         "includeApiKeys": true,
         "providers": "[{ide: ..., baseUrl: ..., apiKey: ...}]",
-        "filePath": "/tmp/aimami-export.json"
+        "filePath": "<临时路径>/aimami-export.json"
       },
       "side_effects_ordered": [
         "1. 读取 relay_config_path/keys/<provider_id> (JSON file, base64 decode, sha256 key derivation) — 每个有 key 的 provider",
@@ -163,12 +163,12 @@
     {
       "id": "U1",
       "category": "resolved",
-      "description": "RESOLVED 2026-06-19 session wf-aimami111-dim6-100-20260619: RelayExportProvider apiKey field confirmed from Serialize impl at 0x100548c30. apiKey included when includeApiKeys=true AND key non-empty (conditional serialize_entry). Full provider serde fields confirmed: id, ide, name, baseUrl, apiKey[conditional], model, extraHeaders."
+      "description": "RESOLVED 2026-06-19 session <审计会话>: RelayExportProvider apiKey field confirmed from Serialize impl at 0x100548c30. apiKey included when includeApiKeys=true AND key non-empty (conditional serialize_entry). Full provider serde fields confirmed: id, ide, name, baseUrl, apiKey[conditional], model, extraHeaders."
     },
     {
       "id": "U2",
       "category": "resolved",
-      "description": "RESOLVED 2026-06-19 session wf-aimami111-dim6-100-20260619: Response DTO is RelayExportSummary (not ExportResult). Serialize impl at 0x10054888a byte-confirmed 3 JSON fields: filePath, providerCount (camelCase, not provider_count), includeApiKeys."
+      "description": "RESOLVED 2026-06-19 session <审计会话>: Response DTO is RelayExportSummary (not ExportResult). Serialize impl at 0x10054888a byte-confirmed 3 JSON fields: filePath, providerCount (camelCase, not provider_count), includeApiKeys."
     },
     {
       "id": "U3",
@@ -198,7 +198,7 @@
     "D_owner_map_index": "PASS — integrity_recovered delta class"
   },
   "gate_tier": "readyToImplement",
-  "consolidated_by": "wf-aimami111-gate-consolidate-20260620",
+  "consolidated_by": "<审计会话>",
   "consolidated_at": "2026-06-20",
   "consolidated_gate_tier": "readyToImplement",
   "consolidated_dim1_5_status": "all closed (dim4 closed: RelayExportSummary 3 fields @0x10054888a + RelayExportProvider with conditional apiKey @0x100548c30; dim5_mac confirmed; dim5_win accepted_unknown)",

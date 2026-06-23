@@ -1,6 +1,6 @@
 # relay-new-commands.md — 1.1.1 新增 relay 命令 DTO 接口
 
-**session**: wf-aimami111-delta-20260617-repair
+**session**: <审计会话>
 **produced_at**: 2026-06-17
 
 ---

@@ -20,10 +20,10 @@
     "intermediate/aimami/1.1.1/version-delta/dim6/win-consolidated.json#readyToImplement"
   ],
   "dim1_evidence": "ipc-contracts.jsonl L76: command=restore_skill_backup, argKeys=[id], argObject={id:t}, callee=ne, kind=tauriInvokeWrapper; CCF L89,L196 confirmed; frontend binding: restoreSkillBackup: (id: string) => invoke<CoreEnvelope<SkillRestorePayload>>(...,{id})",
-  "dim2_evidence": "restore_skill_backup_owner_sys@0x1400201E0 (0x4C1B=1217B) full 逆向分析 decompile gold-leaf; restore_skill_mutex_read_111@0x1407DCA60; restore_skill_do_111@0x1406EFA10; import_skill_build_record_db_write_111@0x1406F1360; snooze_file_backup_copy_111@0x14108C340; session=wf-aimami111-delta-20260618-goldleaf",
+  "dim2_evidence": "restore_skill_backup_owner_sys@0x1400201E0 (0x4C1B=1217B) full 逆向分析 decompile gold-leaf; restore_skill_mutex_read_111@0x1407DCA60; restore_skill_do_111@0x1406EFA10; import_skill_build_record_db_write_111@0x1406F1360; snooze_file_backup_copy_111@0x14108C340; session=<审计会话>",
   "dim3_evidence": "call-tree depth=6 terminated at Win32 leaf (CopyFileExW level 6, ProcessPrng level 5, WriteFile level 5, GetLastError level 6); 7 key functions fully decompiled; depth_path: owner->mutex_read->do->build_record->iter_dir->backup_copy->CopyFileExW",
   "dim4_evidence": "request: {id: string(UUID)}; response: {restoredSkill: InstalledSkillSummary, backup: SkillBackupSummary, rollbackBackup: SkillBackupSummary|null}; backup_record: {backupID,skillID,name,title,relativePath,createdAt}; DELTA-1..6 confirmed; errors: 'restore-rollbackBackup corrupted'@0x1412EC11C, 'Invalid skill source'(20B); side-effects: CopyFileExW+UUID+JSON record write",
   "dim5_evidence": "xref from tauri_ipc_main_dispatcher_sys@0x14000D2A0 code-ref@0x14000F4C4; data refs@0x1414FCF54+0x14189E77C; WIN-specific: CopyFileExW, ProcessPrng/BCryptGenRandom, Win32 WriteFile, win32_path_canonicalize_111",
-  "dim6_evidence": "acceptance-draft by wf-aimami111-dim6-20260619; promoted to readyToImplement in win-consolidated.json",
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "dim6_evidence": "acceptance-draft by <审计会话>; promoted to readyToImplement in win-consolidated.json",
+  "regen_by": "<审计会话>"
 }

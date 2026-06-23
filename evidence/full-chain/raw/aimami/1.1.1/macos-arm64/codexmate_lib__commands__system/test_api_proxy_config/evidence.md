@@ -1,5 +1,5 @@
 # Evidence: test_api_proxy_config — Full Gold Leaf
-## AiMaMi 1.1.1 macOS arm64 | session wf-aimami111-delta-20260618-mac100
+## AiMaMi 1.1.1 macOS arm64 | session <审计会话>
 
 ---
 
@@ -49,7 +49,7 @@
 
 ---
 
-## ACCEPTANCE (dim6 — wf-aimami111-dim6-20260619)
+## ACCEPTANCE (dim6 — <审计会话>)
 
 **Gate tier**: readyToImplement (dim6=acceptance-draft)
 **Delta class**: delta_vs_109 — new auth file read + message format change

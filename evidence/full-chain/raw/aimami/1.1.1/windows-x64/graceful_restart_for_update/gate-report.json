@@ -17,7 +17,7 @@
     "pseudocode.md: owner=graceful_restart_for_update_owner_sys@0x14001AE30, size=547B, Layer0-5 full trace, max_depth=5",
     "call-tree.md: max_depth=5, all branches terminated (OS kernel imports at L5: CreateToolhelp32Snapshot/Process32FirstW/Process32NextW/CloseHandle/GetCurrentProcessId)",
     "interface.md: no-args command, response_tags=tag3(Ok)/tag6(QUIT_TIMEOUT)/tag7(NotFound)/tag9(SpawnFail), win-only confirmed",
-    "owner.md: session=wf-aimami111-delta-20260618-goldleaf, IDB renames applied, saved <本地路径>",
+    "owner.md: session=<审计会话>, IDB renames applied, saved <本地路径>",
     "pseudocode.md#ACCEPTANCE: dim6_basis=Layer1-4 full trace, happy_path/boundary/side_effect_asserts/test_mapping all present; gate=readyToImplement eligible"
   ],
   "dim1_detail": {
@@ -71,11 +71,11 @@
     "caller": "tauri_ipc_main_dispatcher_sys@0x14000D2A0"
   },
   "dim6_detail": {
-    "source": "pseudocode.md#ACCEPTANCE section (session wf-aimami111-dim6-20260619)",
+    "source": "pseudocode.md#ACCEPTANCE section (session <审计会话>)",
     "happy_path": "invoke('graceful_restart_for_update') no-args; Codex quits within 5s; CreateProcessW on known path; Codex appears in ToolHelp32 within 5s; Ok(tag3)",
     "boundary_errors": "tag6=quit_timeout, tag7=Codex_not_found, tag9=spawn_but_not_visible",
     "test_mapping_present": true,
     "gate_note": "acceptance-draft = dim6 producer-side closed; C5 consumer confirms upon test landing"
   },
-  "regen_by": "wf-aimami111-gate-final-20260620"
+  "regen_by": "<审计会话>"
 }

@@ -1,6 +1,6 @@
 # switch_account — SAME-DEPTH-CONFIRM — 1.1.1 vs 1.0.9
 
-**session**: wf-aimami111-same-depth-20260618
+**session**: <审计会话>
 **machine**: <本地机器>
 **shard**: mac-shard-6/6
 **owner_1.1.1**: codexmate_lib::commands::accounts::switch_account_sync @ 0x1006200f0

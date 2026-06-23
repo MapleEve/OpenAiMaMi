@@ -1,6 +1,6 @@
 # activate_relay_provider — Owner (Windows x64)
 
-**session**: wf-aimami111-delta-20260618-goldleaf
+**session**: <审计会话>
 **machine**: <本地机器>
 **binary**: AiMaMi 1.1.1 win64.exe (imagebase 0x140000000)
 **idb**: <本地路径>
@@ -18,7 +18,7 @@
 | Size | 0x5CE (1486 bytes) |
 | IPC string | `"activate_relay_provider"` @ `0x1412AC4EA` (23 chars) |
 | String xref | data-ref in owner at `0x140017F49` |
-| IDB comment | gold-leaf; sha d24e429a; session wf-aimami111-delta-20260618-goldleaf; not gate promotion |
+| IDB comment | gold-leaf; sha d24e429a; session <审计会话>; not gate promotion |
 
 ---
 

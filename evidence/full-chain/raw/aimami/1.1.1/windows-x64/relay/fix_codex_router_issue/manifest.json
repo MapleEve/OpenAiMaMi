@@ -3,7 +3,7 @@
   "produced_at": "2026-06-17T00:00:00Z",
   "producer": "claude-sonnet-4-6",
   "machine": "<本地机器>",
-  "session": "wf-aimami111-delta-20260616",
+  "session": "<审计会话>",
   "key": "aimami/1.1.1/windows-x64/relay/fix_codex_router_issue",
   "product": "aimami",
   "version": "1.1.1",
@@ -214,7 +214,7 @@
     "A_func_query": "PASS — owner at 0x1400246b0 (stripped, sub_ prefix); string xref confirms fix_codex_router_issue@0x1412ac59c; unique command string n=1",
     "B_string_pool": "PASS — fix_codex_router_issue@0x1412ac59c; all 13 itemId strings confirmed in binary (config_stale/auth_integrity/config_third_party/config_omit_syntax/db_orphan_providers/catalog_path_validity/config_profile_conflict/thread-router-migrations/relay-state-cache.json/residual_manifest/residual_cache/current.json); config_marker_start/end@0x1412e941c/0x1412ea00d",
     "C_frontend_ipc": "PASS (migrated from 1.0.9 CCF; argKeys=[itemId]; win frontend same invoke wrapper)",
-    "D_owner_map_index": "PASS — INDEX grep 0 prior 1.1.1 windows-x64 fix_codex_router_issue entries; ADDITIVE no collision; session=wf-aimami111-delta-20260616"
+    "D_owner_map_index": "PASS — INDEX grep 0 prior 1.1.1 windows-x64 fix_codex_router_issue entries; ADDITIVE no collision; session=<审计会话>"
   },
   "fake_wall_check": {
     "genuine_ceiling": false,
@@ -235,7 +235,7 @@
   "dim5_windows_note": "CONFIRMED — 逆向分析 win1.1.1 live decompile; PE stripped x86_64; owner@0x1400246b0; all itemId strings confirmed; process lifecycle confirmed",
   "dim6": {
     "status": "acceptance-draft",
-    "session": "wf-aimami111-dim6-20260619",
+    "session": "<审计会话>",
     "machine": "<本地机器>",
     "dim6_basis": "manifest.json interface block (argKeys, itemId_known_values, response_ok, error_paths, side_effects); manifest.json terminal_leaves; new_in_1_1_1 list; 逆向分析 decompile 4 pseudocode files; 13 itemId strings confirmed in binary",
     "happy_path": {

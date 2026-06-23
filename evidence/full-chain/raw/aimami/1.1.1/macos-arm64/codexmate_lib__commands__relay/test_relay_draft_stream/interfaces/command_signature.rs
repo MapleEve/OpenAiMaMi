@@ -1,5 +1,5 @@
 // test_relay_draft_stream — Tauri command signature (reconstructed)
-// session: wf-aimami111-delta-20260617-repair
+// session: <审计会话>
 // Evidence: IPC channel vtable at 0x1013ae7c0, closure chain analysis
 
 use tauri::ipc::Channel;
