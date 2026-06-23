@@ -19,15 +19,15 @@ OpenAiMami 是面向个人本地工作流的桌面应用公开重建仓库。仓
 
 ## 当前归纳
 
-README 只保留长期有效的归纳状态：按“已做 / 未做或边界 / 验收”说明公开重建的稳定能力面，不记录提交流水、日期、提交号、模块逐项恢复记录或完成百分比。模块级 validator 不再把根 README 当作模块进度证明；README 只给出公开边界和验收入口，由公开边界验证统一约束匿名化、禁用公开标识、表格结构和命令可用性。每次提交仍要同步 README 归纳判断，但只更新能力面和边界变化。
+README 只保留长期有效的归纳状态：按“已做 / 未做或边界 / 验收”概括公开重建的能力面、边界和检查入口，不记录提交流水、日期、提交号、模块逐项恢复记录或完成百分比。模块级 validator 不再把根 README 当作模块进度证明；README 只给出长期口径，由公开边界验证统一约束匿名化、禁用公开标识、表格结构和命令可用性。每次提交仍要同步 README 归纳判断，但只更新能力面和边界变化。
 
 | 范围 | 已做 | 未做或边界 | 验收 |
 | --- | --- | --- | --- |
-| 公开材料 | 已固定 Apache License、匿名化原则、证据来源、公开禁区和贡献边界。 | 未脱敏资料、个人环境、凭据、会话、密钥、账号私密值和外部猜测不进入公开范围。 | `npm run validate:public-boundary` |
-| 前端 | 已按 `raw/internal` 证据链收敛入口、路由、服务门面、缓存、文案、模拟数据、页面可见面和公开证据支撑的本地配置事务合同，并通过 current-source 专名验证、source-only 边界验证、map 绑定验证和其他验证脚本约束来源与边界。 | 不声明完成百分比；README 不替代模块验收、功能完整性证明或逐项恢复记录。 | `npm run validate:frontend`、`npm run validate:frontend-visible-copy`、`npm run validate:frontend-leaf-copy` |
-| 后端 | 已保留原开源能力，并把公开证据支撑的本地文件事务、本地配置事务、平台探针、进程能力、版本差异语义和深链脱敏解析收敛到六边形边界、DTO、mock 和 validator。 | 闭源业务不全量恢复；无证据业务只保留职责注释、边界、接口、DTO、错误语义、测试占位和待补证据位置。 | `npm run validate:backend`、`npm run validate:backend-cargo` |
-| voice | 已保留空骨架和中文说明。 | 不接入口、不接路由、不接 IPC mock、不接后端命令、不调用、不阻塞，也不作为能力完成证明。 | `npm run validate:frontend`、`npm run validate:backend` |
-| 验收 | 已保留公开边界、前端、后端、构建面和 Rust 环境检查的固定入口。 | 工具链、`link.exe`、Rust 编译或测试环境、平台依赖缺口只按环境边界解释，不写成业务完成或失败结论。 | `npm run validate:all`、`npm run validate:build-surface`、`npm run validate:backend-cargo` |
+| 公开材料 | 已固定许可、匿名化、证据来源、公开禁区和贡献边界。 | 未脱敏资料、个人环境、凭据、会话、密钥、账号私密值和外部猜测不进入公开范围。 | `npm run validate:public-boundary` |
+| 前端 | 已把公开证据支撑的入口、路由、服务门面、缓存、文案、mock 和可见面收敛到统一验证边界，map 绑定验证负责检查证据映射。 | README 不声明完成百分比，也不替代模块验收、功能完整性证明或逐项恢复记录。 | `npm run validate:frontend`、`npm run validate:frontend-closeout-map-bindings` |
+| 后端 | 已保留原开源能力，并把公开证据支撑的本地事务、平台能力、版本语义和脱敏解析纳入六边形边界。 | 后端不做闭源业务全量恢复；无证据业务只保留职责注释、边界、接口、DTO、错误语义、测试占位和待补证据位置。 | `npm run validate:backend`、`npm run validate:backend-cargo` |
+| voice | 已保留空骨架和中文说明。 | voice 不接入口、不接路由、不接 IPC mock、不接后端命令、不调用、不阻塞其他范围验收。 | `npm run validate:frontend`、`npm run validate:backend` |
+| 验收 | 已保留公开边界、前端、后端、构建面和 Rust 环境检查的固定入口。 | 工具链、`link.exe`、Rust 编译或测试环境、平台依赖缺口只按环境边界解释。 | `npm run validate:all`、`npm run validate:build-surface`、`npm run validate:backend-cargo` |
 
 ## 仓库入口
 
