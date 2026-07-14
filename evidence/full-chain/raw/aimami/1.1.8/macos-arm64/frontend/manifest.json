@@ -1,0 +1,76 @@
+{
+  "schema": "c5cm.reverse.frontend.manifest.v1",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "produced_at": "2026-07-11",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "baseline_version": "1.0.9",
+  "skipped_intermediate_version": "1.1.1",
+  "source_binary": {
+    "path": "<证据库>/raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+    "sha256": "63c9655f7e7f0d725e55c83b5057023cb8e8351d577f47a9ad683137d6c89470",
+    "sha12": "63c9655f7e7f0",
+    "type": "macho-universal",
+    "thin_arm64": "AiMaMi.arm64.thin"
+  },
+  "dump_tool": "tauri-dumper",
+  "dump_assets_count": 29,
+  "dump_output_dir": "dumped/",
+  "sourcemap_available": false,
+  "recovered_source": false,
+  "extraction_tools": [
+    "extract_frontend_contracts.py (--prefer-recovered-source)",
+    "extract_frontend_ast.mjs"
+  ],
+  "outputs": {
+    "ipc-contracts.jsonl": {"lines": 132, "unique_commands": 131},
+    "frontend-control-flow.jsonl": {"lines": 209},
+    "http-hits.jsonl": {"lines": 182},
+    "query-hits.jsonl": {"lines": 40},
+    "router-hits.jsonl": {"lines": 5},
+    "ast-facts.json": {"bytes": 1792179},
+    "frontend-files.txt": "present",
+    "source-map-refs.txt": "empty (no sourcemaps)",
+    "source-map-recovered.jsonl": {"lines": 0}
+  },
+  "delta_vs_baseline_1_0_9": {
+    "baseline_unique_commands": 127,
+    "current_unique_commands": 131,
+    "added_commands": [
+      "begin_chatgpt_oauth_login",
+      "cancel_chatgpt_oauth_login",
+      "get_codex_router_auth_readiness",
+      "get_relay_provider_quota",
+      "load_voice_processing_modes",
+      "parse_aimami_deeplink",
+      "refresh_single_account_usage",
+      "reorder_relay_providers",
+      "reveal_relay_api_key",
+      "save_voice_processing_modes",
+      "set_codex_router_no_account_mode",
+      "set_relay_display_tags",
+      "test_relay_draft_stream",
+      "test_relay_provider_stream",
+      "voice_processing_done"
+    ],
+    "removed_commands": [
+      "begin_add_account_attach_monitor",
+      "get_passthrough_audit_log",
+      "get_plugin_config",
+      "import_chatgpt_session_account",
+      "list_plugins",
+      "reset_codex_config",
+      "set_block_official_passthrough",
+      "test_relay_draft",
+      "test_relay_provider",
+      "toggle_plugin",
+      "update_plugin_config"
+    ],
+    "note": "diff computed directly against 1.0.9 baseline ipc-contracts.jsonl per this round's scope (skip 1.1.1 comparison); 1.1.1 delta was tracked separately in a prior session (<审计会话>*)"
+  },
+  "authoritative": true,
+  "write_mode": "new-version-raw",
+  "owner_gate": "ALLOW/first (grep -n '1\\.1\\.8' on INDEX.jsonl = 0 hits; no prior raw/aimami/1.1.8 dir; no competing producer)"
+}

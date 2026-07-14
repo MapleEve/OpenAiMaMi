@@ -1,0 +1,45 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "accounts",
+  "command": "refresh_single_account_usage",
+  "session": "<审计会话>",
+  "produced_by": "<本地机器>",
+  "model": "<模型>",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 win64.exe",
+  "owner_va": "0x140a6c900",
+  "owner_symbol": "refresh_single_account_usage_owner_sys",
+  "owner_status": "present_confirmed",
+  "arch_noise_filter_applied": false,
+  "gate_tier": "strictImplementationUse_candidate",
+  "call_tree_depth_reached": 4,
+  "call_tree_terminated_reason": ["response_serialize", "external_call", "error_return"],
+  "renames_this_session": [
+    {"addr": "0x140a6c900", "old": "sub_140A6C900", "new": "refresh_single_account_usage_owner_sys"},
+    {"addr": "0x1400650e0", "old": "sub_1400650E0", "new": "refresh_usage_poll_continuation_sys"},
+    {"addr": "0x14086fd70", "old": "sub_14086FD70", "new": "refresh_usage_arg_extract_poll_sys"},
+    {"addr": "0x140352c90", "old": "sub_140352C90", "new": "refresh_usage_response_build_sys"},
+    {"addr": "0x14037dc40", "old": "sub_14037DC40", "new": "usage_data_fields_flatten_sys"}
+  ],
+  "set_comments_this_session": [
+    {"addr": "0x140a6c900", "note": "A/B-level owner evidence line written; see IDB comment text in gate-report.json ida_live_gate/comment_written field"}
+  ],
+  "files": [
+    {"path": "pseudocode/0001_refresh_single_account_usage_owner_sys.c", "size": 27402, "sha256": "3bad52e7db0460af0a5166018aeb0f8f74f4b8f8de3e34e791635d246c588a9f"},
+    {"path": "pseudocode/0002_refresh_usage_arg_extract_poll_sys_shared.c", "size": 2895, "sha256": "01bd4171df6fa98f70ca6998dfe05fa1e7c3bb83f72ade20f0769daca1a880b1"},
+    {"path": "pseudocode/0003_refresh_usage_poll_continuation_sys.c", "size": 2283, "sha256": "ac10c4335acb96e3e114fef90e5c48dec7ac7666f4006ab2391597d756af6e94"},
+    {"path": "pseudocode/0004_refresh_usage_response_build_sys_shared.c", "size": 6082, "sha256": "1a0743b0f7b4f04512039e26fee2d535d47d67ff073d72f2e4289b0761df582e"},
+    {"path": "pseudocode/0005_usage_data_fields_flatten_sys_shared.c", "size": 5052, "sha256": "9814588d8c9be43c0bc4b59734ed24a86442467b00aa387e12ec17f98e61013b"},
+    {"path": "pseudocode/0006_option_clone_if_present_helper_sys_shared.c", "size": 825, "sha256": "c9f2c32ef9f4429703a74ab36bb4b6e1afa2adae804ae4c66255a777b0331b46"},
+    {"path": "pseudocode/0007_poll_result_variant_predicate_sys_shared.c", "size": 1531, "sha256": "3175fceafd4d54ecd77d49ba4f0108213aee04b72943290b7a8256426df84a46"},
+    {"path": "call-trees/refresh_single_account_usage.jsonl", "size": 11656, "sha256": "2a46d0fb2b12b61db9e011887ebbb61ea3c5310c2bd2a0db8f082c62e970a78a"},
+    {"path": "interface/refresh_single_account_usage.md", "size": 6919, "sha256": "6465ec86c6cb1bfe4efbfe648ba7c3c1bbe433af368c3cd6ace3eaa8daa13926"},
+    {"path": "evidence.md", "size": 10632, "sha256": "13cc516a50c99370c32226ed8c8d2c6c4764698521848061b5999cc41549beaf"}
+  ],
+  "method": "反编译器 MCP (win) find_regex_string_pool_hit+xrefs_to owner resolution (this session's own prior STAGE1 owner-map angle-A pass, intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl line 75) followed by this round's live decompile()/analyze_function() deep recovery against the live 1.1.8 win IDB (<证据库> 1.1.8 win64.exe.i64, PE32+ x86_64, fully symbol-stripped, 分析工具就绪门
+  "idempotency_check": "find raw/aimami/1.1.8/windows-x64/*/refresh_single_account_usage/ prior to this write returned empty; grep for the command name on root INDEX.jsonl prior to this write = 0 hits -- no prior full leaf existed for this command/version/platform.",
+  "cross_version_note": "confirmed NEW in 1.1.8 vs both 1.0.9 and 1.1.1 (cmd-added.win.txt/cmd-added.mac.txt; no raw/aimami/1.1.1/windows-x64/*/refresh_single_account_usage/ directory; 0 records in the 1.1.1 windows frontend ipc-contracts.jsonl). Distinct sibling of the pre-existing 1.0.9 zero-argument refresh_usage_snapshot command (raw/aimami/1.0.9/windows/system/refresh_usage_snapshot/, owner sub_1408CDB20, accepted_unknown ceiling from async-coroutine ICF-fold complexity) -- both command-name string literals co-exist in this 1.1.8 owner's combined command-name string pool, confirming coexistence rather than rename/replacement."
+}

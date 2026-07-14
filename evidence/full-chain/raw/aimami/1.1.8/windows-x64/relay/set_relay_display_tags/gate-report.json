@@ -1,0 +1,89 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "relay",
+  "command": "set_relay_display_tags",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1403EA210",
+  "owner_symbol": null,
+  "source_binary": "raw/binary/AiMaMi 1.1.8 win64.exe",
+  "sha256_binary": "f25d8129528b25ac7f69524fa07c78f961da189a7a8f2c758c288ec96bc68f10",
+  "arch_noise_filter_applied": false,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 219301.649,
+    "反编译就绪": true,
+    "module": "AiMaMi 1.1.8 win64.exe",
+    "idb_path": "<证据库> 1.1.8 win64.exe.i64"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (0x1403EA210, 1518B, FULL decompile 0 truncation) + 2 dedicated callees fully decompiled: core_dispatch_sys (0x140023C50, 475B, FULL), write_and_sync_sys (0x14026B0A0, 716B, FULL — analyze_function() truncation notes on owner (194 lines) and write_and_sync (106 lines) were both resolved via direct decompile() calls returning complete bodies). 3 pseudocode files, 0 real bail on any."
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 6,
+      "edge_count": 25,
+      "terminated_reasons_hit": [
+        "response_serialize",
+        "error_return",
+        "external_call",
+        "persistence_commit"
+      ],
+      "note": "depth>=5-OR-terminated_reason redline satisfied via full-depth traversal: owner[0]->core_dispatch[1]->write_and_sync[2]->persist_dispatch(sub_14027a5f0)[3]->config_persist(sub_14058b830)[4]->atomic_write(sub_1405bdec0)[5]->GetCurrentProcessId/MoveFileExW/CloseHandle[6, terminated_reason=persistence_commit]. Additional independently-terminated branches: owner early-return param-extract-error paths -> invoke_resolver_respond_sys (response_serialize, depth 1); core_dispatch Display-format-failure panic (error_return, depth 2); write_and_sync/persist_dispatch lock-poison panic 'relay state poisoned' (error_return, depth 3-4); persist_dispatch fallback lock contention -> WakeByAddressSingle (external_call, depth 4). Depth=6 and 4 distinct terminated_reason categories both independently satisfy the redline."
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "closed",
+      "closed": [
+        "request DTO (manager required 7B key + global/woyao optional 6B/5B keys) confirmed via direct decompile of owner body, byte-identical key lengths and required/optional split vs 1.1.1 baseline",
+        "response construction (0x1A8-byte Ok-result copy, tagged Err-value construction) confirmed via direct decompile of owner + core_dispatch + write_and_sync",
+        "core persist-chain logic confirmed via full decompile through 6 layers: clone global/woyao Option<String> -> shared lock-acquire+config-validate(~9 fields UTF8-checked)+JSON-serialize(2-space-indent formatter)+atomic file write(GetCurrentProcessId+MoveFileExW+CloseHandle) -> matches 1.1.1 baseline's documented full-config-rewrite + atomic_write pattern",
+        "error paths enumerated: 3x param-extract failure (response_serialize), lock poison panic at 2 distinct call sites sharing the same 'relay state poisoned' literal (error_return), Display-format failure (error_return), terminal persist failure after both fast-path and fallback/retry fail (error_return), WIN fs write/rename failure via GetLastError (error_return)",
+        "side effects fully enumerated: relay-state lock acquire (CAS + blocking park + wake), 9-field config UTF8 validation, full relay-config JSON serialize, atomic disk write (temp-file + MoveFileExW rename-commit pattern), 2x Option<String> clone+dealloc — zero network calls observed anywhere in the traced call tree"
+      ],
+      "open": [
+        "exact byte layout of the 344B (0x158) cloned global/woyao option-pair struct not re-mapped via type_query/declare_type against this specific 1.1.8 build",
+        "precise Rust-level semantics of the write_and_sync entry-gate flag (sourced from sub_14027be60) that gates the sub_140273f40 fallback/retry path not independently traced past its lock-CAS+poison-check shape",
+        "whether MoveFileExW in the atomic-write leaf is a genuine 1.1.1->1.1.8 addition or an under-documented pre-existing callee — not resolved without re-querying the 1.1.1 IDB this round",
+        "exact top-level JSON response key/shape actually consumed by the frontend not independently re-traced through relay-page CCF this round"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "windows-x64 gate is independent of macos-arm64 gate per pipeline convention; macos-arm64 set_relay_display_tags for 1.1.8 not independently re-checked this leaf per platformPolicy.doNotInferWindowsFromMacOS=true"
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "command confirmed NEW vs 1.0.9 baseline (does not exist at all — internal-reverse/REVERSE-STATUS.md lines 298+3037). Confirmed via migration-source cross-check against the 1.1.1 baseline (raw/aimami/1.1.1/windows-x64/set_relay_display_tags/, gate=consumerStartReady, reached readyToImplement per dim6-final rollup): zero request/response-contract delta 1.1.1->1.1.8 (same argKeys, same key-lengths, IDENTICAL owner byte size 1518B in both builds — VA churned 0x14001F080->0x1403ea210 only). Genuine mid-chain architectural delta identified: 1.1.1's write_and_sync_sys carried lock+snapshot+persist INLINE (~1318B) vs 1.1.8's equivalent (716B) delegating to shared multi-caller relay-persist infrastructure (sub_14027a5f0/sub_14058b830/sub_1405bdec0, 6-27 callers each) — plausibly introduced to support the batch of NEW 1.1.8 relay commands sharing the same config surface. Core-dispatch layer grew modestly (~408B->475B, added/more-prominent Display-trait error-formatting safety net)."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf. Owner's and write_and_sync's apparent analyze_function() truncation notes (194 and 106 lines respectively) were cross-verified and RESOLVED via direct decompile() calls that returned complete bodies (0 real truncation) — documented explicitly in the pseudocode files and evidence.md, not papered over. The 5 shared-infrastructure nodes (sub_14027a5f0/sub_14058b830/sub_1405bdec0/sub_14027be60/sub_140273f40) were deliberately left un-renamed after xrefs_to confirmed 6-28 callers each (genuinely shared, outside this leaf's dedicated-owner scope) — all open items against them are recorded as plain Unknown with recovery_attempts in evidence.md, not accepted_unknown claims. All 3 renamed functions were caller-count-verified via xrefs_to (1 caller each) before renaming, confirming they are genuinely command-dedicated and not shared infrastructure misattributed to this command."
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_readyToImplement": [
+    "re-map the 344B cloned option-pair struct's byte layout via type_query/declare_type against this specific 1.1.8 build",
+    "resolve the precise Rust-level semantics of the write_and_sync entry-gate flag (sub_14027be60-sourced) that gates the fallback/retry path",
+    "confirm whether MoveFileExW in the atomic-write leaf is a genuine 1.1.1->1.1.8 addition (requires re-querying the 1.1.1 IDB)",
+    "confirm the exact top-level JSON response key consumed by the frontend via relay-page CCF re-trace",
+    "same-platform (macos-arm64) cross-check for this specific command in this specific 1.1.8 build",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write — idempotency check via find (raw/aimami/1.1.8/windows-x64/*/set_relay_display_tags/) returned empty prior to this write; owner-map-118.jsonl line 106 (set_relay_display_tags, owner_va=0x1403ea210, present=true) had not previously been reduced into a full leaf bundle this session; no INDEX.jsonl key collision for aimami/1.1.8/windows-x64/relay/set_relay_display_tags this session (grep prior to this write hit only pre-existing 1.1.1 entries at lines 1489/1578/1579)",
+  "produced_at": "2026-07-13T16:20:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

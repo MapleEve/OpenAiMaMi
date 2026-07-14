@@ -1,0 +1,89 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "maintenance",
+  "command": "clean",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x100536300",
+  "owner_symbol": "codexmate_lib::core::repository::Repository::clean::h2c36c5eabc800af5",
+  "command_wrapper_va": "0x1006d0730",
+  "command_wrapper_symbol": "codexmate_lib::commands::system::clean::h2637f6beaf6fe510",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "arch_noise_filter_applied": true,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 208641.682,
+    "反编译就绪": true,
+    "module": "AiMaMi",
+    "idb_path_contains": "AiMaMi 1.1.8 universal.app"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (Repository::clean, 22.7KB) + command wrapper (commands::system::clean) both fully decompiled, no bail; 9 additional business-logic callees fully decompiled (load_registry, registry-item retain closure, registry_item_has_managed_virtual_snapshot, persist_registry, ensure_directories, quota_store::load, quota_store::save, quota-entry retain, CoreEnvelope::ok) — 10 pseudocode files, 88410 bytes total"
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 4,
+      "terminated_reasons_hit": [
+        "persistence_commit",
+        "persistence_read",
+        "external_call",
+        "response_serialize",
+        "error_return"
+      ]
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO (argKeys=[])",
+        "response payload shape (filesRemoved/registryEntriesRemoved, inferred field names from 1.0.9 baseline continuity)",
+        "poisoned-mutex error path with exact literal message",
+        "load_registry / persist_registry / quota_store::save error discriminants",
+        "file-deletion side effect (sessions + intermediate dirs)",
+        "registry.json + quota-store persistence side effects incl. conditional backup rotation",
+        "9-directory ensure_directories mkdir chain",
+        "registry-item retention predicate incl. managed-virtual-snapshot auth-file read fallback"
+      ],
+      "open": [
+        "exact serde field-name string bytes (not re-extracted via type_query/get_string this round, inferred from 1.0.9 doc continuity)",
+        "literal 36-byte fast-path pattern string in registry_item_has_managed_virtual_snapshot (not extracted via get_string/get_bytes)",
+        "7-day TTL constant not re-extracted via get_int/disasm this round (matches 1.0.9 documented behavior structurally)"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "mac gate is independent of windows-x64 gate per pipeline convention; windows-x64 owner_va 0x1403cf5b0 already recorded in intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl (inline match-arm dispatch, no dedicated wrapper) but not decompiled this leaf"
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "same command, same argKeys=[] both versions (cmd-same.mac.txt); mac-shard-1 (intermediate/aimami/1.1.8/macos-arm64/version-delta/buckets/mac-shard-1.json) already classified clean as same= at direct-callee level; this leaf's depth-4 pass surfaces 2 additional control-flow details (managed-virtual-snapshot auth-file read fallback, ensure_directories 9-dir mkdir chain + conditional backup rotation) not documented in the 1.0.9 leaf.md's shallower call-tree section — reported as new-evidence-this-round per evidence.md Delta section, not asserted as a version-introduced behavior since no 1.0.9 raw pseudocode exists at this depth to diff against"
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf; all Unknown items in evidence.md are plain absence-of-extraction records (string literals not pulled via get_string/get_bytes, TTL constant not re-extracted via get_int), not decompile-failure ceilings — no async/vtable/ICF ceiling encountered in this leaf's call tree"
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_strictImplementationUse": [
+    "extract literal string bytes (36-byte fast-path pattern, serde field-name strings) via get_string/get_bytes to fully close dim3",
+    "re-confirm the 604800s TTL constant via get_int/disasm against the 1.1.8 duration_since comparison site",
+    "windows-x64 equivalent full decompile (owner_va 0x1403cf5b0) for same-platform cross-check",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write — idempotency check via find (raw/aimami/1.1.8/macos-arm64/*/clean/) returned empty prior to this write; owner-map-118.jsonl line 8 (clean) not previously reduced into a leaf bundle this session; no INDEX.jsonl key collision for aimami/1.1.8/macos-arm64/maintenance/clean this session",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

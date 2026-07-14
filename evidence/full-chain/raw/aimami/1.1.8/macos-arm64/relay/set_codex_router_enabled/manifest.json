@@ -1,0 +1,106 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "set_codex_router_enabled",
+  "session": "<审计会话>",
+  "produced_by": "<本地机器>",
+  "model": "<模型>",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "owner_va": "0x1005c4030",
+  "owner_symbol": "codexmate_lib::core::relay::manager::RelayManager::set_codex_router_enabled::hc374473223f0c370",
+  "arch_noise_filter_applied": true,
+  "gate_tier": "strictImplementationUse_candidate",
+  "files": [
+    {
+      "path": "pseudocode/0001_set_codex_router_enabled_owner.c",
+      "size": 68347,
+      "sha256": "f8dbba7507a7bbc246a6a845f11e39df09ee66acfdc4a5ea00af07f822fb5c17"
+    },
+    {
+      "path": "pseudocode/0002_persist.c",
+      "size": 3356,
+      "sha256": "5c1fa8940ee4e82f676b8a0b90b8f93a8614fec590b177d1f55b2268b635e4c8"
+    },
+    {
+      "path": "pseudocode/0003_stop_codex_for_file_edit.c",
+      "size": 2155,
+      "sha256": "d1bd37420781e9d299b11104b8e7ec0c6556bb292ee2a0617c76c82b45bf900a"
+    },
+    {
+      "path": "pseudocode/0004_rollback_router_enabled.c",
+      "size": 28760,
+      "sha256": "d31346d0020c1d5068bea6c2b800b71d54d7cb7864c9a83014b6894c18ccb990"
+    },
+    {
+      "path": "pseudocode/0005_ensure_proxy_started.c",
+      "size": 19537,
+      "sha256": "185ed2b3c552698ce080e30ba2e3192c947642a7d7c00f0a9bfae104e0bc69df"
+    },
+    {
+      "path": "pseudocode/0006_sync_codex_config_with_outcome.c",
+      "size": 15014,
+      "sha256": "8e17dea3e9aae001e4ad41d8a74a5619a013aec3bfb87697b3517eb433956216"
+    },
+    {
+      "path": "pseudocode/0007_install_virtual_unlock_auth.c",
+      "size": 17416,
+      "sha256": "91f958bc5d354fc2caaa2d84a48b2013a0d3c7a8c42109f3d243b71e2930e32f"
+    },
+    {
+      "path": "pseudocode/0008_codexpaths_ensure_directories.c",
+      "size": 2665,
+      "sha256": "15ad5e1dc79de0def2e4add2e5336f57a80a79bdac880f13dfc2243c1fe81f9a"
+    },
+    {
+      "path": "pseudocode/0009_router_unlock_auth_cleanup.c",
+      "size": 18944,
+      "sha256": "d37c37d38b51d3f7fafc19d68c7ce3984b99130e0e32d625b8e3a11016313402"
+    },
+    {
+      "path": "pseudocode/0010_legacy_virtual_auth_cleanup.c",
+      "size": 18029,
+      "sha256": "f535d027f0c7e141122d15b749ecde5245c16826c261eb56a1db27d790d60be9"
+    },
+    {
+      "path": "pseudocode/0011_valid_codex_active_ids.c",
+      "size": 3074,
+      "sha256": "d92878f4ca5df3e8e2ed76efbbfb60bc258146bf6287a8726849390c4b07a535"
+    },
+    {
+      "path": "pseudocode/0012_config_needs_syntax_fix.c",
+      "size": 2078,
+      "sha256": "49103a340bb8990574a01e5b4302e2ba6ec4d7c54bd1736c06e468772396d4b4"
+    },
+    {
+      "path": "pseudocode/0013_config_takeover_inspect.c",
+      "size": 3085,
+      "sha256": "74a8ef678243713743f4f447b488b4eb9071088ed13be7a0f4695f42f812e4b5"
+    },
+    {
+      "path": "pseudocode/0014_inspect_router_thread_visibility.c",
+      "size": 17845,
+      "sha256": "c294ebdc7212b527a8ac3f5dc107266326423502d675a255be21eba8752d49bf"
+    },
+    {
+      "path": "call-trees/set_codex_router_enabled.jsonl",
+      "size": 29691,
+      "sha256": "3a0eb2cef83c6e95e42ec124b831f5ef03ce6198595d929b69000d36e616cb16"
+    },
+    {
+      "path": "interface/set_codex_router_enabled.md",
+      "size": 9248,
+      "sha256": "a01ac6630944959098f25c2c491926348d0d90a58d52a5e13cbdd947220f3b1a"
+    },
+    {
+      "path": "evidence.md",
+      "size": 22494,
+      "sha256": "967883a7c1f26e38d877c8dd7d64ba7ada2c3ed7211049ec1e5faddb8cccb81b"
+    }
+  ],
+  "method": "反编译器 MCP (mac) decompile/xrefs_to/lookup_funcs/basic_blocks against live 1.1.8 mac IDB (x86_64 slice of universal Mach-O, arch-noise-filtered per REVERSE-STATUS.md precedent); owner resolved via intermediate/aimami/1.1.8/macos-arm64/version-delta/owner-map-118.jsonl line 101 (angle A); 14 functions independently decompiled this round (owner + 13 callees: RelayManager::persist, stop_codex_for_file_edit, RelayManager::rollback_router_enabled, RelayManager::ensure_proxy_started, RelayManager::sync_codex_config_with_outcome, router_unlock_auth::install_virtual_unlock_auth, CodexPaths::ensure_directories, router_unlock_auth::cleanup, legacy_virtual_auth::cleanup, valid_codex_active_ids, config_needs_syntax_fix, config_takeover::inspect, inspect_router_thread_visibility); 2 functions reused without re-derivation from sibling leaf raw/aimami/1.1.8/macos-arm64/relay/get_codex_router_auth_readiness/ this same session (RelayManager::snapshot VA 0x1005cdf60, router_unlock_auth::has_usable_real_oauth_login VA 0x10068ea70, plus its own already-decompiled subtree load_auth_file/token_remaining_seconds/read_to_string/base64::decode); frontend contract cross-checked against raw/aimami/1.1.8/macos-arm64/frontend/ipc-contracts.jsonl (line 118) and frontend-control-flow.jsonl (lines 146, 165); 1.0.9 baseline comparison performed against the existing full 1.0.9 macOS raw leaf at raw/aimami/1.0.9/macos/relay/set_codex_router_enabled/ (this command is NOT new in 1.1.8 — pre-existing since 1.0.9, confirmed via raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/frontend/api-map.json:799 and the 1.0.9 macOS AI.md handoff), yielding 6 documented deltas (4 confirmed, 2 inferred/unresolved) recorded in evidence.md.",
+  "idempotency_check": "find raw/aimami/1.1.8/macos-arm64/*/set_codex_router_enabled/ prior to this write returned empty; grep for the command name on REVERSE-STATUS.md prior to this write returned only the in-progress claim header for this session's own cluster (no prior full leaf or competing claim); owner-map-118.jsonl line 101 (angle A, discovery-only) not previously reduced into a full leaf bundle this session; a pre-existing 1.0.9 leaf for the same command exists at raw/aimami/1.0.9/macos/relay/set_codex_router_enabled/ but that is a different product version and does not satisfy this round's 1.1.8-specific idempotency check (per the Diff/迁移规约, a same-behavior migration would only be valid if this round's 1.1.8 decompile showed zero delta vs 1.0.9 — it does not, per evidence.md's 6 documented deltas, so a fresh 1.1.8 raw work unit was correctly created rather than migrated)."
+}

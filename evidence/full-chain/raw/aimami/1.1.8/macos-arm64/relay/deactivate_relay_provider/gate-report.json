@@ -1,0 +1,173 @@
+{
+  "schema": "c5cm.raw.gate_report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "target": "deactivate_relay_provider",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "produced_at": "2026-07-13",
+  "role": "producer",
+  "gate": "owner_first_no_collision",
+  "kind": "deep_gold_leaf_full_chain",
+  "owner_va": "0x1004c6a10",
+  "owner_symbol": "codexmate_lib::commands::relay::deactivate_relay_provider::hef1f4eefb843a5ec",
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 228152.161,
+    "反编译就绪": true,
+    "module": "AiMaMi",
+    "idb_path": "<证据库>/raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi.i64"
+  },
+  "call_tree": {
+    "total_nodes": 38,
+    "max_depth_reached": 4,
+    "terminated_branches": 27,
+    "already_leafed_shared_callees": 6,
+    "deferred_oversized_or_unexpanded": 2
+  },
+  "functions_fully_decompiled_0_truncation": [
+    {
+      "symbol": "deactivate_relay_provider",
+      "va": "0x1004c6a10",
+      "bytes": 4575
+    },
+    {
+      "symbol": "RelayManager::deactivate",
+      "va": "0x1005c0250",
+      "bytes": 5330
+    },
+    {
+      "symbol": "Vec<T,A>::retain",
+      "va": "0x1006f3140",
+      "bytes": 2584
+    },
+    {
+      "symbol": "RelayManager::persist",
+      "va": "0x1005cccf0",
+      "bytes": 4927
+    },
+    {
+      "symbol": "RelayManager::sync_codex_config_with_outcome",
+      "va": "0x1005c8130",
+      "bytes": 18038
+    },
+    {
+      "symbol": "codex_catalog::write_catalog",
+      "va": "0x100682170",
+      "bytes": 5978
+    },
+    {
+      "symbol": "codex_catalog::remove_catalog",
+      "va": "0x100682470",
+      "bytes": 2350
+    },
+    {
+      "symbol": "codex_writer::apply_codex_state",
+      "va": "0x10067a290",
+      "bytes": 11425
+    },
+    {
+      "symbol": "router_unlock_auth::live_auth_state",
+      "va": "0x100689c00",
+      "bytes": 4606
+    },
+    {
+      "symbol": "valid_codex_active_ids",
+      "va": "0x1005cf100",
+      "bytes": 4134
+    },
+    {
+      "symbol": "RelayManager::compose_proxy_status",
+      "va": "0x1005c1380",
+      "bytes": 6252
+    }
+  ],
+  "deferred_functions": [
+    {
+      "symbol": "codex_writer::compose_from_original",
+      "va": "0x10067a850",
+      "reason": "oversized_body_90854_chars",
+      "recovery_attempts": "full decompile succeeded 0-truncation; refs list inspected and used for behavior inference; basic_blocks-chunked line read not performed this pass",
+      "accepted_unknown": false,
+      "genuine_ceiling": false
+    },
+    {
+      "symbol": "codex_catalog::build_catalog_bytes",
+      "va": "0x100682890",
+      "reason": "not_attempted_this_pass",
+      "recovery_attempts": "refs-list sighting only",
+      "accepted_unknown": false,
+      "genuine_ceiling": false
+    }
+  ],
+  "shared_callees_cross_referenced": [
+    {
+      "symbol": "storage::save",
+      "va": "0x1004b2680",
+      "leafed_at": "raw/aimami/1.1.8/macos-arm64/relay/load_relay_state/pseudocode/0004_storage_save_h4619a271_FULL.c"
+    },
+    {
+      "symbol": "atomic_write::write_atomic",
+      "va": "0x10039e600",
+      "leafed_at": "raw/aimami/1.1.8/macos-arm64/relay/load_relay_state/pseudocode/0005_atomic_write_h7c1a4e98_FULL.c"
+    },
+    {
+      "symbol": "storage::sanitize_for_export",
+      "va": "0x1004b14b0",
+      "leafed_at": "raw/aimami/1.1.8/macos-arm64/relay/load_relay_state/pseudocode/0003_sanitize_for_export_heb20e442_FULL.c"
+    },
+    {
+      "symbol": "RelayManager::snapshot",
+      "va": "0x1005cdf60",
+      "leafed_at": "raw/aimami/1.1.8/macos-arm64/relay/load_relay_state/call-trees/load_relay_state.jsonl (node depth1)"
+    },
+    {
+      "symbol": "RelayState::clone",
+      "va": "0x10061f260",
+      "leafed_at": "raw/aimami/1.1.8/macos-arm64/relay/load_relay_state/call-trees/load_relay_state.jsonl (node depth2)"
+    },
+    {
+      "symbol": "CoreEnvelope<T>::ok",
+      "va": "0x1004ba8f0",
+      "leafed_at": "raw/aimami/1.1.8/macos-arm64/relay/load_relay_state/call-trees/load_relay_state.jsonl (node depth1)"
+    }
+  ],
+  "error_strings_recovered": [
+    {
+      "va": "0x1012cbcd4",
+      "bytes": 107,
+      "code": 9,
+      "text": "当前 Codex 智能路由已开启，禁止操作中转模型，如需操作请关闭 Codex 智能路由。"
+    },
+    {
+      "va": "0x1012cb477",
+      "bytes": 123,
+      "code": 9,
+      "text": "无法停用最后一个 Codex 中转模型：请先关闭 Codex 智能路由，或先启用另一个 Codex 中转模型。"
+    }
+  ],
+  "frontend_cross_check": {
+    "path": "raw/aimami/1.1.8/macos-arm64/frontend/ipc-contracts.jsonl",
+    "line": 109,
+    "argKeys": [
+      "providerId",
+      "ide"
+    ],
+    "consistent_with_backend": "providerId confirmed (Inferred) as the retain-predicate compare key; ide left Unknown (no backend consumption site found)"
+  },
+  "accepted_unknown_claimed": false,
+  "genuine_ceiling_claimed": false,
+  "fake_wall_check": "passed - no drop_in_place-only stubs used to inflate depth, no oversized-body bail without recovery_attempts documented",
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "inline_writeback": {
+    "append_comments_done": true,
+    "保存分析库_done": true
+  },
+  "not_gate_promotion": true,
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

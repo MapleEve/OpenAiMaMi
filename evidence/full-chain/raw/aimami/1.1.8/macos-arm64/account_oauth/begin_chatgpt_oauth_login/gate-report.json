@@ -1,0 +1,80 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "account_oauth",
+  "command": "begin_chatgpt_oauth_login",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1000a2e40",
+  "owner_symbol": "codexmate_lib::commands::account_oauth::begin_chatgpt_oauth_login::{{closure}}::h20c37487e18fb179",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "arch_noise_filter_applied": true,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 207577.386,
+    "反编译就绪": true,
+    "module": "AiMaMi",
+    "idb_path_contains": "AiMaMi 1.1.8 universal.app"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner closure decompiled (partial transcription, 307 basic_blocks / 75954 chars total, real tool call, truncation documented in pseudocode/0001); 4 direct business-logic callees fully decompiled with no bail (generate_pkce, build_authorize_url, TcpListener::bind_addr, mio::TcpListener::bind)"
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 4,
+      "terminated_reasons_hit": [
+        "external_call",
+        "error_return",
+        "response_serialize"
+      ]
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO (argKeys=[])",
+        "authorize-URL query contract (10 params)",
+        "local callback listener bind",
+        "mutex-guarded singleton + oneshot completion",
+        "defensive error paths in build_authorize_url"
+      ],
+      "open": [
+        "exact response DTO field/type name",
+        "token-exchange POST call site (presumed in accept-handler, not reached by this owner's direct callee walk)",
+        "downstream token persistence"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "mac gate is independent of windows-x64 gate per pipeline convention; windows-x64 equivalent not attempted this leaf"
+    },
+    "dim5_version_delta": {
+      "status": "n/a_new_command",
+      "note": "no 1.0.9 baseline exists for this command (confirmed via filesystem search + cmd-added.mac.txt) — this is a gap_needs_new_raw target, not a regression diff; see evidence.md Delta section"
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf; open items in dim3 are out-of-owner-scope (separate downstream functions not reached by this owner's direct call tree), not decompile-failure ceilings"
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_strictImplementationUse": [
+    "decompile the local-listener accept-handler / token-exchange POST call site",
+    "confirm exact response DTO type via type_query/declare_type",
+    "trace downstream token persistence (auth.json write path)"
+  ],
+  "owner_gate": "ALLOW/first-write — no prior raw/aimami/1.1.8/macos-arm64/*/begin_chatgpt_oauth_login leaf existed (idempotency check via find, empty result); no INDEX.jsonl key collision for this command this session",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

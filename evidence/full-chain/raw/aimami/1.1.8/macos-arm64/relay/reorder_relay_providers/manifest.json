@@ -1,0 +1,42 @@
+{
+  "schema": "c5cm.raw.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "reorder_relay_providers",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1004c6850",
+  "owner_symbol": "codexmate_lib::commands::relay::reorder_relay_providers::ha6f71902b24532dd",
+  "batch_rank": "19/29",
+  "files": [
+    "pseudocode/0001_reorder_relay_providers_owner_ha6f71902b24532dd.c",
+    "pseudocode/0002_relay_manager_snapshot_h0d4cb54a50479cd3.c",
+    "pseudocode/0003_relay_manager_persist_he97af7bc6e4923b9.c",
+    "pseudocode/0004_relay_manager_sync_codex_config_with_outcome_h7744b56677bf50f9.c",
+    "pseudocode/0005_relay_storage_sanitize_for_export_heb20e442c9650b92.c",
+    "pseudocode/0006_relay_manager_compose_proxy_status_h3638a0ee22531e27.c",
+    "pseudocode/0007_relay_storage_save_h4619a27159e38d20.c",
+    "pseudocode/0008_relay_atomic_write_write_atomic_h7c1a4e98b44038af.c",
+    "call-trees/reorder_relay_providers.jsonl",
+    "interface/reorder_relay_providers.md",
+    "evidence.md",
+    "manifest.json",
+    "gate-report.json"
+  ],
+  "call_tree_edges": 24,
+  "call_tree_max_depth": 6,
+  "terminated_reasons_present": ["persistence_commit", "response_serialize", "error_return", "external_call"],
+  "delta_vs_1_0_9": "command absent in 1.0.9; new in 1.1.1; structural shape (owner+core_impl) unchanged 1.1.1->1.1.8, VA/hash churn only (no byte-level diff performed this round)",
+  "genuine_ceiling": false,
+  "accepted_unknown": false,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 215937.108,
+    "反编译就绪": true,
+    "module": "AiMaMi",
+    "idb_path": "<证据库>/raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi.i64"
+  }
+}

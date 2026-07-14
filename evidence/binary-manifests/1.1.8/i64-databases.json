@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "project": "OpenAiMami",
+  "release": "1.1.8",
+  "license": "Apache-2.0",
+  "stack": "Tauri 2 + React + Rust",
+  "policy": {
+    "content_imported": true,
+    "publication_shape": "Only the standalone Git LFS archive in OpenAiMami IDB contains the macOS and Windows .i64 reference databases.",
+    "notes": "This source repository keeps only sanitized metadata for the 1.1.8 reference databases. It does not publish private evidence, raw reverse rows, binaries, machine-local paths, database sidecars, or generated analysis text."
+  },
+  "binaries": [
+    { "platform": "macos-arm64", "version": "1.1.8", "sha256": "63c9655f7e7f0d725e55c83b5057023cb8e8351d577f47a9ad683137d6c89470" },
+    { "platform": "windows-x64", "version": "1.1.8", "sha256": "f25d8129528b25ac7f69524fa07c78f961da189a7a8f2c758c288ec96bc68f10" }
+  ],
+  "delta_summary": {
+    "baseline": "1.0.9",
+    "target": "1.1.8",
+    "frontend_command_universe": 131,
+    "macos": { "delta_commands": 29, "same": 60, "orphan": 42, "readyToImplement": 29 },
+    "windows": { "delta_commands": 20, "same": 68, "orphan": 43, "readyToImplement": 20 },
+    "removed": 11,
+    "published_scope": "delta + backend-only + behavioral leaves; same-set and exhaustive-tail kept internal (matches 1.1.1 publication shape)"
+  }
+}

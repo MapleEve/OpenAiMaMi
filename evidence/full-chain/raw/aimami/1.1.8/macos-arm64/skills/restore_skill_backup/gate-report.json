@@ -1,0 +1,128 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "command": "restore_skill_backup",
+  "module": "core::skills",
+  "gate_tier": "readyToImplement",
+  "genuine_ceiling": false,
+  "accepted_unknown": false,
+  "owner_absent_confirmed": false,
+  "call_tree": {
+    "nodes_fully_decompiled": 5,
+    "total_edges": 33,
+    "max_depth_reached": 5,
+    "depth5_branches": [
+      "core_impl -> backup_skill_directory -> copy_dir_all -> copy_dir_all(recursion) -> std::sys::fs::copy",
+      "core_impl -> copy_dir_all -> copy_dir_all(recursion) -> copy_dir_all(recursion) -> std::sys::fs::copy"
+    ],
+    "terminated_reason_branches": [
+      {
+        "terminated_reason": "persistence_commit",
+        "count": 6
+      },
+      {
+        "terminated_reason": "persistence_read",
+        "count": 4
+      },
+      {
+        "terminated_reason": "response_serialize",
+        "count": 8
+      },
+      {
+        "terminated_reason": "error_return",
+        "count": 6
+      },
+      {
+        "terminated_reason": "external_call",
+        "count": 2
+      }
+    ],
+    "redline13_satisfied": true,
+    "redline13_basis": "depth>=5 reached organically on 2 independent branches via copy_dir_all self-recursion; additionally >=1 terminated_reason branch present at every intermediate depth"
+  },
+  "interface": {
+    "argKeys_confirmed": [
+      "id"
+    ],
+    "argKeys_source": "raw/aimami/1.1.8/macos-arm64/frontend/ipc-contracts.jsonl line 80",
+    "response_fields_confirmed": [
+      "backupID",
+      "skillID",
+      "name",
+      "title",
+      "relativePath",
+      "createdAt"
+    ],
+    "response_fields_inferred": [
+      "restoredSkill",
+      "backup",
+      "rollbackBackup"
+    ],
+    "response_fields_unknown": [
+      "deletedBackupID",
+      "remainingBackupCount"
+    ]
+  },
+  "delta_vs_1_0_9": {
+    "baseline_bundle": "raw/aimami/1.0.9/macos/skills/restore_skill_backup/",
+    "baseline_status": "accepted_full_leaf_100 / readyToImplement",
+    "delta_confirmed": true,
+    "delta_id": "DELTA-MKDIRP",
+    "delta_description": "mkdir -p on parent(skills_root.join(skillID)) inserted before the rollback-backup/remove_dir_all/copy_dir_all sequence; new callees Path::parent@0x1010a97e0 and DirBuilder::_create@0x10109a6b0 not present in 1.0.9's documented terminal-callee set (README.md line 9)",
+    "cross_session_corroboration": "intermediate/aimami/1.1.8/macos-arm64/version-delta/buckets/mac-shard-6.json (same session, earlier shallow shared-commands scan pass, angle-A only)"
+  },
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "accepted_unknown_claimed": false,
+    "drop_in_place_only_stub_used": false,
+    "oversized_body_truncation_encountered": false,
+    "all_nodes_decompiled_full": true
+  },
+  "renames": {
+    "count": 0,
+    "reason": "mac IDB already carries clean demangled Rust symbols for all 5 traced functions"
+  },
+  "comments_appended": {
+    "count": 1,
+    "addr": "0x1004bfbb0",
+    "text_summary": "owner evidence comment per SOP, not gate promotion"
+  },
+  "recovery_attempts_for_unknowns": [
+    {
+      "unknown": "restoredSkill/backup/rollbackBackup exact outer JSON key names",
+      "attempts": [
+        "cross-checked against 1.1.1 windows-x64 INDEX.jsonl new_response_fields entry",
+        "reviewed struct-composition (3 sub-parts) for shape match"
+      ],
+      "resolved": false
+    },
+    {
+      "unknown": "restore-rollback tag literal downstream usage",
+      "attempts": [
+        "grepped frontend ipc-contracts.jsonl and frontend-control-flow.jsonl for the literal",
+        "grepped core function's own response-building code for a second embedding"
+      ],
+      "resolved": false
+    },
+    {
+      "unknown": "windows-x64 1.1.8 DELTA-MKDIRP parity",
+      "attempts": [
+        "none run this round, explicitly out of scope for this macos-arm64 sub-entry"
+      ],
+      "resolved": false
+    },
+    {
+      "unknown": "deletedBackupID/remainingBackupCount presence in this response",
+      "attempts": [
+        "reviewed full decompiled core-function body for any additional remove_dir_all/remove_file call beyond the single live-target removal"
+      ],
+      "resolved": false
+    }
+  ],
+  "保存分析库": "pending_at_end_of_this_subentry",
+  "scope_note": "closes command 21/29 of this round's macos-arm64 deep gold-leaf batch. windows-x64 DELTA-MKDIRP parity check and exact outer response key names remain open, listed as blockers for readyToImplement. Round status stays in-progress.",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

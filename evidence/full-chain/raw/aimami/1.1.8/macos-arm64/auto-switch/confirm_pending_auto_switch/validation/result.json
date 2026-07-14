@@ -1,0 +1,37 @@
+{
+  "schema": "c5cm.raw.validation.result.v1",
+  "leaf": "confirm_pending_auto_switch",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "checks": {
+    "ida_live_gate": {
+      "status": "ok",
+      "uptime_sec": 209662.94,
+      "反编译就绪": true,
+      "module": "AiMaMi",
+      "idb_path_contains_version": "AiMaMi 1.1.8 universal.app"
+    },
+    "owner_decompiled": true,
+    "callees_decompiled_count": 8,
+    "callees_decompiled": [
+      "load_pending_auto_switch (0x10052b920)",
+      "load_local_state_synced (0x10052b230)",
+      "ensure_fresh_token (0x1003cf360)",
+      "clear_auto_switch_snooze (0x10052b840)",
+      "switch_account (0x1005239c0)",
+      "write_atomic (0x10039e600)",
+      "make_snapshot_path (0x100521070)",
+      "load_auth_file (0x1006c5140)",
+      "api_proxy_config (0x100525eb0)"
+    ],
+    "call_tree_depth_reached": 3,
+    "call_tree_edge_count": 55,
+    "new_error_strings_confirmed_by_direct_string_literal": 3,
+    "baseline_1_0_9_read_for_comparison": true,
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false
+  },
+  "produced_at": "2026-07-13T00:00:00Z",
+  "session": "<审计会话>"
+}

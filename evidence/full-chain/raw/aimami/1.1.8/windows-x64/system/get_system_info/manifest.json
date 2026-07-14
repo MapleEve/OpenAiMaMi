@@ -1,0 +1,29 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "system",
+  "command": "get_system_info",
+  "session": "<审计会话>",
+  "produced_by": "<本地机器>",
+  "model": "<模型>",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 win64.exe",
+  "owner_va": null,
+  "owner_symbol": null,
+  "owner_status": "absent_confirmed",
+  "owner_absent_note": "windows-x64 1.1.8 build has zero trace of the get_system_info command-dispatch literal anywhere in the binary, confirmed via 5 independent methods (this session's own prior STAGE1 owner-map negative record + this round's live find_regex substring + func_query name_regex exact + func_query commands6system module-path substring + full-image find_bytes raw hex byte-pattern scan). macOS 1.1.8 owner exists (0x1006c9110, intermediate/aimami/1.1.8/macos-arm64/version-delta/owner-map-118.jsonl line 38). 1.1.1 windows baseline (out-of-scope migration-source citation) had a confirmed working dispatch chain. Positive-control sibling commands (load_sessions/get_device_id/restart_codex/run_daemon_once/switch_account/logout/get_notification_client_state) all resolved fine via the identical find_regex method this round, ruling out a tooling/methodology failure.",
+  "core_dispatcher_va_reference_only": "0x1403cf5b0",
+  "arch_noise_filter_applied": false,
+  "gate_tier": "owner_absent_confirmed",
+  "files": [
+    {"path": "pseudocode/0001_owner_absent.md", "size": 1560, "sha256": "6781f28e7f34e7764620103255de3cde04825f0c3ccced1b71df7d4bdd6a1219"},
+    {"path": "call-trees/get_system_info.jsonl", "size": 646, "sha256": "4220181b409f7c98a1560e0106a0966e831c1d5ba6094b66c468ed147f741799"},
+    {"path": "interface/get_system_info.md", "size": 3559, "sha256": "b64d580579aff9fec4517962623b8f3ee02b21915382b9c304163cded5ff0e04"},
+    {"path": "evidence.md", "size": 10257, "sha256": "d7824042da1c7fd5b97b027e33424fdab204e25116517a08a644272507b276eb"}
+  ],
+  "method": "反编译器 MCP (win) find_regex/func_query/find_bytes against live 1.1.8 win IDB (<证据库> 1.1.8 win64.exe.i64, PE32+ x86_64, fully symbol-stripped, 分析工具就绪门
+  "idempotency_check": "find raw/aimami/1.1.8/windows-x64/*/get_system_info/ prior to this write returned empty; grep for the key on INDEX.jsonl prior to this write returned 0 hits — no prior full leaf existed for this command/version/platform.",
+  "no_rename_no_set_comments_note": "no owner VA was found on windows-x64 1.1.8 for this command, so no IDB rename/set_comments inline write-back was performed (there is no sub_xxxx to annotate). 保存分析库 was still run at the end of this session's batch per SOP."
+}

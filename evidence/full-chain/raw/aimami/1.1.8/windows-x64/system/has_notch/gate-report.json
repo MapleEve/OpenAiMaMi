@@ -1,0 +1,99 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "system",
+  "command": "has_notch",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1403eca10",
+  "owner_symbol": "has_notch_owner_sys",
+  "core_dispatcher_va_reference_only": "0x1403cf5b0",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 win64.exe",
+  "arch_noise_filter_applied": false,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 213430.863,
+    "反编译就绪": true,
+    "module": "AiMaMi 1.1.8 win64.exe",
+    "idb_path_contains": "<证据库> 1.1.8 win64.exe.i64",
+    "comment_written": "A/B-level owner for has_notch (cmd 11/20 win deep gold-leaf); sha f25d8129528b25ac7f69524fa07c78f961da189a7a8f2c758c288ec96bc68f10; session <审计会话>; not gate promotion. Dispatcher-wired IPC endpoint (find_regex+xrefs_to=1 hit), caller=main_dispatcher sub_1403CF5B0. tracing::instrument macro wrapper (span enabled/disabled fork) around has_notch_async_body_sys@0x140848a50. argKeys=[] response=bool via Result niche (0x8000000000000000=Err sentinel)."
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner has_notch_owner_sys@0x1403eca10 fully decompiled, 863B/32BB/cc=9, no truncation. See pseudocode/0001_has_notch_owner_sys.c."
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 5,
+      "edge_count": 5,
+      "terminated_reasons_hit": [
+        "external_call"
+      ],
+      "note": "owner(1) -> has_notch_async_body_sys(2) -> tokio_coop_budget_check_sys(3, shared/49callers) -> blocking_channel_park_wait_sys(4, shared/19callers) -> WakeByAddressSingle Win32 API(5, external_call). Alternate span-disabled branch also traced to invoke_resolver_respond_sys(shared/48callers). See call-trees/has_notch.jsonl."
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO confirmed via frontend ipc-contracts.jsonl: argKeys=[] (zero-argument command)",
+        "response DTO confirmed as bool via Result<bool,Error> niche encoding (0x8000000000000000 Err sentinel; low64=0/high64=1 observed for one Ok(true) branch)",
+        "error paths closed: alloc-failure abort (sub_1412AD451 x2), Result::Err niche write, cooperative-scheduling budget-overflow BUG() panic (shared/generic), Display::fmt-error defensive guard (shared/generic)",
+        "side effects closed: heap alloc/dealloc (512B+16B per call, freed same call), atomic refcount/budget counters, WakeByAddressSingle OS thread-wake (non-fast-path branch only); no FS/HTTP/registry/sidecar observed in any of the 5 traced nodes"
+      ],
+      "open": [
+        "exact producer-side closure that computes/delivers the boolean payload into the channel was not located (dispatched via generic async task scheduler, not a directly-visible static call) -- live-hardware-check vs hardcoded-constant not conclusively determined"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "windows-x64 gate is independent of macos-arm64 gate per pipeline convention; macos-arm64 has_notch was already fully bidirectionally evidenced in a prior round (create_hotspot_window DEEP-RECOVERY, 2026-06-04) with real NSScreen-based notch-geometry detection confirmed -- documented for cross-platform contrast in interface/has_notch.md, not re-derived this leaf."
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "owner wrapper size (863B) byte-identical to the independently-recorded 1.1.1 windows baseline (sub_140023000, 863B, namespace=app) -- zero behavioral delta for the dispatch wrapper across 1.1.1->1.1.8, VA churn only (binary reflow). No 1.0.9 windows-x64 baseline exists on disk this round to compare further back; this command's frontend surface is confirmed unchanged since 1.0.9 (cmd-same.win.txt)."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "owner_absent_claimed": false,
+    "recovery_attempts": [
+      "owner VA correctness: find_regex {\"pattern\":\"has_notch\"} -> aHasNotch string literal @0x14133b5c4 has exactly 1 xrefs_to hit landing in this owner; size 863B cross-checked byte-identical against the independently-recorded 1.1.1 windows baseline (sub_140023000, 863B) -- wrong_VA taxonomy item excluded",
+      "async-body full decompile: cross-checked analyze_function's char-capped 'decompiled' field (which showed decompile_truncated:124/136 artifacts) against the plain decompile() call, which returned the complete un-truncated function body for both has_notch_owner_sys and has_notch_async_body_sys -- async_decompile_failed / body_too_large_bail taxonomy items excluded",
+      "shared-vs-specific disambiguation: enumerated the exact caller list (via analyze_function's own 'callers' field, not string-pool heuristics) for all 3 downstream helpers reached from has_notch_async_body_sys -- tokio_coop_budget_check_sys=49 callers, blocking_channel_park_wait_sys=19 callers, invoke_resolver_respond_sys=48 callers, all including other already-frozen sibling command owners -- library_internal_vs_config_callsite_confusion taxonomy item excluded",
+      "vtable check: the only vtable encountered (off_14131D030) is a generic Waker/RawWakerVTable used for poll-context construction, confirmed via its usage pattern (v20[0]=28 size marker, poll-call construction) rather than being a concrete-callee-hiding dynamic dispatch relevant to has_notch's own business logic -- vtable_dynamic_dispatch taxonomy item excluded",
+      "producer-closure search: traced all callees of has_notch_async_body_sys looking for an explicit spawn/spawn_blocking-style call taking a function-pointer argument; none found (only box-allocations of zeroed state observed) -- documented as an open Unknown in evidence.md rather than papered over as accepted_unknown, since a partial-but-real (not walled-off) decompile chain exists throughout all 5 nodes"
+    ],
+    "note": "no accepted_unknown or genuine_ceiling claimed anywhere in this leaf. The one open item (exact producer-closure location for the boolean payload) is documented as a plain Unknown in evidence.md with recovery_attempts logged, not a wall -- all 5 call-tree nodes were fully, successfully decompiled without truncation or chunking bail."
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_readyToImplement": [
+    "exact producer-side closure computing the has_notch boolean payload not located (dispatched via generic async task scheduler) -- cannot confirm whether windows performs a live hardware/display check or returns a hardcoded constant",
+    "no 1.0.9 windows-x64 baseline located on disk this round for full 3-version delta closure (only 1.1.1 and 1.1.8 compared)",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write -- idempotency check via find (raw/aimami/1.1.8/windows-x64/*/has_notch/) returned empty prior to this write; grep -c on INDEX.jsonl for the key prior to this write = 0; owner-map-118.jsonl line 41 (has_notch, owner_va=0x1403eca10, present=true) had not previously been reduced into a full leaf bundle this session; no INDEX.jsonl key collision for aimami/1.1.8/windows-x64/system/has_notch this session",
+  "renames_applied": {
+    "total": 5,
+    "ok": 5,
+    "failed": 0,
+    "stopped": false
+  },
+  "set_comments_applied": {
+    "total": 1,
+    "ok": 1,
+    "failed": 0
+  },
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

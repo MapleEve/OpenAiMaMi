@@ -1,0 +1,94 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "set_codex_router_enabled",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1005c4030",
+  "owner_symbol": "codexmate_lib::core::relay::manager::RelayManager::set_codex_router_enabled::hc374473223f0c370",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "arch_noise_filter_applied": true,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 218689.069,
+    "反编译就绪": true,
+    "module": "AiMaMi",
+    "idb_path_contains": "AiMaMi 1.1.8 universal.app"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (0x1005c4030, capped at 66667/~78000+ chars by the decompile tool's own server-side output limit, ~85% coverage) + 13 freshly-decompiled callees (RelayManager::persist, stop_codex_for_file_edit, RelayManager::rollback_router_enabled, RelayManager::ensure_proxy_started, RelayManager::sync_codex_config_with_outcome, router_unlock_auth::install_virtual_unlock_auth, CodexPaths::ensure_directories, router_unlock_auth::cleanup, legacy_virtual_auth::cleanup, valid_codex_active_ids, config_needs_syntax_fix, config_takeover::inspect, inspect_router_thread_visibility) + 2 reused-without-re-derivation callees from this session's sibling leaf (RelayManager::snapshot, router_unlock_auth::has_usable_real_oauth_login + its already-decompiled subtree) — 14 pseudocode files this leaf, no bail on any decompiled function, real Hex-Rays body every time; owner's own tail truncation handled per Unknown #1 (recovery_attempts recorded, not accepted_unknown)"
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 4,
+      "edge_count": 45,
+      "terminated_reasons_hit": [
+        "persistence_commit",
+        "sidecar_dispatch",
+        "external_call",
+        "persistence_read",
+        "response_serialize",
+        "error_return"
+      ],
+      "note": "45 edges spanning depth 0-4; terminated_reason redline satisfied on at least 11 independent branches (persistence_commit x8 via storage::save/write_atomic/apply_codex_state/write_catalog/remove_catalog, sidecar_dispatch x3 via kill_codex_processes_until_clear/request_codex_app_quit/tokio::block_on, external_call x2 via TcpStream::connect_timeout/fs::copy, persistence_read x2, response_serialize x1, error_return x1 via rollback_router_enabled's 6 call sites) — substantially exceeding the sibling leaf's 3-branch precedent; one reused chain (owner->has_usable_real_oauth_login->load_auth_file->read_to_string::inner, depth3/4-nodes) carried over from sibling leaf without re-derivation, satisfying depth>=5-OR-terminated-reason via both routes"
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO (argKeys=[\"enabled\",\"relaunch\"], relaunch defaults true at call site)",
+        "enable-path side effects fully enumerated across 9 categories: process-stop (always), auth-marker install/cleanup (dual new+legacy marker systems), directory setup, config-takeover-check + thread-convergence, RelayState persistence, local-proxy ensure (TCP probe + tokio block_on), codex-CLI config write (apply_codex_state + catalog write/remove), optional relaunch",
+        "error-return path closed: CoreError via 6 named rollback_router_enabled call sites plus a specifically-named router_no_active_provider_error variant; rollback itself performs a genuine multi-category compensating-transaction (re-persist, config_takeover::restore, thread-reconvergence, both marker-cleanup modules)",
+        "success response confirmed materially different from 1.0.9 (0x158-byte RelayManager::snapshot_sanitized blob + enabled echo byte, vs 1.0.9's small named 2-bool CodexRouterTogglePayload struct)",
+        "progress-event side-channel mechanism identified and confirmed materially different from 1.0.9 (plain closure-callback injection vs 1.0.9's AppHandle+emit_all Tauri-event broadcast)",
+        "delta vs 1.0.9 confirmed via existing 1.0.9 full raw leaf comparison (command pre-exists since 1.0.9, not new) — 4 confirmed deltas + 2 inferred/unresolved deltas documented in evidence.md"
+      ],
+      "open": [
+        "disable-path (enabled=false) response shape and persistence behavior not resolved this round (falls in the owner's truncated tail, see evidence.md Unknown #1)",
+        "exact serde field names for the response struct(s) not resolved via type_query/declare_type",
+        "several depth-2 callees (compose_proxy_status, storage::save, apply_codex_state, write_catalog/remove_catalog, atomic_write::write_atomic, various std::sys::fs::* functions) confirmed as real call targets via refs/decompile but not independently decompiled themselves this round",
+        "literal file paths (router-unlock-auth-marker.json base dir, legacy marker/config file path, codex CLI config.toml/catalog paths) not extracted via get_string/get_bytes this round",
+        "fix_config_preflight's participation in this 1.1.8 owner's call tree not confirmed (present in binary, call site not pinpointed)",
+        "windows-x64 equivalent full decompile/diff for same-platform cross-check (tracked separately per REVERSE-STATUS.md round scope)"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "mac gate is independent of windows-x64 gate per pipeline convention; windows-x64 set_codex_router_enabled not independently re-decompiled by this leaf (a 1.0.9 windows leaf exists at raw/aimami/1.0.9/windows/relay/set_codex_router_enabled/ per this round's discovery grep, but no 1.1.8 windows leaf was produced this round)"
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "command confirmed PRE-EXISTING since 1.0.9 (not new in 1.1.8) via a positive grep hit in raw/aimami/1.0.9/windows-x64/frontend/tauri-dumped/frontend/api-map.json:799 and an existing full 1.0.9 macOS raw leaf (raw/aimami/1.0.9/macos/relay/set_codex_router_enabled/, status: strictImplementationUse). Comparison against that leaf's AI.md yielded 4 confirmed deltas (dispatch-layer restructure from two-layer hand-written async+spawn_blocking closures to a generic tokio BlockingTask<T>::poll wrapper; progress-reporting mechanism replaced from AppHandle+emit_all to a plain closure-callback; thread-convergence functions renamed/split from migrate_threads_for_router_with_scope to repair_missing_rollouts_for_convergence+converge_threads_to_provider; response payload widened from a 2-bool CodexRouterTogglePayload to a 0x158-byte snapshot_sanitized RelayState blob) and 2 inferred/unresolved delta candidates (process-stop step consolidation; fix_config_preflight's exact role) — all documented in evidence.md's Relative-to-1.0.9 change summary."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf; every one of the 14 individually-decompiled functions returned a real Hex-Rays body (no drop_in_place-only stub, no unexpanded async ::poll shim). The one oversized body (the owner itself) was NOT bailed on: 2 independent recovery attempts made (full-artifact re-download via the tool's download_url, still capped at 66667 chars confirming a server-side limit not a fetch artifact; basic_blocks CFG-extent confirmation, 230 blocks / 0x1005c4030-0x1005c6762) plus every callee symbol still recovered via full-text regex scan of the captured portion despite the tail truncation — recorded as a plain scope-bounded Unknown with concrete recovery_attempts, not a fraudulent ceiling claim."
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_strictImplementationUse": [
+    "resolve the disable-path (enabled=false) response shape and persistence behavior (owner tail truncated by decompile tool's 66667-char cap; would require iterative disasm chunking of the missing ~0x10bd bytes)",
+    "resolve exact serde field/struct names for the success/error response via type_query/declare_type against the live 1.1.8 response struct",
+    "independently decompile the remaining depth-2 callees (compose_proxy_status, storage::save, apply_codex_state, write_catalog/remove_catalog, atomic_write::write_atomic) for full interface closure",
+    "extract literal file paths (router-unlock-auth-marker.json base dir, legacy marker/config path, codex CLI config paths) via get_string/get_bytes",
+    "pin down fix_config_preflight's exact role/call-site in this 1.1.8 owner",
+    "windows-x64 equivalent full decompile/diff for same-platform cross-check",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write -- idempotency check via find (raw/aimami/1.1.8/macos-arm64/*/set_codex_router_enabled/) returned empty prior to this write; a pre-existing 1.0.9 leaf for the same command exists (raw/aimami/1.0.9/macos/relay/set_codex_router_enabled/) but is a different product version with 6 documented behavioral deltas (per dim5 above), correctly warranting a fresh 1.1.8 raw work unit rather than a same-behavior migration; owner-map-118.jsonl line 101 (angle A, discovery-only) not previously reduced into a full leaf bundle this session; no collision with any other in-progress claim.",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

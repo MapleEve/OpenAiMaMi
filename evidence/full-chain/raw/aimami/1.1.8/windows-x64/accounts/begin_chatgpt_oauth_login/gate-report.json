@@ -1,0 +1,62 @@
+{
+  "schema": "c5cm.raw.gate_report.v1",
+  "command": "begin_chatgpt_oauth_login",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "session": "<审计会话>",
+  "produced_at": "2026-07-13",
+  "batch_index": "1/20",
+  "owner_va": "0x14096b4e0",
+  "owner_name": "sub_14096B4E0",
+  "gate_tier_candidate": "A/B-level owner",
+  "gate_promotion": false,
+  "gate_promotion_note": "not gate promotion; 本条目仅为 deep gold-leaf 证据留档，readyToImplement 判定留待 STAGE3",
+  "idempotency_check": {
+    "checked_path": "raw/aimami/1.1.8/windows-x64/*/begin_chatgpt_oauth_login/",
+    "pre_existing_leaf_found": false
+  },
+  "owner_resolution": {
+    "method": "owner_map_hit",
+    "source": "intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl row3",
+    "owner_map_method_field": "find_regex_string_pool_hit+xrefs_to_owner=dedicated_per_command_wrapper_fn"
+  },
+  "call_tree": {
+    "max_depth_reached": 5,
+    "terminated_reason_at_depth5": "external_call",
+    "direct_callees_total": 85,
+    "direct_callees_fully_decompiled": 6,
+    "direct_callees_accepted_unknown": true
+  },
+  "fake_wall_broken": false,
+  "fake_wall_note": "未遇到 async ::poll drop-shim 假墙；owner 本身即为 command 实现主体，未见需要破墙的中间转发层",
+  "interface_closure": {
+    "argKeys_closed": false,
+    "response_closed": false,
+    "error_strings_closed": true,
+    "side_effects_closed": "partial",
+    "notes": "回环监听地址/端口/回调路径/DNS解析错误/锁污染错误已确认；argKeys、response payload、浏览器打开动作、token交换目标未闭合，见 evidence.md Unknown"
+  },
+  "delta_vs_1_0_9": {
+    "is_new_command": true,
+    "evidence": "win-divergence-118.json dispatcher_delta_cmds.added_win_1_1_8; zero hits for 'begin_chatgpt_oauth_login' across full 1.0.9 raw+intermediate corpus",
+    "closest_1_0_9_analog": "accounts/import_chatgpt_session_account (session/cookie import, not authorization-code OAuth)"
+  },
+  "inline_writeback": {
+    "planned_rename": "sub_14096B4E0 -> begin_chatgpt_oauth_login_owner_sys",
+    "planned_comment": "A/B-level owner for begin_chatgpt_oauth_login; sha256=f25d8129528b25ac7f69524fa07c78f961da189a7a8f2c758c288ec96bc68f10; session <审计会话>; not gate promotion",
+    "applied": true,
+    "rename_result": "rename(func addr=0x14096b4e0) old=sub_14096B4E0 new=begin_chatgpt_oauth_login_owner_sys ok=1 failed=0",
+    "set_comments_result": "set_comments(addr=0x14096b4e0) ok, no error"
+  },
+  "artifacts": {
+    "pseudocode": "ida/pseudocode/begin_chatgpt_oauth_login.c",
+    "call_tree": "call-trees/begin_chatgpt_oauth_login.jsonl",
+    "evidence": "evidence.md",
+    "interface": "interface/begin_chatgpt_oauth_login.md"
+  },
+  "accepted_unknown_count": 2,
+  "recovery_attempts_documented": true,
+  "gate_tier": "readyToImplement",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

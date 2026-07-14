@@ -1,0 +1,88 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "diagnose_codex_router",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1004c4cf0",
+  "owner_symbol": "codexmate_lib::commands::relay::diagnose_codex_router::hd99dd9f11da0e34e",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "arch_noise_filter_applied": true,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 210987.778,
+    "反编译就绪": true,
+    "module": "AiMaMi",
+    "idb_path_contains": "AiMaMi 1.1.8 universal.app"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (0x1004c4cf0, 17363B) + 5 business-logic callees fully decompiled (sanitize_for_export 5530B, codex_config_stale_reason 32409B, read_top_level_string_value 11424B, relay_ids_in_config 6560B, router_entry_presence 1895B) — 6 pseudocode files, 75466 bytes total, no bail on any"
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 3,
+      "edge_count": 23,
+      "terminated_reasons_hit": [
+        "persistence_read",
+        "external_call",
+        "response_serialize"
+      ],
+      "note": "prior mac-shard-2 bucket pass (same session) recorded call_tree_depth=7 for this command at a summary level; this leaf independently re-derives depth 0-3 with full pseudocode + live callees()/xrefs_to/get_bytes evidence for every edge, satisfying the depth>=5-OR-terminated-reason redline via the terminated_reason route (multiple leaves justified: fs read/metadata/str-pattern-internals)"
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO (argKeys=[])",
+        "response fields consumed by frontend (summary/config_toml_has_router/config_toml_has_catalog) traced to producing statements in owner body",
+        "6 diagnostic summary string templates byte-confirmed via get_bytes (124/71/101/153/148/143B)",
+        "config-key migration (model_server_addr+model+profiles. -> model_provider+model_catalog_json) confirmed via 2 independent sources (decompile literal operands + summary-string text)",
+        "new codex_router_catalog.json path-join + PathBuf::eq validation",
+        "sanitize_for_export new-callee data-flow traced end-to-end (computed, never read into response for this command)",
+        "no error-return path (always Ok), read-only side effects (2x config.toml read + 1x metadata stat)"
+      ],
+      "open": [
+        "remaining response-struct field offsets (has_router_thread_migration/relay_providers_count/port/model-addr) not independently re-mapped via type_query this round (inferred from 1.0.9 doc continuity only)",
+        "router_entry_presence's 3 anon format-template literal strings not extracted via get_string/get_bytes",
+        "whether the 1.0.9 'profiles.' TOML key is still read inside codex_config_stale_reason's nested read_top_level_string_value calls (not individually re-traced)",
+        "full byte-for-byte text diff of the 4 non-key-naming summary templates vs 1.0.9 (only byte-length overlap checked, not content)"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "mac gate is independent of windows-x64 gate per pipeline convention; windows-x64 diagnose_codex_router already noted in REVERSE-STATUS.md as an internal-helper-only command (no standalone dispatcher-matched string on Windows in either 1.0.9 or 1.1.8) but not independently re-decompiled by this leaf"
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "delta command, confirmed via 2 independent evidence sources this round (decompile literal operands for the config-key migration + get_bytes-decoded summary-string text explicitly naming the new keys) on top of this session's earlier mac-shard-2 summary-level delta classification (intermediate/aimami/1.1.8/macos-arm64/version-delta/buckets/mac-shard-2.json). 3 concrete deltas: (1) new sanitize_for_export callee (behaviorally inert for this command specifically), (2) TOML key migration model_server_addr/model/profiles. -> model_provider/model_catalog_json, (3) new codex_router_catalog.json path-join + PathBuf::eq validation"
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf; all Unknown items in evidence.md are plain absence-of-extraction records (literal format-template strings not pulled via get_string/get_bytes, remaining struct offsets not re-mapped via type_query, windows-side delta not re-checked this leaf) — no async/vtable/ICF ceiling encountered in this leaf's call tree, real_body_found=true on every decompiled function, no bail"
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_strictImplementationUse": [
+    "extract router_entry_presence's 3 anon format-template literal strings via get_string/get_bytes",
+    "re-map remaining response-struct field offsets via type_query/declare_type against the 1.1.8 binary",
+    "independently re-trace whether the 1.0.9 'profiles.' key is still read inside codex_config_stale_reason's nested calls",
+    "windows-x64 equivalent full decompile/diff for same-platform cross-check",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write — idempotency check via find (raw/aimami/1.1.8/macos-arm64/*/diagnose_codex_router/) returned empty prior to this write; owner-map-118.jsonl line 19 (diagnose_codex_router) and mac-shard-2.json's summary-level delta classification not previously reduced into a full leaf bundle this session; no INDEX.jsonl key collision for aimami/1.1.8/macos-arm64/relay/diagnose_codex_router this session",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

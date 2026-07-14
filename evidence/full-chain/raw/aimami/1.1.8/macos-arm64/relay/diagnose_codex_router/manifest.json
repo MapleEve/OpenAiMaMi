@@ -1,0 +1,31 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "diagnose_codex_router",
+  "session": "<审计会话>",
+  "produced_by": "<本地机器>",
+  "model": "<模型>",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "owner_va": "0x1004c4cf0",
+  "owner_symbol": "codexmate_lib::commands::relay::diagnose_codex_router::hd99dd9f11da0e34e",
+  "arch_noise_filter_applied": true,
+  "gate_tier": "consumerStartReady",
+  "files": [
+    {"path": "pseudocode/0001_diagnose_codex_router_owner.c", "size": 17576, "sha256": "cd8bd67fe97e6adfd7437c2d6b52277f9fef44e0eff463ffebf7fe9010182f19"},
+    {"path": "pseudocode/0002_sanitize_for_export.c", "size": 5747, "sha256": "58e7072528396d558ebea4df33c5ae3be5a6b64299927181b5b2ed08a91f6891"},
+    {"path": "pseudocode/0003_codex_config_stale_reason.c", "size": 32593, "sha256": "09114290993498b0ce470800b9bf8b00022fde2ccff41a1b061c6008a7fefd42"},
+    {"path": "pseudocode/0004_read_top_level_string_value.c", "size": 11646, "sha256": "bad21a60ecd5698a3b51197f369659c2a39cacfeea9f2c4591ec172e31de4e2b"},
+    {"path": "pseudocode/0005_relay_ids_in_config.c", "size": 6726, "sha256": "56d34ebda33b9818bb9e461b107589accc053bf6fdeb801a12a1fd8597973f91"},
+    {"path": "pseudocode/0006_router_entry_presence.c", "size": 2068, "sha256": "8ea3202f42bd9c7f720541225e2baaaaa6de54b5f33af77fd9fc357c5476c13d"},
+    {"path": "call-trees/diagnose_codex_router.jsonl", "size": 12528, "sha256": "80d020c5c774f96a7727a81e03dffef64ec9723a9c31cca3e5cda8d69642810f"},
+    {"path": "interface/diagnose_codex_router.md", "size": 6674, "sha256": "966a93a4b01be6392eb28cccf4606a925b0f30247deef61cef030a553c0bd6d9"},
+    {"path": "evidence.md", "size": 14367, "sha256": "7f47cb73f3cf7e419f7d352c745005747bb13a167d6337dd58b727c11fabcd04"},
+    {"path": "gate-report.json", "size": 6250, "sha256": "309df5d7ffeb80116391b0ef5a0560b16590a57c6f450445c4d44f9d0de8fb86"}
+  ],
+  "method": "反编译器 MCP (mac) decompile/callees/xrefs_to/get_bytes against live 1.1.8 mac IDB (x86_64 slice of universal Mach-O, arch-noise-filtered per REVERSE-STATUS.md mac-shard-3/8 precedent); owner resolved via intermediate/aimami/1.1.8/macos-arm64/version-delta/owner-map-118.jsonl line 19 (angle A); cross-checked against this session's mac-shard-2.json summary-level delta classification (intermediate/aimami/1.1.8/macos-arm64/version-delta/buckets/mac-shard-2.json); frontend contract cross-checked against raw/aimami/1.1.8/macos-arm64/frontend/ipc-contracts.jsonl (line 132) and frontend-control-flow.jsonl (line 193); 1.0.9 baseline cross-checked against raw/aimami/1.0.9/macos/system/diagnose_codex_router/DIAGNOSE-CODEX-ROUTER-MAC-109.md.",
+  "idempotency_check": "find raw/aimami/1.1.8/macos-arm64/*/diagnose_codex_router/ prior to this write returned empty — no prior full leaf existed for this command this version. mac-shard-2.json already recorded a one-line delta classification for diagnose_codex_router but no full leaf bundle (pseudocode/call-tree/interface/evidence) existed prior to this write."
+}

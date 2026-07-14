@@ -1,0 +1,89 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "relay",
+  "command": "get_relay_provider_quota",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x140A4EFF0",
+  "owner_symbol": null,
+  "core_dispatcher_va": "0x140976010",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 win64.exe",
+  "arch_noise_filter_applied": false,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 211424.632,
+    "反编译就绪": true,
+    "module": "AiMaMi 1.1.8 win64.exe",
+    "idb_path_contains": "<证据库> 1.1.8 win64.exe.i64"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (0x140A4EFF0, 4746B, FULL decompile no truncation) + core dispatcher (0x140976010, 16895B, HexRays-render-limit-truncated only, genuine_ceiling=false per analyze_function metadata) + 6 supporting callees (relay_quota_url_suffix_classifier_sys 409B FULL, relay_response_error_fmt_helper_sys 1754B near-full, relay_http_request_cleanup_sys 311B FULL, reqwest_error_display_sys 509B near-full, relay_quota_poll_phase0_sys 397B FULL, relay_quota_poll_phase1_sys 848B near-full) — 8 pseudocode files, no real bail on any (all truncations are HexRays render-limit only, independently confirmed via analyze_function size/basic_blocks/callees metadata)"
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 6,
+      "edge_count": 16,
+      "terminated_reasons_hit": [
+        "error_return",
+        "response_serialize",
+        "external_call"
+      ],
+      "note": "depth>=5 redline satisfied via TWO independent branches: (a) core dispatcher -> relay_response_error_fmt_helper_sys (depth3) -> reqwest_error_display_sys (depth5, terminated_reason=error_return); (b) core dispatcher -> poll_phase0_sys (depth4) -> poll_phase1_sys (depth5) -> nested hyper/tokio transport poll sub_14010EC30 (depth6, terminated_reason=external_call). Core dispatcher's own 47 callees independently enumerated 100% resolved via callees() live call (0 unresolved edges)."
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO (argKeys=[\"providerId\"]) confirmed via frontend ipc-contracts.jsonl + owner body literal string refs",
+        "11-provider routing table (host+quota-URL literal set) confirmed unchanged vs 1.1.1 baseline via live find_regex sweep (45 matches, byte-identical set)",
+        "2 response schemas confirmed via string-pool: OpenAI-style (total_available/total_granted/limit/etc.) and MiniMax-style (base_resp.*/model_remains[]/current_interval_remaining_percent/current_weekly_*)",
+        "shared relay_http_request_cleanup_sys terminus confirmed byte-identical to 1.1.1 (1424B dealloc, 19 distinct callers)",
+        "reqwest::Error Display impl confirmed as the HTTP-failure error-formatting terminus (7 message classes)",
+        "side effect = network-only (one outbound HTTPS GET per invocation), no persistence, no process spawn — matches 1.1.1 documented behavior"
+      ],
+      "open": [
+        "exact numeric case->provider discriminant mapping for the 10-way and 11-way switches in the core dispatcher not individually traced (jump-table operands not extracted)",
+        "9 of 10 per-provider handler siblings (family of sub_1402679C0) not individually re-decompiled, only enumerated present via callees()",
+        "3 of 4 depth-3 aggregator functions (sub_14097E710/14097EF80/14097F640, siblings of sub_1409802F0) not individually re-decompiled",
+        "exact response-struct byte offsets not re-mapped via type_query/declare_type against this specific 1.1.8 build (inferred from 1.1.1 baseline continuity)",
+        "windows-side runtime response-parsing behavior per schema not independently re-verified beyond string-pool identity"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "windows-x64 gate is independent of macos-arm64 gate per pipeline convention; macos-arm64 get_relay_provider_quota was separately classified 'async-only accepted_unknown' in this session's earlier mac100-batch pass (REVERSE-STATUS.md v1.1.1 Mac100 Delta Candidates section) — not independently re-decompiled by this windows-only leaf"
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "command confirmed NEW vs 1.0.9 baseline (does not exist at all — cmd-added.win.txt line 4, this session's own earlier frontend-delta sub-step, not re-derived here). Confirmed via migration-source cross-check against the 1.1.1 baseline (out-of-scope comparison, cited only per the pipeline's old-to-new migration rule): zero behavioral delta 1.1.1->1.1.8 — same argKeys, same 11-provider set (byte-identical via this round's own find_regex sweep), same 47-callee core-dispatcher count, same reqwest transport, same cleanup-terminus dealloc size (1424B). VA churn only (0x14093DEB0->0x140A4EFF0 owner; 0x1408DBB30->0x140976010 core), plus modest size/complexity growth (591->628 basic blocks, 212->228 cyclomatic complexity) consistent with general binary growth documented elsewhere this session."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf. Core dispatcher's decompile-text truncation was cross-verified via analyze_function (size/basic_blocks/callees all captured, 0 unresolved edges) before being treated as cosmetic (HexRays render-limit) rather than a real gap, consistent with the 1.1.1 baseline's own identical truncation-resolution precedent. No async ::poll body was left at a drop_in_place/shim boundary — the poll chain was traced two full phases deep (phase0 0x140A96EF0 -> phase1 0x140A973C0 -> nested transport poll 0x14010EC30) before terminating at an external_call (hyper/tokio library internal). All Unknown items in evidence.md are plain absence-of-extraction records (numeric discriminant mapping, 9/10 sibling handlers not individually decompiled, exact struct offsets not re-mapped), not fabricated or guessed."
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_readyToImplement": [
+    "trace the exact case->provider numeric discriminant mapping for the core dispatcher's 10-way and 11-way switches",
+    "individually re-decompile the remaining 9 per-provider handler siblings and 3 depth-3 aggregator siblings",
+    "re-map exact response-struct byte offsets via type_query/declare_type against this specific 1.1.8 win build",
+    "same-platform (macos-arm64) cross-check for this specific command in this specific 1.1.8 build (mac side currently only has an out-of-scope 1.1.1 async-only-accepted_unknown classification, not a 1.1.8-specific re-check)",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write — idempotency check via find (raw/aimami/1.1.8/windows-x64/*/get_relay_provider_quota/) returned empty prior to this write; owner-map-118.jsonl line 36 (get_relay_provider_quota, owner_va=0x140a4eff0, present=true) had not previously been reduced into a full leaf bundle this session; no INDEX.jsonl key collision for aimami/1.1.8/windows-x64/relay/get_relay_provider_quota this session",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

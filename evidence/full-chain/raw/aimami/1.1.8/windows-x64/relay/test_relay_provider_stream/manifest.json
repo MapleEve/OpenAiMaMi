@@ -1,0 +1,35 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "relay",
+  "command": "test_relay_provider_stream",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "date": "2026-07-13",
+  "binary": "AiMaMi 1.1.8 win64.exe",
+  "sha256": "f25d8129528b25ac7f69524fa07c78f961da189a7a8f2c758c288ec96bc68f10",
+  "owner_va": "0x140A2E5A0",
+  "owner_renamed": "test_relay_provider_stream_owner_sys",
+  "owner_size_bytes": 8921,
+  "owner_basic_blocks": 241,
+  "owner_cyclomatic_complexity": 93,
+  "callers_renamed": [
+    {"addr": "0x1408D1850", "name": "test_relay_provider_stream_async_spawn_a_sys", "size_bytes": 565},
+    {"addr": "0x1409026F0", "name": "test_relay_provider_stream_async_spawn_b_sys", "size_bytes": 565}
+  ],
+  "files": [
+    "pseudocode/0001_test_relay_provider_stream_owner.c",
+    "call-trees/test_relay_provider_stream.jsonl",
+    "interface/test_relay_provider_stream.md",
+    "evidence.md",
+    "manifest.json",
+    "gate-report.json"
+  ],
+  "delta_vs_1_0_9": "command absent from 1.0.9 baseline (cmd-added.win.txt line 14); 1.0.9 had a differently-named non-streaming predecessor test_relay_provider (argKeys=[manager,providerId], no model/onEvent) which is listed as removed_win_1_1_8 in win-divergence-118.json -- this is a rename+redesign into a streaming variant, not a bolt-on addition",
+  "delta_vs_1_1_1": "pre-existing in 1.1.1 (raw/aimami/1.1.1/windows-x64/commands_relay/test_relay_provider_stream/), owner VA churn only: 0x1409C98D0(7689B) -> 0x140A2E5A0(8921B), +1232B/+16%; async wrapper size unchanged at 565B each; interface argKeys unchanged [providerId,model,onEvent]+manager; response envelope shared-builder pattern continuity confirmed",
+  "not_gate_promotion": true,
+  "implementation_use": false,
+  "gate_accepted": false
+}

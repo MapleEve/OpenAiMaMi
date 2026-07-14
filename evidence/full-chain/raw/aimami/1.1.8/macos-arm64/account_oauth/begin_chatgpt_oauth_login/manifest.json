@@ -1,0 +1,29 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "account_oauth",
+  "command": "begin_chatgpt_oauth_login",
+  "session": "<审计会话>",
+  "produced_by": "<本地机器>",
+  "model": "<模型>",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "owner_va": "0x1000a2e40",
+  "owner_symbol": "codexmate_lib::commands::account_oauth::begin_chatgpt_oauth_login::{{closure}}::h20c37487e18fb179",
+  "arch_noise_filter_applied": true,
+  "gate_tier": "consumerStartReady",
+  "files": [
+    {"path": "pseudocode/0001_begin_chatgpt_oauth_login_owner_closure.c", "size": 3900, "sha256": "8446480a0bc469fbf579138c5c58a415f425b7e3bb6fbd45bea5ca3ecc1f1832"},
+    {"path": "pseudocode/0002_generate_pkce.c", "size": 4788, "sha256": "0217539bf3e155727a99b1d79d6422c56ef829d7345aac65f7c21ee8652342cf"},
+    {"path": "pseudocode/0003_build_authorize_url.c", "size": 9562, "sha256": "d2b4645e7a3380df448d5e50b979a4d9775cb8d02979fec2fbc248f4c3f4f791"},
+    {"path": "pseudocode/0004_tcplistener_bind_addr_and_mio_bind.c", "size": 4378, "sha256": "a8b0dffe2f9944722f60e28da3e97fe9b3285c84238ae8ed7ed80838a9faec51"},
+    {"path": "call-trees/begin_chatgpt_oauth_login.jsonl", "size": 6861, "sha256": "17ed669ae8088af13a731e361cf2f50a49a879274df068c3f1ea982e92c4d478"},
+    {"path": "interface/begin_chatgpt_oauth_login.md", "size": 4185, "sha256": "a8af3a62e03534a9d1b7de2280243e01252ee42a736a6b25367ca0b5e4047a38"},
+    {"path": "evidence.md", "size": 7134, "sha256": "10db07fd6726004454de633bf98e171c52e63ce1abf3124f77a75777bbfe6b82"},
+    {"path": "gate-report.json", "size": 3329, "sha256": "fb90371895d8ec238133df9e4bef7ec05c51dba61b8a24914193656a626d2c93"}
+  ],
+  "method": "反编译器 MCP (mac) decompile/callees/xrefs_to/find_regex/basic_blocks against live 1.1.8 mac IDB (x86_64 slice of universal Mach-O, arch-noise-filtered per REVERSE-STATUS.md mac-shard-3/8 precedent); owner resolved via intermediate/aimami/1.1.8/macos-arm64/version-delta/owner-map-118.jsonl (angle A); frontend contract cross-checked against raw/aimami/1.1.8/macos-arm64/frontend/ipc-contracts.jsonl and frontend-control-flow.jsonl (both produced earlier this session); 1.0.9 baseline absence confirmed via filesystem search + intermediate/aimami/1.1.8/version-delta/frontend-delta/{cmd-added,cmd-removed}.mac.txt.",
+  "idempotency_check": "find raw/aimami/1.1.8/macos-arm64/*/begin_chatgpt_oauth_login/ prior to this write returned empty — no prior leaf existed, not a re-run."
+}

@@ -1,0 +1,91 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "fix_codex_router_issue",
+  "session": "<审计会话>",
+  "produced_by": "<本地机器>",
+  "model": "<模型>",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "owner_va": "0x1004c5d10",
+  "owner_symbol": "codexmate_lib::commands::relay::fix_codex_router_issue::he783bb26d80be6c4",
+  "arch_noise_filter_applied": true,
+  "gate_tier": "consumerStartReady",
+  "files": [
+    {
+      "path": "call-trees/fix_codex_router_issue.jsonl",
+      "size": 23575,
+      "sha256": "334d51e41a22c6a3ca35c393a79878e57e3a5c86dc5d9f034e4eec549b9b8281"
+    },
+    {
+      "path": "evidence.md",
+      "size": 9759,
+      "sha256": "01895121b53956b25154403433b8cc5c3f6040f97fb87da24f3e08adb1761895"
+    },
+    {
+      "path": "gate-report.json",
+      "size": 7394,
+      "sha256": "b13d9b3229689bc36fc2f103487e57f7a3fbf54720dfaa2b46afc6d3e99372d1"
+    },
+    {
+      "path": "interface/fix_codex_router_issue.md",
+      "size": 8617,
+      "sha256": "d6f60939d4f2ba2abcdb4308d4ed858b4126f723b84dd5d9310854938b4a4a3e"
+    },
+    {
+      "path": "pseudocode/0001_fix_codex_router_issue_owner.c",
+      "size": 8745,
+      "sha256": "aa246fb6e612519d03a9c11f9bb9e387afc064121b560047267216691161471a"
+    },
+    {
+      "path": "pseudocode/0002_fix_all.c",
+      "size": 1725,
+      "sha256": "e9f15809b71e7dc881b8944e4f01032bf1da08276995b22de2a23f5cfcb6f0f6"
+    },
+    {
+      "path": "pseudocode/0003_fix_issue.c",
+      "size": 1727,
+      "sha256": "2f12387a315ab76770cfc762b6462caf1d5db5b8b4e06fd8ba1cb4cc8f3e3ad9"
+    },
+    {
+      "path": "pseudocode/0004_fix_config_stale_text.c",
+      "size": 9094,
+      "sha256": "4c527e2e98d5aee5dd2847b69873005a551ca5d01f66ed7a4e08b6f07c722397"
+    },
+    {
+      "path": "pseudocode/0005_resync_codex_config.c",
+      "size": 8062,
+      "sha256": "ce8968938a5841690ea5d65d16954f58b68255296cb9ba69e18e1d8eaf5a8e46"
+    },
+    {
+      "path": "pseudocode/0006_write_atomic.c",
+      "size": 6678,
+      "sha256": "b71db7334fa2f6f1811a79937e052e48572533d557f70a664e5089a75327eaa2"
+    },
+    {
+      "path": "pseudocode/0007_fix_auth_integrity.c",
+      "size": 16738,
+      "sha256": "cb59c13033ab4dc6ffb410ee4fc3396ad95b77d0d8cb492604228be1d6a75809"
+    },
+    {
+      "path": "pseudocode/0008_is_process_running.c",
+      "size": 2488,
+      "sha256": "3b4edb578a44a0a45317addaea8e83a02594759d713ddaffd09e7f6f5022a06c"
+    },
+    {
+      "path": "pseudocode/0009_stop_codex_for_file_edit.c",
+      "size": 2204,
+      "sha256": "ad10d37578c4913ed2dc4a9e3921054b07375a48c4afc18f554df4541891dc2c"
+    },
+    {
+      "path": "pseudocode/0010_launch_codex_app.c",
+      "size": 19780,
+      "sha256": "3967b072997ffa8ee0e4e54e8132124017d6691a4663c56a677bae7f67fd5cdf"
+    }
+  ],
+  "method": "反编译器 MCP (mac) decompile/callees/xrefs_to against live 1.1.8 mac IDB (x86_64 slice of universal Mach-O, arch-noise-filtered); owner resolved via intermediate/aimami/1.1.8/macos-arm64/version-delta/owner-map-118.jsonl (source: func_query_clean_top_level_symbol); frontend contract cross-checked against raw/aimami/1.1.8/macos-arm64/frontend/ipc-contracts.jsonl line 131; 1.0.9 baseline cross-checked against raw/aimami/1.0.9/macos/relay/fix_codex_router_issue/AI.md.",
+  "idempotency_check": "find raw/aimami/1.1.8/macos-arm64/*/fix_codex_router_issue/ prior to this write returned empty (no existing dir under any module) — no prior full leaf existed for this command/version/platform before this write."
+}

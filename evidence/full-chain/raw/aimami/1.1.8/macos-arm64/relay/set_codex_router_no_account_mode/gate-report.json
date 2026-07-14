@@ -1,0 +1,92 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "set_codex_router_no_account_mode",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1005c9090",
+  "owner_symbol": "codexmate_lib::core::relay::manager::RelayManager::set_codex_router_no_account_mode::h9a7e2a1f189a607c",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "arch_noise_filter_applied": true,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 226290.135,
+    "反编译就绪": true,
+    "module": "AiMaMi",
+    "idb_path_contains": "AiMaMi 1.1.8 universal.app"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (0x1005c9090, 18787-byte / 413-line decompile, no truncation notice — complete Hex-Rays body from prologue to final return) + 11 freshly-decompiled callees (RelayManager::persist, RelayManager::rollback_no_account_mode_change, RelayManager::sync_codex_config_with_outcome, router_unlock_auth::install_virtual_unlock_auth, router_unlock_auth::cleanup, router_unlock_auth::marker_exists, platform::process::stop_codex_for_file_edit, RelayManager::launch_codex_app_warning, RelayManager::snapshot_sanitized, storage::sanitize_for_export, set_codex_router_no_account_mode::{{closure}}) — 12 pseudocode files this leaf, no bail on any decompiled function, real Hex-Rays body every time."
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 2,
+      "edge_count": 32,
+      "terminated_reasons_hit": [
+        "persistence_commit",
+        "persistence_read",
+        "external_call",
+        "response_serialize",
+        "error_return"
+      ],
+      "note": "32 edges spanning depth 0-2; terminated_reason redline satisfied on well over a dozen independent branches (persistence_commit x6 via std::sys::fs::copy/atomic_write x3 sites/storage::save/write_catalog/remove_catalog/apply_codex_state, persistence_read x2 via read_marker/marker_exists's metadata check, external_call x4 via request_codex_app_quit/kill_codex_processes_until_clear/progress-closure vtable dispatch/launch_codex_app, response_serialize x1 via sanitize_for_export, error_return x1 via sync_codex_config_with_outcome's re-invocation inside rollback) — satisfying the depth>=5-OR-terminated-reason redline comfortably via the OR clause without needing to walk to depth 5."
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "closed",
+      "closed": [
+        "request DTO (argKeys=[\"enabled\",\"relaunch\"], relaunch defaults true at call site) — confirmed via frontend ipc-contracts.jsonl line 119 and frontend-control-flow.jsonl lines 147/166",
+        "enable-path and disable-path side effects fully enumerated: conditional process-stop, auth-marker install (enable) or cleanup+marker_exists-recheck (disable), RelayState persistence, codex-CLI config write (apply_codex_state + catalog write/remove), optional relaunch",
+        "error-return path closed: CoreError via 2 explicit rollback_no_account_mode_change call sites plus shared error-propagation goto targets, plus 2 specifically-named error literals (marker-still-present-after-cleanup consistency check; a second post-sync-success allocation-failure branch)",
+        "rollback_no_account_mode_change confirmed as a genuine bidirectional compensating transaction (branches on its own bool arg to re-run either cleanup or install_virtual_unlock_auth, then re-persists and re-syncs codex config)",
+        "success response confirmed: 0x158-byte snapshot_sanitized RelayState blob + 1 trailing mode-echo byte, same shape convention as the sibling set_codex_router_enabled leaf's response",
+        "progress-event side-channel mechanism fully characterized: 4 stage-name literals (stopping_codex/preparing_auth/writing_config/launching_codex) via the same closure-callback injection pattern as the sibling command, with a dedicated per-command closure instance",
+        "delta vs 1.0.9 confirmed via a zero-hit recursive grep sweep of raw/aimami/1.0.9/ and intermediate/aimami/1.0.9/ plus a zero-hit INDEX.jsonl sweep for the exact command string: this command does NOT exist in 1.0.9 (new in 1.1.8) — documented in evidence.md's Relative-to-1.0.9 change summary"
+      ],
+      "open": [
+        "exact call_site addresses for router_unlock_auth::cleanup's two divergent branches (remove_file vs write_atomic) not individually re-walked this round (function confirmed real/non-stub via its own decompile; sibling leaf already characterized the same VA's branch dichotomy)",
+        "exact serde field names for the response struct(s) not resolved via type_query/declare_type",
+        "the actual relay/proxy request-dispatch semantics of the no_account_mode flag (as opposed to this command's own state-toggle/persist/config-sync side effects) not traced this round",
+        "exact contents of the two hardcoded CoreError message literals (111-byte and 126-byte) not extracted via get_string/get_bytes",
+        "windows-x64 equivalent not attempted this round (tracked separately per REVERSE-STATUS.md round scope)"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "mac gate is independent of windows-x64 gate per pipeline convention; no windows-x64 leaf for this command exists yet per the INDEX.jsonl zero-hit sweep, and none was produced by this mac-only leaf."
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "command confirmed ABSENT from 1.0.9 (new in 1.1.8) via a zero-hit recursive grep sweep of raw/aimami/1.0.9/ (both mac and windows-x64 subtrees, including frontend dumps), a zero-hit sweep of intermediate/aimami/1.0.9/, and a zero-hit exact-string sweep of the top-level INDEX.jsonl (confirming no other producer has already claimed/completed this leaf — no collision). Full delta-vs-1.0.9 analysis therefore reduces to a new-command characterization rather than a diff against a prior leaf; documented fully in evidence.md's Relative-to-1.0.9 change summary (5 points: new sibling command with a distinct RelayState bit; reuses rather than duplicates the router_unlock_auth subsystem; response shape parallels the sibling set_codex_router_enabled leaf; identical progress-closure protocol mechanism with a dedicated closure instance; inferred no_account_mode semantics)."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf. Every one of the 12 functions individually decompiled this round (owner + 11 callees) returned a real, non-stub Hex-Rays body — no drop_in_place-only stub in place of business logic, no async ::poll shim left unexpanded, no oversized-body bail (the owner's own decompile completed cleanly at 18787 bytes with no truncation notice, unlike the sibling set_codex_router_enabled leaf's 66667-char-capped owner). Call-tree redline (depth>=5 OR terminated_reason) satisfied via the OR clause on well over a dozen independent branches with concrete terminated_reason categories (persistence_commit x6, persistence_read x2, external_call x4, response_serialize x1, error_return x1)."
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_strictImplementationUse": [
+    "re-walk router_unlock_auth::cleanup's exact branch-selecting condition and call-site addresses for the remove_file-vs-write_atomic dichotomy specific to this command's own call path",
+    "resolve exact serde field/struct names for the success/error response via type_query/declare_type against the live 1.1.8 response struct",
+    "trace the no_account_mode flag's actual effect at the relay/proxy request-dispatch layer (out of this leaf's state-toggle-only scope)",
+    "extract the two hardcoded CoreError message literal contents via get_string/get_bytes",
+    "windows-x64 equivalent full decompile/diff for same-platform cross-check",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write -- idempotency check via recursive grep across raw/aimami/1.1.8/macos-arm64/ and raw/aimami/1.0.9/ for the command name, plus an exact-string sweep of INDEX.jsonl, all returned zero prior leaf/claim hits for this exact command before this write; REVERSE-STATUS.md carries no in-progress claim for this item at write time; no collision with any other producer's claim.",
+  "produced_at": "2026-07-13T10:00:48Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}
