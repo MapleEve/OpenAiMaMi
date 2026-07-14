@@ -1,6 +1,6 @@
 # OpenAiMami IDB 状态
 
-`OpenAiMami IDB` 是独立的大文件资料集，用于保存 OpenAiMami 1.0.9 和 1.1.1 的 macOS/Windows `.i64` 参考文件。它不属于主源码仓库的普通文本材料。
+`OpenAiMami IDB` 是独立的大文件资料集，用于保存 OpenAiMami 1.0.9、1.1.1 和 1.1.8 的 macOS/Windows `.i64` 参考文件。它不属于主源码仓库的普通文本材料。
 
 ## 当前规则
 
@@ -21,5 +21,6 @@
 
 - `evidence/binary-manifests/1.0.9/i64-databases.json`
 - `evidence/binary-manifests/1.1.1/i64-databases.json`
+- `evidence/binary-manifests/1.1.8/i64-databases.json`
 
 重建时先使用 raw/internal 链条，再按需要核对该清单。PR 中引用 IDB 时必须说明它只是参考资产，并列出对应 raw/internal 证据。
