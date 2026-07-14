@@ -1,0 +1,44 @@
+{
+  "schema": "c5cm.gate-report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "command": "reorder_relay_providers",
+  "session": "<审计会话>",
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "dims": {
+    "owner_resolved": true,
+    "dispatcher_wired_confirmed": true,
+    "frontend_argkeys_closed": true,
+    "call_tree_depth_ge_5": true,
+    "call_tree_max_depth": 6,
+    "response_fields_closed": "partial",
+    "error_path_closed": true,
+    "persistence_side_effect_closed": true,
+    "cross_subsystem_side_effect_closed": "partial",
+    "genuine_ceiling": false,
+    "accepted_unknown": false,
+    "recovery_attempts": []
+  },
+  "blockers_for_readyToImplement": [
+    "exact Rust struct/field name for the success discriminant constant 10 not type_query-confirmed",
+    "exact on-disk file path/filename for storage::save's atomic_write not traced through CodexPaths",
+    "sync_codex_config_with_outcome's own persistence terminal node not individually isolated (recorded as Inferred side effect only)",
+    "specific CoreError variants producible by RelayManager::reorder's internal validation not enumerated",
+    "byte-level pseudocode diff vs 1.1.1 baseline (h2dd46f2b08c57b96) not performed, only structural-shape match checked",
+    "232-byte-per-element Vec layout iterated during sort step not type_query-confirmed against a named struct"
+  ],
+  "fake_wall_check": {
+    "genuine_ceiling_claimed": false,
+    "accepted_unknown_claimed": false,
+    "all_functions_fully_decompiled": true,
+    "basic_blocks_chunking_used": false,
+    "async_poll_shim_encountered": false
+  },
+  "not_gate_promotion": true,
+  "note": "This is a single-command deep gold-leaf bundle (19/29 of the macos-arm64 batch), not a round-level dim6 closure. gate_tier reflects this leaf's own strength; round-level readyToImplement is decided separately after all 29 commands + STAGE2.5 orphan sweep are closed.",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

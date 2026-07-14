@@ -1,0 +1,29 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "fetch_relay_models_draft",
+  "session": "<审计会话>",
+  "produced_by": "<本地机器>",
+  "model": "<模型>",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "owner_va": "0x1000e9f00",
+  "owner_symbol": "tauri::ipc::InvokeResolver<R>::respond_async_serialized_inner::{{closure}}::h2b6447bb835e17f0",
+  "owner_size": "0xbac",
+  "arch_noise_filter_applied": true,
+  "gate_tier": "consumerStartReady",
+  "files": [
+    {"path": "pseudocode/0001_fetch_relay_models_draft_owner.c", "size": 11672, "sha256": "002a94a20837d82db641450e8da458c363842853c7ec4427cbd74fb9b85d5386"},
+    {"path": "pseudocode/0002_build_url.c", "size": 3313, "sha256": "40c181a664f869e7788aa2f36b5d274b13fcae9e1876b57c0d07c0aff2e9faa7"},
+    {"path": "pseudocode/0003_is_transient_error.c", "size": 1975, "sha256": "4cb02c92598be5aaf27ab1848546c60127870e227c312db06d0345c65d81a2d1"},
+    {"path": "call-trees/fetch_relay_models_draft.jsonl", "size": 13136, "sha256": "d17b68ed934c84f2e846bc950eb0ff7823b5f43bdfbb233466a8c8b600c8f9a6"},
+    {"path": "interface/fetch_relay_models_draft.md", "size": 8936, "sha256": "a4e8bc0631b5032251c98cbb74d8b976c4001826422eaf8a6a8c6a3405c2e987"},
+    {"path": "evidence.md", "size": 13151, "sha256": "e1306cf5a69d19ce0a0dafb909c668889104729319b9cfc8181185e431589317"}
+  ],
+  "method": "反编译器 MCP (mac) find_regex/get_bytes/xrefs_to/callees/decompile against live 1.1.8 mac IDB (x86_64 slice of universal Mach-O, arch-noise-filtered per REVERSE-STATUS.md mac-shard-3/8 precedent). Owner NOT resolvable via name-based func_query (generic tauri::ipc::InvokeResolver<R>::respond_async_serialized_inner::{{closure}} symbol carries no command-specific name) -- located via a 2-step string-literal xref chain: find_regex located the literal 'fetch_relay_models_draft' inside a compiler-merged constant-string blob at 0x10125a1c0, computed+get_bytes-verified the precise sub-offset 0x10125a3ac, then xrefs_to that exact address returned a single unambiguous hit inside this owner. A coarser whole-blob xrefs_to first returned 4 false-positive candidates (2 unrelated command dispatchers, 2 near-empty same-name-pattern async closures for a different simpler command), explicitly excluded via callees() cross-check before the precise-offset method was used. owner-map-118.jsonl line 23 (angle A) had only found the drop_in_place<closure> shim (0x1000a8b70), not the real owner -- this leaf independently re-located the true owner via the method above.",
+  "idempotency_check": "find raw/aimami/1.1.8/macos-arm64/*/fetch_relay_models_draft/ prior to this write returned empty -- no prior full leaf existed for this command this version this session. INDEX.jsonl grep for '1.1.8.*fetch_relay_models_draft' (escaped) = 0 hits prior to this write.",
+  "migration_note": "a genuine, fully-decompiled arm64-confirmed 1.1.1 full-chain leaf for this exact command exists at raw/aimami/1.1.1/macos-arm64/relay/fetch_relay_models_draft/ (session <审计会话>, later regraded to gate_tier=readyToImplement). This 1.1.8 leaf does NOT reuse that leaf's pseudocode verbatim -- it independently re-locates and re-decompiles the 1.1.8-specific owner (fresh VA 0x1000e9f00, distinct per-build hash h2b6447bb835e17f0) plus 2 helper callees fresh this round (build_url, is_transient_error), and cross-references the 1.1.1 leaf's documented callee patterns only to confirm which of the remaining 4 helpers are structurally unchanged (not to fabricate 1.1.8-specific decompile text)."
+}

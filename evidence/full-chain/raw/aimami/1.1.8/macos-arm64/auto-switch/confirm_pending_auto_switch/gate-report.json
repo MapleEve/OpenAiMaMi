@@ -1,0 +1,35 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "leaf": "confirm_pending_auto_switch",
+  "gate_tier": "readyToImplement",
+  "gate_accepted": false,
+  "implementation_use": false,
+  "full_leaf_100_definition_v2": {
+    "dim1_frontend_ccf": "accepted",
+    "dim2_backend_owner_pseudocode": "accepted",
+    "dim3_call_tree": "accepted",
+    "dim4_interface_dto_error": "accepted",
+    "dim5_platform_gate": "partial (macos confirmed, windows unknown this round)",
+    "dim6_test_acceptance_mapping": "empty"
+  },
+  "call_tree_depth_reached": 3,
+  "call_tree_terminated_reason_coverage": "all depth1/2/3 edges have a terminated_reason or continue to a decompiled deeper node; no accepted_unknown claimed (no ceiling encountered — undecompiled nodes are recorded as Unknown/out-of-scope-this-round, not fabricated as accepted)",
+  "accepted_unknown_count": 0,
+  "genuine_ceiling_count": 0,
+  "new_error_strings_found": [
+    "Candidate account no longer exists locally",
+    "Candidate account credentials have expired since the suggestion was made",
+    "Candidate token is no longer valid, please try another account"
+  ],
+  "new_network_side_effect": "HTTPS POST https://auth.openai.com/oauth/token (synchronous reqwest::blocking, OAuth token refresh)",
+  "new_persistence_side_effect": "atomic rewrite of refreshed AuthFile to disk via relay::atomic_write::write_atomic",
+  "blocking_reason_for_readyToImplement": "dim5 (windows-x64 cross-platform confirmation) and dim6 (test/acceptance mapping) not closed this round",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

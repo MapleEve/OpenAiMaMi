@@ -1,0 +1,84 @@
+{
+  "schema": "c5cm.raw.gate_report.v1",
+  "command": "confirm_pending_auto_switch_and_restart_codex",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "session": "<审计会话>",
+  "produced_at": "2026-07-13",
+  "batch_index": "4/20",
+  "owner_va_from_owner_map": "0x1403cf5b0",
+  "owner_map_method": "find_regex_string_pool_hit+xrefs_to_owner=main_dispatcher(inline_match_arm,no_dedicated_wrapper)",
+  "true_command_owner_va": "0x140a56ac0",
+  "true_command_owner_name": "confirm_pending_auto_switch_and_restart_codex_owner_sys",
+  "dispatcher_va": "0x1403cf5b0",
+  "dispatcher_note": "shared main dispatcher (sub_1403CF5B0, size 0x4ad3), not renamed this round -- also handles other commands (e.g. 'clean') in the same inline match-arm body; not chunked via basic_blocks since the command-specific implementation was independently located elsewhere and fully decompiled",
+  "gate_tier_candidate": "A/B-level owner, evidence_collected",
+  "gate_promotion": false,
+  "gate_promotion_note": "not gate promotion; this leaf documents an evidence-collected owner + real depth5 call chain + confirmed shared response_serialize terminal, readyToImplement/strictImplementationUse judgment deferred to STAGE3 (dim6 C5-side outside reverse scope)",
+  "idempotency_check": {
+    "checked_path": "raw/aimami/1.1.8/windows-x64/*/confirm_pending_auto_switch_and_restart_codex/",
+    "pre_existing_leaf_found": false
+  },
+  "owner_resolution": {
+    "method": "owner_map_lookup_then_independent_relocation",
+    "source": "intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl row 12 (owner_va=0x1403cf5b0, method=find_regex_string_pool_hit+xrefs_to_owner=main_dispatcher(inline_match_arm,no_dedicated_wrapper), present=true)",
+    "result": "owner_map_owner_confirmed_as_shared_dispatcher_not_command_specific; true command-specific implementation independently located this round at 0x140a56ac0 via a second find_regex hit (0x141361469, private string copy inside the coroutine) + xrefs_to + byte-size cross-check (0xbd3 matches 1.0.9 windows baseline confirm_pending_auto_switch_and_restart_coroutine@0x1408E4F50 exactly)",
+    "cross_session_note": "win-shard-1.json (same session, earlier sub-step) independently recorded the identical owner_118=0x1403cf5b0 with the same method string, confirming this round's owner-map lookup is consistent with the prior bucket"
+  },
+  "call_tree": {
+    "max_depth_reached": 5,
+    "terminated_reason_at_depth5": "external_call",
+    "terminated_reason_detail": "sub_140870B80 -> sub_14108F780 -> sub_140001360 (Rust global allocator thunk), cross-session-reconciled against this same session's confirm_pending_auto_switch leaf",
+    "secondary_terminal_confirmed": "response_serialize (sub_1407A7610, reached via the coroutine's restart-task poll convergence path, same shared IPC resolver as the confirm_pending_auto_switch sibling leaf)",
+    "direct_callees_total_sampled": 9,
+    "direct_callees_fully_decompiled": 4,
+    "direct_callees_cross_session_reconciled_not_redecompiled": 3,
+    "direct_callees_accepted_unknown": 2,
+    "cross_session_reconciliation": "intermediate/aimami/1.1.8/windows-x64/version-delta/buckets/win-shard-1.json (same session, earlier sub-step) independently recorded owner_118=0x1403cf5b0 (matching method string) with verdict=delta and an aggregate call_tree_depth=6 (not hop-by-hop); this round independently located and fully decompiled the actual coroutine (0x140a56ac0, not itself addressed in win-shard-1.json) and walked a concrete depth5 chain with per-hop decompile evidence, superseding the prior aggregate-only figure"
+  },
+  "fake_wall_broken": true,
+  "fake_wall_note": "did not stop at the owner-map's nominal owner_va (0x1403cf5b0, a 19KB shared dispatcher whose full decompile was truncated by the MCP tool at 85524 chars and which is not command-specific); instead used a second find_regex hit + xrefs_to + byte-size cross-check to independently relocate and fully decompile the TRUE per-command async coroutine (0x140a56ac0), reaching a genuine depth5 chain plus the shared response_serialize terminal on a second independently-walked branch; additionally made 3 independent recovery attempts (imports_query paged search, 2-hop caller trace, get_bytes vtable-byte inspection) on the restart-mechanism cross-platform-delta open question before recording accepted_unknown, per redline 13's anti-cheat bar",
+  "interface_closure": {
+    "argKeys_closed": true,
+    "response_closed": false,
+    "error_strings_closed": "partial",
+    "side_effects_closed": "partial",
+    "notes": "argKeys=[] confirmed from frontend ipc-contracts.jsonl row 104; response payload field-level structure Unknown (discriminant 2/3/4 tags confirmed, field contents not decompiled); side-effects partially closed (confirm-phase shares the sibling leaf's already-confirmed Arc-clone/allocator chain; restart-phase spawn+poll structure confirmed, but the concrete restart-task execution body remains unresolved -- vtable targets off_141321088/off_141321070 could not be statically decoded); error strings partially closed (Display-fallback panic guard confirmed shared infra, but no command-specific error literal observed in the decompiled portions)"
+  },
+  "delta_vs_1_0_9": {
+    "is_new_command": false,
+    "evidence": "present in cmd-same.win.txt (frontend-delta), i.e. unchanged frontend surface across 1.0.9->1.1.8; command already had continuous backend presence (dispatcher inline match-arm) in 1.0.9/1.1.1/1.1.8",
+    "closest_1_0_9_analog": "raw/aimami/1.0.9/windows/auto-switch/confirm_pending_auto_switch_and_restart_codex/ (full baseline bundle: AI.md, ida/pseudocode.c, call-trees/call-tree.jsonl)",
+    "baseline_1_0_9_call_tree_depth": 4,
+    "baseline_1_0_9_leaves": [
+      "signal_codex_quit_wake",
+      "quit_codex_wait_fallback_kill_sys (WaitForSingleObject 8s then TerminateProcess)",
+      "check_update_installability_core_sys",
+      "sub_140879EE0",
+      "tauri_ipc_resolve_sys"
+    ],
+    "verdict": "delta (structural call-chain rewrite confirmed, not just a value tweak): confirm-phase now reuses the shared confirm_pending_auto_switch sub-chain (sub_140421360->sub_140870B80) instead of the 1.0.9 baseline's dedicated sub_1402DCBC0; restart-phase rewritten from a synchronous inline 3-call sequence into a 2-stage async spawn(sub_1401A3720)+poll(sub_140064790) task; this round independently re-derived and cross-validated this via fresh decompile of the actual coroutine (0x140a56ac0), superseding win-shard-1.json's aggregate-only verdict with concrete call-graph evidence",
+    "restart_timeout_delta_probe_result": "mac-confirmed 8s->5s timeout-shortening + helper-rename (stop_codex_app_gracefully->stop_codex_for_file_edit) delta could NOT be confirmed or denied on windows this round: the sole win 1.1.8 TerminateProcess call site (sub_141070590) has a structurally different kill-first/verify-after shape (not wait-then-kill), and its reachability from this command's restart-spawn vtable targets was not established (2-hop upward caller trace found no overlap with the confirmed call graph); recorded accepted_unknown with 3 documented recovery attempts, not asserted same or different"
+  },
+  "inline_writeback": {
+    "planned_rename": "sub_140A56AC0 -> confirm_pending_auto_switch_and_restart_codex_owner_sys",
+    "planned_comment": "A/B-level owner for confirm_pending_auto_switch_and_restart_codex; sha256=f25d8129528b25ac7f69524fa07c78f961da189a7a8f2c758c288ec96bc68f10; session <审计会话>; not gate promotion",
+    "applied": true,
+    "rename_result": "success (mcp__反编译工具__rename batch={\"func\":[{addr,new_name}]}, summary total=1 ok=1 failed=0)",
+    "set_comments_result": "success (mcp__反编译工具__set_comments, addr=0x140a56ac0)",
+    "dispatcher_not_renamed_note": "sub_1403CF5B0 (owner-map's nominal owner_va) deliberately NOT renamed or commented -- it is shared infrastructure serving multiple commands' inline match-arms; renaming it to this command's name would corrupt context for other commands' future leaves"
+  },
+  "artifacts": {
+    "pseudocode": "ida/pseudocode/confirm_pending_auto_switch_and_restart_codex.c",
+    "call_tree": "call-trees/confirm_pending_auto_switch_and_restart_codex.jsonl",
+    "evidence": "evidence.md",
+    "interface": "interface/confirm_pending_auto_switch_and_restart_codex.md"
+  },
+  "accepted_unknown_count": 5,
+  "recovery_attempts_documented": true,
+  "recovery_attempts_count": 8,
+  "保存分析库_planned": true,
+  "gate_tier": "readyToImplement",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

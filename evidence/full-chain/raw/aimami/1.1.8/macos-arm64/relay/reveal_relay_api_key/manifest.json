@@ -1,0 +1,29 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "reveal_relay_api_key",
+  "session": "<审计会话>",
+  "produced_by": "<本地机器>",
+  "model": "<模型>",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "owner_va": "0x1004c48d0",
+  "owner_symbol": "codexmate_lib::commands::relay::reveal_relay_api_key::hbc8d3f25d5bb8ef1",
+  "arch_noise_filter_applied": true,
+  "gate_tier": "strictImplementationUse_candidate",
+  "files": [
+    {"path": "pseudocode/0001_reveal_relay_api_key_owner.c", "size": 2662, "sha256": "4284f8b40d535cd795ae073d3d5f2c6d4a268cfecc1a305f16c97e5220408e91"},
+    {"path": "pseudocode/0002_reveal_api_key_manager.c", "size": 5918, "sha256": "0ea4e55a902f65011ba032d399f87c86cabe6d87d50f35cfe06a722767526427"},
+    {"path": "pseudocode/0003_keychain_get_api_key.c", "size": 27882, "sha256": "c9603dc62d4dc7a61be6e40af13df943dd1003b508b2ce336eadaf5bb00a08d9"},
+    {"path": "pseudocode/0004_mac_keychain_get.c", "size": 4187, "sha256": "e6b7b049980c57f5bd72eafe16a65939b07b70a7200b58dad947316d75082f66"},
+    {"path": "pseudocode/0005_write_key_file.c", "size": 6528, "sha256": "e6db17d10cd711792e2106798017687ec003fd4b4333882cb2071f80f92a3151"},
+    {"path": "call-trees/reveal_relay_api_key.jsonl", "size": 8279, "sha256": "c6c68c13d22911b0c207189ff2b8b6a2c8558740360b0759832bbb50ec373388"},
+    {"path": "interface/reveal_relay_api_key.md", "size": 5067, "sha256": "26a2170fb639ad06d66118d8c14048e5dbf935a4b1a13883aa2dd6b7da10f2a3"},
+    {"path": "evidence.md", "size": 11947, "sha256": "2616b083589723345d899ddb33bf8bf4f825581492bce7affe1f3ccc54e8c31a"}
+  ],
+  "method": "反编译器 MCP (mac) decompile/xrefs_to/callees/func_profile/get_string/get_bytes against live 1.1.8 mac IDB (x86_64 slice of universal Mach-O, arch-noise-filtered per REVERSE-STATUS.md precedent); owner resolved via intermediate/aimami/1.1.8/macos-arm64/version-delta/owner-map-118.jsonl (angle A, reveal_relay_api_key record); frontend contract cross-checked against raw/aimami/1.1.8/macos-arm64/frontend/ipc-contracts.jsonl (line 113) and frontend-control-flow.jsonl (line 194); 1.0.9 baseline absence cross-checked via targeted grep across raw/aimami/1.0.9 and intermediate/aimami/1.0.9 (0 hits) plus intermediate/aimami/1.1.8/version-delta/frontend-delta/cmd-added.mac.txt line 9.",
+  "idempotency_check": "find raw/aimami/1.1.8/macos-arm64/*/reveal_relay_api_key/ prior to this write returned empty; grep -c reveal_relay_api_key INDEX.jsonl prior to this write = 0 -- no prior full leaf or claim existed for this command this version."
+}

@@ -1,0 +1,17 @@
+{
+  "command": "get_image_compat",
+  "platform": "win",
+  "version": "1.1.8",
+  "session": "<审计会话>",
+  "owner_va": null,
+  "gate_tier": "owner_absent_confirmed",
+  "depth_ok": true,
+  "produced_by": "离线分析",
+  "absence_methods": [
+    "owner-map-118 present=False",
+    "find_regex \"get_image_compat\" n=0",
+    "func_query *image_compat* no owner match",
+    "STAGE1 anchored+unanchored+substring",
+    "no dispatcher xref"
+  ]
+}

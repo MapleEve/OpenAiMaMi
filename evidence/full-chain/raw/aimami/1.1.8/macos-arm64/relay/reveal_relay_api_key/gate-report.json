@@ -1,0 +1,90 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "reveal_relay_api_key",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1004c48d0",
+  "owner_symbol": "codexmate_lib::commands::relay::reveal_relay_api_key::hbc8d3f25d5bb8ef1",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "arch_noise_filter_applied": true,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 229568.385,
+    "反编译就绪": true,
+    "module": "AiMaMi",
+    "idb_path_contains": "AiMaMi 1.1.8 universal.app"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (0x1004c48d0) + 4 callees fully decompiled (RelayManager::reveal_api_key, keychain::get_api_key, keychain::mac_keychain::get, keychain::write_key_file) -- 5 pseudocode files, no bail on any, real Hex-Rays body every time, no decompile_truncated flag on the largest body (get_api_key, 4045B/793 instr)"
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 4,
+      "edge_count": 15,
+      "terminated_reasons_hit": [
+        "persistence_read",
+        "persistence_write",
+        "external_call",
+        "response_serialize"
+      ],
+      "note": "15 edges spanning depth 0-4 on multiple independent branches: (a) owner->reveal_api_key->get_api_key->mac_keychain::get->security_framework::passwords::generic_password, terminated_reason=external_call (genuine Security.framework FFI boundary); (b) owner->reveal_api_key->get_api_key->write_key_file->std::fs::write::inner / DirBuilder::_create, terminated_reason=persistence_write; (c) owner->reveal_api_key->get_api_key->std::fs::read_to_string::inner, terminated_reason=persistence_read (depth3); (d) owner->reveal_api_key->get_api_key->{base64::decode,serde_json::from_trait,hostname::get,sha2::compress256}, terminated_reason=external_call/response_serialize (depth3, crate-primitive boundaries) -- satisfies depth>=5-node-OR-terminated-reason redline via multiple simultaneous routes, matching this session's own precedent (windows-x64 restart_codex sub-entry accepted depth4+terminated_reason under the same gate)"
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO (argKeys=[\"providerId\"]) cross-confirmed frontend ipc-contracts.jsonl line 113 + frontend-control-flow.jsonl line 194 + owner pseudocode parameter usage",
+        "response payload traced byte-exact as an Option<String> (isize::MIN niche sentinel 0x8000000000000000 for None) wrapped in the same {disc=2,\"ok\",\"Success\"} envelope shape independently seen in this session's get_codex_router_auth_readiness leaf",
+        "3-tier resolution order fully enumerated and ordered: in-memory cache (RelayManager, dedicated) -> local file cache (get_api_key: per-provider file, then secrets.json index; shared helper, 6 callers) -> macOS Keychain (mac_keychain::get via security_framework crate, service label \"dev.aimami.relay\" confirmed via get_bytes)",
+        "side effects fully enumerated: read-only on tier-1/tier-2 hit; on tier-3 (Keychain) hit, write-through cache-fill to the tier-2 file via write_key_file (DirBuilder::create + set_permissions + fs::write::inner)",
+        "zero network calls confirmed anywhere in the 15-edge call tree -- no reqwest/hyper/socket primitive reachable from the owner, directly contrasted against the sibling get_relay_provider_quota command (HTTP-calling) analyzed earlier this session",
+        "delta vs 1.0.9 confirmed via 2 independent sources: frontend cmd-added.mac.txt line 9 + 0-hit grep sweep across entire 1.0.9 raw/intermediate trees for the command name"
+      ],
+      "open": [
+        "exact serde field/struct name for the response's key-value payload and for the \"ok\"/\"Success\" literal pair (byte values/offsets known, type_query not run this round)",
+        "full on-disk schema of secrets.json beyond \"hashbrown-shaped map keyed by providerId, value is base64 text\" (value type's own field names not reached by this leaf's call tree)",
+        "exact resulting Unix permission bits on the tier-2 cache file/dir after set_permissions (mode argument not extracted via get_bytes this round)",
+        "whether RelayManager's in-memory tier-1 cache is seeded by storage::hydrate_secrets at startup (hydrate_secrets itself not decompiled this round, out of scope)",
+        "windows-x64 equivalent full decompile/diff for same-platform cross-check (tracked separately per REVERSE-STATUS.md round scope)"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "mac gate is independent of windows-x64 gate per pipeline convention; windows-x64 reveal_relay_api_key not independently re-decompiled by this leaf"
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "command confirmed NEW in 1.1.8 (absent from 1.0.9) via 2 independent evidence sources: intermediate/aimami/1.1.8/version-delta/frontend-delta/cmd-added.mac.txt line 9, and a targeted 0-hit grep for the command name across the entirety of raw/aimami/1.0.9 and intermediate/aimami/1.0.9. Also independently correlated with AI-EXECUTION-QUEUE.md line 814's 9-command new-relay-surface list for this same 1.1.8 delta round."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf; all 5 Unknown items in evidence.md are plain absence-of-extraction records with recovery_attempts noted, not decompile-ceiling excuses -- no async/vtable/ICF ceiling encountered, real_body_found=true on every one of the 5 decompiled functions, no bail, no oversized-body truncation requiring basic_blocks chunking (largest body, get_api_key at 4045B, rendered in full in one decompile() call)"
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_strictImplementationUse": [
+    "resolve exact serde field/struct name for the response payload and the \"ok\"/\"Success\" literal pair via type_query/declare_type against the live 1.1.8 response struct",
+    "map full secrets.json value-type schema if any additional fields (beyond the base64 key value) are later found to matter for reimplementation",
+    "extract exact set_permissions mode bits for the tier-2 cache file/dir via get_bytes/register-constant inspection",
+    "decompile storage::hydrate_secrets to confirm/deny whether it seeds RelayManager's in-memory tier-1 cache directly",
+    "windows-x64 equivalent full decompile/diff for same-platform cross-check",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write -- idempotency check via find (raw/aimami/1.1.8/macos-arm64/*/reveal_relay_api_key/) returned empty prior to this write; grep -c reveal_relay_api_key INDEX.jsonl prior to this write = 0; owner-map-118.jsonl reveal_relay_api_key record (angle A, discovery-only) not previously reduced into a full leaf bundle this session; no collision.",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

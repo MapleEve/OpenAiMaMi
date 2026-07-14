@@ -1,0 +1,89 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "get_codex_router_auth_readiness",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1004c7050",
+  "owner_symbol": "codexmate_lib::commands::relay::get_codex_router_auth_readiness::hbc73a173c4a6e170",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "arch_noise_filter_applied": true,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 214586.011,
+    "反编译就绪": true,
+    "module": "AiMaMi",
+    "idb_path_contains": "AiMaMi 1.1.8 universal.app"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (0x1004c7050) + 8 callees fully decompiled to depth 4/5 (readiness, has_usable_real_oauth_login, live_auth_state, can_restore_previous_auth, read_marker, load_auth_file, token_remaining_seconds, plus RelayManager::snapshot noted but not expanded past its Clone callee) — 8 pseudocode files, no bail on any, real Hex-Rays body every time"
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 4,
+      "edge_count": 22,
+      "terminated_reasons_hit": [
+        "persistence_read",
+        "external_call",
+        "response_serialize"
+      ],
+      "note": "22 edges spanning depth 0-4 (5 nodes deep on at least 3 independent branches: owner->readiness->can_restore_previous_auth->read_marker->read_to_string::inner; owner->readiness->has_usable_real_oauth_login->token_remaining_seconds->base64::decode::inner; owner->readiness->has_usable_real_oauth_login->load_auth_file->{read_to_string::inner,serde_json::from_trait}) — satisfies depth>=5-node-OR-terminated-reason redline via both routes simultaneously"
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO (argKeys=[])",
+        "response field virtualEmail traced byte-exact to a hardcoded literal \"niuniu@woyao.pro\" with full data-flow to the response struct",
+        "response field willUseVirtualAuth inferred to packed-flag byte1 (!has_usable_real_oauth_login) with SIMD-pack call-graph evidence",
+        "no error-return path anywhere in the call tree down to depth 4/5 (always Ok)",
+        "read-only side effects fully enumerated: shared auth-file read, router-unlock-auth-marker.json read x2 (via 2 independent call paths), conditional backup-marker stat, RelayManager mutex-guarded RelayState clone (dropped, unused in response beyond 1 bool)",
+        "delta vs 1.0.9 confirmed via 2 independent sources: frontend cmd-added.mac.txt line 3 + 0-hit grep sweep across entire 1.0.9 raw/intermediate trees for command name and 3 internal literal/marker strings"
+      ],
+      "open": [
+        "exact serde field/struct name producing the \"ok\"/\"Success\" literal pair in the final response (byte values + offsets known, symbolic name not resolved -- type_query not run this round)",
+        "absolute path of the shared local auth-file (pointer/length passed in via caller state struct, not a literal visible in this leaf's call tree)",
+        "full RelayState struct layout (clone callees enumerated via callees() but not individually decompiled -- out of scope, cloned value is dropped unused beyond 1 bit)",
+        "backup-marker literal filename at 0x1012d11a6 not extracted via get_string/get_bytes this round",
+        "has_usable_real_oauth_login's apikey-mode-with-populated-refresh-token branch value of v6 not traced byte-for-byte",
+        "windows-x64 equivalent full decompile/diff for same-platform cross-check (tracked separately per REVERSE-STATUS.md round scope)"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "mac gate is independent of windows-x64 gate per pipeline convention; windows-x64 get_codex_router_auth_readiness not independently re-decompiled by this leaf"
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "command confirmed NEW in 1.1.8 (absent from 1.0.9) via 2 independent evidence sources: intermediate/aimami/1.1.8/version-delta/frontend-delta/cmd-added.mac.txt line 3, and a targeted 0-hit grep for the command name plus 3 distinctive internal literals (router_unlock_auth, niuniu@woyao.pro, router-unlock-auth-marker) across the entirety of raw/aimami/1.0.9 and intermediate/aimami/1.0.9. Also independently correlated with this session's earlier macos-arm64 thread-model survey (intermediate/aimami/1.1.8/macos-arm64/_threadmodel/THREAD-MODEL.md line 139), which already listed this command among new-in-1.1.8 relay/account surface from a separate (frontend/string-diff) angle."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf; all 6 Unknown items in evidence.md are plain absence-of-extraction records with recovery_attempts noted, not decompile-ceiling excuses -- no async/vtable/ICF ceiling encountered, real_body_found=true on every one of the 8 decompiled functions, no bail, no oversized-body truncation requiring basic_blocks chunking"
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_strictImplementationUse": [
+    "resolve exact serde field/struct name for the \"ok\"/\"Success\" response literal pair via type_query/declare_type against the live 1.1.8 response struct",
+    "map full RelayState struct layout if any of its fields are later found to reach a response surface for another command",
+    "extract backup-marker literal filename (0x1012d11a6) via get_string/get_bytes",
+    "windows-x64 equivalent full decompile/diff for same-platform cross-check",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write -- idempotency check via find (raw/aimami/1.1.8/macos-arm64/*/get_codex_router_auth_readiness/) returned empty prior to this write; grep for the command name on REVERSE-STATUS.md and INDEX.jsonl prior to this write both returned 0 hits; owner-map-118.jsonl line 28 (angle A, discovery-only) not previously reduced into a full leaf bundle this session; no collision.",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "relay",
+  "command": "set_relay_display_tags",
+  "session": "<审计会话>",
+  "produced_by": "<本地机器>",
+  "model": "<模型>",
+  "produced_at": "2026-07-13T16:20:00Z",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 win64.exe",
+  "sha256_binary": "f25d8129528b25ac7f69524fa07c78f961da189a7a8f2c758c288ec96bc68f10",
+  "owner_va": "0x1403EA210",
+  "owner_symbol": null,
+  "owner_symbol_note": "windows-x64 1.1.8 build is fully symbol-stripped (0 Rust symbols anywhere, confirmed by this session's own windows-x64 owner-map-118.jsonl sub-entry); owner identity resolved via dedicated command-string xref (find_regex_string_pool_hit+xrefs_to_owner=dedicated_per_command_wrapper_fn), per intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl line 106",
+  "core_callees_renamed": [
+    {"va": "0x140023C50", "name": "set_relay_display_tags_core_dispatch_sys", "dedicated": true},
+    {"va": "0x14026B0A0", "name": "set_relay_display_tags_write_and_sync_sys", "dedicated": true}
+  ],
+  "shared_infra_referenced_by_va": [
+    {"va": "0x14027A5F0", "role": "relay_persist_dispatch", "callers": 15},
+    {"va": "0x14058B830", "role": "relay_config_validate_serialize_persist", "callers": 6},
+    {"va": "0x1405BDEC0", "role": "relay_config_atomic_write_win_fs_leaf", "callers": 27},
+    {"va": "0x14027BE60", "role": "relay_state_lock_poison_probe", "callers": 28},
+    {"va": "0x140273F40", "role": "relay_persist_fallback_retry", "callers": 14}
+  ],
+  "arch_noise_filter_applied": false,
+  "gate_tier": "strictImplementationUse_candidate",
+  "files": [
+    {"path": "pseudocode/0001_set_relay_display_tags_owner.c", "size": 11046, "sha256": "3411a0e5b80686b4b5af86f4daac9e7d52b87f933d240e493ae21ecb9fd3e54c"},
+    {"path": "pseudocode/0002_set_relay_display_tags_core_dispatch_sys.c", "size": 5520, "sha256": "ce3bc1e6786a0888df16c2d780f2a4f9af273077cc06efe7bd762e9fc68929ba"},
+    {"path": "pseudocode/0003_set_relay_display_tags_write_and_sync_sys.c", "size": 8213, "sha256": "3b3f69943d8ba7ffb623ee2db49e7d7caba63af85a50a0e8a9514f89e03370b8"},
+    {"path": "call-trees/set_relay_display_tags.jsonl", "size": 11627, "sha256": "975cbdef2c333884acf361ab82b7d77bd0798020776203b4e89622f8f619fc84"},
+    {"path": "interface/set_relay_display_tags.md", "size": 9767, "sha256": "7a448f925216bf63d810fb2275be4f9c6f2d8d40c4b288847d333f7b9728aafd"},
+    {"path": "evidence.md", "size": 13772, "sha256": "86541fedd3e93c99ffc478c9826d83aec3bb53f8bbc1280e9bece08c9c11b691"}
+  ],
+  "method": "反编译器 MCP (win) 健康检查/analyze_function/decompile/callees/xrefs_to against live 1.1.8 win IDB (<证据库> 1.1.8 win64.exe.i64, PE32+ x86_64, fully symbol-stripped); owner resolved via intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl line 106 (find_regex_string_pool_hit+xrefs_to_owner method); 1.0.9 non-existence cross-checked against internal-reverse/REVERSE-STATUS.md lines 298+3037; 1.1.1 migration-source baseline cross-checked against raw/aimami/1.1.1/windows-x64/set_relay_display_tags/ (owner.md, pseudocode.md, interface.md, call-tree.md). 2 renames performed in IDB (owner + 1 dedicated core-dispatch callee + 1 dedicated write-and-sync callee = 3 total) plus 1 set_comments evidence annotation on the owner.",
+  "renames_performed": {
+    "total": 3,
+    "ok": 3,
+    "failed": 0,
+    "entries": [
+      {"addr": "0x1403ea210", "old": "sub_1403EA210", "new": "set_relay_display_tags_owner_sys"},
+      {"addr": "0x140023c50", "old": "sub_140023C50", "new": "set_relay_display_tags_core_dispatch_sys"},
+      {"addr": "0x14026b0a0", "old": "sub_14026B0A0", "new": "set_relay_display_tags_write_and_sync_sys"}
+    ]
+  },
+  "set_comments_performed": [
+    {"addr": "0x1403ea210", "comment": "A/B-level owner for set_relay_display_tags; sha256=f25d8129528b25ac7f69524fa07c78f961da189a7a8f2c758c288ec96bc68f10; session <审计会话>; not gate promotion"}
+  ],
+  "idempotency_check": "find raw/aimami/1.1.8/windows-x64/*/set_relay_display_tags/ prior to this write returned empty — no prior full leaf existed for this command/version/platform. owner-map-118.jsonl line 106 recorded owner_va+present=true only (angle-A discovery pass), no full pseudocode/call-tree/interface/evidence bundle existed prior to this write. A prior 1.1.1 full-chain leaf exists (raw/aimami/1.1.1/windows-x64/set_relay_display_tags/, gate=consumerStartReady, reached readyToImplement per dim6-final rollup INDEX.jsonl lines 1578/1579) and was used as migration-source baseline for delta comparison per the pipeline's old-to-new migration rule, not copied or reused as this leaf's own evidence."
+}

@@ -1,0 +1,88 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "relay",
+  "command": "test_relay_draft_stream",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1409D9370",
+  "owner_symbol": null,
+  "source_binary": "raw/binary/AiMaMi 1.1.8 win64.exe",
+  "arch_noise_filter_applied": false,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 220445.254,
+    "反编译就绪": true,
+    "module": "AiMaMi 1.1.8 win64.exe",
+    "idb_path_contains": "<证据库> 1.1.8 win64.exe.i64"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (0x1409D9370, 4637B, FULL decompile no truncation, 23266-char body) + 5 supporting callees fully decompiled with 0 truncation (sub_140419560 487B, sub_14127A550 191B, sub_140E156C0 1709B, sub_1410958B0 440B, sub_1412AD780 87B) — 6 pseudocode files total. One additional node (sub_1409717F0, 12059B likely SSE-executor) analyzed via analyze_function metadata only (size/basic_blocks/callees), not fully re-decompiled — see dim3 open items."
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 4,
+      "edge_count": 16,
+      "terminated_reasons_hit": [
+        "external_call",
+        "error_return",
+        "sidecar_dispatch",
+        "response_serialize"
+      ],
+      "note": "redline13 OR-gate satisfied via multiple independent terminated branches at real depths: (a) owner->sub_140419560(D1)->WakeByAddressSingle(D2), terminated_reason=external_call, direct kernel32 import; (b) owner->sub_14127A550(D1)->sub_14108F360(D2)->sub_1410958B0(D3), terminated_reason=external_call, genuine vtable-dispatch ceiling (generic Rust fmt::Write trampoline); (b') owner->...->sub_141279770(D2)->sub_1410685B0(D3)->sub_140001370(D4), terminated_reason=external_call, generic dealloc; (c) owner->sub_140E156C0(D1)->sub_1410958B0(D2), terminated_reason=external_call; (c') owner->sub_1412AD780(D1, conditional)->sub_1412AD9E0(D2), terminated_reason=error_return, generic Rust fmt-internal panic guard; (d) owner->sub_1409717F0(D1)->relay_http_request_cleanup_sys(D2), terminated_reason=sidecar_dispatch, reused already-established 19-caller shared cleanup terminus; (e) owner->invoke_resolver_respond_sys(D1), terminated_reason=response_serialize, unconditional final IPC dispatch. max_depth_reached=4, honestly reported (not inflated)."
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "IPC argKeys confirmed: manager/input/onEvent (owner string-pool literal bytes, exact length match to 1.1.1 baseline) cross-checked against frontend ipc-contracts.jsonl line 126 (argKeys=[input,onEvent], manager = Tauri State<T> injection key)",
+        "Windows-specific atomic-wait+wake mechanism confirmed live (WakeByAddressSingle direct kernel32 call), matches 1.1.1 baseline's documented platform note",
+        "Display::fmt error-check boilerplate confirmed byte-size-identical (1709B) to 1.1.1 baseline's documented equivalent function",
+        "shared relay_http_request_cleanup_sys and option_clone_if_present_helper_sys termini confirmed reachable via live callees() enumeration on sub_1409717F0",
+        "127.0.0.1:1455 string explicitly ruled OUT as a false-positive adjacent-string-blob artifact (not an xref target of this owner) -- no local-sidecar side effect claimed"
+      ],
+      "open": [
+        "full 12059B body of sub_1409717F0 (candidate SSE executor) not independently re-decompiled this round -- corroborated only via size-proximity (+1.3%) and one confirmed shared-callee match to the 1.1.1 baseline's fully-documented relay_draft_stream_sse_executor_sys",
+        "RelayDraftTestInput exact 8-field layout not re-verified via a fresh Visitor decompile this round (inherited from 1.1.1 baseline as a plausibility anchor)",
+        "upstream HTTP path/method/auth-header details not re-confirmed via a fresh find_regex sweep this round (inherited from 1.1.1 baseline)",
+        "SSE event-payload field set (schemaVersion/success/code/message/warnings/data) not independently re-derived for 1.1.8",
+        "argument wire-order for manager/input/onEvent not checked (only presence+byte-length confirmed)"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "windows-x64 gate is independent of macos-arm64 gate per pipeline convention; macos-arm64 test_relay_draft_stream for 1.1.8 not covered by this leaf"
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "command confirmed ABSENT from the 1.0.9 windows baseline (find raw/aimami/1.0.9/windows -iname '*test_relay_draft_stream*' -> 0 hits) -- new relative to this round's 1.0.9 comparison scope, though already fully leafed in the intervening 1.1.1 release (raw/aimami/1.1.1/windows-x64/test_relay_draft_stream/, gate=consumerStartReady, status=complete, INDEX.jsonl line 1494). Delta vs 1.1.1: interface (argKeys) confirmed UNCHANGED; 3 independently size-cross-checked functions show VA churn + modest growth only (owner +16B, Display-error-check exact match 1709B, SSE-executor-candidate +151B/+1.3%) -- classified as zero interface-level behavioral delta, VA churn + compiler re-inlining only at the implementation layer (owner's direct-callee count grew from 1.1.1's documented 5 D1 sub-tasks to 29 in 1.1.8, inferred as more aggressive inlining, not independently diff-tool-verified)."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "No accepted_unknown/genuine_ceiling claimed anywhere in this leaf. The one node not fully re-decompiled (sub_1409717F0, 12059B) is documented as a plain open item with a stated reason (near-exact size/shared-callee correspondence to the already-fully-documented 1.1.1 baseline SSE executor), not as a wall. The vtable-dispatched fmt::Write trampoline (sub_1410958B0) genuinely cannot resolve its Write-sink target statically (dynamic dispatch via *(a2+24)) -- this is confirmed-generic Rust std::fmt machinery shared across every Display impl in the binary, not command-specific business logic, so caller-disambiguation was not attempted (would not change the classification). No drop_in_place-only stub was used to inflate depth. The false-positive '127.0.0.1:1455' string was explicitly checked against the live refs array and ruled out rather than silently assumed."
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_readyToImplement": [
+    "fully re-decompile sub_1409717F0 (12059B, candidate SSE executor) to independently confirm the HTTP-request-building/SSE-parsing logic for this specific 1.1.8 build",
+    "re-verify RelayDraftTestInput's exact 8-field layout via a fresh Visitor decompile against this specific 1.1.8 build",
+    "re-confirm upstream HTTP path/method/auth-header details via a fresh find_regex sweep against this specific 1.1.8 build",
+    "same-platform (macos-arm64) cross-check for this specific command in this specific 1.1.8 build",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write — idempotency check via find (raw/aimami/1.1.8/windows-x64/*/test_relay_draft_stream/) returned empty prior to this write; owner-map-118.jsonl line 121 (test_relay_draft_stream, owner_va=0x1409d9370, present=true) had not previously been reduced into a full leaf bundle this session; no INDEX.jsonl key collision for aimami/1.1.8/windows-x64/relay/test_relay_draft_stream this session (only pre-existing 1.1.1 entries found, different version)",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

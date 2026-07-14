@@ -1,0 +1,12 @@
+// mac 1.1.8 switch_account_and_restart_codex node va=0x100e751d0 depth=3
+// alloc4sync16Arc::drop_slow
+__int64 __fastcall alloc::sync::Arc$LT$T$C$A$GT$::drop_slow::h7fbb1c3df0628752(__int64 *a1)
+{
+  __int64 v1; // rdi
+  __int64 result; // rax
+
+  v1 = *a1; /*0x100e751d4*/
+  if ( v1 != -1 && !_InterlockedDecrement64((volatile signed __int64 *)(v1 + 8)) ) /*0x100e751dd*/
+    return _RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc(); /*0x100e751ef*/
+  return result; /*0x100e751ee*/
+}

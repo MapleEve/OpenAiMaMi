@@ -1,0 +1,88 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "system",
+  "command": "restart_codex",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1006c8fb0",
+  "owner_symbol": "codexmate_lib::commands::system::restart_codex::hb63e3eeac5d259e2",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "arch_noise_filter_applied": true,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 216767.711,
+    "反编译就绪": true,
+    "module": "AiMaMi",
+    "idb_path_contains": "AiMaMi 1.1.8 universal.app"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (0x1006c8fb0) + 9 callees fully decompiled, no bail on any, real Hex-Rays body every time: stop_codex_for_file_edit, launch_codex_app, request_codex_app_quit, kill_codex_processes_until_clear, collect_codex_kill_targets, list_codex_db_holder_processes, list_codex_processes_matching, is_process_running, extract_process_name -- 10 pseudocode files total"
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 5,
+      "edge_count": 20,
+      "terminated_reasons_hit": [
+        "external_call",
+        "persistence_read"
+      ],
+      "note": "20 edges spanning depth 0-5; 3 independent branches reach depth>=5-or-terminated_reason: (a) owner->stop_codex_for_file_edit->kill_codex_processes_until_clear->collect_codex_kill_targets->list_codex_db_holder_processes->Command::output (depth5, external_call); (b) same prefix ->list_codex_processes_matching->Command::output (depth5, external_call); (c) owner->stop_codex_for_file_edit->request_codex_app_quit->Command::output (depth3, external_call). Satisfies depth>=5-node-OR-terminated-reason redline via multiple independent routes simultaneously."
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO (argKeys=[], zero-argument command, confirmed via ipc-contracts.jsonl line 82)",
+        "response niche-encoded Result<(),CoreError>: Err sentinel 0x8000000000000000, Ok on discriminant-10 success chain",
+        "all local-machine side effects enumerated: osascript graceful quit (best-effort, error dropped), bounded poll wait, unconditional forceful kill pass (ps name-match + lsof db-lock-holder match, merged, self/AiMaMi/Cursor-excluded), open -b relaunch + poll",
+        "error message 'Codex launch timed out' (22B) confirmed byte-identical to the 1.1.1 baseline",
+        "no HTTP/network call and no sidecar/child-daemon dispatch observed anywhere in the call tree",
+        "cross-version comparison against 1.1.1 baseline (REVERSE-STATUS.md line 367) confirms zero behavioral delta 1.1.1->1.1.8, VA churn only"
+      ],
+      "open": [
+        "exact kill signal argument (SIGKILL/-9 vs bare kill) not sub-byte-offset confirmed this round, inferred from naming + baseline precedent",
+        "exact lsof argument set (e.g. -t terse mode, number of invocations for db/-wal/-shm) not instruction-traced",
+        "kill_codex_processes_until_clear's own poll-loop timeout/sleep numeric constants not individually get_bytes-extracted (unlike stop_codex_for_file_edit's and launch_codex_app's, which are)",
+        "windows-x64 equivalent not re-verified live this specific sub-step (1.1.1 windows precedent exists but not cross-checked against a live 1.1.8 win IDB here)",
+        "exact ps/pgrep output-column parsing beyond the confirmed '-o pid=,command=' format string not instruction-traced",
+        "whether additional helper/child processes beyond the top-level Codex/Codex Helper pair are covered is an open scope question, not asserted either way"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "mac gate is independent of windows-x64 gate per pipeline convention; windows-x64 restart_codex not independently re-decompiled by this leaf (1.1.1 windows precedent exists separately in REVERSE-STATUS.md, out of scope for this specific sub-step)"
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "command unchanged at the frontend layer since 1.0.9 (cmd-same.mac.txt line 82); no standalone 1.0.9 backend full-chain leaf exists (only the composite confirm_pending_auto_switch_and_restart_codex / switch_account_and_restart_codex commands were reversed at 1.0.9); a full 1.1.1 backend full-chain leaf exists (REVERSE-STATUS.md line 367) and is confirmed byte-identical in behavioral contract to this 1.1.8 finding (same 5-core-function set, same terminal syscalls, same argKeys=[], same response niche, same 22B timeout error string) -- VA churn only (owner 0x100616150 -> 0x1006c8fb0); this round additionally traces one level deeper (depth5 vs the 1.1.1 baseline's depth3) into the previously-unexpanded kill_codex_processes_until_clear subtree, a strictly deeper trace of the same unchanged contract, not a new behavioral delta."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf; all 5 Unknown items in evidence.md are plain absence-of-extraction records, not decompile-ceiling excuses -- no async/vtable/ICF ceiling encountered, real_body_found=true on every one of the 10 decompiled functions (largest: list_codex_db_holder_processes at 29071 raw chars, no truncation, no basic_blocks chunking needed)"
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_strictImplementationUse": [
+    "byte-confirm the exact kill signal argument via get_bytes/disasm at the Command::arg call site",
+    "byte-confirm the exact lsof argument set and invocation count",
+    "extract kill_codex_processes_until_clear's own poll-loop timeout/sleep numeric constants",
+    "windows-x64 equivalent live re-verification for this specific 1.1.8 sub-step",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write -- idempotency check via find (raw/aimami/1.1.8/macos-arm64/*/restart_codex/) returned empty prior to this write; grep for the command key on INDEX.jsonl and REVERSE-STATUS.md prior to this write both returned 0 hits for 1.1.8 macos-arm64 (a distinct v1.1.1 entry exists at REVERSE-STATUS.md line 367, different version, not a collision); owner-map-118.jsonl line 90 (angle A, discovery-only) not previously reduced into a full leaf bundle this session; no collision.",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

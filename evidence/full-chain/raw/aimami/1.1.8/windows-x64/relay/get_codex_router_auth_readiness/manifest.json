@@ -1,0 +1,44 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "relay",
+  "command": "get_codex_router_auth_readiness",
+  "session": "<审计会话>",
+  "machine": "unspecified-worker",
+  "idb_path": "<证据库> 1.1.8 win64.exe.i64",
+  "imagebase": "0x140000000",
+  "owner_map_source": "intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl#L28",
+  "owner_map_original_va": "0x1403cf5b0",
+  "owner_map_original_method": "find_regex_string_pool_hit+xrefs_to_owner=main_dispatcher(inline_match_arm,no_dedicated_wrapper)",
+  "true_owner_va": "0x140024b90",
+  "true_owner_name": "get_codex_router_auth_readiness_owner_sys",
+  "true_owner_resolution_note": "owner-map VA is the shared IPC dispatcher (112 callees, 353 basic_blocks); the genuinely command-specific single-caller entry is one hop deeper at 0x140024b90, confirmed via analyze_function caller-count=1",
+  "renames": [
+    {"addr": "0x140024b90", "old": "sub_140024B90", "new": "get_codex_router_auth_readiness_owner_sys"},
+    {"addr": "0x14060e6b0", "old": "sub_14060E6B0", "new": "router_unlock_auth_readiness_core_sys"},
+    {"addr": "0x14060c510", "old": "sub_14060C510", "new": "router_unlock_auth_has_real_oauth_sys"},
+    {"addr": "0x14060c310", "old": "sub_14060C310", "new": "router_unlock_auth_can_restore_sys"},
+    {"addr": "0x1406045f0", "old": "sub_1406045F0", "new": "router_unlock_auth_read_marker_sys"}
+  ],
+  "rename_batch_result": {"total": 5, "ok": 5, "failed": 0},
+  "comments_set": [
+    {"addr": "0x140024b90", "comment": "owner for get_codex_router_auth_readiness; session <审计会话>; not gate promotion"}
+  ],
+  "保存分析库": {"ok": true, "path": "<证据库> 1.1.8 win64.exe.i64"},
+  "files": [
+    "pseudocode/0001_dispatcher_match_arm.c",
+    "pseudocode/0002_owner_sys.c",
+    "pseudocode/0003_readiness_core_sys.c",
+    "pseudocode/0004_has_real_oauth_sys.c",
+    "pseudocode/0005_can_restore_sys.c",
+    "pseudocode/0006_read_marker_sys.c",
+    "call-trees/get_codex_router_auth_readiness.jsonl",
+    "interface/get_codex_router_auth_readiness.md",
+    "evidence.md",
+    "gate-report.json"
+  ],
+  "cross_platform_sibling": "raw/aimami/1.1.8/macos-arm64/relay/get_codex_router_auth_readiness",
+  "delta_vs_1_0_9": "command absent from 1.0.9 baseline (raw+intermediate, 0 hits); confirmed frontend-added in cmd-added.win.txt line 3; net-new 1.1.8 relay/router surface"
+}

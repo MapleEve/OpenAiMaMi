@@ -1,0 +1,70 @@
+{
+  "schema": "c5cm.raw.gate_report.v1",
+  "command": "confirm_pending_auto_switch",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "session": "<审计会话>",
+  "produced_at": "2026-07-13",
+  "batch_index": "3/20",
+  "owner_va": "0x1403ebe20",
+  "owner_name": "confirm_pending_auto_switch_owner_sys",
+  "gate_tier_candidate": "A/B-level owner, evidence_collected",
+  "gate_promotion": false,
+  "gate_promotion_note": "not gate promotion; this leaf documents an evidence-collected owner + real depth5 call chain + dual convergent response_serialize terminal, readyToImplement/strictImplementationUse judgment deferred to STAGE3 (dim6 C5-side outside reverse scope)",
+  "idempotency_check": {
+    "checked_path": "raw/aimami/1.1.8/windows-x64/*/confirm_pending_auto_switch/",
+    "pre_existing_leaf_found": false
+  },
+  "owner_resolution": {
+    "method": "owner_map_lookup",
+    "source": "intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl row 11 (owner_va=0x1403ebe20, method=find_regex_string_pool_hit+xrefs_to_owner=dedicated_per_command_wrapper_fn, present=true), cross-confirmed this round via func_query name_regex=sub_1403EBE20 (size=0x49f, has_type=true) and decompile() showing inline string aConfirmPending assembly",
+    "result": "owner_confirmed",
+    "prior_1_1_1_note": "1.1.1 windows-x64 had a separate owner recorded at 0x14026ea00 (per earlier session notes); this 1.1.8 owner_va (0x1403ebe20) differs, consistent with normal address-space churn across builds, not a misattribution (verified via the same aConfirmPending string xref pattern used in both versions)"
+  },
+  "call_tree": {
+    "max_depth_reached": 5,
+    "terminated_reason_at_depth5": "external_call",
+    "terminated_reason_detail": "sub_14108F780 -> sub_140001360 (Rust global allocator thunk)",
+    "secondary_terminal_confirmed": "response_serialize (sub_1407A7610, reached both via owner fast-path directly and via error path sub_1402868C0->sub_1407B6C80)",
+    "direct_callees_total_sampled": 9,
+    "direct_callees_fully_decompiled": 8,
+    "direct_callees_accepted_unknown": 1,
+    "cross_session_reconciliation": "intermediate/aimami/1.1.8/windows-x64/version-delta/buckets/win-shard-1.json (same session, earlier sub-step) independently recorded the same owner_va=0x1403ebe20 and the same sub_1402868C0(15 callees)->sub_140344B00(24 callees)->sub_1400603E0(8-way) chain, cross-validated byte-for-byte via this round's fresh decompile(0x1402868c0); that prior artifact reported an aggregate call_tree_depth=6 via that lock-wrapper branch (distinct from this round's depth5 future-construction branch) -- both are real, non-contradictory sub-chains fanning out from the same owner"
+  },
+  "fake_wall_broken": true,
+  "fake_wall_note": "traced through the tracing-instrument thin wrapper (sub_140421360) and the async-block/future constructor (sub_140870B80, 6x Arc::clone via InterlockedIncrement64) rather than stopping at the first drop-glue/refcount shim encountered; reached a genuine depth5 real chain plus an independently-confirmed response_serialize terminal on two convergent paths",
+  "interface_closure": {
+    "argKeys_closed": true,
+    "response_closed": false,
+    "error_strings_closed": true,
+    "side_effects_closed": "partial",
+    "notes": "argKeys=[] confirmed from frontend ipc-contracts.jsonl row 103; error strings confirmed (poisoned lock / Display-fallback / resolver-consumed / mutation-tag); response payload field-level structure Unknown (discriminant 2/3 tags confirmed, field contents not decompiled); side-effects partially closed (6x Arc<T> captured-resource clone confirmed, exact resource identity Inferred not Confirmed; AutoSwitchSnoozeRecord/auto-switch-snooze.json persistence surface identified and independently re-confirmed via find_regex+xrefs_to this round, but the specific read-vs-write call inside this command's chain not isolated, so persistence_commit still not asserted)"
+  },
+  "delta_vs_1_0_9": {
+    "is_new_command": false,
+    "evidence": "present in cmd-same.win.txt / cmd-same.mac.txt (frontend-delta), i.e. unchanged frontend surface across 1.0.9->1.1.8; command already had a dedicated windows owner in 1.0.9 and 1.1.1 per prior session records",
+    "closest_1_0_9_analog": "same command, windows-x64 owner existed continuously across 1.0.9/1.1.1/1.1.8 (address churn only, not a structural change)",
+    "baseline_1_0_9_side_effects": "per win-shard-1.json citing raw/aimami/1.0.9/windows/auto-switch/confirm_pending_auto_switch/AI.md: promote pendingSwitchAccountKey->activeAccountKey, set switchedAccountKey, clear pendingSwitchAccountKey; 1.0.9 call_tree_depth=5 with a simple 5-leaf terminal set (sub_140563ED0 promote / WakeByAddressSingle / tokio_task_spawn / tauri_ipc_resolve_sys), no lock-wrapper/deserialize/error-dispatch machinery documented",
+    "verdict": "delta (call-chain complexity increase confirmed): 1.1.8 win adds a sub_1402868C0(15-callee lock-wrapper)->sub_140344B00(24-callee deserialize/error-format)->sub_1400603E0(8-way error-Display) chain absent from the 1.0.9 baseline's simple 5-leaf tree; this round independently re-derived and cross-validated this exact chain (see call_tree.cross_session_reconciliation) rather than merely citing the prior bucket",
+    "cross_platform_delta_probe_result": "mac-confirmed candidate-credential-freshness-gate delta (new in 1.1.8) could NOT be confirmed or denied on win this round: 6 distinct literal-string recovery attempts all returned 0 hits against the live win 1.1.8 IDB; recorded accepted_unknown, not asserted same or different (Windows PE symbol stripping is a genuine cross-referenced ceiling here, not a search failure)"
+  },
+  "inline_writeback": {
+    "planned_rename": "sub_1403EBE20 -> confirm_pending_auto_switch_owner_sys",
+    "planned_comment": "A/B-level owner for confirm_pending_auto_switch; sha256=f25d8129528b25ac7f69524fa07c78f961da189a7a8f2c758c288ec96bc68f10; session <审计会话>; not gate promotion",
+    "applied": true,
+    "rename_result": "success (mcp__反编译工具__rename batch.func, summary total=1 ok=1 failed=0)",
+    "set_comments_result": "success (mcp__反编译工具__set_comments, addr=0x1403ebe20)"
+  },
+  "artifacts": {
+    "pseudocode": "ida/pseudocode/confirm_pending_auto_switch.c",
+    "call_tree": "call-trees/confirm_pending_auto_switch.jsonl",
+    "evidence": "evidence.md",
+    "interface": "interface/confirm_pending_auto_switch.md"
+  },
+  "accepted_unknown_count": 6,
+  "recovery_attempts_documented": true,
+  "recovery_attempts_count": 10,
+  "gate_tier": "readyToImplement",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

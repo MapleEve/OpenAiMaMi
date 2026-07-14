@@ -1,0 +1,98 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "fetch_relay_models_draft",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1000e9f00",
+  "owner_symbol": "tauri::ipc::InvokeResolver<R>::respond_async_serialized_inner::{{closure}}::h2b6447bb835e17f0",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "arch_noise_filter_applied": true,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 211954.747,
+    "反编译就绪": true,
+    "module": "AiMaMi",
+    "idb_path_contains": "AiMaMi 1.1.8 universal.app",
+    "independent_reverification": "fresh disasm of shared anchor get_relay_proxy_status@0x1004c6320 before this leaf's work started, byte-identical x86_64 mnemonics to prior mac-shard-3/4/5/6/8 sub-entries -- confirms same live x86_64-slice session, no restart/reload occurred"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (0x1000e9f00, 0xbac/2988B) located via 2-step string-literal xref chain (not name-based, generic tauri symbol) and structurally documented with 3 real byte-verified code excerpts (client-selection branch, dual auth-header construction, retry-loop terminal) covering all delta-bearing sections; 2 helper callees freshly and fully decompiled (build_url 3313B, is_transient_error 1975B); full 65180-char raw HexRays body not reproduced verbatim (semantic phase reconstruction, matching 1.1.1 leaf's own convention for this owner class) but every phase cites its VA"
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 3,
+      "edge_count": 26,
+      "terminated_reasons_hit": [
+        "tauri_library_leaf",
+        "keychain_leaf",
+        "std_library_leaf",
+        "serde_library_leaf",
+        "http_terminal_leaf",
+        "external_call",
+        "response_serialize"
+      ],
+      "note": "satisfies depth>=5-OR-terminated-reason redline via the terminated_reason route on the majority of leaves; owner-level edges (depth1) fully cite live callees()/decompile evidence, helper-level edges (depth2/3) fresh callees() this round for build_url/is_transient_error, cross-confirmed-unchanged callee-set match for the other 4 helpers vs the 1.1.1 leaf's documented sets"
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO (argKeys=[input], RelayFetchModelsInput 5 fields per 1.1.1 dim4 regrade continuity)",
+        "response DTO (CoreEnvelope<Vec<String>>, cross-confirmed via drop_in_place<ResultFutureTag::future<...>> generic instantiation)",
+        "DELTA: dual reqwest client (ASYNC_CLIENT/ASYNC_DIRECT_CLIENT) selected by input-struct byte flag, byte-verified VAs 0x1015b1ea8/0x1015b1eb8",
+        "DELTA: mutually-exclusive auth-header styles (bearer_auth vs x-api-key+anthropic-version, both header-name literals byte-confirmed via get_bytes+xrefs_to-to-owner)",
+        "DELTA: bounded retry loop with new 'all retries exhausted' (21B) terminal error, qmemcpy-literal-confirmed",
+        "DELTA: explicit HTTP status-code range check [200,299] (symbol/branch confirmed, format-template content Unknown)",
+        "DELTA: separate 'decode failed' JSON-decode error class (aDecodeFailed symbol confirmed) distinct from parse_model_ids's existing bad-shape error",
+        "confirmed unchanged: resolve_draft_api_key/sanitize_api_key/parse_extra_headers/build_url/parse_model_ids/is_transient_error (6 helpers, fresh decompile for 2, fresh callees() cross-check for the other 4, all match 1.1.1 leaf's documented roles+patterns)",
+        "side effects: conditional system-keychain read + outbound HTTPS request per attempt to {baseUrl}/v1/models, read-only relative to local persisted state"
+      ],
+      "open": [
+        "RelayFetchModelsInput exact byte-offset layout for 1.1.8 build not re-mapped via type_query/declare_type (inferred from 1.1.1 dim4 regrade continuity only)",
+        "exact wireApi/v29 discriminant-to-string numeric mapping not confirmed (inferred from header-style match)",
+        "anthropic-version paired header value not operand-level confirmed (adjacent-in-blob inference only)",
+        "literal content of 2 anonymous format templates (status-error, decode-error) not extracted via get_string/get_bytes",
+        "exact retry-cap numeric value(s) not determined (read from instance memory, not literals)",
+        "whether retry-loop/dual-client/status-check machinery was introduced at 1.1.1 vs 1.1.8 specifically not pinpointed (confirmed only as delta-vs-1.0.9)"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "mac gate independent of windows-x64 gate per pipeline convention; windows-x64 equivalent for this specific command not decompiled by this leaf"
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "delta command, confirmed via fresh 1.1.8 decompile against the 1.0.9 baseline doc (raw/aimami/1.0.9/macos/relay/fetch_relay_models_draft/README.md). 4 concrete deltas identified this leaf: (1) wireApi-selected dual-client/mutually-exclusive auth-header split replacing 1.0.9's unconditional dual-header send, (2) new bounded retry loop with 'all retries exhausted' terminal, (3) new explicit HTTP status-code range check, (4) new separated JSON-decode-failure error class. 6 core helper functions confirmed structurally unchanged across 1.0.9/1.1.1/1.1.8."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf; all Unknown items in evidence.md are plain absence-of-extraction records (2 format-template literal strings not pulled via get_string/get_bytes, struct offsets not re-mapped via type_query, exact retry-cap values not literal-visible, windows-side not re-checked this leaf) -- no async/vtable/ICF ceiling encountered, real_body_found=true on the owner and both fresh-decompiled helpers, no bail. The owner itself was NOT trivially findable via name-based func_query (generic tauri closure symbol) -- this was resolved via the string-literal xref method, not accepted as Unknown/orphan."
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_strictImplementationUse": [
+    "re-map RelayFetchModelsInput exact byte-offset layout via type_query/declare_type against the 1.1.8 binary",
+    "extract the 2 anonymous format-template literal strings (status-code error, decode-failure error) via get_string/get_bytes",
+    "confirm the anthropic-version paired header value via direct operand-level get_bytes+xrefs_to",
+    "determine exact retry-cap numeric value(s)",
+    "windows-x64 equivalent full decompile/diff for same-platform cross-check",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write -- idempotency check via find (raw/aimami/1.1.8/macos-arm64/*/fetch_relay_models_draft/) returned empty prior to this write; owner-map-118.jsonl line 23 only recorded the drop_in_place shim (not a full leaf); no INDEX.jsonl key collision for aimami/1.1.8/macos-arm64/relay/fetch_relay_models_draft this session (grep '1.1.8.*fetch_relay_models_draft' escaped = 0 hits prior to write)",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

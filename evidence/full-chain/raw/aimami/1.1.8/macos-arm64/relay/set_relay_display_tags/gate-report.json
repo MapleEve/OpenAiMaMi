@@ -1,0 +1,94 @@
+{
+  "schema": "c5cm.gate-report.v1",
+  "command": "set_relay_display_tags",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "produced_at": "2026-07-13",
+  "sha256_binary": "63c9655f7e7f0d725e55c83b5057023cb8e8351d577f47a9ad683137d6c89470",
+  "owner_va": "0x1004c6450",
+  "owner_symbol": "codexmate_lib::commands::relay::set_relay_display_tags::hf950017d5fd63f1a",
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 220518.304,
+    "反编译就绪": true,
+    "module_match": "AiMaMi",
+    "checked_before_first_call": true
+  },
+  "owner_gate_precheck": {
+    "find_prior_leaf_dir": "empty",
+    "index_jsonl_prior_hits": 1,
+    "index_jsonl_prior_hit_detail": "aimami/1.1.1/windows-x64/set_relay_display_tags/full-chain (different version+platform, not a collision)",
+    "result": "ALLOW/first",
+    "collision": false,
+    "takeover_token_needed": false
+  },
+  "call_tree": {
+    "path": "call-trees/set_relay_display_tags.jsonl",
+    "edge_count": 44,
+    "max_depth_reached": 4,
+    "terminated_reason_branches": {
+      "persistence_commit": 4,
+      "persistence_read": 3,
+      "error_return": 3,
+      "response_serialize": 5,
+      "external_call": 8
+    },
+    "gate_satisfied_via": "terminated_reason (depth>=5 not independently required since multiple genuine terminated_reason branches confirmed at depth 3-4)"
+  },
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "accepted_unknown_claimed": false,
+    "truncated_nodes": 0,
+    "nodes_fully_decompiled": 10,
+    "recovery_attempts_documented": true
+  },
+  "renames_this_leaf": 0,
+  "renames_note": "clean demangled Rust symbols already present throughout; append_comments used instead of rename",
+  "append_comments": [
+    {
+      "addr": "0x1004c6450",
+      "result": "ok",
+      "comment": "A/B-level owner for set_relay_display_tags; sha63c9655f7e7f0d725e55c83b5057023cb8e8351d577f47a9ad683137d6c89470; session <审计会话>; not gate promotion"
+    }
+  ],
+  "delta_vs_baselines": {
+    "vs_1_0_9": "command absent (0 hits in raw/intermediate aimami/1.0.9); listed in cmd-added.mac.txt line 12 as frontend-added",
+    "vs_1_1_1_windows": {
+      "param_count_change": "3 params (manager,global,woyao) -> 2 params (global,woyao); manager selector removed",
+      "response_shape_change": "literal \"ok\" (2B) -> full sanitized 344B RelayState snapshot",
+      "confirmed": true
+    }
+  },
+  "artifacts": [
+    "pseudocode/0001-owner-set_relay_display_tags.c",
+    "pseudocode/0002-RelayManager-set_display_tags.c",
+    "pseudocode/0003-codex_catalog-sanitize_display_tag.c",
+    "pseudocode/0004-RelayManager-persist.c",
+    "pseudocode/0005-storage-save.c",
+    "pseudocode/0006-RelayManager-sync_codex_config_with_outcome.c",
+    "pseudocode/0007-codex_catalog-write_catalog.c",
+    "pseudocode/0008-codex_writer-apply_codex_state.c",
+    "pseudocode/0009-router_unlock_auth-live_auth_state.c",
+    "pseudocode/0010-storage-sanitize_for_export.c",
+    "call-trees/set_relay_display_tags.jsonl",
+    "interface/set_relay_display_tags.md",
+    "evidence.md",
+    "gate-report.json"
+  ],
+  "gate_tier": "readyToImplement",
+  "gate_tier_rationale": "interface/DTO/error/side-effect closure complete for the traced paths; blocked from readyToImplement only by named-field-level Unknowns (RelayState field names, envelope discriminant name) documented in evidence.md, not by any genuine_ceiling",
+  "blockers_for_ready_to_implement": [
+    "RelayState struct field names/offsets for displayTagGlobal/displayTagWoyao not type_query-verified",
+    "outer CoreEnvelope success-variant discriminant field name not type_query-verified",
+    "build_catalog_bytes disk-write terminus not traced one hop further"
+  ],
+  "status": "complete",
+  "gate": "owner_first_no_collision",
+  "not_gate_promotion": true,
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

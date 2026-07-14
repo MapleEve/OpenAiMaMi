@@ -1,0 +1,32 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "deeplink",
+  "command": "parse_aimami_deeplink",
+  "session": "<审计会话>",
+  "produced_by": "<本地机器>",
+  "model": "<模型>",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 win64.exe",
+  "owner_va": "0x1403D6000",
+  "owner_symbol": null,
+  "owner_symbol_note": "windows-x64 1.1.8 build is fully symbol-stripped; owner identity resolved via dedicated command-string xref (find_regex_string_pool_hit+xrefs_to_owner=dedicated_per_command_wrapper_fn) per intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl line 71",
+  "core_va": "0x140025220",
+  "response_build_va": "0x1407AD6D0",
+  "arch_noise_filter_applied": false,
+  "gate_tier": "strictImplementationUse_candidate",
+  "files": [
+    {"path": "pseudocode/0001_parse_aimami_deeplink_owner_sys.c", "size": 7748, "sha256": "0e32a0fd8987c9e98bea38dde94f3a712030850395d277ab1ef3302d521178bf"},
+    {"path": "pseudocode/0002_parse_aimami_deeplink_core_sys.c", "size": 23192, "sha256": "c6c12cfbbaf8bf89426473ebcec3a46ba8d185b27bb9c4e545164683323d0d1f"},
+    {"path": "pseudocode/0003_parse_aimami_deeplink_response_build_sys.c", "size": 4865, "sha256": "993108d271345bc6a6a8fc11f123fcd240b62b7807b84d012b20c53406df9b20"},
+    {"path": "pseudocode/0004_shared_helpers_and_terminals.c", "size": 9236, "sha256": "23bd362b30898711a7fc33ead68576a691c36cb748ce335a4a3aa98668bd4c6b"},
+    {"path": "call-trees/parse_aimami_deeplink.jsonl", "size": 4694, "sha256": "8e47747df433450d56a6da410d5a72ff168ceceecb77b61724237788ff9353fc"},
+    {"path": "interface/parse_aimami_deeplink.md", "size": 7506, "sha256": "1eadd8599cc7611ba6ebc4886dcf52e7ae5b40d42d515d5167f538cdb5c6d64b"},
+    {"path": "evidence.md", "size": 8818, "sha256": "e5107834bb33e0649ef45bd341c4589a237435f1e5616bd383936c01e5c02f21"},
+    {"path": "gate-report.json", "size": 7484, "sha256": "7cde0ffed4a93201044a9136d4ad9b6ae25f14b18c8b3372ce8d21933b890d43"}
+  ],
+  "method": "反编译器 MCP (win) decompile/callees/xrefs_to/rename/set_comments against live 1.1.8 win IDB (<证据库> 1.1.8 win64.exe.i64, PE32+ x86_64, fully symbol-stripped); owner resolved via intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl line 71 (find_regex_string_pool_hit+xrefs_to_owner method); command-specific vs shared disambiguation done via xrefs_to caller-count BEFORE any rename decision (sub_14086FD70=52 callers, sub_1403747D0=46 callers -> left un-renamed; core/response-builder=1 distinct caller each -> renamed); delta comparison cross-checked against raw/aimami/1.1.1/windows-x64/parse_aimami_deeplink/{interface.md,owner.md,manifest.json} (out-of-scope migration-source baseline, cited only per pipeline's old-to-new migration rule).",
+  "idempotency_check": "find raw/aimami/1.1.8/windows-x64/*/parse_aimami_deeplink/ prior to this write returned empty (no directory existed) — no prior full leaf existed for this command/version/platform. owner-map-118.jsonl line 71 recorded owner_va+present=true only (angle-A discovery pass), no full pseudocode/call-tree/interface/evidence bundle existed prior to this write. grep for INDEX.jsonl key aimami/1.1.8/windows-x64/deeplink/parse_aimami_deeplink returned 0 hits."
+}

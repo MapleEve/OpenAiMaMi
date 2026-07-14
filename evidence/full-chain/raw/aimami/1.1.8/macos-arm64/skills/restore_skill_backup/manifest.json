@@ -1,0 +1,57 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "core::skills",
+  "command": "restore_skill_backup",
+  "producer": "claude-sonnet-5",
+  "machine": "<本地机器>",
+  "session": "<审计会话>",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "task_ref": "STAGE2 deep gold-leaf 21/29 (macos-arm64)",
+  "owner": {
+    "ipc_dispatch_owner": {
+      "symbol": "codexmate_lib::commands::skills::restore_skill_backup::hdd4cc5f5064d93ff",
+      "addr": "0x10030ed50",
+      "size": 1010,
+      "basic_blocks": 29,
+      "cyclomatic_complexity": 14
+    },
+    "core_impl": {
+      "symbol": "codexmate_lib::core::skills::restore_skill_backup::h2146afcdb0c1e1fe",
+      "addr": "0x1004bfbb0",
+      "size": 2401,
+      "basic_blocks": 44,
+      "cyclomatic_complexity": 22,
+      "source": "owner-map-118.jsonl line 91 (func_query_clean_top_level_symbol)"
+    }
+  },
+  "callees_decompiled_full": [
+    {"symbol": "backup_skill_directory", "addr": "0x1004c0ca0"},
+    {"symbol": "copy_dir_all", "addr": "0x1004bbfd0"},
+    {"symbol": "load_skill_summary", "addr": "0x1004be5d0"}
+  ],
+  "files": [
+    "pseudocode/0001-owner-commands-skills-restore_skill_backup.c",
+    "pseudocode/0002-core-skills-restore_skill_backup.c",
+    "pseudocode/0003-backup_skill_directory.c",
+    "pseudocode/0004-copy_dir_all.c",
+    "pseudocode/0005-load_skill_summary.c",
+    "call-trees/restore_skill_backup.jsonl",
+    "interface/restore_skill_backup.md",
+    "evidence.md",
+    "manifest.json",
+    "gate-report.json"
+  ],
+  "renames_applied": [],
+  "comments_appended": [
+    {"addr": "0x1004bfbb0", "scope": "owner_evidence_only"}
+  ],
+  "保存分析库d": null,
+  "baseline_comparison": {
+    "1.0.9_bundle": "raw/aimami/1.0.9/macos/skills/restore_skill_backup/",
+    "delta_found": true,
+    "delta_summary": "mkdir -p on parent(target_install_dir) inserted before rollback-backup/remove/copy sequence; absent from 1.0.9 documented terminal-callee set"
+  }
+}

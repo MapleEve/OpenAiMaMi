@@ -1,0 +1,89 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "system",
+  "command": "get_system_info",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": null,
+  "owner_symbol": null,
+  "core_dispatcher_va_reference_only": "0x1403cf5b0",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 win64.exe",
+  "arch_noise_filter_applied": false,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 212529.038,
+    "反编译就绪": true,
+    "module": "AiMaMi 1.1.8 win64.exe",
+    "idb_path_contains": "<证据库> 1.1.8 win64.exe.i64"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "blocked",
+      "note": "no owner function exists anywhere in the windows-x64 1.1.8 binary; nothing to decompile. See pseudocode/0001_owner_absent.md."
+    },
+    "dim2_call_tree": {
+      "status": "blocked",
+      "depth_reached": 0,
+      "edge_count": 0,
+      "terminated_reasons_hit": ["owner_not_found"],
+      "note": "no root node exists to begin a call-tree traversal from."
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO confirmed via frontend ipc-contracts.jsonl: argKeys=[] (no payload)",
+        "command confirmed present, unchanged, in the frontend surface since 1.0.9 (cmd-same.win.txt line 34)",
+        "macOS 1.1.8 owner symbol confirmed present (0x1006c9110), proving this is a live shipping feature on at least one platform"
+      ],
+      "open": [
+        "response DTO fields — unknown, no owner to decompile on this platform",
+        "error paths — unknown, no owner to decompile on this platform",
+        "side effects — unknown, no owner to decompile on this platform"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "windows-x64 gate is independent of macos-arm64 gate per pipeline convention; macos-arm64 get_system_info was only angle-A symbol-resolved this session (owner-map-118.jsonl line 38), not independently gold-leafed."
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "command unchanged in the frontend surface across 1.0.9->1.1.8 (cmd-same.win.txt). Backend: 1.1.1 windows baseline (out-of-scope migration-source citation) had a confirmed WORKING dispatch chain at depth 5 (get_system_info_ipc_dispatcher_branch_sys_111@0x14001D130 -> get_system_info_cmd_owner_sys_111@0x140835CC0). The 1.1.8 windows binary has a confirmed ABSENT dispatch literal (5-method exhaustive negative). This is recorded as a genuine windows-side regression/removal finding for the 1.1.1->1.1.8 window, not a decompile ceiling and not a tooling artifact (ruled out via positive-control checks, see evidence.md)."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "owner_absent_claimed": true,
+    "recovery_attempts": [
+      "this session's own prior STAGE1 owner-map discovery pass: string_pool_absent(anchored+unanchored+substring+targeted_api_import_xref_search,0_hits) -- intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl line 38",
+      "this round, live: find_regex {\"pattern\":\"get_system_info\"} against the current 1.1.8 win IDB -> {\"n\":0,\"matches\":[]}",
+      "this round, live: find_regex {\"pattern\":\"system_info\"} (broader substring) -> {\"n\":0,\"matches\":[]}",
+      "this round, live: find_regex {\"pattern\":\"SystemInfo\"} -> 3 hits, all Win32 API import names (GetSystemInfo/GetNativeSystemInfo), confirmed unrelated to IPC dispatch",
+      "this round, live: func_query {\"name_regex\":\"get_system_info\"} -> {\"data\":[],\"next_offset\":null}",
+      "this round, live: func_query {\"name_regex\":\"commands6system\"} (Rust module-path substring) -> {\"data\":[],\"next_offset\":null}, confirming the entire commands::system module is symbol-unresolvable on this stripped windows binary",
+      "this round, live: find_bytes {\"patterns\":[\"67 65 74 5f 73 79 73 74 65 6d 5f 69 6e 66 6f\"]} (raw hex ASCII byte-pattern scan of the ENTIRE binary image, independent of 反编译器 string-recognition heuristics) -> {\"n\":0,\"matches\":[]}",
+      "positive-control sanity check: identical find_regex method run against 7 sibling command-name literals of comparable/shorter/longer length (load_sessions, get_device_id, restart_codex, run_daemon_once, switch_account, logout, get_notification_client_state) -- all 7 resolved with n>=1, ruling out a string-length/tooling artifact as the explanation"
+    ],
+    "note": "5 independent methods (2 recorded this round live, 1 recorded in this session's own prior STAGE1 pass, plus a raw full-image byte scan and a Win32-API-import false-positive check) all agree: the get_system_info command-dispatch literal does not exist anywhere in the windows-x64 1.1.8 binary. This is classified owner_absent_confirmed, not accepted_unknown/genuine_ceiling, because there is no partial decompile or ambiguous ceiling being excused -- it is a plain, exhaustively-checked absence with a documented positive control ruling out tooling failure."
+  },
+  "gate_tier": "owner_absent_confirmed",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_readyToImplement": [
+    "no windows-x64 owner exists in the 1.1.8 build for this command -- cannot proceed to pseudocode/call-tree/interface/error/side-effect closure on this platform without a target to decompile",
+    "pinpoint the exact 1.1.1->1.1.8 build/commit at which the windows handler was removed (out of this round's scope, would require opening the 1.1.1 IDB live, which this round's task explicitly skips)",
+    "independently verify whether the 1.0.9 windows-x64 build had a working handler (no 1.0.9 windows backend evidence exists on disk this round; only a secondhand note inside the 1.1.1 evidence file)",
+    "macOS 1.1.8 gold-leaf for this same command (currently only angle-A symbol-resolved, not decompiled) to establish the actual cross-platform behavioral contract",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write -- idempotency check via find (raw/aimami/1.1.8/windows-x64/*/get_system_info/) returned empty prior to this write; grep on INDEX.jsonl for the key prior to this write returned 0 hits; owner-map-118.jsonl line 38 (get_system_info, owner_va=null, present=false) had not previously been reduced into a full leaf bundle this session; no INDEX.jsonl key collision for aimami/1.1.8/windows-x64/system/get_system_info this session",
+  "produced_at": "2026-07-13T00:00:00Z"
+}

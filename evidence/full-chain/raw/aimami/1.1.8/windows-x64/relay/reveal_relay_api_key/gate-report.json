@@ -1,0 +1,88 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "relay",
+  "command": "reveal_relay_api_key",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1403DDCB0",
+  "owner_symbol": null,
+  "source_binary": "raw/binary/AiMaMi 1.1.8 win64.exe",
+  "sha256_binary": "f25d8129528b25ac7f69524fa07c78f961da189a7a8f2c758c288ec96bc68f10",
+  "arch_noise_filter_applied": false,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 218300.048,
+    "反编译就绪": true,
+    "module": "AiMaMi 1.1.8 win64.exe",
+    "idb_path": "<证据库> 1.1.8 win64.exe.i64"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (0x1403DDCB0, 1297B, FULL decompile 0 truncation) + 3 dedicated callees fully decompiled: response_build_sys (0x140020ED0, 299B, FULL), state_lookup_sys (0x14026AD50, 720B, FULL — a first analyze_function() call reported a 164-line render-limit truncation, resolved via a direct decompile() call which returned the complete body), respond_dispatch_sys (0x1407AF810, 642B, FULL). 4 pseudocode files, 0 real bail on any."
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 4,
+      "edge_count": 20,
+      "terminated_reasons_hit": [
+        "response_serialize",
+        "error_return",
+        "external_call",
+        "persistence_read"
+      ],
+      "note": "depth>=5-OR-terminated_reason redline satisfied via multiple independent terminated branches at depth 2-4: (a) owner -> respond_dispatch_sys(1) -> invoke_resolver_respond_sys(2), terminated_reason=response_serialize; (b) response_build_sys(1) -> state_lookup_sys(2) -> sub_1412AD780(3, panic 'relay state poisoned'), terminated_reason=error_return; (c) state_lookup_sys(2) -> WakeByAddressSingle(3), terminated_reason=external_call; (d) state_lookup_sys(2) -> sub_14027D5B0(3, keychain-fallback, 4526B, string-pool-confirmed), terminated_reason=persistence_read; (e) respond_dispatch_sys(1) -> sub_14003A6B0(2) -> sub_1407A30E0(3) -> sub_1400450F0(4), max_depth_reached=4, honestly reported (not inflated to claim 5). 20 edges total, depth 0-4."
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "closed",
+      "closed": [
+        "request DTO (argKeys=[\"providerId\"] frontend-confirmed + optional backend-only \"manager\" key) confirmed via frontend ipc-contracts.jsonl line 113 + owner body literal string refs, zero delta vs 1.1.1 baseline",
+        "success response field-label construction (\"ok\" 2B / \"Success\" 7B) confirmed byte-identical to 1.1.1 baseline via literal integer constant comparison",
+        "core RwLock-read + 232B-stride RelayProvider Vec-scan lookup logic confirmed via full decompile, byte-identical stride to 1.1.1 baseline",
+        "2-tier lookup order (in-memory Vec scan first, keychain-fallback second) confirmed via call structure + sub_14027D5B0 string pool (codexmate_lib::core::relay::keychain / USER / USERNAME), architecturally matching 1.1.1 baseline",
+        "error paths enumerated: arg-extract failure (response_serialize), RwLock poison panic (error_return, literal confirmed), keychain read failure (persistence_read, inferred from shared helper's string pool), Display-format failure (error_return, literal confirmed byte-identical to get_relay_provider_quota leaf's safety-net string), alloc failure (error_return)",
+        "side effects fully enumerated: RwLock read-only acquire/release, keychain read-only fallback, memory alloc/dealloc for response labels — zero network calls, zero persistence writes, zero relay-state mutation observed anywhere in the traced call tree"
+      ],
+      "open": [
+        "exact top-level JSON key actually consumed by the frontend response parser (\"ok\" vs \"Success\") not independently re-traced through relay-page CCF this round (same open caveat as the 1.1.1 baseline)",
+        "exact Windows API sequence inside the shared keychain-fallback helper sub_14027D5B0 (CredReadW vs registry vs file-backed secrets.json) not individually re-decompiled (shared 9-caller helper, out of this leaf's dedicated-owner scope, analyze_function metadata only)",
+        "exact RelayProvider struct byte offset of the apiKey field not re-mapped via type_query/declare_type against this specific 1.1.8 build"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "windows-x64 gate is independent of macos-arm64 gate per pipeline convention; macos-arm64 reveal_relay_api_key for 1.1.8 not independently re-checked this leaf (a different-version 1.1.1 macos-arm64 leaf exists at raw/aimami/1.1.1/macos-arm64/commands_relay/reveal_relay_api_key/ but is not used to infer 1.1.8 mac behavior per platformPolicy.doNotInferWindowsFromMacOS=true)"
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "command confirmed NEW vs 1.0.9 baseline (does not exist at all — internal-reverse/REVERSE-STATUS.md line 3037, 9-command new-in-1.1.1 list). Confirmed via migration-source cross-check against the 1.1.1 baseline (raw/aimami/1.1.1/windows-x64/reveal_relay_api_key/, gate=strictImplementationUse): zero behavioral delta 1.1.1->1.1.8 — same argKeys, same response field-label bytes, same 232B RelayProvider stride, same panic strings, same 2-tier memory-then-keychain lookup order, and an IDENTICAL owner byte size (1297B in both builds). VA churn only (owner 0x140012820->0x1403DDCB0; response_build_sys 0x1402188F0->0x140020ED0; state_lookup_sys 0x1406D6E80->0x14026AD50), zero size/complexity growth on the owner (contrast with get_relay_provider_quota's modest growth documented elsewhere this session)."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf. state_lookup_sys's apparent analyze_function() truncation (164 remaining lines reported) was cross-verified and RESOLVED via a direct decompile() call that returned the complete 720B body with 0 truncation — documented explicitly in pseudocode/0003 and evidence.md, not papered over as a real gap. sub_14027D5B0 (keychain fallback) was deliberately left at analyze_function-metadata depth as a SCOPE decision (shared 9-caller helper outside this leaf's dedicated-owner boundary, already architecturally corroborated by the 1.1.1 baseline's own independent documentation) — recorded as a plain Unknown with recovery_attempts in evidence.md, not an accepted_unknown claim. All 4 renamed functions were caller-count-verified via xrefs_to (1 caller each) before renaming, confirming they are genuinely command-dedicated and not shared infrastructure misattributed to this command."
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_readyToImplement": [
+    "confirm the exact top-level JSON response key consumed by the frontend (ok vs Success) via relay-page CCF re-trace",
+    "individually decompile sub_14027D5B0's Windows API call sequence (CredReadW/registry/file) rather than relying on string-pool inference",
+    "re-map RelayProvider struct byte offsets via type_query/declare_type against this specific 1.1.8 build",
+    "same-platform (macos-arm64) cross-check for this specific command in this specific 1.1.8 build",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write — idempotency check via find (raw/aimami/1.1.8/windows-x64/*/reveal_relay_api_key/) returned empty prior to this write; owner-map-118.jsonl line 92 (reveal_relay_api_key, owner_va=0x1403ddcb0, present=true) had not previously been reduced into a full leaf bundle this session; no INDEX.jsonl key collision for aimami/1.1.8/windows-x64/relay/reveal_relay_api_key this session (grep prior to this write hit only pre-existing 1.1.1 entries)",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

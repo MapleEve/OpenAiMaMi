@@ -1,0 +1,115 @@
+{
+  "schema": "c5cm.raw.gate_report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "load_relay_state",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "produced_at": "2026-07-13",
+  "owner_va": "0x1004c3c20",
+  "owner_symbol": "codexmate_lib::commands::relay::load_relay_state::h32179ca79633a42f",
+  "baseline_owner_va_109": "0x1001dff6c",
+  "ida_live_gate": {
+    "status": "ok",
+    "反编译就绪": true,
+    "uptime_sec": 224934.015,
+    "module": "AiMaMi",
+    "idb_path_contains": "AiMaMi 1.1.8 universal.app"
+  },
+  "owner_gate_recheck": {
+    "prior_raw_dir_found": false,
+    "index_jsonl_hits_for_command": 9,
+    "index_jsonl_hits_attributable_to_this_key": 0,
+    "collision": false,
+    "takeover_token_needed": false,
+    "gate": "owner_first_no_collision"
+  },
+  "call_tree": {
+    "total_nodes": 24,
+    "max_depth_reached": 4,
+    "independent_terminated_branches": [
+      {
+        "terminated_reason": "external_call",
+        "via": "TcpStream::connect_timeout",
+        "depth": 2
+      },
+      {
+        "terminated_reason": "persistence_commit",
+        "via": "atomic_write::write_atomic -> {OpenOptions::_open,write_all,sync_data,rename,sync_parent_dir}",
+        "depth": 4
+      },
+      {
+        "terminated_reason": "response_serialize",
+        "via": "RelayManager::snapshot -> RelayState::clone",
+        "depth": 2
+      },
+      {
+        "terminated_reason": "response_serialize",
+        "via": "sanitize_for_export -> {Vec::clone x2, String::clone x4, CodexRouteDiagnostic::clone}",
+        "depth": 2
+      },
+      {
+        "terminated_reason": "error_return",
+        "via": "CoreError::fmt / unwrap_failed",
+        "depth": 1
+      },
+      {
+        "terminated_reason": "response_serialize",
+        "via": "CoreEnvelope::ok",
+        "depth": 1
+      }
+    ]
+  },
+  "fake_wall_check": {
+    "genuine_ceiling": false,
+    "accepted_unknown": false,
+    "functions_fully_decompiled_0_truncation": [
+      "0x1004c3c20 (owner, 3259B)",
+      "0x1005c1610 (ensure_proxy_started, 19355B)",
+      "0x1004b14b0 (sanitize_for_export, 5530B)",
+      "0x1004b2680 (storage::save, 8195B)",
+      "0x10039e600 (atomic_write::write_atomic, 6464B)"
+    ],
+    "recovery_attempts": [
+      "func_query on 4 of the ~8 anon rodata symbol names substituted for storage::save's serialize_entry key literals -> returned unrelated generic function listing, no VA resolved, get_bytes not attempted (no VA available)"
+    ]
+  },
+  "delta_vs_1_0_9": {
+    "verdict": "delta",
+    "kind": "refactor_not_behavior_change",
+    "summary": "inline manual apiKey-zero loop (owner-local in 1.0.9) replaced by centralized codexmate_lib::core::relay::storage::sanitize_for_export (0x1004b14b0, shared with activate_relay_provider/deactivate_relay_provider/diagnose_codex_router this delta round); RelayProvider entry size grew 208B->232B; RelayState gained new Option<CodexRouteDiagnostic> field at offset+176; apiKey scrub still anchored at same relative offset (+88) per entry",
+    "cross_shard_reference": "intermediate/aimami/1.1.8/macos-arm64/version-delta/buckets/mac-shard-4.json"
+  },
+  "interface": {
+    "argKeys": [],
+    "argKeys_source": "raw/aimami/1.1.8/macos-arm64/frontend/ipc-contracts.jsonl",
+    "response_fields_total": 8,
+    "response_fields_confirmed": 2,
+    "response_fields_inferred": 1,
+    "response_fields_unknown": 5,
+    "new_field_confirmed_present_key_unknown": "Option<CodexRouteDiagnostic> @ offset+176"
+  },
+  "platform_gate": {
+    "macos": "confirmed",
+    "windows": "unknown_not_analyzed_this_pass"
+  },
+  "renames_this_session": [],
+  "append_comments_this_session": 1,
+  "保存分析库": "pending_at_end_of_this_subentry",
+  "gate_tier": "readyToImplement",
+  "readyToImplement": false,
+  "strictImplementationUse": true,
+  "consumerStartReady": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "blockers_for_readyToImplement": [
+    "6 of 8 response JSON field-name strings left Unknown",
+    "Windows-x64 equivalent of this 1.1.8 delta not analyzed this pass",
+    "test/acceptance mapping missing (unchanged gap from 1.0.9 baseline)"
+  ],
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

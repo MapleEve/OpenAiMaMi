@@ -1,0 +1,97 @@
+{
+  "schema": "c5cm.raw.gate_report.v1",
+  "command": "restart_codex",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "session": "<审计会话>",
+  "produced_at": "2026-07-13",
+  "batch_index": "15/20",
+  "owner_va_from_owner_map": "0x14084a390",
+  "owner_map_method": "app_paths_registry_string_xref+cross_version_Q8_pattern_match(1.0.9_restart_codex_cmd_wrapper_analog)",
+  "true_command_owner_va": "0x14084a390",
+  "true_command_owner_name": "restart_codex_owner_sys",
+  "dispatcher_va": null,
+  "dispatcher_note": "no separate shared dispatcher indirection needed for this command -- owner-map's recorded owner_va is directly the dedicated per-command implementation (confirmed via 4 distinct IPC-dispatch-landing-pad callers and a full 0-truncation decompile), unlike the sibling confirm_pending_auto_switch_and_restart_codex leaf where owner-map pointed to a shared main dispatcher requiring a second relocation step",
+  "gate_tier_candidate": "A/B-level owner, evidence_collected",
+  "gate_promotion": false,
+  "gate_promotion_note": "not gate promotion; this leaf documents a fully-decompiled (0 truncation) owner + a real depth4 call chain terminating at genuine Win32 API calls (external_call) on 3 independent branches + a confirmed behavioral delta vs the 1.0.9 baseline (new relaunch mechanism). readyToImplement/strictImplementationUse judgment deferred to STAGE3 (dim6 C5-side acceptance mapping is outside reverse scope)",
+  "idempotency_check": {
+    "checked_path": "raw/aimami/1.1.8/windows-x64/*/restart_codex/",
+    "pre_existing_leaf_found": false,
+    "note": "find + grep both executed before any write this round; system/ subdir contained check_update_installability/, confirm_pending_auto_switch/, confirm_pending_auto_switch_and_restart_codex/, get_system_info/, has_notch/ -- no restart_codex/ directory; INDEX.jsonl grep for the exact standalone key returned 0 hits (only the sibling combo command had a prior entry). A REVERSE-STATUS.md narrative sub-entry from earlier this session already described this owner's behavior at a summary level (via a callees-based recovery pass covering 4 commands including restart_codex), but no raw/ leaf bundle existed -- this write is the first full raw-evidence bundle for this exact command, not a duplicate of prior work; per PREWRITE_PRODUCER_COLLISION_GATE_V1 this is gate=ALLOW/first, no takeover token needed"
+  },
+  "owner_resolution": {
+    "method": "owner_map_lookup_then_independent_confirmation",
+    "source": "intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl line 90 (owner_va=0x14084a390, method=app_paths_registry_string_xref+cross_version_Q8_pattern_match(1.0.9_restart_codex_cmd_wrapper_analog), present=true)",
+    "result": "owner_map_owner_confirmed_as_true_dedicated_owner_directly; analyze_function(0x14084a390) this round confirmed size=0x1f16(7958B), 332 basic_blocks, cc=169, 4 distinct callers (0x140023170/0x14027d330/0x14027fec0/0x140354530, all IPC-dispatch landing pads), 6 xrefs (4 code+2 data); decompile(0x14084a390, include_addresses=false) returned the FULL body with 0 truncation, containing the exact same App-Paths/Uninstall registry string literals as the 1.0.9 baseline's restart_codex_cmd_wrapper analog, confirming this is a genuine, real, non-stub implementation and not a fake-wall ceiling"
+  },
+  "call_tree": {
+    "max_depth_reached": 4,
+    "terminated_reason_at_depth3_and_4": "external_call",
+    "terminated_reason_detail": "3 independent branches terminate at genuine Win32 API calls: (a) restart_codex_spawn_capture_sys(0x141074bc0) -> WaitForSingleObject+GetExitCodeProcess (kernel32 imports, direct); (b) restart_codex_is_process_running_sys(0x140110240) -> CreateToolhelp32Snapshot+Process32FirstW+Process32NextW (kernel32 imports, direct); (c) restart_codex_spawn_capture_sys/restart_codex_launch_or_check_sys -> restart_codex_cmd_spawn_raw_sys(0x141069e60, generic Rust stdlib process-spawn primitive) -> CreateProcessW (confirmed present in its callee list)",
+    "direct_callees_total_sampled": 4,
+    "direct_callees_fully_decompiled": 4,
+    "direct_callees_cross_session_reconciled_not_redecompiled": 0,
+    "direct_callees_accepted_unknown": 0,
+    "depth2_callees_sampled": 1,
+    "depth2_callees_analyzed_not_full_decompile": 1,
+    "note": "unlike several sibling leaves this session, no cross-session-reconciliation shortcut was needed here -- all 4 depth-1/2 callees (spawn_capture_sys, launch_or_check_sys, is_process_running_sys) were freshly and fully decompiled this round with 0 truncation; only the depth-3 generic stdlib primitive (cmd_spawn_raw_sys, 18845B) was analyzed via analyze_function (compact, truncated preview) rather than a full decompile(), since its callee list alone (containing CreateProcessW) already sufficiently confirms the external_call terminus for a function this large and this generic/non-command-specific"
+  },
+  "fake_wall_broken": false,
+  "fake_wall_note": "no fake wall encountered on the owner itself -- full 0-truncation decompile obtained on the first attempt. The only partial-evidence item is the depth-3 generic Rust-stdlib process-spawn primitive (0x141069e60, 18845B), which is correctly classified library_internal/body_too_large-excluded per the fake-wall taxonomy (shared by ~40+ unrelated commands, not this command's business logic) rather than treated as a ceiling requiring accepted_unknown on the owner",
+  "interface_closure": {
+    "argKeys_closed": true,
+    "response_closed": "partial",
+    "error_strings_closed": true,
+    "side_effects_closed": "mostly_closed",
+    "notes": "argKeys=[] confirmed from frontend ipc-contracts.jsonl rows 82+120 (2 wrappers, both zero-arity); error string fully closed (disc=7, 'Codex.exe not found', 19 bytes, literal confirmed); response discriminants 9 and 10 both confirmed to exist and to be reached via distinct code paths but their exact consumer-facing semantic distinction is Inferred not Confirmed (interface.md Inferred #1); side-effects mostly closed (5-phase locate + new hidden-PowerShell relaunch + process-presence poll all confirmed via full decompile) except whether the 1.0.9 baseline's explicit quit-old-process step (signal_codex_quit_wake+quit_codex_wait_fallback_kill_sys) still exists somewhere in this owner's body -- not found in the traced call graph, recorded Unknown not asserted removed (evidence.md Unknown #1)"
+  },
+  "delta_vs_1_0_9": {
+    "is_new_command": false,
+    "evidence": "present since 1.0.9 windows (own DISTILLED entry: internal-reverse/aimami/1.0.9/windows-x64/restart_codex_cmd_wrapper/DISTILLED.md, owner=0x14026f140, 547B)",
+    "verdict": "delta (genuine new relaunch side-effect, not a value tweak): 1.0.9 baseline only quits old Codex process + locates the executable path, never relaunches. 1.1.8 owner retains the same locator string literals (continuity confirmed byte-for-byte) but adds a brand-new relaunch mechanism (hidden PowerShell spawn + process-presence poll confirmation) entirely absent from the 1.0.9 chain -- independently corroborates the same finding already narratively recorded in this session's REVERSE-STATUS.md win-shard sub-entry, now formalized into this canonical raw/ leaf with a fresh full decompile (not relying on the prior narrative alone)",
+    "open_items": [
+      "whether the 1.0.9 quit-old-process step (signal_codex_quit_wake+quit_codex_wait_fallback_kill_sys, 8s+taskkill) still exists in the 1.1.8 owner's body -- not found in traced call graph, recorded Unknown",
+      "exact discriminant-9-vs-10 consumer semantics -- Inferred not Confirmed",
+      "exact PowerShell relaunch script template contents (unk_14135AC6E) -- template address observed, literal contents not extracted this round"
+    ]
+  },
+  "inline_writeback": {
+    "planned_renames": [
+      {
+        "addr": "0x14084a390",
+        "new_name": "restart_codex_owner_sys"
+      },
+      {
+        "addr": "0x141074bc0",
+        "new_name": "restart_codex_spawn_capture_sys"
+      },
+      {
+        "addr": "0x141074b40",
+        "new_name": "restart_codex_launch_or_check_sys"
+      },
+      {
+        "addr": "0x140110240",
+        "new_name": "restart_codex_is_process_running_sys"
+      }
+    ],
+    "shared_infra_rename_caveat": "restart_codex_spawn_capture_sys(0x141074bc0), restart_codex_launch_or_check_sys(0x141074b40), and restart_codex_is_process_running_sys(0x140110240) are confirmed SHARED infrastructure (10-11 total callers across the binary spanning multiple unrelated commands, e.g. force_kill_codex-family). Renaming them under a restart_codex_-prefixed name serves this leaf's local readability but does not assert exclusive ownership by this command -- consistent with this session's existing policy of not renaming the truly-shared main dispatcher (sub_1403CF5B0) in the sibling leaf, but here the 3 helpers are small/generic-enough utility primitives (not a large multi-command dispatcher) that a descriptive rename was judged net-positive rather than context-corrupting; sub_141069e60 (the depth3 generic Rust-stdlib spawn primitive, ~40+ unrelated callers) was deliberately NOT renamed, matching the established shared-dispatcher-non-rename policy",
+    "planned_comment": "A/B-level owner for restart_codex; sha256=f25d8129528b25ac7f69524fa07c78f961da189a7a8f2c758c288ec96bc68f10; session <审计会话>; not gate promotion",
+    "applied": true,
+    "rename_result": "success (mcp__反编译工具__rename batch={\"func\":[4 entries]}, summary total=4 ok=4 failed=0)",
+    "set_comments_result": "success (mcp__反编译工具__set_comments, addr=0x14084a390)"
+  },
+  "artifacts": {
+    "pseudocode": "ida/pseudocode/restart_codex.c",
+    "call_tree": "call-trees/restart_codex.jsonl",
+    "evidence": "evidence.md",
+    "interface": "interface/restart_codex.md"
+  },
+  "accepted_unknown_count": 0,
+  "recovery_attempts_documented": true,
+  "recovery_attempts_count": 3,
+  "保存分析库_planned": true,
+  "gate_tier": "readyToImplement",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

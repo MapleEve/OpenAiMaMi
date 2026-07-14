@@ -1,0 +1,58 @@
+{
+  "schema": "c5cm.gate-report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "command": "get_codex_router_auth_readiness",
+  "session": "<审计会话>",
+  "gate_tier": "readyToImplement",
+  "readyToImplement": false,
+  "readyToImplement_blockers": [
+    "exact serde field names for response offsets +24, +26, +27 not confirmed (only virtualEmail +8..+23 and willUseVirtualAuth +25 are frontend-confirmed)",
+    "sub_140604950 shared token-check helper not traced past its immediate callees (base64/JWT primitive not independently confirmed on this platform)",
+    "on-disk directory root for router-unlock-auth-marker.json / router-unlock-auth-backup.json not resolved",
+    "router_unlock_auth_has_real_oauth_sys SIMD-compared xmmword constants (0x141322F30/0x141322F20) not byte-fetched/typed this round"
+  ],
+  "genuine_ceiling": false,
+  "accepted_unknown": false,
+  "fake_wall_check": "passed: all 6 traced nodes (dispatcher match-arm disasm, owner_sys, readiness_core_sys, has_real_oauth_sys, can_restore_sys, read_marker_sys) fully decompiled/disassembled with 0 truncation at their own addresses; only the shared 19155B dispatcher's own decompile() call truncated, and it was never claimed as this command's true owner (worked around via segmented disasm() + analyze_function caller-count cross-check per redline13)",
+  "call_tree": {
+    "max_depth_reached": 5,
+    "terminated_reason_branches": [
+      "external_call (dealloc thunk sub_1410648A0)",
+      "persistence_read (drop/cleanup after read_to_string-shaped Result)"
+    ],
+    "nodes": 8,
+    "file": "call-trees/get_codex_router_auth_readiness.jsonl"
+  },
+  "owner_gate": {
+    "status": "ALLOW_first_no_collision",
+    "checked": [
+      "find raw/aimami/1.1.8/windows-x64/*/get_codex_router_auth_readiness/ -> empty prior to this write",
+      "grep get_codex_router_auth_readiness INDEX.jsonl -> 1 hit prior to this write, all macos-arm64 sibling key, no windows-x64 collision",
+      "owner-map-118.jsonl line 28 -> angle-A discovery only, no prior full leaf bundle"
+    ],
+    "takeover_token_needed": false
+  },
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 227362.546,
+    "反编译就绪": true,
+    "module": "AiMaMi 1.1.8 win64.exe",
+    "idb_path": "<证据库> 1.1.8 win64.exe.i64"
+  },
+  "cross_version_delta": {
+    "present_in_1_0_9": false,
+    "evidence": "0 hits across raw/aimami/1.0.9 and intermediate/aimami/1.0.9; listed in intermediate/aimami/1.1.8/version-delta/frontend-delta/cmd-added.win.txt line 3"
+  },
+  "cross_platform_consistency": {
+    "sibling_leaf": "raw/aimami/1.1.8/macos-arm64/relay/get_codex_router_auth_readiness",
+    "virtualEmail_literal_byte_identical": true,
+    "willUseVirtualAuth_inverse_logic_confirmed_on_this_platform": true,
+    "shared_frontend_bundle_confirmed": "assets/relay-page-CybVyflj.js:38 identical file/line on both platforms"
+  },
+  "not_gate_promotion": true,
+  "note": "gate_tier strictImplementationUse_candidate only; this report does not itself promote to readyToImplement/strictImplementationUse -- blockers above remain open for a future round or STAGE2.5 orphan sweep",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

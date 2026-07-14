@@ -1,0 +1,90 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "fix_codex_router_issue",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1004c5d10",
+  "owner_symbol": "codexmate_lib::commands::relay::fix_codex_router_issue::he783bb26d80be6c4",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "arch_noise_filter_applied": true,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 213522.274,
+    "反编译就绪": true,
+    "module": "AiMaMi",
+    "idb_path_contains": "AiMaMi 1.1.8 universal.app"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (0x1004c5d10, 8531B) + 9 callees decompiled: fix_config_stale_text (9094B), resync_codex_config (8062B), write_atomic (6678B), fix_auth_integrity (16775B+header), is_process_running (2276B), stop_codex_for_file_edit (1986B), launch_codex_app (19570B, full, not truncated) all fully captured with no bail; fix_all and fix_issue partially captured (MCP-truncated at 1024/100797 and 1024/232469 chars respectively, documented not hidden) — 10 pseudocode files total"
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 5,
+      "edge_count": 39,
+      "terminated_reasons_hit": [
+        "persistence_commit",
+        "external_call"
+      ],
+      "note": "two independent chains reach genuine OS-syscall-boundary terminals: owner->fix_all/fix_issue->resync_codex_config->apply_codex_state/write_catalog->write_atomic->rename+fsync (depth5, persistence_commit) and owner->fix_all->resync_codex_config->remove_catalog->remove_file (depth4, persistence_commit); satisfies depth>=5-OR-terminated-reason redline via both routes"
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO (argKeys=[\"itemId\"]) confirmed via frontend ipc-contracts.jsonl line 131, unchanged vs 1.0.9",
+        "dispatch strategy (3-byte \"all\" literal match -> fix_all else fix_issue) confirmed unchanged vs 1.0.9 baseline (only VAs shifted)",
+        "Ok-path response struct shape traced to offset-level granularity (status/message strings + FixResult Vec at +72 + 2 trailing scalar fields)",
+        "Err-path niche discriminant (0x8000000000000000) + CoreError Display-formatted string payload confirmed via decompile",
+        "3 literal string constants byte-decoded from inline heap-write immediates (\"已自动重启 Codex 使修复生效\", \"ok\", \"Success\")",
+        "full side-effect inventory: config.toml read/write, provider-catalog JSON write/remove, auth-file backup copy, graceful-then-force-kill process stop, process relaunch",
+        "8 named per-issue fixer symbols enumerated via callees(fix_all), independent of fix_issue body truncation"
+      ],
+      "open": [
+        "exact itemId byte-literal keys inside fix_issue's match arms not re-extracted (fix_issue body MCP-truncated at 1024/232469 chars; not attempted via basic_blocks-chunked reconstruction this leaf)",
+        "Ok-path response struct exact Rust field names not confirmed via type_query/declare_type",
+        "kill_codex_processes_until_clear body not independently decompiled (reachability only)",
+        "checked_fix_result and check_config_stale's is_top_level_model_key/ok_item bodies not independently decompiled",
+        "windows-x64 equivalent not re-decompiled or diffed this leaf"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "mac gate is independent of windows-x64 gate per pipeline convention; REVERSE-STATUS.md tracks fix_codex_router_issue as win-partial (remaining 13-command list) separately, not re-verified by this leaf"
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "delta command vs 1.0.9 baseline (raw/aimami/1.0.9/macos/relay/fix_codex_router_issue/AI.md), confirmed via independent full re-decompile this round. Concrete deltas: (1) stop_codex_for_file_edit is a richer re-implementation of 1.0.9's accepted_unknown stop_codex_app_gracefully, now showing an explicit timeout-bounded poll loop + unconditional force-kill fallback; (2) fixer catalog reachable from fix_all now names 8 symbols vs 1.0.9's 7 itemId string keys, with 2 symbols (fix_router_unlock_auth_residue, fix_takeover_backup_orphan) lacking a confident 1.0.9 name-analog (Inferred, not Confirmed as new); (3) explicit codex_catalog write/remove JSON persistence path disclosed inside resync_codex_config (may be pre-existing 1.0.9 behavior only now visible via full decompile, since 1.0.9's resync_codex_config was itself accepted_unknown that round -- not asserted as a true behavioral delta). Unchanged: arg key itemId, owner dispatch 3-byte \"all\" match strategy, resolve_codex_home/from_home/RelayManager::snapshot call positions."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf. fix_all/fix_issue partial capture is a documented MCP decompile-tool truncation (server-declared total sizes in the raw response tail: 100797B and 232469B respectively), not an accepted_unknown claim -- no recovery_attempts were needed because the depth>=5 + terminated_reason redline is independently satisfied via the fully-decompiled fix_config_stale_text/resync_codex_config/write_atomic/remove_catalog chain, which required no bail on any function actually needed for that chain. A basic_blocks probe on fix_issue returned an inconsistent 10-block/286-byte result vs the 232469-char decompiled text; this anomaly is recorded in evidence.md as Unknown/unresolved, not papered over."
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_strictImplementationUse": [
+    "re-extract fix_issue's full itemId byte-literal match-arm keys via basic_blocks-chunked reconstruction (232469B body)",
+    "re-extract fix_all's full body via the same chunking technique (100797B body)",
+    "confirm Ok-path response struct field names via type_query/declare_type against the 1.1.8 binary",
+    "independently decompile kill_codex_processes_until_clear, checked_fix_result, is_top_level_model_key, ok_item",
+    "windows-x64 equivalent full decompile/diff for same-platform cross-check",
+    "resolve the basic_blocks-vs-decompile size discrepancy for fix_issue",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write — idempotency check via find (raw/aimami/1.1.8/macos-arm64/*/fix_codex_router_issue/) returned empty prior to this write; owner-map-118.jsonl entry for fix_codex_router_issue (module commands::relay, source func_query_clean_top_level_symbol) had not previously been reduced into a full leaf bundle this session; no INDEX.jsonl key collision for aimami/1.1.8/macos-arm64/relay/fix_codex_router_issue this session",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

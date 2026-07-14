@@ -1,0 +1,99 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "set_codex_router_no_account_mode",
+  "session": "<审计会话>",
+  "produced_by": "<本地机器>",
+  "model": "<模型>",
+  "produced_at": "2026-07-13T10:00:48Z",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "owner_va": "0x1005c9090",
+  "owner_symbol": "codexmate_lib::core::relay::manager::RelayManager::set_codex_router_no_account_mode::h9a7e2a1f189a607c",
+  "arch_noise_filter_applied": true,
+  "gate_tier": "strictImplementationUse_candidate",
+  "files": [
+    {
+      "path": "call-trees/set_codex_router_no_account_mode.jsonl",
+      "size": 20000,
+      "sha256": "55d705b8c2af3bb5c3c4146742e02fc0ac445154e1e1f2bdd38cb729df68de2a"
+    },
+    {
+      "path": "evidence.md",
+      "size": 21275,
+      "sha256": "10c4ff94f8041cd6e1f5986c2500c94a2bdede688e06d5109cf20b68eb6b912e"
+    },
+    {
+      "path": "gate-report.json",
+      "size": 8937,
+      "sha256": "68b5f5bab0ee899a5a7a745a86ab091adde6e3198ccc9a8b26be934a3a5b4d24"
+    },
+    {
+      "path": "interface/set_codex_router_no_account_mode.md",
+      "size": 9028,
+      "sha256": "a51ed51886519f506251e71f384a09d97b18be8b419337416e33175a7f28c0f8"
+    },
+    {
+      "path": "pseudocode/0001_set_codex_router_no_account_mode_owner.c",
+      "size": 18787,
+      "sha256": "d931d5127e82442d50e014ff05cbf81abbea0d6d79159b35b9f739ef14a743ea"
+    },
+    {
+      "path": "pseudocode/0002_persist.c",
+      "size": 4208,
+      "sha256": "1228c92fa70fc38c24fa7a1117685b0d65d4c97b14843bcdb0f5a7065d4933fd"
+    },
+    {
+      "path": "pseudocode/0003_rollback_no_account_mode_change.c",
+      "size": 9852,
+      "sha256": "2757ad4dbf53d2e87635472755580d538170301ab58bbc46d147ac33723e2b6e"
+    },
+    {
+      "path": "pseudocode/0004_sync_codex_config_with_outcome.c",
+      "size": 17219,
+      "sha256": "bfa5a04bcd059a249b6490f24b52774f58b8f6803112e0ed63cd1a1bbfb8481e"
+    },
+    {
+      "path": "pseudocode/0005_install_virtual_unlock_auth.c",
+      "size": 20135,
+      "sha256": "dca95a47919e5b1cb688cf7f5a3d19795f9b55d96d73be0119658c605fea5633"
+    },
+    {
+      "path": "pseudocode/0006_router_unlock_auth_cleanup.c",
+      "size": 20657,
+      "sha256": "6d069e4a51a27cdf9d44da6eab885a016dc5ac2bdfce237f1ce3a8e93403a408"
+    },
+    {
+      "path": "pseudocode/0007_marker_exists.c",
+      "size": 1367,
+      "sha256": "c88e5de612d079bb3af5ee49771862e60c70424c4cfc4e85d6ed8853201809a1"
+    },
+    {
+      "path": "pseudocode/0008_stop_codex_for_file_edit.c",
+      "size": 2645,
+      "sha256": "3e800bfe8ec908308a25410997bb75a00876ddde687b7cbf737f5a2fe02d5f58"
+    },
+    {
+      "path": "pseudocode/0009_launch_codex_app_warning.c",
+      "size": 2468,
+      "sha256": "91fd8337b3e1b723f101426f1b91697b1432bee3a14877068ac3766043cad40b"
+    },
+    {
+      "path": "pseudocode/0010_snapshot_sanitized.c",
+      "size": 937,
+      "sha256": "e298ec38f8b789f41bba0f8f6fc405ae8244190757d7c3a0ed61d24268de9934"
+    },
+    {
+      "path": "pseudocode/0011_sanitize_for_export.c",
+      "size": 6031,
+      "sha256": "49939b739c7f23d7300eb89a2dafc119a324f8f74eeb55030425d138cc5fdfdd"
+    },
+    {
+      "path": "pseudocode/0012_progress_closure.c",
+      "size": 1545,
+      "sha256": "c52c51f63e285997ab3aec02835b34825e559034bd6105a6fb868c06befe347d"
+    }
+  ]
+}

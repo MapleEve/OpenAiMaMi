@@ -1,0 +1,127 @@
+{
+  "schema": "c5cm.gate-report.v1",
+  "command": "test_relay_provider_stream",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "session": "<审计会话>",
+  "date": "2026-07-13",
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "not_gate_promotion": true,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 221588.662,
+    "反编译就绪": true,
+    "module": "AiMaMi 1.1.8 win64.exe",
+    "idb_path": "<证据库> 1.1.8 win64.exe.i64"
+  },
+  "owner_gate_recheck": {
+    "find_raw_leaf_prior": "empty",
+    "grep_index_prior_hits": 0,
+    "collision": false,
+    "takeover_token_needed": false,
+    "result": "ALLOW/first"
+  },
+  "call_tree": {
+    "total_edges": 25,
+    "max_depth_reached": 2,
+    "depth_or_terminated_reason_satisfied": true,
+    "terminated_reason_edges": [
+      {
+        "callee": "WakeByAddressSingle",
+        "terminated_reason": "external_call",
+        "count": 2
+      },
+      {
+        "callee": "sub_1403747D0",
+        "terminated_reason": "error_return"
+      },
+      {
+        "callee": "sub_1412AD780",
+        "terminated_reason": "error_return",
+        "distinct_call_sites": 3
+      },
+      {
+        "callee": "relay_http_request_cleanup_sys",
+        "terminated_reason": "sidecar_dispatch"
+      },
+      {
+        "callee": "sub_140035530",
+        "terminated_reason": "response_serialize"
+      },
+      {
+        "callee": "invoke_resolver_respond_sys",
+        "terminated_reason": "response_serialize"
+      }
+    ]
+  },
+  "fake_wall_check": {
+    "genuine_ceiling_claimed": false,
+    "accepted_unknown_claimed": false,
+    "architecture_only_walls": [
+      {
+        "addr": "0x1409717F0",
+        "name": "shared SSE/HTTP stream executor",
+        "size_bytes": 12059,
+        "recovery_attempts": "decompile() attempted this round with include_addresses=true and include_addresses=false, both truncate at ~1023 chars; analyze_function() confirms 58 direct callees, 0 unresolved; same wall already independently hit for this exact address by the test_relay_draft_stream sibling this round -- classified architecture_only/Hex-Rays render-limit, not genuine_ceiling"
+      }
+    ]
+  },
+  "renames_this_round": {
+    "func_batch": {
+      "total": 3,
+      "ok": 3,
+      "failed": 0
+    },
+    "renamed": [
+      {
+        "addr": "0x140A2E5A0",
+        "old": "sub_140A2E5A0",
+        "new": "test_relay_provider_stream_owner_sys"
+      },
+      {
+        "addr": "0x1408D1850",
+        "old": "sub_1408D1850",
+        "new": "test_relay_provider_stream_async_spawn_a_sys"
+      },
+      {
+        "addr": "0x1409026F0",
+        "old": "sub_1409026F0",
+        "new": "test_relay_provider_stream_async_spawn_b_sys"
+      }
+    ],
+    "set_comments": {
+      "addr": "0x140A2E5A0",
+      "comment": "A/B-level owner for test_relay_provider_stream; sha256=f25d8129528b25ac7f69524fa07c78f961da189a7a8f2c758c288ec96bc68f10; session <审计会话>; not gate promotion"
+    }
+  },
+  "interface_confirmed": {
+    "frontend_argkeys": [
+      "providerId",
+      "model",
+      "onEvent"
+    ],
+    "frontend_source": "raw/aimami/1.1.8/windows-x64/frontend/ipc-contracts.jsonl line 127",
+    "backend_literal_refs_confirmed": [
+      "manager",
+      "providerId",
+      "model",
+      "onEvent"
+    ],
+    "cross_confirmed": true
+  },
+  "open_items_for_readyToImplement": [
+    "1.1.1-documented post-stream relay.json persistence (relay_providers_config_write_and_persist_sys) continuity not independently confirmed for 1.1.8 -- live re-check this round contradicts prior session narrative (unrenamed function, 0 callers found), treated as plain Unknown per GROUNDED_NOT_SUMMARY, not silently trusted",
+    "RelayProvider struct field names for 6 Option-cloned config fields not mapped via type_query",
+    "warnings/data response-envelope fields (1.1.1-documented) not independently re-confirmed on 1.1.8 sub_140035530",
+    "sub_1409717F0 (SSE executor) full request-construction body remains architecture_only wall"
+  ],
+  "delta_summary": {
+    "vs_1_0_9": "NEW (rename+redesign of removed non-streaming test_relay_provider)",
+    "vs_1_1_1": "pre-existing, VA churn only (7689B->8921B owner, +16%), interface and response-envelope pattern unchanged"
+  },
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

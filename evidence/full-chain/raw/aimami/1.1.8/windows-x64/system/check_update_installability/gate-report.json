@@ -1,0 +1,61 @@
+{
+  "schema": "c5cm.raw.gate_report.v1",
+  "command": "check_update_installability",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "session": "<审计会话>",
+  "produced_at": "2026-07-13",
+  "batch_index": "2/20",
+  "owner_va": null,
+  "owner_name": null,
+  "gate_tier_candidate": "no_owner_found",
+  "gate_promotion": false,
+  "gate_promotion_note": "not gate promotion; this leaf documents an accepted_unknown finding only, readyToImplement/strictImplementationUse judgment deferred to STAGE3 and cannot be granted without a real owner",
+  "idempotency_check": {
+    "checked_path": "raw/aimami/1.1.8/windows-x64/*/check_update_installability/",
+    "pre_existing_leaf_found": false
+  },
+  "owner_resolution": {
+    "method": "exhaustive_negative_search",
+    "source": "intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl row 7 (owner_va:null, present:false) cross-checked this round with 4x find_regex variants + find_bytes full-pattern + find_bytes 20x sliding-8-byte-window (all against live IDB, format validated via known-positive control parse_aimami_deeplink@0x14133b788)",
+    "result": "no_candidate_va_located",
+    "prior_1_1_1_artifact_note": "raw/aimami/1.1.1/windows-x64/restart_codex/ida/pseudocode/check_update_installability_launch_sys_111.c (VA 0x1407A02E0) exists under this name but is documented in its own manifest.json/README.md as restart_codex's Phase-3 launch helper, not this command's owner; deliberately NOT reused here (see evidence.md Confirmed #5)"
+  },
+  "call_tree": {
+    "max_depth_reached": 0,
+    "terminated_reason_at_depth5": "no_dispatch_evidence",
+    "direct_callees_total": 0,
+    "direct_callees_fully_decompiled": 0,
+    "direct_callees_accepted_unknown": true
+  },
+  "fake_wall_broken": false,
+  "fake_wall_note": "not_applicable — no owner VA exists to wall off; this is an absence-of-dispatch-evidence finding, not an ICF/vtable/async-shim ceiling around a known target (see evidence.md 'Why this is not a fake wall case')",
+  "interface_closure": {
+    "argKeys_closed": true,
+    "response_closed": false,
+    "error_strings_closed": false,
+    "side_effects_closed": false,
+    "notes": "argKeys=[] confirmed from frontend ipc-contracts.jsonl; response/error/side-effects all Unknown — no backend owner located to read them from"
+  },
+  "delta_vs_1_0_9": {
+    "is_new_command": false,
+    "evidence": "present in cmd-same.win.txt (frontend-delta), i.e. unchanged frontend surface across 1.0.9->1.1.8; no genuine Windows backend owner was ever established in 1.0.9, 1.1.1 (misattributed), or 1.1.8 either — consistent cross-version absence, not a 1.1.8 regression",
+    "closest_1_0_9_analog": "none — no dedicated 1.0.9 windows-x64 folder/leaf exists for this command (checked: raw/aimami/1.0.9/windows-x64/system/* has focus_main_window, get_hotspot_enabled, get_notification_client_state, hotspot_ready, open_path, set_hotspot_enabled — no check_update_installability entry)"
+  },
+  "inline_writeback": {
+    "planned_rename": null,
+    "planned_comment": null,
+    "applied": false,
+    "rename_result": "skipped — no owner VA to rename; renaming an unrelated/misattributed function would itself be a fabrication (see evidence.md and pseudocode NO_OWNER_FOUND.md)",
+    "set_comments_result": "skipped — same reason"
+  },
+  "artifacts": {
+    "pseudocode": "ida/pseudocode/check_update_installability_NO_OWNER_FOUND.md",
+    "call_tree": "call-trees/check_update_installability.jsonl",
+    "evidence": "evidence.md",
+    "interface": "interface/check_update_installability.md"
+  },
+  "accepted_unknown_count": 5,
+  "recovery_attempts_documented": true,
+  "recovery_attempts_count": 10
+}

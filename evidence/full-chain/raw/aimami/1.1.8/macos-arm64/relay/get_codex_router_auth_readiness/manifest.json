@@ -1,0 +1,32 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "command": "get_codex_router_auth_readiness",
+  "session": "<审计会话>",
+  "produced_by": "<本地机器>",
+  "model": "<模型>",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 universal.app/Contents/MacOS/AiMaMi",
+  "owner_va": "0x1004c7050",
+  "owner_symbol": "codexmate_lib::commands::relay::get_codex_router_auth_readiness::hbc73a173c4a6e170",
+  "arch_noise_filter_applied": true,
+  "gate_tier": "strictImplementationUse_candidate",
+  "files": [
+    {"path": "pseudocode/0001_get_codex_router_auth_readiness_owner.c", "size": 4035, "sha256": "58702a19c241733dc754e64e1a4a0d9d5a2e1db34b7d847312c59c97f07c0ff4"},
+    {"path": "pseudocode/0002_router_unlock_auth_readiness.c", "size": 2425, "sha256": "4ebcfc47be377e5a83e2de6195cf58fc75b1fc9cead0f814fd9e2b2ea1611428"},
+    {"path": "pseudocode/0003_has_usable_real_oauth_login.c", "size": 2932, "sha256": "01a92dc3d4bbca1c9dc3e9ed601b7a4b934b88f48ead3ce957273500366dbab7"},
+    {"path": "pseudocode/0004_live_auth_state.c", "size": 2881, "sha256": "d8ff76f6c10e4a9fcda153fe909be8789e29bb6f643a379bc33b7de8cebefeee"},
+    {"path": "pseudocode/0005_can_restore_previous_auth.c", "size": 2210, "sha256": "90e4d93e07a5ecb7e0a8abfd1c593f00cdd7c7e9d8069cfcf9170d5e88156062"},
+    {"path": "pseudocode/0006_read_marker.c", "size": 2838, "sha256": "76f0e504c7ce880da1a3c866b66286e8aa9f184bb64332f68b3a2db9af09fbd1"},
+    {"path": "pseudocode/0007_load_auth_file.c", "size": 1900, "sha256": "e0cdbe4157e590bde0498be2419b7b6e90410cf1a4078baf1c64561dc34aa232"},
+    {"path": "pseudocode/0008_token_remaining_seconds.c", "size": 3184, "sha256": "37507c52c4e98d2c13fc955e05886c58cc8e908e9e6258fe7a03c57841080613"},
+    {"path": "call-trees/get_codex_router_auth_readiness.jsonl", "size": 10996, "sha256": "2b98362631a8333629a2bca6cf1c95063be2c8ee38bfc55c31fc66480a11ff3e"},
+    {"path": "interface/get_codex_router_auth_readiness.md", "size": 5284, "sha256": "384653d75d4cc49f238402db91e19840de9c038c4591020c2906788850d4157e"},
+    {"path": "evidence.md", "size": 11351, "sha256": "89916892ef71539333103b806c990ef7434efa3f59a0f43d6864954f27caf0a5"}
+  ],
+  "method": "反编译器 MCP (mac) decompile/xrefs_to/callees against live 1.1.8 mac IDB (x86_64 slice of universal Mach-O, arch-noise-filtered per REVERSE-STATUS.md precedent); owner resolved via intermediate/aimami/1.1.8/macos-arm64/version-delta/owner-map-118.jsonl line 28 (angle A); frontend contract cross-checked against raw/aimami/1.1.8/macos-arm64/frontend/ipc-contracts.jsonl (line 117) and frontend-control-flow.jsonl (lines 145, 192); 1.0.9 baseline absence cross-checked via targeted grep across raw/aimami/1.0.9 and intermediate/aimami/1.0.9 (0 hits for command name, router_unlock_auth, niuniu@woyao.pro, router-unlock-auth-marker) plus intermediate/aimami/1.1.8/version-delta/frontend-delta/cmd-added.mac.txt line 3.",
+  "idempotency_check": "find raw/aimami/1.1.8/macos-arm64/*/get_codex_router_auth_readiness/ prior to this write returned empty; grep for the command name on REVERSE-STATUS.md and INDEX.jsonl prior to this write both returned 0 hits — no prior full leaf or claim existed for this command this version."
+}

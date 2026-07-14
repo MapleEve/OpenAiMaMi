@@ -1,0 +1,91 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "deeplink",
+  "command": "parse_aimami_deeplink",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x1403D6000",
+  "owner_symbol": null,
+  "core_va": "0x140025220",
+  "response_build_va": "0x1407AD6D0",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 win64.exe",
+  "arch_noise_filter_applied": false,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 214550.963,
+    "反编译就绪": true,
+    "module": "AiMaMi 1.1.8 win64.exe",
+    "idb_path_contains": "<证据库> 1.1.8 win64.exe.i64"
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner (0x1403D6000, FULL decompile no truncation) + core business-logic function (0x140025220, 17035-char decompile text, well under HexRays 30000-75000 truncation window, FULL no truncation) + response-envelope builder (0x1407AD6D0, FULL) + 6 supporting shared helpers (sub_14086FD70 arg-extract, sub_1403747D0 tracing-span, sub_1410242F0 BTreeMap lookup, sub_141276960 byte-compare terminal, sub_1412794B0 Display-fmt trampoline, sub_1400DEBD0 RawVec grow) all FULL non-truncated decompiles — 4 pseudocode files written, no real bail on any"
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 4,
+      "edge_count": 13,
+      "terminated_reasons_hit": [
+        "external_call",
+        "response_serialize"
+      ],
+      "note": "depth>=5-or-terminated_reason redline satisfied via TWO independent branches: (a) owner -> sub_14086FD70(1) -> sub_1403747D0(2) -> sub_1410242F0(3) -> sub_141276960(4), terminated_reason=external_call (compiler-intrinsic SWAR byte-compare, no further Rust-level callees); (b) owner -> parse_aimami_deeplink_response_build_sys(1) -> invoke_resolver_respond_sys(2), terminated_reason=response_serialize (shared Tauri IPC resolver, cross-confirmed by multiple other sub-entries this session). Core business-logic function's own callee set (query-param extraction chain: sub_14022B000/sub_140024F90/sub_1402A1D60/sub_1400DEBD0) independently enumerated via decompile() refs (46 total refs), 0 unresolved."
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO (argKeys=[\"url\"]) confirmed via owner body literal string refs (aParseAimamiDee 21B + aUrl_3 3B)",
+        "full aimami:// deeplink URL validation rule set confirmed byte-identical to 1.1.1 windows baseline: scheme==aimami, path requires /import-shaped 2-segment structure, resource==provider, app==codex, name/endpoint/apiKey required, apiKey must be http(s) URL, model optional with default, trailing / trimmed off apiKey",
+        "success response shape confirmed byte-identical to 1.1.1 baseline: tag=2, status:\"ok\"(2B), result:\"success\"(7B), int field @+192=1, bool field @+196=true",
+        "error response path confirmed to route through a Display::fmt trampoline with the well-known panic guard literal \"a Display implementation returned an error unexpectedly\" (55B), same pattern as 2 other functions on this same command's call path",
+        "shared-vs-command-specific disambiguation done via xrefs_to BEFORE rename: sub_14086FD70 (52 callers) and sub_1403747D0 (46 callers) confirmed shared/generic, NOT renamed"
+      ],
+      "open": [
+        "whereabouts of the 1.1.1-documented relay_provider_hashmap_insert_sys-equivalent side effect: not located in the complete 46-ref callee enumeration of the core function this round (see evidence.md Unknown #1 + recovery_attempts)",
+        "exact literal text of 5 format-string template blobs driving each validation-error message not individually decoded",
+        "exact field-level struct layout of the 200B success payload beyond tag/status/result/int/bool not independently type_query-verified this round (cross-referenced against 1.1.1 baseline layout only)",
+        "frontend TS bundle argKeys=[url] shape for this specific 1.1.8 leaf not independently re-verified standalone (cited from 1.1.1 baseline + this round's own separate frontend-delta sub-step)"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "windows-x64 gate is independent of macos-arm64 gate per pipeline convention; macos-arm64 parse_aimami_deeplink owner_va=0x100694a90 recorded in owner-map-118.jsonl (angle-A only) but not deep-decompiled by this windows-only leaf"
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "command confirmed present in both 1.1.1 and 1.1.8 windows baselines (win-divergence-118.json key_findings.confirmed_changed lists \"parse_aimami_deeplink_backend_string_confirmed\" — string/owner presence re-confirmed, not necessarily behavior-changed). This round's fresh 1.1.8 decompile confirms the validation rule set and success-response shape are BYTE-IDENTICAL to the 1.1.1 windows baseline (raw/aimami/1.1.1/windows-x64/parse_aimami_deeplink/interface.md) — VA churn only (owner 0x14002A690->0x1403D6000, core 0x1401C7B90->0x140025220). One open question: the 1.1.1 baseline's documented relay_provider_hashmap_insert_sys side effect was not located in this round's core-function callee enumeration (see dim3 open items) — flagged Unknown, not asserted as a behavioral removal."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "note": "no accepted_unknown/genuine_ceiling claimed anywhere in this leaf. All 9 functions on the traced call path (owner, core, response-builder, and 6 shared helpers) decompiled with real non-bail Hex-Rays bodies, no truncation, no basic_blocks chunking needed. The one open finding (relay-provider-hashmap-insert whereabouts) is a reachability/scope gap with documented recovery_attempts (full callee-ref cross-check + full decompile of the one candidate allocation call), not a fake wall — explicitly distinguished in evidence.md."
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_readyToImplement": [
+    "locate (or confirm genuinely absent/relocated) the relay-provider in-memory hashmap-insert side effect documented in the 1.1.1 baseline",
+    "decode the 5 format-string template literals driving each validation-error message",
+    "type_query/declare_type the exact 200B success-payload struct layout against this specific 1.1.8 win build",
+    "same-build macos-arm64 deep-decompile cross-check for this specific command (currently only angle-A owner-map entry exists on mac side)",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write — idempotency check via find (raw/aimami/1.1.8/windows-x64/deeplink/parse_aimami_deeplink/) returned 'no such directory' prior to this write; grep for the INDEX.jsonl key aimami/1.1.8/windows-x64/deeplink/parse_aimami_deeplink returned 0 hits; owner-map-118.jsonl line 71 (parse_aimami_deeplink, owner_va=0x1403d6000, present=true) had not previously been reduced into a full leaf bundle this session",
+  "保存分析库": {
+    "ok": true,
+    "path": "<证据库> 1.1.8 win64.exe.i64"
+  },
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}

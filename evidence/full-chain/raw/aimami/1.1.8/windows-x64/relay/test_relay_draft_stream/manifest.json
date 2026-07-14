@@ -1,0 +1,32 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "relay",
+  "command": "test_relay_draft_stream",
+  "session": "<审计会话>",
+  "produced_by": "<本地机器>",
+  "model": "<模型>",
+  "produced_at": "2026-07-13T00:00:00Z",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 win64.exe",
+  "owner_va": "0x1409D9370",
+  "owner_symbol": null,
+  "owner_symbol_note": "windows-x64 1.1.8 build is fully symbol-stripped; owner identity resolved via dedicated command-string xref (find_regex_string_pool_hit+xrefs_to_owner=dedicated_per_command_wrapper_fn), per intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl line 121. Renamed in IDB this round to test_relay_draft_stream_owner_sys.",
+  "sse_executor_candidate_va": "0x1409717F0",
+  "arch_noise_filter_applied": false,
+  "gate_tier": "strictImplementationUse_candidate",
+  "files": [
+    {"path": "pseudocode/0001_test_relay_draft_stream_owner.c", "size": 23266, "sha256": "7e9d491e23e3b11907243c942e6173d104803696605601e40f8ae02e4721f85a"},
+    {"path": "pseudocode/0002_atomic_wait_wake_helper_sys.c", "size": 2788, "sha256": "adec27aeac64dddec2fe215117649386a32e6a4b2289d996a46020e625eefbec"},
+    {"path": "pseudocode/0003_poll_continuation_dispatcher_sys.c", "size": 935, "sha256": "7aee3ea989504e1c2d7669301c0bd47ced650b7a22e783d5ee6521e60cf2de74"},
+    {"path": "pseudocode/0004_display_fmt_error_check_sys.c", "size": 9266, "sha256": "3307b072a4eb992472781451b92b8e26d3c9b042e2a2ba7d305281e9fdf600ab"},
+    {"path": "pseudocode/0005_fmt_write_chunked_trampoline_sys.c", "size": 2316, "sha256": "99a91cb9de34f92422c2f3b448e55395d48c1c0dcbfbdc58f0311049f8f59e30"},
+    {"path": "pseudocode/0006_display_error_panic_builder_sys.c", "size": 415, "sha256": "4b275ee390585329c248472df5903ab953c52b8e066b62fe3f881abfb41455c5"},
+    {"path": "call-trees/test_relay_draft_stream.jsonl", "size": 9787, "sha256": "bfd2fc6e44595fbe4abde7000557c480a7cae6dda0c72afc5a71b6fccbff79ce"},
+    {"path": "interface/test_relay_draft_stream.md", "size": 3944, "sha256": "4d0b46b2b8b87f02b6a4beecfd28ca808524c5833c435edfcd67fdd4aa8695c6"},
+    {"path": "evidence.md", "size": 8262, "sha256": "5805e4fbca4487bb72d331abc4618ef0d2431d34ed63f542ea0ca226e483a05f"}
+  ],
+  "method": "反编译器 MCP (win) analyze_function/decompile/callees against live 1.1.8 win IDB (<证据库> 1.1.8 win64.exe.i64, PE32+ x86_64, fully symbol-stripped); owner resolved via intermediate/aimami/1.1.8/windows-x64/version-delta/owner-map-118.jsonl line 121; frontend contract cross-checked against raw/aimami/1.1.8/windows-x64/frontend/ipc-contracts.jsonl line 126; 1.0.9 baseline non-existence cross-checked via find on raw/aimami/1.0.9/windows; 1.1.1 migration-source baseline cross-checked against raw/aimami/1.1.1/windows-x64/test_relay_draft_stream/ (owner.md/interface.md/call-tree.md) for structural delta comparison.",
+  "idempotency_check": "find raw/aimami/1.1.8/windows-x64/*/test_relay_draft_stream/ prior to this write returned empty — no prior full leaf existed for this command/version/platform. owner-map-118.jsonl line 121 recorded owner_va+present=true only (angle-A discovery pass), no full pseudocode/call-tree/interface/evidence bundle existed prior to this write."
+}

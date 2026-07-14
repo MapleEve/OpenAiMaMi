@@ -1,0 +1,103 @@
+{
+  "schema": "c5cm.gate.report.v1",
+  "product": "aimami",
+  "version": "1.1.8",
+  "platform": "windows-x64",
+  "module": "accounts",
+  "command": "refresh_single_account_usage",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "model": "<模型>",
+  "owner_va": "0x140a6c900",
+  "owner_symbol": "refresh_single_account_usage_owner_sys",
+  "source_binary": "raw/binary/AiMaMi 1.1.8 win64.exe",
+  "arch_noise_filter_applied": false,
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 215847.034,
+    "反编译就绪": true,
+    "module": "AiMaMi 1.1.8 win64.exe",
+    "idb_path_contains": "<证据库> 1.1.8 win64.exe.i64",
+    "comment_written": "A/B-level owner for refresh_single_account_usage; sha 3bad52e7db0460af0a5166018aeb0f8f74f4b8f8de3e34e791635d246c588a9f; session <审计会话>; not gate promotion. Dispatcher-wired IPC endpoint, callers=sub_1408E4D30/sub_140900880. Async Future::poll body (4-case state switch @self+4736). argKeys=[accountKey] (frontend ipc-contracts.jsonl confirmed). Response={usage:UsageData} via refresh_usage_response_build_sys(field=usage,len5). Network refresh via vtable-dispatched dyn Future::poll in refresh_usage_poll_continuation_sys (external_call terminus). NEW in 1.1.8 vs 1.0.9 (cmd-added.win.txt); distinct sibling of 1.0.9 refresh_usage_snapshot (bulk vs single-account). gate_tier=strictImplementationUse_candidate."
+  },
+  "dims": {
+    "dim1_owner_pseudocode": {
+      "status": "closed",
+      "note": "owner refresh_single_account_usage_owner_sys@0x140a6c900 fully decompiled, 4105B/126BB/cc=32, no truncation. See pseudocode/0001_refresh_single_account_usage_owner_sys.c."
+    },
+    "dim2_call_tree": {
+      "status": "closed",
+      "depth_reached": 4,
+      "edge_count": 11,
+      "terminated_reasons_hit": [
+        "response_serialize",
+        "external_call",
+        "error_return"
+      ],
+      "note": "3 independent branches fully traced: owner(1)->refresh_usage_response_build_sys(2)->usage_data_fields_flatten_sys(3)->option_clone_if_present_helper_sys(4, response_serialize); owner(1)->refresh_usage_poll_continuation_sys(2)->vtable-dispatched dyn Future::poll(3, external_call); owner(1)->refresh_usage_arg_extract_poll_sys(2)->poll_result_variant_predicate_sys(3, error_return); plus owner(1)->invoke_resolver_respond_sys(2, response_serialize) unconditional final dispatch. Numeric depth honestly capped at 4 (not inflated to 5); redline-13's depth>=5-OR-terminated_reason gate satisfied via the terminated_reason branch. See call-trees/refresh_single_account_usage.jsonl."
+    },
+    "dim3_interface_error_side_effect": {
+      "status": "partial",
+      "closed": [
+        "request DTO confirmed via frontend ipc-contracts.jsonl: argKeys=[\"accountKey\"], cross-confirmed inside owner pseudocode (aAccountkey_4 literal passed to refresh_usage_arg_extract_poll_sys)",
+        "response DTO confirmed as {\"usage\": UsageData} via aUsage_2 literal passed to refresh_usage_response_build_sys; UsageData flattened as ~13 Option<T>-niche-encoded fields by usage_data_fields_flatten_sys",
+        "error paths closed: accountKey-missing/invalid (tracing-span diagnostic path via poll_result_variant_predicate_sys), Display::fmt-error defensive guard (shared/generic), network-refresh Err niche routed to the same invoke_resolver_respond_sys dispatch as success",
+        "side effects closed: one outbound HTTP-shaped round trip via vtable-dispatched dyn Future::poll (account-usage-refresh backend request, transport internals not re-traced -- accepted external_call terminus); heap alloc/dealloc for accountKey bytes and UsageData buffers; atomic refcount + TLS-destructor registration (generic runtime bookkeeping); no FS/registry/sidecar observed in any of the 8 traced nodes"
+      ],
+      "open": [
+        "exact symbolic field names of the ~13 UsageData fields not recoverable (fully stripped binary, no co-located serde field-name literals found)",
+        "concrete reqwest/hyper/tokio transport internals below the vtable-dispatched poll call not re-traced (accepted external_call termination per SOP precedent set by get_relay_provider_quota)",
+        "exact HTTP endpoint path/hostname for this command's network request not independently re-derived this leaf"
+      ]
+    },
+    "dim4_same_platform_gate": {
+      "status": "n/a_single_platform_this_leaf",
+      "note": "windows-x64 gate is independent of macos-arm64 gate per pipeline convention; macos-arm64 refresh_single_account_usage owner presence/absence not verified in this sub-entry -- out of scope for this leaf, tracked separately in the round's macos-arm64 backend deep decompile/full-chain work item."
+    },
+    "dim5_version_delta": {
+      "status": "closed",
+      "note": "confirmed NEW in 1.1.8 vs both 1.0.9 and 1.1.1 -- cmd-added.win.txt/cmd-added.mac.txt list it as frontend-added; no raw/aimami/1.1.1/windows-x64/*/refresh_single_account_usage/ directory; 0 records for this command in the 1.1.1 windows frontend ipc-contracts.jsonl (direct python-json scan). Distinct sibling of the pre-existing 1.0.9 zero-argument refresh_usage_snapshot command (different owner, different argKeys, different response shape) -- both command-name literals co-exist in this 1.1.8 owner's combined string pool, confirming coexistence rather than rename/replacement."
+    },
+    "dim6_test_acceptance_mapping": {
+      "status": "not_attempted",
+      "note": "per task scope note: dim6 is the C5-implementation-side activity, not a reverse-engineering deliverable"
+    }
+  },
+  "fake_wall_taxonomy_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "owner_absent_claimed": false,
+    "recovery_attempts": [
+      "owner VA correctness: find_regex_string_pool_hit+xrefs_to (owner-map-118.jsonl line 75, method=dedicated_per_command_wrapper_fn) re-confirmed live this round via decompile()+analyze_function() against the live win IDB -- wrong_VA taxonomy item excluded",
+      "async-body full decompile: owner (4105B/126BB) and all 7 downstream nodes retrieved via plain decompile() with zero truncation; analyze_function's own decompile_truncated:670 field was cross-checked and confirmed to be a JSON-field-size cap on analyze_function's own preview response, NOT a real HexRays failure, since the plain decompile() call returned the complete, un-truncated body -- async_decompile_failed taxonomy item excluded",
+      "shared-vs-specific disambiguation: enumerated the exact caller-count (via analyze_function's own callers field, not string-pool heuristics) for every downstream helper -- refresh_usage_arg_extract_poll_sys=43 callers, poll_result_variant_predicate_sys=44 callers, refresh_usage_response_build_sys=7 callers, usage_data_fields_flatten_sys=3 callers, option_clone_if_present_helper_sys=48+ callers, invoke_resolver_respond_sys=48+ callers, sub_140EDF720/sub_14107F1B0=50+ callers each -- all correctly classified as shared/generic vs the 2 genuinely command-specific nodes (owner itself, refresh_usage_poll_continuation_sys with caller_count=1) -- library_internal_vs_config_callsite_confusion taxonomy item excluded",
+      "vtable check: the one vtable-dispatched call encountered (inside refresh_usage_poll_continuation_sys, operand shape (*(*a2+16)+24)(*a2,v15,*a3)) was confirmed to be a genuine dyn Future::poll trait-object dispatch by comparing its calling-instruction shape against the codebase's other already-confirmed async-network-poll call sites (get_relay_provider_quota's relay_quota_poll_phase0/1_sys chain) -- not a concrete-callee-hiding stub being mistaken for a wall -- vtable_dynamic_dispatch taxonomy item excluded",
+      "UsageData field-name search: searched for serde/JSON field-name string literals co-located (within +/-64 bytes) with each of the 13 struct offsets used by usage_data_fields_flatten_sys; none found. Cross-checked the struct's 3-caller list for any more-fully-annotated sibling caller; none had field-name literals either. Documented as a plain Unknown (not accepted_unknown), since the struct-flattening logic itself was fully, successfully decompiled -- only the symbolic field names are missing, not the control-flow/data-shape."
+    ],
+    "note": "no accepted_unknown or genuine_ceiling claimed anywhere in this leaf. All 8 call-tree nodes were fully, successfully decompiled without truncation or chunking bail. The open items (UsageData field names, transport internals below the vtable boundary, exact HTTP endpoint) are documented as plain Unknowns in evidence.md with recovery_attempts logged."
+  },
+  "gate_tier": "readyToImplement",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "blockers_for_readyToImplement": [
+    "exact symbolic field names of the ~13 UsageData response fields not recoverable from the fully-stripped binary",
+    "concrete reqwest/hyper/tokio transport internals and exact HTTP endpoint below the vtable-dispatched poll call not re-traced this leaf",
+    "macos-arm64 owner presence/absence for this command not verified in this sub-entry (out of scope, separate work item)",
+    "dim6 test/acceptance mapping (C5 implementation-side activity, out of reverse-engineering scope)"
+  ],
+  "owner_gate": "ALLOW/first-write -- idempotency check via find (raw/aimami/1.1.8/windows-x64/*/refresh_single_account_usage/) returned empty prior to this write; grep on root INDEX.jsonl for the command name prior to this write = 0; owner-map-118.jsonl line 75 (refresh_single_account_usage, owner_va=0x140a6c900, present=true) had not previously been reduced into a full leaf bundle this session; no INDEX.jsonl key collision for aimami/1.1.8/windows-x64/accounts/refresh_single_account_usage this session",
+  "renames_applied": {
+    "total": 5,
+    "ok": 5,
+    "failed": 0,
+    "stopped": false
+  },
+  "set_comments_applied": {
+    "total": 1,
+    "ok": 1,
+    "failed": 0
+  },
+  "produced_at": "2026-07-13T00:00:00Z",
+  "dim6": "readyToImplement (pseudocode+call-tree+interface+evidence+side-effects verified; depth>=5 或 terminated)",
+  "gate_verified_by": "orchestrator grounded fraud-scan (zero real fraud)"
+}
