@@ -1,0 +1,5 @@
+// mac 1.2.2 NEW write_client_debug_log 0x1000015b0 d=2
+void _RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2()
+{
+  ; /*0x1000015b0*/
+}

@@ -1,0 +1,6 @@
+// win 1.2.1 NEW set_voice_overlay_style 0x140001350 d=1
+// attributes: thunk
+__int64 __fastcall sub_140001350(__int64 a1, __int64 a2)
+{
+  return sub_1413A00F0(a1, a2);
+}
