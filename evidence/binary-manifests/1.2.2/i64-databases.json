@@ -1,0 +1,16 @@
+{
+  "schema_version": 1, "project": "OpenAiMami", "release": "1.2.2",
+  "license": "Apache-2.0", "stack": "Tauri 2 + React + Rust",
+  "policy": { "content_imported": true,
+    "publication_shape": "Only the standalone Git LFS archive in OpenAiMami IDB contains the .i64 reference databases.",
+    "notes": "Sanitized metadata only. Platform versions diverge: macOS=1.2.2, Windows=1.2.1 (Windows 1.2.2 not yet released; upstream only OTA). No private evidence, binaries, machine-local paths." },
+  "binaries": [
+    { "platform": "macos-arm64", "version": "1.2.2", "sha256": "687613838f297b636d0ca68d25e3d3af137f606f888400da8b134358dfa59a37" },
+    { "platform": "windows-x64", "version": "1.2.1", "sha256": "c5037e9527eb5752df3667f3d4220d43f2327b819d7c5b8c4aaa71df07b70db4" }
+  ],
+  "delta_summary": { "baseline": "1.1.8", "target_macos": "1.2.2", "target_windows": "1.2.1",
+    "frontend_command_universe": 129, "added": 7, "removed": 9, "argkey_changed": 1,
+    "new_behavioral_backend": 27,
+    "highlights": ["debug_bundle machinery (export_debug_bundle)", "relay provider_id migrations", "voice overlay backend", "codex_diagnostic::fix_legacy_migrated_threads", "session markdown export + worktree migrate", "frontend: lucide-react dynamic icons via Vite"],
+    "published_scope": "delta + new behavioral leaves; same-set kept internal" }
+}
