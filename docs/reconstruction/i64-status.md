@@ -13,6 +13,8 @@
 
 `OpenAiMami IDB` 应只包含 OpenAiMami 各发布版本的 macOS/Windows 参考数据库 `.i64` 文件。具体文件名、大小和哈希以主仓库清单为准，不在说明文档中重复写内部来源路径。
 
+1.2.2/1.2.1 的 macOS 与 Windows 参考数据库已把应用自身函数按模块路径归入 `codexmate_lib/...` 目录树；Windows（strip 后的库）另外恢复了命令 handler 命名与按模块归属，便于直接按模块浏览。Windows 1.2.1 参考库已随 SMB 同步补入合并 archive。
+
 不发布展开后的伴随文件，不发布用户数据，不发布运行期缓存，不发布凭据或本机状态。
 
 ## 清单
