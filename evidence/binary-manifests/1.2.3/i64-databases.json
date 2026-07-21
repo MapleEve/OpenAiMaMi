@@ -1,0 +1,16 @@
+{
+  "schema_version": 1, "project": "OpenAiMami", "release": "1.2.3",
+  "license": "Apache-2.0", "stack": "Tauri 2 + React + Rust",
+  "policy": { "content_imported": true,
+    "publication_shape": "Only the standalone Git LFS archive in OpenAiMami IDB contains the .i64 reference databases.",
+    "notes": "Sanitized metadata only. macOS and Windows both on 1.2.3 (platform versions realigned). No private evidence, binaries, machine-local paths." },
+  "binaries": [
+    { "platform": "macos-arm64", "version": "1.2.3", "sha256": "25d6d04e6d94c3f1e8258d2b348360b228fda4fc1c3d38b6383c84a2a8d53d21" },
+    { "platform": "windows-x64", "version": "1.2.3", "sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396" }
+  ],
+  "delta_summary": { "baseline": "1.2.2", "target_macos": "1.2.3", "target_windows": "1.2.3",
+    "frontend_command_universe": 131, "added": 2, "removed": 0, "argkey_changed": 0,
+    "new_behavioral_backend": 216,
+    "highlights": ["autostart module (get_autostart_state / set_autostart_enabled, launch-at-login, auto-enabled on router enable)", "account management overhaul (auto-switch state machine, subscription metadata, snapshot quarantine + rollback)", "process handling (kill/quiesce Codex processes, osascript-quit ChatGPT, protected DB holders)", "close-route fix (strip orphan aimami_relay_ keys + invalid router top-level model from config.toml)", "model protocol (session_meta rewrite, translator reasoning adaptation, MiniMax M3 migration, Kimi coding)"],
+    "published_scope": "delta + new behavioral leaves; exhaustive 1638-function baseline kept internal" }
+}
