@@ -1,0 +1,143 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "voice",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-25",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 0,
+    "owner_existence_mapped_only": 36,
+    "blocked": 1,
+    "total_frontend_commands": 37,
+    "updated_2026_07_26_reduce_pass": "owner_existence_mapped_only raised 32->36 and blocked lowered 5->1 after this session identified 4 of the 5 previously-blocked commands as case branches inside the shared open_path ICF-folded dispatcher (commands/relay/ida/pseudocode/open_path_0x140194810.c), confirmed via live IDA decompile of their owner addresses. NO tier promotion beyond owner_existence_mapped was made -- see dim_status below and reduce_pass_2026_07_26 in manifest.json for full method/evidence."
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "consumerStartReady_9dim_status": {
+    "renderSurfaceReady": "closed -- VoicePage exists in the win 1.2.3 tauri-dumped asset bundle (voice-page-CV7DqakD.js), same asset name/content class as macOS sibling",
+    "uiCallEntryReady": "closed -- win-specific ipc-contracts.jsonl (raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl) lists all 37 voice-named invoke() commands with param schemas",
+    "dtoBoundaryReady": "open -- no interfaces/*.md produced this pass; no input/output field/default/nullable catalog exists for any of the 37 commands",
+    "happyPathReady": "partial -- 32/37 commands have a name-stem-matched backend .c file with a non-empty, non-truncated decompiled body (existence + module ownership confirmed); the underlying call-tree from wrapper to implementation leaf (fs/http/registry/process/persistence/response) has NOT been traced for any command this pass -- 131/171 (76.6%) of the voice-domain function population remains generic sub_ identity",
+    "boundaryPathReady": "open -- no error-path/failure-branch catalog produced",
+    "sideEffectReady": "open -- no side-effect boundary (file writes, registry, persistence targets) catalogued",
+    "frontendConsumptionReady": "open -- no frontend response-field consumption mapping produced (would require reading VoicePage component tree in detail; not done this pass, only ipc-contracts.jsonl command-name-level cross-ref)",
+    "acceptanceDraftReady": "open -- no test/acceptance draft produced",
+    "platformScopeDeclared": "closed -- windows-x64, independently sourced from win-native IDB (AiMaMi.1.2.3 win64.exe.i64, confirmed live via IDA MCP server_health this session), NOT inferred from macOS evidence"
+  },
+  "dim_status": {
+    "dim1_frontend_control_flow": "partial -- invoke wrapper + command name confirmed for 37/37 commands (ipc-contracts.jsonl); UI trigger/guard/preflight/argument-assembly walkthrough NOT performed for any command this pass",
+    "dim2_backend_owner_pseudocode": "partial (strengthened 2026-07-26) -- 180 real (non-truncated) decompiled voice-domain raw files exist (corrected from 171; +9 found in previously-unscanned asr/ and models/ directories plus undercounts in commands/, commands/voice/, aliyun_asr/, llm/ -- see manifest.json reduce_pass_2026_07_26.corrected_coverage). 36/37 frontend commands now have a confirmed owner (up from 32/37): 32 map to a dedicated named raw .c file, 4 map to case branches inside the shared open_path ICF-folded dispatcher confirmed via this session's live decompile (resolve_voice_vocabulary_app_info, upsert_voice_vocabulary_app_scope, remove_voice_vocabulary_app_scope, set_voice_trigger_listener_suppressed -- see logic/REGISTRATION-TABLE-1.2.3.md). Only cancel_voice_trigger_capture remains without an owner. Individual function identity for the ~131 generic sub_ population elsewhere in the module is unchanged (still module-attribution only).",
+    "dim3_call_tree_to_leaf": "partial (strengthened 2026-07-26) -- a generic command-wrapper skeleton (deserialize field -> business delegate -> success/error response serialize -> cleanup) is now documented for the whole module (logic/FULL-CHAIN-1.2.3.md §1). Two commands traced past the wrapper into their real business delegate: test_voice_asr_config (-> sub_140755DC0, a real HTTP call with an Authorization header and 2xx status check, provider-branched appleSpeech vs. a second ASR provider) and the 4 newly-resolved commands (-> read_app_bundle_identity_fields / sub_14075B300 [flagged persistence WRITE] / sub_14075A760 [flagged DELETE] / sub_1401C3650+sub_140886400). None of these reach a fully-traced fs/http/registry/process leaf beyond the first business delegate; the remaining ~30 commands are still wrapper-only.",
+    "dim4_interface_dto_boundary": "partial (strengthened 2026-07-26) -- no interfaces/*.md file produced, but logic/REGISTRATION-TABLE-1.2.3.md now catalogues symbol-derived request DTO field names for 28/29 named command wrappers (extracted from IDA auto-generated string-symbol names embedded in each wrapper's field-deserialization calls) plus full request+response+error-path detail for the 4 newly-resolved commands (2 of which carry explicit destructive-side-effect annotations: persistence write, delete). Response payload/error envelope field-level detail is NOT catalogued for the bulk of the 37 commands.",
+    "dim5_platform_gate": "closed-for-existence, open-for-parity -- Windows evidence is independently produced (own IDB, own IDA MCP host <host>, own frontend ipc-contracts.jsonl extraction) and NOT extrapolated from macOS. Platform-difference output (this package's SYSTEM-DIFF.md) is produced: Windows voice-domain raw file count (171) is broadly comparable to macOS (212) in aggregate but structurally very different per-submodule -- aliyun_asr is proportionally much LARGER on Windows (62 vs mac 11) while runtime/llm/text_injection/voice_trigger/voice_permissions/asr/overlay/watchdog are all materially THINNER or entirely absent as separate Windows directories. This satisfies the 'must output relative-to-macOS platform difference' requirement; it does NOT satisfy full dim5 parity closure (no per-submodule Windows completeness claim is made).",
+    "dim6_test_acceptance_mapping": "not-closed -- no test/acceptance mapping produced this pass"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim2 identity-resolution is only 23.4% closed for the underlying implementation population, dim3/dim4/dim6 are fully open, and even dim1 UI-flow walkthrough was not performed -- strictImplementationUse is far from reachable this pass.",
+  "consumerStartReady_commands": [],
+  "consumerStartReady_reason": "Module-wide consumerStartReady is NOT declared this pass. Of the 9 consumerStartReady dimensions (see consumerStartReady_9dim_status), only renderSurfaceReady/uiCallEntryReady/platformScopeDeclared are closed; dtoBoundaryReady/boundaryPathReady/sideEffectReady/frontendConsumptionReady/acceptanceDraftReady are fully open and happyPathReady is only partial (existence-level, not call-tree-to-leaf). Per skill red-line/AGENTS.md RULE7, a leaf/module must have ALL 9 start-gate dimensions closed (with remaining gaps explicitly classified as accepted_unknown/product_decision/blocks_start) before consumerStartReady=true may be written. This package instead records a narrower, honestly-scoped fact: 32/37 frontend voice commands have SAME-NAME-STEM backend owner existence on Windows (dim1-partial x dim2-partial cross-reference only), which is diagnostic/candidate-level input for a future producer pass, not a gate promotion.",
+  "owner_existence_mapped_commands": [
+    "capture_voice_trigger_key", "generate_voice_prompt", "inject_voice_text",
+    "load_voice_asr_config", "load_voice_llm_config", "load_voice_processing_modes",
+    "load_voice_runtime_status", "load_voice_workspace", "remove_voice_history_entry",
+    "remove_voice_mode_shortcut", "remove_voice_template", "remove_voice_vocabulary",
+    "replace_voice_vocabulary_kind", "request_voice_permissions", "save_voice_asr_config",
+    "save_voice_llm_config", "save_voice_processing_modes", "set_voice_global_shortcut",
+    "set_voice_mode_shortcut", "set_voice_overlay_style", "set_voice_processing_mode_id",
+    "set_voice_trigger_bindings", "set_voice_trigger_key", "show_voice_search_overlay",
+    "start_voice_capture", "stop_voice_capture", "test_voice_asr_config", "test_voice_llm_config",
+    "update_voice_runtime_settings", "upsert_voice_template", "upsert_voice_vocabulary",
+    "voice_processing_done",
+    "resolve_voice_vocabulary_app_info", "upsert_voice_vocabulary_app_scope",
+    "remove_voice_vocabulary_app_scope", "set_voice_trigger_listener_suppressed"
+  ],
+  "owner_existence_mapped_commands_2026_07_26_addendum": [
+    {
+      "command": "resolve_voice_vocabulary_app_info",
+      "owner_va": "0x140170790",
+      "owner_location": "case branch inside commands/relay/ida/pseudocode/open_path_0x140194810.c (shared ICF-folded dispatcher), NOT its own raw leaf file",
+      "resolved_2026_07_26_via": "live IDA decompile this session, reading out pre-existing IDB annotation from an untracked prior pass",
+      "side_effect": "none (read-only)"
+    },
+    {
+      "command": "upsert_voice_vocabulary_app_scope",
+      "owner_va": "0x140170D00",
+      "owner_location": "same open_path dispatcher",
+      "resolved_2026_07_26_via": "same method",
+      "side_effect": "PERSISTENCE WRITE (sub_14075B300, IDB-flagged)"
+    },
+    {
+      "command": "remove_voice_vocabulary_app_scope",
+      "owner_va": "0x140171760",
+      "owner_location": "same open_path dispatcher",
+      "resolved_2026_07_26_via": "same method",
+      "side_effect": "DELETE (sub_14075A760, IDB-flagged)"
+    },
+    {
+      "command": "set_voice_trigger_listener_suppressed",
+      "owner_va": "0x140182C20",
+      "owner_location": "same open_path dispatcher",
+      "resolved_2026_07_26_via": "same method",
+      "side_effect": "state toggle"
+    }
+  ],
+  "blocked_commands": [
+    {
+      "command": "cancel_voice_trigger_capture",
+      "reason": "no name-stem-matched backend .c file found across the corrected 180-file voice-domain union; not found among the 26+ commands hosted by the shared open_path ICF dispatcher either; strengthened 2026-07-26 via live IDA find_regex full-binary string-cache exact match (n=0, strings_cache_ready=true) and lookup_funcs exact-name query (Not found). search_text attempted twice this session (30s/120s) both timed out, inconclusive. Unverified hypothesis: may be a pure-frontend AbortController cancel with no corresponding backend invoke -- not confirmed, requires dim1 frontend walkthrough."
+    }
+  ],
+  "unknowns": [
+    {
+      "item": "[RESOLVED 2026-07-26] identity of sub_140755DC0 (535 lines) and sub_140ACDB60 (37 lines) in commands/voice/ida/pseudocode/",
+      "class": "resolved",
+      "reason": "sub_140755DC0 confirmed as the call-tree target of test_voice_asr_config (traced via grep of the named wrapper's call site at line 111 of test_voice_asr_config_0x14016ced0.c); it is NOT an owner of any of the 5 originally-blocked commands. sub_140ACDB60 confirmed as a generic response-envelope-construction helper called repeatedly by sub_140755DC0, also not a blocked-command owner. The 2026-07-25 hypothesis that the 535-line function might be 'an ICF-folded multi-command dispatcher similar to the relay module's open_path pattern' was directionally right in spirit but wrong in target -- the actual ICF-folded dispatcher hosting the voice command-name branches is a DIFFERENT file, commands/relay/ida/pseudocode/open_path_0x140194810.c (see next item), not this one. A 3rd previously-uncounted file in the same directory, __u7b__u7b_closure_u7d__u7d__17_0x140abe3c0.c, is separately confirmed (via pre-existing cross-platform string-signature attribution) to be a nested closure of generate_voice_prompt, unrelated to either."
+    },
+    {
+      "item": "[RESOLVED 2026-07-26, 4 of 5] identity of the 5 originally-blocked commands' backend owners",
+      "class": "resolved (4/5)",
+      "reason": "resolve_voice_vocabulary_app_info (0x140170790), upsert_voice_vocabulary_app_scope (0x140170D00), remove_voice_vocabulary_app_scope (0x140171760), and set_voice_trigger_listener_suppressed (0x140182C20) are all case branches inside commands/relay/ida/pseudocode/open_path_0x140194810.c, a shared Tauri IPC command-string ICF-folded dispatcher that the 2026-07-25 pass's voice-only-directory scan never inspected (it lives under commands/relay/, not any voice-domain directory). Resolved this session via live IDA decompile of the 4 addresses (reading out pre-existing IDB rename/comment annotations left by an untracked earlier pass, not newly written this session). cancel_voice_trigger_capture remains unresolved -- see blocked_commands and the corresponding still_blocked entry in manifest.json."
+    },
+    {
+      "item": "identity of 131/171 (76.6%) generic sub_ functions across aliyun_asr/llm/runtime/tray/workspace/voice_trigger_windows",
+      "class": "blocks_start",
+      "reason": "module ownership is resolved (real dirtree-recovery attribution headers present, per skill red-line 24 methodology) but individual Rust-function identity is not; this blocks dim2 identity-closure and therefore dim3 call-tree-to-leaf work, which depends on knowing what each function does"
+    },
+    {
+      "item": "macOS-only submodules with zero Windows top-level directory (platform::voice_permissions, platform::asr, core::voice::runtime::overlay, core::voice::runtime::watchdog, core::voice::aliyun_asr::connect, core/voice-direct serde+trait-glue bucket incl. MacosPermissionsChecker/MacosTextInjector)",
+      "class": "product_decision",
+      "reason": "confirmed via full top-level directory listing of raw/aimami/1.2.3/windows-x64/ (this session); recorded Unknown/no-evidence (not confirmed-absent, strip binary) and NOT inferred from macOS. Whether Polaris needs Windows-parity for these submodules is a product decision."
+    },
+    {
+      "item": "uniform 'win 1.2.1' literal in all sampled file header comments despite path/INDEX/live-IDB agreement on 1.2.3",
+      "class": "accepted_unknown",
+      "reason": "cross-checked against INDEX.jsonl (version=1.2.3) and live IDA server_health (idb_path=...AiMaMi.1.2.3 win64.exe.i64) this session; concluded stale literal in a reused module-attribution script template, not a real provenance conflict. Flagged as a producer-side data-hygiene item, not blocking."
+    },
+    {
+      "item": "dim3 call-tree-to-leaf, dim4 interface/DTO/error-envelope/side-effect boundary, dim6 test/acceptance mapping",
+      "class": "blocks_start",
+      "reason": "not produced this pass"
+    },
+    {
+      "item": "full pseudocode business-logic content review for all 171 files",
+      "class": "blocks_start",
+      "reason": "only header/attribution-line sampling (~15 files) plus directory-level truncation-marker scans were performed this pass; branch semantics, error paths, and side effects were not reviewed for any file"
+    }
+  ],
+  "notes": [
+    "This gate-report deliberately does NOT promote to consumerStartReady for the module or any single command, even though 32/37 commands have backend name-stem existence -- name-stem existence alone is explicitly listed in OUTPUT-SPEC.md/AGENTS.md as insufficient (wrapper-only / owner/VA-only evidence is diagnostic input, not a gate closure) without call-tree-to-leaf, interface, and side-effect evidence.",
+    "This package is more conservative than windows-1.2.3-relay/gate-report.json (which itself only reached consumerStartReady for 22/23 commands, not strict/ready) -- relay's package had a documented call-tree/owner-map pass (relay-core/owner-map.jsonl, 177 rows) that voice does not have an equivalent of yet.",
+    "RULE9 finding: this module's prior-version sibling (windows-1.0.9-voice) declared readyToImplement=true/implementation_use=true/full_leaf_100=true via an 'accepted same-platform IDA-absence substitute' (voice backend did not exist on Windows at 1.0.9). That gate DOES NOT carry forward to 1.2.3 -- real backend implementation now exists (171 files), so this is a diff_reversed case requiring fresh evidence, not a migrated_no_behavior_diff case. See manifest.json rule9_migration_status.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue (all three tiers empty this pass; commands are held in reverseRequiredQueues).",
+    "2026-07-26 reduce pass: added logic/REGISTRATION-TABLE-1.2.3.md and logic/FULL-CHAIN-1.2.3.md (previously-missing logic/ directory), corrected the raw file census 171->180, and resolved 4 of the 5 originally-blocked commands to owner_existence_mapped via live IDA MCP read-only verification of pre-existing IDB annotations (no new raw/.c files written, no IDB writes performed this pass). All three consumer-gate tiers (readyToImplement/strictImplementationUse/consumerStartReady) remain empty -- this pass strengthened dim2/dim3/dim4 evidence quality but did not close enough of the 9-dim consumerStartReady start gate (dtoBoundaryReady/boundaryPathReady/sideEffectReady/frontendConsumptionReady/acceptanceDraftReady remain open at module level) to promote any tier."
+  ]
+}

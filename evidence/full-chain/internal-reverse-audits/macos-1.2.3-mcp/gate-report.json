@@ -1,0 +1,80 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "mcp",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-24",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 4,
+    "blocked": 0,
+    "total_commands": 4
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "closed -- McpPage (mcp-page-LchViioT.js, 665 lines beautified) fully component-tree + state-model + interaction-table reversed in raw/aimami/1.2.3/macos-arm64/frontend/pages/mcp-sessions-settings-skills-frontend.md §1; all 4 commands mapped to concrete UI triggers with line numbers (refresh icon -> load_mcp_servers L304-318; per-row Switch -> set_mcp_server_enabled L402-410; delete AlertDialog confirm -> remove_mcp_server L478-482; add/edit Dialog save -> upsert_mcp_server L609-613); DTO input shape observed directly in the Dialog form fields (name/transport stdio|http|sse/command/args/url/env/headers) and in ipc-contracts.jsonl argKeys",
+    "dim2_backend_owner_pseudocode": "strong -- 18/18 functions (4 commands::mcp wrapper + 14 core::mcp) have real, non-failed, brace-balanced Hex-Rays pseudocode on disk, source binary SHA e3f2fec7d7cd32c8a7a650ec563577b8c74516aed270c1230a5b11296942114d; all 18 files opened and read in full this session (no reliance on file-existence check alone); 0 truncation markers found",
+    "dim3_call_tree_to_leaf": "partial -- individual function bodies read to real implementation leaves (std::fs::read_to_string / std::fs::DirBuilder::_create / codexmate_lib::core::relay::atomic_write::write_atomic_with_mode / toml_edit encode+parse / codexmate_lib::core::codex_config::read_text), documented narratively in logic/FULL-CHAIN-1.2.3.md; no standalone per-command callees()/xrefs_to()-driven call-tree artifact was produced (same caveat class as macos-1.2.3-relay dim3)",
+    "dim4_interface_dto_boundary": "not-closed -- no systematic per-field DTO/error-envelope/side-effect-boundary extraction pass has been run; field names for upsert_mcp_server (name/transport/command/args/url/env/headers) are inferred by combining frontend argKeys + Dialog form fields + two backend key-literal byte-length matches (7 chars='command', 3 chars='url' passed into set_optional_string), not from a formal backend struct/DTO dump; error paths identified narratively (poisoned-mutex-lock, DirBuilder create failure, fs::read_to_string failure, toml_edit::TomlError parse failure, optimistic-concurrency CAS retry exhausted after 3 attempts, atomic-write IO error) but not tabulated per-field with defaults/nullability",
+    "dim5_platform_gate": "open -- Windows raw evidence exists (raw/aimami/1.2.3/windows-x64/mcp/ida/pseudocode/*.c, 15 files, INDEX.jsonl key aimami/1.2.3/windows-x64/mcp/win-app-inventory-gapfill-leaf, produced 2026-07-24T13:20:34Z) but was NOT read or verified in this session; Windows parity/completeness is Unknown, explicitly not extrapolated from macOS; no windows-1.2.3-mcp canonical package exists yet",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping has been produced for 1.2.3 mcp leaves"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim4 (interface/DTO/error-envelope/side-effect boundary not systematically extracted) and dim6 (test/acceptance mapping not produced) are not closed for any of the 4 mcp commands; per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification, strong backend decompile completeness (dim2) plus closed frontend CCF (dim1) alone does not promote target-level readiness past consumerStartReady",
+  "consumerStartReady_commands": [
+    "load_mcp_servers", "upsert_mcp_server", "set_mcp_server_enabled", "remove_mcp_server"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady + uiCallEntryReady satisfied via mcp-sessions-settings-skills-frontend.md §1 (concrete component/line references for every trigger); happyPathReady + backend owner satisfied via 18 read-and-verified decompiled functions reaching real fs/toml/atomic-write leaves; dtoBoundaryReady PARTIAL (inferred field names, not formally cataloged -- consumer must treat as best-effort, not closed spec); boundaryPathReady PARTIAL (error classes identified narratively, not tabulated); sideEffectReady identified (writes ~/.codex config.toml via write_atomic_with_mode; managed-block marker convention '# >>> aimami-relay managed start (DO NOT EDIT MANUALLY)' 55-byte marker guards a text-block-insertion fallback path distinct from the precise toml_edit-table path used by set_mcp_server_enabled; CodexMutationGate::lock coordinates cross-command mutation ordering with per-command reason strings); acceptanceDraftReady NOT done; platformScopeDeclared=macos-arm64 only (Windows explicitly not covered)",
+  "unknowns": [
+    {
+      "item": "dim4 interface/DTO extraction for 1.2.3 mcp (per-field defaults/nullability/error-envelope table)",
+      "class": "blocks_start",
+      "reason": "not produced this pass; readyToImplement/strictImplementationUse blocked on this until closed"
+    },
+    {
+      "item": "dim6 test/acceptance mapping for 1.2.3 mcp",
+      "class": "blocks_start",
+      "reason": "not produced this pass; readyToImplement/strictImplementationUse blocked on this until closed"
+    },
+    {
+      "item": "Windows 1.2.3 mcp platform parity",
+      "class": "blocks_start",
+      "reason": "raw evidence exists on disk (15 .c files) but not read/verified this session; no windows-1.2.3-mcp canonical package exists; per SKILL.md redline 8/AGENTS.md 'artifact/platform 没拿到的状态保持 Unknown' -- do not infer from macOS"
+    },
+    {
+      "item": "live IDA func_query symbol enumeration (angle-A) for core::mcp/commands::mcp",
+      "class": "accepted_unknown",
+      "reason": "this session has no IDA MCP tool connection available; angle-A was performed via static raw-disk directory enumeration (find|ls, 18 files, cross-checked against angle-B frontend diff which independently confirms all 4 commands and angle-C keyword grep across the full 1.2.3 macos-arm64 raw tree which found no orphan mcp-domain functions outside core::models DTO glue) rather than a live symbol-table query; classified accepted_unknown (tool-availability-limitation class) because the cross-check via angle B+C substantially reduces (though does not eliminate) the residual risk of a live-tool-only-visible function existing that static disk enumeration would miss (e.g. an inlined/monomorphized helper with no standalone .c file)"
+    },
+    {
+      "item": "set_optional_string (core::mcp, 1.2.3 NEW-delta per file header) call-site semantics",
+      "class": "accepted_unknown",
+      "reason": "confirmed called twice from core::mcp::upsert_mcp_server (core, 0x100846d50) at 2 call sites with key-literal byte lengths 7 and 3 respectively; strongly inferred (not confirmed via string dump of &unk_101674B65/&unk_101674B6C) to correspond to 'command' (7 chars, stdio transport) and 'url' (3 chars, http/sse transport) becoming optional/removable TOML keys depending on transport type, consistent with the frontend Dialog's stdio|http|sse transport selector (mcp-sessions-settings-skills-frontend.md §1.2); the literal string content of the two &unk_* rodata pointers was not independently dumped this session to confirm byte-for-byte"
+    },
+    {
+      "item": "2 file-header-annotated 1.2.3 NEW-delta functions (core::mcp::remove_mcp_server, core::mcp::set_optional_string) — WHY they are new vs 1.2.2",
+      "class": "accepted_unknown",
+      "reason": "the 'NEW-delta ... vs 1.2.2 新增(IDA函数枚举diff, 名↔地址一致)' annotation was already present in the raw .c file headers from a prior recon session (not re-derived by this distillation pass); this session did not independently re-run a 1.2.2-vs-1.2.3 func_query name/address diff to verify the annotation, nor does a 1.2.2 mcp canonical package exist to cross-check against; the annotation is cited as inherited evidence, not independently re-verified"
+    },
+    {
+      "item": "5 McpTransport/McpServerSummary/McpServerListPayload serde-Deserialize glue functions under core::models",
+      "class": "already_in_canonical",
+      "reason": "found via angle-C orphan scan (raw/aimami/1.2.3/macos-arm64/core/models/ida/pseudocode/*Mcp*.c, 5 files); these belong to the core::models canonical leaf (separately tracked in INDEX.jsonl, census-gap-fill session 2026-07-24, 79 candidates for that leaf) not core::mcp; referenced via pointer, not duplicated or re-claimed as new coverage in this package"
+    }
+  ],
+  "notes": [
+    "This is the first canonical audits/ gate-report for mcp at 1.2.3 macOS. Raw .c evidence for all 18 functions already existed on disk (produced across 2026-07-21/24 census-gap-fill and baseline sessions) but had never been distilled into a canonical audits/ package -- confirming the task's premise that a prior distillation attempt for this module never produced output despite the raw evidence being present.",
+    "Unlike macos-1.2.3-relay (638 functions, live-tool angle-A), this is a small module (18 functions) fully readable end-to-end in one session -- every function was opened and read, not sampled.",
+    "Do not confuse this package's 4/4 consumerStartReady with the legacy macos-1.0.9-mcp package's readyToImplement=true/full_leaf_100=true: that 1.0.9 claim predates full_leaf_100_definition_v2 and CANONICAL_DIRECTORY_AUTHORITY_V1, covers fewer fields (no url/headers/transport), and has not been re-validated against the current six-dimension gate.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

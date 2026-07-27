@@ -1,0 +1,535 @@
+// module: core::relay::proxy_server (codexmate_lib::core::relay::proxy_server)
+// source (embedded panic Location / cross-platform symbol match): src\core\relay\proxy_server.rs
+// binary: AiMaMi.1.2.3 win64.exe (Windows x64, stripped, imagebase 0x140000000)
+// addr: 0x1406729b0  size: 0xcde  tier: B  evidence: panic-location-2hop
+// decompiled via IDA Hex-Rays (remote IDA MCP, host <host>)
+// status: FULL — not truncated, single decompile call, no chunking needed
+//
+// Functional summary:
+//   Cross-platform symbol match:
+//   codexmate_lib::core::relay::proxy_server::expand_aimami_compactions_for_upstream. References
+//   'input', 'type', 'encrypted_content', 'summary'. Walks the request's content-block array and expands
+//   AiMaMi's compacted placeholder blocks (tagged with 'type'/'encrypted_content'/'summary') back into
+//   the full representation official upstreams expect -- the inverse of a compaction/redaction step
+//   applied earlier in the AiMaMi-specific pipeline.
+//
+// Referenced strings/symbols:
+//   0x141433d50  sub_141433D50
+//   0x141767c6b  aInput_1   "input"
+//   0x140001690  nullsub_1
+//   0x140001650  sub_140001650
+//   0x1416c2d4b  sub_1416C2D4B
+//   0x1417640d0  xmmword_1417640D0
+//   0x141767c76  aType_5   "type"
+//   0x14177c75b  aEncryptedConte   "encrypted_content"
+//   0x140443b90  sub_140443B90
+//   0x14177c5fc  unk_14177C5FC
+//   0x1408a8df0  sub_1408A8DF0
+//   0x140348cf0  sub_140348CF0
+//   0x140001660  sub_140001660
+//   0x14177c73f  aSummary   "summary"
+//   0x14033bc10  sub_14033BC10
+//   0x140388b60  sub_140388B60
+//   0x141684120  sub_141684120
+//   0x1400104f0  sub_1400104F0
+//   0x140b56640  sub_140B56640
+//   0x14177c938  off_14177C938
+//   0x1416c3060  sub_1416C3060
+//   0x1417693f8  aCalledResultUn_8   "called `Result::unwrap()` on an `Err` value"
+//   0x1417693d8  off_1417693D8
+//   0x14177c948  off_14177C948
+//   0x140307860  sub_140307860
+//   0x14177c968  off_14177C968
+//   0x1416c2d31  sub_1416C2D31
+//   0x14177c978  off_14177C978
+//   0x1400015f0  sub_1400015F0
+//   0x14149c0f0  sub_14149C0F0
+//   0x14177c988  unk_14177C988
+//   0x140b56520  sub_140B56520
+//   0x1416890a0  sub_1416890A0
+//   0x1402c3260  sub_1402C3260
+// win 1.2.1 | module src/core/relay/proxy_server.rs | attributed via panic-Location xref (win-native)
+// win 1.2.3 | = mac codexmate_lib::core::relay::proxy_server::expand_aimami_compactions_for_upstream | 跨平台字符串签名匹配(名↔函数一致)
+_OWORD *__fastcall expand_aimami_compactions_for_upstream(_OWORD *a1, __int128 *a2)
+{
+  __int64 v3; // rax
+  __int64 v4; // rcx
+  _QWORD *v5; // r15
+  __int64 v6; // rbx
+  __int64 v7; // rax
+  __int64 v8; // rdx
+  __int64 v9; // rax
+  char *v10; // rcx
+  __int64 v11; // r13
+  __m128i si128; // xmm6
+  __m128i v13; // xmm7
+  char *v14; // rax
+  __int64 v15; // rcx
+  __int64 v16; // rax
+  __int64 v17; // rcx
+  __m128i v18; // xmm0
+  char *v19; // r14
+  char v20; // cl
+  __int64 v21; // rax
+  __int64 v22; // r15
+  __int64 v23; // rax
+  unsigned __int64 v24; // r9
+  const __m128i *v25; // r8
+  __int64 v26; // r15
+  __m128i v27; // xmm0
+  __int64 v28; // rax
+  __int64 v29; // rdx
+  __int64 v30; // rdx
+  __int64 v31; // r15
+  __int64 v32; // rax
+  __int64 v33; // rcx
+  _DWORD *v34; // rax
+  __m128i v35; // xmm0
+  __int64 v36; // rcx
+  _DWORD *v37; // rax
+  __m128i v38; // xmm0
+  __int64 v39; // rcx
+  _DWORD *v40; // rax
+  __int64 v41; // rcx
+  __int64 v42; // rax
+  __int64 v43; // rcx
+  _DWORD *v44; // rax
+  __m128i v45; // xmm0
+  __int64 v46; // rcx
+  _DWORD *v47; // rax
+  __m128i v48; // xmm0
+  __int64 v49; // rax
+  __m128i v50; // xmm0
+  __int64 v51; // r15
+  __int64 v52; // rax
+  __int64 v53; // rcx
+  __m128i v54; // xmm0
+  __int64 v55; // rdi
+  __int64 v56; // rcx
+  __int64 v57; // rdi
+  _QWORD *v58; // rdi
+  __int128 v59; // xmm0
+  _BYTE v61[31]; // [rsp+30h] [rbp-50h] BYREF
+  char *v62; // [rsp+50h] [rbp-30h]
+  char *v63; // [rsp+58h] [rbp-28h]
+  __int64 v64; // [rsp+60h] [rbp-20h]
+  __int64 v65; // [rsp+68h] [rbp-18h]
+  char v66; // [rsp+70h] [rbp-10h] BYREF
+  _BYTE v67[31]; // [rsp+71h] [rbp-Fh] BYREF
+  _QWORD v68[3]; // [rsp+90h] [rbp+10h] BYREF
+  _QWORD v69[3]; // [rsp+A8h] [rbp+28h] BYREF
+  __int64 v70; // [rsp+C0h] [rbp+40h]
+  __int128 v71; // [rsp+C8h] [rbp+48h] BYREF
+  __int64 v72; // [rsp+D8h] [rbp+58h]
+  char v73; // [rsp+E0h] [rbp+60h] BYREF
+  _BYTE v74[31]; // [rsp+E1h] [rbp+61h] BYREF
+  __m128i v75; // [rsp+100h] [rbp+80h] BYREF
+  __int64 v76; // [rsp+110h] [rbp+90h]
+  __int64 v77; // [rsp+118h] [rbp+98h] BYREF
+  __int64 v78; // [rsp+120h] [rbp+A0h]
+  __int64 v79; // [rsp+128h] [rbp+A8h]
+  char *v80; // [rsp+130h] [rbp+B0h]
+  __int64 v81; // [rsp+138h] [rbp+B8h]
+  __int64 v82; // [rsp+140h] [rbp+C0h]
+  _BYTE v83[31]; // [rsp+148h] [rbp+C8h] BYREF
+  __int128 *v84; // [rsp+168h] [rbp+E8h]
+  _QWORD *v85; // [rsp+170h] [rbp+F0h]
+  __int64 v86; // [rsp+178h] [rbp+F8h]
+  __m128i v87; // [rsp+180h] [rbp+100h] BYREF
+  __int64 v88; // [rsp+190h] [rbp+110h]
+  _QWORD *v89; // [rsp+1A0h] [rbp+120h]
+  __int128 v90; // [rsp+1A8h] [rbp+128h] BYREF
+  __int64 v91; // [rsp+1B8h] [rbp+138h]
+  __int64 v92; // [rsp+1C0h] [rbp+140h]
+  __int64 v93; // [rsp+1C8h] [rbp+148h]
+  __m128i v94; // [rsp+1D0h] [rbp+150h] BYREF
+  __m128i v95; // [rsp+1E0h] [rbp+160h] BYREF
+  _BYTE *v96; // [rsp+1F8h] [rbp+178h]
+  __m256i v97; // [rsp+200h] [rbp+180h] BYREF
+  _BYTE *v98; // [rsp+228h] [rbp+1A8h]
+  char v99; // [rsp+231h] [rbp+1B1h]
+  char v100; // [rsp+233h] [rbp+1B3h]
+  char v101; // [rsp+234h] [rbp+1B4h]
+  char v102; // [rsp+235h] [rbp+1B5h]
+  char v103; // [rsp+236h] [rbp+1B6h]
+  char v104; // [rsp+237h] [rbp+1B7h]
+  __int64 v105; // [rsp+238h] [rbp+1B8h]
+
+  v105 = -2; /*0x1406729e3*/
+  v84 = a2; /*0x140672a00*/
+  v3 = sub_141433D50(aInput_1, 5, a2); /*0x140672a07*/
+  v5 = (_QWORD *)v3; /*0x140672a0d*/
+  if ( !v3 || *(_BYTE *)v3 != 4 ) /*0x140672a1d*/
+    goto LABEL_75; /*0x140672a1d*/
+  v6 = *(_QWORD *)(v3 + 24); /*0x140672a23*/
+  if ( v6 ) /*0x140672a2a*/
+  {
+    nullsub_1(v4); /*0x140672a33*/
+    v7 = sub_140001650(32 * v6, 8); /*0x140672a40*/
+    if ( !v7 ) /*0x140672a48*/
+      sub_1416C2D4B(8, 32 * v6); /*0x14067362c*/
+    v8 = v5[3]; /*0x140672a4e*/
+  }
+  else
+  {
+    v7 = 8; /*0x140672a54*/
+    v8 = 0; /*0x140672a59*/
+  }
+  v85 = v5 + 1; /*0x140672a62*/
+  *(_QWORD *)&v90 = v6; /*0x140672a69*/
+  *((_QWORD *)&v90 + 1) = v7; /*0x140672a70*/
+  v91 = 0; /*0x140672a77*/
+  v9 = v5[1]; /*0x140672a82*/
+  v10 = (char *)v5[2]; /*0x140672a86*/
+  v5[1] = 0; /*0x140672a8a*/
+  v5[2] = 8; /*0x140672a92*/
+  v5[3] = 0; /*0x140672a9a*/
+  v62 = v10; /*0x140672aa9*/
+  v63 = v10; /*0x140672aad*/
+  v92 = v9; /*0x140672ab1*/
+  v64 = v9; /*0x140672ab8*/
+  v11 = (__int64)&v10[32 * v8]; /*0x140672abc*/
+  v65 = v11; /*0x140672abf*/
+  si128 = _mm_load_si128((const __m128i *)&xmmword_1417640D0); /*0x140672acb*/
+  v13 = _mm_cvtsi32_si128(0x3A31u); /*0x140672ad3*/
+  v80 = v10; /*0x140672ae6*/
+  v14 = v10; /*0x140672aed*/
+  v89 = v5; /*0x140672af0*/
+  if ( v10 != (char *)v11 ) /*0x140672afa*/
+  {
+    while ( 1 ) /*0x140672b50*/
+    {
+      v19 = v14 + 32; /*0x140672b50*/
+      v63 = v14 + 32; /*0x140672b53*/
+      v20 = *v14; /*0x140672b57*/
+      *(_OWORD *)&v61[15] = *((_OWORD *)v14 + 1); /*0x140672b5e*/
+      *(_OWORD *)v61 = *(_OWORD *)(v14 + 1); /*0x140672b66*/
+      if ( v20 == -1 ) /*0x140672b6d*/
+      {
+        v15 = (__int64)(v14 + 32); /*0x140673393*/
+        goto LABEL_64; /*0x140673393*/
+      }
+      v66 = v20; /*0x140672b73*/
+      *(_OWORD *)&v67[15] = *(_OWORD *)&v61[15]; /*0x140672b7a*/
+      *(__m128i *)v67 = _mm_load_si128((const __m128i *)v61); /*0x140672b85*/
+      v104 = 1; /*0x140672b8b*/
+      v21 = sub_141433D50(aType_5, 4, &v66); /*0x140672ba1*/
+      if ( !v21 ) /*0x140672baa*/
+        goto LABEL_15; /*0x140672baa*/
+      if ( *(_BYTE *)v21 != 3 ) /*0x140672baf*/
+        goto LABEL_15; /*0x140672baf*/
+      if ( *(_QWORD *)(v21 + 24) != 10 ) /*0x140672bb6*/
+        goto LABEL_15; /*0x140672bb6*/
+      if ( **(_QWORD **)(v21 + 16) ^ 0x69746361706D6F63LL /*0x140672bd6*/
+         | *(unsigned __int16 *)(*(_QWORD *)(v21 + 16) + 8LL) ^ 0x6E6FLL )
+      {
+        goto LABEL_15; /*0x140672bd6*/
+      }
+      v104 = 1; /*0x140672c06*/
+      v23 = sub_141433D50(aEncryptedConte, 17, &v66); /*0x140672c1c*/
+      if ( !v23 ) /*0x140672c25*/
+        goto LABEL_15; /*0x140672c25*/
+      if ( *(_BYTE *)v23 != 3 ) /*0x140672c2a*/
+        goto LABEL_15; /*0x140672c2a*/
+      v24 = *(_QWORD *)(v23 + 24); /*0x140672c2c*/
+      if ( v24 < 0x12 ) /*0x140672c34*/
+        goto LABEL_15; /*0x140672c34*/
+      v25 = *(const __m128i **)(v23 + 16); /*0x140672c36*/
+      if ( _mm_movemask_epi8( /*0x140672c5d*/
+             _mm_and_si128(
+               _mm_cmpeq_epi8(_mm_cvtsi32_si128(v25[1].m128i_u16[0]), v13),
+               _mm_cmpeq_epi8(_mm_loadu_si128(v25), si128))) != 0xFFFF )
+        goto LABEL_15; /*0x140672c5d*/
+      v104 = 1; /*0x140672c67*/
+      sub_140443B90(&v97, &unk_14177C5FC, &v25[1].m128i_i16[1], v24 - 18); /*0x140672c78*/
+      v26 = (__int64)v96; /*0x140672c89*/
+      if ( v97.m256i_i64[0] == -1 ) /*0x140672c90*/
+        goto LABEL_15; /*0x140672c90*/
+      v93 = v97.m256i_i64[1]; /*0x140672cab*/
+      v98 = (_BYTE *)v97.m256i_i64[0]; /*0x140672cab*/
+      *(_OWORD *)v97.m256i_i8 = *(_OWORD *)&v97.m256i_u64[1]; /*0x140672cb2*/
+      *(_OWORD *)&v97.m256i_u64[2] = 0; /*0x140672cc7*/
+      sub_1408A8DF0(&v94, &v97); /*0x140672cd5*/
+      if ( v94.m128i_i8[0] == -1 ) /*0x140672ce4*/
+      {
+        sub_140348CF0(&v94); /*0x140672dd3*/
+        if ( v98 ) /*0x140672de3*/
+          sub_140001660(v93, v98, 1); /*0x140672df6*/
+        goto LABEL_15; /*0x140672dfb*/
+      }
+      v27 = _mm_loadu_si128((const __m128i *)&v94.m128i_i8[1]); /*0x140672cf1*/
+      *(__m128i *)&v74[15] = _mm_loadu_si128(&v95); /*0x140672cfe*/
+      *(__m128i *)v74 = v27; /*0x140672d03*/
+      v73 = v94.m128i_i8[0]; /*0x140672d07*/
+      v28 = sub_141433D50("summary", 7, &v73); /*0x140672d1a*/
+      v86 = -1; /*0x140672d20*/
+      if ( v28 ) /*0x140672d2e*/
+      {
+        if ( *(_BYTE *)v28 == 3 ) /*0x140672d37*/
+        {
+          v29 = *(_QWORD *)(v28 + 24); /*0x140672d41*/
+          v70 = *(_QWORD *)(v28 + 16); /*0x140672d45*/
+          v82 = v29; /*0x140672d49*/
+          sub_14033BC10(v70, v29); /*0x140672d50*/
+          if ( v30 ) /*0x140672d59*/
+          {
+            v31 = v82; /*0x140672d71*/
+            sub_140388B60((unsigned int)&v97, v82, 0, 1, 1); /*0x140672d7e*/
+            v86 = v97.m256i_i64[1]; /*0x140672d8a*/
+            if ( v97.m256i_i8[0] ) /*0x140672d98*/
+              sub_1416C2D4B(v86, v97.m256i_i64[2]); /*0x14067361c*/
+            if ( v31 ) /*0x140672da8*/
+            {
+              v32 = v31; /*0x140672daa*/
+              v26 = v97.m256i_i64[2]; /*0x140672dad*/
+              sub_141684120(v97.m256i_i64[2], v70, v32); /*0x140672db7*/
+              v81 = v82; /*0x140672dc3*/
+            }
+            else
+            {
+              v26 = v97.m256i_i64[2]; /*0x140672e00*/
+              v81 = 0; /*0x140672e03*/
+            }
+          }
+        }
+      }
+      sub_1400104F0(&v73); /*0x140672e12*/
+      if ( v98 ) /*0x140672e22*/
+        sub_140001660(v93, v98, 1); /*0x140672e31*/
+      v96 = (_BYTE *)v26; /*0x140672e41*/
+      if ( v86 != -1 ) /*0x140672e48*/
+      {
+        v77 = v86; /*0x140672e4e*/
+        v78 = v26; /*0x140672e55*/
+        v79 = v81; /*0x140672e63*/
+        v75.m128i_i64[0] = 0; /*0x140672e6a*/
+        v76 = 0; /*0x140672e75*/
+        nullsub_1(v33); /*0x140672e80*/
+        v34 = (_DWORD *)sub_140001650(4, 1); /*0x140672e8f*/
+        if ( !v34 ) /*0x140672e97*/
+          sub_1416C2D4B(1, 4); /*0x140673686*/
+        *v34 = 1701869940; /*0x140672e9d*/
+        *(_QWORD *)v83 = 4; /*0x140672ea3*/
+        *(_QWORD *)&v83[8] = v34; /*0x140672eae*/
+        *(_QWORD *)&v83[16] = 4; /*0x140672eb5*/
+        v103 = 1; /*0x140672ec0*/
+        sub_140B56640(&v97, &off_14177C938); /*0x140672ed1*/
+        if ( v97.m256i_i8[0] == -1 ) /*0x140672ede*/
+        {
+          v94.m128i_i64[0] = v97.m256i_i64[1]; /*0x140673500*/
+          sub_1416C3060( /*0x14067352d*/
+            (unsigned int)aCalledResultUn_8,
+            43,
+            (unsigned int)&v94,
+            (unsigned int)&off_1417693D8,
+            (__int64)&off_14177C948);
+        }
+        v35 = _mm_loadu_si128((const __m128i *)&v97); /*0x140672ee4*/
+        v95 = _mm_loadu_si128((const __m128i *)&v97.m256i_u64[2]); /*0x140672ef4*/
+        v94 = v35; /*0x140672efc*/
+        v103 = 0; /*0x140672f04*/
+        sub_140307860(&v97, &v75, v83, &v94); /*0x140672f23*/
+        if ( v97.m256i_i8[0] != -1 ) /*0x140672f30*/
+          sub_1400104F0(&v97); /*0x140672f35*/
+        nullsub_1(v36); /*0x140672f3b*/
+        v37 = (_DWORD *)sub_140001650(4, 1); /*0x140672f4a*/
+        if ( !v37 ) /*0x140672f52*/
+          sub_1416C2D4B(1, 4); /*0x140673674*/
+        *v37 = 1701605234; /*0x140672f58*/
+        *(_QWORD *)v83 = 4; /*0x140672f5e*/
+        *(_QWORD *)&v83[8] = v37; /*0x140672f69*/
+        *(_QWORD *)&v83[16] = 4; /*0x140672f70*/
+        v102 = 1; /*0x140672f7b*/
+        sub_140B56640(&v97, &off_14177C968); /*0x140672f8c*/
+        if ( v97.m256i_i8[0] == -1 ) /*0x140672f99*/
+        {
+          v94.m128i_i64[0] = v97.m256i_i64[1]; /*0x14067353f*/
+          sub_1416C3060( /*0x14067356c*/
+            (unsigned int)aCalledResultUn_8,
+            43,
+            (unsigned int)&v94,
+            (unsigned int)&off_1417693D8,
+            (__int64)&off_14177C948);
+        }
+        v38 = _mm_loadu_si128((const __m128i *)&v97); /*0x140672f9f*/
+        v95 = _mm_loadu_si128((const __m128i *)&v97.m256i_u64[2]); /*0x140672faf*/
+        v94 = v38; /*0x140672fb7*/
+        v102 = 0; /*0x140672fbf*/
+        sub_140307860(&v97, &v75, v83, &v94); /*0x140672fde*/
+        if ( v97.m256i_i8[0] != -1 ) /*0x140672feb*/
+          sub_1400104F0(&v97); /*0x140672ff0*/
+        nullsub_1(v39); /*0x140672ff6*/
+        v40 = (_DWORD *)sub_140001650(7, 1); /*0x140673005*/
+        if ( !v40 ) /*0x14067300d*/
+          sub_1416C2D4B(1, 7); /*0x140673662*/
+        *(_DWORD *)((char *)v40 + 3) = 1953391988; /*0x140673013*/
+        *v40 = 1953394531; /*0x14067301a*/
+        v69[0] = 7; /*0x140673020*/
+        v69[1] = v40; /*0x140673028*/
+        v69[2] = 7; /*0x14067302c*/
+        nullsub_1(v41); /*0x140673034*/
+        v42 = sub_140001650(32, 8); /*0x140673043*/
+        if ( !v42 ) /*0x14067304b*/
+        {
+          v99 = 1; /*0x140673577*/
+          sub_1416C2D31(8, 32); /*0x140673588*/
+        }
+        v98 = (_BYTE *)v42; /*0x140673051*/
+        *(_QWORD *)&v71 = 0; /*0x140673058*/
+        v72 = 0; /*0x140673060*/
+        nullsub_1(v43); /*0x140673068*/
+        v44 = (_DWORD *)sub_140001650(4, 1); /*0x140673077*/
+        if ( !v44 ) /*0x14067307f*/
+          sub_1416C2D4B(1, 4); /*0x140673650*/
+        *v44 = 1701869940; /*0x140673085*/
+        v87.m128i_i64[0] = 4; /*0x14067308b*/
+        v87.m128i_i64[1] = (__int64)v44; /*0x140673096*/
+        v88 = 4; /*0x14067309d*/
+        v101 = 1; /*0x1406730a8*/
+        sub_140B56640(&v97, &off_14177C978); /*0x1406730b9*/
+        if ( v97.m256i_i8[0] == -1 ) /*0x1406730c6*/
+        {
+          v94.m128i_i64[0] = v97.m256i_i64[1]; /*0x14067359a*/
+          sub_1416C3060( /*0x1406735c7*/
+            (unsigned int)aCalledResultUn_8,
+            43,
+            (unsigned int)&v94,
+            (unsigned int)&off_1417693D8,
+            (__int64)&off_14177C948);
+        }
+        v45 = _mm_loadu_si128((const __m128i *)&v97); /*0x1406730cc*/
+        v95 = _mm_loadu_si128((const __m128i *)&v97.m256i_u64[2]); /*0x1406730dc*/
+        v94 = v45; /*0x1406730e4*/
+        v101 = 0; /*0x1406730ec*/
+        sub_140307860(&v97, &v71, &v87, &v94); /*0x140673108*/
+        if ( v97.m256i_i8[0] != -1 ) /*0x140673115*/
+          sub_1400104F0(&v97); /*0x14067311a*/
+        nullsub_1(v46); /*0x140673120*/
+        v47 = (_DWORD *)sub_140001650(4, 1); /*0x14067312f*/
+        if ( !v47 ) /*0x140673137*/
+          sub_1416C2D4B(1, 4); /*0x14067363e*/
+        *v47 = 1954047348; /*0x14067313d*/
+        v68[0] = 4; /*0x140673143*/
+        v93 = (__int64)v47; /*0x14067314b*/
+        v68[1] = v47; /*0x140673152*/
+        v68[2] = 4; /*0x140673156*/
+        v94.m128i_i64[0] = (__int64)&v77; /*0x140673165*/
+        v94.m128i_i64[1] = (__int64)sub_1400015F0; /*0x140673173*/
+        sub_14149C0F0(&v97, &unk_14177C988, &v94); /*0x14067318e*/
+        v87 = _mm_loadu_si128((const __m128i *)&v97); /*0x14067319c*/
+        v88 = v97.m256i_i64[2]; /*0x1406731ab*/
+        v100 = 1; /*0x1406731b2*/
+        sub_140B56520(&v97, &v87); /*0x1406731c3*/
+        if ( v97.m256i_i8[0] == -1 ) /*0x1406731d0*/
+        {
+          v94.m128i_i64[0] = v97.m256i_i64[1]; /*0x1406735d9*/
+          sub_1416C3060( /*0x140673606*/
+            (unsigned int)aCalledResultUn_8,
+            43,
+            (unsigned int)&v94,
+            (unsigned int)&off_1417693D8,
+            (__int64)&off_14177C948);
+        }
+        v48 = _mm_loadu_si128((const __m128i *)&v97); /*0x1406731d6*/
+        v95 = _mm_loadu_si128((const __m128i *)&v97.m256i_u64[2]); /*0x1406731e6*/
+        v94 = v48; /*0x1406731ee*/
+        v100 = 0; /*0x1406731f6*/
+        sub_140307860(&v97, &v71, v68, &v94); /*0x14067320f*/
+        if ( v97.m256i_i8[0] != -1 ) /*0x14067321c*/
+          sub_1400104F0(&v97); /*0x140673221*/
+        if ( v87.m128i_i64[0] ) /*0x140673231*/
+          sub_140001660(v87.m128i_i64[1], v87.m128i_i64[0], 1); /*0x140673240*/
+        *(_OWORD *)v97.m256i_i8 = v71; /*0x140673249*/
+        v97.m256i_i64[2] = v72; /*0x140673254*/
+        *(_QWORD *)&v83[23] = v72; /*0x140673262*/
+        *(_OWORD *)&v83[7] = v71; /*0x140673266*/
+        v49 = (__int64)v98; /*0x140673269*/
+        *v98 = 5; /*0x140673270*/
+        v50 = _mm_loadu_si128((const __m128i *)v83); /*0x140673273*/
+        *(__m128i *)(v49 + 16) = _mm_loadu_si128((const __m128i *)&v83[15]); /*0x140673283*/
+        *(__m128i *)(v49 + 1) = v50; /*0x140673288*/
+        v97.m256i_i64[1] = 1; /*0x14067328d*/
+        v97.m256i_i64[2] = v49; /*0x140673298*/
+        v97.m256i_i64[3] = 1; /*0x14067329f*/
+        v97.m256i_i8[0] = 4; /*0x1406732aa*/
+        v99 = 0; /*0x1406732b1*/
+        sub_140307860(&v94, &v75, v69, &v97); /*0x1406732cd*/
+        if ( v94.m128i_i8[0] != -1 ) /*0x1406732da*/
+          sub_1400104F0(&v94); /*0x1406732e3*/
+        *(_QWORD *)&v74[23] = v76; /*0x1406732f4*/
+        *(__m128i *)&v74[7] = _mm_loadu_si128(&v75); /*0x140673300*/
+        v73 = 5; /*0x140673305*/
+        v51 = v91; /*0x140673309*/
+        if ( v91 == (_QWORD)v90 ) /*0x140673317*/
+          sub_1416890A0(&v90); /*0x140673320*/
+        v52 = *((_QWORD *)&v90 + 1); /*0x140673326*/
+        v53 = 32 * v51; /*0x140673330*/
+        v54 = _mm_loadu_si128((const __m128i *)&v73); /*0x140673334*/
+        *(__m128i *)(*((_QWORD *)&v90 + 1) + v53 + 16) = _mm_loadu_si128((const __m128i *)&v74[15]); /*0x14067333e*/
+        *(__m128i *)(v52 + v53) = v54; /*0x140673344*/
+        v91 = v51 + 1; /*0x14067334c*/
+        if ( v77 ) /*0x14067335d*/
+          sub_140001660(v78, v77, 1); /*0x14067336c*/
+        sub_1400104F0(&v66); /*0x140673375*/
+        v5 = v89; /*0x14067337b*/
+        v14 = v19; /*0x140673382*/
+        if ( v19 == (char *)v11 ) /*0x140673388*/
+          break; /*0x140673388*/
+      }
+      else
+      {
+LABEL_15:
+        v22 = v91; /*0x140672be0*/
+        if ( v91 == (_QWORD)v90 ) /*0x140672bee*/
+          sub_1416890A0(&v90); /*0x140672bfb*/
+        v16 = *((_QWORD *)&v90 + 1); /*0x140672b10*/
+        v17 = 32 * v22; /*0x140672b1a*/
+        v18 = _mm_loadu_si128((const __m128i *)&v66); /*0x140672b1e*/
+        *(__m128i *)(*((_QWORD *)&v90 + 1) + v17 + 16) = _mm_loadu_si128((const __m128i *)&v67[15]); /*0x140672b28*/
+        *(__m128i *)(v16 + v17) = v18; /*0x140672b2e*/
+        v91 = v22 + 1; /*0x140672b36*/
+        v5 = v89; /*0x140672b3d*/
+        v14 = v19; /*0x140672b44*/
+        if ( v19 == (char *)v11 ) /*0x140672b4a*/
+          break; /*0x140672b4a*/
+      }
+    }
+  }
+  v15 = v11; /*0x140672afc*/
+LABEL_64:
+  v98 = (_BYTE *)((unsigned __int64)(v11 - v15) >> 5); /*0x140673396*/
+  v96 = nullptr; /*0x1406733a4*/
+  v93 = v15; /*0x1406733af*/
+  while ( v98 != v96 ) /*0x1406733ce*/
+  {
+    ++v96; /*0x1406733d3*/
+    v55 = v15 + 32; /*0x1406733da*/
+    sub_1402C3260(); /*0x1406733de*/
+    v15 = v55; /*0x1406733e4*/
+  }
+  if ( v92 ) /*0x1406733f3*/
+    sub_140001660(v80, 32 * v92, 8); /*0x140673406*/
+  v97.m256i_i64[2] = v91; /*0x140673412*/
+  *(_OWORD *)v97.m256i_i8 = v90; /*0x140673420*/
+  v56 = v5[2]; /*0x140673427*/
+  v98 = (_BYTE *)v5[3]; /*0x14067342f*/
+  v96 = nullptr; /*0x140673436*/
+  v92 = v56; /*0x140673441*/
+  while ( v98 != v96 ) /*0x14067345e*/
+  {
+    ++v96; /*0x140673463*/
+    v57 = v56 + 32; /*0x14067346a*/
+    sub_1402C3260(); /*0x14067346e*/
+    v56 = v57; /*0x140673474*/
+  }
+  v58 = v85; /*0x140673479*/
+  if ( *v85 ) /*0x140673480*/
+    sub_140001660(v89[2], 32LL * *v85, 8); /*0x14067349d*/
+  v58[2] = v97.m256i_i64[2]; /*0x1406734a9*/
+  *(_OWORD *)v58 = *(_OWORD *)v97.m256i_i8; /*0x1406734b4*/
+LABEL_75:
+  v59 = *v84; /*0x1406734b7*/
+  a1[1] = v84[1]; /*0x1406734c5*/
+  *a1 = v59; /*0x1406734c9*/
+  return a1; /*0x1406734cf*/
+}

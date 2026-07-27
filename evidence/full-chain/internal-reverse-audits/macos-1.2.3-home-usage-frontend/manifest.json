@@ -1,0 +1,71 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "home-usage-frontend",
+  "package": "macos-1.2.3-home-usage-frontend",
+  "created_at": "2026-07-26T00:00:00Z",
+  "producer_machine": "<host> (mini SMB backing host). This package is a read-only frontend-surface reduce distilled from pre-existing raw/aimami/1.2.3/macos-arm64/frontend/ evidence (page-level reduces produced earlier under wf-aimami123-delta-20260721) plus the cross-1.2.3-home-usage-frontend cross-platform synthesis (mac side). No IDA MCP session run this pass; no new raw/intermediate produced.",
+  "binary": {
+    "sha256": "not independently recomputed this pass -- see raw/binary/ SOT for authoritative AiMaMi 1.2.3 macos-arm64 binary hash; this distillation only read pre-existing raw/aimami/1.2.3/macos-arm64/frontend/*.md + *.jsonl evidence, it did not re-hash a binary. Windows sibling binary sha256 aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396 recorded here for cross-reference only (NOT this macOS package's binary).",
+    "binary_format": "macho",
+    "arch": "arm64",
+    "main_bundle": "frontend/beautified/index-B40jKs17.js (43743 lines) + lazy chunk analytics-panel-6jtfGEeX.js (1647 lines)"
+  },
+  "scope": {
+    "module_definition": "Home/Dashboard page (K1() overview, index-B40jKs17.js L42594-42689) + Usage/Analytics panel (Lt=AnalyticsPanel, lazy analytics-panel-6jtfGEeX.js L902-1072) frontend-reachable command surface. This is a FRONTEND-SURFACE bundle: dim1 (frontend control-flow + UI/state) is the covered dimension; backend owner/pseudocode/call-tree (dim2-dim4) is Unknown this pass (no IDA), consistent with the cross-1.2.3-home-usage-frontend finding that this module's backend owners are not covered by the existing commands-baseline.md on either platform.",
+    "frontend_target_universe": "shared-index-app-frontend.md (App shell i7() + Dashboard K1() + shared snapshot hook E2()) + analytics-maintenance-autoswitch-frontend.md §1 (AnalyticsPanel Lt + 6 analytics useQuery + activity tab At)",
+    "backend_target_universe": "NOT reduced this pass -- Unknown for all commands (no macOS commands::/core:: owner or IDA decompile located for this module's analytics/snapshot commands; matches cross-1.2.3-home-usage-frontend gate-report backend gap)",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": false,
+    "coverage_mode": "frontend-control-flow + UI/state only (dim1); NOT backend-owned-target-universe",
+    "covered_commands": [
+      "load_usage_analytics",
+      "load_session_analytics",
+      "load_token_analytics",
+      "load_tool_analytics",
+      "load_change_analytics",
+      "load_quota_history",
+      "load_snapshot",
+      "refresh_usage_snapshot"
+    ],
+    "candidate_or_blocked_commands": {
+      "load_bootstrap_state": "command exists in frontend/ipc-contracts.jsonl (mac, grep-confirmed) but NO page-level UI trigger / component owner located in the two reduced page docs -- dim1 frontend trigger not found this pass. Classified consumerStartBlocked (blocks_start: frontend-control-flow-missing), NOT consumerStartReady.",
+      "get_usage_refresh_interval": "consumed by the App root i7() refreshInterval hook cU() (shared-index-app-frontend.md §2.1 row `N / V | cU() | refreshInterval settings(auto-refresh interval)`) -- the VALUE is read/used inside the home shell, but the get call-site DTO and the settings control that SETS it are not in this module's two page docs (the mutating control set_usage_refresh_interval most plausibly lives in SettingsPage, a different module surface). Classified candidate-only / consumerStartBlocked for this module (blocks_start: dim1 call-entry only partially located)."
+    },
+    "explicit_exclusions": "load_mcp_servers is surfaced in the home Dashboard (Bd 4-cell stat card: accounts/sessions/mcp/skills, and the ug() deferred-query cluster in shared-index-app-frontend.md §2.2) but its backend owner belongs to the mcp module (separate audit scope) -- NOT counted as a covered_command here even though the home dashboard renders its count. set_usage_refresh_interval is owned by the settings/system-usage surface (Windows sibling owner = windows-1.2.3-system-usage/, per that bundle's producer-ledger). refresh_single_account_usage is owned by the accounts module (Windows sibling owner = windows-1.2.3-accounts/). These three are excluded from covered_commands to respect single-owner module discipline (RULE 8a); their appearance in the home render tree is recorded but not claimed as this module's coverage."
+  },
+  "coverage": {
+    "frontend_pages_reduced": 2,
+    "frontend_pages": [
+      "raw/aimami/1.2.3/macos-arm64/frontend/pages/shared-index-app-frontend.md",
+      "raw/aimami/1.2.3/macos-arm64/frontend/pages/analytics-maintenance-autoswitch-frontend.md"
+    ],
+    "commands_with_page_level_render_surface": 8,
+    "commands_command_scan_only": 1,
+    "commands_partial_call_entry": 1,
+    "command_surface_diff_vs_windows": "mac/win ipc-contracts.jsonl usage|analytics|snapshot|bootstrap keyword subset is byte-identical 13/13 (grounded in cross-1.2.3-home-usage-frontend; re-confirmed as evidence context, not a Windows closure claim). This is COMMAND-NAME parity only; Windows UI render-surface remains Unknown (no windows page-level reduce exists).",
+    "backend_owner_coverage": "0/covered_commands -- Unknown this pass, both platforms. commands-baseline.md (mac, 258 lines) does not cover this module's analytics/snapshot commands (zero keyword hits per cross-1.2.3-home-usage-frontend gate-report).",
+    "measurement_basis": "filesystem read of raw/aimami/1.2.3/macos-arm64/frontend/pages/{shared-index-app-frontend.md,analytics-maintenance-autoswitch-frontend.md} + grep over frontend/ipc-contracts.jsonl, this session 2026-07-26. No live IDA MCP session was available (this is a frontend-surface reduce, not a backend pass)."
+  },
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "producer_ledger_ref": "data/producer-ledger.json",
+  "consumed_bundles": [
+    "audits/cross-1.2.3-home-usage-frontend/ (mac-side conclusion + evidence framing; this single-platform bundle is the canonical macOS reducer the cross package's gap_needs_reducer=2 called for)",
+    "audits/cross-1.0.9-home-usage-frontend/DISTILLED-home-usage-load-chains.md (scope/template reference only -- different version, NO cross-version data inference performed)"
+  ],
+  "cross_platform_sibling": "windows-1.2.3-home-usage-frontend/ (NOT yet produced; raw Windows frontend evidence exists at raw/aimami/1.2.3/windows-x64/frontend/{ipc-contracts.jsonl,frontend-contract-report.md,frontend-control-flow.jsonl,ast-facts.json} but NO page-level UI reduce -- Windows render-surface is Unknown, must be closed independently, do not infer from this macOS package)",
+  "authoritative": true,
+  "authoritative_note": "authoritative=true means this is the canonical macOS single-platform frontend-surface conclusion for home-usage-frontend at consumerStartReady tier. It closes one of the two gap_needs_reducer bundles the cross-1.2.3-home-usage-frontend package flagged. It does NOT claim backend (dim2-dim4) closure, does NOT claim Windows (dim5), and does NOT substitute for the still-missing windows-1.2.3-home-usage-frontend bundle.",
+  "known_residuals": [
+    "Backend owner + IDA decompile + call-tree (dim2/dim3) for all 8 covered commands: NOT produced this pass (no IDA session). Unknown, both platforms. This is a genuine open gap, not accepted_unknown.",
+    "dim4 interface/DTO/error-envelope/side-effect boundary: NOT extracted (frontend consumption fields are partially documented from the useQuery shapes -- range param, accountKey param, staleTime -- but the response DTO/error envelope is Unknown pending backend).",
+    "dim5 Windows platform gate: Windows UI render-surface Unknown (no page reduce); command-name parity confirmed but that does NOT close Windows dim1. No windows-1.2.3-home-usage-frontend bundle produced.",
+    "dim6 test/acceptance mapping: NOT produced.",
+    "load_bootstrap_state: no located frontend trigger (command-scan only).",
+    "get_usage_refresh_interval / set_usage_refresh_interval: consuming hook located (cU) but the settings control that mutates the interval is outside this module's page scope (plausibly SettingsPage) -- get is candidate-only, set is excluded (system-usage/settings owner)."
+  ],
+  "note": "This package distills pre-existing raw/aimami/1.2.3/macos-arm64/frontend/pages/*.md evidence (produced earlier, not re-extracted this pass) into a canonical macOS single-platform frontend-surface conclusion. No bulk decompile text, no raw dump, and no binary artifact is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md. Coverage is intentionally NOT reported as blanket 100% -- see gate-report.json dim_status and known_residuals for the honest open gaps. Gate tier is consumerStartReady (frontend-reachable surface), deliberately not inflated."
+}

@@ -4,7 +4,7 @@
 **Machine**: <本地机器>
 **Model**: claude-sonnet-4-6
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
-**IDB**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi.i64 (hexrays_ready=true, uptime 65209s at session start)
+**IDB**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi.i64 (IDA decompiler_ready=true, uptime 65209s at session start)
 **Role**: 纯生产者 (SOP steps 0-6)
 **Delta status**: new_in_1_1_1 — not in 1.0.9 baseline; first appearance in 1.1.1
 

@@ -11,7 +11,7 @@ date: 2026-06-17
 ## 逆向分析 health at reversal time
 
 ```json
-{"status":"ok","module":"AiMaMi","hexrays_ready":true,"auto_analysis_ready":true,
+{"status":"ok","module":"AiMaMi","IDA decompiler_ready":true,"auto_analysis_ready":true,
  "strings_cache_size":14495,
  "idb_path":"<来源位置>/raw/binary/AiMaMi-1.1.1-idb"}
 ```

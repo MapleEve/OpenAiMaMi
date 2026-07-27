@@ -1,0 +1,53 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "daemon-autoswitch",
+  "package": "macos-1.2.3-daemon-autoswitch",
+  "created_at": "2026-07-25T00:00:00Z",
+  "producer_machine": "<host> (this reduce pass; no IDA MCP session run, no new decompile produced)",
+  "task_kind": "reduce/distillation-only -- this session read pre-existing raw/aimami/1.2.3/macos-arm64/{platform/daemon,commands/system,commands/accounts,core/repository,core/models}/ida/pseudocode/*.c files, raw/aimami/1.2.3/macos-arm64/frontend/{ipc-contracts.jsonl,pages/shared-index-app-frontend.md,pages/accounts-frontend.md,pages/analytics-maintenance-autoswitch-frontend.md}, cross-checked against ../macos-1.0.9-daemon-autoswitch/ (canonical 13-command universe origin, readyToImplement baseline) and ../windows-1.2.3-daemon-autoswitch/ (same-version cross-platform sibling, produced 2026-07-25 same day), and synthesized this package. No IDA tool calls (decompile/xrefs_to/callees/set_comments) were made this pass.",
+  "binary": {
+    "sha256_core_relay": "e3f2fec7d7cd32c8a7a650ec563577b8c74516aed270c1230a5b11296942114d",
+    "binary_format": "macho",
+    "arch": "arm64",
+    "note": "SHA cited from sibling ../macos-1.2.3-relay/manifest.json (same binary); this package did not independently re-verify the SHA against these specific .c files' own provenance -- same open caveat the windows-1.2.3-daemon-autoswitch sibling recorded for its own raw tree"
+  },
+  "scope": {
+    "canonical_target_universe_source": "inherited from ../macos-1.0.9-daemon-autoswitch/ and cross-checked against ../windows-1.2.3-daemon-autoswitch/ per RULE9 (13 commands: daemon 6 + auto-switch 7); this package does NOT expand the canonical universe",
+    "backend_target_universe": "13 commands: run_daemon_once, load_bootstrap_state, note_usage_refresh_activity, schedule_full_runtime_refresh, start_usage_refresh_watcher, update_usage_refresh_schedule (daemon, 6) + start_auto_switch_pending_watcher, load_pending_auto_switch, confirm_pending_auto_switch, dismiss_pending_auto_switch, confirm_pending_auto_switch_and_restart_codex, configure_auto_switch, set_auto_switch (auto-switch, 7)",
+    "frontend_target_universe": "raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl (mac-native, per task dim5 instruction) cross-checked against 3 already-produced page-level CCF docs (shared-index-app-frontend.md, accounts-frontend.md, analytics-maintenance-autoswitch-frontend.md); 8/13 commands have tauriInvokeWrapper hits in ipc-contracts.jsonl, 5/13 (note_usage_refresh_activity/schedule_full_runtime_refresh/start_usage_refresh_watcher/update_usage_refresh_schedule/start_auto_switch_pending_watcher) confirmed zero hits, consistent with the 1.0.9 baseline's native-thread/no-IPC-surface classification for the same 5 commands (not independently re-verified backend-side this pass)",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "raw_c_files_exact_canonical_command_name_match": 9,
+    "raw_c_files_confirmed_absent_zero_hits_anywhere": 1,
+    "raw_c_files_name_mismatch_plausible_candidate_unconfirmed_identity": 3,
+    "raw_c_files_daemon_scope_total": 8,
+    "raw_c_files_auto_switch_scope_total_incl_repository_and_models": 47,
+    "raw_c_files_truncated_stubs_among_all_55_scoped": 0,
+    "backend_functions_tagged_1_2_3_NEW_delta": 8,
+    "backend_functions_tagged_baseline_same_set": 32,
+    "backend_functions_no_provenance_tag_mostly_serde_monomorphizations": 15,
+    "measurement_basis": "this pass: find + grep across raw/aimami/1.2.3/macos-arm64/{platform/daemon,commands,core/repository,core/models}/ida/pseudocode/, per-command exact-filename check against the 13-name canonical list, per-file brace-balance + TRUNCATED-marker scan (python, all 55 scoped files + 4 additional exact daemon-command matches = 59 files checked, 0 flagged), cross-checked against ipc-contracts.jsonl grep -c per command name and against 3 already-extracted frontend page CCF docs",
+    "schedule_full_runtime_refresh_confirmed_absent": "grep -rl 'schedule_full_runtime_refresh' across the entire raw/aimami/1.2.3/macos-arm64 tree returns zero hits (not just under commands/); this is a genuine dim2 gap, not a scoping miss"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.0.9-daemon-autoswitch/ (RULE9 canonical-universe origin + readyToImplement historical baseline for all 13 commands; NOT migrated forward as-is, see logic note on 1.2.3 NEW-delta functions)",
+    "internal-reverse/audits/windows-1.2.3-daemon-autoswitch/ (same-version cross-platform sibling, produced same day; this package's gate posture deliberately mirrors its conservative reading of RULE7's 9-sub-dimension consumerStartReady bar for cross-platform consistency, even though this package's dim1 evidence is independently stronger for 5 commands)"
+  ],
+  "cross_platform_sibling": "internal-reverse/audits/windows-1.2.3-daemon-autoswitch/",
+  "known_residuals": [
+    "run_daemon_once: NO exact-name .c file. Plausible candidate: run_daemon_once_blocking (2 addresses -- 0x1007c8fe0, 620 lines, tagged '1.2.3 NEW-delta', clean non-truncated pseudocode; 0x1007ca0b0, 33-line thin dispatcher) plus separate run_daemon_once_cli (510 lines, 基线 same-set) and run_daemon_once_inner (27 lines, 基线 same-set) files that are structurally the LaunchAgent's actual CLI entrypoint, not the Tauri command itself. Frontend confirms run_daemon_once IS a real invoke()-registered command (ipc-contracts.jsonl 1 hit, wrapper=runDaemonOnce) but no component-level UI trigger was found in the 3 already-extracted frontend page docs read this pass -- may be invoked from an as-yet-unextracted settings/debug surface. Identity mapping to run_daemon_once_blocking is plausible by name/semantic proximity but UNCONFIRMED (no byte-signature or IDA xref cross-check performed).",
+    "confirm_pending_auto_switch (plain, non-restart variant): NO exact-name .c file under commands/system. Plausible candidate: confirm_pending_auto_switch_async (0x1000eac80, 104 lines, no provenance tag, clean non-truncated pseudocode). Frontend facade DOES register this command (ipc-contracts.jsonl 1 hit, wrapper=confirmPendingAutoSwitch) but no caller of this specific wrapper was found in shared-index-app-frontend.md's pending-auto-switch banner flow -- that flow only calls confirmPendingAutoSwitchAndRestartCodex. This raises a genuine open question (not resolved this pass): is the plain confirm_pending_auto_switch frontend wrapper dead/unused code in 1.2.3, or is it called from a surface not covered by the 3 extracted frontend docs? Recorded Unknown, not asserted either way.",
+    "confirm_pending_auto_switch_and_restart_codex: NO exact-name .c file anywhere in commands/. Frontend evidence is STRONG and unambiguous (shared-index-app-frontend.md documents the full pending-auto-switch confirmation banner component, 'a7'/'s7', L43429-43561, with the exact literal invoke string 'confirm_pending_auto_switch_and_restart_codex'). The only name-adjacent backend candidate is commands::accounts::perform_switch_payload_with_restart (0x1006a1800, 1360 lines, tagged '1.2.3 NEW-delta', header-annotated '[FULL -- IDA decompiler 全解 53045B, 超大体分页取回]' i.e. genuinely fully decompiled via a large-body paging technique, not a truncation stub). This is a plausible identity match (semantic name proximity: 'perform switch payload with restart' vs 'confirm pending auto switch and restart codex'; both are NEW in 1.2.3; both concern account-switch + Codex restart) reinforced by the 1.2.3 changelog item 'account switching stability' cited in the sibling ../macos-1.2.3-relay/README.md diff section -- but the identity is UNCONFIRMED (different Rust command/function name, different commands:: submodule -- accounts vs system -- no byte-signature or IDA xref cross-check performed this pass). This exact same open question was independently recorded by the windows-1.2.3-daemon-autoswitch sibling (its own candidate is switch_account_and_restart_codex, a DIFFERENT function name again, itself HEXRAYS_DECOMPILE_FAILED on Windows) -- the two platforms have NOT converged on a resolved identity.",
+    "schedule_full_runtime_refresh: CONFIRMED absent from the entire macOS 1.2.3 raw tree (grep -rl zero hits, not scoping-miss). Matches the zero-frontend-hit pattern (native-thread, no IPC surface) but this pass performed no live IDA search to confirm true absence-from-binary vs simply not-yet-targeted-for-decompile in this raw-collection cycle; recorded Unknown/consistent-with-1.0.9-pattern, not confirmed-absent-at-1.2.3, same honesty posture the windows sibling used for its analogous zero-hit set.",
+    "8 core::repository / commands functions in this domain carry a genuine, header-embedded '1.2.3 NEW-delta' provenance tag (vs 1.2.2): perform_switch_payload_with_restart, run_daemon_once_blocking(0x1007c8fe0), clear_pending_auto_switch_request, clear_pending_auto_switch_request_if_cur, confirm_pending_auto_switch(0x100a69390 address only -- the other address 0x100a68530 is tagged 基线 same-set), reconcile_auto_switch_request, restore_auto_switch_service, update_auto_switch_config. This is real, grounded evidence that the auto-switch persistence/reconciliation layer underwent genuine behavior changes in 1.2.3, consistent with the '账号切换稳定性' (account-switching stability) changelog item cross-referenced in ../macos-1.2.3-relay/README.md. Per RULE9 this rules out migrated_no_behavior_diff for the auto-switch sub-scope; status recorded as diff_reversed (new raw evidence already exists for the changed targets from a prior raw-collection pass; this reduce pass performed no new IDA decompile itself)."
+  ],
+  "note": "This manifest synthesizes a read-only reduce pass over already-produced raw/aimami/1.2.3/macos-arm64/{platform/daemon,commands,core/repository,core/models}/ida/pseudocode/*.c files, raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl, and 3 already-extracted frontend page CCF docs. No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md. Per skill red line 8, no macOS finding here is extrapolated from Windows evidence, and vice versa; the windows-1.2.3-daemon-autoswitch sibling's known_residuals were read for cross-reference only, not treated as macOS proof."
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "tray",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "load_tray_template_icon", "create_bootstrap_tray_menu", "handle_tray_menu_event"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 3 covered targets: readyToImplement blocked pending dim4 (interface/DTO) + dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 3 covered targets: strictImplementationUse blocked pending dim4 closure"
+    ],
+    "consumerStartBlocked": [
+      "create_tray_menu, create_tray_menu_from_snapshot, append_codex_router_section, refresh_tray_menu, refresh_tray_menu_with_snapshot, quota_text, update_tray_recording_state: no windows-x64 1.2.3 owner resolved this pass (exact-name lookup_funcs returned Not found); consumerStartReady not claimed for any of these 7"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "gap_summary": {
+    "truly_undone": [
+      "create_tray_menu", "create_tray_menu_from_snapshot", "append_codex_router_section",
+      "refresh_tray_menu", "refresh_tray_menu_with_snapshot", "quota_text", "update_tray_recording_state"
+    ],
+    "truly_undone_basis": "FOUR_ANGLE_COMPLETENESS check this session: (A) func_query/lookup_funcs exact-name enumeration against live IDA MCP -- 7/10 Not found; (B) frontend ipc-contracts.jsonl diff -- 0 tray commands both platforms, not applicable to backend-name gap; (C) exports/semantic keyword scan -- not run this session (would require broader string/xref sweep beyond exact-name match, recorded as next step); (D) WIN-APP-FUNCTION-INVENTORY.jsonl (1133-row manifest) diff -- confirms only 3 tray-tagged rows exist in the full-app attribution set, i.e. the inventory itself has not yet attributed the other 7 to any address, stripped or otherwise. All 7 classified truly_undone (not already_in_canonical / local_outtake / different_machine_owner) because no other package or machine-owner reference for them was found in INDEX.jsonl or audits/ during this session's search.",
+    "already_covered_this_pass": [
+      "load_tray_template_icon (pre-existing, cross-platform sig match)",
+      "create_bootstrap_tray_menu (newly decompiled this session)",
+      "handle_tray_menu_event (newly decompiled this session)"
+    ]
+  },
+  "next_producer_steps": [
+    "Run RULE24 win-strip 3-layer recovery (panic-Location two-hop xref + ≥2-caller call-graph propagation + tauri-command-name xref) against the windows-x64 1.2.3 binary specifically for the 7 missing tray_menu names, seeded from mac's known symbol list -- this is a bounded, well-scoped follow-up (7 targets, same module, same binary already loaded in the live IDA session at <host>).",
+    "Test the ICF/inlining hypothesis directly: read the full callee list of create_bootstrap_tray_menu and handle_tray_menu_event (already decompiled, calls sub_140A7D450/sub_141230630/sub_14096F5D0/quit_keeping_router/load_local_state_synced) via callees/xrefs to check whether any of the 7 missing names' logic is folded into these bodies rather than existing as separate functions.",
+    "Attempt to conclusively map sub_14025D570 (icon-badge circle-mask math) and sub_1407190E0 (drop-glue) to quota_text/update_tray_recording_state or rule them out, via xref_query on their callers and comparison of the pixel-math constants against the mac quota_text/update_tray_recording_state pseudocode.",
+    "Run a dim4 pass once dim2 is closer to 10/10: interface/DTO map for the menu-item-id namespace (tray-bootstrap-h/-t/-s, tray-open-main, tray-quit, and the still-unconfirmed tray-account:<key> prefix referenced in handle_tray_menu_event's default branch).",
+    "Run a dim6 pass: map covered targets to C5's own tray/system-hotspot test surface if one exists.",
+    "RULE 9 diff against windows-1.0.9-tray: 1.0.9 used native win32 Shell_NotifyIcon/RegisterClassW/TrackPopupMenu APIs directly per that package's README; 1.2.3's 2 exact-name-matched functions (create_bootstrap_tray_menu, handle_tray_menu_event) instead match the mac Rust module path exactly, suggesting migration to Tauri's cross-platform tray-icon abstraction between 1.0.9 and 1.2.3 -- this architecture-generation change has not been formally diffed and would be valuable context for any future windows tray work."
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "bundle": "aimami/1.2.3/windows-x64/session_analytics/tree-gap-bodies",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "binary_sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "idb_path": "raw/binary/AiMaMi.1.2.3 win64.exe.i64",
+  "idb_host": "<host> (win IDA MCP; module=AiMaMi.1.2.3 win64.exe)",
+  "session": "win-1.2.3-models-sessanalytics-treegap-bodies-20260725",
+  "reduce_session": "win-1.2.3-treegap-reduce-ack-20260725",
+  "machine": "Maple-C5Mini",
+  "owner_gate": {
+    "result": "ALLOW",
+    "write_mode": "additive",
+    "basis": "NEW raw module dir (distinct from existing core/analytics); 3 fns attributed to /codexmate_lib/core/session_analytics dirtree with no body on disk; no foreign producer active",
+    "collision_detected": false,
+    "foreign_owners": "none",
+    "takeover_token": null
+  },
+  "gate_tier": "owner_bound_bodies_written",
+  "status": "done",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "readyToImplement": false,
+  "scope": "3 core/session_analytics fns attributed in win IDB dirtree, bodies now decompiled win-native and written to disk. No full-chain / frontend / gate this pass (why implementation_use stays false).",
+  "leaf_bodies": {
+    "count": 3,
+    "total_bytes": 38984,
+    "truncation_stubs": 0,
+    "functions": [
+      "parse_all_sessions_0x14047ef60 (33KB, fields incl web_search; came through decompile intact at 33KB)",
+      "range_to_cutoff_0x14047e7d0",
+      "range_to_cutoff_0_0x14099c4a0 (2nd monomorphization)"
+    ]
+  },
+  "attribution_basis": "win-native dirtree membership; names pre-existing from prior cross-platform string-signature match, bodies now on disk.",
+  "unresolved": [],
+  "destructive_side_effects": "none (session parse/aggregate; no FS-mutation/HTTP/spawn/delete observed in bodies)",
+  "dirtree_grounded_reverify": "all 3 remain in /codexmate_lib/core/session_analytics folder, 0 stranded",
+  "in_progress_residuals": 0,
+  "index_bundle_key": "aimami/1.2.3/windows-x64/session_analytics/tree-gap-bodies",
+  "reverse_status_md_clean": true,
+  "four_angle_completeness": "N/A (tree_not_on_disk body-write pass)",
+  "produced_at": "2026-07-25T00:00:00+08:00",
+  "authoritative": true
+}

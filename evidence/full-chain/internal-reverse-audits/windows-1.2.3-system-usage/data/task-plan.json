@@ -1,0 +1,47 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "bundle": "windows-1.2.3-system-usage",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "generated_at": "2026-07-25T00:00:00+08:00",
+  "source": "generated_from_gate-report.json_windows-1.2.3-system-usage",
+  "machine": "<host>",
+  "session": "windows-1.2.3-system-usage-distill-20260725",
+  "gate_tier": "blocks_start",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "get_usage_refresh_interval",
+      "set_usage_refresh_interval"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "get_usage_refresh_interval",
+      "set_usage_refresh_interval"
+    ],
+    "consumerStartBlocked": [
+      "get_usage_refresh_interval",
+      "set_usage_refresh_interval"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "pointer_only_not_in_this_queue": [
+    "refresh_usage_snapshot (see windows-1.2.3-accounts/data/task-plan.json)",
+    "refresh_single_account_usage (see windows-1.2.3-accounts/data/task-plan.json)",
+    "compute_usage_analytics (see windows-1.2.3-sessions-analytics/data/task-plan.json)",
+    "load_usage_analytics (see windows-1.2.3-sessions-analytics/data/task-plan.json)"
+  ],
+  "next_producer_steps": [
+    "Live IDA callees/xrefs on sub_140003640/sub_1416850A0/sub_1401C3650/sub_1409757B0/sub_1403D39C0 to trace get/set_usage_refresh_interval to fs/registry/persistence leaf (dim3)",
+    "Windows-side page-level frontend reduce to locate get_usage_refresh_interval/set_usage_refresh_interval UI trigger (dim1); mac-side equivalent already flagged open in cross-1.2.3-home-usage-frontend/AI.md",
+    "RULE9 formal behavior-diff calibration against windows-1.0.9-system-usage baseline (currently diff_required, not migrated)",
+    "Targeted (non-name-based) search of raw/aimami/1.2.3/windows-x64/repository/ for a core-layer counterpart to macOS's usage_refresh_interval_seconds/get_usage_refresh_interval/set_usage_refresh_interval (core/repository layer)",
+    "If windows-1.2.3-accounts later cracks the Hex-Rays failure on refresh_usage_snapshot/refresh_single_account_usage (red line 13 breakthrough attempt), re-read and update this bundle's pointer entries accordingly"
+  ],
+  "notes": "blocks_start overall; 2/2 owned targets are gap_needs_reducer (raw dim2-wrapper exists, non-truncated, but dim1/dim3/dim4/dim6 unaddressed this pass, no live IDA session run). 4/6 domain commands are pointer-only references to sibling canonical bundles (windows-1.2.3-accounts, windows-1.2.3-sessions-analytics), not duplicated or re-gated here."
+}

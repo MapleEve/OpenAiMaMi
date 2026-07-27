@@ -1,0 +1,40 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "codexmate_lib/core/voice/runtime",
+  "binary": "E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+  "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "session": "win-1.2.3-voice-runtime-naming-loc-20260726",
+  "machine": "<host>",
+  "produced_by": "<host> (IDA MCP <host>, module=AiMaMi.1.2.3 win64.exe, live IDA Python batch: IDA decompiler.decompile+CodeRefsFrom evidence extraction, then idc.set_name/set_func_cmt)",
+  "produced_at": "2026-07-26T00:00:00+08:00",
+  "gate_tier": "owner_bound_dirtree_naming_comments",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "readyToImplement": false,
+  "scope_declared": "71 functions directly under /codexmate_lib/core/voice/runtime dirtree leaf (excludes 2-function child subdir tray, out of scope); starting state 1/71 named (show_voice_overlay) / 71/71 already carried generic module-attribution comments (panic-Location / call-graph-propagation / [win前沿分诊] tags) from prior frontier-triage and gapfill passes -- not per-function Chinese semantic loc.",
+  "method": "Per-function IDA decompiler.decompile (first ~2600 chars, deeper slices fetched for ~8 large ambiguous functions) + CodeRefsFrom callee enumeration, read and reasoned over per function; derived descriptive win-native names (suffix _sys signals inferred/non-source-exact per tools-and-gate.md convention) and appended Chinese 【逻辑·win逆向】 semantic comments describing actual decompiled behavior (drop-glue/Arc refcount patterns, Future::poll combinators/state machines, tracing event emitters, VoiceSettings/VoiceTriggerConfig serde field-match family, API-key mask/provider-match helpers, overlay window/webview context snapshot, hotkey/oneshot channel helpers). Applied via idc.set_name(SN_NOWARN|SN_FORCE) + idc.set_func_cmt (append, not overwrite) in 3 IDA Python batches (24+24+23 items).",
+  "items": 71,
+  "items_named_this_round": 70,
+  "items_loc_commented_this_round": 62,
+  "pre_existing_loc_excluded_from_recount": 9,
+  "grounded_verify": {
+    "scope_total": 71,
+    "named_after": 71,
+    "loc_marked_after": 71,
+    "still_sub_prefixed_after": 0,
+    "codexmate_lib_tree_total_unchanged": 1927,
+    "tray_subdir_untouched_function_count": 2,
+    "idb_save_confirmed": true
+  },
+  "honest_boundary": "All 71 in-scope functions now have a descriptive name and a per-function Chinese semantic comment grounded in decompiled evidence. For ~8 very large functions (2000-7300 bytes: core_pipeline_dispatch, main_loop_poll_variant_a/b, overlay_activate_or_render_flow_a/b, apikey poll/validate state machine, transcript_or_settings_process) only partial decompiled slices were read (not exhaustive basic-block-level review) due to size; naming/comments for these are marked medium/low confidence in the comment text itself, not claimed as fully verified. No new raw pseudocode dump, no frontend CCF, no consumer gate produced this round -- this is IDB-internal naming/comment/dirtree-recheck work only (dirtree already correct from prior frontier-triage pass, 0 new mkdir/move this round). implementation_use=gate_accepted=readyToImplement=full_leaf_100=false.",
+  "not_claimed": [
+    "not claiming exact Rust source-level type/field names (win binary is stripped; names are win-native inferred, suffixed _sys)",
+    "not claiming full basic-block-level review of the ~8 largest functions",
+    "not a new dirtree census of the whole /codexmate_lib tree (reused existing 1927 baseline from frontier-triage)",
+    "not dual-platform 1:1 (macOS not touched this round)"
+  ]
+}

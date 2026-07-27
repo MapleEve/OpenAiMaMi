@@ -1,0 +1,46 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "home-usage-frontend",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 13 home-usage commands: readyToImplement blocked pending dim2 (win backend owner/decompile — no IDA this pass), dim3 (call-tree), dim4 output-side (DTO/error envelope), and dim6 (test/acceptance)."
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 13 home-usage commands: strictImplementationUse blocked pending the same dim2/dim3/dim4-output/dim6 gaps plus win page-level render-surface reduce."
+    ],
+    "consumerStartBlocked": [
+      "load_bootstrap_state: win page render-surface not reduced (renderSurfaceReady) + backend owner Unknown (happyPathReady). Frontend command + invoke grounded (re('load_bootstrap_state'), no args).",
+      "load_snapshot: same two gaps. Frontend grounded: wrapper loadSnapshot, argKeys=localOnly+forceMetadata, in-flight-dedup preflight guard.",
+      "load_usage_analytics: same two gaps. Frontend grounded: wrapper loadUsageAnalytics, no args, chunk analytics-panel-6jtfGEeX.js.",
+      "load_session_analytics: same two gaps. Frontend grounded: wrapper loadSessionAnalytics, argKeys=range.",
+      "load_token_analytics: same two gaps. Frontend grounded: wrapper loadTokenAnalytics, argKeys=range.",
+      "load_tool_analytics: same two gaps. Frontend grounded: wrapper loadToolAnalytics, argKeys=range.",
+      "load_change_analytics: same two gaps. Frontend grounded: wrapper loadChangeAnalytics, argKeys=range.",
+      "load_quota_history: same two gaps. Frontend grounded: wrapper loadQuotaHistory, argKeys=accountKey.",
+      "refresh_usage_snapshot: same two gaps. Frontend grounded: re('refresh_usage_snapshot'), no args, chunk index-B40jKs17.js.",
+      "refresh_single_account_usage: same two gaps. Frontend grounded: wrapper refreshSingleAccountUsage, argKeys=accountKey, in-flight Set + success toast + .warnings[] consumption guard.",
+      "get_usage_refresh_interval: same two gaps + UI trigger point not located (diagnostic-only). Frontend grounded: re('get_usage_refresh_interval'), no args.",
+      "set_usage_refresh_interval: same two gaps + UI trigger point not located (diagnostic-only). Frontend grounded: re('set_usage_refresh_interval'), argKeys=interval.",
+      "load_mcp_servers: same two gaps. Frontend grounded: re('load_mcp_servers'), no args, dashboard MCP stat-card entry."
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true,
+    "note": "Command-surface zero-diff vs mac is a grounded fact, not a basis to import mac's page reduce or DTO shapes. No shared-frontend-artifact exception claimed here (the shell/analytics chunks were not byte-identity-verified across platforms this pass; classified as win-native)."
+  },
+  "next_producer_steps": [
+    "Produce a Windows-native page-level UI reduce for this module's chunks (index-B40jKs17.js shell + analytics-panel-6jtfGEeX.js AnalyticsPanel + accounts-page-GdJYDnGj.js), aligned to mac's shared-index-app-frontend.md / analytics-maintenance-autoswitch-frontend.md depth, to close renderSurfaceReady.",
+    "Run an IDA win-native pass over win IDB (raw/binary/AiMaMi.1.2.3 win64.exe.i64): locate each of the 13 tauri command strings -> find_regex -> xrefs_to -> enclosing handler -> decompile + callees to implementation leaf, closing dim2/dim3 and dim4 output side (DTO/error envelope/side-effect).",
+    "Locate the get_/set_usage_refresh_interval UI trigger points inside the shell chunk (settings entry or inline auto-refresh config).",
+    "Enumerate the AnalyticsRange value domain on win-native evidence (do not assume mac's today|week|month).",
+    "Run a dim6 pass mapping the closed commands to Polaris's own C5 unit/E2E test surface.",
+    "Coordinate with the parallel macos-1.2.3-home-usage-frontend bundle only for scope alignment; keep evidence independently closed per doNotInferWindowsFromMacOS."
+  ]
+}

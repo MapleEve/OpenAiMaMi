@@ -6,7 +6,7 @@
 **Role**: 纯生产者 (SOP steps 0-6)
 **Binary**: AiMaMi 1.1.1 universal (macOS ARM64)
 **IDB**: <来源位置>/raw/binary/AiMaMi-1.1.1-idb
-**逆向分析 uptime**: 20943s (hexrays_ready=true, strings_cache_ready=true)
+**逆向分析 uptime**: 20943s (IDA decompiler_ready=true, strings_cache_ready=true)
 **Migration status**: migrated_no_behavior_diff
 **Baseline**: aimami/1.0.9/macos/voice/capture_voice_trigger_key (<本地机器>, 2026-06-03)
 **Source binary SHA256 (1.1.1)**: (1.1.1 universal arm64 — IDB module=AiMaMi, imagebase=0x100000000)
@@ -31,7 +31,7 @@
 8. **Fake-wall taxonomy exhausted — all 7 categories inapplicable**:
    - `drop_in_place≠async_body`: no VA exists to have a shim
    - `architecture_only/budget_rule`: not self-limited; genuinely absent
-   - `async_decompile_failed_hexrays_limit`: no async body to decompile
+   - `async_decompile_failed_IDA decompiler_limit`: no async body to decompile
    - `wrong_VA`: no VA to be wrong about
    - `vtable_dynamic_dispatch`: no vtable entry; no command owner
    - `HTTP_terminal_external_only`: no HTTP leaf; entirely absent

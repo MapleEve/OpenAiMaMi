@@ -1,0 +1,43 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "system",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "get_usage_refresh_interval", "get_notification_client_state", "load_pending_auto_switch",
+    "diagnose", "set_auto_switch", "open_path", "dismiss_pending_auto_switch",
+    "configure_auto_switch", "merge_mystery_unlock_grants", "get_mystery_unlock_grants",
+    "set_image_compat", "get_system_info", "set_usage_refresh_interval", "force_kill_codex",
+    "clean", "get_device_id", "load_bootstrap_state", "restart_codex", "get_image_compat",
+    "rebuild_registry", "run_daemon_once", "confirm_pending_auto_switch",
+    "confirm_pending_auto_switch_and_restart_codex",
+    "detect_api_proxy_config", "set_api_proxy_config", "test_api_proxy_config"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 26 system commands: readyToImplement blocked pending dim1 (frontend component-tree) + dim3 (standalone call-tree) + dim4 (interface/DTO) + dim5 (Windows platform gate) + dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 26 system commands: strictImplementationUse blocked pending dim1/dim3/dim4 closure at minimum"
+    ],
+    "consumerStartBlocked": [
+      "core::bootstrap_cache (9 files, backs load_bootstrap_state): truly_undone, no distillation exists yet -- consumer should not build load_bootstrap_state's downstream behavior assumptions on anything beyond 'it reads/writes some cached bootstrap state' until this is closed"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Distill core::bootstrap_cache (9 already-decompiled .c files, no new IDA work needed) into this package or a dedicated leaf -- genuinely un-distilled gap, cheapest next step since raw evidence already exists.",
+    "Produce a system-page frontend component-tree/state-model document analogous to relay-frontend.md or the skills page section -- current dim1 is command-name-only, materially weaker than sibling packages.",
+    "Resolve the confirm_pending_auto_switch / confirm_pending_auto_switch_and_restart_codex 1-file-to-2-command ambiguity (byte-level check whether a second owner file exists).",
+    "Reconcile or re-measure the platform backing +10 file discrepancy (85 platform-baseline.md table vs 95 this-session find) -- verify whether the 10 extra files are genuinely glue or represent newer decompile work not reflected in platform-baseline.md.",
+    "Run a live IDA angle-C semantic orphan scan (export_funcs()-equivalent) for system/registry/bootstrap/daemon keywords -- not attempted at all this pass, weaker than the skills sibling's grep-proxy precedent.",
+    "Run a dim4 pass: extract per-command DTO fields from the already-decompiled pseudocode -- synthesis over existing evidence, not new IDA work.",
+    "Attempt Windows-side identity resolution for the 6 commands/system + 3 system_volume_windows sub_XXXX files (currently 0/9 resolved)."
+  ]
+}

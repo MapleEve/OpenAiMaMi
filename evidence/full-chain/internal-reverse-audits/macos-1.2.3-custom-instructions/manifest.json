@@ -1,0 +1,112 @@
+{
+  "schema": "c5cm.reverse.module_manifest.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos",
+  "module": "custom-instructions",
+  "status": "accepted_ready_absent_backend_orphan_ida_direct_live_reverified",
+  "commands": [
+    "load_custom_instruction_state",
+    "preview_custom_instruction_apply",
+    "apply_custom_instruction",
+    "clear_custom_instruction_block",
+    "rollback_custom_instruction"
+  ],
+  "migration_check": {
+    "source_package": "internal-reverse/audits/macos-1.0.9-custom-instructions",
+    "frontend_cmds_unchanged": true,
+    "backend_command_baseline_hits": 0,
+    "backend_literal_grep_custom_instruction_hits": 1,
+    "migrated_no_behavior_diff": false,
+    "reason": "backend grep for custom.instruction is not 0 in 1.2.3 (1 incidental hit: ICF-folded CustomInstructionProtectionState serde stub alias); commands-baseline.md census remains 0 hits so no command owner was found, but this is a new structural signal absent from 1.0.9 evidence scope, so pure migration does not apply. This one flagged signal was independently live-resolved 2026-07-26 (see new_backend_signal below and gate.upgrade_history) and no longer blocks gate closure."
+  },
+  "new_backend_signal": {
+    "identifier": "codexmate_lib::core::models::CustomInstructionProtectionState",
+    "kind": "serde::Deserialize derive (FieldVisitor::expecting stub, ICF-folded)",
+    "evidence_file": "raw/aimami/1.2.3/macos-arm64/core/relay/ida/pseudocode/__codexmate_lib_core_relay_transition_journal___impl_serde_core_de_Deserialize_for_codexmate_lib_core_relay_transition_j_0x100373380.c",
+    "address": "0x100373380",
+    "folded_with": [
+      "codexmate_lib::core::relay::transition_journal::TransitionTarget",
+      "codexmate_lib::core::models::AuthMode",
+      "codexmate_lib::core::models::PlanType"
+    ],
+    "total_hits_in_1.2.3_evidence": 1,
+    "corroborated_elsewhere": false,
+    "independent_function_body_recovered": true,
+    "resolution": "Live decompile(0x100373380) 2026-07-26 (session mac123-custominstr-gapclose-20260726142739, see ../DISTILLED.md) recovered the full pseudocode: a generic serde::de::Visitor::expecting() trait-method body, ICF-folded across 4 unrelated types (AuthMode/PlanType/CustomInstructionProtectionState/TransitionTarget), unconditionally emitting the literal string \"field identifier\" regardless of type. Zero type-specific or command-specific logic. recovery_attempts (false-VA hypothesis, caller-disambiguation) both considered and ruled inapplicable in ../DISTILLED.md and raw evidence. This signal is now characterized as evidentiary noise (a serde-deserializable DTO type existing is orthogonal to a wired Tauri command handler existing) and provides no weight toward a backend command owner."
+  },
+  "gate": {
+    "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+    "readyToImplement": [
+      "load_custom_instruction_state",
+      "preview_custom_instruction_apply",
+      "apply_custom_instruction",
+      "clear_custom_instruction_block",
+      "rollback_custom_instruction"
+    ],
+    "strictImplementationUse": [
+      "load_custom_instruction_state",
+      "preview_custom_instruction_apply",
+      "apply_custom_instruction",
+      "clear_custom_instruction_block",
+      "rollback_custom_instruction"
+    ],
+    "consumerStartReady": [
+      "load_custom_instruction_state",
+      "preview_custom_instruction_apply",
+      "apply_custom_instruction",
+      "clear_custom_instruction_block",
+      "rollback_custom_instruction"
+    ],
+    "reverseRequiredQueues": {
+      "forbiddenUntilReady": [],
+      "forbiddenUntilStrictImplementationUse": [],
+      "consumerStartBlocked": []
+    },
+    "platformPolicy": {
+      "windowsIndependent": true,
+      "doNotInferWindowsFromMacOS": true
+    },
+    "implementation_use": true,
+    "gate_accepted": true,
+    "full_leaf_100": true,
+    "moduleExitAllowed": true,
+    "accepted_substitute": "same_platform_ida_backend_absence_for_frontend_orphan_command",
+    "note": "Upgraded 2026-07-26 to mirror windows-1.2.3-custom-instructions (gate_accepted=true, full_leaf_100=true as of session win-custom-instructions-distill-20260725). Both platforms now independently closed on identical evidentiary footing: 5/5 commands live-reverified absent a backend command owner on their respective same-version, same-platform binary, with the sole macOS structural signal (CustomInstructionProtectionState) characterized and ruled non-probative. See gate.upgrade_history for the full EXPLICIT_OVERWRITE_CANONICAL record and evidence pointers.",
+    "upgrade_history": [
+      {
+        "event": "EXPLICIT_OVERWRITE_CANONICAL",
+        "date": "2026-07-26",
+        "prior_gate": {
+          "status": "distilled_partial_change_vs_1.0.9",
+          "readyToImplement": [],
+          "strictImplementationUse": [],
+          "implementation_use": false,
+          "gate_accepted": false,
+          "full_leaf_100": false,
+          "moduleExitAllowed": false,
+          "accepted_substitute": null
+        },
+        "reason": "User explicitly authorized (chat, this task round, 2026-07-26) synchronizing macOS to the same gate tier already accepted for windows-1.2.3-custom-instructions, after this session's own live re-verification (../DISTILLED.md, session mac123-custominstr-gapclose-20260726142739) closed the one asymmetry that had kept macOS at DISTILLED_PARTIAL_CHANGE: the CustomInstructionProtectionState signal. Live methodology mirrored the windows-1.2.3 approach exactly: func_query per-command name_regex (0/5 hits), module-wide name_regex sweep (0 hits), find_regex per-command string pool (0/5 hits), find_regex broad substring (1 hit, data-only path table via xrefs_to, not a dispatcher), and decompile of the one flagged signal (0x100373380, proven to be a 4-type ICF-folded serde Visitor::expecting() stub with zero command-specific logic).",
+        "evidence_pointers": [
+          "internal-reverse/audits/macos-1.2.3-custom-instructions/DISTILLED.md (2026-07-26 live re-verification, full methodology + results table)",
+          "raw/aimami/1.2.3/macos-arm64/custom-instructions/live-reverify-20260726.md (raw evidence)",
+          "internal-reverse/INDEX.jsonl session mac123-custominstr-gapclose-20260726142739 (5 append-only rows)",
+          "internal-reverse/audits/windows-1.2.3-custom-instructions/gate-report.json (sibling accepted precedent, same accepted_substitute)",
+          "internal-reverse/audits/macos-1.2.3-custom-instructions/reviews/CLAUDE.md (independent reviewer concurrence on the underlying evidence, pre-upgrade; reviewer explicitly flagged the CustomInstructionProtectionState follow-up as the remaining gap, now closed by DISTILLED.md)"
+        ],
+        "owner_basis": "grep -n \"custom-instruction|custominstr\" internal-reverse/REVERSE-STATUS.md and root INDEX.jsonl/internal-reverse/INDEX.jsonl show no other active in-progress producer claim on this bundle; no root task-plan.json exists; no AI-EXECUTION-QUEUE.md P0 Consumer Intake row references this module. gate=ALLOW for this session as sole producer; EXPLICIT_OVERWRITE_CANONICAL token used per user authorization (not a routine ack) because this write changes previously-accepted-false canonical gate fields to true, which GATE-SPEC.md RULE9/migration rules normally forbid without explicit override.",
+        "authorized_by": "user, in-chat, this task round (2026-07-26); C5CM_INTERNAL_HISTORY_ROOT/internal-reverse/GATE-SPEC.md §PREWRITE_PRODUCER_COLLISION_GATE_V1 EXPLICIT_OVERWRITE_CANONICAL token procedure followed",
+        "scope_note": "This upgrade touches ONLY macos-1.2.3-custom-instructions. No other bundle's gate fields were modified in this round."
+      }
+    ]
+  },
+  "frontendConsumerHandoff": {
+    "status": "unchanged_from_1.0.9",
+    "currentC5FrontendStatus": "live"
+  },
+  "productDecisionBoundary": "Current C5 custom-instructions chain is live product/local behavior; upstream 1.2.3 backend owner parity is an absent substitute (live-reverified equally on both platforms 2026-07-26), not strict backend reconstruction.",
+  "machine": "Maple-M3-Max",
+  "audit_date": "2026-07-25",
+  "gate_upgrade_date": "2026-07-26"
+}

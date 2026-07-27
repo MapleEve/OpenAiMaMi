@@ -4,7 +4,7 @@
 **Machine**: <本地机器>
 **Binary**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi
 **Source binary SHA256**: (from IDB idb_path <来源位置>/raw/binary/AiMaMi-1.1.1-binary)
-**IDB**: AiMaMi.i64 (hexrays_ready=true, uptime=63110s at session start)
+**IDB**: AiMaMi.i64 (IDA decompiler_ready=true, uptime=63110s at session start)
 **Date**: 2026-06-17
 **Module**: codexmate_lib::commands::relay (leaf dir: commands_relay/)
 

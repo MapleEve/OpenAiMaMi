@@ -78,7 +78,7 @@ All accepted_unknown items above have been tested against the fake-wall taxonomy
 
 - **drop_in_place != async body**: No drop_in_place shims accepted as function bodies. All named functions were confirmed to be real implementations.
 - **architecture_only/budget_rule self-limit**: NOT applied. All 5 depth levels were decompiled via HexRays. No budget cutoff.
-- **async decompile failed**: NOT applicable. HexRays decompiled all functions successfully (hexrays_ready=true confirmed).
+- **async decompile failed**: NOT applicable. HexRays decompiled all functions successfully (IDA decompiler_ready=true confirmed).
 - **wrong VA**: NOT applicable. `lookup_funcs` and `func_query` both confirmed exact symbol matches with no ambiguity.
 - **vtable dynamic dispatch**: NOT applicable. All callees are statically named in 逆向分析 (no indirect vtable calls in this chain).
 - **HTTP-terminal external-only**: NOT applicable. No HTTP calls anywhere in chain — confirmed.

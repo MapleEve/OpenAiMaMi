@@ -1,0 +1,53 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "daemon-autoswitch",
+  "package": "windows-1.2.3-daemon-autoswitch",
+  "created_at": "2026-07-25T00:00:00Z",
+  "producer_machine": "<host> (this reduce pass; no IDA MCP session run, no new decompile produced)",
+  "task_kind": "reduce/distillation-only -- this session read pre-existing raw/aimami/1.2.3/windows-x64/{codexmate_lib,commands,repository}/ida/pseudocode/*.c files plus frontend/ipc-contracts.jsonl and the already-produced analytics-maintenance-autoswitch-frontend.md CCF doc, and synthesized this package. No IDA tool calls (decompile/xrefs_to/callees/set_comments) were made this pass.",
+  "binary": {
+    "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+    "binary_format": "pe",
+    "pe_machine": "AMD64",
+    "idb_module_name": "AiMaM 1.2.3 win64.exe.i64 (strip, no symbols) -- SAME binary/IDB cited by ../windows-1.2.3-relay/ and ../windows-1.2.3-maintenance/ sibling packages"
+  },
+  "scope": {
+    "canonical_target_universe_source": "inherited from ../windows-1.0.9-daemon-autoswitch/ per RULE9 (13 commands: daemon 6 + auto-switch 7); this package does NOT expand the canonical universe",
+    "backend_target_universe": "13 commands: run_daemon_once, load_bootstrap_state, note_usage_refresh_activity, schedule_full_runtime_refresh, start_usage_refresh_watcher, update_usage_refresh_schedule (daemon, 6) + start_auto_switch_pending_watcher, load_pending_auto_switch, confirm_pending_auto_switch, dismiss_pending_auto_switch, confirm_pending_auto_switch_and_restart_codex, configure_auto_switch, set_auto_switch (auto-switch, 7)",
+    "frontend_target_universe": "raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl (win-native, per task dim5 instruction) -- 11/13 commands have tauriInvokeWrapper hits; 2 (start_auto_switch_pending_watcher = native-thread-no-IPC, consistent with 1.0.9) confirmed zero hits; 4 daemon watcher commands also zero hits, consistent with 1.0.9 ABSENT-from-Windows pattern",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true,
+    "adjacent_out_of_scope_evidence": "3 raw .c files physically co-located in the same codexmate_lib catch-all dump were read this pass but are explicitly NOT part of this package's canonical target_universe: restart_codex (0x140cc0730), export_debug_bundle (0x140cbce20), upload_debug_report (0x140cdff20). These belong to the MaintenancePage frontend domain (see raw/aimami/1.2.3/macos-arm64/frontend/pages/analytics-maintenance-autoswitch-frontend.md section 2). restart_codex already has an independent 1.0.9 Windows baseline in ../windows-1.0.9-maintenance/ (strictImplementationUse). ../windows-1.2.3-maintenance/ (existing sibling) covers a DIFFERENT 3-command set (rebuild_registry/clean/load_snapshot, the account-registry cluster) and does NOT cover restart_codex/export_debug_bundle/upload_debug_report -- these 3 remain an uncovered gap belonging to neither this package nor the existing maintenance package; flagged in Unknown/Missing, not claimed here (collision-gate: this package writes read-only observations about them, does not claim ownership or gate status)."
+  },
+  "coverage": {
+    "raw_c_files_daemon_autoswitch_canonical_scope": 12,
+    "raw_c_files_usable_pseudocode": 9,
+    "raw_c_files_decompile_failed_raw_disasm_only": 2,
+    "raw_c_files_missing_under_canonical_command_name": 1,
+    "raw_c_files_adjacent_out_of_scope_maintenance": 3,
+    "measurement_basis": "this pass: find + grep across raw/aimami/1.2.3/windows-x64/{codexmate_lib,commands,repository}/ida/pseudocode/, cross-checked against raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl (grep -c per command name) and ../windows-1.0.9-daemon-autoswitch/ canonical 13-command universe",
+    "prior_task_estimate_daemon_7_maintenance_3": "the task's prior estimate ('daemon ~7, maintenance ~3') is CORRECTED by this pass: filename-keyword search alone under-counted (missed load_bootstrap_state, which has no 'daemon'/'auto_switch' substring in its filename, and missed the switch_account_and_restart_codex identity-unconfirmed candidate); actual count within the canonical 13-command daemon+auto-switch universe is 9 usable + 2 decompile-failed + 1 missing-under-canonical-name = 12 raw .c files touching this domain, plus 3 adjacent maintenance-domain files out of canonical scope"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/windows-1.0.9-daemon-autoswitch/ (RULE9 baseline reference, NOT diff-confirmed-empty -- see logic/DELTA-LOGIC-1.2.3.md)",
+    "internal-reverse/audits/windows-1.0.9-maintenance/ (restart_codex 1.0.9 baseline, cited as adjacent context only)"
+  ],
+  "cross_platform_sibling": "NONE -- no macos-1.2.3-daemon-autoswitch package exists yet (checked internal-reverse/audits/ listing this pass); macos-1.0.9-daemon-autoswitch exists but is a different target version",
+  "sibling_packages_same_version": [
+    "internal-reverse/audits/windows-1.2.3-relay/ (same binary SHA, different module)",
+    "internal-reverse/audits/windows-1.2.3-maintenance/ (different 3-command scope: rebuild_registry/clean/load_snapshot; does not cover restart_codex/export_debug_bundle/upload_debug_report)"
+  ],
+  "known_residuals": [
+    "configure_auto_switch: raw .c is a HEXRAYS_DECOMPILE_FAILED fallback (raw disassembly only, explicit [TRUNCATED] marker, 'switch analysis failed: bad target 0x140CC6F38 for case 6') -- NOT usable pseudocode, genuine dim2 gap. 1.0.9 Windows had this command at readyToImplement with clean pseudocode; this is a real regression in decompile quality for 1.2.3, not migrated/inherited.",
+    "confirm_pending_auto_switch_and_restart_codex: frontend still calls it (ipc-contracts.jsonl tauriInvokeWrapper hit confirmed, wrapper=confirmPendingAutoSwitchAndRestartCodex), but NO raw .c exists under this exact command name in the 1.2.3 windows-x64 tree. The only name-adjacent candidate found, switch_account_and_restart_codex (0x140cae510, commands/accounts/), is ALSO a HEXRAYS_DECOMPILE_FAILED raw-disasm-only stub, and its identity as the same command is UNCONFIRMED (different Rust command name, no byte-signature or callee cross-check done this pass). This is a genuine coverage gap, not a resolved rename.",
+    "all daemon-domain raw .c file header comments (run_daemon_once, set_auto_switch, confirm_pending_auto_switch, restart_codex, export_debug_bundle, upload_debug_report) say 'win 1.2.1' for module/command attribution provenance, while physically residing under the raw/aimami/1.2.3/windows-x64/ path and citing the 1.2.3 binary SHA in sibling packages. Whether the underlying function bodies were independently re-verified against the 1.2.3 binary or carried forward from a 1.2.1 pass without re-verification is UNKNOWN this pass -- flagged as an open provenance question, not resolved or smoothed over.",
+    "4 daemon watcher commands (note_usage_refresh_activity/schedule_full_runtime_refresh/start_usage_refresh_watcher/update_usage_refresh_schedule) + start_auto_switch_pending_watcher: zero ipc-contracts.jsonl hits at 1.2.3, matching the 1.0.9 ABSENT/native-thread pattern -- but this is only a frontend-existence-signal consistency check (grep count comparison), NOT an independent 1.2.3 backend re-verification. Per RULE9 this does not qualify as migrated_no_behavior_diff (no backend diff basis); recorded Unknown, consistent-with-prior-absence, not confirmed-absent-at-1.2.3."
+  ],
+  "note": "This manifest synthesizes a read-only pass over already-produced raw/aimami/1.2.3/windows-x64/{codexmate_lib,commands,repository}/ida/pseudocode/*.c files, raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl, and raw/aimami/1.2.3/macos-arm64/frontend/pages/analytics-maintenance-autoswitch-frontend.md. No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md. Per skill red line 8, no Windows finding in this package is extrapolated from macOS evidence."
+}

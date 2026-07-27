@@ -1,0 +1,35 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "system-hotspot",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "has_notch", "get_hotspot_enabled", "set_hotspot_enabled", "focus_main_window", "hotspot_ready"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 5 system-hotspot commands: readyToImplement blocked pending dim3 (decompile the 5 core-dispatch addresses 0x140970DA0/0x14096F8D0/0x14096FB70/0x14096F460/0x14096F5D0) + dim4 (confirm whether 'hotspot' is a direct CodexMateSettings field, per the new commands/autostart/sub_140388D60.c lead, and its type/layout) + dim5 (13 macOS-only functions' Windows equivalents, or confirm genuine absence via product_decision) + dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 5 system-hotspot commands: strictImplementationUse blocked pending dim3 (0/5 currently reach a confirmed leaf) and dim4 (interface/DTO) closure -- Windows dim3 is currently weaker than the macOS sibling package's own not-yet-strict state"
+    ],
+    "consumerStartBlocked": [
+      "the 13 macOS-only internal helper/platform functions (create_hotspot_window, apply_native_hotspot_properties, install_native_hotspot_observers, register_hotspot_relayout_observers, schedule_hotspot_relayout, refresh_hotspot_on_main, set_window_alpha, bring_main_window_forward, bring_main_window_force_forward, force_reveal_main_window, reveal_main_window, compute_hotspot_frame, has_notch_screen) have zero Windows evidence and are not independently Tauri-invokable -- product_decision needed on whether Windows needs an equivalent notch-companion-window feature at all before consumer builds cross-platform-parity code against them (same open question as the macOS sibling package records)"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Decompile the 5 unnamed core-dispatch addresses (0x140970DA0 has_notch, 0x14096F8D0 get_hotspot_enabled, 0x14096FB70 set_hotspot_enabled, 0x14096F460 hotspot_ready, 0x14096F5D0 focus_main_window) -- this is the single highest-value next step, since it is the entire dim3 gap for this module and none of the 5 addresses currently have any decompiled .c file.",
+    "Follow up on the commands/autostart/sub_140388D60.c serde field-name-matcher lead: decode the accompanying off_14174B660 offset table (8 entries) and the '17'/'8' call parameters to confirm whether 'hotspot' is genuinely a standalone top-level field of CodexMateSettings (as the string-concatenation ordering suggests) versus a coincidental substring/prefix artifact -- if confirmed, this would meaningfully advance dim4 beyond the macOS sibling package's own unresolved CodexMateSettings/HotspotConfig relationship question.",
+    "Confirm via product_decision (not IDA) whether Windows genuinely lacks a notch-companion-window feature (plausible given no notch hardware) or whether the 13 macOS-only functions' Windows equivalents simply haven't been decompiled yet -- currently accepted_unknown, not confirmed either way, same open question as the macOS sibling package.",
+    "Run a dim6 pass: map each of the 5 system-hotspot commands' behavior to Polaris's own C5 unit/E2E test surface or explicit manual-acceptance criteria (mirrors the macOS sibling package's own outstanding dim6 gap).",
+    "Re-run angle-C as a live IDA export_funcs() semantic scan (this pass only used a text grep proxy) to more rigorously rule out ICF-folded or string-pool-invisible hotspot-adjacent functions on Windows.",
+    "If/when the 1.0.9 Windows system-hotspot package's semantic scope (WiFi network hotspot) is confirmed to be fully superseded by the 1.2.3 semantic scope (notch-companion-window UI toggle) rather than a coexisting separate feature, formally retire the 1.0.9 package's strictImplementationUse claim as no-longer-applicable to the current product surface -- this pass did not make that determination, it only confirmed the two scopes are evidentially distinct (different addresses, different owner names, different persistence blob description)."
+  ]
+}

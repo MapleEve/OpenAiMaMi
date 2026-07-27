@@ -1,0 +1,108 @@
+{
+  "part_a_461_unresolved": {
+    "total": 461,
+    "true": 6,
+    "false": 455,
+    "unknown_still": 0,
+    "true_addrs": [
+      "0x1008b4be0",
+      "0x1008c8210",
+      "0x1008c9e00",
+      "0x10092b8c0",
+      "0x100933b10",
+      "0x1011f3800"
+    ]
+  },
+  "part_b_gracefulshutdown4": {
+    "total": 4,
+    "verdicts": [
+      {
+        "addr": "0x1000ceab0",
+        "verdict": false,
+        "why": "decompiled; ONLY weak (drop_in_place/serialize/deserialize/clone) codexmate_lib callee(s) present (['core::ptr::drop_in_place<codexmate_lib::core::oauth_login::run_login_flow::{{closure}}::{{closure}}::{{closure}}>::h00cbd4bb204ef812']) -- same debunked false-positive pattern as sec.2, no independent business signal"
+      },
+      {
+        "addr": "0x1000ced20",
+        "verdict": false,
+        "why": "decompiled; ONLY weak (drop_in_place/serialize/deserialize/clone) codexmate_lib callee(s) present (['core::ptr::drop_in_place<codexmate_lib::core::oauth_login::run_login_flow::{{closure}}::{{closure}}::{{closure}}>::h00cbd4bb204ef812']) -- same debunked false-positive pattern as sec.2, no independent business signal"
+      },
+      {
+        "addr": "0x1000cef90",
+        "verdict": false,
+        "why": "decompiled; ONLY weak (drop_in_place/serialize/deserialize/clone) codexmate_lib callee(s) present (['core::ptr::drop_in_place<hyper_util::server::conn::auto::UpgradeableConnection<hyper_util::rt::tokio::TokioIo<tokio::net::tcp::stream::TcpStream>,hyper_util::service::glue::TowerToHyperService<tower::util::map_request::MapRequest<axum::routing::Router,<axum::serve::WithGracefulShutdown<axum::routing::Router,axum::routing::Router,codexmate_lib::core::relay::proxy_server::start::{{closure}}::{{closure}}::{{closure}}> as core::future::into_future::IntoFuture>::into_future::{{closure}}::{{closure}}>>,hyper_util::rt::tokio::TokioExecutor>>::h91ca2a399534256b']) -- same debunked false-positive pattern as sec.2, no independent business signal"
+      },
+      {
+        "addr": "0x1000cf3f0",
+        "verdict": false,
+        "why": "decompiled; ONLY weak (drop_in_place/serialize/deserialize/clone) codexmate_lib callee(s) present (['core::ptr::drop_in_place<hyper_util::server::conn::auto::UpgradeableConnection<hyper_util::rt::tokio::TokioIo<tokio::net::tcp::stream::TcpStream>,hyper_util::service::glue::TowerToHyperService<tower::util::map_request::MapRequest<axum::routing::Router,<axum::serve::WithGracefulShutdown<axum::routing::Router,axum::routing::Router,codexmate_lib::core::relay::proxy_server::start::{{closure}}::{{closure}}::{{closure}}> as core::future::into_future::IntoFuture>::into_future::{{closure}}::{{closure}}>>,hyper_util::rt::tokio::TokioExecutor>>::h91ca2a399534256b']) -- same debunked false-positive pattern as sec.2, no independent business signal"
+      }
+    ]
+  },
+  "part_c_cappedhandler1": {
+    "addr": "0x100933b10",
+    "verdict": true,
+    "why": "direct callee to NON-drop/NON-serialize codexmate_lib function: ['codexmate_lib::core::oauth_login::resolve_callback::hae5d803d688d4700']"
+  },
+  "part_d_new_namespaces": {
+    "namespaces_swept": [
+      "objc2",
+      "objc2_foundation",
+      "objc2_app_kit",
+      "objc2_web_kit",
+      "dispatch2",
+      "core_foundation",
+      "security_framework",
+      "tao",
+      "wry",
+      "muda",
+      "tray_icon",
+      "global_hotkey",
+      "keyring",
+      "rusqlite",
+      "auto_launch",
+      "rfd",
+      "zip",
+      "tar",
+      "cfb",
+      "plist",
+      "toml_edit",
+      "toml",
+      "infer",
+      "png",
+      "image",
+      "chrono",
+      "url",
+      "tungstenite",
+      "tokio_tungstenite",
+      "tokio (full, closing gap vs sweep1 partial regex)",
+      "rustls_pki_types",
+      "hyper_rustls",
+      "tokio_rustls"
+    ],
+    "framework_candidates_matched": 10459,
+    "adjacent_candidates": 1475,
+    "total_judged": 1475,
+    "true": 15,
+    "false": 1459,
+    "unknown_still": 1,
+    "true_addrs": [
+      "0x1002fe640",
+      "0x100300bf0",
+      "0x1003ab030",
+      "0x1003c1e40",
+      "0x1003cc420",
+      "0x1003cc6e0",
+      "0x1004b6960",
+      "0x1004b6b30",
+      "0x1004b6ce0",
+      "0x1006b3b20",
+      "0x1006b5350",
+      "0x1007504e0",
+      "0x100e3a6b0",
+      "0x100e3a7b0",
+      "0x100e3a880"
+    ]
+  },
+  "total_funcs_in_binary": 38851,
+  "already_covered_population": 4160
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "c5cm.reverse.audit.task_plan.v1",
+  "bundle": "cross-1.2.3-relay-core-bootstrap",
+  "produced_at": "2026-07-25",
+  "session": "cross123-relay-core-bootstrap-distillation-20260725",
+  "queue": [
+    {
+      "id": "cross123-relaycore-1",
+      "target": "windows-1.2.3-relay-core canonical bundle",
+      "classification": "gap_needs_reducer",
+      "action": "decompile() tier-C (undecompiled) functions from raw/aimami/1.2.3/windows-x64/relay-core/owner-map.jsonl (177 functions, 29 submodules); RULE-8 reduce into audits/windows-1.2.3-relay-core/",
+      "priority": "P1",
+      "blocked_by": "none — raw owner surface already exists, ready for decompile pass"
+    },
+    {
+      "id": "cross123-relaycore-2",
+      "target": "windows-1.2.3-bootstrap canonical bundle",
+      "classification": "gap_needs_new_raw",
+      "action": "triage windows-x64 bootstrap-analog functions mirroring mac-1.2.3-bootstrap-triage-20260725 method; candidates: raw/aimami/1.2.3/windows-x64/runtime/, .../codex_runtime/, and manager/ida/pseudocode/bootstrap_0x14085a330.c (unexamined lead, not yet confirmed as the bootstrap-module leaf)",
+      "priority": "P1",
+      "blocked_by": "none — but zero raw evidence collected yet, this is a from-scratch pass"
+    },
+    {
+      "id": "cross123-relaycore-3",
+      "target": "macos-1.2.3-relay-core formal RULE-9 migration",
+      "classification": "gap_needs_reducer",
+      "action": "produce audits/macos-1.2.3-relay/logic/NO-BEHAVIOR-DIFF-MIGRATION-1.2.3.md formally diffing against audits/macos-1.0.9-relay-core/'s 19-cluster target universe; upgrade macos-1.2.3-relay-core/ from diagnostic-only to a real migrated_no_behavior_diff or diff_required determination per cluster",
+      "priority": "P2",
+      "blocked_by": "none — existing diagnostic pass already did the informal version; this formalizes it"
+    },
+    {
+      "id": "cross123-relaycore-4",
+      "target": "relay_web_executor / relay_web_tools existence falsification",
+      "classification": "gap_needs_new_raw",
+      "action": "func_query full symbol enumeration on macOS 1.2.3 raw tree (string-pool-independent) to rule out ICF/monomorphization masking before declaring removed-feature vs unrecognized-name (FOUR_ANGLE_COMPLETENESS red line 15)",
+      "priority": "P2",
+      "blocked_by": "none"
+    },
+    {
+      "id": "cross123-relaycore-5",
+      "target": "cross-1.2.3-relay-core-bootstrap real gate synthesis",
+      "classification": "blocked",
+      "action": "re-run this cross-synthesis once cross123-relaycore-1 and cross123-relaycore-2 each reach at least consumerStartReady, and cross123-relaycore-3 formalizes the macOS side; compute a real per-cluster cross gate table following the cross-1.0.9-relay-core-bootstrap/ template format",
+      "priority": "P1",
+      "blocked_by": ["cross123-relaycore-1", "cross123-relaycore-2", "cross123-relaycore-3"]
+    }
+  ]
+}

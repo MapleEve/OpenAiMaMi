@@ -1,0 +1,58 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "mcp",
+  "package": "macos-1.2.3-mcp",
+  "created_at": "2026-07-24T00:00:00Z",
+  "producer_machine": "this session (distillation only — no new IDA calls made; consumed pre-existing raw .c evidence + prior func_query name/address version-diff annotations already embedded in file headers)",
+  "binary": {
+    "sha256_core_mcp": "e3f2fec7d7cd32c8a7a650ec563577b8c74516aed270c1230a5b11296942114d",
+    "binary_format": "macho",
+    "arch": "arm64",
+    "note": "same 1.2.3 macOS binary SHA as macos-1.2.3-relay package (cross-checked)"
+  },
+  "scope": {
+    "backend_target_universe": "codexmate_lib::core::mcp::* (14 functions) + codexmate_lib::commands::mcp::* (4 Tauri command wrappers)",
+    "frontend_target_universe": "McpPage (mcp-page-LchViioT.js) + shared relay/mcp service object (T) IPC wrappers",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "backend_functions_commands_mcp": 4,
+    "backend_functions_core_mcp": 14,
+    "backend_functions_total": 18,
+    "backend_functions_truncated_stubs": 0,
+    "backend_functions_truncated_stubs_verification": "all 18 .c files opened and read in full (or, for the two largest >1000-line files, read to completion across paginated reads) this session; every file ends with a closing brace and a `return` statement, no `[N chars total]` / `TRUNCATED` marker observed",
+    "commands_mcp_wrapper_files": 4,
+    "commands_mcp_upstream_command_count": 4,
+    "commands_mcp_command_to_file_gap": 0,
+    "commands_mcp_command_to_file_gap_note": "exact 1:1 match between frontend ipc-contracts.jsonl mcp commands and commands/mcp/*.c wrapper files: load_mcp_servers, upsert_mcp_server, set_mcp_server_enabled, remove_mcp_server",
+    "core_mcp_functions_enumerated": [
+      "load_mcp_servers", "parse_mcp_document", "parse_mcp_section_header",
+      "editable_mcp_server_table", "insert_mcp_block", "prepare_existing_mcp_block",
+      "quote_toml", "unquote_toml", "strip_toml_comment", "replace_string_table",
+      "set_optional_string", "remove_mcp_server", "set_mcp_server_enabled", "upsert_mcp_server"
+    ],
+    "frontend_pages_reversed": 1,
+    "frontend_page_reversed_note": "McpPage fully reversed (component tree/state model/interaction table) in raw/aimami/1.2.3/macos-arm64/frontend/pages/mcp-sessions-settings-skills-frontend.md §1 (shared doc covering 4 pages: mcp/sessions/settings/skills; only §1 mcp-page is in scope for this package)",
+    "measurement_basis": "file-system find|wc -l against raw/aimami/1.2.3/macos-arm64/{commands,core}/mcp/ida/pseudocode/*.c, this session (2026-07-24); frontend command diff against raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl (131 total commands, 4 filtered by command name containing 'mcp')"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.0.9-mcp/ (historical baseline pointer only — 1.0.9 reached legacy readyToImplement=true/full_leaf_100=true under the PRE full_leaf_100_definition_v2 / pre-CANONICAL_DIRECTORY_AUTHORITY_V1 rule set; NOT re-validated against the current six-dimension gate in this pass, NOT used to auto-upgrade any 1.2.3 tier; 1.0.9 evidence covers only command/args/env fields, no url/headers/transport — see SYSTEM-DIFF.md delta note)"
+  ],
+  "cross_platform_sibling": "raw/aimami/1.2.3/windows-x64/mcp/ida/pseudocode/*.c exists (15 files per INDEX.jsonl key aimami/1.2.3/windows-x64/mcp/win-app-inventory-gapfill-leaf, produced 2026-07-24T13:20:34Z) but NOT consumed into a canonical audits/windows-1.2.3-mcp/ package this pass — no such package exists yet",
+  "known_residuals": [
+    "dim4 (interface/DTO/error-envelope/side-effect boundary) not systematically extracted — DTO field names for upsert_mcp_server (command/args/env/headers/url per transport stdio|http|sse) are inferred from frontend ipc-contracts.jsonl argKeys + mcp-page-LchViioT.js form fields + backend key-literal byte lengths (7='command', 3='url' passed to set_optional_string), not from a formal per-field backend struct dump",
+    "dim5 Windows platform gate: existence confirmed (15 raw .c files on disk per INDEX.jsonl), but NOT read/verified in this session — Windows parity is Unknown, not extrapolated from macOS",
+    "dim6 test/acceptance mapping not produced",
+    "Angle-A (live func_query symbol enumeration) NOT performed — this session has no IDA MCP tool connection; angle-A coverage claim is based on static raw-disk directory enumeration only (18 files), cross-checked by angle-C keyword grep across the full 1.2.3 macos-arm64 raw tree, not by a live symbol table query. This is weaker than the relay package's live-tool angle-A and is recorded honestly, not upgraded to a false live-verified claim",
+    "call-tree-to-leaf (dim3) is documented inline in logic/FULL-CHAIN-1.2.3.md from manual pseudocode reading, not from a systematic callees()/xrefs_to() MCP-tool-driven reduction — same caveat as relay package's dim3 partial status",
+    "5 DTO-glue functions (McpTransport::deserialize x2, McpServerSummary::deserialize x2, McpServerListPayload::deserialize x1) live under core::models, NOT core::mcp — referenced via pointer, not duplicated into this package (angle-D already_in_canonical classification, see gate-report.json unknowns)"
+  ],
+  "note": "This is the FIRST canonical audits/ package for the mcp module at 1.2.3 macOS. A prior attempt (referenced by the user as '上波此模块 1 agent 误拒未产出') never produced a canonical package despite raw .c evidence already existing on disk since the 1.2.3 census-gap-fill / baseline sessions on 2026-07-21/24. This package distills that pre-existing raw evidence (all 18 .c files read in full this session) plus the pre-existing frontend page-reversal doc (mcp-sessions-settings-skills-frontend.md §1, itself already produced, not re-derived) into the required audits/ canonical structure. No new IDA decompilation was performed; no bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md."
+}

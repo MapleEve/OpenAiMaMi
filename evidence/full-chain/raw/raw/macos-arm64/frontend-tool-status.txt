@@ -1,0 +1,10 @@
+binary: raw/aimami/1.2.3/macos-arm64/frontend/AiMaMi.arm64.thin
+evidence-excludes: raw/aimami/1.2.3/macos-arm64/evidence-excludes.txt
+tauri-dumper: exit=0 output=raw/aimami/1.2.3/macos-arm64/tauri-dumper.log
+frontend-root: raw/aimami/1.2.3/macos-arm64/dumped
+frontend-extract: exit=0 output=raw/aimami/1.2.3/macos-arm64/frontend-extract.log
+frontend-ast: exit=0 output=raw/aimami/1.2.3/macos-arm64/frontend/ast-facts.json
+resources: raw/aimami/1.2.3/macos-arm64/resources.txt
+version-baseline: raw/aimami/1.2.3/macos-arm64/VERSION-BASELINE.md
+report-template: raw/aimami/1.2.3/macos-arm64/frontend-page-ipc-rust-report.md
+manifest: raw/aimami/1.2.3/macos-arm64/MANIFEST.md

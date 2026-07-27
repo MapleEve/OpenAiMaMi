@@ -1,0 +1,22 @@
+{
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "commands::relay::*",
+  "binary": "AiMaMi.1.2.3 win64.exe",
+  "binary_format": "pe",
+  "pe_machine": "AMD64",
+  "binary_sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "imagebase": "0x140000000",
+  "scope": "function-surface-only",
+  "method": "frontend ipc-contracts.jsonl relay/proxy command names + 2 commands recovered only via deeper frontend-page extraction (relay-frontend.md relay_command_universe, not in static ipc-contracts.jsonl: diagnose_codex_router, test_relay_draft_stream) -> find_regex -> xrefs_to (1-hop) -> unique owner",
+  "commands_total": 23,
+  "commands_resolved_clean_owner": 22,
+  "commands_blocked": 1,
+  "commands_blocked_list": ["get_codex_router_auth_readiness"],
+  "commands_added_from_page_level_extraction_not_in_static_ipc_contracts": ["diagnose_codex_router", "test_relay_draft_stream"],
+  "no_decompile_performed": true,
+  "produced_by": "<host>",
+  "session": "relay123-surface",
+  "produced_at": "2026-07-23T00:00:00Z"
+}

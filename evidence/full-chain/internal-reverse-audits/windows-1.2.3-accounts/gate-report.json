@@ -1,0 +1,86 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "accounts",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-25",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 4,
+    "consumerStartBlocked": 8,
+    "total_accounts_domain_commands_considered": 12
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "mixed -- inherited from macos-1.2.3-accounts's AccountsPage reversal (raw/aimami/1.2.3/macos-arm64/frontend/pages/accounts-frontend.md) via a PROVEN byte-identical artifact (accounts-page-GdJYDnGj.js, SHA-256 09336d32548087c04de52882ad2b37d9236a26678e7b53483bd1dd22c3d10c55 verified identical between mac raw dump and win tauri-dumped-assets this session), plus win's own independently-extracted ipc-contracts.jsonl (131 commands) and frontend-control-flow.jsonl (248 lines) as own-platform corroboration. Same underlying 8-confirmed/4-open interaction split as mac necessarily applies (identical JS bytes -> identical interaction map): switch_account_and_restart_codex/remove_accounts/refresh_single_account_usage/export_accounts_to_file/import_accounts_from_file/preview_account_import/begin_chatgpt_oauth_login/cancel_chatgpt_oauth_login have confirmed call-sites; load_snapshot/logout/switch_account/refresh_usage_snapshot do not (same 4 as mac). This dim1 result is NOT independently win-native-reversed frontend work; it is proven-artifact reuse.",
+    "dim2_backend_owner_pseudocode": "weak-mixed -- 67/72 in-scope .c files have clean pseudocode (0 truncation: account_io 1/1, auth 3/3, oauth_login 11/12, oauth_refresh 10/10, commands/accounts 38/42, codexmate_lib accounts subset 3/4). 5/72 are genuinely Hex-Rays-decompile-failed (disassembly-only, `HEXRAYS_DECOMPILE_FAILED: switch analysis failed`): switch_account_and_restart_codex, refresh_single_account_usage, switch_account, refresh_usage_snapshot (all in commands/accounts), import_accounts_from_file (in codexmate_lib). Additionally, cancel_chatgpt_oauth_login has NO wrapper file found by name anywhere in the win raw tree -- owner completely unresolved (distinct from decompile-failure; this is an absence, not a failed-attempt). This dim2 result is materially weaker than mac's 141/141 0-truncation package.",
+    "dim3_call_tree_to_leaf": "partial-asymmetric-but-cross-platform-name-confirmed -- for the 4 consumerStartReady commands (remove_accounts/export_accounts_to_file/preview_account_import/begin_chatgpt_oauth_login), wrapper pseudocode is clean and, for remove_accounts specifically, the deep leaf (win symbol remove_accounts_0 in core::repository, cross-scope) carries an explicit 'win 1.2.3 | = mac codexmate_lib::core::repository::Repository::remove_accounts | 跨平台字符串签名匹配(名↔函数一致)' provenance comment confirming equivalence to mac's already-documented SnapshotQuarantine two-phase quarantine-then-purge deep leaf. Several repository functions backing OTHER (dim2-blocked) commands (switch_account_0 for switch_account/switch_account_and_restart_codex, rollback, recover_account_removal_quarantine) carry the same kind of cross-platform annotation but this package conservatively does NOT use that deep-leaf strength to promote those commands past dim2 failure at the wrapper level, per the 2026-05-27 Strict Leaf Readiness Clarification (same-target non-failed decompile required).",
+    "dim4_interface_dto_boundary": "weaker-than-mac -- win core::models (3 files: error_hint, normalize_relay_models [relay-domain, not accounts], 1 unnamed sub_) contains ZERO Account*/Logout*/Remove*/Switch*/OauthLogin* DTO serialize/deserialize glue, versus mac's 175-file core::models with full type-name coverage for this domain. Only available evidence is win's OWN ipc-contracts.jsonl argKeys (parameter-name level, e.g. remove_accounts->accountKeys, switch_account->accountKey, export_accounts_to_file->targetPath+accountKeys, load_snapshot->localOnly+forceMetadata) -- genuinely win-native but strictly weaker than even mac's own already-incomplete (type-name-only, not field-level) dim4.",
+    "dim5_platform_gate": "win-native this pass -- ALL primary evidence (raw pseudocode, ipc-contracts.jsonl, tauri-dumped-assets binary extraction, PE binary sha256) is win's own artifact, independently produced/verified this session (not borrowed from macOS). The one cross-platform data point (accounts-page-GdJYDnGj.js byte-identity) is a PROVEN hash match, not an inference. Structural gaps found this pass (account_coordination/account_metadata absence, cancel_chatgpt_oauth_login owner absence, 5 Hex-Rays failures) are recorded as win-native Unknown, explicitly not inferred from or resolved by macOS evidence (per red line 8 / doNotInferMacOSFromWindows).",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping has been produced for 1.2.3 win accounts leaves this pass"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim2 is failed-or-absent for 6 of 12 commands, dim3 is only cross-referenced (not independently closed) for the commands whose wrapper decompile succeeded, dim4 is parameter-name-level only (weaker than mac's already-incomplete type-name-level), dim5 is win-native but with two genuine structural evidence gaps (missing modules, missing owner), and dim6 is not-closed for any command. None of these gaps individually or in combination promote target-level strictImplementationUse readiness per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification.",
+  "consumerStartReady_commands": [
+    "remove_accounts", "export_accounts_to_file", "preview_account_import", "begin_chatgpt_oauth_login"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady + uiCallEntryReady satisfied via the byte-identical accounts-page-GdJYDnGj.js's confirmed interaction map (proven-identical artifact, not independently win-reversed) for these 4 commands; happyPathReady + backend owner satisfied via clean win-native decompiled wrapper pseudocode (0 truncation for these 4 specific files, ground-truth tauri command-handler names per WIN-1.2.1-MODULE-RECOVERY.md); dtoBoundaryReady only weakly satisfied (win ipc-contracts.jsonl argKeys only, no struct-field evidence, weaker than mac's own type-name-level dim4); boundaryPathReady/sideEffectReady partially known for remove_accounts via the cross-platform-annotated repository deep leaf (cross-reference only, not independently re-derived this pass); acceptanceDraftReady NOT produced -- consumer must derive DTO shape and test mapping independently from macos-1.2.3-accounts's supplementary models-repository-baseline.md citation plus platform-specific win verification, this package is not a closed interface spec",
+  "consumerStartBlocked_commands": [
+    "switch_account_and_restart_codex", "refresh_single_account_usage", "import_accounts_from_file",
+    "switch_account", "refresh_usage_snapshot", "cancel_chatgpt_oauth_login",
+    "load_snapshot", "logout"
+  ],
+  "consumerStartBlocked_reason": "5 commands (switch_account_and_restart_codex/refresh_single_account_usage/import_accounts_from_file/switch_account/refresh_usage_snapshot) have Hex-Rays-decompile-failed wrapper files (dim2 broken -- happyPathReady not satisfied for these specific targets despite frontend confirmation and, in some cases, strong cross-platform-confirmed deep-leaf evidence). 1 command (cancel_chatgpt_oauth_login) has a confirmed frontend call-site but NO backend wrapper found anywhere in the win raw tree by name (dim2 completely absent, not just failed). 2 commands (load_snapshot/logout) have fully clean win-native backend pseudocode but no confirmed UI call-site within the (byte-identical) AccountsPage's interaction map -- uiCallEntryReady not satisfied, same finding as mac for the identical reason (identical JS bytes).",
+  "unknowns": [
+    {
+      "item": "account_coordination/account_metadata win-native module evidence",
+      "class": "blocks_start",
+      "reason": "zero files in the win raw tree, zero symbol-name hits anywhere in windows-x64 for the mac-known primitives of these modules (FileLock/AccountDomainLock/AccountSnapshotLock/fetch_subscription_metadata/try_lock_exclusive); genuinely not examined further this pass (would require a fresh live-IDA win-native recovery attempt targeted at these modules)"
+    },
+    {
+      "item": "cancel_chatgpt_oauth_login backend wrapper owner",
+      "class": "blocks_start",
+      "reason": "confirmed present in win's own frontend command registry but not found by name anywhere in the win raw pseudocode tree; likely one of WIN-1.2.1-MODULE-RECOVERY.md's 18 non-precisely-nameable tauri commands (string-pool collision or 2-function ambiguity) but this package did not verify which of the 18 it corresponds to"
+    },
+    {
+      "item": "5 Hex-Rays-decompile-failed command wrapper files",
+      "class": "blocks_start",
+      "reason": "genuine tool ceiling this pass (jump-table-based async switch dispatch pattern Hex-Rays cannot resolve on this PE build); red line 13 requires attempted breakthrough techniques before any accepted_unknown claim -- none attempted this distillation pass (no live IDA MCP access)"
+    },
+    {
+      "item": "dim4 field-level/type-level DTO extraction on win",
+      "class": "blocks_start",
+      "reason": "win's own core::models contains zero Account-domain DTO glue to extract from; worse starting position than mac's own already-incomplete (type-name-only) dim4 gap"
+    },
+    {
+      "item": "dim6 test/acceptance mapping",
+      "class": "blocks_start",
+      "reason": "not produced this pass"
+    },
+    {
+      "item": "semantic-keyword orphan scan (account/snapshot/registry/lock/oauth outside the in-scope win directories)",
+      "class": "blocks_start",
+      "reason": "not executed at all this pass -- genuinely not examined"
+    },
+    {
+      "item": "RULE 9 validity of reusing win-1.2.1-provenance-comment files as 1.2.3 evidence",
+      "class": "blocks_start",
+      "reason": "this package documents the provenance comments as-found on the files but did not independently verify the implicit 1.2.1->1.2.3 no-behavior-diff claim behind their reuse; no live IDA access this pass to perform that verification"
+    }
+  ],
+  "notes": [
+    "This package is the Windows counterpart to macos-1.2.3-accounts and is materially more conservative: 4/12 consumerStartReady here vs 8/12 there, driven by genuine additional win-side evidence weaknesses (2 entirely-missing core modules, 5 Hex-Rays decompile failures sharing one root cause, 1 fully-unresolved command owner, and near-total absence of DTO glue in core::models) -- not a copy-paste of the mac package's gate outcome.",
+    "The 8 repository-layer cross-platform-name-equivalence annotations found in win's core::repository are real and grounded (left by a prior pass combining WIN-1.2.1-MODULE-RECOVERY.md's win-native attribution with a separate cross-platform string-signature matching step), but this package deliberately does NOT let strong deep-leaf evidence promote a command whose OWN wrapper decompile failed -- see dim3_call_tree_to_leaf and the Strict Leaf Readiness Clarification.",
+    "The accounts-page-GdJYDnGj.js byte-identity (SHA-256 verified this session) is a genuinely strong and honest basis for dim1 reuse across platforms -- it is proof of identical artifact, not an inference -- but is explicitly weaker than an independent win-native frontend re-reversal and is labeled as such throughout this package.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

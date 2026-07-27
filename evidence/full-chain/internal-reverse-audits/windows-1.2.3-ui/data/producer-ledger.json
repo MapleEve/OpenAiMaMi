@@ -1,0 +1,63 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "session": "win-1.2.3-ui-gatereport-reduce-20260726",
+  "machine": "<host>",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "ui",
+  "produced_at": "2026-07-26T00:00:00+08:00",
+  "audit_type": "partial_gap_conclusion",
+  "gate_tier": "blocks_start",
+  "gap_class": "gap_needs_new_raw",
+  "reduce_kind": "module_root_package_completion_plus_four_angle_orphan_sweep_over_prior_conclusion",
+  "prior_conclusion_session": "win-ui-set-app-theme-123gap-20260725",
+  "leaves": [
+    {
+      "leaf": "set_app_theme",
+      "gate": "blocks_start",
+      "gap_class": "gap_needs_new_raw",
+      "dims_done": [],
+      "dims_candidate": ["dim1"],
+      "dims_missing": ["dim2", "dim3", "dim4", "dim5", "dim6"],
+      "leaf_bundle": "set_app_theme/ (untouched by this reduce)"
+    }
+  ],
+  "covered_commands": ["set_app_theme"],
+  "orphan_four_category_summary": {
+    "already_in_canonical": ["focus_main_window", "has_notch"],
+    "local_outtake": [],
+    "different_machine_owner": [],
+    "truly_undone": []
+  },
+  "evidence_classes": [
+    {"class": "raw_dir_topology", "path": "raw/aimami/1.2.3/windows-x64/", "detail": "65 module dirs (+ 8 commands/ sub-dirs), none named ui/theme", "hits": 0},
+    {"class": "frontend_ipc_enumeration", "path": "raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl", "detail": "131 commands, grep -i theme/appearance = 0", "hits": 0, "total_commands": 131},
+    {"class": "frontend_asset_direct_grep", "path": "raw/aimami/1.2.3/windows-x64/package/AiMaMi-1.2.3-win64/tauri-dumped-assets/direct/assets/app-TuXtMya9.js", "detail": "line 1: plugin:app|set_app_theme shim, argKey=theme, exported setTheme", "hits": 1},
+    {"class": "backend_pseudocode", "path": "raw/aimami/1.2.3/windows-x64/**/ida/pseudocode/", "detail": "0 .c files for a theme/appearance owner", "hits": 0},
+    {"class": "orphan_semantic_scan_red_line_15", "path": "internal-reverse/audits/WIN-1.2.3-COMMAND-CEILING-CLOSEOUT.md + windows-1.2.3-system-hotspot/manifest.json", "detail": "keyword scan (theme/appearance/window/style/dark/light/mica/tabbed/color/chrome) found focus_main_window + has_notch, both already_in_canonical under windows-1.2.3-system-hotspot", "hits": 2, "truly_undone": 0}
+  ],
+  "artifacts_written_this_reduce": [
+    "internal-reverse/audits/windows-1.2.3-ui/manifest.json",
+    "internal-reverse/audits/windows-1.2.3-ui/README.md",
+    "internal-reverse/audits/windows-1.2.3-ui/AI.md",
+    "internal-reverse/audits/windows-1.2.3-ui/SYSTEM-DIFF.md",
+    "internal-reverse/audits/windows-1.2.3-ui/logic/UI-THEME-GAP-1.2.3.md",
+    "internal-reverse/audits/windows-1.2.3-ui/reviews/CLAUDE.md",
+    "internal-reverse/audits/windows-1.2.3-ui/pointers/evidence-paths.md",
+    "internal-reverse/audits/windows-1.2.3-ui/data/summary.json",
+    "internal-reverse/audits/windows-1.2.3-ui/data/producer-ledger.json"
+  ],
+  "artifacts_augmented_additively_this_reduce": [
+    "internal-reverse/audits/windows-1.2.3-ui/gate-report.json (added covered_commands, four_angle_completeness, reduce_backfill fields; all pre-existing fields unchanged)"
+  ],
+  "artifacts_untouched": [
+    "internal-reverse/audits/windows-1.2.3-ui/set_app_theme/** (leaf bundle from win-ui-set-app-theme-123gap-20260725, read-only referenced)"
+  ],
+  "index_lines_appended": ["aimami/1.2.3/windows-x64/ui/gatereport-reduce-ack"],
+  "reverse_status_note": "Appended module-root package-completion + four-angle orphan-sweep note under existing [win-ui-set-app-theme-123gap-20260725] DONE header (header already DONE since 2026-07-25; no in-progress residue to flip).",
+  "new_raw_evidence_produced": false,
+  "new_ida_calls": false,
+  "gate_unchanged": true,
+  "note": "Reduce-only backfill over the pre-existing win-ui-set-app-theme-123gap-20260725 partial/gap-honest conclusion. No new raw/intermediate evidence and no IDA calls -- task scope is read-only merge (module-root RULE8 skeleton completion: manifest.json/logic/reviews) plus a red-line-15 four-angle orphan sweep. The orphan sweep confirms the ui module gap is real and singular (set_app_theme, gap_needs_new_raw) and does not mask additional undiscovered targets: the two semantically-similar candidates found (focus_main_window, has_notch) are both already_in_canonical under windows-1.2.3-system-hotspot, so zero new equivalent-reversal work is opened. gate stays unchanged: gate_accepted=false, implementation_use=false, readyToImplement=false, strictImplementationUse=false, consumerStartReady=false."
+}

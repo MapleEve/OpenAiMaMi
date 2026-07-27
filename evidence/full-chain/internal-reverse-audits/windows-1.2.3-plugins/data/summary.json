@@ -1,0 +1,51 @@
+{
+  "schema": "c5cm.internal-reverse.audit_summary.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "plugins",
+  "removed": true,
+  "evidence": [
+    {
+      "class": "raw_dir_topology",
+      "detail": "raw/aimami/1.2.3/windows-x64/ has 65 module directories, none named plugins (or plausible rename); same absence independently confirmed in raw/aimami/1.2.3/macos-arm64/",
+      "hits": 0
+    },
+    {
+      "class": "frontend_ipc_enumeration",
+      "detail": "raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl 131 unique commands, grep -i plugin = 0 matches; 1.0.9 4 plugin commands (list_plugins/toggle_plugin/get_plugin_config/update_plugin_config) absent from the set; same result (131/0) on macos-arm64",
+      "hits": 0,
+      "total_commands": 131
+    },
+    {
+      "class": "binary_string_enumeration",
+      "detail": "strings -a on raw/binary/AiMaMi.1.2.3 win64.exe (399151 lines): 0 hits for PluginRegistry, toggle_plugin, list_plugins, get_plugin_config, update_plugin_config, plugins.json, PluginStoreSchema, all_builtin_plugins, web_tools::plugin_info, image_support::plugin_info, PluginsPage, builtin_plugins. Only 3 unrelated Tauri-framework plugin: ACL identifier fragments found (plugin:aH/mL/tH -> app|name, menu|get context), not the AiMaMi plugins feature. Same zero-hit result on raw/binary/AiMaMi 1.2.3.app/Contents/MacOS/AiMaMi (corroboration only, not basis for windows conclusion)",
+      "hits": 0
+    },
+    {
+      "class": "methodology_positive_control",
+      "detail": "same strings -a + grep procedure on raw/binary/AiMaM 1.0.9 win64.exe finds codexmate_lib::core::plugins::registry::PluginRegistry literal string, confirming the method detects the feature when present",
+      "hits": 1
+    }
+  ],
+  "package_path": {
+    "windows_binary": "raw/binary/AiMaMi.1.2.3 win64.exe",
+    "windows_binary_sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+    "windows_binary_size_bytes": 33667584,
+    "macos_binary_corroboration": "raw/binary/AiMaMi 1.2.3.app/Contents/MacOS/AiMaMi",
+    "macos_binary_sha256": "e3f2fec7d7cd32c8a7a650ec563577b8c74516aed270c1230a5b11296942114d",
+    "macos_binary_size_bytes": 65072960,
+    "windows_1_0_9_baseline_binary": "raw/binary/AiMaM 1.0.9 win64.exe",
+    "windows_frontend_ipc_contracts": "raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl",
+    "windows_raw_module_tree": "raw/aimami/1.2.3/windows-x64/",
+    "prior_version_leaf_bundle_windows": "internal-reverse/audits/windows-1.0.9-plugins",
+    "prior_version_leaf_bundle_macos": "internal-reverse/audits/macos-1.0.9-plugins"
+  },
+  "confidence": "high",
+  "gate_leaf_status": "diagnostic-only",
+  "not_strict_implementation_use": true,
+  "not_ready_to_implement": true,
+  "produced_by_session": "win-1.2.3-plugins-audit-20260725",
+  "machine": "<host>",
+  "produced_at": "2026-07-25"
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "cross",
+  "module": "relay-core-bootstrap",
+  "bundle": "cross-1.2.3-relay-core-bootstrap",
+  "produced_at": "2026-07-25",
+  "session": "cross123-relay-core-bootstrap-distillation-20260725",
+  "authoritativeProducer": {
+    "machine": "<host>",
+    "session": "cross123-relay-core-bootstrap-distillation-20260725"
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "bootstrap_leaves": {
+    "app_run_entry":          { "macos": "consumerStartReady", "windows": "not_started", "cross": "blocked" },
+    "bootstrap_cache":        { "macos": "consumerStartReady", "windows": "not_started", "cross": "blocked" },
+    "auto_switch_pending_emitter_dismiss": { "macos": "consumerStartReady", "windows": "not_started", "cross": "blocked" },
+    "auto_switch_pending_emitter_load":    { "macos": "consumerStartReady", "windows": "not_started", "cross": "blocked" }
+  },
+  "relay_core_clusters": {
+    "note": "The 1.0.9 taxonomy had 19 named clusters (relay_codex_writer, relay_diagnostic, relay_health_audit, relay_manager, relay_proxy_server, relay_thread_migration, relay_translator, relay_breaker, relay_fetch_models, relay_models, relay_translator_stream, relay_web_executor, relay_web_tools, relay_image_compat, relay_try_dispatch, relay_ws_handlers, relay_passthrough_helpers, relay_sse, relay_proxy_config). For 1.2.3, macOS content-level matches for 15/19 are documented (diagnostic-only, unverified via formal RULE-9 diff) in audits/macos-1.2.3-relay-core/manifest.json's cross_check_evidence field; 1/19 (relay_proxy_config) confirmed relocated to commands::system; 2/19 (relay_web_executor, relay_web_tools) have zero discoverable macOS 1.2.3 evidence. Windows has an independently-derived 29-submodule surface list (raw/aimami/1.2.3/windows-x64/relay-core/manifest.json) that has not been 1:1 reconciled against this 19-cluster taxonomy in this pass.",
+    "all_clusters_cross_status": "blocked",
+    "reason": "macOS side is diagnostic-only (no gate promotion for any leaf per its own manifest); Windows side is function-surface-only with zero decompile and no canonical bundle. Neither platform independently reaches consumerStartReady, so no cross pairing is possible."
+  },
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "ALL relay-core clusters and bootstrap leaves — readyToImplement not reachable from current evidence on either platform"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "ALL relay-core clusters and bootstrap leaves — strictImplementationUse not reachable; macOS relay-core is diagnostic-only, Windows relay-core has zero decompile, Windows bootstrap has zero evidence"
+    ],
+    "consumerStartBlocked": [
+      "windows relay-core: all clusters — no canonical bundle, zero decompile performed on the 177-function surface list",
+      "windows bootstrap: all 4 leaves — no canonical bundle, no raw evidence pass attempted",
+      "cross relay-core (any cluster): blocked pending both a real macos-1.2.3-relay-core gated bundle (formal RULE-9 diff, not diagnostic-only) and a real windows-1.2.3-relay-core gated bundle (decompile + RULE-8 reduce)",
+      "cross bootstrap (any leaf): blocked pending a windows-1.2.3-bootstrap canonical bundle to exist at all"
+    ]
+  },
+  "blockers_requiring_resolution": [
+    { "blocker": "windows-1.2.3-relay-core: no canonical bundle; raw surface pass has zero decompile calls (177 functions, 29 submodules owner-attributed only)", "resolve": "decompile() the tier-C (undecompiled sub_XXXX) functions in raw/aimami/1.2.3/windows-x64/relay-core/owner-map.jsonl; RULE-8 reduce into audits/windows-1.2.3-relay-core/" },
+    { "blocker": "windows-1.2.3-bootstrap: does not exist; no raw evidence pass attempted", "resolve": "run a triage pass on windows-x64 mirroring mac-1.2.3-bootstrap-triage-20260725's method; candidate starting points raw/aimami/1.2.3/windows-x64/runtime/, .../codex_runtime/, and the observed bootstrap_0x14085a330.c function under .../manager/ (not yet triaged as the bootstrap-module leaf)" },
+    { "blocker": "macos-1.2.3-relay-core: content-level match only, never formally RULE-9 diffed/reduced into a gated bundle", "resolve": "produce audits/macos-1.2.3-relay/logic/NO-BEHAVIOR-DIFF-MIGRATION-1.2.3.md formally diffing against audits/macos-1.0.9-relay-core/'s 19-cluster target universe" },
+    { "blocker": "relay_web_executor / relay_web_tools: zero discoverable macOS 1.2.3 evidence, not falsified via func_query", "resolve": "run func_query full symbol enumeration on macOS 1.2.3 raw tree (and, once windows relay-core is reduced, on Windows too) before declaring removed-feature vs unrecognized-name" },
+    { "blocker": "transition_journal discrepancy: windows raw dir exists but surface-pass manifest claims zero windows string hits for that module name", "resolve": "open raw/aimami/1.2.3/windows-x64/transition_journal/ and its manifest/status files, or re-run find_regex to reconcile" }
+  ],
+  "dim6_status": "not_applicable — no cluster in this cross bundle reaches even consumerStartReady jointly, so dim6 acceptance mapping is moot until the blockers above are resolved"
+}

@@ -1,0 +1,86 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "daemon-autoswitch",
+  "status": "partial_evidence_pack",
+  "updated_at": "2026-07-25",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 0,
+    "blocks_start": 11,
+    "product_decision_or_unknown": 5,
+    "total_canonical_commands": 13
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "partial-strong-for-11 -- raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl confirms 'kind':'tauriInvokeWrapper' (real invoke() call site inside the shared API facade, same evidentiary bar the ../windows-1.0.9-daemon-autoswitch/ predecessor package itself accepted as dim1-Accepted) for 11/13 canonical commands; argKeys cross-checked and match independently-read frontend CCF text for the auto-switch validator (auto-switch-DujJXz0W.js) and MaintenancePage restart flow where applicable. This is API-wrapper-call-site evidence only, NOT a full component/click-handler trace (no React component source read this pass) -- weaker than full renderSurfaceReady/uiCallEntryReady closure, so does not by itself satisfy consumerStartReady's dim1 sub-requirements.",
+    "dim2_backend_owner_pseudocode": "mixed -- 9/13 canonical commands have complete, non-truncated Hex-Rays pseudocode with clear command-name-string-xref attribution (run_daemon_once, load_bootstrap_state, set_auto_switch, confirm_pending_auto_switch, dismiss_pending_auto_switch, load_pending_auto_switch confirmed read; plus repository-layer support leaf auto_switch_config). 1/13 (configure_auto_switch) is HEXRAYS_DECOMPILE_FAILED raw-disassembly-only ([TRUNCATED] marker present, per red line 20 NOT to be treated as complete pseudocode). 1/13 (confirm_pending_auto_switch_and_restart_codex) has NO raw .c under its canonical command name; the only name-adjacent candidate is itself decompile-failed and identity-unconfirmed. 5/13 (4 daemon watchers + start_auto_switch_pending_watcher) have zero raw .c, consistent with (but not independently re-confirmed against) the 1.0.9 ABSENT/native-thread pattern.",
+    "dim3_call_tree_to_leaf": "not_produced_this_pass -- no call-tree-to-leaf catalog produced for any of the 13 targets this pass; this was a reduce/read-only pass, no IDA MCP callees/xrefs_to calls made",
+    "dim4_interface_dto_boundary": "not-closed -- no systematic DTO/error-envelope/side-effect extraction performed this pass for any target; some incidental DTO-relevant strings were visible while reading dismiss_pending_auto_switch/load_pending_auto_switch bodies (dispatch strings aDismissPending/aLoadPendingAut/aRepo) but not formally extracted into an interface map",
+    "dim5_platform_gate": "closed-for-existence-of-raw-files, open-for-parity -- Windows raw .c evidence is independently sourced from the 1.2.3 windows-x64 tree (not extrapolated from macOS); binary SHA aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396 matches the sibling ../windows-1.2.3-relay/ and ../windows-1.2.3-maintenance/ packages' cited binary, but this package did NOT independently re-verify that SHA against these specific .c files' own provenance comments (see known_residuals: header comments say 'win 1.2.1', an unresolved provenance question)",
+    "dim6_test_acceptance_mapping": "not-closed -- no acceptance mapping produced this pass"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "consumerStartReady_commands": [],
+  "blocks_start_commands": [
+    "run_daemon_once", "load_bootstrap_state", "set_auto_switch", "confirm_pending_auto_switch",
+    "dismiss_pending_auto_switch", "load_pending_auto_switch", "configure_auto_switch",
+    "confirm_pending_auto_switch_and_restart_codex"
+  ],
+  "blocked_commands": [
+    {
+      "command": "configure_auto_switch",
+      "reason": "Raw .c at 0x140cc5ed0 is a HEXRAYS_DECOMPILE_FAILED fallback ('switch analysis failed: bad target 0x140CC6F38 for case 6'), raw disassembly only, explicit [TRUNCATED] marker. Not usable as dim2 evidence per red line 20. No breakthrough attempt made this pass (no live IDA MCP access in a reduce-only pass) -- this is blocks_start, NOT accepted_unknown (red line 13 requires an attempted breakthrough before accepted_unknown can be claimed)."
+    },
+    {
+      "command": "confirm_pending_auto_switch_and_restart_codex",
+      "reason": "Frontend confirms the command is still invoked (ipc-contracts.jsonl tauriInvokeWrapper hit, wrapper=confirmPendingAutoSwitchAndRestartCodex), but no raw .c exists under this exact command name anywhere in raw/aimami/1.2.3/windows-x64/. The only name-adjacent file, commands/accounts/ida/pseudocode/switch_account_and_restart_codex_0x140cae510.c, is itself HEXRAYS_DECOMPILE_FAILED (raw disasm only) AND its identity as the same upstream command is unconfirmed (different Rust command name, no byte-signature/xref cross-check performed this pass). Genuine dim2 gap, not a resolved rename."
+    }
+  ],
+  "unknowns": [
+    {
+      "item": "4 daemon watcher commands (note_usage_refresh_activity/schedule_full_runtime_refresh/start_usage_refresh_watcher/update_usage_refresh_schedule) + start_auto_switch_pending_watcher: existence at 1.2.3 Windows",
+      "class": "product_decision",
+      "reason": "raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl shows zero hits for all 5, matching the exact absence pattern the 1.0.9 windows-daemon-autoswitch package independently confirmed via live IDA backend search (4 confirmed absent-from-binary via IDA; 1 confirmed native-bootstrap-thread-with-no-IPC-string). This pass only re-checked the frontend-existence signal (grep count), did NOT re-run a live IDA backend search against the 1.2.3 binary. Recorded Unknown/consistent-with-prior-absence, NOT confirmed-absent-at-1.2.3 -- per RULE9 this is a frontend-level consistency observation, not a diff-confirmed-empty basis for migrating the 1.0.9 gate."
+    },
+    {
+      "item": "configure_auto_switch decompile failure",
+      "class": "blocks_start",
+      "reason": "see blocked_commands above; no breakthrough attempted this pass (no live IDA access)"
+    },
+    {
+      "item": "confirm_pending_auto_switch_and_restart_codex raw evidence gap / switch_account_and_restart_codex identity",
+      "class": "blocks_start",
+      "reason": "see blocked_commands above"
+    },
+    {
+      "item": "dim3 call-tree-to-leaf, dim4 interface/DTO, dim6 test/acceptance mapping for all 13 targets",
+      "class": "blocks_start",
+      "reason": "not produced this pass -- reduce/read-only task scope, no new IDA analysis performed"
+    },
+    {
+      "item": "raw .c header comment provenance mismatch ('win 1.2.1' attribution comments on files physically in the 1.2.3 raw tree)",
+      "class": "blocks_start",
+      "reason": "not resolved this pass; flagged as an open question, see manifest.json known_residuals"
+    },
+    {
+      "item": "restart_codex / export_debug_bundle / upload_debug_report (adjacent maintenance-domain commands, physically co-located raw .c files read this pass)",
+      "class": "product_decision",
+      "reason": "explicitly out of this package's canonical target_universe (13-command daemon+auto-switch domain inherited from ../windows-1.0.9-daemon-autoswitch/); NOT covered by the existing ../windows-1.2.3-maintenance/ sibling package either (that package's scope is rebuild_registry/clean/load_snapshot only); this is a genuine coverage gap belonging to neither existing package -- a future dedicated package or an explicit scope-expansion decision is needed, not claimed or gated here to avoid collision with an undeclared owner"
+    }
+  ],
+  "notes": [
+    "This gate-report intentionally keeps ALL gate flags false and all target-level statuses no higher than blocks_start/product_decision. This is stricter than the sibling ../windows-1.2.3-relay/ package's consumerStartReady-for-22-commands posture, because THIS package's dim3/dim4/dim6 were not produced at all this pass (pure reduce/read-only, no IDA MCP session run), whereas the relay package's dim2 evidence came from a deeper prior multi-session campaign this reduce did not have access to reproduce here.",
+    "Consistent with the ../windows-1.2.3-maintenance/ sibling package's own precedent: strong dim2 evidence (real pseudocode) for a subset of commands does NOT by itself justify consumerStartReady when dim1 is API-wrapper-level-only and dim3/dim4/dim6 are absent.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue (all three tiers empty; everything routed to reverseRequiredQueues)."
+  ]
+}

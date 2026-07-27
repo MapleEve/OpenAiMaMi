@@ -1,0 +1,44 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "accounts",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "remove_accounts", "export_accounts_to_file", "preview_account_import", "begin_chatgpt_oauth_login"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 12 accounts-domain commands: readyToImplement blocked pending dim2 (5 Hex-Rays decompile failures + 1 fully unresolved owner), dim3 (independent call-tree closure beyond cross-platform name annotations), dim4 (field-level interface/DTO -- win core::models has zero Account-domain DTO glue), and dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 12 accounts-domain commands: strictImplementationUse blocked pending the same dim2/dim3/dim4/dim6 gaps"
+    ],
+    "consumerStartBlocked": [
+      "switch_account_and_restart_codex: backend wrapper Hex-Rays decompile failed (switch analysis failed: bad target 0x140CAF37A for case 5), disassembly-only; deep leaf (repository/switch_account_0, cross-platform-name-confirmed to mac Repository::switch_account) has clean pseudocode but this package does not let deep-leaf strength promote a target whose own wrapper decompile failed",
+      "refresh_single_account_usage: backend wrapper Hex-Rays decompile failed, disassembly-only, no cross-platform-confirmed deep leaf substitute identified this pass",
+      "import_accounts_from_file: backend wrapper Hex-Rays decompile failed (switch analysis failed: bad target 0x140CA5257 for case 5), disassembly-only",
+      "switch_account: backend wrapper Hex-Rays decompile failed, disassembly-only; same deep-leaf caveat as switch_account_and_restart_codex",
+      "refresh_usage_snapshot: backend wrapper Hex-Rays decompile failed, disassembly-only",
+      "cancel_chatgpt_oauth_login: confirmed present in win's own frontend command registry but NO backend wrapper found anywhere in the win raw tree by name -- owner completely unresolved",
+      "load_snapshot: backend wrapper decompiled cleanly (ground-truth tauri command handler name) but frontend call-site not confirmed within the (byte-identical to mac) AccountsPage's 25-interaction map -- same finding as macos-1.2.3-accounts for the identical underlying reason",
+      "logout: backend wrapper decompiled cleanly (ground-truth tauri command handler name) but no confirmed frontend call-site found within the same page's scope -- same finding as macos-1.2.3-accounts"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true,
+    "sharedFrontendArtifactException": "accounts-page-GdJYDnGj.js is verified byte-identical (SHA-256) between macOS and Windows builds; this ONE artifact's dim1 evidence is legitimately shared/reused across the two platform packages, not extrapolated. All other evidence in this package is win-native and independently produced."
+  },
+  "next_producer_steps": [
+    "Run a live-IDA win-native module recovery pass targeting account_coordination/account_metadata candidate functions (currently 0 files, 0 symbol hits anywhere in windows-x64) to close the structural gap vs macOS.",
+    "Determine which of WIN-1.2.1-MODULE-RECOVERY.md's 18 non-precisely-nameable tauri commands corresponds to cancel_chatgpt_oauth_login (if any), and attempt to name/attribute it.",
+    "Attempt red-line-13 breakthrough techniques on the 5 Hex-Rays-decompile-failed files (switch_account_and_restart_codex/refresh_single_account_usage/import_accounts_from_file/switch_account/refresh_usage_snapshot) before any accepted_unknown claim -- this requires live IDA MCP access this distillation pass did not have.",
+    "Locate or produce a win-native core::models equivalent with Account-domain DTO glue to close dim4, or make an explicit product-decision to use mac's DTO shapes as the cross-platform implementation basis (not done by this package).",
+    "Run a dim6 pass mapping the 4 win consumerStartReady commands to Polaris's own C5 unit/E2E test surface.",
+    "Independently verify the RULE9 validity of reusing the many win-1.2.1-provenance-comment files as 1.2.3 evidence (live IDA diff against the 1.2.1 IDB, or an explicit documented acceptance decision).",
+    "Run angle-C (semantic-keyword orphan scan) across all win directories for account/snapshot/registry/lock/oauth keywords outside the current in-scope set."
+  ]
+}

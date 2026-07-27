@@ -1,0 +1,76 @@
+{
+  "schema": "c5cm.reverse.audit_manifest.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "mystery-unlock",
+  "package_kind": "understand_and_classify",
+  "implementation_policy": {
+    "default": "understand_only",
+    "tos_circumvention_targets": "understand_only",
+    "normal_feature_targets": "none_in_scope_this_pass"
+  },
+  "generated_at": "2026-07-25",
+  "generated_by": "claude-subagent (windows-1.2.3 mystery-unlock ToS classification merge task)",
+  "scope": [
+    "core::relay::router_unlock_auth::* (12 windows-native functions)",
+    "core::relay::legacy_virtual_auth::* (7 windows-native functions)"
+  ],
+  "out_of_scope_this_pass": [
+    "core::auth::is_aimami_managed_virtual_auth (windows equivalent not located/read)",
+    "core::relay::codex_diagnostic::check_router_unlock_auth_residue (windows equivalent not located/read)",
+    "core::relay::codex_diagnostic::fix_router_unlock_auth_residue (windows equivalent not located/read)",
+    "commands::system::{get,merge}_mystery_unlock_grants / core::repository::Repository::{get,merge}_mystery_unlock_grants (different module path, not part of this task's file scope)"
+  ],
+  "classification": {
+    "tos_circumvention": [
+      "core::relay::router_unlock_auth::install_virtual_unlock_auth",
+      "core::relay::router_unlock_auth::sub_14048FF80 (build_unlock_auth_json equivalent)",
+      "core::relay::router_unlock_auth::sub_14048F130 (make_unsigned_jwt equivalent)",
+      "core::relay::router_unlock_auth::cleanup",
+      "core::relay::router_unlock_auth::read_marker",
+      "core::relay::router_unlock_auth::read_cleanup_backup",
+      "core::relay::router_unlock_auth::serialize",
+      "core::relay::router_unlock_auth::sub_14048EF50",
+      "core::relay::router_unlock_auth::sub_14048FE80",
+      "core::relay::legacy_virtual_auth::cleanup_0",
+      "core::relay::legacy_virtual_auth::read_marker_0",
+      "core::relay::legacy_virtual_auth::read_user_owned_backup",
+      "core::relay::legacy_virtual_auth::sub_1404F99D0",
+      "core::relay::legacy_virtual_auth::sub_140579700",
+      "core::relay::legacy_virtual_auth::__closure__6",
+      "core::relay::legacy_virtual_auth::__closure__7"
+    ],
+    "normal_feature": []
+  },
+  "consumed_bundles": [],
+  "cross_referenced_not_consumed": [
+    "internal-reverse/audits/macos-1.2.3-mystery-unlock/ (same product/version, different platform; independent classification, diff comparison only)",
+    "goal-aimami-122/SPEC-virtual-auth-mode.md (earlier macOS analysis; contradicts this package's classification — see README.md '与既有分析的关系')"
+  ],
+  "gate": {
+    "consumerStartReady": [],
+    "strictImplementationUse": [],
+    "readyToImplement": [],
+    "reverseRequiredQueues": {
+      "forbiddenUntilReady": [],
+      "forbiddenUntilStrictImplementationUse": [],
+      "consumerStartBlocked": []
+    },
+    "permanentlyBlockedProductDecision": [
+      "core::relay::router_unlock_auth::* (all 9 named targets in scope)",
+      "core::relay::legacy_virtual_auth::* (all 7 named targets in scope)"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "full_app_coverage_status": "not-full-app",
+  "raw_c_count": 19,
+  "funcs_analyzed": 19,
+  "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "binary_format": "pe",
+  "pe_machine": "AMD64",
+  "notes": "This package intentionally stops short of full_leaf_100_definition_v2: cluster is a product/ToS decision (SKIP) independent of evidence depth. Evidence completeness (19/19 in-scope Windows-native files read, full census closure per WIN-APP-FUNCTION-INVENTORY.jsonl for these 2 module names) is recorded for classification transparency only, not as a step toward an implementation gate."
+}

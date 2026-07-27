@@ -1,0 +1,68 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "bootstrap",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-25",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 4,
+    "diagnostic_only": 3,
+    "owned_by_other_module_excluded": 82,
+    "total_functions_triaged": 89
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "not-produced -- no frontend CCF pass run this session for any of the 4 bootstrap-classified leaves; app_run_entry has no frontend trigger (it is the process entry point, native-bootstrap-substitute per 1.0.9 precedent); load_bootstrap_state/dismiss_pending_auto_switch/load_pending_auto_switch ARE registered IPC commands (confirmed present in frontend/ipc-contracts.jsonl) but their frontend UI trigger/guard/invoke-wrapper was not traced this session",
+    "dim2_backend_owner_pseudocode": "closed for the 4 classified leaves -- real owner + non-failed decompile already exists in the wf-aimami123-delta-20260721 baseline (source SHA 25d6d04e6d94c3f1e8258d2b348360b228fda4fc1c3d38b6383c84a2a8d53d21); app_run_entry (run_0x1006f50c0.c, 701 lines) read in full this session; the other 3 read via targeted grep+spot-check of call targets, not full manual read line-by-line",
+    "dim3_call_tree_to_leaf": "not-closed -- app_run_entry's call tree was traced to its immediate callees (CodexPaths/*, debug_log::init, single_instance::acquire, RelayManager::new, tauri plugin registrations, Builder::manage calls, App::run) but NOT followed further into those callees' own bodies (e.g. RelayManager::new's internals, single_instance::acquire's fs/lock leaf) -- this is a triage/module-attribution pass, not a deep call-tree-to-implementation-leaf reduction; the 3 command-dispatch leaves (bootstrap_cache/auto_switch_pending_emitter analogs) were not traced past their single call target",
+    "dim4_interface_dto_boundary": "not-closed -- no DTO/error-envelope/side-effect-boundary extraction performed for any of the 4 leaves this session",
+    "dim5_platform_gate": "macOS only -- no Windows 1.2.3 bootstrap evidence gathered or referenced this session; do not infer Windows from this package",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping produced"
+  },
+  "readyToImplement_leaves": [],
+  "strictImplementationUse_leaves": [],
+  "strictImplementationUse_reason": "dim1/dim3/dim4/dim6 all open for every classified leaf; per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the Strict Leaf Readiness Clarification, dim2-only closure does not promote target-level readiness",
+  "consumerStartReady_leaves": [
+    "app_run_entry",
+    "bootstrap_cache (load_bootstrap_state command)",
+    "auto_switch_pending_emitter (dismiss_pending_auto_switch command)",
+    "auto_switch_pending_emitter (load_pending_auto_switch command)"
+  ],
+  "consumerStartReady_basis": "happyPathReady + backend owner satisfied via existing baseline decompile (dim2); render surface for app_run_entry is N/A (process entry, no UI); the 3 command leaves have confirmed IPC command names in ipc-contracts.jsonl (uiCallEntryReady partially inferable) but no independent frontend trace was run this session -- consumer must NOT treat this as closed dim1/dim3/dim4/dim6",
+  "unknowns": [
+    {
+      "item": "boot_spawn_threads analog (1.0.9 had a dedicated long-lived-watcher-thread-spawn function; not found as a standalone function among the 89 triaged files in 1.2.3)",
+      "class": "blocks_start",
+      "reason": "genuinely not located in this raw batch this session -- may exist inside a callee not opened (e.g. RelayManager::new internals) or may have been refactored inline; not fabricated, not extrapolated from 1.0.9"
+    },
+    {
+      "item": "managed_state_registry analog (1.0.9 had this as an independent function; 1.2.3 app_run_entry shows the manage() calls inlined directly rather than delegated to a separate function)",
+      "class": "accepted_unknown",
+      "reason": "structural build difference between 1.0.9 and 1.2.3 observed directly in the full read of app_run_entry (run_0x1006f50c0.c); not a missed function, a genuine architecture difference"
+    },
+    {
+      "item": "run_0x1000cf8f0.c (2535-line generic tokio task/waker body, zero codexmate_lib calls) and run_0x10099df40.c module attribution",
+      "class": "blocks_start",
+      "reason": "no business-logic call target found via grep; would require deeper generic-instantiation / xref tracing than this triage pass budget allows"
+    },
+    {
+      "item": "inner_0x100571850.c",
+      "class": "accepted_unknown",
+      "reason": "file's own header records [HEXRAYS-EMPTY] -- IDA Hex-Rays returned no decompilable body for this closure (async closure state-machine shim with no recoverable logic), a known tool-limitation class per the fake-wall taxonomy (async_decompile_failed), not an unexamined gap"
+    },
+    {
+      "item": "run_0x1006f6dc0.c (toplevel exit-guard) and run_0x100990c40.c (multi-command router) module ownership",
+      "class": "product_decision",
+      "reason": "correctly excluded from bootstrap by content (exit-guard belongs to 'toplevel' module per BASELINE-FINAL-1.2.3.md grouping; router closure dispatches into accounts/autostart/mcp/voice) -- not a gap, a deliberate non-inclusion decision with evidence"
+    }
+  ]
+}

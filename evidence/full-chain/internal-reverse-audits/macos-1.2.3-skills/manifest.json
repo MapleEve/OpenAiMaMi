@@ -1,0 +1,55 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "skills",
+  "package": "macos-1.2.3-skills",
+  "created_at": "2026-07-24T00:00:00Z",
+  "producer_machine": "this session (distillation pass, no new IDA/decompile performed; consolidates already-produced raw .c leaves per user instruction)",
+  "binary": {
+    "sha256_core_skills": "e3f2fec7d7cd32c8a7a650ec563577b8c74516aed270c1230a5b11296942114d",
+    "sha256_windows_binary": "Unknown -- not recorded in INDEX.jsonl windows-x64/skills entry (binary_format=pe only, no sha256_binary field present)",
+    "binary_format": "macho",
+    "arch": "arm64"
+  },
+  "scope": {
+    "backend_target_universe": "codexmate_lib::core::skills::* (single-file module src/core/skills.rs, 21 real functions per func_query name_regex, non-drop_in_place-shim, per INDEX.jsonl session note) -- NOT codexmate_lib::commands::skills::*, which has no standalone backing symbols (Tauri command wrappers are inlined into the async runtime dispatcher and only survive as literal command-name text inside drop_in_place<tokio::...BlockingTask<...>> destructor shims; this is the same 'owner is drop_in_place != real body' false-owner pattern SKILL.md red line 13 warns about)",
+    "frontend_target_universe": "SkillsPage (skills-page-BwPTc5r0.js, component oe()/SkillsPage) + shared invoke wrapper object (l.*) covering 6 commands",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "backend_functions_decompiled": 21,
+    "backend_functions_real_named_non_sub": 21,
+    "backend_functions_truncated_stubs_remaining": 0,
+    "commands_wrapper_files_on_disk": 0,
+    "commands_wrapper_files_reason": "commands::skills::* has zero standalone symbols on macOS -- confirmed by INDEX.jsonl producer note; frontend invoke names map directly 1:1 onto core::skills::* function names of the same identifier (e.g. invoke('import_skill') -> codexmate_lib::core::skills::import_skill), not through a separate commands/skills/ leaf",
+    "frontend_commands_covered": 6,
+    "frontend_commands_list": ["import_skill", "load_installed_skills", "load_skill_backups", "remove_skill", "restore_skill_backup", "delete_skill_backup"],
+    "frontend_page_reversed": true,
+    "windows_functions_decompiled": 6,
+    "windows_functions_name_confirmed_cross_platform": 2,
+    "windows_functions_unresolved_sub_stubs": 4,
+    "windows_coverage_note": "windows-x64/skills/ida/pseudocode/ has only 6 .c files vs macOS's 21; only backup_skill_directory_0 and publish_staged_skill carry confirmed cross-platform names (byte/string-signature match to the Mac symbol of the same name, per file header comment). The other 4 (sub_1408A4BA0, sub_140AD6680, sub_140B0FD50, sub_1414860D0) are module-attributed only (panic-Location xref or call-graph propagation to src/core/skills.rs) with no semantic name resolution -- their call-site usage inside the two named functions is suggestive (sub_1408A4BA0 is called on a StagedDirectory-shaped local exactly where Mac calls StagedDirectory::drop; sub_1414860D0 is called with 2 args exactly where Mac calls load_skill_summary) but this is inference, not a confirmed symbol/signature match, and is NOT treated as evidence in this package.",
+    "measurement_basis": "file-system find|wc -l against raw/aimami/1.2.3/macos-arm64/core/skills/ida/pseudocode/*.c (21 files) and raw/aimami/1.2.3/windows-x64/skills/ida/pseudocode/*.c (6 files); frontend command count from grep over raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl .command field containing 'skill'; all counts re-verified this session by direct Read of every file (not by trusting prior session summaries)"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.0.9-skills/ (prior-version baseline; INDEX.jsonl REVERSE-STATUS.md history records skills commands as largely 'same-set' across 1.0.9->1.1.1->1.1.8, with 2 confirmed deltas: a new mkdir-p hardening step inserted before restore_skill_backup's backup/copy sequence, and remove_skill/load_installed_skills call-tree shape confirmed byte-identical)",
+    "internal-reverse/audits/windows-1.0.9-skills/ (prior-version Windows baseline; consulted for context, not re-verified against 1.2.3 windows evidence this pass)"
+  ],
+  "cross_platform_sibling": "none produced yet for 1.2.3 -- unlike the relay module (which has a windows-1.2.3-relay/ sibling package), no windows-1.2.3-skills/ audit package exists; this package's dim5 section reports the raw windows-x64/skills evidence directly since the Windows evidence base (6 files, 2 confirmed) is too thin to warrant a separate 1.2.3 Windows package yet",
+  "known_residuals": [
+    "dim4 (interface/DTO): SkillBackupMetadata's 6 fields are byte-confirmed (via the FieldVisitor::visit_str byte-comparison decoder at 0x100377d20: backupID/skillID/name/title/relativePath/createdAt). InstalledSkillSummary's 8 fields are ALSO byte-confirmed (via FieldVisitor::visit_str at 0x100378900, found in core/models not core/skills: id/name/title/summary/relativePath/directoryPath/skillFilePath/updatedAt). SkillListPayload has only a Visitor::expecting() stub (0x100374400) decompiled this pass -- its FieldVisitor::visit_str byte-matcher was not among the 3 core/models files produced, and its actual call site (which command/context constructs it) was not located either -- field-level DTO shape for SkillListPayload alone is genuinely Unknown.",
+    "dim3: every read function's control flow terminates at real fs syscalls (create_dir/rename/remove_dir_all/copy/read_dir/read_to_string/write/metadata/symlink_metadata) -- no drop_in_place-only or wrapper-only termination observed in any of the 21 functions read. However no standalone per-command call-tree artifact (jsonl/document) was produced this pass; the call chains are only narrated in logic/FULL-CHAIN-1.2.3.md prose.",
+    "dim5 (platform gate): NOT closed for Windows. 19 of the 21 macOS functions have zero or unconfirmed Windows evidence; do not extrapolate.",
+    "dim6 (test/acceptance mapping): not produced this pass.",
+    "CORRECTION (same session, before publish): initial draft of this package stated InstalledSkillSummary's field shape was unresolved based on reading only its Visitor::expecting() stub (0x100376b30); a second file at 0x100378900 in the same directory turned out to be the FieldVisitor::visit_str byte-matcher (not another expecting stub as assumed) and was read before finalizing -- InstalledSkillSummary's 8 fields ARE byte-confirmed: id, name, title, summary, relativePath, directoryPath, skillFilePath, updatedAt. Only SkillListPayload remains genuinely open (no visit_str sibling found among the 3 skill-related core/models files this pass).",
+    "Angle-C (semantic-keyword orphan scan) was done as a text grep (grep -ril 'skill' across raw/aimami/1.2.3/macos-arm64, excluding core/skills and windows-x64/skills) rather than a live IDA export_funcs() scan (no IDA connection available/used in this distillation pass) -- weaker evidence class than a live semantic export scan; recorded as accepted_unknown/tool-limitation, not as a clean pass.",
+    "No new IDA/decompile work was performed this session; this package is a consolidation ('distillation') of previously-produced raw .c leaves under raw/aimami/1.2.3/{macos-arm64,windows-x64}/*/skills/ per explicit user instruction (batch 1 distillation of mac skills module)."
+  ],
+  "note": "This manifest synthesizes direct-Read verification of all 21 macOS core/skills .c files, all 6 Windows skills .c files, the frontend/pages/mcp-sessions-settings-skills-frontend.md Skills-page section (lines 187-270), the 6-command ipc-contracts.jsonl cross-check, and the 3 skill-related core/models DTO glue files, performed this session. No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md."
+}

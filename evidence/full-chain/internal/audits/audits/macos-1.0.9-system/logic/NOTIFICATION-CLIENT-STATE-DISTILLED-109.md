@@ -8,7 +8,7 @@
 **Machine**: <workstation>
 **Binary SHA256**: `1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482` (macOS arm64)
 **IDB**: `<source-location>/source-binary/AiMaMi 1.0.9_ida.app/Contents/MacOS/AiMaMi.i64`
-**IDA status**: hexrays_ready=true, auto_analysis_ready=true, strings_cache_ready=true (14756 strings)
+**IDA status**: IDA decompiler_ready=true, auto_analysis_ready=true, strings_cache_ready=true (14756 strings)
 **Authoritative**: true (canonical bundle owner = <workstation> / <workstation>)
 **Gate**: strictImplementationUse (macOS arm64; Windows = separate bundle)
 **is_upstream**: false (source archive-extra command, not in upstream Codex CLI)
@@ -232,7 +232,7 @@ otificationsSince` / `device_id` in `CodexMateSettings`.
 |---|---|
 | Binary | AiMaMi 1.0.9 macOS arm64, SHA `1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482` |
 | IDB | `<source-location>/source-binary/AiMaMi 1.0.9_ida.app/Contents/MacOS/AiMaMi.i64` |
-| hexrays_ready | true (session <audit-session>) |
+| IDA decompiler_ready | true (session <audit-session>) |
 | auto_analysis_ready | true |
 | strings_cache_ready | true (14756 strings) |
 | Dispatch closure VA `0x100323f54` | live deep-reconfirm decompile successful |
@@ -295,7 +295,7 @@ otificationsSince` is epoch seconds (u64)** — multiply by 1000 for JS `Date` c
   - owner-gate ALLOW (owner=<workstation>, basis=bundle_manifest, decision=ALLOW, write_mode=owner)
   - Binary SHA `1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482` confirmed
 - Session 2 / pass #3 (<audit-session>, 2026-06-04, M3-Max): independent deep RE-VERIFY (no trust of prior summaries — every claim re-derived from live IDB)
-  - server_health: IDB `AiMaMi 1.0.9_ida.app/.../AiMaMi.i64`, hexrays_ready=true, auto_analysis_ready=true, strings_cache 14756; SHA of SOT `.app` and `_ida.app` binary both `1db044e8efab...` (parity verified via shasum)
+  - server_health: IDB `AiMaMi 1.0.9_ida.app/.../AiMaMi.i64`, IDA decompiler_ready=true, auto_analysis_ready=true, strings_cache 14756; SHA of SOT `.app` and `_ida.app` binary both `1db044e8efab...` (parity verified via shasum)
   - func_query(get_notification_client_state) → exactly `0x100262804`, size `0x278`=632B, has_type=true (matches task spec [632B]); no ICF ambiguity
   - Fresh decompile owner `0x100262804` (sync body, poison-string `0x100f305e9`), core `0x1005f0e34` (read/create paths, save_settings side-effect), closure `0x100323f54` (sync respond, cmd-name binding blob)
   - xrefs_to `0x100262804` → 1 (closure `0x100323f54` @ `0x100324020`), `more=false`

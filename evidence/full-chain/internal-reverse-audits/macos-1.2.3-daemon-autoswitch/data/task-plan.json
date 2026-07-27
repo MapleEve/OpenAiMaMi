@@ -1,0 +1,36 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "daemon-autoswitch",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 13 daemon+auto-switch commands: readyToImplement blocked pending dim3 (call-tree-to-leaf) + dim4 (interface/DTO) + dim6 (test/acceptance mapping) closure at 1.2.3 (1.0.9 closures do not carry forward given confirmed NEW-delta functions in this domain)"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 13 daemon+auto-switch commands: strictImplementationUse blocked pending dim3/dim4/dim6 closure at 1.2.3"
+    ],
+    "consumerStartBlocked": [
+      "run_daemon_once, confirm_pending_auto_switch, confirm_pending_auto_switch_and_restart_codex: consumer must NOT assume the name-adjacent candidate .c files (run_daemon_once_blocking, confirm_pending_auto_switch_async, perform_switch_payload_with_restart) are the same command without independent byte-signature/xref confirmation -- product/engineering decision needed on whether to (a) treat candidates as confirmed pending future verification, or (b) require the verification before any implementation decision",
+      "schedule_full_runtime_refresh: zero raw evidence exists at 1.2.3 on macOS; consumer must not assume this command still exists in 1.2.3 without a targeted IDA lookup",
+      "confirm_pending_auto_switch (plain variant): possible dead frontend code in 1.2.3 -- consumer must not build against it without confirming it is actually reachable from any UI surface"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Live-IDA session: run xrefs_to on run_daemon_once_blocking(0x1007c8fe0), confirm_pending_auto_switch_async(0x1000eac80), and perform_switch_payload_with_restart(0x1006a1800) to resolve the 3 name-mismatch identity questions (highest-value first step: perform_switch_payload_with_restart, since it is the only 1360-line, genuinely-fully-decompiled candidate and directly touches the confirmed 1.2.3 NEW-delta account-switch-stability changelog item).",
+    "Targeted decompile attempt for schedule_full_runtime_refresh (currently zero raw evidence) to determine genuine absence vs not-yet-targeted.",
+    "IDA xrefs_to on the 5 zero-frontend-hit commands' addresses to independently re-verify (or refute) the 1.0.9-inherited native-callback-bootstrap-spawn dim1 substitute at 1.2.3, since this pass could only perform a weak whole-tree grep-based caller search (negative result, but not IDA-grade).",
+    "dim4 pass: extract per-command DTO fields for the 9 commands with clean dim2 pseudocode this pass -- start from ../macos-1.0.9-daemon-autoswitch/interfaces/{autoswitch-commands.md,daemon-commands.md} as a REFERENCE ONLY (not authoritative for 1.2.3), and specifically re-verify the 8 confirmed-NEW-delta functions from scratch since they postdate the 1.0.9 reference.",
+    "dim6 pass: map each of the 13 commands to Polaris's own C5 test/acceptance surface, referencing ../macos-1.0.9-daemon-autoswitch/logic/ACCEPTANCE-MAPPING-109.md as a structural template only.",
+    "Resolve open question: is confirm_pending_auto_switch (plain) dead code in 1.2.3, by extracting any remaining un-extracted frontend page/settings surfaces beyond the 3 already read this pass.",
+    "Coordinate with ../windows-1.2.3-daemon-autoswitch/ owner on the 2 divergent restart-codex candidate names (mac: perform_switch_payload_with_restart / win: switch_account_and_restart_codex) -- possible the two platforms genuinely use different internal names for logically the same upstream command, which a resolved identity on either platform would help cross-confirm."
+  ]
+}

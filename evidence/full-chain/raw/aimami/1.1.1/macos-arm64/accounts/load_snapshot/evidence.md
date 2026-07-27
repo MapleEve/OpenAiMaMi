@@ -6,7 +6,7 @@
 **Binary**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi (macos-arm64)
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 **IDB**: <来源位置>/raw/binary/AiMaMi-1.1.1-idb
-**逆向分析 hexrays_ready**: true | **uptime at session**: 56902s
+**逆向分析 IDA decompiler_ready**: true | **uptime at session**: 56902s
 **Owner-gate**: ADDITIVE — no prior 1.1.1 macos-arm64 load_snapshot in INDEX; no competing producer
 **Gate tier**: strictImplementationUse_candidate
 

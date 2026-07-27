@@ -1,0 +1,19 @@
+{
+  "schema": "c5cm.consumer.producer_ledger.v1",
+  "bundle": "internal-reverse/audits/windows-1.2.3-sessions-analytics",
+  "authoritative_producer": {
+    "machine": "<host>",
+    "session": "sessions-analytics123-win-audit-distill-20260725",
+    "backfill_note": "first production of this bundle (no prior windows-1.2.3-sessions-analytics/ existed); RULE8 skeleton and target_universe reused from macos-1.2.3-sessions-analytics per user instruction; Windows raw-evidence counts, gate status, and 4 additional session-related raw files (codexmate_lib/ x3 + commands/ root x1) independently discovered and verified this pass via live IDA MCP (<host>) + filesystem re-verification -- not a pure backfill, real incremental work performed (server_health gate pass, decompile x1, callees x2, xrefs_to x1, func_query x1)."
+  },
+  "binary_sha256": "not independently recomputed this pass -- see raw/binary/ SOT; server_health confirmed idb_path=E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+  "sha12": "unknown_not_recomputed",
+  "platform": "windows-x64",
+  "produced_at": "2026-07-25",
+  "overall_gate": "consumerStartReady",
+  "target_count": 9,
+  "readyToImplement_count": 0,
+  "strictImplementationUse_count": 0,
+  "consumerStartReady_count": 9,
+  "note": "dim2-wrapper closed 9/9 (stronger than macOS sibling's 3/9, each platform independently closed, no cross-platform extrapolation). dim2-core weaker than macOS for 5 analytics commands + export_session_markdown (core-layer function identity not located; live callees() trace shows delegation to unnamed sub_* functions). 26 unnamed sub_* functions not business-renamed this pass -- honestly kept as sub_*, not fabricated as accepted_unknown/genuine_ceiling (red line 13). dim4/dim6 not run. See gate-report.json for full dim_status and README.md/AI.md for consumer-facing detail."
+}

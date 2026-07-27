@@ -1,0 +1,100 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "sessions-analytics",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-25",
+  "ida_live_gate": {
+    "checked": true,
+    "server_health_status": "ok",
+    "uptime_sec": 122661.071,
+    "IDA decompiler_ready": true,
+    "module_matched": "AiMaMi.1.2.3 win64.exe",
+    "note": "Red line 17 IDA_LIVE_GATE satisfied before any decompile/callees/xrefs_to call this pass."
+  },
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 9,
+    "blocked": 0,
+    "total_commands": 9
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "mostly-closed via shared-bundle reuse -- frontend/ipc-contracts.jsonl (windows-x64 copy, 131 lines) grep-confirmed this pass to contain all 9 in-scope command names, true_gaps=0. No dedicated Windows frontend page-level markdown (component-tree/state-model) exists; this package reuses macos-1.2.3-sessions-analytics's SessionsPage/AnalyticsPanel page docs under the verified-shared-bundle assumption (single cross-platform Tauri JS bundle) rather than independently re-deriving them. Same open gap as macOS: Bs() bento-stats query command binding unconfirmed.",
+    "dim2_backend_owner_pseudocode": "stronger-than-macOS-for-command-wrapper-layer, weaker-for-core-analytics-layer -- ALL 9 commands now have a resolved command-wrapper owner on Windows (4 in codexmate_lib/+commands/ root for the 4 sessions commands, 5 in commands/analytics/ for the analytics commands), confirmed via header provenance 'tauri command handler = <name> | ground-truth' for all 9. This closes the macOS package's own dim2 gap for 6/9 commands (macOS had no named wrapper for load_sessions + 5 analytics commands) -- Windows evidence independently resolves what macOS could not on macOS's own platform (not extrapolated across platforms, each platform closed on its own evidence). However Windows core-layer (business-logic) naming is WEAKER than macOS for the analytics side: macOS has 8 separately-named core::session_analytics functions (compute_change/session/token/tool_analytics, parse_all_sessions, range_to_cutoff, timestamp_to_date, visit_dir); Windows analytics/ only has 1 named core function (compute_usage_analytics) plus 2 unnamed subs, and live callees() tracing of load_change_analytics shows its logic delegating to unnamed sub_* functions rather than a single separately-named core function -- genuinely unresolved whether Windows has equivalent separately-factored functions that are simply unnamed, or whether the logic is structured/inlined differently. export_session_markdown's Windows core-layer counterpart is also not located (command wrapper found this pass at codexmate_lib/export_session_markdown_0x140c8eb30.c, but no separately-named core function backing it).",
+    "dim3_call_tree_to_leaf": "partial -- sessions/ core functions (load_sessions_0/delete_sessions_0/migrate_session_worktree_0) are non-failed, substantial decompiles (4721/1126/726 lines respectively) reaching real business logic. Wrapper-to-core call-chain is NOT a single direct edge for the 3 sessions commands checked live this pass (callees() of the codexmate_lib wrappers does not directly list the sessions/ core function addresses; xrefs_to() of the core functions shows at least one intermediate unnamed hop, e.g. sub_14074F3F0 as a confirmed caller of load_sessions_0). Full multi-hop call-tree-to-leaf reduction NOT completed this pass for any of the 9 commands.",
+    "dim4_interface_dto_boundary": "not-closed -- no per-command DTO/error-envelope/side-effect-boundary extraction pass has been run for windows-x64 sessions-analytics; open gap, not evidence.",
+    "dim5_platform_gate": "windows-closed-for-existence-and-partially-analyzed -- this is the FIRST windows-1.2.3-sessions-analytics audits/ bundle (none existed before this pass). Raw evidence independently verified via live IDA MCP session against <host> (server_health/decompile/callees/xrefs_to all invoked, real results). 40 total session/analytics-related raw .c files located (36 in the 3 dirs the macOS sibling pointed to + 4 additional files this pass discovered: 3 codexmate_lib command wrappers + 1 commands-root wrapper). Per red line 'macOS 只证明 macOS，Windows 只证明 Windows / 禁止外推', this package's findings are NOT extrapolated from macOS and do not extrapolate to macOS; they independently close what they close on Windows evidence alone. Full per-command dim1-dim6 Windows gate NOT closed -- only dim2 command-wrapper-layer existence and dim1 command-name binding are closed at consumerStartReady depth.",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping has been produced for windows-x64 sessions-analytics leaves."
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim4 and dim6 are not closed for any command on windows-x64; dim2 core-analytics-layer naming and dim3 wrapper-to-core call-chain reduction are also incomplete (see dim_status above). Per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification, command-wrapper-layer existence alone (even though closed for all 9 commands here, unlike macOS) does not by itself promote target-level readiness.",
+  "consumerStartReady_commands": [
+    "load_sessions", "delete_sessions", "export_session_markdown", "migrate_session_worktree",
+    "load_session_analytics", "load_token_analytics", "load_tool_analytics",
+    "load_change_analytics", "load_usage_analytics"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady + uiCallEntryReady satisfied via ipc-contracts.jsonl command-name binding (angle B, true_gaps=0) plus reuse of the shared-bundle macOS frontend page docs. happyPathReady satisfied for command-wrapper layer via 9/9 named, non-failed command-handler decompiles with ground-truth provenance (stronger dim2-wrapper closure than the macOS sibling). dtoBoundaryReady/boundaryPathReady/sideEffectReady/acceptanceDraftReady NOT independently produced this pass. Core-analytics-layer (dim2-core) closure is weaker than macOS for the 5 analytics commands and for export_session_markdown -- consumer must treat the compute_*_analytics business-logic mapping as Unknown/unresolved rather than assume macOS's 8-function core::session_analytics structure exists identically on Windows.",
+  "unknowns": [
+    {
+      "item": "26 unnamed sub_* functions across sessions/ (14), analytics/ (2), commands/analytics/ (10)",
+      "class": "blocks_start (for strictImplementationUse/readyToImplement) / does-not-block consumerStartReady",
+      "reason": "genuinely not renamed to business-level symbols this pass. Module/directory attribution already exists from a prior dirtree pass (2 spot-checked live this session both carry 'module src/core/analytics.rs | attributed via call-graph propagation' header comments). No panic-Location two-hop xref renaming attempt was completed to a specific business name for any of the 26 -- per red line 13 this is honestly kept as sub_*, NOT marked accepted_unknown/genuine_ceiling (no exhaustion-of-break-attempts was performed to justify that classification either)."
+    },
+    {
+      "item": "compute_*_analytics-equivalent Windows core functions (macOS has 8 separately-named core::session_analytics functions; Windows has only 1 named core/analytics function plus unnamed subs)",
+      "class": "blocks_start",
+      "reason": "live callees() trace of load_change_analytics (0x140cd3d40) this pass shows its 32 direct callees are all unnamed sub_* addresses (several already filed as raw .c evidence in commands/analytics/'s own unnamed set). Genuinely unresolved whether a Windows equivalent to macOS's compute_change_analytics/compute_session_analytics/etc. exists as a distinct function that is simply unnamed, or whether Windows inlines/distributes this logic differently across the wrapper + multiple small helpers. Recorded as a real structural-difference finding, not covered evidence."
+    },
+    {
+      "item": "export_session_markdown core-layer (business logic) function identity",
+      "class": "blocks_start",
+      "reason": "command wrapper located this pass (codexmate_lib/export_session_markdown_0x140c8eb30.c, 953 lines, ground-truth provenance) but no separately-named core-layer function backing it was found; may be inlined in the wrapper itself or among the 14 unnamed sessions/ subs -- not resolved this pass."
+    },
+    {
+      "item": "wrapper-to-core call-chain for the 3 sessions commands (load_sessions/migrate_session_worktree/delete_sessions -- do the codexmate_lib/commands-root wrappers actually call the sessions/ core _0 functions, and via what intermediate hops?)",
+      "class": "blocks_start",
+      "reason": "live callees() of the 3 wrappers this pass shows NONE of them directly lists the corresponding sessions/ core function address as an immediate callee; live xrefs_to() of load_sessions_0 shows its confirmed callers are migrate_session_worktree_0 (self-referential within core module) and an unnamed sub_14074F3F0 -- i.e. there is at least one intermediate hop not yet traced. Plausible (wrapper calls into a shared dispatch/extraction helper which then calls the core function) but not confirmed this pass."
+    },
+    {
+      "item": "dim4 interface/DTO extraction for windows-x64 sessions-analytics",
+      "class": "blocks_start",
+      "reason": "not produced this pass; readyToImplement/strictImplementationUse blocked on this until closed."
+    },
+    {
+      "item": "dim6 test/acceptance mapping for windows-x64 sessions-analytics",
+      "class": "blocks_start",
+      "reason": "not produced this pass; readyToImplement/strictImplementationUse blocked on this until closed."
+    },
+    {
+      "item": "angle A func_query tool behavior",
+      "class": "accepted_unknown (tool-limitation, not a coverage gap)",
+      "reason": "func_query with {\"queries\":[\"session\"]} was invoked live this pass and returned a valid, non-error JSON result (satisfying red line 17's error-handling requirement -- this was not a failed/unreachable call), but the returned top-50 function list contained 0 name-matches for 'session', indicating the query semantics are not a straightforward name-substring filter as assumed. Filesystem find/grep plus targeted single-address decompile/callees/xrefs_to calls were used instead for this pass's actual angle-A/angle-C work. This is recorded as an accepted_unknown about the *tool's query semantics*, not as an excuse for skipping the underlying enumeration -- the enumeration itself was still done via the filesystem+spot-check method."
+    },
+    {
+      "item": "Bs() SessionsPage bento-stats query command binding",
+      "class": "accepted_unknown",
+      "reason": "inherited unresolved gap from the macOS sibling package's own frontend-doc source; not independently re-investigated this pass."
+    }
+  ],
+  "four_angle_self_check": {
+    "angle_a_symbol_enumeration": "PARTIAL -- live IDA func_query attempted but not usable as a name-filter (see unknowns above); filesystem find across raw/aimami/1.2.3/windows-x64/{sessions,analytics,commands/analytics,codexmate_lib,commands}/ida/pseudocode/*.c found 40 relevant files (36 previously known + 4 newly located this pass) / 12 named functions / 26 unnamed sub_*, re-verified via live find|wc -l this session (not copied from the macOS sibling's number). Additionally, 5 targeted live-IDA calls (decompile x1, callees x4, xrefs_to x1) were run this pass on specific addresses of interest -- an improvement over the macOS sibling's pure filesystem substitution (that pass had zero IDA MCP access), but still short of a working canonical func_query name census.",
+    "angle_b_frontend_command_diff": "RUN -- grep of raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl (live re-run this pass, not reused from macOS) found all 9 in-scope commands present. true_gaps=0 at command-name level.",
+    "angle_c_orphan_scan": "RUN -- grep for session-related keywords across raw/aimami/1.2.3/windows-x64 outside the 5 scope-dir set found: (1) codex_thread_visibility/ida/pseudocode/{find_session_meta_anchors,find_first_session_meta_line,stream_replace_session_meta_lines}*.c and version-delta/ida/pseudocode/session_meta_rewrite_{1,2,3}*.c -- cross-checked against windows-1.2.3-relay/pointers/evidence-paths.md which explicitly lists codex_thread_visibility among its 28 known Windows submodule dirs -- classified already_in_canonical, owned by the sibling windows-1.2.3-relay audit package (session-meta/rollout patching for router visibility, not session/analytics UI, same classification pattern as the macOS sibling's angle-C finding for the same functions on macOS). Not claimed as covered by this package, not reversed further.",
+    "angle_d_manifest_diff": "RUN -- comm -23 between the 9 in-scope frontend commands (angle B result) and this package's consumerStartReady_commands list: 0 missing. Residual gap is depth (dim2-core-analytics naming, dim3 call-chain reduction), not command-name coverage."
+  },
+  "notes": [
+    "This package intentionally does NOT claim blanket 100% coverage or readyToImplement. Command-wrapper-layer (dim2-wrapper) closure is actually stronger on Windows than the macOS sibling package achieved on macOS (9/9 vs 3/9) because this pass located codexmate_lib/'s 3 additional command-entry files plus commands/'s root delete_sessions file that the macOS pass's Windows pointer note did not mention.",
+    "Core-analytics-layer (dim2-core) closure is weaker on Windows than macOS for the 5 load_*_analytics commands and for export_session_markdown -- this is recorded honestly as a platform structural-difference finding, not glossed over.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

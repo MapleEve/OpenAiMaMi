@@ -1,0 +1,86 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "relay-core",
+  "bundle": "macos-1.2.3-relay-core",
+  "produced_at": "2026-07-26",
+  "session": "macos-1.2.3-relay-core-reassign-20260726",
+  "authoritativeProducer": {
+    "machine": "<host>",
+    "session": "macos-1.2.3-relay-core-reassign-20260726",
+    "reassigned_from": {
+      "session": "relay123-surface",
+      "machine": "<host>",
+      "claimed_at": "2026-07-23",
+      "reassign_token": "EXPLICIT_REASSIGN_OWNER",
+      "reassign_basis": "User explicit chat authorization 2026-07-26; original claim stalled 3+ days (2026-07-23 -> 2026-07-26) with zero DONE/completed line and zero canonical-bundle writes for this specific package while broader 'relay 域全量枚举' scope remained open-ended IN-PROGRESS",
+      "reassign_scope": "narrow — only the audits/macos-1.2.3-relay-core/ package (this bundle); does NOT touch relay123-surface's own raw evidence (INDEX.jsonl keys aimami/1.2.3/windows-x64/relay-core/function-surface, .../commands/relay/command-owner-surface, and 5 backend-pseudocode-leaf entries) which remain relay123-surface-attributed and untouched"
+    }
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "package_scope_note": "This package is a reconciliation/coverage audit answering whether the 1.0.9-era standalone relay-core package (19 clusters) still needs its own 1.2.3 canonical bundle, or is absorbed by audits/macos-1.2.3-relay/. It does not itself perform dim1-6 leaf closure for any of the 15 content-matched clusters (those leaves' gate status is owned by audits/macos-1.2.3-relay/, out of scope here). This reduce pass resolves the two previously-open Unknowns (relay_web_executor, relay_web_tools existence) and completes the OUTPUT-SPEC file skeleton (gate-report.json, logic/, reviews/) that were missing since package creation on 2026-07-25.",
+  "four_angle_completeness": {
+    "note": "SKILL.md red line #15. Scoped to the specific disputed question this package exists to answer (relay_web_executor / relay_web_tools fate), not a full re-enumeration of all 32 core::relay submodules (that full-corpus enumeration already exists on disk: 657 .c pseudocode files across 32 submodules, produced by wf-aimami123-delta-20260721 and cross-referenced in this package's manifest.json cross_check_evidence field).",
+    "angle_A_symbol_enumeration": {
+      "method": "Live func_query name_regex against the full macos-arm64 IDB (<host>, IDA_LIVE_GATE passed: status=ok, uptime_sec=260373-260686, IDA decompiler_ready=true, module=AiMaMi, run 2026-07-26), not scoped to a module prefix so a renamed/relocated feature would still surface. Patterns tried (small-result, non-truncated, each independently verified 0 hits): web_executor, web_tool, brave, [Bb]rave, tavily, search_provider, duckduckgo, serpapi, search_exec, ToolExecutor, relay::web. Positive-control patterns confirmed the tool itself works correctly (handle_tray_menu_event returned 12 real hits, zzz_definitely_not_exist_xyz returned 0, codex_diagnostic returned 104).",
+      "web_search_related_survivors": "func_query 'web_search' found exactly 4 real App-level functions, none of them execution/dispatch: codexmate_lib::core::relay::native_responses_compat::rejects_hosted_web_search, codexmate_lib::core::relay::translator::remove_web_search_hint, codexmate_lib::core::relay::translator::strip_anthropic_web_search_tools, codexmate_lib::core::relay::translator::anthropic_web_search_tool_with_type. These are schema-stripping/rejection functions (tool-call shape manipulation before forwarding upstream), not a server-side web-search execution proxy.",
+      "result": "0 hits for any web_executor/web_tools-shaped App symbol on macOS 1.2.3. func_query tool integrity independently verified via positive controls in the same session.",
+      "caveat": "func_query large unfiltered queries (e.g. bare 'codexmate_lib', count=0/5000/200) were observed to silently truncate to ~10 returned items regardless of requested count (transport/response-size limit, not a code defect in the query itself) -- this caveat does NOT affect the zero-hit conclusions above, since a true-zero result set cannot be truncated; it only means this pass did not attempt a full unfiltered re-enumeration of all ~1638 App functions (that full enumeration already exists on disk from wf-aimami123-delta-20260721, see pointers/evidence-paths.md)."
+    },
+    "angle_B_frontend_diff": {
+      "method": "raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl (131 commands total, produced 2026-07-21) filtered for relay/proxy/router/model/diagnose keywords.",
+      "relay_related_commands_found": ["set_api_proxy_config","test_api_proxy_config","detect_api_proxy_config","diagnose","load_relay_state","upsert_relay_provider","delete_relay_provider","activate_relay_provider","deactivate_relay_provider","set_relay_provider_network","reorder_relay_providers","fetch_relay_models_draft","reveal_relay_api_key","get_relay_provider_quota","get_relay_active","get_relay_proxy_status","get_codex_router_auth_readiness","set_codex_router_enabled","set_codex_router_no_account_mode","export_relay_config","import_relay_config"],
+      "true_gaps_for_disputed_clusters": 0,
+      "note": "No frontend invoke() command corresponds to a web-search-tool-execution feature (e.g. no 'execute_web_search'/'run_web_tool'-shaped command exists in the 131-command universe). This corroborates angle A: the disputed clusters are not merely un-reversed on the backend while still frontend-reachable -- there is no frontend call surface for them either.",
+      "windows_cross_check": "raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl (win-1.2.3-frontend-extract-20260724 DONE) independently confirmed 131/131 zero command-name diff vs macOS -- same conclusion holds cross-platform without inferring one platform from the other (each has its own independently-produced frontend extraction)."
+    },
+    "angle_C_exports_semantic_orphan_scan": {
+      "method": "Same func_query pass as angle A doubles as an exports/symbol semantic scan since queries were unscoped to any module prefix (whole-binary search, not core::relay-limited) -- a relocated/renamed feature under a different module (as relay_proxy_config was, to commands::system) would still have surfaced.",
+      "result": "No orphan execution-layer function found anywhere in the macos-arm64 binary matching the searched semantic keyword set. Only the 4 schema-stripping/rejection functions listed under angle A survive."
+    },
+    "angle_D_manifest_diff_and_orphan_classification": {
+      "cluster_classification_15_of_19": "already_in_canonical -- content-matched by function name into audits/macos-1.2.3-relay/'s declared core::relay::* 32-submodule scope (see manifest.json cross_check_evidence.cluster_to_submodule_mapping_confirmed_by_function_name); that bundle owns the actual dim1-6 gate status for these leaves, not duplicated here.",
+      "cluster_classification_1_of_19_relay_proxy_config": "already_in_canonical -- confirmed physically relocated to commands::system, covered by audits/macos-1.2.3-system/ (see manifest.json cluster_moved_out_of_relay_scope_but_covered_elsewhere).",
+      "cluster_classification_2_of_19_relay_web_executor_relay_web_tools": "confirmed_removed -- a fifth classification beyond the standard four-way orphan taxonomy (already_in_canonical / local_outtake / different_machine_owner / truly_undone), because this is not an orphan-coverage question (something we forgot to reverse) but a feature-presence question (something the product used to have and, per live cross-platform symbol/string search on 2026-07-26, no longer has any execution-layer trace of). Per SKILL.md red line #15 intent, truly_undone would require opening a new gap_needs_new_raw/gap_needs_reducer work item; that would be wrong here because there is nothing left to reverse -- both platforms independently show zero execution-side functions, only vestigial schema-stripping/rejection logic in translator/native_responses_compat. This is corroborated by cross-1.0.9-relay-core-bootstrap/data/producer-ledger.json showing relay_web_executor and relay_web_tools were BOTH strictImplementationUse-gated (real, fully-reversed, cross-platform-confirmed features) in 1.0.9 -- i.e. this is a genuine product regression/removal between 1.0.9 and 1.2.3, not evidence that was never captured."
+    }
+  },
+  "cross_platform_verification_relay_web_executor_relay_web_tools": {
+    "date": "2026-07-26",
+    "macos": {
+      "ida_endpoint": "<host>",
+      "server_health": "status=ok, uptime_sec~260373-260686, IDA decompiler_ready=true, module=AiMaMi (IDA_LIVE_GATE passed both before and after the query batch)",
+      "method": "func_query name_regex, whole-binary, multiple patterns (see angle A)",
+      "result": "0 App-level execution-layer hits for web_executor/web_tools/brave/tavily/duckduckgo/serpapi/search_provider/ToolExecutor; only 4 schema-stripping/rejection functions found under 'web_search' pattern"
+    },
+    "windows": {
+      "ida_endpoint": "<host>",
+      "server_health": "status=ok, uptime_sec=264016.592, IDA decompiler_ready=true, module='AiMaMi.1.2.3 win64.exe', idb_path=E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+      "method": "find_regex (string-pool search, appropriate for strip build without Rust demangled symbols) for the same pattern set",
+      "result": "0 string-pool hits for web_executor/web_tools/brave/tavily/serpapi/duckduckgo/search_provider/ToolExecutor; find_regex 'web_search' returned 6 string hits including '[AiMaMi] web_search tool rejected by upstream; retrying without it' and 'web_search_call' -- same rejection/passthrough-refusal semantics as macOS, not an execution proxy",
+      "cross_check": "raw/aimami/1.2.3/windows-x64/relay-core/owner-map.jsonl (177 functions, produced by relay123-surface 2026-07-23) independently contains zero web_executor/web_tools/brave/tavily/search_provider matches on grep -i, corroborating the live find_regex result"
+    },
+    "conclusion": "confirmed_removed on both platforms, independently verified (no macOS-to-Windows inference per AGENTS.md red line). relay_web_executor and relay_web_tools (19-cluster taxonomy items, both strictImplementationUse in 1.0.9 per cross-1.0.9-relay-core-bootstrap producer-ledger) have no discoverable execution-layer trace in AiMaMi 1.2.3 on either platform. Only vestigial tool-schema stripping/rejection logic survives, consistent with the product now relying on client/upstream-native web-search tool handling (reject-and-retry-without) rather than a server-side relay-executed web-search passthrough."
+  },
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "relay_web_executor/relay_web_tools: N/A -- confirmed removed, no leaf to promote"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "windows-1.2.3-relay-core canonical bundle: still does not exist; 177-function surface list (owner-map.jsonl) has 113 tier-C functions with zero decompile calls performed -- out of scope for this reduce pass, remains open per relay123-surface's own raw evidence (untouched by this session)"
+    ],
+    "consumerStartBlocked": [
+      "formal RULE-9 NO-BEHAVIOR-DIFF-MIGRATION-1.2.3.md comparing relay-core-1.0.9's 19-cluster universe against audits/macos-1.2.3-relay/: still not produced. Per this package's own AI.md next_actions_for_next_worker item 3, that document belongs inside audits/macos-1.2.3-relay/logic/ (not this package) once both angles (macOS -- done this session; Windows -- still open) confirm absorption. Out of scope for this reduce pass."
+    ]
+  },
+  "blockers_requiring_resolution": [
+    { "blocker": "windows-1.2.3-relay-core has no canonical bundle; 113/177 functions (tier C) never decompiled", "resolve": "decompile() the tier-C sub_XXXX functions in raw/aimami/1.2.3/windows-x64/relay-core/owner-map.jsonl and RULE-8 reduce into audits/windows-1.2.3-relay-core/ -- separate work item, not claimed by this session", "status": "open, unclaimed by this session" },
+    { "blocker": "macos-1.2.3-relay-core content-absorption into audits/macos-1.2.3-relay/ has never been formalized via RULE-9 diff", "resolve": "produce audits/macos-1.2.3-relay/logic/NO-BEHAVIOR-DIFF-MIGRATION-1.2.3.md formally diffing against the 19-cluster target universe (14 clusters after excluding the 2 confirmed-removed and 1 relocated, since those 3 no longer need diffing against a relay-core baseline that no longer exists for them)", "status": "open, belongs to audits/macos-1.2.3-relay/ owner, not this package" },
+    { "blocker": "relay_web_executor / relay_web_tools", "resolve": "RESOLVED this session -- confirmed_removed on both platforms, see cross_platform_verification field above", "status": "resolved 2026-07-26" }
+  ],
+  "dim6_status": "not_applicable -- this package makes no dim1-6 closure claim for any leaf; it is a coverage-reconciliation and existence-verification audit only"
+}

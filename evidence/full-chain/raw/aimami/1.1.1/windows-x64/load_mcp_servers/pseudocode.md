@@ -3,7 +3,7 @@
 session: <审计会话>
 machine: <本地机器>
 sha: d24e429a
-source: 逆向分析 HexRays decompile (hexrays_ready=true)
+source: 逆向分析 HexRays decompile (IDA decompiler_ready=true)
 
 ---
 

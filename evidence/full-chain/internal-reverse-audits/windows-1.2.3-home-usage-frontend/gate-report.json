@@ -1,0 +1,80 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "home-usage-frontend",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-26",
+  "session": "windows-1.2.3-home-usage-frontend-reduce-20260726",
+  "machine": "<host>",
+  "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "prewrite_gate_decision": "ALLOW",
+  "prewrite_gate_write_mode": "first",
+  "prewrite_owner_matrix": {
+    "target": "audits/windows-1.2.3-home-usage-frontend/",
+    "canonical_scope": "internal-reverse/audits/windows-1.2.3-home-usage-frontend/",
+    "current_producer": "none (target dir absent prior to this write, confirmed via ls 2026-07-26)",
+    "machine_session": "<host> / windows-1.2.3-home-usage-frontend-reduce-20260726",
+    "index_hit": "none (grep windows-1.2.3-home-usage / home-usage.*windows over INDEX.jsonl = 0 hits)",
+    "reverse_status_active_claim": "none for windows home-usage prior to this session's own claim-first row",
+    "write_mode": "first",
+    "collision_status": "none (parallel macos-1.2.3-home-usage-frontend-reduce-20260726 is the macOS half, different bundle, not a collision)",
+    "takeover_token": "N/A"
+  },
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 0,
+    "consumerStartBlocked": 13,
+    "total_home_usage_commands_considered": 13
+  },
+  "gate_tier": "belowConsumerStartReady",
+  "consumerStartReady": false,
+  "strictImplementationUse": false,
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "moduleExitAllowed_note": "RULE 7: a leaf must reach consumerStartReady before moving on. This bundle does NOT reach it (backend Unknown + page render-surface not reduced). It is honestly recorded as a frontend-command-surface evidence pack / gap_needs_reducer, flagged in-progress-toward-consumerStartReady with explicit next_producer_steps, not falsely marked done.",
+  "dim_status": {
+    "dim1_frontend_control_flow": "partial (win-native) -- command-level minified-static CCF closed: 13/13 terminal_call rows with wrapper method, argKeys, invoke-alias `re`, source chunk; partial guards captured (load_snapshot in-flight-dedup preflight; refresh_single_account_usage in-flight Set + success toast + .warnings[] consumption). Page-level render-surface (component/route/state model, visible UX) NOT reduced for win -> renderSurfaceReady NOT closed. This is NOT independently page-reversed frontend work; it is machine-extracted command-surface + minified control-flow.",
+    "dim2_backend_owner_pseudocode": "missing -- no IDA session this pass; 0/13 command wrappers reversed on win. mac backend-baseline/commands-baseline.md (cross-reference) also has zero coverage of this module's commands. Both platforms empty for backend.",
+    "dim3_call_tree_to_leaf": "missing -- backend not reversed; no call-tree.",
+    "dim4_interface_dto_boundary": "partial (input side only) -- win-native input argKeys grounded per command (load_snapshot={localOnly,forceMetadata}; session/token/tool/change_analytics={range}; load_quota_history={accountKey}; refresh_single_account_usage={accountKey}; set_usage_refresh_interval={interval}; others=[]). Output DTO / error envelope / side-effect boundary Unknown (needs backend). mac 1.0.9 DISTILLED DTO shapes deliberately NOT reused (cross-platform + cross-version).",
+    "dim5_platform_gate": "win-native this pass -- all primary evidence (ipc-contracts.jsonl, frontend-control-flow.jsonl, tauri-dumped assets, PE binary sha256) is win's own artifact. Command-surface parity vs mac is a grounded zero-diff data point (not an inference). Evidence-depth gaps (no page reduce, no backend) recorded as win-native Unknown, NOT inferred from or resolved by mac evidence.",
+    "dim6_test_acceptance_mapping": "not-closed -- not produced this pass."
+  },
+  "consumerStartReady_commands": [],
+  "consumerStartReady_reason": "None of the 13 commands reach consumerStartReady: renderSurfaceReady fails (no win page-level UI reduce) and happyPathReady/sideEffectReady/boundaryPathReady fail (backend owner Unknown on win, not reachable this pass). uiCallEntryReady is largely grounded (wrapper->invoke->argKeys) and dtoBoundaryReady is weakly satisfied (input argKeys only), but the missing dims block start-readiness. Per OUTPUT-SPEC full_leaf_100_definition_v2 and 2026-05-27 Strict Leaf Readiness Clarification, partial dim1 + input-only dim4 do not promote any target.",
+  "strictImplementationUse_commands": [],
+  "readyToImplement_commands": [],
+  "consumerStartBlocked_commands": [
+    "load_bootstrap_state", "load_snapshot", "load_usage_analytics",
+    "load_session_analytics", "load_token_analytics", "load_tool_analytics",
+    "load_change_analytics", "load_quota_history", "refresh_usage_snapshot",
+    "refresh_single_account_usage", "get_usage_refresh_interval",
+    "set_usage_refresh_interval", "load_mcp_servers"
+  ],
+  "consumerStartBlocked_reason": "All 13 blocked on two shared gaps: (a) win page-level UI render-surface not reduced (renderSurfaceReady), and (b) win backend owner/decompile Unknown (happyPathReady/sideEffectReady/boundaryPathReady). get_usage_refresh_interval / set_usage_refresh_interval additionally lack a located UI trigger point (diagnostic-only). No accepted_unknown claimed: the gaps are genuine unreduced/un-reversed surfaces, not fake walls.",
+  "per_target_gate_leaf": {
+    "candidate-only": ["load_bootstrap_state","load_snapshot","load_usage_analytics","load_session_analytics","load_token_analytics","load_tool_analytics","load_change_analytics","load_quota_history","refresh_usage_snapshot","refresh_single_account_usage","load_mcp_servers"],
+    "diagnostic-only": ["get_usage_refresh_interval","set_usage_refresh_interval"]
+  },
+  "unknowns": [
+    {"item": "win page-level UI render-surface for all 13 commands", "class": "blocks_start", "reason": "not reduced this pass (no win pages/*.md); genuine evidence-depth gap vs mac, not inferred from mac."},
+    {"item": "win backend owner + IDA decompile + callees for all 13 commands", "class": "blocks_start", "reason": "no IDA session this pass; win IDB available (raw/binary/AiMaMi.1.2.3 win64.exe.i64) for a later pass."},
+    {"item": "output DTO / error envelope / side-effect boundary", "class": "blocks_start", "reason": "backend not reversed; only win-native input argKeys captured."},
+    {"item": "get_/set_usage_refresh_interval UI trigger point", "class": "blocks_start", "reason": "inlined in shell chunk index-B40jKs17.js; not located this pass."},
+    {"item": "dim6 test/acceptance mapping", "class": "blocks_start", "reason": "not produced this pass."},
+    {"item": "AnalyticsRange value domain on win", "class": "accepted_unknown", "reason": "the {range}-parameterized analytics commands take a range arg (win-native argKeys=range); the value set today|week|month is mac-source-derived and not independently enumerated on win. Non-blocking internal detail for command-surface record; would be confirmed by backend or fuller frontend reduce."}
+  ],
+  "notes": [
+    "This bundle is the first landing of the canonical windows-1.2.3-home-usage-frontend package (prior status: MISSING per REVERSE-STATUS.md:4011 and cross-1.2.3-home-usage-frontend gap_needs_reducer=2).",
+    "It is deliberately NOT inflated: a frontend-command-surface + minified-CCF evidence pack, honestly below consumerStartReady, with backend and page-render-surface recorded as open gaps.",
+    "Windows evidence is win-native; the command-surface zero-diff vs mac is a grounded fact, not a basis to import mac's page reduce or DTO shapes (doNotInferWindowsFromMacOS).",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue (all 13 in consumerStartBlocked) and next_producer_steps."
+  ]
+}

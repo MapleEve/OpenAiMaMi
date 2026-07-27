@@ -1,0 +1,84 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "bootstrap",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-25",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 1,
+    "diagnostic_only": 0,
+    "cross_referenced_owned_by_other_module": 4,
+    "gap_needs_new_raw": 5,
+    "total_bootstrap_named_raw_files_examined": 5,
+    "total_rule9_baseline_leaves_checked": 5
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "not-produced for manager_bootstrap -- accepted N/A this session (internal RelayManager subsystem-init routine, not a UI-triggered invoke() command; same accepted-substitute class as the 1.0.9 windows app_run_entry/managed_state_registry leaves, which also carried dim1=N/A). NOT independently re-verified against windows frontend evidence this session (no negative-search performed against ipc-contracts.jsonl for a 'bootstrap'-named command wrapping this VA) -- recorded as accepted_unknown, not confirmed-absent.",
+    "dim2_backend_owner_pseudocode": "closed for manager_bootstrap -- full non-truncated single-pass Hex-Rays decompile already on disk (raw/aimami/1.2.3/windows-x64/manager/ida/pseudocode/bootstrap_0x14085a330.c, 646 lines) plus a pre-existing narrative summary in INDEX.jsonl (session manager-win-deepdecompile-20260724): 'Initializes the manager subsystem at startup: loads persisted account/provider entries, wires router/proxy state, prepares the in-memory account registry.' Cross-platform name match confirmed via header comment: win codexmate_lib::core::relay::manager (panic-Location xref) = mac codexmate_lib::core::relay::manager::RelayManager::bootstrap (string-signature match).",
+    "dim3_call_tree_to_leaf": "partial for manager_bootstrap -- this session's read of the 646-line body confirms a direct call to the named sibling function `ensure_proxy_started` (line ~167, same manager module, itself already gated dim2-closed per the same INDEX entry: 'Idempotently starts the local relay proxy server if not already running') plus two calls into the module's internal tier-C helper `sub_14085A1E0` (poisoned-lock/state-transition support per the module's own owner-map note). Call tree traced ONE hop past `bootstrap` itself; `ensure_proxy_started`'s and `sub_14085A1E0`'s own internal bodies were NOT opened this session -- not traced to fs/http/registry/process/sidecar/persistence/response/error leaves. Not closed.",
+    "dim4_interface_dto_boundary": "not-closed for manager_bootstrap -- no DTO/error-envelope/side-effect-boundary extraction performed this session beyond the narrative INDEX summary's mention of 'loads persisted account/provider entries' (implies a persistence-read side effect, not formally extracted as a field-level DTO).",
+    "dim5_platform_gate": "windows-x64 only, independently sourced (source_binary_sha256 aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396, matches sibling windows-1.2.3-relay/windows-1.2.3-maintenance/windows-1.2.3-daemon-autoswitch packages' cited binary). Do not infer macOS 1.2.3 bootstrap behavior from this package; macos-1.2.3-bootstrap's own AI.md records RelayManager::new's internals (plausible mac-side callsite of an equivalent bootstrap step) as unopened -- this Windows evidence is a candidate lead for that future macOS session, NOT a confirmed cross-platform match beyond the header-comment name-signature note.",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping produced this session for manager_bootstrap or any RULE9-baseline gap leaf."
+  },
+  "readyToImplement_leaves": [],
+  "strictImplementationUse_leaves": [],
+  "strictImplementationUse_reason": "dim1/dim3/dim4/dim6 all open or only partially closed for manager_bootstrap; per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the Strict Leaf Readiness Clarification, dim2-only (plus one-hop dim3) closure does not promote target-level readiness.",
+  "consumerStartReady_leaves": [
+    "manager_bootstrap (core::relay::manager::bootstrap, VA 0x14085a330)"
+  ],
+  "consumerStartReady_basis": "backend owner + non-failed full decompile satisfied (dim2); one-hop call-tree evidence into a real side-effecting sibling (ensure_proxy_started) gives a partial happyPathReady/sideEffectReady signal; dim1 accepted N/A per 1.0.9 native-init precedent (not independently re-verified this session, so flagged accepted_unknown rather than confirmed). Consumer must NOT treat this as strictImplementationUse or readyToImplement -- dim3 only one hop deep, dim4/dim6 fully open.",
+  "cross_referenced_not_duplicated": [
+    {"leaf": "load_bootstrap_state", "va": "0x14018b520", "canonical_owner": "windows-1.2.3-daemon-autoswitch", "owner_status": "blocks_start (per that package's own gate-report.json blocks_start_commands list)"},
+    {"leaf": "dismiss_pending_auto_switch", "canonical_owner": "windows-1.2.3-daemon-autoswitch", "owner_status": "blocks_start"},
+    {"leaf": "load_pending_auto_switch", "canonical_owner": "windows-1.2.3-daemon-autoswitch", "owner_status": "blocks_start"},
+    {"leaf": "confirm_pending_auto_switch", "canonical_owner": "windows-1.2.3-daemon-autoswitch", "owner_status": "blocks_start"},
+    {"leaf": "confirm_pending_auto_switch_and_restart_codex", "canonical_owner": "windows-1.2.3-daemon-autoswitch", "owner_status": "blocks_start (no raw .c found under canonical command name per that package's own manifest.json)"},
+    {"leaf": "load_snapshot", "va": "0x140cb5e50", "canonical_owner": "windows-1.2.3-accounts", "owner_status": "see windows-1.2.3-accounts/gate-report.json"},
+    {"leaf": "store_bootstrap_snapshot_best_effort", "va": "0x1403ec5e0", "canonical_owner": "windows-1.2.3-accounts", "owner_status": "see windows-1.2.3-accounts/logic/FULL-CHAIN-1.2.3.md"},
+    {"leaf": "create_bootstrap_tray_menu", "va": "0x1403f2350", "canonical_owner": "windows-1.2.3-tray", "owner_status": "see windows-1.2.3-tray/ bundle"}
+  ],
+  "rule9_baseline_gap_leaves": [
+    {"leaf": "app_run_entry", "1.0.9_windows_va": "0x140004B30", "1.2.3_windows_raw_found": false, "status": "gap_needs_new_raw"},
+    {"leaf": "boot_spawn_threads", "1.0.9_windows_va": "0x14028CCB0", "1.2.3_windows_raw_found": false, "status": "gap_needs_new_raw"},
+    {"leaf": "bootstrap_cache (standalone IPC-owner shape as recorded in 1.0.9)", "1.0.9_windows_va": "0x140272E80", "1.2.3_windows_raw_found": false, "status": "gap_needs_new_raw -- note: the 1.2.3-generation equivalent command-level entry point is load_bootstrap_state (cross-referenced above, owned by windows-1.2.3-daemon-autoswitch), but that command's own internal core-cache-read implementation body (the 1.0.9 dim2 owner at 0x140272E80/0x1402663E0) has not been independently re-derived for 1.2.3"},
+    {"leaf": "managed_state_registry", "1.0.9_windows_va": "0x141208810", "1.2.3_windows_raw_found": false, "status": "gap_needs_new_raw -- per the macOS-1.2.3-bootstrap sibling's own finding, this may be architecturally inlined into app_run_entry in the 1.2.3 generation rather than a standalone function; unconfirmed for Windows, do not infer from macOS (dim5)"},
+    {"leaf": "load_snapshot (system-shell-init supplement, tokio-coroutine snapshot-builder+webview-event-emitter shape as recorded in 1.0.9)", "1.0.9_windows_va": "0x1408c2e10 (coroutine) / 0x14084DF80 (snapshot builder)", "1.2.3_windows_raw_found": false, "status": "gap_needs_new_raw -- note: a DIFFERENT function also named load_snapshot exists in 1.2.3 windows raw (commands/accounts, VA 0x140cb5e50, owned by windows-1.2.3-accounts) but its module (commands/accounts) and role (account-snapshot IPC command) do not match the 1.0.9 leaf's module (system-shell-init, internal tokio coroutine + tray-refresh side effects) or VA shape -- treated as a DIFFERENT function sharing a name coincidence, not confirmed as the same leaf; genuinely Unknown which (if either) is the true successor"}
+  ],
+  "unknowns": [
+    {
+      "item": "manager_bootstrap dim1 (frontend trigger) -- accepted N/A per 1.0.9 native-init precedent but not independently re-verified against windows ipc-contracts.jsonl this session",
+      "class": "accepted_unknown",
+      "reason": "consistent structural precedent (internal manager-subsystem-init routines called during app startup, not directly invoke()'d) established by the 1.0.9 windows-bootstrap package for app_run_entry/managed_state_registry; not re-derived independently this pass, so held at accepted_unknown rather than promoted to a fully re-confirmed N/A"
+    },
+    {
+      "item": "manager_bootstrap dim3 depth beyond ensure_proxy_started/sub_14085A1E0",
+      "class": "blocks_start",
+      "reason": "genuinely not traced this session -- ensure_proxy_started's own body (which per its own INDEX summary starts the local relay proxy listener) and sub_14085A1E0's own body were not opened; real fs/http/process leaves not yet reached"
+    },
+    {
+      "item": "app_run_entry / boot_spawn_threads / managed_state_registry / bootstrap_cache-standalone / load_snapshot-system-shell-init-supplement -- zero 1.2.3 windows raw evidence",
+      "class": "blocks_start",
+      "reason": "genuinely absent from the current raw tree as of this session (grep-verified across the entire windows-x64 1.2.3 raw tree, not merely un-searched); this is the honest raw-thinness gap the task anticipated, RULE9 status = diff_required for all 5 (no basis for migrated_no_behavior_diff or unchanged_reused without new evidence)"
+    },
+    {
+      "item": "whether the 1.2.3 windows commands/accounts load_snapshot (VA 0x140cb5e50) is the true successor of the 1.0.9 windows system-shell-init load_snapshot leaf, or an unrelated same-named function",
+      "class": "blocks_start",
+      "reason": "module and role mismatch observed (accounts-domain IPC command vs system-shell-init internal tokio coroutine); would require opening both bodies fully and comparing call-tree shape to resolve, not attempted this reduce-only session"
+    },
+    {
+      "item": "cross-platform reconciliation of the load_bootstrap_state/dismiss_pending_auto_switch/load_pending_auto_switch module-ownership mismatch between macos-1.2.3-bootstrap (claims them) and windows-1.2.3-daemon-autoswitch (canonically owns them on Windows)",
+      "class": "product_decision",
+      "reason": "pre-existing structural inconsistency in the canonical tree, not something a reduce-only session touching only the (previously nonexistent) windows-1.2.3-bootstrap package is authorized to resolve without an EXPLICIT_REASSIGN_OWNER token affecting the macOS package; flagged for a future dedicated reconciliation pass, not silently worked around"
+    }
+  ]
+}

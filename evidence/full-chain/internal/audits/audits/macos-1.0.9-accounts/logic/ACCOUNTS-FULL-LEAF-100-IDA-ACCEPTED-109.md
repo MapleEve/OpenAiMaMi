@@ -22,7 +22,7 @@ Gate definition: `full_leaf_100_definition_v2`
 
 IDA MCP `server_health` returned `status=ok`, active IDB at the path above,
 `imagebase=0x100000000`, `auto_analysis_ready=true`, and
-`hexrays_ready=true`.
+`IDA decompiler_ready=true`.
 
 Current-turn mac IDA MCP tools used:
 
@@ -30,7 +30,7 @@ Current-turn mac IDA MCP tools used:
 - `decompile`
 - `analyze_function`
 - `xrefs_to`
-- `py_eval`
+- `IDA Python`
 - `set_comments`
 - `idb_save`
 

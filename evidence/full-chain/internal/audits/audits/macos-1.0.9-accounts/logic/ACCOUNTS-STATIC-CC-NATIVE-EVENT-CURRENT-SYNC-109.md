@@ -34,7 +34,7 @@ Current `server_health` returned:
 - active IDB path matching the macOS AiMaMi 1.0.9 IDA SOT above
 - `imagebase=0x100000000`
 - `auto_analysis_ready=true`
-- `hexrays_ready=true`
+- `IDA decompiler_ready=true`
 - `strings_cache_ready=true`
 
 IDA MCP `find_regex` found the event surface string cluster:

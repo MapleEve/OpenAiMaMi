@@ -1,0 +1,36 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "daemon-autoswitch",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 13 canonical commands: readyToImplement blocked pending dim3/dim4/dim6 closure for the 9-with-usable-pseudocode group, plus dim2 recovery for configure_auto_switch and confirm_pending_auto_switch_and_restart_codex"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 13 canonical commands: strictImplementationUse blocked pending dim3 call-tree-to-leaf, dim4 interface/DTO, dim6 acceptance mapping -- none produced this pass"
+    ],
+    "consumerStartBlocked": [
+      "configure_auto_switch -- dim2 HEXRAYS_DECOMPILE_FAILED, no usable pseudocode, needs live-IDA breakthrough attempt (bad jump-table target 0x140CC6F38)",
+      "confirm_pending_auto_switch_and_restart_codex -- no raw .c under canonical command name; needs live-IDA search or byte-signature identity confirmation against switch_account_and_restart_codex candidate",
+      "note_usage_refresh_activity, schedule_full_runtime_refresh, start_usage_refresh_watcher, update_usage_refresh_schedule, start_auto_switch_pending_watcher -- zero raw evidence this pass; frontend-existence signal consistent with 1.0.9 absence pattern but not independently re-verified backend-side at 1.2.3",
+      "run_daemon_once, load_bootstrap_state, set_auto_switch, confirm_pending_auto_switch, dismiss_pending_auto_switch, load_pending_auto_switch -- have usable dim1+dim2 evidence but dim3/dim4/dim6 not produced this pass; consumerStartBlocked pending those closures, not consumerStartReady"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Live-IDA breakthrough attempt on configure_auto_switch (0x140cc5ed0) to resolve the HEXRAYS_DECOMPILE_FAILED switch-analysis failure (bad target 0x140CC6F38 for case 6) -- try disasm chunking per the windows-1.2.3-relay package's precedent method (max_instructions<=300) since this is exactly the kind of jump-table decompile failure that method resolved there.",
+    "Live-IDA search for confirm_pending_auto_switch_and_restart_codex's true backend owner, or byte-signature/xref cross-check confirming switch_account_and_restart_codex (0x140cae510) is the same command under a renamed Rust handler.",
+    "dim3 call-tree-to-leaf tracing for the 9 commands with usable pseudocode (run_daemon_once, load_bootstrap_state, set_auto_switch, confirm_pending_auto_switch, dismiss_pending_auto_switch, load_pending_auto_switch, plus the auto_switch_config repository leaf).",
+    "dim4 interface/DTO extraction for the same 9 commands -- incidental dispatch-string evidence (aDismissPending/aLoadPendingAut/aRepo) was seen while reading dismiss_pending_auto_switch/load_pending_auto_switch but not formally catalogued.",
+    "Resolve the 'win 1.2.1' vs raw/aimami/1.2.3/ path provenance question for the 6 codexmate_lib-resident daemon files -- confirm whether these bodies were independently re-verified against the 1.2.3 binary SHA or carried forward unverified from a 1.2.1 pass.",
+    "Decide (product/producer decision, not this pass's call) whether restart_codex/export_debug_bundle/upload_debug_report should be folded into a scope-expanded windows-1.2.3-daemon-autoswitch, added to windows-1.2.3-maintenance, or given a new dedicated package -- currently orphaned relative to both existing packages' declared target_universe."
+  ]
+}

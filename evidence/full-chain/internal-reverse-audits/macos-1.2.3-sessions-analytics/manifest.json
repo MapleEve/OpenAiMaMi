@@ -1,0 +1,54 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "sessions-analytics",
+  "package": "macos-1.2.3-sessions-analytics",
+  "created_at": "2026-07-24T00:00:00Z",
+  "producer_machine": "<host> (this package distilled from pre-existing raw evidence; underlying IDA decompile sessions produced earlier and not re-run this pass)",
+  "binary": {
+    "sha256": "not independently recomputed this pass -- see raw/binary/ SOT for authoritative AiMaMi 1.2.3 macos-arm64 binary hash; this distillation only read pre-existing raw/aimami/1.2.3/macos-arm64/*.c evidence, it did not re-verify against a freshly hashed binary",
+    "binary_format": "macho",
+    "arch": "arm64"
+  },
+  "scope": {
+    "backend_target_universe": "commands::sessions (3 wrapper files) + core::sessions (29 functions incl. load_sessions owner) + core::session_analytics (8 functions: compute_change/session/token/tool_analytics, parse_all_sessions, range_to_cutoff, timestamp_to_date, visit_dir) + core::analytics (24 files on disk, 16 unique VAs after de-dup -- compute_usage_analytics + 5 DTO serialize/deserialize functions + 8 literal duplicate-VA copies of core::session_analytics functions cross-filed into this directory by the dirtree module-recovery pass)",
+    "frontend_target_universe": "sessions-page-D0Y3peQj.js (SessionsPage, in frontend/pages/mcp-sessions-settings-skills-frontend.md §2) + analytics-panel-6jtfGEeX.js (AnalyticsPanel, in frontend/pages/analytics-maintenance-autoswitch-frontend.md §1)",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true,
+    "explicit_exclusions": "load_quota_history / load_relay_provider_quota are surfaced in the same AnalyticsPanel quota tab but are owned by core::quota_history + core::relay (separate modules, separate audit scope) -- NOT counted as covered_commands here even though they appear in the same frontend file; get_usage_refresh_interval/set_usage_refresh_interval/refresh_single_account_usage/refresh_usage_snapshot also excluded (different owning module)."
+  },
+  "coverage": {
+    "raw_c_files_on_disk": 64,
+    "raw_c_files_by_dir": {
+      "commands/sessions": 3,
+      "core/sessions": 29,
+      "core/session_analytics": 8,
+      "core/analytics": 24
+    },
+    "deduped_unique_va_functions": 56,
+    "dedup_note": "core/analytics contains 8 files (session_analytics_compute_change_analytics_0x100a87f80.c etc.) that are byte-identical-content, same-VA, same-mangled-symbol copies of the 8 files under core/session_analytics/ida/pseudocode/ (verified via diff: only the leading comment banner differs, function body identical). This is a cross-filing artifact of the dirtree module-recovery pass (core::session_analytics symbols get filed under both their own module dir and core::analytics, likely due to longest-prefix ambiguity or explicit cross-reference), not 8 independently-reversed functions. 64 files on disk = 56 unique VA/function bodies.",
+    "commands_frontend_invoked": 9,
+    "commands_with_dedicated_wrapper_c_file": 3,
+    "commands_wrapper_gap": "delete_sessions/export_session_markdown/migrate_session_worktree have dedicated commands::sessions::* wrapper .c files (183/20/156 lines respectively). load_sessions has NO dedicated commands::sessions::load_sessions wrapper file -- only core::sessions::load_sessions_0x1005292a0.c (5205 lines) exists; the tauri command macro's dispatch entry is presumably folded into one of the 18 generic framework-monomorph/tauri-ipc-dispatch/ida/pseudocode/ipc_dispatch_0x*.c stubs, which are NOT individually bound to a command name in the raw evidence on disk. The 5 analytics commands (load_change_analytics/load_session_analytics/load_token_analytics/load_tool_analytics/load_usage_analytics) have NO commands-layer wrapper .c file anywhere in the raw tree at all (grep-verified across the full raw/aimami/1.2.3/macos-arm64 tree) -- only their core::session_analytics::compute_* / core::analytics::compute_usage_analytics implementations exist. This is a genuine, honestly-recorded dim2 partial gap, not accepted_unknown.",
+    "frontend_pages_reversed": 2,
+    "frontend_command_binding_gap": "SessionsPage's top bento-stats query Bs() (L92-142, 4-cell total-sessions/total-size/active-days/daily-average) is documented as an independent useQuery but its target command is not explicitly named in raw/aimami/1.2.3/macos-arm64/frontend/pages/mcp-sessions-settings-skills-frontend.md -- left as source-doc gap, not resolved this pass, plausibly load_usage_analytics by data shape but NOT confirmed.",
+    "measurement_basis": "file-system find|wc -l against raw/aimami/1.2.3/macos-arm64/{commands/sessions,core/sessions,core/session_analytics,core/analytics}/ida/pseudocode/*.c and frontend/ipc-contracts.jsonl, this session 2026-07-24. No live IDA MCP session was available to this distillation pass (angle A func_query could not be run live; see gate-report.json angle_a note)."
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [],
+  "cross_platform_sibling": "windows-1.2.3-sessions-analytics/ (not yet produced as a canonical audits/ bundle, but raw Windows evidence DOES exist at raw/aimami/1.2.3/windows-x64/{sessions,analytics,commands/analytics}/ida/pseudocode/*.c -- 17+4+15=36 .c files located this pass; not analyzed to gate closure, see SYSTEM-DIFF.md and known_residuals below)",
+  "known_residuals": [
+    "commands-layer wrapper gap for load_sessions + 5 load_*_analytics commands on macOS (see coverage.commands_wrapper_gap above) -- core business logic is genuinely reversed and non-failed, but the individually-named tauri command entry point is not located in the macOS raw tree. IMPORTANT correction found via cross-platform check: Windows raw evidence at raw/aimami/1.2.3/windows-x64/commands/analytics/ida/pseudocode/ has ALL 5 load_*_analytics commands as individually-named, non-stub decompiled functions (load_change_analytics_0x140cd3d40.c etc.), with header provenance 'module src/commands/analytics.rs, attributed via panic-Location xref (win-native)' -- i.e. the upstream Rust source genuinely has a discrete commands::analytics module. This means the macOS gap is most plausibly an evidence-COLLECTION gap (mac side never produced a commands/analytics/ directory to mirror commands/sessions/), not necessarily a folded/anonymous-dispatch gap as macOS-only inspection would suggest. Per red line 'macOS 只证明 macOS / 禁止外推', this Windows finding is NOT used to claim the macOS gap closed -- it only redirects the next producer step from 'search generic ipc_dispatch stubs' to 'search macOS binary for a commands::analytics module directly, cross-referencing the Windows-confirmed src/commands/analytics.rs symbol names'.",
+    "dim4 (interface/DTO/error-envelope/side-effect boundary) extraction NOT run this pass for any of the 9 commands, either platform.",
+    "dim6 (test/acceptance mapping) NOT produced this pass.",
+    "dim5 Windows platform evidence: EXISTS (36 .c files at raw/aimami/1.2.3/windows-x64/{sessions,analytics,commands/analytics}/) but NOT analyzed to gate closure this pass -- no windows-1.2.3-sessions-analytics/ audits bundle produced; do not treat this macOS package as covering Windows, and do not infer Windows behavior from macOS beyond what the Windows evidence pointer above already independently confirms (cross-platform symbol-name match for load_sessions and load_usage_analytics via panic-Location + command-string xref).",
+    "angle A (func_query symbol enumeration) could not be run live -- no IDA MCP tool was available in this distillation session; angle A was substituted with a filesystem find/grep enumeration of raw/aimami/1.2.3/macos-arm64/**/*.c, which is NOT equivalent to a live symbol-table export and cannot rule out ICF/monomorphization-folded symbols the same way func_query would.",
+    "SessionsPage bento-stats query (Bs()) command binding unconfirmed (see coverage.frontend_command_binding_gap).",
+    "no per-command DTO/response-payload/error-path extraction was written; logic/FULL-CHAIN-1.2.3.md gives a narrative module-level chain only, matching the same caveat the macos-1.2.3-relay package recorded for its own dim3."
+  ],
+  "note": "This package distills pre-existing raw/aimami/1.2.3/macos-arm64/{commands/sessions,core/sessions,core/session_analytics,core/analytics}/ida/pseudocode/*.c evidence (produced in earlier sessions, not re-decompiled this pass) plus frontend/pages/mcp-sessions-settings-skills-frontend.md §2 and frontend/pages/analytics-maintenance-autoswitch-frontend.md §1 (also pre-existing). No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md. Coverage is intentionally NOT reported as blanket 100% -- see gate-report.json dim_status and known_residuals above for the genuine open gaps found during four-angle self-check."
+}

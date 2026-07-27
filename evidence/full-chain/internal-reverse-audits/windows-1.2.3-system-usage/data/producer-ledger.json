@@ -1,0 +1,54 @@
+{
+  "bundle": "windows-1.2.3-system-usage",
+  "producer": "claude-sonnet-5",
+  "machine": "<host>",
+  "session": "windows-1.2.3-system-usage-distill-20260725",
+  "produced_at": "2026-07-25",
+  "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "mode": "read_only_reduce_plus_cross_reference",
+  "new_raw_or_intermediate_produced": false,
+  "leaves": [
+    {
+      "command": "get_usage_refresh_interval",
+      "producer": "<host>",
+      "session": "windows-1.2.3-system-usage-distill-20260725",
+      "sha": "aeccccd78e47",
+      "gate": "gap_needs_reducer",
+      "produced_at": "2026-07-25",
+      "evidence_path": "raw/aimami/1.2.3/windows-x64/commands/ida/pseudocode/get_usage_refresh_interval_0x14018cbb0.c"
+    },
+    {
+      "command": "set_usage_refresh_interval",
+      "producer": "<host>",
+      "session": "windows-1.2.3-system-usage-distill-20260725",
+      "sha": "aeccccd78e47",
+      "gate": "gap_needs_reducer",
+      "produced_at": "2026-07-25",
+      "evidence_path": "raw/aimami/1.2.3/windows-x64/commands/ida/pseudocode/set_usage_refresh_interval_0x14018c2d0.c"
+    },
+    {
+      "command": "refresh_usage_snapshot",
+      "role": "pointer_only_not_owned",
+      "canonical_bundle": "internal-reverse/audits/windows-1.2.3-accounts/",
+      "note": "See windows-1.2.3-accounts/data/producer-ledger.json for actual production record; not duplicated here"
+    },
+    {
+      "command": "refresh_single_account_usage",
+      "role": "pointer_only_not_owned",
+      "canonical_bundle": "internal-reverse/audits/windows-1.2.3-accounts/",
+      "note": "See windows-1.2.3-accounts/data/producer-ledger.json for actual production record; not duplicated here"
+    },
+    {
+      "command": "compute_usage_analytics",
+      "role": "pointer_only_not_owned",
+      "canonical_bundle": "internal-reverse/audits/windows-1.2.3-sessions-analytics/",
+      "note": "See windows-1.2.3-sessions-analytics/data/producer-ledger.json for actual production record; not duplicated here"
+    },
+    {
+      "command": "load_usage_analytics",
+      "role": "pointer_only_not_owned",
+      "canonical_bundle": "internal-reverse/audits/windows-1.2.3-sessions-analytics/",
+      "note": "See windows-1.2.3-sessions-analytics/data/producer-ledger.json for actual production record; not duplicated here"
+    }
+  ]
+}

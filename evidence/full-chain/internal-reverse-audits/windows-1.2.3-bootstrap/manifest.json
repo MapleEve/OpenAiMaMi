@@ -1,0 +1,51 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "bootstrap",
+  "package": "windows-1.2.3-bootstrap",
+  "created_at": "2026-07-25T00:00:00Z",
+  "producer_machine": "<host>",
+  "session": "win-1.2.3-bootstrap-reduce-20260725",
+  "binary": {
+    "sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+    "binary_format": "pe",
+    "pe_machine": "AMD64"
+  },
+  "scope": {
+    "task_type": "reduce_partial_gap_honest",
+    "input": "5 pre-existing raw .c files scattered across raw/aimami/1.2.3/windows-x64/{commands,manager,commands/accounts,commands/tray_menu}/ida/pseudocode/ whose filename or owner-map name contains 'bootstrap' (load_bootstrap_state, bootstrap [core::relay::manager], store_bootstrap_snapshot_best_effort, create_bootstrap_tray_menu, load_snapshot); plus the pre-existing manager-module owner-map decompile-leaf INDEX.jsonl entry (session manager-win-deepdecompile-20260724) that already narratively summarizes the `bootstrap` function.",
+    "task_boundary": "read-only reduce: classify existing raw evidence into a canonical RULE8 bundle, cross-check ownership against all sibling windows-1.2.3-* canonical packages (collision gate), diff against windows-1.0.9-bootstrap (RULE9, same platform prior version) and macos-1.2.3-bootstrap (same version other platform, referenced not migrated per dim5). NO new IDA decompile/callees/xrefs/server_health performed this session -- this is a reduce-only pass over already-landed evidence, per the task's explicit instruction.",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "raw_bootstrap_named_files_found": 5,
+    "classified_as_new_bootstrap_leaf_this_package": 1,
+    "classified_as_owned_by_other_canonical_package": 3,
+    "classified_as_partial_command_universe_owned_by_other_canonical_package": 5,
+    "rule9_baseline_leaves_with_zero_1.2.3_windows_raw": 5,
+    "measurement_basis": "find -iname *bootstrap* across raw/aimami/1.2.3/windows-x64/ (4 direct hits) + grep of manager-module owner-map INDEX entry (1 more, the `bootstrap` function inside core::relay::manager, filename bootstrap_0x14085a330.c does not itself contain a redundant 'bootstrap' substring beyond its own name but was located via the owner-map function-name field, not filename grep) = 5 total; each of the 5 cross-checked via grep -rl against every audits/windows-1.2.3-*/{manifest.json,gate-report.json,logic/*.md,pointers/evidence-paths.md} for prior canonical ownership before being included or excluded here (PREWRITE_PRODUCER_COLLISION_GATE_V1); RULE9 baseline universe (5 leaves: app_run_entry, boot_spawn_threads, bootstrap_cache, managed_state_registry, load_snapshot-system-shell-init-supplement) cross-checked via grep -rli for their VA/name patterns across raw/aimami/1.2.3/windows-x64/{codexmate_lib,commands,manager,run}/ -- zero hits for any of the 5 in 1.2.3 windows raw."
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/windows-1.0.9-bootstrap/ (RULE9 baseline: 5 leaves app_run_entry/boot_spawn_threads/bootstrap_cache/managed_state_registry/load_snapshot, all strictImplementationUse; referenced for diff, not migrated -- no 1.2.3 raw evidence exists yet to support a migrated_no_behavior_diff or unchanged_reused verdict for any of the 5)",
+    "internal-reverse/audits/macos-1.2.3-bootstrap/ (same-version macOS sibling, consumerStartReady 4/4, triage-only; referenced per dim5 do-not-infer boundary, NOT used to fill any Windows gap)",
+    "internal-reverse/audits/windows-1.2.3-daemon-autoswitch/ (canonical owner of load_bootstrap_state + dismiss_pending_auto_switch + load_pending_auto_switch + confirm_pending_auto_switch + confirm_pending_auto_switch_and_restart_codex within its inherited 13-command daemon+auto-switch target universe; all 5 currently blocks_start_commands there -- cross-referenced only, NOT duplicated into this package)",
+    "internal-reverse/audits/windows-1.2.3-accounts/ (canonical owner of load_snapshot and store_bootstrap_snapshot_best_effort within its commands/accounts 42-file module -- cross-referenced only, NOT duplicated into this package)",
+    "internal-reverse/audits/windows-1.2.3-tray/ (canonical owner of create_bootstrap_tray_menu -- cross-referenced only, NOT duplicated into this package)",
+    "internal-reverse/audits/cross-1.2.3-relay-core-bootstrap/ (diagnostic-only dependency-completeness finding that flagged windows-1.2.3-bootstrap as 'completely absent, unattempted' prior to this session -- confirms no owner collision existed before this package)"
+  ],
+  "cross_platform_sibling": "macos-1.2.3-bootstrap (consumerStartReady 4/4 leaves: app_run_entry/bootstrap_cache/auto_switch_pending_emitter x2; triage-only, not deep-reversed). This Windows package and the macOS package do NOT share a leaf-naming scheme this round: macOS claims load_bootstrap_state/dismiss_pending_auto_switch/load_pending_auto_switch as ITS OWN bootstrap leaves (dim1 N/A precedent for app_run_entry only), whereas on Windows those same 5 IPC commands are already canonically owned by windows-1.2.3-daemon-autoswitch (inherited from windows-1.0.9-daemon-autoswitch per RULE9). This is a genuine pre-existing cross-platform module-boundary inconsistency in the 1.2.3 canonical tree, not something this reduce-only session is authorized to resolve (would require an EXPLICIT_REASSIGN_OWNER token and touching the macOS package, out of scope) -- flagged in known_residuals for a future owner-reconciliation session.",
+  "known_residuals": [
+    "The 5-leaf windows-1.0.9-bootstrap RULE9 baseline (app_run_entry, boot_spawn_threads, bootstrap_cache-as-standalone-IPC-owner, managed_state_registry, load_snapshot/system-shell-init supplement) has ZERO corresponding raw .c evidence anywhere in raw/aimami/1.2.3/windows-x64/ as of this session. This is a genuine raw-thinness gap, not a triage miss: grep for the 1.0.9 VAs' successor names, 'app_run_entry', 'managed_state', 'CliDispatch'/'cli_dispatch', 'spawn_threads'/'boot_spawn' across the entire windows-x64 1.2.3 raw tree returned zero hits. All 5 recorded gap_needs_new_raw (RULE9 diff_required -- no evidence exists to support migrated_no_behavior_diff or unchanged_reused).",
+    "The manager-module `bootstrap` function (core::relay::manager::bootstrap, VA 0x14085a330) is the one genuinely NEW leaf this package adds to the canonical tree -- it was not previously in any windows-1.2.3-* audits/ package (confirmed via collision-gate grep) despite having full non-truncated Hex-Rays pseudocode and a narrative INDEX.jsonl summary already on disk since 2026-07-24 (session manager-win-deepdecompile-20260724). It has no confirmed macOS-1.2.3-side canonical counterpart yet either: macos-1.2.3-bootstrap's own AI.md explicitly records RelayManager::new's internals (which plausibly calls this bootstrap() analog) as unopened/out-of-scope for that session. This Windows evidence is therefore a genuinely asymmetric find that could inform the next macOS bootstrap session, not the other way around.",
+    "store_bootstrap_snapshot_best_effort (commands/accounts, VA 0x1403ec5e0) and load_snapshot (commands/accounts, VA 0x140cb5e50) are read-confirmed to already be canonically owned by windows-1.2.3-accounts (load_snapshot is one of its 8 named tauri command handlers within the 42-file commands/accounts module). Included here only as pointer cross-references, per RULE8 one-canonical-name-per-leaf and the collision gate -- NOT re-classified as bootstrap leaves.",
+    "create_bootstrap_tray_menu (commands/tray_menu, VA 0x1403f2350) is read-confirmed to already be referenced within windows-1.2.3-tray's canonical bundle (README.md/SYSTEM-DIFF.md/manifest.json/gate-report.json/AI.md/logic/FULL-CHAIN-1.2.3.md/pointers/evidence-paths.md all mention it). Cross-referenced only, not duplicated.",
+    "load_bootstrap_state (commands/, VA 0x14018b520) plus dismiss_pending_auto_switch/load_pending_auto_switch/confirm_pending_auto_switch/confirm_pending_auto_switch_and_restart_codex are read-confirmed to already be canonically owned by windows-1.2.3-daemon-autoswitch's inherited 13-command daemon+auto-switch target universe (per its manifest.json backend_target_universe field), currently all 5 listed in that package's own blocks_start_commands (not yet consumerStartReady there either). Cross-referenced only, not duplicated; consumer should track their gate status in windows-1.2.3-daemon-autoswitch, not here."
+  ],
+  "note": "This is a genuinely thin/partial reduce-only package. Only 1 of the 5 bootstrap-filename-matched raw files (manager `bootstrap`) is actually a new, previously-uncanonicalized bootstrap-domain leaf; the other 4 belong to sibling canonical packages and are cross-referenced not duplicated. The core process-entry-point bootstrap sequence (app_run_entry / boot_spawn_threads / managed_state_registry / bootstrap_cache-as-IPC-owner / load_snapshot-system-shell-init-supplement) that windows-1.0.9-bootstrap closed to strictImplementationUse has NO 1.2.3 windows raw evidence yet -- recorded as an honest gap_needs_new_raw for the next producer session, per the task's explicit instruction not to force an all-or-nothing rejection just because the raw is thin."
+}

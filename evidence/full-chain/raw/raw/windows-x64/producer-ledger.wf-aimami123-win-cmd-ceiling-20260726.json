@@ -1,0 +1,60 @@
+{
+ "schema": "c5cm.reverse.producer_ledger.v1",
+ "session": "wf-aimami123-win-cmd-ceiling-20260726",
+ "machine": "Maple-C5Mini",
+ "ida_mcp": "win <host> (strip) + mac <host> (symbols, read-only cross-check)",
+ "product": "aimami",
+ "version": "1.2.3",
+ "platform": "windows-x64",
+ "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+ "produced_at": "2026-07-26T00:00:00Z",
+ "gate_tier": "idb_naming_ceiling_closeout",
+ "implementation_use": false,
+ "gate_accepted": false,
+ "full_leaf_100": false,
+ "readyToImplement": false,
+ "evidence_sot": "win IDB E:\\binary\\AiMaMi.1.2.3 win64.exe.i64 (idb_save ok) + mac IDB raw/binary/.../AiMaMi.i64 (read-only cross-check)",
+ "summary_pointer": "internal-reverse/audits/WIN-1.2.3-COMMAND-CEILING-CLOSEOUT.md",
+ "no_raw_bundle": "true — round output is IDB set_name/append_comment/dirtree mutations + one internal-reverse summary doc; no raw/intermediate body dump this pass (per red line 3 internal-reverse holds summary/pointer only)",
+ "summary": {
+  "command_universe": 131,
+  "handlers_named_as_separate_fn_before": 112,
+  "handlers_named_this_pass": 5,
+  "handlers_named_as_separate_fn_after": 117,
+  "dispatcher_identified": 1,
+  "mis_name_corrected": 1,
+  "genuine_inline_ceiling": 14,
+  "serialize_renamed": 3,
+  "serialize_direction_confirmed_comment_only": 2,
+  "idb_save": "ok"
+ },
+ "items": [
+  {"va": "0x140170790", "command": "resolve_voice_vocabulary_app_info", "own_name_lea": "0x14017080d", "dirtree": "/codexmate_lib/commands/voice", "mac_crosscheck": "commands::voice 0x100694140", "kind": "handler_named_this_pass"},
+  {"va": "0x140170d00", "command": "upsert_voice_vocabulary_app_scope", "own_name_lea": "0x140170d7f", "dirtree": "/codexmate_lib/commands/voice", "mac_crosscheck": "commands::voice 0x100694770", "kind": "handler_named_this_pass"},
+  {"va": "0x140171760", "command": "remove_voice_vocabulary_app_scope", "own_name_lea": "0x1401717df", "dirtree": "/codexmate_lib/commands/voice", "mac_crosscheck": "commands::voice 0x100693cd0", "kind": "handler_named_this_pass"},
+  {"va": "0x140182c20", "command": "set_voice_trigger_listener_suppressed", "own_name_lea": "0x140182c9d", "dirtree": "/codexmate_lib/commands/voice", "mac_crosscheck": "commands::voice (fn renamed on mac; win self-lea is ground truth)", "kind": "handler_named_this_pass"},
+  {"va": "0x140cbe6b0", "command": "confirm_pending_auto_switch_and_restart_codex", "own_name_lea": "0x140cbe778", "dirtree": "/codexmate_lib/commands/accounts", "mac_crosscheck": "commands::accounts/auto_switch (fn renamed on mac; win self-lea is ground truth)", "kind": "handler_named_this_pass"},
+  {"va": "0x140194810", "renamed_to": "tauri_invoke_command_dispatch", "was_mis_named": "open_path", "size_bytes": 25168, "pdata": "single function-begin (not a boundary merge)", "pool_ref": "sole code-ref to concatenated command-name pool @0x1416c6b10", "jumptable": "0x140194865", "kind": "dispatcher_renamed_mis_name_corrected"},
+  {"va": "0x14092b8c0", "serialize": "serialize_5", "renamed_to": "VoiceWorkspacePayload__serialize", "struct": "core::models::VoiceWorkspacePayload", "fields": "vocabularyApps/processingModes/templates/history", "conf": "HIGH", "kind": "serialize_renamed"},
+  {"va": "0x140aa9980", "serialize": "serialize_10", "renamed_to": "SkillRemovePayload__serialize", "struct": "core::models::SkillRemovePayload", "fields": "removedSkillID/restoredSkill/rollbackBackup", "size_mac_win": "mac 277 ~= win 284", "conf": "HIGH", "kind": "serialize_renamed"},
+  {"va": "0x140aaa880", "serialize": "serialize_12", "renamed_to": "DiagnoseSessionState__serialize", "struct": "core::models::DiagnoseSessionState", "fields": "latestRolloutFound/usageAttemptCount/usageSuccessCount", "size_mac_win": "mac 269 ~= win 277", "conf": "MED-HIGH", "kind": "serialize_renamed"},
+  {"va": "0x140806d70", "serialize": "serialize_3", "direction": "Serialize (confirmed, no deserialize markers)", "struct_probable": "core::models::AccountImportPreviewPayload (attempted/succeeded/failed/items/sourcePath/lastScanAt)", "conf": "MED", "action": "comment_only (exact struct held, direction confirmed = the ask)", "kind": "serialize_direction_comment_only"},
+  {"va": "0x1408274d0", "serialize": "serialize_4", "direction": "Serialize (confirmed, no deserialize markers)", "struct_probable": "core::models::CoreSnapshotPayload (usageStatus/usageLastError/refreshReport/usedPercent/remainingPercent)", "conf": "LOW-MED", "action": "comment_only (exact struct held, direction confirmed = the ask)", "kind": "serialize_direction_comment_only"}
+ ],
+ "genuine_ceiling_14": {
+  "description": "inlined jump-table cases inside dispatcher 0x140194810; no separately-addressable function to set_name (win compiler inlined the wrappers; mac keeps them as separate commands::* symbols). Real strip+inline ceiling, NOT missing-mac-symbols.",
+  "standalone_string_case_annotated_in_dispatcher": [
+   {"command": "clean", "case_lea": "0x1401948ef"},
+   {"command": "get_codex_router_auth_readiness", "case_lea": "0x14019521a"},
+   {"command": "open_path", "case_lea": "0x1401977be"}
+  ],
+  "pool_merged_nstr0_pcmpeqb": ["apply_custom_instruction", "clear_custom_instruction_block", "load_custom_instruction_state", "preview_custom_instruction_apply", "rollback_custom_instruction", "cancel_chatgpt_oauth_login", "cancel_voice_trigger_capture", "check_update_installability", "default_debug_bundle_file_name", "get_image_compat", "get_system_info"],
+  "disambiguation_attempts_failed": [
+   "command-string self-lea => none (inlined)",
+   ".pdata split => single function, no sub-boundaries",
+   "tauri registration name->fnptr table => no such table (dispatcher inlines, no fn-ptr array)",
+   "mac string-signature => most platform-divergent (get_system_info=sw_vers, resolve app-info=Info.plist); mac internals do not string-match win"
+  ]
+ },
+ "grounded_verification": "orchestrator (win agent) re-read all 9 mutated functions post idb_save: names match, comments present, dirtree paths correct (voice folder holds 4 voice handlers, accounts holds confirm_, models holds 3 serialize), 3 dispatcher case comments present, 0 stranded, 0 mis-name remaining"
+}

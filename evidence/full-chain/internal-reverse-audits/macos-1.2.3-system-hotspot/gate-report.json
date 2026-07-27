@@ -1,0 +1,75 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "system-hotspot",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-24",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 5,
+    "blocked": 0,
+    "total_commands": 5
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "strong -- 5 commands (has_notch, get_hotspot_enabled, set_hotspot_enabled, focus_main_window, hotspot_ready) fully cross-checked against ipc-contracts.jsonl (true_gaps=0); 3 distinct frontend surfaces confirmed by direct Read: (a) the dedicated 'hotspot' Tauri window is its own separate React mount (window-label routing in shared-index-app-frontend.md: `af===\"hotspot\"` -> f7()->R2(), an independent QueryClient instance, menu-bar capsule showing Codex + quota%, onClick->focusMainWindow(), mount effect->hotspotReady() after 2 requestAnimationFrame ticks); (b) Settings page has_notch-gated hotspot Switch (mcp-sessions-settings-skills-frontend.md: useQuery(['has-notch'])->useQuery(['hotspot-enabled'], enabled on has-notch)->Switch mutate setHotspotEnabled); (c) Accounts page Quick-Settings dialog has an identical has-notch-gated hotspot Switch (accounts-frontend.md, same double-gated query pattern, separate component instance)",
+    "dim2_backend_owner_pseudocode": "strong -- 18/18 real-named decompiled functions (16 in codexmate_lib::commands::hotspot + 2 in codexmate_lib::platform::screen), 0 truncated stubs, 0 sub_XXXX placeholders on macOS; all 18 files directly Read this pass and confirmed non-failed full bodies (5 headed '1.2.3 NEW-delta', 13 headed '基线 same-set'); Windows has 5/5 confirmed-named command-layer functions (ground-truth via command-name string xref, headers explicitly say so), 0 for the 13 macOS-only helper/platform functions",
+    "dim3_call_tree_to_leaf": "mixed -- 8 of 18 macOS functions now have a confirmed terminal leaf: bring_main_window_forward, bring_main_window_force_forward, apply_native_hotspot_properties, set_window_alpha, create_hotspot_window's on-main-thread branch, compute_hotspot_frame, has_notch_screen terminate directly at real AppKit/Cocoa native leaf calls with no closure indirection (NSApplication.setActivationPolicy/activateIgnoringOtherApps, NSRunningApplication.activateWithOptions, NSWindow.setAlphaValue/setLevel/setCollectionBehavior/setHasShadow/setOpaque/setBackgroundColor/setFrame_display/orderFrontRegardless, NSScreen.auxiliaryTopLeftArea/auxiliaryTopRightArea/frame/screens); focus_main_window is ALSO now closed but via CROSS-REFERENCE, not this package's own decompile -- the sibling package internal-reverse/audits/macos-1.2.3-window-path/ (discovered this session via the mandatory INDEX.jsonl append-time re-read, see manifest.json known_residuals CORRECTION note) is the canonical owner of focus_main_window at strictImplementationUse and resolved its closure as WryUserEvent(discriminant=28, focused=true) via send_user_message, migrated byte-identical from the 1.0.9 baseline. The remaining 9 dispatch points (reveal_main_window, force_reveal_main_window, refresh_hotspot_on_main, register_hotspot_relayout_observers, create_hotspot_window's off-main-thread branch, and each of install_native_hotspot_observers' 5 NSNotificationCenter handler blocks) still dispatch a boxed closure to the main thread via `tauri_runtime_wry::send_user_message` referencing only an anonymous compiler-generated symbol not present as a separately decompiled .c file in this evidence set -- call-tree does NOT reach a confirmed native leaf for these. However, by structural analogy to the now-confirmed focus_main_window (identical discriminant/dispatch shape, differentiated only by a boolean flag byte this package independently observed: focus_main_window/force_reveal_main_window use flag=1, reveal_main_window uses flag=0), there is now materially stronger (though still not independently confirmed) evidence that reveal_main_window posts WryUserEvent(28, focused=false) and force_reveal_main_window posts WryUserEvent(28, focused=true) -- recorded as a higher-confidence accepted_unknown, not promoted to closed since their own closure bodies were not independently decompiled",
+    "dim4_interface_dto_boundary": "not-closed -- no per-command DTO/error-envelope/side-effect-boundary extraction pass has been run. get_hotspot_enabled/set_hotspot_enabled route through core::repository::Repository::{load_settings,save_settings} on a CodexMateSettings struct (boolean hotspot-enabled field inferred from call pattern, field name unconfirmed); a distinct `HotspotConfig` struct name appears in shared core/repository RegistryFile serde-glue string lists but its own field-level shape was not located this pass (genuinely Unknown whether it backs the enabled-toggle or a separate hotspot-position/frame persistence path) -- open gap, not evidence",
+    "dim5_platform_gate": "open for the macOS-only 13 functions -- 5 of 18 macOS functions (the command-layer ones: has_notch, get_hotspot_enabled, set_hotspot_enabled, focus_main_window, hotspot_ready) have confirmed Windows evidence (ground-truth, command-name string xref); the remaining 13 (all macOS-native window-management/notch-geometry helpers) have zero Windows evidence at all, and no windows-x64/screen or windows-x64/hotspot subdirectory exists on disk -- this is consistent with (but not confirmed proof of) a genuine platform difference (no notch concept on Windows PCs), not extrapolated as fact",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping has been produced for 1.2.3 system-hotspot leaves this pass"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim3 (6+ of 16 macOS commands terminate at an undecompiled closure body, not a confirmed native leaf), dim4 (CodexMateSettings/HotspotConfig field shape unconfirmed), dim5 (13 macOS-only functions have zero Windows evidence), and dim6 (not produced) are all open; per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification, strong macOS pseudocode completeness (dim2) alone does not promote target-level readiness",
+  "consumerStartReady_commands": [
+    "has_notch", "get_hotspot_enabled", "set_hotspot_enabled", "focus_main_window", "hotspot_ready"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady + uiCallEntryReady satisfied via 3 frontend surfaces (hotspot window's own React subtree, Settings page Switch, Accounts page Quick-Settings dialog Switch), all 5 invoke names cross-checked 1:1 against ipc-contracts.jsonl; happyPathReady satisfied for the 5 command owners (all have non-failed macOS pseudocode; 2 of 5 -- get/set_hotspot_enabled -- have fully traced fs-adjacent persistence via core::repository::Repository::load_settings/save_settings; focus_main_window's closure is resolved to strictImplementationUse via the sibling window-path package cross-reference, WryUserEvent(28, focused=true); has_notch/hotspot_ready dispatch to a main-thread closure or platform::screen primitive not independently confirmed by this package); dtoBoundaryReady/boundaryPathReady/sideEffectReady/acceptanceDraftReady NOT independently produced for get/set_hotspot_enabled/has_notch/hotspot_ready -- consumer must treat the CodexMateSettings/HotspotConfig field shape and the remaining main-thread-dispatched closure bodies (has_notch's own dispatch, hotspot_ready's underlying window ops) as open questions, not confirmed facts; platformScopeDeclared YES (macOS command-layer + Windows command-layer both confirmed for these 5; the 13 macOS-only internal helpers are NOT part of this consumerStartReady set since they are not independently Tauri-invokable commands)",
+  "unknowns": [
+    {
+      "item": "main-thread closure bodies dispatched via tauri_runtime_wry::send_user_message (reveal_main_window, force_reveal_main_window, refresh_hotspot_on_main, register_hotspot_relayout_observers, create_hotspot_window off-main-thread branch, install_native_hotspot_observers' 5 NSNotificationCenter handler blocks -- focus_main_window's closure is now RESOLVED, see notes below, not part of this open item)",
+      "class": "blocks_start",
+      "reason": "closure bodies are anonymous compiler-generated symbols (e.g. anon_0df76e0cec988e6dc281ac0519b88803_1168, anon_4fd0d0f33f5bcd90fdaba20400e954f2_466), not present as separately decompiled .c files in raw/aimami/1.2.3/macos-arm64/commands/hotspot/ida/pseudocode/ this pass; likely targets inferred from context (materially strengthened for reveal_main_window/force_reveal_main_window by structural analogy to the now-confirmed focus_main_window, see dim3 note) but not confirmed by reading the body -- genuinely not produced, not merely unexamined by this distillation pass (would require new IDA decompile work at the closure's own address, out of scope for a read-only distillation)"
+    },
+    {
+      "item": "focus_main_window canonical ownership -- this package initially treated its closure as unresolved, corrected mid-session",
+      "class": "no_change_needed_resolved_via_cross_reference",
+      "reason": "discovered via mandatory INDEX.jsonl append-time re-read that internal-reverse/audits/macos-1.2.3-window-path/ (a concurrent sibling package) is the canonical owner of focus_main_window, already at strictImplementationUse via RULE 9 migration from the 1.0.9 baseline: closure resolved as WryUserEvent(discriminant=28, focused=true) via send_user_message. This package does not duplicate that canonical claim (RULE8 one-canonical-name); focus_main_window remains in this package's Per-target Result Matrix only as the hotspot capsule's frontend-trigger cross-reference, not as an independently-owned backend leaf of this package."
+    },
+    {
+      "item": "CodexMateSettings field-level shape (the struct get_hotspot_enabled/set_hotspot_enabled actually read/write via Repository::load_settings/save_settings) and its relationship (if any) to the separately-named HotspotConfig struct seen in core/repository serde-glue string lists",
+      "class": "blocks_start",
+      "reason": "no FieldVisitor::visit_str-style byte decoder for CodexMateSettings or HotspotConfig was found among the files this pass examined; genuinely not produced, dim4 blocked on this"
+    },
+    {
+      "item": "13 macOS-only functions' Windows-side existence/absence",
+      "class": "accepted_unknown",
+      "reason": "confirmed zero Windows evidence via directory grep (no windows-x64/screen, no windows-x64/hotspot subdirectory) -- consistent with a genuine platform difference (no notch hardware concept on Windows) but not independently confirmed as intentional absence vs. simply not yet decompiled; recorded as accepted_unknown (plausible-but-unconfirmed platform-difference class), not extrapolated as fact"
+    },
+    {
+      "item": "angle-C method quality (text-grep proxy for 'hotspot', not live export_funcs() semantic scan)",
+      "class": "accepted_unknown",
+      "reason": "performed as grep -rli hotspot across raw/aimami/1.2.3/macos-arm64 with manual triage of every hit (18 real hotspot files + 2 platform/screen files already in scope + 4 generic core/repository serde-glue false-positives (HotspotConfig only as a shared struct-name-list string) + ~61 run/ida/pseudocode/*.c false-positives ('hotspot' as a substring inside a concatenated route-name string literal) -- all triaged, no truly_undone orphan found, but a text grep cannot rule out ICF-folded or string-pool-invisible hotspot-adjacent functions the way a live export_funcs() scan can"
+    },
+    {
+      "item": "dim6 test/acceptance mapping",
+      "class": "blocks_start",
+      "reason": "not produced this pass; readyToImplement/strictImplementationUse blocked on this until closed"
+    }
+  ],
+  "notes": [
+    "Backend decompile completeness (dim2) for 1.2.3 macOS system-hotspot is complete at the file level: 18/18 real-named functions, 0 truncation, 0 sub_XXXX. This is evidence coverage; per OUTPUT-SPEC.md historical-number caveat it is NOT by itself full_leaf_100 or implementation-ready.",
+    "This package intentionally does not claim strictImplementationUse or readyToImplement for any of the 5 commands: dim3 (6+ commands terminate at an undecompiled closure), dim4 (CodexMateSettings/HotspotConfig unconfirmed), dim5 (13 macOS-only functions unconfirmed on Windows), and dim6 (not started) are all genuinely open per the dim_status detail above.",
+    "'hotspot' is NOT a network-hotspot feature -- it is a small always-on-top NSWindow companion widget docked near the MacBook notch showing account/quota status, confirmed by raw/aimami/1.2.3/macos-arm64/backend-baseline/commands-baseline.md section 4 and by this package's own direct reading of apply_native_hotspot_properties (NSWindow floating/transparent/no-shadow/clear-background properties) and compute_hotspot_frame (NSScreen.auxiliaryTopLeftArea/auxiliaryTopRightArea notch-cutout geometry math).",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

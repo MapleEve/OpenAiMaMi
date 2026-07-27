@@ -1,0 +1,37 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "sessions-analytics",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "load_sessions", "delete_sessions", "export_session_markdown", "migrate_session_worktree",
+    "load_session_analytics", "load_token_analytics", "load_tool_analytics",
+    "load_change_analytics", "load_usage_analytics"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 9 sessions-analytics commands: readyToImplement blocked pending dim4 (interface/DTO) + dim6 (test/acceptance mapping) closure, and pending dim2 command-wrapper closure for the 6 commands listed under forbiddenUntilStrictImplementationUse"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "load_sessions, load_session_analytics, load_token_analytics, load_tool_analytics, load_change_analytics, load_usage_analytics: strictImplementationUse blocked pending a named commands-layer wrapper (dim2 command-entry identity currently unresolved -- folded into unnamed generic ipc_dispatch stubs) in addition to dim4/dim6",
+      "delete_sessions, export_session_markdown, migrate_session_worktree: strictImplementationUse blocked pending dim4 (interface/DTO/error-envelope/side-effect boundary) closure only -- dim2 command-wrapper already closed for these 3"
+    ],
+    "consumerStartBlocked": [
+      "core/repository::store_bootstrap_usage_analytics (angle-C orphan, adjacent persistence module, no audit package exists yet -- product_decision needed on whether to fold into this package or spin up a separate core/repository audit before any consumer treats bootstrap usage-analytics persistence as covered)"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Identify which of the 18 framework-monomorph/tauri-ipc-dispatch/ida/pseudocode/ipc_dispatch_0x*.c stubs correspond to load_sessions and the 5 load_*_analytics commands (xref from the command-name rodata string, per rust-reverse-cookbook.md §4 rodata-xref recovery method) to close the dim2 command-wrapper identity gap.",
+    "Run a dim4 pass: extract per-command DTO fields (input struct, output payload, error envelope, nullability) from the already-decompiled core:: functions -- synthesis over existing pseudocode, not new IDA work.",
+    "Run a dim6 pass: map each of the 9 commands' side effects (sqlite writes, fs backup/restore, markdown export) to Polaris's own C5 unit/E2E test surface or explicit manual-acceptance criteria.",
+    "Confirm SessionsPage's Bs() bento-stats query command binding (likely load_usage_analytics by data shape, unconfirmed) by re-reading frontend/beautified/index-B40jKs17.js around L92-142.",
+    "Windows evidence already located this pass at raw/aimami/1.2.3/windows-x64/{sessions,analytics,commands/analytics}/ida/pseudocode/ (36 .c files) -- next producer should run a full Windows dim1-dim6 pass and produce windows-1.2.3-sessions-analytics/ as an independent audits/ bundle; cross-reference the Windows commands::analytics module (src/commands/analytics.rs, confirmed via panic-Location xref) to help locate the equivalent macOS commands::analytics symbols for the dim2 macOS wrapper gap above."
+  ]
+}

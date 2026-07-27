@@ -1,0 +1,40 @@
+{
+  "schema": "c5cm.reverse.gate_report.v1",
+  "status": "PASS",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows",
+  "module": "custom-instructions",
+  "migration_class": "migrated_no_behavior_diff",
+  "commands": [
+    "load_custom_instruction_state",
+    "preview_custom_instruction_apply",
+    "apply_custom_instruction",
+    "clear_custom_instruction_block",
+    "rollback_custom_instruction"
+  ],
+  "accepted_count": 5,
+  "total_count": 5,
+  "readyToImplement": true,
+  "implementation_use": true,
+  "gate_accepted": true,
+  "full_leaf_100": true,
+  "accepted_substitute": "same_platform_ida_backend_absence_for_frontend_orphan_command",
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 120249.041,
+    "IDA decompiler_ready": true,
+    "module": "AiMaMi.1.2.3 win64.exe"
+  },
+  "verification_methods": [
+    "func_query symbol table (per-command + module-wide sweep)",
+    "find_regex string pool (per-command + broad substring)",
+    "xrefs_to on anchor to confirm data-only path-blob role"
+  ],
+  "productDecisionBoundary": "Current C5 custom-instructions chain is live product/local behavior; upstream 1.2.3 backend owner parity is absent substitute.",
+  "frontendValidatorNotes": [
+    "Initial load_custom_instruction_state failure lacks a dedicated visible error alert in the current page and can be perceived as a spinner/empty-current state.",
+    "Successful apply/clear/rollback intentionally uses setQueryData with returned CoreEnvelope instead of invalidation; changing this can alter UI state timing.",
+    "Current C5 implementation is product/local behavior; upstream 1.2.3 backend owner parity is absent substitute, not strict backend reconstruction."
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "maintenance",
+  "package": "macos-1.2.3-maintenance",
+  "created_at": "2026-07-25T00:00:00Z",
+  "producer_machine": "<host> (this package assembled — reduce/distillation task only; no new IDA MCP calls performed this pass)",
+  "task_kind": "distillation",
+  "task_kind_note": "This pass reads already-decompiled raw/aimami/1.2.3/macos-arm64/{commands/system,commands/accounts,core/repository}/ida/pseudocode/*.c files plus raw/aimami/1.2.3/macos-arm64/frontend/{ipc-contracts.jsonl,frontend-control-flow.jsonl,pages/analytics-maintenance-autoswitch-frontend.md,pages/accounts-frontend.md} and synthesizes a canonical consumer conclusion package for the domain named by the task: '注册表 rebuild/clean/load_snapshot 域'. No decompilation, no implementation code, no new IDA MCP calls this pass.",
+  "binary": {
+    "sha256_binary": "e3f2fec7d7cd32c8a7a650ec563577b8c74516aed270c1230a5b11296942114d",
+    "binary_format": "macho",
+    "arch": "arm64",
+    "note": "same 1.2.3 macOS binary SHA as macos-1.2.3-relay and macos-1.2.3-mcp packages (cross-checked against sibling manifests)"
+  },
+  "scope": {
+    "domain_name_source": "task instruction: 'mac maintenance(注册表 rebuild/clean/load_snapshot 域)'",
+    "commands_named_by_task": ["rebuild_registry", "clean", "load_snapshot"],
+    "commands_primary_scope_this_package": ["rebuild_registry", "clean", "load_snapshot"],
+    "commands_out_of_scope_same_ui_surface": [
+      "get_image_compat", "set_image_compat", "force_kill_codex", "restart_codex",
+      "default_debug_bundle_file_name", "export_debug_bundle", "upload_debug_report",
+      "run_codex_router_diagnostics", "fix_codex_router_issue", "configure_auto_switch"
+    ],
+    "commands_out_of_scope_note": "These 10 commands also live on the same MaintenancePage / analytics-maintenance-autoswitch UI surface (see raw/aimami/1.2.3/macos-arm64/frontend/pages/analytics-maintenance-autoswitch-frontend.md §4, 17 commands total across analytics+maintenance+auto-switch) but are outside the registry rebuild/clean/load_snapshot domain the task named; not covered by this package's gate/coverage claims. Matches the identical 3-leaf scope of the existing macos-1.0.9-maintenance package ('范围: clean, rebuild_registry, load_snapshot') and the windows-1.2.3-maintenance sibling's 'commands_named_by_task'.",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "commands_wrapper_c_files": 3,
+    "commands_wrapper_c_files_list": [
+      "commands/system/ida/pseudocode/rebuild_registry_0x1007c7fb0.c",
+      "commands/system/ida/pseudocode/clean_0x1007cd710.c",
+      "commands/accounts/ida/pseudocode/load_snapshot_0x1006ffc90.c"
+    ],
+    "commands_wrapper_module_placement_note": "load_snapshot wrapper lives under commands::accounts, not commands::system, despite being in-scope for this 'maintenance/registry' domain -- same cross-module placement noted in macos-1.0.9-maintenance/README.md",
+    "core_repository_primary_c_files": 3,
+    "core_repository_primary_c_files_list": [
+      "core/repository/ida/pseudocode/rebuild_registry_with_policy_0x100a6a890.c",
+      "core/repository/ida/pseudocode/clean_0x100a74760.c",
+      "core/repository/ida/pseudocode/load_snapshot_local_0x100a5c1d0.c"
+    ],
+    "core_repository_candidate_downstream_c_files": 8,
+    "core_repository_candidate_downstream_c_files_list": [
+      "core/repository/ida/pseudocode/persist_registry_0x100a5b440.c",
+      "core/repository/ida/pseudocode/load_registry_0x100a56040.c",
+      "core/repository/ida/pseudocode/load_registry_for_mutation_0x100a68190.c",
+      "core/repository/ida/pseudocode/carry_over_registry_state_0x100a7b1d0.c",
+      "core/repository/ida/pseudocode/live_snapshot_path_for_rebuild_0x100a6fa60.c",
+      "core/repository/ida/pseudocode/commit_and_purge_0x100a77070.c",
+      "core/repository/ida/pseudocode/rollback_0x100a77d80.c",
+      "core/repository/ida/pseudocode/stage_0x100a771e0.c"
+    ],
+    "core_repository_candidate_downstream_note": "Identified by filename/symbol-name pattern match plus analogy to the 1.0.9 documented call-tree shape (rebuild_registry -> persist_registry terminal; clean -> load_registry -> persist_registry terminal). Existence on disk confirmed by this pass (file-system find + wc -l); reachability from rebuild_registry_with_policy/clean was NOT independently re-verified via callees()/xrefs_to() this pass -- candidate list only, not a traced call-tree.",
+    "truncation_check": "grep -l 'TRUNCATED|chars total|truncat' against all 3 commands_wrapper + 3 core_repository_primary files = 0 hits; all 6 files opened and read in full (rebuild_registry_with_policy_0x100a6a890.c is 2132 lines / read first 90 lines fully + header annotation, remainder not fully read line-by-line this pass -- see known_residuals) with real bodies ending in return/closing brace, not stub markers",
+    "commands_to_file_gap": 0,
+    "commands_to_file_gap_note": "exact 1:1 match between frontend ipc-contracts.jsonl task-named commands (load_snapshot, clean, rebuild_registry) and commands/{system,accounts}/*.c wrapper files -- confirmed via grep of ipc-contracts.jsonl and disk find",
+    "frontend_page_docs_consulted": [
+      "frontend/pages/analytics-maintenance-autoswitch-frontend.md (215 lines, covers MaintenancePage §2 including 'clean' action card)",
+      "frontend/pages/accounts-frontend.md (grep only, for load_snapshot inference via refreshLive prop chain)"
+    ],
+    "frontend_control_flow_jsonl_entries": {
+      "clean": 1,
+      "rebuild_registry": 1,
+      "load_snapshot": 2
+    },
+    "measurement_basis": "file-system find|wc -l against raw/aimami/1.2.3/macos-arm64/{commands/system,commands/accounts,core/repository}/ida/pseudocode/*.c, this session (2026-07-25); frontend command diff against raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl and frontend-control-flow.jsonl"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.0.9-maintenance/ (RULE9 historical baseline pointer only -- 1.0.9 reached strictImplementationUse for all 3 leaves under the same full_leaf_100_definition_v2 rule set; NOT auto-migrated to 1.2.3 because a real version-level diff signal was found for rebuild_registry (see logic/DELTA-LOGIC-1.2.3.md); clean and load_snapshot_local core bodies carry a '基线 same-set' header annotation at 1.2.3 consistent with no-core-logic-diff, but frontend/dim1 evidence strength at 1.2.3 was independently (re-)assessed this pass rather than copied from 1.0.9)"
+  ],
+  "cross_platform_sibling": "internal-reverse/audits/windows-1.2.3-maintenance/ (independently produced 2026-07-25; NOT read into this package's gate conclusions per doNotInferWindowsFromMacOS -- referenced only as a scope-naming cross-check, which confirmed the same 3-command domain and independently found the same rebuild_registry_with_policy new-parameter signal on the Windows side)",
+  "known_residuals": [
+    "rebuild_registry: dim1 (confirmed real UI trigger element) NOT satisfied in currently-landed 1.2.3 raw -- frontend-control-flow.jsonl only has a 'minified-static-function'/element:null entry (wrapper definition site only); rebuild_registry does not appear in the 7-item MaintenancePage action-card list (analytics-maintenance-autoswitch-frontend.md §2.3) or in accounts-frontend.md's grep hits. This is a genuine open gap, not accepted_unknown -- the invoke wrapper's existence is confirmed but its calling UI element is not.",
+    "rebuild_registry_with_policy's added policy parameters (a3:int, a4:__int64, both called with literal 0,0 by the wrapper): existence and call-site confirmed (2132-line body, header-annotated '1.2.3 NEW-delta ... vs 1.2.2 新增(IDA函数枚举diff, 名↔地址一致)'), semantics of the two new parameters NOT derived this pass (would require reading the full 2132-line body, out of scope for a read-only distillation pass)",
+    "load_snapshot: dim1 is medium-strength, not fully confirmed -- frontend-control-flow.jsonl has a real wrapper-callsite entry (Ee.loadSnapshot(!1,x) called from a guarded function c with 'if(!x||C.forceMetadata)return C.promise'), which is stronger evidence than clean/rebuild_registry get from the same automated extractor, but the top-level UI element that ultimately triggers this chain is only inferred (accounts-frontend.md explicitly marks its refreshLive->load_snapshot correspondence as '推断'/inference, not a confirmed direct call site within the files read)",
+    "load_snapshot's closure body (load_snapshot_0x1006ffc90.c) does not visibly forward localOnly/forceMetadata into the Repository::load_snapshot_local call it makes (calls with no visible args beyond the destination buffer) -- differs from the 1.0.9 package's characterization ('localOnly:boolean param'); how the args are actually threaded (state check earlier in the async chain vs a different code path) was not traced this pass",
+    "dim3 (call-tree to fs/process/persistence leaf) is candidate-only for all 3 leaves this pass -- 8 downstream core/repository files identified by name pattern (persist_registry/load_registry/carry_over_registry_state/live_snapshot_path_for_rebuild/commit_and_purge/rollback/stage), not independently re-traced via callees()/xrefs_to()",
+    "dim4 (interface/DTO/error envelope) not systematically extracted for 1.2.3 -- clean's response field names (authBackupsRemoved/registryBackupsRemoved/staleEntriesRemoved per the frontend toast echo in analytics-maintenance-autoswitch-frontend.md) differ in naming from the 1.0.9 package's byte-confirmed CleanResult{deleted_sessions,deleted_intermediate,registry_delta} -- this is a real DTO-shape difference signal, not yet independently byte-confirmed on the backend side for 1.2.3, see logic/DELTA-LOGIC-1.2.3.md",
+    "dim5 Windows platform gate: sibling windows-1.2.3-maintenance package exists (produced same day) but its gate conclusions are NOT consumed here per doNotInferWindowsFromMacOS -- Windows parity for this macOS package is Unknown by design",
+    "dim6 test/acceptance mapping not produced (C5 implementation-side work per GATE-SPEC.md dim6 definition)"
+  ],
+  "note": "This is the FIRST canonical audits/ package for the maintenance/registry-domain module at 1.2.3 macOS (no prior macos-1.2.3-maintenance existed; windows-1.2.3-maintenance is a same-day independent sibling). This package distills pre-existing raw .c evidence (6 primary files read in full or near-full this session, 8 candidate downstream files enumerated but not read) plus pre-existing frontend extraction artifacts (ipc-contracts.jsonl, frontend-control-flow.jsonl, analytics-maintenance-autoswitch-frontend.md) into the required audits/ canonical structure. No new IDA decompilation was performed; no bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md."
+}

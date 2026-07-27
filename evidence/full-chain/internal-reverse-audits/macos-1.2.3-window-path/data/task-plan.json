@@ -1,0 +1,26 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "window-path",
+  "readyToImplement": [],
+  "strictImplementationUse": ["focus_main_window", "open_path"],
+  "consumerStartReady": [],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "focus_main_window: readyToImplement blocked pending dim6 (test/acceptance mapping) closure",
+      "open_path: readyToImplement blocked pending dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [],
+    "consumerStartBlocked": []
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Run a dim6 pass: map focus_main_window (window-focus UX trigger, e.g. dock-icon click / tray-menu reopen) and open_path (reveal-in-Finder / open-external-URL UX) to Polaris's own C5 unit/E2E test surface or explicit manual-acceptance criteria -- this is the sole remaining gap to reach readyToImplement for both commands.",
+    "Optional: isolate the Windows 1.2.3 open_path owner among the 6 unresolved commands::system sub_XXXXXXXX candidates via panic-Location string xref or command-name string xref, to bring the Windows sibling to parity with the existing 1.0.9 Windows evidence (internal-reverse/audits/windows-1.0.9-system/logic/WIN-WINDOW-PATH-CLUSTER-109.md). Not required for this macOS package's own gate."
+  ]
+}

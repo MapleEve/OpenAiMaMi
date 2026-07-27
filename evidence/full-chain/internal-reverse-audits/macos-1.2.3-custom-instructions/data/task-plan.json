@@ -1,0 +1,44 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "machine": "<host>",
+  "readyToImplement": [
+    "load_custom_instruction_state",
+    "preview_custom_instruction_apply",
+    "apply_custom_instruction",
+    "clear_custom_instruction_block",
+    "rollback_custom_instruction"
+  ],
+  "strictImplementationUse": [
+    "load_custom_instruction_state",
+    "preview_custom_instruction_apply",
+    "apply_custom_instruction",
+    "clear_custom_instruction_block",
+    "rollback_custom_instruction"
+  ],
+  "consumerStartReady": [
+    "load_custom_instruction_state",
+    "preview_custom_instruction_apply",
+    "apply_custom_instruction",
+    "clear_custom_instruction_block",
+    "rollback_custom_instruction"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [],
+    "forbiddenUntilStrictImplementationUse": [],
+    "consumerStartBlocked": []
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "implementation_use": true,
+  "gate_accepted": true,
+  "full_leaf_100": true,
+  "moduleExitAllowed": true,
+  "accepted_substitute": "same_platform_ida_backend_absence_for_frontend_orphan_command",
+  "note": "Updated 2026-07-26 (EXPLICIT_OVERWRITE_CANONICAL) to mirror the upgraded gate object in ../manifest.json verbatim, bringing this file back into parity with ../../windows-1.2.3-custom-instructions/data/task-plan.json. Prior state (as of 2026-07-25/first written 2026-07-26 gapclose session): readyToImplement=[]/strictImplementationUse=[]/implementation_use=false/gate_accepted=false/full_leaf_100=false. Upgrade rationale, owner_basis and evidence pointers are recorded in full in ../manifest.json gate.upgrade_history and ../gate-report.json gate_upgrade (not duplicated here to avoid drift between two copies of the same record).",
+  "frontendConsumerHandoff": {
+    "status": "unchanged_from_1.0.9",
+    "currentC5FrontendStatus": "live"
+  }
+}

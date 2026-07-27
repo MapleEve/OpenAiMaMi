@@ -107,7 +107,7 @@ genuine_ceiling: false | accepted_unknown: false | real_body_found: true
 
 ## Live Confirmations (session <审计会话>, 2026-06-17)
 
-- **逆向分析 server_health**: status=ok, uptime_sec=114862, hexrays_ready=true, module=AiMaMi 1.1.1 win64.exe — PASS
+- **逆向分析 server_health**: status=ok, uptime_sec=114862, IDA decompiler_ready=true, module=AiMaMi 1.1.1 win64.exe — PASS
 - **dim1 CCF live re-confirm**: find_regex "hotspot_ready" → n=1, addr=0x1412ac4a3 — CLOSED
 - **dim2 body live re-confirm**: decompile 0x140016720 → 847B, 32BB, body identical to pseudocode.c — CLOSED
 - **hotspot_ready_state_discriminant_check basic_blocks live**: basic_blocks(0x14038D560) → 19 blocks (pseudocode.c annotation corrected from ~18 to 19)

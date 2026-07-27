@@ -1,0 +1,206 @@
+{
+ "schema": "c5cm.reverse.producer_ledger.v1",
+ "session": "win-1.2.3-tree-not-on-disk-gapfill-20260726",
+ "machine": "<host>",
+ "ida_mcp": "win <host>",
+ "product": "aimami",
+ "version": "1.2.3",
+ "platform": "windows-x64",
+ "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+ "produced_at": "2026-07-26T00:00:00Z",
+ "gate_tier": "owner_bound_bodies_written",
+ "implementation_use": false,
+ "gate_accepted": false,
+ "summary": {
+  "tree_not_on_disk_landed": 35,
+  "truncation_stub_reduced": 2,
+  "idb_save": "ok"
+ },
+ "items": [
+  {
+   "dir": "account_io",
+   "file": "__u7b__u7b_closure_u7d__u7d__15_0x14083ee20.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "account_io",
+   "file": "export_accounts_0x14085d1b0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "account_io",
+   "file": "import_accounts_0x1408618d0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "account_io",
+   "file": "parse_import_file_0x1408666c0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "account_io",
+   "file": "persist_account_auth_0x1408675e0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "account_io",
+   "file": "load_matching_export_auth_0x140869440.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "account_io",
+   "file": "validate_import_display_fields_0x14086aff0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "repository",
+   "file": "load_local_state_synced_0x140392350.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "repository",
+   "file": "update_auto_switch_config_0x14039a510.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "repository",
+   "file": "confirm_pending_auto_switch_0_0x14039c710.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "repository",
+   "file": "logout_0_0x1403af090.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "repository",
+   "file": "canonical_managed_child_directory_0x1403c1ed0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "repository",
+   "file": "enrich_active_account_usage_via_api_0x1403e90b0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "asr",
+   "file": "__u7b__u7b_closure_u7d__u7d__16_0x140a543a0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "asr",
+   "file": "keyring_entry_0x140a55230.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "asr",
+   "file": "load_saved_config_0x140a55530.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "llm",
+   "file": "save_config_0x140a58220.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "aliyun_asr",
+   "file": "endpoint_for_protocol_0x140aec4a0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "debug_bundle",
+   "file": "serialize_0_0x14070d1c0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "debug_bundle",
+   "file": "publish_debug_bundle_0x14072a670.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "debug_bundle",
+   "file": "read_catalog_file_shape_0_0x1410d2d20.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "debug_bundle",
+   "file": "read_catalog_file_shape_1_0x141130900.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "debug_log",
+   "file": "write_client_event_0x140355c60.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "debug_log",
+   "file": "__u7b__u7b_closure_u7d__u7d__12_0x140696700.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "single_instance",
+   "file": "request_existing_instance_activation_wit_0x140488f50.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "plan_mapping",
+   "file": "infer_pro_tier_from_raw_0x1409d9d10.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "account_metadata",
+   "file": "fetch_json_0x140737cb0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "deeplink",
+   "file": "parse_aimami_deeplink_0_0x1403eff10.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "sessions",
+   "file": "patch_rollout_cwd_0x14074bfd0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "oauth_refresh",
+   "file": "deserialize_0x14098f1f0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "mcp",
+   "file": "set_mcp_server_enabled_0_0x1409e6810.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "debug_report_upload",
+   "file": "serialize_1_0x14070d370.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "commands/voice",
+   "file": "__u7b__u7b_closure_u7d__u7d__17_0x140abe3c0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "commands/accounts",
+   "file": "finalize_committed_switch_0x1403df5e0.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "commands/account_io",
+   "file": "sub_1412F1C60_0x1412f1c60.c",
+   "kind": "tree_not_on_disk_landed"
+  },
+  {
+   "dir": "skills",
+   "file": "backup_skill_directory_0x1409060c0.c",
+   "kind": "truncation_stub_reduced"
+  },
+  {
+   "dir": "skills",
+   "file": "delete_skill_backup_0x140c92a80.c",
+   "kind": "truncation_stub_reduced"
+  }
+ ]
+}

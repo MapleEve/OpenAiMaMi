@@ -126,7 +126,7 @@ Reconstructed from upsert merge logic field offsets:
 | Gate | Status |
 |---|---|
 | owner_va_confirmed | PASS (0x1005eae30 / 0x1005dd220) |
-| hexrays_decompile | PASS (both functions, full pseudocode) |
+| IDA decompiler_decompile | PASS (both functions, full pseudocode) |
 | callees_depth_ge5 | PASS (depth=5: upsert→persist→save→atomic_write→OS) |
 | interface_dto_recovered | PASS (232-byte RelayProvider field map) |
 | error_paths_covered | PASS (write_key_file/persist/sync all enumerated) |

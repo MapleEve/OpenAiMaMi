@@ -1,0 +1,93 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "system",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-24",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 26,
+    "blocked": 0,
+    "total_commands": 26
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "weak -- only command-name-level cross-check performed against ipc-contracts.jsonl (angle-B, true_gaps=0 for plausible-owner matching); no component-tree/state-model/interaction-sequence document produced this pass, unlike the relay (relay-frontend.md) and skills (dedicated frontend page section) sibling packages. This is the most material gap of this package.",
+    "dim2_backend_owner_pseudocode": "mostly-inherited-strong -- commands-baseline.md §2 claims direct-Read distillation of all 34 commands/system files with 0 truncation (part of its 145-file batch scan); platform-baseline.md claims the same for its 85-file table (95 per this session's independent find, see dim2 discrepancy note). This session independently spot-checked only 2 of the 34 commands/system files by direct Read (clean, compose_image_compat_flag), both confirmed non-truncated and consistent with the baseline characterization. The remaining 32 commands/system files and all platform files were NOT independently re-Read this session -- coverage strength here is inherited from a prior session's claims, not this session's own verification, and is disclosed as such rather than re-asserted as this session's finding.",
+    "dim2_discrepancy_note": "platform-baseline.md's own table states 85 total platform files across 7 subdirs; this session's independent find|wc -l against the current on-disk tree finds 95 (paths 21 not 15, debug_log 17 not 14, single_instance 7 not 6). The 10 extra filenames are serde/trait-glue-shaped (5x CodexPaths::clone monomorphization, 1x StateDbReadState::fmt, 3x FileLogger Log-trait methods, 1x ActivationRecord Deserialize glue) -- plausibly explained by the same glue-exclusion counting convention commands-baseline.md documents elsewhere, but platform-baseline.md does not itself state such an exclusion, and this session did not verify the 10 files' content. Recorded as an open provenance question, not silently resolved.",
+    "dim3_call_tree_to_leaf": "partial-narrative, not standalone-artifact -- commands-baseline.md and platform-baseline.md both narrate real termination points (process kill/spawn via ps/osascript/launchctl/mdfind/lsof, scutil for proxy detection with a real outbound PAC-URL HTTP fetch, flock for single-instance locking, CoreAudio calls for volume, launchctl for daemon install/uninstall) but neither produced a standalone per-command call-tree-to-leaf document. logic/FULL-CHAIN-1.2.3.md in this package is prose-level distillation of those two baseline docs, not a machine-checkable artifact.",
+    "dim4_interface_dto_boundary": "not-closed -- no DTO/field-level extraction, no structured error-envelope table, and no dedicated boundary-condition compilation was attempted for the system module this pass. platform-baseline.md does narrate boundary-adjacent facts in passing (harden_private_file/harden_private_tree permission hardening, flock exclusive-lock semantics, resolve_backup_path-equivalent path validation is NOT present in this module -- no equivalent guard function was identified in system/platform for this module specifically) but these were not compiled into a structured interfaces/ artifact.",
+    "dim5_platform_gate": "not-closed -- Windows evidence for this module is materially thin: commands/system has only 6 .c files on disk (vs 34 on macOS) and system_volume_windows has only 3 (platform-baseline.md's macOS system_volume subdir has 7). ALL 9 Windows files are unresolved sub_XXXX addresses with 0 confirmed names, 0 confirmed cross-platform behavior matches. 0 of the 26 macOS-side commands have any Windows evidence beyond raw unresolved bytes existing at all. Do not extrapolate macOS behavior onto Windows for any of the 26 commands.",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping produced for 1.2.3 system leaves this pass."
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim1 (weak, no frontend component-tree artifact), dim3 (no standalone call-tree artifact), dim4 (not attempted), dim5 (Windows not closed, 0/26 confirmed), and dim6 (not produced) are all open; per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification, inherited backend pseudocode completeness (dim2) alone -- especially when only lightly re-verified this session -- does not promote target-level readiness",
+  "consumerStartReady_commands": [
+    "get_usage_refresh_interval", "get_notification_client_state", "load_pending_auto_switch",
+    "diagnose", "set_auto_switch", "open_path", "dismiss_pending_auto_switch",
+    "configure_auto_switch", "merge_mystery_unlock_grants", "get_mystery_unlock_grants",
+    "set_image_compat", "get_system_info", "set_usage_refresh_interval", "force_kill_codex",
+    "clean", "get_device_id", "load_bootstrap_state", "restart_codex", "get_image_compat",
+    "rebuild_registry", "run_daemon_once", "confirm_pending_auto_switch",
+    "confirm_pending_auto_switch_and_restart_codex",
+    "detect_api_proxy_config", "set_api_proxy_config", "test_api_proxy_config"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady/uiCallEntryReady satisfied WEAKLY -- only via ipc-contracts.jsonl command-name presence (angle-B), not a component-tree/interaction reversal; happyPathReady + backend owner satisfied via commands-baseline.md §2's function-by-function distillation of all 34 commands/system files (this session independently spot-verified 2 of them by direct Read) plus platform-baseline.md's distillation of the supporting platform primitives; dtoBoundaryReady/boundaryPathReady/sideEffectReady/acceptanceDraftReady NOT independently produced this pass -- consumer must derive DTO shape and boundary conditions directly from the underlying pseudocode (via the two baseline docs' pointers) rather than treat this package as a closed interface spec; platformScopeDeclared YES (macOS-only strong-inherited evidence; Windows explicitly and materially Unknown, 9 raw files all unresolved sub_XXXX, not extrapolated)",
+  "unknowns": [
+    {
+      "item": "platform backing file-count discrepancy (85 platform-baseline.md table vs 95 this-session find, +6 paths/+3 debug_log/+1 single_instance)",
+      "class": "accepted_unknown",
+      "reason": "the 10 extra filenames are strongly glue-shaped (serde Clone/Debug/Log-trait/Deserialize glue) consistent with a documented glue-exclusion counting convention used elsewhere in this session's source material, but platform-baseline.md itself does not state such an exclusion and the 10 files' content was not byte-verified this session -- tool/provenance-limitation class, disclosed rather than silently resolved"
+    },
+    {
+      "item": "confirm_pending_auto_switch / confirm_pending_auto_switch_and_restart_codex 1-file-to-2-command mapping",
+      "class": "blocks_start",
+      "reason": "both frontend commands are provisionally mapped to the single confirm_pending_auto_switch_async_0x1000eac80.c closure file; whether this is genuinely 1 closure serving both via a parameter/flag, or whether a second file exists under a name not surfaced by this session's find or by commands-baseline.md, was not verified"
+    },
+    {
+      "item": "core::bootstrap_cache (9 files, backs load_bootstrap_state)",
+      "class": "truly_undone",
+      "reason": "checked against all 4 available backend-baseline documents (commands-baseline.md, platform-baseline.md, models-repository-baseline.md, run-app-misc-baseline.md); none analyze this directory as a dedicated target -- only a passing one-line mention in commands-baseline.md ('load_mcp_servers updates bootstrap_cache'). This is a genuine open gap for a follow-up work unit, not swept into accepted_unknown."
+    },
+    {
+      "item": "dim1 frontend control-flow document",
+      "class": "blocks_start",
+      "reason": "not produced this pass; only command-name cross-check performed"
+    },
+    {
+      "item": "angle-C semantic orphan scan",
+      "class": "blocks_start",
+      "reason": "not attempted at all this pass -- no IDA connection, not even a text-grep proxy (weaker than the skills sibling package's precedent, which at least ran a grep)"
+    },
+    {
+      "item": "dim4 interface/DTO extraction",
+      "class": "blocks_start",
+      "reason": "not attempted this pass"
+    },
+    {
+      "item": "dim5 Windows platform gate",
+      "class": "blocks_start",
+      "reason": "9 raw Windows files exist (6 commands/system + 3 system_volume_windows) but all are unresolved sub_XXXX with 0 confirmed names or behavior matches; genuinely thin evidence, not unexamined but materially insufficient"
+    },
+    {
+      "item": "dim6 test/acceptance mapping",
+      "class": "blocks_start",
+      "reason": "not produced this pass"
+    }
+  ],
+  "notes": [
+    "This package's backend coverage (dim2) is INHERITED from two pre-existing baseline documents (commands-baseline.md §2, platform-baseline.md) that each claim direct-Read function-by-function distillation with 0 truncation found across their respective batches. This session independently re-verified only 2 of the 34+95 total files by direct Read, plus did a full file-count reconciliation (which surfaced the +10 discrepancy noted above) and a full frontend ipc-contracts.jsonl cross-check. This is a materially lighter-verification package than its relay/skills siblings, which each claim direct-Read of their entire in-scope file set within the producing session itself.",
+    "This package's frontend coverage (dim1) is WEAKER than its relay/skills siblings: no component-tree or interaction-sequence document was produced, only a command-name presence check.",
+    "core::bootstrap_cache is flagged as a genuine, not-yet-distilled gap (truly_undone) -- this is a real open item, not an artifact of this package's scope boundary; a follow-up distillation or new-raw work unit could close it using the existing 9 raw .c files (all already reverse-engineered, none pending new IDA work).",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

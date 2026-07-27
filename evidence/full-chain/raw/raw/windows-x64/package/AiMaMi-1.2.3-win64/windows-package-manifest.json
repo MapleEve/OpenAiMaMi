@@ -1,0 +1,63 @@
+{
+  "schema": "rust-reverse-pipeline.windows-package.v1",
+  "generatedAt": "2026-07-24T14:15:32.787352+00:00",
+  "installer": "raw/binary/AiMaMi.1.2.3 win64.exe",
+  "installerName": "AiMaMi.1.2.3 win64.exe",
+  "installerSize": 33667584,
+  "installerSha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "fileType": "raw/binary/AiMaMi.1.2.3 win64.exe: PE32+ executable (GUI) x86-64, for MS Windows",
+  "packageFormat": "pe-executable-or-installer",
+  "platform": "windows",
+  "executedInstaller": false,
+  "extractorUsed": "7zz",
+  "extractStatus": "ok",
+  "extractedRoot": "raw/aimami/1.2.3/windows-x64/package/AiMaMi-1.2.3-win64/extracted",
+  "extractedFileCount": 14,
+  "tauriDumpRoot": "raw/aimami/1.2.3/windows-x64/package/AiMaMi-1.2.3-win64/tauri-dumped-assets",
+  "tauriDumpAttempts": [],
+  "attempts": [
+    {
+      "tool": "7zz",
+      "available": true,
+      "list": {
+        "cmd": [
+          "7zz",
+          "l",
+          "-slt",
+          "raw/binary/AiMaMi.1.2.3 win64.exe"
+        ],
+        "exit": 0,
+        "log": "raw/aimami/1.2.3/windows-x64/package/AiMaMi-1.2.3-win64/logs/7zz-list.log"
+      },
+      "extract": {
+        "cmd": [
+          "7zz",
+          "x",
+          "-y",
+          "-oraw/aimami/1.2.3/windows-x64/package/AiMaMi-1.2.3-win64/extracted",
+          "raw/binary/AiMaMi.1.2.3 win64.exe"
+        ],
+        "exit": 0,
+        "log": "raw/aimami/1.2.3/windows-x64/package/AiMaMi-1.2.3-win64/logs/7zz-extract.log"
+      },
+      "newFileCount": 14
+    }
+  ],
+  "peFiles": [
+    {
+      "path": "raw/binary/AiMaMi.1.2.3 win64.exe",
+      "relativePath": "AiMaMi.1.2.3 win64.exe",
+      "role": "installer",
+      "size": 33667584,
+      "sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+      "fileType": "raw/binary/AiMaMi.1.2.3 win64.exe: PE32+ executable (GUI) x86-64, for MS Windows"
+    }
+  ],
+  "candidateAppBinaries": [],
+  "frontendCandidates": [],
+  "resourceCandidates": [],
+  "gaps": [
+    "no extracted candidate app PE binary found",
+    "no extracted frontend asset directory found"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "voice",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [],
+  "ownerExistenceMappedOnly": [
+    "capture_voice_trigger_key", "generate_voice_prompt", "inject_voice_text",
+    "load_voice_asr_config", "load_voice_llm_config", "load_voice_processing_modes",
+    "load_voice_runtime_status", "load_voice_workspace", "remove_voice_history_entry",
+    "remove_voice_mode_shortcut", "remove_voice_template", "remove_voice_vocabulary",
+    "replace_voice_vocabulary_kind", "request_voice_permissions", "save_voice_asr_config",
+    "save_voice_llm_config", "save_voice_processing_modes", "set_voice_global_shortcut",
+    "set_voice_mode_shortcut", "set_voice_overlay_style", "set_voice_processing_mode_id",
+    "set_voice_trigger_bindings", "set_voice_trigger_key", "show_voice_search_overlay",
+    "start_voice_capture", "stop_voice_capture", "test_voice_asr_config", "test_voice_llm_config",
+    "update_voice_runtime_settings", "upsert_voice_template", "upsert_voice_vocabulary",
+    "voice_processing_done",
+    "resolve_voice_vocabulary_app_info", "upsert_voice_vocabulary_app_scope",
+    "remove_voice_vocabulary_app_scope", "set_voice_trigger_listener_suppressed"
+  ],
+  "ownerExistenceMappedOnly_updated_2026_07_26": "36 commands (was 32). The last 4 listed were moved here from consumerStartBlocked this pass -- see manifest.json reduce_pass_2026_07_26 and gate-report.json owner_existence_mapped_commands_2026_07_26_addendum for evidence.",
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 37 voice commands: readyToImplement blocked pending dim2 individual-identity-resolution for the ~131 remaining generic sub_ functions, dim3 call-tree-to-leaf beyond the first business delegate, dim4 full interface/DTO (response+error envelope fields), dim6 test/acceptance mapping"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 37 voice commands: strictImplementationUse blocked pending the same dim2/dim3/dim4/dim6 closure work above, plus a full UI-flow (dim1) walkthrough which was not performed this pass"
+    ],
+    "consumerStartBlocked": [
+      "cancel_voice_trigger_capture -- no backend owner match found this pass or the 2026-07-26 reduce pass (live IDA find_regex full-binary string search returned 0 matches; see gate-report.json blocked_commands)",
+      "the other 36 commands are NOT individually consumerStartBlocked on identity grounds, but the MODULE as a whole has not closed the 9-dim consumerStartReady start gate (dtoBoundaryReady/boundaryPathReady/sideEffectReady/frontendConsumptionReady/acceptanceDraftReady all open) -- see gate-report.json consumerStartReady_9dim_status"
+    ],
+    "consumerStartBlocked_updated_2026_07_26": "resolve_voice_vocabulary_app_info / upsert_voice_vocabulary_app_scope / remove_voice_vocabulary_app_scope / set_voice_trigger_listener_suppressed removed from this list this pass -- their backend owner was found (case branches inside the shared open_path ICF dispatcher, commands/relay/ida/pseudocode/open_path_0x140194810.c), resolving the dim2 identity gap that justified their prior consumerStartBlocked status. They remain gated by the same module-wide 9-dim gap as the other 36 owner-mapped commands, so they moved to ownerExistenceMappedOnly, not to consumerStartReady."
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "[DONE 2026-07-26] Identity for sub_140755DC0 (confirmed as test_voice_asr_config's call-tree target) and sub_140ACDB60 (confirmed as a generic response-envelope helper) resolved via grep of the named wrapper's call sites -- see logic/FULL-CHAIN-1.2.3.md §2.1.",
+    "[DONE 2026-07-26, 4/5] Owner resolved for resolve_voice_vocabulary_app_info / upsert_voice_vocabulary_app_scope / remove_voice_vocabulary_app_scope / set_voice_trigger_listener_suppressed via live IDA decompile of case branches inside commands/relay/ida/pseudocode/open_path_0x140194810.c. cancel_voice_trigger_capture remains unresolved (live find_regex full-binary string search returned 0 matches this pass).",
+    "[NEW] Materialize the 4 newly-resolved commands' pseudocode as standalone raw leaf files under raw/aimami/1.2.3/windows-x64/commands/voice/ (currently their bodies only exist embedded inside the shared open_path dispatcher file and in live-IDB-only annotations left by an untracked pass) -- requires define_func/extraction + idb_save by a producer session with write authorization (claim-first + owner-gate), not performed this reduce pass.",
+    "[NEW] Run a dim1 frontend walkthrough for cancel_voice_trigger_capture specifically to determine whether its frontend caller ever reaches invoke() or is a pure client-side AbortController.abort() with no backend command -- would settle whether this is a genuine backend gap or a false-positive frontend-only command name.",
+    "[NEW] Individually name the 3 asr/ directory files (module-attributed to codexmate_lib/core/voice/asr but not yet function-identity-resolved) -- this directory was newly discovered this pass (previously omitted from the 2026-07-25 scan entirely) and resolves one of the 6 macOS-only 'Unknown' submodules to confirmed-present-on-Windows; see SYSTEM-DIFF.md addendum.",
+    "[NEW] Disambiguate the apparent duplicate Serialize-for-VoiceWorkspacePayload implementations at workspace/serialize_2_0x1407ae080.c and models/serialize_VoiceWorkspacePayload_0x140aa76f0.c (two different addresses, same claimed serde impl target) -- see logic/REGISTRATION-TABLE-1.2.3.md §4 observation 1.",
+    "Progress dim2 identity-resolution for the ~131 generic sub_ functions in aliyun_asr/llm/runtime/tray/workspace/voice_trigger_windows beyond module-attribution to individual business-logic naming (dirtree module recovery already closed the module-attribution layer; this is the next layer up).",
+    "Produce dim3 (call-tree-to-leaf) for the remaining ~30 owner-existence-mapped commands that are still wrapper-only, tracing from wrapper to fs/http/registry/process/persistence/response leaves -- and continue the 2 partially-traced chains (test_voice_asr_config, generate_voice_prompt) past their current first-delegate stopping point.",
+    "Reverse the 5 shared command-response infrastructure helpers identified this pass (sub_1409757B0 field-deserializer, sub_141684120 memcpy-variant, the sub_140434380/sub_1404346B0/sub_1404356E0 success-response family, sub_14047E370 error-response builder, sub_140014270/commands_response_bundle_drop cleanup) as a SEPARATE cross-module work unit -- they are shared app-wide infrastructure, not voice-specific, reversing them once benefits every command module, not just voice.",
+    "Produce dim4 (interfaces/*.md: full input/output DTO fields, defaults, error envelope) for all 37 commands -- this pass only produced request-side field names (symbol-derived, several marked 推断/inferred) for 28/29 named wrappers plus full detail for the 4 newly-resolved commands.",
+    "Produce dim6 (test/acceptance mapping) for all 37 commands.",
+    "Fix the stale 'win 1.2.1' literal in the module-attribution header template used by the dirtree-recovery script (data-hygiene, non-blocking) so future gapfill batches don't repeat it.",
+    "Consider whether the remaining macOS-only submodules (voice_permissions/overlay/watchdog/aliyun_asr::connect/serde-trait-glue -- asr/ is now resolved as present, see above) need a dedicated Windows search pass or should be recorded as a product decision (no Windows-parity needed)."
+  ]
+}

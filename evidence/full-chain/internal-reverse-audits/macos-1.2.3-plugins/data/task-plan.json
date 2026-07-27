@@ -1,0 +1,32 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "plugins",
+  "package_kind": "understand_and_classify",
+  "removed": true,
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [],
+    "forbiddenUntilStrictImplementationUse": [],
+    "consumerStartBlocked": []
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "removed_classification": {
+    "status": "removed=true (high confidence, 4/4 same-platform macOS-arm64 signals + positive control)",
+    "consumer_action": "NON-ACTION -- do not implement or migrate the AiMaMi plugins feature into the 1.2.3 baseline. There is no target in any tier because the feature is absent upstream.",
+    "why_all_tiers_empty": "A removed feature has no leaf to promote to consumerStartReady/strictImplementationUse/readyToImplement (GATE-SPEC.md). This is intentional, not an incomplete reverse.",
+    "windows_status": "independently removed=true in audits/windows-1.2.3-plugins; not inferred from this package"
+  },
+  "next_producer_steps": [
+    "None required for the presence/absence question -- it is answered (removed=true).",
+    "Optional higher-confidence only (not blocking, no consumer waiting): desugar run_0x1006f50c0.c's 5 .manage() injected-state types to prove no PluginRegistry-typed state persists internally; attach result to logic/ as supplementary evidence. Current evidence already supports the product-surface removed conclusion.",
+    "Optional: bisect the exact removal release in the 1.1.8 (present) -> 1.2.3 (absent) window if a version-provenance record is ever needed."
+  ]
+}

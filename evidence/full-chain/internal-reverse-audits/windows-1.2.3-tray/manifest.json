@@ -1,0 +1,70 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "tray",
+  "package": "windows-1.2.3-tray",
+  "created_at": "2026-07-25T00:00:00Z",
+  "producer_machine": "<host> (this session: server_health confirmed IDA MCP <host> live -- status=ok, uptime=121281s, IDA decompiler_ready=true, module=AiMaMi.1.2.3 win64.exe, idb=E:\\binary\\AiMaMi.1.2.3 win64.exe.i64 -- before any decompile call; 2 new decompile() calls made this session for named-but-uncatalogued win functions; remaining raw evidence in this package was produced by a prior session win-1.2.3-app-function-inventory-gapfill-20260724)",
+  "binary": {
+    "sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+    "sha256_note": "independently re-hashed this session via shasum -a 256 against raw/binary/AiMaMi.1.2.3 win64.exe; matches the value already on file in windows-1.2.3-accounts/manifest.json for the same release (same binary, different module scope)",
+    "binary_format": "pe",
+    "arch": "x64"
+  },
+  "scope": {
+    "backend_target_universe": "cross-platform mac codexmate_lib::commands::tray_menu::* target family (10 distinct symbol names: create_tray_menu, create_bootstrap_tray_menu, create_tray_menu_from_snapshot, append_codex_router_section, handle_tray_menu_event, refresh_tray_menu, refresh_tray_menu_with_snapshot, quota_text, load_tray_template_icon, update_tray_recording_state), used as the win-side lookup query set. Win module path per WIN-APP-FUNCTION-INVENTORY.jsonl attribution comments: src/core/voice/runtime/tray.rs (for the 2 pre-existing stripped sub_ functions) and src/lib.rs (for load_tray_template_icon, cross-platform string-signature matched). No independent win-native module enumeration beyond exact-name lookup_funcs against the mac target list was performed this session.",
+    "frontend_target_universe": "none -- confirmed 0 hits for 'tray' in raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl (131 total IPC commands enumerated, same total count as the macos-1.2.3-tray package's cross-check, i.e. windows and macOS ship the same IPC command surface). Same architecture as macOS: tray menu is native-callback-only (Tauri tray-icon + on_menu_event), never invoked via invoke(\"<command>\") from JS.",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "raw_c_files_total": 5,
+    "raw_c_files_by_source_dir": {
+      "commands/tray_menu/ida/pseudocode": 2,
+      "tray/ida/pseudocode": 2,
+      "codexmate_lib/ida/pseudocode": 1
+    },
+    "named_target_families_matched": 3,
+    "named_target_families_matched_list": [
+      "load_tray_template_icon (0x1401a26f0, cross-platform string-signature matched, decompiled prior session 2026-07-24)",
+      "create_bootstrap_tray_menu (0x1403f2350, exact-name lookup_funcs match, decompiled this session 2026-07-25)",
+      "handle_tray_menu_event (0x1403f1850, exact-name lookup_funcs match, decompiled this session 2026-07-25)"
+    ],
+    "named_target_families_not_found": 7,
+    "named_target_families_not_found_list": [
+      "create_tray_menu", "create_tray_menu_from_snapshot", "append_codex_router_section",
+      "refresh_tray_menu", "refresh_tray_menu_with_snapshot", "quota_text", "update_tray_recording_state"
+    ],
+    "unresolved_stripped_functions": 2,
+    "unresolved_stripped_functions_list": [
+      "sub_14025D570 (0x14025d570, module attribution codexmate_lib/core/voice/runtime/tray via panic-Location xref seed, confidence=high per WIN-APP-FUNCTION-INVENTORY.jsonl; body is icon-badge circle-mask pixel math (roundf/radius-squared compare, ARGB color -14276900), plausible but NOT conclusively mapped to quota_text or update_tray_recording_state)",
+      "sub_1407190E0 (0x1407190e0, module attribution codexmate_lib/core/voice/runtime/tray via call-graph propagation, confidence=medium; body is generic Rust drop-glue/refcount-decrement pattern, most likely compiler-generated destructor infrastructure rather than a named business-logic target from the mac list)"
+    ],
+    "truncated_stubs_found": 0,
+    "truncation_scan_method": "manual read of all 5 raw .c files in full this session (not marker-grep); no TRUNCATED/DECOMPILE-FAILED/chars-total markers and no unbalanced braces observed in any file (create_bootstrap_tray_menu: 13/13 balanced; handle_tray_menu_event: 30/30 balanced; both verified by direct char-count this session)",
+    "measurement_basis": "find against raw/aimami/1.2.3/windows-x64/{commands/tray_menu,tray,codexmate_lib}/ida/pseudocode/*.c this session (2026-07-25), cross-checked against WIN-APP-FUNCTION-INVENTORY.jsonl (1133-row full-app attribution set) which contains exactly 3 rows with 'tray' in module/name (the 2 pre-existing stripped functions + load_tray_template_icon), plus lookup_funcs exact-name queries against all 10 mac target names run live against IDA MCP this session"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.2.3-tray/ (mac sibling package, used as the target-name query list and as the cross-platform comparison baseline; NOT used to infer windows behavior per platformPolicy.doNotInferWindowsFromMacOS)",
+    "internal-reverse/audits/BASELINE-FINAL-1.2.3.md",
+    "internal-reverse/audits/COVERAGE-FINAL-1.2.3.md",
+    "intermediate/aimami/1.2.3/windows-x64/WIN-APP-FUNCTION-INVENTORY.jsonl (1133-row full-app win attribution set; 3 tray-module rows cross-checked this session)"
+  ],
+  "prior_version_reference": {
+    "package": "internal-reverse/audits/windows-1.0.9-tray/",
+    "status_note": "1.0.9 windows tray package declares status=accepted_full_leaf_100_windows_ida with a full IDA-based owner/reachability chain (Shell_NotifyIconW/RegisterClassW/CreateWindowExW/TrackPopupMenu/AppendMenuW). This 1.2.3 package does NOT inherit that claim: different binary, different addresses, no RULE 9 diff was run against 1.0.9 behavior this session (diff basis not established -- 1.0.9 used native win32 Shell_NotifyIcon APIs directly, 1.2.3 appears to route through Tauri's cross-platform tray-icon abstraction per the create_bootstrap_tray_menu/handle_tray_menu_event symbol names matching the mac Rust module path exactly; this is itself a notable architecture-generation difference between 1.0.9 and 1.2.3 windows tray implementations, not yet formally diffed). Treated as historical reference only, not migrated evidence."
+  },
+  "cross_platform_sibling": "internal-reverse/audits/macos-1.2.3-tray/ (10/10 named target families, 12/12 raw .c files, consumerStartReady for all 10). This windows package covers 3/10 named target families with equivalent read-in-full raw evidence; the remaining 7 mac-named targets returned 'Not found' from exact-name lookup_funcs against the windows binary this session and were not further pursued via panic-Location/call-graph attribution (RULE24 win-strip recovery methodology) -- that is out of scope for this gapfill-and-distill pass and is recorded as a producer next-step, not silently dropped.",
+  "known_residuals": [
+    "7 of 10 mac-named tray_menu target families have no resolved windows-x64 1.2.3 owner this pass: create_tray_menu, create_tray_menu_from_snapshot, append_codex_router_section, refresh_tray_menu, refresh_tray_menu_with_snapshot, quota_text, update_tray_recording_state. These may be present under different (stripped sub_XXXX) addresses not yet attributed, or may be ICF-folded/inlined into create_bootstrap_tray_menu/handle_tray_menu_event/other functions by the Windows/MSVC-vs-mac-Clang toolchain -- neither hypothesis was tested this session (would require RULE24 panic-Location two-hop xref or ≥2-caller call-graph propagation, a materially larger pass than this gapfill).",
+    "The 2 pre-existing stripped functions (sub_14025D570, sub_1407190E0) attributed to module codexmate_lib/core/voice/runtime/tray by a prior session are read and summarized in logic/, but not conclusively identity-mapped to any of the 7 missing named targets -- plausible-but-unconfirmed hypotheses are recorded, not treated as coverage.",
+    "dim4 (interface/DTO/error-envelope/side-effect boundary) not systematically extracted for the 3 named targets this session; some literal strings observed while reading (tray-bootstrap-h/-t/-s menu-item ids, tray-open-main, tray-quit, tray-account: prefix via the XOR/length-obfuscated compares in handle_tray_menu_event) but not compiled into a formal interface doc.",
+    "dim6 (test/acceptance mapping) not produced."
+  ],
+  "note": "This manifest synthesizes raw/aimami/1.2.3/windows-x64/{commands/tray_menu,tray,codexmate_lib}/ida/pseudocode/*.c (5 files total: 2 newly decompiled this session, 3 pre-existing from the 2026-07-24 win-1.2.3-app-function-inventory-gapfill session). No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md. This is an honest partial-coverage package (3/10 named targets, 30%), not a full parity claim against the macOS sibling."
+}

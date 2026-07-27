@@ -17,7 +17,7 @@ IDA MCP `server_health` was `status=ok` against the AiMaMi 1.0.9 SOT IDB:
 - input binary: `<source-location>/source-binary/AiMaMi 1.0.9_ida.app/Contents/MacOS/AiMaMi`
 - SHA-256: `1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482`
 - `auto_analysis_ready=true`
-- `hexrays_ready=true`
+- `IDA decompiler_ready=true`
 - `strings_cache_ready=true`
 
 ## Writeback

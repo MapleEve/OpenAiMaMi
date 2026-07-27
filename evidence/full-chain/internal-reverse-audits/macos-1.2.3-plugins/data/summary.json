@@ -1,0 +1,64 @@
+{
+  "schema": "c5cm.internal_reverse.audit_summary.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "plugins",
+  "package_kind": "understand_and_classify",
+  "removed": true,
+  "confidence": "high",
+  "signals_consistent": "4/4",
+  "evidence": [
+    {
+      "class": "frontend_ipc_command_enumeration",
+      "detail": "raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl 131 commands parsed; grep -in plugin = 0; 1.0.9 list_plugins/toggle_plugin/get_plugin_config/update_plugin_config all absent",
+      "hits": 0,
+      "total_commands": 131
+    },
+    {
+      "class": "frontend_page_bundle_topology",
+      "detail": "frontend/beautified/ 10 page bundles (accounts/analytics/auto-switch/maintenance/mcp/relay/sessions/settings/skills/voice), no plugins-page-*.js; settings-page-B8vywarZ.js grep 'plugin' = 0; no PluginsPage / /plugins route / pluginsRoute",
+      "hits": 0
+    },
+    {
+      "class": "backend_commands_directory_topology",
+      "detail": "raw/aimami/1.2.3/macos-arm64/commands/ 16 subdirs, none is plugins/ (vs 1.0.9 dedicated commands/plugins/ with 4 owners); backend-baseline/commands-baseline.md does not list plugins as expected-but-missing",
+      "hits": 0,
+      "total_command_subdirs": 16
+    },
+    {
+      "class": "binary_string_pool_enumeration",
+      "detail": "exact-word grep across raw tree + live IDA find_regex '(?i)plugin' on AiMaMi.i64 (module=AiMaMi, IDA decompiler_ready=true): PluginRegistry / list_plugins / toggle_plugin / get_plugin_config / update_plugin_config / plugin_info / PluginStoreSchema / plugins.json / builtin::web_tools / image_support = 0 hits. ~21 substring + 10 find_regex hits all Tauri framework/webview strings (tauri-plugin-updater/2.10.0, tauri::menu::plugin, plugin:dialog|message, InvalidPluginInitialization, etc.)",
+      "hits": 0
+    },
+    {
+      "class": "methodology_positive_control",
+      "detail": "same enumeration procedure finds codexmate_lib::core::plugins::registry::PluginRegistry in the 1.0.9 build (per sibling windows-1.2.3-plugins positive control on AiMaM 1.0.9 win64.exe; macOS 1.0.9 present-baseline = audits/macos-1.0.9-plugins) -- confirms 0-hit at 1.2.3 is a true absence, not a broken query",
+      "hits": 1
+    }
+  ],
+  "package_path": {
+    "macos_binary_sot": "raw/binary/AiMaMi 1.2.3.app",
+    "macos_thin_arm64_image": "AiMaMi.arm64.thin",
+    "macos_thin_arm64_sha256": "25d6d04e6d94c3f1e8258d2b348360b228fda4fc1c3d38b6383c84a2a8d53d21",
+    "macos_frontend_ipc_contracts": "raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl",
+    "macos_commands_dir": "raw/aimami/1.2.3/macos-arm64/commands/",
+    "macos_frontend_pages": "raw/aimami/1.2.3/macos-arm64/frontend/beautified/",
+    "macos_run_entry_pseudocode": "raw/aimami/1.2.3/macos-arm64/run/ida/pseudocode/run_0x1006f50c0.c",
+    "macos_backend_baseline": "raw/aimami/1.2.3/macos-arm64/backend-baseline/commands-baseline.md",
+    "prior_version_leaf_bundle_macos": "internal-reverse/audits/macos-1.0.9-plugins",
+    "prior_version_leaf_bundle_windows": "internal-reverse/audits/windows-1.0.9-plugins",
+    "same_version_windows_sibling": "internal-reverse/audits/windows-1.2.3-plugins",
+    "last_known_present_1_1_8": "intermediate/aimami/1.1.8/macos-arm64/_threadmodel/THREAD-MODEL.md",
+    "full_baselines_1_2_3": ["internal-reverse/audits/BASELINE-FINAL-1.2.3.md", "internal-reverse/audits/COVERAGE-FINAL-1.2.3.md"]
+  },
+  "residual_unknown": "manage()_5_calls_type_not_fully_decompiled (accepted_unknown, low priority, does not block removed=true product-surface conclusion)",
+  "gate_leaf_status": "diagnostic-only",
+  "not_strict_implementation_use": true,
+  "not_ready_to_implement": true,
+  "consumer_start_ready": false,
+  "produced_by_session": "macos-1.2.3-plugins-reduce-20260726",
+  "machine": "<host>",
+  "produced_at": "2026-07-26",
+  "reduce_note": "no new IDA/decompile/xrefs, no INDEX.jsonl append; consolidates pre-existing README.md verification + cited raw evidence + windows-1.2.3-plugins removed=true precedent"
+}

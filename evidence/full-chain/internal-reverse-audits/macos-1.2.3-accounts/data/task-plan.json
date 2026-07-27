@@ -1,0 +1,40 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "accounts",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "switch_account_and_restart_codex", "remove_accounts", "refresh_single_account_usage",
+    "export_accounts_to_file", "import_accounts_from_file", "preview_account_import",
+    "begin_chatgpt_oauth_login", "cancel_chatgpt_oauth_login"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 12 accounts-domain commands: readyToImplement blocked pending dim3 (independent call-tree closure for the 7 repository-dependent commands), dim4 (field-level interface/DTO), dim5 (Windows platform gate), and dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 12 accounts-domain commands: strictImplementationUse blocked pending the same dim3/dim4/dim5/dim6 gaps"
+    ],
+    "consumerStartBlocked": [
+      "load_snapshot: backend wrapper decompiled but frontend call-site only inferred (not confirmed) within accounts-frontend.md scope",
+      "logout: backend wrapper decompiled but no confirmed frontend call-site found within accounts-frontend.md scope",
+      "switch_account: backend command exists in shared IPC registry but no confirmed frontend call-site found within accounts-frontend.md scope; may be tray_menu-native",
+      "refresh_usage_snapshot: backend wrapper decompiled (refresh_usage_snapshot_with_retry, name mapping not fully confirmed) but no confirmed frontend call-site found within accounts-frontend.md scope"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Reverse the likely frontend homes of load_snapshot/logout/switch_account/refresh_usage_snapshot's call-sites (tray_menu native dispatch, a Settings page, or another JS chunk not yet reversed) to close dim1 for these 4 commands and potentially move them from consumerStartBlocked to consumerStartReady.",
+    "Decide whether to fold a targeted accounts-relevant subset of core::repository (Repository::switch_account/remove_accounts/logout/clean, SnapshotQuarantine::*, auto-switch orchestration -- roughly 20-25 of 99 files) into this package's own primary in-scope evidence with independently-verified pointers, closing dim3 for the 7 repository-dependent commands without relying on pure cross-reference.",
+    "Run a dim4 field-level pass over the already-decompiled core::models DTO functions for the accounts-relevant type list (this is a synthesis pass over existing pseudocode, not new IDA work).",
+    "Run a dim6 pass mapping each of the 12 accounts-domain commands to Polaris's own C5 unit/E2E test surface.",
+    "Read raw/aimami/1.2.3/windows-x64/{account_io,commands/accounts}/ to close dim5 (currently entirely Unknown for this package).",
+    "Perform the RULE9 diff-migration check against macos-1.0.9-accounts (which reached full_leaf_100_ida_accepted for 9 targets) -- requires live IDA MCP access this distillation pass did not have."
+  ]
+}

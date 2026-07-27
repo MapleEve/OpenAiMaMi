@@ -1,0 +1,39 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "maintenance",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "rebuild_registry: forbidden until dim1 (confirmed real UI trigger element) closes -- needs a deeper frontend-control-flow re-extraction or manual bundle trace beyond the current minified-static-function/element:null evidence",
+      "clean: forbidden until BOTH dim1 (same as above) AND dim2 (backend owner -- needs a live-IDA pass targeting the three candidate explanations in SYSTEM-DIFF.md: removed/renamed, ICF-folded, or unresolved sub_XXXXXXXX) close"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "rebuild_registry: additionally needs dim3 extended to an OS-syscall terminal (currently stops at the persist_registry call site), dim4 full response DTO shape extraction, and the policy-byte parameter's semantics derived",
+      "clean: needs everything from scratch once dim2 is resolved"
+    ],
+    "consumerStartBlocked": [
+      "rebuild_registry -- see gate-report.json consumerStartBlocked_commands",
+      "clean -- see gate-report.json consumerStartBlocked_commands"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true,
+    "doNotMigrateFrom109WithoutDiffConfirmedEmpty": true
+  },
+  "excluded_from_this_package": {
+    "load_snapshot": "see ../windows-1.2.3-accounts/data/task-plan.json for its authoritative consumer_gate.v1 entry (consumerStartBlocked there)"
+  },
+  "next_producer_steps": [
+    "Run a live-IDA win-native pass to resolve clean's backend owner on 1.2.3: (a) check whether the command-name string 'clean' or a symbol fragment like 'aClean' still exists in the 1.2.3 binary's string pool (it should, since the frontend still defines re(\"clean\")); (b) if found, do a direct xref to find the dispatcher/handler; (c) if the xref lands inside a large shared dispatcher (ICF-fold pattern, as seen with open_path/get_codex_router_auth_readiness in windows-1.2.3-relay), document that structurally rather than treating it as unresolved.",
+    "Re-run frontend-control-flow extraction (or manually trace the minified bundle around index-B40jKs17.js:87 columns 7642-7690) to determine whether rebuild_registry/clean have a real settings-page or maintenance-page UI trigger, or whether they are purely programmatically-invoked (e.g. called during app startup/health-check rather than by direct user action) -- the latter would be a legitimate product finding, not just an evidence gap, and would change how dim1 should be scored for background-triggered commands.",
+    "Trace rebuild_registry_with_policy's a3 (policy byte) call sites to determine what policy values are passed and under what product conditions, closing the SYSTEM-DIFF.md open question about this 1.0.9->1.2.3 signature change.",
+    "Extend rebuild_registry's call-tree from persist_registry to a confirmed OS-syscall terminal (file write), matching the 1.0.9 baseline's depth.",
+    "If/when a macos-1.2.3-maintenance package is ever produced for this exact 3-command domain, cross-check clean's backend owner resolution against macOS (per red line 8, only after independent Windows-native resolution -- not as a substitute for it)."
+  ]
+}

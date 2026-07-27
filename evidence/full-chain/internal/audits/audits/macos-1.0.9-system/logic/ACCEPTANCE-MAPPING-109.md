@@ -4,7 +4,7 @@
 Bundle: macos-1.0.9-system
 Binary SHA: 1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482
 IDA session: mcp__ida-pro-mcp-mac, idb=<source-location>/source-binary/AiMaMi 1.0.9_ida.app/Contents/MacOS/AiMaMi.i64
-IDA health: ok, hexrays_ready=true, strings_cache_size=14800
+IDA health: ok, IDA decompiler_ready=true, strings_cache_size=14800
 IDA evidence basis: fresh decompile(include_addresses:false) × 6 owners + callees + xref_query; not relying on old leaf summaries
 
 说明: 本文件记录 IDA 实证支撑的 dim6 acceptance 断言。每条断言绑定 IDA 确认的真实 DTO 字段/side-effect 字节/error 变体。执行或明确接受后可提升至 readyToImplement。
@@ -321,7 +321,7 @@ Gate note per GATE-SPEC: "acceptance mapping 已执行或被明确接受" — th
 - Session: mcp__ida-pro-mcp-mac (mac lane, single IDB)
 - binary: <source-location>/reference-artifact 1.0.9_ida.app/Contents/MacOS/AiMaMi
 - SHA verified: 1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482 ✓
-- hexrays_ready: true, auto_analysis_ready: true
+- IDA decompiler_ready: true, auto_analysis_ready: true
 - Calls made: decompile × 7 (6 owners + 1 platform impl), callees × 1 (batch), xrefs_to × 2, find_regex × 3, get_bytes × 1
 - inline IDB comments: to be written below (set_comments step)
 - idb_save: pending (end of session)

@@ -113,7 +113,7 @@ Comments appended at:
 | Gate | Status | Evidence |
 |---|---|---|
 | Owner VA located | PASS | IPC @ 0x10072c810 + core @ 0x1005e44a0 via lookup_funcs |
-| Decompile success (hexrays) | PASS | Both IPC + core decompiled; backup helper decompiled |
+| Decompile success (IDA decompiler) | PASS | Both IPC + core decompiled; backup helper decompiled |
 | Call tree depth ≥ 5 | PASS | Depth 6: IPC → core → backup → copy_dir_all → load_skill_summary → stdlib |
 | terminated_reason documented | PASS | All branches: stdlib fs / serde / allocator / panic handler leaves |
 | Side-effects enumerated | PASS | 6 side-effects documented (5 disk + 1 mutex) |

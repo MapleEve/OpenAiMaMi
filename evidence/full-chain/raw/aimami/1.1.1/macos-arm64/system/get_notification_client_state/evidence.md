@@ -3,7 +3,7 @@
 
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 **IDB**: `<来源位置>/raw/binary/AiMaMi-1.1.1-idb`
-**逆向分析 health**: status=ok, uptime=53523s, hexrays_ready=true, module=AiMaMi, auto_analysis_ready=true
+**逆向分析 health**: status=ok, uptime=53523s, IDA decompiler_ready=true, module=AiMaMi, auto_analysis_ready=true
 **Machine**: <本地机器> | **Produced**: 2026-06-17
 
 ---

@@ -4,7 +4,7 @@
 ## Binary: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi
 ## Binary SHA256: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 ## IDB: <来源位置>/raw/binary/AiMaMi-1.1.1-idb
-## 逆向分析: hexrays_ready=true, uptime=60832s at session start
+## 逆向分析: IDA decompiler_ready=true, uptime=60832s at session start
 
 ---
 

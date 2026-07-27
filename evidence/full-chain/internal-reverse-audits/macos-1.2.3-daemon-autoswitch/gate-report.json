@@ -1,0 +1,95 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "daemon-autoswitch",
+  "status": "partial_evidence_pack",
+  "updated_at": "2026-07-25",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 0,
+    "blocks_start": 13,
+    "total_canonical_commands": 13
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "mixed-and-materially-stronger-than-windows-sibling -- 5/13 commands (configure_auto_switch, set_auto_switch, load_pending_auto_switch, dismiss_pending_auto_switch, confirm_pending_auto_switch_and_restart_codex) have REAL component-level UI trace this pass: concrete button/dialog/effect, state variables, exact invoke() argument assembly, read from already-extracted page docs (accounts-frontend.md §threshold dialog + toggle; shared-index-app-frontend.md §pending-auto-switch confirmation banner 'a7'/'s7' L43429-43561). This is stronger evidentiary bar than the windows-1.2.3-daemon-autoswitch sibling's dim1 (which was wrapper-call-site-only via ipc-contracts.jsonl grep, no component read). 3/13 (run_daemon_once, load_bootstrap_state, confirm_pending_auto_switch-plain) have wrapper-registration only (ipc-contracts.jsonl hit) with NO component-level caller found in the 3 docs read this pass -- confirm_pending_auto_switch specifically raises an open dead-code-vs-not-yet-extracted question since only its ...AndRestartCodex sibling was found actually called. 5/13 (the 4 usage-refresh-watcher commands + start_auto_switch_pending_watcher) have zero ipc-contracts.jsonl hits, consistent with (but not independently re-verified against) the 1.0.9 native-thread/no-IPC pattern; grep-level caller search for these function names across the whole raw tree found no cross-file references either (a real but weak negative-evidence attempt, not equivalent to IDA xrefs_to). None of the 13 satisfy the FULL renderSurfaceReady+uiCallEntryReady bar to a degree this package is prepared to certify without a live-IDA or fuller-frontend-extraction follow-up.",
+    "dim2_backend_owner_pseudocode": "strong-for-9, absent-for-1, ambiguous-for-3 -- 9/13 canonical commands (load_bootstrap_state, note_usage_refresh_activity, start_usage_refresh_watcher, update_usage_refresh_schedule, start_auto_switch_pending_watcher, load_pending_auto_switch, dismiss_pending_auto_switch, configure_auto_switch, set_auto_switch) have exact-command-name-matched, non-truncated, brace-balanced Hex-Rays pseudocode (verified this pass via python brace-balance + TRUNCATED-marker scan across all 55 auto_switch-grep-matched files plus these 4 additional daemon-command matches, 0 flagged). schedule_full_runtime_refresh has ZERO raw .c anywhere in the macOS 1.2.3 tree (grep -rl confirmed, whole-tree not just commands/). 3/13 (run_daemon_once, confirm_pending_auto_switch, confirm_pending_auto_switch_and_restart_codex) have no exact-name file; each has a plausible but IDENTITY-UNCONFIRMED name-adjacent candidate (run_daemon_once_blocking; confirm_pending_auto_switch_async; perform_switch_payload_with_restart respectively) -- see manifest.json known_residuals for full reasoning per candidate.",
+    "dim3_call_tree_to_leaf": "not_produced_this_pass -- no call-tree-to-leaf catalog produced for any of the 13 targets this pass; this was a reduce/read-only pass, no IDA MCP callees/xrefs_to calls made. The 1.0.9 baseline (gate-report.json) DID close this dimension for all 13 (readyToImplement=true) but that evidence is 1.0.9-specific and this pass did not re-verify it against 1.2.3, especially given 8 functions in this domain are tagged 1.2.3 NEW-delta (genuinely new code, no 1.0.9 call-tree can cover it).",
+    "dim4_interface_dto_boundary": "not-closed -- no systematic DTO/error-envelope/side-effect extraction performed this pass for any target. The 1.0.9 baseline has closed dim4 for all 13 (with concrete struct/byte-size findings like AutoSwitchConfig_0x78, PendingAutoSwitchPayload discriminants, DaemonRunPayload ~168 bytes) documented in ../macos-1.0.9-daemon-autoswitch/interfaces/{autoswitch-commands.md,daemon-commands.md} -- these are USEFUL STARTING-POINT REFERENCES for a future dim4 pass on 1.2.3 but are NOT re-verified against the 1.2.3 binary and must NOT be treated as 1.2.3 dim4 evidence, especially for the 8 NEW-delta functions which by definition did not exist in the 1.0.9 binary this reference package analyzed.",
+    "dim5_platform_gate": "closed-for-existence-of-raw-files-on-both-platforms, open-for-parity -- both macOS (this package) and Windows (../windows-1.2.3-daemon-autoswitch/) independently produced raw evidence from their own respective 1.2.3 binaries this development cycle; per red line 8/RULE9 no cross-platform inference was performed. macOS's raw-evidence coverage for this domain (9/13 exact clean matches, 0 truncated) is materially STRONGER than Windows's for the same 13-command canonical universe (Windows: 6 exact clean + 1 decompile-failed + 1 missing-under-canonical-name + 5 zero, per ../windows-1.2.3-daemon-autoswitch/manifest.json coverage block) -- this is a genuine, evidenced platform-coverage asymmetry, not a claim of parity.",
+    "dim6_test_acceptance_mapping": "not-closed -- no acceptance mapping produced this pass. The 1.0.9 baseline has logic/ACCEPTANCE-MAPPING-109.md closing dim6 for all 13, but per the same NEW-delta caveat as dim4, this is a reference only, not re-derived or re-verified against 1.2.3 behavior."
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "consumerStartReady_commands": [],
+  "blocks_start_commands": [
+    "run_daemon_once", "load_bootstrap_state", "note_usage_refresh_activity", "schedule_full_runtime_refresh",
+    "start_usage_refresh_watcher", "update_usage_refresh_schedule", "start_auto_switch_pending_watcher",
+    "load_pending_auto_switch", "confirm_pending_auto_switch", "dismiss_pending_auto_switch",
+    "confirm_pending_auto_switch_and_restart_codex", "configure_auto_switch", "set_auto_switch"
+  ],
+  "blocked_commands": [
+    {
+      "command": "schedule_full_runtime_refresh",
+      "reason": "Zero raw .c evidence anywhere in the macOS 1.2.3 raw tree (whole-tree grep -rl confirmed this pass, not a commands/-only scoping miss). No breakthrough attempted (no live IDA MCP access in a reduce-only pass) -- this is blocks_start, NOT accepted_unknown (red line 13 requires an attempted breakthrough before accepted_unknown can be claimed; this pass's grep-level search is a real but weak attempt that did not qualify as a genuine-ceiling breakthrough)."
+    },
+    {
+      "command": "run_daemon_once",
+      "reason": "Frontend confirms the command is registered (ipc-contracts.jsonl 1 hit, wrapper=runDaemonOnce) but no exact-name backend .c exists and no component-level UI caller was found in the 3 frontend page docs read this pass. Candidate run_daemon_once_blocking (0x1007c8fe0, tagged 1.2.3 NEW-delta) is plausible but identity-unconfirmed (no byte-signature/xref cross-check performed)."
+    },
+    {
+      "command": "confirm_pending_auto_switch",
+      "reason": "Frontend facade registers the wrapper (ipc-contracts.jsonl 1 hit) but the only traced caller in shared-index-app-frontend.md's pending-auto-switch banner flow uses the ...AndRestartCodex sibling instead -- open question whether this plain variant is dead/unused code in 1.2.3 or invoked from an unextracted surface. Backend candidate confirm_pending_auto_switch_async (0x1000eac80) is name-adjacent but unconfirmed."
+    },
+    {
+      "command": "confirm_pending_auto_switch_and_restart_codex",
+      "reason": "Frontend evidence is STRONG (real confirmation banner component, exact invoke() literal string confirmed in shared-index-app-frontend.md). No exact-name backend .c exists anywhere in commands/. Candidate perform_switch_payload_with_restart (0x1006a1800, commands::accounts, tagged 1.2.3 NEW-delta, genuinely fully decompiled via large-body paging -- not a truncation stub) is plausible by name/timing/changelog proximity but identity is UNCONFIRMED (different Rust command name, different commands:: submodule, no byte-signature or xref cross-check performed). The windows-1.2.3-daemon-autoswitch sibling independently hit the exact same open question with a DIFFERENT candidate name (switch_account_and_restart_codex) that is itself decompile-failed on Windows -- the two platforms have not converged."
+    }
+  ],
+  "unknowns": [
+    {
+      "item": "5 zero-frontend-hit commands (note_usage_refresh_activity/schedule_full_runtime_refresh/start_usage_refresh_watcher/update_usage_refresh_schedule/start_auto_switch_pending_watcher): dim1 trigger surface at 1.2.3",
+      "class": "product_decision",
+      "reason": "ipc-contracts.jsonl shows zero hits for all 5, matching the exact absence-from-frontend pattern the 1.0.9 macos-daemon-autoswitch baseline independently accepted via a different dim1 category (native-callback-bootstrap-spawn substitute, verified via live IDA xrefs_to at that time). This pass only re-checked the frontend-existence signal (grep) plus a weak whole-tree function-name cross-reference grep (also negative, i.e. no cross-file caller found) -- neither qualifies as an IDA xrefs_to re-verification of the actual bootstrap call site at 1.2.3. Recorded Unknown/consistent-with-prior-pattern, NOT confirmed-accepted-at-1.2.3."
+    },
+    {
+      "item": "confirm_pending_auto_switch (plain variant) possible dead code in 1.2.3 frontend",
+      "class": "product_decision",
+      "reason": "Facade registers it, but only the ...AndRestartCodex sibling was found actually called from any component in the 3 frontend docs read this pass. Not resolved -- could be dead code, could be called from an unextracted surface (e.g. a settings/manual-trigger path not covered by shared-index-app-frontend.md/accounts-frontend.md/analytics-maintenance-autoswitch-frontend.md)."
+    },
+    {
+      "item": "confirm_pending_auto_switch_and_restart_codex <-> perform_switch_payload_with_restart identity",
+      "class": "blocks_start",
+      "reason": "see blocked_commands above; plausible but unconfirmed, and the two platforms (mac/win) have each independently found a DIFFERENT, ALSO-unconfirmed candidate for this same command"
+    },
+    {
+      "item": "run_daemon_once <-> run_daemon_once_blocking identity",
+      "class": "blocks_start",
+      "reason": "see blocked_commands above"
+    },
+    {
+      "item": "dim3 call-tree-to-leaf, dim4 interface/DTO, dim6 test/acceptance mapping for all 13 targets at 1.2.3",
+      "class": "blocks_start",
+      "reason": "not produced this pass -- reduce/read-only task scope, no new IDA analysis performed. 1.0.9 baseline references exist (see manifest.json / logic/ pointers) but are NOT treated as 1.2.3 evidence, especially for the 8 functions confirmed 1.2.3 NEW-delta which by definition postdate the 1.0.9 analysis."
+    },
+    {
+      "item": "8 functions tagged 1.2.3 NEW-delta in this domain (real behavior change vs 1.2.2, consistent with 'account switching stability' changelog item)",
+      "class": "blocks_start",
+      "reason": "raw pseudocode exists and is genuinely non-truncated for 7/8 of these (all except confirm_pending_auto_switch_and_restart_codex's own candidate ambiguity is separate); however no dim3/dim4/dim6 synthesis has been performed on this new code this pass -- flagged as the single most product-relevant next-step target since it represents genuinely new 1.2.3 behavior, not stale carried-forward baseline"
+    }
+  ],
+  "notes": [
+    "This gate-report intentionally keeps ALL 13 gate flags at blocks_start (consumerStartReady=0/13), deliberately mirroring the same-day, same-module windows-1.2.3-daemon-autoswitch sibling's conservative reading of RULE7's literal 9-sub-dimension consumerStartReady bar (renderSurfaceReady/uiCallEntryReady/dtoBoundaryReady/happyPathReady/boundaryPathReady/sideEffectReady/frontendConsumptionReady/acceptanceDraftReady/platformScopeDeclared) -- even though this package's dim1 evidence is independently STRONGER for 5 commands (real component trace vs windows' wrapper-call-site-only), dtoBoundaryReady/boundaryPathReady/sideEffectReady/acceptanceDraftReady remain untouched this pass for every command, which the windows sibling's own reviews/CLAUDE.md treated as gate-blocking regardless of dim1/dim2 strength. This is a deliberate cross-platform-consistency choice, not an oversight; a different, more liberal reading of RULE7 exists elsewhere in this repo (see ../macos-1.2.3-relay/gate-report.json, which granted consumerStartReady to 23/23 commands on dim1(wrapper)+dim2(strong) alone) -- this package follows the sibling module's stricter precedent instead, because same-module cross-platform consistency was judged more important than matching a different module's looser bar.",
+    "macOS raw-evidence coverage for this domain (9/13 exact clean pseudocode matches, 0 truncated stubs among 55+4 scoped files) is materially stronger than the windows-1.2.3-daemon-autoswitch sibling's (6/13 exact clean + 1 decompile-failed + 1 missing + 5 zero). This package explicitly records that asymmetry rather than downgrading macOS evidence to match Windows, per red line 8 (platform evidence must not be inferred cross-platform, but also must not be artificially suppressed to force false parity).",
+    "The 1.0.9 macOS baseline (../macos-1.0.9-daemon-autoswitch/) achieved readyToImplement=true/full_leaf_100=true for all 13 commands in this exact canonical universe. This package does NOT inherit that gate tier forward, because 8 functions in the 1.2.3 raw evidence are genuinely tagged NEW-delta (did not exist at 1.0.9) and the remaining baseline-same-set functions have not been independently re-verified against the 1.2.3 binary SHA this pass -- per RULE9, migrated_no_behavior_diff requires a diff basis proving NO change, which this domain explicitly does not have (real changes are confirmed to exist).",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue (all three tiers empty; everything routed to reverseRequiredQueues) and next_producer_steps."
+  ]
+}

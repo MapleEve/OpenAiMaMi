@@ -1,0 +1,76 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "skills",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-24",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 6,
+    "blocked": 0,
+    "total_commands": 6
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "strong -- SkillsPage (skills-page-BwPTc5r0.js, component oe()/SkillsPage, L87-399) full component/state/hook tree reversed in raw/aimami/1.2.3/macos-arm64/frontend/pages/mcp-sessions-settings-skills-frontend.md L187-270: installed/backups tab switch with lazy-load query, import via native directory picker + import_skill, remove with AlertDialog confirm, restore with NO confirm dialog (asymmetric UX vs remove/delete, both confirmed present), delete-backup with AlertDialog confirm; all 6 invoke() command names cross-checked 1:1 against ipc-contracts.jsonl (true_gaps=0)",
+    "dim2_backend_owner_pseudocode": "strong -- 21/21 real-named decompiled functions in codexmate_lib::core::skills (single-file module src/core/skills.rs), 0 truncated stubs, 0 sub_XXXX placeholders on macOS. commands::skills::* has genuinely zero standalone backend symbols (confirmed by INDEX.jsonl producer note: inlined into async dispatch, only literal text survives inside drop_in_place<tokio::...BlockingTask> shims) -- this is NOT a coverage gap, it is the correct owner resolution (core::skills::<name> IS the real body for invoke('<name>'))",
+    "dim3_call_tree_to_leaf": "strong-narrative, not standalone-artifact -- every one of the 21 read functions' control flow was traced by direct read to a real implementation leaf (std::fs::DirBuilder::create, std::sys::fs::rename, std::sys::fs::remove_dir_all, std::sys::fs::copy, std::fs::read_dir, std::fs::read_to_string, std::fs::write, std::sys::fs::metadata/symlink_metadata); no function terminated at a wrapper or drop_in_place-only edge. However no standalone per-command call-tree jsonl/document was produced this pass (same gap class as the relay sibling package) -- the chains exist only as logic/FULL-CHAIN-1.2.3.md prose, not a machine-checkable artifact",
+    "dim4_interface_dto_boundary": "mostly-closed for 2 of 3 DTOs, open for the 3rd -- SkillBackupMetadata's 6 fields are byte-confirmed via _..deserialize..__FieldVisitor::visit_str (0x100377d20): backupID, skillID, name, title, relativePath, createdAt. InstalledSkillSummary's 8 fields are ALSO byte-confirmed via its own FieldVisitor::visit_str (0x100378900, in core::models not core::skills): id, name, title, summary, relativePath, directoryPath, skillFilePath, updatedAt. SkillListPayload has only a trivial Visitor::expecting() stub decompiled this pass (0x100374400) -- its FieldVisitor::visit_str was not among the files produced, and its actual call site was not located (load_installed_skills's own Ok-arm builds a raw Vec directly, not this wrapper), so SkillListPayload's shape and even its usage context remain genuinely Unknown. Error-envelope shape for the 6 skills commands was observed ad hoc during pseudocode reading (Result-tag discriminants of 2=Err/11=Ok/... and hard string literals like 'Directory must contain SKILL.md', 'Skill source must not be a symbolic link', 'Skill backup contains an invalid relative path', 'Skill mutation lock is poisoned', 'Invalid skill backup id', 'Backup corrupted', 'Published skill failed validation') but was not extracted into a standalone interfaces/ error-envelope table this pass",
+    "dim5_platform_gate": "NOT closed -- macOS independently strong (21/21); Windows has only 6/21-equivalent .c files on disk and only 2 (backup_skill_directory_0, publish_staged_skill) carry confirmed cross-platform name/behavior matches. The remaining 19 macOS functions (including all 6 command owners except backup_skill_directory's caller-adjacent context) have zero confirmed Windows evidence. Do not extrapolate macOS behavior onto Windows for any of the 19 unconfirmed functions.",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping has been produced for 1.2.3 skills leaves this pass"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim3 (no standalone call-tree artifact), dim4 (1 of 3 DTOs -- SkillListPayload -- unconfirmed at field level), dim5 (Windows not closed), and dim6 (test/acceptance mapping not produced) are all open; per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification, strong macOS pseudocode completeness (dim2) alone does not promote target-level readiness",
+  "consumerStartReady_commands": [
+    "import_skill", "load_installed_skills", "load_skill_backups",
+    "remove_skill", "restore_skill_backup", "delete_skill_backup"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady + uiCallEntryReady satisfied via mcp-sessions-settings-skills-frontend.md SkillsPage section (component tree, query keys, mutation handlers, all 6 invoke names confirmed); happyPathReady + backend owner satisfied via 21/21 real-named decompiled core::skills functions with fs-syscall-level leaf termination traced for every command's call chain (import_skill: validate source -> stage via UUID temp dir + recursive copy -> validate staged SKILL.md -> back up any existing target (reason 'replace') -> atomic rename-swap publish; remove_skill: lock -> find by source path -> ALWAYS back up (reason 'remove') before remove_dir_all -> reload list; restore_skill_backup: resolve+validate backup id (symlink-escape guard) -> read+parse metadata.json -> back up currently-installed target (reason 'restore-rollback') if present -> stage backup content -> publish over target; delete_skill_backup: resolve+validate id -> is_regular_directory guard -> remove_dir_all -> reload backups list); dtoBoundaryReady MOSTLY-CLOSED (SkillBackupMetadata 6 fields + InstalledSkillSummary 8 fields both byte-confirmed via FieldVisitor::visit_str; only SkillListPayload remains open -- consumer must treat SkillListPayload's field shape and even its call site as unconfirmed); boundaryPathReady/sideEffectReady PARTIAL (error-string literals observed ad hoc, not a closed error-envelope table); acceptanceDraftReady NOT produced; platformScopeDeclared YES (macOS-only strong evidence; Windows explicitly Unknown per-function, not extrapolated)",
+  "unknowns": [
+    {
+      "item": "SkillListPayload field-level shape",
+      "class": "blocks_start",
+      "reason": "only a Visitor::expecting() stub decompiled (0x100374400); FieldVisitor::visit_str byte-matcher not among the files produced. Also Unknown which of the 6 skills commands (if any) actually returns this wrapper type vs a bare Vec, since load_installed_skills's own Ok-arm builds a raw Vec directly with no wrapper struct construction observed in its pseudocode -- SkillListPayload's actual call site was not located this pass"
+    },
+    {
+      "item": "Windows-side identity of 4 unresolved skills functions (sub_1408A4BA0, sub_140AD6680, sub_140B0FD50, sub_1414860D0)",
+      "class": "accepted_unknown",
+      "reason": "module-attributed only (panic-Location xref / call-graph propagation, per file header); call-site position in the 2 named functions is suggestive of StagedDirectory::drop / load_skill_summary-equivalent roles but this is inference, not a confirmed symbol or byte-signature match -- recorded as accepted_unknown (tool-limitation-adjacent: distillation pass did not connect to IDA to attempt live cross-reference), not extrapolated as fact"
+    },
+    {
+      "item": "the other ~19 of 21 macOS core::skills functions on Windows (copy_dir_all, stage_skill_directory, lock_skill_mutations, resolve_skill_target, resolve_backup_path, is_regular_directory, scan_skills_recursive, load_skill_summary, remove_skill, restore_skill_backup, delete_skill_backup, load_skill_backups, load_installed_skills, import_skill + 2 closures + StagedDirectory::drop + 2 SkillBackupMetadata deserialize glue fns)",
+      "class": "blocks_start",
+      "reason": "no Windows .c file exists for these at all in raw/aimami/1.2.3/windows-x64/skills/ (only 6 files total on disk, 2 of which are the 2 confirmed above) -- genuinely absent evidence, not unexamined but genuinely not-yet-produced by any prior session either"
+    },
+    {
+      "item": "dim3 standalone call-tree artifact",
+      "class": "blocks_start",
+      "reason": "leaves were traced by direct pseudocode read this pass and are narrated in logic/FULL-CHAIN-1.2.3.md, but no separate call-trees/*.jsonl was produced -- readyToImplement/strictImplementationUse blocked on this until closed"
+    },
+    {
+      "item": "dim6 test/acceptance mapping",
+      "class": "blocks_start",
+      "reason": "not produced this pass; readyToImplement/strictImplementationUse blocked on this until closed"
+    },
+    {
+      "item": "angle-C semantic orphan scan method quality",
+      "class": "accepted_unknown",
+      "reason": "performed as a text grep for the substring 'skill' across raw/aimami/1.2.3/macos-arm64 (excluding core/skills and windows-x64/skills) rather than a live IDA export_funcs() semantic scan -- no IDA connection was used in this distillation pass. The grep surfaced 3 core/models DTO glue files (already classified above) and expected framework-dispatch/generic noise (ipc_dispatch_*.c command-string tables, 1 relay false-positive from an unrelated 'model' hit) with no additional truly_undone orphan found, but a grep-based scan cannot rule out ICF-folded or string-pool-invisible functions the way a live export_funcs() scan can (per SKILL.md red line 15 / cookbook §1 angle-C caveat) -- recorded as accepted_unknown (weaker-evidence-class), not a clean pass"
+    }
+  ],
+  "notes": [
+    "Backend decompile completeness (dim2) for 1.2.3 macOS skills is complete at the file level: 21/21 real-named functions, 0 truncation, 0 sub_XXXX. This is evidence coverage; per OUTPUT-SPEC.md historical-number caveat it is NOT by itself full_leaf_100 or implementation-ready.",
+    "This package intentionally does not claim strictImplementationUse or readyToImplement for any of the 6 commands: dim3 (no standalone artifact), dim4 (2/3 DTOs open), dim5 (Windows not closed), and dim6 (not started) are all genuinely open per the dim_status detail above.",
+    "Cross-version continuity: REVERSE-STATUS.md history (1.0.9->1.1.1->1.1.8) records the skills command family as largely 'same-set' (load_installed_skills/load_skill_backups/remove_skill/restore_skill_backup/delete_skill_backup all confirmed byte-identical or near-identical call chains across those 3 prior versions), with 2 confirmed deltas along the way: (a) a new Path::parent + DirBuilder::create(mode=0o777,recursive=true) mkdir-p hardening step inserted immediately before restore_skill_backup's backup/copy sequence (added between 1.0.9 and 1.1.8, confirmed still present in 1.2.3's restore_skill_backup pseudocode read this pass), and (b) an extra std::sys::fs::metadata guard observed in remove_skill's chain at 1.1.8 not confirmable against 1.0.9's non-exhaustive terminal-callee summary. This 1.2.3 package's own read of the 21 functions did not attempt a byte-level diff against 1.1.8 -- the 'same-set' file-header comments (`// ... | 基线 same-set`) on every 1.2.3 .c file are the producing session's own classification, reused here, not independently re-verified this pass.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

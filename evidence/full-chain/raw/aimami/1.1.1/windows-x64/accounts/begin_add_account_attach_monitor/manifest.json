@@ -14,7 +14,7 @@
   "source_binary": "AiMaMi 1.1.1 win64.exe",
   "source_binary_sha256": "see_INDEX.jsonl_key_aimami/1.1.1/windows-x64/binary",
   "idb_path": "<本地路径>",
-  "hexrays_ready": true,
+  "IDA decompiler_ready": true,
   "idb_save": "ok",
   "imagebase": "0x140000000",
   "handler_va": "0x140013A60",
@@ -31,7 +31,7 @@
   "ida_live_gate": {
     "status": "ok",
     "uptime_sec": 49144,
-    "hexrays_ready": true,
+    "IDA decompiler_ready": true,
     "module": "AiMaMi 1.1.1 win64.exe",
     "checked_at_session_start": true
   },
@@ -203,7 +203,7 @@
   ],
   "gate_leaf": {
     "dim1": "pending_frontend_ccf",
-    "dim2": "accepted — begin_add_account_attach_monitor_handler @ 0x140013A60, non-failed decompile, source=AiMaMi 1.1.1 win64.exe, PE stripped, hexrays_ready=true",
+    "dim2": "accepted — begin_add_account_attach_monitor_handler @ 0x140013A60, non-failed decompile, source=AiMaMi 1.1.1 win64.exe, PE stripped, IDA decompiler_ready=true",
     "dim3": "accepted — call tree depth 5, terminates at fs::write (persist_registry, quota_store::save), schtasks.exe child process (Windows)",
     "dim4": "accepted — arg_keys=[], response_type=CoreEnvelope<CoreSnapshotPayload>, codex_path@+68 Option<String> sentinel=0x8000000000000000, usage_refresh_interval@+80 i32, account stride 360B, provider stride 168B, error envelopes: CURRENT_AUTH_SYNC_FAILED + LEGACY_QUOTA_MIGRATION_FAILED",
     "dim5": "accepted — windows-x64 independent evidence. delta vs macOS: schtask check, CloseHandle, WakeByAddressSingle, _InterlockedDecrement64. NOT inferred from macOS.",

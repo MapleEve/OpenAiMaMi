@@ -1,0 +1,74 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "maintenance",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-25",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 2,
+    "blocked": 1,
+    "total_commands": 3
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "uneven across the 3 leaves -- clean: pass (confirmed real UI action card in MaintenancePage, analytics-maintenance-autoswitch-frontend.md §2.3 item 4, onAction->useMutation->clean()->full invalidateQueries, response fields echoed in toast); load_snapshot: partial (frontend-control-flow.jsonl has a real guarded wrapper-callsite Ee.loadSnapshot(!1,x), but the top-level UI element is only inferred via accounts-frontend.md's explicitly-flagged '推断' refreshLive prop-chain reasoning, not confirmed); rebuild_registry: missing (frontend-control-flow.jsonl only has a bare wrapper-definition entry with element:null; no page-narrative doc traces any UI element to rebuildRegistry(), it is absent from MaintenancePage's 7-item action-card list)",
+    "dim2_backend_owner_pseudocode": "strong for all 3 -- commands/system/rebuild_registry_0x1007c7fb0.c (143 lines) + commands/system/clean_0x1007cd710.c (139 lines) + commands/accounts/load_snapshot_0x1006ffc90.c (146 lines) command wrappers, plus core/repository/rebuild_registry_with_policy_0x100a6a890.c (2132 lines) + core/repository/clean_0x100a74760.c (618 lines) + core/repository/load_snapshot_local_0x100a5c1d0.c (96 lines) core owners, all 6 files read this pass, 0 truncation markers, real bodies with mutex-lock/CoreError-handling/return logic visible",
+    "dim3_call_tree_to_leaf": "partial -- immediate core-layer owner confirmed with real logic for all 3, but a systematic callees()/xrefs_to()-driven reduction to fs/registry/persistence terminal leaves was NOT performed this pass; 8 downstream core/repository files (persist_registry/load_registry/load_registry_for_mutation/carry_over_registry_state/live_snapshot_path_for_rebuild/commit_and_purge/rollback/stage) were identified as candidates by name-pattern + 1.0.9 call-tree-shape analogy only, existence confirmed on disk, reachability not independently re-verified",
+    "dim4_interface_dto_boundary": "partial -- clean has response field names from frontend toast echo (authBackupsRemoved/registryBackupsRemoved/staleEntriesRemoved), which differ in naming from the 1.0.9-confirmed CleanResult{deleted_sessions,deleted_intermediate,registry_delta} (real DTO-shape delta signal, not yet backend-byte-confirmed for 1.2.3); load_snapshot has confirmed request params (localOnly, forceMetadata per ipc-contracts.jsonl argKeys) but response payload shape not re-extracted for 1.2.3; rebuild_registry has no confirmed request or response DTO field names for 1.2.3 at all",
+    "dim5_platform_gate": "macOS-only, declared -- this package covers macos-arm64 only; windows-1.2.3-maintenance sibling package exists (produced same day) but is NOT consumed here per platformPolicy.doNotInferWindowsFromMacOS; Windows parity for this macOS conclusion is Unknown by design",
+    "dim6_test_acceptance_mapping": "missing for all 3 leaves -- C5 implementation-side work per GATE-SPEC.md dim6 definition, not reversible from binary"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim3 (systematic call-tree-to-leaf reduction) and dim4 (interface/DTO/error-envelope extraction) are not closed for any of the 3 leaves this pass; per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification, a confirmed core-owner pseudocode body (dim2) alone does not promote target-level readiness",
+  "consumerStartReady_commands": ["clean", "load_snapshot"],
+  "consumerStartReady_basis": "clean: renderSurfaceReady + uiCallEntryReady satisfied via analytics-maintenance-autoswitch-frontend.md confirmed action-card + onAction chain; happyPathReady satisfied via commands::system::clean -> core::repository::Repository::clean confirmed non-stub bodies. load_snapshot: uiCallEntryReady satisfied at the wrapper/invoke-command/params level (Ee.loadSnapshot guarded callsite + confirmed argKeys) even though the exact top UI element is inferred not confirmed; happyPathReady satisfied via commands::accounts::load_snapshot closure -> core::repository::Repository::load_snapshot_local confirmed non-stub bodies. Both: dtoBoundaryReady/boundaryPathReady/sideEffectReady/acceptanceDraftReady NOT independently produced this pass -- consumer must still derive DTO shape and side-effect boundary from pseudocode rather than treat this package as a closed interface spec.",
+  "consumerStartBlocked_commands": ["rebuild_registry"],
+  "consumerStartBlocked_reason": "uiCallEntryReady is NOT satisfied -- no UI element, button, menu, or even a calling wrapper function beyond the bare command-facade definition has been located in currently-landed 1.2.3 raw evidence for rebuild_registry. Backend dim2 evidence is in fact the strongest of the 3 leaves (2132-line core body, header-annotated as a genuine new-vs-1.2.2 policy variant), but per GATE-SPEC.md Gate 1 this alone cannot satisfy consumerStartReady without a frontend call-entry. This is recorded as a real open gap (blocks_start), not accepted_unknown.",
+  "unknowns": [
+    {
+      "item": "rebuild_registry UI trigger element (button/menu/card)",
+      "class": "blocks_start",
+      "reason": "frontend-control-flow.jsonl only has a wrapper-definition entry (element:null); not present in MaintenancePage's 7-item action-card list or any other read frontend page doc; genuine gap in currently-landed 1.2.3 raw, not examined-and-rejected"
+    },
+    {
+      "item": "rebuild_registry_with_policy's 2 new policy parameters (a3:int, a4:__int64, called with literal 0,0)",
+      "class": "blocks_start",
+      "reason": "existence and call-site confirmed via header annotation ('1.2.3 NEW-delta ... vs 1.2.2 新增') and wrapper call read this pass; semantics not derived -- would require reading the full 2132-line core body, out of scope for this read-only distillation pass"
+    },
+    {
+      "item": "load_snapshot top-level UI element",
+      "class": "accepted_unknown",
+      "reason": "invoke command, params, and a guarded wrapper-callsite chain (Ee.loadSnapshot(!1,x) from function c) are confirmed; only the outermost React button/effect that calls into this chain is inferred (accounts-frontend.md explicitly flags this as '推断') rather than directly observed -- does not block happyPathReady since the command/args/owner chain is otherwise solid"
+    },
+    {
+      "item": "clean response DTO field names vs 1.0.9 (authBackupsRemoved/registryBackupsRemoved/staleEntriesRemoved vs deleted_sessions/deleted_intermediate/registry_delta)",
+      "class": "accepted_unknown",
+      "reason": "frontend-side field names are confirmed via toast-echo narrative; whether this reflects a real 1.2.3 backend DTO rename or the 1.0.9 package's field names were themselves inferred/approximate was not independently re-verified against the current backend struct this pass -- recorded as a diff signal for logic/DELTA-LOGIC-1.2.3.md, not resolved"
+    },
+    {
+      "item": "8 candidate downstream core/repository call-tree files (persist_registry etc.) reachability from clean/rebuild_registry_with_policy",
+      "class": "blocks_start",
+      "reason": "not independently traced via callees()/xrefs_to() this pass; candidate-only by naming-pattern analogy to 1.0.9's documented call-tree shape"
+    },
+    {
+      "item": "Windows platform parity",
+      "class": "product_decision",
+      "reason": "windows-1.2.3-maintenance sibling exists independently (same day); per platformPolicy.doNotInferWindowsFromMacOS this macOS package does not consume or assert against it"
+    }
+  ],
+  "notes": [
+    "This is a partial, honestly-graded conclusion package, not an all-or-nothing accept/reject: clean and load_snapshot reach consumerStartReady on the strength of confirmed dim1+dim2 evidence even though dim3/dim4 remain partial; rebuild_registry is held at consumerStartBlocked specifically because dim1 (UI call entry) has zero confirming evidence in currently-landed raw, despite having the strongest dim2 (backend) evidence of the three -- per-leaf independence rather than cluster-wide accept/reject.",
+    "A real cross-version diff signal was found (not migrated from 1.0.9): rebuild_registry's core owner function was renamed/extended from Repository::rebuild_registry (1.0.9) to Repository::rebuild_registry_with_policy (1.2.3, header-annotated new-vs-1.2.2) with 2 added parameters of undetermined semantics. clean and load_snapshot_local core bodies both carry a '基线 same-set' header annotation at 1.2.3, consistent with (but not proof of) no core-logic diff vs prior versions -- see logic/DELTA-LOGIC-1.2.3.md.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

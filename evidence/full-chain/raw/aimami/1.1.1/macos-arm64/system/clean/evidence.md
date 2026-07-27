@@ -5,7 +5,7 @@ machine: <本地机器>
 produced_at: 2026-06-16
 binary: AiMaMi 1.1.1 universal (macOS ARM64)
 source_binary_sha256: (IDB path: <来源位置>/raw/binary/AiMaMi-1.1.1-idb)
-ida_hexrays_ready: true
+IDA decompiler_ready: true
 ida_uptime_sec: 22325
 module: codexmate_lib::commands::system
 

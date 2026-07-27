@@ -1,0 +1,48 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "bootstrap",
+  "package": "macos-1.2.3-bootstrap",
+  "created_at": "2026-07-25T00:00:00Z",
+  "producer_machine": "<host>",
+  "session": "mac-1.2.3-bootstrap-triage-20260725",
+  "binary": {
+    "sha256": "25d6d04e6d94c3f1e8258d2b348360b228fda4fc1c3d38b6383c84a2a8d53d21",
+    "binary_format": "macho",
+    "arch": "arm64"
+  },
+  "scope": {
+    "task_type": "triage_and_reduce",
+    "input": "89 unclassified generic run_0x<VA>.c pseudocode files in raw/aimami/1.2.3/macos-arm64/run/ida/pseudocode/ (produced by wf-aimami123-delta-20260721 baseline decompile, never RULE8-reduced into a canonical module bundle)",
+    "task_boundary": "read every function body, classify ownership by call-target module; NOT a full leaf-100 deep reverse of the bootstrap sequence (no new callees/xrefs tracing beyond the 89 input files; no new IDA decompile performed this session)",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "raw_files_triaged": 89,
+    "classified_bootstrap_leaves": 4,
+    "classified_multi_target_non_bootstrap": 2,
+    "unresolved_by_triage": 3,
+    "classified_owned_by_other_module": 80,
+    "accounting_check": "4+2+3+80=89, 100% accounted for",
+    "measurement_basis": "grep -oE codexmate_lib::... call-target extraction per file (deduped) + full read of the 1 non-closure top-level run() function + full/targeted read of the 2 multi-target closures + spot-read of representative single-target closures to confirm the call-target module attribution pattern; ipc-contracts.jsonl (131 commands) cross-checked to confirm load_bootstrap_state/dismiss_pending_auto_switch/load_pending_auto_switch are real registered Tauri commands, not guessed names"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/BASELINE-FINAL-1.2.3.md",
+    "internal-reverse/audits/COVERAGE-FINAL-1.2.3.md",
+    "internal-reverse/audits/macos-1.0.9-bootstrap/ (comparison baseline, referenced not migrated)"
+  ],
+  "cross_platform_sibling": "none produced this session (windows-1.2.3-bootstrap not attempted)",
+  "known_residuals": [
+    "1.0.9 macOS bootstrap package had independent boot_spawn_threads (background watcher thread spawn) and managed_state_registry leaves; no standalone function among the 89 triaged files matches 'spawn a long-lived watcher thread' as its own function -- the only spawn found (inside app_run_entry) is a one-shot Context-construction thread. managed_state registration calls are present but inlined into app_run_entry rather than being separate functions in this build. Recorded Unknown, not fabricated.",
+    "run_0x1000cf8f0.c (2535 lines, generic tokio task/waker machinery, zero codexmate_lib:: calls) and run_0x10099df40.c not attributable to any module by this triage pass; left as diagnostic-only, unresolved.",
+    "inner_0x100571850.c self-reports HEXRAYS-EMPTY (no decompilable body) in its own header comment.",
+    "The 4 bootstrap-classified functions were NOT deep-reversed to full_leaf_100_definition_v2 (dim3 call-tree to fs/http/persistence leaves, dim4 DTO/error boundary, dim6 test/acceptance mapping all open) -- this package only closes dim2 (owner+decompile exists, already present in the baseline) plus module attribution; see gate-report.json"
+  ],
+  "note": "This manifest documents a triage/reduce pass over EXISTING raw evidence (no new IDA decompile performed). All 89 raw pseudocode files remain at raw/aimami/1.2.3/macos-arm64/run/ida/pseudocode/ (physically unmoved -- see pointers/evidence-paths.md); this package only records the classification result."
+}

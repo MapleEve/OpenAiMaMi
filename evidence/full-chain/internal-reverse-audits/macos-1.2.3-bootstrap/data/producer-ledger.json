@@ -1,0 +1,19 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "session": "mac-1.2.3-bootstrap-triage-20260725",
+  "machine": "<host>",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "bootstrap",
+  "produced_at": "2026-07-25T00:00:00Z",
+  "leaves": [
+    {"leaf": "app_run_entry", "va": "0x1006f50c0", "file": "run_0x1006f50c0.c", "status": "consumerStartReady"},
+    {"leaf": "bootstrap_cache", "va": "0x1009b4d30", "file": "run_0x1009b4d30.c", "status": "consumerStartReady"},
+    {"leaf": "auto_switch_pending_emitter(dismiss_pending_auto_switch)", "va": "0x1009a80d0", "file": "run_0x1009a80d0.c", "status": "consumerStartReady"},
+    {"leaf": "auto_switch_pending_emitter(load_pending_auto_switch)", "va": "0x1009b1d50", "file": "run_0x1009b1d50.c", "status": "consumerStartReady"}
+  ],
+  "index_lines_appended": ["aimami/1.2.3/macos-arm64/bootstrap/run-generic-triage-reduce"],
+  "new_raw_evidence_produced": false,
+  "note": "Reduce-only session; classified existing raw evidence into a canonical audits/ bundle. No new IDA decompile."
+}

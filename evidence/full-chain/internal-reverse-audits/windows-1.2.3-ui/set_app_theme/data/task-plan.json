@@ -1,0 +1,25 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "bundle": "windows-1.2.3-ui/set_app_theme",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "generated_at": "2026-07-25T00:00:00+08:00",
+  "source": "generated_from_gate-report.json_windows-1.2.3-ui-set_app_theme_partial_gap",
+  "machine": "<host>",
+  "session": "win-ui-set-app-theme-123gap-20260725",
+  "gate_tier": "blocks_start",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": ["set_app_theme"],
+    "forbiddenUntilStrictImplementationUse": ["set_app_theme"],
+    "consumerStartBlocked": ["set_app_theme"]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "notes": "Partial/gap conclusion, not a full closure. set_app_theme is entirely consumerStartBlocked pending new 1.2.3 win backend raw evidence (owner VA, decompile, call-tree, interface, platform-gate — dim2-dim5 all missing; dim1 only candidate-quality). RULE9 same-platform diff was attempted: frontend command face at 1.2.3 is textually near-identical to the 1.0.9 predecessor, but the backend half of the diff cannot be performed because 1.2.3 has zero backend raw to compare — migration status is diff_required, not migrated_no_behavior_diff. The 1.0.9 predecessor bundle (windows-1.0.9-ui/set_app_theme, strictImplementationUse) is unaffected by this package and remains canonical for 1.0.9 only."
+}

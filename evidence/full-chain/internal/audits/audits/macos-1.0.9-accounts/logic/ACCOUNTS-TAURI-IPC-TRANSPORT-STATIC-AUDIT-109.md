@@ -102,7 +102,7 @@ Current blocker remains
 
 Fresh IDA MCP recheck used the active AiMaMi 1.0.9 macOS IDB:
 `<source-location>/source-binary/AiMaMi 1.0.9_ida.app/Contents/MacOS/AiMaMi.i64`.
-`server_health` reported `auto_analysis_ready=true`, `hexrays_ready=true`,
+`server_health` reported `auto_analysis_ready=true`, `IDA decompiler_ready=true`,
 and the input binary under `raw/binary/`.
 
 Function-level xrefs refine, but do not close, the IPC/runtime blocker:

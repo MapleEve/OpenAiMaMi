@@ -1,0 +1,76 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-24",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 23,
+    "blocked": 0,
+    "total_commands": 23
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "mostly-closed -- RelayModelPage (relay-page-iqa4dxHn.js, 4091 lines beautified) fully component-tree + state-model + invoke-mapping reversed in raw/aimami/1.2.3/macos-arm64/frontend/pages/relay-frontend.md; CodexRouter enable/disable/no-account-mode confirm-dialog + 5-stage progress-listener flow captured",
+    "dim2_backend_owner_pseudocode": "strong -- 638 deduped decompiled functions across all 32 core::relay submodules + 22/23 commands::relay wrapper files, 0 truncated stubs remaining (CORRECTED 2026-07-24: fetch_relay_models_draft_0x100193810.c was NOT actually resolved by the earlier 'disasm-chunk completion' claim -- that check only verified the raw disassembly instruction range reached the correct function boundary, while the .c file itself still contained a literal `!! TRUNCATED STUB - 未完整 !!` marker, unbalanced braces (1 open/0 close), and ended in raw .text disassembly, not closed C. This was re-verified against the live file on disk and genuinely re-decompiled this session via IDA Python -> IDA decompiler.decompile(0x100193810) run server-side on the IDA host, producing a real 54,909-char pseudocode body (braces balanced 63/63, proper `return result; }}` closure). Old stub preserved as fetch_relay_models_draft_0x100193810.c.stub.bak for audit. A full-tree scan of all 1853 .c files under raw/aimami/1.2.3/macos-arm64 found no other genuinely truncated files (11 brace-mismatch false positives from string/char literals containing `{`/`}`, e.g. `case '{':` and `\"}false\"`, manually verified as complete real functions); source SHA recorded in manifest.json",
+    "dim3_call_tree_to_leaf": "partial -- individual function bodies recovered to real logic (not wrapper-only), but a systematic command-by-command call-tree-to-implementation-leaf reduction (fs/http/registry/process/sidecar/persistence/response/error) has NOT been produced as a standalone artifact for 1.2.3; logic/FULL-CHAIN-1.2.3.md gives the module-level chain narrative only, not per-command leaf termination proof",
+    "dim4_interface_dto_boundary": "not-closed -- no per-command DTO/error-envelope/side-effect-boundary extraction pass has been run for 1.2.3 relay (contrast with 1.0.9 which has interfaces/relay-interface-map.md); this is an open gap, not evidence",
+    "dim5_platform_gate": "closed-for-existence, open-for-parity -- both macOS and Windows independently produced evidence (see windows-1.2.3-relay/gate-report.json); 4 macOS-only submodules (transition_journal/breaker/native_responses_compat/upstream_url, 20 functions) have zero independent Windows evidence and are recorded Unknown, not extrapolated",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping has been produced for 1.2.3 relay leaves; ACCEPTANCE-MAPPING-109.md exists for 1.0.9 but has not been re-derived or re-verified against 1.2.3 behavior"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim4 (interface/DTO/error-envelope/side-effect boundary) and dim6 (test/acceptance mapping) are not closed for any 1.2.3 relay command; per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification, byte-level decompile completeness (dim2) alone does not promote target-level readiness",
+  "consumerStartReady_commands": [
+    "load_relay_state", "get_relay_active", "get_relay_proxy_status", "upsert_relay_provider",
+    "delete_relay_provider", "set_relay_provider_network", "activate_relay_provider",
+    "deactivate_relay_provider", "reorder_relay_providers", "set_codex_router_enabled",
+    "set_codex_router_no_account_mode", "get_codex_router_auth_readiness", "diagnose_codex_router",
+    "export_relay_config", "import_relay_config", "test_relay_draft_stream",
+    "fetch_relay_models_draft", "get_relay_provider_quota", "load_quota_history",
+    "reveal_relay_api_key", "detect_api_proxy_config", "set_api_proxy_config", "test_api_proxy_config"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady + uiCallEntryReady satisfied via relay-frontend.md component tree; happyPathReady + backend owner satisfied via 638 deduped decompiled functions; dtoBoundaryReady/boundaryPathReady/sideEffectReady/acceptanceDraftReady NOT independently produced -- consumer must still derive DTO shape from pseudocode + Polaris's own existing relay contract (see goal-aimami-122/RELAY-PARITY-G1..G6.md, RELAY-PARITY-DECISIONS.md for already-adjudicated Polaris-side parity decisions) rather than treat this package as a closed interface spec",
+  "unknowns": [
+    {
+      "item": "33rd core::relay submodule existence",
+      "class": "accepted_unknown",
+      "reason": "func_query/list_funcs MCP tool malfunctioned in-session (returned fixed 10 results regardless of filter); find_regex cross-check on panic::Location 'core/relay/' path strings (n=30, cursor done=true, exhaustive) found no evidence beyond the known 32 submodules -- tool-limitation class, actively cross-checked, not an unexamined gap"
+    },
+    {
+      "item": "semantic-keyword orphan scan (brand/litellm/defaultWireApi/noAccountMode outside core::relay namespace)",
+      "class": "blocks_start",
+      "reason": "not executed at all -- time/tool-budget constraint, explicitly recorded as a real open gap by the producing session, not accepted_unknown"
+    },
+    {
+      "item": "identity of 2 Windows commands (sub_140187580/sub_140CCE030) vs Mac (diagnose_codex_router/test_relay_draft_stream)",
+      "class": "accepted_unknown",
+      "reason": "both sides have non-empty decompiled content; size/position plausibility only, no byte-signature cross-verification performed"
+    },
+    {
+      "item": "dim4 interface/DTO extraction for 1.2.3 (vs the 1.0.9-only interfaces/relay-interface-map.md)",
+      "class": "blocks_start",
+      "reason": "not produced this pass; readyToImplement/strictImplementationUse blocked on this until closed"
+    },
+    {
+      "item": "dim6 test/acceptance mapping for 1.2.3",
+      "class": "blocks_start",
+      "reason": "not produced this pass; readyToImplement/strictImplementationUse blocked on this until closed"
+    }
+  ],
+  "notes": [
+    "Backend decompile completeness (dim2) for 1.2.3 relay is materially stronger than the pre-existing 1.0.9 package's mid-project state ever was at equivalent stage: 638 deduped functions, 0 truncated stubs (now genuinely true as of the 2026-07-24 correction below), all 32 submodules covered on macOS. This is evidence coverage, per OUTPUT-SPEC.md historical-number caveat it is NOT by itself full_leaf_100 or implementation-ready.",
+    "This gate-report intentionally does NOT copy forward the 1.0.9 package's readyToImplement=18 pattern: 1.2.3 has NOT had the equivalent dim4 (interfaces/relay-interface-map.md) and dim6 (logic/ACCEPTANCE-MAPPING-109.md) passes run yet. Producing those is the concrete next step to advance any of the 23 commands from consumerStartReady to strictImplementationUse.",
+    "Full byte-level-100 backend coverage claim (638 mac deduped functions, 0 truncation) was originally sourced from goal-aimami-122/RELAY-DOUBLE-PLATFORM-100-GATE.md section 5 (2026-07-24, third audit round) -- CORRECTED 2026-07-24 (later same day, fourth pass): that source's 'fetch_relay_models_draft already completed via disasm-chunk' claim was itself false (verified boundary address only, never verified pseudocode body content); the file was found still containing a live TRUNCATED STUB marker + unbalanced braces on disk re-check. Genuinely fixed this pass via server-side IDA decompiler.decompile; RELAY-DOUBLE-PLATFORM-100-GATE.md section C has been corrected to match. See dim2_backend_owner_pseudocode above for full detail.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

@@ -4,7 +4,7 @@ machine: <本地机器>
 date: 2026-06-17
 binary: AiMaMi 1.1.1 win64.exe (PE x86_64, stripped)
 idb: <本地路径>
-hexrays: true
+IDA decompiler: true
 
 ## Confirmed
 

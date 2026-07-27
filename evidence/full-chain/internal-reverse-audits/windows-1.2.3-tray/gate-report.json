@@ -1,0 +1,78 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "tray",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-25",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 3,
+    "blocked": 7,
+    "total_targets": 10
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "accepted-native-substitute -- 0 'tray' hits across 131 enumerated IPC commands in raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl (same 131-command total as the macos-1.2.3-tray package, i.e. windows and macOS ship an identical IPC surface). Tray UI trigger is the native Windows system-tray icon + menu built via Tauri's cross-platform tray-icon abstraction and dispatched via on_menu_event (handle_tray_menu_event), which OUTPUT-SPEC.md accepts as a substitute for the invoke() wrapper path. Not a gap for the 3 covered targets.",
+    "dim2_backend_owner_pseudocode": "partial -- 3 of 10 mac-named target families have real (non-sub_XXXX) owner names on the windows-x64 1.2.3 binary and non-failed, non-truncated, brace-balanced Hex-Rays decompile bodies read in full this session (load_tray_template_icon, create_bootstrap_tray_menu, handle_tray_menu_event). Source binary sha256 aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396 independently re-hashed this session. The other 7 mac-named targets returned 'Not found' from exact-name lookup_funcs against the same live IDA MCP session (<host>, server_health confirmed status=ok/IDA decompiler_ready=true/module=AiMaMi.1.2.3 win64.exe before and after the query) -- genuinely not found by that method, not an IDA-unreachable false negative (session was live and later calls in the same session succeeded).",
+    "dim3_call_tree_to_leaf": "partial, covered-targets-only -- for the 3 covered targets, implementation leaves ARE visible in the pseudocode itself: create_bootstrap_tray_menu builds 4 menu-item strings (tray-bootstrap-h/-t/-s headers, tray-open-main, tray-quit) via sub_140A7D450 (string-interning helper) and sub_141230630 (menu-item constructor); handle_tray_menu_event dispatches on a3 (menu-item numeric id) via a switch + XOR/length-obfuscated string re-checks, calling quit_keeping_router for the quit path and load_local_state_synced + sub_14096F5D0-family calls for other paths. No standalone per-target call-tree-to-leaf termination table has been produced; this gate-report is the only synthesis so far.",
+    "dim4_interface_dto_boundary": "not-closed -- no formal per-target DTO/error-envelope/side-effect-boundary extraction pass has been run for any of the 3 covered targets.",
+    "dim5_platform_gate": "windows-partial-this-pass, mac-closed-separately -- this package independently covers windows-x64 1.2.3 for 3/10 targets (not inferred from macos-1.2.3-tray, per platformPolicy.doNotInferWindowsFromMacOS). macOS evidence for all 10 targets exists in the sibling macos-1.2.3-tray package (consumerStartReady, not readyToImplement). Do not treat this package's 3/10 windows coverage as equivalent to the mac package's 10/10; the 7 uncovered windows targets are open, not assumed-identical-to-mac.",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping produced for any of the 3 covered windows tray targets this pass."
+  },
+  "readyToImplement_targets": [],
+  "strictImplementationUse_targets": [],
+  "strictImplementationUse_reason": "dim4 and dim6 are not closed for any of the 3 covered targets; per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification, decompile completeness (dim2) alone does not promote target-level readiness even when dim2 is strong and dim1 is satisfied via the accepted native-substitute path.",
+  "consumerStartReady_targets": [
+    "load_tray_template_icon", "create_bootstrap_tray_menu", "handle_tray_menu_event"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady satisfied via the accepted native-menu-callback substitute (dim1, shared across all windows tray targets); happyPathReady + backend owner satisfied only for these 3 targets via non-failed, brace-balanced, non-truncated decompile bodies read in full (dim2 partial-but-real for these 3); dtoBoundaryReady/boundaryPathReady/sideEffectReady/acceptanceDraftReady NOT independently produced for any target.",
+  "blocked_targets": [
+    {"target": "create_tray_menu", "class": "blocks_start", "reason": "exact-name lookup_funcs returned 'Not found' against windows-x64 1.2.3 binary this session; not attempted via panic-Location/call-graph attribution (RULE24 win-strip methodology)"},
+    {"target": "create_tray_menu_from_snapshot", "class": "blocks_start", "reason": "same as create_tray_menu"},
+    {"target": "append_codex_router_section", "class": "blocks_start", "reason": "same as create_tray_menu"},
+    {"target": "refresh_tray_menu", "class": "blocks_start", "reason": "same as create_tray_menu"},
+    {"target": "refresh_tray_menu_with_snapshot", "class": "blocks_start", "reason": "same as create_tray_menu"},
+    {"target": "quota_text", "class": "blocks_start", "reason": "same as create_tray_menu; sub_14025D570's icon-badge circle-mask pixel math is a plausible-but-unconfirmed candidate, not accepted as coverage"},
+    {"target": "update_tray_recording_state", "class": "blocks_start", "reason": "same as create_tray_menu; sub_14025D570 or sub_1407190E0 are plausible-but-unconfirmed candidates, not accepted as coverage"}
+  ],
+  "unknowns": [
+    {
+      "item": "identity mapping of sub_14025D570 / sub_1407190E0 to the 7 missing named targets",
+      "class": "blocks_start",
+      "reason": "sub_14025D570's body performs icon-badge circle-mask pixel math (roundf-based radius comparison, fixed ARGB color -14276900 written into a pixel buffer) which is architecturally consistent with either quota_text (badge text/number rendering) or update_tray_recording_state (recording-indicator dot overlay), but no string literal, xref, or caller-chain evidence conclusively ties it to either name this session. sub_1407190E0 is a generic Rust drop-glue/refcount-decrement pattern (decrement + conditional destructor call), most likely compiler-generated cleanup code rather than one of the 7 named business-logic targets -- recorded as a low-confidence non-match, not excluded as impossible."
+    },
+    {
+      "item": "why 7/10 mac-named targets are not exact-name-findable on windows",
+      "class": "blocks_start",
+      "reason": "three untested hypotheses: (a) MSVC toolchain strips/does not export these particular symbol names while clang/mac does; (b) ICF (Identical Code Folding) or inlining merged some of the 7 into create_bootstrap_tray_menu/handle_tray_menu_event or into unnamed sub_XXXX bodies; (c) windows 1.2.3 tray genuinely has a different code-structure decomposition than mac 1.2.3 tray (both route through Tauri's cross-platform tray abstraction per the 2 matched names, so full architectural divergence is less likely than (a)/(b) but not ruled out). None of the three was tested this session; this is the single largest recorded gap in this package."
+    },
+    {
+      "item": "windows tray_menu module path attribution",
+      "class": "blocks_start",
+      "reason": "create_bootstrap_tray_menu and handle_tray_menu_event were matched by exact function name only; their comment headers in this package's raw files state 'win 1.2.3 | = mac codexmate_lib::commands::tray_menu::<name>' based on that name match, consistent with the WIN-APP-FUNCTION-INVENTORY.jsonl convention used for the pre-existing 3 rows, but this session did not independently verify module path via panic-Location xref for the 2 newly named functions (the exact-name match itself is treated as sufficiently strong evidence for module attribution, per the existing load_tray_template_icon entry's identical methodology, which predates this session)."
+    },
+    {
+      "item": "dim4 interface/DTO extraction",
+      "class": "blocks_start",
+      "reason": "not produced this pass"
+    },
+    {
+      "item": "dim6 test/acceptance mapping",
+      "class": "blocks_start",
+      "reason": "not produced this pass"
+    }
+  ],
+  "notes": [
+    "This package does NOT copy forward the 1.0.9 windows tray package's readyToImplement=true/accepted_full_leaf_100_windows_ida claim (internal-reverse/audits/windows-1.0.9-tray/gate-report.json): different binary/version, no RULE 9 diff run this session, and 1.0.9 appears to use native win32 Shell_NotifyIcon APIs directly while 1.2.3's 2 matched-name functions suggest routing through Tauri's cross-platform tray abstraction -- a plausible architecture change between versions that has not been formally diffed. Treated as historical reference only via manifest.json.prior_version_reference.",
+    "This is a genuinely partial package: 3/10 named targets (30%) vs the macos-1.2.3-tray sibling's 10/10. It is reported honestly rather than padded; see manifest.json.known_residuals and unknowns above for the specific gap.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue and next producer steps."
+  ]
+}

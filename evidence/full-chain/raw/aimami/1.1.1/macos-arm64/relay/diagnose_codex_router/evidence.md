@@ -5,7 +5,7 @@
 **Date**: 2026-06-17
 **Binary**: AiMaMi 1.1.1 universal (macOS ARM64)
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
-**IDB**: AiMaMi.i64 (hexrays_ready=true, uptime=51764s at session start)
+**IDB**: AiMaMi.i64 (IDA decompiler_ready=true, uptime=51764s at session start)
 **Module**: codexmate_lib::commands::relay
 **is_upstream**: false (standalone IPC command, not routed through upstream dispatcher)
 **Gate tier**: strictImplementationUse_candidate (dim1_migrated+dim2+dim3+dim4+dim5_mac; dim5_win+dim6 Unknown)

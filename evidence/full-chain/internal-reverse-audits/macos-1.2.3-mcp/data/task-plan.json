@@ -1,0 +1,32 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "mcp",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "load_mcp_servers", "upsert_mcp_server", "set_mcp_server_enabled", "remove_mcp_server"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 4 mcp commands: readyToImplement blocked pending dim4 (interface/DTO) + dim5 (Windows platform gate) + dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 4 mcp commands: strictImplementationUse blocked pending dim4 (interface/DTO/error-envelope/side-effect boundary) closure"
+    ],
+    "consumerStartBlocked": []
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Run a dim4 pass: extract the per-field DTO (name/transport stdio|http|sse/command/args/url/env/headers, defaults, nullability) and error envelope (poisoned-lock/DirBuilder/fs-read/toml-parse/CAS-retry-exhausted/atomic-write-IO) from the 18 already-decompiled functions -- this is a synthesis pass over existing pseudocode plus a confirmation dump of &unk_101674B65/&unk_101674B6C rodata strings, not new IDA decompile work.",
+    "Read the 15 existing raw/aimami/1.2.3/windows-x64/mcp/ida/pseudocode/*.c files (already produced 2026-07-24, never distilled) and produce a sibling windows-1.2.3-mcp/ canonical package; then close dim5 with an independent macOS/Windows comparison.",
+    "Run a dim6 pass: map load_mcp_servers/upsert_mcp_server/set_mcp_server_enabled/remove_mcp_server side effects to Polaris's own C5 unit/E2E test surface or explicit manual-acceptance criteria.",
+    "If live IDA MCP tool access becomes available, re-run angle-A as a live func_query('codexmate_lib::core::mcp::') / func_query('codexmate_lib::commands::mcp::') symbol enumeration to upgrade the accepted_unknown angle-A classification to a live-verified pass.",
+    "Independently re-verify the 2 file-header-inherited '1.2.3 NEW-delta vs 1.2.2' annotations (core::mcp::remove_mcp_server, core::mcp::set_optional_string) against an actual 1.2.2 binary if one becomes available on raw/binary/."
+  ]
+}

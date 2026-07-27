@@ -1,0 +1,62 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "cross",
+  "module": "home-usage-frontend",
+  "coverage_mode": "cross-platform-dim1-synthesis + read-only-dim2-cross-reference (NOT backend-owned-target-universe)",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "load_usage_analytics",
+    "load_session_analytics",
+    "load_token_analytics",
+    "load_tool_analytics",
+    "load_change_analytics",
+    "load_quota_history",
+    "load_snapshot",
+    "refresh_usage_snapshot"
+  ],
+  "consumerStartReady_meta": {
+    "startMode": "reverse_guided",
+    "allowedImplementationMode": "Implement the C5 dashboard/analytics frontend from macos-1.2.3-home-usage-frontend's documented macOS render surface + interaction-to-command chains. For backend response shape, cross-reference (do not re-reverse): 5 analytics commands -> macos-1.2.3-sessions-analytics / windows-1.2.3-sessions-analytics; load_quota_history -> macos-1.2.3-relay / windows-1.2.3-relay; load_snapshot + refresh_usage_snapshot -> macos-1.2.3-accounts / windows-1.2.3-accounts (note: windows-1.2.3-accounts' refresh_usage_snapshot decompile FAILED -- treat Windows response shape for this one command as Unknown, not just 'go read the sibling').",
+    "forbiddenAssumptions": [
+      "Do NOT assume Windows UI parity from macOS (dim5 Windows dim1 Unknown; command-name parity != UI closure).",
+      "Do NOT treat cross-referenced sibling dim2 evidence as this bundle's own closed evidence -- it is pointer-only, and dim3/dim4/dim6 remain open in every sibling too.",
+      "Do NOT assume load_snapshot has a literal invoke('load_snapshot') call site -- binding inferred from queryKey shape (accepted_unknown, inherited from macos-1.2.3-home-usage-frontend).",
+      "Do NOT assume load_quota_history's relay-module backend function is definitely the same handler as this module's account-quota consumption point -- command-name match only, not independently verified this pass."
+    ]
+  },
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 8 consumerStartReady commands: readyToImplement blocked pending dim3 (call-tree to leaf, open in every cross-referenced sibling), dim4 (response DTO/error/side-effect boundary field-level, open everywhere), and dim6 (test/acceptance, open everywhere) closure on both platforms."
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 8 consumerStartReady commands: strictImplementationUse blocked -- dim2 backend owner is now cross-referenced for all 8 (see manifest.json four_category_orphan_classification), but dim3/dim4/dim6 remain open in every sibling package that owns the backend. A strict pass should deepen call-trees + extract field-level DTOs within the OWNING sibling packages (sessions-analytics/relay/accounts), not re-reverse from scratch here."
+    ],
+    "consumerStartBlocked": [
+      "load_bootstrap_state: blocks_start -- macOS frontend trigger not located (dim1 open despite macOS dim2 being closed via macos-1.2.3-bootstrap's bootstrap_cache leaf); additionally the command has a cross-platform + cross-module owner inconsistency (macOS owner=bootstrap, Windows owner=daemon-autoswitch, itself unclosed there) requiring EXPLICIT_REASSIGN_OWNER-gated reconciliation before any single package can be trusted as the complete picture.",
+      "get_usage_refresh_interval: blocks_start -- consuming hook cU() located in the home App shell but the settings control that mutates it is outside this module's page scope (product_decision needed on ownership, Windows sibling filed get/set under system-usage). This is ALSO the one command with a genuine truly_undone dim2 gap on macOS (no canonical package anywhere covers its macOS backend)."
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "excluded_other_module_owner": {
+    "load_mcp_servers": "mcp module (macos-1.2.3-mcp + windows-1.2.3-mcp, both consumerStartReady 4/4 -- healthy, no action needed)",
+    "set_usage_refresh_interval": "system-usage module (windows-1.2.3-system-usage dim2 available VA 0x14018c2d0; no macOS canonical owner found -- future system-usage-domain work, not this module's)",
+    "refresh_single_account_usage": "accounts module (macos-1.2.3-accounts dim2 closed; windows-1.2.3-accounts dim2 Hex-Rays-decompile-FAILED -- future accounts-domain work, not this module's)"
+  },
+  "next_producer_steps": [
+    "【low-cost, do first】Verify whether index-B40jKs17.js and analytics-panel-6jtfGEeX.js are byte-identical (SHA-256) between the mac raw dump and win tauri-dumped-assets, mirroring the method windows-1.2.3-accounts already used for accounts-page-GdJYDnGj.js (proven identical there). If identical, reuse macos-1.2.3-home-usage-frontend's page-level reduce as Windows dim1 evidence via 'proven byte-identical artifact' instead of a fresh manual Windows page reduce -- potentially the cheapest path to closing Windows renderSurfaceReady for this module.",
+    "Run a macOS IDA pass to locate get_usage_refresh_interval's backend owner (the one genuine truly_undone dim2 gap on macOS for this module; frontend consuming hook cU() is already located in macos-1.2.3-home-usage-frontend as a starting point; Windows sibling windows-1.2.3-system-usage's VA 0x14018cbb0 decompile body may be used as a cross-platform semantic hint but must NOT be assumed identical to the macOS implementation).",
+    "Attempt an ida-deep-recovery.md ceiling-crack pass on refresh_usage_snapshot's Windows Hex-Rays-decompile-FAILED wrapper, within windows-1.2.3-accounts' own scope (not duplicated in this module's package).",
+    "Deepen dim3 (call-tree to fs/sqlite/http/registry leaves) for the 8 already-owner-located commands, within their OWNING sibling packages (sessions-analytics for the 5 analytics commands, relay for load_quota_history, accounts for load_snapshot/refresh_usage_snapshot) -- do not re-search for owners, they are already found.",
+    "Run a dim4 field-level pass (response DTO/error envelope/side-effect boundary) for all 10 in-scope commands on both platforms -- currently every relevant package caps out at type-name enumeration or input-argKeys-only.",
+    "Resolve the load_bootstrap_state cross-platform + cross-module owner inconsistency (macOS=macos-1.2.3-bootstrap vs Windows=windows-1.2.3-daemon-autoswitch) -- requires user-issued EXPLICIT_REASSIGN_OWNER token before touching either sibling package.",
+    "Reconcile the scope-definition mismatch between macos-1.2.3-home-usage-frontend (10-in-scope, RULE-8a-compliant) and windows-1.2.3-home-usage-frontend (13-in-scope, no exclusion applied) -- also requires an owner-reconciliation session with appropriate token.",
+    "Independently verify load_quota_history's function-body parameter signature to confirm the relay-module backend function is genuinely the same Tauri command handler consumed by this module's AnalyticsPanel quota tab (currently accepted_unknown on command-name match alone).",
+    "Run a dim6 pass mapping all 10 in-scope commands to Polaris's own C5 unit/E2E/manual acceptance."
+  ]
+}

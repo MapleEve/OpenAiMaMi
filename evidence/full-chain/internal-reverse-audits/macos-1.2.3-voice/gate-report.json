@@ -1,0 +1,91 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "voice",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-24",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 39,
+    "blocked": 0,
+    "total_commands": 39
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "strong -- VoicePage (voice-page-CV7DqakD.js, 4194 lines beautified) fully component-tree + 4 state-model hooks (hi/ht/si/ii) + all 5 tabs (overview/model/processing/vocabulary/history) + permission dialog + trigger-key capture flow + mode-shortcut rebind compensating-transaction flow reversed in raw/aimami/1.2.3/macos-arm64/frontend/pages/voice-frontend.md; 21 real command mappings directly visible in-file, 7 additional command mappings inferred via shared-hook wrapper-name cross-reference (marked 【推断】 in source doc) and 2 commands (reprocessHistory/quickCorrection callback props) remain genuinely unresolved to a command name (see unknowns)",
+    "dim2_backend_owner_pseudocode": "strong -- 212 real on-disk .c files across commands/voice(23)+commands/voice_runtime(9)+core/voice(150, incl. 25 direct serde/trait-impl glue)+platform/voice_macos(1)+platform/voice_permissions(4)+platform/voice_trigger_macos(15)+platform/text_injection(10); 0 truncated stubs (re-verified this distillation pass via TRUNCATED/DECOMPILE-FAILED/chars-total marker grep across the FULL 212-file superset, which is wider than voice-baseline.md's own 182-file scan -- see manifest.json backend_functions_truncation_scan_basis)",
+    "dim3_call_tree_to_leaf": "partial -- voice-baseline.md gives per-module key_functions tables with real behavioral detail (not wrapper-only) plus a cross-module call-chain diagram (hotkey listen_callback -> dispatch_binding_event_locked -> handle_trigger_action -> start_capture/stop_capture -> asr/workspace/aliyun_asr/llm/overlay/tray/text_injection), but no systematic per-command call-tree-to-implementation-leaf reduction artifact (fs/http/registry/process/sidecar/persistence/response/error termination per command) has been produced as a standalone document for 1.2.3 voice; logic/FULL-CHAIN-1.2.3.md gives the module-level chain narrative only",
+    "dim4_interface_dto_boundary": "not-closed -- no per-command DTO/error-envelope/side-effect-boundary extraction pass has been run for 1.2.3 voice; this is an open gap, not evidence",
+    "dim5_platform_gate": "closed-for-existence-mac / thin-for-windows -- macOS has 212 raw .c files across all voice submodules; Windows voice raw evidence exists but is thin (39 files: 2 in windows-x64/commands/voice, 29 voice_* files scattered directly in windows-x64/commands/ida/pseudocode, 4 in voice_trigger_windows, 1 in runtime/ida/pseudocode (show_voice_overlay), 3 in codexmate_lib/ida/pseudocode (generate_voice_prompt/capture_voice_trigger_key/inject_voice_text)) and has NOT had a per-submodule narrative synthesis or dedicated windows-1.2.3-voice/ bundle produced by this pass; Windows core voice engine internals (equivalent of core::voice::runtime's 60-function state machine, aliyun_asr WebSocket client, workspace persistence layer) are Unknown, not extrapolated from macOS",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping has been produced for 1.2.3 voice leaves"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim4 (interface/DTO/error-envelope/side-effect boundary) and dim6 (test/acceptance mapping) are not closed for any 1.2.3 voice command; per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification, byte-level decompile completeness (dim2) alone does not promote target-level readiness",
+  "consumerStartReady_commands": [
+    "cancel_voice_trigger_capture", "capture_voice_trigger_key", "generate_voice_prompt", "inject_voice_text",
+    "load_voice_asr_config", "load_voice_llm_config", "load_voice_processing_modes", "load_voice_runtime_status",
+    "load_voice_workspace", "remove_voice_history_entry", "remove_voice_mode_shortcut", "remove_voice_template",
+    "remove_voice_vocabulary", "remove_voice_vocabulary_app_scope", "replace_voice_vocabulary_kind",
+    "request_voice_permissions", "resolve_voice_vocabulary_app_info", "save_voice_asr_config", "save_voice_llm_config",
+    "save_voice_processing_modes", "set_voice_global_shortcut", "set_voice_mode_shortcut", "set_voice_overlay_style",
+    "set_voice_processing_mode_id", "set_voice_trigger_bindings", "set_voice_trigger_key",
+    "set_voice_trigger_listener_suppressed", "show_voice_search_overlay", "start_voice_capture", "stop_voice_capture",
+    "test_voice_asr_config", "test_voice_llm_config", "update_voice_runtime_settings", "upsert_voice_template",
+    "upsert_voice_vocabulary", "upsert_voice_vocabulary_app_scope", "voice_processing_done",
+    "request_accessibility_permission", "open_macos_privacy_pane"
+  ],
+  "consumerStartReady_commands_note": "39 = 37 commands whose ipc-contracts.jsonl `command` field contains 'voice' + 2 commands without 'voice' in the name but directly invoked from VoicePage per voice-frontend.md's interaction table (request_accessibility_permission at L852; open_macos_privacy_pane at L1815, literal invoke() call not through the R facade).",
+  "consumerStartReady_basis": "renderSurfaceReady + uiCallEntryReady satisfied via voice-frontend.md component tree + interaction table; happyPathReady + backend owner satisfied via 212 real on-disk decompiled .c files with 0 truncation; dtoBoundaryReady/boundaryPathReady/sideEffectReady/acceptanceDraftReady NOT independently produced -- consumer must derive DTO shape from pseudocode directly, this package is not a closed interface spec",
+  "unknowns": [
+    {
+      "item": "2 frontend callback props (reprocessHistory at voice-frontend.md L1091/1272/3883, quickCorrection at L1092/1246/3884) have no confirmed command-name mapping in the ipc-contracts.jsonl sample used by the source frontend analysis",
+      "class": "blocks_start",
+      "reason": "voice-frontend.md itself records these as 【推断/未知】 (inferred/unknown) -- not executed, genuinely unresolved, not accepted_unknown"
+    },
+    {
+      "item": "core::voice::pipeline / core::voice::traits (PermissionsChecker/TextInjector trait abstraction, MacosPermissionsChecker/MacosTextInjector impls) not narrated as its own module in voice-baseline.md's module list (§1-12), despite 4 of its function bodies existing in raw/aimami/1.2.3/macos-arm64/core/voice/ida/pseudocode/",
+      "class": "accepted_unknown",
+      "reason": "raw .c evidence exists and this package's README/SYSTEM-DIFF describe its functional role (cross-platform text-injection/permission-check trait abstraction, implying a Windows counterpart trait impl is architecturally expected), but no live IDA symbol enumeration was performed this pass to confirm the trait's full method surface or whether additional non-Mac impls exist in the same binary; distillation-only pass, no IDA MCP session available in this environment"
+    },
+    {
+      "item": "Angle-A live symbol enumeration (func_query on codexmate_lib::core::voice::) via IDA MCP",
+      "class": "accepted_unknown",
+      "reason": "no IDA MCP tool session available in this distillation environment; filesystem enumeration of the 212 existing raw .c leaf files was used as a substitute for angle-A, which is weaker than a live symbol-table query (string-pool/ICF blind spots cannot be ruled out by filename enumeration alone per cookbook §1 angle-A caveat) -- honestly flagged, not silently treated as equivalent"
+    },
+    {
+      "item": "Angle-C semantic-keyword orphan scan (export_funcs() filtered by microphone/transcribe/dictation/sidecar/hotkey/overlay keywords, cross-namespace)",
+      "class": "blocks_start",
+      "reason": "not executed as an independent exhaustive IDA export-function scan this pass -- relied on voice-baseline.md's own directory enumeration (182/212 files) plus this session's filesystem find (212/212 files), which found + closed the 30-file gap voice-baseline.md's own table had (25 core/voice-direct glue + platform/voice_macos(1) + platform/voice_permissions(4)), but did not run a fresh binary-wide semantic keyword scan for orphans entirely outside the already-known directory tree"
+    },
+    {
+      "item": "Windows voice backend depth (39 raw files, no per-submodule narrative synthesis, no dedicated windows-1.2.3-voice/ bundle)",
+      "class": "blocks_start",
+      "reason": "genuinely not produced this pass; dim5 cannot close without independent Windows-side core::voice::runtime-equivalent state-machine and platform::voice_trigger_windows narrative analysis"
+    },
+    {
+      "item": "dim4 interface/DTO extraction for 1.2.3 voice",
+      "class": "blocks_start",
+      "reason": "not produced this pass; readyToImplement/strictImplementationUse blocked on this until closed"
+    },
+    {
+      "item": "dim6 test/acceptance mapping for 1.2.3 voice",
+      "class": "blocks_start",
+      "reason": "not produced this pass; readyToImplement/strictImplementationUse blocked on this until closed"
+    }
+  ],
+  "notes": [
+    "Backend decompile completeness (dim2) for 1.2.3 voice covers 212 real on-disk .c files, 0 truncated stubs (independently re-verified this pass across the FULL 212-file superset, a wider scan than voice-baseline.md's own 182-file table). This is evidence coverage, per OUTPUT-SPEC.md historical-number caveat it is NOT by itself full_leaf_100 or implementation-ready.",
+    "This gate-report does NOT claim readyToImplement or strictImplementationUse for any voice command: dim4 (interfaces/*.md) and dim6 (logic/ACCEPTANCE-MAPPING-1.2.3.md) passes have not been run. Producing those is the concrete next step to advance any of the 39 commands from consumerStartReady to strictImplementationUse.",
+    "This package is a distillation of two already-complete raw analysis documents (voice-baseline.md backend, voice-frontend.md frontend), not a product of fresh IDA decompilation in this session -- no IDA MCP tool was available in this environment. Coverage counts (212 .c files, 39 commands) were independently re-verified via filesystem `find`/`grep` by this distillation session against the raw tree, not merely copied from the source documents' own stated totals.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

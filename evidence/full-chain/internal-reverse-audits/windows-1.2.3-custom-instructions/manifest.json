@@ -1,0 +1,74 @@
+{
+  "schema": "c5cm.reverse.module_manifest.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows",
+  "module": "custom-instructions",
+  "status": "accepted_ready_absent_backend_orphan_ida_direct",
+  "migration_class": "migrated_no_behavior_diff",
+  "migration_baseline": "internal-reverse/audits/windows-1.0.9-custom-instructions",
+  "commands": [
+    "load_custom_instruction_state",
+    "preview_custom_instruction_apply",
+    "apply_custom_instruction",
+    "clear_custom_instruction_block",
+    "rollback_custom_instruction"
+  ],
+  "source_binary_sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "idb_path": "E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+  "idb_modified": false,
+  "idb_saved": false,
+  "absence_anchor": "0x1417893f2",
+  "gate": {
+    "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+    "readyToImplement": [
+      "load_custom_instruction_state",
+      "preview_custom_instruction_apply",
+      "apply_custom_instruction",
+      "clear_custom_instruction_block",
+      "rollback_custom_instruction"
+    ],
+    "strictImplementationUse": [
+      "load_custom_instruction_state",
+      "preview_custom_instruction_apply",
+      "apply_custom_instruction",
+      "clear_custom_instruction_block",
+      "rollback_custom_instruction"
+    ],
+    "consumerStartReady": [
+      "load_custom_instruction_state",
+      "preview_custom_instruction_apply",
+      "apply_custom_instruction",
+      "clear_custom_instruction_block",
+      "rollback_custom_instruction"
+    ],
+    "reverseRequiredQueues": {
+      "forbiddenUntilReady": [],
+      "forbiddenUntilStrictImplementationUse": [],
+      "consumerStartBlocked": []
+    },
+    "platformPolicy": {
+      "windowsIndependent": true,
+      "doNotInferWindowsFromMacOS": true
+    },
+    "implementation_use": true,
+    "gate_accepted": true,
+    "full_leaf_100": true,
+    "moduleExitAllowed": true,
+    "accepted_substitute": "same_platform_ida_backend_absence_for_frontend_orphan_command"
+  },
+  "frontendConsumerHandoff": {
+    "status": "complete_current_c5_frontend_chain",
+    "noGatePromotion": true,
+    "currentC5FrontendStatus": "live"
+  },
+  "productDecisionBoundary": "Current C5 custom-instructions chain is live product/local behavior; upstream 1.2.3 backend owner parity is absent substitute (migrated from 1.0.9 baseline, re-verified live this round).",
+  "frontendValidatorNotes": [
+    "Initial load_custom_instruction_state failure lacks a dedicated visible error alert in the current page and can be perceived as a spinner/empty-current state.",
+    "Successful apply/clear/rollback intentionally uses setQueryData with returned CoreEnvelope instead of invalidation; changing this can alter UI state timing.",
+    "Current C5 implementation is product/local behavior; upstream 1.2.3 backend owner parity is absent substitute, not strict backend reconstruction."
+  ],
+  "machine": "<host>",
+  "session": "win-custom-instructions-distill-20260725",
+  "produced_at": "2026-07-25"
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "bundle": "macos-1.2.3-relay",
+  "producer": "claude (this session)",
+  "machine": "<host>",
+  "session": "dsstore-whitelist-cleanup-1.2.3-batch-20260727",
+  "produced_at": "2026-07-27",
+  "mode": "read_only_hygiene_cleanup",
+  "task_kind": "dsstore-whitelist-pollution cleanup: rm -f stray macOS Finder .DS_Store metadata file(s) that are not part of the leaf bundle skeleton whitelist defined in internal-reverse/AGENTS.md RULE 8(b)/(e) and internal-reverse/CLAUDE.md (README.md / AI.md / SYSTEM-DIFF.md / manifest.json / logic/*.md / reviews/{CLAUDE,AGENT,CROSS-REVIEW}.md / pointers/evidence-paths.md / interfaces/*.md / gate-report.json / data/*.json / frontend/*FULL-CHAIN*.md / DISTILLED.md only). Pure filesystem hygiene; no IDA MCP calls made, no new raw or intermediate evidence produced, no canonical content file created/modified/overwritten.",
+  "new_raw_or_intermediate_produced": false,
+  "files_removed": [
+    ".DS_Store"
+  ],
+  "files_removed_count": 1,
+  "output_spec_completeness_check": "Verified prior to cleanup that README.md, AI.md, SYSTEM-DIFF.md, manifest.json, gate-report.json, non-empty logic/, and non-empty reviews/ were ALL already present for this bundle -- confirms the only defect for this bundle was dsstore pollution, not missing content. Per non-destructive rule (only add missing files, never overwrite existing ones), no other file in this bundle was created or modified.",
+  "gate_tier_touched": false,
+  "gate_accepted": "unchanged (not touched by this session)",
+  "implementation_use": "unchanged (not touched by this session)",
+  "full_leaf_100": "unchanged (not touched by this session)",
+  "readyToImplement": "unchanged (not touched by this session)",
+  "owner_basis": "grep -i 'dsstore\\|ds_store' REVERSE-STATUS.md and internal-reverse/INDEX.jsonl prior to this session -> 0 prior claims/entries for this defect type on this bundle (first producer for dsstore-whitelist-pollution cleanup on macos-1.2.3-relay). OWNER NOTE: REVERSE-STATUS.md has an active IN-PROGRESS claim '[relay123-surface] AiMaMi 1.2.3 relay 域全量逆向-面枚举 (machine=<host>)' covering relay-domain function-body enumeration. This session's action (deleting a stray macOS Finder .DS_Store metadata file, which is not a whitelisted content type per AGENTS.md RULE 8(b)/(e)) touches zero canonical content files (no README/AI/SYSTEM-DIFF/manifest/gate-report/logic/reviews/data touched) and does not overlap that claim's scope; treated as non-conflicting supplementary hygiene, gate=ALLOW, no EXPLICIT_* token required.",
+  "grounded_checks_run": [
+    "find macos-1.2.3-relay -iname '.DS_Store' (before) -> 1 hit(s): ['.DS_Store']",
+    "OUTPUT-SPEC required-file completeness check -> all required top-level files (README.md/AI.md/SYSTEM-DIFF.md/manifest.json/gate-report.json/non-empty logic//non-empty reviews/) present prior to this session; no backfill performed or needed",
+    "rm -f ['.DS_Store']",
+    "find macos-1.2.3-relay -iname '.DS_Store' (after) -> 0 hits"
+  ],
+  "avoid": "Did not modify/overwrite README.md, AI.md, SYSTEM-DIFF.md, manifest.json, gate-report.json, logic/*.md, reviews/*.md, pointers/evidence-paths.md, or any data/task-plan.json content in this bundle. Did not touch any rule file (AGENTS.md/OUTPUT-SPEC.md/GATE-SPEC.md/CLAUDE.md). Did not re-run any equivalent IDA probe (no red-line-5 violation, this is not reverse-engineering work).",
+  "next_producer_steps": "none (pure filesystem hygiene closure for this defect type)",
+  "started": "2026-07-27",
+  "completed": "2026-07-27"
+}

@@ -1637,7 +1637,7 @@
 - **delta_class**: `impl_replaced`
 - **readyToImplement**: `True`
 - **strictImplementationUse**: `True`
-- **owner VA**: `{'va': '0x1400149d0', 'symbol': 'upsert_relay_provider_cmd_handler_111', 'size_bytes': '0x5de', 'caller': 'tauri_ipc_main_dispatcher_sys @ 0x14000d2a0', 'ipc_command_string': 'upsert_relay_provider', 'ipc_command_va': '0x1412ac4c0', 'data_xrefs': ['0x1414fa98c', '0x14189ddbc'], 'decompile_status': 'real_hexrays_obtained_2026-06-18'}`
+- **owner VA**: `{'va': '0x1400149d0', 'symbol': 'upsert_relay_provider_cmd_handler_111', 'size_bytes': '0x5de', 'caller': 'tauri_ipc_main_dispatcher_sys @ 0x14000d2a0', 'ipc_command_string': 'upsert_relay_provider', 'ipc_command_va': '0x1412ac4c0', 'data_xrefs': ['0x1414fa98c', '0x14189ddbc'], 'decompile_status': 'real_IDA decompiler_obtained_2026-06-18'}`
 - **evidence**: `interface.md, gate-report.json`
 
 **argKeys (dim2)**:
@@ -1657,6 +1657,6 @@
   - NEW in 1.1.1: reads MCP server snapshot from Repository Mutex (lock fields [78],[79]) to populate tr
   - NEW in 1.1.1: alternate tray branch when both relay_state==3 and mcp_snapshot.tag==3.
 
-**逆向分析 symbols**: `handler@{'va': '0x1400149d0', 'symbol': 'upsert_relay_provider_cmd_handler_111', 'size_bytes': '0x5de', 'caller': 'tauri_ipc_main_dispatcher_sys @ 0x14000d2a0', 'ipc_command_string': 'upsert_relay_provider', 'ipc_command_va': '0x1412ac4c0', 'data_xrefs': ['0x1414fa98c', '0x14189ddbc'], 'decompile_status': 'real_hexrays_obtained_2026-06-18'}`
+**逆向分析 symbols**: `handler@{'va': '0x1400149d0', 'symbol': 'upsert_relay_provider_cmd_handler_111', 'size_bytes': '0x5de', 'caller': 'tauri_ipc_main_dispatcher_sys @ 0x14000d2a0', 'ipc_command_string': 'upsert_relay_provider', 'ipc_command_va': '0x1412ac4c0', 'data_xrefs': ['0x1414fa98c', '0x14189ddbc'], 'decompile_status': 'real_IDA decompiler_obtained_2026-06-18'}`
 
 ---

@@ -10,7 +10,7 @@
   "prior_session": "<审计会话>",
   "delta_purpose": "补全 dim1 CCF (前端 invoke 确认) + dim4 输入参数确认 (零参数) + pseudocode.md full body + gate 升级 consumerStartReady+strictImplementationUse",
   "steps_completed": {
-    "step0_ida_health_gate": "ok | hexrays_ready=true | module=AiMaMi 1.1.1 win64.exe | uptime=114492s",
+    "step0_ida_health_gate": "ok | IDA decompiler_ready=true | module=AiMaMi 1.1.1 win64.exe | uptime=114492s",
     "step1_owner_locate": "func_query name_regex=confirm_pending → 0x140952070 (owner_sys) + 0x140089a50 (deserialize)",
     "step2_decompile_owner": "0x140952070 SUCCESS full body 2970B BB=111 cyclomatic=29",
     "step3_decompile_deserialize": "0x140089a50 SUCCESS 0xce bytes — zero-param confirmed",

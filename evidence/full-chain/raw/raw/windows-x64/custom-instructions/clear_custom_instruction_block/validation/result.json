@@ -1,0 +1,26 @@
+{
+  "schema": "c5cm.raw.leaf.validation.v1",
+  "checks": [
+    {
+      "name": "frontend_contract_match_1.0.9_baseline",
+      "pass": true
+    },
+    {
+      "name": "backend_symbol_absence_func_query",
+      "pass": true
+    },
+    {
+      "name": "backend_string_absence_find_regex",
+      "pass": true
+    },
+    {
+      "name": "anchor_role_confirmed_path_blob_not_command_string",
+      "pass": true
+    },
+    {
+      "name": "ida_live_gate_checked_before_queries",
+      "pass": true
+    }
+  ],
+  "overall": "pass"
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "sessions-analytics",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "load_sessions", "delete_sessions", "export_session_markdown", "migrate_session_worktree",
+    "load_session_analytics", "load_token_analytics", "load_tool_analytics",
+    "load_change_analytics", "load_usage_analytics"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 9 sessions-analytics commands: readyToImplement blocked pending dim4 (interface/DTO) + dim6 (test/acceptance mapping) closure, plus dim2-core-analytics naming and dim3 wrapper-to-core call-chain reduction (see forbiddenUntilStrictImplementationUse)"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "load_session_analytics, load_token_analytics, load_tool_analytics, load_change_analytics, load_usage_analytics: strictImplementationUse blocked pending resolution of the compute_*_analytics core-layer identity gap (live callees() trace shows delegation to unnamed sub_* functions, no confirmed separately-named core function equivalent to macOS's core::session_analytics) in addition to dim4/dim6",
+      "export_session_markdown: strictImplementationUse blocked pending core-layer function identity (not located this pass) in addition to dim4/dim6",
+      "load_sessions, migrate_session_worktree, delete_sessions: strictImplementationUse blocked pending wrapper-to-core call-chain confirmation (live callees()/xrefs_to() this pass found no direct edge; at least one intermediate hop exists, not traced) in addition to dim4/dim6"
+    ],
+    "consumerStartBlocked": []
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Run a systematic panic-Location two-hop xref + call-graph-propagation renaming pass (per red line 24 method) across the 26 unnamed sub_* functions (14 sessions/, 2 analytics/, 10 commands/analytics/) to resolve business-level identity, especially the 2 analytics/ subs already module-attributed to src/core/analytics.rs.",
+    "Trace the intermediate hop(s) between the 3 sessions command wrappers (codexmate_lib/load_sessions, codexmate_lib/migrate_session_worktree, commands/delete_sessions) and their corresponding sessions/ core _0 functions -- xrefs_to() confirmed sub_14074F3F0 as a direct caller of load_sessions_0; decompile that intermediate and continue the chain upward to the wrapper.",
+    "Determine whether Windows has a compute_*_analytics-equivalent set of separately-named core functions (like macOS's 8-function core::session_analytics) that are simply unnamed among the 26 subs, or whether the logic is genuinely inlined/restructured differently on Windows -- requires deeper decompile of load_change_analytics's 32 direct callees plus their own callees.",
+    "Locate export_session_markdown's Windows core-layer counterpart (decompile the 953-line codexmate_lib wrapper in full to determine if the markdown-export/serialization logic is inlined there, or trace its callees to find a delegate).",
+    "Run a dim4 pass: extract per-command DTO fields from the already-decompiled wrapper + core functions.",
+    "Run a dim6 pass: map each command's side effects to C5's own test/E2E surface.",
+    "Once Windows dim2-core/dim3 gaps above are closed, cross-check against macos-1.2.3-sessions-analytics's own open gap (macOS has NO named command-wrapper for load_sessions + 5 analytics commands) -- this Windows package's confirmed commands::analytics module existence (src/commands/analytics.rs) and codexmate_lib command-entry pattern (src/lib.rs) should inform the next macOS producer pass on where to search, WITHOUT closing the macOS gap by extrapolation (per platformPolicy.doNotInferWindowsFromMacOS)."
+  ]
+}

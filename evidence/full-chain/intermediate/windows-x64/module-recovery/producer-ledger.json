@@ -1,0 +1,63 @@
+{
+ "schema": "c5cm.reverse.producer_ledger.v1",
+ "session": "win-1.2.3-frontier-triage-reduce-ack-20260726",
+ "machine": "<host>",
+ "product": "aimami",
+ "version": "1.2.3",
+ "platform": "windows-x64",
+ "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+ "gate_tier": "owner_bound_dirtree_naming_comments",
+ "implementation_use": false,
+ "gate_accepted": false,
+ "full_leaf_100": false,
+ "readyToImplement": false,
+ "evidence_root": "intermediate/aimami/1.2.3/windows-x64/module-recovery/",
+ "idb_sot": "E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+ "idb_save": "ok",
+ "frontier": {
+  "defined_live": true,
+  "attributed_baseline": 1192,
+  "all_neighbors": 9732,
+  "library_string_dropped": 1522,
+  "triaged": 1668,
+  "true_app": 735,
+  "glue": 933,
+  "accepted_unknown": 0,
+  "basis_layers_true_app": {"panic_location_two_hop": 11, "callgraph_ge2_consistent": 309, "bidirectional_in_app_callgraph": 298, "app_business_string": 117},
+  "basis_layers_glue": {"no_string_runtime_glue": 800, "serde_panic_artifact_string": 88, "micro_stub": 45},
+  "modules_touched": 59
+ },
+ "grounded_reverify": {
+  "method": "independent walk (BFS dirtree + full-binary func scan), not driver self-report",
+  "total_funcs": 103359,
+  "tree_total": 1927,
+  "root_funcs": 101432,
+  "front_win_frontier_comment": 735,
+  "front_comment_no_cjk": 0,
+  "front_comment_stranded": 0,
+  "anycmt_total": 1927,
+  "anycmt_stranded": 0,
+  "tree_anycmt": 1927,
+  "tree_named_has_user_name": 362,
+  "named_total_binwide": 516,
+  "tree_loc_line_comment": 448,
+  "idb_save_reconfirmed": "ok E:\\binary\\AiMaMi.1.2.3 win64.exe.i64"
+ },
+ "win_true_app_denominator": 1927,
+ "four_metrics_over_1927": {
+  "dirtree": "1927/1927",
+  "func_comment": "1927/1927",
+  "naming_has_user_name": "362/1927",
+  "loc_line_comment": "448/1927"
+ },
+ "gap_to_win_true_100": {
+  "dirtree": 0,
+  "func_comment": 0,
+  "naming": 1565,
+  "loc_line_comment": 1479,
+  "inline_command_ceiling": 14,
+  "accepted_unknown": 0
+ },
+ "honesty_notes": "win_true_app_denominator=1927 is the win-NATIVE attributed-App dirtree total (1192 baseline + 735 this round), grounded by independent walk. It is a CEILING, not a proven-total: the attributed set was built from panic-Location + call-graph propagation + command-name recovery (NOT full symbols), so genuine App functions never attributed into the dirtree are an unknown boundary ABOVE this denominator. accepted_unknown=0 is real for the triaged frontier (every body decompiled to a readable App-business or lib-glue verdict, no ICF/async wall), not a skip-the-break shortcut. func_comment 1927/1927 and dirtree 1927/1927 are complete by construction; naming (362) and loc-line-comment (448) are the real remaining work toward per-function 100%. 14 inline command-handler cases are a genuine win strip+inline ceiling (dispatcher jumptable cases the win compiler never emitted as separate fns; mac symbols cannot recover them). No raw body dump this pass: evidence SOT = win IDB + intermediate/module-recovery/; internal-reverse holds summary WIN-1.2.3-FRONTIER-TRIAGE.md only (red line 3).",
+ "items_count": 735
+}

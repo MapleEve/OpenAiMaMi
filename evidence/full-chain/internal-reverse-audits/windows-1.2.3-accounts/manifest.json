@@ -1,0 +1,97 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "accounts",
+  "package": "windows-1.2.3-accounts",
+  "created_at": "2026-07-25T00:00:00Z",
+  "producer_machine": "<host> (this package distilled from already-decompiled raw evidence this session; no new IDA MCP calls performed this pass)",
+  "task_kind": "distillation",
+  "task_kind_note": "This pass merges pre-existing decompiled win .c evidence (many files carrying WIN-1.2.1-MODULE-RECOVERY.md provenance/attribution comments) + win's own frontend extraction artifacts into a canonical consumer package, as the Windows counterpart to macos-1.2.3-accounts. It performs read-only synthesis over raw evidence already on disk; it does not invoke IDA MCP tools (decompile/xrefs_to/callees) directly this pass.",
+  "binary": {
+    "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+    "binary_format": "pe",
+    "pe_machine": "AMD64",
+    "arch": "x64",
+    "size_bytes": 33667584,
+    "note": "Re-hashed this session against raw/binary/AiMaMi.1.2.3 win64.exe; matches the value already recorded in windows-1.2.3-relay/manifest.json, confirming same binary batch."
+  },
+  "frontend_artifact": {
+    "sha256_accounts_page_js": "09336d32548087c04de52882ad2b37d9236a26678e7b53483bd1dd22c3d10c55",
+    "size_bytes": 67080,
+    "note": "Verified byte-identical this session (shasum -a 256 + diff) between raw/aimami/1.2.3/macos-arm64/dumped/assets/accounts-page-GdJYDnGj.js and raw/aimami/1.2.3/windows-x64/package/AiMaMi-1.2.3-win64/tauri-dumped-assets/direct/assets/accounts-page-GdJYDnGj.js. This is the platform-agnostic Tauri web bundle, not a claim about native backend parity."
+  },
+  "scope": {
+    "definition": "win-native evidence directories that map to the same 'account_*'-plus-auth/oauth cluster as macos-1.2.3-accounts's core in-scope set, adjusted for win's raw-tree structural reality (account_coordination/account_metadata absent as separate dirs; commands/account_io and commands/account_oauth absent as separate dirs, their command-equivalents found inside the codexmate_lib catch-all directory instead). core::repository (72 files) and core::models (3 files) are EXPLICITLY OUT OF THIS PACKAGE'S PRIMARY SCOPE, cited only as supplementary cross-reference via pointers, mirroring macos-1.2.3-accounts's own scope decision for the same modules.",
+    "core_modules_in_scope": ["account_io", "auth", "oauth_login", "oauth_refresh"],
+    "core_modules_in_scope_rationale": "Directly mirrors 4 of macos-1.2.3-accounts's 6 in-scope core modules by directory name. account_coordination and account_metadata (the other 2 mac in-scope modules) have NO corresponding win directory and NO symbol-name hits anywhere in the win raw tree for their known mac function/type names (FileLock/AccountDomainLock/AccountSnapshotLock/fetch_subscription_metadata/try_lock_exclusive) -- recorded as a structural gap (known_residuals), not silently dropped from scope.",
+    "core_modules_missing_on_win": ["account_coordination", "account_metadata"],
+    "core_modules_missing_on_win_rationale": "Zero files exist under raw/aimami/1.2.3/windows-x64/{account_coordination,account_metadata}/ (directories do not exist at all), and a full-tree grep for the mac-known symbol/type names for these modules' key primitives returns 0 hits anywhere in windows-x64. This is either (a) genuinely unattributed among the many still-unresolved sub_ functions this pass did not further investigate, or (b) not yet captured by any prior win-native recovery pass. Not extrapolated from macOS; recorded Unknown/blocks_start.",
+    "commands_modules_in_scope": ["commands/accounts"],
+    "commands_accounts_relevant_in_codexmate_lib_catchall": ["export_accounts_to_file", "import_accounts_from_file", "preview_account_import", "begin_chatgpt_oauth_login"],
+    "commands_accounts_relevant_in_codexmate_lib_catchall_rationale": "On win, the codexmate_lib directory (32 files total) is a catch-all containing tauri command handlers spanning multiple unrelated domains (voice/skills/debug-bundle/tray/accounts) because win's WIN-1.2.1-MODULE-RECOVERY.md-based recovery attributes many command handlers to src/lib.rs (crate root) rather than a specific accounts.rs-equivalent submodule. These 4 files are the win-side equivalents of mac's commands/account_io (3 files) and commands/account_oauth (5 files), identified by exact command-name match against win's own ipc-contracts.jsonl.",
+    "commands_modules_adjacent_out_of_scope": {
+      "commands/system (auto-switch subset)": "Same exclusion rationale as macos-1.2.3-accounts: physically owned by commands::system per the mac baseline's own finding, mirrored here. Win's commands/system directory (6 files, all sub_ unnamed except module-attribution comments) plus a partial overlap inside codexmate_lib (configure_auto_switch/set_auto_switch/confirm_pending_auto_switch found there) both excluded.",
+      "commands/relay (set_codex_router_no_account_mode)": "Found at raw/aimami/1.2.3/windows-x64/commands/relay/ida/pseudocode/set_codex_router_no_account_mode_0x140cb8050.c -- relay-adjacent, out of accounts scope, same exclusion as its mac counterpart."
+    },
+    "supplementary_cross_reference_only": {
+      "core/repository": "72 files on win (vs 99 on mac), already contains 8 functions with explicit 'win 1.2.3 | = mac codexmate_lib::core::repository::<Symbol> | 跨平台字符串签名匹配(名↔函数一致)' provenance comments confirming cross-platform equivalence to mac's already-documented deep-leaf functions (auto_switch_config, hashed_account_snapshot_path [maps to mac core::auth, a genuine cross-platform module-boundary difference], persist_registry, remove_accounts_0=Repository::remove_accounts, switch_account_0=Repository::switch_account, rollback=SnapshotQuarantine::rollback, recover_account_removal_quarantine, remove_account_backup_files). Cited via pointers/evidence-paths.md as supplementary dim3 evidence; NOT counted in this package's primary file coverage, mirroring macos-1.2.3-accounts's own treatment of the same module.",
+      "core/models": "Only 3 files on win (error_hint, normalize_relay_models [relay-domain, cross-platform-annotated], 1 unnamed sub_). Contains ZERO Account*/Logout*/Remove*/Switch*/OauthLogin* DTO serialize/deserialize glue -- materially weaker than mac's 175-file core::models. Cited as (very thin) partial dim4 evidence; this is a genuine structural weakness relative to mac, not a scoping choice."
+    },
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "core_files_in_scope": {
+      "account_io": 1,
+      "auth": 3,
+      "oauth_login": 12,
+      "oauth_refresh": 10,
+      "total": 26
+    },
+    "commands_files_in_scope": {
+      "commands/accounts": 42,
+      "codexmate_lib_accounts_subset": 4,
+      "total": 46
+    },
+    "total_c_files_in_scope": 72,
+    "truncated_or_failed_decompile_files_in_scope": 5,
+    "truncated_or_failed_decompile_file_list": [
+      "commands/accounts/switch_account_and_restart_codex_0x140cae510.c",
+      "commands/accounts/refresh_single_account_usage_0x140cb15d0.c",
+      "commands/accounts/switch_account_0x140cafd70.c",
+      "commands/accounts/refresh_usage_snapshot_0x140cb44a0.c",
+      "codexmate_lib/import_accounts_from_file_0x140ca4d00.c"
+    ],
+    "truncation_root_cause": "All 5 share the identical Hex-Rays failure class: `[HEXRAYS_DECOMPILE_FAILED: switch analysis failed: bad target 0x... for case N]`. Files fall back to raw disassembly (`// [TRUNCATED]` marker + disasm body with jump-table/panic-string evidence still visible, e.g. `src\\commands\\accounts.rs` panic-location strings), NOT complete pseudocode. Verified this session via direct grep + header inspection of all 5 files.",
+    "truncation_check_method": "grep -rl 'TRUNCATED|DECOMPILE-FAILED|chars total' against each in-scope directory's ida/pseudocode/, this session, on account_io/auth/oauth_login/oauth_refresh/commands/accounts/codexmate_lib -- 5 hits total, all listed above",
+    "clean_files_in_scope": 67,
+    "frontend_pages_reversed": 0,
+    "frontend_accounts_page_reversed_natively": false,
+    "frontend_accounts_page_reused_via_byte_identical_artifact": true,
+    "frontend_accounts_page_source": "raw/aimami/1.2.3/macos-arm64/frontend/pages/accounts-frontend.md (147 lines, produced by an earlier macOS-focused pass) is reused for win because raw/aimami/1.2.3/windows-x64/package/AiMaMi-1.2.3-win64/tauri-dumped-assets/direct/assets/accounts-page-GdJYDnGj.js is byte-identical (SHA-256 verified this session) to the macOS raw dump the mac page-reversal was based on. This is NOT an independent win-native re-reversal of the frontend page; it is a proven-identical-artifact reuse, explicitly flagged as weaker than independent re-reversal.",
+    "win_native_frontend_corroboration": "raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl (131 commands, own-platform extraction) and frontend-control-flow.jsonl (248 lines, contains account-keyword entries) independently confirm the same command names/counts without relying on the mac extraction pipeline.",
+    "measurement_basis": "file-system find|wc -l against raw/aimami/1.2.3/windows-x64/{account_io,auth,oauth_login,oauth_refresh,commands/accounts,codexmate_lib}/ida/pseudocode/*.c, this session"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/WIN-1.2.1-MODULE-RECOVERY.md",
+    "internal-reverse/audits/macos-1.2.3-accounts/ (structural/wording template only; NOT used as a win-specific evidence source for any claim in this package)"
+  ],
+  "sibling_package": "internal-reverse/audits/macos-1.2.3-accounts/ (same 1.2.3 product version, same 12 accounts-domain command names, DIFFERENT and materially weaker gate outcome on win: 4/12 consumerStartReady here vs 8/12 there)",
+  "cross_platform_sibling_note": "This package and macos-1.2.3-accounts are the two halves of a matched pair produced in the same task batch. Per skill red line 8 (platform evidence must come from that platform's own artifact), every win-specific claim in this package is backed by win's own raw/binary/frontend artifact; the ONLY cross-platform reuse is the byte-identical accounts-page-GdJYDnGj.js JS bundle, which is explicitly hash-proven identical rather than assumed.",
+  "known_residuals": [
+    "account_coordination/account_metadata core modules: 0 files in win raw tree, 0 symbol-name hits anywhere in windows-x64 for their known mac primitives -- genuine structural evidence gap, not extrapolated as absent-in-product",
+    "cancel_chatgpt_oauth_login: confirmed present in win's own frontend command registry (ipc-contracts.jsonl) but NO backend wrapper found by name anywhere in the win raw tree -- owner unresolved, likely one of WIN-1.2.1-MODULE-RECOVERY.md's 18 non-precisely-nameable commands but not verified which",
+    "5 of 72 in-scope files are Hex-Rays-decompile-failed (disassembly-only), backing 5 of the 12 accounts-domain commands -- genuine tool ceiling this pass, no red-line-13 breakthrough attempted (no live IDA MCP access)",
+    "core::models has 0 Account*-domain DTO glue on win (vs 175 files including full DTO coverage on mac) -- dim4 materially weaker than mac's own already-incomplete dim4",
+    "dim6 test/acceptance mapping: not produced this pass",
+    "Angle-C semantic-keyword orphan scan NOT executed on win -- honest open gap",
+    "RULE 9 version-diff migration validity of the many win-1.2.1-provenance-comment files being reused as 1.2.3 evidence: NOT independently verified this pass (this package documents the provenance comments as-found but did not re-derive or re-verify the 1.2.1->1.2.3 no-behavior-diff claim implicit in reusing them)",
+    "commands/system auto-switch cluster and commands/relay's set_codex_router_no_account_mode are accounts-adjacent but explicitly out of this package's scope, mirroring mac's own exclusions"
+  ],
+  "note": "This manifest synthesizes windows-x64 raw evidence at raw/aimami/1.2.3/windows-x64/{account_io,auth,oauth_login,oauth_refresh,commands/accounts,codexmate_lib,repository,models}/ida/pseudocode/*.c plus raw/aimami/1.2.3/windows-x64/frontend/{ipc-contracts.jsonl,frontend-control-flow.jsonl,ast-facts.json,frontend-contract-report.md} into the Windows counterpart of macos-1.2.3-accounts. No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md."
+}

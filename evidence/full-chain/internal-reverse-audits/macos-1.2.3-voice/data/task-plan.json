@@ -1,0 +1,45 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "voice",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "cancel_voice_trigger_capture", "capture_voice_trigger_key", "generate_voice_prompt", "inject_voice_text",
+    "load_voice_asr_config", "load_voice_llm_config", "load_voice_processing_modes", "load_voice_runtime_status",
+    "load_voice_workspace", "remove_voice_history_entry", "remove_voice_mode_shortcut", "remove_voice_template",
+    "remove_voice_vocabulary", "remove_voice_vocabulary_app_scope", "replace_voice_vocabulary_kind",
+    "request_voice_permissions", "resolve_voice_vocabulary_app_info", "save_voice_asr_config", "save_voice_llm_config",
+    "save_voice_processing_modes", "set_voice_global_shortcut", "set_voice_mode_shortcut", "set_voice_overlay_style",
+    "set_voice_processing_mode_id", "set_voice_trigger_bindings", "set_voice_trigger_key",
+    "set_voice_trigger_listener_suppressed", "show_voice_search_overlay", "start_voice_capture", "stop_voice_capture",
+    "test_voice_asr_config", "test_voice_llm_config", "update_voice_runtime_settings", "upsert_voice_template",
+    "upsert_voice_vocabulary", "upsert_voice_vocabulary_app_scope", "voice_processing_done",
+    "request_accessibility_permission", "open_macos_privacy_pane"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 39 voice commands: readyToImplement blocked pending dim4 (interface/DTO) + dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 39 voice commands: strictImplementationUse blocked pending dim4 (interface/DTO/error-envelope/side-effect boundary) closure"
+    ],
+    "consumerStartBlocked": [
+      "reprocessHistory / quickCorrection frontend callback props (voice-frontend.md L1091-1093/1246/1272/1281-1286/3883-3885): no confirmed backend command name, product_decision or further frontend cross-file tracing needed before consumer builds against them",
+      "Windows voice module: no windows-1.2.3-voice/ bundle exists yet; consumer must not build cross-platform-parity voice code assuming Windows core::voice::runtime-equivalent behavior matches macOS until independently produced"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Run a dim4 pass: extract per-command DTO fields (input struct, output payload, error envelope, nullability) from the 212 already-decompiled functions -- this is a synthesis pass over existing pseudocode, not new IDA work, and is the fastest path to strictImplementationUse.",
+    "Run a dim6 pass: map each of the 39 voice commands + core submodule side effects (sidecar process spawn/kill, keychain read/write, workspace JSON atomic write, global CGEventTap hotkey listener, clipboard-paste text injection) to Polaris's own C5 unit/E2E test surface or explicit manual-acceptance criteria.",
+    "Execute a live IDA angle-A symbol enumeration (func_query on codexmate_lib::core::voice::) and angle-C semantic-keyword orphan scan once an IDA MCP session is available -- this distillation pass substituted filesystem enumeration, which cannot rule out ICF/string-pool blind spots the way a live query can.",
+    "Produce a windows-1.2.3-voice/ bundle: narrate the 39 existing Windows raw .c files (currently just a flat file list) and identify what additional Windows-side core voice engine evidence (equivalent of macOS core::voice::runtime's 60-function state machine) is missing versus what already exists but is unsynthesized.",
+    "Resolve reprocessHistory/quickCorrection command identity via cross-file frontend tracing into index-B40jKs17.js (the shared hook file voice-frontend.md could not see)."
+  ]
+}

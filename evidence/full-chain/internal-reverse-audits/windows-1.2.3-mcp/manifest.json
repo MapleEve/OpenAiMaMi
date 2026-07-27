@@ -1,0 +1,100 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "mcp",
+  "package": "windows-1.2.3-mcp",
+  "created_at": "2026-07-25T00:00:00Z",
+  "producer_machine": "this session (distillation of 15 pre-existing raw .c files + 1 newly-captured raw .c file produced live this session via win IDA MCP <host>; no prior canonical audits/ package existed for this module+platform)",
+  "binary": {
+    "sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+    "binary_format": "pe",
+    "arch": "x64",
+    "idb_path": "E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+    "module_name": "AiMaMi.1.2.3 win64.exe",
+    "note": "same 1.2.3 windows-x64 binary sha256 as windows-1.2.3-relay package (cross-checked via that package's manifest.json field, not independently re-hashed this session); server_health confirmed live IDA connection status=ok, IDA decompiler_ready=true this session"
+  },
+  "scope": {
+    "backend_target_universe": "codexmate_lib::core::mcp::* (16 raw .c files, partial/unconfirmed-complete) + 4 named commands::* mcp Tauri command wrapper functions (ground-truth complete)",
+    "frontend_target_universe": "McpPage (mcp-page-LchViioT.js, shared cross-platform bundle, reused by pointer from macos-1.2.3-mcp)",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "backend_functions_commands_mcp": 4,
+    "backend_functions_commands_mcp_ground_truth": 4,
+    "backend_functions_core_mcp_on_disk": 16,
+    "backend_functions_core_mcp_pre_existing": 15,
+    "backend_functions_core_mcp_newly_captured_this_session": 1,
+    "backend_functions_core_mcp_role_confidence": {
+      "ground_truth_named": 1,
+      "high_confidence_inferred": 7,
+      "moderate_confidence_inferred": 1,
+      "generic_runtime_stdlib_glue_no_mcp_role_claimed": 6
+    },
+    "backend_functions_truncated_stubs": 0,
+    "backend_functions_truncated_stubs_verification": "all 20 files (16 core + 4 commands) checked for '[N chars total]'/'TRUNCATED' markers (0 found) and for proper closing brace + return statement at file tail; the 8 smaller/medium core files and all 4 wrapper files were read in full; the 2 largest core files (sub_1409E1D30, 1284 lines, and upsert_mcp_server_0, 800 lines with per-instruction address annotations) were read via head+tail+targeted structural excerpts (transport-field-parsing block for the former, opening+closing for the latter) rather than every single line, given their size and the density of low-information-content raw variable declarations",
+    "commands_mcp_wrapper_files": 4,
+    "commands_mcp_upstream_command_count": 4,
+    "commands_mcp_command_to_file_gap": 0,
+    "commands_mcp_command_to_file_gap_note": "exact 1:1 match between frontend windows-x64/frontend/ipc-contracts.jsonl mcp commands and commands/ida/pseudocode/{load_mcp_servers,upsert_mcp_server,set_mcp_server_enabled,remove_mcp_server}_0x*.c wrapper files, independently confirmed on Windows this session (not inherited from macOS)",
+    "core_mcp_functions_role_matched": {
+      "ground_truth": ["upsert_mcp_server_0 (0x1409e86f0)"],
+      "high_confidence_inferred": [
+        "unquote_toml (sub_1409E14D0, 0x1409e14d0)",
+        "insert_mcp_block (sub_1409E1880, 0x1409e1880)",
+        "parse_mcp_document (sub_1409E5800, 0x1409e5800)",
+        "strip_toml_comment (sub_1409E5DC0, 0x1409e5dc0)",
+        "replace_string_table (sub_1409E6250, 0x1409e6250)",
+        "parse_mcp_section_header (sub_1409E74F0, 0x1409e74f0)",
+        "editable_mcp_server_table (sub_1409E7A10, 0x1409e7a10)"
+      ],
+      "moderate_confidence_inferred": ["sub_1409E1D30 (0x1409e1d30, transport-field 3-way parser, related to upsert path, not name-confirmed)"],
+      "generic_glue_no_mcp_role_claimed": [
+        "sub_14034CAE0 (0x14034cae0, Drop/dealloc dispatcher)",
+        "sub_140472C30 (0x140472c30, SIMD HashMap::insert)",
+        "sub_140983900 (0x140983900, struct/enum Drop dispatcher)",
+        "sub_140F3FD00 (0x140f3fd00, generic BTree/sorted-key lookup)",
+        "sub_140F3FE00 (0x140f3fe00, thunk to 0x140F409B0, outside mcp folder)",
+        "sub_140FC6D90 (0x140fc6d90, Default-constructor helper)",
+        "sub_140FC6EA0 (0x140fc6ea0, Item-tag boolean helper)"
+      ]
+    },
+    "core_mcp_functions_no_win_counterpart_found": [
+      "load_mcp_servers (core read path)", "quote_toml", "prepare_existing_mcp_block",
+      "set_optional_string (mac 1.2.3 NEW-delta)", "remove_mcp_server (core, mac 1.2.3 NEW-delta)",
+      "set_mcp_server_enabled (core)"
+    ],
+    "frontend_pages_reversed": 0,
+    "frontend_page_reused_note": "McpPage component-tree/state-model/interaction-table reused by pointer from internal-reverse/audits/macos-1.2.3-mcp/ (same JS bundle mcp-page-LchViioT.js confirmed byte-identically-named present in the windows-x64 package tree); not re-derived this session",
+    "measurement_basis": "file-system find|wc -l against raw/aimami/1.2.3/windows-x64/mcp/ida/pseudocode/*.c (=16, post-session) and raw/aimami/1.2.3/windows-x64/commands/ida/pseudocode/*mcp*.c (=4); frontend command diff against raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl (131 total commands, 4 filtered by command name containing 'mcp'); live IDA verification via tools/IDA CLI win {server_health,find_regex,xrefs_to,decompile} this session (2026-07-24/25)"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/windows-1.0.9-mcp/ (historical baseline pointer only -- legacy schema, pre-dates full_leaf_100_definition_v2, smaller field set, no transport/url/headers/environment, NOT re-validated, not used to auto-upgrade any 1.2.3 tier)",
+    "internal-reverse/audits/macos-1.2.3-mcp/ (cross-platform sibling, independent evidence, cross-referenced only in SYSTEM-DIFF.md's explicitly-labeled Diff section, NOT used to infer any Windows-side coverage claim per SKILL.md red line 8)"
+  ],
+  "new_raw_evidence_produced_this_session": [
+    {
+      "path": "raw/aimami/1.2.3/windows-x64/mcp/ida/pseudocode/upsert_mcp_server_0x1409e86f0.c",
+      "addr": "0x1409e86f0",
+      "name": "upsert_mcp_server_0",
+      "discovery_method": "find_regex('mcp_servers') on win strings cache -> xrefs_to on 3 hits pointing here -> decompile",
+      "note": "This function already carried a pre-existing IDB comment from an earlier (unknown) session naming it as the win match for mac core::mcp::upsert_mcp_server, but had never been written to raw/ or recorded in INDEX.jsonl before this session -- proof the original win-app-inventory-gapfill-leaf census (15 addrs, produced 2026-07-24T13:20:34Z) was not exhaustive for core::mcp"
+    }
+  ],
+  "known_residuals": [
+    "census incompleteness for core::mcp on Windows: proven, not merely suspected (see new_raw_evidence_produced_this_session); extent of remaining gap unknown, no exhaustive live symbol sweep completed (brute-force disasm-text search_text timed out server-side after 60s)",
+    "6/14 mac core::mcp functions (load_mcp_servers-core/quote_toml/prepare_existing_mcp_block/set_optional_string/remove_mcp_server-core/set_mcp_server_enabled-core) have no confirmed Windows counterpart",
+    "sub_1409E1D30 (1284 lines) is moderate-confidence inferred (transport-field parsing), not name-confirmed -- do not treat as a closed identification",
+    "dim4 (interface/DTO/error-envelope/side-effect boundary) not systematically extracted as a formal struct dump, despite having stronger ground-truth literal-key evidence than macOS for upsert_mcp_server/set_mcp_server_enabled/remove_mcp_server's argument names specifically",
+    "dim5 Windows platform gate: substantially advanced this session (was 'exists but unread' per macOS package; now has wrapper ground-truth 4/4 + partial core coverage + 1 newly-captured function) but NOT closed -- 6/14 core-function gap + no exhaustive census + no formal macOS/Windows structural diff document",
+    "dim6 test/acceptance mapping not produced",
+    "angle-A (live func_query symbol enumeration filtered to core::mcp) NOT completed -- attempted but the tool appeared to ignore the name-substring filter and return the full function table; not further pursued given time budget; a narrower find_regex-based string search WAS completed and is the basis for this session's one real discovery",
+    "6 generic-glue functions among the 15 pre-existing core files are attributed to mcp via a call-graph-propagation heuristic (>=2 same-module callers) that is known to be able to mis-attribute generic monomorphized library-internal code; not independently cross-checked against other modules' call sites"
+  ],
+  "note": "This is the FIRST canonical audits/ package for the mcp module at 1.2.3 Windows-x64. Unlike the macos-1.2.3-mcp package (pure distillation, no IDA connection, dim2='strong' for 18/18 name-resolved functions), this package's producing session had a live, healthy win IDA MCP connection and used it for a bounded, targeted verification pass (find_regex + xrefs_to + one decompile) that discovered and closed one real pre-existing census gap. This package deliberately reports dim2 as 'partial' rather than upgrading to 'strong', because the discovery itself proves the underlying census methodology (call-graph-propagation-filtered gap-fill batches) is lossy, and 6 of mac's 14 core::mcp functions still have no confirmed Windows counterpart. No blanket 100% coverage claim is made; see README.md for the full honest breakdown."
+}

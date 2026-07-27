@@ -1,0 +1,76 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "skills",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-25",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 6,
+    "blocked": 0,
+    "total_commands": 6
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "N/A for this package (backend-only; frontend control-flow is macOS-sourced JS bundle, see macos-1.2.3-skills sibling). This package independently confirmed win-side ipc-contracts.jsonl carries all 6 command name strings (load_installed_skills/load_skill_backups/import_skill/remove_skill/restore_skill_backup/delete_skill_backup), true_gaps=0 against the win frontend's own 131-command surface.",
+    "dim2_backend_owner_pseudocode": "materially upgraded this session vs macos-1.2.3-skills batch1's assumption -- ALL 6 frontend commands now have a ground-truth command-name-xref-confirmed Windows owner function (0 gaps at the owner-identity level, up from 0/6 confirmed in the prior package's understanding). Pseudocode is COMPLETE (non-truncated) for 5/6 (import_skill 44823 chars, load_installed_skills 37177 chars, restore_skill_backup 44895 chars, remove_skill 44726 chars, load_skill_backups 31948 chars) and TRUNCATED for 1/6 (delete_skill_backup, 1023/48033 chars). Core-helper layer (codexmate_lib::core::skills, module-attributed not name-confirmed except backup_skill_directory/backup_skill_directory_0/publish_staged_skill) has 7 functions: 6 complete + 1 truncated (backup_skill_directory real body at 0x1409060c0, 1023/66937 chars) + 4 small complete-but-identity-unresolved helpers.",
+    "dim3_call_tree_to_leaf": "NOT closed -- this session did NOT trace any of the 5 complete 30-45K-char command-handler bodies to a real fs-syscall leaf (the Rust async state-machine flattening makes these functions far larger/more complex than the small core-helper functions in the original 6-file raw set, and doing so for all 5 was out of scope/budget for this distillation-plus-gap-fill pass). Only 1 confirmed call-graph edge was independently verified this session: backup_skill_directory (0x1409060c0) calls sub_1408A4BA0 (0x1408a4ba0), matching the macOS StagedDirectory::drop-equivalent call-site hypothesis from macos-1.2.3-skills -- upgraded from 'inference' to 'confirmed call edge' for this one pair only.",
+    "dim4_interface_dto_boundary": "NOT independently assessed this session (out of scope for a backend-owner/pseudocode-focused pass) -- deferred to macos-1.2.3-skills sibling's DTO findings (SkillBackupMetadata 6 fields + InstalledSkillSummary 8 fields byte-confirmed on macOS; SkillListPayload open). Do not assume Windows DTO wire format is identical without independent Windows-side byte confirmation -- none was performed this pass.",
+    "dim5_platform_gate": "PARTIALLY upgraded from macos-1.2.3-skills batch1's 'NOT closed, 6 files/2 confirmed' assessment. This session's live findings: owner-identity confirmed for 6/6 frontend commands (up from 0/6 known before this session) + 7/7 core-helper-layer functions attributed to codexmate_lib/core/skills (up from 6 raw files known, +1 newly captured). HOWEVER dim5 is still NOT fully closed: (a) 2 of the 13 functions are severely content-truncated, (b) NO call-tree-to-leaf tracing was done for the 5 complete command bodies this session (dim3 gap above), (c) the ~14 additional macOS-side helper functions with no Windows raw evidence at all (copy_dir_all, stage_skill_directory, lock_skill_mutations, resolve_skill_target, resolve_backup_path, is_regular_directory, scan_skills_recursive, load_skill_summary, 2 closures, StagedDirectory::drop, 2 SkillBackupMetadata deserialize glue fns, SkillListPayload glue) remain genuinely absent on Windows -- this package does NOT claim dim5 closed, only materially improved in owner-identity and raw-evidence coverage relative to the prior known state.",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping produced for 1.2.3 windows skills leaves this pass, same as macOS sibling"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim3 (no call-tree tracing for the 5 complete command bodies; only 1 confirmed edge in the core-helper layer), dim4 (not independently assessed on Windows this pass), dim5 (2/13 functions truncated, ~14 macOS-equivalent helpers with zero Windows evidence), and dim6 (not produced) are all open -- consistent with macos-1.2.3-skills sibling's own conservative posture; per OUTPUT-SPEC.md full_leaf_100_definition_v2, ground-truth owner-name confirmation alone does not promote target-level readiness",
+  "consumerStartReady_commands": [
+    "import_skill", "load_installed_skills", "load_skill_backups",
+    "remove_skill", "restore_skill_backup", "delete_skill_backup"
+  ],
+  "consumerStartReady_basis": "uiCallEntryReady satisfied via ipc-contracts.jsonl (win frontend command surface, true_gaps=0 for all 6 skill commands); backend owner identity satisfied for all 6 via ground-truth command-name-xref (file header: 'tauri command handler = <name> | mapped via command-name string xref (win-native, ground-truth)'); pseudocode presence satisfied (complete for 5/6, truncated-but-real-prefix-present for 1/6 delete_skill_backup); this basis is WEAKER than macos-1.2.3-skills's consumerStartReady_basis (which additionally has fs-syscall-level call-tree narrative for all 21 macOS functions) -- Windows consumerStartReady here means 'owner+raw-pseudocode-on-disk', NOT 'control-flow understood'. A consumer starting from this package must independently read the 5 complete raw .c files (30-45K chars each) before claiming control-flow understanding; this package does not provide that narrative.",
+  "unknowns": [
+    {
+      "item": "Call-tree / control-flow understanding of the 5 complete command-handler bodies (import_skill/load_installed_skills/restore_skill_backup/remove_skill/load_skill_backups)",
+      "class": "blocks_start",
+      "reason": "raw pseudocode is on disk and complete (non-truncated), but this session did not read/trace any of them line-by-line to a syscall leaf -- each is 30-45K characters of Rust-async-state-machine-flattened control flow, materially larger than the small helper functions previously captured; genuinely not-yet-done, not unexaminable"
+    },
+    {
+      "item": "Full content of delete_skill_backup (0x140c92a80) and backup_skill_directory (0x1409060c0)",
+      "class": "blocks_start",
+      "reason": "MCP decompile tool truncated both server-side at 1023 chars (real sizes 48033 and 66937 respectively) -- per SKILL.md red line 20 (DECOMPILE_TRUNCATION_GUARD), these are recorded as truncated-not-complete; a basic_blocks chunked-read follow-up is required before any content claim beyond the confirmed function signature + the 1 confirmed callee edge (backup_skill_directory -> sub_1408A4BA0)"
+    },
+    {
+      "item": "Identity of sub_1408A4BA0/sub_140AD6680/sub_140B0FD50/sub_1414860D0",
+      "class": "accepted_unknown",
+      "reason": "module-attributed only (panic-Location xref / call-graph propagation per file header); consistent with macos-1.2.3-skills's own accepted_unknown classification for these same 4 functions. This session upgraded ONE inference to a confirmed call-graph edge (backup_skill_directory -> sub_1408A4BA0 via callees()) but did not resolve the other 3 or the remaining ambiguity for sub_1408A4BA0's precise Rust-symbol identity"
+    },
+    {
+      "item": "serialize_10 (0x140aa9980) -- a 14th function surfaced by this session's name/comment 'skill' substring scan",
+      "class": "resolved_not_orphan",
+      "reason": "RESOLVED after IDA connection recovered later in this session: comment reads 'win 1.2.3 | = mac codexmate_lib::core::models::_::_$LT$impl serde_core..ser..Serialize for codexmate_lib..core..models..SkillRemovePayload$GT$::serialize'. This is a Serialize-glue function for the SkillRemovePayload DTO, physically located in core::models (not core::skills / commands::skills), analogous to macos-1.2.3-skills's own finding that InstalledSkillSummary/SkillBackupMetadata DTOs live in core::models rather than core::skills. Angle-D classification: already_in_canonical (correctly out of this module's target universe, not a truly_undone orphan)."
+    },
+    {
+      "item": "~14 macOS-equivalent core::skills helper functions with zero Windows raw evidence (copy_dir_all, stage_skill_directory, lock_skill_mutations, resolve_skill_target, resolve_backup_path, is_regular_directory, scan_skills_recursive, load_skill_summary, 2 import_skill-adjacent closures, StagedDirectory::drop, SkillBackupMetadata/InstalledSkillSummary/SkillListPayload deserialize glue)",
+      "class": "blocks_start",
+      "reason": "genuinely absent from raw/aimami/1.2.3/windows-x64/skills/ -- not searched exhaustively this session beyond the dirtree BFS + name/comment scan (which would only have found them if independently named/attributed already; a dedicated panic-Location 2-hop search specifically for these identifiers was not run this pass)"
+    },
+    {
+      "item": "Windows-side DTO byte-level field confirmation (SkillBackupMetadata/InstalledSkillSummary/SkillListPayload)",
+      "class": "blocks_start",
+      "reason": "out of scope this session (backend-owner/pseudocode-focused pass); macOS byte-confirmation from macos-1.2.3-skills sibling is NOT extrapolated onto Windows per skill red-line 8"
+    }
+  ],
+  "notes": [
+    "This is a mixed distillation-plus-gap-fill pass, not a pure read-only distillation: this session connected to the live win IDA instance (<host>, AiMaMi.1.2.3 win64.exe.i64), confirmed server_health (status=ok, IDA decompiler_ready=true, module name matches expected), performed a dirtree BFS enumeration (angle-A), a func-name+comment 'skill' substring scan (angle-C proxy), decompiled 7 previously-uncaptured functions, wrote their raw .c evidence to raw/aimami/1.2.3/windows-x64/skills/ida/pseudocode/, moved 6 of them from unfiled dirtree-root into /codexmate_lib/commands/skills/, annotated all 7 with session-provenance comments, and saved the IDB (idb_save ok=true).",
+    "The single most significant finding of this pass: ALL 6 windows frontend skill commands have a ground-truth-confirmed Windows-native owner function, contradicting/superseding macos-1.2.3-skills batch1's assumption that Windows skills coverage was thin (6 files/2 confirmed). The raw evidence quantity nearly doubled (6->13 files) and owner-identity confidence improved substantially. However, this package explicitly does NOT claim call-tree/control-flow understanding for the 5 newly-complete large command bodies -- that would require a dedicated follow-up pass reading 30-45K chars of Rust-async-state-machine pseudocode per command, which was out of scope/budget for this session.",
+    "IDA connection dropped mid-session (after most captures completed) preventing full resolution of 1 residual lead (serialize_10). Retried once per red line 17, then stopped per the rule rather than guessing or silently treating it as covered.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue and next_producer_steps."
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "system",
+  "package": "windows-1.2.3-system",
+  "created_at": "2026-07-25T00:00:00Z",
+  "producer_machine": "this session (distillation pass; server_health-gated live IDA MCP <host> spot-decompile of the existing 9 raw addrs + WIN-APP-FUNCTION-INVENTORY.jsonl / INDEX.jsonl / task-plan.json cross-check; no new address-discovery or dirtree function-rename work performed this pass; per user instruction 'batch 5 win system distillation')",
+  "binary": {
+    "module_reported_by_server_health": "AiMaMi.1.2.3 win64.exe",
+    "idb_path": "E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+    "imagebase": "0x140000000",
+    "binary_format": "pe",
+    "arch": "x64",
+    "note": "sha not independently recomputed this session; identity confirmed only via server_health module/idb_path match, not via SHA-256 diff against raw/binary/ SOT"
+  },
+  "scope": {
+    "primary_target_universe": "codexmate_lib::commands::system::* (raw/aimami/1.2.3/windows-x64/commands/system/ida/pseudocode/, 6 files)",
+    "supporting_target_universe": "codexmate_lib::platform::{system_volume_windows,process,paths,debug_log,proxy}::* (48 files: system_volume_windows 3, process 34, paths 3, debug_log 3, proxy 5); platform::{daemon,single_instance} have ZERO attributed rows in WIN-APP-FUNCTION-INVENTORY.jsonl and ZERO files on disk under windows-x64/ -- real coverage gap vs macOS sibling (daemon 6, single_instance 6-7 there), see Unknown/Missing",
+    "mirrors_macos_scope_from": "internal-reverse/audits/macos-1.2.3-system/manifest.json scope block (same 7-subdir platform-support set, minus 2 modules windows has zero attribution for)",
+    "excluded": "commands/hotspot (own module, precedent windows-1.0.9-system-hotspot / windows-1.2.3-system-hotspot); commands/relay-shared api_proxy_config trio physically under commands/system on macOS -- windows commands/system's 6 files were NOT individually mapped to command names this pass, so this exclusion could not be verified file-by-file on the Windows side (see Unknown/Missing)",
+    "frontend_target_universe": "same 26 system-domain invoke commands as macos-1.2.3-system, cross-checked against windows-x64/frontend/ipc-contracts.jsonl this session -- all 26 found present (131/131 total lines identical count to the macOS-side ipc-contracts.jsonl, consistent with a single cross-platform Tauri JS bundle; NOT independently verified byte-identical, only command-name-level match)",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "commands_system_files_total": 6,
+    "commands_system_names_resolved_to_specific_command": 0,
+    "commands_system_module_attributed": 6,
+    "commands_system_attribution_methods": {"panic_location_xref": 4, "call_graph_propagation": 2},
+    "commands_system_attribution_era": "win 1.2.1 (comment header baked into live IDB, carried into raw .c dump; NOT a same-version-1.2.3 fresh attribution -- inherited from an earlier 1.2.1 dirtree-recovery pass per red line 24 methodology, then re-decompiled/re-dumped for 1.2.3 addrs this week)",
+    "system_volume_windows_files_total": 3,
+    "system_volume_windows_module_attributed": 3,
+    "system_volume_windows_attribution_methods": {"panic_location_xref": 2, "call_graph_propagation": 1},
+    "platform_process_files": 34,
+    "platform_paths_files": 3,
+    "platform_debug_log_files": 3,
+    "platform_proxy_files": 5,
+    "platform_daemon_files": 0,
+    "platform_single_instance_files": 0,
+    "platform_support_files_total_this_scope": 48,
+    "windows_system_domain_files_grand_total": 54,
+    "macos_sibling_comparison_file_count": {"macos_commands_system": 34, "macos_platform_support": 95, "macos_total": 129, "windows_total": 54, "windows_as_pct_of_macos_by_file_count": "~42%", "caveat": "file-count ratio is NOT a coverage-completeness proxy; command-to-owner-file mapping is the real gate and is 0/26 on Windows"},
+    "on_disk_field_staleness": "WIN-APP-FUNCTION-INVENTORY.jsonl (1133 rows total, intermediate/aimami/1.2.3/windows-x64/) reports on_disk=false for ALL 9 system-domain rows (6 commands/system + 3 system_volume_windows) as well as all 48 platform-support rows checked this session; this is STALE -- this session independently confirmed via find|wc -l that all 54 files ARE physically present on raw/ disk. The inventory's on_disk flag was not refreshed after the 2026-07-24T13:20:34Z gapfill session (INDEX.jsonl session id win-1.2.3-app-function-inventory-gapfill-20260724) wrote the 9 system+system_volume_windows files, nor does it reflect the pre-existing 48 platform-support files.",
+    "frontend_commands_covered": 26,
+    "frontend_cross_check_basis": "grep of all 26 macos-1.2.3-system command names against windows-x64/frontend/ipc-contracts.jsonl (131 lines total, same count as macOS side) performed directly this session; 26/26 exact 1-hit matches",
+    "measurement_basis": "find|wc -l against raw/aimami/1.2.3/windows-x64/{commands/system,system_volume_windows,process,paths,debug_log,proxy,daemon,single_instance}/ida/pseudocode/*.c performed directly this session; module-attribution counts cross-checked directly against intermediate/aimami/1.2.3/windows-x64/WIN-APP-FUNCTION-INVENTORY.jsonl (1133 rows) via grep on the module field; 10 of the 54 files' decompile output (all 9 system-domain + 1 paths + 1 debug_log spot sample) independently re-fetched live via IDA MCP decompile this session to confirm attribution-comment presence and non-stub content"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.2.3-system/ (scope/skeleton precedent + 26-command frontend list source, not content-copied)",
+    "internal-reverse/INDEX.jsonl (2 rows: aimami/1.2.3/windows-x64/commands/system/win-app-inventory-gapfill-leaf, aimami/1.2.3/windows-x64/system_volume_windows/win-app-inventory-gapfill-leaf)",
+    "intermediate/aimami/1.2.3/windows-x64/WIN-APP-FUNCTION-INVENTORY.jsonl (1133-row module-attribution census; this is the file the task instruction's '1133' figure refers to)"
+  ],
+  "cross_platform_sibling": "internal-reverse/audits/macos-1.2.3-system/ (primary/stronger sibling; that package explicitly deferred creating this Windows package on 2026-07-24 citing 'too thin' evidence -- this package supersedes that deferral now that module-level attribution + on-disk presence for all 54 platform-support files has been confirmed, though command-to-owner mapping remains open)",
+  "related_packages": [
+    "internal-reverse/audits/windows-1.2.3-system-hotspot/ (sibling, excluded from this package's scope)",
+    "internal-reverse/audits/windows-1.0.9-system/, windows-1.0.9-system-hotspot/, windows-1.0.9-system-usage/ (prior-version precedent for module split, not content-consumed)"
+  ],
+  "known_residuals": [
+    "command-to-owner-file mapping: 0/26 -- module-level attribution (which .rs file a sub_ belongs to) is done for all 9 system-domain raw files, but WHICH of the 6 commands/system files backs get_system_info vs restart_codex vs clean etc. is not yet resolved -- this is the single largest closable-with-existing-evidence gap",
+    "platform::daemon and platform::single_instance: 0 files, 0 attributed rows in the 1133-row inventory -- genuine truly_undone gap, not merely un-dumped (the inventory itself has no attributed rows for these two modules on Windows, unlike macOS which has 6 daemon + 6-7 single_instance files)",
+    "dim1 frontend: command-name-level only, no component-tree document (same weakness as macOS sibling)",
+    "dim3/dim4/dim6: not attempted this pass (same as macOS sibling)",
+    "angle-A/C full-module function-histogram scan (red line 19 FULL_MODULE_BACKEND_ENUM) not attempted this pass -- only the 6 known modules from the inventory were checked; a fresh func_query/entity_query sweep across the full 1133-row inventory for any additional system-adjacent module names (e.g. registry, bootstrap, hwid) was not performed",
+    "IDA Python / dirtree batch-rename tooling referenced in the task instruction was not available on the live IDA MCP tools/list this session (confirmed tool set: server_health, server_warmup, lookup_funcs, int_convert, list_funcs, func_query, list_globals, entity_query, imports, imports_query, idb_save, find_regex, search_text, decompile, disasm, func_profile, analyze_batch, xrefs_to, xref_query, xrefs_to_field, callees, find_bytes, basic_blocks, find, insn_query, export_funcs, callg -- no IDA Python/IDA Python exposed); the 2026-07-24 gapfill session's INDEX.jsonl note references 'IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py' as its own producer tooling, which this session could not re-invoke directly and instead used the equivalent single-address decompile tool"
+  ],
+  "note": "This manifest documents a distillation + verification pass, not a new decompile campaign. All 54 files were already on raw/ disk before this session (9 from the 2026-07-24T13:20:34Z gapfill, 45 pre-existing). This session's contribution: (1) confirmed IDA MCP live via server_health gate; (2) live-re-decompiled and read the 9 system-domain addrs plus 2 platform-support spot samples to verify attribution-comment presence and non-truncation; (3) cross-checked all 26 macOS-side frontend command names against the Windows ipc-contracts.jsonl; (4) discovered and documented the on_disk field staleness in WIN-APP-FUNCTION-INVENTORY.jsonl; (5) discovered and documented the platform::daemon / platform::single_instance zero-attribution gap. No bulk decompile text is copied into this package; raw evidence referenced via pointers/evidence-paths.md."
+}

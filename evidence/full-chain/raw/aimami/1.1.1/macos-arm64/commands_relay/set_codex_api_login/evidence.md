@@ -3,7 +3,7 @@
 **Session**: <审计会话>
 **Machine**: <本地机器>
 **Binary**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi (macos-arm64)
-**IDB**: AiMaMi.i64 (hexrays_ready=true, uptime 62205s at session start)
+**IDB**: AiMaMi.i64 (IDA decompiler_ready=true, uptime 62205s at session start)
 **Module**: commands_relay (codexmate_lib::commands::relay)
 **Core owner VA**: 0x1005d3a10 (RelayManager::set_codex_api_login, size=0x1467)
 **ICF status**: command wrapper ICF-folded into tauri IPC dispatch runtime (confirmed via drop_in_place chain + string pool); sole meaningful xref to owner is BlockingTask::poll@0x10059a6e0
