@@ -1,0 +1,399 @@
+const __vite__mapDeps = (i, m = __vite__mapDeps, d = (m.f || (m.f = ["assets/index-ZeD99E_m.js", "assets/index-B40jKs17.js", "assets/index-CR8sKgfr.css"]))) => i.map(i => d[i]);
+import {
+    c as V,
+    j as e,
+    aj as U,
+    g as H,
+    h as Y,
+    p as J,
+    r as k,
+    A as P,
+    q as c,
+    B as d,
+    a5 as q,
+    a4 as W,
+    aa as F,
+    ab as R,
+    ac as Q,
+    ad as T,
+    ae as K,
+    af as _,
+    ag as I,
+    ah as M,
+    t as o,
+    Y as m,
+    _ as X,
+    s as l
+} from "./index-B40jKs17.js";
+import {
+    B as i
+} from "./bento-card-BkTnavwO.js";
+import {
+    U as Z,
+    S as $
+} from "./upload-BycvaRoU.js";
+import {
+    T as L
+} from "./trash-2-DRwsDz2M.js";
+import {
+    R as ee
+} from "./rotate-ccw-BK-Dptsz.js";
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const se = V("Archive", [
+    ["rect", {
+        width: "20",
+        height: "5",
+        x: "2",
+        y: "3",
+        rx: "1",
+        key: "1wp1u1"
+    }],
+    ["path", {
+        d: "M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8",
+        key: "1s80jp"
+    }],
+    ["path", {
+        d: "M10 12h4",
+        key: "a56b0p"
+    }]
+]);
+
+function te({
+    items: t,
+    value: a,
+    onChange: r,
+    className: u
+}) {
+    return e.jsx("div", {
+        className: H("inline-flex rounded-full bg-muted p-0.5 dark:bg-white/[0.06]", u),
+        children: e.jsx(U, {
+            items: t,
+            value: a,
+            onValueChange: n => r(n),
+            className: "gap-0.5",
+            indicatorClassName: "rounded-full bg-primary shadow-sm",
+            itemClassName: "rounded-full px-[18px] py-[5px] text-[13px] font-medium whitespace-nowrap",
+            activeItemClassName: "text-primary-foreground",
+            inactiveItemClassName: "text-muted-foreground hover:text-foreground"
+        })
+    })
+}
+
+function oe() {
+    var A, D, E, S;
+    const {
+        t
+    } = Y(), a = J(), [r, u] = k.useState("installed"), [n, x] = k.useState(null), [p, h] = k.useState(null), y = P({
+        queryKey: ["installed-skills"],
+        queryFn: () => l.loadInstalledSkills(),
+        staleTime: 1 / 0
+    }), N = P({
+        queryKey: ["skill-backups"],
+        queryFn: () => l.loadSkillBackups(),
+        enabled: r === "backups"
+    }), b = c({
+        mutationFn: async () => {
+            const {
+                open: s
+            } = await X(async () => {
+                const {
+                    open: O
+                } = await import("./index-ZeD99E_m.js");
+                return {
+                    open: O
+                }
+            }, __vite__mapDeps([0, 1, 2])), B = await s({
+                directory: !0
+            });
+            if (typeof B == "string") return l.importSkill(B);
+            throw new Error("CANCELLED")
+        },
+        onSuccess: () => a.invalidateQueries({
+            queryKey: ["installed-skills"]
+        }),
+        onError: s => {
+            s instanceof Error && s.message === "CANCELLED" || o({
+                title: t("skills.operationFailed"),
+                description: m(s, t("common.toastErrorGenericDesc")),
+                variant: "destructive"
+            })
+        }
+    }), z = c({
+        mutationFn: s => l.removeSkill(s),
+        onSuccess: () => {
+            x(null), a.invalidateQueries({
+                queryKey: ["installed-skills"]
+            }), a.invalidateQueries({
+                queryKey: ["skill-backups"]
+            })
+        },
+        onError: s => o({
+            title: t("skills.operationFailed"),
+            description: m(s, t("common.toastErrorGenericDesc")),
+            variant: "destructive"
+        })
+    }), w = c({
+        mutationFn: s => l.restoreSkillBackup(s),
+        onSuccess: () => {
+            a.invalidateQueries({
+                queryKey: ["installed-skills"]
+            }), a.invalidateQueries({
+                queryKey: ["skill-backups"]
+            })
+        },
+        onError: s => o({
+            title: t("skills.operationFailed"),
+            description: m(s, t("common.toastErrorGenericDesc")),
+            variant: "destructive"
+        })
+    }), G = c({
+        mutationFn: s => l.deleteSkillBackup(s),
+        onSuccess: () => {
+            h(null), a.invalidateQueries({
+                queryKey: ["skill-backups"]
+            })
+        },
+        onError: s => o({
+            title: t("skills.operationFailed"),
+            description: m(s, t("common.toastErrorGenericDesc")),
+            variant: "destructive"
+        })
+    }), v = ((A = y.data) == null ? void 0 : A.data.items) ?? [], g = ((D = N.data) == null ? void 0 : D.data.items) ?? [], j = ((E = y.data) == null ? void 0 : E.data.rootPath) ?? "", f = ((S = N.data) == null ? void 0 : S.data.rootPath) ?? "", C = s => {
+        navigator.clipboard.writeText(s), o({
+            title: t("skills.pathCopied"),
+            description: t("skills.pathCopiedDesc"),
+            variant: "default"
+        })
+    };
+    return e.jsxs("div", {
+        className: "space-y-6",
+        children: [e.jsxs("div", {
+            className: "flex items-center justify-between",
+            children: [e.jsx("p", {
+                className: "max-w-md text-sm text-muted-foreground",
+                children: t("skills.description")
+            }), e.jsxs("div", {
+                className: "flex items-center gap-2",
+                children: [e.jsx(te, {
+                    items: [{
+                        value: "installed",
+                        label: t("skills.installed")
+                    }, {
+                        value: "backups",
+                        label: t("skills.backups")
+                    }],
+                    value: r,
+                    onChange: s => u(s)
+                }), e.jsxs(d, {
+                    size: "sm",
+                    onClick: () => b.mutate(),
+                    disabled: b.isPending,
+                    children: [e.jsx(Z, {
+                        className: "h-3.5 w-3.5"
+                    }), t("skills.import")]
+                })]
+            })]
+        }), e.jsxs("div", {
+            className: "grid grid-cols-4 gap-4",
+            children: [e.jsxs(i, {
+                compact: !0,
+                children: [e.jsx("span", {
+                    className: "text-xs text-muted-foreground",
+                    children: t("skills.skillCount")
+                }), e.jsx("span", {
+                    className: "mt-1 text-lg font-semibold",
+                    children: v.length
+                })]
+            }), e.jsxs(i, {
+                compact: !0,
+                children: [e.jsx("span", {
+                    className: "text-xs text-muted-foreground",
+                    children: t("skills.backupCount")
+                }), e.jsx("span", {
+                    className: "mt-1 text-lg font-semibold",
+                    children: g.length
+                })]
+            }), e.jsxs(i, {
+                compact: !0,
+                children: [e.jsx("span", {
+                    className: "text-xs text-muted-foreground",
+                    children: t("skills.rootPath")
+                }), e.jsxs("button", {
+                    className: "mt-1 flex w-full items-center gap-1.5 text-left",
+                    title: j,
+                    "aria-label": t("skills.copyRootPathAria"),
+                    onClick: () => C(j),
+                    children: [e.jsx("span", {
+                        className: "min-w-0 flex-1 truncate text-sm font-medium",
+                        children: j
+                    }), e.jsx(q, {
+                        className: "h-3 w-3 shrink-0 text-muted-foreground"
+                    })]
+                })]
+            }), e.jsxs(i, {
+                compact: !0,
+                children: [e.jsx("span", {
+                    className: "text-xs text-muted-foreground",
+                    children: t("skills.backupRootPath")
+                }), e.jsxs("button", {
+                    className: "mt-1 flex w-full items-center gap-1.5 text-left",
+                    title: f,
+                    "aria-label": t("skills.copyBackupRootPathAria"),
+                    onClick: () => C(f),
+                    children: [e.jsx("span", {
+                        className: "min-w-0 flex-1 truncate text-sm font-medium",
+                        children: f
+                    }), e.jsx(q, {
+                        className: "h-3 w-3 shrink-0 text-muted-foreground"
+                    })]
+                })]
+            })]
+        }), r === "installed" ? v.length === 0 ? e.jsx(i, {
+            children: e.jsxs("div", {
+                className: "flex h-48 flex-col items-center justify-center",
+                children: [e.jsx($, {
+                    className: "h-10 w-10 text-muted-foreground/40"
+                }), e.jsx("p", {
+                    className: "mt-3 text-sm text-muted-foreground",
+                    children: t("skills.empty")
+                })]
+            })
+        }) : e.jsx(i, {
+            className: "p-0",
+            children: e.jsx("div", {
+                className: "divide-y divide-border",
+                children: v.map(s => e.jsxs("div", {
+                    className: "group flex items-center justify-between px-5 py-4 transition-colors hover:bg-accent",
+                    children: [e.jsxs("div", {
+                        className: "min-w-0 flex-1",
+                        children: [e.jsx("p", {
+                            className: "text-[14px] font-semibold",
+                            children: s.title || s.name
+                        }), s.summary && e.jsx("p", {
+                            className: "mt-1.5 truncate text-[13px] text-muted-foreground",
+                            children: s.summary
+                        })]
+                    }), e.jsx("div", {
+                        className: "ml-4 flex shrink-0 items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100",
+                        children: e.jsx(d, {
+                            variant: "outline",
+                            size: "icon-sm",
+                            onClick: () => x(s.id),
+                            title: t("skills.removeAria", {
+                                name: s.title || s.name
+                            }),
+                            "aria-label": t("skills.removeAria", {
+                                name: s.title || s.name
+                            }),
+                            className: "text-muted-foreground hover:bg-destructive hover:text-white hover:border-destructive",
+                            children: e.jsx(L, {
+                                className: "h-3.5 w-3.5"
+                            })
+                        })
+                    })]
+                }, s.id))
+            })
+        }) : g.length === 0 ? e.jsx(i, {
+            children: e.jsxs("div", {
+                className: "flex h-48 flex-col items-center justify-center",
+                children: [e.jsx(se, {
+                    className: "h-10 w-10 text-muted-foreground/40"
+                }), e.jsx("p", {
+                    className: "mt-3 text-sm text-muted-foreground",
+                    children: t("skills.noBackups")
+                })]
+            })
+        }) : e.jsx(i, {
+            className: "p-0",
+            children: e.jsx("div", {
+                className: "divide-y divide-border",
+                children: g.map(s => e.jsxs("div", {
+                    className: "group flex items-center justify-between px-5 py-4 transition-colors hover:bg-accent",
+                    children: [e.jsxs("div", {
+                        className: "min-w-0 flex-1",
+                        children: [e.jsx("p", {
+                            className: "text-[14px] font-semibold",
+                            children: s.title || s.name
+                        }), e.jsxs("p", {
+                            className: "mt-1.5 text-[13px] text-muted-foreground",
+                            children: [W(s.createdAt), " · ", s.relativePath]
+                        })]
+                    }), e.jsxs("div", {
+                        className: "ml-4 flex shrink-0 items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100",
+                        children: [e.jsxs(d, {
+                            variant: "outline",
+                            size: "sm",
+                            onClick: () => w.mutate(s.id),
+                            disabled: w.isPending,
+                            children: [e.jsx(ee, {
+                                className: "h-3.5 w-3.5"
+                            }), t("skills.restore")]
+                        }), e.jsx(d, {
+                            variant: "outline",
+                            size: "icon-sm",
+                            onClick: () => h(s.id),
+                            title: t("skills.deleteBackupAria", {
+                                name: s.title || s.name
+                            }),
+                            "aria-label": t("skills.deleteBackupAria", {
+                                name: s.title || s.name
+                            }),
+                            className: "text-muted-foreground hover:bg-destructive hover:text-white hover:border-destructive",
+                            children: e.jsx(L, {
+                                className: "h-3.5 w-3.5"
+                            })
+                        })]
+                    })]
+                }, s.id))
+            })
+        }), e.jsx(F, {
+            open: n !== null,
+            onOpenChange: s => !s && x(null),
+            children: e.jsxs(R, {
+                children: [e.jsxs(Q, {
+                    children: [e.jsx(T, {
+                        children: t("skills.remove")
+                    }), e.jsx(K, {
+                        children: t("skills.confirmRemove")
+                    })]
+                }), e.jsxs(_, {
+                    children: [e.jsx(I, {
+                        children: t("common.cancel")
+                    }), e.jsx(M, {
+                        className: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+                        onClick: () => n && z.mutate(n),
+                        children: t("skills.remove")
+                    })]
+                })]
+            })
+        }), e.jsx(F, {
+            open: p !== null,
+            onOpenChange: s => !s && h(null),
+            children: e.jsxs(R, {
+                children: [e.jsxs(Q, {
+                    children: [e.jsx(T, {
+                        children: t("skills.deleteBackup")
+                    }), e.jsx(K, {
+                        children: t("skills.confirmDeleteBackup")
+                    })]
+                }), e.jsxs(_, {
+                    children: [e.jsx(I, {
+                        children: t("common.cancel")
+                    }), e.jsx(M, {
+                        className: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+                        onClick: () => p && G.mutate(p),
+                        children: t("skills.deleteBackup")
+                    })]
+                })]
+            })
+        })]
+    })
+}
+export {
+    oe as SkillsPage
+};
