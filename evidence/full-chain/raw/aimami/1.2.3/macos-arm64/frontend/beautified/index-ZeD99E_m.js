@@ -1,0 +1,70 @@
+import {
+    bt as l
+} from "./index-B40jKs17.js";
+
+function c(n) {
+    if (n !== void 0) {
+        if (typeof n == "string") return n;
+        if ("ok" in n && "cancel" in n) return {
+            OkCancelCustom: [n.ok, n.cancel]
+        };
+        if ("yes" in n && "no" in n && "cancel" in n) return {
+            YesNoCancelCustom: [n.yes, n.no, n.cancel]
+        };
+        if ("ok" in n) return {
+            OkCustom: n.ok
+        }
+    }
+}
+async function f(n = {}) {
+    return typeof n == "object" && Object.freeze(n), await l("plugin:dialog|open", {
+        options: n
+    })
+}
+async function u(n = {}) {
+    return typeof n == "object" && Object.freeze(n), await l("plugin:dialog|save", {
+        options: n
+    })
+}
+async function k(n, i) {
+    var a, r;
+    const e = typeof i == "string" ? {
+        title: i
+    } : i;
+    return l("plugin:dialog|message", {
+        message: n.toString(),
+        title: (a = e == null ? void 0 : e.title) == null ? void 0 : a.toString(),
+        kind: e == null ? void 0 : e.kind,
+        okButtonLabel: (r = e == null ? void 0 : e.okLabel) == null ? void 0 : r.toString(),
+        buttons: c(e == null ? void 0 : e.buttons)
+    })
+}
+async function d(n, i) {
+    var a, r, t;
+    const e = typeof i == "string" ? {
+        title: i
+    } : i;
+    return await l("plugin:dialog|ask", {
+        message: n.toString(),
+        title: (a = e == null ? void 0 : e.title) == null ? void 0 : a.toString(),
+        kind: e == null ? void 0 : e.kind,
+        yesButtonLabel: (r = e == null ? void 0 : e.okLabel) == null ? void 0 : r.toString(),
+        noButtonLabel: (t = e == null ? void 0 : e.cancelLabel) == null ? void 0 : t.toString()
+    })
+}
+async function y(n, i) {
+    var a, r, t;
+    const e = typeof i == "string" ? {
+        title: i
+    } : i;
+    return await l("plugin:dialog|confirm", {
+        message: n.toString(),
+        title: (a = e == null ? void 0 : e.title) == null ? void 0 : a.toString(),
+        kind: e == null ? void 0 : e.kind,
+        okButtonLabel: (r = e == null ? void 0 : e.okLabel) == null ? void 0 : r.toString(),
+        cancelButtonLabel: (t = e == null ? void 0 : e.cancelLabel) == null ? void 0 : t.toString()
+    })
+}
+export {
+    d as ask, y as confirm, k as message, f as open, u as save
+};
