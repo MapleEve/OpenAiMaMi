@@ -1,0 +1,71 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "relay-core",
+  "package": "macos-1.2.3-relay-core",
+  "package_kind": "lightweight_coverage_audit",
+  "created_at": "2026-07-25T00:00:00Z",
+  "producer_machine": "<host> (this audit assembled; no new IDA decompile performed)",
+  "purpose": "Determine whether the standalone relay-core scope (independent package in 1.0.9: audits/macos-1.0.9-relay-core/ + audits/windows-1.0.9-relay-core/) needs its own 1.2.3 canonical bundle, or is already fully subsumed by audits/macos-1.2.3-relay/.",
+  "method": "Disk-grounded cross-check only (no live IDA session run in this pass): (1) read 1.0.9 relay-core manifest.json cluster list (19 clusters) as the target universe; (2) read 1.2.3 relay manifest.json declared scope (core::relay::* 32 submodules + commands::relay 23 commands); (3) diff the 32 raw/aimami/1.2.3/macos-arm64/core/relay/ submodule directory names and a sample of function filenames against the 19 relay-core-1.0.9 cluster names/functions; (4) cross-read REVERSE-STATUS.md (canonical claim/status ledger) for any existing project determination on this exact question.",
+  "verdict": "PARTIAL — not a clean covered_by_relay_bundle=true. Authoritative project ledger (REVERSE-STATUS.md, wf-aimami123-fullapp-20260724 entry, dated 2026-07-24) already and independently lists `relay-core` as a distinct, still-open 1.2.3 full-app backlog target (macOS + Windows + a cross-platform relay-core-bootstrap module), explicitly separate from the already-closed `relay` bundle. Function-name-level content overlap is substantial for most 1.0.9 relay-core clusters, but two clusters have no discoverable 1.2.3 equivalent, and formal RULE-9 diff/migration + reduce into a canonical audits/<platform>-1.2.3-relay-core/ bundle has never been run.",
+  "covered_by_relay_bundle": false,
+  "covered_by_relay_bundle_caveat": "Most 1.0.9 relay-core cluster content is present, function-name-verified, inside audits/macos-1.2.3-relay/'s declared core::relay::* 32-submodule scope (content-level absorption). But (a) this absorption was never formally verified via RULE-9 diff/migration -- macos-1.2.3-relay/manifest.json's consumed_bundles list does not include audits/macos-1.0.9-relay-core/, so the 1.2.3 relay baseline was produced as a fresh independent baseline, not as a diff against relay-core-1.0.9; (b) 2 of 19 clusters (relay_web_executor, relay_web_tools) have zero name/function matches anywhere in the 1.2.3 macos-arm64 raw tree; (c) REVERSE-STATUS.md's own 2026-07-24 full-app gap audit already lists relay-core as open/unreduced, including Windows-side raw evidence that exists but has not been reduced to canonical form.",
+  "cross_check_evidence": {
+    "cluster_to_submodule_mapping_confirmed_by_function_name": {
+      "relay_codex_writer": "core/relay/codex_writer/",
+      "relay_diagnostic": "core/relay/codex_diagnostic/ (massively expanded: config/catalog/thread/router-unlock reconciliation)",
+      "relay_health_audit": "core/relay/health_check/ + manager/ (run_diagnostics, fix_diagnostic_issue confirmed present)",
+      "relay_manager": "core/relay/manager/",
+      "relay_proxy_server": "core/relay/proxy_server/",
+      "relay_thread_migration": "core/relay/codex_thread_visibility/ (massively expanded: rollout/session_meta convergence)",
+      "relay_translator": "core/relay/translator/ (massively expanded: anthropic<->openai<->responses dialect translation)",
+      "relay_breaker": "core/relay/breaker/",
+      "relay_fetch_models": "core/relay/fetch_models/",
+      "relay_models": "core/relay/models/",
+      "relay_translator_stream": "core/relay/translator/stream/ (sse_event, feed_line, handle_chunk, handle_event functions present)",
+      "relay_image_compat": "core/relay/image_compat/",
+      "relay_try_dispatch": "core/relay/proxy_server/ (try_pass_through_0x100257d90.c, try_translate_0x1002550c0.c function-name matches) + core/relay/proxy_passthrough/ (forward_to_openai)",
+      "relay_ws_handlers": "core/relay/proxy_server/ (codex_router_lookup_model_0x10025ef90.c, record_codex_openai_passthrough_route_0x10026c6b0.c -- exact function-name matches to 1.0.9 relay_ws_handlers cluster's documented leaves)",
+      "relay_passthrough_helpers": "core/relay/proxy_passthrough/ (error_response, is_bearer_likely_missing, copy_response_headers_to_builder, build_passthrough_request_headers -- exact function-name matches)",
+      "relay_sse": "core/relay/translator/ (sse_event_0x100ac5e00.c present; moderate-confidence match, not exhaustively confirmed against the 4 documented 1.0.9 leaves)"
+    },
+    "cluster_moved_out_of_relay_scope_but_covered_elsewhere": {
+      "relay_proxy_config": "Relocated to commands::system on macOS 1.2.3 -- confirmed via audits/macos-1.2.3-relay/logic/REGISTRATION-TABLE-1.2.3.md lines documenting detect_api_proxy_config/set_api_proxy_config/test_api_proxy_config as '物理归属 commands/system/...' and explicitly '不在 commands/relay/ 目录'. Covered by audits/macos-1.2.3-system/ instead (grep-confirmed proxy_config references present in that package's logic/FULL-CHAIN-1.2.3.md, AI.md, README.md)."
+    },
+    "clusters_with_no_discoverable_1_2_3_equivalent": {
+      "relay_web_executor": "No file, directory, or function name matching web_executor/web_tool/brave/tavily/search_provider found anywhere under raw/aimami/1.2.3/macos-arm64/ (whole-tree search, not scoped to core/relay/). Not found = not proven absorbed; could be (a) a removed product feature (native provider web-search tool passthrough now handled via translator/'s anthropic_web_search_tool_with_type / strip_anthropic_web_search_tools / remove_web_search_hint, which only prove tool-schema passthrough, not execution), or (b) present under an unrecognized name requiring func_query symbol enumeration (FOUR_ANGLE_COMPLETENESS red line #15) to falsify -- not done in this pass.",
+      "relay_web_tools": "Same search and same caveat as relay_web_executor; historically a 12-leaf cluster in 1.0.9 (web_tools proxy passthrough for tool calls)."
+    }
+  },
+  "reverse_status_ledger_cross_reference": {
+    "source": "internal-reverse/REVERSE-STATUS.md, entry [wf-aimami123-fullapp-20260724], dated 2026-07-24 (same day as macos-1.2.3-relay bundle creation)",
+    "quote_paraphrase": "Full-app 1.2.3 backlog gap list explicitly names 'relay-core' as a still-open target requiring its own audits/<platform>-1.2.3-relay-core/ canonical bundle, explicitly distinguished from 'relay' (which the same line excludes from the backlog because audits/macos-1.2.3-relay + audits/windows-1.2.3-relay already exist). Also notes raw/aimami/1.2.3 already has 'win 多个 relay-core 子模块深逆' (multiple Windows relay-core submodules already deep-reversed) sitting unreduced, and lists a cross-platform 'relay-core-bootstrap' module (mirroring 1.0.9's cross-1.0.9-relay-core-bootstrap/) as also still pending for 1.2.3.",
+    "avoid_note": "The same REVERSE-STATUS.md entry's own 'avoid' list marks the relay bundle (macos-1.2.3-relay / windows-1.2.3-relay) as read-only / claimed / not to be overlapped by other producers -- but relay-core is listed as a separate open item, not folded into that avoid-scope."
+  },
+  "recommendation": "Do NOT close relay-core as covered_by_relay_bundle=true. Treat as gap_needs_reducer at minimum (existing raw evidence, esp. Windows side, needs RULE-8 reduce into a canonical audits/macos-1.2.3-relay-core/ + audits/windows-1.2.3-relay-core/ bundle) and gap_needs_new_raw for relay_web_executor/relay_web_tools specifically (needs a func_query-based existence check before either writing 'removed in this version' or opening new raw work). A cross-platform relay-core-bootstrap module (audits/cross-1.2.3-relay-core-bootstrap/) also remains open, mirroring 1.0.9's cross-1.0.9-relay-core-bootstrap/.",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.0.9-relay-core/manifest.json",
+    "internal-reverse/audits/macos-1.2.3-relay/manifest.json",
+    "internal-reverse/audits/macos-1.2.3-relay/logic/REGISTRATION-TABLE-1.2.3.md",
+    "internal-reverse/audits/macos-1.2.3-system/ (grep cross-check only)",
+    "internal-reverse/REVERSE-STATUS.md (wf-aimami123-fullapp-20260724 entry)"
+  ],
+  "gate_status": "diagnostic-only. No dim1-6 closure claimed for any leaf in this package. This package does not set implementation_use=true, gate_accepted=true, strictImplementationUse=true, or readyToImplement=true for any target. It only records a coverage determination for planning the next reduce/raw pass.",
+  "resolution_2026_07_26": {
+    "session": "macos-1.2.3-relay-core-reassign-20260726",
+    "machine": "<host>",
+    "reassigned_from": "relay123-surface (<host>, claimed 2026-07-23, stalled 3+ days, EXPLICIT_REASSIGN_OWNER token, user chat authorization 2026-07-26)",
+    "note": "This block is an append; all fields above (created_at through gate_status) are the original 2026-07-25 conclusions and are left unmodified. See gate-report.json for full method and reviews/CLAUDE.md for the independent review.",
+    "relay_web_executor_status": "confirmed_removed -- live func_query (macOS <host>) + find_regex (Windows <host>) on 2026-07-26, both platforms independently 0 execution-layer hits (web_executor/web_tool/brave/tavily/duckduckgo/serpapi/search_provider/ToolExecutor). Was strictImplementationUse on both platforms in 1.0.9 (cross-1.0.9-relay-core-bootstrap/data/producer-ledger.json) -- genuine product removal, not an uncaptured gap.",
+    "relay_web_tools_status": "confirmed_removed -- same evidence and method as relay_web_executor above.",
+    "verdict_2026_07_26": "PARTIAL (unchanged tier from 2026-07-25's PARTIAL) -- the two open Unknowns about relay_web_executor/relay_web_tools existence are now resolved to confirmed_removed, and the OUTPUT-SPEC.md file skeleton (gate-report.json, logic/, reviews/) is now complete. covered_by_relay_bundle remains false in the strict sense (no formal RULE-9 diff has been produced, and the Windows relay-core canonical bundle still does not exist), but the package is no longer missing required files and no longer carries an unresolved existence-question for 2 of its 19 target clusters.",
+    "package_kind_unchanged": "lightweight_coverage_audit -- not upgraded to a full RULE-9 reduce bundle; this session performed a targeted existence-verification and file-skeleton completion, not a formal migration diff or dim1-6 leaf closure.",
+    "still_open_not_claimed_by_this_session": [
+      "windows-1.2.3-relay-core canonical bundle (does not exist; 113/177 tier-C functions in owner-map.jsonl undecompiled)",
+      "formal audits/macos-1.2.3-relay/logic/NO-BEHAVIOR-DIFF-MIGRATION-1.2.3.md against the 19-cluster 1.0.9 universe"
+    ]
+  }
+}

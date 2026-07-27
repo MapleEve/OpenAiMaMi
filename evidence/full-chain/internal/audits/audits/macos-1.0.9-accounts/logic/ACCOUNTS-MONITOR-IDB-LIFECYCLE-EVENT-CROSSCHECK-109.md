@@ -16,7 +16,7 @@ external HOWTO path is an execution dependency.
   `<source-location>/source-binary/AiMaMi 1.0.9_ida.app/Contents/MacOS/AiMaMi.i64`
 - IDA input:
   `<source-location>/source-binary/AiMaMi 1.0.9_ida.app/Contents/MacOS/AiMaMi`
-- IDA health: `auto_analysis_ready=true`, `hexrays_ready=true`.
+- IDA health: `auto_analysis_ready=true`, `IDA decompiler_ready=true`.
 - IDB writeback: comments were added to owner/callsite/leaf addresses below;
   `idb_save` returned OK.
 

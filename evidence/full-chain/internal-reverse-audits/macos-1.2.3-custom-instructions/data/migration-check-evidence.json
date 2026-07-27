@@ -1,0 +1,37 @@
+{
+  "check": "RULE9 migrate macos-1.0.9-custom-instructions -> macos-1.2.3-custom-instructions",
+  "frontend_check": {
+    "file": "raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl",
+    "commands_checked": [
+      "load_custom_instruction_state",
+      "preview_custom_instruction_apply",
+      "apply_custom_instruction",
+      "clear_custom_instruction_block",
+      "rollback_custom_instruction"
+    ],
+    "hit_counts": {
+      "load_custom_instruction_state": 1,
+      "preview_custom_instruction_apply": 1,
+      "apply_custom_instruction": 1,
+      "clear_custom_instruction_block": 1,
+      "rollback_custom_instruction": 1
+    },
+    "result": "unchanged_from_1.0.9"
+  },
+  "backend_command_baseline_check": {
+    "file": "raw/aimami/1.2.3/macos-arm64/backend-baseline/commands-baseline.md",
+    "grep_pattern": "custom",
+    "hits": 0,
+    "result": "unchanged_from_1.0.9_zero_hits"
+  },
+  "backend_literal_grep_check": {
+    "scope": "raw/aimami/1.2.3/{macos-arm64,windows-x64}/ excluding /frontend/ and /dumped/assets/, plus intermediate/aimami/1.2.3/",
+    "grep_pattern": "custom_instruction|custom\\.instruction|customInstruction (case-insensitive)",
+    "total_hits": 1,
+    "hit_files": [
+      "raw/aimami/1.2.3/macos-arm64/core/relay/ida/pseudocode/__codexmate_lib_core_relay_transition_journal___impl_serde_core_de_Deserialize_for_codexmate_lib_core_relay_transition_j_0x100373380.c"
+    ],
+    "hit_detail": "Alternative-name comment (ICF-folded symbol alias) for codexmate_lib::core::models::CustomInstructionProtectionState, sharing a physical address (0x100373380) with the expecting() stub bodies of TransitionTarget/AuthMode/PlanType FieldVisitors",
+    "result": "NOT_ZERO -- RULE9 migration precondition fails, distill required"
+  }
+}

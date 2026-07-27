@@ -5,7 +5,7 @@
 **Date**: 2026-06-17
 **Prior Session**: <审计会话> (2026-06-16) — misclassified as same-sweep; delta_vs_109 was deferred
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
-**IDB**: AiMaMi.i64 (hexrays_ready=true, uptime=82534s)
+**IDB**: AiMaMi.i64 (IDA decompiler_ready=true, uptime=82534s)
 **Module**: codexmate_lib::commands::sessions
 **Command**: delete_sessions (14/76)
 **delta_class**: integrity_recovered

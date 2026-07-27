@@ -1,0 +1,63 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows",
+  "module": "custom-instructions",
+  "command": "load_custom_instruction_state",
+  "status": "accepted_ready_absent_backend_orphan_ida_direct",
+  "migration_class": "migrated_no_behavior_diff",
+  "migration_baseline": "aimami/1.0.9/windows/custom-instructions",
+  "source_binary_sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "idb_path": "E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+  "idb_modified": false,
+  "idb_saved": false,
+  "absence_anchor": "0x1417893f2",
+  "absence_anchor_role": "shared source-path string constant (\"custom-instructions\", single data xref from sub_140714E90/0x838B, path-blob not a command/rodata string) \u2014 same role as 1.0.9 windows anchor 0x1412804eb and 1.1.1 macOS anchor 0x1011514d1",
+  "verification_methods": [
+    {
+      "method": "func_query",
+      "target": "symbol table",
+      "query": "name_regex=load_custom_instruction_state",
+      "result": "0 hits"
+    },
+    {
+      "method": "func_query",
+      "target": "symbol table",
+      "query": "name_regex=custom_instruction",
+      "result": "0 hits (module-wide sweep)"
+    },
+    {
+      "method": "find_regex",
+      "target": "string pool",
+      "query": "pattern=load_custom_instruction_state",
+      "result": "0 hits"
+    }
+  ],
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 120249.041,
+    "IDA decompiler_ready": true,
+    "module": "AiMaMi.1.2.3 win64.exe",
+    "idb_path": "E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+    "checked_before_any_call": true
+  },
+  "gate": {
+    "consumerStartReady": true,
+    "strictImplementationUse": true,
+    "readyToImplement": true,
+    "implementation_use": true,
+    "gate_accepted": true,
+    "full_leaf_100": true,
+    "accepted_substitute": "same_platform_ida_backend_absence_for_frontend_orphan_command"
+  },
+  "outputs": [
+    "AI.md",
+    "README.md",
+    "SYSTEM-DIFF.md",
+    "audits/load_custom_instruction_state-ida-closure.json",
+    "validation/result.json",
+    "file-manifest.json",
+    "manifest.json"
+  ]
+}

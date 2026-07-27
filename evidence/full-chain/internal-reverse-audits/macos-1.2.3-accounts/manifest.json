@@ -1,0 +1,81 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "accounts",
+  "package": "macos-1.2.3-accounts",
+  "created_at": "2026-07-24T00:00:00Z",
+  "producer_machine": "<host> (this package distilled from already-decompiled raw evidence this session; no new IDA MCP calls performed this pass)",
+  "task_kind": "distillation",
+  "task_kind_note": "This pass merges pre-existing decompiled .c evidence + pre-existing backend-baseline/frontend-page markdown into a canonical consumer package. It performs read-only synthesis over raw evidence already on disk; it does not invoke IDA MCP tools (decompile/xrefs_to/callees) directly. Byte-level owner/wrapper/callsite VA graphs (the kind produced for the 1.0.9 accounts package, see pointers/evidence-paths.md) were NOT independently re-derived this pass.",
+  "binary": {
+    "sha256_core_accounts": "e3f2fec7d7cd32c8a7a650ec563577b8c74516aed270c1230a5b11296942114d",
+    "sha256_frontend_extraction": "25d6d04e6d94c3f1e8258d2b348360b228fda4fc1c3d38b6383c84a2a8d53d21",
+    "binary_format": "macho",
+    "arch": "arm64",
+    "note": "Same source binary as macos-1.2.3-relay (both SHAs verified identical against raw/binary/AiMaMi 1.2.3.app/Contents/MacOS/AiMaMi and MANIFEST.md this session)"
+  },
+  "scope": {
+    "definition": "Strict 'account_*'-prefixed directory cluster plus the auth/oauth core modules that are the direct backend owner of commands/account_oauth (per user-scoped task instruction: commands/accounts, core/accounts (does not exist as a literal dir), core/account_* if accounts-related). core::repository (99 files, shared with models/plan_mapping/quota_store/api_client under the separate 'models-repository' baseline cluster) is EXPLICITLY OUT OF THIS PACKAGE'S PRIMARY SCOPE even though it is the true deep-leaf owner of switch_account/remove_accounts/logout/clean -- it is cited only as supplementary cross-reference evidence via pointers, not counted in this package's coverage numbers.",
+    "core_modules_in_scope": ["account_coordination", "account_io", "account_metadata", "auth", "oauth_login", "oauth_refresh"],
+    "core_modules_in_scope_rationale": "account_coordination/account_io/account_metadata match the account_* naming convention directly. auth/oauth_login/oauth_refresh do not carry the account_ prefix but are the account-identity/credential model (AuthFile/AuthTokens/AuthSnapshot) and the OAuth login/refresh flows that commands/account_oauth wraps -- excluding them would leave commands/account_oauth's backend owner unaccounted for. This mirrors the grouping the pre-existing raw evidence itself uses (backend-baseline/account-auth-baseline.md calls this cluster 'account-auth').",
+    "core_modules_excluded_from_account_auth_baseline_grouping": ["bootstrap_cache", "sessions", "session_analytics"],
+    "core_modules_excluded_rationale": "The pre-existing account-auth-baseline.md groups these three into the same 120-function document alongside the six in-scope modules, but bootstrap_cache is a generic app-launch cache (not account-identity-specific), and sessions/session_analytics manage Codex CLI rollout/conversation history, not account switching/credential lifecycle -- a materially different domain. Excluded from this package's primary coverage; cross-referenced via pointers only.",
+    "commands_modules_in_scope": ["commands/accounts", "commands/account_io", "commands/account_oauth"],
+    "commands_modules_adjacent_out_of_scope": {
+      "commands/system (auto-switch subset)": "configure_auto_switch/set_auto_switch/dismiss_pending_auto_switch/confirm_pending_auto_switch/confirm_pending_auto_switch_and_restart_codex/load_pending_auto_switch are, per commands-baseline.md section 2, physically implemented in commands::system, not commands::accounts, despite being semantically about account auto-switching. Not counted in this package.",
+      "commands/hotspot": "has_notch/get_hotspot_enabled/set_hotspot_enabled/hotspot_ready are consumed by AccountsPage's quick-settings dialog (per accounts-frontend.md interaction #15) but owned by commands::hotspot (a separate notch-companion-window module). Not counted in this package."
+    },
+    "supplementary_cross_reference_only": {
+      "core/repository": "99 files (30 marked 1.2.3 NEW-delta), already read+documented in backend-baseline/models-repository-baseline.md. Contains the real deep-leaf implementation of Repository::switch_account / Repository::remove_accounts / Repository::logout / Repository::clean / SnapshotQuarantine::{stage,commit_and_purge,rollback} / auto-switch orchestration. Cited via pointers/evidence-paths.md as supplementary dim3 evidence; NOT counted in this package's primary file coverage because it is shared infrastructure spanning a materially different baseline cluster (models/plan_mapping/quota_store/api_client), not accounts-exclusive.",
+      "core/models": "175 files (DTO/serde glue layer, 0 NEW-delta this version), already documented in backend-baseline/models-repository-baseline.md. Provides real DTO type-name evidence for accounts (AccountExportPayload/AccountImportPayload/AccountImportPreviewPayload/AccountImportSkipped/AccountRefreshReport/AccountSummary/AccountTokenStatus/AccountTokenStatusCode/LogoutPayload/RemovePayload/SwitchPayload/OauthLoginPayload/AutoSwitchConfigPayload/AutoSwitchStatusPayload/PendingAutoSwitchPayload/CoreSnapshotPayload/CoreWarning) via serialize/deserialize symbol-name enumeration only -- field-level DTO extraction was NOT performed this pass. Cited as partial dim4 evidence."
+    },
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "core_files_in_scope": {
+      "account_coordination": 10,
+      "account_io": 18,
+      "account_metadata": 7,
+      "auth": 29,
+      "oauth_login": 8,
+      "oauth_refresh": 15,
+      "total": 87
+    },
+    "commands_files_in_scope": {
+      "commands/accounts": 46,
+      "commands/account_io": 3,
+      "commands/account_oauth": 5,
+      "total": 54
+    },
+    "total_c_files_in_scope": 141,
+    "truncated_or_failed_decompile_files_in_scope": 0,
+    "truncation_check_method": "grep -rl 'TRUNCATED|DECOMPILE-FAILED|chars total' against each in-scope directory's ida/pseudocode/, this session, on every one of the 9 in-scope directories -- 0 hits in all 9",
+    "cross_validation_against_prior_baseline_docs": "backend-baseline/account-auth-baseline.md (produced earlier this same 1.2.3 audit generation, read-only, independently reports 0 truncation hits across its 9-directory 120-function scan which is a superset of this package's 6 in-scope core modules) and backend-baseline/commands-baseline.md (independently reports 0 truncation hits across its 145-file commands scan, superset of this package's 3 in-scope commands modules) -- both agree with this session's direct grep, no discrepancy found",
+    "frontend_pages_reversed": 1,
+    "frontend_accounts_page_reversed": true,
+    "frontend_accounts_page_source": "raw/aimami/1.2.3/macos-arm64/frontend/pages/accounts-frontend.md (147 lines, produced earlier this audit generation): full component tree, 16 useState + 1 useRef + 5 useMemo + 2 useQuery + 6 useMutation for AccountsPage itself plus 3 useMutation for the nested AccountImportExportControls subcomponent, 25 numbered interaction-to-command mappings, 1 dialog/flow summary table",
+    "measurement_basis": "file-system find|wc -l against raw/aimami/1.2.3/macos-arm64/{core,commands}/<in-scope-module>/ida/pseudocode/*.c, this session"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/BASELINE-FINAL-1.2.3.md",
+    "internal-reverse/audits/COVERAGE-FINAL-1.2.3.md"
+  ],
+  "prior_version_bundle_reference_only": "internal-reverse/audits/macos-1.0.9-accounts/ (reached full_leaf_100_ida_accepted for 9 targets incl. switch_account/switch_account_and_restart_codex/remove_accounts/logout/export_accounts_to_file/import_accounts_from_file/preview_account_import/begin_add_account_attach_monitor via live byte-level owner/wrapper/callsite IDA xrefs). Historical reference only per RULE 9 -- this 1.2.3 pass has NOT performed the required diff verification (no-behavior-diff proof) against that baseline, so its tier is NOT migrated forward to this package.",
+  "cross_platform_sibling": "none produced this pass -- windows-x64 1.2.3 raw evidence exists at raw/aimami/1.2.3/windows-x64/{account_io,commands/accounts}/ but was not read or distilled this session; Windows platform gate (dim5) is Unknown for this package, not extrapolated from macOS",
+  "known_residuals": [
+    "4 of 12 accounts-domain-relevant frontend commands (load_snapshot, logout, switch_account, refresh_usage_snapshot) have decompiled backend wrappers (dim2 available, 0 truncation) but NO confirmed UI call-site within accounts-frontend.md's reversed AccountsPage scope -- honest gap, kept out of consumerStartReady, see gate-report.json and data/task-plan.json consumerStartBlocked",
+    "core::repository deep-leaf evidence for switch_account/remove_accounts/logout (Repository::switch_account, Repository::remove_accounts, SnapshotQuarantine::commit_and_purge/rollback, Repository::clean) exists in backend-baseline/models-repository-baseline.md but is NOT primary evidence of this package (see scope.supplementary_cross_reference_only) -- dim3 for those commands is only partial/cross-referenced, not independently closed by this package",
+    "dim4 interface/DTO extraction: only type-name enumeration performed (via core::models serde glue symbol names), no field-level DTO/error-envelope/side-effect-boundary extraction -- open gap, not accepted_unknown",
+    "dim6 test/acceptance mapping: not produced this pass -- open gap",
+    "Angle-C semantic-keyword orphan scan (account/snapshot/registry/lock keywords outside the 9 in-scope directories) NOT executed -- honest open gap, not accepted_unknown",
+    "RULE 9 version-diff migration against macos-1.0.9-accounts NOT performed -- this package does not claim any tier inherited from the 1.0.9 baseline",
+    "commands/system auto-switch cluster and commands/hotspot cluster are accounts-adjacent but explicitly out of this package's scope -- not audited this pass beyond the boundary notes in scope.commands_modules_adjacent_out_of_scope"
+  ],
+  "note": "This manifest synthesizes internal-reverse/audits/BASELINE-FINAL-1.2.3.md (full independent 1.2.3 baseline, accounts is 1 of 9 backend module groups + 1 of 6 reversed frontend pages) with the pre-existing raw evidence at raw/aimami/1.2.3/macos-arm64/backend-baseline/{account-auth,commands,models-repository}-baseline.md and raw/aimami/1.2.3/macos-arm64/frontend/pages/accounts-frontend.md. No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md."
+}

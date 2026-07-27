@@ -1,0 +1,35 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "skills",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "import_skill", "load_installed_skills", "load_skill_backups",
+    "remove_skill", "restore_skill_backup", "delete_skill_backup"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 6 skills commands: readyToImplement blocked pending dim3 (standalone call-tree artifact) + dim4 (InstalledSkillSummary/SkillListPayload field shape) + dim5 (Windows platform gate) + dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 6 skills commands: strictImplementationUse blocked pending dim4 full closure (InstalledSkillSummary/SkillListPayload field-level shape) and dim5 (Windows evidence for the 19 unconfirmed functions)"
+    ],
+    "consumerStartBlocked": []
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Decompile the FieldVisitor::visit_str byte-matcher for InstalledSkillSummary and SkillListPayload in core/models (the Visitor::expecting() stubs at 0x100376b30/0x100378900/0x100374400 are already on disk; the sibling visit_str function for each is not yet produced) -- fastest path to closing dim4 fully.",
+    "Locate the actual call site of SkillListPayload (load_installed_skills's own Ok-arm builds a raw Vec directly, no wrapper struct observed) -- confirm whether it is used by a different command/context or is dead/legacy code.",
+    "Produce a standalone call-trees/*.jsonl for the 6 skills commands (depth/edges/terminal-leaf per command) to close dim3 as a machine-checkable artifact, not just prose narrative.",
+    "Attempt Windows decompile for the remaining ~19 core::skills-equivalent functions (only 6/21-equivalent exist on disk today, 2 confirmed by name) to close dim5 -- particularly the 6 command owners themselves (import_skill/load_installed_skills/load_skill_backups/remove_skill/restore_skill_backup/delete_skill_backup), none of which currently have a confirmed Windows counterpart.",
+    "Re-run angle-C as a live IDA export_funcs() semantic scan (this pass only used a text grep proxy) to more rigorously rule out ICF-folded or string-pool-invisible skill-adjacent functions outside core::skills.",
+    "Run a dim6 pass: map each of the 6 skills commands' side effects (fs create/rename/remove_dir_all/copy under the skills root and skill-backups root) to Polaris's own C5 unit/E2E test surface or explicit manual-acceptance criteria.",
+    "Byte-diff the 21 macOS 1.2.3 functions against the 1.1.8 baseline to independently verify the file-header 'same-set' classification this package reused rather than re-derived."
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "bundle": "aimami/1.2.3/windows-x64/models/serde-serialize-impls-tree-gap-bodies",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "binary_sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "idb_path": "raw/binary/AiMaMi.1.2.3 win64.exe.i64",
+  "idb_host": "<host> (win IDA MCP; module=AiMaMi.1.2.3 win64.exe)",
+  "session": "win-1.2.3-models-sessanalytics-treegap-bodies-20260725",
+  "reduce_session": "win-1.2.3-treegap-reduce-ack-20260725",
+  "machine": "Maple-C5Mini",
+  "owner_gate": {
+    "result": "ALLOW",
+    "write_mode": "additive",
+    "basis": "tree_not_on_disk gap close under existing /codexmate_lib/core/models dirtree; no prior body-on-disk for these 12 serialize fns; no foreign producer active on this leaf",
+    "collision_detected": false,
+    "foreign_owners": "none",
+    "takeover_token": null
+  },
+  "gate_tier": "owner_bound_bodies_written",
+  "status": "done",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "readyToImplement": false,
+  "scope": "12 serde Serialize::serialize impls attributed to core/models in the win IDB dirtree, bodies now decompiled win-native and written to disk. serde plumbing only; no frontend CCF / full-chain / same-platform gate (why implementation_use stays false).",
+  "leaf_bodies": {
+    "count": 12,
+    "total_bytes": 113994,
+    "truncation_stubs": 0,
+    "named_win_corroborated": 7,
+    "kept_generic_honest": 5,
+    "named": [
+      "serialize_VoiceWorkspacePayload_0x140aa76f0",
+      "serialize_VoiceGeneratePayload_0x140aa7ae0",
+      "serialize_AccountImportPayload_0x140aa8b60",
+      "serialize_ApiProxyTestPayload_0x140aa93e0",
+      "serialize_SwitchPayload_0x140aa9ce0",
+      "serialize_SessionAnalyticsPayload_0x140aaafd0",
+      "serialize_ApiConnectivityPayload_0x140aada20"
+    ],
+    "kept_generic": [
+      "serialize_3_0x140806d70 (mac-hint RefreshChannelReport CONTRADICTED win-side: body carries MapAccess::next_value -> likely Deserialize not Serialize)",
+      "serialize_4_0x1408274d0 (mac-hint ApiConnectivityPayload-Serialize CONTRADICTED win-side: MapAccess::next_value -> likely Deserialize)",
+      "serialize_5_0x14092b8c0 (mac-hint VoiceWorkspacePayload UNVERIFIED win-side; MCP-truncated at decompile, full 44641-char body recovered via IDA Python single pass, ends `return a1;}`)",
+      "serialize_10_0x140aa9980 (mac-hint SkillRemovePayload UNVERIFIED win-side)",
+      "serialize_12_0x140aaa880 (mac-hint DiagnoseSessionState UNVERIFIED win-side)"
+    ]
+  },
+  "attribution_basis": "win-native: dirtree membership under core/models from prior call-graph-propagation recovery; struct identities corroborated this pass from win-side serde field strings; mac symbols used only as hint and REJECTED where win evidence contradicted (serialize_3/4).",
+  "unresolved": [
+    "serialize_3 & serialize_4 true direction (Serialize vs Deserialize) — needs mac cross-check of paired impls",
+    "serialize_5 / serialize_10 / serialize_12 concrete struct identity unverified win-side"
+  ],
+  "destructive_side_effects": "none (serde serialization; no FS/HTTP/IPC/spawn/delete)",
+  "dirtree_grounded_reverify": "all 12 remain in /codexmate_lib/core/models folder, 0 stranded",
+  "in_progress_residuals": 0,
+  "index_bundle_key": "aimami/1.2.3/windows-x64/models/serde-serialize-impls-tree-gap-bodies",
+  "reverse_status_md_clean": true,
+  "four_angle_completeness": "N/A (tree_not_on_disk body-write pass, not a command-coverage/full-leaf pass)",
+  "produced_at": "2026-07-25T00:00:00+08:00",
+  "authoritative": true
+}

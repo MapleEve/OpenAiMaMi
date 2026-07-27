@@ -8,7 +8,7 @@
 - **Address**: `0x100615dd0`
 - **Size**: 0x303 = 771 bytes (+127B vs 1.0.9's 644B, +20%)
 - **Binary**: AiMaMi 1.1.1 macOS universal (arm64 slice)
-- **逆向分析 module**: AiMaMi — confirmed via server_health (status=ok, uptime=35218s, hexrays_ready=true)
+- **逆向分析 module**: AiMaMi — confirmed via server_health (status=ok, uptime=35218s, IDA decompiler_ready=true)
 - **is_upstream**: false (内部构建-extra, not in upstream codex-cli)
 - **Module**: system
 - **IPC type**: Retained-IPC / native-bootstrap-substitute — no frontend static CCF; Tauri dispatch closure confirmed
@@ -191,7 +191,7 @@ No HTTP, no process spawn, no IPC to external processes, no macOS keychain or re
 ## dim5 — Same-platform Gate
 
 - macOS arm64 AiMaMi 1.1.1 universal binary
-- 逆向分析 server_health: status=ok, uptime=35218s, hexrays_ready=true, module=AiMaMi, idb_path matches binary
+- 逆向分析 server_health: status=ok, uptime=35218s, IDA decompiler_ready=true, module=AiMaMi, idb_path matches binary
 - All decompile evidence produced from macOS Mach-O IDB (arm64 slice); not inferred from Windows
 - **dim5 status**: PASS
 

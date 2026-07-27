@@ -1,0 +1,36 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "system",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 26 system commands: readyToImplement blocked pending dim1-dim6 closure, same as macos-1.2.3-system plus Windows-specific command-to-owner mapping"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 26 system commands: strictImplementationUse blocked pending dim1/dim3/dim4 and Windows command-mapping closure"
+    ],
+    "consumerStartBlocked": [
+      "all 26 system commands on the Windows platform gate specifically: dim5 not closed at command granularity -- module-level ownership known, command-level owner unknown for all 26",
+      "platform::daemon (Windows): 0 files, 0 attributed rows, truly_undone",
+      "platform::single_instance (Windows): 0 files, 0 attributed rows, truly_undone"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Map each of the 6 commands/system raw addrs (0x140021540, 0x140322890, 0x1403d28a0, 0x14089b320, 0x140cf8380, 0x141471f80) to a specific one of the 26 frontend command names -- cheapest next step since all 6 are already decompiled and module-attributed; needs xrefs_to/callers analysis or constant/string correlation, no new raw evidence required.",
+    "Map the 3 system_volume_windows raw addrs (0x1401b88c0, 0x1401b8c50, 0x1401b91a0) similarly.",
+    "Search the 1133-row WIN-APP-FUNCTION-INVENTORY.jsonl and/or run a fresh win-native panic-Location-xref sweep for a daemon-equivalent or single_instance-equivalent Windows module (possibly named daemon_windows/single_instance_windows following the system_volume_windows naming precedent, or possibly folded into platform::process) -- currently 0 files/0 attribution, genuinely undone.",
+    "Refresh WIN-APP-FUNCTION-INVENTORY.jsonl's on_disk field for the 9 system-domain rows (and ideally the 45 platform-support rows) to match actual raw/ disk state -- bookkeeping fix, no new IDA work.",
+    "Once command-to-owner mapping exists, run dim3 callees/xrefs_to call-tree work for each of the 26 commands on the Windows side (currently 0 attempted).",
+    "Run dim4 DTO/interface extraction and dim6 test/acceptance mapping for the Windows leaves, mirroring the still-open items in macos-1.2.3-system.",
+    "Run an angle-A/angle-C keyword sweep (registry/bootstrap/hwid/diagnostic) across the full 1133-row WIN-APP-FUNCTION-INVENTORY.jsonl module field to check for additional system-adjacent Windows modules not covered by this package's 6-module scope."
+  ]
+}

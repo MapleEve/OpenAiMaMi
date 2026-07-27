@@ -1,0 +1,87 @@
+{
+  "schema": "c5cm.reverse.gate.v1",
+  "bundle": "windows-1.2.3-system-usage",
+  "session": "windows-1.2.3-system-usage-distill-20260725",
+  "machine": "<host>",
+  "produced_at": "2026-07-25",
+  "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "gate_tier": "blocks_start",
+  "gate_accepted": false,
+  "implementation_use": false,
+  "platform": "windows-x64",
+  "product": "aimami",
+  "version": "1.2.3",
+  "is_upstream": false,
+  "prewrite_gate_decision": "ALLOW",
+  "prewrite_gate_write_mode": "owner_for_2_targets_pointer_only_for_4",
+  "evidence_basis": "raw/aimami/1.2.3/windows-x64/commands/ida/pseudocode/{get_usage_refresh_interval_0x14018cbb0.c,set_usage_refresh_interval_0x14018c2d0.c} read this session (non-truncated, brace-balanced, ground-truth tauri command handler name via string xref per file header) + windows-1.2.3-accounts/gate-report.json + windows-1.2.3-sessions-analytics/manifest.json cross-read for pointer targets + windows-1.0.9-system-usage/manifest.json as RULE9 prior-version baseline + windows-1.2.3-system/logic/REGISTRATION-TABLE-1.2.3.md (module-level unresolved mention, not a competing gate claim) + REVERSE-STATUS.md 4011 backlog line + cross-1.2.3-home-usage-frontend/AI.md next_producer_steps",
+  "dim_status": {
+    "dim1_frontend_control_flow": "missing -- ipc-contracts.jsonl (131 win commands) grep-confirmed this pass that get_usage_refresh_interval/set_usage_refresh_interval command names exist in the win frontend command surface, but no page-level UI trigger/guard/invoke-wrapper reduce was performed this pass on either platform (mac side explicitly flagged as an open next_producer_step in cross-1.2.3-home-usage-frontend/AI.md). String-presence in ipc-contracts.jsonl is NOT frontend control-flow proof per OUTPUT-SPEC.md.",
+    "dim2_backend_owner_pseudocode": "partial -- both commands have non-failed, non-truncated (brace-balanced) win-native IDA decompile with ground-truth VA and command-name provenance (file header: 'tauri command handler = <name> | mapped via command-name string xref'). Both call into settings-key paths tagged aRepo/aApp/aInterval string constants, consistent with 1.0.9 baseline semantics (UsageRefresh settings blob read/write). This is wrapper-level dim2 only -- no callee/xrefs chase performed this pass (no live IDA MCP session).",
+    "dim3_call_tree_to_leaf": "missing -- wrapper pseudocode references callees (sub_140003640, sub_1416850A0, sub_1401C3650, sub_1409757B0, sub_140001650/660, sub_1402C7520, etc.) that were not traced this pass; no fs/registry/persistence leaf confirmed for either command at 1.2.3.",
+    "dim4_interface_dto_boundary": "missing -- no DTO field-level extraction performed this pass beyond raw pseudocode variable inspection; return/error envelope shape not derived.",
+    "dim5_platform_gate": "partial-platform-diff-noted -- win-native raw evidence only (not inferred from macOS), consistent with doNotInferWindowsFromMacOS. One genuine cross-platform density observation recorded (not used to fill Windows gaps): macOS has an additional core/repository/ layer (3 files: usage_refresh_interval_seconds, get_usage_refresh_interval, set_usage_refresh_interval) beyond its own commands/system/ wrapper pair; Windows repository/ directory has zero usage-named files (find -iname '*usage*' returned empty). This is recorded as a win-side raw-evidence-density gap, not resolved by mac evidence.",
+    "dim6_test_acceptance_mapping": "missing -- no C5 implementation-side test/acceptance mapping produced or requested this pass."
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "consumerStartReady_commands": [],
+  "consumerStartBlocked_commands": [
+    "get_usage_refresh_interval",
+    "set_usage_refresh_interval"
+  ],
+  "consumerStartBlocked_reason": "Both commands have dim2 wrapper-level pseudocode only; dim1 (frontend control-flow), dim3 (deep call-tree), dim4 (interface/DTO), and dim6 (acceptance mapping) are all unaddressed this pass. Per RULE7's 9-dimension consumerStartReady bar (renderSurfaceReady/uiCallEntryReady/dtoBoundaryReady/happyPathReady/boundaryPathReady/sideEffectReady/frontendConsumptionReady/acceptanceDraftReady/platformScopeDeclared), only platformScopeDeclared (Windows-native, win 1.2.3 confirmed) is satisfied. Not promoted to consumerStartReady.",
+  "pointer_only_targets_not_gated_here": [
+    {
+      "command": "refresh_usage_snapshot",
+      "canonical_bundle": "internal-reverse/audits/windows-1.2.3-accounts/",
+      "canonical_gate": "consumerStartBlocked (dim2 Hex-Rays decompile failed)"
+    },
+    {
+      "command": "refresh_single_account_usage",
+      "canonical_bundle": "internal-reverse/audits/windows-1.2.3-accounts/",
+      "canonical_gate": "consumerStartBlocked (dim2 Hex-Rays decompile failed)"
+    },
+    {
+      "command": "compute_usage_analytics",
+      "canonical_bundle": "internal-reverse/audits/windows-1.2.3-sessions-analytics/",
+      "canonical_gate": "consumerStartReady (dim2-wrapper only, 9/9 analytics commands)"
+    },
+    {
+      "command": "load_usage_analytics",
+      "canonical_bundle": "internal-reverse/audits/windows-1.2.3-sessions-analytics/",
+      "canonical_gate": "consumerStartReady (dim2-wrapper only, 9/9 analytics commands)"
+    }
+  ],
+  "unknowns": [
+    {
+      "item": "get_usage_refresh_interval / set_usage_refresh_interval frontend UI trigger location (Windows)",
+      "class": "blocks_start",
+      "reason": "no page-level frontend reduce performed on either platform this pass; cross-1.2.3-home-usage-frontend/AI.md independently records the macOS-side equivalent as an open next_producer_step"
+    },
+    {
+      "item": "get_usage_refresh_interval / set_usage_refresh_interval deep call-tree leaf (Windows, 1.2.3)",
+      "class": "blocks_start",
+      "reason": "no live IDA MCP session this pass; callees referenced in wrapper pseudocode (sub_140003640 etc.) not traced"
+    },
+    {
+      "item": "1.0.9 -> 1.2.3 behavior diff calibration for get/set_usage_refresh_interval",
+      "class": "blocks_start",
+      "reason": "RULE9 diff_required -- VA changed as expected for new build but no same-platform diff was run to confirm no-behavior-diff vs 1.0.9's strictImplementationUse baseline; not migrated"
+    },
+    {
+      "item": "Windows core/repository/ equivalent of macOS's usage_refresh_interval_seconds/get_usage_refresh_interval/set_usage_refresh_interval (core layer)",
+      "class": "blocks_start",
+      "reason": "zero usage-named files found in raw/aimami/1.2.3/windows-x64/repository/; genuine win-side raw depth gap not resolved by mac evidence, requires targeted win-native search (possibly non-usage-named symbol)"
+    }
+  ],
+  "cluster_gate_summary": {
+    "blocks_start": 2,
+    "consumerStartReady": 0,
+    "strictImplementationUse": 0,
+    "readyToImplement": 0,
+    "gap_needs_reducer": 2,
+    "already_in_canonical_pointer_only": 4,
+    "note": "0/2 owned targets reach consumerStartReady this pass; 4/6 domain commands are already canonically owned and gated by sibling 1.2.3 bundles (windows-1.2.3-accounts, windows-1.2.3-sessions-analytics), not duplicated here."
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "c5cm.reverse.gate_report.v1",
+  "status": "ACCEPTED_READY_ABSENT_BACKEND_ORPHAN_IDA_DIRECT_LIVE_REVERIFIED",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos",
+  "module": "custom-instructions",
+  "commands": [
+    "load_custom_instruction_state",
+    "preview_custom_instruction_apply",
+    "apply_custom_instruction",
+    "clear_custom_instruction_block",
+    "rollback_custom_instruction"
+  ],
+  "accepted_count": 5,
+  "total_count": 5,
+  "readyToImplement": true,
+  "implementation_use": true,
+  "gate_accepted": true,
+  "full_leaf_100": true,
+  "accepted_substitute": "same_platform_ida_backend_absence_for_frontend_orphan_command",
+  "rule9_migration_applicable": false,
+  "reason": "backend literal grep for custom.instruction yielded 1 hit in 1.2.3 (ICF-folded CustomInstructionProtectionState serde stub alias), not 0 as the RULE9 migration precondition required, so this bundle was never a straight migration; it was carried at DISTILLED_PARTIAL_CHANGE pending independent characterization of that one signal. 2026-07-26 live re-verification (session mac123-custominstr-gapclose-20260726142739, see ../DISTILLED.md) closed the gap: 0/5 func_query hits, 0-hit module-wide name_regex sweep, 0/5 find_regex hits, and live decompile of the flagged signal (0x100373380) proved it is a 4-type ICF-folded generic serde Visitor::expecting() stub carrying zero command-specific logic -- evidentiary noise, not a command owner. All 5 commands are now live-reverified absent a backend command owner on macOS, on equal evidentiary footing with the already-accepted windows-1.2.3 conclusion.",
+  "gate_upgrade": {
+    "event": "EXPLICIT_OVERWRITE_CANONICAL",
+    "date": "2026-07-26",
+    "prior_status": "DISTILLED_PARTIAL_CHANGE",
+    "prior_readyToImplement": false,
+    "prior_implementation_use": false,
+    "prior_gate_accepted": false,
+    "prior_full_leaf_100": false,
+    "authorized_by": "user, in-chat, this task round (2026-07-26)",
+    "reason": "User explicitly authorized synchronizing macOS gate fields to the same tier already accepted for windows-1.2.3-custom-instructions (gate_accepted=true/full_leaf_100=true since session win-custom-instructions-distill-20260725), given the two platforms are now on symmetric live-reverified evidence per this round's DISTILLED.md.",
+    "owner_basis": "grep for custom-instruction/custominstr across internal-reverse/REVERSE-STATUS.md, root INDEX.jsonl and internal-reverse/INDEX.jsonl show no other active in-progress producer claim on this bundle; no root task-plan.json exists; no AI-EXECUTION-QUEUE.md P0 Consumer Intake row references this module. gate=ALLOW as sole producer.",
+    "evidence_pointers": [
+      "internal-reverse/audits/macos-1.2.3-custom-instructions/DISTILLED.md",
+      "raw/aimami/1.2.3/macos-arm64/custom-instructions/live-reverify-20260726.md",
+      "internal-reverse/INDEX.jsonl session mac123-custominstr-gapclose-20260726142739",
+      "internal-reverse/audits/windows-1.2.3-custom-instructions/gate-report.json"
+    ],
+    "scope_note": "This upgrade touches ONLY macos-1.2.3-custom-instructions; no sibling bundle was modified."
+  },
+  "productDecisionBoundary": "Current C5 custom-instructions chain is live product/local behavior; upstream 1.2.3 backend owner parity is an absent substitute (live-reverified equally on both platforms 2026-07-26), not strict backend reconstruction."
+}

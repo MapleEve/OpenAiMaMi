@@ -1,0 +1,46 @@
+{
+  "schema": "c5cm.consumer.producer_ledger.v1",
+  "bundle": "internal-reverse/audits/macos-1.2.3-relay-core",
+  "authoritative_producer": {
+    "machine": "<host>",
+    "session": "macos-1.2.3-relay-core-reassign-20260726",
+    "produced_at": "2026-07-26",
+    "basis": "EXPLICIT_REASSIGN_OWNER takeover of a stalled bundle-completion task; original package skeleton (README.md/AI.md/SYSTEM-DIFF.md/manifest.json/pointers/) was first-written 2026-07-25 by an earlier <host> session and is left non-destructively intact"
+  },
+  "reassignment": {
+    "from_session": "relay123-surface",
+    "from_machine": "<host>",
+    "from_claim_date": "2026-07-23",
+    "stall_duration_days": 3,
+    "token": "EXPLICIT_REASSIGN_OWNER",
+    "authorization": "user explicit chat authorization, 2026-07-26",
+    "scope": "narrow: only internal-reverse/audits/macos-1.2.3-relay-core/ canonical bundle completion; relay123-surface's own raw evidence (8 INDEX.jsonl lines under aimami/1.2.3/windows-x64/relay-core/* and aimami/1.2.3/windows-x64/{codex_writer,health_check,manager,atomic_write,translator,config_takeover}/backend-pseudocode-leaf) is NOT reassigned and remains untouched",
+    "gate_spec_reference": "GATE-SPEC.md §PREWRITE_PRODUCER_COLLISION_GATE_V1"
+  },
+  "mac_sha256": "e3f2fec7d7cd32c8a7a650ec563577b8c74516aed270c1230a5b11296942114d",
+  "platform": "macos-arm64",
+  "files_added_this_session": [
+    "gate-report.json",
+    "logic/REGISTRATION-TABLE-1.2.3.md",
+    "reviews/CLAUDE.md",
+    "data/producer-ledger.json"
+  ],
+  "files_amended_this_session": [
+    "manifest.json (added dated resolution block, did not rewrite existing fields)",
+    "README.md (appended dated resolution section)",
+    "AI.md (appended dated resolution section)"
+  ],
+  "files_untouched_this_session": [
+    "SYSTEM-DIFF.md",
+    "pointers/evidence-paths.md"
+  ],
+  "resolved_this_session": {
+    "relay_web_executor": "confirmed_removed (cross-platform, live-verified 2026-07-26)",
+    "relay_web_tools": "confirmed_removed (cross-platform, live-verified 2026-07-26)"
+  },
+  "remaining_open_not_claimed_by_this_session": [
+    "windows-1.2.3-relay-core canonical bundle (does not exist; 113/177 tier-C functions undecompiled)",
+    "formal RULE-9 NO-BEHAVIOR-DIFF-MIGRATION-1.2.3.md inside audits/macos-1.2.3-relay/logic/"
+  ],
+  "gate_status": "diagnostic-only / PARTIAL, unchanged tier -- this session resolved two Unknowns and completed the OUTPUT-SPEC file skeleton but did not promote any gate field to true"
+}

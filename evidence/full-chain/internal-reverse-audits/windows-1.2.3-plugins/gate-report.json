@@ -1,0 +1,79 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "plugins",
+  "status": "module_root_gate_summary_negative_existence",
+  "audit_type": "presence_negative_result",
+  "removed": true,
+  "removed_confidence": "high",
+  "updated_at": "2026-07-26",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 0,
+    "diagnostic_only": 1,
+    "removed_confirmed": 1,
+    "total_targets": 13,
+    "targets_absent": 13,
+    "targets_present": 0,
+    "independent_evidence_classes_checked": 3,
+    "evidence_classes_zero_hit": 3
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_applicable_module_absent",
+  "moduleExitAllowed": true,
+  "moduleExitBasis": "This is a negative-existence (feature-removed) conclusion, not a leaf-closure gate. moduleExitAllowed=true means the wf-aimami123-fullapp-20260724 full-app gap-inventory line item `plugins` is closed as 'no canonical leaf work required' (the feature does not exist in 1.2.3 windows-x64, so there is no upstream behavior to reverse or reimplement) -- it does NOT mean any target reached readyToImplement/strictImplementationUse. gate_accepted and implementation_use remain false: this package produces zero implementable upstream-behavior evidence, only a product-scoping fact ('this feature is gone, do not build/migrate it').",
+  "dim_status": {
+    "dim1_frontend_control_flow": "N/A-module-absent -- confirmed ABSENT (not merely un-produced): raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl enumerates exactly 131 unique Tauri commands (produced by win-1.2.3-frontend-extract-20260724 via tauri-dumper directly against the shipped exe); grep -i plugin returns 0 matches across command/name fields and raw line text. The four 1.0.9 plugin commands (list_plugins, toggle_plugin, get_plugin_config, update_plugin_config) are all absent from the 131-command set. No PluginsPage-equivalent string in frontend-files.txt / ast-facts.json / frontend-contract-report.md. There is no frontend surface to trace because the feature has no frontend surface in 1.2.3.",
+    "dim2_backend_owner_pseudocode": "N/A-module-absent -- no owner exists to decompile. raw/aimami/1.2.3/windows-x64/ has 65 top-level module directories, none named plugins or any plausible rename (contrast mcp/ skills/ accounts/ relay-core/ tray/ which each have dedicated module trees). strings -a on the binary SOT raw/binary/AiMaMi.1.2.3 win64.exe (399151 lines, sha256 aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396) returns 0 hits for all 11 anchor strings (PluginRegistry, toggle_plugin, list_plugins, get_plugin_config, update_plugin_config, plugins.json, PluginStoreSchema, all_builtin_plugins, web_tools::plugin_info, image_support::plugin_info, PluginsPage, builtin_plugins). The only 3 case-insensitive `plugin` hits are Tauri-framework ACL identifier fragments (plugin:aH/mL/tH -> app|name, menu|get), unrelated to the AiMaMi plugins feature. No decompile was attempted this audit because there is no address to target.",
+    "dim3_call_tree_to_leaf": "N/A-module-absent -- no owner function, therefore no call tree.",
+    "dim4_interface_dto_boundary": "N/A-module-absent -- no DTO/error-envelope/side-effect boundary can exist for an absent module.",
+    "dim5_platform_gate": "windows-x64 independently sourced and sufficient -- the removed=true conclusion is derived SOLELY from Windows-produced evidence (Windows raw dir topology + Windows ipc-contracts.jsonl 131-command enumeration + Windows binary strings -a full dump). platformPolicy.doNotInferWindowsFromMacOS=true respected. macos-arm64 1.2.3 was checked independently (131 commands, 0 plugin hits; binary strings 0 anchor hits on AiMaMi 1.2.3.app/Contents/MacOS/AiMaMi sha256 e3f2fec7d7cd32c8a7a650ec563577b8c74516aed270c1230a5b11296942114d) and is reported as CORROBORATION ONLY, not as the basis for the Windows result.",
+    "dim6_test_acceptance_mapping": "N/A-module-absent -- no C5 test/acceptance mapping is produced or needed; there is no feature to test or accept (the consumer action is explicitly 'do not implement')."
+  },
+  "methodology_positive_control": {
+    "binary": "raw/binary/AiMaM 1.0.9 win64.exe",
+    "result": "same strings -a + grep procedure finds codexmate_lib::core::plugins::registry::PluginRegistry as a literal string (line 303600 of the dump)",
+    "significance": "confirms the detection method reliably surfaces the plugins subsystem when present in a same-generation Windows Tauri/Rust binary, making the zero-hit result on 1.2.3 a meaningful negative rather than a tooling blind spot."
+  },
+  "readyToImplement_targets": [],
+  "strictImplementationUse_targets": [],
+  "consumerStartReady_targets": [],
+  "removed_targets": [
+    "PluginRegistry::set_enabled", "PluginRegistry::list", "PluginRegistry::get_config",
+    "PluginRegistry::update_settings", "PluginRegistry::save_store_static", "PluginStoreSchema::serialize",
+    "list_plugins", "toggle_plugin", "get_plugin_config", "update_plugin_config",
+    "builtin::all_builtin_plugins", "builtin::web_tools::plugin_info", "builtin::image_support::plugin_info"
+  ],
+  "removed_targets_basis": "All 13 targets are the canonical 1.0.9 target universe carried over from audits/windows-1.0.9-plugins (PASS 13/13 leaf closure) + audits/macos-1.0.9-plugins; every one checked against 1.2.3 windows-x64 (0 found) and cross-checked against 1.2.3 macos-arm64 (0 found, corroboration only). This is an absent/removed matrix, not a leaf-result matrix.",
+  "unknowns": [
+    {
+      "item": "dead-code-without-surviving-string-literal residual possibility",
+      "class": "accepted_unknown_low_likelihood",
+      "reason": "static strings -a search covers all .rdata/.text string literals; a feature-flagged or dead-code path that survives with NO string literal AND no IPC surface AND no raw module directory cannot be excluded by static string search alone. Recorded as 'Unknown (low-likelihood, unfalsifiable by static string search alone)' and NOT upgraded to a stronger claim. This residual does not weaken the product-facing conclusion, because even a stringless dead-code remnant would have no command/UI/frontend-reachable path to trigger it -- the product surface is confirmed gone via three independent classes (IPC, frontend files, string table) plus raw dir topology."
+    },
+    {
+      "item": "functional-replacement of plugins' third-party-tool-integration role by the mcp / skills modules",
+      "class": "product_decision_open",
+      "reason": "mcp and skills are both present and separately audited at 1.2.3 (audits/{macos,windows}-1.2.3-mcp, audits/{macos,windows}-1.2.3-skills). Whether they functionally replace the plugins feature is an open product-history question; NO functional-equivalence claim is made by this audit. Flagged for product decision, not resolved here.",
+      "no_ida_needed": true
+    },
+    {
+      "item": "exact removal point between 1.1.8 and 1.2.3",
+      "class": "out_of_scope_this_audit",
+      "reason": "1.1.8 threadmodel delta (intermediate/aimami/1.1.8/macos-arm64/_threadmodel/THREAD-MODEL.md) still listed PluginRegistry among the .manage()-injected state types, i.e. plugins was still present at 1.1.8; it is absent at 1.2.3. The precise intermediate version (1.2.1/1.2.2) where removal happened was not located and is not needed for the presence/absence question."
+    }
+  ],
+  "notes": [
+    "This is the FIRST canonical audits/ bundle for the plugins module at 1.2.3 windows-x64. Its answer is `removed`, not a populated leaf table. It closes the `plugins` line in the wf-aimami123-fullapp-20260724 full-app gap inventory as 'no leaf work required' rather than 'still pending'.",
+    "This package does NOT copy forward the 1.0.9 windows/macos plugins packages' readyToImplement/accepted_full_leaf_100 claims (audits/windows-1.0.9-plugins, audits/macos-1.0.9-plugins): different binary/version. Those remain valid HISTORICAL evidence of 'behavior that once existed' but are explicitly NOT a 1.2.3 parity implementation basis (feature is gone).",
+    "AGENTS.md records plugins as an explicit strict-leaf blocker (toggle_plugin command-wrapper decompile alone is insufficient for full_leaf_100). That blocker is moot at 1.2.3 windows-x64 because the entire subsystem -- command wrappers, PluginRegistry, persistence store, and both builtin plugins -- is absent; there is nothing left to deep-decompile.",
+    "gate-report.json + logic/ backfilled by reduce session win-1.2.3-plugins-gatereport-reduce-20260726 over the pre-existing win-1.2.3-plugins-audit-20260725 conclusion package; no new raw/intermediate evidence, no new IDA calls (nothing to decompile for an absent module). Consistent with README.md / DISTILLED.md / AI.md / SYSTEM-DIFF.md / manifest.json / data/summary.json (all removed=true, gate=diagnostic-only).",
+    "See logic/JUSTIFIED-NA.md for the justified-N/A stamp (why no per-target logic/*.md full-chain files exist: the module has no implementation leaves)."
+  ]
+}

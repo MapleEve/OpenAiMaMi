@@ -1,0 +1,64 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "machine": "<host>",
+  "readyToImplement": [
+    "load_custom_instruction_state",
+    "preview_custom_instruction_apply",
+    "apply_custom_instruction",
+    "clear_custom_instruction_block",
+    "rollback_custom_instruction"
+  ],
+  "strictImplementationUse": [
+    "load_custom_instruction_state",
+    "preview_custom_instruction_apply",
+    "apply_custom_instruction",
+    "clear_custom_instruction_block",
+    "rollback_custom_instruction"
+  ],
+  "consumerStartReady": [
+    "load_custom_instruction_state",
+    "preview_custom_instruction_apply",
+    "apply_custom_instruction",
+    "clear_custom_instruction_block",
+    "rollback_custom_instruction"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [],
+    "forbiddenUntilStrictImplementationUse": [],
+    "consumerStartBlocked": []
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "implementation_use": true,
+  "gate_accepted": true,
+  "full_leaf_100": true,
+  "moduleExitAllowed": true,
+  "accepted_substitute": "same_platform_ida_backend_absence_for_frontend_orphan_command",
+  "frontendConsumerHandoff": {
+    "status": "complete_current_c5_frontend_chain",
+    "source": "current  src + src/lib/api.ts + component TanStack wiring",
+    "noGatePromotion": true
+  },
+  "frontendControlFlowClosed": [
+    "load_custom_instruction_state",
+    "preview_custom_instruction_apply",
+    "apply_custom_instruction",
+    "clear_custom_instruction_block",
+    "rollback_custom_instruction"
+  ],
+  "frontendConsumerStartReady": [
+    "load_custom_instruction_state",
+    "preview_custom_instruction_apply",
+    "apply_custom_instruction",
+    "clear_custom_instruction_block",
+    "rollback_custom_instruction"
+  ],
+  "currentC5FrontendStatus": "live",
+  "frontendValidatorNotes": [
+    "Initial load_custom_instruction_state failure lacks a dedicated visible error alert in the current page and can be perceived as a spinner/empty-current state.",
+    "Successful apply/clear/rollback intentionally uses setQueryData with returned CoreEnvelope instead of invalidation; changing this can alter UI state timing.",
+    "Current C5 implementation is product/local behavior; upstream 1.2.3 backend owner parity is absent substitute, not strict backend reconstruction."
+  ]
+}

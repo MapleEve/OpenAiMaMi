@@ -16,7 +16,7 @@
   "source_binary": "<来源位置>/raw/binary/AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi",
   "source_binary_sha256": "f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb",
   "source_binary_idb": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
-  "hexrays_ready": true,
+  "IDA decompiler_ready": true,
   "owner_va": null,
   "owner_symbol": null,
   "absence_anchor": "0x1011514d1",
@@ -52,7 +52,7 @@
   "fake_wall_taxonomy": {
     "drop_in_place_neq_async_body": "excluded — no VA exists, not a shim/async issue",
     "architecture_only_budget_rule": "excluded — full enumeration done, not budget-limited",
-    "async_decompile_failed_hexrays": "excluded — no VA to decompile",
+    "async_decompile_failed_IDA decompiler": "excluded — no VA to decompile",
     "wrong_va": "excluded — 4-angle search exhaustive",
     "vtable_dynamic_dispatch": "excluded — Tauri IPC is static registration",
     "http_terminal_external_only": "excluded — no HTTP routing for this command",

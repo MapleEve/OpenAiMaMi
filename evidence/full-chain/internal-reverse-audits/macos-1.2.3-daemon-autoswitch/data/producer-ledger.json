@@ -1,0 +1,71 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "session": "mac-1.2.3-daemon-autoswitch-deltalogic-backfill-20260726",
+  "machine": "<host>",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "daemon-autoswitch",
+  "package": "internal-reverse/audits/macos-1.2.3-daemon-autoswitch",
+  "task_kind": "logic-backfill/reduce-only",
+  "started_at": "2026-07-26T00:00:00+08:00",
+  "completed_at": "2026-07-26T00:00:00+08:00",
+  "predecessor_session": "mac-1.2.3-daemon-autoswitch-reduce-20260725",
+  "reason": "Predecessor reduce pass produced README/AI/SYSTEM-DIFF/manifest/gate-report/pointers/task-plan/reviews but left logic/ empty. OUTPUT-SPEC 验收条件 requires logic/ non-empty with a version-iteration doc (DELTA-LOGIC-<ver> or NO-BEHAVIOR-DIFF-MIGRATION-<ver>). This session backfills logic/DELTA-LOGIC-1.2.3.md + producer-ledger.json (also missing).",
+  "no_new_raw_evidence": true,
+  "no_ida_calls": true,
+  "ida_live_gate": "not-applicable (reduce-only over already-landed raw .c; no IDA MCP session this pass)",
+  "collision_gate": {
+    "owner_check": "package already owned by predecessor session (same machine, <host>); no other in-progress claim on macos-1.2.3-daemon-autoswitch; not in relay123-surface owned-by-other domain",
+    "explicit_token": "not-required (same-package logic completion, no target reassignment)",
+    "result": "ALLOW"
+  },
+  "artifacts_produced": [
+    {
+      "path": "internal-reverse/audits/macos-1.2.3-daemon-autoswitch/logic/DELTA-LOGIC-1.2.3.md",
+      "kind": "logic/DELTA-LOGIC",
+      "bytes": 21668,
+      "grounded_in": [
+        "raw/aimami/1.2.3/macos-arm64/commands/system/ida/pseudocode/run_daemon_once_blocking_0x1007c8fe0.c",
+        "raw/aimami/1.2.3/macos-arm64/core/repository/ida/pseudocode/reconcile_auto_switch_request_0x100a6f840.c",
+        "raw/aimami/1.2.3/macos-arm64/core/repository/ida/pseudocode/select_rotation_candidate_0x100a7bda0.c",
+        "raw/aimami/1.2.3/macos-arm64/core/repository/ida/pseudocode/sync_auto_switch_request_0x100a5e820.c",
+        "raw/aimami/1.2.3/macos-arm64/commands/accounts/ida/pseudocode/perform_switch_payload_with_restart_0x1006a1800.c",
+        "internal-reverse/audits/macos-1.0.9-daemon-autoswitch/logic/DAEMON-AUTOSWITCH-FULLCHAIN-109.md",
+        "internal-reverse/audits/macos-1.0.9-daemon-autoswitch/logic/DAEMON-TRIGGER-AND-THREAD-MODEL-109.md"
+      ]
+    },
+    {
+      "path": "internal-reverse/audits/macos-1.2.3-daemon-autoswitch/data/producer-ledger.json",
+      "kind": "producer-ledger",
+      "note": "this file (red line 12 backfill)"
+    }
+  ],
+  "gate_unchanged": {
+    "consumerStartReady": "0/13",
+    "strictImplementationUse": "0/13",
+    "readyToImplement": "0/13",
+    "tier": "blocks_start",
+    "note": "logic backfill does NOT change any gate tier; it only satisfies the OUTPUT-SPEC logic/ non-empty acceptance condition and records the grounded delta narrative. No target promoted."
+  },
+  "rule9_status": "diff_reversed (8 header-tagged 1.2.3 NEW-delta functions; NOT migrated_no_behavior_diff)",
+  "migration_matrix": {
+    "exact_name_match": 9,
+    "candidate_only_unconfirmed": 3,
+    "zero_hit": 1,
+    "total_canonical": 13
+  },
+  "index_append": {
+    "file": "INDEX.jsonl",
+    "delta_lines": 1,
+    "key": "aimami/1.2.3/macos-arm64/daemon-autoswitch/delta-logic-backfill",
+    "dup_keys": 0
+  },
+  "grounded_selfcheck": {
+    "logic_file_present_nonempty": true,
+    "producer_ledger_present": true,
+    "index_tail_contains_session": true,
+    "reverse_status_terminal_appended": true,
+    "no_in_progress_residual_this_round": true
+  }
+}

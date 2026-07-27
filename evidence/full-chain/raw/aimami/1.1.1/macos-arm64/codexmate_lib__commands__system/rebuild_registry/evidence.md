@@ -10,7 +10,7 @@
 
 ## Confirmed
 
-1. **Command VA confirmed**: `codexmate_lib::commands::system::rebuild_registry` @ `0x1006182c0`, size=0x2F7 bytes. 逆向分析 hexrays_ready=true, decompiled cleanly.
+1. **Command VA confirmed**: `codexmate_lib::commands::system::rebuild_registry` @ `0x1006182c0`, size=0x2F7 bytes. 逆向分析 IDA decompiler_ready=true, decompiled cleanly.
 2. **Core impl VA confirmed**: `codexmate_lib::core::repository::Repository::rebuild_registry` @ `0x1004c40a0`, size=0x1507 bytes. Full pseudocode captured.
 3. **New command in 1.1.1**: Absent from `1.0.9/macos/system/` directory; confirmed in `mac-delta.txt` and `mac-need-goldleaf.txt`. This command did not exist in 1.0.9.
 4. **Mutex-guarded Tauri handler**: Handler acquires `std::sys::pal::unix::sync::mutex::Mutex::lock` on `State<AppState>` before delegating to core. Unlock on all paths confirmed.

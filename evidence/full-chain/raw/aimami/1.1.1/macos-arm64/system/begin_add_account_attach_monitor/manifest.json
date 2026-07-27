@@ -18,7 +18,7 @@
   "source_binary": "AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi",
   "source_binary_sha256": "see_INDEX.jsonl_key_aimami/1.1.1/macos-arm64/binary",
   "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
-  "hexrays_ready": true,
+  "IDA decompiler_ready": true,
   "idb_save": "ok",
   "append_comments": [
     {"addr": "0x10061cc50", "appended": true},
@@ -27,7 +27,7 @@
   "ida_live_gate": {
     "status": "ok",
     "uptime_sec": 18068,
-    "hexrays_ready": true,
+    "IDA decompiler_ready": true,
     "module": "AiMaMi",
     "checked_at_session_start": true
   },
@@ -74,7 +74,7 @@
   "fake_wall_taxonomy_checked": {
     "drop_in_place_not_async_body": "excluded — 0x1002083c0/0x1003329d0/0x100336820 are closure destructor shims; true body is __rust_begin_short_backtrace@0x100205da0 found via func_query + thread_start vtable[3]",
     "architecture_only_budget_rule": "excluded — full decompile obtained for owner (1614B), thread body (1108B), schedule_full_runtime_refresh (259B)",
-    "async_decompile_failed_hexrays_limit": "excluded — all key functions decompiled successfully; no truncation in owner or schedule_full_runtime_refresh",
+    "async_decompile_failed_IDA decompiler_limit": "excluded — all key functions decompiled successfully; no truncation in owner or schedule_full_runtime_refresh",
     "wrong_va_guess": "excluded — owner VA 0x10061cc50 confirmed by func_query demangled symbol exact match; owner-map reference to 0x100262db4 was caller VA from 1.0.9 era (stale)",
     "vtable_dynamic_dispatch": "partially present — thread_start uses vtable[3] to call closure; resolved by tracing thread_start decompile to find the actual closure VA (0x100205da0)",
     "http_terminal_external_only": "not applicable — no HTTP calls in this command path",

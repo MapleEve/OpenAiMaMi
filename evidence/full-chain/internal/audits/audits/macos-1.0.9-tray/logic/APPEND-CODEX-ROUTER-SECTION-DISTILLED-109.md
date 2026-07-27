@@ -204,7 +204,7 @@ Call-tree depth: ≥ 7 edges. Terminated reasons:
 | idb_path | <source-location>/source-binary/AiMaMi 1.0.9_ida.app/Contents/MacOS/AiMaMi.i64 |
 | idb_saved | true |
 | ida_comment_appended | @ 0x1003332a4 (func scope) |
-| hexrays_ready | true |
+| IDA decompiler_ready | true |
 | strings_cache_ready | true |
 | source | ida |
 | confidence | high |

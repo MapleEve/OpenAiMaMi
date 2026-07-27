@@ -6,7 +6,7 @@
 **Role**: 纯生产者 (SOP steps 0-6)
 **Date**: 2026-06-16
 **Binary**: AiMaMi 1.1.1 universal (macOS ARM64)
-**IDB**: AiMaMi.i64 (hexrays_ready=true, uptime 29006s at health check)
+**IDB**: AiMaMi.i64 (IDA decompiler_ready=true, uptime 29006s at health check)
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 **Migration basis**: 1.0.9 macOS baseline (DIAGNOSE-CLUSTER-DISTILLED-109.md)
 **Delta status**: migrated_no_behavior_diff — interface identical; implementation VAs shifted; string constants now inline-embedded rather than static pool

@@ -1,0 +1,75 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "relay",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-24",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 22,
+    "blocked": 1,
+    "total_commands": 23
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "N/A-for-this-package -- frontend JS bundle is cross-platform, evidence lives in ../macos-1.2.3-relay/; this Windows package does not duplicate it",
+    "dim2_backend_owner_pseudocode": "partial -- 208 deduped decompiled addresses (out of a 177-row owner-map + additional commands/relay 23-row owner-map), materially behind macOS's 638; owner resolution (name/addr/size) is stronger than decompile-body coverage for several submodules",
+    "dim3_call_tree_to_leaf": "weak -- no systematic per-command call-tree-to-leaf document produced; individual function bodies exist for 208 addresses but leaf termination has not been catalogued",
+    "dim4_interface_dto_boundary": "not-closed",
+    "dim5_platform_gate": "closed-for-existence, open-for-parity -- Windows evidence is independently produced (not extrapolated from macOS); 4 macOS-only submodules confirmed zero-evidence on Windows after 4-method search, correctly recorded Unknown rather than inferred-absent",
+    "dim6_test_acceptance_mapping": "not-closed"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim2 (backend decompile) itself is only partially closed for several submodules (translator/codex_thread_visibility/managed_blocks/codex_mutation among the originally-19-zero-decompile group has an aggregate-only re-closeout claim, not per-module re-verification), and dim4/dim6 are fully open; strictImplementationUse is blocked on both counts",
+  "consumerStartReady_commands": [
+    "load_relay_state", "get_relay_active", "get_relay_proxy_status", "upsert_relay_provider",
+    "delete_relay_provider", "set_relay_provider_network", "activate_relay_provider",
+    "deactivate_relay_provider", "reorder_relay_providers", "set_codex_router_enabled",
+    "set_codex_router_no_account_mode", "diagnose_codex_router",
+    "export_relay_config", "import_relay_config", "test_relay_draft_stream",
+    "fetch_relay_models_draft", "get_relay_provider_quota", "load_quota_history",
+    "reveal_relay_api_key", "detect_api_proxy_config", "set_api_proxy_config", "test_api_proxy_config"
+  ],
+  "blocked_commands": [
+    {
+      "command": "get_codex_router_auth_readiness",
+      "reason": "Windows-side wrapper is an ICF (Identical Code Folding)-folded shared dispatcher (open_path@0x140194810, 382 basic blocks, 158 callees spanning 26+ unrelated commands) -- static decompilation cannot isolate this command's own logic on Windows. Per double-platform gate report sec.①, cross-platform ground truth is instead the macOS standalone function get_codex_router_auth_readiness_0x10053fd20.c (see ../macos-1.2.3-relay/). This command is consumerStartReady only via the macOS evidence path, NOT via any Windows-native evidence; consumers targeting Windows-specific implementation nuance for this one command have no Windows decompile to consult and must rely entirely on Mac ground truth + platform-difference reasoning."
+    }
+  ],
+  "unknowns": [
+    {
+      "item": "4 macOS-only submodules on Windows (transition_journal/breaker/native_responses_compat/upstream_url, 20 Mac functions)",
+      "class": "product_decision",
+      "reason": "confirmed via marker-string/panic-Location-2-hop/command-name-1-hop/type-name-xref 4-method search, zero hits on Windows; this is recorded Unknown (not confirmed-absent) because strip binary + possible conditional compilation cannot fully rule out a differently-stringed equivalent. Whether Polaris needs Windows-parity behavior for these 4 submodules is a product decision, not a reverse-engineering gap that more IDA time would necessarily close."
+    },
+    {
+      "item": "2 unnamed Windows commands sub_140187580/sub_140CCE030 identity vs Mac diagnose_codex_router/test_relay_draft_stream",
+      "class": "accepted_unknown",
+      "reason": "both sides have non-empty decompiled content; only size/position plausibility asserted, no byte-signature cross-verification"
+    },
+    {
+      "item": "per-module post-closeout decompile completeness for the originally-19-zero-decompile modules (translator/codex_thread_visibility/managed_blocks/codex_mutation/router_unlock_auth/config_takeover/quota/storage/codex_catalog/keychain/proxy_passthrough/invariants/router_reconciler/legacy_virtual_auth/codex_runtime/codex_config_reconciler/io/models/dialects)",
+      "class": "blocks_start",
+      "reason": "only the AGGREGATE 208-deduped-address figure is re-verified (goal-aimami-122/RELAY-DOUBLE-PLATFORM-100-GATE.md sec.⑤); no per-module breakdown was re-derived after the aggregate recount, so this gate-report cannot assert per-module completeness for any single one of these 18 (19 minus managed_blocks-covered-separately) modules with the same confidence as the 9 originally-100%-modules (atomic_write/codex_diagnostic/codex_project_state/codex_writer/fetch_models/health_check/image_compat/manager/proxy_server/router_transition)"
+    },
+    {
+      "item": "dim3 call-tree-to-leaf, dim4 interface/DTO, dim6 test/acceptance mapping",
+      "class": "blocks_start",
+      "reason": "not produced this pass"
+    }
+  ],
+  "notes": [
+    "This gate-report deliberately keeps Windows below the macOS package's already-conservative consumerStartReady-only posture: Windows dim2 itself is not fully closed (208 vs Mac's 638), so even the dim2-heavy 'evidence is strong' framing used in the macOS gate-report does not apply here verbatim -- Windows dim2 is 'partial', not 'strong'.",
+    "get_codex_router_auth_readiness is the one command NOT independently consumerStartReady on Windows evidence alone (ICF fold); it is included in the macOS package's consumerStartReady list and cross-referenced here as blocked-on-Windows-native-evidence, not blocked overall.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

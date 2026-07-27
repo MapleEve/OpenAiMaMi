@@ -1,0 +1,40 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "bundle": "windows-1.2.3-mystery-unlock",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "generated_at": "2026-07-25T00:00:00Z",
+  "source": "generated_from_manifest_windows-1.2.3-mystery-unlock",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [],
+    "forbiddenUntilStrictImplementationUse": [],
+    "consumerStartBlocked": []
+  },
+  "permanentlyBlockedProductDecision": [
+    "core::relay::router_unlock_auth::install_virtual_unlock_auth",
+    "core::relay::router_unlock_auth::sub_14048FF80",
+    "core::relay::router_unlock_auth::sub_14048F130",
+    "core::relay::router_unlock_auth::cleanup",
+    "core::relay::router_unlock_auth::read_marker",
+    "core::relay::router_unlock_auth::read_cleanup_backup",
+    "core::relay::router_unlock_auth::serialize",
+    "core::relay::router_unlock_auth::sub_14048EF50",
+    "core::relay::router_unlock_auth::sub_14048FE80",
+    "core::relay::legacy_virtual_auth::cleanup_0",
+    "core::relay::legacy_virtual_auth::read_marker_0",
+    "core::relay::legacy_virtual_auth::read_user_owned_backup",
+    "core::relay::legacy_virtual_auth::sub_1404F99D0",
+    "core::relay::legacy_virtual_auth::sub_140579700",
+    "core::relay::legacy_virtual_auth::__closure__6",
+    "core::relay::legacy_virtual_auth::__closure__7"
+  ],
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "notes": "All 19 in-scope Windows-native functions classified tos_circumvention; ceiling=understand_and_classify, implementation_use permanently false. Not a reverse-evidence gap; do not attempt to promote via more IDA work. Unresolved conflict with goal-aimami-122/SPEC-virtual-auth-mode.md recorded in README.md/gate-report.json, left for user decision."
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "load_relay_state", "get_relay_active", "get_relay_proxy_status", "upsert_relay_provider",
+    "delete_relay_provider", "set_relay_provider_network", "activate_relay_provider",
+    "deactivate_relay_provider", "reorder_relay_providers", "set_codex_router_enabled",
+    "set_codex_router_no_account_mode", "get_codex_router_auth_readiness", "diagnose_codex_router",
+    "export_relay_config", "import_relay_config", "test_relay_draft_stream",
+    "fetch_relay_models_draft", "get_relay_provider_quota", "load_quota_history",
+    "reveal_relay_api_key", "detect_api_proxy_config", "set_api_proxy_config", "test_api_proxy_config"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 23 relay commands: readyToImplement blocked pending dim4 (interface/DTO) + dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 23 relay commands: strictImplementationUse blocked pending dim4 (interface/DTO/error-envelope/side-effect boundary) closure"
+    ],
+    "consumerStartBlocked": [
+      "core::relay submodules with no C5 consumption plan yet (transition_journal/breaker/native_responses_compat/upstream_url -- macOS-only, no Windows evidence, product_decision needed on whether Windows-side equivalent logic exists or is genuinely absent before consumer builds cross-platform-parity code against them)"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Run a dim4 pass: extract per-command DTO fields (input struct, output payload, error envelope, nullability) from the 638 already-decompiled functions -- this is a synthesis pass over existing pseudocode, not new IDA work, and is the fastest path to strictImplementationUse.",
+    "Run a dim6 pass: map each of the 23 relay commands + core submodule side effects to Polaris's own C5 unit/E2E test surface or explicit manual-acceptance criteria.",
+    "Execute the angle-C semantic-keyword orphan scan (brand/litellm/defaultWireApi/noAccountMode) outside core::relay namespace -- open gap carried from goal-aimami-122/RELAY-DOUBLE-PLATFORM-100-GATE.md.",
+    "Byte-signature cross-verify Windows sub_140187580/sub_140CCE030 identity against Mac diagnose_codex_router/test_relay_draft_stream."
+  ]
+}

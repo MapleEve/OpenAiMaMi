@@ -3,7 +3,7 @@
 
 **Bundle**: `audits/macos-1.0.9-bootstrap`  
 **Binary SHA-256**: `1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482`  
-**IDA health**: auto_analysis_ready=true, hexrays_ready=true, strings_cache_size=14756  
+**IDA health**: auto_analysis_ready=true, IDA decompiler_ready=true, strings_cache_size=14756  
 **Gate owner**: <workstation> / session deep-mac-bootstrap-20260602 (canonical) + this session <audit-session> (additive upgrade)  
 **Produced**: 2026-06-03  
 **Owner gate**: ALLOW (write_mode=owner — same machine <workstation> owns manifest)  
@@ -118,7 +118,7 @@ LaunchAgent (install_daemon), thread-spawn (3× spawn_unchecked), async-spawn (t
 ### dim5 — Same-platform gate
 
 All evidence from macOS arm64 binary SHA `1db044e8efab`. IDA session confirmed
-auto_analysis_ready=true, hexrays_ready=true. Platform: darwin-arm64.
+auto_analysis_ready=true, IDA decompiler_ready=true. Platform: darwin-arm64.
 
 ### Ceiling
 
@@ -206,7 +206,7 @@ None sentinels: `a3[87]=0x8000000000000000`, `a3[99]=0x8000000000000000`, `a3[10
 
 ### dim5 — Same-platform gate
 
-macOS arm64 binary SHA `1db044e8efab`, IDA hexrays decompile confirmed, same binary SHA in
+macOS arm64 binary SHA `1db044e8efab`, IDA IDA decompiler decompile confirmed, same binary SHA in
 pseudocode-manifest.jsonl. No cross-platform inference.
 
 ### Ceiling

@@ -5,7 +5,7 @@ machine: <本地机器>
 producer: claude-sonnet-4-6 (pure-producer, gold-leaf pass)
 delta_class: integrity_recovered
 idb: <本地路径>
-hexrays_ready: true
+IDA decompiler_ready: true
 baseline: 1.0.9
 sha: d24e429a
 

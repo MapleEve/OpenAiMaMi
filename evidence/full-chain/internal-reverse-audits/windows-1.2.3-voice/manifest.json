@@ -1,0 +1,142 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "voice",
+  "package": "windows-1.2.3-voice",
+  "created_at": "2026-07-25T00:00:00Z",
+  "producer_machine": "<host> (this package assembled/distilled from existing raw evidence; underlying IDA decompile sessions were produced by prior producer sessions per INDEX.jsonl, most recently session win-1.2.3-app-function-inventory-gapfill-20260724 on <host>). This distillation session independently confirmed IDA MCP liveness (server_health: idb_path=E:\\binary\\AiMaMi.1.2.3 win64.exe.i64, module=AiMaMi.1.2.3 win64.exe, IDA decompiler_ready=true) but did not itself run new decompiles (func_query attempts against the live IDB did not filter by query term as expected and were abandoned in favor of file-system + INDEX.jsonl ground-truth enumeration, honestly noted here rather than silently treated as a completed angle-A symbol pass).",
+  "binary": {
+    "sha256_binary": "unknown-not-independently-recomputed-this-pass; IDA MCP server_health reports idb_path=E:\\binary\\AiMaMi.1.2.3 win64.exe.i64 and input_path=E:\\binary\\AiMaMi.1.2.3 win64.exe, imagebase=0x140000000, which is the live source for all addresses cited in this package",
+    "binary_format": "pe",
+    "pe_machine": "AMD64",
+    "idb_module_name": "AiMaMi.1.2.3 win64.exe.i64 (strip)"
+  },
+  "scope": {
+    "backend_target_universe": "codexmate_lib/core/voice/{aliyun_asr,llm,runtime,runtime::tray,workspace} + codexmate_lib/platform/{voice_trigger_windows,text_injection_windows} + codexmate_lib/commands/voice + commands:: generic bucket (28 named voice_* command wrapper files physically filed under raw/.../commands/ida/pseudocode/ rather than a dedicated commands/voice/ directory) + codexmate_lib generic bucket (3 named files: capture_voice_trigger_key/generate_voice_prompt/inject_voice_text)",
+    "frontend_target_universe": "VoicePage (voice-page-CV7DqakD.js, same asset name as macOS -- Tauri JS bundle is platform-agnostic) via raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl (win-specific extraction, 95895 bytes, produced 2026-07-24)",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "backend_voice_domain_raw_c_files_total": 171,
+    "backend_voice_domain_raw_c_files_by_dir": {
+      "commands/ida/pseudocode (named voice_* wrappers, shared bucket)": 28,
+      "codexmate_lib/ida/pseudocode (named, shared bucket: capture_voice_trigger_key/generate_voice_prompt/inject_voice_text)": 3,
+      "commands/voice/ida/pseudocode (unnamed sub_)": 2,
+      "aliyun_asr/ida/pseudocode": 62,
+      "llm/ida/pseudocode": 6,
+      "runtime/ida/pseudocode (includes 1 named show_voice_overlay)": 42,
+      "tray/ida/pseudocode": 2,
+      "workspace/ida/pseudocode (includes 4 named: start_message-adjacent/default_templates/read_workspace_file/serialize_2 style)": 21,
+      "voice_trigger_windows/ida/pseudocode (unnamed sub_)": 4,
+      "text_injection_windows/ida/pseudocode (unnamed sub_, 1 file only)": 1
+    },
+    "backend_voice_domain_named_identity_resolved_files": 40,
+    "backend_voice_domain_generic_sub_unnamed_files": 131,
+    "backend_voice_domain_named_pct": "40/171 = 23.4%",
+    "backend_functions_truncated_stubs_remaining": 0,
+    "backend_functions_truncation_scan_basis": "grep -liE 'TRUNCATED|DECOMPILE-FAILED|chars total\\]' run by this distillation session (2026-07-25) across the full 171-file union set (direct scan of aliyun_asr/llm/runtime/tray/workspace/voice_trigger_windows/commands/voice dirs plus filename-voice-grep hits) -- 0 truncation stubs found; all sampled files (10+ spot-checked, plus 2 dir-level full scans) show complete brace-balanced Hex-Rays bodies with real header attribution comments",
+    "frontend_commands_with_voice_in_name": 37,
+    "frontend_commands_owner_mapped_by_name_stem": 32,
+    "frontend_commands_true_gaps": 5,
+    "frontend_commands_true_gaps_list": [
+      "cancel_voice_trigger_capture",
+      "remove_voice_vocabulary_app_scope",
+      "resolve_voice_vocabulary_app_info",
+      "set_voice_trigger_listener_suppressed",
+      "upsert_voice_vocabulary_app_scope"
+    ],
+    "frontend_commands_owner_mapping_basis": "python3 JSON parse of raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl filtered on command name containing 'voice' (37 rows), diffed by exact-name-stem match against the 33 'voice'-named backend .c files (32 commands matched + 1 backend-only show_voice_overlay with no matching frontend command name). This is a name-stem diff, NOT a byte-signature or call-graph confirmed mapping; see gate-report.json dim2/dim3 for caveats.",
+    "frontend_pages_reversed": 0,
+    "frontend_voice_page_reversed": false,
+    "measurement_basis": "this distillation session (2026-07-25): (1) filename grep -iname '*voice*.c' across raw/aimami/1.2.3/windows-x64/, (2) directory-based find across the 7 module-attributed dirs identified via python3 JSON scan of INDEX.jsonl for module field prefix 'codexmate_lib/core/voice' or 'codexmate_lib/platform/voice_trigger_windows' at version=1.2.3 platform=windows-x64, (3) union+sort -u of (1) and (2), (4) grep -c '/sub_' to split named vs unnamed. All counts are live file-system re-counts, not carried over from any prior document without independent verification."
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "reduce_pass_2026_07_26": {
+    "note": "Second reduce pass over the same evidence root plus a live IDA MCP read-only verification session (<host>, server_health confirmed status=ok/IDA decompiler_ready=true/idb_path=E:\\binary\\AiMaMi.1.2.3 win64.exe.i64). This pass added logic/REGISTRATION-TABLE-1.2.3.md and logic/FULL-CHAIN-1.2.3.md (previously missing/empty logic/ directory), corrected the raw file census, and resolved 4 of the 5 previously-blocked commands. No new raw/.c leaf files were written this pass (read-only verification only); no rename/set_comments/idb_save writes were performed against the IDB.",
+    "corrected_coverage": {
+      "backend_voice_domain_raw_c_files_total_corrected": 180,
+      "delta_from_2026_07_25_manifest": "+9 (171 -> 180)",
+      "delta_breakdown": {
+        "commands/ida/pseudocode (voice-named)": "28 -> 29 (+1, prior count undercounted by 1)",
+        "commands/voice/ida/pseudocode": "2 -> 3 (+1, prior pass missed __u7b__u7b_closure_u7d__u7d__17_0x140abe3c0.c, a resolved closure of generate_voice_prompt)",
+        "aliyun_asr/ida/pseudocode": "62 -> 63 (+1, prior count undercounted by 1)",
+        "asr/ida/pseudocode": "0 -> 3 (+3, NEW: entire directory was omitted from the 2026-07-25 pass's 10-directory scan; module header confirms codexmate_lib/core/voice/asr, resolving one of SYSTEM-DIFF.md's 6 'macOS-only, Unknown' submodules to confirmed-present-on-windows)",
+        "llm/ida/pseudocode": "6 -> 7 (+1, prior pass missed save_config_0x140a58220.c)",
+        "models/ida/pseudocode (voice-named)": "0 -> 2 (+2, NEW: entire directory was omitted; serialize_VoiceGeneratePayload_0x140aa7ae0.c + serialize_VoiceWorkspacePayload_0x140aa76f0.c, real dim4 DTO-serialization evidence)"
+      },
+      "method": "Full-tree grep for '// module:.*voice' header attribution (not limited to the 10 directories the 2026-07-25 pass scanned) plus filename-based recount; cross-checked against live IDA module header comments for the 3 asr/ files this pass read."
+    },
+    "resolved_blocked_commands": [
+      {"command": "resolve_voice_vocabulary_app_info", "owner_va": "0x140170790", "found_in": "commands/relay/ida/pseudocode/open_path_0x140194810.c (ICF-folded shared Tauri command-string dispatcher, NOT a voice-domain directory)", "method": "read the open_path shared dispatcher's header comment (left by a prior untracked pass) listing 26+ commands it hosts, located the string-length case branch (case 0x21LL, length 33) doing nested memcmp against aRemoveVoiceVoc/aUpsertVoiceVoc/aResolveVoiceVo, then live-decompiled the 3 target addresses this session", "side_effect": "none (read-only, calls read_app_bundle_identity_fields)"},
+      {"command": "upsert_voice_vocabulary_app_scope", "owner_va": "0x140170D00", "found_in": "same open_path dispatcher, case 0x21LL", "side_effect": "PERSISTENCE WRITE (calls sub_14075B300, IDB comment explicitly flags '⚠持久化写')"},
+      {"command": "remove_voice_vocabulary_app_scope", "owner_va": "0x140171760", "found_in": "same open_path dispatcher, case 0x21LL else-branch", "side_effect": "DELETE (calls sub_14075A760, IDB comment explicitly flags '⚠删除数据')"},
+      {"command": "set_voice_trigger_listener_suppressed", "owner_va": "0x140182C20", "found_in": "same open_path dispatcher, case 0x25LL (length 37)", "side_effect": "state toggle (trigger listener suppression flag)"}
+    ],
+    "still_blocked": [
+      {"command": "cancel_voice_trigger_capture", "status": "truly_undone", "strengthened_evidence": "live IDA find_regex full-binary string-cache exact match returned n:0 (strings_cache_ready=true, not a cold-cache false negative); lookup_funcs exact-name query returned Not found; search_text attempted twice (30s, 120s) both timed out (exit 124), inconclusive, not treated as evidence either way", "hypothesis_unverified": "may be a pure-frontend AbortController semantic with no corresponding backend invoke; not confirmed, dim1 frontend walkthrough required to settle this"}
+    ],
+    "gate_tier_impact": "NO gate tier promotion made for any command or the module as a whole. The 4 resolved commands are still classified as owner_existence_mapped (moved out of blocked_commands), not strictImplementationUse/readyToImplement/consumerStartReady, because dim3 stops one hop past the wrapper (business delegate identified, its own internals e.g. sub_14075B300/sub_14075A760/read_app_bundle_identity_fields not further decompiled), dim4 response/error envelope fields not fully catalogued, dim6 not produced, and dim1 remains wrapper-level only. See gate-report.json for the updated dim_status text.",
+    "orphan_four_way_classification": {
+      "definition_ref": "rust-reverse-cookbook.md §1 angle D four-category taxonomy",
+      "already_in_canonical": [
+        "The 9 newly-recounted raw files (asr/ x3, models/ x2, +1 each in commands/, commands/voice/, aliyun_asr/, llm/) were already physically present in raw/aimami/1.2.3/windows-x64/ before this pass (produced by earlier producer sessions per their file headers, e.g. session win-1.2.3-tree-not-on-disk-gapfill-20260726 literal in some headers, and win-1.2.3-app-function-inventory-gapfill-20260724 per INDEX.jsonl for others) -- they were simply omitted from the 2026-07-25 audits package's directory-scan scope, not newly reverse-engineered this pass. Classification: already_in_canonical (evidence pre-existed on the SOT share, this pass only expanded the audits package's enumeration to include it)."
+      ],
+      "local_outtake": [],
+      "different_machine_owner": [],
+      "truly_undone": [
+        "cancel_voice_trigger_capture (see still_blocked above) -- no evidence found anywhere in raw/ or via live binary string search this session; genuinely open, would require a new reverse work unit (starting with a dim1 frontend walkthrough to determine whether it even reaches invoke())."
+      ],
+      "note": "The 4 resolved commands in resolved_blocked_commands above are NOT orphans in the four-category sense -- they are frontend-side target-universe members that were previously misclassified as blocked due to an owner-search scope gap (voice-only directories vs. the shared commands/relay/ dispatcher). They don't fit cleanly into already_in_canonical/local_outtake/different_machine_owner/truly_undone because the *evidence* (open_path file) was already in canonical raw/, but the *identity resolution* (which command each case branch belongs to) had not been performed by any prior pass and is genuinely new work product of this session (via live IDA decompile of the 4 addresses, reading out pre-existing IDB annotations left by an untracked earlier pass). Recorded here for transparency rather than forced into an ill-fitting bucket."
+    },
+    "covered_commands": [
+      "capture_voice_trigger_key", "generate_voice_prompt", "inject_voice_text",
+      "load_voice_asr_config", "load_voice_llm_config", "load_voice_processing_modes",
+      "load_voice_runtime_status", "load_voice_workspace", "remove_voice_history_entry",
+      "remove_voice_mode_shortcut", "remove_voice_template", "remove_voice_vocabulary",
+      "replace_voice_vocabulary_kind", "request_voice_permissions", "save_voice_asr_config",
+      "save_voice_llm_config", "save_voice_processing_modes", "set_voice_global_shortcut",
+      "set_voice_mode_shortcut", "set_voice_overlay_style", "set_voice_processing_mode_id",
+      "set_voice_trigger_bindings", "set_voice_trigger_key", "show_voice_search_overlay",
+      "start_voice_capture", "stop_voice_capture", "test_voice_asr_config", "test_voice_llm_config",
+      "update_voice_runtime_settings", "upsert_voice_template", "upsert_voice_vocabulary",
+      "voice_processing_done",
+      "resolve_voice_vocabulary_app_info", "upsert_voice_vocabulary_app_scope",
+      "remove_voice_vocabulary_app_scope", "set_voice_trigger_listener_suppressed"
+    ],
+    "covered_commands_count": 36,
+    "covered_commands_note": "owner_existence_mapped tier (diagnostic-level; NOT consumerStartReady/strictImplementationUse/readyToImplement). 32 of these map to a dedicated named raw .c file; the 4 listed last (resolve/upsert/remove_voice_vocabulary_app_scope, set_voice_trigger_listener_suppressed) map to case branches inside the shared open_path_0x140194810.c ICF-folded dispatcher, confirmed via this session's live decompile calls, not yet materialized as standalone raw leaf files.",
+    "not_covered_commands": ["cancel_voice_trigger_capture"],
+    "live_ida_session_log": [
+      "server_health {} -> status=ok, IDA decompiler_ready=true, idb_path=E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+      "get_bytes regions=[{0x1416C7020,16},{0x1416C7010,16}] -> decoded 'refresh_single_account_usage' (28 chars), ruled OUT as cancel_voice_trigger_capture candidate for open_path case 0x1CLL",
+      "decompile addr=0x140170790 -> resolve_voice_vocabulary_app_info (pre-existing IDB annotation, read-only)",
+      "decompile addr=0x140170D00 -> upsert_voice_vocabulary_app_scope (pre-existing IDB annotation, read-only)",
+      "decompile addr=0x140171760 -> remove_voice_vocabulary_app_scope (pre-existing IDB annotation, read-only)",
+      "decompile addr=0x140182C20 -> set_voice_trigger_listener_suppressed (pre-existing IDB annotation, read-only)",
+      "lookup_funcs queries=['cancel_voice_trigger_capture'] -> Not found",
+      "find_regex pattern='cancel_voice_trigger_capture' -> n=0 matches",
+      "search_text pattern='cancel_voice_trigger_capture' -> timed out twice (30s, 120s), inconclusive"
+    ]
+  },
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.2.3-voice/ (cross-platform sibling; frontend evidence structurally identical JS bundle, backend evidence NOT extrapolated from it per red-line 8/AGENTS.md)",
+    "internal-reverse/audits/windows-1.0.9-voice/ (prior-version same-platform baseline; superseded, see SYSTEM-DIFF.md -- NOT migrated forward via RULE9 migrated_no_behavior_diff because the underlying binary evidence changed materially, see below)"
+  ],
+  "cross_platform_sibling": "internal-reverse/audits/macos-1.2.3-voice/",
+  "rule9_migration_status": "diff_reversed (NOT migrated_no_behavior_diff, NOT unchanged_reused). windows-1.0.9-voice/manifest.json records status='accepted_ready_absent_backend_orphan_ida_direct_voice': at AiMaMi 1.0.9, all 34 voice frontend commands had ZERO matching Windows backend strings/functions (accepted same-platform IDA-absence substitute; voice was UI-only orphan on Windows at that version). At 1.2.3, this distillation confirms 171 real non-empty, non-truncated Windows-native decompiled voice-domain function bodies exist, with 32/37 frontend commands owner-mapped. This is a genuine behavior-adding delta between 1.0.9 and 1.2.3 (Windows voice backend was implemented in this window), not a no-diff case. The 1.0.9 'IDA absence' conclusion is explicitly NOT carried forward; this package supersedes it for 1.2.3 and later.",
+  "known_residuals": [
+    "131/171 (76.6%) of voice-domain raw .c files are generic IDA sub_XXXXXXXX names. Each carries a module-attribution header comment (e.g. 'module src/core/voice/aliyun_asr.rs | attributed via call-graph propagation (>=2 same-module callers)' or '... via panic-Location xref'), which is real prior module-recovery work (matches skill red-line 24 methodology), but individual function IDENTITY (which Rust fn each sub_ corresponds to, and hence which of the 5 frontend-gap commands if any) is NOT resolved. This distillation did not attempt new identity resolution (no live func_query success this session, see manifest.producer_machine note).",
+    "All 171 sampled/scanned file headers carry the literal annotation 'win 1.2.1' despite (a) living under the raw/aimami/1.2.3/... path, (b) INDEX.jsonl recording version=1.2.3 produced_at=2026-07-24T13:20:34Z for the 132-file gapfill batch, and (c) this session's live IDA server_health confirming the attached IDB is 'AiMaMi.1.2.3 win64.exe.i64' / input_path 'E:\\\\binary\\\\AiMaMi.1.2.3 win64.exe.i64'. Cross-checked and concluded this is a stale literal string baked into a reused module-attribution script/template (per skill references/ida-dirtree-module-recovery.md tooling, likely first written against 1.2.1 and not updated when rerun for 1.2.3), NOT a real version-provenance mixup -- the addresses/IDB/INDEX metadata all agree on 1.2.3. Flagged here as a data-hygiene item for the producer side, not treated as blocking evidence.",
+    "Windows aliyun_asr submodule (62 raw files) is proportionally MUCH larger than its macOS sibling core/voice/aliyun_asr+aliyun_asr/connect (9+2=11 files) -- opposite of the runtime/llm/text_injection/voice_trigger submodules, which are all materially THINNER on Windows than macOS. Not independently explained this pass (candidate reading: x86_64 rustc/LLVM produced less inlining/ICF folding for this submodule's async state machine than ARM64 did, but this is a hypothesis, not verified).",
+    "macOS submodules platform::voice_permissions (4 files), platform::asr (8 files), core::voice::runtime::overlay (10 files), core::voice::runtime::watchdog (3 files), core::voice::aliyun_asr::connect (2 files), and the core::voice-direct serde/trait-glue bucket (25 files, incl. MacosPermissionsChecker/MacosTextInjector) have NO corresponding top-level raw directory on Windows (confirmed via `find $ROOT -maxdepth 1 -type d` full listing, this session). Recorded Unknown/no-evidence, NOT confirmed-absent (strip binary; a differently-named Windows-native equivalent cannot be ruled out without dedicated search) and explicitly NOT inferred from macOS evidence.",
+    "dim3 (call-tree-to-leaf), dim4 (interface/DTO/error-envelope/side-effect boundary), dim6 (test/acceptance mapping) were NOT produced this pass -- no interfaces/*.md, no error-path catalog, no acceptance mapping exists in this package.",
+    "This distillation did not read the full pseudocode body content of all 171 files -- only header/module-attribution lines were sampled (approx. 15 files spot-checked) plus 2 full-directory truncation scans (aliyun_asr, runtime samples) and a 7-directory truncation-marker grep. Business-logic-level content review (branch semantics, error paths, side effects) was NOT performed for any file this pass; this is file-existence/attribution/hygiene-level verification only.",
+    "The 2 unnamed commands/voice/ sub_ functions (sub_140755DC0, 535 lines; sub_140ACDB60, 37 lines) are plausible candidates for some of the 5 frontend-gap commands (by directory/module placement) but have NOT been identity-confirmed via string xref, byte-signature, or call-graph disambiguation this pass -- recorded accepted_unknown, matching the same posture windows-1.2.3-relay/gate-report.json used for its own 2 unnamed commands."
+  ],
+  "note": "This manifest is a distillation pass over pre-existing raw evidence (171 .c files across 10 raw sub-directories, cross-checked against 7 INDEX.jsonl module-scoped entries plus live IDA MCP server_health confirmation). No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md. Per skill red-line 8, Windows evidence is NOT extrapolated from macOS evidence anywhere in this package. Coverage claims are honestly tiered: dim1 (frontend contract existence) and dim2 (backend owner/module-existence, decompile-non-failure) are the strongest angles closed this pass; dim2 identity-resolution (business-logic naming) is only 23.4% closed; dim3/dim4/dim6 are entirely open. See gate-report.json for the per-dimension gate_tier and consumerStartReady status (NOT declared module-wide true this pass)."
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "session": "win-1.2.3-plugins-gatereport-reduce-20260726",
+  "machine": "<host>",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "plugins",
+  "produced_at": "2026-07-26T00:00:00+08:00",
+  "audit_type": "presence_negative_result",
+  "removed": true,
+  "removed_confidence": "high",
+  "reduce_kind": "gate_report_and_logic_backfill_over_prior_conclusion",
+  "prior_conclusion_session": "win-1.2.3-plugins-audit-20260725",
+  "leaves": [],
+  "removed_target_universe": [
+    "PluginRegistry::set_enabled", "PluginRegistry::list", "PluginRegistry::get_config",
+    "PluginRegistry::update_settings", "PluginRegistry::save_store_static", "PluginStoreSchema::serialize",
+    "list_plugins", "toggle_plugin", "get_plugin_config", "update_plugin_config",
+    "builtin::all_builtin_plugins", "builtin::web_tools::plugin_info", "builtin::image_support::plugin_info"
+  ],
+  "evidence_classes": [
+    {"class": "raw_dir_topology", "path": "raw/aimami/1.2.3/windows-x64/", "detail": "65 module dirs, none named plugins", "hits": 0},
+    {"class": "frontend_ipc_enumeration", "path": "raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl", "detail": "131 commands, grep -i plugin = 0", "hits": 0, "total_commands": 131},
+    {"class": "binary_string_enumeration", "path": "raw/binary/AiMaMi.1.2.3 win64.exe", "detail": "strings -a 399151 lines, 0/11 anchor strings; 3 unrelated Tauri ACL plugin: fragments only", "hits": 0, "sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396"},
+    {"class": "methodology_positive_control", "path": "raw/binary/AiMaM 1.0.9 win64.exe", "detail": "same method finds codexmate_lib::core::plugins::registry::PluginRegistry literal @ line 303600", "hits": 1}
+  ],
+  "cross_platform_corroboration_only": {
+    "binary": "raw/binary/AiMaMi 1.2.3.app/Contents/MacOS/AiMaMi",
+    "sha256": "e3f2fec7d7cd32c8a7a650ec563577b8c74516aed270c1230a5b11296942114d",
+    "detail": "131 commands 0 plugin hits + binary strings 0 anchor hits; NOT used to infer Windows result (doNotInferWindowsFromMacOS respected)"
+  },
+  "artifacts_written_this_reduce": [
+    "internal-reverse/audits/windows-1.2.3-plugins/gate-report.json",
+    "internal-reverse/audits/windows-1.2.3-plugins/logic/JUSTIFIED-NA.md",
+    "internal-reverse/audits/windows-1.2.3-plugins/data/producer-ledger.json"
+  ],
+  "index_lines_appended": ["aimami/1.2.3/windows-x64/plugins/gatereport-reduce-ack"],
+  "reverse_status_finalized": "flipped [win-1.2.3-plugins-audit-20260725] header IN-PROGRESS -> DONE (completed sub-line already present since 2026-07-25); appended gate-report/logic backfill note",
+  "new_raw_evidence_produced": false,
+  "new_ida_calls": false,
+  "note": "Reduce-only backfill over the pre-existing removed=true diagnostic package. No new raw/intermediate evidence and no IDA calls -- there is no owner function to decompile for an absent module (that absence IS the conclusion). Added the two missing conclusion-package files (gate-report.json + logic/) so the bundle matches the standard audits/<platform>-1.2.3-<module>/ shape while honestly recording, via a justified-N/A stamp, that no per-target logic full-chain can exist. gate stays diagnostic-only: gate_accepted=false, implementation_use=false, readyToImplement=false."
+}

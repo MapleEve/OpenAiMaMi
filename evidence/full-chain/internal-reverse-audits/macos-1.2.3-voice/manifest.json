@@ -1,0 +1,70 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "voice",
+  "package": "macos-1.2.3-voice",
+  "created_at": "2026-07-24T00:00:00Z",
+  "producer_machine": "<host> (this package assembled by distillation; underlying IDA decompile sessions produced by prior producer sessions per INDEX.jsonl)",
+  "binary": {
+    "sha256_core_voice": "unknown-not-recorded-in-source-baseline",
+    "binary_format": "macho",
+    "arch": "arm64",
+    "note": "voice-baseline.md and voice-frontend.md (the two source documents this package distills) do not carry a per-file source_binary_sha256 header field visible to this distillation pass; pointers/evidence-paths.md references the raw .c files directly for byte-level provenance instead of restating a hash here. This is a documentation gap inherited from the source analysis, not fabricated."
+  },
+  "scope": {
+    "backend_target_universe": "core::voice::* (9 submodules: runtime/runtime::overlay/runtime::tray/runtime::watchdog/workspace/llm/aliyun_asr/aliyun_asr::connect/asr, + 25 files directly under core/voice/ida/pseudocode that are serde Deserialize/Default derive glue and 4 trait-impl bodies for core::voice::pipeline::{MacosPermissionsChecker,MacosTextInjector} implementing core::voice::traits::{PermissionsChecker,TextInjector}) + commands::voice (23 files) + commands::voice_runtime (9 files) + platform::voice_trigger_macos (15 files) + platform::text_injection (10 files) + platform::voice_macos (1 file) + platform::voice_permissions (4 files)",
+    "frontend_target_universe": "VoicePage (voice-page-CV7DqakD.js) — full component tree (hi/ht/si/ii hooks + all sub-panels: overview/model/processing/vocabulary/history tabs, permission dialog, trigger-key capture flow, mode-shortcut rebind flow)",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "backend_functions_macos_total_c_files": 212,
+    "backend_functions_macos_by_dir": {
+      "commands/voice": 23,
+      "commands/voice_runtime": 9,
+      "core/voice_direct_serde_and_trait_glue": 25,
+      "core/voice/runtime": 60,
+      "core/voice/runtime/overlay": 10,
+      "core/voice/runtime/tray": 1,
+      "core/voice/runtime/watchdog": 3,
+      "core/voice/workspace": 21,
+      "core/voice/llm": 11,
+      "core/voice/aliyun_asr": 9,
+      "core/voice/aliyun_asr/connect": 2,
+      "core/voice/asr": 8,
+      "platform/voice_macos": 1,
+      "platform/voice_permissions": 4,
+      "platform/voice_trigger_macos": 15,
+      "platform/text_injection": 10
+    },
+    "backend_functions_truncated_stubs_remaining": 0,
+    "backend_functions_truncation_scan_basis": "grep -li 'TRUNCATED\\|DECOMPILE-FAILED\\|chars total\\]' across all 212 macos-arm64 voice-domain .c files (this distillation session, 2026-07-24), independently re-run over the full 212-file superset -- source voice-baseline.md only explicitly TRUNCATED-scanned its own narrower 182-file selection (excluded the 25 core/voice-direct glue files + platform/voice_macos (1) + platform/voice_permissions (4) = 30 files); this distillation's rescan closes that gap and confirms 0 truncation across the full 212.",
+    "commands_voice_wrapper_files": 32,
+    "commands_voice_wrapper_files_breakdown": "23 in commands/voice + 9 in commands/voice_runtime",
+    "frontend_commands_with_voice_in_name": 37,
+    "frontend_commands_owner_mapped": 37,
+    "frontend_commands_owner_mapping_basis": "all 37 ipc-contracts.jsonl commands whose `command` field contains 'voice' have a backend owner function found by name-stem match in the raw .c file inventory (either a direct commands/voice|voice_runtime wrapper file, or a core::voice::runtime / core::voice::runtime::overlay / platform::voice_trigger_macos function with the corresponding stem, e.g. frontend `start_voice_capture` <-> core `start_capture`/`start_capture_legacy`; frontend `show_voice_search_overlay` <-> core `show_voice_search_overlay` exact match). See logic/REGISTRATION-TABLE-1.2.3.md for the full per-command mapping table.",
+    "frontend_pages_reversed": 1,
+    "frontend_voice_page_reversed": true,
+    "measurement_basis": "file-system find -name '*.c' | wc -l against raw/aimami/1.2.3/macos-arm64/{commands/voice,commands/voice_runtime,core/voice,platform/voice_macos,platform/voice_permissions,platform/voice_trigger_macos,platform/text_injection}/**/ida/pseudocode/*.c, run by this distillation session 2026-07-24"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "raw/aimami/1.2.3/macos-arm64/backend-baseline/voice-baseline.md",
+    "raw/aimami/1.2.3/macos-arm64/frontend/pages/voice-frontend.md"
+  ],
+  "cross_platform_sibling": "none-produced-this-pass — windows-x64 voice raw evidence exists but is thin (39 files across commands/voice, commands/ida/pseudocode voice_* subset, voice_trigger_windows, runtime, codexmate_lib) and has NOT been synthesized into a windows-1.2.3-voice/ bundle by this distillation pass; see SYSTEM-DIFF.md dim5",
+  "known_residuals": [
+    "core::voice::pipeline / core::voice::traits abstraction (PermissionsChecker/TextInjector trait + MacosPermissionsChecker/MacosTextInjector impls, 4 of the 25 core/voice-direct files) is NOT narrated as its own module in voice-baseline.md's module list (§1-12); its 4 function bodies exist in raw evidence and are functionally covered by this package's README/SYSTEM-DIFF but were not independently re-decompiled or symbol-enumerated by this distillation pass (no live IDA session available in this environment -- distillation only, per task framing)",
+    "Windows voice backend (39 raw files) is materially thinner than macOS (212 files) and has not had a per-submodule narrative synthesis pass; dim5 (platform gate) is largely Unknown for Windows voice, not extrapolated from macOS",
+    "Angle-A symbol enumeration (func_query on codexmate_lib::core::voice::) was NOT performed via live IDA in this session -- no IDA MCP tool available in this distillation environment; filesystem enumeration of existing raw .c leaf files was used as a substitute (weaker than a live symbol-table query, honestly flagged, see gate-report.json unknowns)",
+    "Angle-C semantic-keyword orphan scan (e.g. 'microphone'/'transcribe'/'dictation'/'sidecar' outside the known voice namespaces) was NOT executed as an independent exhaustive exports_funcs() pass -- this distillation relied on voice-baseline.md's own directory enumeration plus this session's own find-based file inventory, not a fresh IDA export-function semantic scan",
+    "dim4 interface/DTO/error-envelope/side-effect boundary extraction: NOT produced for 1.2.3 voice (no interfaces/*.md in this package)",
+    "dim6 test/acceptance mapping: NOT produced for 1.2.3 voice"
+  ],
+  "note": "This manifest synthesizes raw/aimami/1.2.3/macos-arm64/backend-baseline/voice-baseline.md (independent backend module-role analysis, 298 lines, 182 of the 212 real on-disk voice-domain .c files explicitly narrated) and raw/aimami/1.2.3/macos-arm64/frontend/pages/voice-frontend.md (full VoicePage component-tree + state-model + command-mapping reversal, 204 lines). This is a distillation pass over already-reversed .c evidence, not new IDA decompilation (no IDA MCP tool session available in this environment). No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md."
+}

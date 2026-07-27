@@ -1,0 +1,77 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "maintenance",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-25",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 0,
+    "consumerStartBlocked": 2,
+    "total_commands_in_this_package_primary_scope": 2,
+    "note": "load_snapshot (the task's 3rd named command) is out of this package's primary scope -- see ../windows-1.2.3-accounts/gate-report.json for its independently-produced gate status (consumerStartBlocked there too, for a related-but-not-identical dim1 reason)."
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "weak-for-both -- rebuild_registry and clean each have exactly one frontend/frontend-control-flow.jsonl entry, both classed trigger.type=minified-static-function with element:null; this confirms the JS API-wrapper function (re(\"clean\") / re(\"rebuild_registry\")) exists in the bundle but does NOT confirm a real DOM/component click-handler chain invoking it. Same evidentiary weakness class as load_snapshot/logout in ../windows-1.2.3-accounts/.",
+    "dim2_backend_owner_pseudocode": "asymmetric -- rebuild_registry: strong (3/3 files, 0 truncation, wrapper is ground-truth command-name-string-xref-attributed, deep leaf is cross-platform-signature-annotated). clean: zero (0 files found anywhere in the 1.2.3 windows-x64 raw tree despite a confirmed 1.0.9 precedent and a confirmed 1.2.3 frontend API definition).",
+    "dim3_call_tree_to_leaf": "partial-for-rebuild_registry-only -- 3-hop chain confirmed by direct source-level grep (wrapper -> rebuild_registry_with_policy -> persist_registry at a fixed call site, line 1383 of rebuild_registry_with_policy_0x14039f840.c); does not extend to an OS-syscall terminal this pass (1.0.9's baseline evidence traces further, to a confirmed file-write terminal). clean: no call tree possible, zero evidence.",
+    "dim4_interface_dto_boundary": "partial-for-rebuild_registry-only -- request confirmed no-params; one error path confirmed (3-retry-then-fail, 71-byte error string); full response DTO shape not extracted. clean: not-closed, zero evidence.",
+    "dim5_platform_gate": "closed-for-existence-for-rebuild_registry (win-native evidence independently present, not extrapolated from macOS -- though the cross-platform-signature annotations found IN the raw .c file headers are a PRIOR producer's claim, re-cited not re-verified this pass); N/A-for-clean (no evidence exists to platform-gate)",
+    "dim6_test_acceptance_mapping": "not-closed for either command"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "Neither command reaches even consumerStartReady (dim1 unsatisfied for both; dim2 additionally zero for clean), so strictImplementationUse (which requires dim1+dim2+dim3 at minimum per full_leaf_100_definition_v2) is blocked well upstream of its own specific requirements.",
+  "consumerStartReady_commands": [],
+  "consumerStartBlocked_commands": [
+    {
+      "command": "rebuild_registry",
+      "reason": "dim1 (uiCallEntryReady) not satisfied -- frontend-control-flow.jsonl only shows a minified-static-function/element:null entry, no confirmed real UI trigger element. dim2/dim3/dim4 (backend) are comparatively strong (wrapper+2-deep-leaf chain, 0 truncation, one confirmed error path), but per the same Strict Leaf Readiness Clarification already applied by ../windows-1.2.3-accounts/ to load_snapshot/logout, strong backend evidence alone does not promote a command past a dim1 gap."
+    },
+    {
+      "command": "clean",
+      "reason": "dim1 AND dim2 both unsatisfied -- same dim1 gap as rebuild_registry, PLUS zero backend evidence exists anywhere in the 1.2.3 windows-x64 raw tree (confirmed via exhaustive find/grep). Worst-case gap in this package. A complete 1.0.9 Windows precedent exists (raw/aimami/1.0.9/windows/system/clean/evidence.md, strictImplementationUse-tier) but is explicitly not migrated as 1.2.3 evidence (no diff-confirmed-empty basis -- the 1.2.3-side target evidence needed to confirm no-behavior-diff simply does not exist)."
+    }
+  ],
+  "unknowns": [
+    {
+      "item": "clean backend owner on 1.2.3 Windows",
+      "class": "blocks_start",
+      "reason": "zero raw evidence found via exhaustive filename + symbol-string search; three unresolved candidate explanations (removed/renamed, ICF-folded into a shared dispatcher like get_codex_router_auth_readiness in windows-1.2.3-relay, or present under an unresolved sub_XXXXXXXX name) -- would require a live-IDA pass (command-name string xref, since the frontend still defines re(\"clean\") so the string likely still exists in the binary's string pool) that this reduce-only pass did not perform"
+    },
+    {
+      "item": "rebuild_registry / clean real UI trigger element (dim1)",
+      "class": "blocks_start",
+      "reason": "frontend-control-flow.jsonl extraction stopped at the minified-static-function level (element:null) for both commands; a deeper frontend-control-flow re-extraction or manual JS-bundle trace would be needed to confirm or rule out a real click-handler chain -- not attempted this pass (task scope is read-existing-evidence-only)"
+    },
+    {
+      "item": "rebuild_registry_with_policy's policy-byte parameter semantics",
+      "class": "blocks_start",
+      "reason": "parameter's existence and its use as a branch condition are confirmed by direct pseudocode reading; the MEANING of specific policy values is not derived (would require either tracing all call sites that pass different a3 values, or reading more of the surrounding repository.rs logic than this pass's scope covered)"
+    },
+    {
+      "item": "rebuild_registry call-tree beyond persist_registry to an OS-syscall terminal",
+      "class": "blocks_start",
+      "reason": "persist_registry's own internal file-write mechanics were read but the exact terminal syscall was not independently traced this pass (unlike the 1.0.9 baseline, which explicitly traces to a file-write terminal)"
+    },
+    {
+      "item": "load_snapshot gate status",
+      "class": "already_in_canonical",
+      "reason": "not re-derived in this package -- authoritative status lives in ../windows-1.2.3-accounts/gate-report.json (consumerStartBlocked, dim2 clean/dim1 gap). Cited here only for domain-completeness narrative, not re-computed."
+    }
+  ],
+  "notes": [
+    "This is a partial, honestly-scoped conclusion package, not a claim of module completeness. Per task instruction, raw evidence for this domain is known to be thin (task's own estimate: ~3 .c files for 'maintenance') and this package does not treat that thinness as grounds to withhold any conclusion -- it documents precisely what is covered (rebuild_registry, strongly on dim2/dim3, weakly on dim1) and what is not (clean, entirely; rebuild_registry dim1; both commands' dim4/dim6).",
+    "Neither command in this package's primary scope reaches consumerStartReady. This is a genuine, evidence-grounded outcome, not an artifact of an overly strict internal bar -- it mirrors the exact same dim1 standard already applied to load_snapshot/logout in the sibling windows-1.2.3-accounts package.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

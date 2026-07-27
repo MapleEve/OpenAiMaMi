@@ -1,0 +1,60 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "maintenance",
+  "package": "windows-1.2.3-maintenance",
+  "created_at": "2026-07-25T00:00:00Z",
+  "producer_machine": "<host> (this package assembled from pre-existing raw evidence this session; no new IDA MCP calls performed -- reduce/distillation task only, per explicit task scope)",
+  "task_kind": "distillation",
+  "task_kind_note": "This pass reads already-decompiled raw/aimami/1.2.3/windows-x64/{commands,repository}/ida/pseudocode/*.c files plus raw/aimami/1.2.3/windows-x64/frontend/{ipc-contracts.jsonl,frontend-control-flow.jsonl} and synthesizes a canonical consumer conclusion package. No decompilation, no implementation code, no new IDA MCP calls this pass.",
+  "binary": {
+    "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+    "binary_format": "pe",
+    "pe_machine": "AMD64",
+    "note": "Same recorded hash as windows-1.2.3-relay/manifest.json and windows-1.2.3-accounts/manifest.json, confirming same binary batch (not independently re-hashed this session)."
+  },
+  "scope": {
+    "domain_name_source": "task instruction: 'win maintenance(注册表 rebuild/clean/load_snapshot 域)'",
+    "commands_named_by_task": ["rebuild_registry", "clean", "load_snapshot"],
+    "commands_primary_scope_this_package": ["rebuild_registry", "clean"],
+    "commands_excluded_cross_referenced_elsewhere": {
+      "load_snapshot": "already independently covered as one of 12 accounts-domain commands in ../windows-1.2.3-accounts/ (gate status: consumerStartBlocked there). Excluded from this package's primary coverage/file-count to avoid red-line-5 duplicate producer work; see pointers/evidence-paths.md."
+    },
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "rebuild_registry_c_files": 3,
+    "rebuild_registry_c_files_list": [
+      "commands/ida/pseudocode/rebuild_registry_0x14016c220.c",
+      "repository/ida/pseudocode/rebuild_registry_with_policy_0x14039f840.c",
+      "repository/ida/pseudocode/persist_registry_0x14038fb30.c"
+    ],
+    "rebuild_registry_truncation_check": "grep -c 'TRUNCATED|HEXRAYS_DECOMPILE_FAILED|chars total' against all 3 files = 0 hits each; all 3 are complete Hex-Rays pseudocode, not disassembly-only stubs",
+    "clean_c_files": 0,
+    "clean_search_method": "find -iname '*clean*' across raw/aimami/1.2.3/windows-x64/ (whole tree) + grep -rl for command-adjacent symbol name fragments across commands/ and repository/ -- zero matches",
+    "load_snapshot_c_files_in_this_package": 0,
+    "load_snapshot_note": "Intentionally not counted here -- see ../windows-1.2.3-accounts/manifest.json (commands/accounts scope, 42 files total in that package) for the authoritative file inventory backing load_snapshot.",
+    "measurement_basis": "file-system find/grep this session against raw/aimami/1.2.3/windows-x64/{commands,repository}/ida/pseudocode/*.c and raw/aimami/1.2.3/windows-x64/frontend/{ipc-contracts.jsonl,frontend-control-flow.jsonl}"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [],
+  "prior_version_reference": [
+    "raw/aimami/1.0.9/windows/system/rebuild_registry/evidence.md (strictImplementationUse-tier, dim1-5 confirmed; cited as historical prior only, NOT migrated as 1.2.3 evidence per RULE9 -- 1.2.3-side evidence for the deep-leaf function is present and independently confirms the general shape, but the added policy parameter means this is NOT a diff-confirmed-empty migration)",
+    "raw/aimami/1.0.9/windows/system/clean/evidence.md (strictImplementationUse-tier, dim1-5 confirmed; cited as historical prior only -- 1.2.3 has ZERO corresponding evidence, so this is explicitly NOT migrated, only referenced for context on what the command likely still does)",
+    "raw/aimami/1.0.9/macos/maintenance/rebuild_registry/leaf.md (mac 1.0.9, strictImplementationUse, used only to corroborate that the Windows 1.0.9 evidence.md's shape is cross-platform-consistent at that version; not used as 1.2.3 evidence for either platform)"
+  ],
+  "cross_platform_sibling": "none -- no macos-1.2.3-maintenance package exists in internal-reverse/audits/ for this exact 3-command set",
+  "known_residuals": [
+    "clean: 0 raw .c files in the entire windows-x64/1.2.3 tree despite a confirmed frontend API definition (re(\"clean\")) and a complete 1.0.9 evidentiary precedent -- genuine reverse-engineering gap (blocks_start), three unresolved candidate explanations documented in SYSTEM-DIFF.md",
+    "rebuild_registry: dim1 (confirmed real UI trigger element) not satisfied -- only minified-static-function/element:null evidence exists in frontend-control-flow.jsonl",
+    "rebuild_registry_with_policy's added policy-byte parameter (vs 1.0.9's unconditional Repository::rebuild_registry): existence confirmed, semantics not derived",
+    "rebuild_registry's call-tree not traced past persist_registry to an OS-syscall terminal (1.0.9 baseline traces fully to file-write terminal; this pass stops at the persist_registry call site)",
+    "load_snapshot: not independently covered in this package by design; see ../windows-1.2.3-accounts/ for authoritative coverage"
+  ],
+  "note": "This manifest synthesizes existing raw/aimami/1.2.3/windows-x64/{commands,repository}/ida/pseudocode/*.c evidence plus frontend extraction artifacts, cross-referenced against raw/aimami/1.0.9/windows/system/{rebuild_registry,clean}/evidence.md as historical (non-migrated) context, into a partial consumer conclusion package. No bulk decompile text is copied into this package beyond short quoted call-site snippets used for grounding; full raw evidence is referenced via pointers/evidence-paths.md. Per skill red line 8, no Windows-1.2.3-specific claim in this package is extrapolated from macOS evidence."
+}

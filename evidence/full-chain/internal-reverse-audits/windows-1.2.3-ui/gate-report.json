@@ -1,0 +1,93 @@
+{
+  "schema": "c5cm.reverse.gate.v1",
+  "bundle": "windows-1.2.3-ui",
+  "session": "win-ui-set-app-theme-123gap-20260725",
+  "machine": "<host>",
+  "produced_at": "2026-07-25",
+  "sha12": "aeccccd78e47",
+  "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "gate_tier": "blocks_start",
+  "gate_accepted": false,
+  "implementation_use": false,
+  "gap_class": "gap_needs_new_raw",
+  "ceiling": "blocks_start",
+  "platform": "windows-x64",
+  "product": "aimami",
+  "version": "1.2.3",
+  "prewrite_gate_decision": "ALLOW",
+  "prewrite_gate_write_mode": "first",
+  "prewrite_gate_note": "audits/windows-1.2.3-ui/ did not exist prior to this session (confirmed via `ls internal-reverse/audits/` and `grep -rl set_app_theme internal-reverse/audits/`, which only matched windows-1.0.9-ui). No REVERSE-STATUS.md in-progress claim matched 'windows-1.2.3-ui' or 'macos-1.2.3-ui'. First-write, no collision.",
+  "evidence_basis": "REVERSE-STATUS.md line ~4020 (wf-aimami123-fullapp-20260724 full-app gap inventory) explicitly lists windows-exclusive 'ui' among modules lacking a 1.2.3 canonical audits/<platform>-1.2.3-<module>/ bundle; this session closes that inventory line for 'ui' with an honest partial/gap conclusion, not a full closure.",
+  "note": "Module-root gate-report (aggregation). Single known leaf: set_app_theme (only theme/appearance command found in the 1.2.3 win frontend command face; per-leaf evidence lives in set_app_theme/gate-report.json). Session is a read-only merge/reduce pass over EXISTING raw evidence (raw/aimami/1.2.3/windows-x64/ directory enumeration + frontend dumped-asset grep + ipc-contracts.jsonl diff) plus the RULE9-mandated same-platform prior-version check (windows-1.0.9-ui/set_app_theme). No new IDA decompile, no new raw/intermediate artifacts were produced. Result: win backend raw coverage for this module = 0 .c files / 0 IDA evidence at 1.2.3, hence gap_needs_new_raw, tier=blocks_start (below consumerStartReady — backend owner/DTO/side-effect dims are entirely Unknown, not just dim6).",
+  "leaves": {
+    "set_app_theme": {
+      "gate": "blocks_start",
+      "gap_class": "gap_needs_new_raw",
+      "dims_done": [],
+      "dims_candidate": ["dim1"],
+      "dims_missing": ["dim2", "dim3", "dim4", "dim5", "dim6"],
+      "gate_accepted": false,
+      "implementation_use": false,
+      "sub_gate_report": "set_app_theme/gate-report.json"
+    }
+  },
+  "cluster_gate_summary": {
+    "strictImplementationUse": 0,
+    "consumerStartReady": 0,
+    "readyToImplement": 0,
+    "gap_needs_reducer": 0,
+    "gap_needs_new_raw": 1,
+    "blocked": 0
+  },
+  "raw_coverage_summary": {
+    "raw_c_count_ui_module_1_2_3_windows": 0,
+    "total_module_dirs_enumerated_1_2_3_windows": 65,
+    "ui_or_theme_named_module_dir_found": false,
+    "frontend_ipc_contracts_jsonl_command_count": 131,
+    "frontend_ipc_contracts_jsonl_theme_hits": 0,
+    "frontend_dumped_asset_theme_hit": "app-TuXtMya9.js (direct grep, plugin:app|* shim omitted from ipc-contracts.jsonl same as 1.0.9)"
+  },
+  "covered_commands": ["set_app_theme"],
+  "four_angle_completeness": {
+    "schema_note": "SKILL.md red line 15 FOUR_ANGLE_COMPLETENESS sweep, backfilled by reduce session win-1.2.3-ui-gatereport-reduce-20260726 over the pre-existing win-ui-set-app-theme-123gap-20260725 conclusion. All four angles are read-only re-checks of already-landed raw/intermediate evidence; no new IDA session, no new decompile.",
+    "angle_A_func_query_symbol_enum": {
+      "status": "no_owner_namespace_to_enumerate",
+      "basis": "raw/aimami/1.2.3/windows-x64/ enumerates 65 top-level module directories (re-confirmed this session via directory listing), none named ui or theme. WIN-1.2.3-FRONTIER-TRIAGE.md's exhaustive 1668-function App/glue disambiguation sweep (59 modules touched, full distribution table in that file's §2) also lists no ui/theme module among the App-attributed set. There is no dirtree module namespace corresponding to 'ui' or 'theme' to run func_query against."
+    },
+    "angle_B_frontend_ipc_diff": {
+      "status": "true_gaps_0",
+      "basis": "raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl re-enumerated: 131 unique commands, 0 case-insensitive hits for 'theme' or 'appearance'. Direct grep of the dumped frontend JS assets (package/AiMaMi-1.2.3-win64/tauri-dumped-assets/direct/assets/app-TuXtMya9.js) confirms exactly one ui-shaped invoke surface: plugin:app|set_app_theme (Tauri built-in app-plugin shim, argKey=theme) -- the extractor omits plugin:app|* builtin shims from ipc-contracts.jsonl by design (documented since 1.0.9). This is the same single leaf already recorded in set_app_theme/manifest.json; angle B finds no additional command-level gap beyond it."
+    },
+    "angle_C_exports_semantic_orphan_scan": {
+      "status": "candidates_found_and_resolved_in_angle_D",
+      "basis": "Semantic keyword scan (theme, appearance, window, style, dark, light, mica, tabbed, color, chrome) run over the 131-command ipc-contracts.jsonl set and the 131-handler ledger in WIN-1.2.3-COMMAND-CEILING-CLOSEOUT.md. Two superficially UI-adjacent command names matched: focus_main_window, has_notch. Both are resolved as already_in_canonical under a different module in angle D below, not orphans of the ui module."
+    },
+    "angle_D_manifest_diff_and_orphan_four_category": {
+      "status": "0 truly_undone beyond the already-tracked set_app_theme raw-coverage gap",
+      "already_in_canonical": [
+        {
+          "candidate": "focus_main_window",
+          "owner_bundle": "internal-reverse/audits/windows-1.2.3-system-hotspot",
+          "evidence": "windows-1.2.3-system-hotspot/manifest.json scope.frontend_target_universe and coverage.frontend_commands_list both explicitly enumerate focus_main_window as one of its 5 covered commands (own dedicated backend command-layer function, dispatch address 0x14096F5D0)."
+        },
+        {
+          "candidate": "has_notch",
+          "owner_bundle": "internal-reverse/audits/windows-1.2.3-system-hotspot",
+          "evidence": "windows-1.2.3-system-hotspot/manifest.json coverage.frontend_commands_list enumerates has_notch as one of its 5 covered commands (own dedicated backend command-layer function, dispatch address 0x140970DA0)."
+        }
+      ],
+      "local_outtake": [],
+      "different_machine_owner": [],
+      "truly_undone": [],
+      "note": "The only open item for this module remains the previously-recorded raw-coverage gap on the single already-identified leaf set_app_theme (gap_needs_new_raw) -- that is a known-target evidence gap, not an unidentified orphan. Angle D finds zero additional orphan targets requiring a new work unit; per SKILL.md red line 15, no equivalent-reversal work is opened for focus_main_window/has_notch since they are already_in_canonical elsewhere."
+    }
+  },
+  "reduce_backfill": {
+    "session": "win-1.2.3-ui-gatereport-reduce-20260726",
+    "machine": "<host>",
+    "updated_at": "2026-07-26",
+    "over_prior_conclusion": "win-ui-set-app-theme-123gap-20260725",
+    "scope": "Module-root package completion only: added four_angle_completeness/orphan sweep to this file, plus the previously-missing manifest.json, logic/, and reviews/ at the module root (set_app_theme/ leaf subtree untouched). No new raw/intermediate evidence, no new IDA calls -- read-only re-check of already-landed evidence per task scope.",
+    "gate_unchanged": "gate_tier/gate_accepted/implementation_use/gap_class/ceiling all unchanged from the 2026-07-25 conclusion; this backfill does not upgrade or downgrade the gate."
+  }
+}

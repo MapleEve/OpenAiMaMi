@@ -1,0 +1,42 @@
+{
+  "schema": "c5cm.internal_reverse.producer_ledger.v1",
+  "package": "macos-1.2.3-plugins",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "plugins",
+  "session": "macos-1.2.3-plugins-reduce-20260726",
+  "machine": "<host>",
+  "pass_kind": "reduce (no new IDA/decompile/xrefs; no INDEX.jsonl append)",
+  "produced_at": "2026-07-26",
+  "claim_first_row": "REVERSE-STATUS.md [macos-1.2.3-plugins-reduce-20260726]",
+  "prewrite_owner_gate": {
+    "owner_check": "PASS -- no in-progress session owns macos-1.2.3-plugins; win-1.2.3-plugins-audit-20260725 owns windows-x64 (DONE); wf-aimami123-win-cmd-ceiling-20260726 line (d) records 'mac plugins 审计骨架待 reduce (owned_by_other 只读回避)' i.e. this reduce was the known-pending owner-free gap",
+    "collision_status": "no_collision",
+    "takeover_token": "none_required",
+    "write_mode": "canonical (first producer of this package's conclusion skeleton)"
+  },
+  "artifacts_written": [
+    "gate-report.json",
+    "AI.md",
+    "SYSTEM-DIFF.md",
+    "manifest.json",
+    "data/summary.json",
+    "data/task-plan.json",
+    "pointers/evidence-paths.md",
+    "logic/NOT-APPLICABLE.md",
+    "reviews/CLAUDE.md",
+    "data/producer-ledger.json"
+  ],
+  "pre_existing_retained": ["README.md (real content, removed=true verification, not modified)"],
+  "result": {
+    "removed": true,
+    "confidence": "high",
+    "signals_consistent": "4/4",
+    "gate_leaf_status": "diagnostic-only",
+    "consumer_gate_tiers": "all empty (no implementable leaf)",
+    "residual_unknown": "manage()_5_calls_type_not_fully_decompiled (accepted_unknown)"
+  },
+  "index_jsonl_append": "none -- no new raw evidence produced this pass; MIRROR/INDEX delta not applicable",
+  "note": "Reduce of an already-verified negative-existence result. Source = pre-existing README.md + raw/aimami/1.2.3/macos-arm64 evidence it cites + windows-1.2.3-plugins removed=true precedent. logic/ and reviews/ carry justified-N/A stamps (no implementation leaf)."
+}

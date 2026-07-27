@@ -1,0 +1,32 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "maintenance",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": ["clean", "load_snapshot"],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 3 maintenance commands: readyToImplement blocked pending dim3 (systematic call-tree-to-leaf) + dim4 (interface/DTO/error envelope) + dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 3 maintenance commands: strictImplementationUse blocked pending dim3 + dim4 closure"
+    ],
+    "consumerStartBlocked": [
+      "rebuild_registry: uiCallEntryReady not satisfied -- no confirmed UI trigger element in currently-landed 1.2.3 raw (frontend-control-flow.jsonl wrapper-definition-only, element:null; absent from MaintenancePage's 7-item action-card list and all other read frontend page docs). Must not be treated as consumerStartReady until either (a) a genuine new UI-trigger extraction pass locates the call site, or (b) a product_decision explicitly accepts the backend-only evidence as sufficient to start."
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Locate rebuild_registry's real UI trigger: search additional beautified frontend bundles beyond maintenance-page/accounts-frontend/shared-index-app-frontend.md already read this pass (e.g. re-run extract_frontend_ast.mjs targeted at rebuildRegistry symbol, or manually walk accounts-page 'advanced' section if one exists) -- this is the single highest-value next step since it is the only leaf currently below consumerStartReady.",
+    "Trace the 8 candidate downstream core/repository files (persist_registry/load_registry/load_registry_for_mutation/carry_over_registry_state/live_snapshot_path_for_rebuild/commit_and_purge/rollback/stage) via callees()/xrefs_to() from rebuild_registry_with_policy and clean to close dim3 with a real (not candidate) call-tree.",
+    "Read rebuild_registry_with_policy_0x100a6a890.c in full (2132 lines, only first 90 lines + header read this pass) to derive the semantics of its 2 new policy parameters (a3:int, a4:__int64) -- this closes the DELTA-LOGIC gap and is a read-only pass over already-landed evidence, not new IDA work.",
+    "Run a dim4 pass: extract per-command DTO fields (request/response struct field names, defaults, nullability, error envelope) for all 3 leaves from the already-decompiled pseudocode -- particularly re-verify whether clean's response field names (authBackupsRemoved/registryBackupsRemoved/staleEntriesRemoved per frontend echo) match a real 1.2.3 backend struct, since this differs from 1.0.9's byte-confirmed CleanResult field names.",
+    "Run a dim6 pass: map each of the 3 maintenance commands' side effects to Polaris's own C5 unit/E2E test surface or explicit manual-acceptance criteria."
+  ]
+}

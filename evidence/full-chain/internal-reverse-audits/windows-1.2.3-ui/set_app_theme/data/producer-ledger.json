@@ -1,0 +1,30 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "bundle": "windows-1.2.3-ui",
+  "session": "win-ui-set-app-theme-123gap-20260725",
+  "machine": "<host>",
+  "produced_at": "2026-07-25",
+  "sha12": "aeccccd78e47",
+  "session_type": "consumer_gap_documentation",
+  "session_type_note": "Read-only merge/reduce of already-landed evidence into a RULE8-conformant consumer bundle. No IDA session opened, no new raw/intermediate artifacts written, no root INDEX.jsonl append (nothing new to index — see manifest.json for the exhaustive list of what was read).",
+  "leaves": {
+    "set_app_theme": {
+      "producer": "<host>",
+      "session": "win-ui-set-app-theme-123gap-20260725",
+      "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+      "owner_va": null,
+      "gate": "blocks_start",
+      "gate_accepted": false,
+      "produced_at": "2026-07-25",
+      "dims_closed": [],
+      "dims_candidate": ["dim1"],
+      "dim6_missing": true,
+      "real_body_found": false,
+      "genuine_ceiling": false,
+      "caller_disambiguation_tried": false,
+      "is_upstream": true,
+      "deep_reverify": false,
+      "gap_class": "gap_needs_new_raw"
+    }
+  }
+}

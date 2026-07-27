@@ -1,0 +1,110 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "home-usage-frontend",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-26",
+  "session": "macos-1.2.3-home-usage-frontend-reduce-20260726",
+  "machine": "<host>",
+  "prewrite_gate_decision": "ALLOW",
+  "prewrite_gate_write_mode": "first",
+  "prewrite_owner_matrix": {
+    "target": "audits/macos-1.2.3-home-usage-frontend/",
+    "canonical_scope": "internal-reverse/audits/macos-1.2.3-home-usage-frontend/",
+    "current_producer": "none (dir absent prior to this write, confirmed via ls 2026-07-26)",
+    "machine_session": "<host> / macos-1.2.3-home-usage-frontend-reduce-20260726",
+    "index_hit": "none -- grep 'home-usage-frontend' INDEX.jsonl = 0 matches (2026-07-26)",
+    "source_task_plan": "cross-1.2.3-home-usage-frontend/gate-report.json records cluster_gate_summary.gap_needs_reducer=2 for exactly this missing single-platform bundle",
+    "write_mode": "first",
+    "collision_status": "none",
+    "takeover_token": "N/A"
+  },
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 8,
+    "consumerStartBlocked": 2,
+    "blocked": 0,
+    "total_covered_commands": 8,
+    "total_in_scope_commands": 10
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": true,
+  "moduleExitAllowed_basis": "RULE 7 -- 8 covered commands reach consumerStartReady on the macOS frontend-reachable surface (renderSurfaceReady + uiCallEntryReady + frontendConsumptionReady closed via 2 page-level reduces; all Unknowns classified). Per the same RULE 7, consumerStartReady is a valid transfer point; strict/ready closure (dim2-dim6) is a follow-up upgrade, not a transfer gate.",
+  "dim_status": {
+    "dim1_frontend_control_flow": "mostly-closed (macOS) -- Dashboard K1() (shared-index-app-frontend.md §1.1/§2.1/§3) and AnalyticsPanel Lt (analytics-maintenance-autoswitch-frontend.md §1.1-§1.4) both have full component-tree + state-model + interaction-to-command tables. The 6 analytics commands (load_session/token/tool/change_analytics via the 5-tab useQuery cluster + load_usage_analytics via activity tab At useQuery) and load_quota_history all have named queryKey + queryFn + enabled-guard + staleTime documented. refresh_usage_snapshot has a page-level trigger (BH() refresh, S.refreshUsageOnly -> Ee.refreshUsageSnapshot, with 800ms/1600ms retry backoff, shared-index §3). load_snapshot render-surface is via the shared E2() hook (queryKeys ['snapshot','progressive']/['snapshot','display'], push-driven cache sync on runtime-state-updated event) feeding the Dashboard BH account card + KH health card -- command binding is inferred from the queryKey/data-source rather than a literal invoke('load_snapshot') call site in the reduced docs (slightly weaker than the analytics commands). Open dim1 gaps: load_bootstrap_state (no trigger located) and get_usage_refresh_interval (consuming hook cU located, mutating control out of module scope).",
+    "dim2_backend_owner_pseudocode": "not-closed / Unknown -- no macOS commands:: or core:: owner or IDA decompile located for this module's analytics/snapshot commands. commands-baseline.md (mac, 258 lines) has ZERO hits for usage_analytics/session_analytics/token_analytics/tool_analytics/change_analytics/quota_history/load_snapshot/load_bootstrap (per cross-1.2.3-home-usage-frontend gate-report). Genuine open gap, not accepted_unknown. NOTE: the sibling macos-1.2.3-sessions-analytics bundle DID reduce core::session_analytics compute_* functions for load_session/token/tool/change_analytics + core::analytics::compute_usage_analytics for load_usage_analytics -- a consumer wanting backend for those 5 analytics commands should read that bundle; this frontend-surface bundle does not duplicate or re-own that backend evidence.",
+    "dim3_call_tree_to_leaf": "not-closed / Unknown -- no call-tree produced this pass (frontend-surface bundle).",
+    "dim4_interface_dto_boundary": "partial-frontend-only -- frontend-consumed input params are documented (load_*_analytics take a `range` string arg; load_quota_history takes `accountKey`; the 5 tab queries carry staleTime 5*60000ms, quota 60000ms, activity staleTime Infinity). Response DTO / error envelope / side-effect boundary are Unknown pending backend. The analytics panel's error handling is documented at the UI layer: no explicit error-UI branch -- error state falls through to the loading/skeleton branch (analytics §1.4), and empty-data renders a dedicated empty state (totalSessions/totalCalls/totalCommands/totalTokens===0), quota has minimum-sample-sufficiency gating (data points < 2 -> quotaInsufficient).",
+    "dim5_platform_gate": "macOS-confirmed (frontend render-surface only), Windows-Unknown -- this is a single-platform macOS bundle. Windows frontend render-surface is Unknown: raw Windows frontend evidence exists (ipc-contracts.jsonl/frontend-contract-report.md/frontend-control-flow.jsonl/ast-facts.json) but NO page-level UI component reduce. Command-NAME parity (mac==win 13/13 usage/analytics/snapshot/bootstrap subset) is confirmed but does NOT close Windows dim1 -- per red line 'macOS 只证明 macOS', this macOS package does not extrapolate any Windows UI-layer conclusion. A separate windows-1.2.3-home-usage-frontend bundle must close Windows independently.",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping produced this pass."
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim2 (backend owner/pseudocode), dim3 (call-tree), dim4 (response DTO/error envelope/side-effect boundary), and dim6 (test/acceptance) are Unknown/not-closed for every command in this frontend-surface bundle. Per OUTPUT-SPEC full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification, frontend control-flow alone (even fully closed) never promotes a target to strictImplementationUse. Consumers needing strict backend behavior for the 5 analytics commands should consult macos-1.2.3-sessions-analytics (which reduced their core:: bodies); this bundle only closes the frontend-reachable surface.",
+  "consumerStartReady_commands": [
+    "load_usage_analytics",
+    "load_session_analytics",
+    "load_token_analytics",
+    "load_tool_analytics",
+    "load_change_analytics",
+    "load_quota_history",
+    "load_snapshot",
+    "refresh_usage_snapshot"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady + uiCallEntryReady + frontendConsumptionReady satisfied on macOS via the two page-level reduces (component tree + state model + interaction-to-command tables + loading/empty/error UI-state documentation). happyPathReady is FRONTEND-HALF only: UI trigger -> invoke(command) is documented, but invoke -> backend owner -> core is Unknown this pass (no IDA). dtoBoundaryReady is frontend-input-only (request params known, response DTO Unknown). boundaryPathReady/sideEffectReady/acceptanceDraftReady NOT independently produced. platformScopeDeclared = 'macOS confirmed (frontend render-surface); Windows Unknown'. Consumers starting from this bundle must derive the response payload shape from either the sibling macos-1.2.3-sessions-analytics backend evidence (for the 5 analytics commands) or the frontend consumption fields, and must NOT assume Windows UI parity.",
+  "consumerStartBlocked_commands": [
+    "load_bootstrap_state",
+    "get_usage_refresh_interval"
+  ],
+  "unknowns": [
+    {
+      "item": "backend owner/pseudocode/call-tree (dim2/dim3) for all 8 covered commands, macOS",
+      "class": "blocks_start",
+      "reason": "not produced this pass -- this is a frontend-surface reduce, no IDA session run. Blocks strictImplementationUse/readyToImplement, does NOT block consumerStartReady (frontend surface is closed). For the 5 analytics commands, backend evidence DOES exist in the sibling macos-1.2.3-sessions-analytics bundle -- a future strict pass should cross-reference it rather than re-decompile."
+    },
+    {
+      "item": "load_snapshot literal invoke call-site + response DTO",
+      "class": "accepted_unknown",
+      "reason": "render-surface is closed via the shared E2() snapshot hook (Dashboard account card BH + health card KH consume it; push-driven via runtime-state-updated event), but the reduced docs describe the data source via queryKeys ['snapshot','progressive']/['snapshot','display'] rather than naming a literal invoke('load_snapshot'). The command binding is inferred by shape; re-confirming requires re-reading beautified index-B40jKs17.js around L12200-12700. Does not block consumerStartReady (the render surface and refresh path are documented) but is recorded honestly."
+    },
+    {
+      "item": "load_bootstrap_state frontend trigger",
+      "class": "blocks_start",
+      "reason": "command appears in frontend/ipc-contracts.jsonl (grep-confirmed) but no UI trigger / component owner located in the two reduced page docs. dim1 frontend-control-flow-missing -> consumerStartBlocked. Likely a boot-time / App-shell lifecycle command; next producer should search the i7() mount useEffect chain and the shared hook layer (index-B40jKs17.js L12200-12700) for its call site."
+    },
+    {
+      "item": "get_usage_refresh_interval / set_usage_refresh_interval frontend control",
+      "class": "product_decision",
+      "reason": "the interval VALUE is consumed by the home App-shell hook cU() (shared-index §2.1), but the settings control that reads/mutates it is not in this module's two pages (plausibly SettingsPage). Whether these two belong to home-usage-frontend or a settings/system-usage module is a scope/ownership product decision -- the Windows sibling filed them under windows-1.2.3-system-usage. Excluded set_usage_refresh_interval from covered_commands; get_usage_refresh_interval left as consumerStartBlocked candidate for this module."
+    },
+    {
+      "item": "Windows platform evidence (dim5) render-surface closure",
+      "class": "blocks_start",
+      "reason": "Windows raw frontend evidence exists but no page-level UI reduce; command-name parity confirmed but not a dim1 closure. No windows-1.2.3-home-usage-frontend bundle produced. No extrapolation from macOS performed."
+    },
+    {
+      "item": "dim6 test/acceptance mapping",
+      "class": "blocks_start",
+      "reason": "not produced this pass; blocks readyToImplement/strictImplementationUse until closed (dim6 is C5 implementation-side acceptance work)."
+    }
+  ],
+  "four_angle_self_check": {
+    "angle_a_symbol_enumeration": "N/A-for-frontend-surface -- func_query symbol enumeration is a backend angle; this bundle does not claim backend coverage, so angle A is not applicable to its gate. Recorded as not-run (no IDA available), NOT substituted -- the bundle explicitly scopes itself to dim1.",
+    "angle_b_frontend_command_diff": "RUN -- frontend invoke command set for this module derived from the two page reduces + ipc-contracts.jsonl keyword filter (usage|analytics|snapshot|bootstrap). 8 commands have page-level render surface (consumerStartReady), 2 are consumerStartBlocked (load_bootstrap_state no trigger; get_usage_refresh_interval partial), 3 excluded as other-module-owned (load_mcp_servers=mcp, set_usage_refresh_interval=system-usage, refresh_single_account_usage=accounts). true_gaps=0 at the frontend-reachable-surface level for the 8 covered commands (every one has a documented UI trigger + queryFn).",
+    "angle_c_orphan_scan": "RUN (frontend-scoped) -- cross-checked the home-dashboard render tree (shared-index §1.1) for surfaced-but-unowned commands: load_mcp_servers (Dashboard stat card) classified different_machine_owner (mcp module); refresh_single_account_usage / refresh_usage_snapshot appear in the account-card refresh path -- refresh_usage_snapshot claimed here (home usage refresh), refresh_single_account_usage classified different_machine_owner (accounts module, win owner windows-1.2.3-accounts). No truly_undone frontend orphan found for this module's surface.",
+    "angle_d_manifest_diff": "RUN -- comm between the frontend-reachable in-scope command set and this package's covered_commands: 8 covered, 2 consumerStartBlocked (documented in candidate_or_blocked_commands), 3 explicitly excluded (documented in scope.explicit_exclusions). No in-scope command silently dropped. The residual gap is DEPTH (dim2-dim6 backend), not frontend command-name coverage."
+  },
+  "notes": [
+    "This package closes ONE of the two gap_needs_reducer bundles the cross-1.2.3-home-usage-frontend gate-report flagged (the macOS single-platform reducer). The Windows single-platform reducer (windows-1.2.3-home-usage-frontend) remains open.",
+    "Gate tier is consumerStartReady on the frontend-reachable surface only. It is NOT full_leaf_100, NOT implementation-ready, and does NOT close backend dims. Per OUTPUT-SPEC historical-number caveat, frontend render-surface completeness alone is evidence coverage of dim1, not target-level readiness.",
+    "For backend behavior of the 5 analytics commands (load_session/token/tool/change_analytics + load_usage_analytics), see the sibling macos-1.2.3-sessions-analytics bundle, which reduced their core:: compute bodies. This frontend-surface bundle intentionally does not re-own that evidence.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue and data/producer-ledger.json for the per-leaf production record."
+  ]
+}

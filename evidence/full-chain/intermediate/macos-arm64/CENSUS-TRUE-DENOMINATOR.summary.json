@@ -1,0 +1,676 @@
+{
+  "totals": {
+    "population_total": 4160,
+    "real_body_total": 1840,
+    "on_disk_by_addr_total": 1649,
+    "shim_total": 557,
+    "inlined_total": 13,
+    "unknown_total": 1750,
+    "extra_real_body_from_offpopulation_targets": 0,
+    "std_generic_wrapper_count": 2522,
+    "app_native_count": 1638,
+    "disk_c_file_count": 1662,
+    "disk_addr_extracted_count": 1652,
+    "true_gap_total": 191,
+    "coverage_pct": 89.6195652173913
+  },
+  "per_module": [
+    {
+      "module": "codexmate_lib::core::models",
+      "real_body_count": 254,
+      "on_disk_by_addr": 175,
+      "true_gap": 79,
+      "shim_count": 196,
+      "inlined_count": 0,
+      "unknown_count": 197
+    },
+    {
+      "module": "codexmate_lib::core::relay",
+      "real_body_count": 657,
+      "on_disk_by_addr": 616,
+      "true_gap": 41,
+      "shim_count": 176,
+      "inlined_count": 5,
+      "unknown_count": 243
+    },
+    {
+      "module": "codexmate_lib::core::voice",
+      "real_body_count": 150,
+      "on_disk_by_addr": 125,
+      "true_gap": 25,
+      "shim_count": 35,
+      "inlined_count": 1,
+      "unknown_count": 102
+    },
+    {
+      "module": "codexmate_lib::core::repository",
+      "real_body_count": 113,
+      "on_disk_by_addr": 99,
+      "true_gap": 14,
+      "shim_count": 39,
+      "inlined_count": 0,
+      "unknown_count": 31
+    },
+    {
+      "module": "codexmate_lib::platform::paths",
+      "real_body_count": 21,
+      "on_disk_by_addr": 15,
+      "true_gap": 6,
+      "shim_count": 10,
+      "inlined_count": 0,
+      "unknown_count": 1
+    },
+    {
+      "module": "codexmate_lib::core::quota_store",
+      "real_body_count": 11,
+      "on_disk_by_addr": 7,
+      "true_gap": 4,
+      "shim_count": 10,
+      "inlined_count": 0,
+      "unknown_count": 2
+    },
+    {
+      "module": "codexmate_lib::core::oauth_refresh",
+      "real_body_count": 15,
+      "on_disk_by_addr": 11,
+      "true_gap": 4,
+      "shim_count": 5,
+      "inlined_count": 0,
+      "unknown_count": 5
+    },
+    {
+      "module": "codexmate_lib::core::auth",
+      "real_body_count": 29,
+      "on_disk_by_addr": 26,
+      "true_gap": 3,
+      "shim_count": 18,
+      "inlined_count": 0,
+      "unknown_count": 18
+    },
+    {
+      "module": "codexmate_lib::platform::debug_log",
+      "real_body_count": 17,
+      "on_disk_by_addr": 14,
+      "true_gap": 3,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 1
+    },
+    {
+      "module": "codexmate_lib::core::bootstrap_cache",
+      "real_body_count": 9,
+      "on_disk_by_addr": 6,
+      "true_gap": 3,
+      "shim_count": 4,
+      "inlined_count": 0,
+      "unknown_count": 1
+    },
+    {
+      "module": "codexmate_lib::core::quota_history",
+      "real_body_count": 6,
+      "on_disk_by_addr": 4,
+      "true_gap": 2,
+      "shim_count": 2,
+      "inlined_count": 0,
+      "unknown_count": 6
+    },
+    {
+      "module": "codexmate_lib::core::debug_report_upload",
+      "real_body_count": 5,
+      "on_disk_by_addr": 3,
+      "true_gap": 2,
+      "shim_count": 5,
+      "inlined_count": 0,
+      "unknown_count": 6
+    },
+    {
+      "module": "codexmate_lib::core::oauth_login",
+      "real_body_count": 8,
+      "on_disk_by_addr": 7,
+      "true_gap": 1,
+      "shim_count": 2,
+      "inlined_count": 3,
+      "unknown_count": 71
+    },
+    {
+      "module": "codexmate_lib::platform::single_instance",
+      "real_body_count": 7,
+      "on_disk_by_addr": 6,
+      "true_gap": 1,
+      "shim_count": 2,
+      "inlined_count": 1,
+      "unknown_count": 4
+    },
+    {
+      "module": "codexmate_lib::commands::debug_bundle",
+      "real_body_count": 2,
+      "on_disk_by_addr": 1,
+      "true_gap": 1,
+      "shim_count": 1,
+      "inlined_count": 0,
+      "unknown_count": 1
+    },
+    {
+      "module": "codexmate_lib::core::account_coordination",
+      "real_body_count": 10,
+      "on_disk_by_addr": 9,
+      "true_gap": 1,
+      "shim_count": 9,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::RouterExitGuardState as core::fmt",
+      "real_body_count": 1,
+      "on_disk_by_addr": 0,
+      "true_gap": 1,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::run::{{closure}}",
+      "real_body_count": 0,
+      "on_disk_by_addr": 0,
+      "true_gap": 0,
+      "shim_count": 4,
+      "inlined_count": 0,
+      "unknown_count": 610
+    },
+    {
+      "module": "codexmate_lib::commands::voice",
+      "real_body_count": 23,
+      "on_disk_by_addr": 23,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 12
+    },
+    {
+      "module": "codexmate_lib::commands::account_io",
+      "real_body_count": 3,
+      "on_disk_by_addr": 3,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 31
+    },
+    {
+      "module": "codexmate_lib::core::account_io",
+      "real_body_count": 18,
+      "on_disk_by_addr": 18,
+      "true_gap": 0,
+      "shim_count": 7,
+      "inlined_count": 0,
+      "unknown_count": 6
+    },
+    {
+      "module": "codexmate_lib::core::analytics",
+      "real_body_count": 16,
+      "on_disk_by_addr": 16,
+      "true_gap": 0,
+      "shim_count": 10,
+      "inlined_count": 0,
+      "unknown_count": 6
+    },
+    {
+      "module": "codexmate_lib::core::debug_bundle",
+      "real_body_count": 28,
+      "on_disk_by_addr": 28,
+      "true_gap": 0,
+      "shim_count": 6,
+      "inlined_count": 0,
+      "unknown_count": 9
+    },
+    {
+      "module": "codexmate_lib::commands::accounts",
+      "real_body_count": 46,
+      "on_disk_by_addr": 46,
+      "true_gap": 0,
+      "shim_count": 2,
+      "inlined_count": 0,
+      "unknown_count": 59
+    },
+    {
+      "module": "codexmate_lib::commands::system",
+      "real_body_count": 34,
+      "on_disk_by_addr": 34,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 60
+    },
+    {
+      "module": "codexmate_lib::commands::skills",
+      "real_body_count": 0,
+      "on_disk_by_addr": 0,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 46
+    },
+    {
+      "module": "codexmate_lib::commands::sessions",
+      "real_body_count": 3,
+      "on_disk_by_addr": 3,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 25
+    },
+    {
+      "module": "codexmate_lib::commands::analytics",
+      "real_body_count": 0,
+      "on_disk_by_addr": 0,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 36
+    },
+    {
+      "module": "codexmate_lib::commands::relay",
+      "real_body_count": 17,
+      "on_disk_by_addr": 17,
+      "true_gap": 0,
+      "shim_count": 3,
+      "inlined_count": 1,
+      "unknown_count": 48
+    },
+    {
+      "module": "codexmate_lib::commands::account_oauth",
+      "real_body_count": 5,
+      "on_disk_by_addr": 5,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 19
+    },
+    {
+      "module": "codexmate_lib::commands::voice_runtime",
+      "real_body_count": 9,
+      "on_disk_by_addr": 9,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 17
+    },
+    {
+      "module": "codexmate_lib::commands::debug_report",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 1,
+      "inlined_count": 0,
+      "unknown_count": 6
+    },
+    {
+      "module": "codexmate_lib::commands::tray_menu",
+      "real_body_count": 10,
+      "on_disk_by_addr": 10,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 11
+    },
+    {
+      "module": "codexmate_lib::run::_{{closure}}",
+      "real_body_count": 87,
+      "on_disk_by_addr": 87,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::core::account_metadata",
+      "real_body_count": 7,
+      "on_disk_by_addr": 7,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::core::plan_mapping",
+      "real_body_count": 9,
+      "on_disk_by_addr": 9,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::core::skills",
+      "real_body_count": 21,
+      "on_disk_by_addr": 21,
+      "true_gap": 0,
+      "shim_count": 3,
+      "inlined_count": 0,
+      "unknown_count": 2
+    },
+    {
+      "module": "codexmate_lib::commands::mcp",
+      "real_body_count": 4,
+      "on_disk_by_addr": 4,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::commands::deeplink",
+      "real_body_count": 5,
+      "on_disk_by_addr": 5,
+      "true_gap": 0,
+      "shim_count": 1,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::platform::audio_feedback",
+      "real_body_count": 2,
+      "on_disk_by_addr": 2,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::platform::daemon",
+      "real_body_count": 6,
+      "on_disk_by_addr": 6,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::platform::update",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::platform::process",
+      "real_body_count": 34,
+      "on_disk_by_addr": 34,
+      "true_gap": 0,
+      "shim_count": 6,
+      "inlined_count": 0,
+      "unknown_count": 5
+    },
+    {
+      "module": "codexmate_lib::platform::voice_macos",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::platform::macos_main_bundle",
+      "real_body_count": 2,
+      "on_disk_by_addr": 2,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::core::sessions",
+      "real_body_count": 29,
+      "on_disk_by_addr": 29,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 9
+    },
+    {
+      "module": "codexmate_lib::run::inner",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::platform::text_injection",
+      "real_body_count": 10,
+      "on_disk_by_addr": 10,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 2
+    },
+    {
+      "module": "codexmate_lib::platform::voice_permissions",
+      "real_body_count": 4,
+      "on_disk_by_addr": 4,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::platform::voice_trigger_macos",
+      "real_body_count": 15,
+      "on_disk_by_addr": 15,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 29
+    },
+    {
+      "module": "codexmate_lib::commands::hotspot",
+      "real_body_count": 16,
+      "on_disk_by_addr": 16,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 2,
+      "unknown_count": 1
+    },
+    {
+      "module": "codexmate_lib::platform::system_volume",
+      "real_body_count": 7,
+      "on_disk_by_addr": 7,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 2
+    },
+    {
+      "module": "codexmate_lib::run::inner<tauri_runtime_wry::Wry<tauri::EventLoopMessage>,tauri_utils::assets::EmbeddedAssets>",
+      "real_body_count": 0,
+      "on_disk_by_addr": 0,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 1
+    },
+    {
+      "module": "codexmate_lib::commands::autostart",
+      "real_body_count": 5,
+      "on_disk_by_addr": 5,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::launched_hidden",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::request_user_quit",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::run_daemon_once_cli",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::_::_<impl serde_core::ser::Serialize for codexmate_lib::RouterExitGuardPayload>",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::run_daemon_once_inner::_{{closure}}",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::load_tray_template_icon",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::install_macos_quit_guard",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::install_macos_quit_guard::application_should_terminate",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::schedule_startup_main_window_reveal",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::run",
+      "real_body_count": 1,
+      "on_disk_by_addr": 1,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::platform::screen",
+      "real_body_count": 2,
+      "on_disk_by_addr": 2,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::run::{{closure}}>::{{closure}}>::h331fbd43de0de19f",
+      "real_body_count": 0,
+      "on_disk_by_addr": 0,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 1
+    },
+    {
+      "module": "codexmate_lib::run::{{closure}}>::{{closure}}>::{{closure}}>::ha2d2d304d8e1c497",
+      "real_body_count": 0,
+      "on_disk_by_addr": 0,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 1
+    },
+    {
+      "module": "codexmate_lib::run::{{closure}}>::he5dd6239f9f0fdbb",
+      "real_body_count": 0,
+      "on_disk_by_addr": 0,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 2
+    },
+    {
+      "module": "codexmate_lib::core::api_client",
+      "real_body_count": 6,
+      "on_disk_by_addr": 6,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::platform::proxy",
+      "real_body_count": 3,
+      "on_disk_by_addr": 3,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::core::codex_config",
+      "real_body_count": 3,
+      "on_disk_by_addr": 3,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 0
+    },
+    {
+      "module": "codexmate_lib::core::mcp",
+      "real_body_count": 14,
+      "on_disk_by_addr": 14,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 2
+    },
+    {
+      "module": "codexmate_lib::core::session_analytics",
+      "real_body_count": 8,
+      "on_disk_by_addr": 8,
+      "true_gap": 0,
+      "shim_count": 0,
+      "inlined_count": 0,
+      "unknown_count": 3
+    }
+  ]
+}

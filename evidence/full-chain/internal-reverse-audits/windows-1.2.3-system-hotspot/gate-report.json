@@ -1,0 +1,76 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "system-hotspot",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-24",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 5,
+    "blocked": 0,
+    "total_commands": 5
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "strong (win-native) -- 5 commands (has_notch, get_hotspot_enabled, set_hotspot_enabled, focus_main_window, hotspot_ready) cross-checked against the win-native ipc-contracts.jsonl via exact JSON field match (true_gaps=0, out of 131 total win commands); 3 win-native frontend surfaces independently confirmed by direct grep/Read this pass: (a) the win index-B40jKs17.js asset contains the identical mount-effect pattern as the macOS bundle (transparent background CSS + 2x requestAnimationFrame -> hotspotReady().catch(()=>{}), same minified component-reference shape R2()); (b) settings-page-B8vywarZ.js has the has-notch-gated hotspot-enabled useQuery -> Switch mutation pattern (query-hits.jsonl 3 hits); (c) accounts-page-GdJYDnGj.js has an independent second instance of the identical double-gated pattern (query-hits.jsonl 4 hits) -- all evidence read from win-native package assets and win-native extraction jsonl files this pass, not inferred from the macOS sibling package",
+    "dim2_backend_owner_pseudocode": "strong-for-existence/name-only -- 5/5 real-named command-layer functions on Windows (ground-truth via command-name string xref, header explicitly states this for each of the 5 files), 0 truncated stubs, all 5 files directly Read this pass and confirmed non-failed full bodies. However pseudocode DEPTH stops at the command-wrapper layer: each of the 5 functions' actual work is delegated to one of 5 distinct unnamed sub_XXXX addresses that have no separately decompiled .c file in this evidence set (see dim3). No dedicated commands/hotspot/ or platform/screen-equivalent directory exists on Windows at all -- the 13 macOS-only internal helper/platform functions have zero Windows evidence (confirmed via directory search and per-name grep this pass)",
+    "dim3_call_tree_to_leaf": "weak -- 0 of 5 Windows commands reach a confirmed implementation leaf. Each command wrapper performs Tauri arg/state extraction via a shared cross-module helper (sub_1401C3650, itself only call-graph-attributed to commands/accounts.rs, not hotspot-owned) and then dispatches to one of 5 distinct (non-ICF-folded) unnamed sub_XXXX core-dispatch addresses: has_notch->0x140970DA0, get_hotspot_enabled->0x14096F8D0, set_hotspot_enabled->0x14096FB70 (via a further nested arg-extract at 0x1401BCE80 for the 'enabled' bool), hotspot_ready->0x14096F460, focus_main_window->0x14096F5D0. None of these 5 addresses has its own decompiled .c file anywhere in raw/aimami/1.2.3/windows-x64/ (confirmed via per-address find this pass) -- this is a genuine gap requiring new IDA decompile work, not merely unread evidence. Weak corroborating structural evidence exists (get_hotspot_enabled/set_hotspot_enabled pass a 'repo' (len 4) namespace-selector string matching the 1.0.9 Windows package's own persisted-settings-namespace finding; set_hotspot_enabled also briefly probes an 'app' (len 3) namespace and extracts an 'enabled' (len 7) arg key) but this does not by itself confirm what the core dispatch functions actually do -- this is materially WEAKER dim3 evidence than the sibling macOS package achieves for the same 5 commands (macOS closes 7/18 of its functions to real AppKit leaves directly), and weaker than the unrelated 1.0.9 Windows system-hotspot package achieved for its (semantically different, WiFi-hotspot) 3 commands (which had named owner_sys/core_sys functions reaching persistence_commit/external_call terminal leaves)",
+    "dim4_interface_dto_boundary": "not-closed -- no per-command DTO/error-envelope/side-effect-boundary extraction pass has been run for Windows. A new cross-reference this pass (commands/autostart/ida/pseudocode/sub_140388D60.c, call-graph-attributed to autostart.rs, itself unrelated to hotspot) contains a serde field-name-matcher call referencing a concatenated string literal whose prefix 'CodexMateSettings' is immediately followed by 'hotspot' as an apparent first field name (alongside usageRefreshInterval/deviceId/remoteDeviceSecret/notificationsSince/apiProxy/mysteryUnlockGrant/autostartWhenRouterOn) -- diagnostic-only (single-function, call-graph-attributed, not independently byte-offset-verified), a candidate lead suggesting 'hotspot' may be a direct field name of CodexMateSettings itself (distinct from the separately-named HotspotConfig struct the macOS package found in an unrelated file), but does NOT confirm field type/layout and is not elevated beyond diagnostic-only this pass -- open gap, not evidence",
+    "dim5_platform_gate": "closed-for-existence -- all 5 command-layer functions have confirmed win-native evidence (ground-truth via command-name string xref, this package's own direct Read + independent frontend cross-check, NOT inferred from the macOS sibling package); the 13 macOS-only helper/platform functions have zero Windows evidence at all, no windows-x64/screen or windows-x64/hotspot subdirectory exists on disk -- independently re-confirmed this pass via directory search and full-tree grep across raw/aimami/1.2.3/windows-x64/, consistent with (but independently derived from, not copied from) the macOS package's own finding; this satisfies dim5's platform-independence requirement for the 5-command scope this package owns, but does NOT close dim5 for platform PARITY (Windows dim2/dim3/dim4 depth is materially weaker than macOS for the same 5 commands, and the 13 macOS-only functions remain accepted_unknown on Windows, same as the macOS package's own open item)",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping has been produced for 1.2.3 Windows system-hotspot leaves this pass"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim3 (0/5 commands reach a confirmed implementation leaf; all 5 stop at an unnamed, undecompiled core-dispatch sub_XXXX address one hop past the command wrapper), dim4 (CodexMateSettings field-level shape unconfirmed, the new 'hotspot'-as-a-field-name lead is diagnostic-only), dim5 (13 macOS-only functions remain accepted_unknown on Windows; Windows depth for the 5 in-scope commands is weaker than macOS), and dim6 (not produced) are all open; per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification, command-name-xref-confirmed dim2 existence alone does not promote target-level readiness",
+  "consumerStartReady_commands": [
+    "has_notch", "get_hotspot_enabled", "set_hotspot_enabled", "focus_main_window", "hotspot_ready"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady + uiCallEntryReady satisfied via 3 win-native frontend surfaces (hotspot window's own mount effect in index-B40jKs17.js, Settings page Switch in settings-page-B8vywarZ.js, Accounts page Quick-Settings dialog Switch in accounts-page-GdJYDnGj.js), all 5 invoke names cross-checked 1:1 against the win-native ipc-contracts.jsonl; happyPathReady satisfied at the command-wrapper level for all 5 (non-failed win pseudocode, ground-truth command-name-xref owner) but NOT independently traced past the wrapper to a confirmed persistence/UI leaf for any of the 5 (dim3 gap, see above) -- consumer must treat the 5 core-dispatch sub_XXXX bodies as fully open questions, not confirmed facts, and must not assume Windows behavior mirrors the macOS package's dim3 findings; dtoBoundaryReady/boundaryPathReady/sideEffectReady/acceptanceDraftReady NOT independently produced for any of the 5 commands; platformScopeDeclared YES (Windows command-layer confirmed win-native for all 5; the 13 macOS-only internal helpers are NOT part of this consumerStartReady set since they have zero Windows evidence and are not independently Tauri-invokable on Windows)",
+  "unknowns": [
+    {
+      "item": "5 core-dispatch addresses (0x140970DA0 has_notch, 0x14096F8D0 get_hotspot_enabled, 0x14096FB70 set_hotspot_enabled, 0x14096F460 hotspot_ready, 0x14096F5D0 focus_main_window) -- what each actually does beyond the command wrapper",
+      "class": "blocks_start",
+      "reason": "none of these 5 addresses have a separately decompiled .c file anywhere in raw/aimami/1.2.3/windows-x64/ (confirmed via per-address find this pass); genuinely not produced, would require new IDA decompile work at these 5 specific addresses -- out of scope for a read-only distillation pass"
+    },
+    {
+      "item": "shared arg-extraction helper sub_1401C3650's exact semantics (attributed to commands/accounts.rs via call-graph propagation, called by all 5 hotspot command wrappers plus presumably many other commands)",
+      "class": "accepted_unknown",
+      "reason": "confirmed to exist and be shared/generic (not hotspot-owned) via its own file header attribution; its own internal logic was not independently re-examined this pass beyond the header confirming it is a cross-module Tauri state-extraction utility"
+    },
+    {
+      "item": "'hotspot' as a candidate direct field name of CodexMateSettings (new lead this pass, via commands/autostart/sub_140388D60.c's serde field-name-matcher string constant)",
+      "class": "accepted_unknown",
+      "reason": "diagnostic-only: single call-graph-attributed function (not hotspot-owned, not command-name-xref-confirmed), string constant shows 'CodexMateSettings' immediately followed by 'hotspot' as an apparent first field-name substring alongside 7 other field names, but field type/layout and the precise field-name-list boundary semantics (the accompanying 17/off_14174B660/8 parameters) were not independently decoded this pass -- candidate lead for next producer pass, not confirmed"
+    },
+    {
+      "item": "13 macOS-only functions' Windows-side existence/absence",
+      "class": "accepted_unknown",
+      "reason": "confirmed zero Windows evidence via directory search (no windows-x64/screen, no windows-x64/hotspot subdirectory) and full-tree per-name grep, independently re-derived this pass (not copied from the macOS sibling package) -- consistent with a genuine platform difference (no notch hardware concept on Windows) but not independently confirmed as intentional absence vs. simply not yet decompiled"
+    },
+    {
+      "item": "angle-C method quality (text-grep proxy for 'hotspot', not live export_funcs() semantic scan)",
+      "class": "accepted_unknown",
+      "reason": "performed as grep -rli hotspot across raw/aimami/1.2.3/windows-x64/ with manual triage of every hit (5 in-scope command files + frontend extraction/report files already in scope + 3 cross-reference false-positives: sub_140084C90.c too-big-function raw-disasm fallback with ~109 repeated 'hotspot' string-literal hits as generic match-arm noise, sub_140388D60.c autostart-attributed serde field-name string (see dim4 lead above), open_path.c win command-dispatch-table function calling into the already-in-scope wrappers) -- all triaged, no additional truly_undone orphan found beyond the known dim3 gap, but a text grep cannot rule out ICF-folded or string-pool-invisible hotspot-adjacent functions the way a live export_funcs() scan can"
+    },
+    {
+      "item": "dim6 test/acceptance mapping",
+      "class": "blocks_start",
+      "reason": "not produced this pass; readyToImplement/strictImplementationUse blocked on this until closed"
+    }
+  ],
+  "notes": [
+    "Backend decompile completeness (dim2) for 1.2.3 Windows system-hotspot is complete at the command-wrapper file level: 5/5 real-named functions, 0 truncation, ground-truth command-name-string-xref owner confirmation. This is evidence coverage at the WRAPPER layer only; per OUTPUT-SPEC.md historical-number caveat and this package's own dim3 finding, it is NOT full_leaf_100 or implementation-ready, and is materially shallower than the macOS sibling package's depth for the same 5 commands.",
+    "This package intentionally does not claim strictImplementationUse or readyToImplement for any of the 5 commands: dim3 (0/5 reach a confirmed leaf, all 5 stop one hop past the wrapper at an undecompiled sub_XXXX), dim4 (field shape unconfirmed, new lead is diagnostic-only), dim5 (13 macOS-only functions accepted_unknown on Windows; Windows depth weaker than macOS for the 5 in-scope commands), and dim6 (not started) are all genuinely open per the dim_status detail above.",
+    "Per skill red line 8/dim5 (Windows must use its own evidence, macOS must not be inferred onto Windows), every Windows-side claim in this package was independently re-derived from win-native raw evidence read this session (5 win .c files, win-native ipc-contracts.jsonl, win-native query-hits.jsonl, win-native frontend-contract-report.md, win-native raw JS asset grep, full win-tree angle-C grep) -- the macOS sibling package is cited only as a scope-boundary pointer (which 13 names to check for zero-Windows-evidence), never substituted as Windows proof.",
+    "This package does NOT migrate or reuse the semantically-different windows-1.0.9-system-hotspot package's strictImplementationUse gate, owner names, or core-function addresses -- that package's 'hotspot' scope was a WiFi network-hotspot feature (HotspotConfig inside a UsageRefresh blob, named owner_sys/core_sys functions), materially different from 1.2.3's notch-companion-window UI toggle (matching the 1.2.3 macOS sibling's semantic, confirmed independently via this package's own win-native frontend evidence: identical Switch/query UI surface, same feature). RULE 9's migrated_no_behavior_diff/unchanged_reused paths do not apply here since the scope itself changed between 1.0.9 and 1.2.3, not merely the implementation; this package treats 1.2.3 Windows system-hotspot as requiring its own independent evidence base, which is what was assembled this pass.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

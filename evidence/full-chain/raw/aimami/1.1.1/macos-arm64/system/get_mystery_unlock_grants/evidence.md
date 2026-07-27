@@ -4,7 +4,7 @@
 **Machine**: <本地机器>
 **Produced**: 2026-06-17
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
-**IDB**: AiMaMi.i64 (hexrays_ready=true, uptime=37160s at health check)
+**IDB**: AiMaMi.i64 (IDA decompiler_ready=true, uptime=37160s at health check)
 **Module**: codexmate_lib::commands::system
 **Owner VA**: 0x10061a140
 **Owner size**: 0x303

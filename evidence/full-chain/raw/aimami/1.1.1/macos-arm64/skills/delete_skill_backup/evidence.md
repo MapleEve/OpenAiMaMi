@@ -6,7 +6,7 @@
 ## IDB: <来源位置>/raw/binary/AiMaMi-1.1.1-idb
 ## Gate tier: strictImplementationUse_candidate (dim1+dim2+dim3+dim4; dim5_mac confirmed; dim5_win+dim6 Unknown)
 ## Migration status: migrated_no_behavior_diff from 1.0.9 baseline (interface identical, implementation details confirmed)
-## 逆向分析 health at session start: status=ok, uptime=27402s, hexrays_ready=true, module=AiMaMi
+## 逆向分析 health at session start: status=ok, uptime=27402s, IDA decompiler_ready=true, module=AiMaMi
 
 ---
 

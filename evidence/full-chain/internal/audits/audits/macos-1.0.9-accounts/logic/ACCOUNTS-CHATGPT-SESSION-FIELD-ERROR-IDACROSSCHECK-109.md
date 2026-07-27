@@ -16,7 +16,7 @@ gate.
 ## IDA Static Facts Confirmed
 
 IDA health for this pass reported the current AiMaMi 1.0.9 IDB with
-`auto_analysis_ready=true`, `hexrays_ready=true`, and `strings_cache_ready=true`.
+`auto_analysis_ready=true`, `IDA decompiler_ready=true`, and `strings_cache_ready=true`.
 
 The conversion helper root is:
 

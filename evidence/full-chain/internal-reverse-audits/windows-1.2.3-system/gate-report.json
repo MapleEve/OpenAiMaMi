@@ -1,0 +1,73 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "system",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-25",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 0,
+    "blocked": 26,
+    "total_commands": 26
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "weak -- identical to macos-1.2.3-system's dim1 finding: only command-name-level cross-check performed against windows-x64/frontend/ipc-contracts.jsonl (26/26 present). No Windows-specific component-tree/state-model document produced (nor would one be expected to differ from macOS given the frontend appears to be a shared cross-platform Tauri JS bundle -- 131/131 line-count match -- but this was not independently verified beyond command-name presence).",
+    "dim2_backend_owner_pseudocode": "module-attributed-but-command-unmapped -- all 9 system-domain raw files (6 commands/system + 3 system_volume_windows) are confirmed live via IDA MCP decompile this session: non-stub, non-truncated (brace-balanced per the 2026-07-24 gapfill session's INDEX.jsonl note, independently spot-confirmed for all 9 by this session's own decompile re-fetch), and carry a 'win 1.2.1 | module src/commands/system.rs (or src/platform/system_volume_windows.rs) | attributed via {panic-Location xref | call-graph propagation} (win-native)' comment identifying the OWNING RUST FILE. However, function names remain sub_XXXXX -- NONE of the 9 files has been mapped to a SPECIFIC one of the 26 frontend command names (e.g. which sub_ is get_system_info's handler is unknown). Module-level ownership (dim2's 'real owner' requirement) is satisfied at the .rs-file granularity; command-level ownership (needed to actually promote any single command) is not.",
+    "dim2_platform_support_note": "process (34 files), paths (3), debug_log (3), proxy (5) are all on-disk and module-attributed via the same 1.2.1-era panic-Location-xref/call-graph-propagation methods (spot-checked 1 paths file + 1 debug_log file this session, both carry the expected attribution comment). platform::daemon and platform::single_instance have ZERO files and ZERO attributed rows in the 1133-row WIN-APP-FUNCTION-INVENTORY.jsonl -- see dim5 and Unknown/Missing.",
+    "dim3_call_tree_to_leaf": "not-closed -- no call-tree work attempted this pass (callees/xrefs_to were not invoked against any of the 9 addrs)",
+    "dim4_interface_dto_boundary": "not-closed -- no DTO/field-level extraction attempted",
+    "dim5_platform_gate": "partially-improved-but-not-closed -- this package upgrades the prior state (macos-1.2.3-system's dim5 note: 'ALL 9 Windows files are unresolved sub_XXXX addresses with 0 confirmed names, 0 confirmed cross-platform behavior matches') to: module-level Rust-file ownership IS now confirmed for all 9 system-domain files plus 45 supporting platform files (54 total), via live IDB re-verification. But 0/26 commands have a confirmed SPECIFIC Windows owner function, so dim5 remains not-closed for every individual command. Additionally, platform::daemon/single_instance are a genuinely worse-than-macOS gap (0 files vs macOS's 6+6-7) that must not be inferred as 'folded into another module' without further win-native attribution work.",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping produced"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim1 (weak), dim2 (module-attributed but not command-mapped), dim3/dim4/dim6 (not attempted) all open",
+  "consumerStartReady_commands": [],
+  "consumerStartReady_basis_not_met": "renderSurfaceReady/uiCallEntryReady is satisfied only via shared-frontend command-name presence (26/26), same weak basis as macOS sibling; but happyPathReady (a Windows-side backend owner PER COMMAND) is NOT satisfied -- module-level file ownership (.rs path) is known for the 6 commands/system + 3 system_volume_windows raw files, but no command-to-specific-file mapping exists, so no individual command can be promoted to consumerStartReady on Windows evidence alone. Per AGENTS.md 'artifact/platform 没拿到的状态保持 Unknown，禁止用 macOS 证据外推 Windows' this package does NOT borrow macos-1.2.3-system's consumerStartReady=26/26 for the Windows platform gate.",
+  "unknowns": [
+    {
+      "item": "command-to-owner-file mapping for all 6 commands/system raw addrs (0x140021540, 0x140322890, 0x1403d28a0, 0x14089b320, 0x140cf8380, 0x141471f80) against the 26 frontend command names",
+      "class": "blocks_start",
+      "reason": "module-level attribution (belongs to src/commands/system.rs) is confirmed; which specific command each function implements is not. Closing this needs either (a) string/constant cross-reference from each function to a command-registration site, or (b) call-graph correlation against the already-attributed macOS side's per-command function boundaries (sizes/complexity heuristics), neither attempted this pass."
+    },
+    {
+      "item": "platform::daemon and platform::single_instance zero-attribution on Windows",
+      "class": "truly_undone",
+      "reason": "0 files on raw disk, 0 rows in the 1133-row WIN-APP-FUNCTION-INVENTORY.jsonl for either module name. Not confirmed whether these Rust modules are conditionally-compiled out on Windows (plausible -- macOS single_instance uses flock, daemon uses launchctl, both POSIX-specific; Windows likely has its own equivalent under a different module name such as 'process' or an unseen 'daemon_windows'/'single_instance_windows' analogous to system_volume_windows's naming pattern) or simply not yet attributed. This session did not search for a Windows-native equivalent module name -- open gap."
+    },
+    {
+      "item": "WIN-APP-FUNCTION-INVENTORY.jsonl on_disk field staleness",
+      "class": "accepted_unknown",
+      "reason": "confirmed factually stale (says false for files verified physically present) -- classified accepted_unknown because the underlying raw evidence itself (the .c files) is genuinely on disk and independently re-verified live via IDA this session; the staleness is a bookkeeping gap in the intermediate tracking file, not a gap in the actual evidence"
+    },
+    {
+      "item": "dim1 frontend component-tree document",
+      "class": "blocks_start",
+      "reason": "not produced (mirrors macos-1.2.3-system's same open item)"
+    },
+    {
+      "item": "dim3 call-tree, dim4 interface/DTO, dim6 test mapping",
+      "class": "blocks_start",
+      "reason": "not attempted this pass"
+    },
+    {
+      "item": "angle-A full-module function-histogram / angle-C semantic orphan scan across the full 1133-row inventory for additional system-adjacent modules beyond the 6 already known",
+      "class": "blocks_start",
+      "reason": "not attempted this pass -- only checked the module names already known from the macOS scope precedent; a keyword sweep (registry/bootstrap/hwid/volume/diagnostic) across all 1133 rows' module field was not performed"
+    }
+  ],
+  "notes": [
+    "This package upgrades macos-1.2.3-system's manifest.json note 'cross_platform_sibling: none produced for 1.2.3 -- Windows evidence... too thin' by confirming, via live IDA re-verification, that module-level Rust-file ownership now exists for all 54 windows-x64 system-domain-scope files (up from the 9 previously known, all-unresolved state that macOS package recorded). The material remaining gap is command-level mapping, not raw-evidence existence.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue.",
+    "No command in this package is consumerStartReady, strictImplementationUse, or readyToImplement. This is a strictly more conservative gate result than macos-1.2.3-system's 26/26 consumerStartReady, by design (AGENTS.md: 'artifact/platform 没拿到的状态保持 Unknown，禁止用 macOS 证据外推 Windows')."
+  ]
+}

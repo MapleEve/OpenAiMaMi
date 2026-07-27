@@ -10,7 +10,7 @@
 
 ## ## Confirmed
 
-1. **backend_owner=absent (1.1.1)**: `lookup_funcs ["codexmate_lib::commands::voice::generate_voice_prompt", "generate_voice_prompt"]` → both Not found. 逆向分析 AiMaMi 1.1.1 i64 confirmed live (hexrays_ready=true, uptime 34339s).
+1. **backend_owner=absent (1.1.1)**: `lookup_funcs ["codexmate_lib::commands::voice::generate_voice_prompt", "generate_voice_prompt"]` → both Not found. 逆向分析 AiMaMi 1.1.1 i64 confirmed live (IDA decompiler_ready=true, uptime 34339s).
 
 2. **func_query zero hits (1.1.1)**: `func_query {name_regex: ".*generate_voice_prompt.*"}` → data=[] and `func_query {name_regex: ".*voice.*"}` → data=[]. No voice command functions exist in 1.1.1 backend binary symbol table.
 

@@ -1,0 +1,96 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "plugins",
+  "package_kind": "understand_and_classify",
+  "audit_type": "presence_negative_result",
+  "status": "module_removed_negative_existence",
+  "updated_at": "2026-07-26",
+  "question": "Does AiMaMi 1.2.3 macOS-arm64 still contain the application self-developed plugins subsystem (PluginRegistry / list_plugins / toggle_plugin / get_plugin_config / update_plugin_config / builtin web_tools + image_support / PluginStoreSchema -> plugins.json) that was reverse-confirmed present and full_leaf_100-accepted in 1.0.9 (audits/macos-1.0.9-plugins, audits/windows-1.0.9-plugins) and still present at 1.1.8 (threadmodel .manage() 3-state list)?",
+  "removed": true,
+  "confidence": "high",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 0,
+    "blocked": 0,
+    "total_commands_1_2_3": 0,
+    "removed_commands_vs_1_0_9_baseline": 4
+  },
+  "readyToImplement": false,
+  "strictImplementationUse": false,
+  "consumerStartReady": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_applicable_module_removed -- no 1.2.3 macOS plugins command/UI/leaf exists to close six dimensions against; full_leaf_100 is undefined for an absent feature. The 1.0.9 macOS/Windows plugins packages retain their historical full_leaf_100=true accepted status as behavior-reference for a feature that once existed; that status is NOT migrated forward to 1.2.3.",
+  "gate_leaf_status": "diagnostic-only",
+  "moduleExitAllowed": true,
+  "moduleExitAllowed_basis": "This is a negative-existence (feature-removed) classification closure, NOT a full_leaf_100 leaf-closure exit. Exit is allowed because the reverse question 'does the plugins feature still exist' is answered (no) with 4/4 independent same-platform signals consistent, so there is no implementable leaf left to reverse. This must not be read as 'plugins leaves are closed for implementation' -- there is nothing to implement.",
+  "dim_status": {
+    "dim1_frontend_control_flow": "not_applicable_module_removed -- no PluginsPage bundle, no /plugins route, no pluginsRoute; settings-page-B8vywarZ.js (which in 1.0.9 hosted the plugin toggle surface) direct grep 'plugin' = 0 hits. There is no UI trigger / guard / invoke wrapper to reverse because the frontend surface was deleted.",
+    "dim2_backend_owner_pseudocode": "not_applicable_module_removed -- no commands/plugins/ directory (16 command subdirs on disk, none is plugins/, vs 1.0.9's dedicated commands/plugins/); exact-word grep for PluginRegistry / plugin_info / save_store_static across raw/aimami/1.2.3/macos-arm64 = 0 hits. No owner function exists to decompile. run_0x1006f50c0.c (app builder/setup entry) registers only Tauri-official plugins (updater/autostart/deep_link/dialog/global_shortcut/process), no PluginRegistry .manage() or registration.",
+    "dim3_call_tree_to_leaf": "not_applicable_module_removed -- no command/owner root exists, so no call-tree to fs/store/plugins.json leaf can be produced. The 1.0.9 leaves (PluginRegistry::set_enabled -> save_store_static -> plugins.json write) have no 1.2.3 macOS counterpart on disk.",
+    "dim4_interface_dto_boundary": "not_applicable_module_removed -- no list_plugins/toggle_plugin/get_plugin_config/update_plugin_config DTO or error envelope exists at 1.2.3; PluginStoreSchema { schemaVersion, plugins } string absent from binary string pool.",
+    "dim5_platform_gate": "closed_independently_by_sibling -- Windows-x64 1.2.3 plugins existence was independently verified removed by audits/windows-1.2.3-plugins (session win-1.2.3-plugins-audit-20260725, removed=true, high confidence, 1.0.9 positive control passed on AiMaM 1.0.9 win64.exe). This macOS package does NOT extrapolate to Windows; the two platforms reached the same removed=true conclusion via independent same-platform evidence. macOS-side conclusion here rests only on macOS-arm64 evidence.",
+    "dim6_test_acceptance_mapping": "not_applicable_module_removed -- no leaf to map to a C5 acceptance test. The only C5-side acceptance-adjacent action is a negative one (verify no plugin-management panel should appear in a 1.2.3-parity build), which is a product-decision non-action, not a reverse-produced leaf mapping."
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "consumerStartReady_commands": [],
+  "consumerStartReady_basis": "N/A -- feature absent at 1.2.3 macOS. There is no command for a consumer to start implementing; the consumer action is the non-action 'do not port the AiMaMi plugins feature to the 1.2.3 baseline'. See README.md Action/Non-action.",
+  "negative_existence_signals": [
+    {
+      "signal": "frontend_ipc_command_enumeration",
+      "detail": "raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl -- all 131 commands parsed; 0 named *_plugin* / plugin_*; grep -in plugin on raw text = 0 hits. 1.0.9's list_plugins/toggle_plugin/get_plugin_config/update_plugin_config all absent from the set.",
+      "hits": 0,
+      "total_commands": 131
+    },
+    {
+      "signal": "frontend_page_bundle_topology",
+      "detail": "frontend/beautified/ page bundles: accounts/analytics/auto-switch/maintenance/mcp/relay/sessions/settings/skills/voice -- no plugins-page-*.js; settings-page-B8vywarZ.js direct grep 'plugin' = 0; no PluginsPage / /plugins route / pluginsRoute string.",
+      "hits": 0
+    },
+    {
+      "signal": "backend_commands_directory_topology",
+      "detail": "raw/aimami/1.2.3/macos-arm64/commands/ has 16 module subdirs (account_io account_oauth accounts autostart debug_bundle debug_report deeplink hotspot ida mcp relay sessions system tray_menu voice voice_runtime) -- no plugins/ (vs 1.0.9's dedicated commands/plugins/ with 4 command owners). backend-baseline/commands-baseline.md does not even list plugins as an expected-but-missing module.",
+      "hits": 0
+    },
+    {
+      "signal": "binary_string_pool_enumeration",
+      "detail": "exact-word grep across raw tree + live IDA find_regex '(?i)plugin' on AiMaMi 1.2.3.app core binary -- PluginRegistry / list_plugins / toggle_plugin / get_plugin_config / update_plugin_config / plugin_info / PluginStoreSchema / plugins.json / builtin::web_tools / image_support all 0 hits. The ~21 substring 'plugin' file matches + 10 live find_regex hits are ALL Tauri framework / webview strings (tauri-plugin-updater, tauri::menu::plugin, plugin:dialog|message, InvalidPluginInitialization, etc.), unrelated to the AiMaMi plugin-management feature.",
+      "hits": 0
+    },
+    {
+      "signal": "methodology_positive_control",
+      "detail": "The identical string/enumeration procedure applied to the 1.0.9 build (per sibling windows-1.2.3-plugins positive control on AiMaM 1.0.9 win64.exe) DOES find codexmate_lib::core::plugins::registry::PluginRegistry, confirming the detection method finds the feature when present. macOS 1.0.9 plugins package (audits/macos-1.0.9-plugins) is the same-platform positive baseline.",
+      "hits": 1,
+      "note": "positive control -- confirms 0-hit at 1.2.3 is a true absence, not a broken query"
+    }
+  ],
+  "unknowns": [
+    {
+      "item": "run() entry (run_0x1006f50c0.c) 5x .manage() injected state types not fully desugared",
+      "class": "accepted_unknown",
+      "reason": "run_0x1006f50c0.c contains 5 .manage() calls (up from 3 in 1.0.9/1.1.8, plausibly new VoiceRuntimeInner etc.). Rust generic monomorphization gives these turbofish/hash-suffixed symbol names (e.g. h97d14f3a98688897), so whether any of the 5 still implicitly holds a PluginRegistry-typed state was NOT resolved by per-call xrefs/type recovery. This is a genuine tool/depth ceiling (needs deeper xrefs + type recovery), NOT an architecture_only self-limit false-wall. It does NOT affect the removed=true product-surface conclusion: even if a PluginRegistry struct instance still existed internally, there is no command / UI / frontend reachable path to trigger it (0/131 commands, no page, no commands/plugins/), so no implementable or user-observable behavior remains. Anti-cheat note: this is not a bail-on-size or drop_in_place stub excuse -- the 5 .manage() sites are identified and the ceiling is the monomorphized type identity of their generic argument specifically."
+    },
+    {
+      "item": "exact version where plugins was removed (1.1.8 -> 1.2.3 window)",
+      "class": "accepted_unknown",
+      "reason": "1.1.8 threadmodel delta (intermediate/aimami/1.1.8/macos-arm64/_threadmodel/THREAD-MODEL.md, INDEX key aimami/1.1.8/macos-arm64/threadmodel) still lists PluginRegistry among the 3 unchanged .manage() state types, so the subsystem was present at 1.1.8. 1.2.3 shows it absent. The precise intermediate release (1.1.9/1.2.0/1.2.1/1.2.2) at which removal happened was not bisected -- not needed for the removed-at-1.2.3 conclusion."
+    },
+    {
+      "item": "Windows-x64 1.2.3 plugins existence",
+      "class": "product_decision",
+      "reason": "Independently and already closed by audits/windows-1.2.3-plugins (removed=true). Not re-derived here and not extrapolated from this macOS package. Listed so consumers see the cross-platform picture is complete: both platforms removed=true, each via own same-platform evidence."
+    }
+  ],
+  "notes": [
+    "This package is a reduce of an already-verified negative-existence result. No new IDA decompile / xrefs / INDEX.jsonl append were performed this pass. Source = existing README.md (real content, not filler), the raw/aimami/1.2.3/macos-arm64 evidence it cites (ipc-contracts.jsonl, commands/, frontend/beautified/, run/ida/pseudocode/run_0x1006f50c0.c, backend-baseline/commands-baseline.md), and the same-source windows-1.2.3-plugins removed=true precedent.",
+    "gate is diagnostic-only / removed=true. It intentionally does NOT enter any of the three consumer_gate tiers (consumerStartReady/strictImplementationUse/readyToImplement) because there is no target to implement. Per GATE-SPEC.md, a removed feature has no leaf to promote.",
+    "This audit answers only the presence/absence question. REVERSE-STATUS.md wf-aimami123-fullapp-20260724 targets list named plugins as 'missing a canonical bundle' in the RULE 8 full-leaf sense; that gap is resolved here by classification (removed) rather than by leaf closure -- there are no leaves to close.",
+    "logic/ and reviews/ carry justified-N/A stamps (logic/NOT-APPLICABLE.md, reviews/CLAUDE.md) because no implementation leaf exists to write full-chain logic for or to leaf-close-review. See those files for the justification and the pointer to where the actual negative-existence verification review lives (this gate-report + README + data/summary.json)."
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "c5cm.internal-reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "plugins",
+  "audit_type": "presence_negative_result",
+  "question": "Does AiMaMi 1.2.3 windows-x64 still contain the plugins subsystem (PluginRegistry / list_plugins / toggle_plugin / get_plugin_config / update_plugin_config / builtin web_tools + image_support) that was reverse-confirmed present in 1.0.9 (audits/windows-1.0.9-plugins, audits/macos-1.0.9-plugins)?",
+  "result": {
+    "removed": true,
+    "confidence": "high",
+    "classification": "removed_or_distilled_out_of_binary",
+    "note": "No canonical strictImplementationUse/readyToImplement gate is produced by this audit; this is a scoped presence/absence verification, not a full_leaf_100_definition_v2 closure. Absence is grounded in three independent same-platform evidence classes (raw dir topology, frontend IPC command enumeration, binary string enumeration), cross-checked against macOS 1.2.3 (both null) and against Windows 1.0.9 (methodology validated: same string patterns ARE present in the 1.0.9 windows binary)."
+  },
+  "generated_by": "win-1.2.3-plugins-audit-20260725",
+  "machine": "<host>",
+  "generated_at": "2026-07-25",
+  "evidence_root": "${C5CM_INTERNAL_HISTORY_ROOT:-$C5CM_SHARE_ROOT}",
+  "consumed_bundles": [
+    "audits/windows-1.0.9-plugins",
+    "audits/macos-1.0.9-plugins",
+    "audits/COVERAGE-FINAL-1.2.3.md",
+    "audits/BASELINE-FINAL-1.2.3.md"
+  ],
+  "not_a_replacement_for": "REVERSE-STATUS.md wf-aimami123-fullapp-20260724 full-app gap targets list still names plugins as missing a canonical audits/<platform>-1.2.3-plugins bundle in the strict RULE 8 sense of a full 6-dim leaf closure; this audit answers only the presence/absence question and is a diagnostic input, not a strictImplementationUse or readyToImplement gate."
+}

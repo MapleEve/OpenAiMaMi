@@ -1,0 +1,78 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "home-usage-frontend",
+  "package": "windows-1.2.3-home-usage-frontend",
+  "created_at": "2026-07-26T00:00:00Z",
+  "producer_machine": "<host> (this package distilled from already-extracted win-native frontend evidence this session; no new IDA MCP calls performed this pass)",
+  "task_kind": "distillation",
+  "task_kind_note": "First landing of the previously-MISSING canonical windows-1.2.3-home-usage-frontend bundle. Reduces win-native frontend command-surface + minified-static control-flow into a single-platform consumer package, as the Windows half of the pair with macos-1.2.3-home-usage-frontend (parallel session macos-1.2.3-home-usage-frontend-reduce-20260726). Read-only synthesis over win raw frontend artifacts already on disk; does NOT invoke IDA MCP (decompile/xrefs_to/callees) this pass. No page-level component-tree reduce performed for win.",
+  "binary": {
+    "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+    "binary_format": "pe",
+    "pe_machine": "AMD64",
+    "arch": "x64",
+    "size_bytes": 33667584,
+    "note": "raw/binary/AiMaMi.1.2.3 win64.exe; same value recorded in windows-1.2.3-accounts/manifest.json (same binary batch). No IDA session run this pass over this binary for this module."
+  },
+  "scope": {
+    "definition": "home-dashboard + usage-snapshot-panel FRONTEND command-surface + minified-static control-flow only, on windows-x64. 13 home-usage commands (win ipc-contracts.jsonl keyword subset). Backend owner/decompile is EXPLICITLY OUT OF THIS PASS (no IDA session). Page-level UI render-surface (component/route/state model) is NOT reduced for win (no pages/*.md, in contrast to mac).",
+    "targets": [
+      "load_bootstrap_state", "load_snapshot", "load_usage_analytics",
+      "load_session_analytics", "load_token_analytics", "load_tool_analytics",
+      "load_change_analytics", "load_quota_history", "refresh_usage_snapshot",
+      "refresh_single_account_usage", "get_usage_refresh_interval",
+      "set_usage_refresh_interval", "load_mcp_servers"
+    ],
+    "target_count": 13,
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": false,
+    "coverage_mode": "frontend-command-surface + minified-static-CCF"
+  },
+  "coverage": {
+    "frontend_command_surface_win": "13/13 grounded (win ipc-contracts.jsonl, 131 total commands, keyword subset)",
+    "frontend_minified_ccf_win": "13/13 terminal_call rows (wrapper + argKeys + invoke-alias `re` + source chunk; partial guards on load_snapshot + refresh_single_account_usage)",
+    "frontend_page_render_surface_win": "0/13 (NOT reduced; no win pages/*.md — genuine evidence-depth gap vs mac)",
+    "backend_owner_win": "0/13 (no IDA session this pass)",
+    "command_surface_parity_vs_mac": "zero-diff (13 win == 13 mac, byte-identical set, grounded 2026-07-26); classified as win-native evidence, NOT mac inference",
+    "source_chunks_win": ["index-B40jKs17.js", "analytics-panel-6jtfGEeX.js", "accounts-page-GdJYDnGj.js"],
+    "measurement_basis": "jq over raw/aimami/1.2.3/windows-x64/frontend/{ipc-contracts.jsonl,frontend-control-flow.jsonl}, this session"
+  },
+  "coverage_mode": "frontend-command-surface",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "gate_tier": "belowConsumerStartReady",
+  "gate_tier_note": "Not one of the three consumer tiers. consumerStartReady=false because backend owner is Unknown (blocks happyPathReady/sideEffectReady/boundaryPathReady) and page-level render-surface is not reduced (blocks renderSurfaceReady). This is a frontend-command-surface evidence pack; per-target gate leaf = candidate-only (11) / diagnostic-only (2).",
+  "gate_accepted": false,
+  "implementation_use": false,
+  "full_leaf_100": false,
+  "consumed_bundles": [
+    "audits/cross-1.2.3-home-usage-frontend/ (scope/structure reference + win-side gap acknowledgement; no evidence-field reuse)",
+    "audits/cross-1.0.9-home-usage-frontend/DISTILLED-home-usage-load-chains.md (scope/wording template only; its mac DTO shapes are NOT reused as win evidence — cross-platform + cross-version)"
+  ],
+  "sibling_package": "audits/macos-1.2.3-home-usage-frontend/ (parallel session macos-1.2.3-home-usage-frontend-reduce-20260726, <host>; the matched macOS half — DO NOT MERGE, independently closed per doNotInferWindowsFromMacOS)",
+  "package_files": [
+    "README.md",
+    "AI.md",
+    "SYSTEM-DIFF.md",
+    "manifest.json",
+    "gate-report.json",
+    "logic/FULL-CHAIN-1.2.3.md",
+    "pointers/evidence-paths.md",
+    "reviews/CLAUDE.md",
+    "data/task-plan.json"
+  ],
+  "authoritative": true,
+  "authoritative_note": "authoritative=true means this is the canonical windows-1.2.3-home-usage-frontend entry (replacing the prior MISSING status). It is NOT authoritative as a backend full-chain or page-level render-surface closure — those remain open producer work (see data/task-plan.json next_producer_steps).",
+  "known_residuals": [
+    "Windows page-level UI render-surface (component tree / hooks / interaction->command map / visible UX): NOT reduced -- renderSurfaceReady open, Unknown, not inferred from mac.",
+    "Backend owner + IDA decompile + callees/xrefs for all 13 commands on win: Unknown (no IDA session this pass; win IDB raw/binary/AiMaMi.1.2.3 win64.exe.i64 available for a later pass).",
+    "Output DTO / error envelope / side-effect boundary (dim4 output side): Unknown. Only win-native input argKeys captured. mac 1.0.9 DISTILLED DTO shapes deliberately NOT reused (cross-platform + cross-version).",
+    "get_usage_refresh_interval / set_usage_refresh_interval concrete win UI trigger point (inlined in shell chunk index-B40jKs17.js): not located this pass.",
+    "dim6 test/acceptance mapping: not produced this pass.",
+    "AnalyticsRange value domain (today|week|month) for the {range}-parameterized analytics commands: mac-source-derived, NOT independently enumerated on win this pass."
+  ],
+  "note": "This manifest synthesizes win-native frontend evidence at raw/aimami/1.2.3/windows-x64/frontend/{ipc-contracts.jsonl,frontend-control-flow.jsonl,frontend-contract-report.md,ast-facts.json} into the Windows single-platform canonical home-usage-frontend bundle. No bulk decompile text, no IDA dump, no frontend dump copied into this package; all raw evidence referenced via pointers/evidence-paths.md."
+}

@@ -1,0 +1,52 @@
+{
+  "schema": "c5cm.reverse.gate.v1",
+  "bundle": "windows-1.2.3-ui",
+  "session": "win-ui-set-app-theme-123gap-20260725",
+  "machine": "<host>",
+  "produced_at": "2026-07-25",
+  "sha12": "aeccccd78e47",
+  "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "gate_tier": "blocks_start",
+  "gate_accepted": false,
+  "implementation_use": false,
+  "gap_class": "gap_needs_new_raw",
+  "ceiling": "blocks_start",
+  "leaves": {
+    "set_app_theme": {
+      "owner_va": "Unknown (1.2.3 win backend not decompiled this session)",
+      "command_string": "set_app_theme",
+      "plugin_command": "plugin:app|set_app_theme",
+      "dim1": "candidate",
+      "dim1_evidence": "Win frontend command face confirmed at 1.2.3: app-TuXtMya9.js line 1 — async function m(n){return t('plugin:app|set_app_theme',{theme:n})} exported as setTheme, argKey=theme. Identical shim shape to 1.0.9 (app-C4jGp0lC.js), only chunk-hash filename and minified letter differ. NOT full dim1 pass: the invoke-wrapper identity (t == real Tauri invoke, no guard/preflight injected in 1.2.3) was not independently byte-traced through index-B40jKs17.js this session (1MB minified bundle; grep attempt errored on binary/mixed-encoding content mid-file and was not retried) — treated as candidate/structurally-consistent, not independently re-confirmed at 1.2.3.",
+      "dim2": "missing",
+      "dim2_evidence": "No IDA decompile run against raw/binary/AiMaMi.1.2.3 win64.exe (or its .i64) for a set_app_theme/theme owner this session. No .c pseudocode file exists under raw/aimami/1.2.3/windows-x64/**/ida/pseudocode/ for this leaf — confirmed by directory enumeration (65 module dirs, none named ui/theme) and by targeted grep across all 1.2.3 windows-x64 raw+frontend artifacts.",
+      "dim3": "missing",
+      "dim3_evidence": "No call-tree possible without dim2 owner.",
+      "dim4": "missing",
+      "dim4_evidence": "Request/response/error/side-effect contract not re-verified at 1.2.3; 1.0.9 contract (argKeys=[theme], CoreEnvelope<()>, all-window in-memory apply, no disk write) is a same-platform PRIOR-VERSION reference only, not carried forward without a diff.",
+      "dim5": "missing",
+      "dim5_evidence": "No same-version-same-platform (windows-x64, 1.2.3) IDA evidence produced. Per AGENTS.md/dim5 rule, Windows must be independently closed per version; 1.0.9 Windows evidence does not satisfy 1.2.3 dim5.",
+      "dim6": "missing",
+      "dim6_note": "C5 implementation-side acceptance mapping not assessed (would be moot before dim2-dim5 close).",
+      "real_body_found": false,
+      "genuine_ceiling": false,
+      "was_false_wall": "n/a — no decompile attempted, so no fake-wall taxonomy applies; this is a raw-coverage gap, not a claimed unrecoverable wall",
+      "caller_disambiguation_tried": false,
+      "ceiling_reason": "raw_coverage_gap: zero 1.2.3 windows-x64 backend .c/IDA evidence for this leaf; blocked pending a producer pass that (a) opens raw/binary/AiMaMi.1.2.3 win64.exe.i64 in IDA, (b) locates the 1.2.3 owner via the 'set_app_theme' string xref (same method used at 1.0.9: single data xref -> enclosing coroutine function), (c) decompiles/diffs it against the known-good 1.0.9 owner body (0x14091bc60) to establish migrated_no_behavior_diff vs diff_reversed per RULE9.",
+      "recovery_attempts": "not_applicable_no_decompile_attempted: this session did not open IDA / call decompile/xrefs_to/callees against the 1.2.3 win64 IDB, per task scope ('只读+写结论,不做新反编译'). The 8-item fake-wall taxonomy (drop_in_place / architecture_only-budget / async_decompile_failed / wrong_VA / vtable_dynamic_dispatch / HTTP_terminal / library_internals / body_too_large) is therefore not applicable — there is no candidate decompile output to have hit a fake wall on. This is an honest 'not yet attempted' gap, not an accepted_unknown/genuine_ceiling claim.",
+      "gate_tier": "blocks_start",
+      "is_upstream": true,
+      "is_upstream_note": "Same Tauri built-in app plugin command family as 1.0.9 (plugin:app|set_app_theme); framework-owned, not C5/AiMaMi #[tauri::command]-authored. Framework provenance makes behavior drift across versions unlikely but NOT confirmed without a diff — is_upstream=true does not substitute for dim2/dim3/dim5 evidence per OUTPUT-SPEC full_leaf_100_definition_v2.",
+      "correction_vs_1_0_9": "This is a NEW leaf-version gap package, not a correction of prior evidence. The 1.0.9 leaf (strictImplementationUse, dims1-5 pass, dim6 missing) is unaffected and remains the canonical 1.0.9 result; this 1.2.3 package does not alter it."
+    }
+  },
+  "cluster_gate_summary": {
+    "strictImplementationUse": 0,
+    "consumerStartReady": 0,
+    "readyToImplement": 0,
+    "gap_needs_reducer": 0,
+    "gap_needs_new_raw": 1,
+    "blocked": 0,
+    "note": "set_app_theme @ 1.2.3 windows-x64: gap_needs_new_raw / blocks_start. Frontend command face present and structurally consistent with 1.0.9 (candidate, not independently closed). Backend owner/decompile/call-tree/interface/platform-gate (dim2-dim5) entirely Unknown for this version — zero raw .c evidence exists. RULE9 diff-first was attempted (compared what 1.2.3 frontend evidence exists against 1.0.9) but backend diff is impossible with zero 1.2.3-side raw to compare. Next producer step: IDA re-verify against raw/binary/AiMaMi.1.2.3 win64.exe(.i64) using the 1.0.9 method (string-xref locate -> decompile -> diff vs 0x14091bc60)."
+  }
+}

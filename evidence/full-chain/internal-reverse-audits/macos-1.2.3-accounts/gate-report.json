@@ -1,0 +1,86 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "accounts",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-24",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 8,
+    "consumerStartBlocked": 4,
+    "total_accounts_domain_commands_considered": 12
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "mixed -- AccountsPage fully component-tree + state-model + 25-interaction-map reversed in raw/aimami/1.2.3/macos-arm64/frontend/pages/accounts-frontend.md, closing dim1 for 8 of 12 accounts-domain-relevant commands (switch_account_and_restart_codex, remove_accounts, refresh_single_account_usage, export_accounts_to_file, import_accounts_from_file, preview_account_import, begin_chatgpt_oauth_login, cancel_chatgpt_oauth_login). 4 commands (load_snapshot, logout, switch_account, refresh_usage_snapshot) have NO confirmed UI call-site within this page's reversed scope -- load_snapshot is only inferred (not confirmed) as the implementation behind the refreshLive prop; logout/switch_account/refresh_usage_snapshot do not appear anywhere in the page's 25 numbered interactions at all. These 4 are dim1-open for this package.",
+    "dim2_backend_owner_pseudocode": "strong -- 141 in-scope .c files (87 core: account_coordination 10 / account_io 18 / account_metadata 7 / auth 29 / oauth_login 8 / oauth_refresh 15, plus 54 commands: accounts 46 / account_io 3 / account_oauth 5), 0 truncated or failed decompiles, cross-validated against independently-produced backend-baseline/account-auth-baseline.md and backend-baseline/commands-baseline.md (both agree, 0 discrepancy)",
+    "dim3_call_tree_to_leaf": "partial and asymmetric -- for the 5 commands wholly owned within this package's core scope (export_accounts_to_file/import_accounts_from_file/preview_account_import -> core::account_io; begin_chatgpt_oauth_login/cancel_chatgpt_oauth_login -> core::oauth_login + core::account_io::persist_account_auth), call-tree closes to real implementation leaves (fs read/write via write_atomic_with_mode, HTTP POST to https://auth.openai.com/oauth/token, local axum HTTP callback listener) within this package's own evidence. For switch_account_and_restart_codex/remove_accounts/refresh_single_account_usage/refresh_usage_snapshot/load_snapshot/logout/switch_account, the true deep leaf is core::repository (Repository::switch_account / Repository::remove_accounts / SnapshotQuarantine::commit_and_purge+rollback / Repository::clean / auto-switch orchestration) which exists as evidence in backend-baseline/models-repository-baseline.md but is NOT primary evidence of this package (see manifest.json scope.supplementary_cross_reference_only) -- dim3 for those 7 commands is only cross-referenced, not independently closed by this package's own scope",
+    "dim4_interface_dto_boundary": "partial -- unlike a from-scratch pass, this package can cite real DTO type-name evidence: core::models (175 files, 0 delta this version) contains serialize/deserialize glue for AccountExportPayload/AccountImportPayload/AccountImportPreviewEntry/AccountImportPreviewPayload/AccountImportSkipped/AccountRefreshReport/AccountSummary/AccountTokenStatus/AccountTokenStatusCode/LogoutPayload/RemovePayload/SwitchPayload/OauthLoginPayload/AutoSwitchConfigPayload/AutoSwitchStatusPayload/PendingAutoSwitchPayload/CoreSnapshotPayload/CoreWarning (per backend-baseline/models-repository-baseline.md section 1). This confirms DTO *existence and naming* but field-level extraction (input struct fields, output payload shape, error envelope, nullability) was NOT performed this pass -- open gap, not evidence of closure",
+    "dim5_platform_gate": "macOS-only this pass -- Windows 1.2.3 raw evidence exists at raw/aimami/1.2.3/windows-x64/{account_io,commands/accounts}/ but was not read or distilled this session. Recorded Unknown for Windows, not extrapolated from macOS (per red line 8 / doNotInferWindowsFromMacOS)",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping has been produced for 1.2.3 accounts leaves this pass"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim3 (call-tree-to-leaf) is only cross-referenced (not independently closed within this package) for 7 of 12 commands, dim4 (interface/DTO) is only type-name-level (not field-level), dim5 (platform gate) is macOS-only with Windows fully Unknown, and dim6 (test/acceptance mapping) is not-closed for any command. Per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification, none of these gaps individually or in combination promote target-level strictImplementationUse readiness.",
+  "consumerStartReady_commands": [
+    "switch_account_and_restart_codex", "remove_accounts", "refresh_single_account_usage",
+    "export_accounts_to_file", "import_accounts_from_file", "preview_account_import",
+    "begin_chatgpt_oauth_login", "cancel_chatgpt_oauth_login"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady + uiCallEntryReady satisfied via accounts-frontend.md's confirmed interaction map for these 8 commands; happyPathReady + backend owner satisfied via the 141 in-scope decompiled functions (0 truncation); dtoBoundaryReady only partially satisfied (DTO type names known, fields not extracted); boundaryPathReady/sideEffectReady partially known via commands-baseline.md's destructive-operation table (remove_accounts triggers Repository-layer physical deletion via a two-phase quarantine-then-purge pattern per models-repository-baseline.md, cross-referenced not primary); acceptanceDraftReady NOT produced -- consumer must still derive DTO shape and test mapping independently, this package is not a closed interface spec",
+  "consumerStartBlocked_commands": [
+    "load_snapshot", "logout", "switch_account", "refresh_usage_snapshot"
+  ],
+  "consumerStartBlocked_reason": "backend wrapper decompiled (dim2 available, 0 truncation) but no confirmed UI call-site found within accounts-frontend.md's reversed AccountsPage scope -- uiCallEntryReady (a hard consumerStartReady dimension per RULE 7) is not satisfied for these 4. load_snapshot is only inferred (not confirmed) as the target of the page's refreshLive prop pattern-match; logout/switch_account/refresh_usage_snapshot do not appear in the page's 25 numbered interactions at all and may be invoked from tray_menu, a Settings page, or another frontend surface not reversed by this pass. Consumer should NOT begin implementation against these 4 commands from this package alone.",
+  "unknowns": [
+    {
+      "item": "frontend call-site for load_snapshot/logout/switch_account/refresh_usage_snapshot",
+      "class": "blocks_start",
+      "reason": "not found within the single frontend page (accounts-frontend.md) this package draws on; requires reversing tray_menu/Settings/other page frontend chunks not in this pass's scope, genuinely not examined"
+    },
+    {
+      "item": "core::repository deep-leaf evidence status relative to this package",
+      "class": "product_decision",
+      "reason": "the evidence exists (backend-baseline/models-repository-baseline.md) and is real, but a decision was made this pass to keep it out of this package's primary scope/coverage numbers because it is shared cross-cutting infrastructure (also used by quota/plan_mapping/api_client), not accounts-exclusive; a future pass could fold a targeted accounts-relevant subset of core::repository into this package's own scope if desired"
+    },
+    {
+      "item": "dim4 field-level DTO extraction",
+      "class": "blocks_start",
+      "reason": "not executed at all this pass -- only type-name enumeration (via serde glue symbol names) was cross-referenced from the pre-existing models-repository-baseline.md, no independent field-by-field read of the accounts-relevant DTO structs was performed"
+    },
+    {
+      "item": "dim6 test/acceptance mapping",
+      "class": "blocks_start",
+      "reason": "not produced this pass"
+    },
+    {
+      "item": "Windows 1.2.3 accounts platform gate",
+      "class": "blocks_start",
+      "reason": "raw evidence directories exist (raw/aimami/1.2.3/windows-x64/{account_io,commands/accounts}/) but were not opened or read this pass; not extrapolated from macOS per red line 8"
+    },
+    {
+      "item": "semantic-keyword orphan scan (account/snapshot/registry/lock outside the 9 in-scope directories)",
+      "class": "blocks_start",
+      "reason": "not executed at all -- genuinely not examined, explicitly recorded as an open gap by this producing session"
+    },
+    {
+      "item": "RULE 9 version-diff migration vs macos-1.0.9-accounts (which reached full_leaf_100_ida_accepted for 9 targets via live byte-level owner/wrapper/callsite VA graphs)",
+      "class": "blocks_start",
+      "reason": "not performed -- this pass had no IDA MCP access (pure read-only distillation of pre-existing .c/.md evidence) and could not independently verify no-behavior-diff against the 1.0.9 baseline to migrate its tier forward"
+    }
+  ],
+  "notes": [
+    "This package is materially more conservative than macos-1.2.3-relay's gate-report in one specific way: it explicitly demotes 4 of 12 accounts-domain-relevant commands out of consumerStartReady because their frontend call-site could not be confirmed within the single reversed page this package draws on -- this is a genuine four-angle-protocol finding (angle B, command-name diff against the page's own interaction list), not a copy-paste of the relay template's blanket 100%-command consumerStartReady pattern.",
+    "Backend decompile completeness (dim2) for the 141 in-scope files is strong and cross-validated against two independently-produced baseline documents with 0 discrepancy -- this is solid evidence-coverage, but per OUTPUT-SPEC.md historical-number caveat it is NOT by itself full_leaf_100 or implementation-ready.",
+    "core::repository (99 files) is the real deep-leaf owner for 7 of the 12 commands considered in this package but was deliberately kept out of this package's primary scope as shared cross-cutting infrastructure; see manifest.json scope.supplementary_cross_reference_only and pointers/evidence-paths.md for the cross-reference.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

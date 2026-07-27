@@ -7,7 +7,7 @@
 **Owner VA**: 0x10061f810
 **Symbol**: codexmate_lib::commands::system::open_path::h8be2aab143185937
 **Size**: 0x1e0 (480 bytes)
-**逆向分析**: hexrays_ready=true, uptime=58008s
+**逆向分析**: IDA decompiler_ready=true, uptime=58008s
 
 ---
 

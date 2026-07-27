@@ -1,0 +1,59 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "home-usage-frontend",
+  "coverage_mode": "frontend-control-flow + UI/state only (dim1); NOT backend-owned-target-universe",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "load_usage_analytics",
+    "load_session_analytics",
+    "load_token_analytics",
+    "load_tool_analytics",
+    "load_change_analytics",
+    "load_quota_history",
+    "load_snapshot",
+    "refresh_usage_snapshot"
+  ],
+  "consumerStartReady_meta": {
+    "startMode": "reverse_guided",
+    "allowedImplementationMode": "Implement the C5 dashboard/analytics frontend from the documented render surface + interaction-to-command chains (routing topology, useQuery lazy-fetch pattern with staleTime/enabled guards, shared-snapshot push-driven cache, manual refresh backoff, tab optimistic-UI + min-loading throttle, quota accountKey guard + min-sample gating). Derive the RESPONSE payload shape from the sibling macos-1.2.3-sessions-analytics backend evidence (for the 5 analytics commands) or treat it as Unknown pending backend.",
+    "forbiddenAssumptions": [
+      "Do NOT assume Windows UI parity from macOS (dim5 Windows Unknown; command-name parity != UI closure).",
+      "Do NOT assume the backend response DTO / error envelope shape for load_snapshot / refresh_usage_snapshot / load_quota_history from this bundle (dim4 response Unknown).",
+      "Do NOT treat frontend command-name coverage as strict upstream behavior parity (dim2-dim6 open).",
+      "Do NOT assume load_snapshot has a literal invoke('load_snapshot') call site -- binding inferred from queryKey shape (accepted_unknown)."
+    ]
+  },
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 8 consumerStartReady commands: readyToImplement blocked pending dim2 (backend owner/pseudocode) + dim3 (call-tree) + dim4 (response DTO/error/side-effect boundary) + dim6 (test/acceptance) closure on macOS"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 8 consumerStartReady commands: strictImplementationUse blocked -- this is a frontend-surface bundle; backend owner/IDA decompile/call-tree to implementation leaves is Unknown this pass. For load_session/token/tool/change_analytics + load_usage_analytics, the core:: bodies exist in macos-1.2.3-sessions-analytics -- a strict pass should cross-reference that bundle plus close dim4 response DTO + dim6, rather than re-decompile."
+    ],
+    "consumerStartBlocked": [
+      "load_bootstrap_state: blocks_start -- frontend-control-flow-missing (command in ipc-contracts.jsonl but no located UI trigger in the two reduced page docs; likely App-shell lifecycle command, search i7() mount useEffect + shared hook layer index-B40jKs17.js L12200-12700).",
+      "get_usage_refresh_interval: blocks_start -- consuming hook cU() located in the home App shell but the get call-site DTO + the settings control that mutates it are outside this module's page scope (plausibly SettingsPage). product_decision needed on module ownership (Windows sibling filed get/set under windows-1.2.3-system-usage)."
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "excluded_other_module_owner": {
+    "load_mcp_servers": "mcp module (surfaced in home Dashboard stat card + ug() deferred query, but backend owner belongs to mcp)",
+    "set_usage_refresh_interval": "settings/system-usage module (Windows sibling owner windows-1.2.3-system-usage)",
+    "refresh_single_account_usage": "accounts module (Windows sibling owner windows-1.2.3-accounts)"
+  },
+  "next_producer_steps": [
+    "Run an IDA backend pass for the 8 covered commands: owner + decompile + callees to fs/sqlite/http leaves. For the 5 analytics commands, cross-reference macos-1.2.3-sessions-analytics (core::session_analytics::compute_* + core::analytics::compute_usage_analytics already reduced there) instead of re-decompiling; then extend to load_snapshot/refresh_usage_snapshot/load_quota_history owners (Unknown, likely core::snapshot / core::quota_history).",
+    "Run a dim4 pass: extract per-command response DTO/error envelope from the backend bodies (once dim2 located) to close the frontend-consumption boundary.",
+    "Produce windows-1.2.3-home-usage-frontend/ with a Windows page-level UI reduce (aligned to the macOS shared-index-app-frontend.md + analytics-maintenance-autoswitch-frontend.md depth) -- Windows render-surface is currently Unknown, command-name parity is not a substitute.",
+    "Locate load_bootstrap_state's frontend trigger (search i7() mount useEffect chain L43224-43260 + shared hook layer L12200-12700).",
+    "Resolve get_usage_refresh_interval / set_usage_refresh_interval module ownership (home vs settings/system-usage) as a product decision; the Windows sibling filed them under windows-1.2.3-system-usage.",
+    "Run a dim6 pass mapping each covered command to C5 (Polaris) unit/E2E/manual acceptance."
+  ]
+}

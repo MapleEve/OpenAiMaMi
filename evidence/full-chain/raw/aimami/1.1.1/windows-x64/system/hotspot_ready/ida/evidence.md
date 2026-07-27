@@ -12,7 +12,7 @@ gate_tier: strictImplementationUse (upgraded from candidate — dim1 CCF + dim4 
 
 ## dim1 CCF — Live Confirmation (<审计会话>)
 
-**Method**: `<逆向工具通道>` pattern `hotspot_ready` on live IDB (AiMaMi 1.1.1 win64.exe.i64, hexrays_ready=true, module confirmed).
+**Method**: `<逆向工具通道>` pattern `hotspot_ready` on live IDB (AiMaMi 1.1.1 win64.exe.i64, IDA decompiler_ready=true, module confirmed).
 
 **Result**: `n=1, match=[{"addr":"0x1412ac4a3","string":"hotspot_ready"}]`
 

@@ -9,7 +9,7 @@
 
 ## Confirmed
 
-1. **Owner VAs**: `commands::skills::load_installed_skills` @ `0x10072db50` (size 0x58a), `core::skills::load_installed_skills` @ `0x1005e78d0` (size 0x14f). Both located via `func_query name_regex="load_installed_skills"` with 逆向分析 live (hexrays_ready=true, module=AiMaMi 1.1.1). 逆向分析 decompile confirmed; raw pseudocode in `ida/pseudocode/`.
+1. **Owner VAs**: `commands::skills::load_installed_skills` @ `0x10072db50` (size 0x58a), `core::skills::load_installed_skills` @ `0x1005e78d0` (size 0x14f). Both located via `func_query name_regex="load_installed_skills"` with 逆向分析 live (IDA decompiler_ready=true, module=AiMaMi 1.1.1). 逆向分析 decompile confirmed; raw pseudocode in `ida/pseudocode/`.
 
 2. **NEW delta callee confirmed absent from 1.0.9**: `Repository::store_bootstrap_installed_skills` @ `0x1004cf950` (size 0x1d4). Call site evidence: `call codexmate_lib::core::repository::Repository::store_bootstrap_installed_skills::h770665096ee67f36` from decompile of `0x10072db50`. Verified via 逆向分析 callees tool — callee list for `0x10072db50` explicitly contains `0x1004cf950`. 1.0.9 symbol table has no equivalent function at any VA range.
 

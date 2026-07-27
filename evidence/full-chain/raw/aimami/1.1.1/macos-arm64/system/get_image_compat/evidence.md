@@ -10,7 +10,7 @@ produced_at: 2026-06-17
 
 ## ## Confirmed
 
-1. **Owner VA confirmed**: `codexmate_lib::commands::system::get_image_compat::h0d0962e899c1c6b4` at `0x100617f40`, size=0x2fc, 逆向分析 HexRays clean decompile (hexrays_ready=true, uptime 36488s).
+1. **Owner VA confirmed**: `codexmate_lib::commands::system::get_image_compat::h0d0962e899c1c6b4` at `0x100617f40`, size=0x2fc, 逆向分析 HexRays clean decompile (IDA decompiler_ready=true, uptime 36488s).
 
 2. **Module confirmed as system**: mangled symbol contains `codexmate_lib::commands::system::get_image_compat` — module is `system`, not `relay`, `accounts`, or any other module.
 

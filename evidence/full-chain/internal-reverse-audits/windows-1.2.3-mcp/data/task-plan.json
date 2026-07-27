@@ -1,0 +1,37 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "mcp",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "load_mcp_servers", "upsert_mcp_server", "set_mcp_server_enabled", "remove_mcp_server"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 4 mcp commands: readyToImplement blocked pending dim2 (core owner confirmation for 3/4 commands + census-completeness closure) + dim3 (call-tree to leaf) + dim4 (formal DTO struct dump) + dim5 (macOS/Windows structural diff) + dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "load_mcp_servers/set_mcp_server_enabled/remove_mcp_server: strictImplementationUse blocked pending core-owner identification (currently Unknown for all 3)",
+      "upsert_mcp_server: strictImplementationUse blocked pending dim3 (full call-tree to fs/toml leaves not traced) + dim4 (formal struct dump) closure, despite having core ground-truth ownership"
+    ],
+    "consumerStartBlocked": []
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferMacOSFromWindows": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Run a full live angle-A symbol census for core::mcp on windows-x64: the func_query name-substring filter appeared non-functional this session (returned the full function table); investigate the correct query syntax/params, or alternatively enumerate the full function address range and cross-reference against panic-Location source-path xrefs pointing to 'core/mcp.rs' (per SKILL.md red line 24's win-native owner-resolution method) to systematically find the remaining 5+ undiscovered core::mcp functions (load_mcp_servers-core, quote_toml, prepare_existing_mcp_block, set_optional_string, remove_mcp_server-core, set_mcp_server_enabled-core, and any others beyond mac's known 14-function set).",
+    "Trace upsert_mcp_server_0's (0x1409e86f0) full internal call tree to concrete fs::read/write and toml_edit/toml crate leaf operations -- this session only confirmed identity + non-truncation + 3 template-string reference locations, not a complete dim3 call-tree document.",
+    "Resolve sub_1409E1D30's (0x1409e1d30, 1284 lines) relationship to upsert_mcp_server_0 -- is it a caller, a callee, a shared helper invoked from multiple commands, or an unrelated function that happens to also parse a field named 'transport'? Check via callees()/xrefs_to() on both addresses.",
+    "Independently verify whether win wrapper's 'environment' literal key and macOS README's 'env' field name refer to the same DTO field (likely, given both are read-modify-write TOML mcp_servers.<name> section editors) or are genuinely different -- check the frontend Dialog form's argKeys against both.",
+    "Run a dim4 pass: build a formal per-field DTO table (defaults/nullability/error envelope) for all 3 mutating commands, leveraging the STRONGER ground-truth literal-key evidence this package already captured (better starting point than macOS's inference-only equivalent).",
+    "Run a dim6 pass: map the 4 mcp commands' side effects to Polaris's own C5 unit/E2E test surface or explicit manual-acceptance criteria.",
+    "Produce a formal per-field macOS<->Windows structural diff document once both platforms' dim4 passes are done (this session's SYSTEM-DIFF.md is narrative-level only).",
+    "If a full live census closes the 6-function gap, re-run the four-angle completeness check (per SKILL.md red line 15) before considering dim2 'strong'."
+  ]
+}

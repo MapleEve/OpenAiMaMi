@@ -1,0 +1,70 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "skills",
+  "package": "windows-1.2.3-skills",
+  "created_at": "2026-07-25T00:00:00Z",
+  "producer_machine": "this session (live IDA MCP -> Win IDA instance <host>, AiMaMi.1.2.3 win64.exe.i64); mixed distillation + gap-fill pass (batch2 instruction: merge already-reversed win skills .c into a canonical package, with live grounding self-check per SKILL.md red line 14/15/17)",
+  "binary": {
+    "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+    "binary_format": "pe",
+    "pe_machine": "AMD64",
+    "idb_module_name": "AiMaMi.1.2.3 win64.exe (strip)",
+    "idb_path": "E:\\binary\\AiMaMi.1.2.3 win64.exe.i64"
+  },
+  "scope": {
+    "backend_target_universe": "codexmate_lib::core::skills::* (module-attributed via panic-Location xref / call-graph propagation to src/core/skills.rs) + codexmate_lib::commands::skills::* (6 tauri command handlers, ground-truth named via command-name string xref) -- unlike macOS, Windows DOES carry standalone symbols/attribution for both the core-helper layer and the command-handler layer",
+    "frontend_target_universe": "N/A -- Windows package is backend-only; frontend evidence is macOS-sourced (Tauri JS bundle is platform-agnostic) except ipc-contracts.jsonl itself, which IS platform-specific and was read directly from the windows-x64 frontend extraction this pass",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "raw_c_files_before_this_session": 6,
+    "raw_c_files_after_this_session": 13,
+    "raw_c_files_added_this_session": 7,
+    "raw_c_files_added_list": [
+      "import_skill_0x140c9a610.c (complete, 44823 chars)",
+      "load_installed_skills_0x140c9ec80.c (complete, 37177 chars)",
+      "delete_skill_backup_0x140c92a80.c (TRUNCATED, 1023/48033 chars shown)",
+      "restore_skill_backup_0x140c95480.c (complete, 44895 chars)",
+      "remove_skill_0x140c97d50.c (complete, 44726 chars)",
+      "load_skill_backups_0x140c9ced0.c (complete, 31948 chars)",
+      "backup_skill_directory_0x1409060c0.c (TRUNCATED, 1023/66937 chars shown; distinct from the pre-existing backup_skill_directory_0 at 0x140ad8b50)"
+    ],
+    "core_skills_dirtree_functions": 7,
+    "core_skills_dirtree_list": ["backup_skill_directory (0x1409060c0, NEW this session)", "backup_skill_directory_0 (0x140ad8b50)", "publish_staged_skill (0x140ad5ed0)", "sub_1408A4BA0 (0x1408a4ba0)", "sub_140AD6680 (0x140ad6680)", "sub_140B0FD50 (0x140b0fd50)", "sub_1414860D0 (0x1414860d0)"],
+    "commands_skills_dirtree_functions_before_this_session": 0,
+    "commands_skills_dirtree_functions_after_this_session": 6,
+    "commands_skills_dirtree_list": ["import_skill", "load_installed_skills", "load_skill_backups", "remove_skill", "restore_skill_backup", "delete_skill_backup"],
+    "commands_skills_move_note": "All 6 were LIVE in the IDB (ground-truth command-name-xref named, per file header '// win 1.2.1 | tauri command handler = <name> | mapped via command-name string xref (win-native, ground-truth)') but sitting UNFILED at dirtree root (/codexmate_lib/<name>), not yet moved into any module folder, and with ZERO raw/.c evidence on disk anywhere -- discovered via this session's live func-comment+name scan (angle-C), not previously known to any prior audit package including macos-1.2.3-skills batch1. This session moved all 6 into /codexmate_lib/commands/skills/ (dt.rename, rc=DTE_OK for all 6, idb_save confirmed ok=true) and wrote their raw .c dumps.",
+    "frontend_commands_covered": 6,
+    "frontend_commands_list": ["import_skill", "load_installed_skills", "load_skill_backups", "remove_skill", "restore_skill_backup", "delete_skill_backup"],
+    "frontend_commands_source": "raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl (131 total win commands; grep .command containing 'skill' this session)",
+    "windows_functions_owner_confirmed_total": 13,
+    "windows_functions_content_complete_non_truncated": 11,
+    "windows_functions_content_truncated": 2,
+    "windows_functions_unresolved_identity_sub_stubs": 4,
+    "windows_functions_unresolved_list": ["sub_1408A4BA0 (0x1408a4ba0, small, complete pseudocode, identity inferred not confirmed -- RAII-cleanup-shaped, called by backup_skill_directory)", "sub_140AD6680 (0x140ad6680, small, complete, symlink-traversal-guard-shaped)", "sub_140B0FD50 (0x140b0fd50, small, complete, cleanup-wrapper-shaped)", "sub_1414860D0 (0x1414860d0, small, complete, 2-call-chain lookup-shaped)"],
+    "measurement_basis": "live IDA MCP this session: dirtree BFS walk (IDA Python, DIRTREE_FUNCS) for /codexmate_lib/core/skills (7) and /codexmate_lib/commands/skills (0 before / 6 after move); func-name+comment scan across idautils.Functions() for substring 'skill' (14 hits total, 1 false-positive excluded -- serialize_10 comment hit not independently resolved this pass, see known_residuals); ipc-contracts.jsonl grep for 6 frontend commands; find|wc -l on raw/aimami/1.2.3/windows-x64/skills/ida/pseudocode/*.c (13, up from 6) re-verified by direct Read/decompile of all 7 newly-added files this session (not trusting any prior summary)"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.2.3-skills/ (same-version macOS sibling; primary blueprint for this package's RULE8 skeleton per user instruction; its dim5 assumption of '6 files/2 confirmed' on Windows is SUPERSEDED by this package's live findings -- 13 files/13 owner-confirmed now exist)",
+    "internal-reverse/audits/windows-1.0.9-skills/ (prior-version Windows baseline; consulted for RULE8 skeleton conventions, not re-verified against 1.2.3 windows evidence this pass)",
+    "internal-reverse/audits/windows-1.2.3-relay/ (same-platform same-version sibling; consulted for win-specific manifest/gate-report conventions, e.g. sha256_binary field, dim5 platform-gate phrasing)"
+  ],
+  "cross_platform_sibling": "internal-reverse/audits/macos-1.2.3-skills/ (macOS has 21/21 real-named functions with fs-syscall-level call-tree narrative; this Windows package has owner-confirmed pseudocode for all 6 frontend commands + 7 core helpers, but NO call-tree tracing was attempted this pass for the 5 complete 30-45K-char command bodies -- do not conflate 'owner + pseudocode present' with macOS's stronger 'call-tree traced to fs syscall leaf' status)",
+  "known_residuals": [
+    "2 of 7 newly-captured functions (delete_skill_backup, backup_skill_directory) are severely TRUNCATED by the decompile MCP tool's own response-size limit (1023 chars shown of 48033 and 66937 respectively, ~2% and ~1.5%) -- per SKILL.md red line 20, these are NOT treated as complete decompiles; real prefix preserved, TRUNCATED marker present in both the raw .c file and this manifest. Follow-up basic_blocks chunked read needed before any implementation claim on these two.",
+    "5 of 6 command handlers (import_skill/load_installed_skills/restore_skill_backup/remove_skill/load_skill_backups) have COMPLETE non-truncated decompile text on disk (31-45K chars each) but this session did NOT perform line-by-line call-tree tracing to a real syscall leaf for any of them (the Rust-async-state-machine-flattened body is far larger and more complex than the small helper functions read in the original 6-file raw set) -- dim3 (call-tree-to-leaf) remains NOT closed for the command-handler layer on Windows; only asserting dim2 (owner + pseudocode presence) is strong.",
+    "4 small helper functions (sub_1408A4BA0/sub_140AD6680/sub_140B0FD50/sub_1414860D0) remain identity-unresolved (module-attributed + call-site-inference only, consistent with macos-1.2.3-skills package's own accepted_unknown classification) -- this session did NOT attempt further identity resolution beyond re-confirming one call edge (backup_skill_directory -> sub_1408A4BA0, via callees() this session, upgrading that one edge from 'inference' to 'confirmed call graph edge').",
+    "angle-C (semantic orphan scan) found 1 lead requiring follow-up: function serialize_10 (0x140aa9980), comment/name match for 'skill' substring. IDA connection dropped mid-session before this could initially be checked (1 retry attempted per red line 17, then stopped rather than treating the drop as 'no gap'); connection recovered later in this same session and the lead was resolved: it is codexmate_lib::core::models::...SkillRemovePayload::serialize, a DTO glue function physically in core::models (not core::skills/commands::skills) -- angle-D classification already_in_canonical, not a truly_undone orphan.",
+    "No independent SHA256 was computed by this session for the specific skills leaf; sha256_binary is reused from windows-1.2.3-relay's manifest.json (same win 1.2.3 binary, same idb_path/module) -- not independently re-hashed this pass.",
+    "This package does NOT claim readyToImplement or strictImplementationUse for any of the 6 commands (see gate-report.json) -- dim3/dim4/dim6 all remain open, consistent with macos-1.2.3-skills sibling's own conservative posture, even though this pass materially IMPROVED dim5 raw-evidence quantity/quality relative to what macos-1.2.3-skills batch1 assumed about Windows."
+  ],
+  "note": "This manifest documents a mixed distillation-plus-gap-fill pass: distillation of the 6 pre-existing raw .c files (unchanged), PLUS live-IDA gap-fill this session that discovered and captured 7 additional functions (1 core-helper truncated giant + 6 ground-truth-named command handlers, 5 of which are complete) that existed in the live IDB but had zero prior raw/.c evidence and zero dirtree module placement. Per skill red-line 8, macOS evidence is NOT extrapolated onto Windows anywhere in this package; every claim here traces to a live IDA call or a raw .c file produced this session, listed in pointers/evidence-paths.md."
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "bundle": "internal-reverse/audits/macos-1.2.3-custom-instructions",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos",
+  "module": "custom-instructions",
+  "session_id": "reduce-mac123-custominstr-20260726021919",
+  "machine": "Maple-M3-Max",
+  "date": "2026-07-26",
+  "pass_type": "reduce_only_no_new_reverse",
+  "claim": {
+    "owner_gate": "ADDITIVE",
+    "collision_status": "no_collision",
+    "collision_note": "bundle already at DISTILLED_PARTIAL_CHANGE; this pass only fills missing logic/ + reviews/. macos-1.2.3-custom-instructions is not owned_by_other and not in any active in-progress REVERSE-STATUS round (active round wf-aimami118-delta-20260711 is 1.1.8-delta scope).",
+    "explicit_takeover_token": null
+  },
+  "artifacts_written": [
+    "logic/DELTA-LOGIC-123.md",
+    "logic/REGISTRATION-TABLE-123.md",
+    "reviews/CLAUDE.md",
+    "data/producer-ledger.json"
+  ],
+  "source_evidence_read": [
+    "raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl",
+    "raw/aimami/1.2.3/macos-arm64/frontend/frontend-contract-report.md",
+    "raw/aimami/1.2.3/macos-arm64/backend-baseline/commands-baseline.md",
+    "raw/aimami/1.2.3/macos-arm64/core/relay/ida/pseudocode/__codexmate_lib_core_relay_transition_journal___impl_serde_core_de_Deserialize_for_codexmate_lib_core_relay_transition_j_0x100373380.c",
+    "internal-reverse/audits/macos-1.2.3-custom-instructions/data/migration-check-evidence.json",
+    "internal-reverse/REVERSE-STATUS.md (1.1.1 mac clear_custom_instruction_block sub-entry)"
+  ],
+  "live_ida_rerun": false,
+  "gate_unchanged": {
+    "status": "DISTILLED_PARTIAL_CHANGE",
+    "consumerStartReady": true,
+    "strictImplementationUse": false,
+    "readyToImplement": false,
+    "gate_accepted": false,
+    "implementation_use": false,
+    "full_leaf_100": false
+  },
+  "terminal_state": "reduce_complete",
+  "later_gate_upgrade_event": {
+    "note": "This record above (gate_unchanged) accurately describes the state AT THE END of the reduce-mac123-custominstr-20260726021919 pass and is left untouched. A LATER, separate session on the same date closed the remaining gap and upgraded the gate; documenting the pointer here so a reader of this ledger is not misled into thinking DISTILLED_PARTIAL_CHANGE is still current.",
+    "gapclose_session": "mac123-custominstr-gapclose-20260726142739 (produced ../DISTILLED.md, live re-verification)",
+    "upgrade_session_event": "EXPLICIT_OVERWRITE_CANONICAL, 2026-07-26, authorized_by=user in-chat this task round",
+    "current_gate_as_of_upgrade": {
+      "status": "ACCEPTED_READY_ABSENT_BACKEND_ORPHAN_IDA_DIRECT_LIVE_REVERIFIED",
+      "consumerStartReady": true,
+      "strictImplementationUse": true,
+      "readyToImplement": true,
+      "gate_accepted": true,
+      "implementation_use": true,
+      "full_leaf_100": true
+    },
+    "full_record_pointer": "../manifest.json gate.upgrade_history[] and ../gate-report.json gate_upgrade{}"
+  }
+}

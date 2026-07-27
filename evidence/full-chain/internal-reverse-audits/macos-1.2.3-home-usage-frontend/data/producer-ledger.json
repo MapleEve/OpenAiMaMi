@@ -1,0 +1,100 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "bundle": "macos-1.2.3-home-usage-frontend",
+  "producer": "claude-opus (this session)",
+  "machine": "<host>",
+  "session": "macos-1.2.3-home-usage-frontend-reduce-20260726",
+  "produced_at": "2026-07-26",
+  "sha256_binary": "not_recomputed_this_pass -- see raw/binary/ SOT for AiMaMi 1.2.3 macos-arm64 authoritative hash",
+  "mode": "read_only_frontend_surface_reduce",
+  "task_kind": "reduce (frontend-surface distillation of pre-existing raw page reduces + cross-1.2.3-home-usage-frontend mac-side conclusion; no new IDA MCP calls, no new raw/intermediate produced)",
+  "new_raw_or_intermediate_produced": false,
+  "closes_cross_gap": "cross-1.2.3-home-usage-frontend gate-report cluster_gate_summary.gap_needs_reducer=2 -- this bundle closes the macOS single-platform reducer half (windows-1.2.3-home-usage-frontend remains open)",
+  "gate_tier": "consumerStartReady",
+  "gate_accepted": false,
+  "implementation_use": false,
+  "full_leaf_100": false,
+  "leaves": [
+    {
+      "command": "load_usage_analytics",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos (AnalyticsPanel At activity tab useQuery, staleTime Infinity)",
+      "dim2_backend": "unknown_this_bundle (core body exists in macos-1.2.3-sessions-analytics)",
+      "evidence_path": "raw/aimami/1.2.3/macos-arm64/frontend/pages/analytics-maintenance-autoswitch-frontend.md#1.2"
+    },
+    {
+      "command": "load_session_analytics",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos (sessions tab useQuery p, param range, staleTime 5min)",
+      "dim2_backend": "unknown_this_bundle (core body exists in macos-1.2.3-sessions-analytics)",
+      "evidence_path": "raw/aimami/1.2.3/macos-arm64/frontend/pages/analytics-maintenance-autoswitch-frontend.md#1.2"
+    },
+    {
+      "command": "load_token_analytics",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos (token tab useQuery d, param range)",
+      "dim2_backend": "unknown_this_bundle (core body exists in macos-1.2.3-sessions-analytics)",
+      "evidence_path": "raw/aimami/1.2.3/macos-arm64/frontend/pages/analytics-maintenance-autoswitch-frontend.md#1.2"
+    },
+    {
+      "command": "load_tool_analytics",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos (tools tab useQuery x, param range)",
+      "dim2_backend": "unknown_this_bundle (core body exists in macos-1.2.3-sessions-analytics)",
+      "evidence_path": "raw/aimami/1.2.3/macos-arm64/frontend/pages/analytics-maintenance-autoswitch-frontend.md#1.2"
+    },
+    {
+      "command": "load_change_analytics",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos (changes tab useQuery j, param range)",
+      "dim2_backend": "unknown_this_bundle (core body exists in macos-1.2.3-sessions-analytics)",
+      "evidence_path": "raw/aimami/1.2.3/macos-arm64/frontend/pages/analytics-maintenance-autoswitch-frontend.md#1.2"
+    },
+    {
+      "command": "load_quota_history",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos (quota tab useQuery h, param accountKey, guard !!accountKey, min-sample gating)",
+      "dim2_backend": "unknown_this_bundle",
+      "evidence_path": "raw/aimami/1.2.3/macos-arm64/frontend/pages/analytics-maintenance-autoswitch-frontend.md#1.2-1.4"
+    },
+    {
+      "command": "load_snapshot",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos_render_surface (shared E2() hook, Dashboard BH account card + KH health card, push-driven runtime-state-updated); literal invoke name accepted_unknown (inferred from queryKey shape)",
+      "dim2_backend": "unknown_this_bundle",
+      "evidence_path": "raw/aimami/1.2.3/macos-arm64/frontend/pages/shared-index-app-frontend.md#2.2"
+    },
+    {
+      "command": "refresh_usage_snapshot",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos (BH refresh, S.refreshUsageOnly -> Ee.refreshUsageSnapshot, re('refresh_usage_snapshot') L11864, 800/1600ms backoff retry)",
+      "dim2_backend": "unknown_this_bundle",
+      "evidence_path": "raw/aimami/1.2.3/macos-arm64/frontend/pages/shared-index-app-frontend.md#3"
+    },
+    {
+      "command": "load_bootstrap_state",
+      "gate": "consumerStartBlocked",
+      "dim1_frontend": "missing (no located UI trigger; command-scan only)",
+      "reason": "blocks_start frontend-control-flow-missing",
+      "evidence_path": "raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl"
+    },
+    {
+      "command": "get_usage_refresh_interval",
+      "gate": "consumerStartBlocked",
+      "dim1_frontend": "partial (consuming hook cU() located in i7(); mutating settings control out of module scope)",
+      "reason": "product_decision on module ownership (settings/system-usage vs home)",
+      "evidence_path": "raw/aimami/1.2.3/macos-arm64/frontend/pages/shared-index-app-frontend.md#2.1"
+    }
+  ],
+  "excluded_other_module_owner": {
+    "load_mcp_servers": "mcp module",
+    "set_usage_refresh_interval": "settings/system-usage module (win owner windows-1.2.3-system-usage)",
+    "refresh_single_account_usage": "accounts module (win owner windows-1.2.3-accounts)"
+  },
+  "grounded_checks_run": [
+    "ls audits/ -> macos-1.2.3-home-usage-frontend absent before write (first)",
+    "grep home-usage-frontend INDEX.jsonl -> 0 hits (no collision)",
+    "grep 8-command keywords in backend-baseline/commands-baseline.md -> 0 hits (dim2 gap confirmed)",
+    "read both mac page reduces in full (component tree + useQuery tables + interaction-to-command)"
+  ]
+}

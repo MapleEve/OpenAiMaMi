@@ -1,0 +1,102 @@
+{
+  "schema": "c5cm.reverse.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "mystery-unlock",
+  "package_kind": "understand_and_classify",
+  "honest_tier_statement": "This package does NOT claim consumerStartReady, strictImplementationUse, or readyToImplement for any tos_circumvention target, regardless of how complete the pseudocode/call-tree evidence is for those targets. Evidence completeness for cluster A is recorded for classification transparency only, not as a step toward an implementation gate.",
+  "targets": [
+    {
+      "name": "core::relay::router_unlock_auth::* (20 symbols)",
+      "classification": "tos_circumvention",
+      "consumerStartReady": false,
+      "strictImplementationUse": false,
+      "readyToImplement": false,
+      "implementation_use": false,
+      "gate_accepted": false,
+      "block_reason": "product_decision_tos_circumvention",
+      "block_permanent": true,
+      "evidence_completeness": "high (24/24 files read, non-failed decompile)",
+      "note": "Evidence completeness is intentionally irrelevant to gate status here; blocked by classification, not by missing evidence."
+    },
+    {
+      "name": "core::relay::legacy_virtual_auth::* (6 symbols)",
+      "classification": "tos_circumvention",
+      "consumerStartReady": false,
+      "strictImplementationUse": false,
+      "readyToImplement": false,
+      "implementation_use": false,
+      "gate_accepted": false,
+      "block_reason": "product_decision_tos_circumvention",
+      "block_permanent": true,
+      "evidence_completeness": "high (8/8 files read)"
+    },
+    {
+      "name": "core::auth::is_aimami_managed_virtual_auth",
+      "classification": "tos_circumvention",
+      "consumerStartReady": false,
+      "strictImplementationUse": false,
+      "readyToImplement": false,
+      "implementation_use": false,
+      "gate_accepted": false,
+      "block_reason": "product_decision_tos_circumvention_dependent_detector",
+      "block_permanent": true,
+      "evidence_completeness": "high (1/1 file read)"
+    },
+    {
+      "name": "core::relay::codex_diagnostic::check_router_unlock_auth_residue",
+      "classification": "tos_circumvention",
+      "consumerStartReady": false,
+      "strictImplementationUse": false,
+      "readyToImplement": false,
+      "implementation_use": false,
+      "gate_accepted": false,
+      "block_reason": "product_decision_dependent_on_skipped_feature",
+      "block_permanent": true,
+      "evidence_completeness": "read"
+    },
+    {
+      "name": "core::relay::codex_diagnostic::fix_router_unlock_auth_residue",
+      "classification": "tos_circumvention",
+      "consumerStartReady": false,
+      "strictImplementationUse": false,
+      "readyToImplement": false,
+      "implementation_use": false,
+      "gate_accepted": false,
+      "block_reason": "product_decision_dependent_on_skipped_feature",
+      "block_permanent": true,
+      "evidence_completeness": "read"
+    },
+    {
+      "name": "commands::system::get_mystery_unlock_grants / merge_mystery_unlock_grants",
+      "classification": "normal_feature",
+      "consumerStartReady": false,
+      "strictImplementationUse": false,
+      "readyToImplement": false,
+      "implementation_use": false,
+      "gate_accepted": false,
+      "block_reason": "missing_frontend_ccf_dto_windows_acceptance_mapping",
+      "block_permanent": false,
+      "evidence_completeness": "backend owner/pseudocode/call-tree closed; frontend/DTO/Windows/acceptance open",
+      "note": "Not blocked by product decision; blocked by incomplete start-gate dimensions per RULE 7 (9 动工维度). Can progress with a follow-up evidence pass if product wants this feature."
+    },
+    {
+      "name": "core::repository::Repository::get_mystery_unlock_grants / merge_mystery_unlock_grants",
+      "classification": "normal_feature",
+      "consumerStartReady": false,
+      "strictImplementationUse": false,
+      "readyToImplement": false,
+      "implementation_use": false,
+      "gate_accepted": false,
+      "block_reason": "missing_frontend_ccf_dto_windows_acceptance_mapping",
+      "block_permanent": false,
+      "evidence_completeness": "backend owner/pseudocode/call-tree closed; frontend/DTO/Windows/acceptance open"
+    }
+  ],
+  "fullAppCoverageStatus": "not-full-app",
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  }
+}

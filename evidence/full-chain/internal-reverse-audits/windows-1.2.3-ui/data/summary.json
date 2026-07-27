@@ -1,0 +1,59 @@
+{
+  "schema": "c5cm.internal-reverse.audit_summary.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "ui",
+  "gate_tier": "blocks_start",
+  "gap_class": "gap_needs_new_raw",
+  "covered_commands": ["set_app_theme"],
+  "evidence": [
+    {
+      "class": "frontend_asset_direct_grep",
+      "detail": "package/AiMaMi-1.2.3-win64/tauri-dumped-assets/direct/assets/app-TuXtMya9.js:1 -- plugin:app|set_app_theme shim, argKey=theme, exported as setTheme; structurally identical to 1.0.9 (app-C4jGp0lC.js)",
+      "hits": 1
+    },
+    {
+      "class": "frontend_ipc_contracts_jsonl",
+      "detail": "raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl, 131 commands, grep -i theme = 0 (extractor omits plugin:app|* builtin shims by design)",
+      "hits": 0,
+      "total_commands": 131
+    },
+    {
+      "class": "raw_dir_topology",
+      "detail": "raw/aimami/1.2.3/windows-x64/ has 65 module directories (+ 8 commands/ sub-directories), none named ui or theme",
+      "hits": 0
+    },
+    {
+      "class": "backend_pseudocode",
+      "detail": "0 .c files under raw/aimami/1.2.3/windows-x64/**/ida/pseudocode/ for a theme/appearance owner",
+      "hits": 0
+    },
+    {
+      "class": "orphan_semantic_scan_red_line_15",
+      "detail": "keyword scan (theme/appearance/window/style/dark/light/mica/tabbed/color/chrome) over 131-command ledger found 2 candidates (focus_main_window, has_notch), both already_in_canonical under windows-1.2.3-system-hotspot",
+      "hits": 2,
+      "resolved_orphans": 2,
+      "truly_undone_orphans": 0
+    }
+  ],
+  "package_path": {
+    "windows_binary": "raw/binary/AiMaMi.1.2.3 win64.exe",
+    "windows_binary_sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+    "windows_binary_size_bytes": 33667584,
+    "windows_1_0_9_baseline_binary": "raw/binary/AiMaM 1.0.9 win64.exe",
+    "windows_frontend_ipc_contracts": "raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl",
+    "windows_raw_module_tree": "raw/aimami/1.2.3/windows-x64/",
+    "leaf_bundle_this_package": "internal-reverse/audits/windows-1.2.3-ui/set_app_theme/",
+    "prior_version_leaf_bundle": "internal-reverse/audits/windows-1.0.9-ui/set_app_theme/",
+    "orphan_owner_bundle": "internal-reverse/audits/windows-1.2.3-system-hotspot/"
+  },
+  "rule9_migration_status": "diff_required",
+  "gate_leaf_status": "blocks_start",
+  "not_strict_implementation_use": true,
+  "not_ready_to_implement": true,
+  "produced_by_session": "win-1.2.3-ui-gatereport-reduce-20260726",
+  "over_prior_session": "win-ui-set-app-theme-123gap-20260725",
+  "machine": "<host>",
+  "produced_at": "2026-07-26"
+}

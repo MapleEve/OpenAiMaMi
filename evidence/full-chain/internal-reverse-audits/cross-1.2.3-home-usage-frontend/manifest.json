@@ -1,0 +1,143 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "cross",
+  "module": "home-usage-frontend",
+  "package": "cross-1.2.3-home-usage-frontend",
+  "created_at": "2026-07-25T00:00:00Z",
+  "updated_at": "2026-07-26T00:00:00Z",
+  "producer_machine": "<host>",
+  "task_kind": "reduce (cross-platform synthesis upgrade)",
+  "task_kind_note": "This is the second version of this bundle. v1 (2026-07-25) was a transitional direct-DISTILLED-from-raw synthesis produced because its two canonical single-platform dependencies (macos-1.2.3-home-usage-frontend, windows-1.2.3-home-usage-frontend) did not yet exist. Both now exist (produced 2026-07-26). This v2 upgrades the bundle to the standard synthesis-of-two-canonical-bundles path per v1's own README.md-documented next step, and additionally performs a full four-category orphan classification (rust-reverse-cookbook.md sec1 angle D) of this module's backend (dim2) status against all other discoverable 1.2.3 canonical packages. No new IDA MCP session was run; no new raw/intermediate evidence was produced; all cross-references are read-only pointers.",
+  "binary": {
+    "sha256_macos": "not independently recomputed this pass -- see raw/binary/ SOT for authoritative AiMaMi 1.2.3 macos-arm64 hash",
+    "sha256_windows": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396 (AiMaMi.1.2.3 win64.exe, 33667584 B, PE/AMD64, per windows-1.2.3-home-usage-frontend/manifest.json)",
+    "binary_format": "cross (macho + pe)"
+  },
+  "scope": {
+    "module_definition": "Home/Dashboard page (macOS K1() overview) + Usage/Analytics panel (macOS Lt=AnalyticsPanel; Windows equivalent chunks index-B40jKs17.js + analytics-panel-6jtfGEeX.js) cross-platform frontend-reachable command surface, synthesized from the two now-existing single-platform canonical bundles plus read-only cross-reference of backend-owning sibling packages.",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": false,
+    "coverage_mode": "cross-platform-dim1-synthesis + read-only-dim2-cross-reference (NOT backend-owned-target-universe; this bundle does not itself own or claim any backend evidence)",
+    "command_surface_total": 13,
+    "in_scope_commands_count": 10,
+    "in_scope_commands_note": "10-in-scope definition adopted from macos-1.2.3-home-usage-frontend's RULE-8a-compliant scope (3 commands explicitly excluded as other-module-owned). windows-1.2.3-home-usage-frontend's own manifest.json scope.targets still lists all 13 without this exclusion -- a known cross-sibling scope-definition inconsistency, see known_residuals.",
+    "covered_commands": [
+      "load_usage_analytics",
+      "load_session_analytics",
+      "load_token_analytics",
+      "load_tool_analytics",
+      "load_change_analytics",
+      "load_quota_history",
+      "load_snapshot",
+      "refresh_usage_snapshot"
+    ],
+    "consumerStartBlocked_commands": [
+      "load_bootstrap_state",
+      "get_usage_refresh_interval"
+    ],
+    "explicit_exclusions": {
+      "load_mcp_servers": "mcp module (macos-1.2.3-mcp + windows-1.2.3-mcp, both consumerStartReady 4/4)",
+      "set_usage_refresh_interval": "system-usage module (windows-1.2.3-system-usage, dim2 available VA 0x14018c2d0; no macOS canonical owner found)",
+      "refresh_single_account_usage": "accounts module (macos-1.2.3-accounts dim2 closed; windows-1.2.3-accounts dim2 Hex-Rays-decompile-FAILED)"
+    }
+  },
+  "coverage": {
+    "dim1_macos": "8/10 in-scope commands have page-level component/state/interaction-to-command mapping (consumerStartReady); 2/10 blocked (load_bootstrap_state no trigger; get_usage_refresh_interval partial call-entry). Source: macos-1.2.3-home-usage-frontend (produced 2026-07-26).",
+    "dim1_windows": "0/10 in-scope commands have page-level render-surface (renderSurfaceReady not closed for any); 10/10 have command-level minified-static CCF only (wrapper/argKeys/invoke-alias/source-chunk/partial-guard). Source: windows-1.2.3-home-usage-frontend (produced 2026-07-26).",
+    "command_surface_parity": "mac/win ipc-contracts.jsonl usage|analytics|snapshot|bootstrap keyword subset byte-identical 13/13 (grounded, re-confirmed this pass by reading both single-platform siblings' own re-confirmation).",
+    "measurement_basis": "Filesystem read of audits/{macos,windows}-1.2.3-home-usage-frontend/{README.md,AI.md,gate-report.json,manifest.json,logic/FULL-CHAIN-1.2.3.md} this session 2026-07-26, plus read-only cross-reference of audits/{macos,windows}-1.2.3-sessions-analytics, audits/{macos,windows}-1.2.3-relay, audits/{macos,windows}-1.2.3-accounts, audits/macos-1.2.3-bootstrap, audits/windows-1.2.3-daemon-autoswitch, audits/windows-1.2.3-system-usage, audits/{macos,windows}-1.2.3-mcp gate-report.json/manifest.json dim2 fields. No live IDA MCP session available or needed this pass (pure reduce/synthesis)."
+  },
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "audits/macos-1.2.3-home-usage-frontend/ (PRIMARY dependency -- macOS dim1 closure, now exists)",
+    "audits/windows-1.2.3-home-usage-frontend/ (PRIMARY dependency -- windows command-surface + minified CCF, now exists)",
+    "audits/cross-1.0.9-home-usage-frontend/DISTILLED-home-usage-load-chains.md (scope/template reference only, different version, no cross-version data inference performed)"
+  ],
+  "four_category_orphan_classification": {
+    "definition_source": "rust-reverse-cookbook.md sec1 angle D (four-category orphan classification: already_in_canonical / local_outtake / different_machine_owner / truly_undone)",
+    "scope_of_classification": "dim2 backend owner/pseudocode status for this module's 10 in-scope commands, cross-checked against all 15 macOS + 11 Windows 1.2.3 canonical audits/ packages",
+    "already_in_canonical": [
+      {
+        "commands": ["load_usage_analytics", "load_session_analytics", "load_token_analytics", "load_tool_analytics", "load_change_analytics"],
+        "owner_macos": "audits/macos-1.2.3-sessions-analytics (core::session_analytics::compute_* + core::analytics::compute_usage_analytics, consumerStartReady in that package)",
+        "owner_windows": "audits/windows-1.2.3-sessions-analytics (commands/analytics/ 5 named wrappers, ground-truth tauri handler provenance, consumerStartReady in that package -- stronger command-wrapper-layer coverage than macOS for these 5)",
+        "disposition": "no re-reverse needed; this module points to sessions-analytics for backend, does not duplicate its evidence"
+      },
+      {
+        "commands": ["load_quota_history"],
+        "owner_macos": "audits/macos-1.2.3-relay (VA 0x1006d4d30, one of 638 deduped decompiled functions, consumerStartReady in that package)",
+        "owner_windows": "audits/windows-1.2.3-relay (consumerStartReady 22/23, dim2 partial -- 208 deduped decompiled addresses)",
+        "disposition": "no re-reverse needed; semantic identity between relay-provider-quota framing and this module's account-quota consumption not independently re-verified (see gate-report.json unknowns, accepted_unknown)"
+      },
+      {
+        "commands": ["load_snapshot"],
+        "owner_macos": "audits/macos-1.2.3-accounts (commands::accounts::load_snapshot + load_full_runtime_snapshot_with_policy/load_usage_only_runtime_snapshot/get_cached_display_snapshot family, dim2 closed 0-truncation; that package's own dim1 for this command is consumerStartBlocked because AccountsPage's own reduce did not confirm a UI call-site -- this module's OWN dim1 already confirms it via Dashboard, making the two packages complementary)",
+        "owner_windows": "audits/windows-1.2.3-accounts (dim2 clean, one of 67/72 non-failed; same dim1-blocked-there / dim1-closed-here complementary relationship)",
+        "disposition": "no re-reverse needed; dim3 (leaf=core::repository) remains open even within the accounts package itself (cross-referenced only there too, not independently closed)"
+      },
+      {
+        "commands": ["refresh_usage_snapshot"],
+        "owner_macos": "audits/macos-1.2.3-accounts (refresh_usage_snapshot_with_retry, dim2 closed 0-truncation)",
+        "owner_windows": "audits/windows-1.2.3-accounts -- NOT closed: one of 5 genuine Hex-Rays-decompile-FAILED wrappers ('HEXRAYS_DECOMPILE_FAILED: switch analysis failed'). windows-1.2.3-system-usage independently records this as a version regression vs the 1.0.9 baseline (which reached strictImplementationUse for this command).",
+        "disposition": "macOS: no re-reverse needed. Windows: genuine open gap requiring a targeted ceiling-crack attempt within windows-1.2.3-accounts' own scope (not duplicated here)."
+      }
+    ],
+    "local_outtake": [],
+    "different_machine_owner": [
+      {
+        "commands": ["load_bootstrap_state"],
+        "owner_macos": "audits/macos-1.2.3-bootstrap (leaf bootstrap_cache, dim2 CLOSED, consumerStartReady in that package)",
+        "owner_windows": "audits/windows-1.2.3-daemon-autoswitch (NOT windows-1.2.3-bootstrap -- cross-platform module-boundary mismatch, VA 0x14018b520, status blocks_start / NOT closed in that package)",
+        "disposition": "macOS: already effectively covered (could be reclassified already_in_canonical for macOS specifically), but the Windows-side owner package itself has not closed the command, and the cross-platform owner assignment (bootstrap vs daemon-autoswitch) is itself inconsistent -- flagged as owner-reconciliation residual, not resolvable within this reduce-only session (would require EXPLICIT_REASSIGN_OWNER token touching macos-1.2.3-bootstrap and/or windows-1.2.3-daemon-autoswitch, both out of this session's write scope)"
+      },
+      {
+        "commands": ["get_usage_refresh_interval"],
+        "owner_macos": "NONE FOUND -- see truly_undone below",
+        "owner_windows": "audits/windows-1.2.3-system-usage (VA 0x14018cbb0, dim2 available/non-truncated, but that package's own overall gate is still blocks_start/gap_needs_reducer -- dim1 unclosed, dim3 callee chain untraced, RULE9 diff_required vs 1.0.9 baseline)",
+        "disposition": "Windows: pointer to windows-1.2.3-system-usage, no re-reverse needed for dim2 specifically (though that package itself is far from any consumer gate tier). macOS: see truly_undone."
+      },
+      {
+        "commands": ["load_mcp_servers"],
+        "owner_macos": "audits/macos-1.2.3-mcp (consumerStartReady 4/4)",
+        "owner_windows": "audits/windows-1.2.3-mcp (consumerStartReady 4/4)",
+        "disposition": "excluded from this module's covered_commands per RULE 8a; healthy status on both platforms in its true owning package, no action needed"
+      },
+      {
+        "commands": ["set_usage_refresh_interval"],
+        "owner_macos": "NONE FOUND",
+        "owner_windows": "audits/windows-1.2.3-system-usage (VA 0x14018c2d0, dim2 available)",
+        "disposition": "excluded from this module's covered_commands per RULE 8a; macOS gap noted but out of this module's scope, belongs to system-usage domain's own future work"
+      },
+      {
+        "commands": ["refresh_single_account_usage"],
+        "owner_macos": "audits/macos-1.2.3-accounts (dim2 closed, part of 8-confirmed-interaction / 141-file-0-failure set)",
+        "owner_windows": "audits/windows-1.2.3-accounts -- one of 5 Hex-Rays-decompile-FAILED wrappers",
+        "disposition": "excluded from this module's covered_commands per RULE 8a; accounts module's own future work, not duplicated here"
+      }
+    ],
+    "truly_undone": [
+      {
+        "commands": ["get_usage_refresh_interval (macOS dim2 backend specifically)"],
+        "reason": "Cross-checked against all 15 macOS 1.2.3 canonical audits/ packages (accounts/bootstrap/custom-instructions/daemon-autoswitch/home-usage-frontend/maintenance/mcp/mystery-unlock/plugins/relay/relay-core/sessions-analytics/skills/system/system-hotspot/tray/voice/window-path) -- no macos-1.2.3-system-usage package exists, and no other package's covered_commands/manifest claims this command's macOS backend. This is the ONE genuine truly_undone dim2 gap discovered for this module's in-scope command set. Frontend dim1 (consuming hook cU()) IS already partially located in macos-1.2.3-home-usage-frontend, so a future IDA pass has a concrete starting point (not a cold search)."
+      }
+    ],
+    "cross_dimension_residual_not_orphan_classification": {
+      "note": "dim3 (call-tree-to-leaf) and dim4 (response DTO/error-envelope/side-effect-boundary field-level) and dim6 (test/acceptance) are NOT orphan-classification items (no alternate owner exists anywhere for these dimensions on these commands) -- they are uniformly open across every cross-referenced package. This is the real remaining work, distinct from 'find the owner' which is now largely done for 8/10 commands. See gate-report.json dim_status and logic/FULL-CHAIN-1.2.3.md sec4."
+    }
+  },
+  "authoritative": true,
+  "authoritative_note": "authoritative=true refers to this bundle being the canonical cross-platform synthesis entry for home-usage-frontend at consumerStartReady tier (macOS side, 8/10 in-scope commands). It supersedes this bundle's own 2026-07-25 transitional-DISTILLED version. It is NOT authoritative as a substitute for any of the backend-owning sibling packages (sessions-analytics/relay/accounts/bootstrap/daemon-autoswitch/system-usage/mcp) -- this bundle only cross-references them via read-only pointers, per red line 3 (internal-reverse holds consumer-facing conclusions/pointers, not raw/duplicated evidence).",
+  "known_residuals": [
+    "Windows dim1 render-surface (10/10 commands): not reduced. Possible low-cost closure path identified but NOT verified this pass -- check whether index-B40jKs17.js / analytics-panel-6jtfGEeX.js are byte-identical between mac raw dump and win tauri-dumped-assets (per the precedent windows-1.2.3-accounts already established for accounts-page-GdJYDnGj.js, SHA-256 09336d32548087c04de52882ad2b37d9236a26678e7b53483bd1dd22c3d10c55, verified identical). If identical, mac's page-level reduce could be reused as a 'proven byte-identical artifact' for Windows dim1 instead of a fresh manual reduce.",
+    "get_usage_refresh_interval macOS dim2: genuine truly_undone gap (see four_category_orphan_classification.truly_undone above).",
+    "refresh_usage_snapshot Windows dim2: genuine Hex-Rays-decompile-FAILED gap in windows-1.2.3-accounts (attempted-and-failed, not accepted_unknown; version regression vs 1.0.9 baseline).",
+    "load_bootstrap_state cross-platform + cross-module owner inconsistency (macOS=bootstrap, Windows=daemon-autoswitch): pre-existing, already self-flagged by windows-1.2.3-bootstrap's own manifest.json, not resolvable without EXPLICIT_REASSIGN_OWNER token.",
+    "windows-1.2.3-home-usage-frontend/manifest.json scope.targets does not apply the RULE 8a exclusion of the 3 other-module-owned commands that macos-1.2.3-home-usage-frontend applies -- a scope-definition inconsistency between the two siblings, flagged for future owner-reconciliation.",
+    "load_quota_history relay-owner vs home-usage-frontend-consumer semantic identity: command-name and cross-platform VA-presence match, but function-body parameter-signature identity not independently re-verified this pass (accepted_unknown, non-blocking).",
+    "dim3 (call-tree-to-leaf), dim4 (field-level response DTO/error-envelope/side-effect-boundary), dim6 (test/acceptance mapping): not closed for any of the 10 in-scope commands on either platform, in this bundle or any cross-referenced sibling. This is the real remaining bottleneck for strictImplementationUse/readyToImplement, not backend-owner-location (which is now largely cross-referenced for 8/10 commands)."
+  ],
+  "note": "This manifest synthesizes the two now-existing single-platform canonical bundles (macos-1.2.3-home-usage-frontend, windows-1.2.3-home-usage-frontend) plus performs a read-only four-category orphan classification of this module's dim2 backend status against all other discoverable 1.2.3 canonical packages. No bulk decompile text, no IDA dump, no frontend dump, and no raw artifact copied into this package; all evidence referenced via pointers/evidence-paths.md. No sibling package's files were read-write modified this session -- all cross-references are read-only. Coverage is intentionally NOT reported as blanket 100% -- see gate-report.json dim_status and known_residuals above for the honest open gaps."
+}

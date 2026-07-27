@@ -1,0 +1,98 @@
+{
+  "schema": "c5cm.reverse.audit_manifest.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "mystery-unlock",
+  "package_kind": "understand_and_classify",
+  "implementation_policy": {
+    "default": "see_per_target_classification",
+    "tos_circumvention_targets": "understand_only",
+    "normal_feature_targets": "consumer_start_candidate"
+  },
+  "generated_at": "2026-07-24",
+  "generated_by": "claude-subagent (mystery-unlock ToS classification task)",
+  "scope": [
+    "core::relay::router_unlock_auth::*",
+    "core::relay::legacy_virtual_auth::*",
+    "core::auth::is_aimami_managed_virtual_auth",
+    "core::relay::codex_diagnostic::check_router_unlock_auth_residue",
+    "core::relay::codex_diagnostic::fix_router_unlock_auth_residue",
+    "commands::system::get_mystery_unlock_grants",
+    "commands::system::merge_mystery_unlock_grants",
+    "core::repository::Repository::get_mystery_unlock_grants",
+    "core::repository::Repository::merge_mystery_unlock_grants"
+  ],
+  "classification": {
+    "tos_circumvention": [
+      "core::relay::router_unlock_auth::install_virtual_unlock_auth",
+      "core::relay::router_unlock_auth::build_unlock_auth_json",
+      "core::relay::router_unlock_auth::make_unsigned_jwt",
+      "core::relay::router_unlock_auth::ensure_auth_for_router",
+      "core::relay::router_unlock_auth::prepare_auth_for_router",
+      "core::relay::router_unlock_auth::restore_real_auth_for_router",
+      "core::relay::router_unlock_auth::cleanup",
+      "core::relay::router_unlock_auth::cleanup_for_native_off",
+      "core::relay::router_unlock_auth::has_residue",
+      "core::relay::router_unlock_auth::marker_exists",
+      "core::relay::router_unlock_auth::live_auth_state",
+      "core::relay::router_unlock_auth::readiness",
+      "core::relay::router_unlock_auth::read_marker",
+      "core::relay::router_unlock_auth::read_cleanup_backup",
+      "core::relay::router_unlock_auth::remove_file_if_exists",
+      "core::relay::router_unlock_auth::serialize_RouterUnlockAuthReadiness",
+      "core::relay::router_unlock_auth::auth_is_usable_real_oauth",
+      "core::relay::router_unlock_auth::backup_contains_usable_real_oauth",
+      "core::relay::router_unlock_auth::validate_user_owned_auth_backup",
+      "core::relay::router_unlock_auth::verify_real_auth_restore_ready",
+      "core::relay::legacy_virtual_auth::read_user_owned_backup",
+      "core::relay::legacy_virtual_auth::cleanup",
+      "core::relay::legacy_virtual_auth::remove_file_if_exists",
+      "core::relay::legacy_virtual_auth::read_marker",
+      "core::relay::legacy_virtual_auth::restorable_backup_auth",
+      "core::relay::legacy_virtual_auth::marker_exists",
+      "core::auth::is_aimami_managed_virtual_auth",
+      "core::relay::codex_diagnostic::check_router_unlock_auth_residue",
+      "core::relay::codex_diagnostic::fix_router_unlock_auth_residue"
+    ],
+    "normal_feature": [
+      "commands::system::get_mystery_unlock_grants",
+      "commands::system::merge_mystery_unlock_grants",
+      "core::repository::Repository::get_mystery_unlock_grants",
+      "core::repository::Repository::merge_mystery_unlock_grants",
+      "core::repository::Repository::mystery_route_allowed (referenced from existing backend-baseline, not re-read this pass)"
+    ]
+  },
+  "consumed_bundles": [
+    "backend-baseline/models-repository-baseline.md#L81",
+    "backend-baseline/commands-baseline.md#L90"
+  ],
+  "gate": {
+    "consumerStartReady": [],
+    "strictImplementationUse": [],
+    "readyToImplement": [],
+    "reverseRequiredQueues": {
+      "forbiddenUntilReady": [],
+      "forbiddenUntilStrictImplementationUse": [],
+      "consumerStartBlocked": [
+        "commands::system::get_mystery_unlock_grants",
+        "commands::system::merge_mystery_unlock_grants",
+        "core::repository::Repository::get_mystery_unlock_grants",
+        "core::repository::Repository::merge_mystery_unlock_grants"
+      ]
+    },
+    "permanentlyBlockedProductDecision": [
+      "core::relay::router_unlock_auth::* (all 20 targets, see classification.tos_circumvention)",
+      "core::relay::legacy_virtual_auth::* (all 6 targets)",
+      "core::auth::is_aimami_managed_virtual_auth",
+      "core::relay::codex_diagnostic::check_router_unlock_auth_residue",
+      "core::relay::codex_diagnostic::fix_router_unlock_auth_residue"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "full_app_coverage_status": "not-full-app",
+  "notes": "This package intentionally stops short of full_leaf_100_definition_v2 for both clusters: cluster A because implementation is a product/ToS decision (SKIP) independent of evidence depth; cluster B because frontend CCF / DTO / Windows / acceptance mapping were out of scope for this understand+classify task."
+}

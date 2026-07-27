@@ -1,0 +1,47 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "window-path",
+  "package": "macos-1.2.3-window-path",
+  "created_at": "2026-07-24T00:00:00Z",
+  "producer_machine": "<host> (this package assembled, distillation-only, no new IDA MCP calls this session) / <host> (original 1.0.9 IDA decompile sessions this migrates from)",
+  "task_kind": "distillation",
+  "binary": {
+    "sha256_1_2_3": "25d6d04e6d94c3f1e8258d2b348360b228fda4fc1c3d38b6383c84a2a8d53d21",
+    "sha256_1_0_9_baseline": "1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482",
+    "binary_format": "macho",
+    "arch": "arm64"
+  },
+  "scope": {
+    "cluster": "window-path",
+    "cluster_definition": "the 2-command IPC cluster established by internal-reverse/audits/macos-1.0.9-window-path/: focus_main_window (window focus, IPC no-arg) + open_path (OS-level path/URL open via /usr/bin/open, IPC one-arg). Sibling window/hotspot internal functions (reveal_main_window, force_reveal_main_window, bring_main_window_forward, bring_main_window_force_forward, create_hotspot_window, set_window_alpha) are NOT IPC-exposed at 1.2.3 (confirmed via frontend/ipc-contracts.jsonl, 131 lines, zero hits for those names as \"command\") and belong to the separate system-hotspot/hotspot cluster, not window-path.",
+    "backend_target_universe": "codexmate_lib::commands::hotspot::focus_main_window + codexmate_lib::commands::system::open_path",
+    "frontend_target_universe": "top-level invoke wrappers focusMainWindow()/openPath(path) in assets/index-B40jKs17.js (shared bundle, not a dedicated page component)",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "covered_commands": ["focus_main_window", "open_path"],
+  "migration": {
+    "rule": "RULE 9 (AGENTS.md #rule-9-version-diff-migration)",
+    "status": "migrated_no_behavior_diff",
+    "baseline_bundle": "internal-reverse/audits/macos-1.0.9-window-path/",
+    "baseline_gate": "strictImplementationUse (dim1-5 closed, dim6 missing)",
+    "diff_method": "direct pseudocode-body comparison: 1.2.3 raw/aimami/1.2.3/macos-arm64/commands/hotspot/ida/pseudocode/focus_main_window_0x1006fd300.c and raw/aimami/1.2.3/macos-arm64/commands/system/ida/pseudocode/open_path_0x1007cda80.c read in full and compared line-by-line against internal-reverse/audits/macos-1.0.9-window-path/logic/WINDOW-PATH-DISTILLED-109.md's documented behavior (both leaves)",
+    "diff_result": "byte-identical control-flow/logic on both leaves: focus_main_window still builds a 160-byte WryUserEvent with discriminant 28 (LOBYTE(__src[0])=28) and focused=true, allocated via __rust_alloc(160,8), posted via tauri_runtime_wry::send_user_message; open_path still constructs std::process::Command::new(\"open\", 4) + Command::arg(path) + Command::spawn, 3-fd cleanup on spawn failure. Only VA and mangled-symbol hash suffixes differ (relinking artifact, not behavior). The 1.2.3 raw file header comment on focus_main_window says \"1.2.3 NEW-delta ... vs 1.2.2 新增(IDA函数枚举diff)\" -- this refers to the 1.2.2 raw corpus not having extracted this particular .c file (a raw-corpus coverage gap at 1.2.2, not a claim that the function's behavior is new in 1.2.3); open_path's own header is explicitly annotated \"基线 same-set\" by the producing extraction pass.",
+    "note": "Per RULE 9, migrated_no_behavior_diff does NOT promote gate tier beyond the baseline (strictImplementationUse ceiling carried forward unchanged, dim6 still missing); this package independently re-verifies dim1 (frontend IPC presence) against the 1.2.3 ipc-contracts.jsonl rather than assuming it, since frontend surface can change even when backend body doesn't."
+  },
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.0.9-window-path/"
+  ],
+  "windows_sibling_status": "no dedicated windows-1.2.3-window-path package exists; partial raw evidence only -- see SYSTEM-DIFF.md. Not part of this package's own macOS gate (dim5 same-platform gate for THIS package is proven by macOS evidence alone per AGENTS.md \"macOS 只证明 macOS\").",
+  "known_residuals": [
+    "dim6 (C5 test/acceptance mapping) never produced for this cluster at any version -- carried forward as missing from 1.0.9, same as baseline.",
+    "dim3 (call-tree to leaf) is a short/simple chain for both commands (fire-and-forget Wry event / OS process spawn) -- no separate call-tree document was produced for 1.0.9 either; the DISTILLED doc's inline call-tree section is treated as sufficient given chain depth (2-4 hops, fully terminal).",
+    "Windows 1.2.3: focus_main_window has a name-string-xref-resolved handler (raw/aimami/1.2.3/windows-x64/commands/ida/pseudocode/focus_main_window_0x1401927d0.c) but its body is largely unresolved monomorphized Rust dispatch machinery (sub_XXXXXXXX calls), materially thinner than the 1.0.9 Windows evidence (which had a dedicated distilled doc, internal-reverse/audits/windows-1.0.9-system/logic/WIN-WINDOW-PATH-CLUSTER-109.md). Windows 1.2.3 open_path has NO isolated owner -- only 6 unresolved sub_XXXXXXXX candidates exist under commands/system/ida/pseudocode/ with no open_path-specific string/behavior confirmation; the file literally named open_path_0x140194810.c on Windows 1.2.3 is confirmed (INDEX.jsonl session relay123-win-commands-decompile-20260724) to be the unrelated commands::relay ICF-folded shared dispatcher for get_codex_router_auth_readiness, NOT this cluster's open_path. Recorded Unknown, not extrapolated from 1.0.9 Windows evidence."
+  ],
+  "note": "This manifest synthesizes internal-reverse/audits/macos-1.0.9-window-path/ (baseline, authoritative dim1-5 evidence) + direct re-read of the 2 raw/aimami/1.2.3/macos-arm64 pseudocode files + re-verification against raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl (131 lines). No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md."
+}

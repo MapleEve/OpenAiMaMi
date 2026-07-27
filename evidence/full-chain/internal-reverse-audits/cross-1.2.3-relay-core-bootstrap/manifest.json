@@ -1,0 +1,84 @@
+{
+  "schema": "c5cm.reverse.audit.manifest.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "cross",
+  "module": "relay-core-bootstrap",
+  "bundle": "cross-1.2.3-relay-core-bootstrap",
+  "package_kind": "lightweight_coverage_audit",
+  "task_type": "distillation",
+  "description": "Diagnostic-only cross-platform dependency-completeness check for AiMaMi 1.2.3 relay-core + bootstrap, modeled on audits/cross-1.0.9-relay-core-bootstrap/. Read-only synthesis; no new IDA MCP calls made. Finding: 3 of 4 source dependencies (macos-relay-core is diagnostic-only not gated; windows-relay-core is raw surface-only with zero decompile and no canonical bundle; windows-bootstrap does not exist at all) are not ready, so no real cross gate can be computed for any cluster.",
+  "produced_at": "2026-07-25",
+  "session": "cross123-relay-core-bootstrap-distillation-20260725",
+  "producer_machine": "<host>",
+  "no_new_ida_calls": true,
+  "no_new_raw_evidence_produced": true,
+  "mac_sha256": "25d6d04e6d94c3f1e8258d2b348360b228fda4fc1c3d38b6383c84a2a8d53d21",
+  "win_sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "authoritativeProducer": {
+    "machine": "<host>",
+    "session": "cross123-relay-core-bootstrap-distillation-20260725",
+    "produced_at": "2026-07-25",
+    "basis": "first-write (no prior owner for cross-1.2.3-relay-core-bootstrap scope; REVERSE-STATUS.md wf-aimami123-fullapp-20260724 entry lists it as an open backlog target, not claimed by any in-progress session)"
+  },
+  "source_bundles": {
+    "macos_bootstrap": {
+      "path": "internal-reverse/audits/macos-1.2.3-bootstrap/",
+      "status": "canonical_bundle_exists",
+      "gate": "consumerStartReady (4/4 leaves); dim1/dim3/dim4/dim6 open, not strictImplementationUse"
+    },
+    "macos_relay_core": {
+      "path": "internal-reverse/audits/macos-1.2.3-relay-core/",
+      "status": "diagnostic_only_exists",
+      "gate": "none set (package explicitly does not set implementation_use/gate_accepted/strictImplementationUse/readyToImplement for any leaf); verdict=PARTIAL, covered_by_relay_bundle=false"
+    },
+    "windows_bootstrap": {
+      "path": "internal-reverse/audits/windows-1.2.3-bootstrap/",
+      "status": "does_not_exist",
+      "gate": "not_started",
+      "evidence": "audits/macos-1.2.3-bootstrap/manifest.json field cross_platform_sibling = 'none produced this session (windows-1.2.3-bootstrap not attempted)'"
+    },
+    "windows_relay_core": {
+      "path": "internal-reverse/audits/windows-1.2.3-relay-core/",
+      "status": "does_not_exist_canonical_bundle; raw_surface_evidence_exists",
+      "raw_path": "raw/aimami/1.2.3/windows-x64/relay-core/",
+      "gate": "not_started (surface-only owner attribution, 177 functions / 29 submodules, no_decompile_performed=true per its own manifest.json)"
+    }
+  },
+  "gate_summary": {
+    "cross_consumerStartReady": 0,
+    "cross_strictImplementationUse": 0,
+    "readyToImplement": 0,
+    "blocked_all_clusters": true
+  },
+  "status": "dependency-check-blocked",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "readyToImplement": false,
+  "primaryPointers": [
+    "AI.md",
+    "SYSTEM-DIFF.md",
+    "manifest.json",
+    "gate-report.json",
+    "pointers/evidence-paths.md",
+    "data/task-plan.json"
+  ],
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true,
+    "note": "Each platform gate is independently evaluated. Cross gate for every cluster in this bundle = blocked, because neither platform independently reaches consumerStartReady for relay-core, and Windows has zero bootstrap evidence."
+  },
+  "consumed_bundles": [
+    "internal-reverse/audits/cross-1.0.9-relay-core-bootstrap/ (structural template only)",
+    "internal-reverse/audits/macos-1.2.3-bootstrap/manifest.json",
+    "internal-reverse/audits/macos-1.2.3-bootstrap/gate-report.json",
+    "internal-reverse/audits/macos-1.2.3-relay-core/manifest.json",
+    "internal-reverse/audits/macos-1.2.3-relay-core/README.md",
+    "internal-reverse/audits/windows-1.2.3-relay/manifest.json (binary SHA cross-check only)",
+    "internal-reverse/REVERSE-STATUS.md (wf-aimami123-fullapp-20260724 entry)",
+    "raw/aimami/1.2.3/windows-x64/relay-core/manifest.json",
+    "raw/aimami/1.2.3/windows-x64/relay-core/SURFACE-MANIFEST.md",
+    "raw/aimami/1.2.3/windows-x64/relay-core/tool-status.txt"
+  ]
+}

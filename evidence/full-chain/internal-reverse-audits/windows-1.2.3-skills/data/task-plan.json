@@ -1,0 +1,37 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "skills",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "import_skill", "load_installed_skills", "load_skill_backups",
+    "remove_skill", "restore_skill_backup", "delete_skill_backup"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 6 skills commands: readyToImplement blocked pending dim3 (call-tree tracing for the 5 complete command bodies + basic_blocks recovery of the 2 truncated giants) + dim4 (Windows-side DTO byte confirmation, currently macOS-only) + dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 6 skills commands: strictImplementationUse blocked pending dim3 full closure and dim5 closure of the ~14 macOS-equivalent helper functions with zero Windows evidence (copy_dir_all/stage_skill_directory/lock_skill_mutations/resolve_skill_target/resolve_backup_path/is_regular_directory/scan_skills_recursive/load_skill_summary/StagedDirectory::drop/DTO glue)"
+    ],
+    "consumerStartBlocked": []
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true,
+    "doNotInferMacOSFromWindows": true
+  },
+  "next_producer_steps": [
+    "basic_blocks chunked-read the 2 truncated giants (delete_skill_backup 0x140c92a80 / 48033 chars, backup_skill_directory 0x1409060c0 / 66937 chars) per SKILL.md red line 20 -- decompile() server-side truncation caps at ~1023 chars for these two specifically; a per-block read strategy is required to get complete content.",
+    "Trace the 5 complete command-handler bodies (import_skill/load_installed_skills/restore_skill_backup/remove_skill/load_skill_backups, 31-45K chars each) to their real fs-syscall leaves, mirroring the macos-1.2.3-skills package's dim3 narrative-level treatment -- this is the single largest remaining gap between this package's dim2 (strong) and dim3 (not closed) status.",
+    "Resolve identity of sub_1408A4BA0/sub_140AD6680/sub_140B0FD50/sub_1414860D0 beyond call-site inference -- attempt cross-reference against the mac 21-function set's remaining 15 unaccounted-for helpers (copy_dir_all/stage_skill_directory/lock_skill_mutations/resolve_skill_target/resolve_backup_path/is_regular_directory/scan_skills_recursive/load_skill_summary/2 closures/StagedDirectory::drop) via signature/size/callee-pattern matching, or via a dedicated panic-Location 2-hop search for each identifier's expected panic-site string.",
+    "Read/resolve the 14th 'skill'-substring hit (serialize_10, 0x140aa9980) that surfaced during this session's angle-C scan but was not read before the IDA connection dropped -- determine whether it is a genuine skills-module orphan (truly_undone) or a false-positive/shared serializer already covered elsewhere (already_in_canonical).",
+    "Attempt Windows decompile for the ~14 macOS-equivalent core::skills functions with zero Windows raw evidence today, to materially close dim5 beyond this session's owner-identity-only improvement.",
+    "Perform an independent Windows-side DTO byte-confirmation pass (SkillBackupMetadata/InstalledSkillSummary/SkillListPayload) rather than relying on macos-1.2.3-skills's macOS-only byte-confirmed field lists -- per platformPolicy.doNotInferWindowsFromMacOS.",
+    "Run a dim6 pass mapping each of the 6 skills commands' Windows-side side effects to Polaris's own test/acceptance surface, once dim3 is closed enough to know the actual Windows-side fs call sequence.",
+    "Re-verify this package's angle-C via a live IDA export_funcs() semantic scan for additional keyword variants (backup/restore/staged/publish) beyond the literal substring 'skill', which could surface further orphans the name/comment scan alone would miss."
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "c5cm.reverse.audit.v1",
+  "bundle": "windows-1.2.3-ui",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "cluster": "ui/app-appearance",
+  "session": "win-ui-set-app-theme-123gap-20260725",
+  "machine": "<host>",
+  "produced_at": "2026-07-25",
+  "audit_type": "partial_gap_conclusion",
+  "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "sha12": "aeccccd78e47",
+  "binary_path": "${C5CM_INTERNAL_HISTORY_ROOT}/raw/binary/AiMaMi.1.2.3 win64.exe",
+  "binary_size_bytes": 33667584,
+  "leaves": ["set_app_theme"],
+  "gate_tier": "blocks_start",
+  "gate_accepted": false,
+  "implementation_use": false,
+  "consumerStartReady": false,
+  "strictImplementationUse": false,
+  "readyToImplement": false,
+  "gap_class": "gap_needs_new_raw",
+  "ceiling": "blocks_start",
+  "is_upstream_all": true,
+  "is_upstream": {
+    "set_app_theme": true
+  },
+  "owner": {
+    "machine": "<host>",
+    "session": "win-ui-set-app-theme-123gap-20260725"
+  },
+  "authoritativeProducer": {
+    "machine": "<host>",
+    "session": "win-ui-set-app-theme-123gap-20260725"
+  },
+  "authoritative": true,
+  "raw_evidence_root": "${C5CM_INTERNAL_HISTORY_ROOT}/raw/aimami/1.2.3/windows-x64/",
+  "raw_c_count_this_module": 0,
+  "note_raw_c_count": "raw/aimami/1.2.3/windows-x64/ has 65 top-level module directories (frontend, relay-core, commands, mcp, tray, accounts, bootstrap, ... — enumerated this session); NONE named 'ui' or 'theme'. Zero .c pseudocode files exist anywhere under raw/aimami/1.2.3/windows-x64/**/ida/pseudocode/ for a set_app_theme/theme owner function. This is a read-only merge/reduce session: no new IDA decompile was run (per task scope, IDA re-verify against the 1.2.3 win64 binary/IDB is future producer work, not done here).",
+  "distilled": null,
+  "consumed_bundles": [
+    "windows-1.0.9-ui/set_app_theme (RULE9 same-platform predecessor evidence; NOT migrated to this version because no 1.2.3 backend raw exists to diff against — see rule9_migration_status below)"
+  ],
+  "rule9_migration_status": "diff_required",
+  "rule9_migration_note": "RULE9 diff-first: attempted same-platform (windows) diff before declaring new-raw gap. Frontend command face (dim1 material) at 1.2.3 is textually near-identical to 1.0.9 (same plugin:app|set_app_theme command string, same argKey theme, same shim function shape, only the minified export letter and chunk hash differ: app-TuXtMya9.js@1.2.3 vs app-C4jGp0lC.js@1.0.9). Backend owner/decompile (dim2/dim3/dim5 material) CANNOT be diffed: 1.2.3 has zero win backend raw/IDA evidence for this leaf, so there is nothing on the 1.2.3 side to compare the 1.0.9 owner (0x14091bc60) against. Per RULE9 this state is diff_required (diff basis missing on one side), NOT migrated_no_behavior_diff and NOT unchanged_reused. Target stays Unknown/gap_needs_new_raw; the 1.0.9 gate ceiling (strictImplementationUse) is NOT carried forward to 1.2.3.",
+  "frontend_evidence_1_2_3": {
+    "asset_file": "raw/aimami/1.2.3/windows-x64/package/AiMaMi-1.2.3-win64/tauri-dumped-assets/direct/assets/app-TuXtMya9.js",
+    "line": 1,
+    "snippet": "async function m(n){return t(\"plugin:app|set_app_theme\",{theme:n})} ... export{... m as setTheme ...}",
+    "ipc_contracts_jsonl_hit": false,
+    "ipc_contracts_jsonl_note": "raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl has 131 commands, 0 hits for 'theme' or 'set_app_theme' — the extractor omits plugin:app|* Tauri-builtin shim commands from the CCF JSONL (same omission behavior documented for 1.0.9); the command only surfaces via direct grep of the dumped frontend JS asset, not the structured contract extraction."
+  },
+  "macos_1_2_3_status": "not_attempted_this_session",
+  "macos_1_2_3_note": "No audits/macos-1.2.3-ui/ bundle exists. A quick existence check this session found no macos-1.2.3 raw directory literally named 'ui' or 'theme' either (only false-positive substring hits on unrelated dirs like 'install_macos_quit_guard'). Per AGENTS.md/dim5, macOS 1.2.3 status is NOT inferred from the Windows findings above, and is also NOT inferred from the 1.0.9 macOS theme_platform_diff leaf (cross-version AND cross-platform double-extrapolation forbidden). Left Unknown; a dedicated macOS 1.2.3 pass is separate future work.",
+  "cross_platform_reference_only": "windows-1.0.9-ui/set_app_theme/logic/THEME-PLATFORM-DIFF-109-DISTILLED.md documents the 1.0.9 mac-vs-win verdict (mac set_theme apply-only no-persist; OS light/dark follow is macOS-only via tao+KVO; win backend does not read OS theme). Cited here only as background/what-to-look-for reference for a future 1.2.3 macOS pass — NOT used as 1.2.3 evidence for either platform."
+}

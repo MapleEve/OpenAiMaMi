@@ -2,7 +2,7 @@
 
 > First-party caller/xref re-review. session: <audit-session> | machine: <workstation> | model: claude-opus-4-8 | date: 2026-06-05
 > binary SHA256: a5822387fa3f56dc03893111f4ffdd074daa882e8887ec4e7c394879c0e9fe0b (`AiMaM 1.0.9 win64.exe`)
-> IDB: `<source-location>\raw\binary\AiMaM 1.0.9 win64.exe.i64`, imagebase 0x140000000, hexrays_ready
+> IDB: `<source-location>\raw\binary\AiMaM 1.0.9 win64.exe.i64`, imagebase 0x140000000, IDA decompiler_ready
 > write_mode: owner-gate ALLOW (owner=<workstation>, bundle_manifest); ADDITIVE first-party re-review (does not overwrite canonical relay-core conclusions)
 
 ## Scope / why this doc exists

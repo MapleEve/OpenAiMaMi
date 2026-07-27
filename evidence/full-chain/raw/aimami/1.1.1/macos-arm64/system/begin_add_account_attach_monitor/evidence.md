@@ -4,7 +4,7 @@
 **Machine**: <本地机器>
 **Date**: 2026-06-16
 **Binary**: AiMaMi 1.1.1 universal (macOS ARM64)
-**IDB**: AiMaMi.i64 (hexrays_ready=true, uptime=18068s at session start)
+**IDB**: AiMaMi.i64 (IDA decompiler_ready=true, uptime=18068s at session start)
 **Owner VA**: `0x10061cc50`
 **Module**: `codexmate_lib::commands::system`
 **Symbol**: `__ZN13codexmate_lib8commands6system32begin_add_account_attach_monitor17h7913ad9d66f0a797E`

@@ -1,0 +1,50 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "relay",
+  "package": "windows-1.2.3-relay",
+  "created_at": "2026-07-24T00:00:00Z",
+  "producer_machine": "<host> (this package assembled) / <host> (IDA MCP -> Win IDA instance <host>, majority of underlying decompile sessions)",
+  "binary": {
+    "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+    "binary_format": "pe",
+    "pe_machine": "AMD64",
+    "idb_module_name": "AiMaM 1.2.3 win64.exe.i64 (strip)"
+  },
+  "scope": {
+    "backend_target_universe": "core::relay::* (28 of 32 known submodules have Windows-side directories; 4 are macOS-only -- transition_journal/breaker/native_responses_compat/upstream_url, Unknown on Windows) + commands::relay (23 upstream commands, 23 .c files present including the ICF-folded open_path dispatcher and 2 unnamed sub_XXXX helpers)",
+    "frontend_target_universe": "N/A -- Windows package is backend-only; frontend evidence is macOS-sourced (JS bundle is platform-agnostic, see ../macos-1.2.3-relay/)",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "relay_core_owner_map_functions_total": 177,
+    "relay_core_owner_map_source": "raw/aimami/1.2.3/windows-x64/relay-core/owner-map.jsonl (no_decompile_performed=true at owner-map-creation time; owner/addr/size/name resolution only)",
+    "relay_core_decompiled_first_pass_9_modules": 80,
+    "relay_core_zero_decompile_first_pass_19_modules": 97,
+    "relay_core_raw_c_files_final_recount": 311,
+    "relay_core_deduped_addresses_final_recount": 208,
+    "relay_core_truncation_stub_duplicates_in_raw_count": 23,
+    "commands_relay_c_files": 23,
+    "commands_relay_owner_map_count": 23,
+    "commands_relay_no_decompile_performed_at_owner_map_time": true,
+    "measurement_basis": "goal-aimami-122/RELAY-DOUBLE-PLATFORM-100-GATE.md sections ③/④/⑤ (three successive same-day re-measurements; ⑤ is the file-system ground-truth re-count and supersedes ③/④ module-level tables which are kept for process history only)"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/BASELINE-FINAL-1.2.3.md",
+    "internal-reverse/audits/COVERAGE-FINAL-1.2.3.md"
+  ],
+  "cross_platform_sibling": "internal-reverse/audits/macos-1.2.3-relay/",
+  "known_residuals": [
+    "208 deduped addresses vs Mac's 638 -- Windows coverage is materially behind Mac; per-module post-closeout breakdown for the 19-originally-zero-decompile modules is NOT independently re-verified module-by-module, only the 208 aggregate figure is confirmed",
+    "23 truncation-stub duplicate files (1023/1024 bytes) remain physically present in raw/ alongside their disasm-completed twins -- file-hygiene cleanup recommended but not blocking (each has a verified complete twin)",
+    "commands/relay 23 files include 1 ICF-folded shared dispatcher (open_path, covers get_codex_router_auth_readiness + 25+ unrelated commands) and 2 unnamed sub_XXXX helpers with unconfirmed identity mapping to Mac diagnose_codex_router/test_relay_draft_stream",
+    "4 macOS-only submodules (transition_journal/breaker/native_responses_compat/upstream_url, 20 Mac functions) have zero independent Windows-side evidence after 4-method search (marker string / panic-Location 2-hop / command-name 1-hop / type-name xref) -- recorded Unknown, not confirmed-absent"
+  ],
+  "note": "This manifest synthesizes internal-reverse/audits/BASELINE-FINAL-1.2.3.md, internal-reverse/audits/COVERAGE-FINAL-1.2.3.md, and goal-aimami-122/RELAY-DOUBLE-PLATFORM-100-GATE.md. No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md. Per skill red-line 8, Windows evidence is NOT extrapolated from macOS evidence anywhere in this package."
+}

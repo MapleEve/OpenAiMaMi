@@ -6,7 +6,7 @@
 
 ## Confirmed
 
-- Backend command `clear_custom_instruction_block` is **ABSENT** in AiMaMi 1.1.1 macOS ARM64 binary (IDB: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi.i64, hexrays_ready=true, uptime 22829s).
+- Backend command `clear_custom_instruction_block` is **ABSENT** in AiMaMi 1.1.1 macOS ARM64 binary (IDB: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi.i64, IDA decompiler_ready=true, uptime 22829s).
 - 逆向分析 four-angle completeness confirmed ABSENT:
   - A (func_query): `.*clear.*custom.*` → 0 hits; `.*custom_instruction.*` (commands ns) → 0 hits; `.*clear.*block.*` → 0 hits; `.*custom.*instruct.*clear.*` → 0 hits.
   - B (find_regex string pool): `clear_custom_instruction_block` → 0 matches; `clear_custom` → 0 matches; `clear.*instruct` → 0 matches; `clearCustomInstruction` → 0 matches; `clear_custom_instruction` → 0 matches; `custom.instruct` → 1 match only at path blob `0x1011514d1` (path constant, NOT a command string).

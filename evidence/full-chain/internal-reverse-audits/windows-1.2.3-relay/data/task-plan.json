@@ -1,0 +1,39 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "relay",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "load_relay_state", "get_relay_active", "get_relay_proxy_status", "upsert_relay_provider",
+    "delete_relay_provider", "set_relay_provider_network", "activate_relay_provider",
+    "deactivate_relay_provider", "reorder_relay_providers", "set_codex_router_enabled",
+    "set_codex_router_no_account_mode", "diagnose_codex_router",
+    "export_relay_config", "import_relay_config", "test_relay_draft_stream",
+    "fetch_relay_models_draft", "get_relay_provider_quota", "load_quota_history",
+    "reveal_relay_api_key", "detect_api_proxy_config", "set_api_proxy_config", "test_api_proxy_config"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 22 consumerStartReady commands: readyToImplement blocked pending dim3 (call-tree-to-leaf catalog) + dim4 (interface/DTO) + dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 22 consumerStartReady commands: strictImplementationUse blocked pending per-module decompile re-verification for the 18 originally-zero-decompile submodules + dim4/dim6 closure"
+    ],
+    "consumerStartBlocked": [
+      "get_codex_router_auth_readiness -- Windows-native evidence is an ICF-folded shared dispatcher, not an independently-analyzable body; consumer must use macOS evidence (../macos-1.2.3-relay/) as cross-platform ground truth for this one command, or explicitly accept platform_scope=macos-only-verified for it"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Re-verify per-module decompile completeness for the 18 originally-zero-decompile submodules individually (translator/codex_thread_visibility/managed_blocks/codex_mutation/router_unlock_auth/config_takeover/quota/storage/codex_catalog/keychain/proxy_passthrough/invariants/router_reconciler/legacy_virtual_auth/codex_runtime/codex_config_reconciler/io/models/dialects) -- only the aggregate 208-address figure is currently confirmed.",
+    "Clean up the 23 truncation-stub duplicate files in raw/ once their complete twins are re-confirmed (file hygiene, non-blocking).",
+    "Byte-signature cross-verify sub_140187580/sub_140CCE030 identity against Mac diagnose_codex_router/test_relay_draft_stream.",
+    "Run dim4 (interface/DTO) and dim6 (test/acceptance mapping) passes, mirroring the macOS package's next steps -- these are cross-platform passes and should likely be done once, referencing both platforms' pseudocode."
+  ]
+}

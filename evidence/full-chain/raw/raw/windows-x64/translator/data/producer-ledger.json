@@ -1,0 +1,565 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "session": "win-1.2.3-translator-naming-loc-20260726",
+  "machine": "<host>",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "codexmate_lib/core/relay/translator",
+  "gate_tier": "owner_bound_dirtree_naming_comments",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "readyToImplement": false,
+  "produced_at": "2026-07-26T00:00:00Z",
+  "idb_path": "E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+  "scope_baseline": {
+    "total_functions": 111,
+    "named_before": 8,
+    "loc_before": 15
+  },
+  "scope_result": {
+    "total_functions": 111,
+    "named_after": 16,
+    "loc_after": 111,
+    "stranded": 0,
+    "dirtree_drift": 0
+  },
+  "items_count": 104,
+  "items": [
+    {
+      "addr": "0x141433d50",
+      "action": "rename",
+      "new_name": "json_value_get_field",
+      "evidence": "unique literal string / single-purpose decompiled body (see comment)"
+    },
+    {
+      "addr": "0x14097bf00",
+      "action": "rename",
+      "new_name": "extract_name_field_as_str",
+      "evidence": "unique literal string / single-purpose decompiled body (see comment)"
+    },
+    {
+      "addr": "0x140999170",
+      "action": "rename",
+      "new_name": "content_array_contains_tool_use",
+      "evidence": "unique literal string / single-purpose decompiled body (see comment)"
+    },
+    {
+      "addr": "0x1409991f0",
+      "action": "rename",
+      "new_name": "content_array_contains_tool_result",
+      "evidence": "unique literal string / single-purpose decompiled body (see comment)"
+    },
+    {
+      "addr": "0x140a5ed20",
+      "action": "rename",
+      "new_name": "emit_anthropic_content_block_start_event",
+      "evidence": "unique literal string / single-purpose decompiled body (see comment)"
+    },
+    {
+      "addr": "0x1409a1d40",
+      "action": "rename",
+      "new_name": "emit_anthropic_message_start_event",
+      "evidence": "unique literal string / single-purpose decompiled body (see comment)"
+    },
+    {
+      "addr": "0x140a5ec80",
+      "action": "rename",
+      "new_name": "finish_reason_to_anthropic_stop_reason",
+      "evidence": "unique literal string / single-purpose decompiled body (see comment)"
+    },
+    {
+      "addr": "0x1409cf120",
+      "action": "rename",
+      "new_name": "build_chat_completion_chunk_object",
+      "evidence": "unique literal string / single-purpose decompiled body (see comment)"
+    },
+    {
+      "addr": "0x1402adfc0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1402ae1b0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1402b4580",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1402c3260",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1402c9810",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x14042ad00",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x14042adc0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140467c90",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x14046d090",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140476900",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140476b90",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140557f80",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x14067a360",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140985700",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140992220",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x14099c7b0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x14099dee0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409a2a80",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409a41b0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409a8410",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409a8ea0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409a9480",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409aba90",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409b0fa0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409b2d80",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409b4460",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409b54f0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409b5630",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409b5b30",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409b6ec0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409c55e0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409c5790",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409c6650",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409c6750",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409c69b0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409c8f60",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409caf90",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409cb5a0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409cf090",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409cfbb0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409cfcb0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409d05a0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409d4db0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409ea6c0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409eaaf0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409eacd0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409eae80",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409eb070",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409eb540",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409ef3f0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a01ed0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a022b0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a09c80",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a0e760",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a0e950",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a0ec30",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a0ff00",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a10d90",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a10ff0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a114b0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a11c30",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a13a40",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a15da0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a19380",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a19aa0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a19da0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a1cba0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a1f800",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a201f0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a20290",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a239b0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a273e0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a28e20",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a41c10",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a5ed90",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a5ef30",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a62c20",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a63ae0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140b56520",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140b565b0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140b56640",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140b5a340",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1413567d0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1416890a0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x141689b90",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1416964e0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1416969e0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x141696fd0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x141433d50",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x14097bf00",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140999170",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409991f0",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409a1d40",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x1409cf120",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a5ec80",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    },
+    {
+      "addr": "0x140a5ed20",
+      "action": "append_comment",
+      "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
+    }
+  ],
+  "methodology": "红线24三层法(win strip): 未新增dirtree归属(前轮frontier-triage已100%归树,本轮零move/零mkdir); ①对8个函数按唯一字面量证据(单一JSON字段名/SSE事件名/panic字符串命中且在111函数域内验证唯一性)精确 set_name(SN_FORCE,仅覆盖sub_/nullsub前缀); ②对全部96个此前仅有泛化'attributed via'标签的函数,基于批量提取的callees+字符串引用+反编译头部(IDA Python server-side IDA decompiler.decompile+DataRefsFrom+CodeRefsFrom)逐条撰写基于真实证据的中文[逻辑]分析注释(append,不覆盖既有归属标签); idb_save两次(rename后一次汇总后一次)确认持久化。",
+  "not_complete": [
+    "命名仍未达111/111——96个功能中仅8个证据强度足以安全精确命名(单一无歧义字面量/唯一调用模式),其余88个仅获中文语义分析注释(基于strings+callees+反编译特征,未强行命名以免違反紅線'没试破法就标accepted_unknown=作弊'的对称原则:没有唯一性证据就不该硬命名),留作后续更深入call-tree交叉核验(如与mac符号交叉比对)的命名候选。",
+    "本轮为纯 IDB 内命名/注释/dirtree复核(dirtree保持前轮735归树结果不变,0新增move),未产出新raw pseudocode文件,未追加INDEX.jsonl新raw条目(无新decompile证据类型),不涉及前端CCF/consumer gate。",
+    "0x1409d05a0/0x140a28e20/0x140a41c10/0x1409ef3f0等超大体(40-198KB反编译文本)因体量原因仅基于字符串+调用图证据做功能性描述,未逐基本块精读,存在命名/描述精度进一步提升空间。"
+  ]
+}

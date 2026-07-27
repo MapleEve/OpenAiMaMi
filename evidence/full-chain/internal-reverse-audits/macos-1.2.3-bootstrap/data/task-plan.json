@@ -1,0 +1,37 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "bootstrap",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "app_run_entry",
+    "bootstrap_cache",
+    "auto_switch_pending_emitter"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all bootstrap leaves: readyToImplement blocked pending dim1/dim3/dim4/dim6 closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all bootstrap leaves: strictImplementationUse blocked pending dim1 (frontend CCF trace for the 3 command leaves), dim3 (deep call-tree to fs/persistence/process leaves for app_run_entry's callees), dim4 (DTO/error boundary) closure"
+    ],
+    "consumerStartBlocked": [
+      "boot_spawn_threads analog: not located this session, must not be assumed absent or assumed identical to 1.0.9",
+      "run_0x1000cf8f0.c / run_0x10099df40.c: unresolved, no module attribution, do not consume as bootstrap or anything else without further work"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Deep-trace app_run_entry's callees (RelayManager::new, single_instance::acquire, CodexPaths::ensure_directories) to fs/http/registry/persistence implementation leaves -- closes dim3 for app_run_entry.",
+    "Open RelayManager::new's own body (NOT one of the 89 triaged files, out of this session's scope) to look for the boot_spawn_threads analog (long-lived auto-switch/relay watcher thread spawn) -- current Unknown should be resolved there or explicitly confirmed absent, not left open indefinitely.",
+    "Run a dim1 frontend-CCF pass for load_bootstrap_state / dismiss_pending_auto_switch / load_pending_auto_switch against the already-extracted ipc-contracts.jsonl + frontend-control-flow.jsonl (both already exist in raw/aimami/1.2.3/macos-arm64/frontend/) -- this is a synthesis pass over existing frontend evidence, not new extraction.",
+    "Attempt targeted decompile/xref on run_0x1000cf8f0.c's generic-instantiation context (which concrete command's async future does this poll shim belong to?) and full manual read of run_0x10099df40.c to resolve the 2 remaining unattributed files.",
+    "If Windows 1.2.3 bootstrap evidence is needed, this must be independently produced on the Windows IDB -- do not infer from this macOS package (dim5)."
+  ]
+}

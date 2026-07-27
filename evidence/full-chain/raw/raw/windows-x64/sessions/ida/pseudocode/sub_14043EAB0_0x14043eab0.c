@@ -1,0 +1,37 @@
+// module: codexmate_lib/core/sessions
+// addr: 0x14043eab0
+// name: sub_14043EAB0
+// win 1.2.1 | module src/core/sessions.rs | attributed via call-graph propagation (>=2 same-module callers) (win-native)
+__int64 __fastcall sub_14043EAB0(_QWORD *a1)
+{
+  __int64 v2; // rdx
+  __int64 result; // rax
+  __int64 v4; // rdx
+  __int64 v5; // rdx
+  __int64 v6; // rdx
+  __int64 v7; // rdx
+  __int64 v8; // rdx
+
+  v2 = a1[2];
+  if ( v2 != -1 && v2 )
+    result = sub_140001660(a1[3], v2, 1);
+  v4 = a1[5];
+  if ( v4 != -1 && v4 )
+    result = sub_140001660(a1[6], v4, 1);
+  v5 = a1[8];
+  if ( v5 != -1 && v5 )
+    result = sub_140001660(a1[9], v5, 1);
+  v6 = a1[11];
+  if ( v6 != -1 && v6 )
+    result = sub_140001660(a1[12], v6, 1);
+  v7 = a1[14];
+  if ( v7 != -1 && v7 )
+    result = sub_140001660(a1[15], v7, 1);
+  v8 = a1[17];
+  if ( v8 != -1 )
+  {
+    if ( v8 )
+      return sub_140001660(a1[18], v8, 1);
+  }
+  return result;
+}

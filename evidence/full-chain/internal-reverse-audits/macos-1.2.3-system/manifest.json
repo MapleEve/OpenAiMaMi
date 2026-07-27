@@ -1,0 +1,74 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "system",
+  "package": "macos-1.2.3-system",
+  "created_at": "2026-07-24T00:00:00Z",
+  "producer_machine": "this session (distillation pass, no new IDA/decompile performed; consolidates commands-baseline.md §2 + platform-baseline.md + this session's own find/ipc-contracts.jsonl cross-checks, per user instruction 'batch 1 distillation of mac system module')",
+  "binary": {
+    "sha256_core_reference": "e3f2fec7d7cd32c8a7a650ec563577b8c74516aed270c1230a5b11296942114d",
+    "binary_format": "macho",
+    "arch": "arm64",
+    "note": "sha not independently recomputed this session; reused from sibling packages' INDEX.jsonl entries for the same 1.2.3 build"
+  },
+  "scope": {
+    "primary_target_universe": "codexmate_lib::commands::system::* (raw/aimami/1.2.3/macos-arm64/commands/system/ida/pseudocode/, 34 files)",
+    "supporting_target_universe": "codexmate_lib::platform::{process,paths,debug_log,daemon,single_instance,system_volume,proxy}::* (85 per platform-baseline.md table / 95 per this session's find -- see known_residuals discrepancy note); shared with other commands modules (relay/accounts), NOT counted as system's exclusive coverage",
+    "excluded": "commands/hotspot (own module, precedent macos-1.0.9-system-hotspot); shell-init (no matching directory/file found under raw/aimami/1.2.3/macos-arm64 this session -- treated as not-applicable-to-this-version, not confirmed-removed)",
+    "frontend_target_universe": "26 system-domain invoke commands identified via ipc-contracts.jsonl cross-check (23 exclusive + run_daemon_once + 2-command/1-file ambiguous confirm_pending_auto_switch pair); 3 additional commands (detect/set/test_api_proxy_config) are physically in commands/system but semantically relay-domain, shared/cross-referenced with macos-1.2.3-relay package, not double-counted as system-exclusive",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "commands_system_files_total": 34,
+    "commands_system_truncated_stubs": 0,
+    "commands_system_truncation_source": "commands-baseline.md §0 batch scan across its full 145-file commands-layer corpus (system included), 0 hits; this session independently spot-checked 2 of the 34 files (clean_0x1007cd710.c, compose_image_compat_flag_0x1007ca180.c) via direct Read, both non-truncated, consistent with the baseline claim -- the remaining 32 files were NOT independently re-scanned this session",
+    "commands_system_new_delta_1_2_3": ["run_daemon_once_blocking (+2 internal closures)"],
+    "commands_system_frontend_commands_exclusive": 23,
+    "commands_system_frontend_commands_shared_with_relay": 3,
+    "commands_system_frontend_commands_ambiguous_mapping": 2,
+    "commands_system_frontend_commands_total": 26,
+    "commands_system_internal_helper_files_no_own_command": 8,
+    "platform_backing_files_per_baseline_doc_table": 85,
+    "platform_backing_files_per_this_session_find": 95,
+    "platform_backing_discrepancy": 10,
+    "platform_backing_discrepancy_breakdown": {"paths": 6, "debug_log": 3, "single_instance": 1},
+    "platform_backing_discrepancy_characterization": "all 10 extra filenames inspected this session are serde/trait-glue-shaped (5x CodexPaths::clone monomorphization addresses + 1x StateDbReadState::fmt in paths; 3x FileLogger Log-trait methods in debug_log; 1x ActivationRecord Deserialize glue in single_instance) -- plausible under the glue-exclusion counting convention commands-baseline.md explicitly documents elsewhere, but platform-baseline.md itself does not state such an exclusion, and byte-level content was not verified for these 10 files this session",
+    "platform_backing_truncated_stubs": 0,
+    "platform_backing_truncation_source": "platform-baseline.md §3 batch scan across its own 85-file corpus, 0 hits, with explicit note that the largest functions (detect_system_proxy_candidates 1639 lines, redact_text_inner 1579 lines, prepare_transition 682 lines, list_macos_db_holder_processes_for 747 lines) are marked [FULL IDA decompiler] or close naturally; NOT independently re-verified by this session for the +10 discrepancy files",
+    "core_bootstrap_cache_files": 9,
+    "core_bootstrap_cache_coverage_status": "truly_undone -- checked against commands-baseline.md, platform-baseline.md, models-repository-baseline.md, run-app-misc-baseline.md; none of the 4 available backend-baseline documents analyze this directory as a dedicated target; only a passing mention exists (load_mcp_servers 'updates bootstrap_cache')",
+    "windows_commands_system_files": 6,
+    "windows_commands_system_names_resolved": 0,
+    "windows_system_volume_files": 3,
+    "windows_system_volume_names_resolved": 0,
+    "frontend_commands_covered": 26,
+    "frontend_cross_check_basis": "grep/python parse of all 131 lines of raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl .command field, matched against the 34 commands/system filename-derived function names, performed directly this session",
+    "measurement_basis": "file-system find|wc -l against raw/aimami/1.2.3/macos-arm64/{commands/system,platform/*}/ida/pseudocode/*.c performed directly this session; commands-baseline.md/platform-baseline.md's own function-level claims reused, not independently re-derived except for 2 spot-checked files"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "raw/aimami/1.2.3/macos-arm64/backend-baseline/commands-baseline.md (§2 system section, primary source)",
+    "raw/aimami/1.2.3/macos-arm64/backend-baseline/platform-baseline.md (full document, primary source)"
+  ],
+  "cross_platform_sibling": "none produced for 1.2.3 -- Windows evidence (9 files total across commands/system + system_volume_windows, 0 names resolved) is too thin to warrant a separate windows-1.2.3-system/ package; reported inline in this package's SYSTEM-DIFF.md instead",
+  "related_packages": [
+    "internal-reverse/audits/macos-1.2.3-relay/ (shares physical ownership of detect_api_proxy_config/set_api_proxy_config/test_api_proxy_config, cross-referenced not duplicated)",
+    "internal-reverse/audits/macos-1.0.9-system/, macos-1.0.9-system-hotspot/, macos-1.0.9-system-shell-init/ (prior-version precedent for the system/hotspot/shell-init module split this package follows; not consumed for content, only for scope-boundary precedent)"
+  ],
+  "known_residuals": [
+    "dim1 (frontend control-flow): no component-tree/state-model document produced this pass, unlike relay/skills siblings -- command-name-level cross-check only",
+    "platform backing +10 file discrepancy between platform-baseline.md's table (85) and this session's find (95) -- disclosed, not reconciled to a single number",
+    "confirm_pending_auto_switch / confirm_pending_auto_switch_and_restart_codex 1-file-to-2-command mapping unverified",
+    "core::bootstrap_cache (9 files) genuinely un-distilled by any available baseline document -- truly_undone, open gap for a follow-up work unit",
+    "angle-C semantic orphan scan not attempted at all this pass (not even a grep proxy, weaker than the skills package precedent)",
+    "dim4 interface/DTO extraction not attempted",
+    "dim5 Windows platform gate not closed -- 0/26 commands have any confirmed Windows evidence (9 raw files exist, all unresolved sub_XXXX)",
+    "dim6 test/acceptance mapping not produced"
+  ],
+  "note": "This manifest synthesizes commands-baseline.md §2 and platform-baseline.md (both prior-session direct-Read distillations) plus this session's own file-count reconciliation, 2-file spot-check, and full ipc-contracts.jsonl cross-check. No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md."
+}

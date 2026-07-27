@@ -5,7 +5,7 @@
 **date**: 2026-06-16
 **binary_sha256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 **source_binary**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi
-**idb**: AiMaMi.i64 (hexrays_ready=true, uptime 30887s at gate check)
+**idb**: AiMaMi.i64 (IDA decompiler_ready=true, uptime 30887s at gate check)
 **gate_tier**: strictImplementationUse_candidate (dim1+dim2+dim3+dim4+dim5_mac; dim5_win+dim6 Unknown)
 **delta_vs_109**: migrated_no_behavior_diff (interface identical; impl VAs changed; ExportFile + AccountExportPayload schemas confirmed identical)
 

@@ -1,0 +1,58 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "window-path",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-24",
+  "sha256_binary": "25d6d04e6d94c3f1e8258d2b348360b228fda4fc1c3d38b6383c84a2a8d53d21",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 2,
+    "consumerStartReady": 0,
+    "blocked": 0,
+    "total_commands": 2
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "closed -- both commands confirmed present as tauriInvokeWrapper entries in raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl (focusMainWindow()=>invoke('focus_main_window'), no args; openPath:e=>invoke('open_path',{path:e})); re-verified independently for 1.2.3 rather than assumed from 1.0.9, since frontend surface can drift even when backend body doesn't. No dedicated per-page frontend module (shared top-level service object, not a routed page)",
+    "dim2_backend_owner_pseudocode": "closed -- real owners, non-failed IDA decompile, both leaves read in full at 1.2.3: focus_main_window @0x1006fd300 (codexmate_lib::commands::hotspot), open_path @0x1007cda80 (codexmate_lib::commands::system). Byte-identical control-flow/logic vs the 1.0.9 baseline (see manifest.json migration.diff_result)",
+    "dim3_call_tree_to_leaf": "closed -- both chains are short and fully terminal: focus_main_window -> WryHandle::clone -> __rust_alloc(160,8) -> tauri_runtime_wry::send_user_message -> [Wry event loop, terminates]; open_path -> Command::new(\"open\",4) -> Command::arg(path) -> Command::spawn -> [fork/exec /usr/bin/open <path>, terminates]. Both reach genuine OS-level implementation leaves (Wry window-manager IPC / process spawn), not command-wrapper-only",
+    "dim4_interface_dto_boundary": "closed -- focus_main_window: no input, Result<(), tauri::Error> output, side effect = WryUserEvent(28, focused=true) posted, error path = atomic refcount overflow abort or send failure returning tauri::Error. open_path: input {path: String}, output Result<String,String>, side effect = spawns /usr/bin/open <path>, error path = 3-fd cleanup (stdin/stdout/stderr) then Err(spawn error message); no path validation/canonicalization visible in this function body (relies on caller/upstream context for any allowlisting)",
+    "dim5_platform_gate": "closed for macOS (this package) -- both leaves are real, non-extrapolated macOS arm64 IDA decompile at 1.2.3, independently re-read (not assumed from 1.0.9). Windows 1.2.3 same-platform evidence is materially incomplete for this cluster (focus_main_window has a thin string-xref-resolved handler with mostly-unresolved dispatch internals; open_path has no isolated owner at all -- see SYSTEM-DIFF.md) and is NOT claimed as closed; this does not block the macOS package's own dim5 per AGENTS.md 'macOS 只证明 macOS, Windows 只证明 Windows'",
+    "dim6_test_acceptance_mapping": "missing -- no C5 test/acceptance mapping has ever been produced for this cluster at any version (1.0.9 baseline also left this open); this is the sole blocker preventing readyToImplement"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": ["focus_main_window", "open_path"],
+  "strictImplementationUse_reason": "dim1-dim5 all closed on macOS for both commands (migrated_no_behavior_diff from the 1.0.9 baseline plus independent 1.2.3 frontend re-verification); dim6 (test/acceptance mapping) not closed for either command, so readyToImplement/full_leaf_100_definition_v2 cannot be set per OUTPUT-SPEC.md six-dim requirement",
+  "consumerStartReady_commands": [],
+  "consumerStartReady_basis": "both commands already exceed consumerStartReady (they are at strictImplementationUse); consumerStartReady_commands intentionally left empty because listing already-strict commands as merely consumerStartReady would understate their status -- see strictImplementationUse_commands for the authoritative tier",
+  "unknowns": [
+    {
+      "item": "dim6 test/acceptance mapping for focus_main_window and open_path",
+      "class": "blocks_start",
+      "reason": "not produced at 1.0.9 baseline or this pass; readyToImplement blocked on this until closed for both commands"
+    },
+    {
+      "item": "Windows 1.2.3 open_path owner",
+      "class": "blocks_start",
+      "reason": "no isolated owner function exists at 1.2.3 for the Windows system-module open_path (6 unresolved sub_XXXXXXXX candidates only); the file literally named open_path on Windows 1.2.3 is a confirmed-unrelated commands::relay ICF-folded dispatcher, not this cluster's leaf. This is a Windows-side gap only; does not affect this macOS package's own gate (dim5 is proven by macOS evidence per platform-gate rule)"
+    },
+    {
+      "item": "Windows 1.2.3 focus_main_window body depth",
+      "class": "accepted_unknown",
+      "reason": "owner resolved via command-name string xref (win-native ground truth per manifest.json), but internal body is mostly-unresolved monomorphized dispatch (sub_XXXXXXXX calls) -- materially thinner than the dedicated 1.0.9 Windows evidence (internal-reverse/audits/windows-1.0.9-system/logic/WIN-WINDOW-PATH-CLUSTER-109.md). Recorded as tool/effort-limitation class since owner+existence are confirmed, only internal depth is thin; Windows-side gap only, does not affect this macOS package's own gate"
+    }
+  ],
+  "notes": [
+    "This gate mirrors internal-reverse/audits/macos-1.0.9-window-path/gate-report.json's tier (strictImplementationUse, dim6 missing) per RULE 9 migrated_no_behavior_diff -- it does NOT upgrade the tier beyond baseline. Both leaves independently re-verified against 1.2.3 raw evidence (not just copy-forwarded), see manifest.json migration block.",
+    "The next concrete step to advance either command to readyToImplement is a dim6 pass: map focus_main_window (window-focus UX) and open_path (reveal-in-Finder / open-URL UX) to Polaris's own C5 unit/E2E test surface or explicit manual-acceptance criteria. This is a small synthesis task given both commands are already fully understood at dim1-5.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

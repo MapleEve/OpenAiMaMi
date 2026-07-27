@@ -1,0 +1,88 @@
+{
+  "schema": "c5cm.raw.leaf.ida_closure.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows",
+  "command": "load_custom_instruction_state",
+  "module": "AiMaMi.1.2.3 win64.exe",
+  "idb_path": "E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+  "ida_live_gate": {
+    "status": "ok",
+    "uptime_sec": 120249.041,
+    "IDA decompiler_ready": true,
+    "module": "AiMaMi.1.2.3 win64.exe"
+  },
+  "queries": [
+    {
+      "tool": "func_query",
+      "args": {
+        "queries": [
+          {
+            "name_regex": "load_custom_instruction_state"
+          }
+        ]
+      },
+      "result_n": 0
+    },
+    {
+      "tool": "func_query",
+      "args": {
+        "queries": [
+          {
+            "name_regex": "custom_instruction"
+          }
+        ]
+      },
+      "result_n": 0,
+      "note": "module-wide sweep covering all 5 sibling commands"
+    },
+    {
+      "tool": "find_regex",
+      "args": {
+        "pattern": "load_custom_instruction_state"
+      },
+      "result_n": 0
+    },
+    {
+      "tool": "find_regex",
+      "args": {
+        "pattern": "custom.instruct"
+      },
+      "result_n": 1,
+      "matches": [
+        {
+          "addr": "0x1417893f2",
+          "string": "custom-instructions"
+        }
+      ]
+    },
+    {
+      "tool": "xrefs_to",
+      "args": {
+        "addrs": [
+          "0x1417893f2"
+        ]
+      },
+      "result": [
+        {
+          "addr": "0x1417893f2",
+          "xrefs": [
+            {
+              "addr": "0x140714f28",
+              "type": "data",
+              "fn": {
+                "addr": "0x140714e90",
+                "name": "sub_140714E90",
+                "size": "0x838"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "verdict": "orphan_no_backend",
+  "genuine_ceiling": false,
+  "accepted_unknown": false,
+  "recovery_attempts": "n/a \u2014 plain absence finding (2 independent 0-hit methods), not an async/vtable/ICF ceiling; accepted_unknown machinery does not apply per red-line-13"
+}

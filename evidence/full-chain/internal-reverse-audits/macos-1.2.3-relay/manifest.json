@@ -1,0 +1,50 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "relay",
+  "package": "macos-1.2.3-relay",
+  "created_at": "2026-07-24T00:00:00Z",
+  "producer_machine": "<host> (this package assembled) / <host> (majority of underlying IDA decompile sessions)",
+  "binary": {
+    "sha256_core_relay": "e3f2fec7d7cd32c8a7a650ec563577b8c74516aed270c1230a5b11296942114d",
+    "sha256_frontend_extraction": "25d6d04e6d94c3f1e8258d2b348360b228fda4fc1c3d38b6383c84a2a8d53d21",
+    "binary_format": "macho",
+    "arch": "arm64"
+  },
+  "scope": {
+    "backend_target_universe": "core::relay::* (32 submodules) + commands::relay (23 upstream commands, mapped to 22 .c wrapper files on macOS since get_codex_router_auth_readiness's Windows sibling is an ICF-folded shared dispatcher and is instead covered by a Mac-native standalone function)",
+    "frontend_target_universe": "RelayModelPage (relay-page-iqa4dxHn.js) + shared relay service object (je/Mn) IPC wrappers",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "backend_functions_decompiled_first_audit_2026-07-23_24": 570,
+    "backend_functions_decompiled_later_same_day_recount": 616,
+    "backend_functions_relay_plus_commands_final_dedup_count": 638,
+    "backend_functions_truncated_stubs_remaining": 0,
+    "backend_functions_truncated_stubs_correction_note": "CORRECTED 2026-07-24: this field's prior 0-value relied on an unverified claim (goal-aimami-122/RELAY-DOUBLE-PLATFORM-100-GATE.md sec.C) that fetch_relay_models_draft_0x100193810.c had been completed via disasm-chunking; on-disk re-check found the file still had a live '!! TRUNCATED STUB - 未完整 !!' marker and unbalanced braces (1 open/0 close). It has now been genuinely re-decompiled this pass via IDA Python -> IDA decompiler.decompile server-side (54,909 chars, braces balanced 63/63, proper closure); old stub kept as *.c.stub.bak. A full-tree brace-balance + marker scan of all 1853 macos-arm64 .c files found no other true truncation (11 brace-mismatch hits were all string/char-literal false positives, manually verified).",
+    "commands_relay_wrapper_files": 22,
+    "commands_relay_upstream_command_count": 23,
+    "commands_relay_command_to_file_gap_reason": "get_codex_router_auth_readiness is an independent Mac function (0x10053fd20) but the equivalent Windows wrapper is an ICF-folded shared dispatcher (open_path@0x140194810); Mac ground truth stands in for this command, see logic/DELTA-LOGIC-1.2.3.md",
+    "frontend_pages_reversed": 6,
+    "frontend_relay_page_reversed": true,
+    "measurement_basis": "file-system find|wc -l against raw/aimami/1.2.3/macos-arm64/core/relay/*/ida/pseudocode/*.c and commands/relay/ida/pseudocode/*.c, re-verified 2026-07-24 (see pointers)"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/BASELINE-FINAL-1.2.3.md",
+    "internal-reverse/audits/COVERAGE-FINAL-1.2.3.md"
+  ],
+  "cross_platform_sibling": "internal-reverse/audits/windows-1.2.3-relay/",
+  "known_residuals": [
+    "commands/relay 9-command wrapper gap: fetch_relay_models_draft hit a decompile-tool server-side truncation (~1024-char hard cap). An earlier pass claimed this was resolved via disasm-chunk completion, but that only verified the disassembly instruction range matched the function boundary -- the .c file itself remained an unclosed stub. CORRECTED 2026-07-24: genuinely fixed via IDA Python -> IDA decompiler.decompile server-side (bypasses the MCP response channel's char cap by writing the full pseudocode to disk directly on the IDA host), producing a real 54,909-char closed function; see logic/DELTA-LOGIC-1.2.3.md and gate-report.json dim2 for detail",
+    "Angle-C semantic-keyword orphan scan (brand/litellm/defaultWireApi/noAccountMode) NOT executed -- honest open gap, not accepted_unknown",
+    "Angle-A: existence of a 33rd relay submodule beyond the known 32 could not be independently falsified via func_query (tool malfunction); find_regex cross-check on core/relay/ path strings found no evidence of a 33rd module -- recorded accepted_unknown (tool-limitation class, not unexamined)",
+    "2 of 23 relay commands (Windows sub_140187580/sub_140CCE030 vs Mac diagnose_codex_router/test_relay_draft_stream) have unconfirmed byte-signature identity mapping -- content exists both sides, identity assertion is a weak inference pending verification"
+  ],
+  "note": "This manifest synthesizes internal-reverse/audits/BASELINE-FINAL-1.2.3.md (full independent baseline), internal-reverse/audits/COVERAGE-FINAL-1.2.3.md (delta vs 1.2.2), and goal-aimami-122/RELAY-DOUBLE-PLATFORM-100-GATE.md (double-platform byte-level gate, authored 2026-07-24, 4 successive audit rounds). No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md."
+}

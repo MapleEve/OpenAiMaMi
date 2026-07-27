@@ -5,7 +5,7 @@
 **Date**: 2026-06-17
 **Binary**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi (macos-arm64)
 **Binary SHA256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
-**IDB**: AiMaMi.i64 (hexrays_ready=true, uptime=60341s at session start)
+**IDB**: AiMaMi.i64 (IDA decompiler_ready=true, uptime=60341s at session start)
 **Module**: codexmate_lib::commands::relay (leaf dir: commands_relay/)
 **Command index**: 25/35 mac delta
 **Owner VA**: 0x1005eb9a0

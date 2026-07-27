@@ -7,7 +7,7 @@
 **produced_at**: 2026-06-17
 **binary_sha256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
 **binary**: AiMaMi 1.1.1 universal.app/Contents/MacOS/AiMaMi (macos-arm64)
-**idb**: AiMaMi.i64 (hexrays_ready=true, uptime=56117s at session start)
+**idb**: AiMaMi.i64 (IDA decompiler_ready=true, uptime=56117s at session start)
 **gate_tier**: strictImplementationUse_candidate (dim2+dim3+dim4+dim5_mac+delta_nil; dim1 accepted_unknown consistent with 1.0.9 baseline; dim5_win Unknown; dim6 Unknown)
 **delta_status**: delta_nil — behavior identical to 1.0.9; SQL query / DTO / side-effects / argKeys unchanged; only recompile VAs changed
 

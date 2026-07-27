@@ -1,0 +1,146 @@
+{
+  "schema": "c5cm.reverse.audit.v1",
+  "bundle": "windows-1.2.3-system-usage",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "system",
+  "cluster": "usage",
+  "produced_at": "2026-07-25",
+  "session": "windows-1.2.3-system-usage-distill-20260725",
+  "producer": "claude-sonnet-5",
+  "machine": "<host>",
+  "binary_sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+  "binary_sot": "raw/binary/AiMaMi.1.2.3 win64.exe",
+  "status": "blocks_start",
+  "gate_tier": "blocks_start",
+  "strict_count": 0,
+  "ready_to_implement_count": 0,
+  "consumer_start_ready_count": 0,
+  "is_upstream": false,
+  "role": "partial_reduce_plus_cross_reference",
+  "claims_no_new_canonical_leaf_ownership_for_pointer_targets": true,
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "target_universe_note": "User-framed 'usage snapshot domain' spans 6 command names found in raw/aimami/1.2.3/windows-x64. 4/6 are already canonically owned by sibling 1.2.3 bundles (see owned_elsewhere below) and are NOT duplicated here -- only pointer-referenced. 2/6 are newly claimed by this bundle.",
+  "targets_owned_by_this_bundle": [
+    {
+      "command": "get_usage_refresh_interval",
+      "owner_va": "0x14018cbb0",
+      "raw_path": "raw/aimami/1.2.3/windows-x64/commands/ida/pseudocode/get_usage_refresh_interval_0x14018cbb0.c",
+      "gate": "gap_needs_reducer",
+      "consumerStartReady": false,
+      "strictImplementationUse": false,
+      "readyToImplement": false,
+      "implementation_use": false,
+      "gate_accepted": false,
+      "is_upstream": false,
+      "dims_done": [],
+      "dims_partial": ["dim2_wrapper_only"],
+      "dims_missing": ["dim1", "dim3_deep", "dim4", "dim5_platform_diff_note_only", "dim6"],
+      "ceiling": "not_yet_determined",
+      "decompile_truncated": false,
+      "prior_version_baseline": {
+        "version": "1.0.9",
+        "gate": "strictImplementationUse",
+        "owner_va_1.0.9": "0x1402663e0",
+        "core_va_1.0.9": "0x1402dcbc0",
+        "diff_status": "diff_required",
+        "note": "VA changed (expected for new build); behavior diff NOT calibrated this pass; not migrated, kept Unknown per RULE9"
+      }
+    },
+    {
+      "command": "set_usage_refresh_interval",
+      "owner_va": "0x14018c2d0",
+      "raw_path": "raw/aimami/1.2.3/windows-x64/commands/ida/pseudocode/set_usage_refresh_interval_0x14018c2d0.c",
+      "gate": "gap_needs_reducer",
+      "consumerStartReady": false,
+      "strictImplementationUse": false,
+      "readyToImplement": false,
+      "implementation_use": false,
+      "gate_accepted": false,
+      "is_upstream": false,
+      "dims_done": [],
+      "dims_partial": ["dim2_wrapper_only"],
+      "dims_missing": ["dim1", "dim3_deep", "dim4", "dim5_platform_diff_note_only", "dim6"],
+      "ceiling": "not_yet_determined",
+      "decompile_truncated": false,
+      "prior_version_baseline": {
+        "version": "1.0.9",
+        "gate": "strictImplementationUse",
+        "owner_va_1.0.9": "0x14027f690",
+        "diff_status": "diff_required",
+        "note": "VA changed (expected for new build); behavior diff NOT calibrated this pass; not migrated, kept Unknown per RULE9"
+      }
+    }
+  ],
+  "targets_owned_elsewhere_pointer_only": [
+    {
+      "command": "refresh_usage_snapshot",
+      "owner_va": "0x140cb44a0",
+      "raw_path": "raw/aimami/1.2.3/windows-x64/commands/accounts/ida/pseudocode/refresh_usage_snapshot_0x140cb44a0.c",
+      "canonical_bundle": "internal-reverse/audits/windows-1.2.3-accounts/",
+      "canonical_status": "consumerStartBlocked",
+      "canonical_reason": "Hex-Rays decompile failed (switch analysis failed, jump-table async switch dispatch); no live IDA breakthrough attempted this pass in the owning bundle",
+      "duplicated_here": false
+    },
+    {
+      "command": "refresh_single_account_usage",
+      "owner_va": "0x140cb15d0",
+      "raw_path": "raw/aimami/1.2.3/windows-x64/commands/accounts/ida/pseudocode/refresh_single_account_usage_0x140cb15d0.c",
+      "canonical_bundle": "internal-reverse/audits/windows-1.2.3-accounts/",
+      "canonical_status": "consumerStartBlocked",
+      "canonical_reason": "Hex-Rays decompile failed (same failure class as refresh_usage_snapshot)",
+      "duplicated_here": false
+    },
+    {
+      "command": "compute_usage_analytics",
+      "owner_va": "0x14086c970",
+      "raw_path": "raw/aimami/1.2.3/windows-x64/analytics/ida/pseudocode/compute_usage_analytics_0x14086c970.c",
+      "canonical_bundle": "internal-reverse/audits/windows-1.2.3-sessions-analytics/",
+      "canonical_status": "consumerStartReady",
+      "canonical_reason": "dim2-wrapper level closed (9/9 analytics commands), not strict/ready; explicitly excludes get/set_usage_refresh_interval and refresh_usage_snapshot/refresh_single_account_usage as 'different owning module' in its own manifest.json",
+      "duplicated_here": false
+    },
+    {
+      "command": "load_usage_analytics",
+      "owner_va": "0x140cde3c0",
+      "raw_path": "raw/aimami/1.2.3/windows-x64/commands/analytics/ida/pseudocode/load_usage_analytics_0x140cde3c0.c",
+      "canonical_bundle": "internal-reverse/audits/windows-1.2.3-sessions-analytics/",
+      "canonical_status": "consumerStartReady",
+      "canonical_reason": "same as compute_usage_analytics",
+      "duplicated_here": false
+    }
+  ],
+  "raw_c_count_module_scope": {
+    "directly_named_usage_files": 6,
+    "of_which_owned_by_this_bundle": 2,
+    "of_which_pointer_only_owned_elsewhere": 4,
+    "grep_hits_incl_xref_and_frontend_files": 9,
+    "frontend_ipc_contracts_usage_grep_line_hits": 21
+  },
+  "windows_1_0_9_baseline_ref": {
+    "bundle": "internal-reverse/audits/windows-1.0.9-system-usage/",
+    "gate": "strictImplementationUse",
+    "commands": ["get_usage_refresh_interval", "set_usage_refresh_interval", "refresh_usage_snapshot"],
+    "note": "1.0.9 treated all 3 as one cluster; at 1.2.3 refresh_usage_snapshot has migrated ownership (RULE8 canonical) into windows-1.2.3-accounts and gained a sibling refresh_single_account_usage command not present as a separate 1.0.9 cluster member; not a regression claim, just RULE8 canonical-home divergence between versions"
+  },
+  "bundle_files": [
+    "README.md",
+    "AI.md",
+    "SYSTEM-DIFF.md",
+    "manifest.json",
+    "gate-report.json",
+    "logic/WIN-USAGE-SETTINGS-DISTILLED-123.md",
+    "pointers/evidence-paths.md",
+    "data/task-plan.json",
+    "data/producer-ledger.json",
+    "reviews/CLAUDE.md"
+  ],
+  "no_raw_in_internal_reverse": true,
+  "no_version_span_path_components": true,
+  "idb_saved": false,
+  "idb_saved_note": "No IDA MCP session run this pass (read-only reduce of existing raw); idb_save not applicable"
+}

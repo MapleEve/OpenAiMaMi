@@ -1,0 +1,111 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "bundle": "cross-1.2.3-home-usage-frontend",
+  "producer": "claude (this session)",
+  "machine": "<host>",
+  "session": "cross-1.2.3-home-usage-frontend-synthesis-reduce-20260726",
+  "produced_at": "2026-07-26",
+  "mode": "read_only_cross_platform_synthesis_upgrade",
+  "task_kind": "reduce (v2 synthesis upgrade of the bundle's own v1 20260725 transitional-DISTILLED form; synthesizes the two now-landed single-platform canonical bundles + read-only four-category orphan classification of dim2 backend status against 6 additional cross-referenced sibling package groups; no new IDA MCP calls, no new raw/intermediate produced, no sibling package modified)",
+  "new_raw_or_intermediate_produced": false,
+  "supersedes": "this bundle's own v1 (cross-1.2.3-home-usage-frontend-synthesis-20260725)",
+  "closes_dependency_gap": "v1's own dependency_status.dependency_exists=false is now dependency_exists=true -- macos-1.2.3-home-usage-frontend and windows-1.2.3-home-usage-frontend both landed 2026-07-26 (sessions macos-1.2.3-home-usage-frontend-reduce-20260726 / windows-1.2.3-home-usage-frontend-reduce-20260726)",
+  "gate_tier": "consumerStartReady",
+  "gate_accepted": false,
+  "implementation_use": false,
+  "full_leaf_100": false,
+  "leaves": [
+    {
+      "command": "load_usage_analytics",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos (inherited from macos-1.2.3-home-usage-frontend); command-level-only_windows (inherited from windows-1.2.3-home-usage-frontend)",
+      "dim2_backend": "already_in_canonical -- macos-1.2.3-sessions-analytics (core::analytics::compute_usage_analytics) + windows-1.2.3-sessions-analytics (commands/analytics/ named wrapper), both consumerStartReady in their own scope",
+      "evidence_path": "audits/macos-1.2.3-sessions-analytics/ + audits/windows-1.2.3-sessions-analytics/ (pointer only, not this bundle's evidence)"
+    },
+    {
+      "command": "load_session_analytics",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos; command-level-only_windows",
+      "dim2_backend": "already_in_canonical -- macos/windows-1.2.3-sessions-analytics (core::session_analytics::compute_session_analytics)",
+      "evidence_path": "audits/macos-1.2.3-sessions-analytics/ + audits/windows-1.2.3-sessions-analytics/"
+    },
+    {
+      "command": "load_token_analytics",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos; command-level-only_windows",
+      "dim2_backend": "already_in_canonical -- macos/windows-1.2.3-sessions-analytics (core::session_analytics::compute_token_analytics)",
+      "evidence_path": "audits/macos-1.2.3-sessions-analytics/ + audits/windows-1.2.3-sessions-analytics/"
+    },
+    {
+      "command": "load_tool_analytics",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos; command-level-only_windows",
+      "dim2_backend": "already_in_canonical -- macos/windows-1.2.3-sessions-analytics (core::session_analytics::compute_tool_analytics)",
+      "evidence_path": "audits/macos-1.2.3-sessions-analytics/ + audits/windows-1.2.3-sessions-analytics/"
+    },
+    {
+      "command": "load_change_analytics",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos; command-level-only_windows",
+      "dim2_backend": "already_in_canonical -- macos/windows-1.2.3-sessions-analytics (core::session_analytics::compute_change_analytics)",
+      "evidence_path": "audits/macos-1.2.3-sessions-analytics/ + audits/windows-1.2.3-sessions-analytics/"
+    },
+    {
+      "command": "load_quota_history",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos; command-level-only_windows",
+      "dim2_backend": "already_in_canonical, semantic-identity accepted_unknown -- macos-1.2.3-relay (VA 0x1006d4d30) + windows-1.2.3-relay, both consumerStartReady; command-name match with this module's account-quota consumption not independently function-body-verified this pass",
+      "evidence_path": "audits/macos-1.2.3-relay/ + audits/windows-1.2.3-relay/"
+    },
+    {
+      "command": "load_snapshot",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos_render_surface (shared E2() hook); command-level-only_windows",
+      "dim2_backend": "already_in_canonical -- macos-1.2.3-accounts (commands::accounts::load_snapshot family, dim2 closed 0-truncation) + windows-1.2.3-accounts (dim2 clean); complementary relationship: accounts package's own dim1 for this command is consumerStartBlocked (no confirmed AccountsPage call-site), this module's dim1 IS confirmed (Dashboard)",
+      "evidence_path": "audits/macos-1.2.3-accounts/ + audits/windows-1.2.3-accounts/"
+    },
+    {
+      "command": "refresh_usage_snapshot",
+      "gate": "consumerStartReady",
+      "dim1_frontend": "closed_macos (BH refresh, 800/1600ms backoff); command-level-only_windows",
+      "dim2_backend": "mac: already_in_canonical -- macos-1.2.3-accounts (refresh_usage_snapshot_with_retry, dim2 closed). win: genuine_gap -- windows-1.2.3-accounts records HEXRAYS_DECOMPILE_FAILED for this command specifically (attempted-and-failed, version regression vs 1.0.9 baseline per windows-1.2.3-system-usage's own RULE9 diff note)",
+      "evidence_path": "audits/macos-1.2.3-accounts/ + audits/windows-1.2.3-accounts/"
+    },
+    {
+      "command": "load_bootstrap_state",
+      "gate": "consumerStartBlocked",
+      "dim1_frontend": "missing_macos (no located UI trigger in this module's own reduce); command-level-only_windows",
+      "dim2_backend": "different_machine_owner, cross-platform+cross-module inconsistency -- macos-1.2.3-bootstrap (leaf bootstrap_cache, CLOSED, consumerStartReady there) vs windows-1.2.3-daemon-autoswitch (NOT windows-1.2.3-bootstrap; VA 0x14018b520; OPEN, blocks_start there). Inconsistency already self-flagged by windows-1.2.3-bootstrap's own manifest.json, requires EXPLICIT_REASSIGN_OWNER token to reconcile (not performed this session).",
+      "reason": "blocks_start frontend-control-flow-missing (macOS); owner-boundary ambiguity unresolved (both platforms)",
+      "evidence_path": "audits/macos-1.2.3-bootstrap/ + audits/windows-1.2.3-daemon-autoswitch/ + audits/windows-1.2.3-bootstrap/manifest.json (self-flagged inconsistency note)"
+    },
+    {
+      "command": "get_usage_refresh_interval",
+      "gate": "consumerStartBlocked",
+      "dim1_frontend": "partial_macos (consuming hook cU() located; mutating settings control out of module scope); command-level-diagnostic-only_windows",
+      "dim2_backend": "macOS: truly_undone (NO canonical package anywhere covers this command's macOS backend -- cross-checked against all 15 macOS 1.2.3 canonical packages). Windows: different_machine_owner -- windows-1.2.3-system-usage (VA 0x14018cbb0, dim2 available/non-truncated), but that package's own gate is still blocks_start/gap_needs_reducer overall.",
+      "reason": "product_decision on module ownership (settings/system-usage vs home); macOS backend is the one genuine truly_undone gap for this module",
+      "evidence_path": "audits/windows-1.2.3-system-usage/ (Windows only; no macOS pointer exists)"
+    }
+  ],
+  "excluded_other_module_owner": {
+    "load_mcp_servers": "mcp module -- macos-1.2.3-mcp + windows-1.2.3-mcp, both consumerStartReady 4/4 (different_machine_owner, healthy)",
+    "set_usage_refresh_interval": "settings/system-usage module -- windows-1.2.3-system-usage dim2 available (VA 0x14018c2d0); no macOS canonical owner found (out of this module's scope, future system-usage-domain work)",
+    "refresh_single_account_usage": "accounts module -- macos-1.2.3-accounts dim2 closed; windows-1.2.3-accounts dim2 Hex-Rays-decompile-FAILED (out of this module's scope, future accounts-domain work)"
+  },
+  "four_category_orphan_classification_summary": {
+    "already_in_canonical": 4,
+    "local_outtake": 0,
+    "different_machine_owner": 5,
+    "truly_undone": 1,
+    "detail_ref": "manifest.json four_category_orphan_classification"
+  },
+  "grounded_checks_run": [
+    "ls audits/ -> macos-1.2.3-home-usage-frontend and windows-1.2.3-home-usage-frontend both present (dependency gap resolved, confirmed 2026-07-26)",
+    "grep cross-1.2.3-home-usage-frontend REVERSE-STATUS.md -> only v1 (20260725) and the two sibling single-platform DONE entries referencing this bundle; no active in-progress claim by another session",
+    "grep cross-1.2.3-home-usage-frontend INDEX.jsonl -> 0 hits prior to this session's own append (no prior synthesis-upgrade entry, no collision)",
+    "read both single-platform siblings' README/AI/gate-report/manifest/logic in full",
+    "read gate-report.json + manifest.json dim2 fields of all 6 cross-referenced sibling package groups (12 individual packages across both platforms where they exist) to build the four-category orphan classification",
+    "cross-checked all 15 macOS 1.2.3 canonical audits/ packages for any coverage of get_usage_refresh_interval's macOS backend -> 0 hits, confirming genuine truly_undone status"
+  ]
+}

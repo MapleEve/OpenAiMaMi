@@ -1,0 +1,36 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "tray",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "create_tray_menu", "create_bootstrap_tray_menu", "create_tray_menu_from_snapshot",
+    "append_codex_router_section", "handle_tray_menu_event", "refresh_tray_menu",
+    "refresh_tray_menu_with_snapshot", "quota_text", "load_tray_template_icon",
+    "update_tray_recording_state"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 10 tray targets: readyToImplement blocked pending dim4 (interface/DTO) + dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 10 tray targets: strictImplementationUse blocked pending dim4 (interface/DTO/error-envelope/side-effect boundary) closure"
+    ],
+    "consumerStartBlocked": [
+      "handle_tray_menu_event's tray_account: confirmation-dialog-to-switch-closure wiring (exact trigger path not conclusively traced; consumer should not assume the dialog is a blocking confirm-before-switch gate without independently verifying against a live IDA xref pass)"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "Run a dim4 pass: this is a small, tractable module (10 targets, 12 files already read) -- systematize the opportunistic field-offset notes in README.md into a formal interface/DTO map (CoreSnapshotPayload account-array shape, per-account checkbox flag, quota i32 pair semantics, menu-item-id namespace).",
+    "Run a dim6 pass: map each of the 10 targets to Polaris's own C5 test surface (e.g. tray menu construction has no direct C5 test today; recording-state icon overlay could map to a voice-module E2E if one exists).",
+    "Connect a live IDA MCP session and xref handle_tray_menu_event's tray_account: dialog-show call against handle_tray_menu_event::{closure}::{closure} to conclusively resolve the confirmation-to-switch wiring Unknown.",
+    "Resolve windows-x64 1.2.3 tray owners (2 stripped sub_XXXX functions) to produce a windows-1.2.3-tray sibling package and close dim5 for Windows."
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "session": "win-1.2.3-bootstrap-reduce-20260725",
+  "machine": "<host>",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "bootstrap",
+  "produced_at": "2026-07-25T00:00:00Z",
+  "leaves": [
+    {"leaf": "manager_bootstrap", "va": "0x14085a330", "file": "manager/ida/pseudocode/bootstrap_0x14085a330.c", "status": "consumerStartReady"}
+  ],
+  "cross_referenced_not_owned": [
+    {"leaf": "load_bootstrap_state", "va": "0x14018b520", "owner": "windows-1.2.3-daemon-autoswitch"},
+    {"leaf": "dismiss_pending_auto_switch", "owner": "windows-1.2.3-daemon-autoswitch"},
+    {"leaf": "load_pending_auto_switch", "owner": "windows-1.2.3-daemon-autoswitch"},
+    {"leaf": "confirm_pending_auto_switch", "owner": "windows-1.2.3-daemon-autoswitch"},
+    {"leaf": "confirm_pending_auto_switch_and_restart_codex", "owner": "windows-1.2.3-daemon-autoswitch"},
+    {"leaf": "load_snapshot", "va": "0x140cb5e50", "owner": "windows-1.2.3-accounts"},
+    {"leaf": "store_bootstrap_snapshot_best_effort", "va": "0x1403ec5e0", "owner": "windows-1.2.3-accounts"},
+    {"leaf": "create_bootstrap_tray_menu", "va": "0x1403f2350", "owner": "windows-1.2.3-tray"}
+  ],
+  "gap_leaves_no_1.2.3_raw": [
+    "app_run_entry", "boot_spawn_threads", "bootstrap_cache (standalone)", "managed_state_registry", "load_snapshot (system-shell-init supplement)"
+  ],
+  "index_lines_appended": ["aimami/1.2.3/windows-x64/bootstrap/manager-bootstrap-and-gap-reduce"],
+  "new_raw_evidence_produced": false,
+  "note": "Reduce-only session; classified 1 pre-existing raw file (manager_bootstrap) into a new canonical audits/ bundle, cross-referenced 4 other bootstrap-filename-matched raw files to their existing canonical owners (not duplicated), and recorded 5 RULE9-baseline leaves as honest gap_needs_new_raw. No new IDA decompile, no server_health call (not required for a read-only reduce pass over already-landed evidence)."
+}

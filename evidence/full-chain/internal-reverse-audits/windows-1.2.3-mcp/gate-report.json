@@ -1,0 +1,113 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "mcp",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-25",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 4,
+    "blocked": 0,
+    "total_commands": 4
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "closed -- McpPage reused by pointer from macos-1.2.3-mcp (shared cross-platform JS bundle, byte-identical filename confirmed present in windows-x64 package tree); all 4 commands independently confirmed on Windows via ground-truth-named wrapper files with 'command-name string xref' attribution headers",
+    "dim2_backend_owner_pseudocode": "partial -- NOT 'strong' like macos-1.2.3-mcp. 16/16 core .c files on disk (0 truncation), but only 1/16 is ground-truth-named (upsert_mcp_server_0, pre-existing IDB signature comment), 7/16 high-confidence inferred via literal-string cross-evidence, 1/16 moderate-confidence, 6/16 generic runtime/stdlib glue with no mcp-specific role claimed. 6 of mac's 14 core::mcp functions (load_mcp_servers-core/quote_toml/prepare_existing_mcp_block/set_optional_string/remove_mcp_server-core/set_mcp_server_enabled-core) have NO confirmed win counterpart. Census incompleteness independently proven this session (1 previously-undumped, already-signature-matched function found and captured; method of discovery -- find_regex+xrefs_to on a narrow string family -- was not exhaustive, so more gaps likely remain unfound)",
+    "dim3_call_tree_to_leaf": "partial -- the 7 high-confidence-inferred helper functions' call relationships are narrated in logic/FULL-CHAIN-1.2.3.md (parse_mcp_document -> parse_mcp_section_header -> unquote_toml, etc.), reaching plausible fs/toml-adjacent operations by structural inference; upsert_mcp_server_0's full internal call tree to real leaves was NOT exhaustively traced (only identity + non-truncation + a few structural landmarks were confirmed) given the 800-line size and session time budget",
+    "dim4_interface_dto_boundary": "partial -- STRONGER evidence than macos-1.2.3-mcp for 3 of 4 commands' argument field names (upsert_mcp_server: name/transport/enabled/command/args/url/headers/environment; set_mcp_server_enabled: name/enabled; remove_mcp_server: name -- all read as literal key-string constants directly inside the wrapper pseudocode, ground-truth, not inferred), but still not a formal per-field struct/DTO dump with defaults/nullability/error-envelope table, so not closed",
+    "dim5_platform_gate": "partial -- substantially advanced from the prior 'exists but unread' status recorded by macos-1.2.3-mcp; this package is the first to read and structure Windows mcp evidence. NOT closed: 6/14 core-function gap, census proven incomplete, no formal macOS<->Windows per-field structural diff document produced (SYSTEM-DIFF.md gives a narrative diff only), only 1/4 commands (upsert_mcp_server) has both wrapper AND core ground-truth ownership confirmed",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping has been produced for windows-x64 1.2.3 mcp leaves"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim2 (core backend owner partial, not strong -- 6/14 mac-equivalent functions unconfirmed, census incompleteness proven), dim3 (call-tree to leaf partial), dim4 (interface/DTO not a formal struct dump), and dim6 (test/acceptance mapping not produced) are not closed for any of the 4 mcp commands",
+  "consumerStartReady_commands": [
+    "load_mcp_servers", "upsert_mcp_server", "set_mcp_server_enabled", "remove_mcp_server"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady + uiCallEntryReady satisfied via reused macOS McpPage doc (shared JS bundle, independently confirmed byte-identical filename present on win) plus win-native ground-truth wrapper files for all 4 commands (command-name string xref); happyPathReady/backend-owner satisfaction is UNEVEN across the 4 commands -- see the per-command 'backend_owner_confidence' array below; dtoBoundaryReady PARTIAL (ground-truth literal argument-key names for 3/4 commands, stronger than macOS's inference-level equivalent, but not a formal closed spec); boundaryPathReady PARTIAL (2 named lock resources visible at wrapper level -- 'repo'/'mutationgate' -- core-level error paths not independently traced); sideEffectReady PARTIAL (writes to a codex-config-equivalent TOML file via the same managed-block-marker convention as macOS, byte-identical 55-byte marker string confirmed on Windows; full write-path leaf not exhaustively traced for the core implementation); acceptanceDraftReady NOT done; platformScopeDeclared=windows-x64 only (macOS package's own claims not extrapolated onto this package or vice versa)",
+  "backend_owner_confidence": [
+    {
+      "command": "load_mcp_servers",
+      "wrapper_owner": "ground_truth (0x1401788e0)",
+      "core_owner": "unknown",
+      "core_owner_note": "no core .c file among the 16 on disk was role-matched to this command's read-path implementation"
+    },
+    {
+      "command": "upsert_mcp_server",
+      "wrapper_owner": "ground_truth (0x140177050, 8 literal DTO field keys read)",
+      "core_owner": "ground_truth (upsert_mcp_server_0, 0x1409e86f0, pre-existing IDB cross-platform signature comment, newly captured to raw/ this session)",
+      "core_owner_note": "only command with full wrapper+core ground-truth chain on Windows"
+    },
+    {
+      "command": "set_mcp_server_enabled",
+      "wrapper_owner": "ground_truth (0x140176630, name/enabled literal DTO field keys read)",
+      "core_owner": "unknown",
+      "core_owner_note": "editable_mcp_server_table (sub_1409E7A10, high-confidence) is a shared table-locate/create helper, not independently confirmed as the set_mcp_server_enabled-specific mutation implementation"
+    },
+    {
+      "command": "remove_mcp_server",
+      "wrapper_owner": "ground_truth (0x140175e20, name literal DTO field key read)",
+      "core_owner": "unknown",
+      "core_owner_note": "insert_mcp_block (sub_1409E1880, high-confidence, references the 55-byte managed marker) is a shared paragraph insert/replace helper, not independently confirmed as the remove_mcp_server-specific atomic-deletion implementation (mac's core::mcp::remove_mcp_server was itself a 1.2.3 NEW-delta function, so a generic shared helper is unlikely to be the sole implementation)"
+    }
+  ],
+  "unknowns": [
+    {
+      "item": "core::mcp census completeness on windows-x64 1.2.3",
+      "class": "blocks_start",
+      "reason": "1 previously-undumped, already-signature-matched function (upsert_mcp_server_0) was found and captured this session via a narrow-scope find_regex+xrefs_to check, proving the original 15-address win-app-inventory-gapfill-leaf census was not exhaustive; no full live symbol-range sweep was completed to bound the remaining gap (brute-force search_text timed out server-side after 60s and was not force-retried per red line 17's retry-then-stop discipline)"
+    },
+    {
+      "item": "6/14 mac core::mcp functions with no confirmed windows counterpart (load_mcp_servers-core, quote_toml, prepare_existing_mcp_block, set_optional_string, remove_mcp_server-core, set_mcp_server_enabled-core)",
+      "class": "blocks_start",
+      "reason": "not found among the 16 core .c files on disk this session; per SKILL.md redline 8 / AGENTS.md, 'artifact/platform not obtained stays Unknown' -- not extrapolated from macOS, not assumed absent"
+    },
+    {
+      "item": "sub_1409E1D30 (0x1409e1d30, 1284 lines) identity",
+      "class": "accepted_unknown",
+      "reason": "strong structural evidence (transport field 3-way stdio/http/sse parsing via inline literal-value byte comparisons) ties it to the upsert path, consistent with macOS's finding of a transport selector, but this function carries no pre-existing IDB cross-platform signature comment (unlike upsert_mcp_server_0) and this session did not independently confirm its relationship to upsert_mcp_server_0 (caller? shared helper? unrelated?); classified moderate-confidence, not upgraded to ground-truth or even high-confidence"
+    },
+    {
+      "item": "live angle-A full symbol-range enumeration for core::mcp on windows-x64",
+      "class": "accepted_unknown",
+      "reason": "a live, healthy win IDA MCP connection WAS available this session (server_health confirmed status=ok/IDA decompiler_ready=true/module matches, satisfying red line 17's preconditions), and was used for a targeted find_regex+xrefs_to+decompile pass that found 1 real gap; a broader func_query attempt filtered by name-substring appeared to ignore the filter and return the full function table (not further pursued given time budget), and a brute-force disasm-text search_text call timed out server-side after 60s (attempted once, not force-retried indefinitely). This is classified accepted_unknown in the 'partial-live, tool/time-budget-limited' sense -- meaningfully stronger evidence-gathering than macos-1.2.3-mcp's angle-A (no tool connection at all), but not a completed exhaustive census, and NOT silently treated as 'no further gaps exist'"
+    },
+    {
+      "item": "6 generic runtime/stdlib-glue functions' module attribution",
+      "class": "accepted_unknown",
+      "reason": "attributed to codexmate_lib/core/mcp via a call-graph-propagation heuristic (>=2 same-module callers) recorded in the pre-existing file headers from an earlier session; this heuristic can mis-attribute generic monomorphized library-internal code (Drop glue, HashMap::insert, BTree lookup, Default-init, thunks, tag-check helpers) when both observed callers happen to be within mcp; not independently cross-checked against other modules' call sites this session; no mcp-domain business-logic role is claimed for any of these 6"
+    },
+    {
+      "item": "dim4 formal per-field DTO struct dump (defaults/nullability/error-envelope table) for windows-x64 1.2.3 mcp",
+      "class": "blocks_start",
+      "reason": "not produced this pass; the literal argument-key names ARE ground-truth (stronger than macOS's inference-level equivalent for 3/4 commands) but a formal structured dump with defaults/nullability/error taxonomy was not built"
+    },
+    {
+      "item": "dim6 test/acceptance mapping for windows-x64 1.2.3 mcp",
+      "class": "blocks_start",
+      "reason": "not produced this pass"
+    },
+    {
+      "item": "upsert_mcp_server_0's full internal call tree to real fs/toml leaves",
+      "class": "blocks_start",
+      "reason": "identity (ground-truth) and non-truncation (head/tail + structural spot-check) were confirmed this session, but the 800-line function body was not exhaustively traced call-by-call to concrete filesystem/TOML-crate leaf operations; 3 distinct '\\r[mcp_servers.' template-string references were located and cross-checked via xrefs_to but their exact branch conditions (which template is used when) were not fully resolved"
+    }
+  ],
+  "notes": [
+    "This is the first canonical audits/ gate-report for mcp at 1.2.3 windows-x64. Unlike macos-1.2.3-mcp (pure distillation of pre-existing raw evidence, no IDA connection, dim2 reported 'strong'), this session had a live win IDA MCP connection and used it for a bounded, targeted live-verification pass that discovered and closed one genuine pre-existing census gap (upsert_mcp_server_0, previously signature-matched in the IDB but never dumped to raw/ or recorded in INDEX.jsonl).",
+    "dim2 is deliberately reported as 'partial', not upgraded to 'strong', because the census-gap discovery itself is direct proof the underlying gap-fill methodology (call-graph-propagation-filtered batches) is lossy, and because 6 of mac's 14 core::mcp functions still have no confirmed windows counterpart -- reporting 'strong' would misrepresent the actual state of knowledge.",
+    "dim4 is reported as having stronger-than-macOS ground-truth evidence for 3 of 4 commands' argument field names specifically (literal key-string constants read directly from wrapper pseudocode), while still correctly remaining 'partial' overall (no formal struct dump).",
+    "Do not confuse this package's 4/4 consumerStartReady with a claim of uniform backend-owner confidence across the 4 commands -- see backend_owner_confidence array; only upsert_mcp_server has full wrapper+core ground-truth.",
+    "Do not confuse this package's 4/4 consumerStartReady with the legacy windows-1.0.9-mcp package's readyToImplement=true/full_leaf_100=true: that 1.0.9 claim predates full_leaf_100_definition_v2, covers fewer fields (no transport/url/headers/environment), and has not been re-validated against the current six-dimension gate.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue and concrete next-producer-steps."
+  ]
+}

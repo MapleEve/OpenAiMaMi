@@ -6,7 +6,7 @@
 **Date**: 2026-06-17
 **Binary**: AiMaMi 1.1.1 universal (macOS ARM64)
 **Binary SHA-256**: f34ff82910539964e24e86b35e95ea85b42af7d7dccf8e979914a2c21bd8cfeb
-**IDB**: AiMaMi.i64 — hexrays_ready=true, strings_cache_ready=true, uptime 82868s
+**IDB**: AiMaMi.i64 — IDA decompiler_ready=true, strings_cache_ready=true, uptime 82868s
 **Role**: 纯生产者 (producer-only)
 **delta_class**: integrity_recovered
 **Gate tier**: strictImplementationUse_candidate

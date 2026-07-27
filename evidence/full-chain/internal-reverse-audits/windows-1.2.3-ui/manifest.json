@@ -1,0 +1,81 @@
+{
+  "schema": "c5cm.internal-reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "ui",
+  "package": "windows-1.2.3-ui",
+  "audit_type": "partial_gap_conclusion",
+  "question": "What is the complete AiMaMi 1.2.3 windows-x64 'ui' command surface, and for each covered command, what gate tier does it reach?",
+  "binary": {
+    "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
+    "binary_path": "raw/binary/AiMaMi.1.2.3 win64.exe",
+    "binary_size_bytes": 33667584,
+    "binary_format": "pe",
+    "pe_machine": "AMD64",
+    "arch": "x64"
+  },
+  "covered_commands": ["set_app_theme"],
+  "covered_commands_detail": [
+    {
+      "command": "set_app_theme",
+      "plugin_command": "plugin:app|set_app_theme",
+      "kind": "tauri_builtin_app_plugin_shim",
+      "is_upstream": true,
+      "gate": "blocks_start",
+      "gap_class": "gap_needs_new_raw",
+      "dims_done": [],
+      "dims_candidate": ["dim1"],
+      "dims_missing": ["dim2", "dim3", "dim4", "dim5", "dim6"],
+      "leaf_bundle": "set_app_theme/"
+    }
+  ],
+  "orphan_four_category": {
+    "schema_note": "SKILL.md red line 15 FOUR_ANGLE_COMPLETENESS. Semantic keyword sweep (theme/appearance/window/style/dark/light/mica/tabbed/color/chrome) over the 131-command windows-x64 1.2.3 frontend command face, cross-checked against all existing 1.2.3 canonical bundles.",
+    "already_in_canonical": [
+      {
+        "candidate": "focus_main_window",
+        "owner_bundle": "internal-reverse/audits/windows-1.2.3-system-hotspot",
+        "owner_va": "0x14096F5D0",
+        "reason": "Own dedicated command-layer function, listed in windows-1.2.3-system-hotspot/manifest.json coverage.frontend_commands_list; part of the hotspot always-on-top companion widget feature, not the ui/theme leaf."
+      },
+      {
+        "candidate": "has_notch",
+        "owner_bundle": "internal-reverse/audits/windows-1.2.3-system-hotspot",
+        "owner_va": "0x140970DA0",
+        "reason": "Own dedicated command-layer function, listed in windows-1.2.3-system-hotspot/manifest.json coverage.frontend_commands_list; screen-geometry query for the hotspot widget, not a theme/appearance command."
+      }
+    ],
+    "local_outtake": [],
+    "different_machine_owner": [],
+    "truly_undone": [],
+    "conclusion": "Zero truly_undone orphans found for the ui module beyond the already-tracked set_app_theme raw-coverage gap. No new equivalent-reversal work opened for focus_main_window/has_notch (already_in_canonical elsewhere, per red line 15 prohibition on re-reversing non-truly_undone orphans)."
+  },
+  "gate_tier": "blocks_start",
+  "gate_accepted": false,
+  "implementation_use": false,
+  "consumerStartReady": false,
+  "strictImplementationUse": false,
+  "readyToImplement": false,
+  "gap_class": "gap_needs_new_raw",
+  "ceiling": "blocks_start",
+  "is_upstream_all": true,
+  "authoritative": true,
+  "authoritativeProducer": {
+    "machine": "<host>",
+    "session": "win-1.2.3-ui-gatereport-reduce-20260726"
+  },
+  "raw_evidence_root": "raw/aimami/1.2.3/windows-x64/",
+  "raw_c_count_this_module": 0,
+  "note_raw_c_count": "raw/aimami/1.2.3/windows-x64/ has 65 top-level module directories (re-enumerated this session); none named 'ui' or 'theme'. Zero .c pseudocode files exist anywhere under raw/aimami/1.2.3/windows-x64/**/ida/pseudocode/ for a set_app_theme/theme owner function. This module-root manifest is a reduce/backfill over the pre-existing win-ui-set-app-theme-123gap-20260725 leaf conclusion; no new IDA decompile was run.",
+  "consumed_bundles": [
+    "windows-1.2.3-ui/set_app_theme (this package's own leaf bundle, produced by win-ui-set-app-theme-123gap-20260725)",
+    "windows-1.0.9-ui/set_app_theme (RULE9 same-platform predecessor evidence; NOT migrated -- no 1.2.3 backend raw exists to diff against, rule9_migration_status=diff_required, see set_app_theme/manifest.json)",
+    "windows-1.2.3-system-hotspot (orphan-resolution cross-reference for focus_main_window/has_notch)"
+  ],
+  "generated_by": "win-1.2.3-ui-gatereport-reduce-20260726",
+  "machine": "<host>",
+  "generated_at": "2026-07-26",
+  "evidence_root": "${C5CM_INTERNAL_HISTORY_ROOT:-$C5CM_SHARE_ROOT}",
+  "not_a_replacement_for": "This manifest completes the module-root package skeleton (manifest.json/logic/reviews per AGENTS.md RULE 8) over the pre-existing win-ui-set-app-theme-123gap-20260725 leaf conclusion. It does not upgrade the gate: set_app_theme remains gap_needs_new_raw/blocks_start pending an IDA producer pass against raw/binary/AiMaMi.1.2.3 win64.exe.i64 (see logic/UI-THEME-GAP-1.2.3.md next_producer_steps)."
+}

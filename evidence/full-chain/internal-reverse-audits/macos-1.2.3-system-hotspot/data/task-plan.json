@@ -1,0 +1,35 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "system-hotspot",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "has_notch", "get_hotspot_enabled", "set_hotspot_enabled", "focus_main_window", "hotspot_ready"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "all 5 system-hotspot commands: readyToImplement blocked pending dim3 (closure-body decompile for focus_main_window/reveal_main_window/force_reveal_main_window/refresh_hotspot_on_main/register_hotspot_relayout_observers/install_native_hotspot_observers handlers) + dim4 (CodexMateSettings/HotspotConfig field shape) + dim5 (Windows platform gate for 13 macOS-only functions) + dim6 (test/acceptance mapping) closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "all 5 system-hotspot commands: strictImplementationUse blocked pending dim3 (closure bodies) and dim4 (interface/DTO) closure"
+    ],
+    "consumerStartBlocked": [
+      "the 13 macOS-only internal helper/platform functions (create_hotspot_window, apply_native_hotspot_properties, install_native_hotspot_observers, register_hotspot_relayout_observers, schedule_hotspot_relayout, refresh_hotspot_on_main, set_window_alpha, bring_main_window_forward, bring_main_window_force_forward, force_reveal_main_window, reveal_main_window, compute_hotspot_frame, has_notch_screen) are not independently Tauri-invokable and have zero Windows evidence -- product_decision needed on whether Windows needs an equivalent notch-companion-window feature at all before consumer builds cross-platform-parity code against them"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "next_producer_steps": [
+    "focus_main_window's closure is already resolved via the sibling package internal-reverse/audits/macos-1.2.3-window-path/ (WryUserEvent(28,focused=true), strictImplementationUse) -- no further work needed on that one. Decompile the anonymous closure bodies referenced by tauri_runtime_wry::send_user_message in reveal_main_window, force_reveal_main_window, refresh_hotspot_on_main, register_hotspot_relayout_observers, and create_hotspot_window's off-main-thread branch -- by structural analogy to focus_main_window these likely resolve quickly (reveal/force_reveal are near-certainly WryUserEvent(28,focused=<flag>) variants) and are the fastest remaining path to closing dim3 for this module.",
+    "Decompile the 5 NSNotificationCenter handler block bodies inside install_native_hotspot_observers (currently only the registration call sites are decompiled, not the handler closures themselves) to confirm they call schedule_hotspot_relayout as inferred from call-site position.",
+    "Locate and decompile the FieldVisitor::visit_str byte-matcher (if any) for CodexMateSettings (the struct backing get_hotspot_enabled/set_hotspot_enabled via Repository::load_settings/save_settings) and for the separately-named HotspotConfig struct seen in core/repository serde-glue -- confirm whether these are the same field or two independent hotspot-related persisted structs.",
+    "Confirm via product_decision (not IDA) whether Windows genuinely lacks a notch-companion-window feature (plausible given no notch hardware) or whether the 13 macOS-only functions' Windows equivalents simply haven't been decompiled yet -- currently accepted_unknown, not confirmed either way.",
+    "Run a dim6 pass: map each of the 5 system-hotspot commands' behavior (has_notch geometry detection, get/set_hotspot_enabled persisted toggle, focus_main_window/hotspot_ready main-thread window operations) to Polaris's own C5 unit/E2E test surface or explicit manual-acceptance criteria.",
+    "Re-run angle-C as a live IDA export_funcs() semantic scan (this pass only used a text grep proxy) to more rigorously rule out ICF-folded or string-pool-invisible hotspot-adjacent functions."
+  ]
+}

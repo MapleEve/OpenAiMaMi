@@ -1,0 +1,75 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "tray",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-24",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 10,
+    "blocked": 0,
+    "total_targets": 10
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "accepted-native-substitute -- this module has no frontend invoke() surface at all (0 'tray' hits across 131 enumerated IPC commands in frontend/ipc-contracts.jsonl, extractor cross-verified functional against unrelated relay commands in the same file). UI trigger is the native macOS menu-bar icon + NSMenu items built by tauri::menu::MenuBuilder and dispatched via Tauri's on_menu_event native callback (handle_tray_menu_event), which OUTPUT-SPEC.md explicitly accepts as a substitute for the invoke() wrapper path ('明示接受的同平台 native callback/helper 替代路径'). Not a gap; architecturally not applicable.",
+    "dim2_backend_owner_pseudocode": "strong -- all 12 raw .c files across the 3 tray-scoped source directories (commands/tray_menu 10, load_tray_template_icon 1, core/voice/runtime/tray 1) were read in full this session; all 10 distinct symbol families have real (non-sub_XXXX) owner names, non-failed decompile bodies, 0 truncation markers or unbalanced braces observed. Source binary sha256 not independently re-hashed this pass for tray-scoped dirs specifically (see manifest.json binary.sha256_note); same 1.2.3 macos-arm64 release as macos-1.2.3-relay.",
+    "dim3_call_tree_to_leaf": "partial -- individual function bodies are real logic (not wrapper-only stubs), and several implementation leaves ARE visible in the pseudocode itself (tauri::Emitter/TrayIcon::set_menu/set_icon/set_icon_as_template native calls, tauri_plugin_dialog::MessageDialogBuilder::show, RelayManager::snapshot+sanitize_for_export read, Repository::load_local_state_synced read, cross-module call into commands::accounts::switch_account_and_restart_sync and codexmate_lib::request_user_quit). But no standalone per-target call-tree-to-implementation-leaf termination document has been produced; logic/FULL-CHAIN-1.2.3.md gives a module-level narrative, not a systematic per-target leaf-termination table.",
+    "dim4_interface_dto_boundary": "not-closed -- no formal per-target DTO/error-envelope/side-effect-boundary extraction pass has been run. Some struct field offsets were observed opportunistically while reading (CoreSnapshotPayload account array at a3+680/count at a3+688, per-account active checkbox flag at offset+153, quota i32 pair at a3+112/a3+120/a3+152, override-subtitle String at a3+208, account-key-table index byte at a3+344) but these are read-along notes, not a systematic interface map. This is an open gap, not evidence.",
+    "dim5_platform_gate": "mac-closed-for-existence, windows-not-attempted-this-pass -- macOS evidence for all 10 targets is present and read (this package). Windows raw evidence exists at raw/aimami/1.2.3/windows-x64/tray/ (2 files, sub_14025D570/sub_1407190E0, owners unresolved -- stripped binary, names not yet recovered) plus a separate windows-x64/codexmate_lib/load_tray_template_icon_0x1401a26f0.c; none of this was reduced or gated this pass (out of scope for this mac-only tray canonicalization task). Do not infer Windows tray behavior from this macOS package; a future windows-1.2.3-tray package must independently close dim5 for Windows.",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping produced for any of the 10 tray targets this pass."
+  },
+  "readyToImplement_targets": [],
+  "strictImplementationUse_targets": [],
+  "strictImplementationUse_reason": "dim4 (interface/DTO/error-envelope/side-effect boundary) and dim6 (test/acceptance mapping) are not closed for any of the 10 tray targets; per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the 2026-05-27 Strict Leaf Readiness Clarification, decompile completeness (dim2) alone does not promote target-level readiness even when dim2 is strong and dim1 is satisfied via the accepted native-substitute path.",
+  "consumerStartReady_targets": [
+    "create_tray_menu", "create_bootstrap_tray_menu", "create_tray_menu_from_snapshot",
+    "append_codex_router_section", "handle_tray_menu_event", "refresh_tray_menu",
+    "refresh_tray_menu_with_snapshot", "quota_text", "load_tray_template_icon",
+    "update_tray_recording_state"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady satisfied via the accepted native-menu-callback substitute (dim1); happyPathReady + backend owner satisfied via 12/12 raw .c files read with real owners and non-failed decompile bodies (dim2 strong); dtoBoundaryReady/boundaryPathReady/sideEffectReady/acceptanceDraftReady NOT independently produced -- consumer must derive menu-item id namespace, account-switch/quit routing, and quota-text formatting behavior directly from the pseudocode read-notes in logic/ rather than treat this package as a closed interface spec.",
+  "corrections_to_prior_baseline": [
+    {
+      "item": "refresh_tray_menu / refresh_tray_menu_with_snapshot rebuild scope",
+      "prior_claim": "backend-baseline/commands-baseline.md §5 describes these as '菜单内容刷新（不重建整个菜单对象，更新展示文案）' (refresh content without rebuilding the whole menu object)",
+      "grounded_finding": "reading refresh_tray_menu_0x1003565f0.c and refresh_tray_menu_with_snapshot_0x10035a260.c directly shows both fully call create_tray_menu / create_tray_menu_from_snapshot (the complete menu builder), then look up the tray by id \"main\" and call tauri::tray::TrayIcon::set_menu with the freshly-built menu object. This is a full rebuild-and-swap, not an in-place text update. The prior baseline's one-line characterization overstates the incremental-ness of the refresh path.",
+      "impact": "does not change consumerStartReady tier; recorded as a correction for anyone using this as an implementation reference (a naive port that tries to mutate menu item labels in place instead of rebuilding+swapping would diverge from upstream behavior)"
+    }
+  ],
+  "unknowns": [
+    {
+      "item": "handle_tray_menu_event tray_account: confirmation-dialog-to-switch wiring",
+      "class": "blocks_start",
+      "reason": "the default-case branch for 'tray_account:<key>' ids loads local state, compares the parsed key against stored account keys, and (when matched) formats + shows a native MessageDialogBuilder with OK/Cancel-shaped button set; the account-switch closure (handle_tray_menu_event::{closure}::{closure} @ 0x100702600, which calls commands::accounts::switch_account_and_restart_sync then refresh_tray_menu on success) was read and confirmed to exist and be called from the create_bootstrap_tray_menu family as a generic error-unwrap closure, but the exact call site that wires the dialog's confirm button to actually invoking the switch closure was not conclusively traced in this pass -- recorded as an honest partial, not fabricated as closed"
+    },
+    {
+      "item": "windows-x64 1.2.3 tray owner resolution",
+      "class": "blocks_start",
+      "reason": "2 stripped sub_XXXX functions exist on disk (raw/aimami/1.2.3/windows-x64/tray/) with no resolved names; out of scope for this mac-only pass, not attempted"
+    },
+    {
+      "item": "dim4 interface/DTO extraction",
+      "class": "blocks_start",
+      "reason": "not produced this pass; readyToImplement/strictImplementationUse blocked on this until closed"
+    },
+    {
+      "item": "dim6 test/acceptance mapping",
+      "class": "blocks_start",
+      "reason": "not produced this pass; readyToImplement/strictImplementationUse blocked on this until closed"
+    }
+  ],
+  "notes": [
+    "This package deliberately does NOT copy forward the 1.0.9 macos tray package's readyToImplement=true/full_leaf_100=true claim (internal-reverse/audits/macos-1.0.9-tray/gate-report.json): that package predates the later-hardened full_leaf_100_definition_v2 six-dim gate format (no dim_status breakdown), points at a different binary/version, and no diff was run against it this pass (RULE 9 diff_required, diff basis not established). Treated as historical reference only via manifest.json.prior_version_reference.",
+    "Backend decompile completeness (dim2) is genuinely strong for this small module: 10/10 targets across 12/12 raw .c files, all read in full, 0 truncation. This is evidence coverage only, per OUTPUT-SPEC.md historical-number caveat it is NOT by itself full_leaf_100 or implementation-ready.",
+    "See data/task-plan.json for the consumer_gate.v1 three-tier queue."
+  ]
+}

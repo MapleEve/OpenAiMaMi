@@ -1,0 +1,47 @@
+{
+  "schema": "c5cm.reverse.task_plan.consumer_gate.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "bootstrap",
+  "readyToImplement": [],
+  "strictImplementationUse": [],
+  "consumerStartReady": [
+    "manager_bootstrap"
+  ],
+  "reverseRequiredQueues": {
+    "forbiddenUntilReady": [
+      "manager_bootstrap: readyToImplement blocked pending dim1 re-verification, dim3 deep call-tree (into ensure_proxy_started/sub_14085A1E0 bodies), dim4, dim6 closure"
+    ],
+    "forbiddenUntilStrictImplementationUse": [
+      "manager_bootstrap: strictImplementationUse blocked pending dim3 depth beyond one hop and dim4 DTO/side-effect boundary extraction",
+      "app_run_entry/boot_spawn_threads/managed_state_registry/bootstrap_cache-standalone/load_snapshot-system-shell-init-supplement: no raw evidence exists yet for 1.2.3 windows -- cannot enter any gate tier until new IDA decompile is produced"
+    ],
+    "consumerStartBlocked": [
+      "app_run_entry / boot_spawn_threads / managed_state_registry / bootstrap_cache-standalone / load_snapshot-system-shell-init-supplement: gap_needs_new_raw, must not be assumed unchanged from 1.0.9 or assumed inlined/removed without direct 1.2.3 windows evidence",
+      "commands/accounts load_snapshot (VA 0x140cb5e50) vs 1.0.9 system-shell-init load_snapshot leaf identity: unresolved, do not assume same or different without opening both bodies"
+    ]
+  },
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "cross_referenced_owned_elsewhere": [
+    {"leaf": "load_bootstrap_state", "owner": "windows-1.2.3-daemon-autoswitch"},
+    {"leaf": "dismiss_pending_auto_switch", "owner": "windows-1.2.3-daemon-autoswitch"},
+    {"leaf": "load_pending_auto_switch", "owner": "windows-1.2.3-daemon-autoswitch"},
+    {"leaf": "confirm_pending_auto_switch", "owner": "windows-1.2.3-daemon-autoswitch"},
+    {"leaf": "confirm_pending_auto_switch_and_restart_codex", "owner": "windows-1.2.3-daemon-autoswitch"},
+    {"leaf": "load_snapshot (commands/accounts)", "owner": "windows-1.2.3-accounts"},
+    {"leaf": "store_bootstrap_snapshot_best_effort", "owner": "windows-1.2.3-accounts"},
+    {"leaf": "create_bootstrap_tray_menu", "owner": "windows-1.2.3-tray"}
+  ],
+  "next_producer_steps": [
+    "IDA MCP: locate the true 1.2.3 windows process entry point (Rust `fn main`/`run` equivalent to 1.0.9's app_run_entry at 0x140004B30) -- likely near the PE entry point or via xrefs from tauri::Builder/generate_context! string constants; none of the current raw/aimami/1.2.3/windows-x64 directories contain it.",
+    "Once app_run_entry-equivalent is found, trace its callees for a long-lived thread-spawn (boot_spawn_threads analog) and managed-state registration calls (managed_state_registry analog, which per the macOS 1.2.3 sibling may be architecturally inlined -- verify independently for Windows, do not infer from macOS).",
+    "Deep-trace manager_bootstrap's call to ensure_proxy_started and sub_14085A1E0 to their own fs/http/process/registry leaves to close dim3.",
+    "Resolve the commands/accounts load_snapshot (0x140cb5e50) vs 1.0.9 system-shell-init load_snapshot identity question by opening both bodies and comparing call-tree shape.",
+    "Run a dim1 frontend-CCF pass for manager_bootstrap against ipc-contracts.jsonl / frontend-control-flow.jsonl to independently re-confirm the accepted-N/A classification (currently accepted_unknown, not confirmed).",
+    "Flag to a future reconciliation session: macos-1.2.3-bootstrap claims load_bootstrap_state/dismiss_pending_auto_switch/load_pending_auto_switch as its own leaves while windows-1.2.3-daemon-autoswitch canonically owns the Windows-side equivalents -- decide whether macOS should re-home those 3 leaves to a macos-1.2.3-daemon-autoswitch-equivalent package for cross-platform consistency, or whether the Windows daemon-autoswitch package should be the one to cede them. Requires EXPLICIT_REASSIGN_OWNER token, out of scope for this reduce-only session."
+  ]
+}

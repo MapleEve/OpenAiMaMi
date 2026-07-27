@@ -24,7 +24,7 @@ Use env-relative paths only.
 - `mcp__ida_pro_mcp_mac.decompile`
 - `mcp__ida_pro_mcp_mac.analyze_function`
 - `mcp__ida_pro_mcp_mac.xrefs_to`
-- `mcp__ida_pro_mcp_mac.py_eval`
+- `mcp__ida_pro_mcp_mac.IDA Python`
 - `mcp__ida_pro_mcp_mac.set_comments`
 - `mcp__ida_pro_mcp_mac.idb_save`
 

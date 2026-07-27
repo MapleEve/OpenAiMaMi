@@ -1,0 +1,49 @@
+{
+  "schema": "c5cm.reverse.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.3",
+  "platform": "windows-x64",
+  "module": "mystery-unlock",
+  "package_kind": "understand_and_classify",
+  "honest_tier_statement": "This package does NOT claim consumerStartReady, strictImplementationUse, or readyToImplement for any target. All 19 in-scope Windows-native functions are classified tos_circumvention and are permanently blocked by product decision, independent of how complete the pseudocode/call-tree evidence is. Evidence completeness is recorded for classification transparency only.",
+  "targets": [
+    {
+      "name": "core::relay::router_unlock_auth::* (9 named targets: install_virtual_unlock_auth, sub_14048FF80, sub_14048F130, cleanup+4closures, read_marker, read_cleanup_backup, serialize, sub_14048EF50, sub_14048FE80)",
+      "classification": "tos_circumvention",
+      "consumerStartReady": false,
+      "strictImplementationUse": false,
+      "readyToImplement": false,
+      "implementation_use": false,
+      "gate_accepted": false,
+      "block_reason": "product_decision_tos_circumvention",
+      "block_permanent": true,
+      "evidence_completeness": "high (12/12 windows-native files read, non-failed decompile, full census closure per WIN-APP-FUNCTION-INVENTORY.jsonl)",
+      "note": "Evidence completeness is intentionally irrelevant to gate status here; blocked by classification, not by missing evidence."
+    },
+    {
+      "name": "core::relay::legacy_virtual_auth::* (7 named targets: cleanup_0, read_marker_0, read_user_owned_backup, sub_1404F99D0, sub_140579700, 2 closures)",
+      "classification": "tos_circumvention",
+      "consumerStartReady": false,
+      "strictImplementationUse": false,
+      "readyToImplement": false,
+      "implementation_use": false,
+      "gate_accepted": false,
+      "block_reason": "product_decision_tos_circumvention",
+      "block_permanent": true,
+      "evidence_completeness": "high (7/7 windows-native files read, full census closure per WIN-APP-FUNCTION-INVENTORY.jsonl)"
+    }
+  ],
+  "dim5_platform_gate": {
+    "status": "closed_independently",
+    "note": "Windows evidence was read and classified independently of macOS; findings cross-checked (not derived) against macOS sibling package audits/macos-1.2.3-mystery-unlock/ for diff purposes only. do-not-infer red line respected."
+  },
+  "fullAppCoverageStatus": "not-full-app",
+  "platformPolicy": {
+    "windowsIndependent": true,
+    "doNotInferWindowsFromMacOS": true
+  },
+  "known_conflict": {
+    "with": "goal-aimami-122/SPEC-virtual-auth-mode.md",
+    "nature": "SPEC document frames same function cluster as a legitimate feature and recommends implementing enhancements (gaps G1/G2); this package (and its macOS sibling) classify the same cluster as tos_circumvention and recommend SKIP. Not resolved by this package; recorded for user/maintainer decision. See README.md."
+  }
+}

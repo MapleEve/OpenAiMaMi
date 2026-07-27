@@ -1,0 +1,80 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.3",
+  "platform": "macos-arm64",
+  "module": "plugins",
+  "package": "macos-1.2.3-plugins",
+  "package_kind": "understand_and_classify",
+  "audit_type": "presence_negative_result",
+  "created_at": "2026-07-26T00:00:00Z",
+  "producer_machine": "<host> (reduce pass, session macos-1.2.3-plugins-reduce-20260726; no new IDA/decompile/xrefs, no INDEX.jsonl append; consolidates the pre-existing README.md negative-existence verification + the raw/aimami/1.2.3/macos-arm64 evidence it cites + the windows-1.2.3-plugins removed=true precedent)",
+  "question": "Does AiMaMi 1.2.3 macOS-arm64 still contain the application self-developed plugins subsystem (PluginRegistry / list_plugins / toggle_plugin / get_plugin_config / update_plugin_config / builtin web_tools + image_support) that was full_leaf_100-accepted at 1.0.9 and still present at 1.1.8?",
+  "result": {
+    "removed": true,
+    "confidence": "high",
+    "classification": "removed_or_distilled_out_of_binary_product_surface",
+    "signals_consistent": "4/4",
+    "note": "No canonical strictImplementationUse/readyToImplement gate is produced; this is a scoped presence/absence classification, not a full_leaf_100_definition_v2 closure. Absence grounded in 4 independent same-platform macOS-arm64 evidence classes (frontend IPC command enumeration, frontend page bundle topology, backend commands/ directory topology, binary string-pool enumeration) plus a methodology positive control (the same procedure finds PluginRegistry in the 1.0.9 build). Windows-x64 1.2.3 reached the same removed=true conclusion independently in audits/windows-1.2.3-plugins; not extrapolated here."
+  },
+  "binary": {
+    "sha256_core_reference": "25d6d04e6d94c3f1e8258d2b348360b228fda4fc1c3d38b6383c84a2a8d53d21",
+    "binary_format": "macho",
+    "arch": "arm64",
+    "binary_sot": "raw/binary/AiMaMi 1.2.3.app (thin arm64: AiMaMi.arm64.thin)",
+    "note": "sha per raw/aimami/1.2.3/macos-arm64/VERSION-BASELINE.md / MANIFEST.md; not independently recomputed this reduce pass. (Distinct from the 65072960-byte fat-binary sha e3f2fec7... that sibling packages cite for the Contents/MacOS/AiMaMi image; this thin-arm64 sha is the one recorded in this package's own README evidence index.)"
+  },
+  "scope": {
+    "primary_target_universe": "codexmate_lib plugins subsystem as it existed at 1.0.9 (commands::plugins::{list_plugins,toggle_plugin,get_plugin_config,update_plugin_config} + core PluginRegistry::{set_enabled,list,get_config,update_settings} + save_store_static + builtin::{web_tools,image_support}::plugin_info + PluginStoreSchema -> plugins.json) -- verified ABSENT at 1.2.3 macOS-arm64",
+    "excluded": "Tauri framework built-in plugins (tauri-plugin-autostart, tauri_plugin_updater, @tauri-apps/plugin-dialog, plugin-deep-link, plugin-event, plugin-app, plugin:shell|open) -- these ARE present but are framework infrastructure, NOT the AiMaMi plugin-management feature; explicitly disambiguated and excluded from the presence question",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true,
+    "coverage_note": "single-target existence verification only; does not represent 1.2.3 full backend/frontend coverage"
+  },
+  "coverage": {
+    "frontend_ipc_commands_total": 131,
+    "frontend_ipc_plugin_hits": 0,
+    "frontend_page_bundles_total": 10,
+    "frontend_plugins_page_present": false,
+    "backend_commands_subdirs_total": 16,
+    "backend_commands_plugins_dir_present": false,
+    "binary_string_pool_plugin_feature_hits": 0,
+    "binary_string_pool_tauri_framework_plugin_hits": "~21 substring files + 10 live find_regex, all Tauri framework/webview strings, none AiMaMi plugins feature",
+    "run_entry_manage_calls": 5,
+    "run_entry_manage_calls_type_resolved": 0,
+    "measurement_basis": "grep -ril exact-word + case-insensitive substring across raw/aimami/1.2.3/macos-arm64; python/grep parse of all 131 ipc-contracts.jsonl .command fields; frontend/beautified/ bundle listing + settings-page-B8vywarZ.js direct grep; commands/ subdir listing; live IDA server_health + find_regex '(?i)plugin' on AiMaMi.i64 (module=AiMaMi, IDA decompiler_ready=true). All performed by the prior README verification pass; this reduce pass re-cites, does not re-run IDA."
+  },
+  "coverage_mode": "presence-negative-result",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/task-plan.json",
+  "evidence_summary_ref": "data/summary.json",
+  "evidence_pointers_ref": "pointers/evidence-paths.md",
+  "logic_status": "not-applicable (logic/NOT-APPLICABLE.md justified-N/A stamp -- no implementation leaf to write full-chain/registration logic for)",
+  "reviews_status": "reviews/CLAUDE.md justified-N/A stamp for leaf-chain closure review; carries a genuine independent confirmation of the 4/4 negative-existence signals in lieu of a (non-applicable) implementation review",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.2.3-plugins/README.md (this package's own prior verification pass -- primary source, real content)",
+    "raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl (131 commands)",
+    "raw/aimami/1.2.3/macos-arm64/commands/ (16 subdirs, no plugins/)",
+    "raw/aimami/1.2.3/macos-arm64/frontend/beautified/ + frontend/pages/ (no plugins-page)",
+    "raw/aimami/1.2.3/macos-arm64/run/ida/pseudocode/run_0x1006f50c0.c (app builder entry, Tauri-only plugins + 5 .manage())",
+    "raw/aimami/1.2.3/macos-arm64/backend-baseline/commands-baseline.md",
+    "internal-reverse/audits/macos-1.0.9-plugins/ (prior-version present-baseline, methodology positive control)",
+    "internal-reverse/audits/windows-1.0.9-plugins/ (prior-version present-baseline)",
+    "internal-reverse/audits/windows-1.2.3-plugins/ (same-version Windows removed=true sibling, cross-platform corroboration)",
+    "intermediate/aimami/1.1.8/macos-arm64/_threadmodel/THREAD-MODEL.md (last-known-present point: PluginRegistry in 1.1.8 .manage() 3-state list)",
+    "internal-reverse/audits/BASELINE-FINAL-1.2.3.md, internal-reverse/audits/COVERAGE-FINAL-1.2.3.md (1.2.3 full baselines, neither mentions plugins)"
+  ],
+  "cross_platform_sibling": "internal-reverse/audits/windows-1.2.3-plugins (removed=true, independent same-platform evidence). Both platforms conclude removed; neither extrapolates to the other.",
+  "related_packages": [
+    "internal-reverse/audits/macos-1.0.9-plugins/ (historical full_leaf_100 accepted, behavior reference only, NOT migrated to 1.2.3)",
+    "internal-reverse/audits/windows-1.0.9-plugins/ (historical)",
+    "internal-reverse/audits/windows-1.2.3-plugins/ (same-version Windows sibling)"
+  ],
+  "known_residuals": [
+    "run() 5x .manage() injected state types not per-call desugared (accepted_unknown) -- generic monomorphization hash-suffixed symbols; does not affect product-surface removed=true conclusion (no reachable command/UI/frontend path even if a struct instance persisted internally)",
+    "exact removal release between 1.1.8 (present) and 1.2.3 (absent) not bisected (accepted_unknown, not needed)",
+    "logic/ and reviews/ are justified-N/A (no implementation leaf); see stamps"
+  ],
+  "not_a_replacement_for": "REVERSE-STATUS.md wf-aimami123-fullapp-20260724 full-app gap list named plugins as missing a canonical RULE-8 6-dim leaf bundle; this audit answers only presence/absence and resolves that gap by classification (removed -> no leaves to close), acting as a diagnostic input, not a strictImplementationUse/readyToImplement gate.",
+  "note": "This manifest synthesizes the pre-existing README.md verification and the raw evidence it cites. No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md. No new raw/intermediate evidence produced; no INDEX.jsonl append (no new raw)."
+}

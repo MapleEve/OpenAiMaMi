@@ -3,7 +3,7 @@
 
 **Migration basis**: 1.0.9 macos `migrated_no_behavior_diff` (same-platform backend absence)
 **Gate**: migrated_no_behavior_diff → readyToImplement (accepted_substitute: same-platform 逆向分析 backend command absence)
-**Source binary SHA256**: (1.1.1 arm64 universal — 逆向分析 module=AiMaMi, imagebase=0x100000000, hexrays_ready=true)
+**Source binary SHA256**: (1.1.1 arm64 universal — 逆向分析 module=AiMaMi, imagebase=0x100000000, IDA decompiler_ready=true)
 **Produced**: 2026-06-16 | Producer: claude-sonnet-4-6 | Machine: <本地机器>
 
 ---
