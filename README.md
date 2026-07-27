@@ -4,6 +4,40 @@ OpenAiMami 是面向个人本地工作流的桌面应用公开重建仓库。仓
 
 本仓库采用 Apache License，具体许可文本以 [LICENSE](LICENSE) 为准。公开重建的目的，是在不暴露个人机器、路径、凭据、会话、密钥或账号私密值的前提下继续个人迭代；使用者可以通过公开证据和验证入口检查边界，从而用得更放心并降低隐私泄露风险。
 
+## 这是什么
+
+AiMaMi 是一个闭源的 Rust + Tauri 2 桌面应用（Codex/ChatGPT 的本地伴侣工具）。OpenAiMami 仓库不发布它的源码或二进制，而是发布**逆向重建出来的可审计证据**：反编译伪代码、前端逆向文档、命令契约、模块覆盖分析、破坏性副作用编目。这些证据经脱敏后公开，用来约束后续的消费者实现（互操作/竞品重建），让"上游到底做了什么"可被任何人核对。
+
+配套的 IDB（IDA 参考数据库）单独发布在 [OpenAiMami-IDB](https://github.com/MapleEve/OpenAiMami-IDB)，主仓库只保存脱敏文本证据。
+
+## 仓库导航
+
+```
+OpenAiMaMi/
+├── evidence/                          # 公开证据（脱敏后）
+│   ├── binary-manifests/<version>/   # 各版本二进制哈希 + delta/baseline 概要
+│   └── full-chain/
+│       ├── raw/aimami/<version>/     # 全量反编译伪代码 + 前端 + 契约（双平台）
+│       ├── intermediate/aimami/<version>/  # 蒸馏计划 + 脚本 + census
+│       ├── internal-reverse-audits/  # 按模块/平台的审计包（relay/accounts/voice/...）
+│       └── internal/audits/<version>/ # 终稿：COVERAGE-FINAL + BASELINE-FINAL
+├── docs/reconstruction/              # 重建说明、源映射、i64-status、版本 diff
+├── src/  src-tauri/                  # 消费者实现源码（按证据约束）
+└── scripts/                          # 验证脚本
+```
+
+## 已发布版本
+
+| 版本 | 类型 | 终稿 | 全量证据 |
+| --- | --- | --- | --- |
+| 1.0.9 | 基线 | — | `evidence/full-chain/raw/aimami/1.0.9/` |
+| 1.1.1 | delta | `COVERAGE-FINAL-1.1.1-20260617.md` | `raw/aimami/1.1.1/` |
+| 1.1.8 | delta | `internal/audits/1.1.8/` | `raw/aimami/1.1.8/` + `internal-reverse-audits/*1.1.8*` |
+| 1.2.2 / 1.2.1 | delta | `internal/audits/1.2.2/COVERAGE-FINAL-1.2.2.md` | `raw/aimami/1.2.2/` + `1.2.1/` |
+| **1.2.3** | **baseline** | `internal/audits/1.2.3/BASELINE-FINAL-1.2.3.md` + `COVERAGE-FINAL-1.2.3.md` | `raw/aimami/1.2.3/`（双平台 3949 文件）+ `intermediate/aimami/1.2.3/` + 55 审计包 |
+
+1.2.3 是当前 baseline：1638 个应用函数全反编译 + 注释 + 模块目录树，6 个前端页真逆向，62 处破坏性副作用编目。IDB 见 [OpenAiMami-IDB `1.2.3/`](https://github.com/MapleEve/OpenAiMami-IDB/tree/main/1.2.3)。
+
 ## 为什么公开
 
 公开仓库是为了把个人迭代放在可审计证据和清晰许可下，而不是发布未脱敏环境或闭源业务的完整复制。真实业务实现必须能回指仓库内已经公开、已经匿名化的 `raw/internal` 证据链；没有公开证据支撑的行为，不写成真实业务逻辑。
