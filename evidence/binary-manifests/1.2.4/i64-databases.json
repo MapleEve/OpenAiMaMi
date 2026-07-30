@@ -1,0 +1,16 @@
+{
+  "schema_version": 1, "project": "OpenAiMami", "release": "1.2.4",
+  "license": "Apache-2.0", "stack": "Tauri 2 + React + Rust",
+  "policy": { "content_imported": true,
+    "publication_shape": "Only the standalone Git LFS archive in OpenAiMami IDB contains the .i64 reference databases.",
+    "notes": "Sanitized metadata only. macOS and Windows both on 1.2.4 (delta over 1.2.3 baseline). No private evidence, binaries, machine-local paths." },
+  "binaries": [
+    { "platform": "macos-arm64", "version": "1.2.4", "sha256": "24bf0857f7afa0c2352cb5ca1552136c406ed9894609dc2de6152437faf9c288" },
+    { "platform": "windows-x64", "version": "1.2.4", "sha256": "5b6aa827d6bde7c3a045c10d14b395fab87230fea434cb3d8f8631f79c6dc6b7" }
+  ],
+  "delta_summary": { "baseline": "1.2.3", "target_macos": "1.2.4", "target_windows": "1.2.4",
+    "frontend_command_universe": 134, "added": 3, "removed": 0, "argkey_changed": 0,
+    "new_behavioral_backend_macos": 116, "new_behavioral_backend_windows": 20,
+    "highlights": ["Anthropic reasoning refactor (anthropic_reasoning/history new modules + translator/stream rewrite + thinking budget by model name)", "no-account mode + managed API key + slot routing (router_unlock_auth 12 functions + set_codex_no_account_slots)", "Claude web search compat (get/set_claude_web_search_compat)", "account switch preflight (repository preflight/verify_account_switch)"],
+    "published_scope": "exhaustive delta (116 mac + 20 win functions + 6dims + CCF + changelog alignment); baseline 1.2.3 exhaustive kept internal" }
+}

@@ -18,6 +18,8 @@
 
 1.2.3 的 macOS 与 Windows 参考数据库已按模块路径归入 `codexmate_lib/...` 目录树；macOS（带符号）承载全量应用函数命名+注释+目录，Windows（strip）恢复命令 handler 名 + 跨平台字符串签名名 + 按模块归属。两平台版本重新对齐（均 1.2.3）。1.2.3 已成为新 baseline,两库刷新为完整基线版(全量应用函数命名+注释+模块目录树),非 delta-only。
 
+1.2.4 的 macOS 与 Windows 参考数据库已按模块路径归入 codexmate_lib/... 目录树,承载 116(mac)+20(win) delta 函数命名+注释。两平台版本 1.2.4(delta over 1.2.3 baseline)。
+
 不发布展开后的伴随文件，不发布用户数据，不发布运行期缓存，不发布凭据或本机状态。
 
 ## 清单
