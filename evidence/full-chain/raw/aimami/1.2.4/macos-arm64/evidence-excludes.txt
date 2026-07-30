@@ -1,0 +1,18 @@
+# Evidence archive exclusion policy
+#
+# Keep logs, reports, final app artifacts, and explicit validation outputs.
+# Do not archive Rust build caches or intermediate Cargo target trees.
+
+target/
+src-tauri/target/
+target-validation/debug/
+.fingerprint/
+build/
+deps/
+incremental/
+examples/
+package/
+tmp/
+.cache/
+node_modules/
+dist/

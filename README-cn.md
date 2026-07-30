@@ -34,6 +34,7 @@ OpenAiMaMi/
 | 1.1.1 | delta | `COVERAGE-FINAL-1.1.1-20260617.md` | `raw/aimami/1.1.1/` |
 | 1.1.8 | delta | `internal/audits/1.1.8/` | `raw/aimami/1.1.8/` + `internal-reverse-audits/*1.1.8*` |
 | 1.2.2 / 1.2.1 | delta | `internal/audits/1.2.2/COVERAGE-FINAL-1.2.2.md` | `raw/aimami/1.2.2/` + `1.2.1/` |
+| **1.2.4** | **delta** | `internal/audits/1.2.4/COVERAGE-FINAL-1.2.4.md` | `raw/aimami/1.2.4/`（双平台 230 文件）|
 | **1.2.3** | **baseline** | `internal/audits/1.2.3/BASELINE-FINAL-1.2.3.md` + `COVERAGE-FINAL-1.2.3.md` | `raw/aimami/1.2.3/`（双平台 3949 文件）+ `intermediate/aimami/1.2.3/` + 55 审计包 |
 
 1.2.3 是当前 baseline：1638 个应用函数全反编译 + 注释 + 模块目录树，6 个前端页真逆向，62 处破坏性副作用编目。IDB 见 [OpenAiMami-IDB `1.2.3/`](https://github.com/MapleEve/OpenAiMami-IDB/tree/main/1.2.3)。
