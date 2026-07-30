@@ -1,0 +1,59 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.4",
+  "platform": "macos-arm64",
+  "module": "repository-platform",
+  "package": "macos-1.2.4-repository-platform-system",
+  "created_at": "2026-07-29T00:00:00Z",
+  "producer_machine": "<host> (this package assembled; underlying 1.2.4 raw IDA decompile sessions produced per raw/aimami/1.2.4/macos-arm64/MANIFEST.md)",
+  "binary": {
+    "sha256_frontend_extraction": "24bf0857f7afa0c2352cb5ca1552136c406ed9894609dc2de6152437faf9c288",
+    "binary_format": "macho",
+    "arch": "arm64",
+    "binary_path": "/raw/aimami/1.2.4/macos-arm64/frontend/AiMaMi.arm64.thin",
+    "sha_source": "raw/aimami/1.2.4/macos-arm64/MANIFEST.md binary_sha256 field; this is the thin arm64 binary sha. 1.2.4 MANIFEST.md did not record a distinct frontend-extraction-stage sha (unlike 1.2.3 which had both sha256_core_relay and sha256_frontend_extraction); the binary sha is used here as the closest available extraction-source fingerprint."
+  },
+  "scope": {
+    "backend_target_universe": "core::repository (5 functions: store_bootstrap_snapshot_progressive / enrich_active_account_usage_via_api / preflight_account_switch / verify_account_switch / Serialize<RegistryFile>) + core::api_client (1: try_connect_local_proxy) + core::models (1: Serialize<ClaudeWebSearchCompatPayload>) + core::sessions (1: export_session_markdown closure) + platform::process (1: codex_bundled_cli_path) + platform::single_instance::imp (1: acquire) + commands::system (1: get_claude_web_search_compat) + commands::relay (1: Serialize<CodexNoAccountSlotsPayload>) = 12 mac .c files on disk; win module-relevant 4 .c files (cmd_get_claude_web_search_compat / cmd_set_claude_web_search_compat / cmd_set_codex_no_account_slots / codexmate_lib4core10repository35enrich_active_acco)",
+    "frontend_target_universe": "not independently reversed this pass; 1.2.4 frontend IPC contracts extracted at raw/aimami/1.2.4/macos-arm64/frontend/ipc-contracts.jsonl but no per-page CCF (component tree + state model + invoke mapping) pass run for repository-platform module",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "backend_functions_decompiled_mac_on_disk": 12,
+    "backend_functions_decompiled_win_module_relevant": 4,
+    "backend_functions_truncated_stubs_remaining": 0,
+    "truncated_stubs_check_method": "grep -l 'TRUNCATED|未完整|chars total' across all 12 mac + 4 win .c files in scope -> 0 hits (grep exit=1, no matches); 6dims doc states all mac functions are [FULL decompile] or complete short functions, win 4 are [FULL decompile], no truncation stubs",
+    "new_commands_this_delta": 3,
+    "new_commands_list": ["get_claude_web_search_compat", "set_claude_web_search_compat", "set_codex_no_account_slots"],
+    "mac_c_files_by_module": {
+      "core_repository": 5,
+      "core_api_client": 1,
+      "core_models": 1,
+      "core_sessions": 1,
+      "platform_process": 1,
+      "platform_single_instance_imp": 1,
+      "commands_system": 1,
+      "commands_relay": 1
+    },
+    "measurement_basis": "find /raw/aimami/1.2.4/macos-arm64/{core/repository,core/api_client,core/models,core/sessions,platform/process,platform/single_instance,commands/system,commands/relay} -name '*.c' | wc -l = 12 mac; find /raw/aimami/1.2.4/windows-x64/version-delta/ida/pseudocode/ -name 'cmd_*' -o -name '*repository*' = 4 win module-relevant"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": null,
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.2.3-relay/"
+  ],
+  "cross_platform_sibling": "internal-reverse/audits/windows-1.2.4-repository-platform-system/",
+  "known_residuals": [
+    "mac 侧 set_claude_web_search_compat 与 set_codex_no_account_slots 的 setter 实现体不在本批 NEW-delta 制品内（mac delta 仅含对应 DTO 的 serialize），消费侧实现时需以 win 行为为准并补 mac 等价路径",
+    "set_codex_no_account_slots 的 relaunch 字段仅做反序列化+状态写入（win setter v110[16]=aRelaunch），Codex 重启执行体（osascript quit + 重启 Codex）不在本批 delta 制品内",
+    "6dims 源文档头部声称 'mac 13 个' .c 伪代码，但盘上实测 mac 模块范围内 12 个 .c 文件（与 6dims 函数表 12 个 mac 函数一致），'13' 可能是源文档计数偏差，未发现第 13 个文件",
+    "dim4 interface/DTO 抽取未做独立闭合（DTO 字段线索来自 6dims 分析的 key 长度/偏移，非独立 per-command DTO extraction pass）",
+    "dim6 test/acceptance mapping 未产出",
+    "frontend CCF 未做（1.2.4 frontend ipc-contracts.jsonl 已提取但无 per-page 组件树/状态模型逆向）",
+    "windows-1.2.4-repository-platform-system 跨平台 sibling bundle 尚未产出（win raw .c 已在盘但无独立 win 侧 bundle）"
+  ],
+  "note": "本 manifest 基于 raw/aimami/1.2.4/macos-arm64/version-delta/repository-platform-system-6dims.md（6dims 详实分析，15088 字节）合成，不复制 raw 伪代码内容，所有 raw evidence 通过 pointers/evidence-paths.md 引用。baseline=1.2.3，consumed bundle=macos-1.2.3-relay（该 bundle 的 readyToImplement=false / consumerStartReady=23/23，本 delta 轮不单独升 ready）。本包为消费者结论包，内部专用（红线23），不对外发布。"
+}

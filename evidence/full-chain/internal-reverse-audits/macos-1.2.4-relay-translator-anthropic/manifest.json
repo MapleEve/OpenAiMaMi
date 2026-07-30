@@ -1,0 +1,51 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.4",
+  "platform": "macos-arm64",
+  "module": "relay-translator",
+  "package": "macos-1.2.4-relay-translator-anthropic",
+  "created_at": "2026-07-29T00:00:00Z",
+  "producer_machine": "<host> (this package assembled; consumer conclusion pass, no IDA connected, no binary re-decompiled)",
+  "binary": {
+    "sha256_core_binary": "24bf0857f7afa0c2352cb5ca1552136c406ed9894609dc2de6152437faf9c288",
+    "sha256_frontend_extraction": "ceef9114ea462656c42d4d6ba453478ab5b21ca6ddca18ae36254ab7f2feab28",
+    "sha256_frontend_extraction_note": "relay-page-pfdbI0wX.js asset hash from raw/aimami/1.2.4/macos-arm64/frontend-assets.sha256 (1.2.4 relay page beautified source); core binary sha256 from VERSION-BASELINE.md (AiMaMi.arm64.thin, the IDA decompile source for all 6 modules in this bundle)",
+    "binary_format": "macho",
+    "arch": "arm64"
+  },
+  "scope": {
+    "backend_target_universe": "core::relay::translator (9 fns) + core::relay::translator::stream (6 fns) + core::relay::anthropic_reasoning (7 fns, NEW module) + core::relay::anthropic_history (5 fns, NEW module) + core::relay::native_responses_compat (1 fn) + core::relay::models (4 fns) = 32 decompiled functions across 6 modules; 3 new upstream IPC commands consumed (get_claude_web_search_compat / set_claude_web_search_compat / set_codex_no_account_slots) — translator/stream/reasoning/history are pure function libraries on the proxy/relay request path with NO IPC direct output",
+    "frontend_target_universe": "maintenance-page-Cfv_qYNg.js (ClaudeWebSearchCompat toggle, consumes get/set_claude_web_search_compat) + relay-page-pfdbI0wX.js (NoAccountSlots Os/Ls components, consumes set_codex_no_account_slots); translator/anthropic_reasoning/anthropic_history have ZERO frontend projection (changelog C is backend-only, confirmed by CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md)",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "backend_functions_decompiled_this_delta_scope": 32,
+    "backend_functions_breakdown": "translator=9 (anthropic_to_responses_response_with_tool_maps[3192 lines FULL], push_anthropic_message_block, push_anthropic_thinking_block, leading_think_prefix_decision, strip_leading_think_open_tag, is_anthropic_relay_private_item, collect_loaded_custom_tool_names, collect_tool_search_output_tools, unwrap_custom_tool_input) + translator::stream=6 (with_tool_maps, close_all_blocks, close_anthropic_block, close_anthropic_tool_block, finish_response, fail_with_type) + anthropic_reasoning=7 (normalize_model_name, uses_adaptive_thinking, adaptive_thinking_is_default, thinking_cannot_be_disabled, codex_effort_to_anthropic, effort_to_thinking_budget, reasoning_explicitly_disabled) + anthropic_history=5 (normalize_messages[66KB FULL], rectify_invalid_thinking_signature, rectify_invalid_thinking_signature::{closure}, trailing_turn_supports_thinking, push_tool_result_block) + native_responses_compat=1 (strip_hosted_web_search_tools) + models=4 (contains_http_status_code, serialize x3)",
+    "backend_functions_truncated_stubs_remaining": 0,
+    "backend_functions_decompile_status_note": "All 32 functions carry [FULL decompile] header in source 6dims doc; 0 [TRUNCATED]/[DECOMPILE-FAILED] markers hit this pass. Large functions (anthropic_to_responses_response_with_tool_maps 3192 lines, normalize_messages 66KB) explicitly marked [FULL decompile] by producing session.",
+    "new_modules_this_version": 2,
+    "new_modules_names": ["anthropic_reasoning", "anthropic_history"],
+    "new_upstream_commands_this_version": 3,
+    "new_upstream_commands_names": ["get_claude_web_search_compat", "set_claude_web_search_compat", "set_codex_no_account_slots"],
+    "measurement_basis": "file-system ls against raw/aimami/1.2.4/macos-arm64/core/relay/{translator/ida/pseudocode,translator/stream/ida/pseudocode,anthropic_reasoning/ida/pseudocode,anthropic_history/ida/pseudocode,native_responses_compat/ida/pseudocode,models/ida/pseudocode}/*.c, cross-checked against function table in raw/aimami/1.2.4/macos-arm64/version-delta/relay-translator-anthropic-6dims.md section 8"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/producer-ledger.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.2.3-relay/"
+  ],
+  "cross_platform_sibling": "internal-reverse/audits/windows-1.2.4-relay-translator-anthropic/",
+  "cross_platform_sibling_status": "not-yet-produced — win delta evidence exists inline in relay-translator-anthropic-6dims.md section 7 (win 0x1408a2a20 uses_adaptive_thinking logic-equivalent, 3 command names cross-platform consistent); standalone windows-1.2.4-relay-translator-anthropic/ bundle not assembled this pass",
+  "known_residuals": [
+    "handle_event (stream main event loop) not present in this delta's pseudocode set — cannot confirm whether its internal dispatch for redacted_thinking/tool_search_call new block types is new; marked 待查 in 6dims section 10, not extrapolated",
+    "normalize_messages (66KB) embeds SHA-256 round constants (0x6A09E667/0x5BE0CD19/0x9B05688C/0xA54FF53A) strongly indicating thinking signature computation; full signature algorithm requires per-round restoration — this bundle confirms 'SHA-256 is used' only, does NOT expand a pseudo-algorithm (6dims section 10)",
+    "codex_effort_to_anthropic len3(low/max)/len5(xhigh) return specific static strings (anon_289/290/293) — which anthropic effort enum values they are needs cross-reference with anon data segment; this bundle confirms mapping exists, does not force-name them (6dims section 10)",
+    "1.2.3 native_responses_compat's rejects_hosted_web_search/sanitize_request — whether still present in 1.2.4 not reconciled (this delta only gives the NEW strip_hosted_web_search_tools function); marked 待对账 in 6dims section 10",
+    "set_claude_web_search_compat mac setter implementation body not in this delta's NEW-delta artifacts (only DTO serialize @0x1005825c0 on mac); win behavior @0x140e01580 is authoritative per CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md section 4 note",
+    "dim4 interface/DTO extraction is partial (CodexNoAccountSlot DTO + Responses output envelope extracted, but per-command DTO/error-envelope/side-effect boundary not systematically closed); dim6 test/acceptance mapping not produced — gate_accepted=false as a result"
+  ],
+  "note": "This manifest is a CONSUMER conclusion package: it synthesizes raw/aimami/1.2.4/macos-arm64/version-delta/relay-translator-anthropic-6dims.md (6dims detailed analysis, 24278 bytes) + cross-references DELTA-FINAL-1.2.4.md / CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md / FRONTEND-CCF-DELTA-1.2.4.md, all already on disk. No IDA was connected and no binary was re-decompiled this pass — this is a read-only synthesis over existing .c pseudocode + delta docs, per task authorization (本仓/本机所有者自家已授权产品 AiMaMi, baseline=1.2.3). No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md. Baseline 1.2.3 relay module gate was consumerStartReady (23/23 commands, readyToImplement=0) per macos-1.2.3-relay/gate-report.json; this delta evaluates the translator sub-scope against strictImplementationUse but does not independently promote (implementation_use=false)."
+}

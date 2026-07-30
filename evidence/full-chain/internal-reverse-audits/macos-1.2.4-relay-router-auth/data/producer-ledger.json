@@ -1,0 +1,86 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "bundle": "macos-1.2.4-relay-router-auth",
+  "producer": "claude (this session, subagent spawned by workflow orchestration)",
+  "machine": "<host>",
+  "session": "1.2.4-relay-router-auth-consumer-bundle-20260729",
+  "produced_at": "2026-07-29",
+  "mode": "read_only_delta_consumption",
+  "task_kind": "消费者结论包合成：只读消费 raw/aimami/1.2.4/macos-arm64/version-delta/ 下已定稿的 6dims 详实分析（relay-router-auth-6dims.md）+ DELTA-FINAL-1.2.4.md 跨平台终稿 + CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md 对账文档，按 1.2.3 macos-1.2.3-relay bundle 模板格式写消费者结论包到 internal-reverse/audits/macos-1.2.4-relay-router-auth/。不连 IDA、不逆二进制、不臆断。路径硬编码 SMB 绝对路径，不用 env-var。",
+  "new_raw_or_intermediate_produced": false,
+  "claim_basis": "本会话为 workflow 编排脚本派发的 subagent，任务授权来自对话渠道（本仓/本机所有者自家已授权产品 AiMaMi，baseline=1.2.3，所有者在对话渠道下达重建授权）。无既有 REVERSE-STATUS.md 认领记录冲突（本会话未读 REVERSE-STATUS.md，按 workflow 任务授权直接执行；如存在冲突 IN-PROGRESS 认领，本会话的消费者结论包合成属非冲突补充工作，不触碰既有 IDA/逆向认领 scope）。",
+  "scope": "core::relay::router_unlock_auth (12 functions, all NEW-delta) + router_reconciler (3 functions) + manager set_codex_no_account_slots + set_claude_web_search_compat + router_exit_guard_state + proxy_server compat layer (3 functions). 1.2.3 baseline had NO router_unlock_auth submodule and NO set_codex_no_account_slots/router_exit_guard_state commands.",
+  "target_count": 4,
+  "targets": [
+    {
+      "name": "set_codex_no_account_slots",
+      "mac_addr": "0x10079a8a0",
+      "win_addr": "0x140e2de30",
+      "status": "1.2.4 NEW",
+      "gate_tier": "consumerStartReady",
+      "frontend_consumer": "relay-page-pfdbI0wX.js L3356/L3522 (_r onSave → h.mutateAsync({slots, relaunch}))",
+      "destructive": true,
+      "destructive_note": "persist relay state + router_transition + 可选 launch_warning；后端命令本身无 Codex 重启执行体，实际重启由前端 relaunch 出参触发"
+    },
+    {
+      "name": "get_claude_web_search_compat",
+      "mac_addr": "0x10041d7a0",
+      "win_addr": "0x140156ef0",
+      "status": "1.2.4 NEW",
+      "gate_tier": "consumerStartReady",
+      "frontend_consumer": "maintenance-page-Cfv_qYNg.js L436 (useQuery [\"claudeWebSearchCompat\"])",
+      "destructive": false,
+      "destructive_note": "只读 RelayState claude_web_search_compat_enabled 标志"
+    },
+    {
+      "name": "set_claude_web_search_compat",
+      "mac_addr": "0x1005825c0 (DTO serialize only, setter not in this batch)",
+      "win_addr": "0x140e01580",
+      "status": "1.2.4 NEW",
+      "gate_tier": "consumerStartReady",
+      "frontend_consumer": "maintenance-page-Cfv_qYNg.js L439 (useMutation → y.setClaudeWebSearchCompat(enabled))",
+      "destructive": true,
+      "destructive_note": "突变 RelayState + 触发落盘；mac setter 实现体不在本批 NEW-delta 制品，以 win 行为为准并补 mac 等价路径"
+    },
+    {
+      "name": "router_exit_guard_state",
+      "mac_addr": "0x1002cae90",
+      "win_addr": "(no independent win anchor, mac-only observed)",
+      "status": "1.2.4 NEW",
+      "gate_tier": "consumerStartReady (backend-only, no frontend page-level consumer located)",
+      "frontend_consumer": "未定位（ipc-contracts.jsonl/frontend-contract-report.md/frontend-control-flow.jsonl 三处 0 命中，属 app 退出流，accepted_unknown）",
+      "destructive": false,
+      "destructive_note": "只读 tauri state 查询，迁移中返回 2 阻退出"
+    }
+  ],
+  "gate_status": "gate_accepted=false, implementation_use=false, full_leaf_100=false, readyToImplement=false, strictImplementationUse=false, consumerStartReady=true (3 new commands)",
+  "gate_reason": "delta 轮不单独升 ready：1.2.3 baseline 实际 gate 档为 consumerStartReady（23/23），strictImplementationUse=0、readyToImplement=0、full_leaf_100=false（dim4/dim6 未闭合）。1.2.4 delta 虽在 dim4 上显著进步（6dims doc 已实测抽取 DTO/字段/错误变体），但 5 字段具体英文名未直读、BTreeMap value 归属存疑、dim6 test/acceptance mapping 仍未闭合，不满足 full_leaf_100_definition_v2 六维门。按 OUTPUT-SPEC.md 迁移要求：有行为 diff 只允许为 changed targets 增补证据，不得把既有 implementation_use=false/gate_accepted=false/full_leaf_100=false 改成 true。",
+  "grounded_checks_run": [
+    "find /raw/aimami/1.2.4/macos-arm64/core/relay/router_unlock_auth/ida/pseudocode/ -name '*.c' | wc -l → 12",
+    "find /raw/aimami/1.2.4/macos-arm64/core/relay/router_reconciler/ida/pseudocode/ -name '*.c' | wc -l → 3",
+    "find /raw/aimami/1.2.4/macos-arm64/core/relay/manager/ida/pseudocode/ -name '*.c' | wc -l → 7 (含 2 新命令 + closure + 邻接 stale_reason 函数)",
+    "find /raw/aimami/1.2.4/macos-arm64/router_exit_guard_state/ida/pseudocode/ -name '*.c' | wc -l → 1",
+    "find /raw/aimami/1.2.4/macos-arm64/core/relay/proxy_server/ida/pseudocode/ -name '*.c' | wc -l → 3",
+    "python3 json parse of ipc-contracts.jsonl: 1.2.4=134 unique commands vs 1.2.3=131 unique, +3 new (get_claude_web_search_compat/set_claude_web_search_compat/set_codex_no_account_slots), -0 removed",
+    "grep -rl 'router_exit_guard_state' raw/aimami/1.2.4/macos-arm64/frontend/ → 0 hits (ipc-contracts.jsonl + frontend-contract-report.md + frontend-control-flow.jsonl 三处均 0 命中，确认前端 page 级无消费者)",
+    "grep -rl 'router_exit_guard_state' raw/aimami/1.2.4/windows-x64/ → 0 hits (win 侧无独立锚点，mac-only observed)",
+    "cat raw/aimami/1.2.4/macos-arm64/MANIFEST.md → binary_sha256=24bf0857f7afa0c2352cb5ca1552136c406ed9894609dc2de6152437faf9c288",
+    "cat raw/aimami/1.2.4/macos-arm64/frontend-assets.sha256 → relay-page sha256=ceef9114..., index sha256=7fe174bf...",
+    "wc -c raw/aimami/1.2.4/macos-arm64/version-delta/relay-router-auth-6dims.md → 20133B",
+    "wc -c raw/aimami/1.2.4/macos-arm64/version-delta/DELTA-FINAL-1.2.4.md → 27345B",
+    "wc -c raw/aimami/1.2.4/macos-arm64/version-delta/CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md → 15481B"
+  ],
+  "files_written": [
+    "manifest.json",
+    "gate-report.json",
+    "README.md",
+    "logic/DELTA-LOGIC-1.2.4.md",
+    "pointers/evidence-paths.md",
+    "data/producer-ledger.json",
+    "reviews/CLAUDE.md"
+  ],
+  "avoid": "未连 IDA MCP、未逆二进制、未臆断任何未读出的字符串常量/字段名/明文。未修改 raw/intermediate 任何既有证据文件。未触碰 1.2.3 baseline bundle 的任何文件。未修改任何 rule 文件（AGENTS.md/OUTPUT-SPEC.md/GATE-SPEC.md/CLAUDE.md/CONSUMER-GATE-SCHEMA.md）。未对外发布本包任何内容（红线 23，内部专用）。",
+  "next_producer_steps": "none (消费者结论包合成已闭合；如需推进到 strictImplementationUse，需补 dim4 闭合（直读 5 字段英文名 + 确认 BTreeMap value 归属）+ dim6 test/acceptance mapping + set_claude_web_search_compat mac setter 实现体定位)",
+  "started": "2026-07-29",
+  "completed": "2026-07-29"
+}

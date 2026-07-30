@@ -1,0 +1,51 @@
+{
+  "schema": "c5cm.reverse.producer_ledger.v1",
+  "bundle": "macos-1.2.4-repository-platform-system",
+  "producer": "claude (this session)",
+  "machine": "<host>",
+  "session": "internal-reverse-consumer-1.2.4-repository-platform-20260729",
+  "produced_at": "2026-07-29T00:00:00Z",
+  "mode": "consumer_conclusion_synthesis",
+  "task_kind": "1.2.4 repository-platform 消费者结论包合成：读 1.2.3 relay bundle 模板 + 1.2.4 delta 6dims 详实分析文档，按 1.2.3 macos-relay 格式写 bundle。不连 IDA、不逆二进制，只读已完成的 delta 文档和 1.2.3 bundle 模板。基于真 delta 不编造。",
+  "new_raw_or_intermediate_produced": false,
+  "claim_basis": "raw/aimami/1.2.4/macos-arm64/version-delta/repository-platform-system-6dims.md (15088 bytes, 6dims 详实分析) + raw/aimami/1.2.4/macos-arm64/{core,platform,commands}/*.c (12 mac .c files on disk, 0 truncated stubs) + raw/aimami/1.2.4/windows-x64/version-delta/ida/pseudocode/*.c (4 win module-relevant .c files)",
+  "scope": "core::repository (5) + core::api_client (1) + core::models (1) + core::sessions (1) + platform::process (1) + platform::single_instance::imp (1) + commands::system (1) + commands::relay (1) = 12 mac .c files; 4 win module-relevant .c files",
+  "target_count": 3,
+  "targets": [
+    "get_claude_web_search_compat",
+    "set_claude_web_search_compat",
+    "set_codex_no_account_slots"
+  ],
+  "gate_status": "gate_accepted=false",
+  "gate_reason": "delta round does not independently promote to ready; dim1 (frontend CCF) not-closed, dim4 (interface/DTO) partial-not-closed, dim6 (test/acceptance) not-closed; 2 of 3 new commands have mac-side setter implementation absent from this delta batch (mac has DTO serialize only, win has full setter)",
+  "gate_tier": "strictImplementationUse",
+  "gate_tier_context": "1.2.4 delta round, baseline=1.2.3 (consumed bundle macos-1.2.3-relay was at consumerStartReady 23/23, readyToImplement=false; this delta round does not independently promote to ready)",
+  "implementation_use": false,
+  "full_leaf_100": false,
+  "readyToImplement": false,
+  "consumerStartReady": 3,
+  "files_written": [
+    "manifest.json",
+    "gate-report.json",
+    "README.md",
+    "logic/DELTA-LOGIC-1.2.4.md",
+    "pointers/evidence-paths.md",
+    "data/producer-ledger.json",
+    "reviews/CLAUDE.md"
+  ],
+  "grounded_checks_run": [
+    "find /raw/aimami/1.2.4/macos-arm64/{core/repository,core/api_client,core/models,core/sessions,platform/process,platform/single_instance,commands/system,commands/relay} -name '*.c' | wc -l = 12 mac",
+    "find /raw/aimami/1.2.4/windows-x64/version-delta/ida/pseudocode/ -name 'cmd_*' -o -name '*repository*' = 4 win module-relevant",
+    "grep -l 'TRUNCATED|未完整|chars total' across all 12 mac + 4 win .c files in scope -> 0 hits (grep exit=1, no matches)",
+    "wc -c all 12 mac .c files -> total 76191 bytes (enrich_active_account_usage_via_api 36707 largest, export_session_markdown closure 528 smallest)",
+    "wc -c 4 win .c files -> total 81423 bytes (cmd_set_codex_no_account_slots 21975 largest, cmd_get_claude_web_search_compat 3874 smallest)",
+    "cat raw/aimami/1.2.4/macos-arm64/MANIFEST.md -> binary_sha256=24bf0857f7afa0c2352cb5ca1552136c406ed9894609dc2de6152437faf9c288",
+    "cat raw/aimami/1.2.4/macos-arm64/VERSION-BASELINE.md -> app_version=1.2.4, bundle_identifier=dev.aimami.desktop",
+    "ls internal-reverse/audits/macos-1.2.3-relay/ -> manifest.json/gate-report.json/README.md/AI.md/SYSTEM-DIFF.md/logic/pointers/data/reviews all present (template consumed)",
+    "ls internal-reverse/audits/windows-1.2.4-repository-platform-system/ -> No such file or directory (cross-platform sibling not yet produced)"
+  ],
+  "avoid": "Did not connect to IDA MCP. Did not reverse-engineer any binary. Did not produce new raw or intermediate evidence. Did not modify any rule file. Did not touch the consumed 1.2.3 bundle. Did not fabricate any delta content beyond what the 6dims doc and on-disk .c files support.",
+  "next_producer_steps": "none (consumer conclusion synthesis complete for this delta round); future: produce windows-1.2.4-repository-platform-system sibling bundle; run dim4 per-command DTO extraction pass; run dim6 test/acceptance mapping pass; reverse mac-side setter implementation for set_claude_web_search_compat / set_codex_no_account_slots (absent from this delta batch)",
+  "started": "2026-07-29T00:00:00Z",
+  "completed": "2026-07-29T00:00:00Z"
+}

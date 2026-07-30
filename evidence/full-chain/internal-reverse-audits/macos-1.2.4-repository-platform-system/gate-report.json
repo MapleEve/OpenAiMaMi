@@ -1,0 +1,81 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.4",
+  "platform": "macos-arm64",
+  "module": "repository-platform",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-29",
+  "gate_tier": "strictImplementationUse",
+  "gate_tier_context": "1.2.4 delta round, baseline=1.2.3 (consumed bundle macos-1.2.3-relay was at consumerStartReady 23/23, readyToImplement=false; this delta round does not independently promote to ready)",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 3,
+    "blocked": 0,
+    "total_commands": 3
+  },
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "not-closed -- 1.2.4 frontend ipc-contracts.jsonl extracted at raw/aimami/1.2.4/macos-arm64/frontend/ but no per-page CCF (component tree + state model + invoke mapping) pass run for repository-platform module; 3 new commands' frontend invocation paths not independently traced",
+    "dim2_backend_owner_pseudocode": "partial -- 12 mac .c files on disk across 8 modules (core::repository 5 / core::api_client 1 / core::models 1 / core::sessions 1 / platform::process 1 / platform::single_instance::imp 1 / commands::system 1 / commands::relay 1) + 4 win module-relevant .c files; 0 truncated stubs (grep verified); but 2 of 3 new commands (set_claude_web_search_compat / set_codex_no_account_slots) have mac-side implementation body absent from this delta batch (mac has DTO serialize only, win has full setter)",
+    "dim3_call_tree_to_leaf": "partial -- 6dims doc provides per-function behavior + destructive side-effect table (14 functions), but no standalone per-command call-tree-to-implementation-leaf reduction document produced",
+    "dim4_interface_dto_boundary": "partial -- 6dims doc extracts DTO field clues (ClaudeWebSearchCompatPayload / CodexNoAccountSlotsPayload / RegistryFile / CoreEnvelope) and error paths (SWITCH_AUTH_VERIFY_FAILED / SWITCH_REGISTRY_VERIFY_FAILED / PROGRESSIVE_STATE_SAVE_FAILED etc), but not a closed per-command DTO/error-envelope/side-effect-boundary extraction pass",
+    "dim5_platform_gate": "closed-for-existence, open-for-parity -- mac+win both produced evidence for get_claude_web_search_compat and enrich_active_account_usage_via_api; 2 commands (set_claude_web_search_compat / set_codex_no_account_slots) have win-only implementation body (mac has DTO serialize only), recorded as mac-implementation-absent-not-extrapolated",
+    "dim6_test_acceptance_mapping": "not-closed -- no C5 test/acceptance mapping produced for 1.2.4 repository-platform leaves"
+  },
+  "covered_commands": [
+    "get_claude_web_search_compat",
+    "set_claude_web_search_compat",
+    "set_codex_no_account_slots"
+  ],
+  "new_commands": [
+    "get_claude_web_search_compat",
+    "set_claude_web_search_compat",
+    "set_codex_no_account_slots"
+  ],
+  "implementation_use_reason": "delta round does not independently promote to ready; dim1 (frontend CCF) not-closed, dim4 (interface/DTO) partial-not-closed, dim6 (test/acceptance) not-closed; 2 of 3 new commands have mac-side setter implementation absent from this delta batch",
+  "consumerStartReady_commands": [
+    "get_claude_web_search_compat",
+    "set_claude_web_search_compat",
+    "set_codex_no_account_slots"
+  ],
+  "consumerStartReady_basis": "6dims doc provides per-function behavior + DTO field clues + error paths + persistence + sidecar for all 3 new commands; mac get_claude_web_search_compat has full implementation body (0x10041d7a0); set_claude_web_search_compat / set_codex_no_account_slots have win full setter (0x140e01580 / 0x140e2de30) + mac DTO serialize (0x1005825c0 / 0x1007b6530); mac setter body absent from this delta batch, consumer must use win behavior as reference and supplement mac equivalent path",
+  "unknowns": [
+    {
+      "item": "mac-side setter implementation for set_claude_web_search_compat and set_codex_no_account_slots",
+      "class": "accepted_unknown",
+      "reason": "mac delta batch contains only DTO serialize for these 2 commands, not the setter implementation body; 6dims doc explicitly notes 'mac 侧 setter 实现体不在本批 NEW-delta（可能 1.2.3 已有或归入其它模块制品）'; consumer must use win behavior as reference"
+    },
+    {
+      "item": "Codex restart execution body for set_codex_no_account_slots relaunch field",
+      "class": "accepted_unknown",
+      "reason": "win setter (0x140e2de30) only deserializes relaunch:bool into payload (v110[16]=aRelaunch), 725-line serde state machine, no kill/spawn/exit in function body; actual restart execution (osascript quit + restart Codex) not in this delta batch"
+    },
+    {
+      "item": "6dims doc header claims 'mac 13 个' .c files but on-disk count is 12",
+      "class": "accepted_unknown",
+      "reason": "find across all 8 module directories yields 12 mac .c files, matching the 12 mac functions in the 6dims function table; '13' in doc header may be a counting discrepancy; no 13th file found on disk"
+    },
+    {
+      "item": "dim4 interface/DTO closed extraction",
+      "class": "blocks_start",
+      "reason": "6dims provides DTO field clues (key lengths/offsets) but not a closed per-command DTO/error-envelope/side-effect-boundary extraction pass; blocks strictImplementationUse"
+    },
+    {
+      "item": "dim6 test/acceptance mapping",
+      "class": "blocks_start",
+      "reason": "not produced; blocks strictImplementationUse"
+    }
+  ],
+  "notes": [
+    "This is a delta consumer package: it synthesizes the 6dims analysis doc (repository-platform-system-6dims.md, 15088 bytes) into a consumer-facing conclusion bundle. No IDA MCP calls were made; no new raw or intermediate evidence produced. All evidence is referenced via pointers/evidence-paths.md.",
+    "baseline=1.2.3; consumed bundle=macos-1.2.3-relay (which was at consumerStartReady 23/23, readyToImplement=false, strictImplementationUse=false). This delta round does not independently close dim4/dim6 or promote any command to strictImplementationUse.",
+    "3 new commands this delta: get_claude_web_search_compat (mac+win, full impl both sides), set_claude_web_search_compat (win full setter, mac DTO serialize only), set_codex_no_account_slots (win full setter, mac DTO serialize only).",
+    "Cross-platform sibling windows-1.2.4-repository-platform-system not yet produced as an independent bundle; win raw .c files exist on disk (4 module-relevant files in raw/aimami/1.2.4/windows-x64/version-delta/ida/pseudocode/)."
+  ]
+}
