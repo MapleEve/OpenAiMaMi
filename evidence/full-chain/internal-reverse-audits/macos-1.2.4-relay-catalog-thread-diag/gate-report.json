@@ -1,0 +1,68 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.4",
+  "platform": "macos-arm64",
+  "module": "relay-catalog",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-29",
+  "gate_tier": "strictImplementationUse",
+  "gate_tier_note": "Assessment tier for this 1.2.4 delta bundle is strictImplementationUse (the highest tier). Baseline 1.2.3 was at consumerStartReady (23/23 commands) with readyToImplement=false and strictImplementationUse=false (see internal-reverse/audits/macos-1.2.3-relay/gate-report.json). This delta round does not independently promote any command to readyToImplement or strictImplementationUse — implementation_use=false. The strictImplementationUse tier is the target being assessed against, not an achieved state.",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 0,
+    "blocked": 1,
+    "total_commands_in_batch_scope": 1
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "implementation_use_reason": "delta round does not independently promote readiness — a 1.2.4 delta bundle establishes new behavior evidence (45 NEW-delta functions + 1 new IPC command set_codex_no_account_slots) but does not re-run the full six-dimension closure required to lift the baseline 1.2.3 consumerStartReady commands to readyToImplement/strictImplementationUse. Per OUTPUT-SPEC.md full_leaf_100_definition_v2, byte-level decompile completeness (dim2) alone does not promote target-level readiness; dim4 (interface/DTO/error-envelope/side-effect boundary) and dim6 (test/acceptance mapping) remain not-closed at the full-module level.",
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_commands": "closed-for-batch-scope -- 1 new IPC command set_codex_no_account_slots anchored win@0x140e2de30 (Rust async state machine, switch on poll status 0/1/2/3, DTO input {Manager, slots, relaunch}, Tauri invoke resolver sub_1407A09A0 confirms invoke_handler registration). Mac library layer in this batch's scope (45 functions across catalog/thread_visibility/diagnostic/writer/config_reconciler) serves this command + the internal no-account-slot routing / orphan-adoption / diagnostic-repair pipeline. Mac RelayManager::set_codex_no_account_slots@0x10079a8a0 (the setter body itself) is in the manager/ module, OUTSIDE this batch's 5-module scope; referenced via DELTA-FINAL-1.2.4.md. No other commands are newly introduced within this batch's module scope.",
+    "dim2_dto": "partial -- 7 DTOs/structs identified from Rust mangled symbol resolution: NativeThreadModelCatalog (codex_catalog, has supports_reasoning method), PreparedRouterCatalog (prepare_router_catalog output, write_prepared_catalog serializes to disk, has mode field = catalog source enum), RouterCatalogModelIndex::disposition (thread_visibility, routing-catalog-index disposition enum), NoAccountModelRestoreEntry (thread_visibility, impl serde_core::ser::Serialize, journal single record), DiagnosticRolloutProviderCache (diagnostic, has read method), TakeoverInspection (config_takeover, reconciler calls inspect/takeover), catalog source enum (3-state: bundled / matching-account-cache / bundled+matching-account-cache, from win delta string anchors). Residual: NoAccountModelRestoreEntry exact field set inferred from journal semantics + restore SQL, not all field names appear as plaintext 4-byte keys in pseudocode (serde derive).",
+    "dim3_fields": "closed-for-batch -- catalog/router fields: model, model_messages, tool_mode, visibility, slug (find_official_reasoning_model uses trim_matches + index_into('slug')). No-account slot hardcoded slugs: gpt-5.5 (len 7), gpt-5.4 (len 7), gpt-5.6- family (len 11/12/13, byte fragments sol/luna/.6-terra from byteswap QWORD comparison in canonical_no_account_slot_slug/is_no_account_slot_slug; full trademark strings NOT reconstructed to avoid fabrication). default_no_account_slots hard cap 5 (if v80 >= 5 break). Native inline system prompts read as strings: MiniMax-M3 ('You are Codex, a coding agent based on MiniMax-M3...') and MiMo-Xiaomi ('You are MiMo, an AI assistant developed by Xiaomi...'). threads table columns: id, model, model_provider, reasoning_effort, rollout_path, archived. journal/recovery JSON keys: payload, model_reasoning_effort, rollout, version, createdAtMs, completedAtMs, failure, fallbackModel, permanentAdoption, thread-provider-adoptions. Provider config TOML key: requires_openai_auth (codex_writer::router_provider_requires_openai_auth parses toml_edit then indexes this key), provider name constant 'openai'.",
+    "dim4_error_paths": "closed-for-batch -- all error/log strings read from pseudocode (adjacent-concatenation noise removed): codex_catalog 5 degradation paths under [AiMaMi][catalog] log domain (1. merged account model cache with matching ChatGPT bundled catalog / 2. using the current ChatGPT bundled official model catalog / 3. bundled model command unavailable; using version-matched account model cache / 4. current ChatGPT bundled catalog unavailable; account model cache is not verified current / 5. no usable official model source; relay-only catalog will be generated); read_bundled_cli_version CLI args --bundled / --version (unavailable triggers path 3). codex_thread_visibility: 'invalid no-account model restore journal contents', 'session_meta missing' / 'session_meta payload not found' / 'session_meta anchors are missing', 'session_meta line length changed before replacement' / 'session_meta replacements overlap', 'session_meta changed while preparing router migration', 'rollout changed while router migration was streaming; retry required', 'rollout path has no parent', fallback patch instructions '::[AiMaMi][patch-instructions] no donor thread found, using fallback instructions...'. codex_diagnostic: 'rollout has no database owner', 'ROLLBACK' (rusqlite::Connection::execute_batch transaction rollback). codex_config_reconciler: 'prepared Codex catalog mode does not match the config target' (reconcile_inner mode mismatch, 60-char string, error-code class 9).",
+    "dim5_persistence": "closed-for-batch -- files (relay state directory): models_cache.json (load_official_catalog_snapshot reads via std::fs::read_to_string), codex_router_catalog.json (write_prepared_catalog atomic_write, inspect_official_catalog_freshness reads for新旧比对), no-account-model-restore journal (load/patch/remove_file, relay namespace string relay_no_account_model_restore), thread-provider-adoptions recovery file (write_orphan_thread_adoption_recovery_file via serde_json::ser::to_vec_pretty + atomic_write::write_atomic_with_mode), rollout_orphan_providers diagnostic cache (check_rollout_orphan_providers_with_cache read/write), config-backups / databaseBackups (reconciler/diagnostic backup dirs before config+DB changes, qmemcpy(...,'databaseBackups',15)). DB (SQLite threads table, rusqlite): thread_visibility reads (SELECT model,model_provider,COALESCE(rollout_path,'') FROM threads WHERE id=?1 AND COALESCE(archived,0)=0; SELECT DISTINCT rollout_path FROM threads WHERE rollout_path IS NOT NULL AND rollout_path <> '' AND COALESCE(archived,0)=0); diagnostic writes 4 UPDATE orphan-adoption variants (incremental field-preservation granularity, all with WHERE ... AND COALESCE(archived,0)=0 guard, failure execute_batch('ROLLBACK')); thread_visibility writes UPDATE threads SET model=?2 WHERE id=?1 (no-account model restore). config.toml (config_takeover): reconcile_inner -> config_takeover::inspect -> config_takeover::takeover -> codex_config::update_text (23-length key write) rewrites user config.toml; CodexPaths::ensure_directories precondition; failure/no-op codex_catalog::remove_catalog deletes catalog files. Keychain: NOT observed in this batch's 45 functions (not in module scope; credential persistence is router_unlock_auth bundle scope).",
+    "dim6_sidecar": "closed-for-batch -- set_codex_no_account_slots command output relaunch=true (string anchor aRelaunch) drives Codex sidecar restart: this is the ONLY explicit sidecar restart signal in this batch. Backend command itself has NO Codex kill/spawn execution body (per DELTA-FINAL: only persist relay state + router_transition::run + optional launch_codex_app_warning which just warns; actual restart driven by frontend consuming relaunch out-param, _r forces relaunch=true when routerEnabled && noAccountMode). reconcile_inner rewrites config.toml + codex_router_catalog.json, consumed by next Codex launch (config_takeover产物 -> 下一次 Codex 启动消费); command-layer relaunch corresponds to this '改配置 -> 重启生效' closed loop. Diagnostic orphan adoption runs same-process DB transaction (prepare_thread_metadata_rollout -> apply_thread_metadata_rollout_adoption, failure rollback_orphan_thread_adoption + with_orphan_adoption_rollback + mark_orphan_thread_adoption_recovery writes recovery file); no process kill. No裸 AppHandle::exit in this batch's 45 functions (quit_keeping_router is 1.2.3 baseline, not in this delta batch)."
+  },
+  "covered_commands": [
+    "set_codex_no_account_slots"
+  ],
+  "new_commands": [
+    "set_codex_no_account_slots"
+  ],
+  "covered_commands_basis": "set_codex_no_account_slots is the only new IPC command whose logic is served by this batch's 45 decompiled library functions (catalog builds the no-account slot routing table, thread_visibility restores/adopts thread providers, diagnostic fixes orphan providers, writer checks requires_openai_auth, config_reconciler rewrites config.toml+catalog). The other 3 new 1.2.4 IPC commands (get_claude_web_search_compat, set_claude_web_search_compat, router_exit_guard_state) belong to sibling delta bundles (relay-translator-anthropic / relay-router-auth / repository-platform-system) and are NOT in this bundle's module scope.",
+  "unknowns": [
+    {
+      "item": "NoAccountModelRestoreEntry exact field set (byte-level key verification)",
+      "class": "accepted_unknown",
+      "reason": "serialize impl uses serde derive; field set inferred from journal semantics + restore SQL (model/model_provider/rollout_path etc.) is behaviorally closed but not all field names appear as plaintext 4-byte keys in pseudocode. Not fabrication — recorded as accepted_unknown because the behavior is fully understood, only the byte-level key enumeration is incomplete."
+    },
+    {
+      "item": "Full trademark strings for length 11/12/13 no-account slot slugs (gpt-5.6- family)",
+      "class": "accepted_unknown",
+      "reason": "canonical_no_account_slot_slug/is_no_account_slot_slug use byteswap QWORD comparison; only byte fragments (sol/luna/.6-terra) are recoverable from the comparison logic. Full names intentionally NOT reconstructed to avoid fabrication; use IDA anon_* data symbols for full names if needed."
+    },
+    {
+      "item": "mac RelayManager::set_codex_no_account_slots setter body @0x10079a8a0",
+      "class": "out_of_batch_scope",
+      "reason": "setter is in manager/ module, outside this batch's 5-module scope (catalog/thread_visibility/diagnostic/writer/config_reconciler). This bundle covers the library layer called by the setter. Setter evidence referenced via DELTA-FINAL-1.2.4.md. Not a gap in this bundle's declared scope."
+    },
+    {
+      "item": "cross_platform_sibling windows-1.2.4-relay-catalog-thread-diag bundle",
+      "class": "blocks_start",
+      "reason": "win delta pseudocode anchors exist at raw/aimami/1.2.4/windows-x64/version-delta/ida/pseudocode/ (20 files) and 6dims doc records 14 win parity anchors, but no independent windows-1.2.4-relay-catalog-thread-diag gate-report has been assembled yet. Sibling bundle assembly is a separate producer task."
+    }
+  ],
+  "notes": [
+    "This gate-report is a delta-round assessment: it establishes NEW 1.2.4 behavior evidence (45 NEW-delta functions + 1 new IPC command set_codex_no_account_slots + the no-account-slot-routing / orphan-adoption / diagnostic-repair pipeline) but does NOT independently promote any command's gate tier. Baseline 1.2.3 gate state (consumerStartReady 23/23, readyToImplement=0, strictImplementationUse=0) is carried forward unchanged from internal-reverse/audits/macos-1.2.3-relay/gate-report.json.",
+    "dim1/dim3/dim4/dim5/dim6 are closed-for-batch-scope (the 45 functions in this batch's 5 modules are fully covered). dim2 is partial (7 DTOs identified but NoAccountModelRestoreEntry field set is behaviorally closed, not byte-level key-verified). This is stronger than the 1.2.3 baseline's dim4/dim6 not-closed state for the full relay module, but only within this batch's narrow 5-module scope — it does NOT close dim4/dim6 for the full 32-submodule relay domain.",
+    "No [TRUNCATED] / [DECOMPILE-FAILED] markers present in the 6dims source for any of the 45 anchored functions. All pseudocode is [FULL decompile] / 1.2.4 NEW-delta.",
+    "Authorization: AiMaMi is the owner's own authorized product (本仓/本机所有者自家已授权产品), baseline=1.2.3. This bundle is internal-only (red line 23), not for external release."
+  ]
+}

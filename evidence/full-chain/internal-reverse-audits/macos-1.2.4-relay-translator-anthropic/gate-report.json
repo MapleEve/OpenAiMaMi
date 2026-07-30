@@ -1,0 +1,95 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.4",
+  "platform": "macos-arm64",
+  "module": "relay-translator",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-29",
+  "gate_tier": "strictImplementationUse",
+  "gate_tier_context": "1.2.4 delta over baseline 1.2.3 (macos-1.2.3-relay consumed; baseline relay module gate was consumerStartReady 23/23, readyToImplement=0 per its gate-report.json — this delta evaluates whether the translator/anthropic sub-scope can advance to strictImplementationUse)",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 3,
+    "blocked": 0,
+    "total_new_commands": 3
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "implementation_use_reason": "delta round does not independently promote to ready — dim4 (interface/DTO/error-envelope/side-effect boundary) is only partial (CodexNoAccountSlot DTO + Responses output envelope extracted, but per-command boundary not systematically closed) and dim6 (test/acceptance mapping) remains not-closed for the 1.2.4 translator delta; per OUTPUT-SPEC.md full_leaf_100_definition_v2, byte-level decompile completeness (dim2 strong, 32 functions) alone does not promote target-level readiness",
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "partial — 2 of 3 new commands have frontend CCF reversed: get/set_claude_web_search_compat consumed by maintenance-page-Cfv_qYNg.js component ia (useQuery+useMutation+invalidate+toast, L434-L446), set_codex_no_account_slots consumed by relay-page-pfdbI0wX.js component Os (NoAccountSlots card, L3072-L3261, 18 i18n keys, min/max guard st=5); translator/anthropic_reasoning/anthropic_history are backend-only pure function libraries with ZERO frontend projection (changelog C confirmed backend-only by CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md), dim1 not-applicable for them",
+    "dim2_backend_owner_pseudocode": "strong — 32 deduped decompiled functions across all 6 modules (translator 9 + translator::stream 6 + anthropic_reasoning 7 + anthropic_history 5 + native_responses_compat 1 + models 4), 0 truncated stubs, all carry [FULL decompile] header in source 6dims doc; large functions (anthropic_to_responses_response_with_tool_maps 3192 lines, normalize_messages 66KB) explicitly marked FULL; source SHA in manifest.json",
+    "dim3_call_tree_to_leaf": "partial — individual function bodies recovered to real logic (not wrapper-only); stream收尾路径 (finish_response/fail_with_type/close_anthropic_block/close_all_blocks) and anthropic_history修正路径 (rectify_invalid_thinking_signature retain_mut closure) traced to leaf termination (BTreeMap/Vec/retain_mut operations, event sink writes, finished flag sets); but no standalone per-function call-tree-to-leaf reduction document produced for all 32 functions",
+    "dim4_interface_dto_boundary": "partial-closed — CodexNoAccountSlot DTO (3 serialize单态 @0x10057cbe0/cd30/cea0, struct layout offset 0..24/24..48/48=Option<i64> with 0x8000000000000000 None sentinel, field count __OFSUB__(-v2,1)^3) and AnthropicDirectToResponsesStream output DTO (finish_response response envelope: id/object:\"response\"/created_at/status/model/output/usage; fail_with_type error sub-object: type/message/status:\"failed\") extracted in 6dims section 2; but per-command DTO/error-envelope/side-effect boundary for the 3 new commands not systematically closed",
+    "dim5_platform_gate": "closed-for-existence — win delta 0x1408a2a20 (uses_adaptive_thinking) logic-equivalent to mac 0x1005731d0 (9 model-name strings: fable-5/mythos-5/mythos-preview/sonnet-5/opus-5/opus-4-8/4-7/4-6/sonnet-4-6, win-side named aFable5/aMythos5/etc.); 3 command names (get_claude_web_search_compat/set_claude_web_search_compat/set_codex_no_account_slots) cross-platform consistent; no cfg(windows) branch found in this scope; standalone windows-1.2.4-relay-translator-anthropic/ bundle not yet produced",
+    "dim6_test_acceptance_mapping": "not-closed — no C5 test/acceptance mapping has been produced for 1.2.4 translator/anthropic delta leaves; this is the concrete next step to advance any of the 3 new commands from consumerStartReady to strictImplementationUse"
+  },
+  "covered_commands": [
+    "get_claude_web_search_compat",
+    "set_claude_web_search_compat",
+    "set_codex_no_account_slots"
+  ],
+  "new_commands": [
+    "get_claude_web_search_compat",
+    "set_claude_web_search_compat",
+    "set_codex_no_account_slots"
+  ],
+  "new_commands_note": "All 3 are NEW vs 1.2.3 (1.2.3 win/mac delta has no same-name anchor per 6dims section 1). translator/translator::stream/anthropic_reasoning/anthropic_history have NO command direct output — they are pure function libraries on the proxy/relay request path, called by proxy_server/dialects, not by Tauri #[tauri::command].",
+  "consumerStartReady_commands": [
+    "get_claude_web_search_compat",
+    "set_claude_web_search_compat",
+    "set_codex_no_account_slots"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady + uiCallEntryReady satisfied via maintenance-page/relay-page frontend CCF (FRONTEND-CCF-DELTA-1.2.4.md); happyPathReady + backend owner satisfied via 32 deduped decompiled functions; dtoBoundaryReady partial (CodexNoAccountSlot + Responses envelope extracted, per-command boundary not closed); acceptanceDraftReady NOT produced — consumer must still derive remaining DTO shape from pseudocode + Polaris's own relay contract rather than treat this package as a closed interface spec",
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "dim4 (per-command interface/DTO/error-envelope/side-effect boundary) only partial and dim6 (test/acceptance mapping) not closed for any 1.2.4 translator command; per OUTPUT-SPEC.md full_leaf_100_definition_v2 and the Strict Leaf Readiness Clarification, byte-level decompile completeness (dim2 strong) alone does not promote target-level readiness",
+  "unknowns": [
+    {
+      "item": "handle_event (stream main event loop) internal dispatch for redacted_thinking/tool_search_call new block types",
+      "class": "accepted_unknown",
+      "reason": "handle_event not present in this delta's pseudocode set; cannot confirm whether its internal dispatch is new — marked 待查 in 6dims section 10, not extrapolated"
+    },
+    {
+      "item": "normalize_messages (66KB) full thinking signature algorithm",
+      "class": "accepted_unknown",
+      "reason": "SHA-256 round constants confirmed present (0x6A09E667/0x5BE0CD19/0x9B05688C/0xA54FF53A) but full per-round algorithm not restored this pass; 6dims section 10 explicitly does not expand pseudo-algorithm"
+    },
+    {
+      "item": "codex_effort_to_anthropic len3(low/max)/len5(xhigh) specific anthropic effort enum return strings",
+      "class": "accepted_unknown",
+      "reason": "mapping existence confirmed, specific anon_289/290/293 values not force-named; needs anon data segment cross-reference (6dims section 10)"
+    },
+    {
+      "item": "1.2.3 native_responses_compat rejects_hosted_web_search/sanitize_request presence in 1.2.4",
+      "class": "blocks_start",
+      "reason": "not reconciled — this delta only gives the NEW strip_hosted_web_search_tools function; 6dims section 10 marks 待对账"
+    },
+    {
+      "item": "set_claude_web_search_compat mac setter implementation body",
+      "class": "accepted_unknown",
+      "reason": "mac side only has DTO serialize @0x1005825c0 in this delta's artifacts; win behavior @0x140e01580 is authoritative per CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md section 4 note"
+    },
+    {
+      "item": "dim4 per-command DTO/error-envelope/side-effect boundary (systematic)",
+      "class": "blocks_start",
+      "reason": "only partial — CodexNoAccountSlot DTO + Responses output envelope extracted, per-command boundary not closed; strictImplementationUse blocked on this"
+    },
+    {
+      "item": "dim6 test/acceptance mapping for 1.2.4 translator delta",
+      "class": "blocks_start",
+      "reason": "not produced this pass; strictImplementationUse blocked on this"
+    }
+  ],
+  "notes": [
+    "This gate-report is a CONSUMER conclusion over already-on-disk 6dims analysis (relay-translator-anthropic-6dims.md, 24278 bytes). No IDA was connected, no binary re-decompiled. Gate fields reflect the 6dims doc's evidence, not a fresh decompile pass.",
+    "Backend decompile completeness (dim2) for this delta scope is 32 functions across 6 modules, all [FULL decompile]. This is evidence coverage, NOT full_leaf_100 or implementation-ready per OUTPUT-SPEC.md historical-number caveat.",
+    "This gate-report intentionally does NOT copy forward a readyToImplement pattern: the 1.2.4 translator delta has NOT had dim4 (per-command interface/DTO) and dim6 (test/acceptance mapping) fully closed. Producing those is the concrete next step to advance any of the 3 new commands from consumerStartReady to strictImplementationUse.",
+    "See data/producer-ledger.json for the consumer conclusion session record."
+  ]
+}

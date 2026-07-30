@@ -1,0 +1,63 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.4",
+  "platform": "macos-arm64",
+  "module": "relay-router",
+  "package": "macos-1.2.4-relay-router-auth",
+  "created_at": "2026-07-29T00:00:00Z",
+  "producer_machine": "<host> (this package assembled, read-only delta consumption; no IDA, no binary re-decompile)",
+  "binary": {
+    "sha256_frontend_extraction": "24bf0857f7afa0c2352cb5ca1552136c406ed9894609dc2de6152437faf9c288",
+    "binary_path": "/raw/aimami/1.2.4/macos-arm64/frontend/AiMaMi.arm64.thin",
+    "binary_format": "macho",
+    "arch": "arm64",
+    "frontend_asset_hashes_ref": "/raw/aimami/1.2.4/macos-arm64/frontend-assets.sha256",
+    "frontend_relay_page_sha256": "ceef9114ea462652c42d4d6ba453478ab5b21ca6ddca18ae36254ab7f2feab28",
+    "frontend_index_bundle_sha256": "7fe174bfdc26295184f2455f0e63f8cd3d992f1f4df1490f56a74e9e16303aef"
+  },
+  "scope": {
+    "backend_target_universe": "core::relay::router_unlock_auth (12 functions, all NEW-delta vs 1.2.3) + core::relay::router_reconciler (3 functions) + core::relay::manager::set_codex_no_account_slots + set_claude_web_search_compat (NEW commands) + router_exit_guard_state (top-level tauri state query, NEW) + core::relay::proxy_server compat layer (client_for / claude_web_search_compat_enabled / is_anthropic_thinking_signature_rejection). 1.2.3 baseline had NO router_unlock_auth submodule and NO set_codex_no_account_slots / router_exit_guard_state commands.",
+    "frontend_target_universe": "relay-page-pfdbI0wX.js (no-account slots management UI, L3058-L3842) + maintenance-page-Cfv_qYNg.js (ClaudeWebSearchCompat toggle, L434-L446) + index-UqyngLFp.js (mock+wrapper+i18n). router_exit_guard_state has NO frontend page-level consumer located (属 app 退出流, 疑在根组件/window 关闭钩子, 出 page 级 delta 范围).",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true,
+    "delta_scope_basis": "只读消费 raw/aimami/1.2.4/macos-arm64/version-delta/relay-router-auth-6dims.md (20133B, 详实 6dims) + DELTA-FINAL-1.2.4.md (27345B, 跨平台整合终稿) + CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md (15481B, 6 条 changelog 对账)。不连 IDA、不逆二进制、不臆断。"
+  },
+  "coverage": {
+    "router_unlock_auth_functions_decompiled": 12,
+    "router_unlock_auth_status_vs_baseline": "all 12 NEW-delta (1.2.3 baseline 无对应物)",
+    "router_reconciler_functions_decompiled": 3,
+    "router_reconciler_status_vs_baseline": "from_state + verify_managed_auth_commit_boundary + closure (NEW-delta commit-boundary guard)",
+    "manager_new_command_functions_decompiled": 2,
+    "manager_new_command_names": ["set_codex_no_account_slots", "set_claude_web_search_compat"],
+    "router_exit_guard_state_functions_decompiled": 1,
+    "router_exit_guard_state_status": "NEW-delta (1.2.3 无此命令/函数)",
+    "proxy_server_compat_functions_decompiled": 3,
+    "proxy_server_compat_names": ["client_for", "claude_web_search_compat_enabled", "is_anthropic_thinking_signature_rejection"],
+    "total_mac_pseudocode_files_consumed": 26,
+    "total_win_delta_pseudocode_files_consumed": 20,
+    "truncated_stubs_remaining": 0,
+    "decompile_failed_markers": 0,
+    "new_ipc_commands_frontend_confirmed": 3,
+    "new_ipc_commands_names": ["get_claude_web_search_compat", "set_claude_web_search_compat", "set_codex_no_account_slots"],
+    "backend_only_commands_no_frontend_consumer": ["router_exit_guard_state"],
+    "measurement_basis": "find|wc -l on raw/aimami/1.2.4/macos-arm64/core/relay/{router_unlock_auth,router_reconciler,manager,proxy_server}/ida/pseudocode/*.c + router_exit_guard_state/ida/pseudocode/*.c; IPC command diff via python3 json parse of frontend/ipc-contracts.jsonl (1.2.4=134 unique vs 1.2.3=131 unique, +3 new, -0 removed)"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": "data/producer-ledger.json",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.2.3-relay/"
+  ],
+  "cross_platform_sibling": "internal-reverse/audits/windows-1.2.4-relay-router-auth/",
+  "known_residuals": [
+    "router_exit_guard_state 前端 page 级消费者未定位：ipc-contracts.jsonl (1.2.4) 0 命中、frontend-contract-report.md 0 命中、frontend-control-flow.jsonl 0 命中。属 app 退出流（疑在根组件/window 关闭钩子），出本次 page 级 delta 范围。记 accepted_unknown（已交叉核查 3 处前端制品均为 0 命中，非未查），不视为悬空。",
+    "静态错误串常量（84B marker blob、88B/77B/72B/78B/40B/31B 错误模板、transition 错误模板）长度与调用点已实测，具体文案字节未读出，不臆造内容。",
+    "managed_api_key 的 14 字符 key 名与 23 字节前缀 XOR 掩码常量（xmmword_10166EEF0/xmmword_10166EEE0）未读出明文——AiMaMi managed key 敏感识别位，按脱敏红线不还原。",
+    "RouterUnlockAuthMarker 5 个字段 key 的具体英文名（6/5/10/9/20 字符）由 serialize_entry 长度推断，未直读字符串池；BTreeMap 的 auth_mode(9)/OPENAI_API_KEY(14) 已在 commit_auth_for_router 直读确认，但 value 归属（OPENAI_API_KEY 挂 uuid、auth_mode 挂全局 static off_101973CF8）语义可疑，off_101973CF8 明文未读出，存疑待二次确认。",
+    "is_anthropic_thinking_signature_rejection 本次仅登记文件存在，未深读 body；proxy_server/client_for 是 RwLock clone gym 而非鉴权本体。",
+    "set_claude_web_search_compat mac delta 仅含 DTO serialize@0x1005825c0，setter 实现体不在本批 NEW-delta 制品（可能 1.2.3 已有或归入其它模块）；win delta 锚定了完整 setter@0x140e01580，消费侧实现时需以 win 行为为准并补 mac 等价路径。",
+    "1.2.3 baseline 实际 gate 档为 consumerStartReady（23/23），并非 readyToImplement；strictImplementationUse=0、readyToImplement=0、full_leaf_100=false（dim4/dim6 未闭合）。本 delta 轮不单独升 ready，继承 baseline 的 gate 天花板。"
+  ],
+  "note": "本 manifest 只读消费 raw/aimami/1.2.4/macos-arm64/version-delta/ 下已定稿的 6dims 详实分析（relay-router-auth-6dims.md）+ DELTA-FINAL-1.2.4.md 跨平台终稿 + CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md 对账文档，做消费者结论包合成；不连 IDA、不逆二进制、不臆断。所有 raw evidence 通过 pointers/evidence-paths.md 引用，不复制 bulk decompile 文本。本包内部专用，供 Polaris 自有产品线参照实现，不对外发布（红线 23）。"
+}

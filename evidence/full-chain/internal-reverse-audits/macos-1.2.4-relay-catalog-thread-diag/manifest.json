@@ -1,0 +1,51 @@
+{
+  "schema": "c5cm.internal_reverse.audit_manifest.v1",
+  "product": "aimami",
+  "target_version": "1.2.4",
+  "platform": "macos-arm64",
+  "module": "relay-catalog",
+  "package": "macos-1.2.4-relay-catalog-thread-diag",
+  "created_at": "2026-07-29T00:00:00Z",
+  "producer_machine": "<host> (this package assembled; no IDA connected, no binary re-reversed — read-only synthesis over already-finalized .c pseudocode + delta docs)",
+  "binary": {
+    "sha256_frontend_extraction": "24bf0857f7afa0c2352cb5ca1552136c406ed9894609dc2de6152437faf9c288",
+    "binary_format": "macho",
+    "arch": "arm64",
+    "binary_path_ref": "raw/aimami/1.2.4/macos-arm64/frontend/AiMaMi.arm64.thin",
+    "hash_provenance_note": "sha256_frontend_extraction value is the binary_sha256 from raw/aimami/1.2.4/macos-arm64/VERSION-BASELINE.md (whole thin Mach-O, authoritative for the 1.2.4 release). 1.2.4 did not produce a separate frontend-extraction-only hash; per-asset frontend hashes are in raw/aimami/1.2.4/macos-arm64/frontend-assets.sha256. This field is named sha256_frontend_extraction per bundle template parity with macos-1.2.3-relay; the value is the whole-binary hash, not a frontend-only extraction hash."
+  },
+  "scope": {
+    "backend_target_universe": "core::relay::codex_catalog (17 functions) + core::relay::codex_thread_visibility (15 functions) + core::relay::codex_diagnostic (11 functions) + core::relay::codex_writer (1 function: router_provider_requires_openai_auth) + core::relay::codex_config_reconciler (1 function: reconcile_inner) = 45 deduped 1.2.4 NEW-delta functions, all [FULL decompile], 0 [TRUNCATED]/[DECOMPILE-FAILED]",
+    "frontend_target_universe": "not-in-batch-scope -- frontend RelayModelPage no-account-slots card + maintenance ClaudeWebSearchCompat toggle are covered by the cross-bundle DELTA-FINAL-1.2.4.md / CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md / FRONTEND-CCF-DELTA-1.2.4.md (sibling delta docs in version-delta/), not re-extracted in this backend-owned bundle",
+    "full_app_coverage_status": "not-full-app",
+    "backend_owned_target_universe": true
+  },
+  "coverage": {
+    "backend_functions_decompiled_in_batch": 45,
+    "backend_functions_truncated_stubs_remaining": 0,
+    "backend_functions_decompile_status_basis": "all 45 anchored functions marked [FULL decompile] or 1.2.4 NEW-delta in relay-catalog-thread-diag-6dims.md; no [TRUNCATED] or [DECOMPILE-FAILED] markers present in the 6dims source",
+    "submodules_in_scope": 5,
+    "submodules_list": ["codex_catalog", "codex_thread_visibility", "codex_diagnostic", "codex_writer", "codex_config_reconciler"],
+    "new_ipc_commands_in_batch_scope": 1,
+    "new_ipc_commands_list": ["set_codex_no_account_slots"],
+    "measurement_basis": "file-system find against raw/aimami/1.2.4/macos-arm64/core/relay/{codex_catalog,codex_thread_visibility,codex_diagnostic,codex_writer,codex_config_reconciler}/ida/pseudocode/*.c + 6dims doc function table cross-check (17+15+11+1+1=45)"
+  },
+  "coverage_mode": "backend-owned-target-universe",
+  "gate_summary_ref": "gate-report.json",
+  "task_plan_ref": null,
+  "task_plan_ref_note": "no task-plan.json produced for this delta bundle; the 1.2.3 baseline three-tier queue at internal-reverse/audits/macos-1.2.3-relay/data/task-plan.json remains authoritative for the 23-command consumer gate. This 1.2.4 delta round does not independently promote any command's tier (implementation_use=false).",
+  "consumed_bundles": [
+    "internal-reverse/audits/macos-1.2.3-relay"
+  ],
+  "cross_platform_sibling": "internal-reverse/audits/windows-1.2.4-relay-catalog-thread-diag/",
+  "cross_platform_sibling_status": "not-yet-assembled -- win delta pseudocode anchors exist at raw/aimami/1.2.4/windows-x64/version-delta/ida/pseudocode/ (20 files including cmd_set_codex_no_account_slots_0x140e2de30.c, codex_catalog/diagnostic/thread_visibility/config_reconciler anchors); 6dims doc records 14 win parity anchors confirming cross-platform behavior alignment. Sibling bundle assembly is a separate producer task.",
+  "known_residuals": [
+    "NoAccountModelRestoreEntry exact field set is inferred from journal semantics + restore SQL (model/model_provider/rollout_path etc.); the serialize impl uses serde derive, and not all field names appear as plaintext 4-byte keys in pseudocode. Field set is behaviorally closed but not byte-level key-verified.",
+    "Length 11/12/13 no-account slot slugs (gpt-5.6- family) only give byte fragments (sol/luna/.6-terra) from byteswap QWORD comparison in canonical_no_account_slot_slug/is_no_account_slot_slug; full trademark strings are NOT reconstructed to avoid fabrication. Use IDA anon_* data symbols for full names if needed.",
+    "mac RelayManager::set_codex_no_account_slots setter body @0x10079a8a0 is in the manager/ module, OUTSIDE this batch's 5-module scope (catalog/thread_visibility/diagnostic/writer/config_reconciler). This bundle covers the library layer called by the setter, not the setter itself. Setter evidence is referenced via DELTA-FINAL-1.2.4.md.",
+    "mac set_claude_web_search_compat setter implementation body is NOT in this batch (only DTO serialize@0x1005825c0); per DELTA-FINAL, mac setter is not in the 1.2.4 NEW-delta artifacts, win @0x140e01580 is the complete implementation. This is translator-anthropic bundle scope, not this bundle.",
+    "Keychain writes not observed in this batch's 45 functions (not in module scope); credential persistence is in router_unlock_auth bundle scope (separate 1.2.4 delta bundle).",
+    "cross_platform_sibling bundle not yet assembled -- win parity is established via 6dims doc's 14 win anchors + DELTA-FINAL dirtree/CCF双补全, but no independent windows-1.2.4-relay-catalog-thread-diag gate-report exists yet."
+  ],
+  "note": "This manifest synthesizes raw/aimami/1.2.4/macos-arm64/version-delta/relay-catalog-thread-diag-6dims.md (6dims detailed analysis, 19177B) + DELTA-FINAL-1.2.4.md (cross-platform integrated final, 27345B) + CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md (changelog-to-frontend alignment, 15481B). No bulk decompile text is copied into this package; all raw evidence is referenced via pointers/evidence-paths.md. Baseline is macos-1.2.3-relay (consumerStartReady 23/23, readyToImplement=false, strictImplementationUse=false). This 1.2.4 delta round does not independently promote gate tier (implementation_use=false, gate_accepted=false). Authorization: AiMaMi is the owner's own authorized product (本仓/本机所有者自家已授权产品), baseline=1.2.3, SMB absolute paths hardcoded per skill red line 16, no env-var."
+}

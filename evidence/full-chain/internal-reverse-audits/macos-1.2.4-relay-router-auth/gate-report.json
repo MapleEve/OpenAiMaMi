@@ -1,0 +1,92 @@
+{
+  "schema": "c5cm.reverse.audit.gate_report.v1",
+  "product": "aimami",
+  "version": "1.2.4",
+  "platform": "macos-arm64",
+  "module": "relay-router",
+  "status": "module_root_gate_summary",
+  "updated_at": "2026-07-29",
+  "gate_tier": "strictImplementationUse (delta 轮：1.2.4 delta 源已闭合 6dims 详实分析；baseline 1.2.3 已达 consumerStartReady 但未达 readyToImplement)",
+  "gate_summary": {
+    "readyToImplement": 0,
+    "strictImplementationUse": 0,
+    "consumerStartReady": 3,
+    "blocked": 0,
+    "total_new_commands": 3,
+    "total_covered_commands": 3
+  },
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100": false,
+  "full_leaf_100_definition_v2_status": "not_closed",
+  "moduleExitAllowed": false,
+  "dim_status": {
+    "dim1_frontend_control_flow": "mostly-closed -- relay-page-pfdbI0wX.js L3058-L3842 无账号槽位管理 UI（Os/Ls 组件 + noAccountSlots i18n 树 16 key + _r onSave + subtitle/enabledHint NoAccount 分支）完整逆向；maintenance-page-Cfv_qYNg.js L434-L446 ClaudeWebSearchCompat toggle 卡片（useQuery+useMutation+invalidate+toast）完整逆向，镜像既有 imageCompat 同构。index-UqyngLFp.js mock+wrapper+i18n 全对齐。唯一缺口：router_exit_guard_state 后端有命令注册但前端 page 级 delta 未发现直接消费者（属 app 退出流，疑在根组件/window 关闭钩子，出 page 级 delta 范围），已在 CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md L71/L95 标注为已知不确定性，不视为悬空。",
+    "dim2_backend_owner_pseudocode": "strong -- router_unlock_auth 12 函数全 NEW-delta 完整伪代码（commit_auth_for_router 双分支入口 + managed_api_key 三键校验 + should_use_no_account_mode + has_restorable_real_oauth + write_json ×2 + install_managed_api_key_auth 闭包 ×3）；router_reconciler 3 函数（from_state + verify_managed_auth_commit_boundary 提交闸 + closure）；manager set_codex_no_account_slots + set_claude_web_search_compat；router_exit_guard_state 退出守卫；proxy_server 3 兼容层函数。0 截断桩、0 decompile-failed 标记。mac 为行为真值源（带符号、伪代码完整可读）。",
+    "dim3_call_tree_to_leaf": "partial -- 逐函数 behavior + destructive 标注已完整（见 logic/DELTA-LOGIC-1.2.4.md 逐函数表 16 行），commit_auth_for_router 双分支（A managed key 成功单次写 / B managed key 失败走完整恢复链双次写+覆盖 OAuth 备份）已还原到实现叶子；但未产出独立 per-command call-tree-to-leaf 规约文档（与 1.2.3 baseline 同档位，logic/DELTA-LOGIC-1.2.4.md 给模块级链叙事）。",
+    "dim4_interface_dto_boundary": "partial-closed (delta 轮显著优于 1.2.3 baseline 的 not-closed) -- 6dims doc 已实测抽取：RouterUnlockAuthMarker 5 字段（key 长 6/5/10/9/20，偏移 +0/+24/+48/+72/+80）；managed_api_key JSON schema 三键校验（9/14/6 字符 key + 23 字节前缀 XOR 掩码）；CodexNoAccountSlot 72B 单条（+8 slug ptr/+16 slug len/+32 base_url/+40 len/+48 display_name Option）；RelayState snapshot_sanitized 0x140+0x30 trailer；错误变体 12 类全编目（含长度与触发点）。但 5 字段具体英文名未直读字符串池、BTreeMap value 归属存疑待二次确认，故标 partial-closed 而非 closed。",
+    "dim5_platform_gate": "closed-for-existence, open-for-parity -- mac 与 win 均落地新命令 set_codex_no_account_slots（mac @0x10079a8a0 / win cmd_ @0x140e2de30）+ reconciler 守卫（mac verify_managed_auth_commit_boundary @0x1008c7170 / win router_reconciler35verif @0x1408f69b0 薄闭包）+ router_unlock_auth 闭包（mac install_managed_api_key_auth ×3 / win router_unlock_auth28inst @0x140410960 薄闭包）。win delta 锚点多为闭包/格式化层，主体逻辑 mac 可完整读出，未观测 mac/win 业务行为分叉。router_exit_guard_state win 侧无独立锚点（mac-only observed，非确认 win 不存在）。",
+    "dim6_test_acceptance_mapping": "not-closed -- 无 C5 test/acceptance mapping 产出（与 1.2.3 baseline 同档位）。1.2.4 delta 源 6dims doc 未提供 test 映射，本消费者包不臆造。"
+  },
+  "readyToImplement_commands": [],
+  "strictImplementationUse_commands": [],
+  "strictImplementationUse_reason": "delta 轮不单独升 ready：1.2.3 baseline 实际 gate 档为 consumerStartReady（23/23），strictImplementationUse=0、readyToImplement=0、full_leaf_100=false（dim4/dim6 未闭合）。1.2.4 delta 虽在 dim4 上显著进步（6dims doc 已实测抽取 DTO/字段/错误变体），但 5 字段具体英文名未直读、BTreeMap value 归属存疑、dim6 test/acceptance mapping 仍未闭合，不满足 full_leaf_100_definition_v2 六维门。按 OUTPUT-SPEC.md 迁移要求：有行为 diff 只允许为 changed targets 增补证据，不得把既有 implementation_use=false/gate_accepted=false/full_leaf_100=false 改成 true。",
+  "consumerStartReady_commands": [
+    "set_codex_no_account_slots",
+    "get_claude_web_search_compat",
+    "set_claude_web_search_compat"
+  ],
+  "consumerStartReady_basis": "renderSurfaceReady + uiCallEntryReady 满足（relay-page L3356/L3522 + maintenance-page L436/L439 前端接入点已对齐）；happyPathReady + backend owner 满足（router_unlock_auth 12 函数 + router_reconciler 3 函数 + manager 2 新命令 + router_exit_guard_state + proxy_server 3 兼容层，全完整伪代码 0 截断）；dtoBoundaryReady partial（6dims 已抽 DTO/字段/错误变体，但 5 字段英文名未直读、value 归属存疑）；boundaryPathReady/sideEffectReady/acceptanceDraftReady 未独立产出——consumer 须从伪代码 + Polaris 自有 relay 合同推导 DTO 形状，不得把本包当作闭合 interface spec。",
+  "covered_commands": [
+    "set_codex_no_account_slots",
+    "get_claude_web_search_compat",
+    "set_claude_web_search_compat",
+    "router_exit_guard_state"
+  ],
+  "new_commands": [
+    "set_codex_no_account_slots",
+    "get_claude_web_search_compat",
+    "set_claude_web_search_compat",
+    "router_exit_guard_state"
+  ],
+  "unknowns": [
+    {
+      "item": "router_exit_guard_state 前端 page 级消费者",
+      "class": "accepted_unknown",
+      "reason": "ipc-contracts.jsonl (1.2.4) 0 命中、frontend-contract-report.md 0 命中、frontend-control-flow.jsonl 0 命中——已交叉核查 3 处前端制品均为 0 命中。属 app 退出流（疑在根组件/window 关闭钩子），出 page 级 delta 范围。CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md L71/L95 已标注为已知不确定性，不视为悬空。"
+    },
+    {
+      "item": "RouterUnlockAuthMarker 5 字段具体英文名",
+      "class": "accepted_unknown",
+      "reason": "由 serialize_entry 长度推断（6/5/10/9/20 字符），未直读字符串池；BTreeMap 的 auth_mode(9)/OPENAI_API_KEY(14) 已在 commit_auth_for_router 直读确认，但 value 归属（OPENAI_API_KEY 挂 uuid、auth_mode 挂全局 static off_101973CF8）语义可疑，off_101973CF8 明文未读出，存疑待二次确认。不影响开始实现（DTO 形状已实测），但不得宣称 strict parity。"
+    },
+    {
+      "item": "managed_api_key 14 字符 key 名与 23 字节前缀 XOR 掩码常量",
+      "class": "accepted_unknown",
+      "reason": "AiMaMi managed key 敏感识别位，按脱敏红线不还原明文。校验机制已记录（三键校验 + 23 字节前缀通过 xmmword_10166EEF0/xmmword_10166EEE0 两组 XOR 掩码常量等值校验），不臆造具体值。"
+    },
+    {
+      "item": "set_claude_web_search_compat mac setter 实现体",
+      "class": "blocks_start",
+      "reason": "mac delta 仅含 DTO serialize@0x1005825c0，setter 实现体不在本批 NEW-delta 制品（可能 1.2.3 已有或归入其它模块）；win delta 锚定了完整 setter@0x140e01580（状态机 case 0/1/2/3 + Arc clone）。消费侧实现时需以 win 行为为准并补 mac 等价路径。"
+    },
+    {
+      "item": "dim6 test/acceptance mapping for 1.2.4 relay-router",
+      "class": "blocks_start",
+      "reason": "1.2.4 delta 源 6dims doc 未提供 test 映射，本消费者包不臆造。readyToImplement/strictImplementationUse blocked on this until closed。"
+    },
+    {
+      "item": "is_anthropic_thinking_signature_rejection body",
+      "class": "accepted_unknown",
+      "reason": "本次仅登记文件存在（proxy_server/ida/pseudocode/），未深读 body；文件名指示检测 anthropic thinking-signature 拒绝，非鉴权本体。"
+    }
+  ],
+  "notes": [
+    "本 gate-report 是 delta 轮消费者结论：只读消费 raw/aimami/1.2.4/macos-arm64/version-delta/ 下已定稿的 6dims 详实分析 + DELTA-FINAL 终稿 + CHANGELOG-FRONTEND-ALIGNMENT 对账文档，做 gate 档位判定；不连 IDA、不逆二进制、不臆断。",
+    "1.2.4 delta 在 dim4（interface/DTO/error-envelope/side-effect boundary）上显著优于 1.2.3 baseline 的 not-closed：6dims doc 已实测抽取 RouterUnlockAuthMarker/CodexNoAccountSlot/RelayState 三个 DTO 的字段布局 + 12 类错误变体全编目。但 5 字段英文名未直读、value 归属存疑，故 dim4 标 partial-closed 而非 closed，不构成 readyToImplement 升档依据。",
+    "本 gate-report 有意不复制 1.2.3 baseline 的 consumerStartReady=23 模式：1.2.4 delta 轮只对 3 个新命令（set_codex_no_account_slots/get_claude_web_search_compat/set_claude_web_search_compat）+ 1 个 backend-only 命令（router_exit_guard_state）做 gate 判定，1.2.3 既有的 23 条命令 gate 档位继承 baseline 不变（见 consumed_bundles: macos-1.2.3-relay）。",
+    "router_exit_guard_state 是 1.2.4 唯一「后端有命令但前端 page 级未定位消费者」的条目，已在 CHANGELOG-FRONTEND-ALIGNMENT-1.2.4.md L71/L95 标注为已知不确定性，不视为悬空，不阻塞 consumerStartReady（属 app 退出流，非 page 级消费）。",
+    "见 data/producer-ledger.json for the consumer_gate.v1 three-tier queue 与 producer 认领记录。"
+  ]
+}
