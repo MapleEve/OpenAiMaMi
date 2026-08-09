@@ -26,7 +26,7 @@ Use env-relative paths only.
 - `mcp__ida_pro_mcp_mac.xrefs_to`
 - `mcp__ida_pro_mcp_mac.IDA Python`
 - `mcp__ida_pro_mcp_mac.set_comments`
-- `mcp__ida_pro_mcp_mac.idb_save`
+- `mcp__ida_pro_mcp_mac.<工具调用>`
 
 ## Gate State
 

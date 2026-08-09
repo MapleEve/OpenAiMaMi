@@ -6,7 +6,7 @@
 
 ### 覆盖(grounded)
 - **1638 全 App 函数 decompile**:1422 baseline same-set + 216 delta(88 超大体用 IDA Python+IDA decompiler 分页全解,红线13;1 IDA 失败)。名↔地址一致(IDA 函数枚举地址,非 nm VA)。
-- **1638 全 IDB 注释**:1422 标 `baseline same-set` + 216 标 `1.2.3 NEW-delta` + 归 `codexmate_lib/...` 目录树(94 目录)+ idb_save。复验 216+1422=1638。
+- **1638 全 IDB 注释**:1422 标 `baseline same-set` + 216 标 `1.2.3 NEW-delta` + 归 `codexmate_lib/...` 目录树(94 目录)+ <工具调用>。复验 216+1422=1638。
 - **9 组模块覆盖分析**(sonnet workflow,读全部 .c 出模块职责+关键函数+破坏副作用),文档在 `backend-baseline/*.md`(17-24KB 各):
 
 | 组 | 文件 | 覆盖模块 |

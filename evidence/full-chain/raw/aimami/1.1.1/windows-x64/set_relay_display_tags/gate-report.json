@@ -18,7 +18,7 @@
     "pseudocode.md 8077B ≥600B",
     "call-tree.md: depth=6, terminated WIN OS syscall leaves (GetCurrentProcessId/CloseHandle/CAS/WakeByAddressSingle/IPC resolver). genuine_ceiling=false, all fake wall taxonomy cleared.",
     "interface.md: input={manager:String(backend-only gap),global:Option<String>,woyao:Option<String>}, output='ok' (2-byte), side_effects=[in-memory displayTagGlobal/Woyao update (stride=232B), relay.json atomic write, conditional post_login_state_sync (global=Some), WIN lock]",
-    "gate-report.json <审计会话>: all dim1-5 PASS (dim1 was accepted_unknown for wrapper name, now closed via CCF confirmation); dim4_side_effects PASS; dim6_acceptance=acceptance_draft; idb_save=ok",
+    "gate-report.json <审计会话>: all dim1-5 PASS (dim1 was accepted_unknown for wrapper name, now closed via CCF confirmation); dim4_side_effects PASS; dim6_acceptance=acceptance_draft; <工具调用>=ok",
     "dim5: _InterlockedCompareExchange8+WakeByAddressSingle@0x14124A5D0+GetCurrentProcessId confirmed WIN-only",
     "dim6_acceptance: acceptance_draft with full happy_path+boundary_error+side_effect_asserts"
   ],

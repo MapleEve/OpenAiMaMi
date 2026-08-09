@@ -1,5 +1,5 @@
 // win 1.2.3 delta | invariants_strip_invalid_router @ 0x14047b4a0 | changelog ②关闭路由修复
-// [FULL IDA decompiler 18608B]
+// [FULL hexrays 18608B]
 // win 1.2.1 | module src/core/relay/managed_blocks.rs | attributed via panic-Location xref (win-native)
 __int64 __fastcall sub_14047B4A0(__int64 a1, __int64 a2, __int64 a3, __int64 a4)
 {

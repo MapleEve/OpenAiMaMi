@@ -25,7 +25,7 @@ regulation/spec/skill file, runs no product/main test, and promotes no gate.
   `preview_import @ 0x1005dd788`, and command-body callsite
   `0x10032cb40`.
 - IDB writeback: comments were added to `0x1001d6e34`, `0x1001d6source archive0`,
-  and `0x1005dd788`; `idb_save` returned OK.
+  and `0x1005dd788`; `<工具调用>` returned OK.
 
 ## Frontend Trigger And Preview State
 

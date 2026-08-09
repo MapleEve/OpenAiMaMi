@@ -32,7 +32,7 @@ by `tier` field:
 | tier | count | meaning |
 |---|---|---|
 | A | 0 | dispatcher-tier, none found |
-| B | 64 | already named via the earlier `wf-aimami123-delta-20260721` full-decompile baseline (prior AI.md's "59/172" figure referred to a different, not-yet-reconciled denominator — this is the first exact tier-B count against the full 177-function surface list) |
+| B | 64 | already named via the earlier `<审计会话> full-decompile baseline (prior AI.md's "59/172" figure referred to a different, not-yet-reconciled denominator — this is the first exact tier-B count against the full 177-function surface list) |
 | C | 113 | still `sub_XXXX`, **zero decompile performed** |
 
 So of the 177 functions, **64/177 (36%) already have real names/decompile from prior work**, and

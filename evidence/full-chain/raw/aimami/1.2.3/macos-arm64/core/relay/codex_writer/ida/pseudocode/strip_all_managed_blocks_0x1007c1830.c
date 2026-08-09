@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay12codex_writer24strip_all_managed_blocks @ 0x1007c1830 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 *__fastcall codexmate_lib::core::relay::codex_writer::strip_all_managed_blocks::h80da2768569d91b4(
         __int64 *a1,

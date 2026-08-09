@@ -19,4 +19,4 @@
 - `audits/cross-1.2.3-home-usage-frontend/` — 过渡性跨平台 DISTILLED 包（记 win 侧曾为 command-scan only；本单平台包升级为含 win-native minified CCF）
 - `audits/cross-1.0.9-home-usage-frontend/DISTILLED-home-usage-load-chains.md` — 1.0.9 同 scope 模板；其 mac DTO 形状**未**跨版本/跨平台复用为 win 证据
 - `audits/macos-1.2.3-home-usage-frontend/` — 配对 macOS 半（并行会话 `macos-1.2.3-home-usage-frontend-reduce-20260726`），独立闭合，不合并
-- `REVERSE-STATUS.md`（`:4011` wf-aimami123-fullapp-20260724 + 本会话 `windows-1.2.3-home-usage-frontend-reduce-20260726` claim/DONE 行）
+- `REVERSE-STATUS.md`（`:4011` <审计会话> + 本会话 `windows-1.2.3-home-usage-frontend-reduce-20260726` claim/DONE 行）

@@ -1,0 +1,154 @@
+{
+  "target": "set_codex_no_account_slots",
+  "owner_ea": "0x10079a8a0",
+  "edges": [
+    {
+      "from": "0x10079a8a0",
+      "to": "OnceBox::initialize",
+      "edge_type": "call",
+      "order": 0
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "Mutex::lock",
+      "edge_type": "call",
+      "order": 1
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "Mutex::unlock",
+      "edge_type": "call",
+      "order": 2
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "CodexMutationGate::lock",
+      "edge_type": "call",
+      "order": 3
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "RelayManager::snapshot",
+      "edge_type": "call",
+      "order": 4
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "validate_no_account_slots",
+      "edge_type": "call",
+      "order": 5
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "normalize_no_account_slot_preference",
+      "edge_type": "call",
+      "order": 6
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "RelayManager::persist",
+      "edge_type": "call",
+      "order": 7
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "RelayManager::snapshot_sanitized",
+      "edge_type": "call",
+      "order": 8
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "RelayManager::transition_paths",
+      "edge_type": "call",
+      "order": 9
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "RouterOnPlan::from_state",
+      "edge_type": "call",
+      "order": 10
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "RouterOnPlan::ensure_ready",
+      "edge_type": "call",
+      "order": 11
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "no_account_slot_routing_changed",
+      "edge_type": "call",
+      "order": 12
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "router_transition::run",
+      "edge_type": "call",
+      "order": 13
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "RelayManager::restore_router_enabled_stably",
+      "edge_type": "call",
+      "order": 14
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "launch_codex_app_warning",
+      "edge_type": "call",
+      "order": 15
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "verify_target_state_at_with_depth",
+      "edge_type": "call",
+      "order": 16
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "codex_config_stale_reason",
+      "edge_type": "call",
+      "order": 17
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "RelayState::clone",
+      "edge_type": "call",
+      "order": 18
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "SlicePartialEq::equal",
+      "edge_type": "call",
+      "order": 19
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "format_inner",
+      "edge_type": "call",
+      "order": 20
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "drop_in_place",
+      "edge_type": "call",
+      "order": 21
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "__rust_alloc",
+      "edge_type": "call",
+      "order": 22
+    },
+    {
+      "from": "0x10079a8a0",
+      "to": "__rust_dealloc",
+      "edge_type": "call",
+      "order": 23
+    }
+  ],
+  "edge_count": 22,
+  "terminated_reason": "persistence_commit",
+  "extraction_method": "c_text_analysis",
+  "note": "Callees extracted from 1.2.4 mac SMB .c pseudocode text, not IDA MCP callees call"
+}

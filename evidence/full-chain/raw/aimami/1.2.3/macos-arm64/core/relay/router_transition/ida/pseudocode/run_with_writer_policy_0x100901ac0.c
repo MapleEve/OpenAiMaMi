@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay17router_transition22run_with_writer_policy @ 0x100901ac0
-// [FULL — IDA decompiler 全解 54111B, 超大体分页取回]
+// [FULL — hexrays 全解 54111B, 超大体分页取回]
 // 1.2.3 NEW-delta | codexmate_lib::core::relay::router_transition::run_with_writer_policy | vs 1.2.2 新增(IDA函数枚举diff, 名↔地址一致)
 _QWORD *__fastcall codexmate_lib::core::relay::router_transition::run_with_writer_policy::h1219123683360807(
         char *a1,

@@ -96,4 +96,4 @@ VA `0x140089A50` was renamed `get_usage_refresh_interval_read_sys_111` by sessio
 - `0x140016720` → renamed `hotspot_ready_owner_sys_111` (level-A, allow_overwrite)
 - `0x1403C0BD0` → renamed `hotspot_alternate_focus_dispatch_sys_111` (level-B, gold-leaf)
 - `0x1403EFD40` → renamed `hotspot_cleanup_non38_drop_sys_111` (level-B, gold-leaf)
-- inline comment @ `0x140016720` — gold-leaf evidence (see idb_save section)
+- inline comment @ `0x140016720` — gold-leaf evidence (see <工具调用> section)

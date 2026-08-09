@@ -1,0 +1,50 @@
+{
+  "command": "request_accessibility_permission",
+  "argKeys": [],
+  "idaSymbols": [
+    "request_accessibility",
+    "CoreEnvelope::ok",
+    "drop_in_place<AppHandle>",
+    "memcpy"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/0001_request_accessibility_permission_owner.c"
+  ],
+  "nextCallees": [
+    "request_accessibility",
+    "CoreEnvelope::ok",
+    "drop_in_place<AppHandle>",
+    "memcpy"
+  ],
+  "callTreeRows": [
+    {
+      "callee": "request_accessibility",
+      "addr": "0x10048cb00"
+    },
+    {
+      "callee": "CoreEnvelope::ok",
+      "addr": "0x1005b0380"
+    },
+    {
+      "callee": "drop_in_place<AppHandle>",
+      "addr": "0x1004c32b0"
+    },
+    {
+      "callee": "memcpy",
+      "addr": "0x101527590"
+    }
+  ],
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": null,
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "destructive_side_effects": [],
+  "owner_ea": "0x100496340",
+  "owner_name": "codexmate_lib::commands::voice_runtime::request_accessibility_permission",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64",
+  "notes": "Tauri wrapper: runtime::request_accessibility -> CoreEnvelope::ok"
+}

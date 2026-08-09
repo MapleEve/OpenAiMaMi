@@ -61,7 +61,7 @@ gate_leaf_status: consumerStartReady for all 9; see gate-report.json
 scripts: |
   This pass DID have live IDA MCP access (idacall.py against <host>). Calls made: server_health
   (gate check, red line 17), decompile x1, callees x2 (4 addrs total), xrefs_to x1 (3 addrs), func_query x1
-  (tool-limitation finding). No idb_save / no comment/rename writes this pass -- read-only reconnaissance.
+  (tool-limitation finding). No <工具调用> / no comment/rename writes this pass -- read-only reconnaissance.
   Filesystem: find/wc -l/grep against raw/aimami/1.2.3/windows-x64/{sessions,analytics,commands/analytics,
   codexmate_lib,commands}/ida/pseudocode/*.c and frontend/ipc-contracts.jsonl.
 unknowns:

@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay10translator26chat_to_responses_response @ 0x100860a60 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __m256i *__fastcall codexmate_lib::core::relay::translator::chat_to_responses_response::hc2f4bad558319739(
         __m256i *a1,

@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core10repository10Repository28rebuild_registry_with_policy @ 0x100a6a890
-// [FULL — IDA decompiler 全解 75180B, 超大体分页取回]
+// [FULL — hexrays 全解 75180B, 超大体分页取回]
 // 1.2.3 NEW-delta | codexmate_lib::core::repository | vs 1.2.2 新增(IDA函数枚举diff, 名↔地址一致)
 size_t __fastcall codexmate_lib::core::repository::Repository::rebuild_registry_with_policy::hbfa144768b254519(
         char *a1,

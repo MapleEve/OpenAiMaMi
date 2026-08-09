@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib8platform19voice_trigger_macos15listen_callback @ 0x1005e0570 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 CGEventRef __fastcall codexmate_lib::platform::voice_trigger_macos::listen_callback::h0d02846d38aa2540(
         CGEventTapProxy a1,

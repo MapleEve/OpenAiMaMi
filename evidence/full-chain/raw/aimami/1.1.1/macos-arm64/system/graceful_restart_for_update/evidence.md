@@ -88,7 +88,7 @@ enum Result {
 - `0x10061ba75` (line): Command::spawn
 - `0x10061bbd8` (line): AppHandle::exit(0)
 
-idb_save: OK @ 2026-06-17
+<工具调用>: OK @ 2026-06-17
 
 ---
 

@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib8platform9debug_log17redact_text_inner @ 0x1009170b0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 double __fastcall codexmate_lib::platform::debug_log::redact_text_inner::h676b645192a17d3b(
         __int64 *a1,

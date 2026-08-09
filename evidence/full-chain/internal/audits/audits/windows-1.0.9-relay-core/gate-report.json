@@ -245,7 +245,7 @@
       "key_findings": [
         "BreakerState stride=208, open_until_ms_offset=144, active_flag_offset=204",
         "Backoff ladder: 5s/30s/300s confirmed",
-        "3 .c decompile files + 9 in manifest; idb_save confirmed=true",
+        "3 .c decompile files + 9 in manifest; <工具调用> confirmed=true",
         "Sentinel value 0x8000000000000000 for not-found entries",
         "Windows mutex: InterlockedCompareExchange8 + WakeByAddressSingle pattern",
         "relay_breaker_is_open_sys IS standalone callable (not inline)",
@@ -377,7 +377,7 @@
         "web_search_tool = {type:web_search_20250305, name:web_search, max_uses:5}",
         "inject_prompt = 'You have a web_search tool available.' (37B) + cache_control:ephemeral",
         "SSE headers: text/event-stream + no-cache + X-Accel-Buffering:no",
-        "16 renames + 16 comments applied; idb_save ok",
+        "16 renames + 16 comments applied; <工具调用> ok",
         "format_results/extract_ddg_url/SearchResult: inlined/stripped — not locatable"
       ],
       "accepted_unknowns": [
@@ -412,7 +412,7 @@
         "feed_line pattern: trim \\r → check 'data: ' prefix → parse JSON → [DONE] check → call handle_event_sys",
         "NO ICF fold — synchronous handlers; all 4 fully decompilable (unlike macOS relay_fetch_models)",
         "ensure_response_created_sys@0x1402246F0; emit_message_start_sys@0x140237670; emit_created_response_sys@0x140238C10",
-        "11 renames + 8 IDB comments; idb_save confirmed",
+        "11 renames + 8 IDB comments; <工具调用> confirmed",
         "ToolItemState accepted_unknown (Windows version — layout differs from macOS stride=40)"
       ],
       "platform_differences": {
@@ -476,7 +476,7 @@
       "session": "<audit-session>",
       "evidence_root": "raw/aimami/1.0.9/windows/relay-core/relay_transport/ (relay_proxy_config scope)",
       "logic_file": "logic/WIN-RELAY-TRANSPORT-CLOSEOUT-109.md",
-      "idb_saved": true
+      "<工具调用>d": true
     },
     "relay_image_compat": {
       "leaf_count": 9,
@@ -541,7 +541,7 @@
       "session": "<audit-session>",
       "evidence_root": "raw/aimami/1.0.9/windows/relay-core/relay_image_compat/",
       "logic_file": "logic/WIN-RELAY-IMAGE-COMPAT-109.md",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "idb_path": "<source-location><network-share>"
     },
     "relay_sse": {

@@ -1,5 +1,5 @@
 // win 1.2.3 delta | autostart_module_anchor @ 0x1404885c0 | changelog autostart
-// [FULL IDA decompiler 6714B]
+// [FULL hexrays 6714B]
 // win 1.2.1 | module src/commands/autostart.rs | attributed via panic-Location xref (win-native)
 void __fastcall sub_1404885C0(__int64 a1)
 {

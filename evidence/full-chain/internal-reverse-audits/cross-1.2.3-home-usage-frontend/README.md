@@ -17,7 +17,7 @@ rust-reverse-cookbook §1 角度 D 的四分类孤儿清查。详见 `logic/FULL
 
 - `audits/macos-1.2.3-home-usage-frontend/` — **不存在**（2026-07-26 已产出）
 - `audits/windows-1.2.3-home-usage-frontend/` — **不存在**（2026-07-26 已产出）
-- `REVERSE-STATUS.md:4011`（`wf-aimami123-fullapp-20260724` 账本重建行）显式把 `home-usage-frontend`（与 `relay-core-bootstrap`）列为「cross-platform 两个跨平台模块，均缺 1.2.3 canonical `audits/<platform>-1.2.3-<module>/` 结论包」，现状仅有部分 raw 证据，尚未按 RULE 8 归并/reduce。
+- `REVERSE-STATUS.md:4011`（`<审计会话> 账本重建行）显式把 `home-usage-frontend`（与 `relay-core-bootstrap`）列为「cross-platform 两个跨平台模块，均缺 1.2.3 canonical `audits/<platform>-1.2.3-<module>/` 结论包」，现状仅有部分 raw 证据，尚未按 RULE 8 归并/reduce。
 
 这与 1.0.9 时代不同：1.0.9 的 `cross-1.0.9-home-usage-frontend` 本身也不是从两个 canonical 单平台包合成的（它自己也没有对应的 `macos-1.0.9-home-usage-frontend`/`windows-1.0.9-home-usage-frontend` canonical 包），而是直接产出一份 `DISTILLED-home-usage-load-chains.md` + `gate-report.json`（frontend-source-dump 证据，无 IDA 后端）。v1 沿用同一务实做法，但补齐 1.0.9 模板缺失的 `README.md`/`AI.md`/`SYSTEM-DIFF.md`/`manifest.json`/`pointers/`/`reviews/` 骨架（RULE 8(b) 白名单要求）。
 

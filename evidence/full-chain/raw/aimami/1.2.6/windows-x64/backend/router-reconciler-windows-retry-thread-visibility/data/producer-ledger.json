@@ -1,0 +1,499 @@
+{
+  "leaf": "router-reconciler-windows-retry-thread-visibility",
+  "merged_from": [
+    "producer-ledger.wf-item1-router-reconciler-orphan-macside-round7-20260807.json",
+    "producer-ledger.wf-item1-router-reconciler-windows-round5-20260807.json",
+    "producer-ledger.wf-item1-router-reconciler-windows-20260807.json",
+    "producer-ledger.wf-item1-router-reconciler-windows-round6-20260807.json",
+    "producer-ledger.wf-item1-router-reconciler-windows-round2-20260807.json",
+    "producer-ledger.wf-item1-router-reconciler-windows-round3-20260807.json",
+    "producer-ledger.wf-item1-router-reconciler-windows-round4-20260807.json"
+  ],
+  "entry_count": 7,
+  "entries": [
+    {
+      "schema": "c5cm.internal-reverse.producer-ledger.v1",
+      "claim_id": "cc-aimami126-item1-router-reconciler-orphan-macside-round7-20260807",
+      "produced_at": "2026-08-07T00:00:00Z",
+      "producer": "Claude",
+      "machine": "<本地机器>
+      "bundle_path": "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/",
+      "supersedes_partial_status_of": "cc-aimami126-item1-router-reconciler-windows-round6-20260807 (orphan 0x1406FABE0 disposition upgraded from gap_needs_reducer to confirmed; round5's repair_if_needed confirmed disposition is unaffected)",
+      "trigger": "承接round6遗留的唯一待办：mac侧0x100805510/0x100b263d0的字段内容、rename、注释、<工具调用>()时间戳均未独立核实。本轮独立核验路径 + 独立对抗核验路径分别重新对mac侧做decompile()/xrefs_to/字节级字段解码，并交叉核对win侧此前round6的全部结论，同时对native_off_openai_model_needs_fallback做第二次深挖复核（详见同批次round6-needsfallback producer-ledger）。",
+      "targets_this_round": [
+        {
+          "symbol": "orphan_thread_adoption_row_to_json_MAPFOLD",
+          "win_addr": "0x1406FABE0",
+          "mac_addr": "0x100805510",
+          "mac_symbol": "<core::iter::adapters::map::Map<I,F> as Iterator>::fold::hccb4f8d48c346002 (codexmate_lib::core::relay::codex_diagnostic)",
+          "status": "confirmed",
+          "prior_status": "gap_needs_reducer (round6)",
+          "method": "independent_macside_decompile_plus_instruction_level_immediate_scan_plus_adversarial_cross_review",
+          "verification_summary": "两条独立核验线（本轮验证者 + 独立对抗复核者）分别重新调用mac IDA做decompile()/get_pseudocode()/xrefs_to，逐指令扫描该函数全部immediate操作数字面量，程序化统计各字段字面量出现次数（非人工读屏计数），并与win侧round6结论逐项交叉核对。",
+          "fields_confirmed_6_of_6": {
+            "threadId": "QWORD 0x6449646165726874，mac计数2，两侧数值一致",
+            "provider": "QWORD 0x72656469766F7270，mac计数3，两侧数值一致",
+            "rolloutPath": "两条重叠写指令拼接(rolloutP+Path)，mac计数各1，两侧数值一致",
+            "originalRollout": "literal qmemcpy，两侧一致",
+            "reasoningEffort": "两条重叠写指令拼接(reasonin+ngEffort)，独立指令级扫描mac计数=3(非round6注释记载的2)——本轮已订正mac repeatable注释x2->x3；win侧独立<工具调用>用ida_<反编译器>.decompile()+str(cfunc).count('\"reasoningEffort\"')程序化复核=3，双端一致",
+            "originalDbRows": "literal qmemcpy，两侧一致"
+          },
+          "call_chain_confirmed": "xrefs_to(0x100805510)唯一调用者=Vec::from_iter::h71a551ef0df7e847@0x1008c12f0；该Vec::from_iter是write_orphan_thread_adoption_recovery(0x100b263d0)内部直接调用对象，两跳链路(mac)对应win侧sub_1405B5E30单跳直调，属编译器内联差异非矛盾，与round6结论一致，本轮独立复现坐实。",
+          "envelope_7_of_7_confirmed": "write_orphan_thread_adoption_recovery(0x100b263d0)自身7字段(prepared/version/status/createdAtMs/permanentAdoption/fallbackModel/databaseBackups)与win侧sub_1405B5E30逐字节比对全部一致，两条独立核验线均复现此结论。",
+          "rename_and_comment_verified": "idc.get_func_name/ida_bytes.has_user_name(True)/idc.get_func_cmt(ea,1)三项独立取值均与round6声称一致；mac IDB两个函数的repeatable注释内容经本轮独立<工具调用>读取核实为round6所声称的文本（除reasoningEffort计数误差外）。",
+          "cross_platform_byte_table": "win/mac两侧对threadId/provider/rolloutP/Path(重叠dword)/version(vers/sion)/status(stat/us)/prepared共9项立即数做独立指令级扫描，数值全部逐字节相同；win侧部分字段(threadId/rolloutP)计数高于mac(9 vs 2、7 vs 1)，经核实为MSVC在多分支/错误处理路径重复reload同一立即数导致，架构级解释合理，不构成矛盾。",
+          "idb_mtime_timeline": "mac IDB `AiMaMi.i64` 磁盘mtime与round6声称的落盘时间存在约2小时的正常漂移，判定为多机并发session继续在同一IDB上工作导致的正常再次落盘（非本轮验证过程写入，本轮验证过程全程只读），不构成造假证据。",
+          "genuine_ceiling": false,
+          "caller_disambiguation_tried": true
+        }
+      ],
+      "issues_found_and_fixed_this_round": [
+        {
+          "issue": "mac侧0x100805510 repeatable注释对reasoningEffort出现次数记载有误（写\"x2\"，程序化指令级扫描实际为3次）",
+          "severity": "文档精度问题，不影响身份识别结论",
+          "fix_applied": "本轮（reduction round）用mcp__ida-pro-mcp-mac__<工具调用>直调idc.set_func_cmt()把mac 0x100805510 repeatable注释中的'reasoningEffort x2'订正为'reasoningEffort x3(程序化指令级扫描独立复核确认,2026-08-07 dual-verification round7订正)'，<工具调用>()确认落盘，独立readback核实变更生效。同批把win 0x1406FABE0 repeatable注释中原有的'reasoningEffort×2-3'不确定表述订正为精确的'reasoningEffort×3(literal qmemcpy，win/mac两侧均程序化计数复核为3，2026-08-07 round7订正此前×2-3的不确定表述)'。"
+        },
+        {
+          "issue": "win侧MCP `decompile()` 工具对0x1406FABE0返回的渲染文本仍是round2时代已废弃的旧候选结论（\"...属于codex_thread_visibility模块...标记gap_needs_reducer...\"），与idc.get_func_cmt()/idc.get_cmt()四处底层查询得到的正确、已更新结论均不一致",
+          "severity": "工具层缓存/渲染问题，非IDB数据问题",
+          "root_cause_analysis": "本轮reduction阶段独立第三次复现该现象：①调用mcp__ida-pro-mcp-win__decompile(0x1406FABE0)确认返回文本仍是陈旧候选结论；②直接<工具调用>查询idc.get_func_cmt(ea,0)/idc.get_func_cmt(ea,1)/idc.get_cmt(ea,0)/idc.get_cmt(ea,1)四处底层注释存储，均为正确、已更新的文本，无一处包含陈旧矛盾内容；③<工具调用>查询ida_<反编译器>.decompile(ea).user_cmts（<反编译器>行内注释overlay），返回空(0 entries)，排除<反编译器>行内注释残留的可能。三项独立排查后判定：陈旧文本来源既不是func_cmt、不是line cmt、也不是<反编译器> user_cmts，只能是MCP `decompile` 工具服务端自身的渲染/缓存层问题（例如按地址memoize了某次更早调用的输出且未随IDB变更失效），不是IDB数据本身有误。",
+          "fix_applied": "无法通过rename/set_comments/<工具调用>在IDB侧修复（IDB数据本身已正确）。已在win 0x1406FABE0非repeatable注释追加一段说明记录此工具限制，供后续维护者参考；已在本producer-ledger与消费者文档中如实记录为'已知工具限制'而非'IDB数据缺陷'，避免误导后续读者去重新'修复'一个其实已经正确的IDB。"
+        }
+      ],
+      "adversarial_verdict": "CONFIRMED（独立对抗复核者裁定：原声明核验为真，未发现新的编造或未披露问题；本轮reduction阶段的第三次独立复现——含指令级reasoningEffort计数复核、decompile()缓存bug复现、mac注释修复——与两条既有核验线结论完全吻合，无矛盾）",
+      "idb_actions_this_round": {
+        "mac": {
+          "renamed": 0,
+          "comments_fixed": 1,
+          "comments_fixed_detail": [
+            "0x100805510: repeatable注释reasoningEffort计数x2->x3订正"
+          ],
+          "<工具调用>": true
+        },
+        "win": {
+          "renamed": 0,
+          "comments_fixed": 1,
+          "comments_added": 1,
+          "comments_fixed_detail": [
+            "0x1406FABE0: repeatable注释reasoningEffort×2-3->×3精确表述订正",
+            "0x1406FABE0: non-repeatable注释追加decompile()工具缓存限制说明"
+          ],
+          "<工具调用>": true
+        }
+      },
+      "server_health_pre_check": {
+        "mac": "status=ok, uptime_sec=32218.354, <反编译器>_ready=true, module='AiMaMi', imagebase=0x100000000",
+        "win": "status=ok, uptime_sec=202131.456, <反编译器>_ready=true, module='AiMaMi 1.2.6 win64.exe', imagebase=0x140000000"
+      },
+      "grounded_reverify": "mac: 独立readback idc.get_func_cmt(0x100805510,1)确认'reasoningEffort x3'替换生效且其余文本未变。win: 独立readback idc.get_func_cmt(0x1406FABE0,1)确认'reasoningEffort×3'替换生效；独立readback idc.get_func_cmt(0x1406FABE0,0)确认追加的工具限制说明已写入；独立重新调用mcp__ida-pro-mcp-win__decompile(0x1406FABE0)复现陈旧文本仍存在于该工具渲染路径（证实为工具层问题，非本轮引入的新缺陷，且不因本轮的set_func_cmt调用而改变——因为该工具从未读取func_cmt/line_cmt/user_cmts中的任何一处）。",
+      "gate_accepted": false,
+      "implementation_use": false,
+      "disposition_change": "orphan_thread_adoption_row_to_json_MAPFOLD (win 0x1406FABE0 = mac 0x100805510) 从 gap_needs_reducer 升级为 confirmed——两条独立核验线（原始验证 + 对抗复核）均确认mac侧字段内容/调用链/rename/注释与win侧round6结论完全吻合，未发现造假，仅发现两处已修复的文档/工具层瑕疵（均非身份识别结论的实质性问题）。",
+      "not_done_honest": [
+        "未做本地+对抗双审的canonical格式化流程（本轮是两条独立核验+一次reduction closure，非macOS v1-v10式的local-review.json/adversarial-review.json文件对）",
+        "未做四角度完整性核查（红线15）",
+        "未与真实Windows/macOS客户端做参照运行对照（红线25）",
+        "MCP decompile()工具的缓存/渲染层bug本身未修复（不在IDB写权限范围内，需工具维护者介入排查MCP服务端实现）",
+        "全部实现门（consumerStartReady/strictImplementationUse/readyToImplement/implementation_use/gate_accepted）保持false——真实confirmed只表示函数级身份定位可信，不等同于达到实现门标准"
+      ]
+    },
+    {
+      "schema": "c5cm.internal-reverse.producer-ledger.v1",
+      "claim_id": "cc-aimami126-item1-router-reconciler-windows-round5-20260807",
+      "produced_at": "2026-08-07T00:00:00Z",
+      "producer": "Claude",
+      "machine": "<本地机器>
+      "bundle_path": "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/",
+      "supersedes_partial_status_of": "cc-aimami126-item1-router-reconciler-windows-round4-20260807",
+      "targets_this_round": [
+        {
+          "symbol": "codex_project_state::repair_if_needed",
+          "mac_addr": "0x100737150",
+          "win_addr": "0x1405D7DD0",
+          "status": "confirmed",
+          "method": "string_literal_exact_match_plus_call_graph_plus_panic_location_two_hop",
+          "prior_status": "gap_needs_reducer (round4)",
+          "correction": "round3/round4 曾反编译并排除 sub_1405D7DD0(1456B)，理由仅为'两次调用 reconcile_threads_with_progress，判定为重试包装器'，未核对内嵌字面量字符串。本轮用 find_regex 精确搜索 mac 侧 repair_if_needed 内嵌的两个 format_inner 模板字符串（'cannot be repaired safely'/'still unstable after repair'），在 win 二进制命中且 xrefs_to 唯一指向 sub_1405D7DD0——与此前排除的地址完全相同，证明此前排除有误。另核对该函数内联的39字节成功字面量与mac侧逐字节100%一致，并用panic-Location两跳法独立确认其callee repair()归属codex_project_state.rs，三条独立证据链交叉印证。",
+          "genuine_ceiling": false,
+          "caller_disambiguation_tried": true,
+          "ceiling_reason": "not_applicable_target_located_with_confirmed_confidence",
+          "recovery_attempts_taxonomy_matched": "accepted_unknown（ICF-size猜测）——round3/round4的排除是'可能上一轮VA指错/判断依据不充分'的假墙，非真ICF折叠"
+        }
+      ],
+      "idb_actions": {
+        "win": {
+          "renamed": 3,
+          "renamed_detail": [
+            "0x1405d7dd0 -> repair_if_needed",
+            "0x1405d7c20 -> stability_issue",
+            "0x1405dc220 -> repair"
+          ],
+          "dirtree_moved": 3,
+          "dirtree_target": "/codexmate_lib/core/relay/codex_project_state/",
+          "comments_added": 3,
+          "<工具调用>": true
+        },
+        "mac": {
+          "renamed": 0,
+          "comments_added": 0,
+          "<工具调用>": false,
+          "note": "本轮只读取mac侧既有反编译证据(round3 pseudocode文件+get_string)，未对mac IDB做任何写操作"
+        }
+      },
+      "server_health_pre_check": {
+        "win": "status=ok,uptime_sec=192222.317,<反编译器>_ready=true,module='AiMaMi 1.2.6 win64.exe' (过程中1次Surge本地代理瞬时connection refused，重试1次恢复，uptime连续未重启)",
+        "mac": "status=ok,uptime_sec=22339.522,<反编译器>_ready=true,module=AiMaMi"
+      },
+      "gate_accepted": false,
+      "implementation_use": false,
+      "not_done_honest": [
+        "0x1405e0390(round2命名reconcile_threads_with_progress)在repair_if_needed内部调用位置与mac侧inspect()调用位置结构完全同构，身份存疑(ICF共享或round2判定有误)，本轮未展开验证，留待专项工作单",
+        "repair(0x1405DC220)体积11847B，本轮未完整展开全部反编译内容",
+        "panic-Location两跳法额外发现的4个同模块候选函数(sub_1404432F0/sub_1405D8950/sub_1405D8D00/sub_1405DA620)身份未核实",
+        "新发现的第三调用者sub_14059DB10未展开核实",
+        "未展开win侧两个巨型分发器sub_1405B8B10/sub_1405CBF60的完整反编译(遗留自round2/round3/round4)",
+        "0x1406FABE0孤儿仍未做1:1函数级改名(round4已标记blocked，本轮未继续)",
+        "未做本地+对抗双审",
+        "未做四角度完整性核查(红线15)",
+        "未做真机对照(红线25)"
+      ]
+    },
+    {
+      "schema": "c5cm.producer-ledger.v1",
+      "claim_id": "cc-aimami126-item1-router-reconciler-windows-strip-recovery-20260807",
+      "machine": "<本地机器>
+      "producer": "Claude",
+      "product": "aimami",
+      "version": "1.2.6",
+      "supersedes_windows_status_of": "cc-aimami126-item1-router-reconciler-20260806",
+      "targets_claimed": [
+        "run_config_mutation_with_windows_retry",
+        "append_thread_reconcile_warnings",
+        "reconcile_native_off_with_progress",
+        "reconcile_router_on",
+        "RouterToggleProgress",
+        "codex_thread_visibility::reconcile_threads_with_progress",
+        "reconcile_native_off_after_stop_with_progress"
+      ],
+      "platforms_attempted": [
+        "windows-x64"
+      ],
+      "outcome": {
+        "windows-x64": "5/7 confirmed via 红线24 三层恢复法(panic-Location两跳xref + 唯一错误字符串交叉验证 + 严格调用图传播) -- reconcile_router_on(0x140AA86E0)/reconcile_native_off_with_progress(0x140B50EA0)/reconcile_native_off_after_stop_with_progress(0x1409BC600)/append_thread_reconcile_warnings(0x140B4FD60) 已改名+归dirtree+加注释+<工具调用>；run_config_mutation_with_windows_retry 证实完全内联进reconcile_router_on(诚实发现,非独立符号); reconcile_threads_with_progress 两候选(0x1405E0390 vs 0x1406FABE0)证据矛盾未唯一确认; RouterToggleProgress::serialize 完全未定位。"
+      },
+      "ida_live_gate_verified": {
+        "win": "status=ok, uptime_sec=170180.273, <反编译器>_ready=true, auto_analysis_ready=true, module='AiMaMi 1.2.6 win64.exe', idb_path='<二进制路径>\\\\AiMaMi 1.2.6 win64.exe.i64'"
+      },
+      "method_layers_used": {
+        "layer1_panic_location_two_hop": "true -- router_reconciler.rs字符串@0x14185af27(实为完整路径串'src\\core\\relay\\router_reconciler.rs'起点0x14185af18的后缀子串匹配)，手工比对24字节Location结构体@0x14185af40(ptr+len=35+line=762+col=29)，对结构体地址做code xref反查得2处命中(均落sub_140B50EA0)；同法对thread_visibility.rs 3处字符串两跳得3候选函数(0x1406fabe0/0x1406fe0c0/0x1409a31e0)",
+        "layer2_call_graph_propagation": "true -- reconcile_native_off_after_stop_with_progress经xrefs_to(reconcile_native_off_with_progress)唯一调用者确定性反查；append_thread_reconcile_warnings经reconcile_router_on直接callee位置+体积匹配确定",
+        "layer3_tauri_command_name": "not_applicable_this_round -- 7个目标均为router_reconciler/manager模块内部辅助函数,非直接tauri command handler,本轮未追溯至命令入口层",
+        "supplementary_unique_string_crossref": "true -- 通过mac侧manifest记录的'两函数共享同一常量池错误字符串'线索，直接搜索'router reconcile did not become effective'(85B)与'relay proxy started without an available root URL'(49B)两条错误串定位真实reconcile_router_on，纠正了仅凭panic-Location两跳法容易误判的身份(该法最初锚定的是reconcile_native_off_with_progress而非reconcile_router_on)"
+      },
+      "idb_write_actions": {
+        "renamed": [
+          "reconcile_router_on@0x140aa86e0",
+          "reconcile_native_off_with_progress@0x140b50ea0",
+          "reconcile_native_off_after_stop_with_progress@0x1409bc600",
+          "append_thread_reconcile_warnings@0x140b4fd60"
+        ],
+        "dirtree_moves": 4,
+        "comments_added": 7,
+        "<工具调用>d": true,
+        "<工具调用>_result": "{\"ok\":true,\"path\":\"<二进制路径>\\\\AiMaMi 1.2.6 win64.exe.i64\"}"
+      },
+      "artifacts_written": [
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/manifest.json",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/README.md",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/cand-A-sub_140B50EA0.c",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/cand-B-sub_140AA86E0.c",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/cand-C-sub_1405E0390-thread-reconcile.c",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/cand-D-sub_140AAB170-reconcile-inner.c",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/cand-E-sub_1406FABE0-thread-visibility.c",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/cand-F-sub_1409BC600-native-off-after-stop.c",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/cand-G-sub_140B4FD60-append-thread-warnings.c",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/producer-ledger.wf-item1-router-reconciler-windows-20260807.json"
+      ],
+      "index_appended": true,
+      "gate_accepted": false,
+      "implementation_use": false,
+      "next_round_needed": [
+        "裁定reconcile_threads_with_progress两候选(0x1405E0390 vs 0x1406FABE0)的真实身份，需basic_blocks()逐块比对或深挖sub_1405B5E30完整调用图",
+        "定位RouterToggleProgress::serialize，需专项反查progress回调vtable分派路径",
+        "确认reconcile_inner候选(0x140AAB170)自身独立锚点(codex_config_reconciler模块专项panic-Location/字符串搜索)",
+        "核实reconcile_native_off_with_progress体积膨胀来源(11148B vs mac侧7461B)"
+      ],
+      "produced_at": "2026-08-07T00:00:00Z"
+    },
+    {
+      "schema": "c5cm.internal-reverse.producer-ledger.v1",
+      "claim_id": "cc-aimami126-item1-router-reconciler-windows-round6-20260807",
+      "produced_at": "2026-08-07T00:00:00Z",
+      "producer": "Claude",
+      "machine": "<本地机器>
+      "bundle_path": "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/",
+      "supersedes_partial_status_of": "cc-aimami126-item1-router-reconciler-windows-round4-20260807 (orphan 0x1406FABE0 disposition only; round4's repair_if_needed disposition was separately superseded by round5, which remains confirmed and unaffected by this entry)",
+      "targets_this_round": [
+        {
+          "symbol": "orphan_0x1406FABE0_true_identity",
+          "win_addr": "0x1406FABE0",
+          "mac_addr": "0x100805510",
+          "mac_symbol": "<core::iter::adapters::map::Map<I,F> as Iterator>::fold::hccb4f8d48c346002 (codexmate_lib::core::relay::codex_diagnostic)",
+          "status": "gap_needs_reducer",
+          "prior_status": "blocked (round4) / partial_module_identified (round3)",
+          "method": "field_content_match_plus_call_graph_position_match",
+          "correction": "本轮win侧发现真实、有证据支撑的mac对应体（6/6字段字节级精确匹配 + 唯一调用者7/7字段精确匹配交叉印证），并已在win IDB完成rename+dirtree+注释+<工具调用>。但独立对抗核验判定整体仍为gap_needs_reducer（非confirmed），原因：①0x1406FABE0函数头遗留一条陈旧矛盾的non-repeatable注释（已于本轮closure清除）；②声称'与既有8函数同目录'为夸大，实际目录只有3个函数（已于本轮closure在manifest.json订正）；③mac侧全部声称本轮完全未独立核实（本轮环境无mac IDA工具）。",
+          "genuine_ceiling": false,
+          "caller_disambiguation_tried": true,
+          "ceiling_reason": "not_applicable_real_candidate_found_but_cross_platform_unverified",
+          "closure_fixes_this_round": [
+            "清除0x1406FABE0上陈旧矛盾的non-repeatable注释，替换为指向repeatable注释(真实结论)的说明",
+            "manifest.json新增round6_2026_08_07字段如实记录dirtree实际只有3个函数（非8个）",
+            "如实标注mac侧未独立核实为待办缺口"
+          ]
+        }
+      ],
+      "idb_actions": {
+        "win": {
+          "renamed": 2,
+          "renamed_detail": [
+            "0x1406FABE0 -> orphan_thread_adoption_row_to_json_MAPFOLD (此前轮已做，本轮独立核实仍在)",
+            "0x1405B5E30 -> write_orphan_thread_adoption_recovery (此前轮已做，本轮独立核实仍在)"
+          ],
+          "comments_fixed": 1,
+          "comments_fixed_detail": [
+            "0x1406FABE0: 清除陈旧矛盾的non-repeatable注释，替换为非矛盾说明文字"
+          ],
+          "<工具调用>": true
+        },
+        "mac": {
+          "renamed": 0,
+          "comments_added": 0,
+          "<工具调用>": false,
+          "note": "本轮无mac IDA工具可用，mac侧全部声称（对应函数字段内容、mac侧rename/注释/<工具调用>时间戳）未独立核实，如实标注为待办"
+        }
+      },
+      "server_health_pre_check": {
+        "win": "status=ok, uptime_sec=194407.997, <反编译器>_ready=true, module='AiMaMi 1.2.6 win64.exe', imagebase=0x140000000"
+      },
+      "grounded_reverify": "closure后独立<工具调用>重新读取0x1406FABE0的repeatable/non-repeatable注释：repeatable注释（真实结论）完整保留，non-repeatable注释已被替换为非矛盾说明；独立<工具调用>遍历/codexmate_lib/core/relay/codex_diagnostic/目录确认实际条目数=3，与manifest.json新记录一致（非8）。",
+      "gate_accepted": false,
+      "implementation_use": false,
+      "not_done_honest": [
+        "mac侧0x100805510/0x100b263d0的字段内容未独立decompile核实",
+        "mac侧rename/注释/<工具调用>()时间戳未独立核实",
+        "本函数是否真的是write_orphan_thread_adoption_recovery内部databaseBackups数组元素的兄弟子构造逻辑（round3曾推测为该数组的子构造）未在本轮重新核对",
+        "未做本地+对抗双审的完整流程（本轮是对已有对抗核验发现问题的closure，非双审本身的首次执行）",
+        "未做四角度完整性核查（红线15）",
+        "未与真实Windows/macOS客户端做参照运行对照（红线25）"
+      ]
+    },
+    {
+      "schema": "c5cm.producer-ledger.v1",
+      "claim_id": "cc-aimami126-item1-router-reconciler-windows-round2-recovery-20260807",
+      "machine": "<本地机器>
+      "producer": "Claude",
+      "product": "aimami",
+      "version": "1.2.6",
+      "supersedes_windows_status_of": "cc-aimami126-item1-router-reconciler-windows-strip-recovery-20260807",
+      "round": 2,
+      "scope_note": "本轮仅裁定上一轮遗留的 2 个未解决目标: reconcile_threads_with_progress 身份争议 + RouterToggleProgress::serialize 定位；不重跑已确认的 5 个目标。",
+      "targets_claimed": [
+        "codex_thread_visibility::reconcile_threads_with_progress (身份裁定)",
+        "RouterToggleProgress::serialize (定位/反查)"
+      ],
+      "platforms_attempted": [
+        "windows-x64"
+      ],
+      "outcome": {
+        "reconcile_threads_with_progress": {
+          "verdict": "confirmed",
+          "address": "0x1405e0390",
+          "method": "basic_blocks()逐块比对(150 blocks/4195B vs 217 blocks/5221B) + 深挖sub_1405B5E30完整调用图(向上追溯2跳: sub_1405B8B10/sub_1405CBF60 -> sub_14059D830/sub_1405C49F0/sub_1409658F0/sub_1409A6E10/sub_1409AEFB0)",
+          "decisive_signal": "0x1405e0390 是 reconcile_router_on 与 reconcile_native_off_with_progress 两个已确认顶层入口 callees() 集合的共同直接成员(双重call-site确认)；0x1406fabe0 唯一调用者sub_1405B5E30的完整调用图与router_reconciler簇完全断链，反编译内容(threadId/provider/reasoningEffort/originalRollout/originalDbRows序列化记录)与mac侧真实行为(repair_missing_rollouts/converge_threads_to_provider/rayon_core::registry阈值7)不符",
+          "0x1406fabe0_disposition": "已排除，未改名，加注释记录排除依据留待后续专项工作单"
+        },
+        "RouterToggleProgress_serialize": {
+          "verdict": "not_present_fully_inlined_shared_helper",
+          "method": "反查progress回调vtable分派路径(reconcile_router_on内a6/a7参数,a7+32偏移Fn(&str)闭包call槽) + find_regex字段名字符串反查(RouterToggleProgress/phase/thread_visibility.rs)",
+          "decisive_signal": "Tauri事件名'codex-router-toggle-progress'@0x14184AC0E定位到2个仅被数据(vtable)引用的微型emit函数(0x140944320=273B/0x14094CB60=312B)；字段名字符串块'targetphasestartedAtMsupdatedAtMsreasonoccurredAtMs'确认DTO六字段(target/phase/startedAtMs/updatedAtMs/reason/occurredAtMs)；真实序列化逻辑内联于0x140BFB190(1835B,写入router-transition-journal.json/router-events.jsonl)，该函数被3个18-20KB多命令异步分发器(sub_1409658F0/sub_14096C8D0/sub_140972CA0)共调用13次以上，跨多个具相同字段形状的progress DTO复用，非RouterToggleProgress专属独立::serialize符号"
+        }
+      },
+      "ida_live_gate_verified": {
+        "win": "首次server_health: status=ok uptime_sec=173453.456；中途2次timeout(server_health+search_text)，重试1次仍timeout后改用<工具调用>()验活(成功)+find_regex(轻量strings_cache查询,成功)，随后server_health恢复status=ok uptime_sec=174259.727，未在不确定状态下继续声称结果"
+      },
+      "idb_write_actions": {
+        "renamed": [
+          "reconcile_threads_with_progress@0x1405e0390"
+        ],
+        "dirtree_moves": [
+          "0x1405e0390 -> /codexmate_lib/core/relay/codex_thread_visibility/reconcile_threads_with_progress"
+        ],
+        "local_var_renames": [
+          "a1->sret_reconcile_result@0x1405e0390",
+          "a2->ctx_and_progress_handle@0x1405e0390"
+        ],
+        "comments_added": 7,
+        "<工具调用>d_calls": 2,
+        "<工具调用>_result_final": "{\"ok\":true,\"path\":\"<二进制路径>\\\\AiMaMi 1.2.6 win64.exe.i64\"}"
+      },
+      "artifacts_written": [
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/manifest.json (更新 functions[].resolution_round2)",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/README.md (改写反映本轮裁定)",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/round2-cand-H-sub_140BFB190-progress-journal-serialize-inlined.c",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/round2-cand-I-sub_140944320-emit-wrapper-candidate1.c",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/round2-cand-J-sub_14094CB60-emit-wrapper-candidate2.c",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/round2-cand-K-sub_140BA0B20-field-matcher-deserialize.c",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/round2-cand-L-sub_140BA0D80-field-matcher-deserialize-variant.c",
+        "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/producer-ledger.wf-item1-router-reconciler-windows-round2-20260807.json"
+      ],
+      "gate_accepted": false,
+      "implementation_use": false,
+      "full_leaf_100": false,
+      "remaining_gap": "RouterToggleProgress::serialize 无独立符号可被引用/门禁化，只有内联证据；若消费侧需要精确的field-to-JSON映射用于自实现，可直接引用本轮 round2-cand-H 证据(字段顺序target/phase/startedAtMs/updatedAtMs/reason/occurredAtMs均已grounded确认)，无需进一步逆向即可支撑实现。0x1406FABE0真实身份未定性，留待后续专项工作单(非本轮范围)。",
+      "produced_at": "2026-08-07T00:00:00Z"
+    },
+    {
+      "schema": "c5cm.internal-reverse.producer-ledger.v1",
+      "claim_id": "cc-aimami126-item1-router-reconciler-windows-round3-20260807",
+      "produced_at": "2026-08-07T00:00:00Z",
+      "producer": "Claude",
+      "machine": "<本地机器>
+      "bundle_path": "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/",
+      "targets_this_round": [
+        {
+          "symbol": "codex_config_reconciler::reconcile_inner",
+          "mac_addr": "0x1002e6840",
+          "win_addr": "0x140AAB170",
+          "status": "confirmed"
+        },
+        {
+          "symbol": "config_takeover::takeover",
+          "mac_addr": "0x100aecde0",
+          "win_addr": "0x140574EE0",
+          "status": "confirmed"
+        },
+        {
+          "symbol": "codex_project_state::repair_if_needed",
+          "mac_addr": "0x100737150",
+          "win_addr": null,
+          "status": "gap_needs_reducer"
+        },
+        {
+          "symbol": "router_unlock_auth::commit_auth_for_router",
+          "mac_addr": "0x1007325b0",
+          "win_addr": "0x140BF4CE0",
+          "status": "confirmed"
+        },
+        {
+          "symbol": "orphan_0x1406FABE0_module_id",
+          "mac_addr": null,
+          "win_addr": "0x1406FABE0",
+          "status": "partial_module_identified"
+        }
+      ],
+      "idb_actions": {
+        "win": {
+          "renamed": 3,
+          "dirtree_moved": 3,
+          "comments_added": 4,
+          "<工具调用>": true
+        },
+        "mac": {
+          "renamed": 0,
+          "comments_added": 4,
+          "<工具调用>": true
+        }
+      },
+      "server_health_pre_check": {
+        "mac": "status=ok,uptime_sec=9298.05,<反编译器>_ready=true,module=AiMaMi",
+        "win": "status=ok,uptime_sec=179996.063,<反编译器>_ready=true,auto_analysis_ready=true,module='AiMaMi 1.2.6 win64.exe'"
+      },
+      "gate_accepted": false,
+      "implementation_use": false,
+      "not_done_honest": [
+        "repair_if_needed win侧未定位(2候选已排除)",
+        "0x1406FABE0未做1:1函数级改名",
+        "未做本地+对抗双审",
+        "未做四角度完整性核查(红线15)",
+        "未做真机对照(红线25)"
+      ]
+    },
+    {
+      "schema": "c5cm.internal-reverse.producer-ledger.v1",
+      "claim_id": "cc-aimami126-item1-router-reconciler-windows-round4-20260807",
+      "produced_at": "2026-08-07T00:00:00Z",
+      "producer": "Claude",
+      "machine": "<本地机器>
+      "bundle_path": "raw/aimami/1.2.6/windows-x64/backend/router-reconciler-windows-retry-thread-visibility/",
+      "supersedes_partial_status_of": "cc-aimami126-item1-router-reconciler-windows-round3-20260807",
+      "targets_this_round": [
+        {
+          "symbol": "codex_project_state::repair_if_needed",
+          "mac_addr": "0x100737150",
+          "win_addr": null,
+          "status": "gap_needs_reducer",
+          "method": "call_graph_propagation_exhaustive",
+          "candidates_checked": [
+            "0x140A9F870 (slice/join utility, excluded)",
+            "0x1405D7DD0 (reconcile_threads_with_progress retry wrapper, excluded)"
+          ],
+          "prior_excluded_candidates": [
+            "0x140BF6180",
+            "0x140AAAA10"
+          ],
+          "genuine_ceiling": false,
+          "caller_disambiguation_tried": true,
+          "ceiling_reason": "no_ICF_collision_candidate_found_this_is_absence_not_ambiguity"
+        },
+        {
+          "symbol": "orphan_0x1406FABE0_field_level_id",
+          "mac_addr": null,
+          "win_addr": "0x1406FABE0",
+          "status": "blocked",
+          "method": "field_by_field_full_text_comparison_all_7_candidates",
+          "candidates_checked": [
+            "0x100b187f0 (prepare_orphan_thread_adoption::{closure}, 0 field match)",
+            "0x100b189e0 (apply_orphan_thread_adoption_db, 0 field match)",
+            "0x100b1ce50 (rollback_orphan_thread_adoption, 0 field match)",
+            "0x100b25f80 (mark_orphan_thread_adoption_recovery, 0 field match)",
+            "0x100b263d0 (write_orphan_thread_adoption_recovery, 0 field match, databaseBackups field traced to generic serde_json::Value collect_seq dispatch)",
+            "0x100b30d40 (write_orphan_thread_adoption_recovery_file, 0 field match)",
+            "0x100b29050 (fix_orphan_thread_providers_with_catalog, additional candidate located via caller span xref, true body 133288 chars via server-side <工具调用> bypassing MCP truncation, 0 field match)"
+          ],
+          "genuine_ceiling": false,
+          "caller_disambiguation_tried": true,
+          "ceiling_reason": "no_ICF_collision_candidate_found_7_candidates_all_excluded_by_content_none_match"
+        }
+      ],
+      "idb_actions": {
+        "win": {
+          "renamed": 0,
+          "dirtree_moved": 0,
+          "comments_added": 3,
+          "<工具调用>": true
+        },
+        "mac": {
+          "renamed": 0,
+          "comments_added": 0,
+          "<工具调用>": false
+        }
+      },
+      "server_health_pre_check": {
+        "mac": "status=ok,uptime_sec=14039.692,<反编译器>_ready=true,module=AiMaMi",
+        "win": "status=ok,uptime_sec=183529.364,<反编译器>_ready=true,auto_analysis_ready=true,module='AiMaMi 1.2.6 win64.exe'"
+      },
+      "gate_accepted": false,
+      "implementation_use": false,
+      "not_done_honest": [
+        "repair_if_needed win侧仍未定位(如实标记gap_needs_reducer，非genuine_ceiling)",
+        "0x1406FABE0仍未做1:1函数级改名(如实标记blocked，非genuine_ceiling)",
+        "未找到databaseBackups数组元素在mac侧真正的组装函数(第8个候选待续)",
+        "未展开win侧两个巨型分发器sub_1405B8B10/sub_1405CBF60的完整反编译",
+        "未做本地+对抗双审",
+        "未做四角度完整性核查(红线15)",
+        "未做真机对照(红线25)"
+      ]
+    }
+  ]
+}

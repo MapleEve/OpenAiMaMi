@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib8platform5proxy30detect_system_proxy_candidates @ 0x1007cdcf0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 char *__fastcall codexmate_lib::platform::proxy::detect_system_proxy_candidates::h3bbf92084c103f1c(char *a1)
 {

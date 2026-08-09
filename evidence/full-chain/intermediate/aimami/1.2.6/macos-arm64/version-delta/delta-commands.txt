@@ -1,0 +1,37 @@
+# delta-commands.txt — AiMaMi 1.2.4 → 1.2.6 (macOS arm64, symbol diff from x86_64 slice, v2-live-verified)
+# Commands/functions that are new or changed, requiring IDA full-chain verification.
+# Source: authoritative-symbol-diff-1.2.4-to-1.2.6-v2-live-verified.json
+# Generated: 2026-08-08
+
+# === New functional symbols (non-serde) ===
+<&alloc::string::String as core::str::pattern::Pattern>::into_searcher  # module=external/std/vendored-crate
+<codexmate_lib::core::relay::response_item_id_compat::StagedFileCleanup as core::ops::drop::Drop>::drop  # module=codexmate_lib::core::relay
+<std::io::buffered::bufwriter::BufWriter<W>::flush_buf::BufGuard as core::ops::drop::Drop>::drop  # module=external/std/vendored-crate
+codexmate_lib::commands::system::confirm_pending_auto_switch_and_restart_sync  # module=codexmate_lib::commands::system
+codexmate_lib::commands::voice_runtime::request_accessibility_permission  # module=codexmate_lib::commands::voice_runtime
+codexmate_lib::commands::voice_runtime::set_voice_global_shortcut  # module=codexmate_lib::commands::voice_runtime
+codexmate_lib::commands::voice_runtime::set_voice_overlay_style  # module=codexmate_lib::commands::voice_runtime
+codexmate_lib::commands::voice_runtime::set_voice_processing_mode_id  # module=codexmate_lib::commands::voice_runtime
+codexmate_lib::commands::voice_runtime::start_voice_capture  # module=codexmate_lib::commands::voice_runtime
+codexmate_lib::commands::voice_runtime::stop_voice_capture  # module=codexmate_lib::commands::voice_runtime
+codexmate_lib::commands::voice_runtime::voice_search_overlay_ready  # module=codexmate_lib::commands::voice_runtime
+codexmate_lib::core::mcp::remove_mcp_server  # module=codexmate_lib::core::mcp
+codexmate_lib::core::relay::codex_thread_visibility::ensure_transition_rollout_write_capacity  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::codex_thread_visibility::reconcile_threads_with_progress  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::managed_blocks::TomlLexicalState::line_is_structural  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::storage::preflight_save  # module=codexmate_lib::core::relay
+fs2::unix::statvfs  # module=external/std/vendored-crate
+std::io::buffered::bufwriter::BufWriter<W>::flush_buf::BufGuard::remaining  # module=external/std/vendored-crate
+std::io::buffered::bufwriter::BufWriter<W>::write_all_cold  # module=external/std/vendored-crate
+std::process::Child::wait_with_output  # module=external/std/vendored-crate
+
+# === Removed functional symbols (renamed/rewritten — need full-chain to confirm successor) ===
+codexmate_lib::commands::sessions::delete_sessions  # module=codexmate_lib::commands::sessions (removed — check for renamed successor in added list)
+codexmate_lib::core::relay::codex_thread_visibility::fallback_relay_model_threads  # module=codexmate_lib::core::relay (removed — check for renamed successor in added list)
+codexmate_lib::core::relay::codex_thread_visibility::patch_relay_thread_instructions  # module=codexmate_lib::core::relay (removed — check for renamed successor in added list)
+codexmate_lib::core::relay::codex_thread_visibility::reconcile_threads  # module=codexmate_lib::core::relay (removed — check for renamed successor in added list)
+codexmate_lib::core::relay::router_unlock_auth::cleanup_for_native_off  # module=codexmate_lib::core::relay (removed — check for renamed successor in added list)
+codexmate_lib::core::relay::translator::stream::AnthropicDirectToResponsesStream::flush  # module=codexmate_lib::core::relay (removed — check for renamed successor in added list)
+
+# === New DTO/serde types (25 Deserialize impls) ===
+# See VERSION-DIFF.md for full list — includes core::relay::models (RelayProvider, RelayState, RelayUpsertInput, etc.), codex_thread_visibility types

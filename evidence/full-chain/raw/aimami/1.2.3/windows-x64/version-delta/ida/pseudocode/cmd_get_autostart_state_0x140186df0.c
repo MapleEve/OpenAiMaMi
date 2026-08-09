@@ -1,5 +1,5 @@
 // win 1.2.3 delta | cmd_get_autostart_state @ 0x140186df0 | changelog autostart
-// [FULL IDA decompiler 4804B]
+// [FULL hexrays 4804B]
 // win 1.2.1 | tauri command handler = get_autostart_state | mapped via command-name string xref (win-native, ground-truth)
 __int64 __fastcall get_autostart_state(__int64 a1)
 {

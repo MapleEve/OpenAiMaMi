@@ -1,0 +1,57 @@
+{
+  "command": "commit_auth_for_router",
+  "module": "core/relay/router_unlock_auth",
+  "owner_ea": "0x10056b3f0",
+  "interface_type": "internal_function",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "RouterContext (auth paths, managed api key)",
+    "output": "Result<RouterUnlockAuthMarker, CoreError>"
+  },
+  "side_effects": [
+    "⚠ PERSISTENCE: writes router-unlock-auth-marker.json with OPENAI_API_KEY and managed api key",
+    "⚠ Reads auth file, may install managed api key auth",
+    "⚠ atomic_write::copy_atomic_private for backup"
+  ],
+  "idaSymbols": [
+    "commit_auth_for_router"
+  ],
+  "pseudocode": [
+    "core/relay/router_unlock_auth/ida/pseudocode/commit_auth_for_router_0x10056b3f0.c"
+  ],
+  "nextCallees": [
+    "load_auth_file",
+    "auth_is_usable_real_oauth",
+    "drop_in_place<CoreError>",
+    "CodexPaths::ensure_directories",
+    "Path::_join",
+    "live_auth_state",
+    "managed_api_key",
+    "managed_api_key_marker_matches",
+    "current_timestamp",
+    "std::sys::fs::metadata",
+    "std::fs::read::inner",
+    "validate_user_owned_auth_backup",
+    "install_managed_api_key_auth::{{closure}}",
+    "atomic_write::copy_atomic_private",
+    "write_json",
+    "uuid::new_v4",
+    "serde_json::value::to_value",
+    "BTreeMap::insert",
+    "format_inner",
+    "drop_in_place<RouterUnlockAuthMarker>",
+    "__rust_alloc",
+    "__rust_dealloc"
+  ],
+  "callTreeRows": 20,
+  "claims": {
+    "client": [],
+    "server": [
+      "commit_auth_for_router"
+    ]
+  },
+  "serverEvidencePath": "core/relay/router_unlock_auth/ida/pseudocode/commit_auth_for_router_0x10056b3f0.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "Commits auth for router: if flag a3=0, loads auth file and checks usable real oauth; if a3=1, ensures directories, checks live_auth_state, manages api key marker, writes router-unlock-auth-marker.json with OAuth credentials and timestamp. Split from ensure_auth_for_router (1.2.3 removed function)."
+}

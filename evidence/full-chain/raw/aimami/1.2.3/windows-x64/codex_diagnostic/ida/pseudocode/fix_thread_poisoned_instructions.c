@@ -1,8 +1,8 @@
 // addr=0x140797210
 // win 1.2.1 | module src/core/relay/codex_diagnostic.rs | attributed via panic-Location xref (win-native)
 // win 1.2.3 | = mac codexmate_lib::core::relay::codex_diagnostic::fix_thread_poisoned_instructions | cross-platform string-signature match (name<->function consistent)
-// NOTE: raw IDA decompiler.decompile() text fetched via IDA Python in 6x20000-char slices (decompile tool truncated preview at "[142738 chars total]" with include_addresses=true default;
-// full raw pseudocode without /*0xNNNN*/ address annotations is 110371 chars / 3038 lines, reassembled here verified byte-exact against IDA Python-reported len(str(cf)))
+// NOTE: raw ida_hexrays.decompile() text fetched via py_eval in 6x20000-char slices (decompile tool truncated preview at "[142738 chars total]" with include_addresses=true default;
+// full raw pseudocode without /*0xNNNN*/ address annotations is 110371 chars / 3038 lines, reassembled here verified byte-exact against py_eval-reported len(str(cf)))
 // refs:
 //   0x14076d370  sub_14076D370
 //   0x14041f680  sub_14041F680

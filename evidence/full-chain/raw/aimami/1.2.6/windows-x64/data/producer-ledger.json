@@ -1,0 +1,325 @@
+{
+  "leaf": "windows-x64",
+  "merged_from": [
+    "producer-ledger.<审计会话>
+    "producer-ledger.<审计会话>
+    "producer-ledger.item3-deepseek-v4-flash-20260806.json"
+  ],
+  "entry_count": 3,
+  "entries": [
+    {
+      "schema": "c5cm.reverse.producer_ledger.v1",
+      "session": "<审计会话>
+      "machine": "<本地机器>
+      "ida_mcp": "win (ida-pro-mcp-win), module=AiMaMi 1.2.6 win64.exe",
+      "product": "aimami",
+      "version": "1.2.6",
+      "platform": "windows-x64",
+      "produced_at": "2026-08-06T08:05:00Z",
+      "gate_tier": "strictImplementationUse_candidate",
+      "implementation_use": false,
+      "gate_accepted": false,
+      "full_leaf_100": false,
+      "readyToImplement": false,
+      "evidence_sot": "win IDB <二进制路径>\\AiMaMi 1.2.6 win64.exe.i64 (<工具调用> ok=true)",
+      "scope": "strictly 3 targets per user instruction: get_codex_router_auth_readiness / load_voice_runtime_status / stop_voice_capture (the remaining 3 of the 5-target/8-command backend-recon-targets.json P1 set; the other 5 commands already covered by prior tasks #149-152)",
+      "summary": {
+        "targets_total": 3,
+        "raw_bundles_written": 3,
+        "index_lines_appended": 3,
+        "functions_renamed": 4,
+        "comments_set": 4,
+        "dirtree_moves": 4,
+        "<工具调用>": "ok"
+      },
+      "count_clarification": "3 个目标 (4 个函数，因 stop_voice_capture 含 owner+core 两个函数；get_codex_router_auth_readiness 与 load_voice_runtime_status 各只重命名了 owner，其 core 函数分别为 pre-existing/inline，未在本会话计入 functions_renamed)。不得简化陈述为'3 个函数'——targets_total=3 与 functions_renamed=4 是两个不同维度的计数，均已在上方 summary 字段中如实分列，此字段仅作后续归约/汇总轮的显式防呆说明，避免下一轮引用时把 targets_total 误当 functions_renamed 抄成'3个函数'。",
+      "items": [
+        {
+          "command": "get_codex_router_auth_readiness",
+          "owner_ea": "0x140547c70",
+          "owner_name": "get_codex_router_auth_readiness_owner_sys",
+          "resolution": "located inside shared 90+-command dispatcher sub_140174120 (size 0x6606) via string xref -> basic_blocks -> insn_query(call) filtering out shared helpers; owner confirmed single-caller via analyze_function",
+          "dirtree": "codexmate_lib/core/relay/get_codex_router_auth_readiness_owner_sys",
+          "kind": "handler_named_this_pass"
+        },
+        {
+          "command": "load_voice_runtime_status",
+          "owner_ea": "0x140162d80",
+          "owner_name": "load_voice_runtime_status_owner_sys",
+          "core_ea": "0x140c37a50",
+          "core_name": "load_voice_runtime_status",
+          "core_pre_existing": true,
+          "note": "core function already renamed+commented from an earlier same-day round (orphaned mutation, 0 raw evidence existed on disk anywhere prior to this session); this pass only renamed the owner and backfilled the missing raw bundle",
+          "dirtree": "codexmate_lib/core/voice/runtime/load_voice_runtime_status_owner_sys",
+          "kind": "handler_named_this_pass"
+        },
+        {
+          "command": "stop_voice_capture",
+          "owner_ea": "0x14015b140",
+          "owner_name": "stop_voice_capture_owner_sys",
+          "core_ea": "0x140c384a0",
+          "core_name": "stop_voice_capture_core_sys",
+          "core_shared_callers": 3,
+          "core_shared_caller_note": "2 of 3 callers (sub_140C42E40/sub_140C44B20) belong to already-completed task #152 sidecar-scheduler cluster; not renamed/touched this pass",
+          "dirtree": [
+            "codexmate_lib/core/voice/runtime/stop_voice_capture_owner_sys",
+            "codexmate_lib/core/voice/runtime/stop_voice_capture_core_sys"
+          ],
+          "kind": "handler_named_this_pass"
+        }
+      ],
+      "not_touched": [
+        "sub_140174120 (shared dispatcher itself, size 0x6606)",
+        "sub_14002B2A0 (shared 32-caller async-unwrap/poison helper)",
+        "sub_1409C2D20 (shared 26-caller RelayManager mutex-guard state read)",
+        "sub_140C42E40, sub_140C44B20 (sidecar-scheduler cluster, task #152 already complete)",
+        "the other 19 already-completed functions across claude-web-search-compat/codex-no-account-slots/update-voice-runtime-settings/voice-runtime-start-capture",
+        "full 106272-function binary enumeration",
+        "the other 124 pre-existing IPC commands"
+      ],
+      "grounded_verification": "orchestrator (this session) re-read all 4 mutated functions post <工具调用> via <工具调用> resolve_path+isfile checks: all 4 resolve true at their intended dirtree paths (codexmate_lib/core/relay/1, codexmate_lib/core/voice/runtime/3); INDEX.jsonl line count verified 1925->1928 (delta +3, no dup); REVERSE-STATUS.md in-progress claim (line 4928) closed with a DONE entry, 0 in-progress residue for this session-id"
+    },
+    {
+      "schema": "c5cm.reverse.producer_ledger.v1",
+      "session": "<审计会话>
+      "machine": "<本地机器>
+      "ida_mcp": "none used this round -- pure documentation/ledger reduction, zero IDA calls issued",
+      "product": "aimami",
+      "version": "1.2.6",
+      "platform": "windows-x64",
+      "produced_at": "2026-08-06T08:31:34Z",
+      "round_kind": "reduce_and_schema_normalize_and_count_clarification (4 user-specified documentation/ledger items, no new decompile)",
+      "gate_tier": "not_applicable_documentation_round",
+      "implementation_use": false,
+      "gate_accepted": false,
+      "full_leaf_100": false,
+      "readyToImplement": false,
+      "scope": "strictly 4 items per user instruction: (1) count clarification in p1gap evidence.md/producer-ledger; (2) reduce/ack 5 task#149-152 commands into root INDEX.jsonl; (3) normalize 4 old ida-leaf.v1 bundles to leaf.v1-parity schema (gate-report.json/evidence.md/interface/call-trees, from existing manifest+pseudocode, no re-decompile); (4) update windows-1.2.6-version-delta manifest/gate-report/task-plan to reflect 8/8 P1 raw evidence complete, all implementation gates left false. Did NOT touch task #154 (dual review), P2/P3/P4, dim4/5/6, or any new IDA decompile/rename/dirtree/<工具调用>.",
+      "summary": {
+        "count_clarification_files_touched": 2,
+        "index_lines_appended": 5,
+        "index_lines_before": 1928,
+        "index_lines_after": 1933,
+        "bundles_normalized": 4,
+        "new_files_written_in_normalization": 20,
+        "version_delta_files_updated": 3
+      },
+      "items": [
+        {
+          "action": "count_clarification",
+          "files": [
+            "raw/aimami/1.2.6/windows-x64/producer-ledger.<审计会话>
+            "raw/aimami/1.2.6/windows-x64/backend/stop-voice-capture/evidence.md"
+          ],
+          "finding": "no literal '3个函数'/'3 functions' miscount was found verbatim on disk after exhaustive grep across evidence.md/manifest.json/gate-report.json/producer-ledger.json for the p1gap session and REVERSE-STATUS.md; the producer-ledger.json already correctly stated targets_total=3 and functions_renamed=4 separately. An explicit disambiguating 'count_clarification' field/section was added defensively per user instruction to prevent any future round from collapsing the two distinct counts into a single ambiguous '3个函数' phrase."
+        },
+        {
+          "action": "index_reduce_ack",
+          "commands": [
+            "get_claude_web_search_compat",
+            "set_claude_web_search_compat",
+            "set_codex_no_account_slots",
+            "update_voice_runtime_settings",
+            "start_voice_capture"
+          ],
+          "index_lines": 5,
+          "dedup_verified": "independent key-uniqueness check across all 1933 lines: the 5 new keys appear exactly once each (lines 1929-1933); no historical line was altered (append-only, red line 6)."
+        },
+        {
+          "action": "schema_normalize",
+          "bundles": [
+            "claude-web-search-compat (2 commands: get+set)",
+            "codex-no-account-slots (1 command)",
+            "update-voice-runtime-settings (1 command)",
+            "voice-runtime-start-capture (1 command)"
+          ],
+          "files_added_per_bundle": [
+            "gate-report.json",
+            "evidence.md",
+            "interface/<command>.md (1 or 2 files)",
+            "call-trees/<command>.jsonl (1 or 2 files)"
+          ],
+          "method": "reorganized pre-existing manifest.json content (owner_ea, verified_callees, cross_platform_semantic_comparison, recovery_attempts, limitations) into leaf.v1-parity artifacts; zero new mcp__ida-pro-mcp-win__* calls issued."
+        },
+        {
+          "action": "version_delta_update",
+          "files": [
+            "internal-reverse/audits/windows-1.2.6-version-delta/manifest.json",
+            "internal-reverse/audits/windows-1.2.6-version-delta/gate-report.json",
+            "internal-reverse/audits/windows-1.2.6-version-delta/data/task-plan.json"
+          ],
+          "change_summary": "status updated to reflect P1 8/8 commands raw-evidence-complete; backend_deep_p1_shared_recon_targets_not_done moved from blockers to not_blockers_resolved_this_round; P2/P3/P4/dim4/dim5/dim6/task#154 blockers left unchanged and still open; all gate fields (consumerStartReady/strictImplementationUse/readyToImplement/implementation_use/gate_accepted/full_leaf_100) left exactly as before this round (all false)."
+        }
+      ],
+      "not_touched": [
+        "task #154 (local + adversarial dual review) -- explicitly out of this round's 4-item scope",
+        "P2 (10 angle-B true_gaps commands)",
+        "P3 (relay submodule reattribution, core=881 bucket)",
+        "P4 (bulk dirtree/<工具调用> for the ~1050+124 attributed functions beyond the P0+P1 leaves)",
+        "dim4/dim5/dim6",
+        "data/diff-readiness-report.json's readiness field -- correctly left at false, since P2/P3/P4/dim4-6/task#154 remain genuinely open; not a defect, this round's narrower scope does not warrant flipping it to true",
+        "any new IDA decompile/rename/dirtree/<工具调用> call of any kind"
+      ],
+      "grounded_verification": "orchestrator (this session) re-read all edited/created files post-write: (1) root INDEX.jsonl line count 1928->1933 confirmed via wc -l, 5 new keys confirmed unique via independent python key-uniqueness scan across all 1933 lines; (2) all 4 gate-report.json files + all 5 call-trees .jsonl files + all 4 bundles' evidence.md validated as syntactically valid JSON/JSONL via python json.load; (3) windows-1.2.6-version-delta/{manifest.json,gate-report.json,data/task-plan.json} re-validated as syntactically valid JSON post-edit, all 6 gate fields confirmed still false in all 3 files; (4) REVERSE-STATUS.md in-progress claim (this session) will be closed with a DONE entry immediately after this producer-ledger is written, 0 in-progress residue expected for this session-id."
+    },
+    {
+      "schema": "c5cm.reverse.producer_ledger.v1",
+      "session": "item3-deepseek-v4-flash-backend-completion-20260806",
+      "machine": "<本地机器>
+      "ida_mcp": "both mac and win live IDA MCP instances used this round (decompile/xrefs_to/get_bytes/get_string/find_regex/func_query/rename/set_comments/<工具调用>)",
+      "product": "aimami",
+      "version": "1.2.6",
+      "platform": "windows-x64 + macos-x64 (cross-platform round)",
+      "produced_at": "2026-08-06T00:00:00Z",
+      "round_kind": "targeted_deep_recovery_2_functions_plus_cross_platform_symbol_search",
+      "gate_tier": "not_gate_accepted (evidence-only, implementation_use permanently false per user instruction)",
+      "implementation_use": false,
+      "gate_accepted": false,
+      "full_leaf_100": false,
+      "readyToImplement": false,
+      "scope": "Item3 (deepseek-v4-flash) 后端补完：完整反编译 mac is_deepseek_v4_flash_model(0x1007750a0) 与 migrate_legacy_deepseek_v4_flash_official_protocol(0x100778c20)；Windows 侧扩大符号搜索关键词(deepseek/v4_flash/v4flash变体)排查对应实现。",
+      "summary": {
+        "mac_functions_decompiled": 2,
+        "mac_functions_size_bytes": [
+          551,
+          789
+        ],
+        "win_functions_decompiled": 2,
+        "win_functions_size_bytes": [
+          1169,
+          "helper size not separately measured, full body confirmed no truncation"
+        ],
+        "win_symbol_search_direct_hits": 0,
+        "win_symbol_search_method": "func_query(6 filter variants, all empty) -> find_regex(string-based, 7 hits) -> xrefs_to(reverse lookup) -> decompile(confirm)",
+        "win_functions_renamed": 1,
+        "constants_verified_via_get_bytes": 2,
+        "idb_comments_set": 4,
+        "<工具调用>s": 2,
+        "new_evidence_dirs_created": 2,
+        "new_files_written": 14
+      },
+      "items": [
+        {
+          "action": "decompile",
+          "platform": "macos-x64",
+          "address": "0x1007750a0",
+          "symbol": "is_deepseek_v4_flash_model",
+          "result": "full body, 551 bytes, no truncation marker, no basic_blocks pagination needed"
+        },
+        {
+          "action": "decompile",
+          "platform": "macos-x64",
+          "address": "0x100778c20",
+          "symbol": "migrate_legacy_deepseek_v4_flash_official_protocol",
+          "result": "full body, 789 bytes, no truncation marker"
+        },
+        {
+          "action": "get_bytes",
+          "platform": "macos-x64",
+          "address": "0x1016eee80",
+          "verified": "api.deepseek.com (16 bytes exact)"
+        },
+        {
+          "action": "set_comments+<工具调用>",
+          "platform": "macos-x64",
+          "addresses": [
+            "0x1007750a0",
+            "0x100778c20"
+          ]
+        },
+        {
+          "action": "symbol_search_negative",
+          "platform": "windows-x64",
+          "filters_tried": [
+            "*storage*",
+            "*relay*",
+            "*codexmate_lib*",
+            "*deepseek*",
+            "*v4_flash*",
+            "*v4flash*"
+          ],
+          "result": "all empty -- Windows build strips Rust symbol names for this module"
+        },
+        {
+          "action": "find_regex",
+          "platform": "windows-x64",
+          "pattern": "deepseek",
+          "hits": 7,
+          "key_hits": [
+            "0x1418638d7 deepseek-v4-flash",
+            "0x14180a888 api.deepseek.com",
+            "0x141863ba9 migration log fragment"
+          ]
+        },
+        {
+          "action": "xrefs_to+decompile",
+          "platform": "windows-x64",
+          "address": "0x140b5f590",
+          "found_via": "xrefs_to(0x1418638d7) -> 1 function, 3 call sites",
+          "result": "full body, 1169 bytes, no truncation marker; confirmed behaviorally equivalent to mac migrate_legacy_deepseek_v4_flash_official_protocol, with is_deepseek_v4_flash_model inlined (no standalone symbol)"
+        },
+        {
+          "action": "get_bytes",
+          "platform": "windows-x64",
+          "address": "0x141859630",
+          "verified": "api.deepseek.com (16 bytes exact, matches mac constant byte-for-byte)"
+        },
+        {
+          "action": "decompile",
+          "platform": "windows-x64",
+          "address": "0x140a839d0",
+          "result": "shared generic ASCII case-insensitive SIMD compare helper, 4 distinct callers confirmed via xrefs_to, NOT renamed (would mislead as deepseek-specific)"
+        },
+        {
+          "action": "rename",
+          "platform": "windows-x64",
+          "address": "0x140b5f590",
+          "old": "sub_140B5F590",
+          "new": "migrate_legacy_deepseek_v4_flash_official_protocol"
+        },
+        {
+          "action": "set_comments+<工具调用>",
+          "platform": "windows-x64",
+          "addresses": [
+            "0x140b5f590",
+            "0x140a839d0"
+          ]
+        },
+        {
+          "action": "write_evidence_bundle",
+          "paths": [
+            "raw/aimami/1.2.6/macos-x64/backend/deepseek-v4-flash-migration/",
+            "raw/aimami/1.2.6/windows-x64/backend/deepseek-v4-flash-migration/"
+          ],
+          "files_per_bundle": [
+            "manifest.json",
+            "evidence.md",
+            "gate-report.json",
+            "interface/*.md",
+            "call-trees/*.jsonl",
+            "pseudocode/*.c"
+          ]
+        },
+        {
+          "action": "update_parent_manifest",
+          "path": "raw/aimami/1.2.6/macos-x64/backend/manifest.json",
+          "change": "appended new leaf entry to 'leaves' array, did not touch canonical_leaf_repair section (out of that round's scope)"
+        }
+      ],
+      "not_touched": [
+        "root INDEX.jsonl (not part of this round's explicit scope)",
+        "REVERSE-STATUS.md (not located under raw/aimami tier at maxdepth 2; not created this round)",
+        "cross-version baseline decompile of 1.2.3/1.2.4 storage::load equivalents (honestly marked NOT_DONE in gate-report.json)",
+        "Windows caller sub_140B5D9D0 full verification/rename (honestly marked as unverified candidate, blocker in gate-report.json)",
+        "any other task in the pre-existing task list (#15-154); this ledger covers only the newly assigned Item3 work"
+      ],
+      "honesty_disclosures": [
+        "Windows migration log string (0x141863ba9 vicinity) not directly xref-linked to the function body; documented as semantic association, not byte-level closure",
+        "cross-version baseline (dim5) explicitly NOT_DONE, not fabricated",
+        "dim6 live-app reference parity NOT_RUN, per project convention (static analysis only)",
+        "no accepted_unknown / fake-ceiling claims; all blockers are genuine open items"
+      ],
+      "grounded_verification": "在写盘后重新用 Read 工具核对全部 5 个 JSON 文件语法有效性；重新用 get_bytes 对两个平台的 host 比较常量做了独立字节核实（非假设）；rename/set_comments 调用返回值均确认无 error；<工具调用> 两次均返回 ok:true 并回显路径。"
+    }
+  ]
+}

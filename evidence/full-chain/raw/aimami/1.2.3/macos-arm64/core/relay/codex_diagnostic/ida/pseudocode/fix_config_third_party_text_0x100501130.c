@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay16codex_diagnostic27fix_config_third_party_text @ 0x100501130 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::relay::codex_diagnostic::fix_config_third_party_text::h7c56543f2e575f68(
         _QWORD *a1,

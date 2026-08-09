@@ -3,7 +3,7 @@
 session: <审计会话>
 platform: windows-x64
 delta_class: integrity_recovered
-idb_saved: true
+<工具调用>d: true
 
 ---
 

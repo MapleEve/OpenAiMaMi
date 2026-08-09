@@ -2,7 +2,7 @@
 // source (embedded panic Location / cross-platform symbol match): src\core\relay\proxy_server.rs
 // binary: AiMaMi.1.2.3 win64.exe (Windows x64, stripped, imagebase 0x140000000)
 // addr: 0x140660a60  size: 0x45e  tier: C  evidence: panic-location-2hop
-// decompiled via IDA Hex-Rays (remote IDA MCP, host <host>)
+// decompiled via IDA Hex-Rays (remote IDA MCP, host 192.168.110.94)
 // status: FULL — not truncated, single decompile call, no chunking needed
 //
 // Functional summary:

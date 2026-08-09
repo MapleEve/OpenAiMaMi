@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay13codex_catalog21make_relay_model_info @ 0x1008a20e0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 double __fastcall codexmate_lib::core::relay::codex_catalog::make_relay_model_info::hc9ad5d2b44979e93(
         __int64 a1,

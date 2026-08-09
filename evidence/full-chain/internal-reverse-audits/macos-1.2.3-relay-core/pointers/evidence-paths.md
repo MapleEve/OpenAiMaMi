@@ -9,7 +9,7 @@ All paths are env-relative to `${C5CM_INTERNAL_HISTORY_ROOT:-$C5CM_SHARE_ROOT}` 
 - `internal-reverse/audits/macos-1.2.3-relay/manifest.json` — scope declaration cross-checked against
 - `internal-reverse/audits/macos-1.2.3-relay/logic/REGISTRATION-TABLE-1.2.3.md` — source of relay_proxy_config relocation evidence
 - `internal-reverse/audits/macos-1.2.3-system/` (manifest.json, logic/FULL-CHAIN-1.2.3.md, AI.md, README.md) — grep-confirmed proxy_config coverage
-- `internal-reverse/REVERSE-STATUS.md` — `[wf-aimami123-fullapp-20260724]` entry (ledger cross-reference; independently lists relay-core as an open 1.2.3 backlog target)
+- `internal-reverse/REVERSE-STATUS.md` — `[<审计会话> entry (ledger cross-reference; independently lists relay-core as an open 1.2.3 backlog target)
 
 ## Raw evidence directories inspected (name/function-basename cross-check only, no content copied)
 

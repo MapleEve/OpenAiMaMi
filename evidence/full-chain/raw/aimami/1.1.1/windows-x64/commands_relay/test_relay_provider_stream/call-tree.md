@@ -64,7 +64,7 @@ All branches terminated at or before depth 4. Depth requirement (>=5 or terminat
 | 0x1406E6960 | relay_providers_config_write_and_persist_sys | (unchanged) | D | comment |
 | 0x1406EAED0 | sub_1406EAED0 | (unchanged) | D | comment |
 
-idb_save: OK — <本地路径>
+<工具调用>: OK — <本地路径>
 
 ## Accepted Unknown / Fake Wall Taxonomy
 

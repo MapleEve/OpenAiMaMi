@@ -1,7 +1,7 @@
 # DISTILLED — macOS 1.2.3 custom-instructions live re-verification (2026-07-26)
 
 session: mac123-custominstr-gapclose-20260726142739
-machine: Maple-M3-Max
+machine: <本地机器>
 purpose: close the readyToImplement asymmetry with `audits/windows-1.2.3-custom-instructions` (gate_accepted=true,
 full_leaf_100=true as of session `win-custom-instructions-distill-20260725`) by re-running the identical live
 verification methodology on the mac binary and characterizing the one open signal this bundle's 2026-07-25 static

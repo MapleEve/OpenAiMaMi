@@ -1,0 +1,666 @@
+import {
+  c as q,
+  j as e,
+  g as r,
+  r as l,
+  a9 as J,
+  h as O,
+  p as $,
+  y as Z,
+  A as W,
+  q as R,
+  B as N,
+  H as X,
+  R as ee,
+  a5 as te,
+  t as P,
+  aa as ae,
+  ab as se,
+  ac as ne,
+  ad as ie,
+  ae as oe,
+  af as le,
+  ag as ce,
+  ah as re,
+  Y as B,
+  s as T,
+  D as me,
+  i as de,
+  k as xe,
+  l as ue,
+  n as pe,
+  J as he,
+  ai as ge
+} from "./index-UqyngLFp.js";
+import {
+  B as w
+} from "./bento-card-FKBS-Zu5.js";
+import {
+  C as je
+} from "./chevron-right-Bh1g3gK1.js";
+import {
+  S as fe
+} from "./switch-D-WVtNjE.js";
+import {
+  B as be
+} from "./badge-BFikN3mw.js";
+import {
+  P as Ne
+} from "./plus-CwG4uDrE.js";
+import {
+  S as ye
+} from "./server-CGofXgZx.js";
+import {
+  T as Ce
+} from "./trash-2-DYbdQVHK.js";
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const ve = q("ChevronLeft", [
+  ["path", {
+    d: "m15 18-6-6 6-6",
+    key: "1wnfg3"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const we = q("Ellipsis", [
+  ["circle", {
+    cx: "12",
+    cy: "12",
+    r: "1",
+    key: "41hilf"
+  }],
+  ["circle", {
+    cx: "19",
+    cy: "12",
+    r: "1",
+    key: "1wjl8i"
+  }],
+  ["circle", {
+    cx: "5",
+    cy: "12",
+    r: "1",
+    key: "1pcz8c"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Pe = q("Pencil", [
+    ["path", {
+      d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
+      key: "1a8usu"
+    }],
+    ["path", {
+      d: "m15 5 4 4",
+      key: "1mk7zo"
+    }]
+  ]),
+  K = ({
+    className: a,
+    ...s
+  }) => e.jsx("nav", {
+    role: "navigation",
+    "aria-label": "pagination",
+    className: r("mx-auto flex w-full justify-center", a),
+    ...s
+  });
+K.displayName = "Pagination";
+const Q = l.forwardRef(({
+  className: a,
+  ...s
+}, n) => e.jsx("ul", {
+  ref: n,
+  className: r("flex flex-row items-center gap-1", a),
+  ...s
+}));
+Q.displayName = "PaginationContent";
+const _ = l.forwardRef(({
+  className: a,
+  ...s
+}, n) => e.jsx("li", {
+  ref: n,
+  className: r("", a),
+  ...s
+}));
+_.displayName = "PaginationItem";
+const z = ({
+  className: a,
+  isActive: s,
+  size: n = "icon",
+  ...i
+}) => e.jsx("a", {
+  "aria-current": s ? "page" : void 0,
+  className: r(J({
+    variant: s ? "outline" : "ghost",
+    size: n
+  }), a),
+  ...i
+});
+z.displayName = "PaginationLink";
+const H = ({
+  className: a,
+  ...s
+}) => e.jsxs(z, {
+  "aria-label": "Go to previous page",
+  size: "default",
+  className: r("gap-1 pl-2.5", a),
+  ...s,
+  children: [e.jsx(ve, {
+    className: "h-4 w-4"
+  }), e.jsx("span", {
+    children: "Previous"
+  })]
+});
+H.displayName = "PaginationPrevious";
+const U = ({
+  className: a,
+  ...s
+}) => e.jsxs(z, {
+  "aria-label": "Go to next page",
+  size: "default",
+  className: r("gap-1 pr-2.5", a),
+  ...s,
+  children: [e.jsx("span", {
+    children: "Next"
+  }), e.jsx(je, {
+    className: "h-4 w-4"
+  })]
+});
+U.displayName = "PaginationNext";
+const V = ({
+  className: a,
+  ...s
+}) => e.jsxs("span", {
+  "aria-hidden": !0,
+  className: r("flex h-9 w-9 items-center justify-center", a),
+  ...s,
+  children: [e.jsx(we, {
+    className: "h-4 w-4"
+  }), e.jsx("span", {
+    className: "sr-only",
+    children: "More pages"
+  })]
+});
+V.displayName = "PaginationEllipsis";
+const A = {
+  stdio: {
+    dot: "bg-blue-500 shadow-[0_0_0_2px_rgba(59,130,246,0.2)]",
+    text: "text-blue-500"
+  },
+  http: {
+    dot: "bg-violet-500 shadow-[0_0_0_2px_rgba(139,92,246,0.2)]",
+    text: "text-violet-500"
+  },
+  sse: {
+    dot: "bg-amber-500 shadow-[0_0_0_2px_rgba(245,158,11,0.2)]",
+    text: "text-amber-500"
+  }
+};
+
+function G({
+  dotClass: a,
+  textClass: s,
+  children: n
+}) {
+  return e.jsxs(be, {
+    variant: "outline",
+    className: r("gap-1.5 pl-2 pr-2.5 py-0.5 text-[11px] font-medium", s),
+    children: [e.jsx("span", {
+      className: r("inline-block h-1.5 w-1.5 rounded-full shrink-0", a)
+    }), n]
+  })
+}
+
+function Te() {
+  const {
+    t: a
+  } = O(), s = $(), [n, i] = l.useState(null), [p, m] = l.useState(null), [h, u] = l.useState(1), y = 15, v = Z({
+    minVisibleMs: 800
+  }), {
+    data: g,
+    refetch: k
+  } = W({
+    queryKey: ["mcp-servers"],
+    queryFn: () => T.loadMcpServers(),
+    staleTime: 1 / 0
+  }), j = v.busy, S = async () => {
+    try {
+      await v.run(async () => {
+        const t = await k();
+        if (t.error) throw t.error
+      })
+    } catch (t) {
+      P({
+        title: a("mcp.operationFailed"),
+        description: B(t, a("common.toastErrorGenericDesc")),
+        variant: "destructive"
+      })
+    }
+  }, E = R({
+    mutationFn: ({
+      name: t,
+      enabled: x
+    }) => T.setMcpServerEnabled(t, x),
+    onSuccess: () => s.invalidateQueries({
+      queryKey: ["mcp-servers"]
+    }),
+    onError: t => P({
+      title: a("mcp.operationFailed"),
+      description: B(t, a("common.toastErrorGenericDesc")),
+      variant: "destructive"
+    })
+  }), D = R({
+    mutationFn: t => T.removeMcpServer(t),
+    onSuccess: () => {
+      m(null), s.invalidateQueries({
+        queryKey: ["mcp-servers"]
+      })
+    },
+    onError: t => P({
+      title: a("mcp.operationFailed"),
+      description: B(t, a("common.toastErrorGenericDesc")),
+      variant: "destructive"
+    })
+  }), f = (g == null ? void 0 : g.data.items) ?? [], M = f.filter(t => t.enabled).length, C = (g == null ? void 0 : g.data.sourcePath) ?? "", c = Math.max(1, Math.ceil(f.length / y)), o = Math.min(h, c), b = f.slice((o - 1) * y, o * y), d = l.useMemo(() => {
+    const t = [];
+    if (c <= 7)
+      for (let x = 1; x <= c; x++) t.push(x);
+    else {
+      t.push(1), o > 3 && t.push("ellipsis");
+      const x = Math.max(2, o - 1),
+        Y = Math.min(c - 1, o + 1);
+      for (let I = x; I <= Y; I++) t.push(I);
+      o < c - 2 && t.push("ellipsis"), t.push(c)
+    }
+    return t
+  }, [c, o]);
+  return e.jsxs("div", {
+    className: "space-y-6",
+    children: [e.jsxs("div", {
+      className: "flex items-center justify-between",
+      children: [e.jsx("p", {
+        className: "max-w-md text-sm text-muted-foreground",
+        children: a("mcp.description")
+      }), e.jsxs("div", {
+        className: "flex items-center gap-2",
+        children: [e.jsxs(N, {
+          size: "sm",
+          onClick: () => i("new"),
+          children: [e.jsx(Ne, {
+            className: "h-3.5 w-3.5"
+          }), a("mcp.addServer")]
+        }), e.jsx(N, {
+          variant: "outline",
+          size: "icon-sm",
+          onClick: S,
+          disabled: j,
+          "aria-busy": j,
+          "aria-label": a(j ? "common.refreshing" : "common.refresh"),
+          title: a(j ? "common.refreshing" : "common.refresh"),
+          children: e.jsx(X, {
+            busy: j,
+            idleIcon: e.jsx(ee, {
+              className: "h-3.5 w-3.5"
+            })
+          })
+        })]
+      })]
+    }), e.jsxs("div", {
+      className: "grid grid-cols-3 gap-4",
+      children: [e.jsxs(w, {
+        compact: !0,
+        children: [e.jsx("span", {
+          className: "text-xs text-muted-foreground",
+          children: a("mcp.serverCount")
+        }), e.jsx("span", {
+          className: "mt-1 text-lg font-semibold",
+          children: f.length
+        })]
+      }), e.jsxs(w, {
+        compact: !0,
+        children: [e.jsx("span", {
+          className: "text-xs text-muted-foreground",
+          children: a("mcp.enabledCount")
+        }), e.jsx("span", {
+          className: "mt-1 text-lg font-semibold",
+          children: M
+        })]
+      }), e.jsxs(w, {
+        compact: !0,
+        children: [e.jsx("span", {
+          className: "text-xs text-muted-foreground",
+          children: a("mcp.configFile")
+        }), e.jsxs("button", {
+          className: "mt-1 flex w-full items-center gap-1.5 text-left",
+          title: C,
+          onClick: () => {
+            navigator.clipboard.writeText(C), P({
+              title: a("mcp.pathCopied"),
+              description: a("mcp.pathCopiedDesc"),
+              variant: "default"
+            })
+          },
+          children: [e.jsx("span", {
+            className: "min-w-0 flex-1 truncate text-sm font-medium",
+            children: C
+          }), e.jsx(te, {
+            className: "h-3 w-3 shrink-0 text-muted-foreground"
+          })]
+        })]
+      })]
+    }), f.length === 0 ? e.jsx(w, {
+      children: e.jsxs("div", {
+        className: "flex h-48 flex-col items-center justify-center",
+        children: [e.jsx(ye, {
+          className: "h-10 w-10 text-muted-foreground/40"
+        }), e.jsx("p", {
+          className: "mt-3 text-sm text-muted-foreground",
+          children: a("mcp.empty")
+        })]
+      })
+    }) : e.jsxs(e.Fragment, {
+      children: [e.jsx(w, {
+        className: "p-0",
+        children: e.jsx("div", {
+          className: "divide-y divide-border",
+          children: b.map(t => e.jsxs("div", {
+            className: "group flex items-center justify-between px-5 py-4 transition-colors hover:bg-accent",
+            children: [e.jsxs("div", {
+              className: "min-w-0 flex-1",
+              children: [e.jsxs("div", {
+                className: "flex items-center gap-2",
+                children: [e.jsx("span", {
+                  className: "text-[14px] font-semibold",
+                  children: t.name
+                }), e.jsx(G, {
+                  dotClass: (A[t.transport] ?? A.stdio).dot,
+                  textClass: (A[t.transport] ?? A.stdio).text,
+                  children: t.transport.toUpperCase()
+                }), e.jsx(G, {
+                  dotClass: t.enabled ? "bg-emerald-500 shadow-[0_0_0_2px_rgba(16,185,129,0.2)]" : "bg-destructive shadow-[0_0_0_2px_rgba(239,68,68,0.2)]",
+                  textClass: t.enabled ? "text-emerald-500" : "text-destructive",
+                  children: t.enabled ? a("mcp.enabled") : a("mcp.disabled")
+                })]
+              }), e.jsxs("p", {
+                className: "mt-1.5 truncate  text-[13px] text-muted-foreground",
+                children: [t.command, t.args.length > 0 && ` ${t.args.join(" ")}`, t.url && t.url]
+              })]
+            }), e.jsxs("div", {
+              className: "ml-4 flex items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100",
+              children: [e.jsx(fe, {
+                checked: t.enabled,
+                onCheckedChange: x => E.mutate({
+                  name: t.name,
+                  enabled: x
+                }),
+                "aria-label": a("mcp.toggleAria", {
+                  name: t.name
+                })
+              }), e.jsx(N, {
+                variant: "outline",
+                size: "icon-sm",
+                onClick: () => i(t),
+                title: a("mcp.editAria", {
+                  name: t.name
+                }),
+                "aria-label": a("mcp.editAria", {
+                  name: t.name
+                }),
+                children: e.jsx(Pe, {
+                  className: "h-3.5 w-3.5"
+                })
+              }), e.jsx(N, {
+                variant: "outline",
+                size: "icon-sm",
+                onClick: () => m(t.name),
+                title: a("mcp.deleteAria", {
+                  name: t.name
+                }),
+                "aria-label": a("mcp.deleteAria", {
+                  name: t.name
+                }),
+                className: "text-muted-foreground hover:bg-destructive hover:text-white hover:border-destructive",
+                children: e.jsx(Ce, {
+                  className: "h-3.5 w-3.5"
+                })
+              })]
+            })]
+          }, t.name))
+        })
+      }), c > 1 && e.jsx(K, {
+        children: e.jsxs(Q, {
+          children: [e.jsx(_, {
+            children: e.jsx(H, {
+              onClick: () => u(t => Math.max(1, t - 1)),
+              className: r(h <= 1 && "pointer-events-none opacity-50")
+            })
+          }), d.map((t, x) => t === "ellipsis" ? e.jsx(_, {
+            children: e.jsx(V, {})
+          }, `e${x}`) : e.jsx(_, {
+            children: e.jsx(z, {
+              isActive: t === h,
+              onClick: () => u(t),
+              children: t
+            })
+          }, t)), e.jsx(_, {
+            children: e.jsx(U, {
+              onClick: () => u(t => Math.min(c, t + 1)),
+              className: r(h >= c && "pointer-events-none opacity-50")
+            })
+          })]
+        })
+      })]
+    }), e.jsx(ae, {
+      open: p !== null,
+      onOpenChange: t => !t && m(null),
+      children: e.jsxs(se, {
+        children: [e.jsxs(ne, {
+          children: [e.jsx(ie, {
+            children: a("mcp.delete")
+          }), e.jsx(oe, {
+            children: a("mcp.confirmDelete")
+          })]
+        }), e.jsxs(le, {
+          children: [e.jsx(ce, {
+            children: a("mcp.cancel")
+          }), e.jsx(re, {
+            className: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+            onClick: () => p && D.mutate(p),
+            children: a("mcp.delete")
+          })]
+        })]
+      })
+    }), e.jsx(_e, {
+      open: n !== null,
+      server: n === "new" ? void 0 : n ?? void 0,
+      onClose: () => i(null)
+    }, n === "new" ? "__new__" : (n == null ? void 0 : n.name) ?? "__closed__")]
+  })
+}
+
+function _e({
+  open: a,
+  server: s,
+  onClose: n
+}) {
+  const {
+    t: i
+  } = O(), p = $(), [m, h] = l.useState(""), [u, y] = l.useState("stdio"), [v, g] = l.useState(""), [k, j] = l.useState(""), [S, E] = l.useState(""), [D, f] = l.useState(""), [M, C] = l.useState("");
+  l.useEffect(() => {
+    a && (h((s == null ? void 0 : s.name) ?? ""), y((s == null ? void 0 : s.transport) ?? "stdio"), g((s == null ? void 0 : s.command) ?? ""), j((s == null ? void 0 : s.args.join(", ")) ?? ""), E((s == null ? void 0 : s.url) ?? ""), f(s != null && s.environment ? Object.entries(s.environment).map(([o, b]) => `${o}=${b}`).join(`
+`) : ""), C(s != null && s.headers ? Object.entries(s.headers).map(([o, b]) => `${o}: ${b}`).join(`
+`) : ""))
+  }, [a, s]);
+  const c = R({
+    mutationFn: () => {
+      const o = {};
+      D.split(`
+`).filter(Boolean).forEach(d => {
+        const t = d.indexOf("=");
+        t > 0 && (o[d.slice(0, t).trim()] = d.slice(t + 1).trim())
+      });
+      const b = {};
+      return M.split(`
+`).filter(Boolean).forEach(d => {
+        const t = d.indexOf(":");
+        t > 0 && (b[d.slice(0, t).trim()] = d.slice(t + 1).trim())
+      }), T.upsertMcpServer({
+        name: m,
+        transport: u,
+        enabled: !0,
+        command: u === "stdio" ? v : void 0,
+        args: u === "stdio" ? k.split(",").map(d => d.trim()).filter(Boolean) : [],
+        url: u !== "stdio" ? S : void 0,
+        headers: b,
+        environment: o
+      })
+    },
+    onSuccess: () => {
+      p.invalidateQueries({
+        queryKey: ["mcp-servers"]
+      }), n()
+    },
+    onError: o => P({
+      title: i("mcp.operationFailed"),
+      description: B(o, i("common.toastErrorGenericDesc")),
+      variant: "destructive"
+    })
+  });
+  return e.jsx(me, {
+    open: a,
+    onOpenChange: o => !o && n(),
+    children: e.jsxs(de, {
+      className: "max-w-lg",
+      children: [e.jsx(xe, {
+        children: e.jsx(ue, {
+          children: i(s ? "mcp.edit" : "mcp.add")
+        })
+      }), e.jsxs("div", {
+        className: "space-y-4",
+        children: [e.jsx(F, {
+          label: i("mcp.name"),
+          value: m,
+          onChange: h,
+          disabled: !!s
+        }), e.jsxs("div", {
+          className: "space-y-1.5",
+          children: [e.jsx("label", {
+            className: "text-xs font-medium text-muted-foreground",
+            children: i("mcp.transport")
+          }), e.jsx("div", {
+            className: "flex gap-2",
+            children: ["stdio", "http", "sse"].map(o => e.jsx(N, {
+              variant: u === o ? "soft" : "outline",
+              size: "sm",
+              onClick: () => y(o),
+              children: o.toUpperCase()
+            }, o))
+          })]
+        }), u === "stdio" ? e.jsxs(e.Fragment, {
+          children: [e.jsx(F, {
+            label: i("mcp.command"),
+            value: v,
+            onChange: g,
+            mono: !0
+          }), e.jsx(F, {
+            label: i("mcp.args"),
+            value: k,
+            onChange: j,
+            mono: !0,
+            placeholder: "arg1, arg2, ..."
+          })]
+        }) : e.jsxs(e.Fragment, {
+          children: [e.jsx(F, {
+            label: i("mcp.url"),
+            value: S,
+            onChange: E,
+            mono: !0
+          }), e.jsx(L, {
+            label: i("mcp.headers"),
+            value: M,
+            onChange: C,
+            placeholder: "Authorization: Bearer ...",
+            mono: !0
+          })]
+        }), e.jsx(L, {
+          label: i("mcp.env"),
+          value: D,
+          onChange: f,
+          placeholder: "KEY=value",
+          mono: !0
+        })]
+      }), e.jsxs(pe, {
+        children: [e.jsx(N, {
+          variant: "outline",
+          onClick: n,
+          children: i("mcp.cancel")
+        }), e.jsx(N, {
+          onClick: () => c.mutate(),
+          disabled: !m || c.isPending,
+          children: i("mcp.save")
+        })]
+      })]
+    })
+  })
+}
+
+function F({
+  label: a,
+  value: s,
+  onChange: n,
+  disabled: i,
+  mono: p,
+  placeholder: m
+}) {
+  return e.jsxs("div", {
+    className: "space-y-1.5",
+    children: [e.jsx("label", {
+      className: "text-xs font-medium text-muted-foreground",
+      children: a
+    }), e.jsx(he, {
+      type: "text",
+      value: s,
+      onChange: h => n(h.target.value),
+      disabled: i,
+      placeholder: m,
+      className: r("focus:ring-2 focus:ring-ring/20 focus:border-primary", p && "")
+    })]
+  })
+}
+
+function L({
+  label: a,
+  value: s,
+  onChange: n,
+  placeholder: i,
+  mono: p
+}) {
+  return e.jsxs("div", {
+    className: "space-y-1.5",
+    children: [e.jsx("label", {
+      className: "text-xs font-medium text-muted-foreground",
+      children: a
+    }), e.jsx(ge, {
+      value: s,
+      onChange: m => n(m.target.value),
+      placeholder: i,
+      rows: 2,
+      className: r(p && "")
+    })]
+  })
+}
+export {
+  Te as McpPage
+};

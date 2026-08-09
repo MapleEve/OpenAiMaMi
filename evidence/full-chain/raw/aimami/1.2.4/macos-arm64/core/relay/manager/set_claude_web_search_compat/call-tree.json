@@ -1,0 +1,82 @@
+{
+  "target": "set_claude_web_search_compat",
+  "owner_ea": "0x10079bbc0",
+  "edges": [
+    {
+      "from": "0x10079bbc0",
+      "to": "OnceBox::initialize",
+      "edge_type": "call",
+      "order": 0
+    },
+    {
+      "from": "0x10079bbc0",
+      "to": "Mutex::lock",
+      "edge_type": "call",
+      "order": 1
+    },
+    {
+      "from": "0x10079bbc0",
+      "to": "Mutex::unlock",
+      "edge_type": "call",
+      "order": 2
+    },
+    {
+      "from": "0x10079bbc0",
+      "to": "RelayState::clone",
+      "edge_type": "call",
+      "order": 3
+    },
+    {
+      "from": "0x10079bbc0",
+      "to": "RelayManager::persist",
+      "edge_type": "call",
+      "order": 4
+    },
+    {
+      "from": "0x10079bbc0",
+      "to": "storage::sanitize_for_export",
+      "edge_type": "call",
+      "order": 5
+    },
+    {
+      "from": "0x10079bbc0",
+      "to": "drop_in_place<RelayState>",
+      "edge_type": "call",
+      "order": 6
+    },
+    {
+      "from": "0x10079bbc0",
+      "to": "core::result::unwrap_failed",
+      "edge_type": "call",
+      "order": 7
+    },
+    {
+      "from": "0x10079bbc0",
+      "to": "panic_count::is_zero_slow_path",
+      "edge_type": "call",
+      "order": 8
+    },
+    {
+      "from": "0x10079bbc0",
+      "to": "String::clone",
+      "edge_type": "call",
+      "order": 9
+    },
+    {
+      "from": "0x10079bbc0",
+      "to": "__rust_alloc",
+      "edge_type": "call",
+      "order": 10
+    },
+    {
+      "from": "0x10079bbc0",
+      "to": "__rust_dealloc",
+      "edge_type": "call",
+      "order": 11
+    }
+  ],
+  "edge_count": 12,
+  "terminated_reason": "persistence_commit",
+  "extraction_method": "c_text_analysis",
+  "note": "Callees extracted from 1.2.4 mac SMB .c pseudocode text, not IDA MCP callees call"
+}

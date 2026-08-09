@@ -1,0 +1,101 @@
+{
+  "command": "preflight_save",
+  "argKeys": [],
+  "idaSymbols": [
+    "CodexPaths::ensure_directories",
+    "Path::is_dir",
+    "metadata",
+    "OpenOptions::_open",
+    "serde_json::to_vec_pretty",
+    "Path::parent",
+    "process::id",
+    "uuid::v4::new_v4",
+    "Path::_join",
+    "write_atomic_with_mode",
+    "remove_file",
+    "format_inner"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/0001_preflight_save_owner.c"
+  ],
+  "nextCallees": [
+    "CodexPaths::ensure_directories",
+    "Path::is_dir",
+    "metadata",
+    "OpenOptions::_open",
+    "serde_json::to_vec_pretty",
+    "Path::parent",
+    "process::id",
+    "uuid::v4::new_v4",
+    "Path::_join",
+    "write_atomic_with_mode",
+    "remove_file",
+    "format_inner"
+  ],
+  "callTreeRows": [
+    {
+      "callee": "CodexPaths::ensure_directories",
+      "addr": "0x100b3e0e0"
+    },
+    {
+      "callee": "Path::is_dir",
+      "addr": "0x101492410"
+    },
+    {
+      "callee": "metadata",
+      "addr": "0x10148a350"
+    },
+    {
+      "callee": "OpenOptions::_open",
+      "addr": "0x101483db0"
+    },
+    {
+      "callee": "serde_json::to_vec_pretty",
+      "addr": "0x1006eaf60"
+    },
+    {
+      "callee": "Path::parent",
+      "addr": "0x1014925f0"
+    },
+    {
+      "callee": "process::id",
+      "addr": "0x101494b50"
+    },
+    {
+      "callee": "uuid::v4::new_v4",
+      "addr": "0x101371a30"
+    },
+    {
+      "callee": "Path::_join",
+      "addr": "0x101492290"
+    },
+    {
+      "callee": "write_atomic_with_mode",
+      "addr": "0x100a4ca40"
+    },
+    {
+      "callee": "remove_file",
+      "addr": "0x101488e60"
+    },
+    {
+      "callee": "format_inner",
+      "addr": "0x1014c30c0"
+    }
+  ],
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": null,
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "destructive_side_effects": [
+    "remove_file_cleanup_on_failure",
+    "atomic_write"
+  ],
+  "owner_ea": "0x100773b70",
+  "owner_name": "codexmate_lib::core::relay::storage::preflight_save",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64",
+  "notes": "Relay state preflight: ensure_dirs->is_dir->metadata->serde_json->uuid temp->atomic_write->cleanup"
+}

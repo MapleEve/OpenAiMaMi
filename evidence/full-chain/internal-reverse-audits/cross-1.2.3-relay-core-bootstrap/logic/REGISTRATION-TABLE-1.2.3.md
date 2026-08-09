@@ -12,7 +12,7 @@ README/AI/SYSTEM-DIFF/manifest/gate-report/pointers/task-plan/reviews，但 **`l
 raw + 已有结论包（`internal-reverse/audits/*`）与 `REVERSE-STATUS.md`，**未新增 raw/intermediate
 证据、未跑任何新 IDA decompile/callees/xrefs/server_health**（只读 shell 检查过一个已存在的 raw
 `.c` 文件的文件头以核实一个既存差异，见下文「transition_journal 更新」，未执行任何新 IDA MCP 调用）。
-IDA_LIVE_GATE：本 session 开工时确认 mac IDA MCP 端点可达（`initialize` 握手成功），但未使用其
+<门控>：本 session 开工时确认 mac IDA MCP 端点可达（`initialize` 握手成功），但未使用其
 做任何新反编译，仅作起手健康确认。
 
 **Gate 姿态：完全不变**——本文件不提升本包任何 leaf/cluster 的 gate。

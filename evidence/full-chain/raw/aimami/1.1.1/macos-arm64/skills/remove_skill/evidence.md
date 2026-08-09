@@ -99,7 +99,7 @@ Two decompile call sites at `0x1005e44e0` (pre-remove, for skill lookup) and `0x
 ## 4. IDB write-back
 
 IDB saved: `<来源位置>/raw/binary/AiMaMi-1.1.1-idb`
-idb_save result: ok
+<工具调用> result: ok
 
 Comments appended at:
 - `0x10072c810` (IPC entry): full delta summary + session tag
@@ -120,7 +120,7 @@ Comments appended at:
 | Interface/DTO inferred | PASS | RemoveSkillResult (8 serde keys) + SkillBackupMetadata (6 serde keys) confirmed |
 | String evidence cross-checks | PASS | 0x101150e9c + 0x101148783 + 0x1011542c7 corroborate all delta fields |
 | Delta vs 1.0.9 classified | PASS | 6 delta items + noise filter documented |
-| IDB comments written | PASS | append_comments at 3 VAs, idb_save ok |
+| IDB comments written | PASS | append_comments at 3 VAs, <工具调用> ok |
 | Leaf files written to SMB | PASS | pseudocode.md + call-trees.md + evidence.md at canonical mac layout |
 
 Overall gate: **PASS — integrity_recovered delta complete**

@@ -30,7 +30,7 @@ system_volume, proxy}/ida/pseudocode/` 以及 `platform/ida/pseudocode/`
 daemon 目录 1 个（`check_daemon_state`）、single_instance 目录 1 个（`acquire`）。
 逐一读盘确认均是函数体完整的正常伪代码（部分函数体很大，如 `prepare_transition`
 682 行、`list_macos_db_holder_processes_for` 747 行、`detect_system_proxy_candidates`
-1639 行、`redact_text_inner` 1579 行，文件头标注 `[FULL IDA decompiler]` 表示完整解码），
+1639 行、`redact_text_inner` 1579 行，文件头标注 `[FULL <反编译器>]` 表示完整解码），
 判断为标注脚本对本目录未做版本 delta 分类（无 1.2.2 对照基线），而非反编译失败。
 
 **全仓（7 个子目录，共 85 个函数文件）未发现任何 `TRUNCATED` / `DECOMPILE-FAILED` /
@@ -184,7 +184,7 @@ daemon 目录 1 个（`check_daemon_state`）、single_instance 目录 1 个（`
   `[时间戳] [线程名] 消息` 一行，持全局互斥锁后以 `O_APPEND|O_CREAT`、**mode 0600**
   打开日志文件写入并关闭 fd；写失败会记入全局失败计数器 `LOG_WRITE_FAILURES` 与
   `LAST_LOG_WRITE_ERROR`，并 `eprintln!` 到 stderr。
-- **`redact_text_inner`**（`[FULL IDA decompiler]`，1579 行，本目录信息密度最高的函数）：多层
+- **`redact_text_inner`**（`[FULL <反编译器>]`，1579 行，本目录信息密度最高的函数）：多层
   脱敏流水线——① 把配置里的旧路径标记替换为家目录占位、把真实 `home_dir()` 路径整体
   替换为 `~`；② 扫描配对的方括号/花括号 `[...]`/`{...}` 与引号 `"..."`/`'...'`（正确
   处理转义反斜杠），命中即把整段内容替换为字面量 `"[REDACTED]"`；③ 内置约 31 组敏感
@@ -284,7 +284,7 @@ daemon 目录 1 个（`check_daemon_state`）、single_instance 目录 1 个（`
 
 ### 2.7 proxy
 
-- **`detect_system_proxy_candidates`**（`[FULL IDA decompiler]`，1639 行）：跑
+- **`detect_system_proxy_candidates`**（`[FULL <反编译器>]`，1639 行）：跑
   **`scutil --proxy`** 并解析其 `key : value` 逐行输出为 `HashMap`（跳过 XML/大括号
   包裹行），依次检查 `HTTPEnable`/`HTTPProxy`/`HTTPPort`、
   `HTTPSEnable`/`HTTPSProxy`/`HTTPSPort`、`SOCKSEnable`/`SOCKSProxy`/`SOCKSPort` 三组
@@ -308,5 +308,5 @@ daemon 目录 1 个（`check_daemon_state`）、single_instance 目录 1 个（`
 `"[N chars total]"`。体积最大的若干函数（`detect_system_proxy_candidates`
 1639 行、`redact_text_inner` 1579 行、`prepare_transition` 682 行、
 `list_macos_db_holder_processes_for` 747 行）文件头均显式标注
-`[FULL IDA decompiler]` 或函数体自然收尾（`return`/闭合大括号），逐行读盘确认内部
+`[FULL <反编译器>]` 或函数体自然收尾（`return`/闭合大括号），逐行读盘确认内部
 控制流完整、无桩函数或占位注释残留。

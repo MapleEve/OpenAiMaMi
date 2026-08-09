@@ -1106,11 +1106,11 @@
     "illegal_accepted_unknown_count": 0,
     "genuine_ceiling_count": 0,
     "open_dim_count": 0,
-    "idb_save_status": {
-      "win": "confirmed — win-final-b idb_saved=true (<本地路径>",
-      "mac": "confirmed — mac idb_save recorded in mac gate-report sessions"
+    "<工具调用>_status": {
+      "win": "confirmed — win-final-b <工具调用>d=true (<本地路径>",
+      "mac": "confirmed — mac <工具调用> recorded in mac gate-report sessions"
     },
-    "authority_note": "本段为 win-100 终账 rollup（session <审计会话>，schema v3_win100_final）。源自 win-shard-1~7 + win-final-a/b + win-100 leaf gate-reports 直接读盘聚合。win delta 59 条（分母 59，get_image_compat 归 removed）全部达 readyToImplement（59/59=100.0%）。v2_gate_final(55/60=91.7%) 为被 win-final-a/b 和 win-100 session 超越的旧数字，本段取代。mac 43/43=100.0% 不变。idb_save 双端已确认。消费者唯一权威计数入口。"
+    "authority_note": "本段为 win-100 终账 rollup（session <审计会话>，schema v3_win100_final）。源自 win-shard-1~7 + win-final-a/b + win-100 leaf gate-reports 直接读盘聚合。win delta 59 条（分母 59，get_image_compat 归 removed）全部达 readyToImplement（59/59=100.0%）。v2_gate_final(55/60=91.7%) 为被 win-final-a/b 和 win-100 session 超越的旧数字，本段取代。mac 43/43=100.0% 不变。<工具调用> 双端已确认。消费者唯一权威计数入口。"
   },
 
   "dim6_final": {

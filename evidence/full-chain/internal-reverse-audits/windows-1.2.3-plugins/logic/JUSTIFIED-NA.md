@@ -33,7 +33,7 @@ The evidence that a reduce would normally distill into `logic/` is, for a negati
 
 - `removed=true`, `confidence=high` (three independent same-platform Windows evidence classes all zero-hit + raw dir topology, plus positive control on the 1.0.9 binary).
 - `gate_accepted=false`, `implementation_use=false`, `readyToImplement=false`, `strictImplementationUse=false`, `consumerStartReady=false` — this bundle produces **no implementable upstream-behavior evidence**, only the product-scoping fact "the plugins feature is gone; do not build or migrate it."
-- `moduleExitAllowed=true` in the narrow sense defined in `gate-report.json.moduleExitBasis`: the `plugins` line in the `wf-aimami123-fullapp-20260724` full-app gap inventory is closed as **"no canonical leaf work required"**, not promoted to any implement-ready tier.
+- `moduleExitAllowed=true` in the narrow sense defined in `gate-report.json.moduleExitBasis`: the `plugins` line in the `<审计会话> full-app gap inventory is closed as **"no canonical leaf work required"**, not promoted to any implement-ready tier.
 
 ## Residual (carried, not upgraded)
 

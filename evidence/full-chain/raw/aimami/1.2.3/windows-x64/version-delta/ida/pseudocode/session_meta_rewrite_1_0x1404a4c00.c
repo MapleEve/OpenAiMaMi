@@ -1,5 +1,5 @@
 // win 1.2.3 delta | session_meta_rewrite_1 @ 0x1404a4c00 | changelog ③模型协议
-// [FULL IDA decompiler 14528B]
+// [FULL hexrays 14528B]
 // win 1.2.1 | module src/core/relay/codex_thread_visibility.rs | attributed via panic-Location xref (win-native)
 __int64 __fastcall sub_1404A4C00(__int64 a1, __int64 a2, __int64 a3)
 {

@@ -121,7 +121,7 @@
         "RelayIde: 1 variant only: codex",
         "update_inplace VA: 0x1401BDED0"
       ],
-      "reduce_notes": "error_hint/sanitize_error_for_display/RelayActiveByIde::add/RelayProvider_map_deser(15 fields)/RelayActiveByIde_update_inplace/RelayProxyStatus_map_deser(5 fields); 8 IDB renames, 6 IDB comments; idb_saved",
+      "reduce_notes": "error_hint/sanitize_error_for_display/RelayActiveByIde::add/RelayProvider_map_deser(15 fields)/RelayActiveByIde_update_inplace/RelayProxyStatus_map_deser(5 fields); 8 IDB renames, 6 IDB comments; <工具调用>d",
       "evidence_path": "<source-location>/raw/aimami/1.0.9/windows/relay-core/relay_models/",
       "gate_accepted": true,
       "implementation_use": true,
@@ -142,7 +142,7 @@
       "sha256_binary": "a5822387fa3f56dc03893111f4ffdd074daa882e8887ec4e7c394879c0e9fe0b",
       "gate": "readyToImplement",
       "status": "produced-pre-gate",
-      "reduce_notes": "6 Tier-A renamed+commented; 3 Tier-B named prior session; dim2/3/4 closed for Tier-A; send_request ICF-folded accepted_unknown; idb_saved",
+      "reduce_notes": "6 Tier-A renamed+commented; 3 Tier-B named prior session; dim2/3/4 closed for Tier-A; send_request ICF-folded accepted_unknown; <工具调用>d",
       "evidence_path": "<source-location>/raw/aimami/1.0.9/windows/relay-core/relay_web_executor/",
       "gate_accepted": true,
       "implementation_use": true,
@@ -164,7 +164,7 @@
         "extract_ddg_url (inlined)",
         "SearchResult (stripped struct)"
       ],
-      "reduce_notes": "Two mirrored clusters (cluster1=0x14015xxx stream path / cluster2=0x14084xxx forward path); 16 renames+16 comments; fetch UA=MacOS Chrome/125; truncate=8000 bytes; web_search_tool={type:web_search_20250305,max_uses:5}; inject_prompt=37B+cache_control:ephemeral; SSE headers confirmed; idb_saved",
+      "reduce_notes": "Two mirrored clusters (cluster1=0x14015xxx stream path / cluster2=0x14084xxx forward path); 16 renames+16 comments; fetch UA=MacOS Chrome/125; truncate=8000 bytes; web_search_tool={type:web_search_20250305,max_uses:5}; inject_prompt=37B+cache_control:ephemeral; SSE headers confirmed; <工具调用>d",
       "evidence_path": "<source-location>/raw/aimami/1.0.9/windows/relay-core/relay_web_tools/",
       "gate_accepted": true,
       "implementation_use": true,
@@ -260,7 +260,7 @@
       "status": "complete",
       "evidence_path": "raw/aimami/1.0.9/windows/relay-core/relay_translator/",
       "key_supplement": "<source-location>/audits/windows-1.0.9-relay-core/logic/WIN-RELAY-MAC-CLOSEOUT-109.md",
-      "notes": "tool_result/tool_use/tool_choice mapping CLOSED; stream_codex_responses_translator_dispatch_sys@0x140134DC0 + anthropic_request_to_openai_chat_request_sys@0x14020A900; call-tree depth>=5; 4 new INDEX entries; idb_saved"
+      "notes": "tool_result/tool_use/tool_choice mapping CLOSED; stream_codex_responses_translator_dispatch_sys@0x140134DC0 + anthropic_request_to_openai_chat_request_sys@0x14020A900; call-tree depth>=5; 4 new INDEX entries; <工具调用>d"
     },
     {
       "cluster": "relay_codex_writer",
@@ -311,10 +311,10 @@
       "status": "complete",
       "evidence_path": "raw/aimami/1.0.9/windows/relay-core/relay_image_compat/",
       "logic_file": "logic/WIN-RELAY-IMAGE-COMPAT-109.md",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "renames_applied": 9,
       "comments_applied": 11,
-      "notes": "relay_image_compat_set/get handlers + set_impl + read_config_toml + build_ok_bool_response + image_support_capability_descriptor + image_support_tool_pair_builder + stream_codex_responses_native forward gate all confirmed; 9 renames + 11 IDA comments; idb_save ok"
+      "notes": "relay_image_compat_set/get handlers + set_impl + read_config_toml + build_ok_bool_response + image_support_capability_descriptor + image_support_tool_pair_builder + stream_codex_responses_native forward gate all confirmed; 9 renames + 11 IDA comments; <工具调用> ok"
     },
     {
       "cluster": "relay_proxy_config",
@@ -333,7 +333,7 @@
       "status": "complete",
       "evidence_path": "raw/aimami/1.0.9/windows/relay-core/relay_transport/ (relay_proxy_config scope)",
       "logic_file": "logic/WIN-RELAY-TRANSPORT-CLOSEOUT-109.md",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "index_entries": 4,
       "notes": "set_api_proxy_config_handler@0x140282340 + cmd_detect_coroutine@0x1408C45B0 + cmd_test_coroutine@0x1408E8160 + detect_system_env_proxy@0x140110A80; transport supplement also adds relay_forward_chain to relay_proxy_server (4 fns) and featureA compact path (compact_response_body_parser@0x14013E630); relay_proxy_server gate unchanged (remains readyToImplement)"
     },
@@ -345,7 +345,7 @@
       "functions_decompiled": 9,
       "renames": 11,
       "idb_comments": 9,
-      "idb_saved": true,
+      "<工具调用>d": true,
       "index_entries": 9,
       "gate_change": "relay_proxy_config: new_cluster → strictImplementationUse; relay_proxy_server supplement (forward_chain + featureA) — gate unchanged (readyToImplement)",
       "logic_file": "logic/WIN-RELAY-TRANSPORT-CLOSEOUT-109.md"
@@ -404,7 +404,7 @@
       "evidence_path": "<source-location>/audits/windows-1.0.9-relay-core/logic/WIN-SSE-TRANSLATE-CEILINGCRACK-109.md §8"
     }
   ],
-  "updated_at": "2026-06-03 (<audit-session>: relay_proxy_config angle-3 Win IDA deep full closure; dim1-5 all 3 leaves; INDEX lines 1265-1267; idb_saved)",
+  "updated_at": "2026-06-03 (<audit-session>: relay_proxy_config angle-3 Win IDA deep full closure; dim1-5 all 3 leaves; INDEX lines 1265-1267; <工具调用>d)",
   "phase_reduce_session": "relay-closeout-109",
   "relay_transport_closeout_supplement": {
     "session": "<audit-session>",
@@ -414,7 +414,7 @@
     "functions_decompiled": 9,
     "renames": 11,
     "idb_comments": 9,
-    "idb_saved": true,
+    "<工具调用>d": true,
     "index_entries": 9,
     "gate_changes": [
       "relay_proxy_config: new_cluster → strictImplementationUse (cluster_count 15→16; strictImplementationUse 6→7)",
@@ -475,7 +475,7 @@
     ],
     "renames": 5,
     "idb_comments": 5,
-    "idb_saved": true,
+    "<工具调用>d": true,
     "index_entries": 3,
     "index_lines": "1265-1267",
     "raw_leaf": "raw/aimami/1.0.9/windows/relay-core/relay_proxy_config/WIN-PROXY-CONFIG-DEEP-109-wf-dualcomplete.md"

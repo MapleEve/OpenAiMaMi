@@ -1,0 +1,76 @@
+{
+  "target": "validate_no_account_slots",
+  "owner_ea": "0x100222220",
+  "edges": [
+    {
+      "from": "0x100222220",
+      "to": "hashbrown::map::HashMap::insert",
+      "edge_type": "call",
+      "order": 0
+    },
+    {
+      "from": "0x100222220",
+      "to": "hashbrown::raw::RawTable::reserve_rehash",
+      "edge_type": "call",
+      "order": 1
+    },
+    {
+      "from": "0x100222220",
+      "to": "hashbrown::map::HashMap::insert",
+      "edge_type": "call",
+      "order": 2
+    },
+    {
+      "from": "0x100222220",
+      "to": "canonical_no_account_slot_slug",
+      "edge_type": "call",
+      "order": 3
+    },
+    {
+      "from": "0x100222220",
+      "to": "RelayProvider::exposed_models",
+      "edge_type": "call",
+      "order": 4
+    },
+    {
+      "from": "0x100222220",
+      "to": "core::hash::BuildHasher::hash_one",
+      "edge_type": "call",
+      "order": 5
+    },
+    {
+      "from": "0x100222220",
+      "to": "core::fmt::num::Display for usize",
+      "edge_type": "call",
+      "order": 6
+    },
+    {
+      "from": "0x100222220",
+      "to": "alloc::fmt::format::format_inner",
+      "edge_type": "call",
+      "order": 7
+    },
+    {
+      "from": "0x100222220",
+      "to": "__rust_alloc",
+      "edge_type": "call",
+      "order": 8
+    },
+    {
+      "from": "0x100222220",
+      "to": "__rust_dealloc",
+      "edge_type": "call",
+      "order": 9
+    },
+    {
+      "from": "0x100222220",
+      "to": "alloc::raw_vec::handle_error",
+      "edge_type": "call",
+      "order": 10
+    }
+  ],
+  "edge_count": 11,
+  "terminated_reason": "error_return",
+  "extraction_method": "c_text_analysis",
+  "note": "Callees extracted from 1.2.4 mac SMB .c pseudocode text, not IDA MCP callees call"
+}

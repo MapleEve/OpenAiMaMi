@@ -42,7 +42,7 @@ See `logic/FULL-CHAIN-1.2.3.md` for what the 3 covered functions actually do, `g
 
 ## Producer/session facts
 
-- IDA MCP host: <host>, module `AiMaMi.1.2.3 win64.exe`, idb `E:\binary\AiMaMi.1.2.3 win64.exe.i64`, confirmed live via `server_health` (status=ok, uptime=121281s, IDA decompiler_ready=true) before all tool calls this session.
+- IDA MCP host: <host>, module `AiMaMi.1.2.3 win64.exe`, idb `<二进制路径>\AiMaMi.1.2.3 win64.exe.i64`, confirmed live via `server_health` (status=ok, uptime=121281s, IDA decompiler_ready=true) before all tool calls this session.
 - Binary sha256 (independently re-hashed this session): `aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396`.
 - 2 new raw `.c` files written this session; 1 `INDEX.jsonl` row appended (append-only, no existing rows modified).
 - 0 new IDA MCP calls failed, timed out, or returned ambiguous results that were treated as coverage (per red line 17 — one `lookup_funcs` call did hit a client-side timeout on first attempt and was retried once per protocol; the retry succeeded and its result is what's recorded here).

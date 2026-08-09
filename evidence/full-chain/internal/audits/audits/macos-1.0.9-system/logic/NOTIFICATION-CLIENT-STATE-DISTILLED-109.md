@@ -240,7 +240,7 @@ otificationsSince` / `device_id` in `CodexMateSettings`.
 | Core VA `0x1005f0e34` | live deep-reconfirm decompile successful |
 | xref count to impl | 1 (only IPC closure at 0x100324020); xrefs_to more=false |
 | func_query name_regex | returns exactly `0x100262804`, no ICF ambiguity |
-| IDB inline comments | A-level appended at all three VAs; idb_save confirmed ok |
+| IDB inline comments | A-level appended at all three VAs; <工具调用> confirmed ok |
 
 **Windows x64 platform**: see INDEX entry `aimami/1.0.9/windows-x64/system/get_notification_client_state/distilled` (session <audit-session>, gate=strictImplementationUse).
 
@@ -291,7 +291,7 @@ otificationsSince` is epoch seconds (u64)** — multiply by 1000 for JS `Date` c
   - xrefs_to `0x100262804` → 1 caller confirmed, `more=false`
   - func_query name_regex confirmed VA and size=0x278=632B, no ICF ambiguity
   - anti-cheat taxonomy exhausted per ida-deep-recovery.md §1 (8 false-wall types, zero hits)
-  - A-level IDB comments appended at all three VAs; idb_save returned ok
+  - A-level IDB comments appended at all three VAs; <工具调用> returned ok
   - owner-gate ALLOW (owner=<workstation>, basis=bundle_manifest, decision=ALLOW, write_mode=owner)
   - Binary SHA `1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482` confirmed
 - Session 2 / pass #3 (<audit-session>, 2026-06-04, M3-Max): independent deep RE-VERIFY (no trust of prior summaries — every claim re-derived from live IDB)
@@ -303,5 +303,5 @@ otificationsSince` is epoch seconds (u64)** — multiply by 1000 for JS `Date` c
   - **Async ruling decisive**: func_query(respond_async_serialized) enumerated → no entry is our closure `h9f5e2f4a9691174e`; all are unrelated-closure drops → command is synchronous (rules out drop_in_place/async false wall with positive evidence, not just absence)
   - Cmd-name binding re-confirmed: closure inline blob `v19[0]` begins `"get_notification_client_state"` (len `v19[1]`=29); full registry blob `0x100f2ecf6` (adjacent `get_system_info`)
   - anti-cheat taxonomy re-exhausted per ida-deep-recovery.md §1 (8 false-wall types, zero hits); genuine_ceiling=false, accepted_unknown=false
-  - A-level IDB comments appended (RE-VERIFY 2026-06-04 marker) at all three VAs; idb_save returned ok (`<source-location>/reference-artifact`)
+  - A-level IDB comments appended (RE-VERIFY 2026-06-04 marker) at all three VAs; <工具调用> returned ok (`<source-location>/reference-artifact`)
   - owner-gate ALLOW (owner=<workstation>, basis=bundle_manifest, write_mode=owner, exit 0)

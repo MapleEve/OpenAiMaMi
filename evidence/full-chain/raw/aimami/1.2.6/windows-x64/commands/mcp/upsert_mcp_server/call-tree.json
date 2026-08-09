@@ -1,0 +1,211 @@
+{
+  "target": "upsert_mcp_server",
+  "owner_ea": "0x140163e30",
+  "owner_name": "upsert_mcp_server",
+  "module": "commands/mcp",
+  "edges": [
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x14172b820",
+      "to_name": "sub_14172B820",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x140029dd0",
+      "to_name": "sub_140029DD0",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x14002b050",
+      "to_name": "sub_14002B050",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x140955980",
+      "to_name": "sub_140955980",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x140affc30",
+      "to_name": "sub_140AFFC30",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x14172c620",
+      "to_name": "sub_14172C620",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x1409562a0",
+      "to_name": "sub_1409562A0",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x140952570",
+      "to_name": "sub_140952570",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x14045aec0",
+      "to_name": "sub_14045AEC0",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x140033330",
+      "to_name": "sub_140033330",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x140001660",
+      "to_name": "sub_140001660",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x140401fb0",
+      "to_name": "sub_140401FB0",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x140043900",
+      "to_name": "sub_140043900",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x140a7a010",
+      "to_name": "sub_140A7A010",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x1409f5070",
+      "to_name": "sub_1409F5070",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x14051f720",
+      "to_name": "sub_14051F720",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x1401a80b0",
+      "to_name": "sub_1401A80B0",
+      "type": "call"
+    },
+    {
+      "from": "0x140163e30",
+      "from_name": "upsert_mcp_server",
+      "to": "0x140a94390",
+      "to_name": "sub_140A94390",
+      "type": "call"
+    }
+  ],
+  "edge_count": 18,
+  "terminated_reason": "leaf_handler",
+  "callees": [
+    {
+      "addr": "0x14172b820",
+      "name": "sub_14172B820"
+    },
+    {
+      "addr": "0x140029dd0",
+      "name": "sub_140029DD0"
+    },
+    {
+      "addr": "0x14002b050",
+      "name": "sub_14002B050"
+    },
+    {
+      "addr": "0x140955980",
+      "name": "sub_140955980"
+    },
+    {
+      "addr": "0x140affc30",
+      "name": "sub_140AFFC30"
+    },
+    {
+      "addr": "0x14172c620",
+      "name": "sub_14172C620"
+    },
+    {
+      "addr": "0x1409562a0",
+      "name": "sub_1409562A0"
+    },
+    {
+      "addr": "0x140952570",
+      "name": "sub_140952570"
+    },
+    {
+      "addr": "0x14045aec0",
+      "name": "sub_14045AEC0"
+    },
+    {
+      "addr": "0x140033330",
+      "name": "sub_140033330"
+    },
+    {
+      "addr": "0x140001660",
+      "name": "sub_140001660"
+    },
+    {
+      "addr": "0x140401fb0",
+      "name": "sub_140401FB0"
+    },
+    {
+      "addr": "0x140043900",
+      "name": "sub_140043900"
+    },
+    {
+      "addr": "0x140a7a010",
+      "name": "sub_140A7A010"
+    },
+    {
+      "addr": "0x1409f5070",
+      "name": "sub_1409F5070"
+    },
+    {
+      "addr": "0x14051f720",
+      "name": "sub_14051F720"
+    },
+    {
+      "addr": "0x1401a80b0",
+      "name": "sub_1401A80B0"
+    },
+    {
+      "addr": "0x140a94390",
+      "name": "sub_140A94390"
+    }
+  ],
+  "callee_count": 18
+}

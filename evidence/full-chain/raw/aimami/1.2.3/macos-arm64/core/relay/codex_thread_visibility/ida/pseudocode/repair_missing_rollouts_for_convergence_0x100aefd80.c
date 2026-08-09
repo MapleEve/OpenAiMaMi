@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay23codex_thread_visibility39repair_missing_rollouts_for_convergence @ 0x100aefd80 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::relay::codex_thread_visibility::repair_missing_rollouts_for_convergence::h29a5363c015dcf12(
         _QWORD *a1,

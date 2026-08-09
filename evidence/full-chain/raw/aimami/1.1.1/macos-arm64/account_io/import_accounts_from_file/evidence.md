@@ -180,6 +180,6 @@ Open questions not resolved by this session's decompile.
 - pseudocode-manifest.jsonl written with source_binary_sha256
 - interfaces/import_accounts_from_file.json written with all DTOs, error codes, side effects
 - manifest.json written with leaf_status=full_gold_leaf
-- IDB annotated via append_comments + idb_save
+- IDB annotated via append_comments + <工具调用>
 - Three confirmed deltas vs 1.0.9: two-phase spawn_blocking pattern, parse_chatgpt_plan_label, chatgpt_subscription_active_until
 - No strictImplementationUse blocking issues

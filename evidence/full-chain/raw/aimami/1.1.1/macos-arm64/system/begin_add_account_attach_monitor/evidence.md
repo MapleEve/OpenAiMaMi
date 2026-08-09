@@ -36,7 +36,7 @@
 
 11. **Error handling in owner**: `load_snapshot_local` Err path (discriminant==3) is handled before spawn: CoreError formatted and returned as CoreEnvelope::Err without spawning thread.
 
-12. **IDB append_comments confirmed**: `append_comments` returned `appended=true` for both 0x10061cc50 (owner) and 0x100205da0 (thread body). `idb_save` returned `ok=true`.
+12. **IDB append_comments confirmed**: `append_comments` returned `appended=true` for both 0x10061cc50 (owner) and 0x100205da0 (thread body). `<工具调用>` returned `ok=true`.
 
 ---
 

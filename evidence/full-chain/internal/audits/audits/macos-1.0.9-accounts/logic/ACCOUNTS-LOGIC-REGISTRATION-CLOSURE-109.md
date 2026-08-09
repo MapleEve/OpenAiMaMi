@@ -84,7 +84,7 @@ relay, system, or tray.
 - Registered reducer: `logic/ACCOUNTS-EXPORT-ACCOUNTS-IDB-OWNER-CALLSITE-CORRECTION-109.md`.
 - Actual accounts logic count after registration target: 149.
 - Accepted static correction: `0x10032ce58` is the `export_accounts_to_file` blocking command body/function start; `0x10032d0cc` is the callsite inside that body to core owner `0x1005ddd0c`, not the function owner.
-- IDB writeback: comments added to `0x10032ce58`, `0x10032d0cc`, and `0x1005ddd0c`; `idb_save` returned OK.
+- IDB writeback: comments added to `0x10032ce58`, `0x10032d0cc`, and `0x1005ddd0c`; `<工具调用>` returned OK.
 - Gate effect: no promotion; accounts remains active and `moduleExitAllowed=false`.
 
 ## Accounts IDB-first Static Recheck Batch - 2026-06-02
@@ -106,7 +106,7 @@ relay, system, or tray.
 - Registered reducer: `logic/ACCOUNTS-MONITOR-IDB-LIFECYCLE-EVENT-CROSSCHECK-109.md`.
 - Actual accounts logic count after registration target: 152.
 - Accepted static fact: `begin_add_account_attach_monitor` has IDB-confirmed owner `0x100262db4`, wrapper callsite `0x100325278`, thread shim callsite `0x100185790`, polling body `0x100529504`, refresh scheduler `0x100262aec`, spawned refresh task `0x10030d508`, `refresh_full_runtime_snapshot` callsite `0x10030d5c0`, `broadcast_runtime_snapshot` callsite `0x1001e6ad8`, and Tauri event emit callsite `0x1001e3ad0` for `runtime-state-updated`.
-- IDB writeback: comments added to owner/callsite/leaf addresses; `idb_save` returned OK.
+- IDB writeback: comments added to owner/callsite/leaf addresses; `<工具调用>` returned OK.
 - Gate effect: no promotion; accounts remains active and `moduleExitAllowed=false`.
 
 ## Accounts Preview Import Fixture UI / No-Write Crosscheck - 2026-06-02
@@ -114,5 +114,5 @@ relay, system, or tray.
 - Registered reducer: `logic/ACCOUNTS-PREVIEW-IMPORT-FIXTURE-UI-NOWRITE-CROSSCHECK-109.md`.
 - Actual accounts logic count after registration target: 153.
 - Accepted static fact: first strict fixture lane `accounts.preview_account_import.missing_path.v1` now has frontend cancel/error/success state and IDB parser-first no-write selector narrowed. Backend addresses: `0x10032c93c`, `0x10032cb40`, `0x1005dd788`, `0x1005dd7c4`, `0x1005e13fc`, `0x1005e142c`.
-- IDB writeback: comments added to listed addresses; `idb_save` returned OK.
+- IDB writeback: comments added to listed addresses; `<工具调用>` returned OK.
 - Gate effect: no promotion; accounts remains active and `moduleExitAllowed=false`.

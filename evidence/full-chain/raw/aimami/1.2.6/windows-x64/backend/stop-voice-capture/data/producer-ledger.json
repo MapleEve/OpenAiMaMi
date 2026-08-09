@@ -1,0 +1,58 @@
+{
+  "leaf": "stop-voice-capture",
+  "merged_from": [
+    "producer-ledger.cc-aimami126-vibe-dirtree-8func-cleanup-20260807.json"
+  ],
+  "entry_count": 1,
+  "entries": [
+    {
+      "schema": "c5cm.reverse.producer-ledger.v1",
+      "session": "cc-aimami126-vibe-dirtree-8func-cleanup-20260807",
+      "machine": "<本地机器>
+      "producer": "Claude",
+      "cluster": "aimami-1.2.6-stop-voice-capture",
+      "platform": "windows-x64",
+      "produced_at": "2026-08-07",
+      "ack": true,
+      "action_type": "dirtree_correction_only",
+      "trigger": "opus 只读对抗核验发现 task#174/#175 声明(5个函数已清理/vibe残留)与 live win IDB 实际状态矛盾（实测8个函数仍 stranded 于 /vibe）",
+      "resolution_summary": {
+        "functions_moved_fresh": 0,
+        "functions_unlinked_duplicate": 2
+      },
+      "functions_moved_fresh_detail": [],
+      "functions_unlinked_duplicate_detail": [
+        {
+          "name": "stop_voice_capture_owner_sys",
+          "ea": "0x14015b140",
+          "unlinked_from": "/vibe/stop_voice_capture_owner_sys",
+          "canonical_path_retained": "codexmate_lib/core/voice/runtime/stop_voice_capture_owner_sys"
+        },
+        {
+          "name": "stop_voice_capture_core_sys",
+          "ea": "0x140c384a0",
+          "unlinked_from": "/vibe/stop_voice_capture_core_sys",
+          "canonical_path_retained": "codexmate_lib/core/voice/runtime/stop_voice_capture_core_sys"
+        }
+      ],
+      "files_written": [
+        "manifest.json (patched: +dirtree_correction_20260807)"
+      ],
+      "idb_mutations": {
+        "dt_mkdir_calls": 8,
+        "dt_rename_calls": 0,
+        "dt_unlink_calls": 2,
+        "dt_rmdir_vibe": true,
+        "<工具调用>_count": 1,
+        "<工具调用>_result": {
+          "ok": true,
+          "path": "<二进制路径>\\\\AiMaMi 1.2.6 win64.exe.i64"
+        }
+      },
+      "grounded_reverify": "独立<工具调用>：8/8函数 find_entry(idx=ea)+get_abspath 命中预期路径，current_name不变，func_exists=true，all_match=true；dt.isdir('/vibe')=false",
+      "gate_impact": "无。本轮不涉及任何implementation gate变更，consumerStartReady/strictImplementationUse/readyToImplement/implementation_use/gate_accepted均保持涉及bundle既有状态",
+      "index_jsonl_line_added": true,
+      "reverse_status_entry": "[cc-aimami126-vibe-dirtree-8func-cleanup-20260807] DONE — win侧/vibe dirtree残留8函数红线24归位+grounded复验 — 2026-08-07"
+    }
+  ]
+}

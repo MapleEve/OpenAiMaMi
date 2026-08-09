@@ -29,7 +29,7 @@ IDA MCP `set_comments` wrote 38 reuse comments for the current macOS accounts
 owner, wrapper, callsite, parser, write, rebuild, monitor, event, and
 conversion anchors.
 
-IDA MCP `idb_save` returned:
+IDA MCP `<工具调用>` returned:
 
 ```json
 {

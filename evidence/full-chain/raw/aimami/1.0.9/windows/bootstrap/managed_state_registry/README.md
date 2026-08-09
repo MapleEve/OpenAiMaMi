@@ -96,7 +96,7 @@ All three use the same sub_141208810 helper and the same unk_14126AC16 state-man
 3. `decompile 0x1400D93D0`, `0x1400D8020`, `0x1400D9820` — guard logic
 4. Check RelayManager and PluginRegistry allocation sizes
 5. Rename: `managed_state_register_sys` @ 0x141208810, guard fns
-6. `set_comments` + `idb_save`
+6. `set_comments` + `<工具调用>`
 
 ---
 

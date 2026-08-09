@@ -1,0 +1,32 @@
+{
+  "schema": "c5cm.raw.leaf.gate_report.v1",
+  "commands": ["update_voice_runtime_settings"],
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "gates": {
+    "consumerStartReady": true,
+    "strictImplementationUse": false,
+    "readyToImplement": false,
+    "implementation_use": false,
+    "gate_accepted": false,
+    "full_leaf_100_definition_v2": false
+  },
+  "blockers": [
+    "4 of the macOS 9-function parity set (write_runtime_file, ensure_standby_sidecar, shutdown_standby_sidecar, normalize_processing_mode_id) not separately resolved to independent Windows functions in this call chain (write_runtime_file appears architecturally replaced by in-core Mutex<Repository> writes; the sidecar-scheduling pair is expected in the start_voice_capture chain instead, see voice-runtime-start-capture bundle)",
+    "sub_140C48530 (load_status delegation target) and sub_140BB37B0 (emit_status serialization target) not further recursed",
+    "no independent verification of whether Windows has a background async flush-to-disk path equivalent to macOS's write_runtime_file"
+  ],
+  "dim_status": {
+    "dim1_owner_located": "PASS (dispatcher 0x14015dd80 confirmed via 6-field parity match with macOS dispatcher)",
+    "dim2_call_tree_depth": "PASS (depth4: dispatcher -> handler -> core -> {restart_trigger_listener | emit_status | load_status}, 3 independent terminal branches)",
+    "dim3_pseudocode_recovered": "PASS (5 bodies recovered across dispatcher/handler+core/restart_trigger/emit_status/load_status, all confirmed non-truncated)",
+    "dim4_dto_fields": "PASS (6 fields confirmed matching macOS: app/enabled/shortcut/speechModel/processingMode/processingModeId)",
+    "dim5_cross_version_baseline": "PASS (macos_reference: raw/aimami/1.2.6/macos-x64/backend/update-voice-runtime-settings/manifest.json, 9-function parity mapping table cross-referenced field-by-field)",
+    "dim6_live_reference_parity": "NOT_RUN (no live reference App comparison performed, per red line 25 disclosure)"
+  },
+  "scope_note": "This bundle was originally produced under task #151 (2026-08-06T16:10:00Z decompile session) as a c5cm.raw.ida-leaf.v1 manifest+pseudocode-only bundle. This gate-report.json/evidence.md/interface/call-trees were added in a later schema-normalization round (session <审计会话> purely by reorganizing the pre-existing manifest.json content into leaf.v1-parity shape -- no new IDA decompile, rename, dirtree, or <工具调用> call was made during normalization.",
+  "generated_at": "2026-08-06T16:10:00Z",
+  "schema_normalized_at": "2026-08-06T08:31:34Z",
+  "session": "task#151 (original decompile); <审计会话> (schema normalization backfill)"
+}

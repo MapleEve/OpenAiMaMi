@@ -12,7 +12,7 @@ package's creation on 2026-07-25.
 
 | 1.0.9 cluster | 1.2.3 fate | 1.2.3 location | Evidence basis |
 |---|---|---|---|
-| relay_codex_writer | matched | `core/relay/codex_writer/` (19 .c files) | function-name match, wf-aimami123-delta-20260721 |
+| relay_codex_writer | matched | `core/relay/codex_writer/` (19 .c files) | function-name match, <审计会话> |
 | relay_diagnostic | matched (massively expanded) | `core/relay/codex_diagnostic/` (83 .c files) | function-name match; config/catalog/thread/router-unlock reconciliation added |
 | relay_health_audit | matched | `core/relay/health_check/` + `core/relay/manager/` (13 .c files) | `run_diagnostics`, `fix_diagnostic_issue` confirmed present |
 | relay_manager | matched | `core/relay/manager/` | function-name match |
@@ -36,7 +36,7 @@ package's creation on 2026-07-25.
 
 `raw/aimami/1.2.3/macos-arm64/core/relay/` contains **657** `.c` pseudocode files across **32** submodule directories
 (enumerated via `find ... -name '*.c' | wc -l`, 2026-07-26). This is the disk-grounded total backing the "matched"
-rows above; it was produced by `wf-aimami123-delta-20260721` (DONE, 2026-07-21), not by this session, and is not
+rows above; it was produced by `<审计会话> (DONE, 2026-07-21), not by this session, and is not
 re-decompiled here.
 
 Windows side (`raw/aimami/1.2.3/windows-x64/relay-core/owner-map.jsonl`, produced by `relay123-surface`,

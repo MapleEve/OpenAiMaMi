@@ -1,0 +1,90 @@
+0x140a42ea0: jnz     def_140A42FDB; jumptable 0000000140A42FDB default case, cases 17,19,21,22
+0x140a42ea3: mov     rax, [rax+10h]
+0x140a42ea7: mov     rcx, [rax]
+0x140a42eaa: mov     rdx, 6574656C706D6F63h
+0x140a42eb4: xor     rcx, rdx
+0x140a42eb7: movzx   eax, byte ptr [rax+8]
+0x140a42ebb: xor     rax, 64h
+0x140a42ebf: or      rax, rcx
+0x140a42ec2: mov     rcx, r15
+0x140a42ec5: jnz     def_140A42FDB; jumptable 0000000140A42FDB default case, cases 17,19,21,22
+0x140a42ecb: jmp     short loc_140A42ECF
+0x140a42ecd: xor     ebx, ebx
+0x140a42ecf: cmp     rdi, 7
+0x140a42ed3: jz      loc_140A42F73
+0x140a42ed9: cmp     rdi, 9; 【中文证据注释】识别/清理侧(读取) private carrier 前缀的具体字节位置，在 sub_140A42B20(0x140a42b20, 0xc100=49408字节巨型多用途分发函数, 未整体重命名, 理由见下) 内部。本段(0x140a42ed9-0x140a42f65)与 mac 侧 response_item_id_compat::is_unusable_store_false_reasoning_item(0x10024df90) 行为模板逐字节对应: ① cmp rdi,9 + xor 比对 8+1 字节常量 0x6E696E6F73616572/0x67 = 字符串值=="reasoning"(9字节, 对应 mac 侧 payload.type!='reasoning' 判断, 不匹配跳 loc_140A42F8E 保留)；② 0x140a42f12 mov edx,11h + lea rcx,aEncryptedConte_0 调用 sub_1414D4800查字段 "encrypted_content"(17字节, 对应 mac 侧 17字节字段名); ③ 0x140a42f39 cmp r9,1Dh 长度>=29检查(对应 mac 侧 <29 保留判断); ④ 0x140a42f43-0x140a42f60 双16字节SIMD重叠比对(bytes[0:16)对xmm9、bytes[13:29)对xmm13)实现 29字节完整比对私有前缀 'aimami-anthropic-thinking-v1:'(@0x141855e45, 实测两段字节与该地址字节完全匹配, 根__
+0x140a42edd: jnz     loc_140A42F8E
+0x140a42ee3: mov     rax, [rsi]
+0x140a42ee6: mov     rcx, 6E696E6F73616572h
+0x140a42ef0: xor     rax, rcx
+0x140a42ef3: movzx   ecx, byte ptr [rsi+8]
+0x140a42ef7: xor     rcx, 67h
+0x140a42efb: or      rcx, rax
+0x140a42efe: jnz     loc_140A42F8E
+0x140a42f04: mov     rax, [rbp+630h+var_118]
+0x140a42f0b: mov     [rbp+630h+var_1D8], rax
+0x140a42f12: mov     edx, 11h
+0x140a42f17: lea     rcx, aEncryptedConte_0; "encrypted_content"
+0x140a42f1e: mov     r8, [rbp+630h+var_208]
+0x140a42f25: call    sub_1414D4800
+0x140a42f2a: nop
+0x140a42f2b: test    rax, rax
+0x140a42f2e: jz      short loc_140A42F6B
+0x140a42f30: cmp     byte ptr [rax], 3
+0x140a42f33: jnz     short loc_140A42F6B
+0x140a42f35: mov     r9, [rax+18h]
+0x140a42f39: cmp     r9, 1Dh
+0x140a42f3d: jb      short loc_140A42F6B
+0x140a42f3f: mov     r8, [rax+10h]
+0x140a42f43: movdqu  xmm0, xmmword ptr [r8]
+0x140a42f48: pcmpeqb xmm0, xmm9
+0x140a42f4d: movdqu  xmm1, xmmword ptr [r8+0Dh]
+0x140a42f53: pcmpeqb xmm1, xmm13
+0x140a42f58: pand    xmm1, xmm0
+0x140a42f5c: pmovmskb eax, xmm1
+0x140a42f60: cmp     eax, 0FFFFh
+0x140a42f65: jz      loc_140A45BC1
+0x140a42f6b: mov     rcx, r15
+0x140a42f6e: jmp     def_140A42FDB; jumptable 0000000140A42FDB default case, cases 17,19,21,22
+
+--- prefix-match consequence branch (loc_140A45BC1) ---
+0x140a45bc1: add     r9, 0FFFFFFFFFFFFFFE3h
+0x140a45bc5: add     r8, 1Dh
+0x140a45bc9: mov     rax, [rbp+630h+var_118]
+0x140a45bd0: mov     [rbp+630h+var_1D8], rax
+0x140a45bd7: lea     rcx, [rbp+630h+var_1C0]
+0x140a45bde: lea     rdx, unk_141855E62
+0x140a45be5: call    sub_140B9FFD0
+0x140a45bea: nop
+0x140a45beb: mov     rax, qword ptr [rbp+630h+var_1C0]
+0x140a45bf2: cmp     rax, 0FFFFFFFFFFFFFFFFh
+0x140a45bf6: jz      loc_140A42F6B
+0x140a45bfc: mov     [rbp+630h+var_F8], rax
+0x140a45c03: mov     rcx, qword ptr [rbp+630h+var_1C0+8]
+0x140a45c0a: mov     rax, qword ptr [rbp+630h+var_1B0]
+0x140a45c11: mov     [rbp+630h+var_108], rcx
+0x140a45c18: mov     qword ptr [rbp+630h+var_1C0], rcx
+0x140a45c1f: mov     qword ptr [rbp+630h+var_1C0+8], rax
+0x140a45c26: lea     rax, [rbp+630h+var_1C0+1]
+0x140a45c2d: movdqu  xmmword ptr [rax+0Fh], xmm10
+0x140a45c33: lea     rcx, [rbp+630h+var_150]
+0x140a45c3a: lea     rdx, [rbp+630h+var_1C0]
+0x140a45c41: call    sub_14086E7A0
+0x140a45c46: nop
+0x140a45c47: movzx   ebx, byte ptr [rbp+630h+var_150]
+0x140a45c4e: cmp     bl, 0FFh
+0x140a45c51: jz      loc_140A466FF
+0x140a45c57: lea     rax, [rbp+630h+var_150+1]
+0x140a45c5e: movdqu  xmm0, xmmword ptr [rax]
+0x140a45c62: movdqu  xmm1, xmmword ptr [rax+0Fh]
+0x140a45c67: movdqu  [rbp+630h+var_300+0Fh], xmm1
+0x140a45c6f: movdqa  [rbp+630h+var_300], xmm0
+0x140a45c77: jmp     loc_140A4670C
+0x140a45c7c: mov     rdi, [rbp+630h+var_450]
+0x140a45c83: jmp     loc_140A46544
+0x140a45c88: mov     qword ptr [rbp+630h+var_1C0+8], 0
+0x140a45c93: mov     qword ptr [rbp+630h+var_1B0+8], 0
+0x140a45c9e: mov     byte ptr [rbp+630h+var_1C0], 5
+0x140a45ca5: movzx   eax, byte ptr [rbp+630h+var_1C0]
+0x140a45cac: mov     rcx, qword ptr [rbp+630h+var_1C0+1]
+0x140a45cb3: mov     edx, dword ptr [rbp+630h+var_1C0+9]

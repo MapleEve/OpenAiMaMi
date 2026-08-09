@@ -28,7 +28,7 @@ module: codexmate_lib::commands::system
 - `quota_store::save` @ `0x100535100`: `Path::parent` + `DirBuilder::create`, then serde_json serializes `{schemaVersion, updatedAt, items}` + `std::fs::write` to quota path. Returns 10=Ok, 2=IoError, 3=SerError.
 - Response on success path: `CoreEnvelope::ok` called with `(__dst[0]=i, __dst[1]=v98-v99[2])` where `i` = total files deleted count and `v98-v99[2]` = original_registry_count - retained_registry_count (accounts removed). Response struct is 0x60 bytes.
 - Error propagation: if `persist_registry` fails → returns Err branch with 0x8000000000000000 tag in command wrapper. Error formatted via `CoreError as Display`. No `unwrap/expect/panic` in business path.
-- idb_save: ok=true, path confirmed.
+- <工具调用>: ok=true, path confirmed.
 - append_comments: 7 addresses annotated (A-level: 0x10061f140, 0x1004d1210; B-level: 0x1004bf8e0, 0x1004c3a00, 0x100647050, 0x100534ff0, 0x100535100).
 
 ## Inferred

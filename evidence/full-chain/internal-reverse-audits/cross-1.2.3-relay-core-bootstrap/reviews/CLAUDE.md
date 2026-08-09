@@ -45,7 +45,7 @@ package are `false`/`blocked`; no target is promoted.
 ## Cross-check against REVERSE-STATUS.md
 
 Confirmed via `grep -n "relay-core-bootstrap"` that the only prior mention of this exact
-cross-platform module name is in the `[wf-aimami123-fullapp-20260724]` backlog-gap entry, which
+cross-platform module name is in the `[<审计会话> backlog-gap entry, which
 lists `relay-core-bootstrap` as one of two still-open cross-platform modules for 1.2.3 (the other
 being `home-usage-frontend`) and does not claim any producer session has started work on it. No
 collision with an in-progress claim was found before writing this package.
@@ -55,7 +55,7 @@ collision with an in-progress claim was found before writing this package.
 - The `transition_journal` discrepancy (see `SYSTEM-DIFF.md`) — genuinely ambiguous from the
   evidence available in a read-only pass; flagged rather than guessed.
 - Whether any of the 177 Windows relay-core surface functions already have real decompiled bodies
-  from the earlier `wf-aimami123-delta-20260721` baseline (the surface manifest's own "IDB
+  from the earlier `<审计会话> baseline (the surface manifest's own "IDB
   baseline note" claims 59/172 panic-Location-attributed functions were already named before this
   surface pass, but that number refers to a slightly different denominator and was not
   reconciled against the 177-function surface list in this session).

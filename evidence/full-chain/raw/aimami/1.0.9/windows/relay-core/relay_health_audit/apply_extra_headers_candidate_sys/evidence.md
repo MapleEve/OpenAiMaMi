@@ -8,7 +8,7 @@ binary_sha256_12: a5822387fa3f
 idb: <local-path> 1.0.9 win64.exe.i64
 session: win-health-audit-20260602
 produced: 2026-06-02
-deep_phase_status: COMPLETE — IDA MCP decompiled, xrefs confirmed, renamed, commented, idb_saved
+deep_phase_status: COMPLETE — IDA MCP decompiled, xrefs confirmed, renamed, commented, <工具调用>d
 gate: consumerStartReady=true, strictImplementationUse=false, readyToImplement=false
 
 ## RECLASSIFICATION (from blocked to confirmed with scope correction)
@@ -60,4 +60,4 @@ apply_extra_headers is in the LIVE RELAY PROXY path (forwarding requests from Co
 - xrefs_to confirmed for all 3 VAs (no IDA outage this time)
 - rename: sub_14010EFC0 → apply_extra_headers_openai_sys; sub_14010FF80 → apply_extra_headers_variant_b_sys; sub_1401175C0 → build_headers_get_path_sys
 - set_comments: apply_extra_headers_openai_sys and build_headers_get_path_sys
-- idb_save: OK
+- <工具调用>: OK

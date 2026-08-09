@@ -1,6 +1,6 @@
 # AiMaMi 1.2.3 windows-x64 core::relay::* — Function Surface Recovery (strip PE, no decompile)
 
-Produced: 2026-07-23 · session `relay123-surface` · machine `<host>` · binary `AiMaMi.1.2.3 win64.exe` (PE, imagebase `0x140000000`) · SHA-256 `aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396`
+Produced: 2026-07-23 · session `relay123-surface` · machine `<本地机器> · binary `AiMaMi.1.2.3 win64.exe` (PE, imagebase `0x140000000`) · SHA-256 `aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396`
 
 ## Scope
 
@@ -15,11 +15,11 @@ This bundle enumerates the **owner function surface** (address, size, current ID
 
 **Strict propagation note**: string-based coverage (layers ①–④) already reached all 28 `core::relay::*.rs` files confirmed present in this Windows binary, so the ≥2-caller call-graph propagation fallback (red line: non-library, ≥2 distinct same-module callers, `lib.rs` excluded as source) was **not needed** in this pass and was not applied. It remains available as a follow-up tool for any `truly_undone` gaps found in a later four-angle completeness pass.
 
-**IDB baseline note**: this Windows IDB already carries partial real names from the prior `wf-aimami123-delta-20260721` (DONE) full-decompile+rename session — 59/172 panic-Location-attributed functions and all 19 clean command owners already had real (non-`sub_`) names before this pass; this pass adds module attribution + the previously-unlabeled `sub_XXXX` candidates (113) as a structured surface, without decompiling them.
+**IDB baseline note**: this Windows IDB already carries partial real names from the prior `<审计会话> (DONE) full-decompile+rename session — 59/172 panic-Location-attributed functions and all 19 clean command owners already had real (non-`sub_`) names before this pass; this pass adds module attribution + the previously-unlabeled `sub_XXXX` candidates (113) as a structured surface, without decompiling them.
 
 ## Platform independence
 
-All evidence above was produced **live against the windows-x64 1.2.3 IDB** (`mcp-win` equivalent HTTP endpoint `<host>:13337`, verified `server_health.status=ok`, `IDA decompiler_ready=true`, `module="AiMaMi.1.2.3 win64.exe"`, `imagebase=0x140000000` matching expected before any query — IDA_LIVE_GATE passed). **No macOS evidence was used to infer Windows ownership.** The macOS `core/relay/<module>/` directory listing (`raw/aimami/1.2.3/macos-arm64/core/relay/`) was consulted only as a **search hint** — 4 mac-only module names (`transition_journal`, `breaker`, `native_responses_compat`, `upstream_url`) were searched independently on Windows via `find_regex` and returned **zero hits**; these are recorded as `Unknown` (not confirmed present, not claimed absent) rather than inferred from macOS.
+All evidence above was produced **live against the windows-x64 1.2.3 IDB** (`mcp-win` equivalent HTTP endpoint `<内网IP>:13337`, verified `server_health.status=ok`, `<反编译器>_ready=true`, `module="AiMaMi.1.2.3 win64.exe"`, `imagebase=0x140000000` matching expected before any query — <门控> passed). **No macOS evidence was used to infer Windows ownership.** The macOS `core/relay/<module>/` directory listing (`raw/aimami/1.2.3/macos-arm64/core/relay/`) was consulted only as a **search hint** — 4 mac-only module names (`transition_journal`, `breaker`, `native_responses_compat`, `upstream_url`) were searched independently on Windows via `find_regex` and returned **zero hits**; these are recorded as `Unknown` (not confirmed present, not claimed absent) rather than inferred from macOS.
 
 ## Confirmed relay submodules on Windows (29, all with independent Windows string evidence)
 

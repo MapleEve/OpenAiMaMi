@@ -1,0 +1,168 @@
+# same-commands.txt — AiMaMi 1.2.3 → 1.2.4 (Windows x64)
+# Coexisting commands/functions where body diff < 2x threshold (noise_below_2x).
+# Per commands-platform-coexisting-body-diff: commands:: 71→70 (-1.4%), platform:: 53→52 (-1.9%) — both noise_below_2x.
+# Reuse 1.2.3 evidence with SHA binding per flow.md step 3.
+
+# 1.2.4 win command inventory (70 commands in /codexmate_lib/commands/). 1.2.3 had 71.
+# Net -1 = noise. Bulk coexisting commands are same-behavior candidates.
+# Full per-command same-list requires 1.2.3 win command enum (in audits/windows-1.2.3-*/logic/).
+
+# =============================================================================
+# 1.2.4↔1.2.6 128cmd identity ledger — 1.2.4 侧 handler 身份现场补全
+# Generated: 2026-08-09
+# Session: cc-aimami124-win-128cmd-handler-identity-20260809
+# Source: 1.2.6 侧 delta-commands.txt (126 remaining) + 2 real change candidates
+# Method: win 1.2.4 live IDA — idautils.Strings() exact match → XrefsTo → handler func
+#   + ida_gdl.FlowChart for basic_blocks + call-insn scan for callee set (red line 32)
+#   + find_regex IDA-native search for NOTFOUND verification (red line 13)
+# Red line 17: server_health confirmed module=AiMaMi 1.2.4 win64.exe / <反编译器>_ready / uptime>30s
+# Red line 31: 全部 handler EA 通过活体 IDA <工具调用> 独立计算，未链式引用既有 IDB 注释
+# Red line 32: 同名函数除 EA 外额外采集 basic_blocks 计数 + callee 集合（去重）两项交叉度量
+# Red line 34: codex_bundled_cli_path 地址 0x140a19ac0 来自 1.2.3→1.2.4 delta 文档记录，
+#   本轮通过 lookup_funcs 独立验证函数存在（非链式引用旧注释）；其余 116 条全部本轮现场计算
+# Counts: {"total_128": 128, "found_via_command_string": 116, "not_found_both_sides": 10,
+#   "address_verified_platform_func": 1, "new_in_126_not_in_124": 1}
+# =============================================================================
+
+# === 116 recorded commands: handler identity landed via command name string → xref ===
+load_snapshot  # v124_ea=0x140e2bc30 fn=sub_140E2BC30 bb=179 cc=30
+refresh_usage_snapshot  # v124_ea=0x140e2a280 fn=sub_140E2A280 bb=127 cc=28
+refresh_single_account_usage  # v124_ea=0x140e287f0 fn=sub_140E287F0 bb=128 cc=31
+switch_account  # v124_ea=0x140e26f90 fn=sub_140E26F90 bb=113 cc=26
+switch_account_and_restart_codex  # v124_ea=0x140e25730 fn=sub_140E25730 bb=113 cc=26
+remove_accounts  # v124_ea=0x140e223b0 fn=sub_140E223B0 bb=143 cc=30
+logout  # v124_ea=0x140e208b0 fn=sub_140E208B0 bb=148 cc=28
+rebuild_registry  # v124_ea=0x140158610 fn=sub_140158610 bb=33 cc=12
+force_kill_codex  # v124_ea=0x140158030 fn=sub_140158030 bb=33 cc=12
+set_image_compat  # v124_ea=0x1401574b0 fn=sub_1401574B0 bb=36 cc=13
+export_debug_bundle  # v124_ea=0x140e34590 fn=sub_140E34590 bb=117 cc=30
+upload_debug_report  # v124_ea=0x140e55c30 fn=sub_140E55C30 bb=77 cc=21
+write_client_debug_log  # v124_ea=0x140174bf0 fn=sub_140174BF0 bb=19 cc=8
+begin_chatgpt_oauth_login  # v124_ea=0x140e1ffd0 fn=sub_140E1FFD0 bb=42 cc=11
+export_accounts_to_file  # v124_ea=0x140e1e680 fn=sub_140E1E680 bb=111 cc=27
+preview_account_import  # v124_ea=0x140e1d0a0 fn=sub_140E1D0A0 bb=106 cc=26
+import_accounts_from_file  # v124_ea=0x140e1aae0 fn=sub_140E1AAE0 bb=163 cc=33
+set_auto_switch  # v124_ea=0x140dfffc0 fn=sub_140DFFFC0 bb=122 cc=28
+configure_auto_switch  # v124_ea=0x140dfe4c0 fn=sub_140DFE4C0 bb=137 cc=29
+set_api_proxy_config  # v124_ea=0x140179300 fn=sub_140179300 bb=40 cc=14
+get_usage_refresh_interval  # v124_ea=0x140178d70 fn=sub_140178D70 bb=34 cc=12
+set_usage_refresh_interval  # v124_ea=0x140178490 fn=sub_140178490 bb=46 cc=15
+test_api_proxy_config  # v124_ea=0x140e3c1e0 fn=sub_140E3C1E0 bb=101 cc=26
+detect_api_proxy_config  # v124_ea=0x140e3b0c0 fn=sub_140E3B0C0 bb=91 cc=22
+run_daemon_once  # v124_ea=0x140e39e70 fn=sub_140E39E70 bb=89 cc=22
+diagnose  # v124_ea=0x140e38d40 fn=sub_140E38D40 bb=90 cc=22
+load_sessions  # v124_ea=0x140e16d60 fn=sub_140E16D60 bb=132 cc=30
+delete_sessions  # v124_ea=0x1401636f0 fn=sub_1401636F0 bb=36 cc=13
+export_session_markdown  # v124_ea=0x140e14910 fn=sub_140E14910 bb=152 cc=31
+migrate_session_worktree  # v124_ea=0x140e02b00 fn=sub_140E02B00 bb=146 cc=31
+load_voice_workspace  # v124_ea=0x140162950 fn=sub_140162950 bb=33 cc=12
+upsert_voice_template  # v124_ea=0x140161c70 fn=sub_140161C70 bb=49 cc=12
+remove_voice_template  # v124_ea=0x1401615a0 fn=sub_1401615A0 bb=36 cc=13
+upsert_voice_vocabulary  # v124_ea=0x140160170 fn=sub_140160170 bb=69 cc=13
+remove_voice_vocabulary  # v124_ea=0x14015faa0 fn=sub_14015FAA0 bb=36 cc=13
+replace_voice_vocabulary_kind  # v124_ea=0x14015eef0 fn=sub_14015EEF0 bb=47 cc=13
+remove_voice_vocabulary_app_scope  # v124_ea=0x14015e820 fn=sub_14015E820 bb=36 cc=13 secondary=0x140180c00(sub_140180C00,bb=396,cc=161,shared_dispatcher)
+upsert_voice_vocabulary_app_scope  # v124_ea=0x14015ddc0 fn=sub_14015DDC0 bb=40 cc=11 secondary=0x140180c00(sub_140180C00,bb=396,cc=161,shared_dispatcher)
+resolve_voice_vocabulary_app_info  # v124_ea=0x14015d850 fn=sub_14015D850 bb=30 cc=11 secondary=0x140180c00(sub_140180C00,bb=396,cc=161,shared_dispatcher)
+generate_voice_prompt  # v124_ea=0x140e57ee0 fn=sub_140E57EE0 bb=574 cc=33
+test_voice_llm_config  # v124_ea=0x14015bbf0 fn=sub_14015BBF0 bb=41 cc=9
+load_voice_llm_config  # v124_ea=0x14015d2e0 fn=sub_14015D2E0 bb=30 cc=11
+save_voice_llm_config  # v124_ea=0x14015c790 fn=sub_14015C790 bb=41 cc=9
+load_voice_asr_config  # v124_ea=0x14015b680 fn=sub_14015B680 bb=30 cc=11
+save_voice_asr_config  # v124_ea=0x14015ab30 fn=sub_14015AB30 bb=41 cc=9
+test_voice_asr_config  # v124_ea=0x140159f90 fn=sub_140159F90 bb=41 cc=9
+remove_voice_history_entry  # v124_ea=0x1401598c0 fn=sub_1401598C0 bb=36 cc=13
+load_voice_processing_modes  # v124_ea=0x1401592e0 fn=sub_1401592E0 bb=33 cc=12
+save_voice_processing_modes  # v124_ea=0x140158bf0 fn=sub_140158BF0 bb=37 cc=13
+load_voice_runtime_status  # v124_ea=0x14016f5c0 fn=sub_14016F5C0 bb=39 cc=13
+request_voice_permissions  # v124_ea=0x14016f040 fn=sub_14016F040 bb=32 cc=11
+set_voice_global_shortcut  # v124_ea=0x14016e810 fn=sub_14016E810 bb=44 cc=14
+capture_voice_trigger_key  # v124_ea=0x140e19790 fn=sub_140E19790 bb=99 cc=25
+set_voice_trigger_listener_suppressed  # v124_ea=0x14016db70 fn=sub_14016DB70 bb=41 cc=14 secondary=0x140180c00(sub_140180C00,bb=396,cc=161,shared_dispatcher)
+set_voice_trigger_key  # v124_ea=0x14016cc70 fn=sub_14016CC70 bb=64 cc=14
+set_voice_trigger_bindings  # v124_ea=0x14016b390 fn=sub_14016B390 bb=106 cc=14
+update_voice_runtime_settings  # v124_ea=0x14016a5a0 fn=sub_14016A5A0 bb=63 cc=14
+set_voice_processing_mode_id  # v124_ea=0x140169b50 fn=sub_140169B50 bb=52 cc=15
+set_voice_overlay_style  # v124_ea=0x140169330 fn=sub_140169330 bb=44 cc=14
+start_voice_capture  # v124_ea=0x140167fd0 fn=sub_140167FD0 bb=39 cc=13
+stop_voice_capture  # v124_ea=0x140167960 fn=sub_140167960 bb=39 cc=13
+voice_processing_done  # v124_ea=0x140168640 fn=sub_140168640 bb=39 cc=13
+inject_voice_text  # v124_ea=0x140e185b0 fn=sub_140E185B0 bb=95 cc=23
+show_voice_search_overlay  # v124_ea=0x140164a70 fn=sub_140164A70 bb=47 cc=14
+set_voice_mode_shortcut  # v124_ea=0x1401660a0 fn=sub_1401660A0 bb=80 cc=14
+remove_voice_mode_shortcut  # v124_ea=0x140165960 fn=sub_140165960 bb=38 cc=13
+request_accessibility_permission  # v124_ea=0x1401672f0 fn=sub_1401672F0 bb=39 cc=13
+load_mcp_servers  # v124_ea=0x140171f00 fn=sub_140171F00 bb=33 cc=12
+upsert_mcp_server  # v124_ea=0x140170670 fn=sub_140170670 bb=84 cc=18
+set_mcp_server_enabled  # v124_ea=0x14016fc50 fn=sub_14016FC50 bb=49 cc=15
+load_installed_skills  # v124_ea=0x140e10d80 fn=sub_140E10D80 bb=191 cc=37
+load_skill_backups  # v124_ea=0x140e0efd0 fn=sub_140E0EFD0 bb=155 cc=34
+import_skill  # v124_ea=0x140e0c710 fn=sub_140E0C710 bb=264 cc=32
+remove_skill  # v124_ea=0x140e09e50 fn=sub_140E09E50 bb=264 cc=32
+restore_skill_backup  # v124_ea=0x140e07580 fn=sub_140E07580 bb=264 cc=33
+delete_skill_backup  # v124_ea=0x140e04b80 fn=sub_140E04B80 bb=265 cc=32
+restart_codex  # v124_ea=0x140e37ea0 fn=sub_140E37EA0 bb=87 cc=19
+load_usage_analytics  # v124_ea=0x140e540d0 fn=sub_140E540D0 bb=173 cc=32
+load_quota_history  # v124_ea=0x140e51510 fn=sub_140E51510 bb=272 cc=33
+load_session_analytics  # v124_ea=0x140e4f6c0 fn=sub_140E4F6C0 bb=156 cc=33
+load_token_analytics  # v124_ea=0x140e4d6f0 fn=sub_140E4D6F0 bb=157 cc=33
+load_tool_analytics  # v124_ea=0x140e4b8a0 fn=sub_140E4B8A0 bb=156 cc=33
+load_change_analytics  # v124_ea=0x140e49a50 fn=sub_140E49A50 bb=156 cc=33
+has_notch  # v124_ea=0x140180320 fn=sub_140180320 bb=32 cc=11
+get_hotspot_enabled  # v124_ea=0x14017fda0 fn=sub_14017FDA0 bb=34 cc=12
+set_hotspot_enabled  # v124_ea=0x14017f4e0 fn=sub_14017F4E0 bb=46 cc=15
+get_autostart_state  # v124_ea=0x1401731e0 fn=sub_1401731E0 bb=39 cc=14
+set_autostart_enabled  # v124_ea=0x1401728f0 fn=sub_1401728F0 bb=46 cc=15
+focus_main_window  # v124_ea=0x14017ef80 fn=sub_14017EF80 bb=32 cc=11
+hotspot_ready  # v124_ea=0x14017ea20 fn=sub_14017EA20 bb=32 cc=11
+get_device_id  # v124_ea=0x140176640 fn=sub_140176640 bb=34 cc=12
+get_mystery_unlock_grants  # v124_ea=0x1401760b0 fn=sub_1401760B0 bb=34 cc=12
+merge_mystery_unlock_grants  # v124_ea=0x1401759f0 fn=sub_1401759F0 bb=36 cc=13
+get_notification_client_state  # v124_ea=0x140175460 fn=sub_140175460 bb=33 cc=12
+load_bootstrap_state  # v124_ea=0x1401776e0 fn=sub_1401776E0 bb=34 cc=12
+load_pending_auto_switch  # v124_ea=0x140177150 fn=sub_140177150 bb=33 cc=12
+dismiss_pending_auto_switch  # v124_ea=0x140176bd0 fn=sub_140176BD0 bb=34 cc=12
+confirm_pending_auto_switch  # v124_ea=0x140e36e60 fn=sub_140E36E60 bb=82 cc=21
+confirm_pending_auto_switch_and_restart_codex  # v124_ea=0x140e35e20 fn=sub_140E35E20 bb=82 cc=21
+load_relay_state  # v124_ea=0x14017e490 fn=sub_14017E490 bb=33 cc=12
+upsert_relay_provider  # v124_ea=0x14017dba0 fn=sub_14017DBA0 bb=46 cc=15
+delete_relay_provider  # v124_ea=0x14017d290 fn=sub_14017D290 bb=46 cc=15
+activate_relay_provider  # v124_ea=0x14017ca00 fn=sub_14017CA00 bb=42 cc=14
+deactivate_relay_provider  # v124_ea=0x14017c170 fn=sub_14017C170 bb=42 cc=14
+set_relay_provider_network  # v124_ea=0x14017b8d0 fn=sub_14017B8D0 bb=42 cc=14
+reorder_relay_providers  # v124_ea=0x14017b200 fn=sub_14017B200 bb=36 cc=13
+fetch_relay_models_draft  # v124_ea=0x140e3f180 fn=sub_140E3F180 bb=322 cc=51
+reveal_relay_api_key  # v124_ea=0x14017aa20 fn=sub_14017AA20 bb=39 cc=14
+get_relay_provider_quota  # v124_ea=0x140e3d640 fn=sub_140E3D640 bb=116 cc=28
+get_relay_active  # v124_ea=0x14017a430 fn=sub_14017A430 bb=33 cc=13
+get_relay_proxy_status  # v124_ea=0x140174640 fn=sub_140174640 bb=33 cc=13
+set_codex_router_enabled  # v124_ea=0x140e329c0 fn=sub_140E329C0 bb=148 cc=34
+set_codex_router_no_account_mode  # v124_ea=0x140e2f7c0 fn=sub_140E2F7C0 bb=146 cc=33
+export_relay_config  # v124_ea=0x1401565e0 fn=sub_1401565E0 bb=42 cc=14
+import_relay_config  # v124_ea=0x140179b20 fn=sub_140179B20 bb=46 cc=15
+parse_aimami_deeplink  # v124_ea=0x140156070 fn=sub_140156070 bb=30 cc=11
+
+# === 10 commands NOTFOUND in 1.2.4 binary (consistent with 1.2.6 side also unresolved) ===
+# Verification: idautils.Strings() exact match → NOTFOUND + find_regex IDA-native search → 0 matches
+# These command name strings do not exist as searchable strings in the 1.2.4 binary.
+# Consistent with 1.2.6 side v126_ea=None (also unresolved).
+default_debug_bundle_file_name  # v124_ea=None fn=None status=string_not_found_in_124 verified=Strings_exact+find_regex_0_matches
+cancel_chatgpt_oauth_login  # v124_ea=None fn=None status=string_not_found_in_124 verified=Strings_exact+find_regex_0_matches
+check_update_installability  # v124_ea=None fn=None status=string_not_found_in_124 verified=Strings_exact+find_regex_0_matches
+load_custom_instruction_state  # v124_ea=None fn=None status=string_not_found_in_124 verified=Strings_exact+find_regex_0_matches
+cancel_voice_trigger_capture  # v124_ea=None fn=None status=string_not_found_in_124 verified=Strings_exact+find_regex_0_matches
+preview_custom_instruction_apply  # v124_ea=None fn=None status=string_not_found_in_124 verified=Strings_exact+find_regex_0_matches
+apply_custom_instruction  # v124_ea=None fn=None status=string_not_found_in_124 verified=Strings_exact+find_regex_0_matches
+clear_custom_instruction_block  # v124_ea=None fn=None status=string_not_found_in_124 verified=Strings_exact+find_regex_0_matches
+rollback_custom_instruction  # v124_ea=None fn=None status=string_not_found_in_124 verified=Strings_exact+find_regex_0_matches
+get_system_info  # v124_ea=None fn=None status=string_not_found_in_124 verified=Strings_exact+find_regex_0_matches
+
+# === Real change candidate: codex_bundled_cli_path (platform function, not IPC command) ===
+# Command name string not present as searchable string in binary (platform function, not invoke() command).
+# Handler address 0x140a19ac0 from 1.2.3→1.2.4 delta-commands.txt; independently verified this session
+# via lookup_funcs (red line 31: not chained from IDB annotation, verified function exists + name + size).
+codex_bundled_cli_path  # v124_ea=0x140a19ac0 fn=sub_140A19AC0 bb=65 cc=4 method=address_verified_via_lookup_funcs size=0x6a0
+
+# === Real change candidate: ChatGPT桌面应用定位器 (new in 1.2.6, not in 1.2.4) ===
+# Per 1.2.6 delta-commands.txt: "1.2.6 新增能力" — this function does not exist in 1.2.4.
+ChatGPT桌面应用定位器  # v124_ea=None status=new_in_1_2_6_not_in_1_2_4 v126_ea=0x140b370f0

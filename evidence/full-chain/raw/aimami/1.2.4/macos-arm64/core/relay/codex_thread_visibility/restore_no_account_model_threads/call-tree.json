@@ -1,0 +1,136 @@
+{
+  "target": "restore_no_account_model_threads",
+  "owner_ea": "0x1008e6080",
+  "edges": [
+    {
+      "from": "0x1008e6080",
+      "to": "load_no_account_model_restore_journal",
+      "edge_type": "call",
+      "order": 0
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "CodexPaths::all_codex_state_dbs",
+      "edge_type": "call",
+      "order": 1
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "std::sys::fs::metadata",
+      "edge_type": "call",
+      "order": 2
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "open_codex_db_for_convergence",
+      "edge_type": "call",
+      "order": 3
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "read_thread_columns",
+      "edge_type": "call",
+      "order": 4
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "rusqlite::Connection::prepare_with_flags",
+      "edge_type": "call",
+      "order": 5
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "rusqlite::statement::Statement::query_row",
+      "edge_type": "call",
+      "order": 6
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "rusqlite::Connection::execute",
+      "edge_type": "call",
+      "order": 7
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "patch_no_account_model_restore_rollout",
+      "edge_type": "call",
+      "order": 8
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "checkpoint_after_committed_write",
+      "edge_type": "call",
+      "order": 9
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "remove_no_account_model_restore_journal",
+      "edge_type": "call",
+      "order": 10
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "revert_rollout_patch",
+      "edge_type": "call",
+      "order": 11
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "app_event",
+      "edge_type": "call",
+      "order": 12
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "core::str::trim_matches",
+      "edge_type": "call",
+      "order": 13
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "format_inner",
+      "edge_type": "call",
+      "order": 14
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "drop_in_place<rusqlite::Connection>",
+      "edge_type": "call",
+      "order": 15
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "drop_in_place<StoredLlmConfig>",
+      "edge_type": "call",
+      "order": 16
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "restore_no_account_model_threads::{{closure}}",
+      "edge_type": "call",
+      "order": 17
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "HashMap::insert",
+      "edge_type": "call",
+      "order": 18
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "__rust_alloc",
+      "edge_type": "call",
+      "order": 19
+    },
+    {
+      "from": "0x1008e6080",
+      "to": "__rust_dealloc",
+      "edge_type": "call",
+      "order": 20
+    }
+  ],
+  "edge_count": 18,
+  "terminated_reason": "persistence_commit",
+  "extraction_method": "c_text_analysis",
+  "note": "Callees extracted from 1.2.4 mac SMB .c pseudocode text, not IDA MCP callees call"
+}

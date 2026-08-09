@@ -1,8 +1,8 @@
 {
  "schema": "c5cm.reverse.producer_ledger.v1",
  "session": "win-1.2.3-nocjk52-comment-fix-20260726",
- "machine": "<host>",
- "ida_mcp": "win <host> (strip), module=AiMaMi.1.2.3 win64.exe, status=ok/IDA decompiler_ready=true/uptime=252888s",
+ "machine": "mini-local",
+ "ida_mcp": "win <内网IP> (strip), module=AiMaMi.1.2.3 win64.exe, status=ok/<反编译器>_ready=true/uptime=252888s",
  "product": "aimami",
  "version": "1.2.3",
  "platform": "windows-x64",
@@ -13,7 +13,7 @@
  "gate_accepted": false,
  "full_leaf_100": false,
  "readyToImplement": false,
- "evidence_sot": "win IDB E:\\binary\\AiMaMi.1.2.3 win64.exe.i64 (idb_save ok x2, independent readback verified)",
+ "evidence_sot": "win IDB <二进制路径>\\AiMaMi.1.2.3 win64.exe.i64 (<工具调用> ok x2, independent readback verified)",
  "summary_pointer": "REVERSE-STATUS.md entry [win-1.2.3-nocjk52-comment-fix-20260726]",
  "no_raw_bundle": "true — round output is IDB append_comments/set_func_cmt mutations only; no raw/intermediate body dump this pass, no renaming (naming left to separate sessions per red line13 no-unverified-naming)",
  "summary": {
@@ -23,8 +23,8 @@
   "comments_appended": 52,
   "nocjk_count_verified_live_after": 0,
   "garbage_marker_cleaned": 1,
-  "IDA decompiler_decompile_failed_fallback_disasm": 6,
-  "idb_save": "ok (x2, both confirmed ok:true)"
+  "<反编译器>_decompile_failed_fallback_disasm": 6,
+  "<工具调用>": "ok (x2, both confirmed ok:true)"
  },
  "items": [
   {
@@ -241,9 +241,9 @@
   "function": "locked_hashmap_entry_access_a",
   "issue": "repeatable func comment slot contained literal garbage value 'TESTMARKER123' (not produced by this session; pre-existing residue, root cause unknown)",
   "fix": "replaced repeatable comment slot with proper Chinese explanation referencing the existing high-quality regular comment (std::sync::Once/OnceLock slow-path init + Drop fusion analysis, already present pre-session) and documenting the cleanup itself",
-  "method": "ida_funcs.set_func_cmt(f, <new_text>, True) via IDA Python"
+  "method": "ida_funcs.set_func_cmt(f, <new_text>, True) via <工具调用>"
  },
- "IDA decompiler_bail_functions": [
+ "<反编译器>_bail_functions": [
   "0x140ca4d00 import_accounts_from_file",
   "0x140cc5ed0 configure_auto_switch",
   "0x140cae510 switch_account_and_restart_codex",
@@ -251,6 +251,6 @@
   "0x140cb15d0 refresh_single_account_usage",
   "0x140cb44a0 refresh_usage_snapshot"
  ],
- "recovery_attempts_IDA decompiler_bail": "IDA decompiler.decompile() retried individually per function -> consistently returned None (not transient); fell back to disasm(idc.GetDisasm) head 40 instructions + CodeRefsFrom callees enumeration per red line 'async decompile failed -> disasm+callees, not accepted_unknown'; jump-table dispatch structure cross-verified identical to sibling successfully-decompiled commands in same family, confirming correct function boundary (not a mis-guessed VA) -- comments for these 6 explicitly flag lower confidence/HexRays-bail basis, not silently presented as full decompile evidence",
- "grounded_verification": "orchestrator independently re-ran the exact same IDA Python enumeration script used for initial discovery (BFS over /codexmate_lib dirtree, CJK-char detection on func_cmt regular+repeatable) post idb_save: total=1927 (unchanged, 0 dirtree drift), nocjk_count=0 (was 52, all 52 now carry CJK comments), spot-read one target function (0x140cae510) confirmed original 'attributed via' attribution tags preserved + new Chinese comment appended after (not overwritten); TESTMARKER123 raw-garbage-value no longer present as the comment's sole content (only appears as descriptive substring inside the new explanatory Chinese text documenting the cleanup itself, confirmed via direct get_func_cmt readback)."
+ "recovery_attempts_<反编译器>_bail": "ida_<反编译器>.decompile() retried individually per function -> consistently returned None (not transient); fell back to disasm(idc.GetDisasm) head 40 instructions + CodeRefsFrom callees enumeration per red line 'async decompile failed -> disasm+callees, not accepted_unknown'; jump-table dispatch structure cross-verified identical to sibling successfully-decompiled commands in same family, confirming correct function boundary (not a mis-guessed VA) -- comments for these 6 explicitly flag lower confidence/HexRays-bail basis, not silently presented as full decompile evidence",
+ "grounded_verification": "orchestrator independently re-ran the exact same <工具调用> enumeration script used for initial discovery (BFS over /codexmate_lib dirtree, CJK-char detection on func_cmt regular+repeatable) post <工具调用>: total=1927 (unchanged, 0 dirtree drift), nocjk_count=0 (was 52, all 52 now carry CJK comments), spot-read one target function (0x140cae510) confirmed original 'attributed via' attribution tags preserved + new Chinese comment appended after (not overwritten); TESTMARKER123 raw-garbage-value no longer present as the comment's sole content (only appears as descriptive substring inside the new explanatory Chinese text documenting the cleanup itself, confirmed via direct get_func_cmt readback)."
 }

@@ -1,0 +1,40 @@
+{
+  "command": "with_tool_maps",
+  "module": "core/relay/translator/stream",
+  "owner_ea": "0x100acf9f0",
+  "interface_type": "internal_method",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "tool_name: &[u8], tool_maps: Vec<(String,String)>, tool_map_hashmap",
+    "output": "AnthropicDirectToResponsesStream (self, initialized)"
+  },
+  "side_effects": [],
+  "idaSymbols": [
+    "with_tool_maps"
+  ],
+  "pseudocode": [
+    "core/relay/translator/stream/ida/pseudocode/with_tool_maps_0x100acf9f0.c"
+  ],
+  "nextCallees": [
+    "uuid::new_v4",
+    "alloc::fmt::format::format_inner",
+    "chrono::offset::utc::Utc::now",
+    "core::str::slice_error_fail",
+    "core::result::unwrap_failed",
+    "__rust_alloc",
+    "__rust_dealloc",
+    "memcpy",
+    "alloc::raw_vec::handle_error"
+  ],
+  "callTreeRows": 8,
+  "claims": {
+    "client": [],
+    "server": [
+      "with_tool_maps"
+    ]
+  },
+  "serverEvidencePath": "core/relay/translator/stream/ida/pseudocode/with_tool_maps_0x100acf9f0.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "Stream constructor: creates AnthropicDirectToResponsesStream with tool maps. Allocates tool_name copy, generates UUID for stream ID, creates timestamp via Utc::now, stores tool_maps HashMap. Renamed from with_tool_name_map (singular) in 1.2.3."
+}

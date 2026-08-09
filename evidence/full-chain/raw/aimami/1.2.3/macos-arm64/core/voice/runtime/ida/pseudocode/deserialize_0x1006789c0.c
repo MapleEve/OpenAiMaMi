@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5voice7runtime1_112_$LT$impl$u20$serde_core..de..Deserialize$u20$for$u20$codexmate_lib..core..voice..runtime..VoiceSidecarEvent$GT$11deserialize @ 0x1006789c0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 *__fastcall codexmate_lib::core::voice::runtime::_::_$LT$impl$u20$serde_core..de..Deserialize$u20$for$u20$codexmate_lib..core..voice..runtime..VoiceSidecarEvent$GT$::deserialize::h1a28fea6ef33ad17(
         __int64 *a1,

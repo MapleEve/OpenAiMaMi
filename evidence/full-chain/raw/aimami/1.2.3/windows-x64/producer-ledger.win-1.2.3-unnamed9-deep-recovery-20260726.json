@@ -1,9 +1,9 @@
 {
  "schema": "c5cm.reverse.producer_ledger.v1",
  "session": "win-1.2.3-unnamed9-deep-recovery-20260726",
- "machine": "<host>",
- "ida_mcp": "win <host> (strip), module=AiMaMi.1.2.3 win64.exe, status=ok/IDA decompiler_ready=true (server_health confirmed at session start and mid-session, uptime>30s each time)",
- "mac_cross_reference": "mac <host> (full symbols), module=AiMaMi 1.2.3, status=ok/IDA decompiler_ready=true — used read-only for func_query('codex_thread_visibility') symbol cross-reference (50 demangled symbols retrieved, confirmed real struct names ThreadModelCatalogInspection/ThreadProviderConvergenceInspection/ThreadModelCatalogConvergenceSummary/ModelRestoreEntry/ThreadReconcileSummary/AppliedConvergenceRolloutPatch/RolloutConvergenceResult/RolloutProviderAnchors/ThreadMissingRolloutRepairSummary and true App fns patch_convergence_rollouts_parallel/patch_instructions_rollouts_parallel/fallback_relay_model_threads_in_db_once/collect_provider_convergence_targets/collect_router_model_targets/sync_parent_dir); no write performed on mac IDB",
+ "machine": "mini-local",
+ "ida_mcp": "win <内网IP> (strip), module=AiMaMi.1.2.3 win64.exe, status=ok/<反编译器>_ready=true (server_health confirmed at session start and mid-session, uptime>30s each time)",
+ "mac_cross_reference": "mac <内网IP> (full symbols), module=AiMaMi 1.2.3, status=ok/<反编译器>_ready=true — used read-only for func_query('codex_thread_visibility') symbol cross-reference (50 demangled symbols retrieved, confirmed real struct names ThreadModelCatalogInspection/ThreadProviderConvergenceInspection/ThreadModelCatalogConvergenceSummary/ModelRestoreEntry/ThreadReconcileSummary/AppliedConvergenceRolloutPatch/RolloutConvergenceResult/RolloutProviderAnchors/ThreadMissingRolloutRepairSummary and true App fns patch_convergence_rollouts_parallel/patch_instructions_rollouts_parallel/fallback_relay_model_threads_in_db_once/collect_provider_convergence_targets/collect_router_model_targets/sync_parent_dir); no write performed on mac IDB",
  "product": "aimami",
  "version": "1.2.3",
  "platform": "windows-x64",
@@ -14,7 +14,7 @@
  "gate_accepted": false,
  "full_leaf_100": false,
  "readyToImplement": false,
- "evidence_sot": "win IDB E:\\binary\\AiMaMi.1.2.3 win64.exe.i64 (idb_save ok, independent readback verified via fresh IDA Python call post-save)",
+ "evidence_sot": "win IDB <二进制路径>\\AiMaMi.1.2.3 win64.exe.i64 (<工具调用> ok, independent readback verified via fresh <工具调用> call post-save)",
  "summary_pointer": "REVERSE-STATUS.md entry [win-1.2.3-unnamed9-deep-recovery-20260726]",
  "no_raw_bundle": "true — round output is IDB set_name(SN_FORCE)+append(set_func_cmt) mutations only; no new raw/intermediate body dump, no new frontend CCF, no consumer-gate field promoted",
  "task_context": "用户明确不接受上轮(win-1.2.3-dirtree-block3-naming-loc-20260726)对本9个函数的accepted_unknown判定(理由:字符串签名匹配无果+调用图纯度分析),要求死磕到字面100%命名。本轮上更重手段:mac符号比对/2-3跳调用图聚类/数据流(候选push helper复用)/panic-Location两跳/__noreturn链/vtable偏移反推,对9个函数逐个重新破名,9/9全部脱离sub_/nullsub_前缀。",
@@ -27,7 +27,7 @@
   "unnamed_after_global_codexmate_lib_scope": 0,
   "global_codexmate_lib_total_in_tree": 1927,
   "global_drift": 0,
-  "idb_save": "ok (confirmed ok:true)",
+  "<工具调用>": "ok (confirmed ok:true)",
   "genuine_ceiling_count": 4,
   "strict_confidence_count": 5
  },
@@ -163,6 +163,6 @@
    ]
   }
  ],
- "grounded_verification": "orchestrator ran two independent post-write IDA Python calls (separate from the write call): (1) targeted BFS of /codexmate_lib/core/relay/codex_thread_visibility confirmed total_in_tree=111 (unchanged) and unnamed_remaining=0 (was 9), plus spot-check of 3 renamed functions confirmed idc.get_func_name()==expected new name, comment contains the [win-1.2.3-unnamed9-deep-recovery-20260726] tag and CJK characters, comment length >1000 chars (real content, not a stub); (2) full BFS of /codexmate_lib (global scope) confirmed total_in_tree=1927 (matches prior baseline exactly, 0 drift) and unnamed_total=0 (was 9 at round start per user-supplied baseline) -- this is the literal 9/9 100% naming closure requested by the user. idb_save returned {ok:true, path:'E:\\\\binary\\\\AiMaMi.1.2.3 win64.exe.i64'} and was confirmed via a fresh independent read after save.",
+ "grounded_verification": "orchestrator ran two independent post-write <工具调用> calls (separate from the write call): (1) targeted BFS of /codexmate_lib/core/relay/codex_thread_visibility confirmed total_in_tree=111 (unchanged) and unnamed_remaining=0 (was 9), plus spot-check of 3 renamed functions confirmed idc.get_func_name()==expected new name, comment contains the [win-1.2.3-unnamed9-deep-recovery-20260726] tag and CJK characters, comment length >1000 chars (real content, not a stub); (2) full BFS of /codexmate_lib (global scope) confirmed total_in_tree=1927 (matches prior baseline exactly, 0 drift) and unnamed_total=0 (was 9 at round start per user-supplied baseline) -- this is the literal 9/9 100% naming closure requested by the user. <工具调用> returned {ok:true, path:'<二进制路径>\\\\AiMaMi.1.2.3 win64.exe.i64'} and was confirmed via a fresh independent read after save.",
  "honest_boundary": "9/9 renamed (0 remain sub_/nullsub_). 5/9 (0x140a5f9a0, 0x140a5ffe0, 0x140a601f0, 0x140a60790, 0x141689180) reach 'strict' confidence -- win-native behaviorally-inferred names anchored by 3-hop call-graph triangulation and/or panic-Location source-line resolution, not literal recovered Rust source identifiers (binary is stripped). The other 4/9 (0x14043e650, 0x141689730, 0x141689c00, 0x1416c2fc0) meet the skill's genuine_ceiling criteria (caller_disambiguation_tried=true, ICF/compiler-shared infra spanning 26-268 unrelated callers) and are named for their genuinely-shared role per skill guidance ('ICF折叠导致语义确实是多源共用的,就命名成体现该共性的名字'), not claimed as single-source-feature identifiers -- see items[] confidence_tier for the authoritative per-function classification. implementation_use=gate_accepted=readyToImplement=full_leaf_100=false; this round is IDB naming/annotation only, no new raw pseudocode bundle, no frontend CCF, no consumer-gate promotion."
 }

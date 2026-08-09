@@ -1,0 +1,67 @@
+{
+  "command": "remove_accounts",
+  "entry": "remove_accounts(a1, a2) -> char (async state machine)",
+  "ea": "0x140e223b0",
+  "module": "commands/accounts",
+  "classification": "body_diff_vs_1_2_3",
+  "argKeys": [
+    "accountKeys"
+  ],
+  "responseFields": [
+    "result",
+    "mutation"
+  ],
+  "idaSymbols": [
+    "0x140e223b0"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/remove_accounts_0x140e223b0.c"
+  ],
+  "nextCallees": [
+    "sub_140296460",
+    "sub_140041330",
+    "nullsub_1",
+    "sub_1416F15C0",
+    "sub_14170CFB7",
+    "sub_1412A4620",
+    "sub_1407A09A0",
+    "sub_1406BB130",
+    "sub_1401B2270",
+    "sub_140D58150",
+    "sub_141509590",
+    "sub_140E6E3F0",
+    "sub_140D61340",
+    "sub_141733E1B",
+    "sub_1413601F0",
+    "sub_1417344F0",
+    "sub_1406A6030",
+    "sub_1417344D0",
+    "sub_140D64CE0",
+    "sub_140D65D60",
+    "sub_141354CF0",
+    "sub_140001660",
+    "sub_141734130",
+    "sub_1406A3B70",
+    "sub_1401B1BF0",
+    "sub_14069F350",
+    "sub_14049C4A0",
+    "sub_140D64E60",
+    "sub_1403041F0",
+    "sub_140001650"
+  ],
+  "callTreeRows": 30,
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": "raw/aimami/1.2.4/windows-x64/commands/accounts/remove_accounts/",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "sideEffects": "removes accounts + runtime refresh + mutation event",
+  "destructive": true,
+  "body_diff": {
+    "v123_ea": "0x140cac5d0",
+    "v124_ea": "0x140e223b0",
+    "finding": "1.2.3=sync 4-arg fn (0x140cac5d0); 1.2.4=async 2-arg state machine (bb=143,cc=43). Signature+structure+callee set all different. Real body-diff, not compilation noise. Strings: 'remove_accounts','accountKeys','RUNTIME_REFRESH_FAILED_AFTER_REMOVE','Accounts were removed','mutation'."
+  }
+}

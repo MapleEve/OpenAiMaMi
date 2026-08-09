@@ -1,0 +1,24 @@
+{
+  "command": "configure_auto_switch",
+  "owner_ea": "0x140d44bd0",
+  "owner_name": "configure_auto_switch",
+  "module": "commands/accounts",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "confidence": "high",
+  "decompile_status": "decompiled",
+  "decompile_source": "ida",
+  "decompile_method": "disasm_reconstructed",
+  "decompile_note": "Hex-Rays null_cfunc; reconstructed from IDA disasm+strings+callees+basic_blocks(134/CC=44)",
+  "side_effects": [
+    {"type": "WRITE", "desc": "配置文件写入 (mutation via sub_14085ACD0)", "severity": "destructive"},
+    {"type": "TRIGGER", "desc": "运行时刷新 (via sub_140D9FA30, 失败报RUNTIME_REFRESH_FAILED_AFTER_AUTO_SWITCH_UPDATE)", "severity": "warning"},
+    {"type": "VALIDATE", "desc": "阈值范围校验 (via sub_140C98E70, 0-100)", "severity": "info"}
+  ],
+  "argKeys": ["enabled", "threshold5hPercent", "thresholdWeeklyPercent"],
+  "strings_count": 16,
+  "callee_count": 29,
+  "function_size": "0x10b0",
+  "error_strings": ["RUNTIME_REFRESH_FAILED_AFTER_AUTO_SWITCH_UPDATE"],
+  "success_strings": ["Auto-switch configuration committed"]
+}

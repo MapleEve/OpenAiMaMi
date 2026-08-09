@@ -66,5 +66,5 @@ Dispatcher: `tauri_ipc_main_dispatcher_sys@0x14000D2A0` (41-case switch, cycloma
 - `0x1406D9FC0` — relay state write-lock evidence ✓
 - `0x1406D7860` — relay slots Vec updater evidence ✓
 
-### idb_save
+### <工具调用>
 ok=true, path=<本地路径>

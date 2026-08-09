@@ -1,0 +1,32 @@
+# same-commands.txt — AiMaMi 1.2.3 → 1.2.4 (macOS)
+# Coexisting functions where owner exists in both versions AND IDA pseudocode body equivalent.
+# Reuse condition (flow.md step 3): owner address same AND IDA owner+callee pseudocode equivalent AND frontend CCF unchanged.
+# Note: mac symbol diff is at x86_64 slice; arm64 slice not diffed (known gap). Most coexisting commands pass module-level noise_below_2x threshold (win cross-check).
+
+# Per mac_verify_63: of 62 added, 34 confirmed_live + 28 icf_alias. Of 23 removed, 4 confirmed_removed + 19 icf_alias.
+# icf_alias = ICF-folded alias of surviving code (not real removal). These coexist as same-behavior candidates.
+
+# 19 icf_alias 'removed' symbols are fold-cluster aliases of surviving 1.2.4 code → same-behavior, reuse 1.2.3 evidence:
+<codexmate_lib::commands::deeplink::_::<impl serde_core::de::Deserialize for codexmate_lib::commands::deeplink::ImportDeeplinkPayload>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+<codexmate_lib::core::auth::_::<impl serde_core::de::Deserialize for codexmate_lib::core::auth::AuthFile>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+<codexmate_lib::core::auth::_::<impl serde_core::de::Deserialize for codexmate_lib::core::auth::AuthTokens>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+<codexmate_lib::core::bootstrap_cache::_::<impl serde_core::de::Deserialize for codexmate_lib::core::bootstrap_cache::BootstrapCacheFile>::deserialize::__Visitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+<codexmate_lib::core::debug_report_upload::_::<impl serde_core::de::Deserialize for codexmate_lib::core::debug_report_upload::DebugReportUploadInput>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+<codexmate_lib::core::debug_report_upload::_::<impl serde_core::de::Deserialize for codexmate_lib::core::debug_report_upload::UploadResponse>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+<codexmate_lib::core::quota_history::_::<impl serde_core::de::Deserialize for codexmate_lib::core::quota_history::QuotaHistoryPayload>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+<codexmate_lib::core::quota_history::_::<impl serde_core::de::Deserialize for codexmate_lib::core::quota_history::QuotaHistoryPoint>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+<codexmate_lib::core::relay::config_takeover::_::<impl serde_core::de::Deserialize for codexmate_lib::core::relay::config_takeover::LegacyBackup>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+<codexmate_lib::core::relay::config_takeover::_::<impl serde_core::de::Deserialize for codexmate_lib::core::relay::config_takeover::TakeoverBackup>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+<codexmate_lib::core::relay::config_takeover::_::<impl serde_core::de::Deserialize for codexmate_lib::core::relay::config_takeover::TakeoverSection>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+<codexmate_lib::core::skills::_::<impl serde_core::de::Deserialize for codexmate_lib::core::skills::SkillBackupMetadata>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+<codexmate_lib::core::voice::asr::_::<impl serde_core::de::Deserialize for codexmate_lib::core::voice::asr::AsrConfig>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+<codexmate_lib::core::voice::asr::_::<impl serde_core::de::Deserialize for codexmate_lib::core::voice::asr::StoredAsrConfig>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias (fold-cluster alias, behavior unchanged)
+codexmate_lib::commands::relay::get_codex_router_auth_readiness  # icf_alias (fold-cluster alias, behavior unchanged)
+codexmate_lib::core::mcp::remove_mcp_server  # icf_alias (fold-cluster alias, behavior unchanged)
+codexmate_lib::core::relay::codex_catalog::build_catalog_bytes  # icf_alias (fold-cluster alias, behavior unchanged)
+codexmate_lib::core::relay::codex_catalog::write_catalog  # icf_alias (fold-cluster alias, behavior unchanged)
+codexmate_lib::core::relay::native_responses_compat::sanitize_request  # icf_alias (fold-cluster alias, behavior unchanged)
+codexmate_lib::core::relay::router_unlock_auth::ensure_auth_for_router  # icf_alias (fold-cluster alias, behavior unchanged)
+codexmate_lib::core::relay::translator::anthropic_to_responses_response_with_tool_map  # icf_alias (fold-cluster alias, behavior unchanged)
+codexmate_lib::core::relay::translator::stream::AnthropicDirectToResponsesStream::with_tool_name_map  # icf_alias (fold-cluster alias, behavior unchanged)
+codexmate_lib::platform::single_instance::acquire  # icf_alias (fold-cluster alias, behavior unchanged)

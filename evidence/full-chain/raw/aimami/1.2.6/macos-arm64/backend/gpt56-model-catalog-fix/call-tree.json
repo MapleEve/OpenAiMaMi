@@ -1,0 +1,81 @@
+{
+  "target": "gpt56-model-catalog-fix",
+  "target_type": "backend_function_cluster",
+  "owner_ea": "0x100acecf0",
+  "owner_name": "codexmate_lib::codex_catalog::catalog_models",
+  "edges": [
+    {
+      "callee": "catalog_models",
+      "addr": "0x100acecf0",
+      "type": "entry",
+      "size": 153
+    },
+    {
+      "callee": "official_reasoning_profile",
+      "addr": "0x100adcb30",
+      "type": "internal",
+      "size": 307
+    },
+    {
+      "callee": "full_reasoning_levels",
+      "addr": "0x100acfc30",
+      "type": "internal",
+      "size": 4666
+    },
+    {
+      "callee": "run_bundled_cli",
+      "addr": "0x100aceed0",
+      "type": "internal",
+      "size": 1858
+    },
+    {
+      "callee": "native_off_openai_model_needs_fallback",
+      "addr": "0x100b28230",
+      "type": "internal",
+      "size": 860
+    },
+    {
+      "callee": "check_native_off_invalid_openai_thread_models",
+      "addr": "0x100b34f30",
+      "type": "internal",
+      "size": 3194
+    },
+    {
+      "callee": "fix_native_off_invalid_openai_thread_models",
+      "addr": "0x100b30fc0",
+      "type": "internal",
+      "size": 12719
+    },
+    {
+      "callee": "is_aimami_owned_model_section",
+      "addr": "0x100ae9de0",
+      "type": "internal",
+      "size": 305
+    }
+  ],
+  "edge_count": 8,
+  "terminated_reason": null,
+  "depth": 3,
+  "leaf_status": "implementation_leaf",
+  "missing_targets": [
+    {
+      "name": "quarantined_model_provider_ids",
+      "status": "confirmed_absent",
+      "evidence": "trials/0009-quarantined_model_provider_ids_NOT_FOUND.md"
+    },
+    {
+      "name": "read_top_level_model_line",
+      "status": "confirmed_absent",
+      "evidence": "trials/0010-read_top_level_model_line_NOT_FOUND.md"
+    }
+  ],
+  "terminals": [
+    "model_catalog_construction",
+    "reasoning_level_definition",
+    "openai_thread_model_validation",
+    "aimami_owned_section_predicate"
+  ],
+  "notes": "10 targets requested, 8 found and full-decompiled, 2 confirmed absent under exact symbol name. fix_native_off_invalid_openai_thread_models (12719B) contains ⚠ destructive side-effect (in-place flag writes).",
+  "session": "<审计会话>
+  "binary_sha256": "1.2.6-mac-arm64"
+}

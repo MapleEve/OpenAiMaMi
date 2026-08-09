@@ -6,4 +6,4 @@ stage-status: stage=layer3-command-string-1hop role=required status=ok exit=0 ou
 stage-status: stage=layer4-type-name-xref role=optional status=ok exit=0 output=owner-map.jsonl (codex_mutation)
 stage-status: stage=func_query-relay-keyword-sweep role=required status=ok exit=0 output=owner-map.jsonl
 stage-status: stage=decompile role=not-in-scope status=skipped exit=0 output=none (surface-only pass per task scope; no decompile() calls made)
-notes: all IDA calls made against mcp win instance <host>:13337 via idacall.py HTTP client (equivalent to mcp__ida-pro-mcp-win__*); IDA_LIVE_GATE passed at session start (status=ok, IDA decompiler_ready=true, module="AiMaMi.1.2.3 win64.exe" matched expected, imagebase 0x140000000 matched expected).
+notes: all IDA calls made against mcp win instance <内网IP>:13337 via idacall.py HTTP client (equivalent to mcp__ida-pro-mcp-win__*); <门控> passed at session start (status=ok, <反编译器>_ready=true, module="AiMaMi.1.2.3 win64.exe" matched expected, imagebase 0x140000000 matched expected).

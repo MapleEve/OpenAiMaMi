@@ -2,7 +2,7 @@
 
 同步时间：2026-07-25
 范围：`raw/aimami/1.2.3/macos-arm64/run/ida/pseudocode/` 下 89 个未归并的泛型
-`run_0x<VA>.c`（wf-aimami123-delta-20260721 基线遗留，均为 `codexmate_lib::run::...` 符号）triage
+`run_0x<VA>.c`（<审计会话> 基线遗留，均为 `codexmate_lib::run::...` 符号）triage
 + RULE8 归并；不含新 IDA decompile，不含深层 call-tree/dim1/dim4/dim6 闭合。
 最终结论：**4/89 判定为 bootstrap 叶（consumerStartReady，非 strict/ready）；2/89 判定为非
 bootstrap 的多目标闭包（toplevel 退出守护 + 多命令路由器）；80/89 判定归属其他已知模块（15

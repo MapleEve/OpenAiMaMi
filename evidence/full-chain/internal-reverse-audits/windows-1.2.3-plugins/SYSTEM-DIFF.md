@@ -14,7 +14,7 @@
 ## Backend Commands / Control-flow / Pseudocode / Call-tree / Leaf
 
 - 1.0.9: `PluginRegistry::{set_enabled,list,get_config,update_settings,save_store_static}` + `PluginStoreSchema::serialize` fully decompiled and leaf-closed (13/13 PASS).
-- 1.2.3: no `plugins/` raw module directory exists among the 65 windows-x64 module directories produced by the 1.2.3 full-app baseline sweeps (`wf-aimami123-delta-20260721`, `win-1.2.3-app-function-inventory-gapfill-20260724`); no owner symbol found in the binary string table. No decompile attempted this audit — there is no address to target.
+- 1.2.3: no `plugins/` raw module directory exists among the 65 windows-x64 module directories produced by the 1.2.3 full-app baseline sweeps (`<审计会话> `win-1.2.3-app-function-inventory-gapfill-20260724`); no owner symbol found in the binary string table. No decompile attempted this audit — there is no address to target.
 
 ## Interface / Error / Boundary
 

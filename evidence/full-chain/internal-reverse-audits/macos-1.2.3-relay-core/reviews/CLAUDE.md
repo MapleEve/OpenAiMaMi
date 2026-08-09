@@ -23,7 +23,7 @@ chat on 2026-07-26 to unblock this one package; see `REVERSE-STATUS.md` for the 
 2. Read the existing package in full: `manifest.json`, `README.md`, `AI.md`, `SYSTEM-DIFF.md`,
    `pointers/evidence-paths.md` -- all pre-existing conclusions left as-is (non-destructive; only new files added
    and manifest.json amended with a dated resolution section, not rewritten).
-3. IDA_LIVE_GATE passed on both endpoints before any query: macOS <host> (`status=ok`,
+3. <门控> passed on both endpoints before any query: macOS <host> (`status=ok`,
    `IDA decompiler_ready=true`, `module=AiMaMi`) and Windows <host> (`status=ok`, `IDA decompiler_ready=true`,
    `module="AiMaMi.1.2.3 win64.exe"`).
 4. Ran the two open Unknowns from this package's own `AI.md next_actions_for_next_worker` item 1 (macOS

@@ -4,7 +4,7 @@
 范围：Home/Dashboard 页 + Usage/Analytics 面板的 **Windows-x64 前端可达面**（命令面 + minified-static 控制流）。scope 对齐 `cross-1.2.3-home-usage-frontend` 与 `cross-1.0.9-home-usage-frontend` 模板（home-dashboard + usage-snapshot-panel）。
 最终结论：**consumerStartReady=false —— Windows 前端命令面证据包（frontend-command-surface + minified CCF）；页面级 render-surface 未 reduce、后端 owner/decompile Unknown、dim6 未做 → 每命令 gate leaf = candidate-only，`gap_needs_reducer`（backend + 页面 render-surface）。不虚高。**
 
-本包是此前记为 **MISSING** 的 `audits/windows-1.2.3-home-usage-frontend/` canonical 单平台包的首次落地，回应 `REVERSE-STATUS.md:4011`（`wf-aimami123-fullapp-20260724`）与 `cross-1.2.3-home-usage-frontend` 的 `gate_needs_reducer=2` 缺口之一（另一半 = 并行会话 `macos-1.2.3-home-usage-frontend-reduce-20260726`）。
+本包是此前记为 **MISSING** 的 `audits/windows-1.2.3-home-usage-frontend/` canonical 单平台包的首次落地，回应 `REVERSE-STATUS.md:4011`（`<审计会话> `cross-1.2.3-home-usage-frontend` 的 `gate_needs_reducer=2` 缺口之一（另一半 = 并行会话 `macos-1.2.3-home-usage-frontend-reduce-20260726`）。
 
 ## 诚实定位（本包不是什么）
 

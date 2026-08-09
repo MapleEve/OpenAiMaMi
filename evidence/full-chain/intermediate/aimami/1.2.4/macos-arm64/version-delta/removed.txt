@@ -1,0 +1,11 @@
+# removed.txt — AiMaMi 1.2.3 → 1.2.4 (macOS, mac_verify_63 confirmed_removed)
+# Only 4 symbols confirmed truly removed (not ICF alias). See VERSION-DIFF.md for platform-divergence notes.
+
+commands::relay::get_codex_router_auth_readiness  # mac confirmed_removed by mac_verify_63_20260808
+core::mcp::remove_mcp_server  # mac confirmed_removed by mac_verify_63_20260808
+core::relay::codex_catalog::build_catalog_bytes  # mac confirmed_removed by mac_verify_63_20260808
+core::relay::router_unlock_auth::ensure_auth_for_router  # mac confirmed_removed by mac_verify_63_20260808
+
+# Platform-divergent removals (mac removed, win dispatch string still present):
+# codexmate_lib::commands::relay::get_codex_router_auth_readiness — win dispatch string 'get_codex_router_auth_readiness' still at 0x14173f338 in 1.2.4 win, referenced by tauri dispatcher sub_140180C00
+# codexmate_lib::core::mcp::remove_mcp_server — mac removed core helper, win still has independent function

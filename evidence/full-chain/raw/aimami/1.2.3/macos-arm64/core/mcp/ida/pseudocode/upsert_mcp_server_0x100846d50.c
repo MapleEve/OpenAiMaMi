@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core3mcp17upsert_mcp_server @ 0x100846d50 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::mcp::upsert_mcp_server::h5e6eaa54129c4429(
         _QWORD *a1,

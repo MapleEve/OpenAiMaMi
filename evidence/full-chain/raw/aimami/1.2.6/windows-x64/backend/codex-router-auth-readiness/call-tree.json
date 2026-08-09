@@ -1,0 +1,80 @@
+{
+  "targets": [
+    {
+      "target": "get_codex_router_auth_readiness",
+      "edges": [
+        {
+          "depth": 0,
+          "ea": "0x140174120",
+          "name": "sub_140174120",
+          "role": "shared_dispatcher_inline_match_arm",
+          "note": "tracing::instrument dispatch loop; string get_codex_router_auth_readiness@0x14177aa2e xref single-hit at 0x140174bd6 leads into match-arm block 0x140174aea-0x140174bb6 -> 0x140174bff-0x140174c5c; boilerplate call to sub_14002B2A0 (32-caller shared async unwrap/poison helper) then the one exclusive business call at 0x140174bd6"
+        },
+        {
+          "depth": 1,
+          "ea": "0x140547c70",
+          "name": "get_codex_router_auth_readiness_owner_sys",
+          "role": "owner",
+          "callers": 1,
+          "caller_ea": "0x140174120",
+          "note": "renamed this session; 113B, 1 basic block, cc=1; exclusive caller confirmed via analyze_function"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140bf9190",
+          "name": "sub_140BF9190",
+          "role": "oauth_availability_check",
+          "callers": 1,
+          "caller_ea": "0x140547c70",
+          "note": "821B/47 blocks/cc29; not renamed (out of strict 3-target scope), documented as owner's callee only"
+        },
+        {
+          "depth": 2,
+          "ea": "0x1409c2d20",
+          "name": "sub_1409C2D20",
+          "role": "relaymanager_mutex_state_read",
+          "callers": 26,
+          "caller_ea": "0x140547c70",
+          "terminated_reason": "persistence_read_equivalent",
+          "note": "shared helper, string relay state poisoned + src\\core\\relay\\manager.rs; mutex CAS + poison-recovery + sub_140A7ABA0 712B state copy"
+        },
+        {
+          "depth": 2,
+          "ea": "0x1404d0720",
+          "name": "sub_1404D0720",
+          "role": "response_envelope_builder",
+          "callers": 1,
+          "caller_ea": "0x140547c70",
+          "terminated_reason": "response_serialize",
+          "note": "exclusive; builds {disc=2,\"ok\",\"Success\"} envelope matching macOS/1.1.8 windows sibling leaf's already-documented envelope shape"
+        },
+        {
+          "depth": 3,
+          "ea": "0x140b1e6d0",
+          "name": "sub_140B1E6D0",
+          "role": "account_repository_probe",
+          "callers": ">=1",
+          "caller_ea": "0x140bf9190",
+          "note": "reads account/session-like repository record via sub_141534AD0 + sub_14086C5A0 (depth4); dealloc via shared sub_140001660"
+        },
+        {
+          "depth": 4,
+          "ea": "0x141534ad0",
+          "name": "sub_141534AD0",
+          "role": "account_state_read",
+          "caller_ea": "0x140b1e6d0",
+          "note": "produces (status,ptr,len) triple consumed by sub_14086C5A0; not further traced this round (out of strict 3-target scope; documented depth4 anchor only)"
+        },
+        {
+          "depth": 4,
+          "ea": "0x14086c5a0",
+          "name": "sub_14086C5A0",
+          "role": "account_state_transform",
+          "caller_ea": "0x140b1e6d0",
+          "note": "consumes sub_141534AD0 output, produces final oauth-availability record written into owner's response buffer"
+        }
+      ]
+    }
+  ],
+  "edges_count": 8
+}

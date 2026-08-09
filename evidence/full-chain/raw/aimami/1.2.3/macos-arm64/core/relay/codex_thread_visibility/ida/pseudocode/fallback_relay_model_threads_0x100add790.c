@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay23codex_thread_visibility28fallback_relay_model_threads @ 0x100add790 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 *__fastcall codexmate_lib::core::relay::codex_thread_visibility::fallback_relay_model_threads::h3dd6da94b27a11ac(
         __int64 *a1,

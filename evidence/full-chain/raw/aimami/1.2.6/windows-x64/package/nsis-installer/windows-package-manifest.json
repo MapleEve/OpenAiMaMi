@@ -1,0 +1,121 @@
+{
+  "schema": "rust-reverse-pipeline.windows-package.v1",
+  "generatedAt": "2026-08-05T05:01:08.402968+00:00",
+  "installer": "<内部存储>/raw/binary/AiMaMi_1.2.6_x64-setup.exe",
+  "installerName": "AiMaMi_1.2.6_x64-setup.exe",
+  "installerSize": 8822349,
+  "installerSha256": "34553bc0022c38f2666b16349fe7817eb9f2463409acc30e1460fedb1852f37b",
+  "fileType": "<内部存储>/raw/binary/AiMaMi_1.2.6_x64-setup.exe: PE32 executable (GUI) Intel 80386, for MS Windows, Nullsoft Installer self-extracting archive",
+  "packageFormat": "nsis-installer",
+  "platform": "windows",
+  "executedInstaller": false,
+  "extractorUsed": "7zz",
+  "extractStatus": "ok",
+  "extractedRoot": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted",
+  "extractedFileCount": 9,
+  "tauriDumpRoot": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/tauri-dumped-assets",
+  "tauriDumpAttempts": [],
+  "attempts": [
+    {
+      "tool": "7zz",
+      "available": true,
+      "list": {
+        "cmd": [
+          "7zz",
+          "l",
+          "-slt",
+          "<内部存储>/raw/binary/AiMaMi_1.2.6_x64-setup.exe"
+        ],
+        "exit": 0,
+        "log": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/logs/7zz-list.log"
+      },
+      "extract": {
+        "cmd": [
+          "7zz",
+          "x",
+          "-y",
+          "-o<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted",
+          "<内部存储>/raw/binary/AiMaMi_1.2.6_x64-setup.exe"
+        ],
+        "exit": 0,
+        "log": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/logs/7zz-extract.log"
+      },
+      "newFileCount": 9
+    }
+  ],
+  "peFiles": [
+    {
+      "path": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/AiMaMi.exe",
+      "relativePath": "AiMaMi.exe",
+      "role": "candidate-app-binary",
+      "size": 34685952,
+      "sha256": "763c9b677d612b18115cb56c03f717b1820deb09ad32f89fd43619a0fdcc60fb",
+      "fileType": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/AiMaMi.exe: PE32+ executable (GUI) x86-64, for MS Windows"
+    },
+    {
+      "path": "<内部存储>/raw/binary/AiMaMi_1.2.6_x64-setup.exe",
+      "relativePath": "AiMaMi_1.2.6_x64-setup.exe",
+      "role": "installer",
+      "size": 8822349,
+      "sha256": "34553bc0022c38f2666b16349fe7817eb9f2463409acc30e1460fedb1852f37b",
+      "fileType": "<内部存储>/raw/binary/AiMaMi_1.2.6_x64-setup.exe: PE32 executable (GUI) Intel 80386, for MS Windows, Nullsoft Installer self-extracting archive"
+    },
+    {
+      "path": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/$PLUGINSDIR/nsis_tauri_utils.dll",
+      "relativePath": "$PLUGINSDIR/nsis_tauri_utils.dll",
+      "role": "installer-plugin",
+      "size": 34304,
+      "sha256": "5ba143b5db4a87d32d6e7802e033330aae56cbceabe0d1e3ba41948385ad4709",
+      "fileType": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/$PLUGINSDIR/nsis_tauri_utils.dll: PE32 executable (DLL) (GUI) Intel 80386, for MS Windows"
+    },
+    {
+      "path": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/$PLUGINSDIR/NSISdl.dll",
+      "relativePath": "$PLUGINSDIR/NSISdl.dll",
+      "role": "installer-plugin",
+      "size": 15360,
+      "sha256": "ddf40229dd9d6b268902d8dea88c8a04aacf1af218dd29f6dcd35babc54ac08d",
+      "fileType": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/$PLUGINSDIR/NSISdl.dll: PE32 executable (DLL) (GUI) Intel 80386, for MS Windows"
+    },
+    {
+      "path": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/$PLUGINSDIR/System.dll",
+      "relativePath": "$PLUGINSDIR/System.dll",
+      "role": "installer-plugin",
+      "size": 12288,
+      "sha256": "8b4c47c4cf5e76ec57dd5a050d5acd832a0d532ee875d7b44f6cdaf68f90d37c",
+      "fileType": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/$PLUGINSDIR/System.dll: PE32 executable (DLL) (GUI) Intel 80386, for MS Windows"
+    },
+    {
+      "path": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/$PLUGINSDIR/nsDialogs.dll",
+      "relativePath": "$PLUGINSDIR/nsDialogs.dll",
+      "role": "installer-plugin",
+      "size": 9728,
+      "sha256": "b1350f487692057c8ffde75dcc55287a52a3272240d4d4912f24464b27551fc0",
+      "fileType": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/$PLUGINSDIR/nsDialogs.dll: PE32 executable (DLL) (GUI) Intel 80386, for MS Windows"
+    },
+    {
+      "path": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/$PLUGINSDIR/StartMenu.dll",
+      "relativePath": "$PLUGINSDIR/StartMenu.dll",
+      "role": "installer-plugin",
+      "size": 7680,
+      "sha256": "fe330320459637d8dd2b5d84d07925c38ec264152ffd3b1760a4d44d76536caa",
+      "fileType": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/$PLUGINSDIR/StartMenu.dll: PE32 executable (DLL) (GUI) Intel 80386, for MS Windows"
+    }
+  ],
+  "candidateAppBinaries": [
+    {
+      "path": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/AiMaMi.exe",
+      "relativePath": "AiMaMi.exe",
+      "role": "candidate-app-binary",
+      "size": 34685952,
+      "sha256": "763c9b677d612b18115cb56c03f717b1820deb09ad32f89fd43619a0fdcc60fb",
+      "fileType": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/AiMaMi.exe: PE32+ executable (GUI) x86-64, for MS Windows"
+    }
+  ],
+  "frontendCandidates": [],
+  "resourceCandidates": [
+    "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/resources"
+  ],
+  "gaps": [
+    "no extracted frontend asset directory found"
+  ]
+}

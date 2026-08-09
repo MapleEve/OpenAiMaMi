@@ -1,0 +1,81 @@
+{
+  "targets": [
+    {
+      "target": "migrate_legacy_deepseek_v4_flash_official_protocol",
+      "edges": [
+        {
+          "depth": 0,
+          "ea": "0x140b5d9d0",
+          "name": "sub_140B5D9D0",
+          "role": "caller_candidate",
+          "note": "疑为storage::load的Windows对应位置，size 0x15b7，未完整验证，未重命名，call site 0x140b5e54c"
+        },
+        {
+          "depth": 1,
+          "ea": "0x140b5f590",
+          "name": "migrate_legacy_deepseek_v4_flash_official_protocol",
+          "role": "migration",
+          "note": "本轮重命名(原sub_140B5F590)，完整反编译1169字节无截断"
+        },
+        {
+          "depth": 2,
+          "ea": "0x1414ef350",
+          "name": "sub_1414EF350",
+          "role": "url_parse",
+          "note": "对应mac url::ParseOptions::parse",
+          "terminated_reason": "external_call"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140a82f20",
+          "name": "sub_140A82F20",
+          "role": "trim_matches",
+          "terminated_reason": "external_call"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140a837d0",
+          "name": "sub_140A837D0",
+          "role": "trim_end_matches",
+          "terminated_reason": "external_call"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140affb20",
+          "name": "sub_140AFFB20",
+          "role": "split_next_back",
+          "terminated_reason": "external_call"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140a839d0",
+          "name": "sub_140A839D0",
+          "role": "shared_simd_compare_helper",
+          "note": "is_deepseek_v4_flash_model等价判定内联点(3处调用: 0x140b5f87d/0x140b5f922/0x140b5f9bf)；确认4处调用方复用，未重命名"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140001660",
+          "name": "sub_140001660",
+          "role": "rust_dealloc",
+          "terminated_reason": "external_call"
+        },
+        {
+          "depth": 2,
+          "ea": "0x1414f2570",
+          "name": "sub_1414F2570",
+          "role": "url_path_accessor",
+          "terminated_reason": "external_call"
+        },
+        {
+          "depth": 2,
+          "ea": "0x1414f27d0",
+          "name": "sub_1414F27D0",
+          "role": "url_host_str_accessor",
+          "terminated_reason": "external_call"
+        }
+      ]
+    }
+  ],
+  "edges_count": 10
+}

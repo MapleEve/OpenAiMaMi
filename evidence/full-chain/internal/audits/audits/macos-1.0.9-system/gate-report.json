@@ -186,7 +186,7 @@
         "assertions": [
           "cargo: test_check_update_installability_normal_app → status='ok', can_install=true, is_translocation=false, quarantine_cleared=true",
           "cargo: test_check_update_installability_translocation → /AppTranslocation/ path → status='app_translocation', can_install=false",
-          "cargo: test_check_update_installability_volumes → /Volumes/ prefix → status='read_only_location', can_install=false",
+          "cargo: test_check_update_installability_volumes → <内部存储>/ prefix → status='read_only_location', can_install=false",
           "cargo: test_check_update_installability_xattr_fail → quarantine_cleared=false",
           "e2e: AiMaMi from normal install → can_install=true, status='ok'",
           "e2e: AiMaMi from DMG (translocation) → status='app_translocation', can_install=false"

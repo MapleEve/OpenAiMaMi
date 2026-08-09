@@ -3,7 +3,7 @@
 > 任务编号 1.2.3 后端完整基线模块分析（run-app-misc）。
 > 方法：只读已由 IDA 反编译好的 `.c` 伪代码（文件头注释含 mangled 符号名 + 地址 + `基线 same-set` / `NEW-delta` 标记），不连 IDA、不做二次反编译，只做代码阅读与文档整理。
 > 授权范围：本仓/本机所有者对 AiMaMi（自家/已授权产品）下达的重建授权任务，产出仅用于内部架构基线文档。
-> 覆盖目录：`run/`、`toplevel/`、`install_macos_quit_guard/`、`core/debug_bundle/`、`core/analytics/`、`core/mcp/`、`core/skills/`、`core/`（根级）共 8 个任务给定路径，全部位于 `raw/aimami/1.2.3/macos-arm64/`。
+> 覆盖目录：`run/`、`toplevel/`、`install_macos_quit_guard/`、`core/debug_bundle/`、`core/analytics/`、`core/mcp/`、`core/skills/`、`core/`（根级）共 8 个任务给定路径，全部位于 `<内部存储>/raw/aimami/1.2.3/macos-arm64/`。
 
 ## 0. 目录清单与偏差说明
 
@@ -33,7 +33,7 @@
 其余函数头注释均为 `基线 same-set`（与 1.2.2 版本对齐，非本版本新增）。
 
 **自动生成 glue 计数（略读，不逐条展开）**：
-- `run/`：89 个文件中，除 1 个带真实符号名的顶层入口（`run::h629ec01...`）与 2 个标注 `[FULL IDA decompiler]` 的大型闭包外，其余 **86 个**全部是 `codexmate_lib::run::{{closure}}::{{closure}}::hXXXXXXXX` 形态、且全部为「基线 same-set」的嵌套闭包——这是 Rust 编译器为 `tauri::generate_handler!` 宏生成的 async/命令分发状态机在编译期展开出的延续（continuation）片段，属于宏生成粘合代码而非独立业务逻辑，本次按「1 个业务实体（IPC 分发表）」统计，不逐个展开。
+- `run/`：89 个文件中，除 1 个带真实符号名的顶层入口（`run::h629ec01...`）与 2 个标注 `[FULL <反编译器>]` 的大型闭包外，其余 **86 个**全部是 `codexmate_lib::run::{{closure}}::{{closure}}::hXXXXXXXX` 形态、且全部为「基线 same-set」的嵌套闭包——这是 Rust 编译器为 `tauri::generate_handler!` 宏生成的 async/命令分发状态机在编译期展开出的延续（continuation）片段，属于宏生成粘合代码而非独立业务逻辑，本次按「1 个业务实体（IPC 分发表）」统计，不逐个展开。
 - `core/analytics/`：5 个 `serde_core::ser::Serialize for XxxPayload::serialize` 样板实现（`SessionStats`、`TodaySummary`、`DailyActivity`、`CachedRolloutEntry`、`UsageAnalyticsPayload`），直接按字段顺序写入序列化器，无业务判断逻辑。
 - `core/debug_bundle/`：2 个 `export_debug_bundle::{{closure}}` 小闭包为 UTF-8 校验/ZipError 格式化胶水；1 个 `DebugBundlePayload::serialize` 为样板序列化。
 
@@ -48,8 +48,8 @@
 | 函数 | 行为 | destructive |
 |---|---|---|
 | `run::h629ec01040356f4c`（顶层入口，700 行，唯一带真实符号名的非闭包函数） | 应用主入口：`CodexPaths::resolve_codex_home`/`ensure_directories` 确保配置目录存在，`harden_private_file`/`harden_private_tree` 收紧敏感文件权限；调用 `single_instance::acquire` 抢占单实例锁——**若抢占成功**（本进程是主实例）：构建 `RelayManager`，注册 `tauri_plugin_updater`/`autostart`/`deep_link`/`global_shortcut`/`dialog`/`process` 等插件与自定义 relay 插件，`manage` 注入 `VoiceRuntimeInner` 等应用状态，在独立 8MiB 栈线程中构建 Tauri `Context`（避免生成的 Context 体积过大导致主线程栈溢出），最终 `App::run` 进入事件循环；**若抢占失败**（已有实例在跑）：解析命令行参数，若首个参数以 `aimami:/` 深链接前缀开头则取出该 URL，调用 `single_instance::request_existing_instance_activation_with_url` 把 URL 转发给已运行的主实例并退出，失败时记录日志 `"[AiMaMi] failed to activate the running instance"` | 无（正常启动/转发流程） |
-| `run::{{closure}}` × 2（`[FULL IDA decompiler]` 标记，`0x1000cf8f0` 2535 行、`0x100990c40` 4819 行） | `tauri::ipc::command::CommandArg::from_command` 驱动的 IPC 命令匹配闭包——即 `generate_handler!` 宏展开后的实际分发体，按命令名字符串（反编译产物中可见约 150 个拼接在一起的命令名，如 `remove_mcp_server`/`upsert_mcp_server`/`reveal_relay_api_key`/`restart_codex`/`graceful_restart_for_update`/`get_system_info`/`load_usage_analytics` 等）匹配并解出 `State<Mutex<T>>` 类型的命令参数（含中毒锁 `"poisoned lock: another task failed inside"` 的错误路径处理），再跳转到各命令的真实实现（不在本目录内） | 无（分发胶水，不含具体业务副作用） |
-| 86 个 `run::{{closure}}::{{closure}}::hXXXXXXXX`（全部「基线 same-set」） | 上述两个 `[FULL IDA decompiler]` 分发闭包在编译期为每个 async 命令 / `.await` 点展开出的延续状态机片段，本质是同一条分发逻辑的不同延续位置，非独立业务函数 | — |
+| `run::{{closure}}` × 2（`[FULL <反编译器>]` 标记，`0x1000cf8f0` 2535 行、`0x100990c40` 4819 行） | `tauri::ipc::command::CommandArg::from_command` 驱动的 IPC 命令匹配闭包——即 `generate_handler!` 宏展开后的实际分发体，按命令名字符串（反编译产物中可见约 150 个拼接在一起的命令名，如 `remove_mcp_server`/`upsert_mcp_server`/`reveal_relay_api_key`/`restart_codex`/`graceful_restart_for_update`/`get_system_info`/`load_usage_analytics` 等）匹配并解出 `State<Mutex<T>>` 类型的命令参数（含中毒锁 `"poisoned lock: another task failed inside"` 的错误路径处理），再跳转到各命令的真实实现（不在本目录内） | 无（分发胶水，不含具体业务副作用） |
+| 86 个 `run::{{closure}}::{{closure}}::hXXXXXXXX`（全部「基线 same-set」） | 上述两个 `[FULL <反编译器>]` 分发闭包在编译期为每个 async 命令 / `.await` 点展开出的延续状态机片段，本质是同一条分发逻辑的不同延续位置，非独立业务函数 | — |
 | `inner::{{closure}}`（`0x100571850`，**[DECOMPILE-FAILED]**） | 反编译失败，仅知其为 `run::inner` 内部闭包，具体行为未知，不作臆断 | 未知 |
 
 ---
@@ -101,7 +101,7 @@
 
 | 函数 | 行为 | destructive |
 |---|---|---|
-| `compute_usage_analytics`（1553 行，`[FULL IDA decompiler]`） | 持 `ANALYTICS_SCAN_LOCK` 互斥锁扫描会话目录，对每个文件按 `visit_dir` 递归遍历结果结合增量索引缓存（`CachedRolloutEntry`）跳过未修改文件；若缓存索引损坏/不合法则记录日志 `"[AiMaMi][usage-analytics] ignored invalid incremental index"` 并回退全量重扫；按 `timestamp_to_date_string` 把记录归入对应自然日桶，最终经 `atomic_write::write_atomic_with_mode` 把聚合结果原子写回本地缓存文件 | 覆盖写本地用量缓存文件（原子写，非任意删除） |
+| `compute_usage_analytics`（1553 行，`[FULL <反编译器>]`） | 持 `ANALYTICS_SCAN_LOCK` 互斥锁扫描会话目录，对每个文件按 `visit_dir` 递归遍历结果结合增量索引缓存（`CachedRolloutEntry`）跳过未修改文件；若缓存索引损坏/不合法则记录日志 `"[AiMaMi][usage-analytics] ignored invalid incremental index"` 并回退全量重扫；按 `timestamp_to_date_string` 把记录归入对应自然日桶，最终经 `atomic_write::write_atomic_with_mode` 把聚合结果原子写回本地缓存文件 | 覆盖写本地用量缓存文件（原子写，非任意删除） |
 | `visit_dir`（896 行） | 递归遍历目录：对每个 `DirEntry` 取 `file_type`/`metadata`/`modified` 时间，匹配到目标日志文件后用 `OpenOptions::_open` 打开读取，供 `compute_usage_analytics` 增量比对 mtime 决定是否需要重新解析 | 无（只读遍历） |
 | `timestamp_to_date_string` | 把 Unix 时间戳按本地时区转换为 `%Y-%m-%d` 格式的日期字符串，用于按天分桶统计 | 无 |
 | 5 个 `serialize`（`SessionStats`/`TodaySummary`/`DailyActivity`/`CachedRolloutEntry`/`UsageAnalyticsPayload`） | `serde` 派生的样板 `Serialize` 实现，按字段顺序写出，无业务逻辑（计数即可） | — |
@@ -117,7 +117,7 @@
 | 函数 | 行为 | destructive |
 |---|---|---|
 | `load_mcp_servers`（1417 行） | 用轻量文本解析（`parse_mcp_section_header` + `strip_toml_comment` + `unquote_toml`，非 `toml_edit`）逐行解析 `config.toml`，抽取已配置的 MCP 服务器列表供前端展示 | 无（只读） |
-| `upsert_mcp_server`（1504 行，`[FULL IDA decompiler]`） | `codex_config::read_text` 读原文 → `parse_mcp_document` 解析为 `toml_edit::Document` → `editable_mcp_server_table` 确保 `mcp_servers` 顶层表与目标服务器子表存在（若已存在同名非表类型键则报错 `"mcp_servers must be a TOML table"`）→ `replace_string_table`/`set_optional_string`/`quote_toml` 写入 name/command/args/env/url 等字段 → `insert_mcp_block`/`prepare_existing_mcp_block` 维护「DO NOT EDIT MANUALLY」标记块 → `atomic_write::write_atomic_with_mode` 整文件原子覆写 | 覆盖写 `config.toml`（原子写，新增/更新服务器条目） |
+| `upsert_mcp_server`（1504 行，`[FULL <反编译器>]`） | `codex_config::read_text` 读原文 → `parse_mcp_document` 解析为 `toml_edit::Document` → `editable_mcp_server_table` 确保 `mcp_servers` 顶层表与目标服务器子表存在（若已存在同名非表类型键则报错 `"mcp_servers must be a TOML table"`）→ `replace_string_table`/`set_optional_string`/`quote_toml` 写入 name/command/args/env/url 等字段 → `insert_mcp_block`/`prepare_existing_mcp_block` 维护「DO NOT EDIT MANUALLY」标记块 → `atomic_write::write_atomic_with_mode` 整文件原子覆写 | 覆盖写 `config.toml`（原子写，新增/更新服务器条目） |
 | `remove_mcp_server`（622 行） | 读原文 → 解析 → `toml_edit::Table::remove` 从内存 AST 中移除目标 `[mcp_servers.NAME]` 表 → 原子写回整份文件 | **删除**用户已配置的 MCP 服务器条目（config.toml 段落级删除） |
 | `set_mcp_server_enabled` | 读原文 → 确保服务器子表存在 → 通过 `prepare_existing_mcp_block` 调整该服务器块的启用/禁用标记（管理块级别的开关，非物理删除）→ 原子写回 | 无（启用/禁用切换，非删除） |
 | `set_optional_string`（**1.2.3 NEW-delta**） | 若给定值非空（`trim` 后仍有内容），用 `toml_edit::Value::from` 写入该字段；若为空，则 `toml_edit::table::Table::remove` 直接移除该键——用于可选字段（如 env/headers）「留空即删除」的语义 | 移除单个可选 TOML 键（值为空时） |

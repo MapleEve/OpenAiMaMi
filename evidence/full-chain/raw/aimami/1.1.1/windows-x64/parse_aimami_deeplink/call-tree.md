@@ -111,7 +111,7 @@ tauri_ipc_dispatcher_shim_sys
 | trim_end_matches | sub_14070B500 | str_trim_end_matches_char_sys | B-rename | 0x14070B500 |
 | hashmap insert | sub_140730900 | relay_provider_hashmap_insert_sys | B-rename | 0x140730900 |
 
-idb_save: ok=true path=<本地路径>
+<工具调用>: ok=true path=<本地路径>
 
 ## Accepted Unknown
 

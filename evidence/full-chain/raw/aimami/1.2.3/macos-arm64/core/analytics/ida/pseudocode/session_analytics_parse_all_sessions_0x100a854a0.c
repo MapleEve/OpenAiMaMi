@@ -1,4 +1,4 @@
-// 1.2.3 baseline same-set | __ZN13codexmate_lib4core17session_analytics18parse_all_sessions17h61d984ccd4ee9321E @ 0x100a854a0 | full-body via IDA Python(IDA decompiler.decompile direct write)
+// 1.2.3 baseline same-set | __ZN13codexmate_lib4core17session_analytics18parse_all_sessions17h61d984ccd4ee9321E @ 0x100a854a0 | full-body via py_exec_file(ida_hexrays.decompile direct write)
 // 1.2.3 baseline same-set | codexmate_lib::core::session_analytics::parse_all_sessions | 完整基线逆(decompile+归目录)
 void __fastcall codexmate_lib::core::session_analytics::parse_all_sessions::h61d984ccd4ee9321(
         _QWORD *a1,

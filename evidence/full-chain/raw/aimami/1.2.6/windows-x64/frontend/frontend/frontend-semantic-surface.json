@@ -1,0 +1,5533 @@
+{
+  "binary": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/AiMaMi.exe",
+  "binarySha256": "763c9b677d612b18115cb56c03f717b1820deb09ad32f89fd43619a0fdcc60fb",
+  "binarySize": 34685952,
+  "commands": [
+    {
+      "argKeys": [
+        "ide",
+        "providerId"
+      ],
+      "ccfRows": 2,
+      "command": "activate_relay_provider",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "activate"
+      ]
+    },
+    {
+      "argKeys": [
+        "content",
+        "source",
+        "templateCode",
+        "templateTitle"
+      ],
+      "ccfRows": 1,
+      "command": "apply_custom_instruction",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "applyCustomInstruction"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "begin_chatgpt_oauth_login",
+      "componentFiles": [
+        "assets/accounts-page-MTQ8SHe2.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(i)return;"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "beginChatgptOauthLogin"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "cancel_chatgpt_oauth_login",
+      "componentFiles": [
+        "assets/accounts-page-MTQ8SHe2.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "cancelChatgptOauthLogin"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "cancel_voice_trigger_capture",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "cancelVoiceTriggerCapture"
+      ]
+    },
+    {
+      "argKeys": [
+        "style"
+      ],
+      "ccfRows": 2,
+      "command": "capture_voice_trigger_key",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "captureVoiceTriggerKey"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "check_update_installability",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "checkUpdateInstallability"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "clean",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "clean"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "clear_custom_instruction_block",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "clearCustomInstructionBlock"
+      ]
+    },
+    {
+      "argKeys": [
+        "enabled",
+        "threshold5hPercent",
+        "thresholdWeeklyPercent"
+      ],
+      "ccfRows": 2,
+      "command": "configure_auto_switch",
+      "componentFiles": [
+        "assets/auto-switch-zNj1OBIk.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(!e(t.t5h)||!e(t.tWeekly))throw new RangeError(\"Auto-switch thresholds must be integers from 1 to 100\");"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "configureAutoSwitch"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "confirm_pending_auto_switch",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "confirmPendingAutoSwitch"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "confirm_pending_auto_switch_and_restart_codex",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(!(!t||r)){i(!0);try{const c=await Pe.confirmPendingAutoSwitchAndRestartCodex();c.warnings.length>0&&Ie({title:e(\"accounts.switched\"),description:c.warnings.map(d=>d.message).joi"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "confirmPendingAutoSwitchAndRestartCodex"
+      ]
+    },
+    {
+      "argKeys": [
+        "ide",
+        "providerId"
+      ],
+      "ccfRows": 2,
+      "command": "deactivate_relay_provider",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "deactivate"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "default_debug_bundle_file_name",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/maintenance-page-VLVCW7Jr.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "defaultDebugBundleFileName"
+      ]
+    },
+    {
+      "argKeys": [
+        "providerId"
+      ],
+      "ccfRows": 1,
+      "command": "delete_relay_provider",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "delete"
+      ]
+    },
+    {
+      "argKeys": [
+        "ids"
+      ],
+      "ccfRows": 2,
+      "command": "delete_sessions",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/sessions-page-BlAM0ZKh.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "deleteSessions"
+      ]
+    },
+    {
+      "argKeys": [
+        "id"
+      ],
+      "ccfRows": 2,
+      "command": "delete_skill_backup",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/skills-page-1VAVrk5f.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "deleteSkillBackup"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "detect_api_proxy_config",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "detectApiProxyConfig"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "diagnose",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "diagnose"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "dismiss_pending_auto_switch",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(!(!t||r)){i(!0);try{await Pe.dismissPendingAutoSwitch(),n(null)}catch(c){Ie({title:e(\"settings.autoSwitchConfirmFailed\"),description:String(c),variant:\"destructive\"});try{n(awai"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "dismissPendingAutoSwitch"
+      ]
+    },
+    {
+      "argKeys": [
+        "accountKeys",
+        "targetPath"
+      ],
+      "ccfRows": 2,
+      "command": "export_accounts_to_file",
+      "componentFiles": [
+        "assets/accounts-page-MTQ8SHe2.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(!O)throw new Error(\"CANCELLED\");"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "exportAccountsToFile"
+      ]
+    },
+    {
+      "argKeys": [
+        "targetPath"
+      ],
+      "ccfRows": 2,
+      "command": "export_debug_bundle",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/maintenance-page-VLVCW7Jr.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "exportDebugBundle"
+      ]
+    },
+    {
+      "argKeys": [
+        "filePath",
+        "includeApiKeys"
+      ],
+      "ccfRows": 2,
+      "command": "export_relay_config",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/relay-page-CgECWXZm.js"
+      ],
+      "guards": [
+        "if(!w)throw new Error(\"CANCELLED\");"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "exportConfig"
+      ]
+    },
+    {
+      "argKeys": [
+        "sessionId",
+        "targetPath"
+      ],
+      "ccfRows": 2,
+      "command": "export_session_markdown",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/sessions-page-BlAM0ZKh.js"
+      ],
+      "guards": [
+        "if(!B(n))throw new Error(s(\"sessions.exportUnavailable\"));",
+        "if(!u)throw new Error(\"CANCELLED\");"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "exportSessionMarkdown"
+      ]
+    },
+    {
+      "argKeys": [
+        "input"
+      ],
+      "ccfRows": 2,
+      "command": "fetch_relay_models_draft",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(!e.baseUrl.trim()||v)return;"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "fetchModelsDraft"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "focus_main_window",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "focusMainWindow"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "force_kill_codex",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/maintenance-page-VLVCW7Jr.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "forceKillCodex"
+      ]
+    },
+    {
+      "argKeys": [
+        "asrDurationMs",
+        "asrEmotion",
+        "asrErrorCode",
+        "asrLanguage",
+        "asrModel",
+        "asrProvider",
+        "clipboardText",
+        "llmApiKey",
+        "llmBaseUrl",
+        "llmModel",
+        "llmProvider",
+        "promptOverride",
+        "rawText",
+        "selectedText",
+        "targetAppName",
+        "targetBundleId",
+        "templateId",
+        "templateKind",
+        "templateTitle"
+      ],
+      "ccfRows": 2,
+      "command": "generate_voice_prompt",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "generateVoicePrompt"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "get_autostart_state",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/settings-page-DdurgRVs.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "getAutostartState"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "get_claude_web_search_compat",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/maintenance-page-VLVCW7Jr.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "getClaudeWebSearchCompat"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "get_codex_router_auth_readiness",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/relay-page-CgECWXZm.js"
+      ],
+      "guards": [
+        "if(i&&!Gt){oe(!0);return}",
+        "if(i)try{const g=await Ne.getCodexRouterAuthReadiness();ht(g.data.willUseNoAccountMode)}catch(g){k({title:t(\"relay.codexRouter.authReadinessFailed\"),description:V(g),variant:\"destr",
+        "if(i){X(!0);return}"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "getCodexRouterAuthReadiness"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "get_device_id",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "getDeviceId"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 3,
+      "command": "get_hotspot_enabled",
+      "componentFiles": [
+        "assets/accounts-page-MTQ8SHe2.js",
+        "assets/index-COJfQ25H.js",
+        "assets/settings-page-DdurgRVs.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "getHotspotEnabled"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "get_image_compat",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/maintenance-page-VLVCW7Jr.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "getImageCompat"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "get_mystery_unlock_grants",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "getMysteryUnlockGrants"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "get_notification_client_state",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(!a.current||!l.current){const x=await Pe.getNotificationClientState();a.current=x.deviceId,l.current=new Date(x.notificationsSince*1e3).toISOString()}"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "getNotificationClientState"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "get_relay_active",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "getActive"
+      ]
+    },
+    {
+      "argKeys": [
+        "providerId"
+      ],
+      "ccfRows": 2,
+      "command": "get_relay_provider_quota",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/relay-page-CgECWXZm.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "getQuota"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "get_relay_proxy_status",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "getProxyStatus"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "get_system_info",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "getSystemInfo"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "get_usage_refresh_interval",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "getUsageRefreshInterval"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 3,
+      "command": "has_notch",
+      "componentFiles": [
+        "assets/accounts-page-MTQ8SHe2.js",
+        "assets/index-COJfQ25H.js",
+        "assets/settings-page-DdurgRVs.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "hasNotch"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "hotspot_ready",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "hotspotReady"
+      ]
+    },
+    {
+      "argKeys": [
+        "expectedContentSha256",
+        "filePath",
+        "overwriteExisting",
+        "selectedKeys"
+      ],
+      "ccfRows": 2,
+      "command": "import_accounts_from_file",
+      "componentFiles": [
+        "assets/accounts-page-MTQ8SHe2.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "importAccountsFromFile"
+      ]
+    },
+    {
+      "argKeys": [
+        "filePath"
+      ],
+      "ccfRows": 2,
+      "command": "import_relay_config",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/relay-page-CgECWXZm.js"
+      ],
+      "guards": [
+        "if(!v||typeof v!=\"string\")throw new Error(\"CANCELLED\");"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "importConfig"
+      ]
+    },
+    {
+      "argKeys": [
+        "path"
+      ],
+      "ccfRows": 2,
+      "command": "import_skill",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/skills-page-1VAVrk5f.js"
+      ],
+      "guards": [
+        "if(typeof B==\"string\")return l.importSkill(B);"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "importSkill"
+      ]
+    },
+    {
+      "argKeys": [
+        "expectedBundleId",
+        "text"
+      ],
+      "ccfRows": 1,
+      "command": "inject_voice_text",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "injectVoiceText"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "load_bootstrap_state",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(!n)return!1;"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadBootstrapState"
+      ]
+    },
+    {
+      "argKeys": [
+        "range"
+      ],
+      "ccfRows": 2,
+      "command": "load_change_analytics",
+      "componentFiles": [
+        "assets/analytics-panel-D8q9cdQd.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadChangeAnalytics"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "load_custom_instruction_state",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "loadCustomInstructionState"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 3,
+      "command": "load_installed_skills",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/skills-page-1VAVrk5f.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadInstalledSkills"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 3,
+      "command": "load_mcp_servers",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/mcp-page-K7w7j3Nk.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadMcpServers"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 3,
+      "command": "load_pending_auto_switch",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(!(!t||r)){i(!0);try{await Pe.dismissPendingAutoSwitch(),n(null)}catch(c){Ie({title:e(\"settings.autoSwitchConfirmFailed\"),description:String(c),variant:\"destructive\"});try{n(awai",
+        "if(!(!t||r)){i(!0);try{const c=await Pe.confirmPendingAutoSwitchAndRestartCodex();c.warnings.length>0&&Ie({title:e(\"accounts.switched\"),description:c.warnings.map(d=>d.message).joi"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadPendingAutoSwitch"
+      ]
+    },
+    {
+      "argKeys": [
+        "accountKey"
+      ],
+      "ccfRows": 2,
+      "command": "load_quota_history",
+      "componentFiles": [
+        "assets/analytics-panel-D8q9cdQd.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadQuotaHistory"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "load_relay_state",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadState"
+      ]
+    },
+    {
+      "argKeys": [
+        "range"
+      ],
+      "ccfRows": 2,
+      "command": "load_session_analytics",
+      "componentFiles": [
+        "assets/analytics-panel-D8q9cdQd.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadSessionAnalytics"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "load_sessions",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/sessions-page-BlAM0ZKh.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadSessions"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "load_skill_backups",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/skills-page-1VAVrk5f.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadSkillBackups"
+      ]
+    },
+    {
+      "argKeys": [
+        "forceMetadata",
+        "localOnly"
+      ],
+      "ccfRows": 2,
+      "command": "load_snapshot",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(!x||C.forceMetadata)return C.promise;"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadSnapshot"
+      ]
+    },
+    {
+      "argKeys": [
+        "range"
+      ],
+      "ccfRows": 2,
+      "command": "load_token_analytics",
+      "componentFiles": [
+        "assets/analytics-panel-D8q9cdQd.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadTokenAnalytics"
+      ]
+    },
+    {
+      "argKeys": [
+        "range"
+      ],
+      "ccfRows": 2,
+      "command": "load_tool_analytics",
+      "componentFiles": [
+        "assets/analytics-panel-D8q9cdQd.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadToolAnalytics"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 4,
+      "command": "load_usage_analytics",
+      "componentFiles": [
+        "assets/analytics-panel-D8q9cdQd.js",
+        "assets/index-COJfQ25H.js",
+        "assets/sessions-page-BlAM0ZKh.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadUsageAnalytics"
+      ]
+    },
+    {
+      "argKeys": [
+        "provider"
+      ],
+      "ccfRows": 2,
+      "command": "load_voice_asr_config",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [
+        "if(N!==y.current)return;"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadVoiceAsrConfig"
+      ]
+    },
+    {
+      "argKeys": [
+        "provider"
+      ],
+      "ccfRows": 3,
+      "command": "load_voice_llm_config",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [
+        "if(!z.data.configured&&N&&t.llmApiKey.trim()){M(z.data.provider||h),w(t.llmApiKey),g(t.llmModel.trim()||z.data.model||I.defaultModel),o(t.llmBaseUrl.trim()||z.data.baseUrl||I.defau",
+        "if(a!==l.current)return;"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadVoiceLlmConfig"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "load_voice_processing_modes",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(!n)return;",
+        "if((await Pe.loadVoiceProcessingModes()).data!=null)return;"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadVoiceProcessingModes"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "load_voice_runtime_status",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadVoiceRuntimeStatus"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "load_voice_workspace",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "loadVoiceWorkspace"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "logout",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "logout"
+      ]
+    },
+    {
+      "argKeys": [
+        "grants"
+      ],
+      "ccfRows": 1,
+      "command": "merge_mystery_unlock_grants",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "mergeMysteryUnlockGrants"
+      ]
+    },
+    {
+      "argKeys": [
+        "sessionId"
+      ],
+      "ccfRows": 2,
+      "command": "migrate_session_worktree",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/sessions-page-BlAM0ZKh.js"
+      ],
+      "guards": [
+        "if(!L(n))throw new Error(G(n,s));"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "migrateSessionWorktree"
+      ]
+    },
+    {
+      "argKeys": [
+        "path"
+      ],
+      "ccfRows": 4,
+      "command": "open_path",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/relay-page-CgECWXZm.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "openPath"
+      ]
+    },
+    {
+      "argKeys": [
+        "url"
+      ],
+      "ccfRows": 2,
+      "command": "parse_aimami_deeplink",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(a)return;",
+        "if(v.startsWith(\"aimami://\"))try{const x=await pn.parseDeeplink(v);if(a)return;await ar(\"focus_main_window\").catch(()=>{}),n(x.data)}catch(x){const S=x instanceof Error?x.message:S"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "parseDeeplink"
+      ]
+    },
+    {
+      "argKeys": [
+        "filePath"
+      ],
+      "ccfRows": 2,
+      "command": "preview_account_import",
+      "componentFiles": [
+        "assets/accounts-page-MTQ8SHe2.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(!S||typeof S!=\"string\")throw new Error(\"CANCELLED\");"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "previewAccountImport"
+      ]
+    },
+    {
+      "argKeys": [
+        "content"
+      ],
+      "ccfRows": 1,
+      "command": "preview_custom_instruction_apply",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "previewCustomInstructionApply"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "rebuild_registry",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "rebuildRegistry"
+      ]
+    },
+    {
+      "argKeys": [
+        "accountKey"
+      ],
+      "ccfRows": 2,
+      "command": "refresh_single_account_usage",
+      "componentFiles": [
+        "assets/accounts-page-MTQ8SHe2.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [
+        "if(!Oe.has(o)){tt(v=>new Set(v).add(o));try{const v=await H.refreshSingleAccountUsage(o);T({title:n(\"accounts.refreshQuotaSuccess\"),description:v.warnings.length>0?v.warnings.map(p"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "refreshSingleAccountUsage"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "refresh_usage_snapshot",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "refreshUsageSnapshot"
+      ]
+    },
+    {
+      "argKeys": [
+        "accountKeys"
+      ],
+      "ccfRows": 2,
+      "command": "remove_accounts",
+      "componentFiles": [
+        "assets/accounts-page-MTQ8SHe2.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "removeAccounts"
+      ]
+    },
+    {
+      "argKeys": [
+        "name"
+      ],
+      "ccfRows": 2,
+      "command": "remove_mcp_server",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/mcp-page-K7w7j3Nk.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "removeMcpServer"
+      ]
+    },
+    {
+      "argKeys": [
+        "id"
+      ],
+      "ccfRows": 2,
+      "command": "remove_skill",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/skills-page-1VAVrk5f.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "removeSkill"
+      ]
+    },
+    {
+      "argKeys": [
+        "id"
+      ],
+      "ccfRows": 2,
+      "command": "remove_voice_history_entry",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "removeVoiceHistoryEntry"
+      ]
+    },
+    {
+      "argKeys": [
+        "modeId"
+      ],
+      "ccfRows": 3,
+      "command": "remove_voice_mode_shortcut",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "removeVoiceModeShortcut"
+      ]
+    },
+    {
+      "argKeys": [
+        "id"
+      ],
+      "ccfRows": 1,
+      "command": "remove_voice_template",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "removeVoiceTemplate"
+      ]
+    },
+    {
+      "argKeys": [
+        "id"
+      ],
+      "ccfRows": 2,
+      "command": "remove_voice_vocabulary",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "removeVoiceVocabulary"
+      ]
+    },
+    {
+      "argKeys": [
+        "appBundleId"
+      ],
+      "ccfRows": 2,
+      "command": "remove_voice_vocabulary_app_scope",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "removeVoiceVocabularyAppScope"
+      ]
+    },
+    {
+      "argKeys": [
+        "orderedIds"
+      ],
+      "ccfRows": 2,
+      "command": "reorder_relay_providers",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "reorderProviders"
+      ]
+    },
+    {
+      "argKeys": [
+        "appBundleId",
+        "appName",
+        "entries",
+        "kind",
+        "notes",
+        "replacement",
+        "source"
+      ],
+      "ccfRows": 2,
+      "command": "replace_voice_vocabulary_kind",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "replaceVoiceVocabularyKind"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "request_accessibility_permission",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "requestAccessibilityPermission"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "request_voice_permissions",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "requestVoicePermissions"
+      ]
+    },
+    {
+      "argKeys": [
+        "path"
+      ],
+      "ccfRows": 2,
+      "command": "resolve_voice_vocabulary_app_info",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [
+        "if(!(r||i||K)){l(!0);try{const{open:a}=await ds(async()=>{const{open:Me}=await import(\"./index-BzQde2Wh.js\");return{open:Me}},__vite__mapDeps([2,0,1])),I=await a({directory:!0,mult",
+        "if(!I||Array.isArray(I))return;"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "resolveVoiceVocabularyAppInfo"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 2,
+      "command": "restart_codex",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/maintenance-page-VLVCW7Jr.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "restartCodex"
+      ]
+    },
+    {
+      "argKeys": [
+        "id"
+      ],
+      "ccfRows": 2,
+      "command": "restore_skill_backup",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/skills-page-1VAVrk5f.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "restoreSkillBackup"
+      ]
+    },
+    {
+      "argKeys": [
+        "providerId"
+      ],
+      "ccfRows": 2,
+      "command": "reveal_relay_api_key",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/relay-page-CgECWXZm.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "revealApiKey"
+      ]
+    },
+    {
+      "argKeys": [
+        "historyId"
+      ],
+      "ccfRows": 1,
+      "command": "rollback_custom_instruction",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "rollbackCustomInstruction"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "run_daemon_once",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "runDaemonOnce"
+      ]
+    },
+    {
+      "argKeys": [
+        "asrApiKey",
+        "asrBaseUrl",
+        "asrModel",
+        "asrProvider"
+      ],
+      "ccfRows": 2,
+      "command": "save_voice_asr_config",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [
+        "if(!N){j({title:s(\"voice.page.saveFailed\"),description:s(h===\"aliyunFunAsr\"?\"voice.page.asrIncompleteAliyun\":\"voice.page.asrIncomplete\"),variant:\"destructive\"});return}"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "saveVoiceAsrConfig"
+      ]
+    },
+    {
+      "argKeys": [
+        "llmApiKey",
+        "llmBaseUrl",
+        "llmModel",
+        "llmProvider"
+      ],
+      "ccfRows": 2,
+      "command": "save_voice_llm_config",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [
+        "if(!h){j({title:s(\"voice.page.saveFailed\"),description:N.requiresApiKey?s(\"voice.page.llmIncompleteWithKey\"):s(\"voice.page.llmIncomplete\"),variant:\"destructive\"});return}"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "saveVoiceLlmConfig"
+      ]
+    },
+    {
+      "argKeys": [
+        "modes"
+      ],
+      "ccfRows": 2,
+      "command": "save_voice_processing_modes",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "saveVoiceProcessingModes"
+      ]
+    },
+    {
+      "argKeys": [
+        "mode",
+        "url"
+      ],
+      "ccfRows": 2,
+      "command": "set_api_proxy_config",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setApiProxyConfig"
+      ]
+    },
+    {
+      "argKeys": [
+        "enabled"
+      ],
+      "ccfRows": 3,
+      "command": "set_auto_switch",
+      "componentFiles": [
+        "assets/accounts-page-MTQ8SHe2.js",
+        "assets/index-COJfQ25H.js",
+        "assets/settings-page-DdurgRVs.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setAutoSwitch"
+      ]
+    },
+    {
+      "argKeys": [
+        "enabled"
+      ],
+      "ccfRows": 2,
+      "command": "set_autostart_enabled",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/settings-page-DdurgRVs.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setAutostartEnabled"
+      ]
+    },
+    {
+      "argKeys": [
+        "enabled"
+      ],
+      "ccfRows": 2,
+      "command": "set_claude_web_search_compat",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/maintenance-page-VLVCW7Jr.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setClaudeWebSearchCompat"
+      ]
+    },
+    {
+      "argKeys": [
+        "relaunch",
+        "slots"
+      ],
+      "ccfRows": 2,
+      "command": "set_codex_no_account_slots",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setCodexNoAccountSlots"
+      ]
+    },
+    {
+      "argKeys": [
+        "enabled",
+        "relaunch"
+      ],
+      "ccfRows": 2,
+      "command": "set_codex_router_enabled",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setCodexRouterEnabled"
+      ]
+    },
+    {
+      "argKeys": [
+        "enabled",
+        "relaunch"
+      ],
+      "ccfRows": 2,
+      "command": "set_codex_router_no_account_mode",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setCodexRouterNoAccountMode"
+      ]
+    },
+    {
+      "argKeys": [
+        "enabled"
+      ],
+      "ccfRows": 3,
+      "command": "set_hotspot_enabled",
+      "componentFiles": [
+        "assets/accounts-page-MTQ8SHe2.js",
+        "assets/index-COJfQ25H.js",
+        "assets/settings-page-DdurgRVs.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setHotspotEnabled"
+      ]
+    },
+    {
+      "argKeys": [
+        "enabled"
+      ],
+      "ccfRows": 2,
+      "command": "set_image_compat",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/maintenance-page-VLVCW7Jr.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setImageCompat"
+      ]
+    },
+    {
+      "argKeys": [
+        "enabled",
+        "name"
+      ],
+      "ccfRows": 2,
+      "command": "set_mcp_server_enabled",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/mcp-page-K7w7j3Nk.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setMcpServerEnabled"
+      ]
+    },
+    {
+      "argKeys": [
+        "network",
+        "providerId"
+      ],
+      "ccfRows": 2,
+      "command": "set_relay_provider_network",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setProviderNetwork"
+      ]
+    },
+    {
+      "argKeys": [
+        "interval"
+      ],
+      "ccfRows": 2,
+      "command": "set_usage_refresh_interval",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setUsageRefreshInterval"
+      ]
+    },
+    {
+      "argKeys": [
+        "shortcut"
+      ],
+      "ccfRows": 1,
+      "command": "set_voice_global_shortcut",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "setVoiceGlobalShortcut"
+      ]
+    },
+    {
+      "argKeys": [
+        "keyCode",
+        "keyKind",
+        "keyLabel",
+        "modeId",
+        "modifierMask",
+        "style"
+      ],
+      "ccfRows": 2,
+      "command": "set_voice_mode_shortcut",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [
+        "if(!me(N))return j({title:o(\"voice.permissions.unsafeKey\"),description:o(\"voice.permissions.unsafeKeyDesc\"),variant:\"destructive\"}),!1;",
+        "if(z===\"action\")return j({title:o(\"voice.permissions.triggerConflict\"),description:o(\"voice.permissions.triggerConflictOther\"),variant:\"destructive\"}),!1;",
+        "if(z===\"main\")return j({title:o(\"voice.permissions.triggerConflict\"),description:o(\"voice.permissions.triggerConflictMain\"),variant:\"destructive\"}),!1;"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setVoiceModeShortcut"
+      ]
+    },
+    {
+      "argKeys": [
+        "style"
+      ],
+      "ccfRows": 2,
+      "command": "set_voice_overlay_style",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setVoiceOverlayStyle"
+      ]
+    },
+    {
+      "argKeys": [
+        "modeId",
+        "processingMode"
+      ],
+      "ccfRows": 2,
+      "command": "set_voice_processing_mode_id",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setVoiceProcessingModeId"
+      ]
+    },
+    {
+      "argKeys": [
+        "activeStyle",
+        "holdKeyCode",
+        "holdKeyKind",
+        "holdKeyLabel",
+        "holdModifierMask",
+        "toggleKeyCode",
+        "toggleKeyKind",
+        "toggleKeyLabel",
+        "toggleModifierMask"
+      ],
+      "ccfRows": 2,
+      "command": "set_voice_trigger_bindings",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setVoiceTriggerBindings"
+      ]
+    },
+    {
+      "argKeys": [
+        "keyCode",
+        "keyKind",
+        "keyLabel",
+        "modifierMask",
+        "style"
+      ],
+      "ccfRows": 2,
+      "command": "set_voice_trigger_key",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setVoiceTriggerKey"
+      ]
+    },
+    {
+      "argKeys": [
+        "suppressed"
+      ],
+      "ccfRows": 2,
+      "command": "set_voice_trigger_listener_suppressed",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "setVoiceTriggerListenerSuppressed"
+      ]
+    },
+    {
+      "argKeys": [
+        "output",
+        "query"
+      ],
+      "ccfRows": 2,
+      "command": "show_voice_search_overlay",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "showVoiceSearchOverlay"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "start_voice_capture",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "startVoiceCapture"
+      ]
+    },
+    {
+      "argKeys": [],
+      "ccfRows": 1,
+      "command": "stop_voice_capture",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "stopVoiceCapture"
+      ]
+    },
+    {
+      "argKeys": [
+        "accountKey"
+      ],
+      "ccfRows": 1,
+      "command": "switch_account",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "switchAccount"
+      ]
+    },
+    {
+      "argKeys": [
+        "accountKey"
+      ],
+      "ccfRows": 2,
+      "command": "switch_account_and_restart_codex",
+      "componentFiles": [
+        "assets/accounts-page-MTQ8SHe2.js",
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "switchAccountAndRestartCodex"
+      ]
+    },
+    {
+      "argKeys": [
+        "mode",
+        "url"
+      ],
+      "ccfRows": 2,
+      "command": "test_api_proxy_config",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "testApiProxyConfig"
+      ]
+    },
+    {
+      "argKeys": [
+        "asrApiKey",
+        "asrBaseUrl",
+        "asrModel",
+        "asrProvider"
+      ],
+      "ccfRows": 2,
+      "command": "test_voice_asr_config",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [
+        "if(!N){j({title:s(\"voice.page.fillConfigFirst\"),description:s(h===\"aliyunFunAsr\"?\"voice.page.asrIncompleteAliyun\":\"voice.page.asrIncompleteTest\"),variant:\"destructive\"});return}"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "testVoiceAsrConfig"
+      ]
+    },
+    {
+      "argKeys": [
+        "llmApiKey",
+        "llmBaseUrl",
+        "llmModel",
+        "llmProvider"
+      ],
+      "ccfRows": 2,
+      "command": "test_voice_llm_config",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [
+        "if(!h){j({title:s(\"voice.page.fillConfigFirst\"),description:N.requiresApiKey?s(\"voice.page.llmIncompleteTest\"):s(\"voice.page.llmIncompleteTestNoKey\"),variant:\"destructive\"});return"
+      ],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "testVoiceLlmConfig"
+      ]
+    },
+    {
+      "argKeys": [
+        "enabled",
+        "processingMode",
+        "processingModeId",
+        "shortcut",
+        "speechModel"
+      ],
+      "ccfRows": 2,
+      "command": "update_voice_runtime_settings",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/voice-page-C5FPOrA4.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "updateVoiceRuntimeSettings"
+      ]
+    },
+    {
+      "argKeys": [
+        "input"
+      ],
+      "ccfRows": 2,
+      "command": "upload_debug_report",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "uploadDebugReport"
+      ]
+    },
+    {
+      "argKeys": [
+        "args",
+        "environment",
+        "headers"
+      ],
+      "ccfRows": 2,
+      "command": "upsert_mcp_server",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js",
+        "assets/mcp-page-K7w7j3Nk.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "upsertMcpServer"
+      ]
+    },
+    {
+      "argKeys": [
+        "input"
+      ],
+      "ccfRows": 2,
+      "command": "upsert_relay_provider",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "upsert"
+      ]
+    },
+    {
+      "argKeys": [
+        "content",
+        "description",
+        "id",
+        "title"
+      ],
+      "ccfRows": 1,
+      "command": "upsert_voice_template",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "upsertVoiceTemplate"
+      ]
+    },
+    {
+      "argKeys": [
+        "appBundleId",
+        "appName",
+        "id",
+        "kind",
+        "notes",
+        "replacement",
+        "source"
+      ],
+      "ccfRows": 2,
+      "command": "upsert_voice_vocabulary",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "upsertVoiceVocabulary"
+      ]
+    },
+    {
+      "argKeys": [
+        "bundleId",
+        "name",
+        "path"
+      ],
+      "ccfRows": 2,
+      "command": "upsert_voice_vocabulary_app_scope",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "upsertVoiceVocabularyAppScope"
+      ]
+    },
+    {
+      "argKeys": [
+        "sessionGeneration"
+      ],
+      "ccfRows": 1,
+      "command": "voice_processing_done",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function"
+      ],
+      "wrappers": [
+        "notifyVoiceProcessingDone"
+      ]
+    },
+    {
+      "argKeys": [
+        "event"
+      ],
+      "ccfRows": 2,
+      "command": "write_client_debug_log",
+      "componentFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "guards": [],
+      "ipcFiles": [
+        "assets/index-COJfQ25H.js"
+      ],
+      "ipcRows": 1,
+      "triggerTypes": [
+        "minified-static-function",
+        "minified-wrapper-callsite"
+      ],
+      "wrappers": [
+        "writeClientDebugLog"
+      ]
+    }
+  ],
+  "counts": {
+    "ccfRows": 254,
+    "commands": 134,
+    "errorUiStrings": 51,
+    "events": 5,
+    "ipcRows": 134,
+    "malformedCcfRows": 0,
+    "malformedIpcRows": 0,
+    "payloadFields": 37,
+    "queryKeys": 70,
+    "routes": 84,
+    "schedulerSidecarStrings": 50,
+    "storageKeys": 35
+  },
+  "errorUiStrings": [
+    {
+      "column": 102,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 81,
+      "value": "accounts.refreshFailed"
+    },
+    {
+      "column": 10990,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 81,
+      "value": "refreshFailed"
+    },
+    {
+      "column": 11174,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 81,
+      "value": "refreshFailed"
+    },
+    {
+      "column": 14036,
+      "file": "assets/sessions-page-BlAM0ZKh.js",
+      "line": 17,
+      "value": "sessions.deleteFailed"
+    },
+    {
+      "column": 142,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 81,
+      "value": "accounts.refreshFailedDesc"
+    },
+    {
+      "column": 14756,
+      "file": "assets/sessions-page-BlAM0ZKh.js",
+      "line": 17,
+      "value": "sessions.exportFailed"
+    },
+    {
+      "column": 152,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 76,
+      "value": "accounts.removeFailed"
+    },
+    {
+      "column": 15220,
+      "file": "assets/sessions-page-BlAM0ZKh.js",
+      "line": 17,
+      "value": "sessions.migrateWorktreeFailed"
+    },
+    {
+      "column": 160243,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 376,
+      "value": "Failed to refresh custom-instruction data"
+    },
+    {
+      "column": 163875,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 376,
+      "value": "Terminate and restart the local Codex process to apply config changes or recover from errors."
+    },
+    {
+      "column": 164,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 79,
+      "value": "Token refresh failed"
+    },
+    {
+      "column": 167343,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 376,
+      "value": "Failed to save refresh interval"
+    },
+    {
+      "column": 173,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 75,
+      "value": "accounts.switchErrorDesc"
+    },
+    {
+      "column": 174793,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 376,
+      "value": "Remote OTA update connection failed. Turn off VPN, check your network, and try again."
+    },
+    {
+      "column": 18448,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 81,
+      "value": "refreshFailed"
+    },
+    {
+      "column": 18669,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 81,
+      "value": "refreshFailed"
+    },
+    {
+      "column": 188,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 74,
+      "value": "INVALID_ACCOUNT_KEY"
+    },
+    {
+      "column": 190,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 79,
+      "value": "accounts.refreshQuotaFailedToken"
+    },
+    {
+      "column": 2093,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 82,
+      "value": "refreshFailed"
+    },
+    {
+      "column": 2187,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 370,
+      "value": "Failed to prepare speculative LLM session"
+    },
+    {
+      "column": 22500,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 72,
+      "value": "accounts.io.exportFailed"
+    },
+    {
+      "column": 23091,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 72,
+      "value": "accounts.io.previewFailed"
+    },
+    {
+      "column": 237,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 79,
+      "value": "Usage fetch failed"
+    },
+    {
+      "column": 23765,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 72,
+      "value": "accounts.io.importFailed"
+    },
+    {
+      "column": 24219,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "CODEX_APP_QUIT_TIMEOUT"
+    },
+    {
+      "column": 24276,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "CODEX_EXTERNAL_WRITER_TERMINATE_FAILED"
+    },
+    {
+      "column": 24317,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "CODEX_TRANSITION_QUIET_TIMEOUT"
+    },
+    {
+      "column": 24371,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "CODEX_ORPHAN_WRITER_TIMEOUT"
+    },
+    {
+      "column": 24438,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "CODEX_FORCE_KILL_FAILED"
+    },
+    {
+      "column": 24464,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "CODEX_ORPHAN_WRITER_TERMINATE_FAILED"
+    },
+    {
+      "column": 24503,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "CODEX_TRANSITION_FENCE_START_FAILED"
+    },
+    {
+      "column": 24541,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "CODEX_TRANSITION_REENTRY_TIMEOUT"
+    },
+    {
+      "column": 261,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 79,
+      "value": "accounts.refreshQuotaFailedNetwork"
+    },
+    {
+      "column": 26956,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "relay.codexRouter.authReadinessFailed"
+    },
+    {
+      "column": 28770,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "relay.codexRouter.toggleFailed"
+    },
+    {
+      "column": 29423,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "relay.codexRouter.authReadinessFailed"
+    },
+    {
+      "column": 298,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "accounts.copyFailed"
+    },
+    {
+      "column": 30490,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "relay.codexRouter.noAccountModeToggleFailed"
+    },
+    {
+      "column": 31366,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "relay.codexRouter.noAccountSlots.saveFailed"
+    },
+    {
+      "column": 325,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 79,
+      "value": "accounts.refreshQuotaFailedNotFound"
+    },
+    {
+      "column": 335,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "line": 28,
+      "value": "accounts.copyFailedDesc"
+    },
+    {
+      "column": 366,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 79,
+      "value": "accounts.refreshQuotaFailedGeneric"
+    },
+    {
+      "column": 379,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 78,
+      "value": "accounts.copyFailed"
+    },
+    {
+      "column": 39314,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225,
+      "value": "settings.refreshIntervalSaveFailedTitle"
+    },
+    {
+      "column": 39371,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225,
+      "value": "settings.refreshIntervalSaveFailedDesc"
+    },
+    {
+      "column": 415,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 79,
+      "value": "accounts.refreshQuotaFailed"
+    },
+    {
+      "column": 416,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 78,
+      "value": "accounts.copyFailedDesc"
+    },
+    {
+      "column": 55900,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 274,
+      "value": "relay.form.fetchModels.failed"
+    },
+    {
+      "column": 618,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 82,
+      "value": "accounts.addAccountOauthCancelledTitle"
+    },
+    {
+      "column": 698,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 82,
+      "value": "accounts.addAccountOauthFailedTitle"
+    },
+    {
+      "column": 754,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 82,
+      "value": "accounts.addAccountOauthFailedDesc"
+    }
+  ],
+  "events": [
+    {
+      "column": 3644,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 114,
+      "value": "sm:max-w-md"
+    },
+    {
+      "column": 3880,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 87,
+      "value": "mock-user::mock-account"
+    },
+    {
+      "column": 559,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 74,
+      "value": "aimami:accounts-card-density"
+    },
+    {
+      "column": 593,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 74,
+      "value": "aimami:accounts-privacy-mode"
+    },
+    {
+      "column": 627,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 74,
+      "value": "aimami:accounts-card-order"
+    }
+  ],
+  "malformed": {
+    "ccf": [],
+    "ipc": []
+  },
+  "payloadFields": [
+    {
+      "column": 1013,
+      "container": "data",
+      "fields": [
+        "status"
+      ],
+      "file": "assets/settings-page-DdurgRVs.js",
+      "line": 7
+    },
+    {
+      "column": 184188,
+      "container": "data",
+      "fields": [
+        "status"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 376
+    },
+    {
+      "column": 185,
+      "container": "data",
+      "fields": [
+        "status"
+      ],
+      "file": "assets/settings-page-DdurgRVs.js",
+      "line": 8
+    },
+    {
+      "column": 189,
+      "container": "data",
+      "fields": [
+        "status"
+      ],
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 77
+    },
+    {
+      "column": 20161,
+      "container": "data",
+      "fields": [
+        "accounts",
+        "refreshReport",
+        "status"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 87
+    },
+    {
+      "column": 21279,
+      "container": "data",
+      "fields": [
+        "accounts",
+        "refreshReport",
+        "status"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 87
+    },
+    {
+      "column": 2673,
+      "container": "data",
+      "fields": [
+        "droppableContainer",
+        "value"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 274
+    },
+    {
+      "column": 2958,
+      "container": "data",
+      "fields": [
+        "droppableContainer",
+        "value"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 274
+    },
+    {
+      "column": 3466,
+      "container": "data",
+      "fields": [
+        "droppableContainer",
+        "value"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 274
+    },
+    {
+      "column": 352,
+      "container": "data",
+      "fields": [
+        "status"
+      ],
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "line": 76
+    },
+    {
+      "column": 3929,
+      "container": "data",
+      "fields": [
+        "output",
+        "processingError",
+        "processingStatus",
+        "workspace"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 370
+    },
+    {
+      "column": 41418,
+      "container": "data",
+      "fields": [
+        "centerOffset",
+        "x"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 217
+    },
+    {
+      "column": 42400,
+      "container": "data",
+      "fields": [
+        "index",
+        "overflows"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 217
+    },
+    {
+      "column": 42409,
+      "container": "data",
+      "fields": [
+        "codexLaunchError",
+        "state",
+        "usedNoAccountMode"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225
+    },
+    {
+      "column": 42624,
+      "container": "data",
+      "fields": [
+        "codexLaunchError",
+        "state",
+        "usedNoAccountMode"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225
+    },
+    {
+      "column": 42859,
+      "container": "data",
+      "fields": [
+        "codexLaunchError",
+        "state",
+        "warnings"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225
+    },
+    {
+      "column": 43071,
+      "container": "data",
+      "fields": [
+        "canRestorePreviousAuth",
+        "hasUsableRealAuth",
+        "legacyVirtualAuthActive",
+        "willUseNoAccountMode"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225
+    },
+    {
+      "column": 43277,
+      "container": "data",
+      "fields": [
+        "adapter",
+        "error",
+        "providerId",
+        "source",
+        "status",
+        "updatedAt",
+        "value"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225
+    },
+    {
+      "column": 43335,
+      "container": "data",
+      "fields": [
+        "referenceHidden",
+        "referenceHiddenOffsets"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 217
+    },
+    {
+      "column": 43487,
+      "container": "data",
+      "fields": [
+        "escaped",
+        "escapedOffsets"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 217
+    },
+    {
+      "column": 44289,
+      "container": "data",
+      "fields": [
+        "placement"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 217
+    },
+    {
+      "column": 44838,
+      "container": "data",
+      "fields": [
+        "enabled",
+        "x",
+        "y"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 217
+    },
+    {
+      "column": 47968,
+      "container": "headers",
+      "fields": [
+        "Content-Type"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225
+    },
+    {
+      "column": 49757,
+      "container": "headers",
+      "fields": [
+        "X-Device-Id",
+        "X-Device-Secret"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225
+    },
+    {
+      "column": 50145,
+      "container": "headers",
+      "fields": [
+        "Authorization"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 42
+    },
+    {
+      "column": 50172,
+      "container": "headers",
+      "fields": [
+        "X-Device-Id",
+        "X-Device-Secret"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225
+    },
+    {
+      "column": 50362,
+      "container": "headers",
+      "fields": [
+        "Authorization"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 42
+    },
+    {
+      "column": 50659,
+      "container": "headers",
+      "fields": [
+        "X-Device-Id",
+        "X-Device-Secret"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225
+    },
+    {
+      "column": 50857,
+      "container": "headers",
+      "fields": [
+        "X-Device-Id",
+        "X-Device-Secret"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225
+    },
+    {
+      "column": 51047,
+      "container": "headers",
+      "fields": [
+        "X-Device-Id",
+        "X-Device-Secret"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225
+    },
+    {
+      "column": 51247,
+      "container": "headers",
+      "fields": [
+        "Content-Type"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225
+    },
+    {
+      "column": 52414,
+      "container": "data",
+      "fields": [
+        "callback"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 269
+    },
+    {
+      "column": 64286,
+      "container": "data",
+      "fields": [
+        "x",
+        "y"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 217
+    },
+    {
+      "column": 74544,
+      "container": "payload",
+      "fields": [
+        "paths",
+        "position",
+        "type"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 41
+    },
+    {
+      "column": 74674,
+      "container": "payload",
+      "fields": [
+        "position",
+        "type"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 41
+    },
+    {
+      "column": 74781,
+      "container": "payload",
+      "fields": [
+        "paths",
+        "position",
+        "type"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 41
+    },
+    {
+      "column": 74911,
+      "container": "payload",
+      "fields": [
+        "type"
+      ],
+      "file": "assets/index-COJfQ25H.js",
+      "line": 41
+    }
+  ],
+  "platform": "windows-x64",
+  "product": "aimami",
+  "queryKeys": [
+    {
+      "column": 12412,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 42,
+      "queryKey": null
+    },
+    {
+      "column": 12552,
+      "file": "assets/sessions-page-BlAM0ZKh.js",
+      "kind": "queryKeyProperty",
+      "line": 17,
+      "queryKey": [
+        "sessions"
+      ]
+    },
+    {
+      "column": 12606,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 42,
+      "queryKey": null
+    },
+    {
+      "column": 1273,
+      "file": "assets/skills-page-1VAVrk5f.js",
+      "kind": "queryKeyProperty",
+      "line": 7,
+      "queryKey": [
+        "installed-skills"
+      ]
+    },
+    {
+      "column": 1275,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 343,
+      "queryKey": null
+    },
+    {
+      "column": 1282,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "kind": "queryKeyProperty",
+      "line": 79,
+      "queryKey": [
+        "quota-history"
+      ]
+    },
+    {
+      "column": 13358,
+      "file": "assets/sessions-page-BlAM0ZKh.js",
+      "kind": "queryKeyProperty",
+      "line": 17,
+      "queryKey": [
+        "usage-analytics"
+      ]
+    },
+    {
+      "column": 13644,
+      "file": "assets/sessions-page-BlAM0ZKh.js",
+      "kind": "queryKeyProperty",
+      "line": 17,
+      "queryKey": [
+        "sessions"
+      ]
+    },
+    {
+      "column": 13686,
+      "file": "assets/sessions-page-BlAM0ZKh.js",
+      "kind": "queryKeyProperty",
+      "line": 17,
+      "queryKey": [
+        "usage-analytics"
+      ]
+    },
+    {
+      "column": 15172,
+      "file": "assets/sessions-page-BlAM0ZKh.js",
+      "kind": "queryKeyProperty",
+      "line": 17,
+      "queryKey": [
+        "sessions"
+      ]
+    },
+    {
+      "column": 1540,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "kind": "queryKeyProperty",
+      "line": 112,
+      "queryKey": null
+    },
+    {
+      "column": 1557,
+      "file": "assets/skills-page-1VAVrk5f.js",
+      "kind": "queryKeyProperty",
+      "line": 7,
+      "queryKey": [
+        "installed-skills"
+      ]
+    },
+    {
+      "column": 15732,
+      "file": "assets/analytics-panel-D8q9cdQd.js",
+      "kind": "queryKeyProperty",
+      "line": 1,
+      "queryKey": [
+        "session-analytics",
+        "Identifier"
+      ]
+    },
+    {
+      "column": 15933,
+      "file": "assets/analytics-panel-D8q9cdQd.js",
+      "kind": "queryKeyProperty",
+      "line": 1,
+      "queryKey": [
+        "token-analytics",
+        "Identifier"
+      ]
+    },
+    {
+      "column": 1610,
+      "file": "assets/skills-page-1VAVrk5f.js",
+      "kind": "queryKeyProperty",
+      "line": 7,
+      "queryKey": [
+        "skill-backups"
+      ]
+    },
+    {
+      "column": 16124,
+      "file": "assets/analytics-panel-D8q9cdQd.js",
+      "kind": "queryKeyProperty",
+      "line": 1,
+      "queryKey": [
+        "tool-analytics",
+        "Identifier"
+      ]
+    },
+    {
+      "column": 16313,
+      "file": "assets/analytics-panel-D8q9cdQd.js",
+      "kind": "queryKeyProperty",
+      "line": 1,
+      "queryKey": [
+        "change-analytics",
+        "Identifier"
+      ]
+    },
+    {
+      "column": 16510,
+      "file": "assets/analytics-panel-D8q9cdQd.js",
+      "kind": "queryKeyProperty",
+      "line": 1,
+      "queryKey": [
+        "quota-history",
+        "LogicalExpression"
+      ]
+    },
+    {
+      "column": 18161,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 87,
+      "queryKey": null
+    },
+    {
+      "column": 18192,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 87,
+      "queryKey": null
+    },
+    {
+      "column": 1844,
+      "file": "assets/skills-page-1VAVrk5f.js",
+      "kind": "queryKeyProperty",
+      "line": 7,
+      "queryKey": [
+        "installed-skills"
+      ]
+    },
+    {
+      "column": 188273,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 376,
+      "queryKey": [
+        "usage-analytics"
+      ]
+    },
+    {
+      "column": 188404,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 376,
+      "queryKey": [
+        "mcp-servers"
+      ]
+    },
+    {
+      "column": 188523,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 376,
+      "queryKey": [
+        "installed-skills"
+      ]
+    },
+    {
+      "column": 1897,
+      "file": "assets/skills-page-1VAVrk5f.js",
+      "kind": "queryKeyProperty",
+      "line": 7,
+      "queryKey": [
+        "skill-backups"
+      ]
+    },
+    {
+      "column": 20348,
+      "file": "assets/analytics-panel-D8q9cdQd.js",
+      "kind": "queryKeyProperty",
+      "line": 1,
+      "queryKey": [
+        "usage-analytics"
+      ]
+    },
+    {
+      "column": 2138,
+      "file": "assets/skills-page-1VAVrk5f.js",
+      "kind": "queryKeyProperty",
+      "line": 7,
+      "queryKey": [
+        "skill-backups"
+      ]
+    },
+    {
+      "column": 22309,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 87,
+      "queryKey": null
+    },
+    {
+      "column": 2259,
+      "file": "assets/mcp-page-K7w7j3Nk.js",
+      "kind": "queryKeyProperty",
+      "line": 16,
+      "queryKey": [
+        "mcp-servers"
+      ]
+    },
+    {
+      "column": 22950,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 87,
+      "queryKey": [
+        "quota-history"
+      ]
+    },
+    {
+      "column": 23284,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 87,
+      "queryKey": [
+        "quota-history"
+      ]
+    },
+    {
+      "column": 23414,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "kind": "queryKeyProperty",
+      "line": 72,
+      "queryKey": [
+        "quota-history"
+      ]
+    },
+    {
+      "column": 23795,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 87,
+      "queryKey": null
+    },
+    {
+      "column": 244,
+      "file": "assets/settings-page-DdurgRVs.js",
+      "kind": "queryKeyProperty",
+      "line": 9,
+      "queryKey": [
+        "has-notch"
+      ]
+    },
+    {
+      "column": 24515,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 42,
+      "queryKey": null
+    },
+    {
+      "column": 25081,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 42,
+      "queryKey": null
+    },
+    {
+      "column": 2643,
+      "file": "assets/mcp-page-K7w7j3Nk.js",
+      "kind": "queryKeyProperty",
+      "line": 16,
+      "queryKey": [
+        "mcp-servers"
+      ]
+    },
+    {
+      "column": 2876,
+      "file": "assets/mcp-page-K7w7j3Nk.js",
+      "kind": "queryKeyProperty",
+      "line": 16,
+      "queryKey": [
+        "mcp-servers"
+      ]
+    },
+    {
+      "column": 29102,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "kind": "queryKeyProperty",
+      "line": 27,
+      "queryKey": null
+    },
+    {
+      "column": 2958,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 42,
+      "queryKey": null
+    },
+    {
+      "column": 3259,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "kind": "queryKeyProperty",
+      "line": 74,
+      "queryKey": [
+        "has-notch"
+      ]
+    },
+    {
+      "column": 333,
+      "file": "assets/settings-page-DdurgRVs.js",
+      "kind": "queryKeyProperty",
+      "line": 9,
+      "queryKey": [
+        "hotspot-enabled"
+      ]
+    },
+    {
+      "column": 3350,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "kind": "queryKeyProperty",
+      "line": 74,
+      "queryKey": [
+        "hotspot-enabled"
+      ]
+    },
+    {
+      "column": 336,
+      "file": "assets/sessions-page-BlAM0ZKh.js",
+      "kind": "queryKeyProperty",
+      "line": 17,
+      "queryKey": [
+        "usage-analytics"
+      ]
+    },
+    {
+      "column": 33622,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 42,
+      "queryKey": null
+    },
+    {
+      "column": 338,
+      "file": "assets/mcp-page-K7w7j3Nk.js",
+      "kind": "queryKeyProperty",
+      "line": 20,
+      "queryKey": [
+        "mcp-servers"
+      ]
+    },
+    {
+      "column": 3454,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 376,
+      "queryKey": null
+    },
+    {
+      "column": 3512,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "kind": "queryKeyProperty",
+      "line": 74,
+      "queryKey": [
+        "hotspot-enabled"
+      ]
+    },
+    {
+      "column": 35412,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 42,
+      "queryKey": null
+    },
+    {
+      "column": 35776,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 42,
+      "queryKey": null
+    },
+    {
+      "column": 35882,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 42,
+      "queryKey": null
+    },
+    {
+      "column": 3591,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 376,
+      "queryKey": null
+    },
+    {
+      "column": 36109,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 42,
+      "queryKey": null
+    },
+    {
+      "column": 36209,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "kind": "queryKeyProperty",
+      "line": 27,
+      "queryKey": [
+        "relay-provider-quota",
+        "MemberExpression",
+        "MemberExpression"
+      ]
+    },
+    {
+      "column": 36211,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 42,
+      "queryKey": null
+    },
+    {
+      "column": 36689,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 269,
+      "queryKey": [
+        "Identifier"
+      ]
+    },
+    {
+      "column": 38002,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 42,
+      "queryKey": null
+    },
+    {
+      "column": 40082,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 270,
+      "queryKey": null
+    },
+    {
+      "column": 40134,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 270,
+      "queryKey": null
+    },
+    {
+      "column": 40312,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 270,
+      "queryKey": null
+    },
+    {
+      "column": 416,
+      "file": "assets/settings-page-DdurgRVs.js",
+      "kind": "queryKeyProperty",
+      "line": 9,
+      "queryKey": [
+        "autostart-state"
+      ]
+    },
+    {
+      "column": 564,
+      "file": "assets/settings-page-DdurgRVs.js",
+      "kind": "queryKeyProperty",
+      "line": 9,
+      "queryKey": [
+        "autostart-state"
+      ]
+    },
+    {
+      "column": 5773,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "queryKeyProperty",
+      "line": 343,
+      "queryKey": null
+    },
+    {
+      "column": 6564,
+      "file": "assets/maintenance-page-VLVCW7Jr.js",
+      "kind": "queryKeyProperty",
+      "line": 22,
+      "queryKey": [
+        "imageCompat"
+      ]
+    },
+    {
+      "column": 6737,
+      "file": "assets/maintenance-page-VLVCW7Jr.js",
+      "kind": "queryKeyProperty",
+      "line": 22,
+      "queryKey": [
+        "imageCompat"
+      ]
+    },
+    {
+      "column": 6908,
+      "file": "assets/maintenance-page-VLVCW7Jr.js",
+      "kind": "queryKeyProperty",
+      "line": 22,
+      "queryKey": [
+        "claudeWebSearchCompat"
+      ]
+    },
+    {
+      "column": 7111,
+      "file": "assets/maintenance-page-VLVCW7Jr.js",
+      "kind": "queryKeyProperty",
+      "line": 22,
+      "queryKey": [
+        "claudeWebSearchCompat"
+      ]
+    },
+    {
+      "column": 815,
+      "file": "assets/skills-page-1VAVrk5f.js",
+      "kind": "queryKeyProperty",
+      "line": 7,
+      "queryKey": [
+        "installed-skills"
+      ]
+    },
+    {
+      "column": 879,
+      "file": "assets/settings-page-DdurgRVs.js",
+      "kind": "queryKeyProperty",
+      "line": 9,
+      "queryKey": [
+        "hotspot-enabled"
+      ]
+    },
+    {
+      "column": 902,
+      "file": "assets/skills-page-1VAVrk5f.js",
+      "kind": "queryKeyProperty",
+      "line": 7,
+      "queryKey": [
+        "skill-backups"
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "column": 1117,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 83,
+      "path": "/Users/mock/.codex/codexmate/voice-runtime.json"
+    },
+    {
+      "column": 1179,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 83,
+      "path": "/Users/mock/.codex/codexmate/voice-sidecar.swift"
+    },
+    {
+      "column": 12959,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 270,
+      "path": "/"
+    },
+    {
+      "column": 1566,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/Users/mock/.codex/AGENTS.md"
+    },
+    {
+      "column": 16046,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 83,
+      "path": "/Users/mock/.codex/AGENTS.md"
+    },
+    {
+      "column": 16878,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "kind": "stringPath",
+      "line": 72,
+      "path": "/"
+    },
+    {
+      "column": 1722,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 83,
+      "path": "/Users/mock/.codex/codexmate/voice-workspace.json"
+    },
+    {
+      "column": 1903,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/Users/mock/.codex/mcp_servers.json"
+    },
+    {
+      "column": 20218,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "kind": "stringPath",
+      "line": 72,
+      "path": "/"
+    },
+    {
+      "column": 2075,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 377,
+      "path": "/Applications"
+    },
+    {
+      "column": 20895,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "kind": "stringPath",
+      "line": 28,
+      "path": "/"
+    },
+    {
+      "column": 2132,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/Users/mock/.codex/mcp_servers.json"
+    },
+    {
+      "column": 229,
+      "file": "assets/relay-page-CgECWXZm.js",
+      "kind": "stringPath",
+      "line": 27,
+      "path": "/assets/woyao-pro-DqsTB8HE.png"
+    },
+    {
+      "column": 2470,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/Users/mock/.codex/mcp_servers.json"
+    },
+    {
+      "column": 2603,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 10,
+      "path": "/"
+    },
+    {
+      "column": 2686,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/Users/mock/.codex/mcp_servers.json"
+    },
+    {
+      "column": 2739,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 10,
+      "path": "/"
+    },
+    {
+      "column": 27571,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/"
+    },
+    {
+      "column": 27583,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/"
+    },
+    {
+      "column": 2861,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/Users/mock/.codex/mcp_servers.json"
+    },
+    {
+      "column": 2924,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 83,
+      "path": "/Users/mock/.codex/mcp_servers.json"
+    },
+    {
+      "column": 2974,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/Users/mock/.codex/skills"
+    },
+    {
+      "column": 3028,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 83,
+      "path": "/Users/mock/.codex/skills"
+    },
+    {
+      "column": 3080,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/Users/mock/.codex/skill-backups"
+    },
+    {
+      "column": 3374,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/mock"
+    },
+    {
+      "column": 3605,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/mock"
+    },
+    {
+      "column": 436,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/Users/mock/.codex/AGENTS.md"
+    },
+    {
+      "column": 48487,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/notifications/:id/read"
+    },
+    {
+      "column": 48555,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 274,
+      "path": "/"
+    },
+    {
+      "column": 48833,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/heartbeat"
+    },
+    {
+      "column": 48862,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex"
+    },
+    {
+      "column": 48896,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/accounts"
+    },
+    {
+      "column": 48935,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/auth.json"
+    },
+    {
+      "column": 48979,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/registry.json"
+    },
+    {
+      "column": 49027,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/sessions"
+    },
+    {
+      "column": 49073,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/Library/LaunchAgents/dev.aimami.auto-switch.plist"
+    },
+    {
+      "column": 49155,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/autoswitch.log"
+    },
+    {
+      "column": 49211,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/feedback"
+    },
+    {
+      "column": 49315,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/recharge/plans"
+    },
+    {
+      "column": 49413,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/feature-gates/visibility"
+    },
+    {
+      "column": 49514,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/feature-gates/visibility"
+    },
+    {
+      "column": 49638,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/mcp_servers.json"
+    },
+    {
+      "column": 49708,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/feature-gates/visibility"
+    },
+    {
+      "column": 49828,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/mcp_servers.json"
+    },
+    {
+      "column": 49844,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/custom-instructions/templates"
+    },
+    {
+      "column": 49933,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/projects"
+    },
+    {
+      "column": 49953,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/custom-instructions/apply"
+    },
+    {
+      "column": 50054,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/mcp_servers.json"
+    },
+    {
+      "column": 50132,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/recharge/check"
+    },
+    {
+      "column": 50266,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/mcp_servers.json"
+    },
+    {
+      "column": 50338,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/recharge/activate"
+    },
+    {
+      "column": 50524,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/sessions/2026/04/10/rollout-root-001.jsonl"
+    },
+    {
+      "column": 50615,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/recharge/wx/native"
+    },
+    {
+      "column": 50629,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/WONG/Develop-box/aimami-desktop"
+    },
+    {
+      "column": 50892,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/sessions/2026/04/10/rollout-child-001.jsonl"
+    },
+    {
+      "column": 50998,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/WONG/Develop-box/aimami-desktop"
+    },
+    {
+      "column": 51280,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/sessions/2026/04/10/rollout-child-002.jsonl"
+    },
+    {
+      "column": 51386,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/WONG/Develop-box/aimami-desktop"
+    },
+    {
+      "column": 51449,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/mystery-codes/redeem"
+    },
+    {
+      "column": 51582,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/mystery-codes/redeem"
+    },
+    {
+      "column": 51671,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/sessions/2026/04/09/rollout-root-002.jsonl"
+    },
+    {
+      "column": 51775,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/WONG/Develop-box/aimami-legacy"
+    },
+    {
+      "column": 51812,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/desktop-message"
+    },
+    {
+      "column": 51869,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 225,
+      "path": "/client/sponsor-message"
+    },
+    {
+      "column": 52035,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/sessions/2026/04/06/rollout-root-003.jsonl"
+    },
+    {
+      "column": 52133,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/WONG/Develop-box/omnipic"
+    },
+    {
+      "column": 5228,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 376,
+      "path": "/"
+    },
+    {
+      "column": 52451,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/skills/code-review"
+    },
+    {
+      "column": 52505,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/skills/code-review/SKILL.md"
+    },
+    {
+      "column": 52722,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/skills/git-commit"
+    },
+    {
+      "column": 5277,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 217,
+      "path": "/"
+    },
+    {
+      "column": 52775,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/skills/git-commit/SKILL.md"
+    },
+    {
+      "column": 53012,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/skills/frontend-design"
+    },
+    {
+      "column": 53070,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 42,
+      "path": "/Users/mock/.codex/skills/frontend-design/SKILL.md"
+    },
+    {
+      "column": 58519,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 41,
+      "path": "/"
+    },
+    {
+      "column": 6627,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 83,
+      "path": "/Users/mock/.codex/AGENTS.md"
+    },
+    {
+      "column": 6720,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "kind": "stringPath",
+      "line": 116,
+      "path": "/Applications"
+    },
+    {
+      "column": 81968,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 217,
+      "path": "/"
+    },
+    {
+      "column": 8454,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "pathProperty",
+      "line": 270,
+      "path": "M0 10 L5 0 L10 10z"
+    },
+    {
+      "column": 8502,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "pathProperty",
+      "line": 270,
+      "path": "M0 0 L10 0 L10 10 L0 10 Z"
+    },
+    {
+      "column": 8557,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "pathProperty",
+      "line": 270,
+      "path": "M5 0 A5 5 0 1 0 5 10 A5 5 0 1 0 5 0 Z"
+    },
+    {
+      "column": 8624,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "pathProperty",
+      "line": 270,
+      "path": "M5 0 L10 10 L0 10 Z"
+    },
+    {
+      "column": 952,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 87,
+      "path": "/Users/mock/.codex/AGENTS.md"
+    },
+    {
+      "column": 9708,
+      "file": "assets/index-COJfQ25H.js",
+      "kind": "stringPath",
+      "line": 83,
+      "path": "/"
+    }
+  ],
+  "schedulerSidecarStrings": [
+    {
+      "column": 1117,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 83,
+      "value": "/Users/mock/.codex/codexmate/voice-runtime.json"
+    },
+    {
+      "column": 1179,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 83,
+      "value": "/Users/mock/.codex/codexmate/voice-sidecar.swift"
+    },
+    {
+      "column": 1560,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 118,
+      "value": "voice.hero.refreshing"
+    },
+    {
+      "column": 1584,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 118,
+      "value": "voice.hero.refresh"
+    },
+    {
+      "column": 16477,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 87,
+      "value": "confirm_pending_auto_switch_and_restart_codex"
+    },
+    {
+      "column": 167209,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 376,
+      "value": "Refresh interval updated"
+    },
+    {
+      "column": 167343,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 376,
+      "value": "Failed to save refresh interval"
+    },
+    {
+      "column": 169575,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 376,
+      "value": "Refresh Interval"
+    },
+    {
+      "column": 170368,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 376,
+      "value": "Current account {{current}} has dropped below the auto-switch threshold. Switch to {{candidate}} and restart Codex to apply it immediately."
+    },
+    {
+      "column": 1722,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 83,
+      "value": "/Users/mock/.codex/codexmate/voice-workspace.json"
+    },
+    {
+      "column": 2183,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 116,
+      "value": "voice.processing.modeList"
+    },
+    {
+      "column": 2258,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 118,
+      "value": "voice.overview.dashModel"
+    },
+    {
+      "column": 38783,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225,
+      "value": "refresh_interval"
+    },
+    {
+      "column": 38893,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 225,
+      "value": "refresh_interval"
+    },
+    {
+      "column": 3996,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.asrTitle"
+    },
+    {
+      "column": 4034,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.asrDesc"
+    },
+    {
+      "column": 4159,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.asrEngine"
+    },
+    {
+      "column": 45115,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 87,
+      "value": "absolute z-[1] box-border h-[18px] w-[18px] origin-center rounded-full border border-[rgb(var(--tf-recording))] motion-safe:animate-[voice-inner-pulse_0.8s_ease-in-out_0.15s_infinite_alternate]"
+    },
+    {
+      "column": 4815,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 83,
+      "value": "get_usage_refresh_interval"
+    },
+    {
+      "column": 4836,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.asrModel"
+    },
+    {
+      "column": 4859,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 83,
+      "value": "set_usage_refresh_interval"
+    },
+    {
+      "column": 4900,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 118,
+      "value": "voice.tabs.model"
+    },
+    {
+      "column": 50806,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 87,
+      "value": "voice-shell-fadein relative h-full min-w-0 flex-1 overflow-hidden"
+    },
+    {
+      "column": 51515,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 87,
+      "value": "voice-shell-fadein relative h-full min-w-0 flex-1 overflow-hidden"
+    },
+    {
+      "column": 5217,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 370,
+      "value": "voice.bridge.needsModelConfig"
+    },
+    {
+      "column": 5227,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.aliyunNote"
+    },
+    {
+      "column": 5428,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 370,
+      "value": "voice.bridge.needsModelConfigTitle"
+    },
+    {
+      "column": 5452,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.asrModel"
+    },
+    {
+      "column": 54639,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 87,
+      "value": "voice-llm-token"
+    },
+    {
+      "column": 5880,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 83,
+      "value": "confirm_pending_auto_switch_and_restart_codex"
+    },
+    {
+      "column": 6027,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.testing"
+    },
+    {
+      "column": 6049,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.testEngine"
+    },
+    {
+      "column": 6171,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.saving"
+    },
+    {
+      "column": 6192,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.saveConfig"
+    },
+    {
+      "column": 6354,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.llmTitle"
+    },
+    {
+      "column": 6392,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.llmDesc"
+    },
+    {
+      "column": 6508,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.configured"
+    },
+    {
+      "column": 6533,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.notConfigured"
+    },
+    {
+      "column": 6713,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.provider"
+    },
+    {
+      "column": 6964,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.modelName"
+    },
+    {
+      "column": 7333,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.ollamaPlaceholder"
+    },
+    {
+      "column": 7365,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.modelPlaceholder"
+    },
+    {
+      "column": 7608,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.noApiKeyNeeded"
+    },
+    {
+      "column": 7983,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.testing"
+    },
+    {
+      "column": 8005,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.testConnection"
+    },
+    {
+      "column": 8106,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.saving"
+    },
+    {
+      "column": 8127,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 115,
+      "value": "voice.model.saveConfig"
+    },
+    {
+      "column": 8918,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 87,
+      "value": "get_usage_refresh_interval"
+    },
+    {
+      "column": 8978,
+      "file": "assets/index-COJfQ25H.js",
+      "line": 87,
+      "value": "set_usage_refresh_interval"
+    },
+    {
+      "column": 9566,
+      "file": "assets/voice-page-C5FPOrA4.js",
+      "line": 112,
+      "value": "voice.history.csvAsrModel"
+    }
+  ],
+  "schema": "c5cm.reverse.frontend.semantic_surface.v1",
+  "session": "<审计会话>
+  "source": "same-platform-tauri-dumper-and-ast",
+  "storageKeys": [
+    {
+      "column": 1532,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "key": null,
+      "line": 74,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 1655,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "key": null,
+      "line": 74,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 16665,
+      "file": "assets/index-COJfQ25H.js",
+      "key": null,
+      "line": 87,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 16775,
+      "file": "assets/index-COJfQ25H.js",
+      "key": null,
+      "line": 87,
+      "storage": "localStorage.removeItem"
+    },
+    {
+      "column": 16842,
+      "file": "assets/index-COJfQ25H.js",
+      "key": null,
+      "line": 87,
+      "storage": "localStorage.removeItem"
+    },
+    {
+      "column": 16991,
+      "file": "assets/index-COJfQ25H.js",
+      "key": null,
+      "line": 87,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 176440,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "app_language",
+      "line": 376,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 2026,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "key": null,
+      "line": 81,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 203366,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "sidebar_collapsed",
+      "line": 376,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 207476,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "app_language",
+      "line": 376,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 208380,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "sidebar_collapsed",
+      "line": 376,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 27046,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "theme",
+      "line": 217,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 27633,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "theme",
+      "line": 217,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 2856,
+      "file": "assets/index-COJfQ25H.js",
+      "key": null,
+      "line": 376,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 3073,
+      "file": "assets/index-COJfQ25H.js",
+      "key": null,
+      "line": 376,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 3291,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "key": null,
+      "line": 81,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 35445,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "theme",
+      "line": 225,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 35600,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "theme",
+      "line": 225,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 36726,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "accent_color",
+      "line": 225,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 36797,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "heatmap_color",
+      "line": 225,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 37120,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "accent_color",
+      "line": 225,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 37279,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "heatmap_color",
+      "line": 225,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 38762,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "refresh_interval",
+      "line": 225,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 38872,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "refresh_interval",
+      "line": 225,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 46623,
+      "file": "assets/index-COJfQ25H.js",
+      "key": null,
+      "line": 225,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 46758,
+      "file": "assets/index-COJfQ25H.js",
+      "key": null,
+      "line": 225,
+      "storage": "localStorage.removeItem"
+    },
+    {
+      "column": 46885,
+      "file": "assets/index-COJfQ25H.js",
+      "key": null,
+      "line": 225,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 46967,
+      "file": "assets/index-COJfQ25H.js",
+      "key": null,
+      "line": 225,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 682,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "key": null,
+      "line": 74,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 69802,
+      "file": "assets/index-COJfQ25H.js",
+      "key": null,
+      "line": 225,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 70021,
+      "file": "assets/index-COJfQ25H.js",
+      "key": null,
+      "line": 225,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 70064,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "recharge_entry_enabled",
+      "line": 225,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 70134,
+      "file": "assets/index-COJfQ25H.js",
+      "key": "custom_instructions_entry_enabled",
+      "line": 225,
+      "storage": "localStorage.setItem"
+    },
+    {
+      "column": 70487,
+      "file": "assets/index-COJfQ25H.js",
+      "key": null,
+      "line": 225,
+      "storage": "localStorage.getItem"
+    },
+    {
+      "column": 838,
+      "file": "assets/accounts-page-MTQ8SHe2.js",
+      "key": null,
+      "line": 74,
+      "storage": "localStorage.setItem"
+    }
+  ],
+  "version": "1.2.6"
+}

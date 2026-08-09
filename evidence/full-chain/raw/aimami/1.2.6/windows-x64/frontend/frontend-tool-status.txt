@@ -1,0 +1,23 @@
+binary: <内部存储>/raw/aimami/1.2.6/windows-x64/package/nsis-installer/extracted/AiMaMi.exe
+feature: full
+evidence-excludes: <内部存储>/raw/aimami/1.2.6/windows-x64/frontend/evidence-excludes.txt
+tauri-dumper: exit=0 output=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/tauri-dumper.log
+frontend-root: <内部存储>/raw/aimami/1.2.6/windows-x64/frontend/dumped
+frontend-extract: exit=0 output=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend-extract.log
+frontend-ast: exit=3 reason=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend/ast-facts.missing.txt
+version-baseline: <内部存储>/raw/aimami/1.2.6/windows-x64/frontend/VERSION-BASELINE.md
+report-template: <内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend-page-ipc-rust-report.md
+manifest: <内部存储>/raw/aimami/1.2.6/windows-x64/frontend/MANIFEST.md
+frontend-ast-recovery: exit=0 output=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend/ast-facts.json ccf_candidate=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend/frontend-control-flow-ast.jsonl
+stage-status: stage=frontend-control-flow-minified role=required status=ok exit=0 output=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend/frontend-control-flow.jsonl api_map=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend/api-map.json
+frontend-inventory: exit=0 output=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend/{route-map.json,page-map.json,chunk-map.json,frontend-semantic-surface.json,frontend-hash-manifest.json}
+frontend-beautify: exit=0 tool=js-beautify@1.15.4 inputs=31 output=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/beautified
+stage-status: stage=frontend-control-flow-final role=required status=ok source=ast-contract-driven rows=254 commands=134 output=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend/frontend-control-flow.jsonl
+stage-status: stage=frontend-control-flow-minified-callsite role=auxiliary status=partial-contract-coverage rows=173 ipc_commands=123 non_ipc_commands=16 output=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend/frontend-control-flow-minified-callsite.jsonl
+frontend-inventory: exit=0 output=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend/{route-map.json,page-map.json,chunk-map.json,frontend-semantic-surface.json,frontend-hash-manifest.json}
+frontend-beautify: exit=0 tool=js-beautify@1.15.4 indent_size=2 inputs=31 output=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/beautified
+stage-status: stage=frontend-control-flow-final role=required status=ok source=ast-contract-driven rows=254 commands=134 output=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend/frontend-control-flow.jsonl
+stage-status: stage=frontend-control-flow-minified-callsite role=auxiliary status=partial-contract-coverage rows=173 contract_misses=17 non_contract_terminals=16 output=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend/frontend-control-flow-minified-callsite.jsonl
+frontend-inventory: exit=0 output=<内部存储>/raw/aimami/1.2.6/windows-x64/frontend/frontend/{route-map.json,page-map.json,chunk-map.json,frontend-semantic-surface.json,frontend-hash-manifest.json}
+stage-status: stage=frontend-control-flow-minified role=required status=superseded reason=contract_set_not_closed retained_output=frontend/frontend-control-flow-minified-callsite.jsonl
+cross-platform-frontend-validation: status=ok shared_assets=33/33 shared_asset_hash_mismatches=0 beautified_js=31/31 beautified_hash_mismatches=0 ipc_sha_match=true ccf_sha_match=true index_html_platform_delta=windows:1487:c0d12414e5827d8b5e0ec3814d52f0e9c1c26dfe9dd16fec48a9bd0833739587,macos:1455:002b469a2450e65f7e52f0c40b7876856ff148e8f3a5298f4b77d197951937dc

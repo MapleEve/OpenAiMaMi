@@ -1,0 +1,41 @@
+{
+  "command": "is_anthropic_thinking_signature_rejection",
+  "module": "core/relay/proxy_server",
+  "owner_ea": "0x100848920",
+  "interface_type": "internal_function",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "HTTP status code (int16), response body (bytes, len)",
+    "output": "bool"
+  },
+  "side_effects": [],
+  "idaSymbols": [
+    "is_anthropic_thinking_signature_rejection"
+  ],
+  "pseudocode": [
+    "core/relay/proxy_server/ida/pseudocode/is_anthropic_thinking_signature_rejectio_0x100848920.c"
+  ],
+  "nextCallees": [
+    "alloc::string::String::from_utf8_lossy",
+    "__rust_alloc",
+    "__rust_dealloc",
+    "alloc::raw_vec::RawVecInner::reserve",
+    "memcpy",
+    "memcmp",
+    "core::str::pattern::StrSearcher::new",
+    "StrSearcher::next_match",
+    "Pattern::is_contained_in",
+    "alloc::raw_vec::handle_error"
+  ],
+  "callTreeRows": 10,
+  "claims": {
+    "client": [],
+    "server": [
+      "is_anthropic_thinking_signature_rejection"
+    ]
+  },
+  "serverEvidencePath": "core/relay/proxy_server/ida/pseudocode/is_anthropic_thinking_signature_rejectio_0x100848920.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "Checks if an HTTP 400 response from Anthropic is a thinking_signature rejection: converts body to lowercase UTF-8, searches for specific rejection signature strings (35-byte and 30-byte and 28-byte patterns). Returns true if signature rejection detected, used to trigger rectify_invalid_thinking_signature."
+}

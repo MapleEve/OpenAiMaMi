@@ -1,7 +1,7 @@
 // addr: 0x1408559e0
 // name (owner-map): upsert
 // module: core::relay::manager
-// source: IDA remote IDA decompiler decompile, win AiMaMi.1.2.3 win64.exe, full single-pass (no truncation)
+// source: IDA remote hexrays decompile, win AiMaMi.1.2.3 win64.exe, full single-pass (no truncation)
 
 // win 1.2.1 | module src/core/relay/manager.rs | attributed via panic-Location xref (win-native)
 // 1.2.3 win delta | aimami_relay_cleanup_3 | changelog ②关闭路由修复 (win-native 锚点逆)

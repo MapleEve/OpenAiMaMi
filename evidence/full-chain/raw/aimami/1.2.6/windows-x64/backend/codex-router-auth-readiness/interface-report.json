@@ -1,0 +1,33 @@
+{
+  "commands": [
+    {
+      "command": "get_codex_router_auth_readiness",
+      "argKeys": [],
+      "idaSymbols": [],
+      "pseudocode": [
+        "0002-callee-sub_140BF9190.c",
+        "0001-owner-get_codex_router_auth_readiness_owner_sys.c",
+        "0004-callee-sub_1404D0720.c",
+        "0003-callee-sub_1409C2D20.c"
+      ],
+      "nextCallees": [
+        {
+          "ea": "0x140547c70",
+          "name": "get_codex_router_auth_readiness_owner_sys"
+        }
+      ],
+      "callTreeRows": 8,
+      "claims": {
+        "client": [],
+        "server": []
+      },
+      "sideEffects": [],
+      "serverEvidencePath": "<内部存储>/raw/aimami/1.2.6/windows-x64/backend/codex-router-auth-readiness/evidence.md",
+      "needsServerEvidencePath": false,
+      "confidence": "medium",
+      "sourceMarkdown": "get_codex_router_auth_readiness.md"
+    }
+  ],
+  "generated_from": "interface/*.md (converted to machine-readable format)",
+  "leaf": "codex-router-auth-readiness"
+}

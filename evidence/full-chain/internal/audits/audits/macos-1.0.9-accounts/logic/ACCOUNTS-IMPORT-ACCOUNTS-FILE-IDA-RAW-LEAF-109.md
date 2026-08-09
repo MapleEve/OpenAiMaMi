@@ -41,7 +41,7 @@ ready.
 | write | `0x1005e0764` | calls `relay::atomic_write::write_atomic` |
 | rebuild | `0x1005e0924` | calls `Repository::rebuild_registry` after imported vector is non-empty |
 
-IDB comments were written at all listed addresses, and `idb_save` returned OK.
+IDB comments were written at all listed addresses, and `<工具调用>` returned OK.
 
 ## Static Behavior
 

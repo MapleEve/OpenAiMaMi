@@ -4,4 +4,4 @@
 - IDB (1.2.3 windows): `${C5CM_INTERNAL_HISTORY_ROOT:-$C5CM_SHARE_ROOT}/raw/binary/AiMaMi.1.2.3 win64.exe.i64`
 - binary SOT (1.2.3 windows): `${C5CM_INTERNAL_HISTORY_ROOT:-$C5CM_SHARE_ROOT}/raw/binary/AiMaMi.1.2.3 win64.exe`
 - frontend contract (1.2.3 windows): `${C5CM_INTERNAL_HISTORY_ROOT:-$C5CM_SHARE_ROOT}/raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl`
-- cross-version corroboration (1.1.8 delta round, same 39/42-command voice/custom_instruction cluster): `${C5CM_INTERNAL_HISTORY_ROOT:-$C5CM_SHARE_ROOT}/internal-reverse/REVERSE-STATUS.md` (wf-aimami118-delta-20260711 sub-entries)
+- cross-version corroboration (1.1.8 delta round, same 39/42-command voice/custom_instruction cluster): `${C5CM_INTERNAL_HISTORY_ROOT:-$C5CM_SHARE_ROOT}/internal-reverse/REVERSE-STATUS.md` (<审计会话> sub-entries)

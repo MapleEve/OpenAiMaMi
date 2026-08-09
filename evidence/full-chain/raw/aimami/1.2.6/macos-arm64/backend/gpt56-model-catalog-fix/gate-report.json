@@ -1,0 +1,30 @@
+{
+  "schema": "c5cm.reverse.gate-report.v1",
+  "cluster": "aimami-1.2.6-gpt56-model-catalog-fix",
+  "platform": "macos-arm64",
+  "session": "<审计会话>
+  "gate_tier": "evidence_collected_not_gate_promotion",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "readyToImplement": false,
+  "strictImplementationUse": false,
+  "full_leaf_100_definition_v2": false,
+  "blockers": [
+    "config_takeover::quarantined_model_provider_ids: exact symbol not found in this binary (5 recovery attempts documented, closest candidate merge_runtime_quarantine is not a confirmed equivalent)",
+    "codex_writer::read_top_level_model_line: exact symbol not found in this binary (closest candidate read_top_level_string_value is a generic keyed-reader, not confirmed to be called with literal \"model\" key)",
+    "no local+adversarial dual review (task#154-style) performed this round",
+    "no four-angle completeness check (红线15) performed this round",
+    "no live reference app comparison performed (红线25)",
+    "windows-x64 side has only address-level candidate mapping via panic-Location two-hop xref, not exact demangled-symbol confirmation (stripped build)"
+  ],
+  "fake_wall_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "reasoning": "Truncated functions were not papered over as accepted_unknown; recovery_attempts (decompile + analyze_function) documented for each. Not-found symbols were exhaustively searched via broad regex (5 and 3 independent method attempts respectively) with positive-control confirmation that func_query works correctly (8/10 other targets resolved cleanly)."
+  },
+  "idb_live_gate": {
+    "mac": {"status": "ok", "uptime_sec": 141904.532, "<反编译器>_ready": true, "module": "AiMaMi"},
+    "win": {"status": "ok", "uptime_sec": 141724.167, "<反编译器>_ready": true, "module": "AiMaMi 1.2.6 win64.exe"}
+  },
+  "destructive_side_effects_documented": true
+}

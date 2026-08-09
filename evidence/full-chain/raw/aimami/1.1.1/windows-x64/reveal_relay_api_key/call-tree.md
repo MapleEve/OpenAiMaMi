@@ -16,7 +16,7 @@
 |---|---|---|
 | 0x1402EE7C0 | relay_keychain_lookup_for_quota_sys | [EVIDENCE][B] 已有 rename |
 
-**idb_save**: ok=true, path=<本地路径>
+**<工具调用>**: ok=true, path=<本地路径>
 
 ## 完整调用树（depth=5，terminated at leaves）
 

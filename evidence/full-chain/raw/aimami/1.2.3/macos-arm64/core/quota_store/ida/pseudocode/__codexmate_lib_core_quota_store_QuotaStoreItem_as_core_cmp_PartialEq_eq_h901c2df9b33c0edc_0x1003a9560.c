@@ -1,4 +1,4 @@
-// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::quota_store::QuotaStoreItem as core::cmp::PartialEq>::eq::h901c2df9b33c0edc @ 0x1003a9560 | full-body via IDA Python(IDA decompiler.decompile direct write)
+// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::quota_store::QuotaStoreItem as core::cmp::PartialEq>::eq::h901c2df9b33c0edc @ 0x1003a9560 | full-body via py_exec_file(ida_hexrays.decompile direct write)
 char __fastcall _$LT$codexmate_lib..core..quota_store..QuotaStoreItem$u20$as$u20$core..cmp..PartialEq$GT$::eq::h901c2df9b33c0edc(
         __int64 a1,
         char *a2)

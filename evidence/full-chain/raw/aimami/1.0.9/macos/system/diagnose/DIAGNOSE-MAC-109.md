@@ -1,6 +1,6 @@
 # diagnose — macOS arm64 1.0.9 Raw Leaf
 
-**Session**: wf-aimami109-dualcomplete  
+**Session**: <审计会话>  
 **Machine**: <workstation>  
 **SHA**: 1db044e8efab (sha12); full: 1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482  
 **Produced**: 2026-06-03  

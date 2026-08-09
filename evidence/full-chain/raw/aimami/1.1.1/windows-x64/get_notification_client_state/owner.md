@@ -28,7 +28,7 @@
 - Comments set at 0x140122010, 0x140113170, 0x140115AC0, 0x140114F20, 0x140117B40,
   0x140116660, 0x14011B850, 0x140113D10, 0x140118940, 0x1401125D0, 0x1401A1D90, 0x1401A15D0
 - Gold-leaf comment: "gold-leaf for get_notification_client_state; sha d24e429a; session <审计会话>; not gate promotion"
-- idb_save confirmed ok
+- <工具调用> confirmed ok
 
 ## Prior Annotations (from sweep session <审计会话>)
 

@@ -1,0 +1,63 @@
+{
+  "schema": "c5cm.reverse.bundle.manifest.v1",
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "macos-arm64",
+  "module": "gpt56-model-catalog-fix",
+  "cluster": "aimami-1.2.6-gpt56-model-catalog-fix",
+  "session": "<审计会话>
+  "produced_at": "2026-08-07",
+  "changelog_item": "changelog-item-4: 修复部分Windows机型开启路由后缺少GPT-5.6系列模型",
+  "targets_requested": [
+    "codex_catalog::catalog_models",
+    "codex_catalog::official_reasoning_profile",
+    "codex_catalog::full_reasoning_levels",
+    "codex_catalog::run_bundled_cli",
+    "codex_diagnostic::native_off_openai_model_needs_fallback",
+    "codex_diagnostic::check_native_off_invalid_openai_thread_models",
+    "codex_diagnostic::fix_native_off_invalid_openai_thread_models",
+    "config_takeover::is_aimami_owned_model_section",
+    "config_takeover::quarantined_model_provider_ids",
+    "codex_writer::read_top_level_model_line"
+  ],
+  "targets_found": [
+    {"symbol": "codex_catalog::catalog_models", "ea": "0x100acecf0", "size": 153, "status": "full_decompile"},
+    {"symbol": "codex_catalog::official_reasoning_profile", "ea": "0x100adcb30", "size": 307, "status": "full_decompile"},
+    {"symbol": "codex_catalog::full_reasoning_levels", "ea": "0x100acfc30", "size": 4666, "status": "full_decompile", "decompile_code_chars": 26077, "basic_blocks": 75, "note": "此前 635 字符预览曾被误判为截断；本轮直接 decompile() 取得完整 26077 字符体，无 [N chars total] 截断标记，确认该函数只构建 4 档 reasoning level（tag=4, len=4：low/medium/high/xhigh），此前记录的'与官方6档吻合'结论为编造，已在证据中撤回"},
+    {"symbol": "codex_catalog::run_bundled_cli", "ea": "0x100aceed0", "size": 1858, "status": "full_decompile", "decompile_code_chars": 13192, "note": "此前同名文件为手写摘要/删节稿（约9-48%覆盖率）；本轮重新调用 decompile() 取得完整体，无截断标记"},
+    {"symbol": "codex_diagnostic::native_off_openai_model_needs_fallback", "ea": "0x100b28230", "size": 860, "status": "full_decompile", "decompile_code_chars": 7367, "note": "此前同名文件为手写摘要/删节稿；本轮重新调用 decompile() 取得完整体，无截断标记"},
+    {"symbol": "codex_diagnostic::check_native_off_invalid_openai_thread_models", "ea": "0x100b34f30", "size": 3194, "status": "full_decompile", "decompile_code_chars": 23298, "basic_blocks": 109, "note": "此前 573 字符预览曾被误判为截断；本轮直接 decompile() 取得完整 23298 字符体，无 [N chars total] 截断标记"},
+    {"symbol": "codex_diagnostic::fix_native_off_invalid_openai_thread_models", "ea": "0x100b30fc0", "size": 12719, "status": "full_decompile_via_<工具调用>_slice", "decompile_code_chars": 62443, "basic_blocks": 320, "destructive_side_effect": true, "note": "此前 1875 字符预览曾被误判为截断；decompile(include_addresses=true) 总长 81758 字符被 MCP 层截断到预览，改用 <工具调用> 对 str(cfunc)（include_addresses=false，长度 62443，与 decompile() 结果一致互相印证）做 5 段×15000 字符切片拼接，绕开 MCP 预览截断，还原完整 62443 字符真实伪代码，basic_blocks=320 确认函数体规模"},
+    {"symbol": "config_takeover::is_aimami_owned_model_section", "ea": "0x100ae9de0", "size": 305, "status": "full_decompile"}
+  ],
+  "targets_not_found": [
+    {
+      "symbol": "config_takeover::quarantined_model_provider_ids",
+      "closest_candidate": "config_takeover::merge_runtime_quarantine",
+      "closest_candidate_ea": "0x100ae60a0",
+      "closest_candidate_size": 3976,
+      "recovery_attempts": 5
+    },
+    {
+      "symbol": "codex_writer::read_top_level_model_line",
+      "closest_candidate": "codex_writer::read_top_level_string_value",
+      "closest_candidate_ea": "0x100822e30",
+      "closest_candidate_size": 745,
+      "recovery_attempts": 3
+    }
+  ],
+  "renames_in_idb": 0,
+  "comments_in_idb": 6,
+  "<工具调用>": {"ok": true, "path": "<内部存储>/<内部项目>/raw/binary/AiMaMi 1.2.6.app/Contents/MacOS/AiMaMi.i64"},
+  "gate": {
+    "implementation_use": false,
+    "gate_accepted": false,
+    "readyToImplement": false,
+    "strictImplementationUse": false,
+    "consumerStartReady": false
+  },
+  "live_reference_parity": "not_performed",
+  "destructive_side_effects": [
+    "codex_diagnostic::fix_native_off_invalid_openai_thread_models writes thread metadata rollout patches and orphan-adoption recovery DB/log entries (persistent state mutation, not read-only)"
+  ]
+}

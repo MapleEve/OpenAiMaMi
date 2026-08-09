@@ -1,0 +1,43 @@
+{
+  "leaf": "gpt56-model-catalog-fix",
+  "merged_from": [
+    "producer-ledger.<审计会话>
+  ],
+  "entry_count": 1,
+  "entries": [
+    {
+      "schema": "c5cm.reverse.producer-ledger.v1",
+      "session": "<审计会话>
+      "machine": "<本地机器>
+      "producer": "Claude",
+      "cluster": "aimami-1.2.6-gpt56-model-catalog-fix",
+      "platform": "macos-arm64",
+      "produced_at": "2026-08-07",
+      "ack": true,
+      "files_written": [
+        "pseudocode/0001-catalog_models_0x100acecf0.c",
+        "pseudocode/0002-official_reasoning_profile_0x100adcb30.c",
+        "pseudocode/0003-full_reasoning_levels_0x100acfc30_TRUNCATED.md",
+        "pseudocode/0004-run_bundled_cli_0x100aceed0.c",
+        "pseudocode/0005-native_off_openai_model_needs_fallback_0x100b28230.c",
+        "pseudocode/0006-0007-check-fix_native_off_invalid_openai_thread_models_TRUNCATED.md",
+        "pseudocode/0008-is_aimami_owned_model_section_0x100ae9de0.c",
+        "pseudocode/0009-quarantined_model_provider_ids_NOT_FOUND.md",
+        "pseudocode/0010-read_top_level_model_line_NOT_FOUND.md",
+        "pseudocode/0011-read_top_level_string_value_0x100822e30_closest_match.c",
+        "evidence.md",
+        "manifest.json",
+        "gate-report.json",
+        "producer-ledger.<审计会话>
+      ],
+      "idb_comments_added": 6,
+      "idb_renames": 0,
+      "<工具调用>": {
+        "ok": true,
+        "path": "<内部存储>/<内部项目>/raw/binary/AiMaMi 1.2.6.app/Contents/MacOS/AiMaMi.i64"
+      },
+      "index_jsonl_line_appended": true,
+      "reverse_status_md_closed": true
+    }
+  ]
+}

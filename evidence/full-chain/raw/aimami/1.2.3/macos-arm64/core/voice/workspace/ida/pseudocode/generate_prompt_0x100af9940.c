@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5voice9workspace15generate_prompt @ 0x100af9940 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::voice::workspace::generate_prompt::hcca4b46aeb1f0fb5(
         _QWORD *a1,

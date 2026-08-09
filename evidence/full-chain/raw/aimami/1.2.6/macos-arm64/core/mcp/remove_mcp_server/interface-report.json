@@ -1,0 +1,101 @@
+{
+  "command": "remove_mcp_server",
+  "argKeys": [],
+  "idaSymbols": [
+    "Path::parent",
+    "DirBuilder::_create",
+    "read_text",
+    "parse_mcp_document",
+    "hash_one",
+    "Vec::clone",
+    "str::trim_matches",
+    "join_generic_copy",
+    "write_atomic_with_mode",
+    "remove_file",
+    "log",
+    "format_inner"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/0001_remove_mcp_server_owner.c"
+  ],
+  "nextCallees": [
+    "Path::parent",
+    "DirBuilder::_create",
+    "read_text",
+    "parse_mcp_document",
+    "hash_one",
+    "Vec::clone",
+    "str::trim_matches",
+    "join_generic_copy",
+    "write_atomic_with_mode",
+    "remove_file",
+    "log",
+    "format_inner"
+  ],
+  "callTreeRows": [
+    {
+      "callee": "Path::parent",
+      "addr": "0x1014925f0"
+    },
+    {
+      "callee": "DirBuilder::_create",
+      "addr": "0x101483450"
+    },
+    {
+      "callee": "read_text",
+      "addr": "0x1009ef890"
+    },
+    {
+      "callee": "parse_mcp_document",
+      "addr": "0x1009f6f80"
+    },
+    {
+      "callee": "hash_one",
+      "addr": "0x100aa9f40"
+    },
+    {
+      "callee": "Vec::clone",
+      "addr": "0x1009152b0"
+    },
+    {
+      "callee": "str::trim_matches",
+      "addr": "0x100265030"
+    },
+    {
+      "callee": "join_generic_copy",
+      "addr": "0x100b58ee0"
+    },
+    {
+      "callee": "write_atomic_with_mode",
+      "addr": "0x100a4ca40"
+    },
+    {
+      "callee": "remove_file",
+      "addr": "0x101488e60"
+    },
+    {
+      "callee": "log",
+      "addr": "0x1012d4190"
+    },
+    {
+      "callee": "format_inner",
+      "addr": "0x1014c30c0"
+    }
+  ],
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": null,
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "destructive_side_effects": [
+    "atomic_write_config_file",
+    "remove_file_cleanup"
+  ],
+  "owner_ea": "0x1009f31d0",
+  "owner_name": "codexmate_lib::core::mcp::remove_mcp_server",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64",
+  "notes": "Parses MCP doc, removes server entry, writes atomically with retry loop (max 3)"
+}

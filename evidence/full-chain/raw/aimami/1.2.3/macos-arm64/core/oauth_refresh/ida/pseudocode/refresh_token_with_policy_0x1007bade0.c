@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core13oauth_refresh25refresh_token_with_policy @ 0x1007bade0
-// [FULL — IDA decompiler 全解 56260B, 超大体分页取回]
+// [FULL — hexrays 全解 56260B, 超大体分页取回]
 // 1.2.3 NEW-delta | codexmate_lib::core::oauth_refresh::refresh_token_with_policy | vs 1.2.2 新增(IDA函数枚举diff, 名↔地址一致)
 __int64 __fastcall codexmate_lib::core::oauth_refresh::refresh_token_with_policy::h554e0eb1f76208d0(
         _QWORD *a1,

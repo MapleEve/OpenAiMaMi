@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib8commands8accounts21finish_switch_failure @ 0x100696160 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 double __fastcall codexmate_lib::commands::accounts::finish_switch_failure::h6eeb88217806168c(
         _QWORD *a1,

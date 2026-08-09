@@ -3,7 +3,7 @@
 **session**: <audit-session>
 **produced**: 2026-06-04  
 **binary SHA**: 1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482  
-**idb_saved**: true  
+**<工具调用>d**: true  
 **authoritative**: false (additive logic/*.md inside bundle macos-1.0.9-tray owned by <workstation>; no canonical top-level file touched)
 
 ---
@@ -202,7 +202,7 @@ Call-tree depth: ≥ 7 edges. Terminated reasons:
 |---|---|
 | binary_sha256 | 1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482 |
 | idb_path | <source-location>/source-binary/AiMaMi 1.0.9_ida.app/Contents/MacOS/AiMaMi.i64 |
-| idb_saved | true |
+| <工具调用>d | true |
 | ida_comment_appended | @ 0x1003332a4 (func scope) |
 | IDA decompiler_ready | true |
 | strings_cache_ready | true |

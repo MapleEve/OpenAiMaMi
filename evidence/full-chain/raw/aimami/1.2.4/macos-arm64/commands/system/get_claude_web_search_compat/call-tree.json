@@ -1,0 +1,52 @@
+{
+  "target": "get_claude_web_search_compat",
+  "owner_ea": "0x10041d7a0",
+  "edges": [
+    {
+      "from": "0x10041d7a0",
+      "to": "RelayManager::snapshot",
+      "edge_type": "call",
+      "order": 0
+    },
+    {
+      "from": "0x10041d7a0",
+      "to": "storage::sanitize_for_export",
+      "edge_type": "call",
+      "order": 1
+    },
+    {
+      "from": "0x10041d7a0",
+      "to": "drop_in_place<RelayState>",
+      "edge_type": "call",
+      "order": 2
+    },
+    {
+      "from": "0x10041d7a0",
+      "to": "CoreEnvelope<T>::ok",
+      "edge_type": "call",
+      "order": 3
+    },
+    {
+      "from": "0x10041d7a0",
+      "to": "String::clone",
+      "edge_type": "call",
+      "order": 4
+    },
+    {
+      "from": "0x10041d7a0",
+      "to": "CoreError::fmt::Display",
+      "edge_type": "call",
+      "order": 5
+    },
+    {
+      "from": "0x10041d7a0",
+      "to": "core::result::unwrap_failed",
+      "edge_type": "call",
+      "order": 6
+    }
+  ],
+  "edge_count": 7,
+  "terminated_reason": "response_serialize",
+  "extraction_method": "c_text_analysis",
+  "note": "Callees extracted from 1.2.4 mac SMB .c pseudocode text, not IDA MCP callees call"
+}

@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core12debug_bundle19threads_table_shape @ 0x1004d2b20 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::debug_bundle::threads_table_shape::h3df0c5999cb35c2c(
         __int64 a1,

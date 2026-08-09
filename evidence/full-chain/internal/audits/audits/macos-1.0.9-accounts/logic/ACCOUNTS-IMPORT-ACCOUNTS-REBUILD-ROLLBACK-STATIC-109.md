@@ -27,7 +27,7 @@ promotes no gate.
 - Accepted call tree:
   `<source-location>/intermediate/aimami/1.0.9/macos/accounts/backend-owner-pseudocode-calltree/run-bundle/call-trees/import_accounts_from_file.jsonl`
 - IDB writeback:
-  comments added at `0x1005dfb6c` and `0x100eaefd8`; `idb_save` returned OK.
+  comments added at `0x1005dfb6c` and `0x100eaefd8`; `<工具调用>` returned OK.
 
 ## Static Terminal Branch
 

@@ -1,0 +1,35 @@
+{
+  "command": "managed_api_key_marker_matches",
+  "module": "core/relay/router_unlock_auth",
+  "owner_ea": "0x10056d800",
+  "interface_type": "internal_function",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "RouterContext (managed key path, marker path)",
+    "output": "bool"
+  },
+  "side_effects": [],
+  "idaSymbols": [
+    "managed_api_key_marker_matches"
+  ],
+  "pseudocode": [
+    "core/relay/router_unlock_auth/ida/pseudocode/managed_api_key_marker_matches_0x10056d800.c"
+  ],
+  "nextCallees": [
+    "managed_api_key",
+    "read_marker",
+    "memcmp",
+    "__rust_dealloc"
+  ],
+  "callTreeRows": 4,
+  "claims": {
+    "client": [],
+    "server": [
+      "managed_api_key_marker_matches"
+    ]
+  },
+  "serverEvidencePath": "core/relay/router_unlock_auth/ida/pseudocode/managed_api_key_marker_matches_0x10056d800.c",
+  "needsServerEvidencePath": false,
+  "confidence": "medium",
+  "summary": "Checks if managed API key marker matches current auth: retrieves managed_api_key from auth file, reads marker file, compares byte sequences with memcmp. Returns true if marker key matches managed key, confirming auth was committed by router."
+}

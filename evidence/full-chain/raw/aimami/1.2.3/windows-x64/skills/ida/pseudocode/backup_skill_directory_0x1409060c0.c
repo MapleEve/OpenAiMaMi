@@ -1,7 +1,7 @@
 // module: codexmate_lib/core/skills
 // addr: 0x1409060c0
 // name: backup_skill_directory
-// win 1.2.3 | truncation-stub REDUCED to full body (48714 chars) via IDA Python direct IDA decompiler.decompile paged retrieval (red line 13/20) | session win-1.2.3-truncation-reducer-20260726
+// win 1.2.3 | truncation-stub REDUCED to full body (48714 chars) via py_eval direct ida_hexrays.decompile paged retrieval (red line 13/20) | session win-1.2.3-truncation-reducer-20260726
 // win 1.2.3 | = mac codexmate_lib::core::skills::backup_skill_directory | cross-platform string-signature match (name<->func, win-native)
 // win 1.2.3 | = mac codexmate_lib::core::skills::backup_skill_directory | 跨平台字符串签名匹配(名↔函数一致)
 __int64 __fastcall backup_skill_directory(__int64 a1, __int64 a2, unsigned __int64 a3)

@@ -1,0 +1,86 @@
+{
+  "target": "ensure_transition_rollout_write_capacity",
+  "owner_ea": "0x10076d070",
+  "owner_name": "codexmate_lib::core::relay::codex_thread_visibility::ensure_transition_rollout_write_capacity",
+  "edges": [
+    {
+      "callee": "statvfs",
+      "addr": "0x1011f9200",
+      "type": "internal"
+    },
+    {
+      "callee": "collect_active_rollout_paths",
+      "addr": "0x1007483c0",
+      "type": "internal"
+    },
+    {
+      "callee": "metadata",
+      "addr": "0x10148a350",
+      "type": "internal"
+    },
+    {
+      "callee": "Error::kind",
+      "addr": "0x1007a8620",
+      "type": "internal"
+    },
+    {
+      "callee": "all_codex_state_dbs",
+      "addr": "0x100b3e380",
+      "type": "internal"
+    },
+    {
+      "callee": "open_codex_db_readonly",
+      "addr": "0x100740ff0",
+      "type": "internal"
+    },
+    {
+      "callee": "collect_provider_convergence_targets",
+      "addr": "0x10075ed80",
+      "type": "internal"
+    },
+    {
+      "callee": "find_trusted_rollout_backup",
+      "addr": "0x100743e20",
+      "type": "internal"
+    },
+    {
+      "callee": "rollout_path_identity",
+      "addr": "0x100740cf0",
+      "type": "internal"
+    },
+    {
+      "callee": "HashMap::insert",
+      "addr": "0x100b89040",
+      "type": "internal"
+    },
+    {
+      "callee": "grow_one",
+      "addr": "0x10150e440",
+      "type": "internal"
+    },
+    {
+      "callee": "ipnsort",
+      "addr": "0x100b57740",
+      "type": "internal"
+    },
+    {
+      "callee": "app_event",
+      "addr": "0x1007a0660",
+      "type": "internal"
+    },
+    {
+      "callee": "log",
+      "addr": "0x1012d4190",
+      "type": "internal"
+    }
+  ],
+  "edge_count": 14,
+  "terminated_reason": null,
+  "depth": 14,
+  "leaf_status": "implementation_leaf",
+  "callers_count": 0,
+  "basic_block_count": 0,
+  "notes": "Preflight disk capacity: statvfs + rollout paths + codex DBs + sum sizes + compare",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64"
+}

@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay16codex_diagnostic32fix_thread_poisoned_instructions @ 0x10050fa10
-// [FULL — IDA decompiler 全解 55702B, 超大体分页取回]
+// [FULL — hexrays 全解 55702B, 超大体分页取回]
 // 1.2.3 NEW-delta | codexmate_lib::core::relay::codex_diagnostic::fix_thread_poisoned_instructions | vs 1.2.2 新增(IDA函数枚举diff, 名↔地址一致)
 __int64 __fastcall codexmate_lib::core::relay::codex_diagnostic::fix_thread_poisoned_instructions::h2e3af49a31edf81c(
         __int64 a1,

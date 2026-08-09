@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay10translator33openai_chat_to_anthropic_response @ 0x100879a70 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::relay::translator::openai_chat_to_anthropic_response::h65764620b8ca243c(
         __int64 a1,

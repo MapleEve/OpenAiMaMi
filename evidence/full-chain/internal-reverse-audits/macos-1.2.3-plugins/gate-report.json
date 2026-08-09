@@ -90,7 +90,7 @@
   "notes": [
     "This package is a reduce of an already-verified negative-existence result. No new IDA decompile / xrefs / INDEX.jsonl append were performed this pass. Source = existing README.md (real content, not filler), the raw/aimami/1.2.3/macos-arm64 evidence it cites (ipc-contracts.jsonl, commands/, frontend/beautified/, run/ida/pseudocode/run_0x1006f50c0.c, backend-baseline/commands-baseline.md), and the same-source windows-1.2.3-plugins removed=true precedent.",
     "gate is diagnostic-only / removed=true. It intentionally does NOT enter any of the three consumer_gate tiers (consumerStartReady/strictImplementationUse/readyToImplement) because there is no target to implement. Per GATE-SPEC.md, a removed feature has no leaf to promote.",
-    "This audit answers only the presence/absence question. REVERSE-STATUS.md wf-aimami123-fullapp-20260724 targets list named plugins as 'missing a canonical bundle' in the RULE 8 full-leaf sense; that gap is resolved here by classification (removed) rather than by leaf closure -- there are no leaves to close.",
+    "This audit answers only the presence/absence question. REVERSE-STATUS.md <审计会话> targets list named plugins as 'missing a canonical bundle' in the RULE 8 full-leaf sense; that gap is resolved here by classification (removed) rather than by leaf closure -- there are no leaves to close.",
     "logic/ and reviews/ carry justified-N/A stamps (logic/NOT-APPLICABLE.md, reviews/CLAUDE.md) because no implementation leaf exists to write full-chain logic for or to leaf-close-review. See those files for the justification and the pointer to where the actual negative-existence verification review lives (this gate-report + README + data/summary.json)."
   ]
 }

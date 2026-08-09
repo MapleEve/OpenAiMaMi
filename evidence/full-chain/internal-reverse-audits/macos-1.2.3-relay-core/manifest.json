@@ -10,7 +10,7 @@
   "producer_machine": "<host> (this audit assembled; no new IDA decompile performed)",
   "purpose": "Determine whether the standalone relay-core scope (independent package in 1.0.9: audits/macos-1.0.9-relay-core/ + audits/windows-1.0.9-relay-core/) needs its own 1.2.3 canonical bundle, or is already fully subsumed by audits/macos-1.2.3-relay/.",
   "method": "Disk-grounded cross-check only (no live IDA session run in this pass): (1) read 1.0.9 relay-core manifest.json cluster list (19 clusters) as the target universe; (2) read 1.2.3 relay manifest.json declared scope (core::relay::* 32 submodules + commands::relay 23 commands); (3) diff the 32 raw/aimami/1.2.3/macos-arm64/core/relay/ submodule directory names and a sample of function filenames against the 19 relay-core-1.0.9 cluster names/functions; (4) cross-read REVERSE-STATUS.md (canonical claim/status ledger) for any existing project determination on this exact question.",
-  "verdict": "PARTIAL — not a clean covered_by_relay_bundle=true. Authoritative project ledger (REVERSE-STATUS.md, wf-aimami123-fullapp-20260724 entry, dated 2026-07-24) already and independently lists `relay-core` as a distinct, still-open 1.2.3 full-app backlog target (macOS + Windows + a cross-platform relay-core-bootstrap module), explicitly separate from the already-closed `relay` bundle. Function-name-level content overlap is substantial for most 1.0.9 relay-core clusters, but two clusters have no discoverable 1.2.3 equivalent, and formal RULE-9 diff/migration + reduce into a canonical audits/<platform>-1.2.3-relay-core/ bundle has never been run.",
+  "verdict": "PARTIAL — not a clean covered_by_relay_bundle=true. Authoritative project ledger (REVERSE-STATUS.md, <审计会话> entry, dated 2026-07-24) already and independently lists `relay-core` as a distinct, still-open 1.2.3 full-app backlog target (macOS + Windows + a cross-platform relay-core-bootstrap module), explicitly separate from the already-closed `relay` bundle. Function-name-level content overlap is substantial for most 1.0.9 relay-core clusters, but two clusters have no discoverable 1.2.3 equivalent, and formal RULE-9 diff/migration + reduce into a canonical audits/<platform>-1.2.3-relay-core/ bundle has never been run.",
   "covered_by_relay_bundle": false,
   "covered_by_relay_bundle_caveat": "Most 1.0.9 relay-core cluster content is present, function-name-verified, inside audits/macos-1.2.3-relay/'s declared core::relay::* 32-submodule scope (content-level absorption). But (a) this absorption was never formally verified via RULE-9 diff/migration -- macos-1.2.3-relay/manifest.json's consumed_bundles list does not include audits/macos-1.0.9-relay-core/, so the 1.2.3 relay baseline was produced as a fresh independent baseline, not as a diff against relay-core-1.0.9; (b) 2 of 19 clusters (relay_web_executor, relay_web_tools) have zero name/function matches anywhere in the 1.2.3 macos-arm64 raw tree; (c) REVERSE-STATUS.md's own 2026-07-24 full-app gap audit already lists relay-core as open/unreduced, including Windows-side raw evidence that exists but has not been reduced to canonical form.",
   "cross_check_evidence": {
@@ -41,7 +41,7 @@
     }
   },
   "reverse_status_ledger_cross_reference": {
-    "source": "internal-reverse/REVERSE-STATUS.md, entry [wf-aimami123-fullapp-20260724], dated 2026-07-24 (same day as macos-1.2.3-relay bundle creation)",
+    "source": "internal-reverse/REVERSE-STATUS.md, entry [<审计会话> dated 2026-07-24 (same day as macos-1.2.3-relay bundle creation)",
     "quote_paraphrase": "Full-app 1.2.3 backlog gap list explicitly names 'relay-core' as a still-open target requiring its own audits/<platform>-1.2.3-relay-core/ canonical bundle, explicitly distinguished from 'relay' (which the same line excludes from the backlog because audits/macos-1.2.3-relay + audits/windows-1.2.3-relay already exist). Also notes raw/aimami/1.2.3 already has 'win 多个 relay-core 子模块深逆' (multiple Windows relay-core submodules already deep-reversed) sitting unreduced, and lists a cross-platform 'relay-core-bootstrap' module (mirroring 1.0.9's cross-1.0.9-relay-core-bootstrap/) as also still pending for 1.2.3.",
     "avoid_note": "The same REVERSE-STATUS.md entry's own 'avoid' list marks the relay bundle (macos-1.2.3-relay / windows-1.2.3-relay) as read-only / claimed / not to be overlapped by other producers -- but relay-core is listed as a separate open item, not folded into that avoid-scope."
   },
@@ -51,7 +51,7 @@
     "internal-reverse/audits/macos-1.2.3-relay/manifest.json",
     "internal-reverse/audits/macos-1.2.3-relay/logic/REGISTRATION-TABLE-1.2.3.md",
     "internal-reverse/audits/macos-1.2.3-system/ (grep cross-check only)",
-    "internal-reverse/REVERSE-STATUS.md (wf-aimami123-fullapp-20260724 entry)"
+    "internal-reverse/REVERSE-STATUS.md (<审计会话> entry)"
   ],
   "gate_status": "diagnostic-only. No dim1-6 closure claimed for any leaf in this package. This package does not set implementation_use=true, gate_accepted=true, strictImplementationUse=true, or readyToImplement=true for any target. It only records a coverage determination for planning the next reduce/raw pass.",
   "resolution_2026_07_26": {

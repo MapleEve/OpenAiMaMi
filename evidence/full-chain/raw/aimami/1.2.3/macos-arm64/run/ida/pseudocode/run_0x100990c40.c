@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib3run28_$u7b$$u7b$closure$u7d$$u7d$ @ 0x100990c40 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 char __fastcall codexmate_lib::run::_$u7b$$u7b$closure$u7d$$u7d$::h34ce79929e26d159(
         __m128i a1,

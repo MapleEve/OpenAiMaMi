@@ -1,0 +1,41 @@
+{
+  "target": "fallback_relay_model_threads_excluding",
+  "owner_ea": "0x100760be0",
+  "owner_name": "codexmate_lib::core::relay::codex_thread_visibility::fallback_relay_model_threads_excluding",
+  "edges": [
+    {
+      "callee": "str::trim_matches",
+      "addr": "0x100265030",
+      "type": "internal"
+    },
+    {
+      "callee": "all_codex_state_dbs",
+      "addr": "0x100b3e380",
+      "type": "internal"
+    },
+    {
+      "callee": "load_model_restore_journal",
+      "addr": "0x1007433a0",
+      "type": "internal"
+    },
+    {
+      "callee": "Vec::retain",
+      "addr": "0x100907cf0",
+      "type": "internal"
+    },
+    {
+      "callee": "String::clone",
+      "addr": "0x1014c4ec0",
+      "type": "internal"
+    }
+  ],
+  "edge_count": 5,
+  "terminated_reason": null,
+  "depth": 5,
+  "leaf_status": "implementation_leaf",
+  "callers_count": 0,
+  "basic_block_count": 0,
+  "notes": "Renamed successor of fallback_relay_model_threads (1.2.4->1.2.6). Load journal, filter providers",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64"
+}

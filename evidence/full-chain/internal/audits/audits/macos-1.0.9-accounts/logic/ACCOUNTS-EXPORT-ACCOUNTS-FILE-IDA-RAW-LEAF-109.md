@@ -44,7 +44,7 @@ ready.
 | atomic write | `0x1005df458` | calls `relay::atomic_write::write_atomic` |
 
 IDB comments were written at the wrapper, owner, and listed leaf/callsite
-addresses, and `idb_save` returned OK.
+addresses, and `<工具调用>` returned OK.
 
 ## Frontend / IPC Chain
 

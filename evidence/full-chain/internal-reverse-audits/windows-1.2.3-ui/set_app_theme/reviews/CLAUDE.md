@@ -27,7 +27,7 @@ Read-only merge/reduce pass. No IDA session opened; no new raw/intermediate arti
 - Do NOT treat `is_upstream=true` (inferred from command-string identity) as a substitute for dim2-dim5 evidence; framework provenance lowers behavior-drift *likelihood*, it does not close the gate.
 
 ## Cross-check against REVERSE-STATUS.md
-Confirmed consistent: line ~4020 (`wf-aimami123-fullapp-20260724`) independently lists windows-exclusive `ui` among modules lacking a 1.2.3 canonical `audits/<platform>-1.2.3-<module>/` bundle, and separately notes raw/aimami/1.2.3 currently has only partial raw coverage overall (baseline 1638-function backend decompile pass + win relay-core deep-dives) that has not yet been RULE8-reduced into per-module canonical bundles — consistent with this session's finding of zero raw coverage specifically for the `ui` module. No contradiction found between this review and the existing ledger.
+Confirmed consistent: line ~4020 (`<审计会话> independently lists windows-exclusive `ui` among modules lacking a 1.2.3 canonical `audits/<platform>-1.2.3-<module>/` bundle, and separately notes raw/aimami/1.2.3 currently has only partial raw coverage overall (baseline 1638-function backend decompile pass + win relay-core deep-dives) that has not yet been RULE8-reduced into per-module canonical bundles — consistent with this session's finding of zero raw coverage specifically for the `ui` module. No contradiction found between this review and the existing ledger.
 
 ## Verdict
 Accept as partial/gap conclusion. `gate_tier=blocks_start`, `gap_class=gap_needs_new_raw`. No fields upgraded beyond what raw evidence supports.

@@ -1,0 +1,60 @@
+{
+  "commands": [
+    {
+      "command": "migrate_legacy_deepseek_v4_flash_official_protocol",
+      "argKeys": [],
+      "idaSymbols": [
+        {
+          "ea": "0x140b5f590",
+          "role": "callee"
+        },
+        {
+          "ea": "0x100778c20",
+          "role": "callee"
+        },
+        {
+          "ea": "0x140b5f87d",
+          "role": "callee"
+        },
+        {
+          "ea": "0x140b5f922",
+          "role": "callee"
+        },
+        {
+          "ea": "0x140b5f9bf",
+          "role": "callee"
+        },
+        {
+          "ea": "0x140b5d9d0",
+          "role": "callee"
+        },
+        {
+          "ea": "0x140b5e54c",
+          "role": "callee"
+        }
+      ],
+      "pseudocode": [
+        "0002-ascii-eq-ignore-case-simd-helper-0x140a839d0.c",
+        "0001-migrate-legacy-deepseek-v4-flash-official-protocol-0x140b5f590.c"
+      ],
+      "nextCallees": [
+        {
+          "ea": "0x140b5f590",
+          "name": "migrate_legacy_deepseek_v4_flash_official_protocol"
+        }
+      ],
+      "callTreeRows": 10,
+      "claims": {
+        "client": [],
+        "server": []
+      },
+      "sideEffects": [],
+      "serverEvidencePath": "<内部存储>/raw/aimami/1.2.6/windows-x64/backend/deepseek-v4-flash-migration/evidence.md",
+      "needsServerEvidencePath": false,
+      "confidence": "unknown",
+      "sourceMarkdown": "migrate_legacy_deepseek_v4_flash_official_protocol.md"
+    }
+  ],
+  "generated_from": "interface/*.md (converted to machine-readable format)",
+  "leaf": "deepseek-v4-flash-migration"
+}

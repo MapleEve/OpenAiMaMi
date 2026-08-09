@@ -1,0 +1,33 @@
+# delta-commands.txt — AiMaMi 1.2.3 → 1.2.4 (macOS arm64, symbol diff from x86_64 slice)
+# Commands/functions that are new or changed, requiring IDA full-chain verification.
+# Source: authoritative-symbol-diff-1.2.3-to-1.2.4.json (mac_verify_63_20260808 confirmed)
+# Generated: 2026-08-08 | migrating non-canonical JSON into canonical flow.md step-1 format
+
+# === New functional symbols (mac confirmed_live or icf_alias, non-serde) ===
+<http::header::value::HeaderValue as core::fmt::Debug>::fmt  # module=external/http
+codexmate_lib::commands::system::get_claude_web_search_compat  # module=codexmate_lib::commands::system
+codexmate_lib::core::relay::anthropic_history::rectify_invalid_thinking_signature  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::codex_catalog::default_no_account_slots  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::codex_catalog::normalize_no_account_slot_preference  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::codex_catalog::validate_no_account_slots  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::codex_thread_visibility::restore_no_account_model_threads  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::manager::RelayManager::set_claude_web_search_compat  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::manager::RelayManager::set_codex_no_account_slots  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::proxy_server::claude_web_search_compat_enabled  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::proxy_server::is_anthropic_thinking_signature_rejection  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::router_unlock_auth::commit_auth_for_router  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::router_unlock_auth::has_restorable_real_oauth  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::router_unlock_auth::has_usable_real_oauth_login  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::router_unlock_auth::managed_api_key_marker_matches  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::router_unlock_auth::should_use_no_account_mode  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::translator::anthropic_to_responses_response_with_tool_maps  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::translator::stream::AnthropicDirectToResponsesStream::with_tool_maps  # module=codexmate_lib::core::relay
+codexmate_lib::platform::process::codex_bundled_cli_path  # module=codexmate_lib::platform::process
+
+# === Changed/renamed functions (removed in 1.2.3 + successor added in 1.2.4) ===
+codexmate_lib::core::relay::router_unlock_auth::ensure_auth_for_router  # removed; split into prepare_/commit_auth_for_router (functional rewrite)
+codexmate_lib::core::relay::translator::anthropic_to_responses_response_with_tool_map  # renamed to _with_tool_maps (plural)
+codexmate_lib::core::relay::translator::stream::AnthropicDirectToResponsesStream::with_tool_name_map  # renamed to with_tool_maps
+
+# === New DTO/serde types (compiler-generated Deserialize impls, NOT commands — represent new persisted types) ===
+# 43 serde Deserialize::expecting impls added (DTO schema additions in core::analytics, core::auth, core::relay, core::repository, core::voice) — see VERSION-DIFF.md for full list

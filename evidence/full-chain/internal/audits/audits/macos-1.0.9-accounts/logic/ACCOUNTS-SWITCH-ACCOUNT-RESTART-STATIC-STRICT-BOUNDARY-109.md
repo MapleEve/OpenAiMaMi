@@ -9,7 +9,7 @@ It uses only:
 
 - frontend packaged extraction already recorded in the raw leaf;
 - IDA MCP `server_health`, `decompile`, `xrefs_to`, `callees`,
-  `set_comments`, and `idb_save`.
+  `set_comments`, and `<工具调用>`.
 
 It does not promote any consumer gate. It does not add raw dumps, generated
 source, call-tree corpora, run bundles, product-code changes, or main tests.

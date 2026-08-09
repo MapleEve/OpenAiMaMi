@@ -1,7 +1,7 @@
 // addr: 0x14084ad00
 // name (owner-map): sub_14084AD00
 // module: core::relay::manager
-// source: IDA remote IDA decompiler decompile, win AiMaMi.1.2.3 win64.exe, full single-pass (no truncation)
+// source: IDA remote hexrays decompile, win AiMaMi.1.2.3 win64.exe, full single-pass (no truncation)
 
 // win 1.2.1 | module src/core/relay/manager.rs | attributed via panic-Location xref (win-native)
 __int64 *__fastcall sub_14084AD00(__int64 *a1, _QWORD *a2, _QWORD *a3, __int64 a4, __int64 a5)

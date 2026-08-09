@@ -6,7 +6,7 @@ All paths are relative to `${C5CM_INTERNAL_HISTORY_ROOT:-$C5CM_SHARE_ROOT}` (SMB
 ## Raw input (untouched, physically unmoved)
 
 - `raw/aimami/1.2.3/macos-arm64/run/ida/pseudocode/*.c` — the 89 triaged files (88 closures +
-  1 top-level `run()` function), produced by `wf-aimami123-delta-20260721`.
+  1 top-level `run()` function), produced by `<审计会话>
 
 ## Bootstrap-classified (4 files)
 

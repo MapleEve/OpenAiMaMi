@@ -1,0 +1,36 @@
+{
+  "command": "has_restorable_real_oauth",
+  "module": "core/relay/router_unlock_auth",
+  "owner_ea": "0x10056c8a0",
+  "interface_type": "internal_function",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "RouterContext (marker path, auth paths)",
+    "output": "bool"
+  },
+  "side_effects": [],
+  "idaSymbols": [
+    "has_restorable_real_oauth"
+  ],
+  "pseudocode": [
+    "core/relay/router_unlock_auth/ida/pseudocode/has_restorable_real_oauth_0x10056c8a0.c"
+  ],
+  "nextCallees": [
+    "read_marker",
+    "backup_contains_usable_real_oauth",
+    "auth_is_usable_real_oauth",
+    "legacy_virtual_auth::restorable_backup_auth",
+    "__rust_dealloc"
+  ],
+  "callTreeRows": 5,
+  "claims": {
+    "client": [],
+    "server": [
+      "has_restorable_real_oauth"
+    ]
+  },
+  "serverEvidencePath": "core/relay/router_unlock_auth/ida/pseudocode/has_restorable_real_oauth_0x10056c8a0.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "Checks if restorable real OAuth exists: reads router-unlock-auth-marker, if marker has backup flag, checks backup_contains_usable_real_oauth; otherwise falls back to legacy_virtual_auth::restorable_backup_auth. Returns true if restorable OAuth credentials exist."
+}

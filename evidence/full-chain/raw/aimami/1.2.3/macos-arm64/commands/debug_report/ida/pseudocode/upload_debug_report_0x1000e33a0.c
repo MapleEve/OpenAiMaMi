@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib8commands12debug_report19upload_debug_report28_$u7b$$u7b$closure$u7d$$u7d$ @ 0x1000e33a0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 char __fastcall codexmate_lib::commands::debug_report::upload_debug_report::_$u7b$$u7b$closure$u7d$$u7d$::h6a209fee615dbc94(
         unsigned __int64 *a1,

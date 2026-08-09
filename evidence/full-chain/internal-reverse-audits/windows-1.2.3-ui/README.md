@@ -48,5 +48,5 @@ RULE9 同平台版本 diff：前端侧可比对（结构一致，候选未行为
 
 ## Action / Non-action
 
-- Action：`REVERSE-STATUS.md` `[wf-aimami123-fullapp-20260724]` 的 full-app 缺口清单中 windows 专属 `ui` 一项，保持"已产出部分/诚实缺口结论包"状态（非完全关闭——`set_app_theme` 仍待 producer IDA 补证）；下一 producer 步骤见 `logic/UI-THEME-GAP-1.2.3.md` §Next producer steps。
+- Action：`REVERSE-STATUS.md` `[<审计会话> 的 full-app 缺口清单中 windows 专属 `ui` 一项，保持"已产出部分/诚实缺口结论包"状态（非完全关闭——`set_app_theme` 仍待 producer IDA 补证）；下一 producer 步骤见 `logic/UI-THEME-GAP-1.2.3.md` §Next producer steps。
 - Non-action：不据本包为 `focus_main_window`/`has_notch` 重开等效逆向工作单（已 `already_in_canonical`）；不把 1.0.9 `strictImplementationUse` 上限带到 1.2.3；不因模块根骨架补全而升级/降级既有 gate 判定。

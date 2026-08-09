@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay17router_reconciler20reconcile_native_off @ 0x100326400 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 char *__fastcall codexmate_lib::core::relay::router_reconciler::reconcile_native_off::h9c7a4e89d050482c(
         char *a1,

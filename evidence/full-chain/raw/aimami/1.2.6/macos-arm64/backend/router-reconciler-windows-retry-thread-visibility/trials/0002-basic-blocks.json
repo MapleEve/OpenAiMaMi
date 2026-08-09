@@ -1,0 +1,15 @@
+{
+  "function": "codexmate_lib::core::relay::router_reconciler::reconcile_native_off_with_progress::h4d7d689ebda9e6fc",
+  "addr": "0x1008278a0",
+  "size_reported_by_func_query": "0x1d25",
+  "note": "CFG obtained via mcp__ida-pro-mcp-mac__basic_blocks as supplementary structural evidence because decompile() output truncated at 60099 chars. Range 0x1008278a0-0x1008295c5 matches reported size. type=2 blocks are normal-return exits, type=4 blocks are early-return/panic exits (multiple distinct early-exit tails suggest several distinct error paths, consistent with reconcile_router_on's multi-stage error propagation pattern).",
+  "total_blocks": 139,
+  "range_start": "0x1008278a0",
+  "range_end": "0x1008295c5",
+  "exit_blocks_type2_normal_return": ["0x100829580-0x100829596"],
+  "exit_blocks_type4_early_return": [
+    "0x100829596-0x1008295a5",
+    "0x1008295a5-0x1008295b2",
+    "0x1008295b4-0x1008295c3"
+  ]
+}

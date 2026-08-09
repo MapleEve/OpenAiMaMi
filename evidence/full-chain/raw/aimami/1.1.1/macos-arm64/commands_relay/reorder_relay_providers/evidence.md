@@ -32,7 +32,7 @@
 - Response type: CoreEnvelope::ok(reorder_result) on success — confirmed at owner decompile; error path returns CoreEnvelope wrapping CoreError string
 - Error path: CoreError::fmt → unwrap_failed propagation (no panic in business logic)
 - IDB comments appended: 0x1005eb9a0 (A-level owner), 0x1005df110 (A-level core impl), 0x10031c6f0 (A-level IPC dispatcher) — all dedupe=true, appended=true
-- idb_save: ok=true at <来源位置>/raw/binary/AiMaMi-1.1.1-idb
+- <工具调用>: ok=true at <来源位置>/raw/binary/AiMaMi-1.1.1-idb
 - four-angle completeness: all 4 angles PASS (see below)
 
 ## ## Inferred

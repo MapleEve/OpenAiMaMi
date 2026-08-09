@@ -1,0 +1,70 @@
+{
+  "target": "is_anthropic_thinking_signature_rejection",
+  "owner_ea": "0x100848920",
+  "edges": [
+    {
+      "from": "0x100848920",
+      "to": "alloc::string::String::from_utf8_lossy",
+      "edge_type": "call",
+      "order": 0
+    },
+    {
+      "from": "0x100848920",
+      "to": "__rust_alloc",
+      "edge_type": "call",
+      "order": 1
+    },
+    {
+      "from": "0x100848920",
+      "to": "__rust_dealloc",
+      "edge_type": "call",
+      "order": 2
+    },
+    {
+      "from": "0x100848920",
+      "to": "alloc::raw_vec::RawVecInner::reserve",
+      "edge_type": "call",
+      "order": 3
+    },
+    {
+      "from": "0x100848920",
+      "to": "memcpy",
+      "edge_type": "call",
+      "order": 4
+    },
+    {
+      "from": "0x100848920",
+      "to": "memcmp",
+      "edge_type": "call",
+      "order": 5
+    },
+    {
+      "from": "0x100848920",
+      "to": "core::str::pattern::StrSearcher::new",
+      "edge_type": "call",
+      "order": 6
+    },
+    {
+      "from": "0x100848920",
+      "to": "StrSearcher::next_match",
+      "edge_type": "call",
+      "order": 7
+    },
+    {
+      "from": "0x100848920",
+      "to": "Pattern::is_contained_in",
+      "edge_type": "call",
+      "order": 8
+    },
+    {
+      "from": "0x100848920",
+      "to": "alloc::raw_vec::handle_error",
+      "edge_type": "call",
+      "order": 9
+    }
+  ],
+  "edge_count": 10,
+  "terminated_reason": "response_serialize",
+  "extraction_method": "c_text_analysis",
+  "note": "Callees extracted from 1.2.4 mac SMB .c pseudocode text, not IDA MCP callees call"
+}

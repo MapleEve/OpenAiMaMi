@@ -51,7 +51,7 @@
 | `0x1401A15D0` | already named | `codexmate_settings_hotspot_read_full_sys_111` | B | shared with get_hotspot_enabled |
 | `0x14040CC30` | already named | `codexmate_settings_field_lookup_sys_111` | B | shared settings lookup |
 
-idb_save: ok (path=<本地路径>
+<工具调用>: ok (path=<本地路径>
 
 ---
 

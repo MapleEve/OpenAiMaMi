@@ -1,20 +1,20 @@
 {
  "schema": "c5cm.reverse.producer_ledger.v1",
  "session": "win-1.2.3-unnamed57-recovery-naming-20260726",
- "machine": "<host>",
- "ida_mcp": "win <host> (strip), module=AiMaMi.1.2.3 win64.exe, status=ok/uptime_sec=252926/IDA decompiler_ready=true/auto_analysis_ready=true, curl 直连兜底因 idacall.py 走 HTTP_PROXY 502",
+ "machine": "mini-local",
+ "ida_mcp": "win <内网IP> (strip), module=AiMaMi.1.2.3 win64.exe, status=ok/uptime_sec=252926/<反编译器>_ready=true/auto_analysis_ready=true, curl 直连兜底因 idacall.py 走 HTTP_PROXY 502",
  "product": "aimami",
  "version": "1.2.3",
  "platform": "windows-x64",
  "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
  "produced_at": "2026-07-26T05:20:00Z",
- "backfill_note": "This ledger was reconstructed 2026-07-26 (later hygiene session, see REVERSE-STATUS.md CLAIM_FIRST/GROUNDED backfill task) because the original unnamed57 session completed via a detailed REVERSE-STATUS.md narrative (including a full va-to-new-name census in prose) but never wrote a per-bundle data/producer-ledger.json (the nocjk52 sibling session did). The 57-item list below is transcribed verbatim from the REVERSE-STATUS.md '[win-1.2.3-unnamed57-recovery-naming-20260726] DONE — 终态回填' section's naming census line, not re-derived or guessed; it was cross-checked against the current live IDB (<host>) which confirms 0 remaining sub_/nullsub_-prefixed functions in /codexmate_lib/core/debug_bundle and /codexmate_lib/commands/accounts, consistent with the 57/57 rename claim.",
+ "backfill_note": "This ledger was reconstructed 2026-07-26 (later hygiene session, see REVERSE-STATUS.md CLAIM_FIRST/GROUNDED backfill task) because the original unnamed57 session completed via a detailed REVERSE-STATUS.md narrative (including a full va-to-new-name census in prose) but never wrote a per-bundle data/producer-ledger.json (the nocjk52 sibling session did). The 57-item list below is transcribed verbatim from the REVERSE-STATUS.md '[win-1.2.3-unnamed57-recovery-naming-20260726] DONE — 终态回填' section's naming census line, not re-derived or guessed; it was cross-checked against the current live IDB (<内网IP>) which confirms 0 remaining sub_/nullsub_-prefixed functions in /codexmate_lib/core/debug_bundle and /codexmate_lib/commands/accounts, consistent with the 57/57 rename claim.",
  "gate_tier": "idb_naming_plus_cjk_comment",
  "implementation_use": false,
  "gate_accepted": false,
  "full_leaf_100": false,
  "readyToImplement": false,
- "evidence_sot": "win IDB E:\\binary\\AiMaMi.1.2.3 win64.exe.i64 (idb_save ok x2, independent readback verified per REVERSE-STATUS.md GROUNDED section: 57/57 idc.get_func_name(ea)==预期新名, 57/57 comments含CJK, 5 抽样地址二次独立读取确认落盘)",
+ "evidence_sot": "win IDB <二进制路径>\\AiMaMi.1.2.3 win64.exe.i64 (<工具调用> ok x2, independent readback verified per REVERSE-STATUS.md GROUNDED section: 57/57 idc.get_func_name(ea)==预期新名, 57/57 comments含CJK, 5 抽样地址二次独立读取确认落盘)",
  "summary_pointer": "REVERSE-STATUS.md entry [win-1.2.3-unnamed57-recovery-naming-20260726] DONE — 终态回填",
  "no_raw_bundle": "true -- round output is IDB set_name(SN_NOWARN|SN_FORCE)/set_func_cmt(append, not overwrite) mutations only; no raw/intermediate body dump this pass; 3 of the 57 (account_switch_auto_mode_transaction_execute / account_switch_transaction_core_execute / account_switch_manual_mode_transaction_execute) hit DECOMPILE_TRUNCATED (red line 20), named/commented from verified prefix evidence + strong string evidence only, marked [TRUNCATED-evidence-based]",
  "summary": {
@@ -31,7 +31,7 @@
   "skipped_already_named": 0,
   "genuine_ceiling_count": 0,
   "decompile_truncated_named_from_prefix_plus_string_evidence": 3,
-  "idb_save": "ok (x2, both confirmed ok:true per REVERSE-STATUS.md)"
+  "<工具调用>": "ok (x2, both confirmed ok:true per REVERSE-STATUS.md)"
  },
  "items": [
   {"va": "0x14071abc0", "name": "debug_bundle_thread_shape_fields_build", "module": "debug_bundle", "kind": "renamed_and_commented"},
@@ -92,5 +92,5 @@
   {"va": "0x140a8b330", "name": "accounts_store_drop_chain_mid", "module": "commands/accounts", "kind": "renamed_and_commented"},
   {"va": "0x140a8ed10", "name": "accounts_store_drop_chain_tail", "module": "commands/accounts", "kind": "renamed_and_commented"}
  ],
- "grounded_verification_of_this_backfill": "orchestrator ran a fresh, independent IDA Python query 2026-07-26 (this hygiene session) against the still-live win IDB: BFS over /codexmate_lib confirms total_in_tree=1927 (0 drift) and 0 remaining sub_/nullsub_-prefixed functions in /codexmate_lib/core/debug_bundle and /codexmate_lib/commands/accounts, consistent with the 57/57 rename claim transcribed from REVERSE-STATUS.md prose above; this ledger's items[] is a verbatim transcription of that prose census (not independently re-derived per-function this round), flagged here for transparency per red line 14 (GROUNDED_NOT_SUMMARY)."
+ "grounded_verification_of_this_backfill": "orchestrator ran a fresh, independent <工具调用> query 2026-07-26 (this hygiene session) against the still-live win IDB: BFS over /codexmate_lib confirms total_in_tree=1927 (0 drift) and 0 remaining sub_/nullsub_-prefixed functions in /codexmate_lib/core/debug_bundle and /codexmate_lib/commands/accounts, consistent with the 57/57 rename claim transcribed from REVERSE-STATUS.md prose above; this ledger's items[] is a verbatim transcription of that prose census (not independently re-derived per-function this round), flagged here for transparency per red line 14 (GROUNDED_NOT_SUMMARY)."
 }

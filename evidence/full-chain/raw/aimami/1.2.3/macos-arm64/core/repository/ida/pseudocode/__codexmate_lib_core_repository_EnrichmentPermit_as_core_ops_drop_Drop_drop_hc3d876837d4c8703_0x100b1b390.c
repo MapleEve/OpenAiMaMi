@@ -1,4 +1,4 @@
-// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::repository::EnrichmentPermit as core::ops::drop::Drop>::drop::hc3d876837d4c8703 @ 0x100b1b390 | full-body via IDA Python(IDA decompiler.decompile direct write)
+// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::repository::EnrichmentPermit as core::ops::drop::Drop>::drop::hc3d876837d4c8703 @ 0x100b1b390 | full-body via py_exec_file(ida_hexrays.decompile direct write)
 __int64 __fastcall _$LT$codexmate_lib..core..repository..EnrichmentPermit$u20$as$u20$core..ops..drop..Drop$GT$::drop::hc3d876837d4c8703(
         _QWORD *a1,
         __int64 a2)

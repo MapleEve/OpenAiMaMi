@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay10translator24responses_to_sse_payload @ 0x10084df90 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 void **__fastcall codexmate_lib::core::relay::translator::responses_to_sse_payload::heb299e141bee3947(
         void **p_src,

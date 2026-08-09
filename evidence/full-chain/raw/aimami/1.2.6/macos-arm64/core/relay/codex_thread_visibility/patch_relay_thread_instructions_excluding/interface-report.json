@@ -1,0 +1,68 @@
+{
+  "command": "patch_relay_thread_instructions_excluding",
+  "argKeys": [],
+  "idaSymbols": [
+    "find_reference_instructions",
+    "collect_active_rollout_paths",
+    "from_iter_in_place",
+    "patch_instructions_rollouts_serial",
+    "Registry::new",
+    "Registry::in_worker",
+    "log"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/0001_patch_relay_thread_instructions_excluding_owner.c"
+  ],
+  "nextCallees": [
+    "find_reference_instructions",
+    "collect_active_rollout_paths",
+    "from_iter_in_place",
+    "patch_instructions_rollouts_serial",
+    "Registry::new",
+    "Registry::in_worker",
+    "log"
+  ],
+  "callTreeRows": [
+    {
+      "callee": "find_reference_instructions",
+      "addr": "0x100743790"
+    },
+    {
+      "callee": "collect_active_rollout_paths",
+      "addr": "0x1007483c0"
+    },
+    {
+      "callee": "from_iter_in_place",
+      "addr": "0x1006e15e0"
+    },
+    {
+      "callee": "patch_instructions_rollouts_serial",
+      "addr": "0x100759330"
+    },
+    {
+      "callee": "Registry::new",
+      "addr": "0x1004f6550"
+    },
+    {
+      "callee": "Registry::in_worker",
+      "addr": "0x1004f7750"
+    },
+    {
+      "callee": "log",
+      "addr": "0x1012d4190"
+    }
+  ],
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": null,
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "destructive_side_effects": [],
+  "owner_ea": "0x100770980",
+  "owner_name": "codexmate_lib::core::relay::codex_thread_visibility::patch_relay_thread_instructions_excluding",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64",
+  "notes": "Renamed successor of patch_relay_thread_instructions (1.2.4->1.2.6). Rayon parallel + serial fallback"
+}

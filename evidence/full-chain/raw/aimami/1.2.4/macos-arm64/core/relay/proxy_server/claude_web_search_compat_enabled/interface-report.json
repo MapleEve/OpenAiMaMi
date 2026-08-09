@@ -1,0 +1,36 @@
+{
+  "command": "claude_web_search_compat_enabled",
+  "module": "core/relay/proxy_server",
+  "owner_ea": "0x10083a880",
+  "interface_type": "internal_function",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "&ProxyServerState",
+    "output": "bool (enabled flag)"
+  },
+  "side_effects": [],
+  "idaSymbols": [
+    "claude_web_search_compat_enabled"
+  ],
+  "pseudocode": [
+    "core/relay/proxy_server/ida/pseudocode/claude_web_search_compat_enabled_0x10083a880.c"
+  ],
+  "nextCallees": [
+    "OnceBox::initialize",
+    "Mutex::lock",
+    "Mutex::unlock",
+    "panic_count::GLOBAL_PANIC_COUNT",
+    "panic_count::is_zero_slow_path"
+  ],
+  "callTreeRows": 6,
+  "claims": {
+    "client": [],
+    "server": [
+      "claude_web_search_compat_enabled"
+    ]
+  },
+  "serverEvidencePath": "core/relay/proxy_server/ida/pseudocode/claude_web_search_compat_enabled_0x10083a880.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "Thread-safe getter: acquires mutex lock on ProxyServerState, reads claude_web_search_compat enabled flag from offset +350, returns bool. Used by proxy server request handler to check if web search compat mode is active."
+}

@@ -7,7 +7,7 @@
 ## 证据索引
 - 前端契约：`raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl`（5 命令 grep 命中，camelCase wrapper + snake_case command 均一致）
 - 后端逆向（本轮新增）：`raw/aimami/1.2.3/windows-x64/custom-instructions/<command>/`（5 leaf，各含 manifest.json/README.md/AI.md/SYSTEM-DIFF.md/audits/*-ida-closure.json/validation/result.json/file-manifest.json）
-- IDA live gate：`server_health` on win IDA -> status=ok, uptime_sec=120249.041, IDA decompiler_ready=true, module="AiMaMi.1.2.3 win64.exe", idb_path="E:\binary\AiMaMi.1.2.3 win64.exe.i64"（本轮查询前已确认）
+- IDA live gate：`server_health` on win IDA -> status=ok, uptime_sec=120249.041, IDA decompiler_ready=true, module="AiMaMi.1.2.3 win64.exe", idb_path="<二进制路径>\AiMaMi.1.2.3 win64.exe.i64"（本轮查询前已确认）
 - 1.0.9 windows 基线（migration source）：`audits/windows-1.0.9-custom-instructions/`（source_binary_sha256=a5822387fa3f56dc03893111f4ffdd074daa882e8887ec4e7c394879c0e9fe0b, absence_anchor=0x1412804eb）
 - 二进制 SOT：`raw/binary/AiMaMi.1.2.3 win64.exe`（sha256=aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396）
 

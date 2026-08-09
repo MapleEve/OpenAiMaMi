@@ -1,5 +1,5 @@
 // win 1.2.3 delta | cmd_set_autostart_enabled @ 0x140186500 | changelog autostart
-// [FULL IDA decompiler 5176B]
+// [FULL hexrays 5176B]
 // win 1.2.1 | tauri command handler = set_autostart_enabled | mapped via command-name string xref (win-native, ground-truth)
 __int64 __fastcall set_autostart_enabled(__int64 a1)
 {

@@ -2,7 +2,7 @@
 
 ## Platform Artifacts
 
-- Windows: `E:\binary\AiMaMi.1.2.3 win64.exe`（imagebase `0x140000000`，PE，x64；server_health 现场确认 `IDA decompiler_ready=true`）。
+- Windows: `<二进制路径>\AiMaMi.1.2.3 win64.exe`（imagebase `0x140000000`，PE，x64；server_health 现场确认 `IDA decompiler_ready=true`）。
 - macOS: 见 `macos-1.2.3-system/manifest.json`（`sha256_core_reference` 已记录，本包未重复）。
 - 两平台 raw evidence 独立存放（`raw/aimami/1.2.3/{windows-x64,macos-arm64}/`），本包未做任何跨平台外推。
 

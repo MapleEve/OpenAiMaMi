@@ -1,0 +1,97 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "module": "relay",
+  "command": "get_codex_router_auth_readiness",
+  "session": "<审计会话>
+  "machine": "<本地机器>
+  "generated_at": "2026-08-06T08:05:00Z",
+  "owner_ea": "0x140547c70",
+  "owner_name": "get_codex_router_auth_readiness_owner_sys",
+  "owner_resolution_method": "shared_dispatcher_inline_match_arm_exclusive_callee",
+  "dispatcher_ea": "0x140174120",
+  "dispatcher_size": "0x6606",
+  "dispatcher_renamed": false,
+  "call_tree_max_depth": 4,
+  "terminated_reasons": [
+    "response_serialize",
+    "persistence_read_equivalent"
+  ],
+  "files": {
+    "pseudocode": [
+      "pseudocode/0001-owner-get_codex_router_auth_readiness_owner_sys.c",
+      "pseudocode/0002-callee-sub_140BF9190.c",
+      "pseudocode/0003-callee-sub_1409C2D20.c",
+      "pseudocode/0004-callee-sub_1404D0720.c"
+    ],
+    "call_tree": "call-trees/get_codex_router_auth_readiness.jsonl",
+    "interface": "interface/get_codex_router_auth_readiness.md",
+    "evidence": "evidence.md",
+    "gate_report": "gate-report.json"
+  },
+  "ida_mutations": {
+    "renames": [
+      {
+        "ea": "0x140547c70",
+        "old": "sub_140547C70",
+        "new": "get_codex_router_auth_readiness_owner_sys"
+      }
+    ],
+    "comments_set": 1,
+    "dirtree_moves": [
+      {
+        "ea": "0x140547c70",
+        "path": "codexmate_lib/core/relay/get_codex_router_auth_readiness_owner_sys"
+      }
+    ],
+    "<工具调用>": {
+      "ok": true,
+      "path": "<二进制路径>\\AiMaMi 1.2.6 win64.exe.i64"
+    }
+  },
+  "cross_reference_baselines": [
+    "raw/aimami/1.2.3/macos-arm64/commands/relay/ida/pseudocode/get_codex_router_auth_readiness_0x10053fd20.c",
+    "INDEX.jsonl key aimami/1.1.8/windows-x64/relay/get_codex_router_auth_readiness",
+    "INDEX.jsonl key aimami/1.1.8/macos-arm64/relay/get_codex_router_auth_readiness"
+  ],
+  "recovery_attempts": [
+    {
+      "item": "niuniu@woyao.pro virtual-auth literal presence in 1.2.6 windows-x64",
+      "method": "find_regex full-image scan",
+      "result": "0 hits",
+      "conclusion": "not found this round; NOT claimed removed (red line 29); left Unknown, may be fragmented/chunked or field restructured between 1.1.8 and 1.2.6"
+    },
+    {
+      "item": "depth5 exhaustive walk of sub_140BF9190 branch",
+      "method": "analyze_function + decompile on sub_140B1E6D0/sub_141534AD0/sub_14086C5A0",
+      "result": "depth4 reached, role identified, not walked to a further terminal",
+      "conclusion": "left open, not claimed accepted_unknown/genuine_ceiling; out of strict 3-target rename/deep-walk scope for this session"
+    }
+  ],
+  "gate_tier": "strictImplementationUse_candidate",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "dirtree_correction_20260807": {
+    "session": "cc-aimami126-vibe-dirtree-8func-cleanup-20260807",
+    "trigger": "opus 对抗核验发现 task#174/#175 声明与 live IDB 矛盾（声明5个已清理，实测8个仍在/vibe）",
+    "functions_in_this_bundle": [
+      {
+        "name": "get_codex_router_auth_readiness_owner_sys",
+        "ea": "0x140547c70",
+        "prior_false_claim": "本 manifest 此前记录 ida_mutations.dirtree_moves=[{ea,path:'codexmate_lib/core/relay/get_codex_router_auth_readiness_owner_sys'}] 且 <工具调用>.ok=true——本轮 live 核实证明该记录未真正持久化生效，函数实际仍 stranded 于 /vibe/",
+        "root_cause": "IDA MCP rename 工具改名时的已知副作用：即便函数已被正确 dirtree_move，后续任何对该函数的 rename 调用都会把其重新放入 /vibe/（本轮通过 dt.chdir('/codexmate_lib/core/relay') 遍历发现该路径下同时已存在一个同 ea 的正确入口，与 /vibe 下的残留入口并存，证实是「移动未清理旧入口」的重复登记问题，而非从未移动过）",
+        "fix": "dt.unlink('/vibe/get_codex_router_auth_readiness_owner_sys') 清除残留入口(rc=0)；保留 /codexmate_lib/core/relay/get_codex_router_auth_readiness_owner_sys 原有正确入口，函数 ea/name 均未变",
+        "final_path": "codexmate_lib/core/relay/get_codex_router_auth_readiness_owner_sys"
+      }
+    ],
+    "vibe_dir_final_state": "已清空并删除",
+    "<工具调用>": {
+      "ok": true,
+      "path": "<二进制路径>\\\\AiMaMi 1.2.6 win64.exe.i64"
+    },
+    "grounded_reverify": "独立 <工具调用>：unlink 后 find_entry+get_abspath 唯一命中 codexmate_lib/core/relay/get_codex_router_auth_readiness_owner_sys，current_name/func_exists 均未变，match=true",
+    "note": "本轮触发：opus 只读对抗核验发现上一轮（task#174/#175，声明清理5个函数/vibe残留+<工具调用>+grounded复验已完成）与 live win IDB 实际状态矛盾——/vibe 目录仍是实存目录，下挂 8 个 stranded 函数（非声明的5个）。红线17已核 win server_health（status=ok,module='AiMaMi 1.2.6 win64.exe',<反编译器>_ready=true）。本轮对该函数逐一用 ida_dirtree 原语（find_entry(idx=ea)+get_abspath）实测确认其当前均位于 /vibe/<name>，与上一轮声明矛盾。根因定位：此前 manifest 中记录的 ida_mutations.dirtree_moves + <工具调用>.ok=true 是虚假/未持久化的声明——真实机制是 IDA MCP 的 rename 工具在改名时会把函数自动放入/重新放入 /vibe/ 目录（即便该函数在别处已有正确 dirtree 归属），导致同一 ea 在 dirtree 中出现『正确路径 + /vibe 残留』两个入口（本轮通过 dt.find_entry/dt.chdir 遍历证实该现象，非猜测）。修复方法：对本 bundle 涉及函数逐一执行 dt.unlink('/vibe/<name>') 清除残留入口（不删除函数本身，函数 ea/name 均未变），若目标模块目录不存在则先 dt.mkdir 逐级建立，8 个函数全部归位后 /vibe 目录内容清零，执行 dt.rmdir('/vibe') 成功删除该空目录。<工具调用>() 返回 {ok:true}。Grounded 复验（独立 <工具调用> 调用，非信驱动自报）：对 8 个函数逐一按 ea 重新 find_entry+get_abspath，确认 current_name 未变 + 路径命中预期模块目录，all_match=true；dt.isdir('/vibe')=false；对目标模块目录做 BFS 内容抽读确认函数真实存在于目录内。"
+  }
+}

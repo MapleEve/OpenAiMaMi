@@ -1,0 +1,56 @@
+{
+  "command": "voice_search_overlay_ready",
+  "argKeys": [],
+  "idaSymbols": [
+    "StateManager::try_get",
+    "VoiceSearchResultState::snapshot",
+    "CoreEnvelope::ok",
+    "panic_fmt",
+    "drop_in_place<AppHandle>"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/0001_voice_search_overlay_ready_owner.c"
+  ],
+  "nextCallees": [
+    "StateManager::try_get",
+    "VoiceSearchResultState::snapshot",
+    "CoreEnvelope::ok",
+    "panic_fmt",
+    "drop_in_place<AppHandle>"
+  ],
+  "callTreeRows": [
+    {
+      "callee": "StateManager::try_get",
+      "addr": "0x10090ff10"
+    },
+    {
+      "callee": "VoiceSearchResultState::snapshot",
+      "addr": "0x10059e2d0"
+    },
+    {
+      "callee": "CoreEnvelope::ok",
+      "addr": "0x1005ad430"
+    },
+    {
+      "callee": "panic_fmt",
+      "addr": "0x101526f60"
+    },
+    {
+      "callee": "drop_in_place<AppHandle>",
+      "addr": "0x1004c32b0"
+    }
+  ],
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": null,
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "destructive_side_effects": [],
+  "owner_ea": "0x100495fe0",
+  "owner_name": "codexmate_lib::commands::voice_runtime::voice_search_overlay_ready",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64",
+  "notes": "StateManager::try_get -> snapshot -> CoreEnvelope::ok, panics if state not found"
+}

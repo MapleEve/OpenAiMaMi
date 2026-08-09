@@ -1,0 +1,7 @@
+{
+  "function": "codexmate_lib::core::relay::translator::stream::AnthropicDirectToResponsesStream::flush",
+  "status": "removed",
+  "successor": "see_note",
+  "confidence": "high",
+  "note": "REMOVED: The flush method is not found in 1.2.6 IDB. Other AnthropicDirectToResponsesStream methods still exist (handle_event, capture_usage, ensure_created, fail_with_type, with_tool_maps, finish_response, responses_event). The flush functionality may have been inlined into finish_response or removed."
+}

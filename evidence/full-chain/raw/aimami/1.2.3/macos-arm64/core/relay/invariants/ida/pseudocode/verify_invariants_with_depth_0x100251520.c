@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay10invariants28verify_invariants_with_depth @ 0x100251520
-// [FULL — IDA decompiler 全解 40867B, 超大体分页取回]
+// [FULL — hexrays 全解 40867B, 超大体分页取回]
 // 1.2.3 NEW-delta | codexmate_lib::core::relay::invariants::verify_invariants_with_depth | vs 1.2.2 新增(IDA函数枚举diff, 名↔地址一致)
 _QWORD *__fastcall codexmate_lib::core::relay::invariants::verify_invariants_with_depth::h960ecc8c9694ee1f(
         _QWORD *a1,

@@ -135,7 +135,7 @@ genuine_ceiling=false; no fake walls encountered:
 - No vtable dispatch in hot path
 - Not HTTP-terminal: pure local FS + Keychain; no outbound HTTP in this command
 - recovery_attempts: none needed — all decompiled cleanly on first attempt
-- idb_save confirmed: ok=true, path=<来源位置>/.../AiMaMi.i64
+- <工具调用> confirmed: ok=true, path=<来源位置>/.../AiMaMi.i64
 
 ---
 

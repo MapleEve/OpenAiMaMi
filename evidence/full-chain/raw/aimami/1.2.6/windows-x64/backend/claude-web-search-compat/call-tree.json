@@ -1,0 +1,109 @@
+{
+  "targets": [
+    {
+      "target": "get_claude_web_search_compat",
+      "edges": [
+        {
+          "depth": 0,
+          "ea": "0x14014ade0",
+          "name": "get_claude_web_search_compat",
+          "role": "owner",
+          "note": "thin dispatch; constructs manager.request(name=\"get_claude_web_search_compat\", target=\"manager\") via sub_14172C620 future-combinator"
+        },
+        {
+          "depth": 1,
+          "ea": "0x14172c620",
+          "name": "sub_14172C620",
+          "role": "shared_future_combinator",
+          "note": "generic future-combinator: manager.request(name,args) constructor, shared across manager-backed commands"
+        },
+        {
+          "depth": 1,
+          "ea": "0x14002b2a0",
+          "name": "sub_14002B2A0",
+          "role": "shared_registry_probe",
+          "note": "generic hashbrown-SIMD registry probe + futex wait, shared 32-caller helper"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140a92ca0",
+          "name": "sub_140A92CA0",
+          "role": "response_envelope_builder",
+          "note": "CoreEnvelope-style response finalize, exclusive to this read path per manifest.json",
+          "terminated_reason": "response_serialize"
+        },
+        {
+          "depth": 3,
+          "ea": "0x140affc30",
+          "name": "sub_140AFFC30",
+          "role": "shared_response_emitter",
+          "note": "registry dispatch + WakeByAddressSingle: emits response to Tauri invoke channel, shared across manager-backed commands",
+          "terminated_reason": "external_call"
+        }
+      ]
+    },
+    {
+      "target": "set_claude_web_search_compat",
+      "edges": [
+        {
+          "depth": 0,
+          "ea": "0x140d47c70",
+          "name": "set_claude_web_search_compat",
+          "role": "owner",
+          "note": "real async poll state machine (poll_state_dispatch_field_offset a1+1712, states 0/1/2/3); parses {target:\"manager\", enabled:<bool>}"
+        },
+        {
+          "depth": 1,
+          "ea": "0x14002b2a0",
+          "name": "sub_14002B2A0",
+          "role": "shared_registry_probe",
+          "note": "shared with getter, generic hashbrown-registry probe"
+        },
+        {
+          "depth": 1,
+          "ea": "0x14172c620",
+          "name": "sub_14172C620",
+          "role": "shared_future_combinator",
+          "note": "shared with getter, generic future-combinator"
+        },
+        {
+          "depth": 1,
+          "ea": "0x1409562a0",
+          "name": "sub_1409562A0",
+          "role": "second_manager_request",
+          "note": "second manager.request keyed by 'enabled' arg"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140504ee0",
+          "name": "sub_140504EE0",
+          "role": "config_store_apply_candidate",
+          "note": "candidate business-logic/persistence leaf; recognizes -1/-2/-3 typed error sentinels; NOT further recursed this pass (documented scope boundary, not accepted_unknown)"
+        },
+        {
+          "depth": 2,
+          "ea": "0x1412ddf00",
+          "name": "sub_1412DDF00",
+          "role": "rust_display_error_format",
+          "note": "generic Rust fmt::Display error-path formatting, standard panic-safety net"
+        },
+        {
+          "depth": 2,
+          "ea": "0x141543af0",
+          "name": "sub_141543AF0",
+          "role": "rust_display_error_format",
+          "note": "paired with sub_1412DDF00, same generic error-formatting glue"
+        },
+        {
+          "depth": 3,
+          "ea": "0x140affc30",
+          "name": "sub_140AFFC30",
+          "role": "shared_response_emitter",
+          "note": "final CoreEnvelope response emission, shared with getter and other manager-backed commands",
+          "terminated_reason": "external_call"
+        }
+      ]
+    }
+  ],
+  "edges_count": 13
+}

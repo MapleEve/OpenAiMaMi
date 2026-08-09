@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib8commands8accounts35perform_switch_payload_with_restart @ 0x1006a1800
-// [FULL — IDA decompiler 全解 53045B, 超大体分页取回]
+// [FULL — hexrays 全解 53045B, 超大体分页取回]
 // 1.2.3 NEW-delta | codexmate_lib::commands::accounts::perform_switch_payload_with_restart | vs 1.2.2 新增(IDA函数枚举diff, 名↔地址一致)
 _QWORD *__fastcall codexmate_lib::commands::accounts::perform_switch_payload_with_restart::h152c5b791ab39a92(
         void *a1,

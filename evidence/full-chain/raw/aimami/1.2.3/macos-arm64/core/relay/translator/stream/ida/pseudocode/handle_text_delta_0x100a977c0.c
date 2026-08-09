@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay10translator6stream21ChatToResponsesStream17handle_text_delta @ 0x100a977c0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::relay::translator::stream::ChatToResponsesStream::handle_text_delta::h49a6433a1b443499(
         __int64 a1,

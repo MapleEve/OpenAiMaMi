@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay12codex_writer21compose_from_original @ 0x1007bf0e0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::relay::codex_writer::compose_from_original::h499b644f0fb511a8(
         __int64 a1,

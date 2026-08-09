@@ -69,7 +69,7 @@ Inline IDB comments were written at:
 - `0x10032d0cc`: callsite, not owner;
 - `0x1005ddd0c`: core owner.
 
-`idb_save` returned OK for:
+`<工具调用>` returned OK for:
 `<source-location>/source-binary/AiMaMi 1.0.9_ida.app/Contents/MacOS/AiMaMi.i64`.
 
 ## Still Missing Before Strict

@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5voice3llm8call_llm @ 0x100668b80 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::voice::llm::call_llm::h6022ef50e8dbad9a(
         _QWORD *a1,

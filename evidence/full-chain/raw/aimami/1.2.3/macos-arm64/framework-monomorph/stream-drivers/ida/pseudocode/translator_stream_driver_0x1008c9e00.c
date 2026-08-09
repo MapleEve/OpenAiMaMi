@@ -1,5 +1,5 @@
 /* addr=0x1008c9e00 cleanname=translator_stream_driver group=stream-drivers
- * decompiled via IDA Python server-side IDA decompiler.decompile
+ * decompiled via py_exec_file server-side ida_hexrays.decompile
  * n_lines=622 brace_balanced=True truncation_markers=[]
  */
 _QWORD *__fastcall _$LT$futures_util..stream..unfold..Unfold$LT$T$C$F$C$Fut$GT$$u20$as$u20$futures_core..stream..Stream$GT$::poll_next::he15ccdcb8347d6c3(

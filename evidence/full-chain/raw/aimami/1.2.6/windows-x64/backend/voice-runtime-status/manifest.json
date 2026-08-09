@@ -1,0 +1,77 @@
+{
+  "schema": "c5cm.raw.leaf.manifest.v1",
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "module": "voice",
+  "command": "load_voice_runtime_status",
+  "session": "<审计会话>
+  "machine": "<本地机器>
+  "generated_at": "2026-08-06T08:05:00Z",
+  "owner_ea": "0x140162d80",
+  "owner_name": "load_voice_runtime_status_owner_sys",
+  "owner_resolution_method": "tauri_command_name_exact_string_xref_single_hit",
+  "core_ea": "0x140c37a50",
+  "core_name": "load_voice_runtime_status",
+  "core_pre_existing_rename": true,
+  "core_pre_existing_rename_note": "renamed+commented in an earlier same-day round (likely task #151); no raw evidence bundle existed on disk anywhere for it prior to this session - orphaned mutation, now backfilled",
+  "call_tree_max_depth": 3,
+  "terminated_reasons": [
+    "persistence_read",
+    "response_serialize"
+  ],
+  "files": {
+    "pseudocode": [
+      "pseudocode/0001-owner-load_voice_runtime_status_owner_sys.c",
+      "pseudocode/0002-core-load_voice_runtime_status.c"
+    ],
+    "call_tree": "call-trees/load_voice_runtime_status.jsonl",
+    "interface": "interface/load_voice_runtime_status.md",
+    "evidence": "evidence.md",
+    "gate_report": "gate-report.json"
+  },
+  "ida_mutations": {
+    "renames": [
+      {
+        "ea": "0x140162d80",
+        "old": "sub_140162D80",
+        "new": "load_voice_runtime_status_owner_sys"
+      }
+    ],
+    "comments_set": 1,
+    "dirtree_moves": [
+      {
+        "ea": "0x140162d80",
+        "path": "codexmate_lib/core/voice/runtime/load_voice_runtime_status_owner_sys"
+      }
+    ],
+    "<工具调用>": {
+      "ok": true,
+      "path": "<二进制路径>\\AiMaMi 1.2.6 win64.exe.i64"
+    }
+  },
+  "recovery_attempts": [],
+  "gate_tier": "strictImplementationUse_candidate",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "dirtree_correction_20260807": {
+    "session": "cc-aimami126-vibe-dirtree-8func-cleanup-20260807",
+    "trigger": "opus 对抗核验发现 task#174/#175 声明与 live IDB 矛盾（声明5个已清理，实测8个仍在/vibe）",
+    "functions_in_this_bundle": [
+      {
+        "name": "load_voice_runtime_status_owner_sys",
+        "ea": "0x140162d80",
+        "prior_false_claim": "本 manifest 此前记录 dirtree_moves 已完成+<工具调用>.ok=true——本轮 live 核实证明未真正持久化，函数实际仍 stranded 于 /vibe/（与 codex-router-auth-readiness 同一根因：rename 工具副作用重新插入 /vibe，形成重复入口）",
+        "fix": "dt.unlink('/vibe/load_voice_runtime_status_owner_sys') 清除残留(rc=0)，保留既有正确入口",
+        "final_path": "codexmate_lib/core/voice/runtime/load_voice_runtime_status_owner_sys"
+      }
+    ],
+    "vibe_dir_final_state": "已清空并删除",
+    "<工具调用>": {
+      "ok": true,
+      "path": "<二进制路径>\\\\AiMaMi 1.2.6 win64.exe.i64"
+    },
+    "grounded_reverify": "独立 <工具调用>：unlink 后唯一命中 codexmate_lib/core/voice/runtime/load_voice_runtime_status_owner_sys，match=true",
+    "note": "本轮触发：opus 只读对抗核验发现上一轮（task#174/#175，声明清理5个函数/vibe残留+<工具调用>+grounded复验已完成）与 live win IDB 实际状态矛盾——/vibe 目录仍是实存目录，下挂 8 个 stranded 函数（非声明的5个）。红线17已核 win server_health（status=ok,module='AiMaMi 1.2.6 win64.exe',<反编译器>_ready=true）。本轮对该函数逐一用 ida_dirtree 原语（find_entry(idx=ea)+get_abspath）实测确认其当前均位于 /vibe/<name>，与上一轮声明矛盾。根因定位：此前 manifest 中记录的 ida_mutations.dirtree_moves + <工具调用>.ok=true 是虚假/未持久化的声明——真实机制是 IDA MCP 的 rename 工具在改名时会把函数自动放入/重新放入 /vibe/ 目录（即便该函数在别处已有正确 dirtree 归属），导致同一 ea 在 dirtree 中出现『正确路径 + /vibe 残留』两个入口（本轮通过 dt.find_entry/dt.chdir 遍历证实该现象，非猜测）。修复方法：对本 bundle 涉及函数逐一执行 dt.unlink('/vibe/<name>') 清除残留入口（不删除函数本身，函数 ea/name 均未变），若目标模块目录不存在则先 dt.mkdir 逐级建立，8 个函数全部归位后 /vibe 目录内容清零，执行 dt.rmdir('/vibe') 成功删除该空目录。<工具调用>() 返回 {ok:true}。Grounded 复验（独立 <工具调用> 调用，非信驱动自报）：对 8 个函数逐一按 ea 重新 find_entry+get_abspath，确认 current_name 未变 + 路径命中预期模块目录，all_match=true；dt.isdir('/vibe')=false；对目标模块目录做 BFS 内容抽读确认函数真实存在于目录内。"
+  }
+}

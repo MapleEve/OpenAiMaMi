@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay10translator45anthropic_to_responses_response_with_tool_map @ 0x1008938c0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::relay::translator::anthropic_to_responses_response_with_tool_map::h58553209f6c91da6(
         __int64 a1,

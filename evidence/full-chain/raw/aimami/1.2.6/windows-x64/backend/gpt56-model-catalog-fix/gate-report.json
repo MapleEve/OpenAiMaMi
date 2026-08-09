@@ -1,0 +1,61 @@
+{
+  "schema": "c5cm.reverse.gate-report.v1",
+  "cluster": "aimami-1.2.6-gpt56-model-catalog-fix",
+  "platform": "windows-x64",
+  "session": "<审计会话>
+  "gate_tier": "evidence_collected_not_gate_promotion",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "readyToImplement": false,
+  "strictImplementationUse": false,
+  "full_leaf_100_definition_v2": false,
+  "resolution_summary": {
+    "total_targets": 8,
+    "confirmed_and_renamed": 4,
+    "confirmed_list": ["run_bundled_cli", "official_reasoning_profile", "check_native_off_invalid_openai_thread_models", "is_aimami_owned_model_section"],
+    "tentative_not_renamed": 0,
+    "tentative_list": [],
+    "disconfirmed_genuine_ceiling": 0,
+    "disconfirmed_genuine_ceiling_list": [],
+    "confirmed_inlined_no_standalone_symbol": 1,
+    "confirmed_inlined_list": ["fix_native_off_invalid_openai_thread_models (round5, 2026-08-07 same-day follow-up: prior genuine_ceiling_claimed=true was premature per red-line-13 -- it only refuted the sole known candidate 0x1405ae4b0 without exhausting sub_1405CBF60's remaining switch branches. Full enumeration this round found the dispatcher has 15 case buckets / 24 diagnostic-key strings; case 39 (key=\"native_off_invalid_openai_thread_models\") is a ~1230-line fully inlined implementation, byte-exact matched against mac's fix_native_off_invalid_openai_thread_models (0x100b30fc0) at its entry guard: identical 39-byte key literal, identical 59-byte UTF-8 message '路由启用中，无需修复 NativeOff 官方线程模型' decoded byte-for-byte on both platforms, identical alloc-size sequence, identical hashbrown SwissTable SIMD probe pattern in the post-guard real-fix continuation. genuine_ceiling=false — this is LLVM inlining into the shared dispatcher on the Windows target, not a missing function. No standalone win_ea/rename applies. See manifest.json target_8_functions_resolution[fix_native_off_invalid_openai_thread_models] and evidence.md 第五轮 for full method chain.)"],
+    "not_found": 3,
+    "not_found_list": [
+      "native_off_openai_model_needs_fallback (round5 retry, 2026-08-07 same-day: extracted exact mac-side predicate literals via get_operand_value/get_bytes -- tag==6, provider prefix=='openai' case-insensitive, native_off count==0, model name =='aimami_relay'(12B exact)/'aimami_relay_'(13B prefix) short-circuit, else two-level SwissTable HashSet fallback. find_regex+find_bytes dual-channel search located 4 win-side functions embedding the aimami_relay literal family (0x1404d2a10/0x1404e8f50/0x140bb5b60/0x14054ea80), all fully decompiled and excluded -- none has the tag==6 discriminant or case-insensitive 'openai' fold-compare; cross-reference showed these 4 are actually the is_aimami_owned_model_section literal family inlined at multiple callsites (round4 confirmed target), not this predicate. call-graph expansion from all 3 already-confirmed functions found no new candidate. genuine_ceiling=false -- still NOT_FOUND, not a ceiling. Next-step lead: mac's true caller fix_native_off_invalid_openai_thread_models is now CONFIRMED_INLINED in sub_1405CBF60 case 39 (see confirmed_inlined_list) -- next round should search inside that ~1230-line inlined body's post-guard continuation for the tag==6+openai+two-level-SwissTable feature block, rather than an independent function outside the dispatcher. See manifest.json target_8_functions_resolution[native_off_openai_model_needs_fallback].round5_2026_08_07_retry and evidence.md 第五轮/第六轮closure for full method chain.)",
+      "catalog_models (index_into generic symbol confirmed inlined per-callsite, no standalone 1:1 function boundary; logic present but fused in 0x140556590/0x1405607e0)",
+      "full_reasoning_levels (win side uses embedded JSON literal at 0x1405622d0, not BTreeMap::entry code construction — architecturally different mechanism, no equivalent function exists)"
+    ],
+    "round4_update": "is_aimami_owned_model_section resolved this round (previously NOT_FOUND after actively refuting candidate 0x14056b270) via call-cluster expansion: xrefs_to(0x14056b270) -> sole caller sub_140573DE0 (config_takeover orchestrator) -> callees() of that orchestrator directly includes 0x140572FB0, confirmed CONFIRMED+renamed at win_ea=0x140572fb0 (405B) after byte-level literal cross-check against mac's 0008 pseudocode (9-byte \"profiles.\" prefix exact match, 16-byte fast-path decoded as \"model_providers.\", 12/13-byte literals decoded as \"aimami_relay\"/\"aimami_relay_\"). genuine_ceiling=false. See manifest.json round4_is_aimami_owned_model_section_resolution_20260807 for full method chain.",
+    "round5_update": "fix_native_off_invalid_openai_thread_models's prior genuine_ceiling_claimed=true superseded this round (see confirmed_inlined_list above) after full sub_1405CBF60 switch enumeration + mac-side full decompile cross-check. resolution_summary category counts: total_targets=8 = confirmed_and_renamed(4) + confirmed_inlined_no_standalone_symbol(1) + not_found(3)."
+  },
+  "blockers": [
+    "3 of 8 targets remain unresolved after real method attempts (panic-Location two-hop xref + strict call-graph propagation + precise string localization + call-cluster expansion); documented per-target attempted methods in pseudocode/0005/0007/0008 (0006 is_aimami_owned_model_section NOT_FOUND has since been superseded by round4 resolution, see pseudocode/0009)",
+    "no local+adversarial dual review performed this round",
+    "no four-angle completeness check (红线15) performed this round",
+    "no live reference app comparison performed (红线25)",
+    "core embedded-catalog-JSON holder function (0x1405622d0, 8907B/39783 chars via <工具调用>) fully retrieved this round; confirmed data-literal architecture, ruled out as full_reasoning_levels equivalent",
+    "is_aimami_owned_model_section len==6/len==19 branch literals not fully byte-decoded via get_bytes this round (honest gap, does not affect function-identity confidence — see pseudocode/0009)",
+    "fix_native_off_invalid_openai_thread_models's inlined case-39 continuation (~1100 lines, post-guard real-fix logic) was cross-checked structurally (identical hashbrown SIMD probe idiom) against mac's collect_diagnostic_main_threads/native_off_openai_model_needs_fallback/prepare_thread_metadata_rollout/write_orphan_thread_adoption_recovery/apply_orphan_thread_adoption_db chain, but individual win-side callee names within that continuation were not each independently confirmed 1:1 by symbol (they are anonymous sub_ helpers inside the same inlined blob) — honest gap, does not affect the entry-guard byte-exact identity match"
+  ],
+  "fake_wall_check": {
+    "accepted_unknown_claimed": false,
+    "genuine_ceiling_claimed": false,
+    "genuine_ceiling_target": null,
+    "genuine_ceiling_superseded_target": "fix_native_off_invalid_openai_thread_models (windows-x64) — see confirmed_inlined_list",
+    "caller_disambiguation_tried": true,
+    "reasoning": "本轮4个NOT_FOUND目标均已实际尝试红线24三层恢复法（panic-Location两跳xref/严格调用图传播/精确字符串定位）且失败，未标记accepted_unknown（未走完整假墙taxonomy排除）。1个高置信度候选(0x14056b270 for is_aimami_owned_model_section)经decompile主动证伪，避免了继承错误映射。full_reasoning_levels/catalog_models的NOT_FOUND结论基于确凿的架构差异证据（数据字面量vs代码构造；跨7处调用点内联融合），非放弃搜索。fix_native_off_invalid_openai_thread_models此前(同日早前session)的genuine_ceiling_claimed=true经本轮(round5)复核判定为误判：当时只证伪了唯一已知候选0x1405ae4b0(case28=thread_poisoned_instructions,与目标无关)，未穷尽同一分发器sub_1405CBF60的其余switch分支即下genuine_ceiling结论，不满足红线13\"ICF折叠+caller反推穷尽\"的严格定义。本轮完整枚举该switch全部15个case桶/24条诊断key后，在case39(key=native_off_invalid_openai_thread_models)发现该函数的完整内联实现，与mac侧fix_native_off_invalid_openai_thread_models(0x100b30fc0)的entry guard做字节级交叉核对(39字节key字面量+59字节UTF-8提示消息逐字节相同+分配尺寸序列相同+hashbrown SwissTable SIMD探测手法相同)，确认为编译器内联(非genuine_ceiling)。genuine_ceiling=false(已订正)。"
+  },
+  "idb_live_gate": {
+    "win": {"status": "ok", "uptime_sec": 179356.238, "<反编译器>_ready": true, "module": "AiMaMi 1.2.6 win64.exe", "checked_before_all_decompile_rename_calls": true},
+    "win_round4": {"status": "ok", "uptime_sec": 192244.497, "<反编译器>_ready": true, "module": "AiMaMi 1.2.6 win64.exe", "checked_before_all_decompile_rename_calls": true},
+    "win_round5": {"status": "ok", "uptime_sec": 193296.917, "<反编译器>_ready": true, "module": "AiMaMi 1.2.6 win64.exe", "checked_before_all_decompile_rename_calls": true}
+  },
+  "renames_in_idb": 4,
+  "comments_in_idb": 14,
+  "round5closure_20260807_note": "对抗核验(adversarial review)发现round5声称的'native_off_openai_model_needs_fallback: append_comments 4处'实际只有3处真正写入IDB(0x1404d2a10/0x1404e8f50/0x140bb5b60)，第4处(0x14054ea80，round5文档误写地址为0x140b50ea0)遗漏未写；closure轮已补写并<工具调用>()确认落盘，comments_in_idb由13更新为14。另round5声称manifest.json缺少round4_is_aimami_owned_model_section_resolution_20260807字段一事经核验为失实猜测，该字段确实存在，已在evidence.md/manifest.json中订正撤回。详见manifest.json的round5closure_20260807字段。",
+  "destructive_side_effects_documented": true,
+  "destructive_side_effects": [
+    "candidate 0x140570d80 (quarantined_model_provider_ids candidate, not one of the 8 targets) reads/writes router-takeover-backup.json with epoch-timestamp logic, suspected persistent state mutation, not fully decompiled to confirm write path",
+    "mac side fix_native_off_invalid_openai_thread_models confirmed to write thread metadata rollout + orphan adoption recovery DB/log (see macos-arm64 evidence.md); win side inlined equivalent (sub_1405CBF60 case 39 post-guard continuation, round5) structurally confirmed to contain the same hashbrown-based collect+repair pattern, though individual win-side callee symbol names within the inlined blob were not each independently verified this round (see blockers)"
+  ]
+}

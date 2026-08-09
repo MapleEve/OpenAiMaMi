@@ -1,7 +1,7 @@
 # Claude 独立复核 — windows-1.2.3-skills
 
 复核日期：2026-07-25
-复核范围：本包自身产出（README/AI/SYSTEM-DIFF/manifest/gate-report/logic/pointers）对照本会话直接产出的证据（13 个 raw `.c` 文件中的 7 个新增、dirtree 活体查询结果、`callees()`/`server_health`/`idb_save` 返回值）逐条核对。
+复核范围：本包自身产出（README/AI/SYSTEM-DIFF/manifest/gate-report/logic/pointers）对照本会话直接产出的证据（13 个 raw `.c` 文件中的 7 个新增、dirtree 活体查询结果、`callees()`/`server_health`/`<工具调用>` 返回值）逐条核对。
 
 ## 四角度完整性核验（SKILL.md 红线15 FOUR_ANGLE_COMPLETENESS）
 
@@ -15,12 +15,12 @@
 - 13 个 win 函数（7 core + 6 commands）的 owner-identity 判定——直接来自本会话 `server_health`/dirtree 查询/`decompile()`/`callees()` 的 LIVE 返回值，非转述旧摘要。
 - 5 个完整命令 handler 的"完整但未追踪 call-tree"判定——直接检查每个 `decompile()` 返回的 `code` 字段末尾是否含截断标记（`chars total]`），5 个均无该标记（对比 2 个截断函数确有该标记），据此二分类，非猜测。
 - `backup_skill_directory -> sub_1408A4BA0` 调用边——直接来自 `callees()` 工具返回值中该地址对的命中，非从 mac 侧调用点位置推测外推。
-- dirtree 移动 6/6 `rc=DTE_OK=0` 与 `idb_save ok=true`——直接来自工具调用返回值，未假设成功。
+- dirtree 移动 6/6 `rc=DTE_OK=0` 与 `<工具调用> ok=true`——直接来自工具调用返回值，未假设成功。
 
 ## 自我纠正（Self-correction，同一会话内）
 
 - **dirtree BFS 首次实现报错**：递归函数内部访问外层 `dt` 变量触发 `NameError: name 'dt' is not defined`（IDA `IDA Python` 的 `exec()` 用了独立 globals/locals，函数体内看不到调用侧的模块级变量）。已改写为扁平队列（非递归）版本，验证通过后才采信其枚举结果——**未把首次失败的空结果或报错误判为"目录为空"**，而是修复脚本后重新核验。
-- **`server_health`/`IDA Python` 一度连接失败**（`{"error":"no session (<host> down?)"}`，出现 3 次调用中 2 次失败）——严格按红线17 IDA_LIVE_GATE 执行：重试 1 次，仍失败后 STOP，**未**把连接失败当"无 gap"处理，`serialize_10` 因此如实标记为未核实而非默认"已覆盖"或"非孤儿"。
+- **`server_health`/`IDA Python` 一度连接失败**（`{"error":"no session (<host> down?)"}`，出现 3 次调用中 2 次失败）——严格按红线17 <门控> 执行：重试 1 次，仍失败后 STOP，**未**把连接失败当"无 gap"处理，`serialize_10` 因此如实标记为未核实而非默认"已覆盖"或"非孤儿"。
 
 ## 驳回/降级（Rejected/Downgraded）
 

@@ -1,5 +1,5 @@
 /* addr=0x100308070 cleanname=route_handler group=axum-handlers
- * decompiled via IDA Python server-side IDA decompiler.decompile
+ * decompiled via py_exec_file server-side ida_hexrays.decompile
  * n_lines=18 brace_balanced=True truncation_markers=[]
  */
 _WORD *__fastcall _$LT$F$u20$as$u20$axum..handler..Handler$LT$$LP$$LP$$RP$$C$$RP$$C$S$GT$$GT$::call::h2c950e760213c830(

@@ -1,0 +1,24 @@
+{
+  "command": "remove_mcp_server",
+  "argKeys": [
+    "server_name",
+    "config_path"
+  ],
+  "idaSymbols": [
+    "0x1007cbfc0",
+    "0x1009f31d0"
+  ],
+  "confidence": "high",
+  "request": {
+    "server_name": "String",
+    "config_path": "PathBuf"
+  },
+  "response": "CoreEnvelope<()>",
+  "errors": [
+    "CoreError on config parse/write failure"
+  ],
+  "side_effects": [
+    "⚠ modifies codex_config.rs file",
+    "removes MCP server entry from config"
+  ]
+}

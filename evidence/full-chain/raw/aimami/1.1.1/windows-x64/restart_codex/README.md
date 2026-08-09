@@ -7,7 +7,7 @@
 **IDB**: <本地路径>
 **Gate**: strictImplementationUse (dim1-5 closed; dim6 内部构建-side pending)
 **is_upstream**: false (内部构建-extra command, not in upstream codex-cli)
-**IDB saved**: true (idb_save confirmed 2026-06-16)
+**IDB saved**: true (<工具调用> confirmed 2026-06-16)
 
 ---
 

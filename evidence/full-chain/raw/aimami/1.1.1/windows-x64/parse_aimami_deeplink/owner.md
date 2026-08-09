@@ -39,7 +39,7 @@
 | sub_14070B500 | str_trim_end_matches_char_sys | 0x14070B500 | B |
 | sub_140730900 | relay_provider_hashmap_insert_sys | 0x140730900 | B |
 
-idb_save: ok=true, path=<本地路径>
+<工具调用>: ok=true, path=<本地路径>
 
 ## Callers
 - tauri_ipc_dispatcher_shim_sys → tauri_ipc_main_dispatcher_sys → parse_aimami_deeplink_owner_sys

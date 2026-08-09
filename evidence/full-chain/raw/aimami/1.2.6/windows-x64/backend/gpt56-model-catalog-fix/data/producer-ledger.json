@@ -1,0 +1,342 @@
+{
+  "leaf": "gpt56-model-catalog-fix",
+  "merged_from": [
+    "producer-ledger.<审计会话>
+    "producer-ledger.<审计会话>
+    "producer-ledger.<审计会话>
+    "producer-ledger.<审计会话>
+    "producer-ledger.<审计会话>
+    "producer-ledger.cc-aimami126-vibe-dirtree-8func-cleanup-20260807.json"
+  ],
+  "entry_count": 6,
+  "entries": [
+    {
+      "schema": "c5cm.internal-reverse.producer-ledger.v1",
+      "claim_id": "<审计会话>
+      "produced_at": "2026-08-07T00:00:00Z",
+      "producer": "Claude",
+      "machine": "<本地机器>
+      "bundle_path": "raw/aimami/1.2.6/windows-x64/backend/gpt56-model-catalog-fix/",
+      "supersedes_partial_status_of": "<审计会话> (native_off_openai_model_needs_fallback: technical conclusion NOT_FOUND unchanged, this round adds exhaustive case-39 full-body search + adversarial-found description corrections)",
+      "trigger": "承接round5closure记录的下一步线索建议——'应在fix_native_off_invalid_openai_thread_models已确认的内联体(sub_1405CBF60 case 39) post-guard延续部分(~1100行)内逐basic-block搜索本谓词的特征组合段'。本轮实际执行该建议，并对结果做独立对抗核验。",
+      "target": {
+        "symbol": "native_off_openai_model_needs_fallback",
+        "mac_addr": "0x100b34f30(mac确认地址，此前已定位)",
+        "win_status": "NOT_FOUND（本轮持续，第三次独立复核仍为负向结果）",
+        "predicate_literal_reference": "mac活体IDB解出的判定谓词字面量：tag==6 / provider前缀'openai'大小写不敏感 / native_off计数==0 / 模型名'aimami_relay'(12B精确)或'aimami_relay_'(13B前缀)短路 / 两级SwissTable HashSet回退"
+      },
+      "method_this_round": [
+        "用ida_<反编译器>.decompile()+get_pseudocode()直接取伪代码文本（绕开MCP decompile工具对超大函数~150K字符的自动截断），定位case 39起止边界：pseudocode第2108行'case 39LL:'起至第3339行（紧接第3340行default:，第3342行switch闭合），共1232行/44070字符，逐段人工读取+子串/正则扫描（'aimami'/'relay'/十六进制打包常量批量解码为ASCII）",
+        "检查case 39入口早退缓存分支`if(*(_BYTE*)(a3+316))`（绝对行2111-2158，48行）：构造对象内硬编码诊断ID 'id_openai_thread_models'(23字节，qmemcpy，行2125)+tag 39，判定该分支是15个case通用的'本会话已跑过'防抖样板，与needs_fallback判定结果无直接数据依赖",
+        "核对case 39内openai provider匹配点（绝对行2966，sub_140C22BD0调用aOpenai@0x141831078长度6）与修复写回函数sub_1405A7260（独立函数，非内联）：sub_1405A7260内部用数值常量32838查表(sub_1405199B0)，4个SQL UPDATE模板硬编码aOpenai，无aimami_relay字面量、无SwissTable探测",
+        "对case 39一跳可达的65个sub_调用目标（用正则从case 39全文本提取唯一sub_调用目标枚举得出）中结构最吻合的3个函数（sub_1405A7260修复写回函数、sub_1405199B0数值ID查表函数、sub_1404C1F20迭代器比较函数）逐一完整反编译核对",
+        "全二进制范围find_regex('^aimami_relay$')精确锚定匹配（0命中）+ find_bytes(原始ASCII字节'61 69 6D 61 6D 69 5F 72 65 6C 61 79')原始字节匹配（7处命中，地址均已记录）+ 逐条get_string核实内容（全部为'aimami_relay_'/'aimami_relay_legacy_'/'aimami_relay# Codex '/SQL GLOB查询等带后缀变体，无一处是独立、以空字符结尾的精确12字节'aimami_relay'）"
+      ],
+      "conclusion": "native_off_openai_model_needs_fallback对应的'aimami_relay精确/前缀匹配'快捷判定分支在AiMaMi 1.2.6 win64二进制里持续确认不存在——不在case 39分支体内部（本轮已逐行读完整1232行），不在其一跳可达、结构最吻合的3个被调函数里，也不在整个Windows二进制范围内以任何字符串常量形式存在。genuine_ceiling仍为false（本轮未追溯到a3+316缓存标志的赋值源头，不满足红线13'ICF折叠+caller反推穷尽'的genuine_ceiling严格定义，不得仅凭'看起来像死代码消除'的归纳升级为genuine_ceiling）。技术结论NOT_FOUND本身与round5/round5closure一致，未变化。",
+      "adversarial_verdict": "CONFIRMED（主结论成立，独立复现的地址/字符串内容/行号/字节计数与原声明逐一吻合，无编造痕迹）；同时发现3处需订正的技术性瑕疵（不影响主结论）：",
+      "issues_found_by_adversarial_review": [
+        {
+          "issue": "入口身份串张冠李戴",
+          "detail": "原声明称case 39入口第一行`sub_14172BEB0(a4, &xmmword_141830401, 39)`是在校验/构造诊断自身身份串'id_openai_thread_models'(23字节)；独立读取xmmword_141830401处39字节原始内容，实际是'native_off_invalid_openai_thread_models'(39字节，与调用里长度参数吻合)，与后面2125行qmemcpy的'id_openai_thread_models'(23字节)是两个不同地址、不同长度的字符串，原声明把两处混为一谈。",
+          "impact": "更正后反而让'case 39对应mac侧fix_native_off_invalid_openai_thread_models家族'的大方向判断证据更硬（native_off_invalid_openai_thread_models直接对上mac侧函数名家族），不影响NOT_FOUND结论。"
+        },
+        {
+          "issue": "跳数(hop count)错标",
+          "detail": "原声明称检查的sub_1405A7260/sub_1405199B0/sub_1404C1F20三个函数都是'case 39一跳可达的65个被调函数'之一；独立枚举case 39全文本唯一sub_调用目标核对后，sub_1405199B0和sub_1404C1F20均不在这65个一跳函数列表内——它们是通过sub_1405A7260（真正的一跳函数）间接调用的两跳函数。",
+          "impact": "检查这两个函数本身没有问题（确实与needs_fallback逻辑高度相关），但'一跳可达'的说法对其中两个是错的，需订正措辞。"
+        },
+        {
+          "issue": "死代码消除(dead code elimination)排查论证强度不足",
+          "detail": "原声明断言a3+316缓存位'是15个case通用的防抖样板，与needs_fallback判定结果没有数据依赖'；独立扫描全部15个case后发现该偏移量只出现在7个case（21/22/23/26/27/32/39）而非全部15个，其中5个case(21/22/23/26/27)把它当作活数据直接传给各自核心诊断函数，case 32甚至用相反极性判断(if(!flag))；往上追一层调用者sub_1405C49F0，该字段在那里也只是被读取/|=累加，赋值源头未能定位到。",
+          "impact": "'这条分支跟needs_fallback无数据依赖'的结论只是基于'长得像'的归纳，并未真正追踪到写入点，严谨程度不及原文行文暗示的水平——不足以支撑'genuine_ceiling'或'死代码消除已排除'的确定性措辞，本轮维持gap_needs_reducer，不升级为genuine_ceiling。"
+        }
+      ],
+      "genuine_ceiling": false,
+      "caller_disambiguation_tried": true,
+      "ceiling_reason": "not_applicable_insufficient_dataflow_trace_to_claim_dead_code_elimination_or_architectural_absence",
+      "next_steps_concrete": [
+        "订正evidence.md/manifest.json中3处adversarial发现的技术描述错误（入口身份串id_openai_thread_models vs native_off_invalid_openai_thread_models；sub_1405199B0/sub_1404C1F20的跳数标注一跳->两跳；死代码消除论证强度声明降级为'待验证假设'而非'已排除'）",
+        "真正追踪a3+316缓存标志的赋值源头（非仅读取点）：需要在sub_1405C49F0及其调用者链路中定位该字段的写入指令，确认其数据来源是否与needs_fallback判定结果存在真实依赖关系，用数据流证据（非'长得像其他case'的归纳）确认或排除死代码消除假设",
+        "在fix_native_off_invalid_openai_thread_models已确认的case 39内联体post-guard延续部分（约1100行，本轮已完整读取但逐basic-block特征匹配尚未做）内，用basic_blocks工具分块扫描寻找tag==6判别字段+大小写不敏感'openai'折叠比较+12/13字节aimami_relay字面量+两级SwissTable HashSet回退这一完整组合的具体位置（round5closure建议的方向，本轮完成了全文读取但未做逐block特征匹配，此为下一步的具体、可执行的技术动作，非泛泛的'继续找'）",
+        "若上述两步仍无结果，需评估是否该判定逻辑在win侧确实以数据驱动配置表（而非独立代码分支）方式实现，但此假设成立前提是必须先完成上一条assignment-source追踪，不得凭空升级为genuine_ceiling"
+      ],
+      "idb_actions_this_round": {
+        "win": {
+          "renamed": 0,
+          "comments_added": 0,
+          "<工具调用>": false,
+          "note": "本轮为纯分析/核验性任务，未涉及新的rename/comment写入（此前round5closure已补齐IDB注释遗漏，本轮技术结论未变化，不构成需要新增/修改IDB注释的理由；3处描述订正落在evidence.md/manifest.json等消费者文档层面，非IDB层面）"
+        }
+      },
+      "server_health_pre_check": {
+        "win": "status=ok, uptime_sec=201396 (原始核验) / 194407-202131区间 (本轮reduction收尾复查), <反编译器>_ready=true, module='AiMaMi 1.2.6 win64.exe'"
+      },
+      "gate_accepted": false,
+      "implementation_use": false,
+      "not_done_honest": [
+        "a3+316缓存标志赋值源头未追踪到（见next_steps_concrete）",
+        "case 39 post-guard延续部分未做逐basic-block特征匹配扫描",
+        "未做本地+对抗双审的canonical格式化流程",
+        "未做四角度完整性核查（红线15）",
+        "未与真实Windows客户端做参照运行对照（红线25）",
+        "全部实现门保持false"
+      ]
+    },
+    {
+      "schema": "c5cm.reverse.producer-ledger.v1",
+      "session": "<审计会话>
+      "machine": "<本地机器>
+      "producer": "Claude",
+      "cluster": "aimami-1.2.6-gpt56-model-catalog-fix",
+      "platform": "windows-x64",
+      "produced_at": "2026-08-07",
+      "ack": true,
+      "resolution_summary": {
+        "confirmed_renamed": 3,
+        "tentative_not_renamed": 1,
+        "not_found": 4
+      },
+      "files_written": [
+        "pseudocode/0001-run_bundled_cli_0x140555b60_CONFIRMED.c",
+        "pseudocode/0002-official_reasoning_profile_0x140561840_CONFIRMED.c",
+        "pseudocode/0003-check_native_off_invalid_openai_thread_models_0x1405aabc0_CONFIRMED.c",
+        "pseudocode/0004-fix_native_off_invalid_openai_thread_models_TENTATIVE_0x1405ae4b0.c",
+        "pseudocode/0005-native_off_openai_model_needs_fallback_NOT_FOUND.md",
+        "pseudocode/0006-is_aimami_owned_model_section_NOT_FOUND.md",
+        "pseudocode/0007-catalog_models_NOT_FOUND_LIKELY_INLINED.md",
+        "pseudocode/0008-full_reasoning_levels_NOT_FOUND_DIFFERENT_MECHANISM.md",
+        "evidence.md",
+        "manifest.json",
+        "gate-report.json",
+        "producer-ledger.<审计会话>
+      ],
+      "idb_comments_added": 10,
+      "idb_renames": 3,
+      "idb_renames_detail": [
+        {
+          "addr": "0x140555b60",
+          "old": "sub_140555B60",
+          "new": "run_bundled_cli"
+        },
+        {
+          "addr": "0x140561840",
+          "old": "sub_140561840",
+          "new": "official_reasoning_profile"
+        },
+        {
+          "addr": "0x1405aabc0",
+          "old": "sub_1405AABC0",
+          "new": "check_native_off_invalid_openai_thread_models"
+        }
+      ],
+      "<工具调用>": {
+        "ok": true,
+        "path": "<二进制路径>\\AiMaMi 1.2.6 win64.exe.i64"
+      },
+      "index_jsonl_line_appended": true,
+      "reverse_status_md_closed": true
+    },
+    {
+      "schema": "c5cm.reverse.producer-ledger.v1",
+      "session": "<审计会话>
+      "machine": "<本地机器>
+      "producer": "Claude",
+      "cluster": "aimami-1.2.6-gpt56-model-catalog-fix",
+      "platform": "windows-x64",
+      "produced_at": "2026-08-07",
+      "ack": true,
+      "files_written": [
+        "pseudocode/0001-embedded-default-catalog-json_0x1405622d0_TRUNCATED.md",
+        "pseudocode/0002-is_aimami_owned_model_section_candidate_0x14056b270.c",
+        "evidence.md",
+        "manifest.json",
+        "gate-report.json",
+        "producer-ledger.<审计会话>
+      ],
+      "idb_comments_added": 0,
+      "idb_renames": 0,
+      "<工具调用>": {
+        "ok": true,
+        "path": "<二进制路径>\\AiMaMi 1.2.6 win64.exe.i64"
+      },
+      "index_jsonl_line_appended": true,
+      "reverse_status_md_closed": true
+    },
+    {
+      "schema": "c5cm.reverse.producer-ledger.v1",
+      "session": "<审计会话>
+      "machine": "<本地机器>
+      "producer": "Claude",
+      "cluster": "aimami-1.2.6-gpt56-model-catalog-fix",
+      "platform": "windows-x64",
+      "produced_at": "2026-08-07",
+      "ack": true,
+      "scope": "single-target follow-up: locate win_ea for is_aimami_owned_model_section (previously NOT_FOUND after actively refuting candidate 0x14056b270 in the prior round)",
+      "method": "call-cluster expansion (xrefs_to/callees around refuted candidate 0x14056b270) + mac-side literal extraction (0008 pseudocode) + byte-level cross-check on win decompile, per references/ida-deep-recovery.md fake-wall playbook",
+      "resolution_summary": {
+        "confirmed_renamed": 1,
+        "confirmed_list": [
+          "is_aimami_owned_model_section"
+        ],
+        "tentative_not_renamed": 0,
+        "not_found": 0,
+        "genuine_ceiling": 0
+      },
+      "files_written": [
+        "pseudocode/0009-is_aimami_owned_model_section_0x140572fb0_CONFIRMED.c",
+        "pseudocode/0006-is_aimami_owned_model_section_NOT_FOUND.md (superseding note prepended, historical content preserved)",
+        "evidence.md (round4 section appended)",
+        "manifest.json (target_8_functions_resolution entry #6 updated CONFIRMED, candidate_functions +2 entries, counters updated, round4_is_aimami_owned_model_section_resolution_20260807 addendum added)",
+        "gate-report.json (resolution_summary/blockers/counters updated)",
+        "producer-ledger.<审计会话>
+      ],
+      "idb_comments_added": 1,
+      "idb_renames": 1,
+      "idb_renames_detail": [
+        {
+          "addr": "0x140572fb0",
+          "old": "sub_140572FB0",
+          "new": "is_aimami_owned_model_section"
+        }
+      ],
+      "idb_dirtree_moves": [
+        {
+          "addr": "0x140572fb0",
+          "before": "/vibe/is_aimami_owned_model_section",
+          "after": "/codexmate_lib/core/relay/config_takeover/is_aimami_owned_model_section",
+          "vibe_dir_cleaned": true
+        }
+      ],
+      "<工具调用>": {
+        "ok": true,
+        "path": "<二进制路径>\\AiMaMi 1.2.6 win64.exe.i64"
+      },
+      "index_jsonl_line_appended": true,
+      "reverse_status_md_updated": true,
+      "honest_gaps": "len==6/len==19 branch literals not fully get_bytes-decoded this round; does not affect function-identity confidence (4 independent evidence lines already grounded: signature, 9-byte prefix constant, 16-byte prefix constant, 12/13-byte literal, call-cluster position)."
+    },
+    {
+      "schema": "c5cm.internal-reverse.producer-ledger.v1",
+      "claim_id": "<审计会话>
+      "produced_at": "2026-08-07T00:00:00Z",
+      "producer": "Claude",
+      "machine": "<本地机器>
+      "bundle_path": "raw/aimami/1.2.6/windows-x64/backend/gpt56-model-catalog-fix/",
+      "trigger": "本轮承接同日更早两次round5深挖（native_off_openai_model_needs_fallback第五轮NOT_FOUND复核 + fix_native_off_invalid_openai_thread_models genuine_ceiling订正为CONFIRMED_INLINED）经对抗核验(adversarial review)后的账本收口：①native_off_openai_model_needs_fallback一项的对抗核验判定为gap_needs_reducer（发现声称的'4处append_comments'实际只写入3处，第4处地址抄录笔误）；②fix_native_off_invalid_openai_thread_models一项的对抗核验判定为真实confirmed（CONFIRMED_INLINED成立），但指出其round5记录里'manifest.json缺少round4字段'的观察为失实猜测。本轮做两件事：为gap_needs_reducer项补齐遗漏的IDB写入并订正文档；为confirmed项补齐此前从未做过的产品级账本收口（producer-ledger/INDEX.jsonl/REVERSE-STATUS.md，此前只更新了manifest.json/gate-report.json/evidence.md，未走account closure）。",
+      "targets_this_round": [
+        {
+          "symbol": "native_off_openai_model_needs_fallback",
+          "mac_addr": "0x100b28230",
+          "win_addr": null,
+          "status": "NOT_FOUND (persists)",
+          "adversarial_verdict": "gap_needs_reducer（技术结论NOT_FOUND本身可信，但round5自述的'IDB变更：append_comments 4处'部分失实——实际只有3处真正写入）",
+          "fix_applied_this_round": "为sub_14054ea80（第4个候选，此前遗漏）补写排除理由中文注释，<工具调用>()确认落盘，独立<工具调用>复读确认非空（558字符）；订正evidence.md/manifest.json中'三者'措辞与地址笔误(0x140b50ea0->0x14054ea80)",
+          "genuine_ceiling": false,
+          "caller_disambiguation_tried": true,
+          "next_step_lead": "mac真正调用方fix_native_off_invalid_openai_thread_models已确认win对应体为sub_1405CBF60 case 39内联实现；下一轮应在该内联体post-guard真实修复延续部分(2108~3339行)内逐basic-block搜索tag==6+openai折叠+两级SwissTable特征段"
+        },
+        {
+          "symbol": "fix_native_off_invalid_openai_thread_models",
+          "mac_addr": "0x100b30fc0",
+          "win_addr": "inlined_in_0x1405CBF60_case39_no_standalone_symbol",
+          "status": "CONFIRMED_INLINED_NO_STANDALONE_SYMBOL",
+          "adversarial_verdict": "真实CONFIRMED（CONFIRMED_INLINED成立）——win侧字节级证据（39字节key字面量+59字节中文提示消息逐字节相同+分配尺寸序列相同+hashbrown SIMD探测手法相同）经独立decompile()复核确认站得住；round5记录里'manifest.json缺少round4_is_aimami_owned_model_section_resolution_20260807字段'的旁注为失实猜测，该字段确实存在",
+          "genuine_ceiling": false,
+          "genuine_ceiling_superseded": true,
+          "prior_wrong_claim_corrected": "此前(同日更早session)genuine_ceiling_claimed=true经round5完整枚举sub_1405CBF60全部15个case桶/24条诊断key后订正为CONFIRMED_INLINED（case 39）",
+          "ledger_closure_gap_filled_this_round": "此前round5的manifest.json/gate-report.json/evidence.md已完整记录该发现，但从未产出对应的producer-ledger/INDEX.jsonl/REVERSE-STATUS.md账本收口条目——本轮（round5closure）补齐这一账本滞后",
+          "fix_applied_this_round": "撤回evidence.md中失实的'manifest.json缺少round4字段'猜测性表述，注明该字段确实存在且内容完整"
+        }
+      ],
+      "idb_actions": {
+        "win": {
+          "renamed": 0,
+          "comments_added": 1,
+          "comments_added_detail": [
+            "0x14054ea80: native_off_openai_model_needs_fallback排除理由（此前遗漏，本轮补写）"
+          ],
+          "<工具调用>": true,
+          "<工具调用>_verified": {
+            "ok": true,
+            "path": "<二进制路径>\\\\AiMaMi 1.2.6 win64.exe.i64"
+          }
+        },
+        "mac": {
+          "renamed": 0,
+          "comments_added": 0,
+          "<工具调用>": false,
+          "note": "本轮无mac IDA工具可用，未做任何mac IDB写操作"
+        }
+      },
+      "server_health_pre_check": {
+        "win": "status=ok, uptime_sec=194407.997, <反编译器>_ready=true, module='AiMaMi 1.2.6 win64.exe', imagebase=0x140000000"
+      },
+      "grounded_reverify": "closure后独立<工具调用>重新读取0x14054ea80的idc.get_func_cmt(ea,0)，长度558字符非空，确认真实落盘（非工具返回值自述）；独立Read+grep确认manifest.json的round4_is_aimami_owned_model_section_resolution_20260807字段确实存在且非空。",
+      "gate_accepted": false,
+      "implementation_use": false,
+      "not_done_honest": [
+        "native_off_openai_model_needs_fallback真实身份仍未定位，留待新工作单（下一步线索见next_step_lead）",
+        "fix_native_off_invalid_openai_thread_models内联体post-guard延续部分(~1100行)内的匿名sub_XXX helper未逐一与mac具名函数做1:1符号级对应",
+        "未做本地+对抗双审(本轮为对抗核验发现问题后的收口，非双审本身)",
+        "未做四角度完整性核查(红线15)",
+        "未做真机对照(红线25)",
+        "未对本簇其余6个目标(3个confirmed+2个架构性天花板+is_aimami_owned_model_section)做进一步排查(均已在各自轮次分别闭合，本轮不重跑)"
+      ]
+    },
+    {
+      "schema": "c5cm.reverse.producer-ledger.v1",
+      "session": "cc-aimami126-vibe-dirtree-8func-cleanup-20260807",
+      "machine": "<本地机器>
+      "producer": "Claude",
+      "cluster": "aimami-1.2.6-gpt56-model-catalog-fix",
+      "platform": "windows-x64",
+      "produced_at": "2026-08-07",
+      "ack": true,
+      "action_type": "dirtree_correction_only",
+      "trigger": "opus 只读对抗核验发现 task#174/#175 声明(5个函数已清理/vibe残留)与 live win IDB 实际状态矛盾（实测8个函数仍 stranded 于 /vibe）",
+      "resolution_summary": {
+        "functions_moved_fresh": 3,
+        "functions_unlinked_duplicate": 0
+      },
+      "functions_moved_fresh_detail": [
+        {
+          "name": "run_bundled_cli",
+          "ea": "0x140555b60",
+          "from": "/vibe/run_bundled_cli",
+          "to": "codexmate_lib/core/relay/codex_catalog/run_bundled_cli"
+        },
+        {
+          "name": "official_reasoning_profile",
+          "ea": "0x140561840",
+          "from": "/vibe/official_reasoning_profile",
+          "to": "codexmate_lib/core/relay/codex_catalog/official_reasoning_profile"
+        },
+        {
+          "name": "check_native_off_invalid_openai_thread_models",
+          "ea": "0x1405aabc0",
+          "from": "/vibe/check_native_off_invalid_openai_thread_models",
+          "to": "codexmate_lib/core/relay/codex_diagnostic/check_native_off_invalid_openai_thread_models"
+        }
+      ],
+      "functions_unlinked_duplicate_detail": [],
+      "files_written": [
+        "manifest.json (patched: +dirtree_correction_20260807)"
+      ],
+      "idb_mutations": {
+        "dt_mkdir_calls": 8,
+        "dt_rename_calls": 3,
+        "dt_unlink_calls": 0,
+        "dt_rmdir_vibe": true,
+        "<工具调用>_count": 1,
+        "<工具调用>_result": {
+          "ok": true,
+          "path": "<二进制路径>\\\\AiMaMi 1.2.6 win64.exe.i64"
+        }
+      },
+      "grounded_reverify": "独立<工具调用>：8/8函数 find_entry(idx=ea)+get_abspath 命中预期路径，current_name不变，func_exists=true，all_match=true；dt.isdir('/vibe')=false",
+      "gate_impact": "无。本轮不涉及任何implementation gate变更，consumerStartReady/strictImplementationUse/readyToImplement/implementation_use/gate_accepted均保持涉及bundle既有状态",
+      "index_jsonl_line_added": true,
+      "reverse_status_entry": "[cc-aimami126-vibe-dirtree-8func-cleanup-20260807] DONE — win侧/vibe dirtree残留8函数红线24归位+grounded复验 — 2026-08-07"
+    }
+  ]
+}

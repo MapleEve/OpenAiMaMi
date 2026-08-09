@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay5quota11fetch_async28_$u7b$$u7b$closure$u7d$$u7d$ @ 0x1000da9c0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 char __fastcall codexmate_lib::core::relay::quota::fetch_async::_$u7b$$u7b$closure$u7d$$u7d$::h45e00fe395ffd5b2(
         _QWORD *__dst,

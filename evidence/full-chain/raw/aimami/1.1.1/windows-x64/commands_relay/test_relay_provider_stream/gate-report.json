@@ -16,7 +16,7 @@
     "frontend-control-flow.jsonl L127: terminal_call.command=test_relay_provider_stream kind=tauriInvoke argKeys=['providerId','model','onEvent']; trigger=index-DdcCOEJG.js L86 (minified-static-function); handler_chain=[testStream]",
     "dim1 NOTE: backend interface.md also lists 'manager' param (7B@0x1412fa999). Frontend sends {providerId,model,onEvent} only. Integration gap: manager absent. dim1 confirmed_with_gap.",
     "pseudocode.md 4776B ≥600B",
-    "call-tree.md: D0-D3 max depth via config write chain; all branches have explicit terminated_reason; 5 renames+7 set_comments+idb_save confirmed OK; fake wall taxonomy cleared (async poll/large body/stripped symbols/vtable all CLEARED)",
+    "call-tree.md: D0-D3 max depth via config write chain; all branches have explicit terminated_reason; 5 renames+7 set_comments+<工具调用> confirmed OK; fake wall taxonomy cleared (async poll/large body/stripped symbols/vtable all CLEARED)",
     "interface.md: params={manager(gap),providerId,model,onEvent}; UNIQUE side effect=relay.json write-back after stream (relay_providers_config_write_and_persist_sys); provider quality score updated (latency-based 100/70/40/20); error_codes={0x8000000000000000,0x8000000000000007,9,2}",
     "gate-report.json <审计会话>: all dim1-6 PASS; consumer_suggestion=readyToImplement; four_angle_completeness all PASS; dim6_acceptance=acceptance_draft",
     "dim5: _InterlockedCompareExchange8+WakeByAddressSingle (vs parking_lot on mac); GetCurrentProcessId+CreateFile/WriteFile/CloseHandle atomic write; quota Vec stride=232B",

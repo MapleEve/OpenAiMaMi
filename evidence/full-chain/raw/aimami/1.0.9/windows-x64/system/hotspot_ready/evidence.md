@@ -1,6 +1,6 @@
 # hotspot_ready — Windows x64 1.0.9 Evidence
 
-**session**: wf-aimami109-dualcomplete  
+**session**: <审计会话>  
 **machine**: <workstation>  
 **binary_sha256**: a5822387fa3f56dc03893111f4ffdd074daa882e8887ec4e7c394879c0e9fe0b  
 **binary_sha12**: a5822387fa3f  

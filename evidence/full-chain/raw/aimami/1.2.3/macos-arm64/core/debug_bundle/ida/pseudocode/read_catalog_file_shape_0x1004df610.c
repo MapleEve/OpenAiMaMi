@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core12debug_bundle23read_catalog_file_shape @ 0x1004df610 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::debug_bundle::read_catalog_file_shape::heed63cb5977810c0(
         __int64 a1,

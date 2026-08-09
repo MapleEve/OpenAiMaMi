@@ -1,7 +1,7 @@
 // addr: 0x1408476e0
 // name (owner-map): ensure_proxy_started
 // module: core::relay::manager
-// source: IDA remote IDA decompiler decompile, win AiMaMi.1.2.3 win64.exe, full single-pass (no truncation)
+// source: IDA remote hexrays decompile, win AiMaMi.1.2.3 win64.exe, full single-pass (no truncation)
 
 // win 1.2.1 | module src/core/relay/manager.rs | attributed via panic-Location xref (win-native)
 // win 1.2.3 | = mac codexmate_lib::core::relay::manager::RelayManager::ensure_proxy_started | 跨平台字符串签名匹配(名↔函数一致)

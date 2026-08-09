@@ -1,0 +1,42 @@
+{
+  "commands": [
+    {
+      "command": "start_voice_capture",
+      "argKeys": [],
+      "idaSymbols": [
+        {
+          "ea": "0x14015b7b0",
+          "role": "callee"
+        },
+        {
+          "ea": "0x140c38d20",
+          "role": "callee"
+        }
+      ],
+      "pseudocode": [
+        "0002-start-capture-core-0x140c38d20.c",
+        "0001-start-voice-capture-dispatch-0x14015b7b0.c"
+      ],
+      "nextCallees": [
+        {
+          "ea": "0x140c38d20",
+          "name": "sub_140C38D20"
+        }
+      ],
+      "callTreeRows": 9,
+      "claims": {
+        "client": [],
+        "server": []
+      },
+      "sideEffects": [
+        "frontend event emission"
+      ],
+      "serverEvidencePath": "<内部存储>/raw/aimami/1.2.6/windows-x64/backend/voice-runtime-start-capture/evidence.md",
+      "needsServerEvidencePath": false,
+      "confidence": "unknown",
+      "sourceMarkdown": "start_voice_capture.md"
+    }
+  ],
+  "generated_from": "interface/*.md (converted to machine-readable format)",
+  "leaf": "voice-runtime-start-capture"
+}

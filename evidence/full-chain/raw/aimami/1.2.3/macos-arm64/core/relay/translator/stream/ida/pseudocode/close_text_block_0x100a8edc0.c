@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay10translator6stream21ChatToResponsesStream16close_text_block @ 0x100a8edc0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 double __fastcall codexmate_lib::core::relay::translator::stream::ChatToResponsesStream::close_text_block::h24b24176cdd772a0(
         _QWORD *a1,

@@ -1,0 +1,38 @@
+{
+  "command": "get_claude_web_search_compat",
+  "module": "commands/system",
+  "owner_ea": "0x10041d7a0",
+  "interface_type": "ipc_command",
+  "argKeys": [],
+  "dto_fields": {
+    "request": "()",
+    "response": "CoreEnvelope<bool>"
+  },
+  "side_effects": [],
+  "idaSymbols": [
+    "get_claude_web_search_compat"
+  ],
+  "pseudocode": [
+    "commands/system/ida/pseudocode/get_claude_web_search_compat_0x10041d7a0.c"
+  ],
+  "nextCallees": [
+    "RelayManager::snapshot",
+    "storage::sanitize_for_export",
+    "drop_in_place<RelayState>",
+    "CoreEnvelope<T>::ok",
+    "String::clone",
+    "CoreError::fmt::Display",
+    "core::result::unwrap_failed"
+  ],
+  "callTreeRows": 7,
+  "claims": {
+    "client": [],
+    "server": [
+      "get_claude_web_search_compat"
+    ]
+  },
+  "serverEvidencePath": "commands/system/ida/pseudocode/get_claude_web_search_compat_0x10041d7a0.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "IPC command getter: reads claude_web_search_compat flag from RelayManager snapshot, returns CoreEnvelope<bool>."
+}

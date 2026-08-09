@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay12proxy_server32forward_codex_responses_internal28_$u7b$$u7b$closure$u7d$$u7d$ @ 0x10025fd00 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 char __fastcall codexmate_lib::core::relay::proxy_server::forward_codex_responses_internal::_$u7b$$u7b$closure$u7d$$u7d$::ha0a9686e22e589cb(
         _QWORD *a1,

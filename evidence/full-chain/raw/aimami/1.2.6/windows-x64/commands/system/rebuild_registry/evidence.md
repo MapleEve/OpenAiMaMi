@@ -1,0 +1,32 @@
+# Evidence: rebuild_registry
+
+## 命令身份
+- 命令名: `rebuild_registry`
+- Owner EA: `0x14014c500`
+- Owner 函数名: `rebuild_registry`
+- 模块: `commands/system`
+- 版本: 1.2.6 / 平台: windows-x64
+- 函数大小: 0x3d8 (984 bytes)
+
+## Owner 定位
+- 方法: delta-commands.txt 已记录 EA (conf=high)，IDA find_regex 确认命令名串存在
+- Xrefs to owner: tauri generate_handler! dispatcher
+
+## 反编译
+- 文件: `ida/pseudocode/rebuild_registry_0x14014c500.c`
+- 状态: decompiled
+- IDA 注释: Tauri 命令 rebuild_registry 处理器（commands::system）。重建本地注册索引（mac 符号 Repository::rebuild_registry_with_policy 佐证）。⚠副作用：重写注册数据。
+
+## 调用树
+- 文件: `call-tree.json`
+- Callee 数量: 12 / Edge 数量: 12
+- 终止原因: leaf_handler
+
+## 接口报告
+- 文件: `interface-report.json`
+- 置信度: high
+- 副作用: 无检测到
+
+## 字符串引用
+- `0x0x14177a17a`: rebuild_registry
+- `0x0x14177a18a`: repo

@@ -1,0 +1,77 @@
+{
+  "targets": [
+    {
+      "target": "stop_voice_capture",
+      "edges": [
+        {
+          "depth": 0,
+          "ea": "0x14015b140",
+          "name": "stop_voice_capture_owner_sys",
+          "role": "tracing_wrapper_owner",
+          "callers": 1,
+          "caller_ea": "0x140174120",
+          "note": "renamed this session; 1068B/39 blocks/cc10; callers=[sub_140174120], same shared dispatcher pattern as sibling voice/relay commands"
+        },
+        {
+          "depth": 1,
+          "ea": "0x140c384a0",
+          "name": "stop_voice_capture_core_sys",
+          "role": "shared_core_capture_stop_state_machine",
+          "callers": 3,
+          "caller_eas": [
+            "0x14015b140",
+            "0x140c42e40",
+            "0x140c44b20"
+          ],
+          "note": "renamed this session (shared caveat: 2 of 3 callers belong to already-completed sidecar-scheduler task #152, not touched/renamed this round); 1765B/77 blocks/cc41"
+        },
+        {
+          "depth": 2,
+          "ea": "0x14005f140",
+          "name": "sub_14005F140",
+          "role": "capture_state_ptr_resolve",
+          "note": "resolves per-session capture-state struct pointer from a2"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140c37590",
+          "name": "emit_voice_runtime_status",
+          "role": "event_broadcast",
+          "terminated_reason": "external_call",
+          "note": "⚠ observable side effect: broadcasts updated voice-runtime status event to frontend during capture-stop; already-named function (not renamed this session, pre-existing)"
+        },
+        {
+          "depth": 2,
+          "ea": "0x14023dd80",
+          "name": "sub_14023DD80",
+          "role": "oneshot_channel_alloc",
+          "note": "builds a fresh oneshot-style completion channel for the async thread-join path"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140001660",
+          "name": "sub_140001660",
+          "role": "handle_or_ref_release",
+          "note": "generic shared release/close helper used across dozens of sibling commands; not command-specific"
+        },
+        {
+          "depth": 3,
+          "ea": "0x140c37a50",
+          "name": "load_voice_runtime_status",
+          "role": "final_state_requery",
+          "terminated_reason": "persistence_read",
+          "note": "same core function documented in the load_voice_runtime_status leaf; called at the tail of the async-join path to re-query fresh state for the response"
+        },
+        {
+          "depth": 2,
+          "ea": "__imp_CloseHandle",
+          "name": "CloseHandle",
+          "role": "win32_handle_release",
+          "terminated_reason": "external_call",
+          "note": "⚠ observable side effect: releases the background voice-capture worker thread HANDLE"
+        }
+      ]
+    }
+  ],
+  "edges_count": 8
+}

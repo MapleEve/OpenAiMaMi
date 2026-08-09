@@ -177,7 +177,7 @@ frontend: useEffect([]) mount → We.checkUpdateInstallability().then(l => { if 
 Tauri closure (0x1003290d4) → platform::update::check_update_installability (0x100578128):
   __NSGetExecutablePath → is_translocation (/AppTranslocation/ substring 18B)
   xattr -p com.apple.quarantine <app_path> (subprocess)
-  /Volumes/ prefix check
+  <内部存储>/ prefix check
   → {status_tag, exe_path, app_path, can_install, is_translocation, quarantine_cleared}
 ```
 

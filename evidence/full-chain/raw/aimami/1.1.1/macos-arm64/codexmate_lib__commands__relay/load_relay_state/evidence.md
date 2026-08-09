@@ -182,7 +182,7 @@ Comments appended at:
 - 0x100545110 (enable_virtual_login)
 - 0x1005e2c60 (storage::save)
 
-(see idb_save confirmation below)
+(see <工具调用> confirmation below)
 
 ---
 
@@ -209,7 +209,7 @@ call-trees/load_relay_state.jsonl written with 73 caller→callee edges across d
 Edge breakdown: depth-1=6, depth-2=10, depth-3=32, depth-4=26. Terminated at stdlib/alloc/serde leaves (depth>=5).
 
 逆向分析 live verification (<逆向工具通道>) used for all 4 levels.
-IDB annotated at 5 VAs and saved (idb_save ok).
+IDB annotated at 5 VAs and saved (<工具调用> ok).
 
 ---
 

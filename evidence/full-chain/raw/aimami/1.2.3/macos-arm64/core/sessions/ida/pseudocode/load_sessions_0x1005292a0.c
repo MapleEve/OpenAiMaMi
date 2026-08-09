@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core8sessions13load_sessions @ 0x1005292a0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::sessions::load_sessions::h8bd835a57b4abc44(
         _QWORD *a1,

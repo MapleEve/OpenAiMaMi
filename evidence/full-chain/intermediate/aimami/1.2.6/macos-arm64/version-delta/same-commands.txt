@@ -1,0 +1,22 @@
+# same-commands.txt — AiMaMi 1.2.4 → 1.2.6 (macOS)
+# Coexisting functions where owner exists in both AND IDA pseudocode body equivalent.
+# Per batchN_verification_pass: added 45, removed 23. icf-alias coexisting serde = same-behavior candidates.
+
+# Removed serde impls that are icf-alias fold-cluster (same behavior, reuse 1.2.4):
+<codexmate_lib::core::auth::_::<impl serde_core::de::Deserialize for codexmate_lib::core::auth::AuthFile>::deserialize::__Visitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::bootstrap_cache::_::<impl serde_core::de::Deserialize for codexmate_lib::core::bootstrap_cache::BootstrapCacheFile>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::bootstrap_cache::_::<impl serde_core::de::Deserialize for codexmate_lib::core::bootstrap_cache::BootstrapStatePayload>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::oauth_login::_::<impl serde_core::de::Deserialize for codexmate_lib::core::oauth_login::TokenErrorResponse>::deserialize::__Visitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::oauth_login::_::<impl serde_core::de::Deserialize for codexmate_lib::core::oauth_login::TokenResponse>::deserialize::__Visitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::quota_store::_::<impl serde_core::de::Deserialize for codexmate_lib::core::quota_store::QuotaStoreFile>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::quota_store::_::<impl serde_core::de::Deserialize for codexmate_lib::core::quota_store::QuotaStoreItem>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::relay::legacy_virtual_auth::_::<impl serde_core::de::Deserialize for codexmate_lib::core::relay::legacy_virtual_auth::LegacyVirtualAuthMarker>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::repository::_::<impl serde_core::de::Deserialize for codexmate_lib::core::repository::ApiConfig>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::repository::_::<impl serde_core::de::Deserialize for codexmate_lib::core::repository::AutoSwitchConfig>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::repository::_::<impl serde_core::de::Deserialize for codexmate_lib::core::repository::AutoSwitchSnoozeRecord>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::repository::_::<impl serde_core::de::Deserialize for codexmate_lib::core::repository::CodexMateSettings>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::repository::_::<impl serde_core::de::Deserialize for codexmate_lib::core::repository::HotspotConfig>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::repository::_::<impl serde_core::de::Deserialize for codexmate_lib::core::repository::MysteryRouteGrant>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::repository::_::<impl serde_core::de::Deserialize for codexmate_lib::core::repository::RegistryFile>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::core::repository::_::<impl serde_core::de::Deserialize for codexmate_lib::core::repository::RegistryItem>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)
+<codexmate_lib::platform::single_instance::_::<impl serde_core::de::Deserialize for codexmate_lib::platform::single_instance::ActivationRecord>::deserialize::__FieldVisitor as serde_core::de::Visitor>::expecting  # icf_alias serde fold (behavior unchanged)

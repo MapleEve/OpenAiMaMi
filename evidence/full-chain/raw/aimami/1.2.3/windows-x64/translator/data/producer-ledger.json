@@ -1,7 +1,7 @@
 {
   "schema": "c5cm.reverse.producer_ledger.v1",
   "session": "win-1.2.3-translator-naming-loc-20260726",
-  "machine": "<host>",
+  "machine": "<本地机器>
   "product": "aimami",
   "version": "1.2.3",
   "platform": "windows-x64",
@@ -12,7 +12,7 @@
   "full_leaf_100": false,
   "readyToImplement": false,
   "produced_at": "2026-07-26T00:00:00Z",
-  "idb_path": "E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+  "idb_path": "<二进制路径>\\AiMaMi.1.2.3 win64.exe.i64",
   "scope_baseline": {
     "total_functions": 111,
     "named_before": 8,
@@ -556,7 +556,7 @@
       "tag": "[逻辑·win-1.2.3-translator-naming-loc-20260726]"
     }
   ],
-  "methodology": "红线24三层法(win strip): 未新增dirtree归属(前轮frontier-triage已100%归树,本轮零move/零mkdir); ①对8个函数按唯一字面量证据(单一JSON字段名/SSE事件名/panic字符串命中且在111函数域内验证唯一性)精确 set_name(SN_FORCE,仅覆盖sub_/nullsub前缀); ②对全部96个此前仅有泛化'attributed via'标签的函数,基于批量提取的callees+字符串引用+反编译头部(IDA Python server-side IDA decompiler.decompile+DataRefsFrom+CodeRefsFrom)逐条撰写基于真实证据的中文[逻辑]分析注释(append,不覆盖既有归属标签); idb_save两次(rename后一次汇总后一次)确认持久化。",
+  "methodology": "红线24三层法(win strip): 未新增dirtree归属(前轮frontier-triage已100%归树,本轮零move/零mkdir); ①对8个函数按唯一字面量证据(单一JSON字段名/SSE事件名/panic字符串命中且在111函数域内验证唯一性)精确 set_name(SN_FORCE,仅覆盖sub_/nullsub前缀); ②对全部96个此前仅有泛化'attributed via'标签的函数,基于批量提取的callees+字符串引用+反编译头部(<工具调用> server-side ida_<反编译器>.decompile+DataRefsFrom+CodeRefsFrom)逐条撰写基于真实证据的中文[逻辑]分析注释(append,不覆盖既有归属标签); <工具调用>两次(rename后一次汇总后一次)确认持久化。",
   "not_complete": [
     "命名仍未达111/111——96个功能中仅8个证据强度足以安全精确命名(单一无歧义字面量/唯一调用模式),其余88个仅获中文语义分析注释(基于strings+callees+反编译特征,未强行命名以免違反紅線'没试破法就标accepted_unknown=作弊'的对称原则:没有唯一性证据就不该硬命名),留作后续更深入call-tree交叉核验(如与mac符号交叉比对)的命名候选。",
     "本轮为纯 IDB 内命名/注释/dirtree复核(dirtree保持前轮735归树结果不变,0新增move),未产出新raw pseudocode文件,未追加INDEX.jsonl新raw条目(无新decompile证据类型),不涉及前端CCF/consumer gate。",

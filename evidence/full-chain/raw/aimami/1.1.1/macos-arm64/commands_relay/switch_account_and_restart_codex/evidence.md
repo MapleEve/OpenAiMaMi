@@ -6,7 +6,7 @@ producer: subagent (pure producer mode)
 delta_class: integrity_recovered
 baseline: AiMaMi 1.0.9 (previously mis-marked "same" — see correction below)
 idb: <来源位置>/raw/binary/AiMaMi-1.1.1-idb
-idb_save: ok (confirmed)
+<工具调用>: ok (confirmed)
 date: 2026-06-17
 
 ---
@@ -109,7 +109,7 @@ Tauri command string in binary: `switch_account_and_restart_codex` @ 0x1010e7311
 | 错误字符串/警告码 | ✅ CLIENT_RESTART_RECOMMENDED, RUNTIME_REFRESH_FAILED_AFTER_SWITCH, "No AiMaMi registry exists yet", "Codex launch timed out" |
 | sidecar 副作用 | ✅ osascript quit + `open -b Codex` + SIGKILL |
 | IDB inline comments | ✅ 10 函数 append_comments confirmed |
-| idb_save | ✅ ok |
+| <工具调用> | ✅ ok |
 | delta_class | integrity_recovered |
 | 3角度完整性 | ✅ 函数符号枚举(func_query) + 调用树(callees+decompile) + 字符串/副作用(find_regex+IPC注册) |
 

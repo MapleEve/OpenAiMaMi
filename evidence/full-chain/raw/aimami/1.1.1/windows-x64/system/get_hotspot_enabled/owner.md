@@ -39,7 +39,7 @@ Owner is a tauri command handler — called via tauri IPC main dispatcher (strin
 
 - rename: `sub_140021570` → `get_hotspot_enabled_owner_sys_111` ✓
 - comment @ `0x140021570`: evidence row written ✓
-- idb_save: ok (<本地路径>
+- <工具调用>: ok (<本地路径>
 
 ## Delta vs 1.0.9
 

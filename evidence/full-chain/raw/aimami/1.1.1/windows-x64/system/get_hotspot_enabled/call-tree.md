@@ -35,7 +35,7 @@
 | `0x14040CC30` | `sub_14040CC30` | `codexmate_settings_field_lookup_sys_111` | B | shared with other settings commands |
 | `0x1412B6E51` | data string | (comment only, not renamed) | C | "hotspot" key string evidence |
 
-idb_save: ok × 1 (path=<本地路径>
+<工具调用>: ok × 1 (path=<本地路径>
 
 ## Fake-Wall Check (ACCEPTED_UNKNOWN Taxonomy)
 

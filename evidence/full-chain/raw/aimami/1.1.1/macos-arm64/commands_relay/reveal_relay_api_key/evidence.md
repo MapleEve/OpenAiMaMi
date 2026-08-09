@@ -28,7 +28,7 @@
 
 11. **SHA256 key derivation for Tier 2 decrypt**: `sha2::sha256::compress256` @0x100942d40 applied to `format!("{hostname}:{username}")`. Username fallback chain: `env(USERhttp)` → `env(USERNAME)` → literal (5B "local" or similar; decompile shows dword=1634560353 + word=26989 written to 6B buffer).
 
-12. **IDB comments appended**: 4 functions annotated (owner, dispatcher, get_api_key, mac_keychain::get); `idb_save` ok (confirmed post-comment).
+12. **IDB comments appended**: 4 functions annotated (owner, dispatcher, get_api_key, mac_keychain::get); `<工具调用>` ok (confirmed post-comment).
 
 ---
 

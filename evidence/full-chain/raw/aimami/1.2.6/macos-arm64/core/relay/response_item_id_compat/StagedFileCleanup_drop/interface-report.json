@@ -1,0 +1,52 @@
+{
+  "command": "StagedFileCleanup_drop",
+  "argKeys": [],
+  "idaSymbols": [
+    "std::sys::fs::remove_file",
+    "Error::kind",
+    "log::GlobalLogger::log",
+    "__rust_dealloc"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/0001_StagedFileCleanup_drop_owner.c"
+  ],
+  "nextCallees": [
+    "std::sys::fs::remove_file",
+    "Error::kind",
+    "log::GlobalLogger::log",
+    "__rust_dealloc"
+  ],
+  "callTreeRows": [
+    {
+      "callee": "std::sys::fs::remove_file",
+      "addr": "0x101488e60"
+    },
+    {
+      "callee": "Error::kind",
+      "addr": "0x100257d80"
+    },
+    {
+      "callee": "log::GlobalLogger::log",
+      "addr": "0x1012d4190"
+    },
+    {
+      "callee": "__rust_dealloc",
+      "addr": "0x100001800"
+    }
+  ],
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": null,
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "destructive_side_effects": [
+    "remove_file"
+  ],
+  "owner_ea": "0x100229840",
+  "owner_name": "<codexmate_lib::core::relay::response_item_id_compat::StagedFileCleanup as core::ops::drop::Drop>::drop",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64",
+  "notes": "Drop trait: deletes staged temp file via remove_file, checks Error::kind, ignores NotFound"
+}

@@ -3,7 +3,7 @@
 生成时间：2026-07-26（reduce pass，续接 2026-07-25 distillation）
 范围：37 个前端 `*voice*` IPC 命令的 Windows 后端注册表 + DTO 字段面 + 非命令支撑模块清单。
 
-来源：`raw/aimami/1.2.3/windows-x64/` 已落盘 raw `.c` 文件的字段级重读（本轮独立重新打开逐个文件，不是照抄 manifest 数字），加上本轮对 IDA MCP `<host>`（`server_health` 确认 `status=ok`/`IDA decompiler_ready=true`/`idb_path=E:\binary\AiMaMi.1.2.3 win64.exe.i64`）发起的只读验证调用（`get_bytes`/`decompile`/`lookup_funcs`/`find_regex`）。本轮**未写任何新 raw `.c` 文件**，未做 rename/comment 写回，只读取已存在于 IDB 里的信息（4 个此前 `blocked` 命令的 owner 函数在 live IDB 中已有他人此前 pass 留下的中文分析注释和真实函数名——本轮只是把这份既有信息读出来纳入结论，不是本轮新做的逆向标注）。
+来源：`raw/aimami/1.2.3/windows-x64/` 已落盘 raw `.c` 文件的字段级重读（本轮独立重新打开逐个文件，不是照抄 manifest 数字），加上本轮对 IDA MCP `<host>`（`server_health` 确认 `status=ok`/`IDA decompiler_ready=true`/`idb_path=<二进制路径>\AiMaMi.1.2.3 win64.exe.i64`）发起的只读验证调用（`get_bytes`/`decompile`/`lookup_funcs`/`find_regex`）。本轮**未写任何新 raw `.c` 文件**，未做 rename/comment 写回，只读取已存在于 IDB 里的信息（4 个此前 `blocked` 命令的 owner 函数在 live IDB 中已有他人此前 pass 留下的中文分析注释和真实函数名——本轮只是把这份既有信息读出来纳入结论，不是本轮新做的逆向标注）。
 
 ## 1. 37 命令注册表
 

@@ -1,0 +1,41 @@
+{
+  "command": "get_claude_web_search_compat",
+  "entry": "get_claude_web_search_compat(a1) -> __int64",
+  "ea": "0x140156ef0",
+  "module": "commands/system",
+  "classification": "new_in_1_2_4",
+  "argKeys": [],
+  "responseFields": [
+    "web_search_compat_state"
+  ],
+  "idaSymbols": [
+    "0x140156ef0"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/get_claude_web_search_compat_0x140156ef0.c"
+  ],
+  "nextCallees": [
+    "sub_1416F15C0",
+    "sub_14002B7A0",
+    "sub_14044BAB0",
+    "sub_1416F2670",
+    "sub_1407A09A0",
+    "sub_141733E1B",
+    "nullsub_1",
+    "sub_140001650",
+    "sub_140001660",
+    "sub_1406C6BA0",
+    "sub_140296460",
+    "sub_140041450"
+  ],
+  "callTreeRows": 12,
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": "raw/aimami/1.2.4/windows-x64/commands/system/get_claude_web_search_compat/",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "sideEffects": "none (read-only getter)",
+  "destructive": false
+}

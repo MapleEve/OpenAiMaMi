@@ -1,8 +1,8 @@
 {
  "schema": "c5cm.reverse.producer_ledger.v1",
- "session": "wf-aimami123-win-cmd-ceiling-20260726",
- "machine": "Maple-C5Mini",
- "ida_mcp": "win <host> (strip) + mac <host> (symbols, read-only cross-check)",
+ "session": "<审计会话>
+ "machine": "<本地机器>",
+ "ida_mcp": "win <内网IP> (strip) + mac <内网IP> (symbols, read-only cross-check)",
  "product": "aimami",
  "version": "1.2.3",
  "platform": "windows-x64",
@@ -13,7 +13,7 @@
  "gate_accepted": false,
  "full_leaf_100": false,
  "readyToImplement": false,
- "evidence_sot": "win IDB E:\\binary\\AiMaMi.1.2.3 win64.exe.i64 (idb_save ok) + mac IDB raw/binary/.../AiMaMi.i64 (read-only cross-check)",
+ "evidence_sot": "win IDB <二进制路径>\\AiMaMi.1.2.3 win64.exe.i64 (<工具调用> ok) + mac IDB raw/binary/.../AiMaMi.i64 (read-only cross-check)",
  "summary_pointer": "internal-reverse/audits/WIN-1.2.3-COMMAND-CEILING-CLOSEOUT.md",
  "no_raw_bundle": "true — round output is IDB set_name/append_comment/dirtree mutations + one internal-reverse summary doc; no raw/intermediate body dump this pass (per red line 3 internal-reverse holds summary/pointer only)",
  "summary": {
@@ -26,7 +26,7 @@
   "genuine_inline_ceiling": 14,
   "serialize_renamed": 3,
   "serialize_direction_confirmed_comment_only": 2,
-  "idb_save": "ok"
+  "<工具调用>": "ok"
  },
  "items": [
   {"va": "0x140170790", "command": "resolve_voice_vocabulary_app_info", "own_name_lea": "0x14017080d", "dirtree": "/codexmate_lib/commands/voice", "mac_crosscheck": "commands::voice 0x100694140", "kind": "handler_named_this_pass"},
@@ -56,5 +56,5 @@
    "mac string-signature => most platform-divergent (get_system_info=sw_vers, resolve app-info=Info.plist); mac internals do not string-match win"
   ]
  },
- "grounded_verification": "orchestrator (win agent) re-read all 9 mutated functions post idb_save: names match, comments present, dirtree paths correct (voice folder holds 4 voice handlers, accounts holds confirm_, models holds 3 serialize), 3 dispatcher case comments present, 0 stranded, 0 mis-name remaining"
+ "grounded_verification": "orchestrator (win agent) re-read all 9 mutated functions post <工具调用>: names match, comments present, dirtree paths correct (voice folder holds 4 voice handlers, accounts holds confirm_, models holds 3 serialize), 3 dispatcher case comments present, 0 stranded, 0 mis-name remaining"
 }

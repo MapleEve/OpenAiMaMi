@@ -1,21 +1,21 @@
 # Reverse Evidence Manifest
 
-- archive_path: `raw/aimami/1.2.3/macos-arm64`
-- binary: `raw/aimami/1.2.3/macos-arm64/frontend/AiMaMi.arm64.thin`
+- archive_path: `<内部存储>/raw/aimami/1.2.3/macos-arm64`
+- binary: `<内部存储>/raw/aimami/1.2.3/macos-arm64/frontend/AiMaMi.arm64.thin`
 - binary_sha256: `25d6d04e6d94c3f1e8258d2b348360b228fda4fc1c3d38b6383c84a2a8d53d21`
-- app_bundle: `raw/binary/AiMaMi 1.2.3.app`
+- app_bundle: `<内部存储>/raw/binary/AiMaMi 1.2.3.app`
 - feature: `unknown`
-- frontend_root: `raw/aimami/1.2.3/macos-arm64/dumped`
+- frontend_root: `<内部存储>/raw/aimami/1.2.3/macos-arm64/dumped`
 - created_at: `2026-07-21T02:33:28Z`
 - tmp_scratch: `/var/folders/2x/3sc_rmhj7wx9pgjfkg_dvx3r0000gn/T/`
-- version_baseline: `raw/aimami/1.2.3/macos-arm64/VERSION-BASELINE.md`
-- evidence_excludes: `raw/aimami/1.2.3/macos-arm64/evidence-excludes.txt`
+- version_baseline: `<内部存储>/raw/aimami/1.2.3/macos-arm64/VERSION-BASELINE.md`
+- evidence_excludes: `<内部存储>/raw/aimami/1.2.3/macos-arm64/evidence-excludes.txt`
 
 ## Commands
 
-- `tauri-dumper --input "raw/aimami/1.2.3/macos-arm64/frontend/AiMaMi.arm64.thin" --output "raw/aimami/1.2.3/macos-arm64/dumped"`
-- `python3 "" --frontend "raw/aimami/1.2.3/macos-arm64/dumped" --out "raw/aimami/1.2.3/macos-arm64/frontend" --prefer-recovered-source`
-- `node "" "raw/aimami/1.2.3/macos-arm64/dumped" "raw/aimami/1.2.3/macos-arm64/frontend/ast-facts.json" "raw/aimami/1.2.3/macos-arm64/frontend/frontend-control-flow.jsonl"`
+- `tauri-dumper --input "<内部存储>/raw/aimami/1.2.3/macos-arm64/frontend/AiMaMi.arm64.thin" --output "<内部存储>/raw/aimami/1.2.3/macos-arm64/dumped"`
+- `python3 "<本地路径>/.claude/skills/rust-reverse-pipeline/scripts/extract_frontend_contracts.py" --frontend "<内部存储>/raw/aimami/1.2.3/macos-arm64/dumped" --out "<内部存储>/raw/aimami/1.2.3/macos-arm64/frontend" --prefer-recovered-source`
+- `node "<本地路径>/.claude/skills/rust-reverse-pipeline/scripts/extract_frontend_ast.mjs" "<内部存储>/raw/aimami/1.2.3/macos-arm64/dumped" "<内部存储>/raw/aimami/1.2.3/macos-arm64/frontend/ast-facts.json" "<内部存储>/raw/aimami/1.2.3/macos-arm64/frontend/frontend-control-flow.jsonl"`
 
 ## Tool Versions
 
@@ -28,11 +28,11 @@
 
 ## Key Outputs
 
-- status: `raw/aimami/1.2.3/macos-arm64/frontend-tool-status.txt`
-- dumped_assets: `raw/aimami/1.2.3/macos-arm64/dumped`
-- frontend_contracts: `raw/aimami/1.2.3/macos-arm64/frontend/frontend-contract-report.md`
-- ast_facts: `raw/aimami/1.2.3/macos-arm64/frontend/ast-facts.json`
-- frontend_control_flow: `raw/aimami/1.2.3/macos-arm64/frontend/frontend-control-flow.jsonl`
-- page_backend_template: `raw/aimami/1.2.3/macos-arm64/frontend-page-ipc-rust-report.md`
-- frontend_asset_hashes: `raw/aimami/1.2.3/macos-arm64/frontend-assets.sha256`
-- evidence_excludes: `raw/aimami/1.2.3/macos-arm64/evidence-excludes.txt`
+- status: `<内部存储>/raw/aimami/1.2.3/macos-arm64/frontend-tool-status.txt`
+- dumped_assets: `<内部存储>/raw/aimami/1.2.3/macos-arm64/dumped`
+- frontend_contracts: `<内部存储>/raw/aimami/1.2.3/macos-arm64/frontend/frontend-contract-report.md`
+- ast_facts: `<内部存储>/raw/aimami/1.2.3/macos-arm64/frontend/ast-facts.json`
+- frontend_control_flow: `<内部存储>/raw/aimami/1.2.3/macos-arm64/frontend/frontend-control-flow.jsonl`
+- page_backend_template: `<内部存储>/raw/aimami/1.2.3/macos-arm64/frontend-page-ipc-rust-report.md`
+- frontend_asset_hashes: `<内部存储>/raw/aimami/1.2.3/macos-arm64/frontend-assets.sha256`
+- evidence_excludes: `<内部存储>/raw/aimami/1.2.3/macos-arm64/evidence-excludes.txt`

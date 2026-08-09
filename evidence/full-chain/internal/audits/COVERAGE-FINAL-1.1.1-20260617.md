@@ -90,7 +90,7 @@
 
 **per-platform 门规则**（铁律）：mac 门只看 mac dim1-5；win 门只看 win dim1-5。另一平台的 dim5_Unknown 单独不阻塞本平台 readyToImplement。
 
-**idb_save 双端确认**：win idb_saved=true（win-final-b: <本地路径>
+**<工具调用> 双端确认**：win <工具调用>d=true（win-final-b: <本地路径>
 
 **win 100% 达成路径**（分母 59，get_image_compat 归 removed）：
 
@@ -147,7 +147,7 @@ activate_relay_provider · begin_add_account_attach_monitor · confirm_pending_a
 - gate-final shards（背景）：`intermediate/aimami/1.1.1/version-delta/gate-final/{mac,win}-shard-*.json`
 - 聚合 gate-report rollup（v3_win100_final）：`internal-reverse/audits/windows-1.1.1-delta/gate-report.json` → `rollup` 段
 - per-command ACCEPTANCE：`raw/aimami/1.1.1/{macos-arm64,windows-x64}/<module>/<cmd>/ACCEPTANCE.md`
-- idb_save 确认：win-final-b `idb_saved=true`；parse_aimami_deeplink `idb_save=ok`
+- <工具调用> 确认：win-final-b `<工具调用>d=true`；parse_aimami_deeplink `<工具调用>=ok`
 
 ---
 
@@ -254,10 +254,10 @@ activate_relay_provider · begin_add_account_attach_monitor · confirm_pending_a
 
 | 1.0.9 孤儿命令 | 1.1.1 win 状态 | 1.1.1 mac 状态 | 最终处置 |
 |---|---|---|---|
-| **rollback_threads_for_router** | **PRESENT**（VA 0x140615A80，size 2744B=0xab8，-23% vs 1.0.9 3590B）。证据：log strings `rollout file gone`/`session_meta not found`/`read rollout failed` xref；source module string `codex_thread_visibility.rs`；caller pattern 2 rayon parallel wrapper thunks 匹配 1.0.9；WakeByAddressSingle+poisoned mutex strings 匹配。逆向分析 renamed+commented+idb_save=ok | 未单独核（mac 118 命令无此项）| local_outtake（内部 relay 线程迁移函数，非 IPC 命令）。不开工作单 |
+| **rollback_threads_for_router** | **PRESENT**（VA 0x140615A80，size 2744B=0xab8，-23% vs 1.0.9 3590B）。证据：log strings `rollout file gone`/`session_meta not found`/`read rollout failed` xref；source module string `codex_thread_visibility.rs`；caller pattern 2 rayon parallel wrapper thunks 匹配 1.0.9；WakeByAddressSingle+poisoned mutex strings 匹配。逆向分析 renamed+commented+<工具调用>=ok | 未单独核（mac 118 命令无此项）| local_outtake（内部 relay 线程迁移函数，非 IPC 命令）。不开工作单 |
 | **execute_proxy_tools** | **PRESENT merged**（VA 0x14027EF10，size 51490B=0xc922，1945BB）。1.1.1 扩展吸收 append_assistant 逻辑 + reasoning_content 路径（32.5KB → 50.3KB）。证据：DTO strings tool_call_id/parallel_tool_calls/reasoning_content/roleassistant → sub_14027EF10。逆向分析 renamed+commented | 同 | local_outtake（内部 relay web executor，非 IPC 命令）。不开工作单 |
 | **data_store_identifiers / fetch_data_store_identifiers** | **PRESENT**（VA 0x14094D300，size 1968B，string 0x1412fdde4，async vtable 注册）。size exact match 1.0.9 1968B。1.1.1 renamed data_store_identifiers → fetch_data_store_identifiers | mac 118 命令无（mac 不暴露 data store IPC）| win-only IPC，handler 已定位，size 等价迁移。**CONFIRMED_PRESENT** |
-| **data_store_remove** | **PRESENT**（VA 0x140933610，1.1.1 renamed remove_data_store，size=0x76b=1899B/58BB/364insn EXACT match）。证据：IPC string 0x1412fdd88 xref；callee 链 confirm_pending_auto_switch_deserialize_request_sys → sub_1408F6E50 → has_notch_invoke_resolver_respond；DTO uuid=String（0x1412fdd99）。**readyToImplement=true，逆向分析 renamed+idb_save=ok** | 同 | **CONFIRMED_PRESENT** as `remove_data_store`（word order inverted rename）。真正 gap 已关闭。 |
+| **data_store_remove** | **PRESENT**（VA 0x140933610，1.1.1 renamed remove_data_store，size=0x76b=1899B/58BB/364insn EXACT match）。证据：IPC string 0x1412fdd88 xref；callee 链 confirm_pending_auto_switch_deserialize_request_sys → sub_1408F6E50 → has_notch_invoke_resolver_respond；DTO uuid=String（0x1412fdd99）。**readyToImplement=true，逆向分析 renamed+<工具调用>=ok** | 同 | **CONFIRMED_PRESENT** as `remove_data_store`（word order inverted rename）。真正 gap 已关闭。 |
 | **append_assistant_and_tool_results** | **PRESENT merged**（VA 0x14027EF10，same as execute_proxy_tools — 1.1.1 merged into execute_proxy_tools body）。证据：roleassistant + tool_call_id/tool_calls/call_id/custom_tool_call strings all in body。负证据：穷举 size scan 21600–26600B 无独立 24KB 等效函数；func_query 28000–38000B 范围空。1.0.9 独立 24KB 函数在 1.1.1 合并进 execute_proxy_tools | 同 | local_outtake（已 merged，非 IPC 命令）。不开工作单 |
 | **mystery_unlock** | **REMOVED**（`mystery_unlock` 直接命令 string-pool find_regex 零命中）。替代命令 `get_mystery_unlock_grants`（0x1412ac39a）和 `merge_mystery_unlock_grants`（0x1412ac3b3）PRESENT，两者已在 §6.3 RTI | mac 同样无 mystery_unlock 直接命令 | **REMOVED**。直接命令已删；前端替代命令（get/merge）保留且已逆。消费者使用 get/merge_mystery_unlock_grants |
 
@@ -295,7 +295,7 @@ activate_relay_provider · begin_add_account_attach_monitor · confirm_pending_a
 
 | 命令 | 逆向状态 |
 |---|---|
-| `remove_data_store` | **已逆完，readyToImplement=true**。VA=0x140933610，IPC string @ 0x1412fdd88，size=0x76b=1899B，58BB，364insn，EXACT match to 1.0.9 data_store_remove（1899B/58BB/364insn）。确认：IPC string xref + exact size match + 调用链（→confirm_pending_auto_switch_deserialize_request_sys → sub_1408F6E50 store removal core → has_notch_invoke_resolver_respond）+ DTO param uuid=String（string 0x1412fdd99）。1.0.9 data_store_remove → 1.1.1 remove_data_store（字词顺序倒置）。逆向分析 renamed+commented+idb_save=ok。leaf: `raw/aimami/1.1.1/windows-x64/…/remove_data_store_owner_111`（via win-gap-close.json）。**win_four_angle_pass 升为 true，backend_truly_full 升为 true。** |
+| `remove_data_store` | **已逆完，readyToImplement=true**。VA=0x140933610，IPC string @ 0x1412fdd88，size=0x76b=1899B，58BB，364insn，EXACT match to 1.0.9 data_store_remove（1899B/58BB/364insn）。确认：IPC string xref + exact size match + 调用链（→confirm_pending_auto_switch_deserialize_request_sys → sub_1408F6E50 store removal core → has_notch_invoke_resolver_respond）+ DTO param uuid=String（string 0x1412fdd99）。1.0.9 data_store_remove → 1.1.1 remove_data_store（字词顺序倒置）。逆向分析 renamed+commented+<工具调用>=ok。leaf: `raw/aimami/1.1.1/windows-x64/…/remove_data_store_owner_111`（via win-gap-close.json）。**win_four_angle_pass 升为 true，backend_truly_full 升为 true。** |
 
 ---
 

@@ -1,0 +1,139 @@
+# delta-commands.txt — AiMaMi 1.2.4 → 1.2.6 (Windows x64)
+# Commands/functions that are new or changed, requiring IDA full-chain verification.
+# Source: 128cmd-identity-ledger (126 remaining) + commands-platform-coexisting-body-diff (real_change_candidates) + backend-function-diff
+# Generated: 2026-08-08
+
+# === Real change candidates (body-level diff confirmed) ===
+codex_bundled_cli_path 候选串集缩减  # id=1 summary=1.2.4 候选集含 Codex.exe（大写）+ App Paths\Codex.exe 注册表风格串；1.2.6 同形态函数仅剩小写 codex.exe + 目录段，注册表候选移出。1.2.6 侧已完整反编译（本文件 function_
+ChatGPT 桌面应用定位器（sub_140B370F0）  # id=2 summary=1.2.6 新增能力：10 环境变量候选 + reg query + powershell + where 四级定位链解析 ChatGPT 桌面应用路径；1.2.4 文档零对应（文档级证据，非现场重扫）。1.2.6 侧已完整反编译（5839
+
+# === Remaining 126 commands (handler identity recorded, need body-equivalence verification) ===
+# counts: {"total_ipc_commands": 134, "already_paired_prev_round": 8, "remaining_unrecorded": 116, "remaining_unresolved_126": 10, "total_remaining_gap": 126, "v126_renamed": 95, "v126_still_sub": 29, "v126_unresolved": 10}
+# v126_renamed=95 v126_still_sub=29 v126_unresolved=10
+
+load_snapshot  # v126_ea=0x140d73cb0 fn=load_snapshot conf=high
+refresh_usage_snapshot  # v126_ea=0x140d722f0 fn=refresh_usage_snapshot conf=high
+refresh_single_account_usage  # v126_ea=0x140d70840 fn=refresh_single_account_usage conf=high
+switch_account  # v126_ea=0x140d6f0d0 fn=switch_account conf=high
+switch_account_and_restart_codex  # v126_ea=0x140d6d960 fn=switch_account_and_restart_codex conf=high
+remove_accounts  # v126_ea=0x140d6a610 fn=remove_accounts conf=high
+logout  # v126_ea=0x140d68b00 fn=logout conf=high
+rebuild_registry  # v126_ea=0x14014c500 fn=rebuild_registry conf=high
+force_kill_codex  # v126_ea=0x14014bf20 fn=force_kill_codex conf=high
+set_image_compat  # v126_ea=0x14014b3a0 fn=set_image_compat conf=high
+export_debug_bundle  # v126_ea=0x140d7c5e0 fn=export_debug_bundle conf=high
+upload_debug_report  # v126_ea=0x140d9dd40 fn=upload_debug_report conf=high
+write_client_debug_log  # v126_ea=0x1401683a0 fn=write_client_debug_log conf=high
+begin_chatgpt_oauth_login  # v126_ea=0x140d68220 fn=begin_chatgpt_oauth_login conf=high
+export_accounts_to_file  # v126_ea=0x140d668d0 fn=export_accounts_to_file conf=high
+preview_account_import  # v126_ea=0x140d65310 fn=preview_account_import conf=high
+import_accounts_from_file  # v126_ea=0x140d62e30 fn=import_accounts_from_file conf=high
+set_auto_switch  # v126_ea=0x140d466b0 fn=set_auto_switch conf=high
+configure_auto_switch  # v126_ea=0x140d44bd0 fn=configure_auto_switch conf=high
+set_api_proxy_config  # v126_ea=0x14016cab0 fn=set_api_proxy_config conf=high
+get_usage_refresh_interval  # v126_ea=0x14016c520 fn=get_usage_refresh_interval conf=high
+set_usage_refresh_interval  # v126_ea=0x14016bc40 fn=set_usage_refresh_interval conf=high
+test_api_proxy_config  # v126_ea=0x140d84230 fn=test_api_proxy_config conf=high
+detect_api_proxy_config  # v126_ea=0x140d83110 fn=detect_api_proxy_config conf=high
+run_daemon_once  # v126_ea=0x140d81ec0 fn=run_daemon_once_tauri_dispatcher conf=high
+diagnose  # v126_ea=0x140d80d90 fn=diagnose conf=high
+load_sessions  # v126_ea=0x140d5f0b0 fn=load_sessions conf=high
+delete_sessions  # v126_ea=0x140d5d450 fn=delete_sessions conf=high
+export_session_markdown  # v126_ea=0x140d5b000 fn=export_session_markdown conf=high
+migrate_session_worktree  # v126_ea=0x140d491f0 fn=migrate_session_worktree conf=high
+load_voice_workspace  # v126_ea=0x140156800 fn=sub_140156800 conf=high
+upsert_voice_template  # v126_ea=0x140155b30 fn=sub_140155B30 conf=high
+remove_voice_template  # v126_ea=0x140155460 fn=sub_140155460 conf=high
+upsert_voice_vocabulary  # v126_ea=0x140154050 fn=sub_140154050 conf=high
+remove_voice_vocabulary  # v126_ea=0x140153980 fn=sub_140153980 conf=high
+replace_voice_vocabulary_kind  # v126_ea=0x140152de0 fn=sub_140152DE0 conf=high
+remove_voice_vocabulary_app_scope  # v126_ea=0x140152710 fn=sub_140152710 conf=high
+upsert_voice_vocabulary_app_scope  # v126_ea=0x140151cb0 fn=sub_140151CB0 conf=high
+resolve_voice_vocabulary_app_info  # v126_ea=0x140151740 fn=sub_140151740 conf=high
+generate_voice_prompt  # v126_ea=0x140d9fdd0 fn=sub_140D9FDD0 conf=high
+test_voice_llm_config  # v126_ea=0x14014fae0 fn=sub_14014FAE0 conf=high
+load_voice_llm_config  # v126_ea=0x1401511d0 fn=sub_1401511D0 conf=high
+save_voice_llm_config  # v126_ea=0x140150680 fn=sub_140150680 conf=high
+load_voice_asr_config  # v126_ea=0x14014f570 fn=sub_14014F570 conf=high
+save_voice_asr_config  # v126_ea=0x14014ea20 fn=sub_14014EA20 conf=high
+test_voice_asr_config  # v126_ea=0x14014de80 fn=sub_14014DE80 conf=high
+remove_voice_history_entry  # v126_ea=0x14014d7b0 fn=sub_14014D7B0 conf=high
+load_voice_processing_modes  # v126_ea=0x14014d1d0 fn=sub_14014D1D0 conf=high
+save_voice_processing_modes  # v126_ea=0x14014cae0 fn=sub_14014CAE0 conf=high
+load_voice_runtime_status  # v126_ea=0x140162d80 fn=load_voice_runtime_status_owner_sys conf=high
+request_voice_permissions  # v126_ea=0x140162800 fn=sub_140162800 conf=high
+set_voice_global_shortcut  # v126_ea=0x140161fd0 fn=set_voice_global_shortcut conf=high
+capture_voice_trigger_key  # v126_ea=0x140d61ae0 fn=sub_140D61AE0 conf=high
+set_voice_trigger_listener_suppressed  # v126_ea=0x140161330 fn=sub_140161330 conf=high
+set_voice_trigger_key  # v126_ea=0x140160430 fn=sub_140160430 conf=high
+set_voice_trigger_bindings  # v126_ea=0x14015eb50 fn=sub_14015EB50 conf=high
+update_voice_runtime_settings  # v126_ea=0x14015dd80 fn=tauri_cmd_update_voice_runtime_settings_dispatch conf=high
+set_voice_processing_mode_id  # v126_ea=0x14015d330 fn=set_voice_processing_mode_id conf=high
+set_voice_overlay_style  # v126_ea=0x14015cb10 fn=set_voice_overlay_style conf=high
+start_voice_capture  # v126_ea=0x14015b7b0 fn=start_voice_capture conf=high
+stop_voice_capture  # v126_ea=0x14015b140 fn=stop_voice_capture_owner_sys conf=high
+voice_processing_done  # v126_ea=0x14015be20 fn=sub_14015BE20 conf=high
+inject_voice_text  # v126_ea=0x140d60900 fn=sub_140D60900 conf=high
+show_voice_search_overlay  # v126_ea=0x140158250 fn=sub_140158250 conf=high
+set_voice_mode_shortcut  # v126_ea=0x140159880 fn=sub_140159880 conf=high
+remove_voice_mode_shortcut  # v126_ea=0x140159140 fn=sub_140159140 conf=high
+request_accessibility_permission  # v126_ea=0x14015aad0 fn=request_accessibility_permission conf=high
+load_mcp_servers  # v126_ea=0x1401656b0 fn=load_mcp_servers conf=high
+upsert_mcp_server  # v126_ea=0x140163e30 fn=upsert_mcp_server conf=high
+set_mcp_server_enabled  # v126_ea=0x140163410 fn=set_mcp_server_enabled conf=high
+load_installed_skills  # v126_ea=0x140d57470 fn=load_installed_skills conf=high
+load_skill_backups  # v126_ea=0x140d556c0 fn=load_skill_backups conf=high
+import_skill  # v126_ea=0x140d52e00 fn=import_skill conf=high
+remove_skill  # v126_ea=0x140d50540 fn=remove_skill conf=high
+restore_skill_backup  # v126_ea=0x140d4dc70 fn=restore_skill_backup conf=high
+delete_skill_backup  # v126_ea=0x140d4b270 fn=delete_skill_backup conf=high
+restart_codex  # v126_ea=0x140d7fef0 fn=restart_codex conf=high
+load_usage_analytics  # v126_ea=0x140d9c1e0 fn=load_usage_analytics conf=high
+load_quota_history  # v126_ea=0x140d99620 fn=load_quota_history conf=high
+load_session_analytics  # v126_ea=0x140d977d0 fn=load_session_analytics conf=high
+load_token_analytics  # v126_ea=0x140d95800 fn=load_token_analytics conf=high
+load_tool_analytics  # v126_ea=0x140d939b0 fn=load_tool_analytics conf=high
+load_change_analytics  # v126_ea=0x140d91b60 fn=load_change_analytics conf=high
+has_notch  # v126_ea=0x140173ad0 fn=has_notch conf=high
+get_hotspot_enabled  # v126_ea=0x140173550 fn=get_hotspot_enabled conf=high
+set_hotspot_enabled  # v126_ea=0x140172c90 fn=set_hotspot_enabled conf=high
+get_autostart_state  # v126_ea=0x140166990 fn=get_autostart_state conf=high
+set_autostart_enabled  # v126_ea=0x1401660a0 fn=set_autostart_enabled conf=high
+focus_main_window  # v126_ea=0x140172730 fn=focus_main_window conf=high
+hotspot_ready  # v126_ea=0x1401721d0 fn=hotspot_ready conf=high
+get_device_id  # v126_ea=0x140169df0 fn=get_device_id conf=high
+get_mystery_unlock_grants  # v126_ea=0x140169860 fn=get_mystery_unlock_grants conf=high
+merge_mystery_unlock_grants  # v126_ea=0x1401691a0 fn=merge_mystery_unlock_grants conf=high
+get_notification_client_state  # v126_ea=0x140168c10 fn=get_notification_client_state conf=high
+load_bootstrap_state  # v126_ea=0x14016ae90 fn=load_bootstrap_state conf=high
+load_pending_auto_switch  # v126_ea=0x14016a900 fn=load_pending_auto_switch conf=high
+dismiss_pending_auto_switch  # v126_ea=0x14016a380 fn=dismiss_pending_auto_switch conf=high
+confirm_pending_auto_switch  # v126_ea=0x140d7eeb0 fn=confirm_pending_auto_switch conf=high
+confirm_pending_auto_switch_and_restart_codex  # v126_ea=0x140d7de70 fn=confirm_pending_auto_switch_and_restart_codex conf=high
+load_relay_state  # v126_ea=0x140171c40 fn=load_relay_state conf=high
+upsert_relay_provider  # v126_ea=0x140171350 fn=upsert_relay_provider conf=high
+delete_relay_provider  # v126_ea=0x140170a40 fn=delete_relay_provider conf=high
+activate_relay_provider  # v126_ea=0x1401701b0 fn=activate_relay_provider conf=high
+deactivate_relay_provider  # v126_ea=0x14016f920 fn=deactivate_relay_provider conf=high
+set_relay_provider_network  # v126_ea=0x14016f080 fn=set_relay_provider_network conf=high
+reorder_relay_providers  # v126_ea=0x14016e9b0 fn=reorder_relay_providers conf=high
+fetch_relay_models_draft  # v126_ea=0x140d871d0 fn=fetch_relay_models_draft conf=high
+reveal_relay_api_key  # v126_ea=0x14016e1d0 fn=reveal_relay_api_key conf=high
+get_relay_provider_quota  # v126_ea=0x140d85690 fn=get_relay_provider_quota conf=high
+get_relay_active  # v126_ea=0x14016dbe0 fn=get_relay_active conf=high
+get_relay_proxy_status  # v126_ea=0x140167df0 fn=get_relay_proxy_status conf=high
+set_codex_router_enabled  # v126_ea=0x140d7aa10 fn=set_codex_router_enabled conf=high
+set_codex_router_no_account_mode  # v126_ea=0x140d77830 fn=set_codex_router_no_account_mode conf=high
+export_relay_config  # v126_ea=0x14014a4d0 fn=export_relay_config conf=high
+import_relay_config  # v126_ea=0x14016d2d0 fn=import_relay_config conf=high
+parse_aimami_deeplink  # v126_ea=0x140149f60 fn=parse_aimami_deeplink conf=high
+default_debug_bundle_file_name  # v126_ea=None fn=None conf=none
+cancel_chatgpt_oauth_login  # v126_ea=None fn=None conf=none
+check_update_installability  # v126_ea=None fn=None conf=none
+load_custom_instruction_state  # v126_ea=None fn=None conf=none
+cancel_voice_trigger_capture  # v126_ea=None fn=None conf=none
+preview_custom_instruction_apply  # v126_ea=None fn=None conf=none
+apply_custom_instruction  # v126_ea=None fn=None conf=none
+clear_custom_instruction_block  # v126_ea=None fn=None conf=none
+rollback_custom_instruction  # v126_ea=None fn=None conf=none
+get_system_info  # v126_ea=None fn=None conf=none

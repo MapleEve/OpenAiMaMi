@@ -1,5 +1,5 @@
 /* addr=0x10013a9b0 cleanname=ipc_dispatch group=tauri-ipc-dispatch
- * decompiled via IDA Python server-side IDA decompiler.decompile
+ * decompiled via py_exec_file server-side ida_hexrays.decompile
  * n_lines=668 brace_balanced=True truncation_markers=[]
  */
 char __fastcall tauri::ipc::InvokeResolver$LT$R$GT$::respond_async_serialized_inner::_$u7b$$u7b$closure$u7d$$u7d$::h1b11683447aa8eed(

@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay23codex_thread_visibility36cleanup_orphan_router_threads_strict @ 0x100aec9a0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 *__fastcall codexmate_lib::core::relay::codex_thread_visibility::cleanup_orphan_router_threads_strict::h0dc1554601aef88a(
         __int64 *a1,

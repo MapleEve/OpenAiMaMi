@@ -1,0 +1,55 @@
+{
+  "leaf": "router-reconciler-windows-retry-thread-visibility",
+  "merged_from": [
+    "producer-ledger.wf-item1-router-reconciler-20260806.json"
+  ],
+  "entry_count": 1,
+  "entries": [
+    {
+      "schema": "c5cm.producer-ledger.v1",
+      "claim_id": "cc-aimami126-item1-router-reconciler-20260806",
+      "machine": "<本地机器>
+      "producer": "Claude",
+      "product": "aimami",
+      "version": "1.2.6",
+      "targets_claimed": [
+        "run_config_mutation_with_windows_retry",
+        "append_thread_reconcile_warnings",
+        "reconcile_native_off_with_progress",
+        "reconcile_router_on",
+        "RouterToggleProgress",
+        "codex_thread_visibility::reconcile_threads_with_progress",
+        "reconcile_native_off_after_stop_with_progress"
+      ],
+      "platforms_attempted": [
+        "macos-arm64",
+        "windows-x64"
+      ],
+      "outcome": {
+        "macos-arm64": "9/10 grounded full decompile; 1/10 (reconcile_native_off_with_progress) truncated -> gap_needs_reducer with CFG evidence",
+        "windows-x64": "0/7 located -- stripped binary, only panic-Location source-path string anchor found (0x14185af27), 3-layer recovery (red line 24) not completed this round -> gap_needs_reducer"
+      },
+      "ida_live_gate_verified": {
+        "mac": "status=ok, uptime_sec=128028.525, <反编译器>_ready=true, module=AiMaMi",
+        "win": "status=ok, uptime_sec=127988.079/127847.505, <反编译器>_ready=true, module=AiMaMi 1.2.6 win64.exe"
+      },
+      "artifacts_written": [
+        "raw/aimami/1.2.6/macos-arm64/backend/router-reconciler-windows-retry-thread-visibility/manifest.json",
+        "raw/aimami/1.2.6/macos-arm64/backend/router-reconciler-windows-retry-thread-visibility/README.md",
+        "raw/aimami/1.2.6/macos-arm64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/0001-reconcile-router-on-0x100825030.c",
+        "raw/aimami/1.2.6/macos-arm64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/0002-reconcile-native-off-with-progress-0x1008278a0-TRUNCATED.c",
+        "raw/aimami/1.2.6/macos-arm64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/0002-basic-blocks.json",
+        "raw/aimami/1.2.6/macos-arm64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/0003-reconcile-threads-with-progress-0x1007507c0.c",
+        "raw/aimami/1.2.6/macos-arm64/backend/router-reconciler-windows-retry-thread-visibility/pseudocode/0004-helpers-and-dto.c"
+      ],
+      "index_appended": true,
+      "gate_accepted": false,
+      "implementation_use": false,
+      "next_round_needed": [
+        "chunked re-decompile of reconcile_native_off_with_progress full body (mac)",
+        "windows-x64 three-layer strip recovery for all 7 targets (panic-Location two-hop xref -> call-graph propagation -> tauri command name)"
+      ],
+      "produced_at": "2026-08-06T00:00:00Z"
+    }
+  ]
+}

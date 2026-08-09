@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core10repository10Repository24sync_local_runtime_state @ 0x100a5f130 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::repository::Repository::sync_local_runtime_state::h9a275b158e989503(
         _QWORD *a1,

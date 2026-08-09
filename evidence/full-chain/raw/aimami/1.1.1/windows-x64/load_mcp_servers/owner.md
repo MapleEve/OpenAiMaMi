@@ -52,4 +52,4 @@ Caller passes single pointer `ctx` (a1). Stack layout extracted from decompile:
 
 - Renamed to `load_mcp_servers_owner_sys` (was `load_mcp_servers_handler_111`)
 - Comment at `0x14001c4c0`: `gold-leaf for load_mcp_servers; sha d24e429a; session <审计会话>; not gate promotion`
-- `idb_save` confirmed ok in this session
+- `<工具调用>` confirmed ok in this session

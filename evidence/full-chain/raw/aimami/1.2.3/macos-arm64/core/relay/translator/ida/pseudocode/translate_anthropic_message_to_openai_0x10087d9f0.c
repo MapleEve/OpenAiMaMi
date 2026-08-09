@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay10translator37translate_anthropic_message_to_openai @ 0x10087d9f0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::relay::translator::translate_anthropic_message_to_openai::hf77050f34a40c814(
         __int64 a1,

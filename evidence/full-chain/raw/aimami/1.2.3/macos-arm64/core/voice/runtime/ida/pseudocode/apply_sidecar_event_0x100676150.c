@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5voice7runtime19apply_sidecar_event @ 0x100676150 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 double __fastcall codexmate_lib::core::voice::runtime::apply_sidecar_event::h1a34e0acde633e1c(
         __int64 a1,

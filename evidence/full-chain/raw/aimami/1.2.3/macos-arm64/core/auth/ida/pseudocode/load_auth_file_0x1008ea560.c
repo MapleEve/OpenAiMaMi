@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core4auth14load_auth_file @ 0x1008ea560 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 unsigned __int64 *__fastcall codexmate_lib::core::auth::load_auth_file::h495f6935c70eecba(
         unsigned __int64 *a1,

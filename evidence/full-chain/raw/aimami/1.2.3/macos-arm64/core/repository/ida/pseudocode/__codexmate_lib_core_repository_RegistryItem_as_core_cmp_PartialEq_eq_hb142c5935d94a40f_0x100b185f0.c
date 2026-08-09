@@ -1,4 +1,4 @@
-// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::repository::RegistryItem as core::cmp::PartialEq>::eq::hb142c5935d94a40f @ 0x100b185f0 | full-body via IDA Python(IDA decompiler.decompile direct write)
+// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::repository::RegistryItem as core::cmp::PartialEq>::eq::hb142c5935d94a40f @ 0x100b185f0 | full-body via py_exec_file(ida_hexrays.decompile direct write)
 char __fastcall _$LT$codexmate_lib..core..repository..RegistryItem$u20$as$u20$core..cmp..PartialEq$GT$::eq::hb142c5935d94a40f(
         __int64 a1,
         char *a2)

@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5voice10aliyun_asr16AliyunAsrSession7connect28_$u7b$$u7b$closure$u7d$$u7d$ @ 0x1002101b0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 char __fastcall codexmate_lib::core::voice::aliyun_asr::AliyunAsrSession::connect::_$u7b$$u7b$closure$u7d$$u7d$::hbb4b340bd79fba8f(
         unsigned __int64 *a1,
