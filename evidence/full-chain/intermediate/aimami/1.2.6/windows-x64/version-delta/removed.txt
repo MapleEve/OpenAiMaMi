@@ -1,0 +1,12 @@
+# removed.txt — AiMaMi 1.2.4 → 1.2.6 (Windows x64)
+# Mac-confirmed removed symbols with win cross-check. IPC contract set unchanged (134=134).
+
+# === Mac removed functional symbols (win handler may persist — platform divergence) ===
+codexmate_lib::commands::sessions::delete_sessions  # mac removed, module=codexmate_lib::commands::sessions — verify win handler status
+codexmate_lib::core::relay::codex_thread_visibility::fallback_relay_model_threads  # mac removed, module=codexmate_lib::core::relay — verify win handler status
+codexmate_lib::core::relay::codex_thread_visibility::patch_relay_thread_instructions  # mac removed, module=codexmate_lib::core::relay — verify win handler status
+codexmate_lib::core::relay::codex_thread_visibility::reconcile_threads  # mac removed, module=codexmate_lib::core::relay — verify win handler status
+codexmate_lib::core::relay::router_unlock_auth::cleanup_for_native_off  # mac removed, module=codexmate_lib::core::relay — verify win handler status
+codexmate_lib::core::relay::translator::stream::AnthropicDirectToResponsesStream::flush  # mac removed, module=codexmate_lib::core::relay — verify win handler status
+
+# Note: delete_sessions mac-removed but win 1.2.6 handler exists (0x140d5d450) — platform divergence, NOT win removal.

@@ -3,7 +3,7 @@
 ## Platform Artifacts
 
 - Binary: `raw/binary/AiMaMi.1.2.3 win64.exe`, PE, x64. sha256 independently re-hashed this session: `aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396` (matches the value already on file in `../windows-1.2.3-accounts/manifest.json` for the same release).
-- IDB: `E:\binary\AiMaMi.1.2.3 win64.exe.i64` on the IDA MCP host (<host>), confirmed live this session (`server_health` → status=ok, uptime=121281s, IDA decompiler_ready=true).
+- IDB: `<二进制路径>\AiMaMi.1.2.3 win64.exe.i64` on the IDA MCP host (<host>), confirmed live this session (`server_health` → status=ok, uptime=121281s, IDA decompiler_ready=true).
 
 ## Frontend IPC surface
 

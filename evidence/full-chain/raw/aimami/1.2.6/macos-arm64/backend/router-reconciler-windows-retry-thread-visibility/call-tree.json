@@ -1,0 +1,102 @@
+{
+  "target": "router-reconciler-windows-retry-thread-visibility",
+  "target_type": "backend_function_cluster",
+  "owner_ea": "0x100825030",
+  "owner_name": "codexmate_lib::core::relay::router_reconciler::reconcile_router_on",
+  "edges": [
+    {
+      "callee": "reconcile_router_on",
+      "addr": "0x100825030",
+      "type": "entry",
+      "size": "0x16d2"
+    },
+    {
+      "callee": "reconcile_native_off_with_progress",
+      "addr": "0x1008278a0",
+      "type": "internal",
+      "size": "0x1d25"
+    },
+    {
+      "callee": "reconcile_threads_with_progress",
+      "addr": "0x1007507c0",
+      "type": "internal",
+      "size": "0x145b"
+    },
+    {
+      "callee": "run_config_mutation_with_windows_retry",
+      "addr": "0x10082a540",
+      "type": "internal",
+      "size": "0x83"
+    },
+    {
+      "callee": "reconcile_native_off_after_stop_with_progress",
+      "addr": "0x100a71930",
+      "type": "internal",
+      "size": "0x47d"
+    },
+    {
+      "callee": "commit_auth_for_router",
+      "addr": "0x1007325b0",
+      "type": "internal",
+      "size": "round3"
+    },
+    {
+      "callee": "reconcile_inner",
+      "addr": "0x1002e6840",
+      "type": "internal",
+      "size": "round3"
+    },
+    {
+      "callee": "repair_if_needed",
+      "addr": "0x100737150",
+      "type": "internal",
+      "size": "round3"
+    },
+    {
+      "callee": "config_takeover",
+      "addr": "0x100aecde0",
+      "type": "internal",
+      "size": "round3"
+    },
+    {
+      "callee": "collect_external_codex_writers",
+      "addr": null,
+      "type": "terminal"
+    },
+    {
+      "callee": "reject_external_codex_writers",
+      "addr": null,
+      "type": "terminal"
+    },
+    {
+      "callee": "assert_no_external_codex_writers",
+      "addr": null,
+      "type": "terminal"
+    },
+    {
+      "callee": "ensure_proxy_started",
+      "addr": null,
+      "type": "terminal"
+    },
+    {
+      "callee": "verify_managed_auth_commit_boundary",
+      "addr": null,
+      "type": "terminal"
+    }
+  ],
+  "edge_count": 14,
+  "terminated_reason": null,
+  "depth": 5,
+  "leaf_status": "implementation_leaf",
+  "missing_targets": [],
+  "terminals": [
+    "process management (external codex writers)",
+    "proxy lifecycle",
+    "auth commit boundary",
+    "filesystem config write (config_takeover)",
+    "project state repair"
+  ],
+  "notes": "5 primary targets + 4 round3 supplementary targets, all full-decompiled. reconcile_native_off_with_progress (0x1d25) was truncated by MCP but recovered via <工具调用> + download endpoint (49540 chars, 139 basic blocks). run_config_mutation_with_windows_retry is NOT a retry loop — it's a parameter repackaging wrapper.",
+  "session": "<审计会话>
+  "binary_sha256": "1.2.6-mac-arm64"
+}

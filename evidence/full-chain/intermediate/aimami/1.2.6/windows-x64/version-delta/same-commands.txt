@@ -1,0 +1,24 @@
+# same-commands.txt — AiMaMi 1.2.4 → 1.2.6 (Windows x64)
+# Commands already paired with confirmed same handler (8 from 128cmd-identity-ledger).
+# Plus coexisting functions where module-level delta is noise_below_2x (commands:: +7/+10.4% noise, platform:: +2/+3.9% noise).
+# IPC contract set: 134→134 (0 added/0 removed) — identical_contract.
+
+# === Already paired (confirmed same handler) ===
+clean  # v126_ea=0x140174120 fn=tauri_master_invoke_handler_shared_dispatcher
+get_image_compat  # v126_ea=0x140174120 fn=tauri_master_invoke_handler_shared_dispatcher
+get_claude_web_search_compat  # v126_ea=0x14014ade0 fn=get_claude_web_search_compat
+set_claude_web_search_compat  # v126_ea=0x140d47c70 fn=set_claude_web_search_compat
+remove_mcp_server  # v126_ea=0x140156d90 fn=remove_mcp_server
+open_path  # v126_ea=0x140174120 fn=tauri_master_invoke_handler_shared_dispatcher
+get_codex_router_auth_readiness  # v126_ea=0x140174120 fn=tauri_master_invoke_handler_shared_dispatcher
+set_codex_no_account_slots  # v126_ea=0x140d75ea0 fn=set_codex_no_account_slots
+
+# === Coexisting function pairs (8 function_level_pairs, body-diff screening passed) ===
+get_claude_web_search_compat  # module=commands::system(1.2.4 归位) / commands/claude_web_search_compat(1.2.6 归位)
+set_claude_web_search_compat  # module=commands::relay(1.2.4) / commands/claude_web_search_compat(1.2.6)
+set_codex_no_account_slots  # module=commands::relay(1.2.4) / commands/codex_no_account_slots(1.2.6)
+remove_mcp_server (dispatch shell)  # module=commands::mcp 能力门闭包（1.2.6 归位于 /codexmate_lib/core/mcp/remove_mcp_server）
+tauri_master_invoke_handler_shared_dispatcher  # module=commands（tauri generate_handler! 主分发表）
+codex_bundled_cli_path 候选（codex.exe 路径探测）  # module=platform::process
+single_instance acquire 内联宿主（bootstrap）  # module=platform::single_instance（两版本均无独立子目录，内联于根桶 bootstrap）
+（1.2.6 新增）ChatGPT 桌面应用定位器  # module=platform::process 调用簇（1.2.6 平台桶内 sub_140AFCCD0 为其调用者之一）

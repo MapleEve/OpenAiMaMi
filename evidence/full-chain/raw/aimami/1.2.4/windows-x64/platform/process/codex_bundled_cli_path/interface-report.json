@@ -1,0 +1,33 @@
+{
+  "command": "codex_bundled_cli_path",
+  "entry": "codex_bundled_cli_path(a1, a2, a3) -> __int64",
+  "ea": "0x140a19ac0",
+  "module": "platform/process",
+  "classification": "new_in_1_2_4",
+  "argKeys": [],
+  "responseFields": [
+    "path_or_null"
+  ],
+  "idaSymbols": [
+    "0x140a19ac0"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/codex_bundled_cli_path_0x140a19ac0.c"
+  ],
+  "nextCallees": [
+    "sub_1416F15C0",
+    "sub_1414E1440",
+    "sub_1414E1680",
+    "sub_140001660"
+  ],
+  "callTreeRows": 4,
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": "raw/aimami/1.2.4/windows-x64/platform/process/codex_bundled_cli_path/",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "sideEffects": "none (read-only path resolution)",
+  "destructive": false
+}

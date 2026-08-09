@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib8commands13account_oauth25begin_chatgpt_oauth_login28_$u7b$$u7b$closure$u7d$$u7d$ @ 0x1000e7050 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 char __fastcall codexmate_lib::commands::account_oauth::begin_chatgpt_oauth_login::_$u7b$$u7b$closure$u7d$$u7d$::he430be462b37ccff(
         unsigned __int64 *a1,

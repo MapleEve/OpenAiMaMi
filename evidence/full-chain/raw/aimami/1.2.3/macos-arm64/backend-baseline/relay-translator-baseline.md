@@ -4,7 +4,7 @@
 
 文件头统一格式：`// __ZN...<mangled symbol> @ 0x<addr> [| 基线 same-set]`，部分带 `// 1.2.3 NEW-delta | ... | vs 1.2.2 新增` 标记（本目录集合内 6 个：`find_official_reasoning_model`、`read_catalog_model_slugs`（codex_catalog）、`value_to_f64`（quota）、`is_minimax_m3_model`（storage）、`copy_api_key_from_legacy_id`（keychain）、`clean_input_for_anthropic_relay`/`leading_think_prefix_decision`/`strip_leading_think_open_tag`/`unwrap_custom_tool_input`（translator，4 个））。
 
-**完整性检查**：对全部 10 个目录 grep `TRUNCATED` / `DECOMPILE-FAILED` / `chars total]`，命中 0 个文件 — 无截断桩、无反编译失败函数。唯一需要特别标注的是 `translator/translate_openai_message_to_anthropic_0x100881a60.c`，文件头写明 `// [FULL — IDA decompiler 全解 60201B, 超大体分页取回]`：这是一个真实存在的超大函数（约 60KB 反编译体、2346 行），已完整反编译（非截断），只是取回时分页拉取。其余标 `// [FULL IDA decompiler]` 的文件同样表示完整反编译，不是截断标记。
+**完整性检查**：对全部 10 个目录 grep `TRUNCATED` / `DECOMPILE-FAILED` / `chars total]`，命中 0 个文件 — 无截断桩、无反编译失败函数。唯一需要特别标注的是 `translator/translate_openai_message_to_anthropic_0x100881a60.c`，文件头写明 `// [FULL — <反编译器> 全解 60201B, 超大体分页取回]`：这是一个真实存在的超大函数（约 60KB 反编译体、2346 行），已完整反编译（非截断），只是取回时分页拉取。其余标 `// [FULL <反编译器>]` 的文件同样表示完整反编译，不是截断标记。
 
 自动生成 glue 计数（略读未逐行读）：`models/` 目录 43 个文件中 24 个 `serialize_*` + 10 个 `deserialize_*` = 34 个 serde derive glue（`RelayBrand`/`RelayIde`/`RelayProvider` 等 DTO 的 `Serialize`/`Deserialize` 实现，纯字段搬运，无业务逻辑）。其余目录未见 `Debug`/`Clone`/`drop_in_place`/`fmt` 类自动生成函数单独成文件（这类 glue 大多被内联进业务函数体内，如 `String::clone`、`Vec::clone` 调用点，未单独占用函数文件）。
 
@@ -38,7 +38,7 @@
 - **responses_to_chat_request** — Responses API 请求 → Chat Completions 请求：工具/parameters/strict schema、`instructions`→`system`、`tool_call`/`tool_call_output` 处理（超大函数，7412 行）。
 - **responses_to_anthropic_request_with_context** — Responses API 请求 → Anthropic Messages 请求：含 thinking/`budget_tokens`、`cache_control`、多档 reasoning effort（`minimal/low/medium/high/xhigh/max/ultra`）（超大函数，6865 行）。
 - **chat_to_responses_response / anthropic_to_responses_response_with_tool_map / openai_chat_to_anthropic_response / anthropic_to_openai_chat_response** — 四个非流式响应体转换器，映射 finish/stop 原因、usage token 计数、`tool_calls`。
-- **translate_openai_message_to_anthropic** — 单条消息级转换器（Chat→Anthropic 方向），本目录集合内最大函数：约 60KB 反编译体、2346 行，文件头明确标注"[FULL — IDA decompiler 全解]"（完整反编译，非截断）。
+- **translate_openai_message_to_anthropic** — 单条消息级转换器（Chat→Anthropic 方向），本目录集合内最大函数：约 60KB 反编译体、2346 行，文件头明确标注"[FULL — <反编译器> 全解]"（完整反编译，非截断）。
 - **strip_image_url_from_messages / shell_quote** — 前者剥离消息里的 `image_url` 内容块；后者为 `exec_command` 工具调用展示的命令做 POSIX shell 引用转义。
 
 destructive：均无（纯内存 JSON 结构转换，无文件/进程操作）。
@@ -132,4 +132,4 @@ destructive：均无。
 
 全量 grep `TRUNCATED` / `DECOMPILE-FAILED` / `chars total]`，在本次涉及的 10 个目录、192 个函数文件中命中 **0** 个 —— 没有需要标注"内部不可臆断"的截断桩或反编译失败函数。
 
-唯一需要说明的规模异常项：`translator/translate_openai_message_to_anthropic_0x100881a60.c` 文件头写明 `// [FULL — IDA decompiler 全解 60201B, 超大体分页取回]`，表示该函数体约 60KB、需分页取回，但**已完整反编译**，不属于截断/失败范畴，本文档据此按其函数签名与调用上下文归纳职责，未逐行通读全部 2346 行。同理 `codex_catalog/make_relay_model_info_0x1008a20e0.c`（4690 行）与 `quota/fetch_async_0x1000da9c0.c`（2475 行）也是完整反编译的大体量函数，本文档基于字符串常量枚举 + 调用图交叉验证其行为，未逐行通读。
+唯一需要说明的规模异常项：`translator/translate_openai_message_to_anthropic_0x100881a60.c` 文件头写明 `// [FULL — <反编译器> 全解 60201B, 超大体分页取回]`，表示该函数体约 60KB、需分页取回，但**已完整反编译**，不属于截断/失败范畴，本文档据此按其函数签名与调用上下文归纳职责，未逐行通读全部 2346 行。同理 `codex_catalog/make_relay_model_info_0x1008a20e0.c`（4690 行）与 `quota/fetch_async_0x1000da9c0.c`（2475 行）也是完整反编译的大体量函数，本文档基于字符串常量枚举 + 调用图交叉验证其行为，未逐行通读。

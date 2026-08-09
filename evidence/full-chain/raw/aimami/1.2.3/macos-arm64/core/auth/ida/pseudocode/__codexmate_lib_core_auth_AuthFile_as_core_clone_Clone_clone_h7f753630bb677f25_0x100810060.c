@@ -1,4 +1,4 @@
-// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::auth::AuthFile as core::clone::Clone>::clone::h7f753630bb677f25 @ 0x100810060 | full-body via IDA Python(IDA decompiler.decompile direct write)
+// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::auth::AuthFile as core::clone::Clone>::clone::h7f753630bb677f25 @ 0x100810060 | full-body via py_exec_file(ida_hexrays.decompile direct write)
 __int64 __fastcall _$LT$codexmate_lib..core..auth..AuthFile$u20$as$u20$core..clone..Clone$GT$::clone::h7f753630bb677f25(
         __int64 a1,
         __int64 a2)

@@ -10,7 +10,7 @@ All paths are `${C5CM_INTERNAL_HISTORY_ROOT:-$C5CM_SHARE_ROOT}`-relative. No raw
 
 ## Raw directory topology (this audit)
 
-- `raw/aimami/1.2.3/windows-x64/` — top-level module directory listing (65 entries as of 2026-07-24, produced across `wf-aimami123-delta-20260721`, `win-1.2.3-app-function-inventory-gapfill-20260724`, `win123-closeout-backfill-20260724`, `win-1.2.3-frontend-extract-20260724`). No `plugins/` subdirectory exists, unlike e.g. `mcp/`, `skills/`, `accounts/`, `relay-core/` which each have dedicated module raw trees.
+- `raw/aimami/1.2.3/windows-x64/` — top-level module directory listing (65 entries as of 2026-07-24, produced across `<审计会话> `win-1.2.3-app-function-inventory-gapfill-20260724`, `win123-closeout-backfill-20260724`, `win-1.2.3-frontend-extract-20260724`). No `plugins/` subdirectory exists, unlike e.g. `mcp/`, `skills/`, `accounts/`, `relay-core/` which each have dedicated module raw trees.
 - `raw/aimami/1.2.3/macos-arm64/` — same check, cross-platform, also no `plugins/` (or equivalently-named) module directory.
 
 ## Frontend IPC contract (this audit)
@@ -27,8 +27,8 @@ All paths are `${C5CM_INTERNAL_HISTORY_ROOT:-$C5CM_SHARE_ROOT}`-relative. No raw
 
 ## Full-app baseline context (1.2.3)
 
-- `audits/COVERAGE-FINAL-1.2.3.md`, `audits/BASELINE-FINAL-1.2.3.md` — 1.2.3 full-app 1638-function backend baseline + 6-page frontend baseline (`wf-aimami123-delta-20260721`, DONE); no `plugins` module entry in either coverage table (only unrelated `tauri-plugin-autostart` package reference for the `autostart` module).
-- `REVERSE-STATUS.md` `[wf-aimami123-fullapp-20260724]` — lists `plugins` among modules still lacking a canonical `audits/<platform>-1.2.3-<module>/` bundle as of the 2026-07-24 full-app gap inventory; this audit is the first canonical bundle for the `plugins` module at 1.2.3, and its answer is `removed` rather than a populated leaf table.
+- `audits/COVERAGE-FINAL-1.2.3.md`, `audits/BASELINE-FINAL-1.2.3.md` — 1.2.3 full-app 1638-function backend baseline + 6-page frontend baseline (`<审计会话> DONE); no `plugins` module entry in either coverage table (only unrelated `tauri-plugin-autostart` package reference for the `autostart` module).
+- `REVERSE-STATUS.md` `[<审计会话> — lists `plugins` among modules still lacking a canonical `audits/<platform>-1.2.3-<module>/` bundle as of the 2026-07-24 full-app gap inventory; this audit is the first canonical bundle for the `plugins` module at 1.2.3, and its answer is `removed` rather than a populated leaf table.
 
 ## Cross-platform note
 

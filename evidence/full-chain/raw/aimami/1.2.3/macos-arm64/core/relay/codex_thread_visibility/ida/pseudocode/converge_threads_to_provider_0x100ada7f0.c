@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay23codex_thread_visibility28converge_threads_to_provider @ 0x100ada7f0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __m128i *__fastcall codexmate_lib::core::relay::codex_thread_visibility::converge_threads_to_provider::h11024501c8d0762b(
         __m128i *a1,

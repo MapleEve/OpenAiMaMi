@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core10repository27enrich_single_account_usage @ 0x100a7c680 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::repository::enrich_single_account_usage::ha95d96dc350686fe(
         _QWORD *a1,

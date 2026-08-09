@@ -1,0 +1,76 @@
+{
+  "target": "preflight_save",
+  "owner_ea": "0x100773b70",
+  "owner_name": "codexmate_lib::core::relay::storage::preflight_save",
+  "edges": [
+    {
+      "callee": "CodexPaths::ensure_directories",
+      "addr": "0x100b3e0e0",
+      "type": "internal"
+    },
+    {
+      "callee": "Path::is_dir",
+      "addr": "0x101492410",
+      "type": "internal"
+    },
+    {
+      "callee": "metadata",
+      "addr": "0x10148a350",
+      "type": "internal"
+    },
+    {
+      "callee": "OpenOptions::_open",
+      "addr": "0x101483db0",
+      "type": "internal"
+    },
+    {
+      "callee": "serde_json::to_vec_pretty",
+      "addr": "0x1006eaf60",
+      "type": "internal"
+    },
+    {
+      "callee": "Path::parent",
+      "addr": "0x1014925f0",
+      "type": "internal"
+    },
+    {
+      "callee": "process::id",
+      "addr": "0x101494b50",
+      "type": "internal"
+    },
+    {
+      "callee": "uuid::v4::new_v4",
+      "addr": "0x101371a30",
+      "type": "internal"
+    },
+    {
+      "callee": "Path::_join",
+      "addr": "0x101492290",
+      "type": "internal"
+    },
+    {
+      "callee": "write_atomic_with_mode",
+      "addr": "0x100a4ca40",
+      "type": "internal"
+    },
+    {
+      "callee": "remove_file",
+      "addr": "0x101488e60",
+      "type": "internal"
+    },
+    {
+      "callee": "format_inner",
+      "addr": "0x1014c30c0",
+      "type": "internal"
+    }
+  ],
+  "edge_count": 12,
+  "terminated_reason": null,
+  "depth": 12,
+  "leaf_status": "implementation_leaf",
+  "callers_count": 2,
+  "basic_block_count": 40,
+  "notes": "Relay state preflight: ensure_dirs->is_dir->metadata->serde_json->uuid temp->atomic_write->cleanup",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64"
+}

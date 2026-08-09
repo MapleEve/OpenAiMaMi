@@ -1,0 +1,62 @@
+{
+  "commands": [
+    {
+      "command": "update_voice_runtime_settings",
+      "argKeys": [],
+      "idaSymbols": [
+        {
+          "ea": "0x14015dd80",
+          "role": "callee"
+        },
+        {
+          "ea": "0x1403d6b90",
+          "role": "callee"
+        },
+        {
+          "ea": "0x140c45670",
+          "role": "callee"
+        },
+        {
+          "ea": "0x140c4a500",
+          "role": "callee"
+        },
+        {
+          "ea": "0x140c37590",
+          "role": "callee"
+        },
+        {
+          "ea": "0x140c37a50",
+          "role": "callee"
+        }
+      ],
+      "pseudocode": [
+        "0002-handler-and-core-0x1403d6b90-0x140c45670.c",
+        "0005-load-status-0x140c37a50.c",
+        "0003-restart-trigger-listener-0x140c4a500.c",
+        "0001-tauri-cmd-update-voice-runtime-settings-dispatch-0x14015dd80.c",
+        "0004-emit-status-0x140c37590.c"
+      ],
+      "nextCallees": [
+        {
+          "ea": "0x1403d6b90",
+          "name": "sub_1403D6B90"
+        }
+      ],
+      "callTreeRows": 8,
+      "claims": {
+        "client": [],
+        "server": []
+      },
+      "sideEffects": [
+        "frontend event emission",
+        "persistence write"
+      ],
+      "serverEvidencePath": "<内部存储>/raw/aimami/1.2.6/windows-x64/backend/update-voice-runtime-settings/evidence.md",
+      "needsServerEvidencePath": false,
+      "confidence": "unknown",
+      "sourceMarkdown": "update_voice_runtime_settings.md"
+    }
+  ],
+  "generated_from": "interface/*.md (converted to machine-readable format)",
+  "leaf": "update-voice-runtime-settings"
+}

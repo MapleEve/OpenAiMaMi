@@ -1,0 +1,50 @@
+{
+  "command": "stop_voice_capture",
+  "argKeys": [],
+  "idaSymbols": [
+    "stop_capture",
+    "CoreEnvelope::ok",
+    "drop_in_place<AppHandle>",
+    "memcpy"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/0001_stop_voice_capture_owner.c"
+  ],
+  "nextCallees": [
+    "stop_capture",
+    "CoreEnvelope::ok",
+    "drop_in_place<AppHandle>",
+    "memcpy"
+  ],
+  "callTreeRows": [
+    {
+      "callee": "stop_capture",
+      "addr": "0x100475a90"
+    },
+    {
+      "callee": "CoreEnvelope::ok",
+      "addr": "0x1005b0380"
+    },
+    {
+      "callee": "drop_in_place<AppHandle>",
+      "addr": "0x1004c32b0"
+    },
+    {
+      "callee": "memcpy",
+      "addr": "0x101527590"
+    }
+  ],
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": null,
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "destructive_side_effects": [],
+  "owner_ea": "0x100494e40",
+  "owner_name": "codexmate_lib::commands::voice_runtime::stop_voice_capture",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64",
+  "notes": "Tauri wrapper: runtime::stop_capture -> CoreEnvelope::ok"
+}

@@ -1,0 +1,59 @@
+{
+  "command": "set_claude_web_search_compat",
+  "entry": "set_claude_web_search_compat(a1, a2) -> char",
+  "ea": "0x140e01580",
+  "module": "commands/relay",
+  "classification": "new_in_1_2_4",
+  "argKeys": [
+    "enabled"
+  ],
+  "responseFields": [
+    "success"
+  ],
+  "idaSymbols": [
+    "0x140e01580"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/set_claude_web_search_compat_0x140e01580.c"
+  ],
+  "nextCallees": [
+    "sub_1416F15C0",
+    "sub_14002B7A0",
+    "sub_1407AC9D0",
+    "sub_1406BA270",
+    "sub_1416F2670",
+    "sub_140D64CE0",
+    "sub_140296460",
+    "sub_1406A2C90",
+    "sub_1413601F0",
+    "sub_141354CF0",
+    "sub_141509590",
+    "sub_140D64E60",
+    "sub_140662E70",
+    "sub_1403CCB70",
+    "sub_1406A4FE0",
+    "sub_140D660A0",
+    "sub_141733E1B",
+    "nullsub_1",
+    "sub_140001650",
+    "sub_140001660",
+    "sub_140D54730",
+    "sub_1407A09A0",
+    "sub_1406A7210",
+    "sub_1412A4620",
+    "sub_14170CFB7",
+    "sub_141734130",
+    "sub_1417344F0",
+    "sub_1417344D0"
+  ],
+  "callTreeRows": 28,
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": "raw/aimami/1.2.4/windows-x64/commands/relay/set_claude_web_search_compat/",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "sideEffects": "writes config (persistence)",
+  "destructive": false
+}

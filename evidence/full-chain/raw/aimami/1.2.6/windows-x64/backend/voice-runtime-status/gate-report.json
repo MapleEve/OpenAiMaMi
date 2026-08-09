@@ -1,0 +1,30 @@
+{
+  "schema": "c5cm.raw.leaf.gate_report.v1",
+  "command": "load_voice_runtime_status",
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "gates": {
+    "consumerStartReady": true,
+    "strictImplementationUse": false,
+    "readyToImplement": false,
+    "implementation_use": false,
+    "gate_accepted": false,
+    "full_leaf_100_definition_v2": false
+  },
+  "blockers": [
+    "depth3 only; deeper sub-callees of sub_140029DD0/sub_140BB37B0/sub_140C48530 not walked this round",
+    "exact serde/DTO field names of the 712-byte snapshot not individually enumerated this round"
+  ],
+  "dim_status": {
+    "dim1_owner_located": "PASS",
+    "dim2_call_tree_depth": "PASS (depth3, 2 terminated_reason categories)",
+    "dim3_pseudocode_recovered": "PASS (0 truncation)",
+    "dim4_dto_fields": "PARTIAL (response shape known, exact field names not enumerated)",
+    "dim5_cross_version_baseline": "NOT_RUN this leaf (1.0.9/1.1.8 windows baselines document this command as backend-absent in those versions - see REVERSE-STATUS.md win-shard-5/9 and win-shard-1/9 orphan_no_backend findings; 1.2.6 is the first version where a backend owner was found for this command)",
+    "dim6_live_reference_parity": "NOT_RUN"
+  },
+  "scope_note": "This leaf was produced under a strictly-scoped 3-target session (get_codex_router_auth_readiness / load_voice_runtime_status / stop_voice_capture only). Core function 0x140c37a50 was already renamed/commented from an earlier same-day round; this bundle backfills its missing raw evidence without re-touching that prior rename.",
+  "generated_at": "2026-08-06T08:05:00Z",
+  "session": "<审计会话>
+}

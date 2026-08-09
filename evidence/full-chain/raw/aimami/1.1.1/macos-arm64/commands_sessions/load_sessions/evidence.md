@@ -28,7 +28,7 @@
 11. **truncate_chars** `@0x100727180`: UTF-8 aware char truncation (handles 1/2/3/4 byte sequences); used for title/excerpt truncation in response DTO.
 12. **rusqlite::Rows::advance** `@0x100754dc0`: `sqlite3_step` → SQLITE_ROW(100)→ok / SQLITE_DONE(101)→reset+done; error propagation via `decode_result_raw`; mutex refcount guard.
 13. **Closure drop shim field count**: `drop_in_place<load_sessions::{{closure}}::{{closure}}>@0x100009970` frees 30 String/buffer fields (pairs at offsets +0×3, +1×3, ..., +29×3 = offsets 0,3,6,...,87 in QWORD pairs). This means the closure captures 15 Strings worth of CodexPaths + session-state data for the spawn_blocking call.
-14. **idb_save**: ok (called after append_comments, path=AiMaMi.i64).
+14. **<工具调用>**: ok (called after append_comments, path=AiMaMi.i64).
 15. **fake_wall_taxonomy_all_excluded**: genuine_ceiling=false; async body decisively excluded (func_query for `load_sessions.*{poll|async_fn_env|generator|resume}` = 0 hits — only BlockingTask bridge 0x1005976c0); drop_in_place shims are RAII destructors; wrong_VA excluded (unique func_query hit); body_too_large excluded (17942B single decompile pass, ok=true); vtable = all business callees direct demangled static; HTTP-terminal = N/A (pure sqlite+fs, no network); architecture_only = no budget override applied; ICF = not folded (unique symbol + hash mismatch verified).
 
 ---

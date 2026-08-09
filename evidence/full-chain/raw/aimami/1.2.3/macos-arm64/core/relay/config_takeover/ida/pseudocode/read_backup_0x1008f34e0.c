@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay15config_takeover11read_backup @ 0x1008f34e0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 double __fastcall codexmate_lib::core::relay::config_takeover::read_backup::hd8bcee2af149bcd9(
         _QWORD *a1,

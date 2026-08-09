@@ -1,0 +1,48 @@
+{
+  "command": "quit_keeping_router",
+  "entry": "quit_keeping_router(a1) -> __int64 (async state machine)",
+  "ea": "0x140173f00",
+  "module": "commands/relay",
+  "classification": "body_diff_vs_1_2_3",
+  "argKeys": [],
+  "responseFields": [
+    "quit_decision"
+  ],
+  "idaSymbols": [
+    "0x140173f00"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/quit_keeping_router_0x140173f00.c"
+  ],
+  "nextCallees": [
+    "sub_140296460",
+    "sub_1406CE1D0",
+    "sub_140041330",
+    "nullsub_1",
+    "sub_140001660",
+    "sub_14002B7A0",
+    "sub_1416F2670",
+    "sub_1416F15C0",
+    "sub_140041450",
+    "sub_1401B1BF0",
+    "sub_1407A09A0",
+    "sub_141733E1B",
+    "sub_140B90440",
+    "sub_140001650"
+  ],
+  "callTreeRows": 14,
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": "raw/aimami/1.2.4/windows-x64/commands/relay/quit_keeping_router/",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "sideEffects": "may quit app while keeping router enabled",
+  "destructive": false,
+  "body_diff": {
+    "v123_ea": "0x140485420",
+    "v124_ea": "0x140173f00",
+    "finding": "1.2.3=sync 3-arg fn (0x140485420, ~47 lines, linear if/else); 1.2.4=async 1-arg state machine (bb=40,cc=11). Signature+structure+callee set all different. Strings: 'quit_keeping_router','app','manager'. 1.2.3 calls sub_14084FB80/sub_1403565C0/sub_1401B4A10; 1.2.4 calls sub_1401B1BF0/sub_1407A09A0/sub_140B90440/sub_1406CE1D0."
+  }
+}

@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay10translator6stream32AnthropicDirectToResponsesStream20close_thinking_block @ 0x100ac1660 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 double __fastcall codexmate_lib::core::relay::translator::stream::AnthropicDirectToResponsesStream::close_thinking_block::h437259882a7eca68(
         __int64 a1,

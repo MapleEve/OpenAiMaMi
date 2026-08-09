@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay23codex_thread_visibility40converge_router_thread_models_to_catalog @ 0x100af5a40 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::relay::codex_thread_visibility::converge_router_thread_models_to_catalog::h65d472a51982a375(
         void *a1,

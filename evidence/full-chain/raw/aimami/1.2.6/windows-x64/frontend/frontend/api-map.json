@@ -1,0 +1,939 @@
+{
+  "Pe": {
+    "loadSnapshot": {
+      "command": "load_snapshot",
+      "argKeys": [
+        "localOnly",
+        "forceMetadata"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "refreshUsageSnapshot": {
+      "command": "refresh_usage_snapshot",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "refreshSingleAccountUsage": {
+      "command": "refresh_single_account_usage",
+      "argKeys": [
+        "accountKey"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "switchAccount": {
+      "command": "switch_account",
+      "argKeys": [
+        "accountKey"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "switchAccountAndRestartCodex": {
+      "command": "switch_account_and_restart_codex",
+      "argKeys": [
+        "accountKey"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "removeAccounts": {
+      "command": "remove_accounts",
+      "argKeys": [
+        "accountKeys"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "rebuildRegistry": {
+      "command": "rebuild_registry",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "forceKillCodex": {
+      "command": "force_kill_codex",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "getImageCompat": {
+      "command": "get_image_compat",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setImageCompat": {
+      "command": "set_image_compat",
+      "argKeys": [
+        "enabled"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "getClaudeWebSearchCompat": {
+      "command": "get_claude_web_search_compat",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setClaudeWebSearchCompat": {
+      "command": "set_claude_web_search_compat",
+      "argKeys": [
+        "enabled"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "defaultDebugBundleFileName": {
+      "command": "default_debug_bundle_file_name",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "exportDebugBundle": {
+      "command": "export_debug_bundle",
+      "argKeys": [
+        "targetPath"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "uploadDebugReport": {
+      "command": "upload_debug_report",
+      "argKeys": [
+        "input"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "writeClientDebugLog": {
+      "command": "write_client_debug_log",
+      "argKeys": [
+        "event"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "beginChatgptOauthLogin": {
+      "command": "begin_chatgpt_oauth_login",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "cancelChatgptOauthLogin": {
+      "command": "cancel_chatgpt_oauth_login",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "exportAccountsToFile": {
+      "command": "export_accounts_to_file",
+      "argKeys": [
+        "targetPath",
+        "accountKeys"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "previewAccountImport": {
+      "command": "preview_account_import",
+      "argKeys": [
+        "filePath"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "importAccountsFromFile": {
+      "command": "import_accounts_from_file",
+      "argKeys": [
+        "filePath",
+        "expectedContentSha256",
+        "overwriteExisting",
+        "selectedKeys"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setAutoSwitch": {
+      "command": "set_auto_switch",
+      "argKeys": [
+        "enabled"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "configureAutoSwitch": {
+      "command": "configure_auto_switch",
+      "argKeys": [
+        "threshold5hPercent",
+        "thresholdWeeklyPercent",
+        "enabled"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setApiProxyConfig": {
+      "command": "set_api_proxy_config",
+      "argKeys": [
+        "mode",
+        "url"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "getUsageRefreshInterval": {
+      "command": "get_usage_refresh_interval",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setUsageRefreshInterval": {
+      "command": "set_usage_refresh_interval",
+      "argKeys": [
+        "interval"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "testApiProxyConfig": {
+      "command": "test_api_proxy_config",
+      "argKeys": [
+        "mode",
+        "url"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "detectApiProxyConfig": {
+      "command": "detect_api_proxy_config",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "checkUpdateInstallability": {
+      "command": "check_update_installability",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "runDaemonOnce": {
+      "command": "run_daemon_once",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadSessions": {
+      "command": "load_sessions",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "deleteSessions": {
+      "command": "delete_sessions",
+      "argKeys": [
+        "ids"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "exportSessionMarkdown": {
+      "command": "export_session_markdown",
+      "argKeys": [
+        "sessionId",
+        "targetPath"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "migrateSessionWorktree": {
+      "command": "migrate_session_worktree",
+      "argKeys": [
+        "sessionId"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadCustomInstructionState": {
+      "command": "load_custom_instruction_state",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadVoiceWorkspace": {
+      "command": "load_voice_workspace",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "upsertVoiceTemplate": {
+      "command": "upsert_voice_template",
+      "argKeys": [
+        "id",
+        "title",
+        "description",
+        "content"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "removeVoiceTemplate": {
+      "command": "remove_voice_template",
+      "argKeys": [
+        "id"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "upsertVoiceVocabulary": {
+      "command": "upsert_voice_vocabulary",
+      "argKeys": [
+        "id",
+        "source",
+        "replacement",
+        "kind",
+        "appBundleId",
+        "appName",
+        "notes"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "removeVoiceVocabulary": {
+      "command": "remove_voice_vocabulary",
+      "argKeys": [
+        "id"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "replaceVoiceVocabularyKind": {
+      "command": "replace_voice_vocabulary_kind",
+      "argKeys": [
+        "kind",
+        "appBundleId",
+        "appName",
+        "entries"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "removeVoiceVocabularyAppScope": {
+      "command": "remove_voice_vocabulary_app_scope",
+      "argKeys": [
+        "appBundleId"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "upsertVoiceVocabularyAppScope": {
+      "command": "upsert_voice_vocabulary_app_scope",
+      "argKeys": [
+        "bundleId",
+        "name",
+        "path"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "resolveVoiceVocabularyAppInfo": {
+      "command": "resolve_voice_vocabulary_app_info",
+      "argKeys": [
+        "path"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "generateVoicePrompt": {
+      "command": "generate_voice_prompt",
+      "argKeys": [
+        "templateId",
+        "rawText",
+        "selectedText",
+        "clipboardText",
+        "targetBundleId",
+        "targetAppName",
+        "promptOverride",
+        "templateTitle",
+        "templateKind",
+        "llmProvider",
+        "llmApiKey",
+        "llmModel",
+        "llmBaseUrl",
+        "asrProvider",
+        "asrModel",
+        "asrLanguage",
+        "asrEmotion",
+        "asrDurationMs",
+        "asrErrorCode"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "testVoiceLlmConfig": {
+      "command": "test_voice_llm_config",
+      "argKeys": [
+        "llmProvider",
+        "llmApiKey",
+        "llmModel",
+        "llmBaseUrl"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadVoiceLlmConfig": {
+      "command": "load_voice_llm_config",
+      "argKeys": [
+        "provider"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "saveVoiceLlmConfig": {
+      "command": "save_voice_llm_config",
+      "argKeys": [
+        "llmProvider",
+        "llmApiKey",
+        "llmModel",
+        "llmBaseUrl"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadVoiceAsrConfig": {
+      "command": "load_voice_asr_config",
+      "argKeys": [
+        "provider"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "saveVoiceAsrConfig": {
+      "command": "save_voice_asr_config",
+      "argKeys": [
+        "asrProvider",
+        "asrApiKey",
+        "asrModel",
+        "asrBaseUrl"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "testVoiceAsrConfig": {
+      "command": "test_voice_asr_config",
+      "argKeys": [
+        "asrProvider",
+        "asrApiKey",
+        "asrModel",
+        "asrBaseUrl"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "removeVoiceHistoryEntry": {
+      "command": "remove_voice_history_entry",
+      "argKeys": [
+        "id"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadVoiceProcessingModes": {
+      "command": "load_voice_processing_modes",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "saveVoiceProcessingModes": {
+      "command": "save_voice_processing_modes",
+      "argKeys": [
+        "modes"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadVoiceRuntimeStatus": {
+      "command": "load_voice_runtime_status",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "requestVoicePermissions": {
+      "command": "request_voice_permissions",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setVoiceGlobalShortcut": {
+      "command": "set_voice_global_shortcut",
+      "argKeys": [
+        "shortcut"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "captureVoiceTriggerKey": {
+      "command": "capture_voice_trigger_key",
+      "argKeys": [
+        "style"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "cancelVoiceTriggerCapture": {
+      "command": "cancel_voice_trigger_capture",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setVoiceTriggerListenerSuppressed": {
+      "command": "set_voice_trigger_listener_suppressed",
+      "argKeys": [
+        "suppressed"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setVoiceTriggerKey": {
+      "command": "set_voice_trigger_key",
+      "argKeys": [
+        "keyCode",
+        "keyLabel",
+        "keyKind",
+        "style",
+        "modifierMask"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setVoiceTriggerBindings": {
+      "command": "set_voice_trigger_bindings",
+      "argKeys": [
+        "activeStyle",
+        "holdKeyCode",
+        "holdKeyLabel",
+        "holdKeyKind",
+        "holdModifierMask",
+        "toggleKeyCode",
+        "toggleKeyLabel",
+        "toggleKeyKind",
+        "toggleModifierMask"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "updateVoiceRuntimeSettings": {
+      "command": "update_voice_runtime_settings",
+      "argKeys": [
+        "enabled",
+        "shortcut",
+        "speechModel",
+        "processingMode",
+        "processingModeId"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setVoiceProcessingModeId": {
+      "command": "set_voice_processing_mode_id",
+      "argKeys": [
+        "modeId",
+        "processingMode"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setVoiceOverlayStyle": {
+      "command": "set_voice_overlay_style",
+      "argKeys": [
+        "style"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "startVoiceCapture": {
+      "command": "start_voice_capture",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "stopVoiceCapture": {
+      "command": "stop_voice_capture",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "notifyVoiceProcessingDone": {
+      "command": "voice_processing_done",
+      "argKeys": [
+        "sessionGeneration"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "injectVoiceText": {
+      "command": "inject_voice_text",
+      "argKeys": [
+        "text",
+        "expectedBundleId"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "showVoiceSearchOverlay": {
+      "command": "show_voice_search_overlay",
+      "argKeys": [
+        "query",
+        "output"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setVoiceModeShortcut": {
+      "command": "set_voice_mode_shortcut",
+      "argKeys": [
+        "modeId",
+        "keyCode",
+        "keyLabel",
+        "keyKind",
+        "style",
+        "modifierMask"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "removeVoiceModeShortcut": {
+      "command": "remove_voice_mode_shortcut",
+      "argKeys": [
+        "modeId"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "requestAccessibilityPermission": {
+      "command": "request_accessibility_permission",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "previewCustomInstructionApply": {
+      "command": "preview_custom_instruction_apply",
+      "argKeys": [
+        "content"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "applyCustomInstruction": {
+      "command": "apply_custom_instruction",
+      "argKeys": [
+        "content",
+        "templateCode",
+        "templateTitle",
+        "source"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "clearCustomInstructionBlock": {
+      "command": "clear_custom_instruction_block",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "rollbackCustomInstruction": {
+      "command": "rollback_custom_instruction",
+      "argKeys": [
+        "historyId"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadMcpServers": {
+      "command": "load_mcp_servers",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "upsertMcpServer": {
+      "command": "upsert_mcp_server",
+      "argKeys": [
+        "args",
+        "headers",
+        "environment"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setMcpServerEnabled": {
+      "command": "set_mcp_server_enabled",
+      "argKeys": [
+        "name",
+        "enabled"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "removeMcpServer": {
+      "command": "remove_mcp_server",
+      "argKeys": [
+        "name"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadInstalledSkills": {
+      "command": "load_installed_skills",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadSkillBackups": {
+      "command": "load_skill_backups",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "importSkill": {
+      "command": "import_skill",
+      "argKeys": [
+        "path"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "removeSkill": {
+      "command": "remove_skill",
+      "argKeys": [
+        "id"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "restoreSkillBackup": {
+      "command": "restore_skill_backup",
+      "argKeys": [
+        "id"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "deleteSkillBackup": {
+      "command": "delete_skill_backup",
+      "argKeys": [
+        "id"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "restartCodex": {
+      "command": "restart_codex",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadUsageAnalytics": {
+      "command": "load_usage_analytics",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadQuotaHistory": {
+      "command": "load_quota_history",
+      "argKeys": [
+        "accountKey"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadSessionAnalytics": {
+      "command": "load_session_analytics",
+      "argKeys": [
+        "range"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadTokenAnalytics": {
+      "command": "load_token_analytics",
+      "argKeys": [
+        "range"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadToolAnalytics": {
+      "command": "load_tool_analytics",
+      "argKeys": [
+        "range"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadChangeAnalytics": {
+      "command": "load_change_analytics",
+      "argKeys": [
+        "range"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "hasNotch": {
+      "command": "has_notch",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "getHotspotEnabled": {
+      "command": "get_hotspot_enabled",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setHotspotEnabled": {
+      "command": "set_hotspot_enabled",
+      "argKeys": [
+        "enabled"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "getAutostartState": {
+      "command": "get_autostart_state",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setAutostartEnabled": {
+      "command": "set_autostart_enabled",
+      "argKeys": [
+        "enabled"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "focusMainWindow": {
+      "command": "focus_main_window",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "hotspotReady": {
+      "command": "hotspot_ready",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "openPath": {
+      "command": "open_path",
+      "argKeys": [
+        "path"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "getDeviceId": {
+      "command": "get_device_id",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "getMysteryUnlockGrants": {
+      "command": "get_mystery_unlock_grants",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "mergeMysteryUnlockGrants": {
+      "command": "merge_mystery_unlock_grants",
+      "argKeys": [
+        "grants"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "getNotificationClientState": {
+      "command": "get_notification_client_state",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "getSystemInfo": {
+      "command": "get_system_info",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadBootstrapState": {
+      "command": "load_bootstrap_state",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "loadPendingAutoSwitch": {
+      "command": "load_pending_auto_switch",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "dismissPendingAutoSwitch": {
+      "command": "dismiss_pending_auto_switch",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "confirmPendingAutoSwitch": {
+      "command": "confirm_pending_auto_switch",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "confirmPendingAutoSwitchAndRestartCodex": {
+      "command": "confirm_pending_auto_switch_and_restart_codex",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    }
+  },
+  "pn": {
+    "loadState": {
+      "command": "load_relay_state",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "upsert": {
+      "command": "upsert_relay_provider",
+      "argKeys": [
+        "input"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "delete": {
+      "command": "delete_relay_provider",
+      "argKeys": [
+        "providerId"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "activate": {
+      "command": "activate_relay_provider",
+      "argKeys": [
+        "providerId",
+        "ide"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "deactivate": {
+      "command": "deactivate_relay_provider",
+      "argKeys": [
+        "providerId",
+        "ide"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setProviderNetwork": {
+      "command": "set_relay_provider_network",
+      "argKeys": [
+        "providerId",
+        "network"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "reorderProviders": {
+      "command": "reorder_relay_providers",
+      "argKeys": [
+        "orderedIds"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "testStream": {
+      "command": "test_relay_provider_stream",
+      "argKeys": [
+        "providerId",
+        "model",
+        "onEvent"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "testDraftStream": {
+      "command": "test_relay_draft_stream",
+      "argKeys": [
+        "input",
+        "onEvent"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "fetchModelsDraft": {
+      "command": "fetch_relay_models_draft",
+      "argKeys": [
+        "input"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "revealApiKey": {
+      "command": "reveal_relay_api_key",
+      "argKeys": [
+        "providerId"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "getQuota": {
+      "command": "get_relay_provider_quota",
+      "argKeys": [
+        "providerId"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "getActive": {
+      "command": "get_relay_active",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "getProxyStatus": {
+      "command": "get_relay_proxy_status",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "getCodexRouterAuthReadiness": {
+      "command": "get_codex_router_auth_readiness",
+      "argKeys": [],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setCodexRouterEnabled": {
+      "command": "set_codex_router_enabled",
+      "argKeys": [
+        "enabled",
+        "relaunch"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setCodexRouterNoAccountMode": {
+      "command": "set_codex_router_no_account_mode",
+      "argKeys": [
+        "enabled",
+        "relaunch"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "setCodexNoAccountSlots": {
+      "command": "set_codex_no_account_slots",
+      "argKeys": [
+        "slots",
+        "relaunch"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "exportConfig": {
+      "command": "export_relay_config",
+      "argKeys": [
+        "filePath",
+        "includeApiKeys"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "importConfig": {
+      "command": "import_relay_config",
+      "argKeys": [
+        "filePath"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    },
+    "parseDeeplink": {
+      "command": "parse_aimami_deeplink",
+      "argKeys": [
+        "url"
+      ],
+      "definedIn": "assets/index-COJfQ25H.js"
+    }
+  }
+}

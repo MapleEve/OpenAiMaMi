@@ -1,7 +1,7 @@
 # dismiss_pending_auto_switch — AiMaMi 1.0.9 macOS
 
 updated: 2026-06-03 (deep-recovery pass — all callee bodies decompiled, snooze keys rodata-confirmed)
-session: wf-aimami109-fullsurface-audit
+session: <审计会话>
 sha256: 1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482
 
 ## IPC Command Owner

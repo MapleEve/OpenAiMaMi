@@ -1,6 +1,6 @@
 # 1.2.4 前端 delta 详实 diff — relay-accounts-voice（baseline 1.2.3）
 
-> 来源：逐文件读 1.2.4 vs 1.2.3 beautified JS（`//raw/aimami/{1.2.4,1.2.3}/macos-arm64/frontend/beautified/`）+ ipc-contracts.jsonl 对照。
+> 来源：逐文件读 1.2.4 vs 1.2.3 beautified JS（`<内部存储>/raw/aimami/{1.2.4,1.2.3}/macos-arm64/frontend/beautified/`）+ ipc-contracts.jsonl 对照。
 > 方法：MD5 → 全量 `diff` → 字符串字面量集合差（node 正则抽取）→ token 流差 → 关键区段逐行精读。所有行号均为 beautified 文件行号（1-based），基于真码，无臆造。
 
 ---

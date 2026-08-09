@@ -29,7 +29,7 @@
 
 ## IDA MCP 活性核实（本次 session）
 
-- `python3 idacall.py <host> server_health` → `{"status":"ok","uptime_sec":123915.691,"idb_path":"E:\\binary\\AiMaMi.1.2.3 win64.exe.i64","module":"AiMaMi.1.2.3 win64.exe","imagebase":"0x140000000","auto_analysis_ready":true,"IDA decompiler_ready":true,"strings_cache_ready":true}` — 满足红线 17 IDA_LIVE_GATE
+- `python3 idacall.py <host> server_health` → `{"status":"ok","uptime_sec":123915.691,"idb_path":"<二进制路径>\\AiMaMi.1.2.3 win64.exe.i64","module":"AiMaMi.1.2.3 win64.exe","imagebase":"0x140000000","auto_analysis_ready":true,"IDA decompiler_ready":true,"strings_cache_ready":true}` — 满足红线 17 <门控>
 - `func_query` 带 `queries` 参数调用未按预期过滤（返回值与查询词无关，疑似该工具签名与 skill 文档描述不一致或本次调用方式有误）；本次未进一步排障，如实记录为本 pass 未完成的 angle-A 尝试，未静默当作"已核实无 gap"
 
 ## 姊妹包 / 版本前身
@@ -50,11 +50,11 @@
 
 ## 本轮 live IDA MCP 会话记录（只读验证，未写入 IDB）
 
-- Host: `<host>:13337/mcp`；客户端脚本：`idacall.py`（既有脚本，位于 `/private/tmp/verify_win_iso/idacall.py` 等临时目录，非本轮新增）。
-- `server_health {}` → `status=ok`, `IDA decompiler_ready=true`, `idb_path=E:\binary\AiMaMi.1.2.3 win64.exe.i64`，满足红线 17 IDA_LIVE_GATE。
+- Host: `<host>:13337/mcp`；客户端脚本：`idacall.py`（既有脚本，位于 `<临时路径> 等临时目录，非本轮新增）。
+- `server_health {}` → `status=ok`, `IDA decompiler_ready=true`, `idb_path=<二进制路径>\AiMaMi.1.2.3 win64.exe.i64`，满足红线 17 <门控>。
 - `get_bytes` 对 `0x1416C7020`/`0x1416C7010` 各取 16 字节，解码确认 `open_path` 的 `case 0x1CLL` 是 `refresh_single_account_usage`（28 字符），排除其作为 `cancel_voice_trigger_capture`（同 28 字符）候选的假设。
 - `decompile` 对 `0x140170790`/`0x140170D00`/`0x140171760`/`0x140182C20` 四个地址取得完整伪代码 + xref 列表（读出 live IDB 中已存在、非本轮写入的中文分析注释）。
 - `lookup_funcs` 精确查询 `cancel_voice_trigger_capture` → `Not found`。
 - `find_regex` 全二进制字符串缓存精确匹配 `cancel_voice_trigger_capture` → `n:0`。
 - `search_text` 两次尝试（30s、120s）均超时，未获结果，如实记录为未完成尝试。
-- 本轮**未调用** `rename`/`set_comments`/`idb_save`/`patch` 等任何写入类工具。
+- 本轮**未调用** `rename`/`set_comments`/`<工具调用>`/`patch` 等任何写入类工具。

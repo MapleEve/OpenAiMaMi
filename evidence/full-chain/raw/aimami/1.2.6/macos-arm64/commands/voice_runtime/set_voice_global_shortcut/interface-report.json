@@ -1,0 +1,50 @@
+{
+  "command": "set_voice_global_shortcut",
+  "argKeys": [],
+  "idaSymbols": [
+    "set_global_shortcut",
+    "CoreEnvelope::ok",
+    "drop_in_place<AppHandle>",
+    "memcpy"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/0001_set_voice_global_shortcut_owner.c"
+  ],
+  "nextCallees": [
+    "set_global_shortcut",
+    "CoreEnvelope::ok",
+    "drop_in_place<AppHandle>",
+    "memcpy"
+  ],
+  "callTreeRows": [
+    {
+      "callee": "set_global_shortcut",
+      "addr": "0x100481d70"
+    },
+    {
+      "callee": "CoreEnvelope::ok",
+      "addr": "0x1005b0380"
+    },
+    {
+      "callee": "drop_in_place<AppHandle>",
+      "addr": "0x1004c32b0"
+    },
+    {
+      "callee": "memcpy",
+      "addr": "0x101527590"
+    }
+  ],
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": null,
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "destructive_side_effects": [],
+  "owner_ea": "0x1004959d0",
+  "owner_name": "codexmate_lib::commands::voice_runtime::set_voice_global_shortcut",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64",
+  "notes": "Tauri wrapper: runtime::set_global_shortcut -> CoreEnvelope::ok"
+}

@@ -105,7 +105,7 @@
         "PassthroughAuditEntry 7 fields",
         "RelayTestResult 4-field shape B-level (cross-platform relay-mac-closeout-109): modelsSample@+0/errorMessage@+24/latencyMs@+48/ok@+56"
       ],
-      "key_facts": "health_check orchestrator call-tree 9+ edges; PassthroughAuditEntry 7 fields confirmed; JSONL append fire-and-forget; get_passthrough_audit_log IPC interface closed; idb_save=true; RelayTestResult shape cross-confirmed relay-mac-closeout-109",
+      "key_facts": "health_check orchestrator call-tree 9+ edges; PassthroughAuditEntry 7 fields confirmed; JSONL append fire-and-forget; get_passthrough_audit_log IPC interface closed; <工具调用>=true; RelayTestResult shape cross-confirmed relay-mac-closeout-109",
       "session": "<audit-session>",
       "reduce_session_prior": "phase-reduce-20260602 (gap_needs_reducer)",
       "session_supplement": "relay-mac-closeout-109 (RelayTestResult DTO cross-confirmed)"
@@ -133,7 +133,7 @@
       "accepted_unknowns": [
         "new_store accepted_unknown prior to relay-closeout-109; CLOSED@0x1403ECFA0"
       ],
-      "key_facts": "BreakerState stride=208; open_until_ms_offset=144; backoff 5s/30s/300s; new_store CLOSED@0x1403ECFA0 (relay-closeout-109); idb_save=true",
+      "key_facts": "BreakerState stride=208; open_until_ms_offset=144; backoff 5s/30s/300s; new_store CLOSED@0x1403ECFA0 (relay-closeout-109); <工具调用>=true",
       "new_store_closure": {
         "va": "0x1403ECFA0",
         "name": "relay_breaker_new_store_sys",
@@ -214,7 +214,7 @@
       "dim6_closed": true,
       "dim6_session": "relay-closeout-109 phase-reduce",
       "gate_change": "strictImplementationUse→readyToImplement",
-      "key_facts": "4 state machines: ChatToResponsesStream@0x1401DC4C0 / AnthropicToOpenAi@0x140211FC0 / AnthropicDirectToResponses@0x14021C1A0 / OpenAiToAnthropic@0x140233800; NO ICF fold (synchronous handlers); feed_line + handle_event pattern; 11 renames + 8 IDB comments; idb_save=true",
+      "key_facts": "4 state machines: ChatToResponsesStream@0x1401DC4C0 / AnthropicToOpenAi@0x140211FC0 / AnthropicDirectToResponses@0x14021C1A0 / OpenAiToAnthropic@0x140233800; NO ICF fold (synchronous handlers); feed_line + handle_event pattern; 11 renames + 8 IDB comments; <工具调用>=true",
       "platform_differences": "Windows state machine sizes differ from macOS; no ICF fold on Windows vs macOS relay_fetch_models; truncate=8000B (byte count) on Windows vs 8000 chars (Unicode) on macOS",
       "evidence_root": "raw/aimami/1.0.9/windows/relay-core/relay_translator/",
       "logic_file": "logic/WIN-RELAY-CLOSEOUT-109.md",
@@ -231,7 +231,7 @@
       "dim4_closed": true,
       "dim6_missing": true,
       "gate_change": "not_started → strictImplementationUse (relay-mac-closeout-109)",
-      "key_facts": "tool_result/tool_use/tool_choice CLOSED; stream_codex_responses_translator_dispatch_sys@0x140134DC0; anthropic_request_to_openai_chat_request_sys@0x14020A900 A-level; convert_anthropic_message_to_openai_chat_sys@0x140214FD0 A-level; call-tree depth>=5; 4 INDEX entries appended relay-mac-closeout-109; idb_saved",
+      "key_facts": "tool_result/tool_use/tool_choice CLOSED; stream_codex_responses_translator_dispatch_sys@0x140134DC0; anthropic_request_to_openai_chat_request_sys@0x14020A900 A-level; convert_anthropic_message_to_openai_chat_sys@0x140214FD0 A-level; call-tree depth>=5; 4 INDEX entries appended relay-mac-closeout-109; <工具调用>d",
       "evidence_root": "raw/aimami/1.0.9/windows/relay-core/relay_translator/",
       "logic_file": "logic/WIN-RELAY-MAC-CLOSEOUT-109.md",
       "session": "<audit-session>",
@@ -253,7 +253,7 @@
       "dim6_test_acceptance": "missing",
       "dim6_missing": true,
       "blocker": "dim6 only",
-      "key_facts": "relay_image_compat_set_handler_sys@0x14027A1B0 (A); set_impl_sys@0x1400A5EB0 (A; 3 insertion paths; byteswap field detect); read_config_toml_sys@0x1400A55F0 (A; SSE 16-byte prefix match); build_ok_bool_response_sys@0x1404391D0 (shared builder); get_handler_sys@0x1402779B0 (A); relay_image_support_capability_descriptor_sys@0x140599610 (id/name/desc/version/category/enabled); relay_image_support_tool_pair_builder_sys@0x1405999D0 (304B alloc); forward_gate BEHAVIORAL@0x14012C3C0 in stream_codex_responses_native_sys (image_url substring check → retry sub_140143840); platform_diff: Windows uses BEHAVIORAL rejection (no OnceLock cache), macOS uses TBZ dispatch with OnceLock/Mutex cache; 9 renames + 11 IDA comments; idb_save=true",
+      "key_facts": "relay_image_compat_set_handler_sys@0x14027A1B0 (A); set_impl_sys@0x1400A5EB0 (A; 3 insertion paths; byteswap field detect); read_config_toml_sys@0x1400A55F0 (A; SSE 16-byte prefix match); build_ok_bool_response_sys@0x1404391D0 (shared builder); get_handler_sys@0x1402779B0 (A); relay_image_support_capability_descriptor_sys@0x140599610 (id/name/desc/version/category/enabled); relay_image_support_tool_pair_builder_sys@0x1405999D0 (304B alloc); forward_gate BEHAVIORAL@0x14012C3C0 in stream_codex_responses_native_sys (image_url substring check → retry sub_140143840); platform_diff: Windows uses BEHAVIORAL rejection (no OnceLock cache), macOS uses TBZ dispatch with OnceLock/Mutex cache; 9 renames + 11 IDA comments; <工具调用>=true",
       "dto_closures": {
         "IPC_set_image_compat": {
           "command_string_va": "0x141268D1C",
@@ -273,7 +273,7 @@
       "platform_difference_vs_macos": "macOS: TBZ dispatch + OnceLock/Mutex cache + TOML re-read per call; Windows: BEHAVIORAL rejection via substring match in stream path; macOS config field=[feature], Windows config field=[features]",
       "evidence_root": "raw/aimami/1.0.9/windows/relay-core/relay_image_compat/",
       "logic_file": "logic/WIN-RELAY-IMAGE-COMPAT-109.md",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "idb_path": "<source-location><network-share>",
       "session": "<audit-session>",
       "gate_change": "new_cluster → strictImplementationUse"
@@ -295,7 +295,7 @@
       "dim6_missing": true,
       "blocker": "dim6 only",
       "is_upstream": true,
-      "key_facts": "set_api_proxy_config_handler_sys@0x140282340 (A; params repo+mode+url; api_proxy_config_write_core_sys@0x14055C3A0→settings_deserialize+serialize+disk_write; NOT relay TOML). cmd_detect_api_proxy_config_coroutine_sys@0x1408C45B0 (A; 4-state async; reads settings; sub_140609490 TCP probe coroutine→detect_system_env_proxy_sys@0x140110A80; 6 env vars both cases; 200ms probe; skip 127.0.0.1/localhost). cmd_test_api_proxy_config_coroutine_sys@0x1408E8160 (A; params mode+url; sub_140609D60 TCP probe coroutine; broadcast sub_140877B20 on success). Platform diff vs macOS: detect on Win uses env vars only (no networksetup subprocess, no 18 static candidates). 5 IDA renames + 5 comments; idb_save=true.",
+      "key_facts": "set_api_proxy_config_handler_sys@0x140282340 (A; params repo+mode+url; api_proxy_config_write_core_sys@0x14055C3A0→settings_deserialize+serialize+disk_write; NOT relay TOML). cmd_detect_api_proxy_config_coroutine_sys@0x1408C45B0 (A; 4-state async; reads settings; sub_140609490 TCP probe coroutine→detect_system_env_proxy_sys@0x140110A80; 6 env vars both cases; 200ms probe; skip 127.0.0.1/localhost). cmd_test_api_proxy_config_coroutine_sys@0x1408E8160 (A; params mode+url; sub_140609D60 TCP probe coroutine; broadcast sub_140877B20 on success). Platform diff vs macOS: detect on Win uses env vars only (no networksetup subprocess, no 18 static candidates). 5 IDA renames + 5 comments; <工具调用>=true.",
       "dto_closures": {
         "set_api_proxy_config": {
           "input": "{ repo: String, mode: String, url: Option<String> }",
@@ -317,7 +317,7 @@
       "evidence_root": "raw/aimami/1.0.9/windows/relay-core/relay_proxy_config/",
       "raw_leaf": "raw/aimami/1.0.9/windows/relay-core/relay_proxy_config/WIN-PROXY-CONFIG-DEEP-109-wf-dualcomplete.md",
       "logic_file": "logic/WIN-RELAY-TRANSPORT-CLOSEOUT-109.md (§6-7)",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "idb_path": "<source-location><network-share>",
       "session": "<audit-session>", "index_lines": "1265-1267",
       "gate_change": "supplement→full_cluster strictImplementationUse (angle-3 Win deep)"

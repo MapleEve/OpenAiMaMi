@@ -99,4 +99,4 @@ All 7 taxonomy categories excluded. No accepted_unknown justified without proof 
 | 0x101147e82 | IPC registration blob: delete_skill_backup command string anchor; session <审计会话> |
 | 0x1010B7872 | error strings for delete_skill_backup core: 'Backup not found: '(18B) / 'Path not found: '(16B) / 'Backup corrupted: '(18B); session <审计会话> |
 
-idb_save: ok (path=<来源位置>/raw/binary/AiMaMi-1.1.1-idb)
+<工具调用>: ok (path=<来源位置>/raw/binary/AiMaMi-1.1.1-idb)

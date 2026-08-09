@@ -32,7 +32,7 @@ Last-updated-session: <审计会话>
 
 12. **Rollback path confirmed**: `rollback_router_enabled_win_sys@0x140680220` (696B) calls `set_codex_router_toml_section_write_win_sys@0x140680339`. Searches config list by name (sub_141213640=strcmp, sub_140729FE0=list iter). Mac equivalent: rollback_router_enabled@0x1005d6fa0(1614B). Win version smaller (stripped vs debug, inline differences expected).
 
-13. **IDB 4x A-level renames committed and idb_save confirmed**: renames set_codex_router_toml_section_write_win_sys, set_codex_router_enabled_blocking_body_win_sys, sync_codex_config_with_outcome_win_sys, apply_relay_config_section_win_sys all appended with session evidence and idb_save returned ok=true path=<本地路径>
+13. **IDB 4x A-level renames committed and <工具调用> confirmed**: renames set_codex_router_toml_section_write_win_sys, set_codex_router_enabled_blocking_body_win_sys, sync_codex_config_with_outcome_win_sys, apply_relay_config_section_win_sys all appended with session evidence and <工具调用> returned ok=true path=<本地路径>
 
 14. **Arg keys "relaunch" + "apiLogin" in dispatcher**: strings @ `0x1412faa86` and `0x1412faa8e` confirmed from dispatcher decompile. Parsed by sub_1402FF330 (returns discriminant 3/6). These args absent from mac 1.1.1 manifest — may be 1.1.1 win extension or dispatcher-level routing for multi-command entry.
 
@@ -101,6 +101,6 @@ Last-updated-session: <审计会话>
 - dim1 (pseudocode): UPDATED — owner_sub_140963A40.c + apilogin_coroutine_sub_14096A2D0.c written to ida/pseudocode/; pseudocode-manifest.jsonl indices 8+9 appended
 - dim2 (call-tree): existing set_codex_router_enabled.jsonl retained; callees of owner (34) and apiLogin coroutine (26) confirmed live this session
 - dim3 (evidence): this file — 20 Confirmed / 10 Inferred / 10 Unknown
-- dim4 (IDB inline): renames from <审计会话> retained; new session will add 2 renames (owner dispatcher + apiLogin coroutine) and idb_save
+- dim4 (IDB inline): renames from <审计会话> retained; new session will add 2 renames (owner dispatcher + apiLogin coroutine) and <工具调用>
 - dim5 (interface): interfaces/ dir — not modified this session
 - dim6 (impl boundary): N/A — production role

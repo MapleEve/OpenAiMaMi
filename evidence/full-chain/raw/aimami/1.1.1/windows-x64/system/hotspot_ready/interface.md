@@ -112,4 +112,4 @@ genuine_ceiling: false | accepted_unknown: false | real_body_found: true
 - **dim2 body live re-confirm**: decompile 0x140016720 → 847B, 32BB, body identical to pseudocode.c — CLOSED
 - **hotspot_ready_state_discriminant_check basic_blocks live**: basic_blocks(0x14038D560) → 19 blocks (pseudocode.c annotation corrected from ~18 to 19)
 - **rename note**: 0x140089A50 IDB name overwritten to `confirm_pending_auto_switch_deserialize_request_sys` by later session; hotspot_ready calls same VA as usage_refresh_interval_read (shared utility); rename conflict recorded, does not affect gate assessment
-- **IDB comment appended** @ 0x140016720, **idb_save**: ok
+- **IDB comment appended** @ 0x140016720, **<工具调用>**: ok

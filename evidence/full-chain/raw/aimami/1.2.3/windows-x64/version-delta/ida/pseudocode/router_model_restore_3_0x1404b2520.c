@@ -1,5 +1,5 @@
 // win 1.2.3 delta | router_model_restore_3 @ 0x1404b2520 | changelog ③模型回退
-// [FULL IDA decompiler 32204B]
+// [FULL hexrays 32204B]
 // win 1.2.1 | module src/core/relay/codex_thread_visibility.rs | attributed via panic-Location xref (win-native)
 __int64 *__fastcall sub_1404B2520(__int64 *a1, __int64 a2, const char *a3, __int64 a4)
 {

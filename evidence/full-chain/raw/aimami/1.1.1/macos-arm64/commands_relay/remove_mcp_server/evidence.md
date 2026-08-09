@@ -35,7 +35,7 @@ delta_basis: 1.0.9 baseline (owner 0x10015c300) — delta_reversed (VA change on
 - error path 3: parse_mcp_document fails (not-found) → format_inner(alloc::fmt) → Err string
 - error path 4: save_config_text/atomic_write fails (OpenOptions/write_all/sync_data/rename) → return Err(IoError string)
 - IDB comments appended: 0x10072a660 (A-level owner), 0x10030db80 (IPC dispatcher), 0x1005a0510 (core impl)
-- idb_save completed ok=true
+- <工具调用> completed ok=true
 
 ## ## Inferred
 

@@ -60,7 +60,7 @@ All four owner VAs confirmed present in 1.1.1 IDB via `lookup_funcs`:
 - `0x1004cecd0` Repository::store_bootstrap_mcp_servers size=0x23f ✓
 - `0x1004d88c0` bootstrap_cache::load size=0x1d4 ✓
 Callees re-enumerated via 逆向分析 MCP: callee sets match call-tree above exactly.
-idb_save ok → AiMaMi.i64 written 2026-06-17.
+<工具调用> ok → AiMaMi.i64 written 2026-06-17.
 
 ## Delta callee set vs 1.0.9 (new callees only)
 | New callee (1.1.1) | VA | Reason counts as delta |

@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay7manager12RelayManager6upsert @ 0x10027f970 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::relay::manager::RelayManager::upsert::h5326725eb16ae26b(
         _QWORD *__dst,

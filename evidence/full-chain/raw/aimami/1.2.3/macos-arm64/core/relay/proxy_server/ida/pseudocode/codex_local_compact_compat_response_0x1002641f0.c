@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay12proxy_server35codex_local_compact_compat_response @ 0x1002641f0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 char *__fastcall codexmate_lib::core::relay::proxy_server::codex_local_compact_compat_response::hd8bce4ade049df87(
         char *a1,

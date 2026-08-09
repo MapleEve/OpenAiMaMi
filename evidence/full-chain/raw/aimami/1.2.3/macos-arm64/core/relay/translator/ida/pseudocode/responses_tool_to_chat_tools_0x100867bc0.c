@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay10translator28responses_tool_to_chat_tools @ 0x100867bc0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 void __fastcall codexmate_lib::core::relay::translator::responses_tool_to_chat_tools::h6084d502058dbcf5(
         _QWORD *a1,

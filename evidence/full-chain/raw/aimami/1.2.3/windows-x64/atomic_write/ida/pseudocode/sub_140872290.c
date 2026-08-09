@@ -2,7 +2,7 @@
 // source (embedded panic Location): src\core\relay\atomic_write.rs
 // binary: AiMaMi.1.2.3 win64.exe (Windows x64, stripped, imagebase 0x140000000)
 // addr: 0x140872290  size: 0x283  tier: C  evidence: panic-location-2hop
-// decompiled via IDA Hex-Rays (remote IDA MCP, host <host>)
+// decompiled via IDA Hex-Rays (remote IDA MCP, host 192.168.110.94)
 // status: FULL — not truncated, single decompile call, no chunking needed
 //
 // ⚠ DESTRUCTIVE SIDE EFFECT: calls MoveFileExW(src, dst, flags=9)

@@ -1,0 +1,58 @@
+{
+  "target": "default_no_account_slots",
+  "owner_ea": "0x1002211e0",
+  "edges": [
+    {
+      "from": "0x1002211e0",
+      "to": "RelayProvider::exposed_models",
+      "edge_type": "call",
+      "order": 0
+    },
+    {
+      "from": "0x1002211e0",
+      "to": "hashbrown::map::HashMap::insert",
+      "edge_type": "call",
+      "order": 1
+    },
+    {
+      "from": "0x1002211e0",
+      "to": "String::clone",
+      "edge_type": "call",
+      "order": 2
+    },
+    {
+      "from": "0x1002211e0",
+      "to": "alloc::raw_vec::RawVec::grow_one",
+      "edge_type": "call",
+      "order": 3
+    },
+    {
+      "from": "0x1002211e0",
+      "to": "alloc::raw_vec::handle_error",
+      "edge_type": "call",
+      "order": 4
+    },
+    {
+      "from": "0x1002211e0",
+      "to": "__rust_alloc",
+      "edge_type": "call",
+      "order": 5
+    },
+    {
+      "from": "0x1002211e0",
+      "to": "__rust_dealloc",
+      "edge_type": "call",
+      "order": 6
+    },
+    {
+      "from": "0x1002211e0",
+      "to": "core::panicking::panic_bounds_check",
+      "edge_type": "call",
+      "order": 7
+    }
+  ],
+  "edge_count": 8,
+  "terminated_reason": "response_serialize",
+  "extraction_method": "c_text_analysis",
+  "note": "Callees extracted from 1.2.4 mac SMB .c pseudocode text, not IDA MCP callees call"
+}

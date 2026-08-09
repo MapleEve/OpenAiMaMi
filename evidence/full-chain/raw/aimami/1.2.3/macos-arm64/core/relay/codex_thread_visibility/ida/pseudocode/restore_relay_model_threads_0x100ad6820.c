@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay23codex_thread_visibility27restore_relay_model_threads @ 0x100ad6820
-// [FULL — IDA decompiler 全解 54370B, 超大体分页取回]
+// [FULL — hexrays 全解 54370B, 超大体分页取回]
 // 1.2.3 NEW-delta | codexmate_lib::core::relay::codex_thread_visibility::restore_relay_model_threads | vs 1.2.2 新增(IDA函数枚举diff, 名↔地址一致)
 _OWORD *__fastcall codexmate_lib::core::relay::codex_thread_visibility::restore_relay_model_threads::h77dd3ecc898a3538(
         _QWORD *a1,

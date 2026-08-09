@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core9analytics23compute_usage_analytics @ 0x10068b060 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::analytics::compute_usage_analytics::hdee5a18885b88118(
         __int64 a1,

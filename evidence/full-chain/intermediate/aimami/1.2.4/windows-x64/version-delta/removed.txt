@@ -1,0 +1,6 @@
+# removed.txt — AiMaMi 1.2.3 → 1.2.4 (Windows x64)
+# Platform divergence: mac symbol removal does NOT equal win handler removal.
+
+codexmate_lib::commands::relay::get_codex_router_auth_readiness  # mac_confirmed_removed (icf_alias category, real-code renamed/reworked successor) | 串 'get_codex_router_auth_readiness' 仍存在于 1.2.4 win 二进制 (0x14173f338)，被 tauri 主分发表 sub_140180C00 (26055B) 在 0x14018163d 引
+codexmate_lib::platform::single_instance::acquire  # mac_confirmed_removed (real-code icf_alias, renamed successor content-verified) | 
+codexmate_lib::commands::deeplink::_::<impl serde::de::Deserialize for ImportDeeplinkPayload>::deserialize::__FieldVisitor  # mac_icf_alias_removed (serde 折叠别名符号不再发射，结构体仍可反序列化) | 

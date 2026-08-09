@@ -1,0 +1,110 @@
+{
+  "command": "reconcile_threads_with_progress",
+  "argKeys": [],
+  "idaSymbols": [
+    "Instant::now",
+    "Instant::elapsed",
+    "repair_missing_rollouts_for_convergence",
+    "converge_threads_to_provider",
+    "rollout_path_identity",
+    "HashMap::insert",
+    "patch_relay_thread_instructions_excluding",
+    "fallback_relay_model_threads_excluding",
+    "collect_active_rollout_paths",
+    "cleanup_private_reasoning_items",
+    "Registry::new",
+    "Registry::in_worker",
+    "app_event",
+    "log"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/0001_reconcile_threads_with_progress_owner.c"
+  ],
+  "nextCallees": [
+    "Instant::now",
+    "Instant::elapsed",
+    "repair_missing_rollouts_for_convergence",
+    "converge_threads_to_provider",
+    "rollout_path_identity",
+    "HashMap::insert",
+    "patch_relay_thread_instructions_excluding",
+    "fallback_relay_model_threads_excluding",
+    "collect_active_rollout_paths",
+    "cleanup_private_reasoning_items",
+    "Registry::new",
+    "Registry::in_worker",
+    "app_event",
+    "log"
+  ],
+  "callTreeRows": [
+    {
+      "callee": "Instant::now",
+      "addr": "0x1014938e0"
+    },
+    {
+      "callee": "Instant::elapsed",
+      "addr": "0x1014938f0"
+    },
+    {
+      "callee": "repair_missing_rollouts_for_convergence",
+      "addr": "0x100764b80"
+    },
+    {
+      "callee": "converge_threads_to_provider",
+      "addr": "0x100749710"
+    },
+    {
+      "callee": "rollout_path_identity",
+      "addr": "0x100740cf0"
+    },
+    {
+      "callee": "HashMap::insert",
+      "addr": "0x100b89040"
+    },
+    {
+      "callee": "patch_relay_thread_instructions_excluding",
+      "addr": "0x100770980"
+    },
+    {
+      "callee": "fallback_relay_model_threads_excluding",
+      "addr": "0x100760be0"
+    },
+    {
+      "callee": "collect_active_rollout_paths",
+      "addr": "0x1007483c0"
+    },
+    {
+      "callee": "cleanup_private_reasoning_items",
+      "addr": "0x100772d00"
+    },
+    {
+      "callee": "Registry::new",
+      "addr": "0x1004f6550"
+    },
+    {
+      "callee": "Registry::in_worker",
+      "addr": "0x1004f7540"
+    },
+    {
+      "callee": "app_event",
+      "addr": "0x1007a0660"
+    },
+    {
+      "callee": "log",
+      "addr": "0x1012d4190"
+    }
+  ],
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": null,
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "destructive_side_effects": [],
+  "owner_ea": "0x1007507c0",
+  "owner_name": "codexmate_lib::core::relay::codex_thread_visibility::reconcile_threads_with_progress",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64",
+  "notes": "Reconcile: repair->converge->patch->fallback->cleanup with rayon. Successor of removed reconcile_threads"
+}

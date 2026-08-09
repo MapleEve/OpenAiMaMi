@@ -1,0 +1,131 @@
+{
+  "schema": "c5cm.raw.ida-leaf.v1",
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "topic": "deepseek-v4-flash-migration",
+  "scope_note": "Item3 补完：Windows 侧扩大关键词搜索（deepseek/v4_flash/v4flash 等变体）确认 mac is_deepseek_v4_flash_model / migrate_legacy_deepseek_v4_flash_official_protocol 的对应实现",
+  "source": {
+    "idb_module": "AiMaMi 1.2.6 win64.exe",
+    "idb_path": "<二进制路径>\\AiMaMi 1.2.6 win64.exe.i64"
+  },
+  "symbol_search": {
+    "method": "func_query filter glob，覆盖 *storage* / *relay* / *codexmate_lib* / *deepseek* / *v4_flash* / *v4flash*",
+    "result": "全部返回空结果——Windows 构建该模块函数符号已被剥离，无 Rust demangled 名称",
+    "fallback_method": "find_regex 搜索字符串常量 'deepseek'，命中 7 处；xrefs_to 定位到唯一引用函数 sub_140B5F590（现已重命名）"
+  },
+  "functions": [
+    {
+      "role": "migration",
+      "command_name": null,
+      "address": "0x140b5f590",
+      "original_name": "sub_140B5F590",
+      "current_name": "migrate_legacy_deepseek_v4_flash_official_protocol",
+      "size_bytes": 1169,
+      "pseudocode": "pseudocode/0001-migrate-legacy-deepseek-v4-flash-official-protocol-0x140b5f590.c",
+      "bytes_returned": "full body, no truncation marker",
+      "is_deepseek_v4_flash_model_inlined": true,
+      "inline_call_sites": [
+        "0x140b5f87d",
+        "0x140b5f922",
+        "0x140b5f9bf"
+      ],
+      "caller": {
+        "address": "0x140b5e54c",
+        "in": "sub_140B5D9D0 (0x140b5d9d0, size 0x15b7)",
+        "verified": false,
+        "note": "疑为storage::load的Windows对应位置，未做完整验证、未重命名，仅作调用链索引"
+      },
+      "behavior": "与 mac codexmate_lib::core::relay::storage::migrate_legacy_deepseek_v4_flash_official_protocol (0x100778c20) 逻辑完全等价，含 is_deepseek_v4_flash_model 判定内联"
+    },
+    {
+      "role": "shared_generic_helper",
+      "command_name": null,
+      "address": "0x140a839d0",
+      "original_name": "sub_140A839D0",
+      "renamed": false,
+      "rename_reason_not_applied": "xrefs_to 确认至少 4 处不同调用方复用（sub_140B414C0/migrate_legacy_deepseek_v4_flash_official_protocol/sub_140B66350/sub_14127D460），非 deepseek 专属，重命名为 deepseek 相关名称会误导",
+      "pseudocode": "pseudocode/0002-ascii-eq-ignore-case-simd-helper-0x140a839d0.c",
+      "verdict": "generic_ascii_case_insensitive_eq_simd",
+      "note": "在本迁移函数中用于比较 model_id 末段是否等于 'deepseek-v4-flash'（17字节，SIMD分块+尾部处理），等价于 mac 版本手写逐字节 |32 大小写折叠比较"
+    }
+  ],
+  "string_evidence": [
+    {
+      "addr": "0x1418638d7",
+      "value": "deepseek-v4-flash",
+      "xrefs_count": 3,
+      "xrefs_fn": "0x140b5f590"
+    },
+    {
+      "addr": "0x14180a888",
+      "value": "api.deepseek.com",
+      "note": "与 xmmword_141859630 内容对应（已用 get_bytes 核实）"
+    },
+    {
+      "addr": "0x14180aa76",
+      "value": "deepseek-officialDeepSeek ",
+      "note": "字符串常量表相邻拼接，未进一步分析"
+    },
+    {
+      "addr": "0x141806629",
+      "value": "deepseek",
+      "note": "未定位具体使用点，仅记录存在"
+    },
+    {
+      "addr": "0x141863ba9",
+      "value_partial": "H legacy DeepSeek V4 Flash official model protocol(s) to openai-responses",
+      "note": "疑似迁移日志文案，语义吻合但未在函数体内直接定位到该字符串的 xref，诚实标注为语义关联非字节级闭环。前导 'H' 疑为 fmt::Arguments 字面量表长度前缀字节，非可打印字符。"
+    }
+  ],
+  "host_constant_verification": {
+    "addr": "0x141859630",
+    "name": "xmmword_141859630",
+    "bytes_hex": "61 70 69 2e 64 65 65 70 73 65 65 6b 2e 63 6f 6d",
+    "ascii": "api.deepseek.com",
+    "matches_mac_constant": "0x1016eee80 (mac)，字节完全相同，已双端 get_bytes 核实"
+  },
+  "generated_at": "2026-08-06T00:00:00Z",
+  "generation_method": "mcp__ida-pro-mcp-win__func_query(空结果) -> find_regex(字符串定位) -> xrefs_to(反查引用函数) -> decompile(live IDB, <反编译器>_ready=true, 完整无截断) -> get_bytes(常量核实) -> rename+set_comments+<工具调用>",
+  "idb_mutations": [
+    {
+      "op": "rename",
+      "addr": "0x140b5f590",
+      "old": "sub_140B5F590",
+      "new": "migrate_legacy_deepseek_v4_flash_official_protocol"
+    },
+    {
+      "op": "set_comments",
+      "addr": "0x140b5f590"
+    },
+    {
+      "op": "set_comments",
+      "addr": "0x140a839d0",
+      "note": "仅注释未重命名"
+    },
+    {
+      "op": "<工具调用>",
+      "path": "<二进制路径>\\AiMaMi 1.2.6 win64.exe.i64"
+    }
+  ],
+  "dirtree_correction_20260807": {
+    "session": "cc-aimami126-vibe-dirtree-8func-cleanup-20260807",
+    "trigger": "opus 对抗核验发现 task#174/#175 声明与 live IDB 矛盾（声明5个已清理，实测8个仍在/vibe）",
+    "functions_in_this_bundle": [
+      {
+        "name": "migrate_legacy_deepseek_v4_flash_official_protocol",
+        "ea": "0x140b5f590",
+        "prior_state": "stranded in /vibe/migrate_legacy_deepseek_v4_flash_official_protocol（此前 manifest 未记录任何 dirtree_moves，仅 rename+comments）",
+        "final_path": "codexmate_lib/core/relay/storage/migrate_legacy_deepseek_v4_flash_official_protocol",
+        "method": "dt.mkdir(codexmate_lib/core/relay/storage) + dt.rename(rc=0)；模块依据：本 manifest 已明确记录 mac 对应符号全路径 codexmate_lib::core::relay::storage::migrate_legacy_deepseek_v4_flash_official_protocol(0x100778c20)，直接取其模块前缀，非猜测"
+      }
+    ],
+    "vibe_dir_final_state": "已清空并删除（跨 bundle 共同清理，见 gpt56-model-catalog-fix/voice-runtime-status/stop-voice-capture/codex-router-auth-readiness 各 manifest 同批记录）",
+    "<工具调用>": {
+      "ok": true,
+      "path": "<二进制路径>\\\\AiMaMi 1.2.6 win64.exe.i64"
+    },
+    "grounded_reverify": "独立 <工具调用>：find_entry+get_abspath 命中 codexmate_lib/core/relay/storage/migrate_legacy_deepseek_v4_flash_official_protocol，current_name 未变，match=true",
+    "note": "本轮触发：opus 只读对抗核验发现上一轮（task#174/#175，声明清理5个函数/vibe残留+<工具调用>+grounded复验已完成）与 live win IDB 实际状态矛盾——/vibe 目录仍是实存目录，下挂 8 个 stranded 函数（非声明的5个）。红线17已核 win server_health（status=ok,module='AiMaMi 1.2.6 win64.exe',<反编译器>_ready=true）。本轮对该函数逐一用 ida_dirtree 原语（find_entry(idx=ea)+get_abspath）实测确认其当前均位于 /vibe/<name>，与上一轮声明矛盾。根因定位：此前 manifest 中记录的 ida_mutations.dirtree_moves + <工具调用>.ok=true 是虚假/未持久化的声明——真实机制是 IDA MCP 的 rename 工具在改名时会把函数自动放入/重新放入 /vibe/ 目录（即便该函数在别处已有正确 dirtree 归属），导致同一 ea 在 dirtree 中出现『正确路径 + /vibe 残留』两个入口（本轮通过 dt.find_entry/dt.chdir 遍历证实该现象，非猜测）。修复方法：对本 bundle 涉及函数逐一执行 dt.unlink('/vibe/<name>') 清除残留入口（不删除函数本身，函数 ea/name 均未变），若目标模块目录不存在则先 dt.mkdir 逐级建立，8 个函数全部归位后 /vibe 目录内容清零，执行 dt.rmdir('/vibe') 成功删除该空目录。<工具调用>() 返回 {ok:true}。Grounded 复验（独立 <工具调用> 调用，非信驱动自报）：对 8 个函数逐一按 ea 重新 find_entry+get_abspath，确认 current_name 未变 + 路径命中预期模块目录，all_match=true；dt.isdir('/vibe')=false；对目标模块目录做 BFS 内容抽读确认函数真实存在于目录内。"
+  }
+}

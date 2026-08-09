@@ -42,7 +42,7 @@
         "raw/aimami/1.0.9/macos/system/diagnose/DIAGNOSE-MAC-109.md"
       ],
       "distilled_path": "<source-location>/audits/macos-1.0.9-system/logic/DIAGNOSE-CLUSTER-DISTILLED-109.md",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "notes": "diagnose_codex_router: source archive-extra relay module cmd; DiagnoseCodexRouterResult 0x140B; read-only. diagnose: upstream system cmd; DiagnoseResult 0x1A0B; read-only."
     },
     {
@@ -107,7 +107,7 @@
         "raw/aimami/1.0.9/macos/relay-core/relay_image_compat/"
       ],
       "distilled_path": "<source-location>/audits/macos-1.0.9-system/logic/GET-IMAGE-COMPAT-DISTILLED-109.md",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "idb_comment_appended": "0x10025e7c0",
       "deep_reverify": true,
       "corrections": "config=<codex_home>/config.toml home-root (codex_home=$CODEX_HOME|~/.codex|.); section=[features] len==10 (NOT [feature]); value=false 0x736C6166 (NOT true); semantic inversion image_generation=false=>enabled=true; superseded prior readyToImplement over-claim (canonical=strictImplementationUse); fixed relay-core INTERFACE-MAP Leaf2/DTO mislabels",
@@ -185,7 +185,7 @@
         1323
       ],
       "distilled_path": "<source-location>/audits/macos-1.0.9-system/logic/NOTIFICATION-CLIENT-STATE-DISTILLED-109.md",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "idb_comment_appended": "0x100262804,0x1005f0e34,0x100323f54",
       "deep_reverify": true,
       "reverify_pass": 3,
@@ -270,7 +270,7 @@
         1324
       ],
       "distilled_path": "<source-location>/audits/macos-1.0.9-system/logic/DEVICE-sensitive-field-CLUSTER-DISTILLED-109.md",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "idb_comment_appended": "0x100263544,0x1005f030c",
       "deep_reverify": true,
       "reverify_pass": 2,
@@ -367,7 +367,7 @@
         "raw/aimami/1.0.9/macos/system/import_remote_device_secret_if_empty/"
       ],
       "distilled_path": "<source-location>/audits/macos-1.0.9-system/logic/DEVICE-sensitive-field-CLUSTER-DISTILLED-109.md",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "idb_comment_appended": "0x100263bc4,0x1005f0508",
       "deep_reverify": true,
       "reverify_pass": 2,
@@ -462,7 +462,7 @@
       "distilled_path": "<source-location>/audits/macos-1.0.9-system/logic/USAGE-ONLY-RUNTIME-SNAPSHOT-DISTILLED-109.md",
       "json_evidence_path": "<source-location>/audits/macos-1.0.9-system/logic/USAGE-ONLY-RUNTIME-SNAPSHOT-109.json",
       "index_line": 1353,
-      "idb_saved": true,
+      "<工具调用>d": true,
       "idb_comment_appended": "0x1001e74d0,0x10030dbb8",
       "owner_gate_exit": 0,
       "owner_gate_write_mode": "owner",

@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core3mcp16load_mcp_servers @ 0x100843d20 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::mcp::load_mcp_servers::h201cbab0198c4973(_QWORD *a1, __int64 a2, __int64 a3)
 {

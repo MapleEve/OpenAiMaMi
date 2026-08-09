@@ -5,11 +5,11 @@
 ## 1. server_health 门（本轮现场核验）
 
 ```
-{"status":"ok","uptime_sec":121304.538,"idb_path":"E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
- "module":"AiMaMi.1.2.3 win64.exe","input_path":"E:\\binary\\AiMaMi.1.2.3 win64.exe.exe"(sic-truncated in capture),
+{"status":"ok","uptime_sec":121304.538,"idb_path":"<二进制路径>\\AiMaMi.1.2.3 win64.exe.i64",
+ "module":"AiMaMi.1.2.3 win64.exe","input_path":"<二进制路径>\\AiMaMi.1.2.3 win64.exe.exe"(sic-truncated in capture),
  "imagebase":"0x140000000","auto_analysis_ready":true,"IDA decompiler_ready":true,"strings_cache_ready":true}
 ```
-module 名与 `IDA decompiler_ready=true` 均匹配红线 17 IDA_LIVE_GATE 要求，门通过。
+module 名与 `IDA decompiler_ready=true` 均匹配红线 17 <门控> 要求，门通过。
 
 ## 2. 9 个 system 域原始地址 — 归属注释逐条摘录
 

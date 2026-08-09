@@ -1,0 +1,25 @@
+{
+  "command": "import_accounts_from_file",
+  "owner_ea": "0x140d62e30",
+  "owner_name": "import_accounts_from_file",
+  "module": "commands/accounts",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "confidence": "high",
+  "decompile_status": "decompiled",
+  "decompile_source": "ida",
+  "decompile_method": "disasm_reconstructed",
+  "decompile_note": "Hex-Rays null_cfunc; reconstructed from IDA disasm+strings+callees+basic_blocks(162/CC=51)",
+  "side_effects": [
+    {"type": "WRITE", "desc": "账号数据库写入 (mutation via sub_140AFFC30)", "severity": "destructive"},
+    {"type": "FILE_READ", "desc": "读取账号文件 filePath (via sub_140856D70)", "severity": "info"},
+    {"type": "TRIGGER", "desc": "运行时刷新 (via sub_140DB62C0, 失败报RUNTIME_REFRESH_FAILED_AFTER_IMPORT)", "severity": "warning"},
+    {"type": "VALIDATE", "desc": "SHA256 校验 (via sub_14049D260, 若expectedContentSha256非空)", "severity": "info"}
+  ],
+  "argKeys": ["filePath", "expectedContentSha256", "overwriteExisting", "selectedKeys"],
+  "strings_count": 17,
+  "callee_count": 33,
+  "function_size": "0x1742",
+  "error_strings": ["RUNTIME_REFRESH_FAILED_AFTER_IMPORT"],
+  "success_strings": ["Accounts were imported"]
+}

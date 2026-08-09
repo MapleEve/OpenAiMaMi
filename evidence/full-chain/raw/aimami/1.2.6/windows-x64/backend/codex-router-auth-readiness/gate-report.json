@@ -1,0 +1,31 @@
+{
+  "schema": "c5cm.raw.leaf.gate_report.v1",
+  "command": "get_codex_router_auth_readiness",
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "gates": {
+    "consumerStartReady": true,
+    "strictImplementationUse": false,
+    "readyToImplement": false,
+    "implementation_use": false,
+    "gate_accepted": false,
+    "full_leaf_100_definition_v2": false
+  },
+  "blockers": [
+    "niuniu@woyao.pro-equivalent virtual-auth literal not located in 1.2.6 windows-x64 (open Unknown, not confirmed removed)",
+    "depth5 exhaustive walk of the oauth-availability-check branch (sub_140BF9190 subtree) not completed this round",
+    "success/error envelope only traced on the success path; no leaf-specific error branch distinct from the shared dispatcher poison-recovery path was found/traced"
+  ],
+  "dim_status": {
+    "dim1_owner_located": "PASS",
+    "dim2_call_tree_depth": "PASS (depth4, 2 terminated_reason categories)",
+    "dim3_pseudocode_recovered": "PASS (0 truncation on all 4 recovered nodes)",
+    "dim4_dto_fields": "PARTIAL (response envelope shape confirmed; virtual-auth field presence Unknown)",
+    "dim5_cross_version_baseline": "PASS (1.1.8 windows + 1.1.8 macOS + 1.2.3 macOS baselines cross-referenced)",
+    "dim6_live_reference_parity": "NOT_RUN (no live reference App comparison performed this round, per red line 25 disclosure)"
+  },
+  "scope_note": "This leaf was produced under a strictly-scoped 3-target session (get_codex_router_auth_readiness / load_voice_runtime_status / stop_voice_capture only). No other functions, modules, or existing completed leaves were touched.",
+  "generated_at": "2026-08-06T08:05:00Z",
+  "session": "<审计会话>
+}

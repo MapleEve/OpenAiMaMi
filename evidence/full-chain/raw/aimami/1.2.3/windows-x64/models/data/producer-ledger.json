@@ -5,11 +5,11 @@
   "version": "1.2.3",
   "platform": "windows-x64",
   "binary_sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
-  "idb_path": "raw/binary/AiMaMi.1.2.3 win64.exe.i64",
-  "idb_host": "<host> (win IDA MCP; module=AiMaMi.1.2.3 win64.exe)",
+  "idb_path": "<内部存储>/raw/binary/AiMaMi.1.2.3 win64.exe.i64",
+  "idb_host": "<内网IP> (win IDA MCP; module=AiMaMi.1.2.3 win64.exe)",
   "session": "win-1.2.3-models-sessanalytics-treegap-bodies-20260725",
   "reduce_session": "win-1.2.3-treegap-reduce-ack-20260725",
-  "machine": "Maple-C5Mini",
+  "machine": "<本地机器>",
   "owner_gate": {
     "result": "ALLOW",
     "write_mode": "additive",
@@ -43,7 +43,7 @@
     "kept_generic": [
       "serialize_3_0x140806d70 (mac-hint RefreshChannelReport CONTRADICTED win-side: body carries MapAccess::next_value -> likely Deserialize not Serialize)",
       "serialize_4_0x1408274d0 (mac-hint ApiConnectivityPayload-Serialize CONTRADICTED win-side: MapAccess::next_value -> likely Deserialize)",
-      "serialize_5_0x14092b8c0 (mac-hint VoiceWorkspacePayload UNVERIFIED win-side; MCP-truncated at decompile, full 44641-char body recovered via IDA Python single pass, ends `return a1;}`)",
+      "serialize_5_0x14092b8c0 (mac-hint VoiceWorkspacePayload UNVERIFIED win-side; MCP-truncated at decompile, full 44641-char body recovered via <工具调用> single pass, ends `return a1;}`)",
       "serialize_10_0x140aa9980 (mac-hint SkillRemovePayload UNVERIFIED win-side)",
       "serialize_12_0x140aaa880 (mac-hint DiagnoseSessionState UNVERIFIED win-side)"
     ]

@@ -29,7 +29,7 @@
 
 10. **Sort algorithm confirmed**: `core::skills::load_installed_skills` uses `driftsort_main` @ `0x1007449d0` when `len >= 21` (0x15), else `insertion_sort_shift_left` @ `0x1004f32e0` when `2 <= len < 21`. Same stdlib pattern as other collection-returning commands.
 
-11. **IDB annotations written**: `append_comments` applied to 6 owner VAs with `[delta:integrity_recovered 2026-06-18 session:<审计会话>]`. `idb_save` confirmed.
+11. **IDB annotations written**: `append_comments` applied to 6 owner VAs with `[delta:integrity_recovered 2026-06-18 session:<审计会话>]`. `<工具调用>` confirmed.
 
 12. **Call-tree depth verified**: deepest app-logic path = depth 4 (`cmd → core → scan_recursive → load_skill_summary → fs::read_to_string`). Delta path depth = 4 (`cmd → store_bootstrap → bootstrap_cache::load → serde_json::from_trait`). All leaves terminated at stdlib/serde. 15 edges in `call-trees/load_installed_skills.jsonl`.
 

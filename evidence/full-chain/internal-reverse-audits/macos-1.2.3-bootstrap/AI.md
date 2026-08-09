@@ -4,7 +4,7 @@ status: consumerStartReady (4 leaves); triage-complete, deep-reverse NOT done
 evidence_root: raw/aimami/1.2.3/macos-arm64/run/ida/pseudocode/ (89 files, untouched)
 versions: 1.2.3
 platforms: macos-arm64 only (windows-1.2.3-bootstrap not attempted this session)
-target_universe: 89 generic run_0x*.c files from the wf-aimami123-delta-20260721 baseline;
+target_universe: 89 generic run_0x*.c files from the <审计会话> baseline;
   triaged into 4 bootstrap / 2 non-bootstrap-multi-target / 80 owned-by-other-module / 3 unresolved.
 locator_audit: grep -oE codexmate_lib::...::h[0-9a-f]+ call-target extraction per file (complete,
   89/89 files processed), cross-checked against ipc-contracts.jsonl (131 commands) for the 3
@@ -18,7 +18,7 @@ full_app_coverage_status: not-full-app
 per_target_required_results: see gate-report.json dim_status
 frontend_ccf_status: not-produced (dim1 open for all 4 leaves)
 backend_ccf_status: closed for app_run_entry (full read); grep-target-only for the other 3
-pseudocode_status: pre-existing (from wf-aimami123-delta-20260721 baseline, not new this session)
+pseudocode_status: pre-existing (from <审计会话> baseline, not new this session)
 call_tree_status: shallow (1 hop) for app_run_entry; not traced for the other 3
 interface_status: not-produced
 error_path_status: not-produced

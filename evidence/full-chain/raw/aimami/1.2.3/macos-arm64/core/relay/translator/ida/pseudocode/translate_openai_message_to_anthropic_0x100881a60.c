@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay10translator37translate_openai_message_to_anthropic @ 0x100881a60
-// [FULL — IDA decompiler 全解 60201B, 超大体分页取回]
+// [FULL — hexrays 全解 60201B, 超大体分页取回]
 // 1.2.3 NEW-delta | codexmate_lib::core::relay::translator::translate_openai_message_to_anthropic | vs 1.2.2 新增(IDA函数枚举diff, 名↔地址一致)
 __int64 __fastcall codexmate_lib::core::relay::translator::translate_openai_message_to_anthropic::h2841191c7f22086b(
         __int64 a1,

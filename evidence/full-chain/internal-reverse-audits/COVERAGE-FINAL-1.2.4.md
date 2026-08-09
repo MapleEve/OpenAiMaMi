@@ -69,8 +69,8 @@
 
 ## 3. IDB 命名(红线24,双平台)
 
-- **mac 1.2.4**:116 NEW-delta 函数全部 `[FULL decompile]`,inline 注释 `1.2.4 NEW-delta | <module>` + 归 `codexmate_lib/...` 目录树(含新 `core/relay/anthropic_reasoning`、`core/relay/anthropic_history`、`core/relay/router_unlock_auth`、`core/relay/codex_catalog` 等子目录)+ idb_save。
-- **win 1.2.4**(strip):20 delta 锚点函数 `[FULL decompile]` + **955 函数 dirtree 补全归入 71 目录**(对齐 mac 模块树命名)+ strip 缺失符号经 dirtree + 命令名串 + 格式化闭包签名三重锚定定位 + idb_save。
+- **mac 1.2.4**:116 NEW-delta 函数全部 `[FULL decompile]`,inline 注释 `1.2.4 NEW-delta | <module>` + 归 `codexmate_lib/...` 目录树(含新 `core/relay/anthropic_reasoning`、`core/relay/anthropic_history`、`core/relay/router_unlock_auth`、`core/relay/codex_catalog` 等子目录)+ <工具调用>。
+- **win 1.2.4**(strip):20 delta 锚点函数 `[FULL decompile]` + **955 函数 dirtree 补全归入 71 目录**(对齐 mac 模块树命名)+ strip 缺失符号经 dirtree + 命令名串 + 格式化闭包签名三重锚定定位 + <工具调用>。
 - 前端 CCF delta 已做完:beautified JS 的 invoke 命令链/路由/状态机抽齐为 `frontend-control-flow.jsonl`(134 行)+ `ast-facts.json`。
 
 ## 4. opus 复查结论

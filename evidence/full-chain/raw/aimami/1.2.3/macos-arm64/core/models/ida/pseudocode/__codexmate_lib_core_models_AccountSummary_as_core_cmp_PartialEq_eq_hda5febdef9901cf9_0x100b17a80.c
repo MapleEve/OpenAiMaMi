@@ -1,4 +1,4 @@
-// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::models::AccountSummary as core::cmp::PartialEq>::eq::hda5febdef9901cf9 @ 0x100b17a80 | full-body via IDA Python(IDA decompiler.decompile direct write)
+// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::models::AccountSummary as core::cmp::PartialEq>::eq::hda5febdef9901cf9 @ 0x100b17a80 | full-body via py_exec_file(ida_hexrays.decompile direct write)
 bool __fastcall _$LT$codexmate_lib..core..models..AccountSummary$u20$as$u20$core..cmp..PartialEq$GT$::eq::hda5febdef9901cf9(
         __int64 a1,
         char *a2)

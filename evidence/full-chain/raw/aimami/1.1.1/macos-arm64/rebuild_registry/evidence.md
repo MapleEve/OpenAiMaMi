@@ -108,7 +108,7 @@ Error string: `"Rebuild registry failed: "` @ 0x1010b455a (referenced in IPC han
 | Side effects documented | PASS | 2 side effects (snapshot copy + registry.json) |
 | Error paths documented | PASS | 7 error cases in §3 |
 | Compilation noise filtered | PASS | GLOBAL_PANIC_COUNT/OnceBox excluded |
-| IDB annotated + saved | PASS | append_comments on 7 functions, idb_save confirmed |
+| IDB annotated + saved | PASS | append_comments on 7 functions, <工具调用> confirmed |
 | Baseline comparison | PASS | command absent in 1.0.9 (new in 1.1.1) |
 
 **Overall gate: PASS — integrity_recovered delta fully documented**

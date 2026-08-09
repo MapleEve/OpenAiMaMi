@@ -1,4 +1,4 @@
-// 1.2.3 baseline same-set | __ZN13codexmate_lib4core17session_analytics15range_to_cutoff17hbe9b944a87b55264E @ 0x100a84f10 | full-body via IDA Python(IDA decompiler.decompile direct write)
+// 1.2.3 baseline same-set | __ZN13codexmate_lib4core17session_analytics15range_to_cutoff17hbe9b944a87b55264E @ 0x100a84f10 | full-body via py_exec_file(ida_hexrays.decompile direct write)
 // 1.2.3 baseline same-set | codexmate_lib::core::session_analytics::range_to_cutoff | 完整基线逆(decompile+归目录)
 __int64 __fastcall codexmate_lib::core::session_analytics::range_to_cutoff::hbe9b944a87b55264(__int64 a1, __int64 a2)
 {

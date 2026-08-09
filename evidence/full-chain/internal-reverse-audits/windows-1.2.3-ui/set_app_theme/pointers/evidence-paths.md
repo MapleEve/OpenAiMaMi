@@ -30,5 +30,5 @@
 
 ## Cross-check performed this session (negative results)
 - `grep -rl "set_app_theme" internal-reverse/audits/` → only `windows-1.0.9-ui/*` (no 1.2.3 bundle exists prior to this session).
-- `grep "1.2.3.*ui\|ui.*1.2.3\|1.2.3.*theme\|theme.*1.2.3"` in `REVERSE-STATUS.md` → 1 hit (wf-aimami123-fullapp-20260724 gap-inventory line listing `ui` as a windows-exclusive module still lacking a 1.2.3 canonical bundle; no in-progress claim on this specific module/leaf).
+- `grep "1.2.3.*ui\|ui.*1.2.3\|1.2.3.*theme\|theme.*1.2.3"` in `REVERSE-STATUS.md` → 1 hit (<审计会话> gap-inventory line listing `ui` as a windows-exclusive module still lacking a 1.2.3 canonical bundle; no in-progress claim on this specific module/leaf).
 - `find raw/aimami/1.2.3/macos-arm64 -iname "*ui*" -o -iname "*theme*"` → only false-positive substring hits (`install_macos_quit_guard`, `request_user_quit`); no dedicated mac ui/theme module dir.

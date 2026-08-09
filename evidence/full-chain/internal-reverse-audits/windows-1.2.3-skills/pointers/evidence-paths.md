@@ -27,13 +27,13 @@
 
 ## IDB 活体证据（本轮，非文件，记录方法与结果供复核复现）
 
-- `server_health`：`{"status":"ok","IDA decompiler_ready":true,"module":"AiMaMi.1.2.3 win64.exe","idb_path":"E:\\binary\\AiMaMi.1.2.3 win64.exe.i64"}`（红线17 IDA_LIVE_GATE 起手核验，命中）
+- `server_health`：`{"status":"ok","IDA decompiler_ready":true,"module":"AiMaMi.1.2.3 win64.exe","idb_path":"<二进制路径>\\AiMaMi.1.2.3 win64.exe.i64"}`（红线17 <门控> 起手核验，命中）
 - dirtree BFS（`IDA Python`，`ida_dirtree.get_std_dirtree(DIRTREE_FUNCS)`，队列式非递归遍历，避免 `chdir` 状态被递归破坏——本轮实测踩坑：首次写递归版本因函数作用域看不到外层 `dt` 全局变量报 `NameError`，改为扁平队列写法后成功）：`/codexmate_lib` 下 80 个子目录，其中 `core/skills`（7 个函数）与 `commands/skills`（移动前 0 个）
 - 函数名/注释 `skill` 子串扫描（`idautils.Functions()` 全量遍历 + `idc.get_func_name`/`idc.get_func_cmt`）：14 个命中，13 个已分类（7 core + 6 commands），1 个未核实（`serialize_10` @ `0x140aa9980`，IDA 连接中断，1 次重试后按红线17停止）
 - `callees()`：确认 `backup_skill_directory`（`0x1409060c0`）调用 `sub_1408A4BA0`（`0x1408a4ba0`）；其余 6 个 command handler 的直接 callee 列表中**未**发现对 7 个 core-helper 函数的直接调用（推测为 Rust async 内联导致核心逻辑直接内联进 command handler 体内，而非委托调用；未逐行验证此推测）
 - dirtree 移动：`dt.find_entry`+`dt.get_abspath`+`dt.rename`，6/6 全部 `rc=DTE_OK=0`
 - 注释：`idc.set_func_cmt(ea, ..., 1)`，7/7 全部 `set_ok=true`
-- `idb_save`：`{"ok":true,"path":"E:\\binary\\AiMaMi.1.2.3 win64.exe.i64"}`
+- `<工具调用>`：`{"ok":true,"path":"<二进制路径>\\AiMaMi.1.2.3 win64.exe.i64"}`
 
 ## 历史版本基线（consumed，参考，未本轮重新核对）
 
@@ -43,4 +43,4 @@
 
 ## 本轮方法论声明
 
-本轮为**蒸馏 + 现场补缺混合**：起点是归并已有 6 个 raw .c（用户指令原意），但 Angle-A 活体 dirtree 核验发现 raw 证据与 IDB 实际归属状态不一致（IDB 里已有 7 个 core 函数、6 个 command handler 共 13 个，raw 目录只有 6 个文件），遂当场补做剩余 7 个的反编译 + 落盘 + 归目录树 + IDB 注释 + `idb_save`。角度A/C 均为 LIVE IDA 调用（非文本 grep 代理，优于 macos-1.2.3-skills 批1 角度C 的 grep 代理方法）；角度B 为本轮直接对 win 自己的 `ipc-contracts.jsonl` grep（未借用 mac 前端文档，遵循红线8 dim5 win 用 win 自己证据）；角度D 为与 macos-1.2.3-skills 21 函数集的结构性对比（非逐一映射校验）。
+本轮为**蒸馏 + 现场补缺混合**：起点是归并已有 6 个 raw .c（用户指令原意），但 Angle-A 活体 dirtree 核验发现 raw 证据与 IDB 实际归属状态不一致（IDB 里已有 7 个 core 函数、6 个 command handler 共 13 个，raw 目录只有 6 个文件），遂当场补做剩余 7 个的反编译 + 落盘 + 归目录树 + IDB 注释 + `<工具调用>`。角度A/C 均为 LIVE IDA 调用（非文本 grep 代理，优于 macos-1.2.3-skills 批1 角度C 的 grep 代理方法）；角度B 为本轮直接对 win 自己的 `ipc-contracts.jsonl` grep（未借用 mac 前端文档，遵循红线8 dim5 win 用 win 自己证据）；角度D 为与 macos-1.2.3-skills 21 函数集的结构性对比（非逐一映射校验）。

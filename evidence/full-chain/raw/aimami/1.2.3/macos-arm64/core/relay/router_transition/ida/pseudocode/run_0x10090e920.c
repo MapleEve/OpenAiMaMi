@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay17router_transition3run @ 0x10090e920 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _OWORD *__fastcall codexmate_lib::core::relay::router_transition::run::h691af2bc0aba412d(
         char *a1,

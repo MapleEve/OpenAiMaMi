@@ -34,7 +34,7 @@ manager 目录里 4 个文件（`reconcile_current_mode_locked_from_with__0x1002
 `[N chars total]` 截断桩标记**——所有业务函数均已完整反编译。
 
 **唯一的版本差异发现**：`router_transition::run_with_writer_policy` 在 1.2.3 新增了 2 个
-超大函数体（54111B / 67313B，`[FULL — IDA decompiler 全解 ... 超大体分页取回]`，非截断）的
+超大函数体（54111B / 67313B，`[FULL — <反编译器> 全解 ... 超大体分页取回]`，非截断）的
 新单态化实例（`h1219123683360807` @ 0x100901ac0、`h95f8fadb6cf11dd8` @ 0x1009049a0），
 文件头标注 `1.2.3 NEW-delta ... vs 1.2.2 新增(IDA函数枚举diff, 名↔地址一致)`。两者均是同一
 泛型函数对不同 `WriterPolicy` 类型参数的单态化展开：0x100901ac0 版本额外接入
@@ -188,6 +188,6 @@ manager 目录里 4 个文件（`reconcile_current_mode_locked_from_with__0x1002
 
 8 个目录、189 个 `.c` 文件逐一 grep 排查，**0 处** `TRUNCATED` / `DECOMPILE-FAILED` /
 `[N chars total]` 截断桩标记；`router_transition` 下两个超大函数体（54111B/67313B）均标注
-`[FULL — IDA decompiler 全解 ... 超大体分页取回]`，为完整反编译后分页取回，非截断。manager/proxy_server
+`[FULL — <反编译器> 全解 ... 超大体分页取回]`，为完整反编译后分页取回，非截断。manager/proxy_server
 共 7 个文件头部缺失「基线 same-set」标签后缀，判断为标注脚本对超长 mangled 符号名的显示截断，
 不影响函数体完整性，未见任何异常。

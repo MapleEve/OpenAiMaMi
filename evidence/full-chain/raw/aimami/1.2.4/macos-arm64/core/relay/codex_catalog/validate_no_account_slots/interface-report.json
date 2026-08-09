@@ -1,0 +1,42 @@
+{
+  "command": "validate_no_account_slots",
+  "module": "core/relay/codex_catalog",
+  "owner_ea": "0x100222220",
+  "interface_type": "internal_function",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "providers + slots array + slot count",
+    "output": "Result<Vec<CodexNoAccountSlot>, CoreError>"
+  },
+  "side_effects": [],
+  "idaSymbols": [
+    "validate_no_account_slots"
+  ],
+  "pseudocode": [
+    "core/relay/codex_catalog/ida/pseudocode/validate_no_account_slots_0x100222220.c"
+  ],
+  "nextCallees": [
+    "hashbrown::map::HashMap::insert",
+    "hashbrown::raw::RawTable::reserve_rehash",
+    "hashbrown::map::HashMap::insert",
+    "canonical_no_account_slot_slug",
+    "RelayProvider::exposed_models",
+    "core::hash::BuildHasher::hash_one",
+    "core::fmt::num::Display for usize",
+    "alloc::fmt::format::format_inner",
+    "__rust_alloc",
+    "__rust_dealloc",
+    "alloc::raw_vec::handle_error"
+  ],
+  "callTreeRows": 11,
+  "claims": {
+    "client": [],
+    "server": [
+      "validate_no_account_slots"
+    ]
+  },
+  "serverEvidencePath": "core/relay/codex_catalog/ida/pseudocode/validate_no_account_slots_0x100222220.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "Validates no-account slots: checks count ≤5, verifies each slot references a real provider, canonical slug matches, no duplicates. Returns CoreError with descriptive message on failure."
+}

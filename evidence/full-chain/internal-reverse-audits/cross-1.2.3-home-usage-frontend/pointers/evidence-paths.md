@@ -37,6 +37,6 @@
 ## 关联历史（consumed，非本包证据来源，仅作对照）
 
 - `audits/cross-1.0.9-home-usage-frontend/DISTILLED-home-usage-load-chains.md` — 1.0.9 同 scope 模板，供结构/措辞参考，未跨版本复用其数据字段
-- `audits/BASELINE-FINAL-1.2.3.md` + `audits/COVERAGE-FINAL-1.2.3.md` — 1.2.3 全量基线终稿（wf-aimami123-delta-20260721），本模块命令未在其明细索引中单独出现
-- `REVERSE-STATUS.md:4011` — `wf-aimami123-fullapp-20260724` 账本重建行，独立确认 home-usage-frontend 缺 1.2.3 canonical 包（v1 时的状态；v2 已解除，见上方新增两包）
+- `audits/BASELINE-FINAL-1.2.3.md` + `audits/COVERAGE-FINAL-1.2.3.md` — 1.2.3 全量基线终稿（<审计会话>
+- `REVERSE-STATUS.md:4011` — `<审计会话> 账本重建行，独立确认 home-usage-frontend 缺 1.2.3 canonical 包（v1 时的状态；v2 已解除，见上方新增两包）
 - `REVERSE-STATUS.md:4332-4351`（`macos-1.2.3-home-usage-frontend-reduce-20260726`）+ `REVERSE-STATUS.md:4340-4346`（`windows-1.2.3-home-usage-frontend-reduce-20260726`）— 两个单平台包的落地记录

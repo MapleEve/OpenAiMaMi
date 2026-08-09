@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5voice3llm18call_llm_streaming @ 0x100665310 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::voice::llm::call_llm_streaming::h7ee9e798df91cf33(
         _QWORD *a1,

@@ -1,0 +1,3083 @@
+const __vite__mapDeps = (i, m = __vite__mapDeps, d = (m.f || (m.f = ["assets/index-DSDber3S.js", "assets/index-UqyngLFp.js", "assets/index-CO38ZUFF.css"]))) => i.map(i => d[i]);
+import {
+  c as I,
+  r as l,
+  u as de,
+  j as e,
+  P as ge,
+  a as Te,
+  b as rs,
+  d as ae,
+  e as re,
+  f as as,
+  g as E,
+  h as W,
+  D as G,
+  i as Z,
+  k as J,
+  l as ee,
+  m as te,
+  C as pe,
+  n as oe,
+  B as D,
+  T as kt,
+  L as Y,
+  S as At,
+  o as Nt,
+  p as Ve,
+  q as X,
+  t as T,
+  _ as ct,
+  s as H,
+  v as ce,
+  F as V,
+  w as os,
+  x as ie,
+  y as cs,
+  z as is,
+  A as it,
+  E as lt,
+  G as ls,
+  H as Et,
+  R as Tt,
+  I as ds,
+  J as ze,
+  K as Rt,
+  M as us,
+  N as hs,
+  O as ms,
+  Q as fs,
+  U as xs,
+  V as ps,
+  W as gs,
+  X as bs,
+  Y as Ce,
+  Z as vs,
+  $ as ws,
+  a0 as dt,
+  a1 as ys,
+  a2 as Ss,
+  a3 as js,
+  a4 as Cs,
+  a5 as ks,
+  a6 as As,
+  a7 as Ns,
+  a8 as Es
+} from "./index-UqyngLFp.js";
+import {
+  i as ut,
+  s as Ts
+} from "./auto-switch-BJRHUfJM.js";
+import {
+  u as Rs,
+  c as Ds,
+  S as ht,
+  a as mt,
+  b as ft,
+  d as xt,
+  e as We
+} from "./select-CNrS0cKk.js";
+import {
+  S as Ps
+} from "./switch-D-WVtNjE.js";
+import {
+  B as Be
+} from "./badge-BFikN3mw.js";
+import {
+  U as _s,
+  S as pt
+} from "./upload-vzF6miqH.js";
+import {
+  P as Os
+} from "./plus-CwG4uDrE.js";
+import {
+  P as Ls,
+  S as Ms
+} from "./shield-check-PzmsDtF9.js";
+import {
+  T as Is
+} from "./trash-2-DYbdQVHK.js";
+import {
+  Z as Fs
+} from "./zap-CfppkMBS.js";
+import {
+  R as Hs
+} from "./refresh-cw-DufHHbFb.js";
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Us = I("ArrowRightLeft", [
+  ["path", {
+    d: "m16 3 4 4-4 4",
+    key: "1x1c3m"
+  }],
+  ["path", {
+    d: "M20 7H4",
+    key: "zbl0bi"
+  }],
+  ["path", {
+    d: "m8 21-4-4 4-4",
+    key: "h9nckh"
+  }],
+  ["path", {
+    d: "M4 17h16",
+    key: "g4d7ey"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Ks = I("BadgeCheck", [
+  ["path", {
+    d: "M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z",
+    key: "3c2336"
+  }],
+  ["path", {
+    d: "m9 12 2 2 4-4",
+    key: "dzmm74"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const zs = I("CalendarClock", [
+  ["path", {
+    d: "M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5",
+    key: "1osxxc"
+  }],
+  ["path", {
+    d: "M16 2v4",
+    key: "4m81vk"
+  }],
+  ["path", {
+    d: "M8 2v4",
+    key: "1cmpym"
+  }],
+  ["path", {
+    d: "M3 10h5",
+    key: "r794hk"
+  }],
+  ["path", {
+    d: "M17.5 17.5 16 16.3V14",
+    key: "akvzfd"
+  }],
+  ["circle", {
+    cx: "16",
+    cy: "16",
+    r: "6",
+    key: "qoo3c4"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Ws = I("CircleUser", [
+  ["circle", {
+    cx: "12",
+    cy: "12",
+    r: "10",
+    key: "1mglay"
+  }],
+  ["circle", {
+    cx: "12",
+    cy: "10",
+    r: "3",
+    key: "ilqhr7"
+  }],
+  ["path", {
+    d: "M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662",
+    key: "154egf"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const gt = I("Crown", [
+  ["path", {
+    d: "M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z",
+    key: "1vdc57"
+  }],
+  ["path", {
+    d: "M5 21h14",
+    key: "11awu3"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const $s = I("Gem", [
+  ["path", {
+    d: "M6 3h12l4 6-10 13L2 9Z",
+    key: "1pcd5k"
+  }],
+  ["path", {
+    d: "M11 3 8 9l4 13 4-13-3-6",
+    key: "1fcu3u"
+  }],
+  ["path", {
+    d: "M2 9h20",
+    key: "16fsjt"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Bs = I("Grid3x3", [
+  ["rect", {
+    width: "18",
+    height: "18",
+    x: "3",
+    y: "3",
+    rx: "2",
+    key: "afitv7"
+  }],
+  ["path", {
+    d: "M3 9h18",
+    key: "1pudct"
+  }],
+  ["path", {
+    d: "M3 15h18",
+    key: "5xshup"
+  }],
+  ["path", {
+    d: "M9 3v18",
+    key: "fh3hqa"
+  }],
+  ["path", {
+    d: "M15 3v18",
+    key: "14nvp0"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Vs = I("KeyRound", [
+  ["path", {
+    d: "M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z",
+    key: "1s6t7t"
+  }],
+  ["circle", {
+    cx: "16.5",
+    cy: "7.5",
+    r: ".5",
+    fill: "currentColor",
+    key: "w0ekpg"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Ys = I("LayoutGrid", [
+  ["rect", {
+    width: "7",
+    height: "7",
+    x: "3",
+    y: "3",
+    rx: "1",
+    key: "1g98yp"
+  }],
+  ["rect", {
+    width: "7",
+    height: "7",
+    x: "14",
+    y: "3",
+    rx: "1",
+    key: "6d4xhi"
+  }],
+  ["rect", {
+    width: "7",
+    height: "7",
+    x: "14",
+    y: "14",
+    rx: "1",
+    key: "nxv5o0"
+  }],
+  ["rect", {
+    width: "7",
+    height: "7",
+    x: "3",
+    y: "14",
+    rx: "1",
+    key: "1bb6yr"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const qs = I("Settings", [
+  ["path", {
+    d: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z",
+    key: "1qme2f"
+  }],
+  ["circle", {
+    cx: "12",
+    cy: "12",
+    r: "3",
+    key: "1v7zrd"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Qs = I("Shield", [
+  ["path", {
+    d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+    key: "oel41y"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Xs = I("UserRound", [
+  ["circle", {
+    cx: "12",
+    cy: "8",
+    r: "5",
+    key: "1hypcn"
+  }],
+  ["path", {
+    d: "M20 21a8 8 0 0 0-16 0",
+    key: "rfgkzh"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const bt = I("Users", [
+  ["path", {
+    d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2",
+    key: "1yyitq"
+  }],
+  ["circle", {
+    cx: "9",
+    cy: "7",
+    r: "4",
+    key: "nufk8"
+  }],
+  ["path", {
+    d: "M22 21v-2a4 4 0 0 0-3-3.87",
+    key: "kshegd"
+  }],
+  ["path", {
+    d: "M16 3.13a4 4 0 0 1 0 7.75",
+    key: "1da9ce"
+  }]
+]);
+/**
+ * @license lucide-react v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Gs = I("WifiOff", [
+  ["path", {
+    d: "M12 20h.01",
+    key: "zekei9"
+  }],
+  ["path", {
+    d: "M8.5 16.429a5 5 0 0 1 7 0",
+    key: "1bycff"
+  }],
+  ["path", {
+    d: "M5 12.859a10 10 0 0 1 5.17-2.69",
+    key: "1dl1wf"
+  }],
+  ["path", {
+    d: "M19 12.859a10 10 0 0 0-2.007-1.523",
+    key: "4k23kn"
+  }],
+  ["path", {
+    d: "M2 8.82a15 15 0 0 1 4.177-2.643",
+    key: "1grhjp"
+  }],
+  ["path", {
+    d: "M22 8.82a15 15 0 0 0-11.288-3.764",
+    key: "z3jwby"
+  }],
+  ["path", {
+    d: "m2 2 20 20",
+    key: "1ooewy"
+  }]
+]);
+
+function Zs(t) {
+  return !!t && t.toLowerCase().includes("free")
+}
+
+function Js(t) {
+  return t != null && t.subscriptionExpiresAt && t.subscriptionExpiresAt * 1e3 < Date.now() ? t.subscriptionExpiresAt : null
+}
+
+function en(t, s, r) {
+  if ((t === "refreshReused" || t === "noRefreshToken") && s) {
+    if (Zs(s.plan)) return r("accounts.tokenStatus.deadFreeDesc");
+    const c = Js(s);
+    if (c) {
+      const i = new Date(c * 1e3).toLocaleDateString();
+      return r("accounts.tokenStatus.deadExpiredDesc", {
+        date: i
+      })
+    }
+  }
+  return r(`accounts.tokenStatus.${t}Desc`)
+}
+
+function tn(t, s, r) {
+  return en(t, s, r)
+}
+
+function sn(t, s) {
+  return l.useReducer((r, a) => s[r][a] ?? r, t)
+}
+var Ye = "ScrollArea",
+  [Dt] = rs(Ye),
+  [nn, U] = Dt(Ye),
+  Pt = l.forwardRef((t, s) => {
+    const {
+      __scopeScrollArea: r,
+      type: a = "hover",
+      dir: c,
+      scrollHideDelay: i = 600,
+      ...u
+    } = t, [n, d] = l.useState(null), [h, m] = l.useState(null), [b, f] = l.useState(null), [y, k] = l.useState(null), [g, j] = l.useState(null), [C, P] = l.useState(0), [w, N] = l.useState(0), [x, S] = l.useState(!1), [O, L] = l.useState(!1), R = de(s, K => d(K)), _ = Rs(c);
+    return e.jsx(nn, {
+      scope: r,
+      type: a,
+      dir: _,
+      scrollHideDelay: i,
+      scrollArea: n,
+      viewport: h,
+      onViewportChange: m,
+      content: b,
+      onContentChange: f,
+      scrollbarX: y,
+      onScrollbarXChange: k,
+      scrollbarXEnabled: x,
+      onScrollbarXEnabledChange: S,
+      scrollbarY: g,
+      onScrollbarYChange: j,
+      scrollbarYEnabled: O,
+      onScrollbarYEnabledChange: L,
+      onCornerWidthChange: P,
+      onCornerHeightChange: N,
+      children: e.jsx(ge.div, {
+        dir: _,
+        ...u,
+        ref: R,
+        style: {
+          position: "relative",
+          "--radix-scroll-area-corner-width": C + "px",
+          "--radix-scroll-area-corner-height": w + "px",
+          ...t.style
+        }
+      })
+    })
+  });
+Pt.displayName = Ye;
+var _t = "ScrollAreaViewport",
+  Ot = l.forwardRef((t, s) => {
+    const {
+      __scopeScrollArea: r,
+      children: a,
+      nonce: c,
+      ...i
+    } = t, u = U(_t, r), n = l.useRef(null), d = de(s, n, u.onViewportChange);
+    return e.jsxs(e.Fragment, {
+      children: [e.jsx("style", {
+        dangerouslySetInnerHTML: {
+          __html: "[data-radix-scroll-area-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-radix-scroll-area-viewport]::-webkit-scrollbar{display:none}"
+        },
+        nonce: c
+      }), e.jsx(ge.div, {
+        "data-radix-scroll-area-viewport": "",
+        ...i,
+        ref: d,
+        style: {
+          overflowX: u.scrollbarXEnabled ? "scroll" : "hidden",
+          overflowY: u.scrollbarYEnabled ? "scroll" : "hidden",
+          ...t.style
+        },
+        children: e.jsx("div", {
+          ref: u.onContentChange,
+          style: {
+            minWidth: "100%",
+            display: "table"
+          },
+          children: a
+        })
+      })]
+    })
+  });
+Ot.displayName = _t;
+var $ = "ScrollAreaScrollbar",
+  qe = l.forwardRef((t, s) => {
+    const {
+      forceMount: r,
+      ...a
+    } = t, c = U($, t.__scopeScrollArea), {
+      onScrollbarXEnabledChange: i,
+      onScrollbarYEnabledChange: u
+    } = c, n = t.orientation === "horizontal";
+    return l.useEffect(() => (n ? i(!0) : u(!0), () => {
+      n ? i(!1) : u(!1)
+    }), [n, i, u]), c.type === "hover" ? e.jsx(rn, {
+      ...a,
+      ref: s,
+      forceMount: r
+    }) : c.type === "scroll" ? e.jsx(an, {
+      ...a,
+      ref: s,
+      forceMount: r
+    }) : c.type === "auto" ? e.jsx(Lt, {
+      ...a,
+      ref: s,
+      forceMount: r
+    }) : c.type === "always" ? e.jsx(Qe, {
+      ...a,
+      ref: s
+    }) : null
+  });
+qe.displayName = $;
+var rn = l.forwardRef((t, s) => {
+    const {
+      forceMount: r,
+      ...a
+    } = t, c = U($, t.__scopeScrollArea), [i, u] = l.useState(!1);
+    return l.useEffect(() => {
+      const n = c.scrollArea;
+      let d = 0;
+      if (n) {
+        const h = () => {
+            window.clearTimeout(d), u(!0)
+          },
+          m = () => {
+            d = window.setTimeout(() => u(!1), c.scrollHideDelay)
+          };
+        return n.addEventListener("pointerenter", h), n.addEventListener("pointerleave", m), () => {
+          window.clearTimeout(d), n.removeEventListener("pointerenter", h), n.removeEventListener("pointerleave", m)
+        }
+      }
+    }, [c.scrollArea, c.scrollHideDelay]), e.jsx(Te, {
+      present: r || i,
+      children: e.jsx(Lt, {
+        "data-state": i ? "visible" : "hidden",
+        ...a,
+        ref: s
+      })
+    })
+  }),
+  an = l.forwardRef((t, s) => {
+    const {
+      forceMount: r,
+      ...a
+    } = t, c = U($, t.__scopeScrollArea), i = t.orientation === "horizontal", u = De(() => d("SCROLL_END"), 100), [n, d] = sn("hidden", {
+      hidden: {
+        SCROLL: "scrolling"
+      },
+      scrolling: {
+        SCROLL_END: "idle",
+        POINTER_ENTER: "interacting"
+      },
+      interacting: {
+        SCROLL: "interacting",
+        POINTER_LEAVE: "idle"
+      },
+      idle: {
+        HIDE: "hidden",
+        SCROLL: "scrolling",
+        POINTER_ENTER: "interacting"
+      }
+    });
+    return l.useEffect(() => {
+      if (n === "idle") {
+        const h = window.setTimeout(() => d("HIDE"), c.scrollHideDelay);
+        return () => window.clearTimeout(h)
+      }
+    }, [n, c.scrollHideDelay, d]), l.useEffect(() => {
+      const h = c.viewport,
+        m = i ? "scrollLeft" : "scrollTop";
+      if (h) {
+        let b = h[m];
+        const f = () => {
+          const y = h[m];
+          b !== y && (d("SCROLL"), u()), b = y
+        };
+        return h.addEventListener("scroll", f), () => h.removeEventListener("scroll", f)
+      }
+    }, [c.viewport, i, d, u]), e.jsx(Te, {
+      present: r || n !== "hidden",
+      children: e.jsx(Qe, {
+        "data-state": n === "hidden" ? "hidden" : "visible",
+        ...a,
+        ref: s,
+        onPointerEnter: ae(t.onPointerEnter, () => d("POINTER_ENTER")),
+        onPointerLeave: ae(t.onPointerLeave, () => d("POINTER_LEAVE"))
+      })
+    })
+  }),
+  Lt = l.forwardRef((t, s) => {
+    const r = U($, t.__scopeScrollArea),
+      {
+        forceMount: a,
+        ...c
+      } = t,
+      [i, u] = l.useState(!1),
+      n = t.orientation === "horizontal",
+      d = De(() => {
+        if (r.viewport) {
+          const h = r.viewport.offsetWidth < r.viewport.scrollWidth,
+            m = r.viewport.offsetHeight < r.viewport.scrollHeight;
+          u(n ? h : m)
+        }
+      }, 10);
+    return le(r.viewport, d), le(r.content, d), e.jsx(Te, {
+      present: a || i,
+      children: e.jsx(Qe, {
+        "data-state": i ? "visible" : "hidden",
+        ...c,
+        ref: s
+      })
+    })
+  }),
+  Qe = l.forwardRef((t, s) => {
+    const {
+      orientation: r = "vertical",
+      ...a
+    } = t, c = U($, t.__scopeScrollArea), i = l.useRef(null), u = l.useRef(0), [n, d] = l.useState({
+      content: 0,
+      viewport: 0,
+      scrollbar: {
+        size: 0,
+        paddingStart: 0,
+        paddingEnd: 0
+      }
+    }), h = Ut(n.viewport, n.content), m = {
+      ...a,
+      sizes: n,
+      onSizesChange: d,
+      hasThumb: h > 0 && h < 1,
+      onThumbChange: f => i.current = f,
+      onThumbPointerUp: () => u.current = 0,
+      onThumbPointerDown: f => u.current = f
+    };
+
+    function b(f, y) {
+      return hn(f, u.current, n, y)
+    }
+    return r === "horizontal" ? e.jsx(on, {
+      ...m,
+      ref: s,
+      onThumbPositionChange: () => {
+        if (c.viewport && i.current) {
+          const f = c.viewport.scrollLeft,
+            y = vt(f, n, c.dir);
+          i.current.style.transform = `translate3d(${y}px, 0, 0)`
+        }
+      },
+      onWheelScroll: f => {
+        c.viewport && (c.viewport.scrollLeft = f)
+      },
+      onDragScroll: f => {
+        c.viewport && (c.viewport.scrollLeft = b(f, c.dir))
+      }
+    }) : r === "vertical" ? e.jsx(cn, {
+      ...m,
+      ref: s,
+      onThumbPositionChange: () => {
+        if (c.viewport && i.current) {
+          const f = c.viewport.scrollTop,
+            y = vt(f, n);
+          i.current.style.transform = `translate3d(0, ${y}px, 0)`
+        }
+      },
+      onWheelScroll: f => {
+        c.viewport && (c.viewport.scrollTop = f)
+      },
+      onDragScroll: f => {
+        c.viewport && (c.viewport.scrollTop = b(f))
+      }
+    }) : null
+  }),
+  on = l.forwardRef((t, s) => {
+    const {
+      sizes: r,
+      onSizesChange: a,
+      ...c
+    } = t, i = U($, t.__scopeScrollArea), [u, n] = l.useState(), d = l.useRef(null), h = de(s, d, i.onScrollbarXChange);
+    return l.useEffect(() => {
+      d.current && n(getComputedStyle(d.current))
+    }, [d]), e.jsx(It, {
+      "data-orientation": "horizontal",
+      ...c,
+      ref: h,
+      sizes: r,
+      style: {
+        bottom: 0,
+        left: i.dir === "rtl" ? "var(--radix-scroll-area-corner-width)" : 0,
+        right: i.dir === "ltr" ? "var(--radix-scroll-area-corner-width)" : 0,
+        "--radix-scroll-area-thumb-width": Re(r) + "px",
+        ...t.style
+      },
+      onThumbPointerDown: m => t.onThumbPointerDown(m.x),
+      onDragScroll: m => t.onDragScroll(m.x),
+      onWheelScroll: (m, b) => {
+        if (i.viewport) {
+          const f = i.viewport.scrollLeft + m.deltaX;
+          t.onWheelScroll(f), zt(f, b) && m.preventDefault()
+        }
+      },
+      onResize: () => {
+        d.current && i.viewport && u && a({
+          content: i.viewport.scrollWidth,
+          viewport: i.viewport.offsetWidth,
+          scrollbar: {
+            size: d.current.clientWidth,
+            paddingStart: Ee(u.paddingLeft),
+            paddingEnd: Ee(u.paddingRight)
+          }
+        })
+      }
+    })
+  }),
+  cn = l.forwardRef((t, s) => {
+    const {
+      sizes: r,
+      onSizesChange: a,
+      ...c
+    } = t, i = U($, t.__scopeScrollArea), [u, n] = l.useState(), d = l.useRef(null), h = de(s, d, i.onScrollbarYChange);
+    return l.useEffect(() => {
+      d.current && n(getComputedStyle(d.current))
+    }, [d]), e.jsx(It, {
+      "data-orientation": "vertical",
+      ...c,
+      ref: h,
+      sizes: r,
+      style: {
+        top: 0,
+        right: i.dir === "ltr" ? 0 : void 0,
+        left: i.dir === "rtl" ? 0 : void 0,
+        bottom: "var(--radix-scroll-area-corner-height)",
+        "--radix-scroll-area-thumb-height": Re(r) + "px",
+        ...t.style
+      },
+      onThumbPointerDown: m => t.onThumbPointerDown(m.y),
+      onDragScroll: m => t.onDragScroll(m.y),
+      onWheelScroll: (m, b) => {
+        if (i.viewport) {
+          const f = i.viewport.scrollTop + m.deltaY;
+          t.onWheelScroll(f), zt(f, b) && m.preventDefault()
+        }
+      },
+      onResize: () => {
+        d.current && i.viewport && u && a({
+          content: i.viewport.scrollHeight,
+          viewport: i.viewport.offsetHeight,
+          scrollbar: {
+            size: d.current.clientHeight,
+            paddingStart: Ee(u.paddingTop),
+            paddingEnd: Ee(u.paddingBottom)
+          }
+        })
+      }
+    })
+  }),
+  [ln, Mt] = Dt($),
+  It = l.forwardRef((t, s) => {
+    const {
+      __scopeScrollArea: r,
+      sizes: a,
+      hasThumb: c,
+      onThumbChange: i,
+      onThumbPointerUp: u,
+      onThumbPointerDown: n,
+      onThumbPositionChange: d,
+      onDragScroll: h,
+      onWheelScroll: m,
+      onResize: b,
+      ...f
+    } = t, y = U($, r), [k, g] = l.useState(null), j = de(s, R => g(R)), C = l.useRef(null), P = l.useRef(""), w = y.viewport, N = a.content - a.viewport, x = re(m), S = re(d), O = De(b, 10);
+
+    function L(R) {
+      if (C.current) {
+        const _ = R.clientX - C.current.left,
+          K = R.clientY - C.current.top;
+        h({
+          x: _,
+          y: K
+        })
+      }
+    }
+    return l.useEffect(() => {
+      const R = _ => {
+        const K = _.target;
+        (k == null ? void 0 : k.contains(K)) && x(_, N)
+      };
+      return document.addEventListener("wheel", R, {
+        passive: !1
+      }), () => document.removeEventListener("wheel", R, {
+        passive: !1
+      })
+    }, [w, k, N, x]), l.useEffect(S, [a, S]), le(k, O), le(y.content, O), e.jsx(ln, {
+      scope: r,
+      scrollbar: k,
+      hasThumb: c,
+      onThumbChange: re(i),
+      onThumbPointerUp: re(u),
+      onThumbPositionChange: S,
+      onThumbPointerDown: re(n),
+      children: e.jsx(ge.div, {
+        ...f,
+        ref: j,
+        style: {
+          position: "absolute",
+          ...f.style
+        },
+        onPointerDown: ae(t.onPointerDown, R => {
+          R.button === 0 && (R.target.setPointerCapture(R.pointerId), C.current = k.getBoundingClientRect(), P.current = document.body.style.webkitUserSelect, document.body.style.webkitUserSelect = "none", y.viewport && (y.viewport.style.scrollBehavior = "auto"), L(R))
+        }),
+        onPointerMove: ae(t.onPointerMove, L),
+        onPointerUp: ae(t.onPointerUp, R => {
+          const _ = R.target;
+          _.hasPointerCapture(R.pointerId) && _.releasePointerCapture(R.pointerId), document.body.style.webkitUserSelect = P.current, y.viewport && (y.viewport.style.scrollBehavior = ""), C.current = null
+        })
+      })
+    })
+  }),
+  Ne = "ScrollAreaThumb",
+  Ft = l.forwardRef((t, s) => {
+    const {
+      forceMount: r,
+      ...a
+    } = t, c = Mt(Ne, t.__scopeScrollArea);
+    return e.jsx(Te, {
+      present: r || c.hasThumb,
+      children: e.jsx(dn, {
+        ref: s,
+        ...a
+      })
+    })
+  }),
+  dn = l.forwardRef((t, s) => {
+    const {
+      __scopeScrollArea: r,
+      style: a,
+      ...c
+    } = t, i = U(Ne, r), u = Mt(Ne, r), {
+      onThumbPositionChange: n
+    } = u, d = de(s, b => u.onThumbChange(b)), h = l.useRef(void 0), m = De(() => {
+      h.current && (h.current(), h.current = void 0)
+    }, 100);
+    return l.useEffect(() => {
+      const b = i.viewport;
+      if (b) {
+        const f = () => {
+          if (m(), !h.current) {
+            const y = mn(b, n);
+            h.current = y, n()
+          }
+        };
+        return n(), b.addEventListener("scroll", f), () => b.removeEventListener("scroll", f)
+      }
+    }, [i.viewport, m, n]), e.jsx(ge.div, {
+      "data-state": u.hasThumb ? "visible" : "hidden",
+      ...c,
+      ref: d,
+      style: {
+        width: "var(--radix-scroll-area-thumb-width)",
+        height: "var(--radix-scroll-area-thumb-height)",
+        ...a
+      },
+      onPointerDownCapture: ae(t.onPointerDownCapture, b => {
+        const y = b.target.getBoundingClientRect(),
+          k = b.clientX - y.left,
+          g = b.clientY - y.top;
+        u.onThumbPointerDown({
+          x: k,
+          y: g
+        })
+      }),
+      onPointerUp: ae(t.onPointerUp, u.onThumbPointerUp)
+    })
+  });
+Ft.displayName = Ne;
+var Xe = "ScrollAreaCorner",
+  Ht = l.forwardRef((t, s) => {
+    const r = U(Xe, t.__scopeScrollArea),
+      a = !!(r.scrollbarX && r.scrollbarY);
+    return r.type !== "scroll" && a ? e.jsx(un, {
+      ...t,
+      ref: s
+    }) : null
+  });
+Ht.displayName = Xe;
+var un = l.forwardRef((t, s) => {
+  const {
+    __scopeScrollArea: r,
+    ...a
+  } = t, c = U(Xe, r), [i, u] = l.useState(0), [n, d] = l.useState(0), h = !!(i && n);
+  return le(c.scrollbarX, () => {
+    var b;
+    const m = ((b = c.scrollbarX) == null ? void 0 : b.offsetHeight) || 0;
+    c.onCornerHeightChange(m), d(m)
+  }), le(c.scrollbarY, () => {
+    var b;
+    const m = ((b = c.scrollbarY) == null ? void 0 : b.offsetWidth) || 0;
+    c.onCornerWidthChange(m), u(m)
+  }), h ? e.jsx(ge.div, {
+    ...a,
+    ref: s,
+    style: {
+      width: i,
+      height: n,
+      position: "absolute",
+      right: c.dir === "ltr" ? 0 : void 0,
+      left: c.dir === "rtl" ? 0 : void 0,
+      bottom: 0,
+      ...t.style
+    }
+  }) : null
+});
+
+function Ee(t) {
+  return t ? parseInt(t, 10) : 0
+}
+
+function Ut(t, s) {
+  const r = t / s;
+  return isNaN(r) ? 0 : r
+}
+
+function Re(t) {
+  const s = Ut(t.viewport, t.content),
+    r = t.scrollbar.paddingStart + t.scrollbar.paddingEnd,
+    a = (t.scrollbar.size - r) * s;
+  return Math.max(a, 18)
+}
+
+function hn(t, s, r, a = "ltr") {
+  const c = Re(r),
+    i = c / 2,
+    u = s || i,
+    n = c - u,
+    d = r.scrollbar.paddingStart + u,
+    h = r.scrollbar.size - r.scrollbar.paddingEnd - n,
+    m = r.content - r.viewport,
+    b = a === "ltr" ? [0, m] : [m * -1, 0];
+  return Kt([d, h], b)(t)
+}
+
+function vt(t, s, r = "ltr") {
+  const a = Re(s),
+    c = s.scrollbar.paddingStart + s.scrollbar.paddingEnd,
+    i = s.scrollbar.size - c,
+    u = s.content - s.viewport,
+    n = i - a,
+    d = r === "ltr" ? [0, u] : [u * -1, 0],
+    h = Ds(t, d);
+  return Kt([0, u], [0, n])(h)
+}
+
+function Kt(t, s) {
+  return r => {
+    if (t[0] === t[1] || s[0] === s[1]) return s[0];
+    const a = (s[1] - s[0]) / (t[1] - t[0]);
+    return s[0] + a * (r - t[0])
+  }
+}
+
+function zt(t, s) {
+  return t > 0 && t < s
+}
+var mn = (t, s = () => {}) => {
+  let r = {
+      left: t.scrollLeft,
+      top: t.scrollTop
+    },
+    a = 0;
+  return (function c() {
+    const i = {
+        left: t.scrollLeft,
+        top: t.scrollTop
+      },
+      u = r.left !== i.left,
+      n = r.top !== i.top;
+    (u || n) && s(), r = i, a = window.requestAnimationFrame(c)
+  })(), () => window.cancelAnimationFrame(a)
+};
+
+function De(t, s) {
+  const r = re(t),
+    a = l.useRef(0);
+  return l.useEffect(() => () => window.clearTimeout(a.current), []), l.useCallback(() => {
+    window.clearTimeout(a.current), a.current = window.setTimeout(r, s)
+  }, [r, s])
+}
+
+function le(t, s) {
+  const r = re(s);
+  as(() => {
+    let a = 0;
+    if (t) {
+      const c = new ResizeObserver(() => {
+        cancelAnimationFrame(a), a = window.requestAnimationFrame(r)
+      });
+      return c.observe(t), () => {
+        window.cancelAnimationFrame(a), c.unobserve(t)
+      }
+    }
+  }, [t, r])
+}
+var Wt = Pt,
+  fn = Ot,
+  xn = Ht;
+const Ge = l.forwardRef(({
+  className: t,
+  children: s,
+  ...r
+}, a) => e.jsxs(Wt, {
+  ref: a,
+  className: E("relative overflow-hidden", t),
+  ...r,
+  children: [e.jsx(fn, {
+    className: "h-full w-full rounded-[inherit]",
+    children: s
+  }), e.jsx($t, {}), e.jsx(xn, {})]
+}));
+Ge.displayName = Wt.displayName;
+const $t = l.forwardRef(({
+  className: t,
+  orientation: s = "vertical",
+  ...r
+}, a) => e.jsx(qe, {
+  ref: a,
+  orientation: s,
+  className: E("flex touch-none select-none transition-colors", s === "vertical" && "h-full w-2.5 border-l border-l-transparent p-[1px]", s === "horizontal" && "h-2.5 flex-col border-t border-t-transparent p-[1px]", t),
+  ...r,
+  children: e.jsx(Ft, {
+    className: "relative flex-1 rounded-full bg-border"
+  })
+}));
+$t.displayName = qe.displayName;
+
+function pn({
+  open: t,
+  preview: s,
+  onOpenChange: r,
+  onConfirm: a,
+  busy: c
+}) {
+  const {
+    t: i
+  } = W(), [u, n] = l.useState(!1), [d, h] = l.useState(new Set), m = l.useMemo(() => s != null && s.exportedAt ? new Date(s.exportedAt * 1e3).toLocaleString() : null, [s == null ? void 0 : s.exportedAt]), b = l.useMemo(() => s ? s.entries.filter(w => !w.isActiveLocally).map(w => w.accountKey) : [], [s]), f = l.useCallback(() => {
+    if (!s) return;
+    const w = new Set;
+    for (const N of s.entries) N.isActiveLocally || N.conflict || w.add(N.accountKey);
+    h(w)
+  }, [s]);
+  l.useEffect(() => {
+    !t || !s || (n(!1), f())
+  }, [f, t, s]);
+  const y = w => {
+      c || (w || (n(!1), h(new Set)), r(w))
+    },
+    k = b.length > 0 && b.every(w => d.has(w)),
+    g = () => {
+      h(k ? new Set : new Set(b))
+    },
+    j = w => {
+      h(N => {
+        const x = new Set(N);
+        return x.has(w) ? x.delete(w) : x.add(w), x
+      })
+    },
+    C = d.size,
+    P = l.useMemo(() => s ? s.entries.some(w => w.conflict && !w.isActiveLocally && d.has(w.accountKey)) : !1, [s, d]);
+  return e.jsx(G, {
+    open: t,
+    onOpenChange: y,
+    children: e.jsxs(Z, {
+      className: "max-w-lg max-h-[85vh] flex flex-col",
+      children: [e.jsxs(J, {
+        className: "shrink-0",
+        children: [e.jsx(ee, {
+          children: i("accounts.io.previewTitle")
+        }), e.jsx(te, {
+          children: i("accounts.io.previewDesc")
+        })]
+      }), s ? e.jsxs("div", {
+        className: "flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto",
+        children: [e.jsxs("div", {
+          className: "rounded-[8px] border bg-muted/40 px-3 py-2 text-xs text-muted-foreground",
+          children: [e.jsxs("div", {
+            className: "flex items-center justify-between gap-2",
+            children: [e.jsx("span", {
+              children: i("accounts.io.previewCount", {
+                count: s.accountCount
+              })
+            }), e.jsx("span", {
+              className: "tabular-nums",
+              children: s.appVersion ? `v${s.appVersion}` : ""
+            })]
+          }), m && e.jsxs("div", {
+            className: "mt-1 flex items-center justify-between gap-2",
+            children: [e.jsx("span", {
+              children: i("accounts.io.exportedAt", {
+                time: m
+              })
+            }), s.exportedHostname && e.jsx("span", {
+              className: "truncate",
+              title: s.exportedHostname,
+              children: s.exportedHostname
+            })]
+          })]
+        }), e.jsx(Ge, {
+          className: "max-h-[40vh] min-h-[120px] rounded-[8px] border",
+          children: e.jsxs("div", {
+            className: "divide-y",
+            children: [s.entries.map(w => {
+              const N = w.isActiveLocally,
+                x = d.has(w.accountKey),
+                S = N ? i("accounts.io.activeLocally") : x ? w.conflict ? i("accounts.io.statusOverwrite") : i("accounts.io.statusNew") : i("accounts.io.statusSkip");
+              return e.jsxs("label", {
+                className: E("flex items-center gap-2 px-3 py-2", !N && "cursor-pointer hover:bg-muted/40"),
+                children: [e.jsx(pe, {
+                  checked: x,
+                  onCheckedChange: () => j(w.accountKey),
+                  disabled: c || N
+                }), e.jsxs("div", {
+                  className: "min-w-0 flex-1",
+                  children: [e.jsxs("div", {
+                    className: "flex items-center gap-2",
+                    children: [e.jsx("span", {
+                      className: "truncate text-[13px] font-medium",
+                      children: w.email
+                    }), N && e.jsx(Be, {
+                      variant: "outline",
+                      className: "h-5 shrink-0 px-1.5 py-0 text-[10px] font-medium leading-none",
+                      children: i("accounts.io.activeLocally")
+                    })]
+                  }), (w.workspaceName || w.profileName) && e.jsx("p", {
+                    className: "mt-0.5 truncate text-[11px] text-muted-foreground",
+                    children: w.profileName ? w.workspaceName ? `${w.profileName} · ${w.workspaceName}` : w.profileName : w.workspaceName
+                  })]
+                }), e.jsx(Be, {
+                  className: E("shrink-0 border-0 text-[10px] px-1.5 py-0", !x || N ? "bg-muted text-muted-foreground hover:bg-muted" : w.conflict ? "bg-amber-500/15 text-amber-600 hover:bg-amber-500/15 dark:text-amber-400" : "bg-emerald-500/15 text-emerald-600 hover:bg-emerald-500/15 dark:text-emerald-400"),
+                  children: S
+                })]
+              }, w.accountKey)
+            }), e.jsxs("label", {
+              className: "flex cursor-pointer items-center gap-2 px-3 py-2 bg-muted/30",
+              children: [e.jsx(pe, {
+                checked: k,
+                onCheckedChange: g,
+                disabled: c
+              }), e.jsx("span", {
+                className: "flex-1 text-xs font-medium text-muted-foreground",
+                children: i(k ? "accounts.io.deselectAll" : "accounts.io.selectAll")
+              }), e.jsxs("span", {
+                className: "text-[10px] text-muted-foreground tabular-nums",
+                children: [d.size, "/", s.accountCount]
+              })]
+            })]
+          })
+        }), P && e.jsxs("label", {
+          className: "flex cursor-pointer items-start gap-2 rounded-[8px] border bg-muted/30 px-3 py-2.5 text-xs",
+          children: [e.jsx(pe, {
+            checked: u,
+            onCheckedChange: w => n(w === !0),
+            disabled: c,
+            className: "mt-0.5"
+          }), e.jsxs("span", {
+            className: "flex-1 leading-snug",
+            children: [e.jsx("span", {
+              className: "font-medium text-foreground",
+              children: i("accounts.io.overwriteLabel", {
+                count: s.conflictCount
+              })
+            }), e.jsx("span", {
+              className: "ml-1 text-muted-foreground",
+              children: i("accounts.io.overwriteHint")
+            })]
+          })]
+        }), e.jsxs("div", {
+          className: "flex items-start gap-2 rounded-[8px] border border-destructive/20 bg-destructive/5 px-3 py-2 text-[11px] text-muted-foreground",
+          children: [e.jsx(At, {
+            className: "mt-0.5 h-3.5 w-3.5 shrink-0 text-destructive"
+          }), e.jsx("span", {
+            className: "leading-relaxed",
+            children: i("accounts.io.importWarning")
+          })]
+        })]
+      }) : e.jsx("div", {
+        className: "flex h-40 items-center justify-center",
+        children: e.jsx(Y, {
+          className: "h-5 w-5 animate-spin text-muted-foreground"
+        })
+      }), e.jsxs(oe, {
+        children: [e.jsx(D, {
+          variant: "outline",
+          onClick: () => y(!1),
+          disabled: c,
+          children: i("common.cancel")
+        }), e.jsxs(D, {
+          onClick: () => a(u, Array.from(d)),
+          disabled: c || !s || C <= 0,
+          children: [c ? e.jsx(Y, {
+            className: "h-4 w-4 animate-spin"
+          }) : e.jsx(Nt, {
+            className: "h-4 w-4"
+          }), C > 0 ? i("accounts.io.importAction", {
+            count: C
+          }) : i("accounts.io.nothingToImport")]
+        })]
+      })]
+    })
+  })
+}
+
+function gn({
+  open: t,
+  onOpenChange: s,
+  accounts: r,
+  onContinue: a
+}) {
+  const {
+    t: c
+  } = W(), i = l.useMemo(() => r.map(g => g.accountKey), [r]), [u, n] = l.useState(() => new Set(i)), d = l.useRef(!1), h = l.useRef(new Set(i));
+  l.useEffect(() => {
+    const g = new Set(i);
+    if (!t) {
+      d.current = !1, h.current = g;
+      return
+    }
+    if (!d.current) {
+      n(g), d.current = !0, h.current = g;
+      return
+    }
+    n(j => {
+      const C = new Set([...j].filter(P => g.has(P)));
+      for (const P of g) h.current.has(P) || C.add(P);
+      return C
+    }), h.current = g
+  }, [i, t]);
+  const m = l.useCallback(g => {
+      s(g)
+    }, [s]),
+    b = i.length > 0 && i.every(g => u.has(g)),
+    f = i.filter(g => u.has(g)),
+    y = () => {
+      n(b ? new Set : new Set(i))
+    },
+    k = g => {
+      n(j => {
+        const C = new Set(j);
+        return C.has(g) ? C.delete(g) : C.add(g), C
+      })
+    };
+  return e.jsx(G, {
+    open: t,
+    onOpenChange: m,
+    children: e.jsxs(Z, {
+      className: "max-w-lg",
+      children: [e.jsxs(J, {
+        children: [e.jsx(ee, {
+          children: c("accounts.io.selectExportTitle")
+        }), e.jsx(te, {
+          children: c("accounts.io.selectExportDesc")
+        })]
+      }), e.jsx(Ge, {
+        className: "max-h-[50vh] min-h-[120px] rounded-[8px] border",
+        children: e.jsxs("div", {
+          className: "divide-y",
+          children: [r.map(g => {
+            const j = g.profileName ? g.workspaceName ? `${g.profileName} · ${g.workspaceName}` : g.profileName : g.workspaceName ?? null;
+            return e.jsxs("label", {
+              className: "flex cursor-pointer items-center gap-2 px-3 py-2 hover:bg-muted/40",
+              children: [e.jsx(pe, {
+                checked: u.has(g.accountKey),
+                onCheckedChange: () => k(g.accountKey)
+              }), e.jsxs("div", {
+                className: "min-w-0 flex-1",
+                children: [e.jsx("span", {
+                  className: "block truncate text-[13px] font-medium",
+                  children: g.email
+                }), j && e.jsx("p", {
+                  className: "mt-0.5 truncate text-[11px] text-muted-foreground",
+                  children: j
+                })]
+              }), e.jsx(Be, {
+                variant: "outline",
+                className: "shrink-0 text-[10px] px-1.5 py-0",
+                children: g.plan
+              })]
+            }, g.accountKey)
+          }), e.jsxs("label", {
+            className: "flex cursor-pointer items-center gap-2 px-3 py-2 bg-muted/30",
+            children: [e.jsx(pe, {
+              checked: b,
+              onCheckedChange: y
+            }), e.jsx("span", {
+              className: "flex-1 text-xs font-medium text-muted-foreground",
+              children: c(b ? "accounts.io.deselectAll" : "accounts.io.selectAll")
+            }), e.jsxs("span", {
+              className: "text-[10px] text-muted-foreground tabular-nums",
+              children: [f.length, "/", i.length]
+            })]
+          })]
+        })
+      }), e.jsxs(oe, {
+        children: [e.jsx(D, {
+          variant: "outline",
+          onClick: () => m(!1),
+          children: c("common.cancel")
+        }), e.jsx(D, {
+          disabled: f.length === 0,
+          onClick: () => a(f),
+          children: c("accounts.io.continueExport")
+        })]
+      })]
+    })
+  })
+}
+
+function bn({
+  open: t,
+  onOpenChange: s,
+  onConfirm: r,
+  busy: a,
+  accountCount: c
+}) {
+  const {
+    t: i
+  } = W();
+  return e.jsx(G, {
+    open: t,
+    onOpenChange: u => !a && s(u),
+    children: e.jsxs(Z, {
+      className: "max-w-md",
+      children: [e.jsxs(J, {
+        children: [e.jsxs(ee, {
+          className: "flex items-center gap-2",
+          children: [e.jsx(kt, {
+            className: "h-5 w-5 text-amber-500"
+          }), i("accounts.io.exportConfirmTitle")]
+        }), e.jsx(te, {
+          className: "leading-relaxed",
+          children: i("accounts.io.exportConfirmDesc", {
+            count: c
+          })
+        })]
+      }), e.jsxs("ul", {
+        className: "space-y-1.5 rounded-[8px] border border-destructive/20 bg-destructive/5 px-3 py-2.5 text-xs leading-relaxed text-muted-foreground",
+        children: [e.jsxs("li", {
+          children: ["· ", i("accounts.io.exportRiskToken")]
+        }), e.jsxs("li", {
+          children: ["· ", i("accounts.io.exportRiskShare")]
+        }), e.jsxs("li", {
+          children: ["· ", i("accounts.io.exportRiskStorage")]
+        })]
+      }), e.jsxs(oe, {
+        children: [e.jsx(D, {
+          variant: "outline",
+          onClick: () => s(!1),
+          disabled: a,
+          children: i("common.cancel")
+        }), e.jsxs(D, {
+          onClick: r,
+          disabled: a,
+          children: [a && e.jsx(Y, {
+            className: "h-4 w-4 animate-spin"
+          }), i("accounts.io.exportContinue")]
+        })]
+      })]
+    })
+  })
+}
+
+function vn({
+  accountCount: t,
+  accounts: s
+}) {
+  const {
+    t: r
+  } = W(), a = Ve(), [c, i] = l.useState(!1), [u, n] = l.useState(null), [d, h] = l.useState(!1), [m, b] = l.useState(null), [f, y] = l.useState(!1), k = l.useCallback(x => {
+    n(x), i(!1), h(!0)
+  }, []), g = X({
+    mutationFn: async () => {
+      const {
+        save: x
+      } = await ct(async () => {
+        const {
+          save: L
+        } = await import("./index-DSDber3S.js");
+        return {
+          save: L
+        }
+      }, __vite__mapDeps([0, 1, 2])), S = wn(), O = await x({
+        title: r("accounts.io.saveDialogTitle"),
+        defaultPath: S,
+        filters: [{
+          name: "AiMaMi Accounts Backup",
+          extensions: ["json"]
+        }]
+      });
+      if (!O) throw new Error("CANCELLED");
+      return H.exportAccountsToFile(O, u ?? void 0)
+    },
+    onSuccess: x => {
+      h(!1), n(null);
+      const S = x.data;
+      T({
+        title: r("accounts.io.exportSuccess"),
+        description: $e(S.skipped.length > 0 ? r("accounts.io.exportSuccessDescPartial", {
+          count: S.accountCount,
+          skipped: S.skipped.length
+        }) : r("accounts.io.exportSuccessDesc", {
+          count: S.accountCount
+        }), x.warnings),
+        variant: S.skipped.length > 0 || x.warnings.length > 0 ? "warning" : "success"
+      })
+    },
+    onError: x => {
+      if (x instanceof Error && x.message === "CANCELLED") {
+        h(!1), n(null);
+        return
+      }
+      T({
+        title: r("accounts.io.exportFailed"),
+        description: x instanceof Error ? x.message : String(x),
+        variant: "destructive"
+      })
+    }
+  }), j = X({
+    mutationFn: async () => {
+      const {
+        open: x
+      } = await ct(async () => {
+        const {
+          open: L
+        } = await import("./index-DSDber3S.js");
+        return {
+          open: L
+        }
+      }, __vite__mapDeps([0, 1, 2])), S = await x({
+        title: r("accounts.io.openDialogTitle"),
+        multiple: !1,
+        directory: !1,
+        filters: [{
+          name: "AiMaMi Accounts Backup",
+          extensions: ["json"]
+        }]
+      });
+      if (!S || typeof S != "string") throw new Error("CANCELLED");
+      return (await H.previewAccountImport(S)).data
+    },
+    onSuccess: x => {
+      b(x), y(!0)
+    },
+    onError: x => {
+      x instanceof Error && x.message === "CANCELLED" || T({
+        title: r("accounts.io.previewFailed"),
+        description: x instanceof Error ? x.message : String(x),
+        variant: "destructive"
+      })
+    }
+  }), C = X({
+    mutationFn: async ({
+      filePath: x,
+      expectedContentSha256: S,
+      overwriteExisting: O,
+      selectedKeys: L
+    }) => H.importAccountsFromFile(x, S, O, L),
+    onMutate: async () => {
+      ie(), await ce(a)
+    },
+    onSuccess: x => {
+      y(!1), b(null), a.invalidateQueries({
+        queryKey: ["quota-history"]
+      });
+      const S = x.data;
+      if (S.importedCount <= 0) {
+        T({
+          title: r("accounts.io.importNothingTitle"),
+          description: $e(Sn(r, S.skipped), x.warnings),
+          variant: "warning"
+        });
+        return
+      }
+      T({
+        title: r("accounts.io.importSuccess"),
+        description: $e(yn(r, S), x.warnings),
+        variant: S.skipped.length > 0 || x.warnings.length > 0 ? "warning" : "success"
+      })
+    },
+    onError: x => {
+      T({
+        title: r("accounts.io.importFailed"),
+        description: x instanceof Error ? x.message : String(x),
+        variant: "destructive"
+      })
+    }
+  }), P = l.useCallback((x, S) => {
+    m && C.mutate({
+      filePath: m.filePath,
+      expectedContentSha256: m.contentSha256,
+      overwriteExisting: x,
+      selectedKeys: S
+    })
+  }, [C, m]), w = j.isPending || C.isPending, N = g.isPending;
+  return e.jsxs(e.Fragment, {
+    children: [e.jsx(V.Trigger, {
+      content: r("accounts.io.importAccount"),
+      children: e.jsx(D, {
+        variant: "outline",
+        size: "icon-sm",
+        onClick: () => j.mutate(),
+        disabled: w,
+        "aria-busy": w,
+        "aria-label": r("accounts.io.importAccount"),
+        children: w ? e.jsx(Y, {
+          className: "h-3.5 w-3.5 animate-spin"
+        }) : e.jsx(_s, {
+          className: "h-3.5 w-3.5"
+        })
+      })
+    }), e.jsx(V.Trigger, {
+      content: t <= 0 ? r("accounts.io.exportEmptyHint") : r("accounts.io.exportAccount"),
+      children: e.jsx(D, {
+        variant: "outline",
+        size: "icon-sm",
+        onClick: () => i(!0),
+        disabled: N || t <= 0,
+        "aria-busy": N,
+        "aria-label": r("accounts.io.exportAccount"),
+        children: N ? e.jsx(Y, {
+          className: "h-3.5 w-3.5 animate-spin"
+        }) : e.jsx(os, {
+          className: "h-3.5 w-3.5"
+        })
+      })
+    }), e.jsx(gn, {
+      open: c,
+      onOpenChange: i,
+      accounts: s,
+      onContinue: k
+    }), e.jsx(bn, {
+      open: d,
+      onOpenChange: x => {
+        h(x), x || n(null)
+      },
+      onConfirm: () => g.mutate(),
+      busy: g.isPending,
+      accountCount: (u == null ? void 0 : u.length) ?? t
+    }), e.jsx(pn, {
+      open: f,
+      preview: m,
+      onOpenChange: x => {
+        y(x), x || b(null)
+      },
+      onConfirm: P,
+      busy: C.isPending
+    })]
+  })
+}
+
+function wn() {
+  const t = new Date,
+    s = a => a.toString().padStart(2, "0");
+  return `aimami-accounts-${`${t.getFullYear()}-${s(t.getMonth()+1)}-${s(t.getDate())}-${s(t.getHours())}${s(t.getMinutes())}`}.aimami-accounts.json`
+}
+
+function yn(t, s) {
+  return s.skipped.length === 0 ? t("accounts.io.importSuccessDesc", {
+    count: s.importedCount
+  }) : t("accounts.io.importSuccessDescPartial", {
+    count: s.importedCount,
+    skipped: s.skipped.length,
+    reason: Bt(t, s.skipped)
+  })
+}
+
+function Sn(t, s) {
+  return s.length === 0 ? t("accounts.io.importNothingDescEmpty") : t("accounts.io.importNothingDesc", {
+    skipped: s.length,
+    reason: Bt(t, s)
+  })
+}
+
+function Bt(t, s) {
+  const r = new Map;
+  for (const a of s) {
+    const c = jn(a.reason);
+    r.set(c, (r.get(c) ?? 0) + 1)
+  }
+  return [...r.entries()].map(([a, c]) => `${t(`accounts.io.skipReason.${a}`)} × ${c}`).join("，")
+}
+
+function $e(t, s) {
+  if (!s || s.length === 0) return t;
+  const r = s.map(a => `· ${a.message}`).join(`
+`);
+  return `${t}
+${r}`
+}
+
+function jn(t) {
+  var r, a;
+  const s = ((a = (r = t.split(":")[0]) == null ? void 0 : r.split(" ")[0]) == null ? void 0 : a.trim()) ?? "";
+  switch (s) {
+    case "ACCOUNT_MISSING_TOKEN":
+    case "UNSUPPORTED_AUTH_MODE":
+    case "INVALID_ACCOUNT_KEY":
+    case "ACCOUNT_BUSY":
+    case "LIVE_AUTH_BUSY":
+    case "ACCOUNT_STATE_BUSY":
+    case "UNSAFE_SNAPSHOT":
+    case "CONFLICT_SKIPPED":
+    case "ACTIVE_ACCOUNT_PROTECTED":
+    case "ACCOUNT_KEY_MISMATCH":
+    case "AUTH_SNAPSHOT_FAILED":
+    case "SERIALIZE_FAILED":
+    case "READ_EXISTING_FAILED":
+    case "INVALID_EXISTING_SNAPSHOT":
+    case "WRITE_FAILED":
+      return s;
+    default:
+      return "UNKNOWN"
+  }
+}
+let wt = !1;
+const yt = "aimami:accounts-card-density",
+  St = "aimami:accounts-privacy-mode",
+  Vt = "aimami:accounts-card-order";
+
+function Cn() {
+  try {
+    const t = localStorage.getItem(Vt);
+    if (!t) return [];
+    const s = JSON.parse(t);
+    return Array.isArray(s) ? s.filter(r => typeof r == "string") : []
+  } catch {
+    return []
+  }
+}
+
+function jt(t) {
+  try {
+    localStorage.setItem(Vt, JSON.stringify(t))
+  } catch {}
+}
+const kn = ["free", "plus", "pro5x", "pro20x", "team", "business", "enterprise", "edu"];
+
+function An(t) {
+  const s = t.indexOf("@");
+  if (s < 0) return "***";
+  const r = t.slice(0, s),
+    a = t.slice(s + 1),
+    c = a.lastIndexOf("."),
+    i = c > 0 ? a.slice(0, c) : a,
+    u = c > 0 ? a.slice(c) : "",
+    n = (d, h) => d.length <= h ? d : d.slice(0, Math.max(1, Math.ceil(h / 2))) + "***" + d.slice(-Math.max(1, Math.floor(h / 2)));
+  return `${n(r,4)}@${n(i,2)}${u}`
+}
+const Nn = 1200;
+
+function Jn({
+  snapshotEnvelope: t,
+  refreshLive: s,
+  usageStatusReady: r,
+  onProxySavedRefresh: a,
+  onRefreshUsageStatus: c,
+  refreshInterval: i,
+  setRefreshInterval: u
+}) {
+  var ot;
+  const {
+    t: n
+  } = W(), d = Ve(), [h, m] = l.useState(""), [b, f] = l.useState("all"), [y, k] = l.useState(() => {
+    try {
+      return localStorage.getItem(yt) === "comfortable" ? "comfortable" : "compact"
+    } catch {
+      return "compact"
+    }
+  }), [g, j] = l.useState(() => {
+    try {
+      return localStorage.getItem(St) === "1"
+    } catch {
+      return !1
+    }
+  }), [C, P] = l.useState(() => Cn()), [w, N] = l.useState(null), [x, S] = l.useState(null), [O, L] = l.useState(!1), [R, _] = l.useState(!1), [K, B] = l.useState(!1), [ue, be] = l.useState(!1), [q, ve] = l.useState(15), [Pe, Ze] = l.useState(10), [qt, Je] = l.useState(!1), _e = cs({
+    minVisibleMs: 800
+  }), et = l.useRef(!1), [Oe, tt] = l.useState(new Set), we = _e.busy, he = (t == null ? void 0 : t.data.accounts) ?? [], ye = l.useMemo(() => {
+    const o = new Map(C.map((v, p) => [v, p]));
+    return [...he].sort((v, p) => {
+      if (v.isActive !== p.isActive) return v.isActive ? -1 : 1;
+      if (v.isActive && p.isActive) return v.email.localeCompare(p.email);
+      const A = o.has(v.accountKey) ? o.get(v.accountKey) : 1 / 0,
+        F = o.has(p.accountKey) ? o.get(p.accountKey) : 1 / 0;
+      return A !== F ? A - F : v.email.localeCompare(p.email)
+    })
+  }, [he, C]), se = l.useMemo(() => ye.filter(o => {
+    var A, F, ne;
+    const v = !h || o.email.toLowerCase().includes(h.toLowerCase()) || o.alias.toLowerCase().includes(h.toLowerCase()) || (((A = o.accountName) == null ? void 0 : A.toLowerCase().includes(h.toLowerCase())) ?? !1) || (((F = o.workspaceName) == null ? void 0 : F.toLowerCase().includes(h.toLowerCase())) ?? !1) || (((ne = o.profileName) == null ? void 0 : ne.toLowerCase().includes(h.toLowerCase())) ?? !1),
+      p = b === "all" || o.plan === b;
+    return v && p
+  }), [ye, h, b]), Q = l.useMemo(() => se.find(o => o.isActive), [se]), Qt = l.useMemo(() => se.map(o => o.accountKey), [se]), Le = r ? ((ot = t == null ? void 0 : t.data.status.apiConnectivity) == null ? void 0 : ot.usageStatus) ?? "unknown" : "unknown", M = t == null ? void 0 : t.data.status.autoSwitch, me = (M == null ? void 0 : M.enabled) ?? !1, st = o => {
+    be(o), ve((M == null ? void 0 : M.threshold5hPercent) ?? 15), Ze((M == null ? void 0 : M.thresholdWeeklyPercent) ?? 10), B(!0)
+  }, Me = is(), Se = it({
+    queryKey: ["has-notch"],
+    queryFn: () => H.hasNotch(),
+    staleTime: 1 / 0,
+    enabled: Me
+  }).data ?? !1, Xt = it({
+    queryKey: ["hotspot-enabled"],
+    queryFn: () => H.getHotspotEnabled(),
+    enabled: Me && Se
+  }), nt = X({
+    mutationFn: o => H.setHotspotEnabled(o),
+    onSuccess: (o, v) => {
+      d.invalidateQueries({
+        queryKey: ["hotspot-enabled"]
+      }), T({
+        title: n(v ? "settings.hotspotEnabled" : "settings.hotspotDisabled"),
+        description: n(v ? "settings.hotspotEnabledDesc" : "settings.hotspotDisabledDesc"),
+        variant: "success"
+      })
+    }
+  }), Ie = X({
+    mutationFn: o => H.switchAccountAndRestartCodex(o),
+    onMutate: async () => {
+      ie(), await ce(d)
+    },
+    onSuccess: o => {
+      N(null);
+      const v = o.warnings.find(A => A.code === "CLIENT_RESTART_FAILED" || A.code === "CLIENT_RESTART_DEFERRED"),
+        p = v ? [v, ...o.warnings.filter(A => A !== v)] : o.warnings;
+      T({
+        title: n("accounts.switched"),
+        description: p.length > 0 ? p.map(A => A.message).join(`
+`) : n("accounts.switchedDesc", {
+          email: o.data.activeAccount.email
+        }),
+        variant: p.length > 0 ? "warning" : "success"
+      })
+    },
+    onError: o => {
+      N(null), T({
+        title: n("common.error"),
+        description: Ce(o, n("accounts.switchErrorDesc")),
+        variant: "destructive"
+      })
+    }
+  }), Fe = X({
+    mutationFn: o => H.removeAccounts(o),
+    onMutate: async () => {
+      ie(), await ce(d)
+    },
+    onSuccess: o => {
+      S(null);
+      const v = new Set(o.data.removedAccountKeys);
+      P(p => {
+        const A = p.filter(F => !v.has(F));
+        return jt(A), A
+      }), T({
+        title: n("accounts.removeSuccessTitle"),
+        description: o.warnings.length > 0 ? o.warnings.map(p => p.message).join(`
+`) : n("accounts.removeSuccessDesc"),
+        variant: o.warnings.length > 0 ? "warning" : "success"
+      })
+    },
+    onError: o => {
+      S(null), T({
+        title: n("common.error"),
+        description: Ce(o, n("accounts.removeFailed")),
+        variant: "destructive"
+      })
+    }
+  }), He = X({
+    mutationFn: () => H.setAutoSwitch(!1),
+    onMutate: async () => {
+      ie(), await ce(d);
+      const o = d.getQueryData(vs),
+        v = d.getQueryData(ws);
+      return dt(d, p => ({
+        ...p,
+        data: {
+          ...p.data,
+          status: {
+            ...p.data.status,
+            autoSwitch: {
+              ...p.data.status.autoSwitch,
+              enabled: !1
+            }
+          }
+        }
+      })), {
+        previous: o,
+        previousProgressive: v
+      }
+    },
+    onError: (o, v, p) => {
+      bs(d, {
+        display: p == null ? void 0 : p.previous,
+        progressive: p == null ? void 0 : p.previousProgressive
+      }), T({
+        title: n("common.error"),
+        description: Ce(o, n("common.toastErrorGenericDesc")),
+        variant: "destructive"
+      })
+    },
+    onSuccess: o => {
+      T({
+        title: n("settings.autoSwitchDisabled"),
+        description: o.warnings.length > 0 ? o.warnings.map(v => v.message).join(`
+`) : n("settings.autoSwitchDisabledDesc"),
+        variant: o.warnings.length > 0 ? "warning" : "success"
+      })
+    }
+  }), je = X({
+    mutationFn: Ts,
+    onMutate: async () => {
+      ie(), await ce(d)
+    },
+    onSuccess: (o, v) => {
+      B(!1), dt(d, A => ({
+        ...A,
+        data: {
+          ...A.data,
+          status: {
+            ...A.data.status,
+            autoSwitch: o.data.autoSwitch
+          }
+        }
+      }));
+      const p = o.data.autoSwitch.enabled;
+      T({
+        title: v.enable ? n("settings.autoSwitchEnabled") : n("settings.thresholdSavedTitle"),
+        description: o.warnings.length > 0 ? o.warnings.map(A => A.message).join(`
+`) : n(p ? "settings.autoSwitchEnabledDesc" : "settings.thresholdSavedDesc"),
+        variant: o.warnings.length > 0 ? "warning" : "success"
+      })
+    },
+    onError: o => {
+      T({
+        title: n("common.error"),
+        description: Ce(o, n("common.toastErrorGenericDesc")),
+        variant: "destructive"
+      })
+    }
+  }), rt = l.useCallback((o, v, p) => {
+    navigator.clipboard.writeText(o).then(() => {
+      T({
+        title: v,
+        description: p,
+        variant: "default"
+      })
+    }).catch(() => {
+      T({
+        title: n("accounts.copyFailed"),
+        description: n("accounts.copyFailedDesc"),
+        variant: "destructive"
+      })
+    })
+  }, [n]), Gt = l.useCallback(o => rt(o, n("accounts.copiedEmail"), n("accounts.copiedEmailDesc")), [rt, n]), Zt = l.useCallback(async o => {
+    if (!Oe.has(o)) {
+      tt(v => new Set(v).add(o));
+      try {
+        const v = await H.refreshSingleAccountUsage(o);
+        T({
+          title: n("accounts.refreshQuotaSuccess"),
+          description: v.warnings.length > 0 ? v.warnings.map(p => p.message).join(`
+`) : n("accounts.refreshQuotaSuccessDesc"),
+          variant: v.warnings.length > 0 ? "warning" : "default"
+        })
+      } catch (v) {
+        const p = v instanceof Error ? v.message : String(v ?? ""),
+          A = p.includes("Token refresh failed") ? n("accounts.refreshQuotaFailedToken") : p.includes("Usage fetch failed") ? n("accounts.refreshQuotaFailedNetwork") : p.includes("not found") ? n("accounts.refreshQuotaFailedNotFound") : n("accounts.refreshQuotaFailedGeneric");
+        T({
+          title: n("accounts.refreshQuotaFailed"),
+          description: A,
+          variant: "destructive"
+        })
+      } finally {
+        tt(v => {
+          const p = new Set(v);
+          return p.delete(o), p
+        })
+      }
+    }
+  }, [n, Oe]), Jt = l.useCallback(o => {
+    const v = Q == null ? void 0 : Q.accountKey;
+    return v ? lt({
+      ...o,
+      droppableContainers: o.droppableContainers.filter(p => p.id !== v)
+    }) : lt(o)
+  }, [Q]), es = l.useCallback(o => !o.isSorting && o.wasDragging && o.previousItems !== o.items ? !1 : ls(o), []), ts = l.useCallback(o => {
+    const v = Q == null ? void 0 : Q.accountKey,
+      p = o.filter(z => z !== v),
+      A = ye.filter(z => !z.isActive).map(z => z.accountKey),
+      F = new Set(p);
+    let ne = 0;
+    const xe = A.map(z => F.has(z) ? p[ne++] : z);
+    P(xe), jt(xe)
+  }, [ye, Q]), fe = l.useCallback(async o => {
+    await _e.run(async () => {
+      try {
+        let v;
+        try {
+          v = await s({
+            forceMetadata: (o == null ? void 0 : o.forceMetadata) ?? !(o != null && o.silent)
+          })
+        } catch (p) {
+          if (o != null && o.silent) await new Promise(A => setTimeout(A, Nn)), v = await s({
+            forceMetadata: !1
+          });
+          else throw p
+        }
+        if (d.invalidateQueries({
+            queryKey: ["quota-history"]
+          }), !(o != null && o.silent)) {
+          const p = v.data.refreshReport,
+            A = v.data.accounts.length,
+            F = v.data.accounts.filter(Ke => Ke.usageSource === "api").length,
+            ne = p ? p.token.failed + p.metadata.failed + p.usage.failed : 0,
+            xe = p ? n("accounts.refreshSuccessDescReport", {
+              tokenSucceeded: p.token.succeeded,
+              tokenAttempted: p.token.attempted,
+              metadataSucceeded: p.metadata.succeeded,
+              metadataAttempted: p.metadata.attempted,
+              usageSucceeded: p.usage.succeeded,
+              usageAttempted: p.usage.attempted
+            }) : F > 0 ? n("accounts.refreshSuccessDescApi", {
+              count: A,
+              apiCount: F
+            }) : n("accounts.refreshSuccessDescLocal", {
+              count: A
+            }),
+            z = v.warnings.map(Ke => Ke.message).join(`
+`);
+          T({
+            title: ne > 0 || v.warnings.length > 0 ? n("accounts.refreshPartial") : n("accounts.refreshSuccess"),
+            description: z ? `${xe}
+${z}` : xe,
+            variant: ne > 0 || v.warnings.length > 0 ? "warning" : "success"
+          })
+        }
+      } catch {
+        o != null && o.silent || T({
+          title: n("accounts.refreshFailed"),
+          description: n("accounts.refreshFailedDesc"),
+          variant: "destructive"
+        })
+      }
+    })
+  }, [d, _e, s, n]), ss = l.useCallback(async () => {
+    await fe()
+  }, [fe]), [Ue, at] = l.useState(!1), ns = l.useCallback(async () => {
+    if (!(!c || Ue)) {
+      at(!0);
+      try {
+        await c()
+      } finally {
+        at(!1)
+      }
+    }
+  }, [c, Ue]);
+  return l.useEffect(() => {
+    wt || et.current || (wt = !0, et.current = !0, fe({
+      silent: !0,
+      forceMetadata: !0
+    }))
+  }, [fe]), e.jsxs("div", {
+    className: "flex h-full min-h-0 flex-col",
+    children: [e.jsxs("div", {
+      className: "flex items-center justify-between pb-4",
+      children: [e.jsx("p", {
+        className: "text-sm text-muted-foreground",
+        children: n("accounts.description")
+      }), e.jsxs("div", {
+        className: "flex items-center gap-2",
+        children: [e.jsxs(D, {
+          variant: "outline",
+          size: "sm",
+          onClick: () => L(!0),
+          children: [e.jsx(Os, {
+            className: "h-3.5 w-3.5"
+          }), n("accounts.addAccount")]
+        }), e.jsx(D, {
+          size: "icon-sm",
+          onClick: ss,
+          disabled: we,
+          "aria-busy": we,
+          title: n(we ? "common.refreshing" : "common.refresh"),
+          children: e.jsx(Et, {
+            busy: we,
+            idleIcon: e.jsx(Tt, {
+              className: "h-3.5 w-3.5"
+            })
+          })
+        })]
+      })]
+    }), e.jsxs("div", {
+      className: "flex items-center gap-2.5 pb-4",
+      children: [e.jsxs("div", {
+        className: "relative max-w-[220px] flex-1",
+        children: [e.jsx(ds, {
+          className: "absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground"
+        }), e.jsx(ze, {
+          value: h,
+          onChange: o => m(o.target.value),
+          placeholder: n("accounts.search"),
+          className: "h-8 rounded-[8px] pl-8 text-xs"
+        })]
+      }), e.jsxs(ht, {
+        value: b,
+        onValueChange: f,
+        children: [e.jsx(mt, {
+          className: "h-8 w-[130px] rounded-[8px] text-xs",
+          children: e.jsx(ft, {})
+        }), e.jsxs(xt, {
+          children: [e.jsx(We, {
+            value: "all",
+            children: n("accounts.allPlans")
+          }), kn.map(o => e.jsx(We, {
+            value: o,
+            children: Rt(o)
+          }, o))]
+        })]
+      }), e.jsx(vn, {
+        accountCount: he.length,
+        accounts: he.map(o => ({
+          accountKey: o.accountKey,
+          email: o.email,
+          plan: o.plan,
+          profileName: o.profileName,
+          workspaceName: o.workspaceName
+        }))
+      }), e.jsx(V.Trigger, {
+        content: n(g ? "accounts.privacyOff" : "accounts.privacyOn"),
+        children: e.jsx(D, {
+          variant: "outline",
+          size: "icon-sm",
+          onClick: () => {
+            const o = !g;
+            j(o);
+            try {
+              localStorage.setItem(St, o ? "1" : "0")
+            } catch {}
+          },
+          "aria-pressed": g,
+          "aria-label": n(g ? "accounts.privacyOff" : "accounts.privacyOn"),
+          children: g ? e.jsx(us, {
+            className: "h-3.5 w-3.5"
+          }) : e.jsx(hs, {
+            className: "h-3.5 w-3.5"
+          })
+        })
+      }), e.jsx(V.Trigger, {
+        content: me ? `${n("accounts.autoSwitchOn")}  ·  5h ≤${(M==null?void 0:M.threshold5hPercent)??15}%  ·  1w ≤${(M==null?void 0:M.thresholdWeeklyPercent)??10}%` : n("accounts.autoSwitchOff"),
+        description: n(me ? "accounts.autoSwitchClickToConfig" : "accounts.autoSwitchClickToEnable"),
+        children: e.jsx(D, {
+          variant: me ? "default" : "outline",
+          size: "icon-sm",
+          onClick: () => {
+            st(!me)
+          },
+          disabled: He.isPending || je.isPending,
+          "aria-label": n("accounts.autoSwitchLabel"),
+          children: e.jsx(Us, {
+            className: "h-3.5 w-3.5"
+          })
+        })
+      }), e.jsx(V.Trigger, {
+        content: n("accounts.quickSettings"),
+        children: e.jsx(D, {
+          variant: "outline",
+          size: "icon-sm",
+          onClick: () => Je(!0),
+          "aria-label": n("accounts.quickSettings"),
+          children: e.jsx(qs, {
+            className: "h-3.5 w-3.5"
+          })
+        })
+      }), e.jsx("div", {
+        className: "flex shrink-0 items-center rounded-full bg-muted p-0.5",
+        children: [{
+          value: "comfortable",
+          icon: Ys,
+          title: n("accounts.densityComfortable")
+        }, {
+          value: "compact",
+          icon: Bs,
+          title: n("accounts.densityCompact")
+        }].map(({
+          value: o,
+          icon: v,
+          title: p
+        }) => e.jsx(V.Trigger, {
+          content: p,
+          children: e.jsx("button", {
+            type: "button",
+            onClick: () => {
+              k(o);
+              try {
+                localStorage.setItem(yt, o)
+              } catch {}
+            },
+            "aria-pressed": y === o,
+            className: E("flex h-7 w-7 items-center justify-center rounded-full transition-colors", y === o ? "bg-white text-foreground shadow-sm dark:bg-white/10 dark:text-white" : "text-muted-foreground hover:text-foreground"),
+            children: e.jsx(v, {
+              className: "h-3.5 w-3.5"
+            })
+          })
+        }, o))
+      }), e.jsxs("div", {
+        className: "ml-auto flex min-w-0 shrink-0 items-center gap-2",
+        children: [e.jsx(En, {
+          timestamp: t == null ? void 0 : t.data.status.lastScanAt
+        }), e.jsx(ms, {
+          status: Le,
+          onRefresh: c ? ns : void 0,
+          refreshing: Ue,
+          onConfigureProxy: () => _(!0),
+          className: "shrink-0 text-xs font-normal"
+        })]
+      })]
+    }), e.jsx("div", {
+      className: "min-h-0 flex-1 overflow-y-auto overscroll-y-contain pb-4",
+      children: se.length === 0 ? e.jsxs("div", {
+        className: "flex h-full flex-col items-center justify-center rounded-2xl border border-dashed",
+        children: [e.jsx(Ws, {
+          className: "h-12 w-12 text-muted-foreground/30"
+        }), e.jsx("p", {
+          className: "mt-3 text-sm text-muted-foreground",
+          children: he.length === 0 ? n("accounts.empty") : n("accounts.noSelection")
+        })]
+      }) : e.jsx(fs, {
+        ids: Qt,
+        onReorder: ts,
+        strategy: xs,
+        collisionDetection: Jt,
+        renderOverlay: o => {
+          const v = se.find(p => p.accountKey === o);
+          return v ? e.jsx(Yt, {
+            account: v,
+            apiReachability: Le,
+            compact: y === "compact",
+            privacyMode: g,
+            onSwitch: () => {},
+            onRemove: () => {},
+            onCopyEmail: () => {},
+            onConfigureProxy: () => {},
+            onRefreshQuota: () => {},
+            overlay: !0
+          }) : null
+        },
+        children: e.jsx("div", {
+          className: E("grid gap-4 duration-200 animate-in fade-in-0 zoom-in-95", y === "compact" ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"),
+          children: se.map(o => e.jsx(Tn, {
+            account: o,
+            pinned: o.isActive,
+            apiReachability: Le,
+            compact: y === "compact",
+            privacyMode: g,
+            reorderLabel: n("accounts.reorderHandle"),
+            animateLayoutChanges: es,
+            onSwitch: () => N(o),
+            onRemove: () => S(o),
+            onCopyEmail: () => Gt(o.email),
+            onConfigureProxy: () => _(!0),
+            onRefreshQuota: () => Zt(o.accountKey),
+            refreshingQuota: Oe.has(o.accountKey)
+          }, o.accountKey))
+        }, y)
+      })
+    }), e.jsx(G, {
+      open: w !== null,
+      onOpenChange: o => !o && N(null),
+      children: e.jsxs(Z, {
+        className: "max-w-sm",
+        children: [e.jsxs(J, {
+          children: [e.jsx(ee, {
+            children: n("accounts.switchConfirmTitle")
+          }), e.jsx(te, {
+            children: n("accounts.switchConfirmDesc", {
+              email: (w == null ? void 0 : w.email) ?? ""
+            })
+          })]
+        }), e.jsxs(oe, {
+          children: [e.jsx(D, {
+            variant: "outline",
+            onClick: () => N(null),
+            children: n("common.cancel")
+          }), e.jsxs(D, {
+            onClick: () => w && Ie.mutate(w.accountKey),
+            disabled: Ie.isPending,
+            children: [Ie.isPending && e.jsx(Y, {
+              className: "h-4 w-4 animate-spin"
+            }), n("accounts.switchAndRestart")]
+          })]
+        })]
+      })
+    }), e.jsx(G, {
+      open: x !== null,
+      onOpenChange: o => !o && S(null),
+      children: e.jsxs(Z, {
+        className: "max-w-sm",
+        children: [e.jsxs(J, {
+          children: [e.jsx(ee, {
+            children: n("accounts.removeConfirmTitle")
+          }), e.jsx(te, {
+            children: n("accounts.confirmRemove", {
+              email: (x == null ? void 0 : x.email) ?? ""
+            })
+          })]
+        }), e.jsxs(oe, {
+          children: [e.jsx(D, {
+            variant: "outline",
+            onClick: () => S(null),
+            children: n("common.cancel")
+          }), e.jsxs(D, {
+            variant: "destructive",
+            onClick: () => x && Fe.mutate([x.accountKey]),
+            disabled: Fe.isPending,
+            children: [Fe.isPending && e.jsx(Y, {
+              className: "h-4 w-4 animate-spin"
+            }), n("common.confirm")]
+          })]
+        })]
+      })
+    }), e.jsx(In, {
+      open: O,
+      onOpenChange: L,
+      onImported: () => fe({
+        silent: !0,
+        forceMetadata: !0
+      })
+    }), e.jsx(ps, {
+      open: R,
+      onOpenChange: _,
+      currentProxy: (t == null ? void 0 : t.data.status.api.proxy) ?? null,
+      onSaved: () => a == null ? void 0 : a(),
+      defaultModeOnOpen: "manual"
+    }), e.jsx(G, {
+      open: K,
+      onOpenChange: B,
+      children: e.jsxs(Z, {
+        className: "max-w-sm",
+        children: [e.jsxs(J, {
+          children: [e.jsx(ee, {
+            children: n("settings.thresholdDialogTitle")
+          }), e.jsx(te, {
+            children: n("settings.thresholdDialogDesc")
+          })]
+        }), e.jsxs("div", {
+          className: "space-y-4 py-2",
+          children: [e.jsxs("div", {
+            className: "flex items-center justify-between",
+            children: [e.jsx("span", {
+              className: "text-sm",
+              children: n("settings.threshold5h")
+            }), e.jsxs("div", {
+              className: "flex items-center gap-2",
+              children: [e.jsx(ze, {
+                type: "number",
+                min: 1,
+                max: 100,
+                value: q,
+                onChange: o => ve(Number(o.target.value)),
+                className: "h-8 w-20 rounded-[8px] text-right text-xs"
+              }), e.jsx("span", {
+                className: "text-sm text-muted-foreground",
+                children: "%"
+              })]
+            })]
+          }), e.jsxs("div", {
+            className: "flex items-center justify-between",
+            children: [e.jsx("span", {
+              className: "text-sm",
+              children: n("settings.thresholdWeekly")
+            }), e.jsxs("div", {
+              className: "flex items-center gap-2",
+              children: [e.jsx(ze, {
+                type: "number",
+                min: 1,
+                max: 100,
+                value: Pe,
+                onChange: o => Ze(Number(o.target.value)),
+                className: "h-8 w-20 rounded-[8px] text-right text-xs"
+              }), e.jsx("span", {
+                className: "text-sm text-muted-foreground",
+                children: "%"
+              })]
+            })]
+          })]
+        }), e.jsxs(oe, {
+          children: [me && e.jsx(D, {
+            variant: "destructive",
+            onClick: () => {
+              B(!1), He.mutate()
+            },
+            disabled: He.isPending,
+            children: n("accounts.autoSwitchDisable")
+          }), e.jsx("div", {
+            className: "flex-1"
+          }), e.jsx(D, {
+            variant: "outline",
+            onClick: () => B(!1),
+            children: n("common.cancel")
+          }), e.jsxs(D, {
+            onClick: () => je.mutate({
+              enable: ue,
+              t5h: q,
+              tWeekly: Pe
+            }),
+            disabled: je.isPending || !ut(q) || !ut(Pe),
+            children: [je.isPending && e.jsx(Y, {
+              className: "h-4 w-4 animate-spin"
+            }), n(ue ? "accounts.autoSwitchSaveAndEnable" : "common.save")]
+          })]
+        })]
+      })
+    }), e.jsx(G, {
+      open: qt,
+      onOpenChange: Je,
+      children: e.jsxs(Z, {
+        className: "max-w-sm",
+        children: [e.jsxs(J, {
+          children: [e.jsx(ee, {
+            children: n("accounts.quickSettings")
+          }), e.jsx(te, {
+            children: n("accounts.quickSettingsDesc")
+          })]
+        }), e.jsxs("div", {
+          className: "divide-y",
+          children: [e.jsxs("div", {
+            className: "flex items-center justify-between py-3",
+            children: [e.jsxs("div", {
+              children: [e.jsx("p", {
+                className: "text-[13px] font-medium",
+                children: n("settings.refreshInterval")
+              }), e.jsx("p", {
+                className: "mt-0.5 text-xs text-muted-foreground",
+                children: n("settings.refreshIntervalDesc")
+              })]
+            }), e.jsxs(ht, {
+              value: i,
+              onValueChange: o => u(o),
+              children: [e.jsx(mt, {
+                className: "h-8 w-[90px] rounded-[8px] text-xs",
+                children: e.jsx(ft, {})
+              }), e.jsx(xt, {
+                children: gs.map(({
+                  value: o,
+                  labelKey: v
+                }) => e.jsx(We, {
+                  value: o,
+                  children: n(v)
+                }, o))
+              })]
+            })]
+          }), Me && e.jsxs("div", {
+            className: "flex items-center justify-between py-3",
+            children: [e.jsxs("div", {
+              children: [e.jsx("p", {
+                className: "text-[13px] font-medium",
+                children: n("settings.hotspot")
+              }), e.jsx("p", {
+                className: "mt-0.5 text-xs text-muted-foreground",
+                children: n(Se ? "settings.hotspotDesc" : "settings.hotspotNotSupported")
+              })]
+            }), e.jsx(Ps, {
+              checked: Se && (Xt.data ?? !1),
+              onCheckedChange: o => nt.mutate(o),
+              disabled: !Se || nt.isPending
+            })]
+          })]
+        })]
+      })
+    })]
+  })
+}
+
+function En({
+  timestamp: t
+}) {
+  const {
+    t: s
+  } = W(), [, r] = l.useState(0);
+  if (l.useEffect(() => {
+      const h = window.setInterval(() => r(m => m + 1), 6e4);
+      return () => window.clearInterval(h)
+    }, []), !t || t <= 0) return null;
+  const c = Date.now() - t * 1e3,
+    i = Math.floor(c / 6e4),
+    u = Math.floor(c / 36e5);
+  let n, d = !1;
+  return i < 1 ? n = s("accounts.refreshedJustNow") : i < 60 ? n = s("accounts.refreshedMinAgo", {
+    count: i
+  }) : (n = s("accounts.refreshedHourAgo", {
+    count: u
+  }), d = !0), e.jsx(V.Trigger, {
+    content: s("accounts.lastRefreshedTooltip"),
+    children: e.jsx("span", {
+      className: E("text-[11px] tabular-nums", d ? "text-amber-500" : "text-muted-foreground/60"),
+      children: n
+    })
+  })
+}
+
+function Tn({
+  account: t,
+  reorderLabel: s,
+  animateLayoutChanges: r,
+  pinned: a = !1,
+  ...c
+}) {
+  const {
+    setNodeRef: i,
+    style: u,
+    attributes: n,
+    listeners: d,
+    isDragging: h
+  } = ys(t.accountKey, a, r), m = a ? null : e.jsx("button", {
+    type: "button",
+    "aria-label": s,
+    className: "-ml-1 flex h-5 w-4 shrink-0 cursor-grab touch-none items-center justify-center text-muted-foreground/40 transition-colors hover:text-foreground focus:outline-none active:cursor-grabbing",
+    ...n,
+    ...d,
+    children: e.jsx(Ss, {
+      className: "h-3.5 w-3.5"
+    })
+  });
+  return e.jsx(Yt, {
+    account: t,
+    ...c,
+    setSortableRef: i,
+    sortableStyle: u,
+    dragging: h,
+    dragHandle: m
+  })
+}
+
+function Yt({
+  account: t,
+  apiReachability: s,
+  compact: r = !1,
+  privacyMode: a = !1,
+  onSwitch: c,
+  switchDisabledTooltip: i,
+  onRemove: u,
+  onCopyEmail: n,
+  onConfigureProxy: d,
+  onRefreshQuota: h,
+  refreshingQuota: m,
+  setSortableRef: b,
+  sortableStyle: f,
+  dragging: y = !1,
+  overlay: k = !1,
+  dragHandle: g
+}) {
+  var R, _, K, B, ue, be;
+  const {
+    t: j
+  } = W(), C = js(s, t), P = k ? "-ov" : "", w = a ? An(t.email) : t.email, N = ((R = t.tokenStatus) == null ? void 0 : R.code) === "noRefreshToken" || ((_ = t.tokenStatus) == null ? void 0 : _.code) === "refreshReused" || ((K = t.tokenStatus) == null ? void 0 : K.code) === "refreshFailed", x = ((B = t.tokenStatus) == null ? void 0 : B.code) === "noRefreshToken" || ((ue = t.tokenStatus) == null ? void 0 : ue.code) === "refreshReused", S = ((be = t.tokenStatus) == null ? void 0 : be.code) === "refreshFailed", O = !N, L = [{
+    key: "primary",
+    gradientId: `q5-${t.accountKey}${P}`,
+    label: j("accounts.5hour"),
+    window: t.primaryWindow ?? null
+  }, {
+    key: "secondary",
+    gradientId: `qw-${t.accountKey}${P}`,
+    label: j("accounts.weekly"),
+    window: t.secondaryWindow ?? null
+  }];
+  return e.jsxs("div", {
+    ref: b,
+    style: f,
+    className: E("group relative flex flex-col overflow-hidden rounded-2xl border bg-card transition-[border-color,box-shadow,opacity] duration-300", "shadow-[0_1px_2px_rgba(0,0,0,0.03)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.2)]", t.isActive && "border-emerald-500/40 ring-1 ring-emerald-500/15 shadow-[0_0_24px_-8px_rgba(16,185,129,0.2)]", !t.isActive && O && "hover:border-emerald-500/40 hover:ring-1 hover:ring-emerald-500/15 hover:shadow-[0_0_24px_-8px_rgba(16,185,129,0.2)]", !t.isActive && x && "hover:border-red-500/40 hover:ring-1 hover:ring-red-500/15 hover:shadow-[0_0_24px_-8px_rgba(239,68,68,0.2)]", !t.isActive && S && "hover:border-amber-500/40 hover:ring-1 hover:ring-amber-500/15 hover:shadow-[0_0_24px_-8px_rgba(245,158,11,0.2)]", y && "opacity-40", k && "shadow-[0_18px_40px_-12px_rgba(0,0,0,0.4)] ring-1 ring-black/5"),
+    children: [t.isActive && e.jsx("div", {
+      className: "absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-r from-emerald-400/0 via-emerald-500 to-emerald-400/0"
+    }), !t.isActive && O && e.jsx("div", {
+      className: "absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-r from-emerald-400/0 via-emerald-500 to-emerald-400/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+    }), !t.isActive && x && e.jsx("div", {
+      className: "absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-r from-red-400/0 via-red-500 to-red-400/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+    }), !t.isActive && S && e.jsx("div", {
+      className: "absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-r from-amber-400/0 via-amber-500 to-amber-400/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+    }), e.jsx("div", {
+      className: E("flex items-start border-b border-border", r ? "p-3 pb-2.5" : "p-4 pb-3.5"),
+      children: e.jsxs("div", {
+        className: "flex min-w-0 flex-1 flex-col gap-1",
+        children: [e.jsxs("div", {
+          className: "flex min-w-0 items-center gap-2",
+          children: [g, e.jsx("span", {
+            className: E("h-2 w-2 shrink-0 rounded-full transition-colors", Fn(t, C)),
+            "aria-hidden": !0
+          }), e.jsx("h3", {
+            className: E("truncate font-bold leading-tight", r ? "text-[13px]" : "text-[15px]"),
+            title: a ? w : t.email,
+            children: w
+          })]
+        }), e.jsxs("div", {
+          className: "flex flex-wrap items-center gap-1.5 pl-4",
+          children: [e.jsx(Rn, {
+            plan: C ? "unknown" : t.plan,
+            label: C ? j("accounts.planUnknown") : Rt(t.plan)
+          }), e.jsx(On, {
+            account: t,
+            masked: C,
+            onConfigureProxy: d
+          })]
+        })]
+      })
+    }), e.jsxs("div", {
+      className: E("grid bg-muted/30", r ? "grid-cols-[minmax(86px,auto)_minmax(0,1fr)] gap-x-3 gap-y-2 px-3 py-2.5" : "grid-cols-[minmax(108px,auto)_minmax(0,1fr)] gap-x-4 gap-y-3 px-4 py-3.5"),
+      children: [e.jsx(Ae, {
+        compact: r,
+        icon: Xs,
+        label: j("accounts.profileName"),
+        value: a ? "***" : t.profileName ?? j("accounts.notAvailable")
+      }), e.jsx(Ae, {
+        compact: r,
+        icon: Qs,
+        label: j("accounts.authMode"),
+        value: Un(t.authMode)
+      }), e.jsx(Ae, {
+        compact: r,
+        icon: Ks,
+        label: j("accounts.subscriptionStatus"),
+        value: Hn(t.subscriptionStatus, j)
+      }), e.jsx(Ae, {
+        compact: r,
+        icon: zs,
+        label: j("accounts.expiresAt"),
+        value: t.subscriptionExpiresAt ? Cs(t.subscriptionExpiresAt) : j("accounts.notAvailable")
+      })]
+    }), e.jsx("div", {
+      className: E("grid flex-1 grid-cols-2 items-center border-t border-border", r ? "gap-1 p-3" : "gap-2 p-4"),
+      children: L.map((q, ve) => e.jsx("div", {
+        className: E("flex min-w-0 justify-center", ve > 0 && "border-l border-border"),
+        children: e.jsx(Mn, {
+          gradientId: q.gradientId,
+          label: q.label,
+          window: N ? null : q.window,
+          masked: C,
+          compact: r
+        })
+      }, q.key))
+    }), e.jsxs("div", {
+      className: E("flex items-center justify-end gap-2", r ? "px-3 pb-3" : "px-4 pb-4"),
+      children: [t.isActive ? e.jsxs("span", {
+        className: "mr-auto flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400",
+        children: [e.jsx(Nt, {
+          className: "h-3.5 w-3.5"
+        }), j("accounts.currentAccount")]
+      }) : null, e.jsxs("div", {
+        className: "flex shrink-0 items-center gap-1 rounded-full bg-muted p-0.5",
+        children: [!t.isActive && e.jsx(ke, {
+          tooltip: i || j("accounts.switchTo"),
+          icon: Ls,
+          onClick: c,
+          disabled: !!i
+        }), e.jsx(ke, {
+          tooltip: j("accounts.refreshQuota"),
+          icon: Tt,
+          onClick: h,
+          spinning: m
+        }), e.jsx(ke, {
+          tooltip: j("accounts.copyEmail"),
+          icon: ks,
+          onClick: n
+        }), e.jsx(ke, {
+          tooltip: t.isActive ? j("accounts.removeActiveDisabled") : j("accounts.removeSnapshot"),
+          icon: Is,
+          destructive: !0,
+          disabled: t.isActive,
+          onClick: u
+        })]
+      })]
+    })]
+  })
+}
+const Ct = {
+  pro20x: {
+    icon: gt,
+    cls: "border-[#c9a227]/35 bg-[#c9a227]/15 text-[#8a6d1b] dark:text-[#f0ce6b]",
+    iconCls: "text-[#c9a227] dark:text-[#f0ce6b] fill-[#c9a227]/20"
+  },
+  enterprise: {
+    icon: gt,
+    cls: "border-[#c9a227]/35 bg-[#c9a227]/15 text-[#8a6d1b] dark:text-[#f0ce6b]",
+    iconCls: "text-[#c9a227] dark:text-[#f0ce6b] fill-[#c9a227]/20"
+  },
+  plus: {
+    icon: Fs,
+    cls: "border-emerald-500/20 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
+    iconCls: "text-emerald-500 fill-emerald-500/15 dark:text-emerald-400"
+  },
+  pro5x: {
+    icon: $s,
+    cls: "border-blue-500/20 bg-blue-500/15 text-blue-500 dark:text-blue-400",
+    iconCls: "text-blue-500 dark:text-blue-400"
+  },
+  team: {
+    icon: bt,
+    cls: "border-violet-500/20 bg-violet-500/15 text-violet-600 dark:text-violet-400",
+    iconCls: "text-violet-500 dark:text-violet-400"
+  },
+  business: {
+    icon: bt,
+    cls: "border-violet-500/20 bg-violet-500/15 text-violet-600 dark:text-violet-400",
+    iconCls: "text-violet-500 dark:text-violet-400"
+  },
+  edu: {
+    icon: pt,
+    cls: "border-sky-500/20 bg-sky-500/15 text-sky-600 dark:text-sky-400",
+    iconCls: "text-sky-500 dark:text-sky-400"
+  },
+  free: {
+    icon: pt,
+    cls: "border-border bg-muted text-muted-foreground",
+    iconCls: "text-muted-foreground"
+  },
+  unknown: {
+    icon: null,
+    cls: "border-border bg-muted text-muted-foreground",
+    iconCls: ""
+  }
+};
+
+function Rn({
+  plan: t,
+  label: s
+}) {
+  const r = Ct[t] ?? Ct.unknown,
+    a = r.icon;
+  return e.jsxs("span", {
+    className: E("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-semibold leading-none", r.cls),
+    children: [a ? e.jsx(a, {
+      className: E("h-[10px] w-[10px] shrink-0", r.iconCls)
+    }) : null, s]
+  })
+}
+
+function ke({
+  tooltip: t,
+  icon: s,
+  onClick: r,
+  destructive: a,
+  disabled: c,
+  spinning: i
+}) {
+  return e.jsx(V.Trigger, {
+    content: t,
+    children: e.jsx("button", {
+      type: "button",
+      className: E("relative flex aspect-square items-center justify-center rounded-full p-[7px] text-muted-foreground transition-all", c ? "cursor-not-allowed opacity-30" : i ? "pointer-events-none" : "hover:bg-card hover:text-foreground hover:shadow-sm", a && !c && !i && "hover:border-destructive hover:bg-destructive hover:text-white"),
+      onClick: c || i ? void 0 : r,
+      "aria-disabled": c || i,
+      "aria-label": t,
+      children: e.jsx(s, {
+        className: E("h-[14px] w-[14px]", i && "animate-spin")
+      })
+    })
+  })
+}
+const Dn = {
+  valid: "border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  refreshed: "border-sky-500/20 bg-sky-500/10 text-sky-600 dark:text-sky-400",
+  error: "border-destructive/20 bg-destructive/10 text-destructive",
+  missing: "border-destructive/20 bg-destructive/10 text-destructive",
+  warning: "border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400",
+  "api-error": "border-destructive/15 bg-destructive/[0.07] text-destructive"
+};
+
+function Pn(t) {
+  switch (t) {
+    case "valid":
+      return Ms;
+    case "refreshed":
+      return Hs;
+    case "error":
+      return At;
+    case "missing":
+      return Vs;
+    case "warning":
+      return kt;
+    case "api-error":
+    default:
+      return Gs
+  }
+}
+
+function _n(t) {
+  switch (t) {
+    case "fresh":
+      return "valid";
+    case "refreshed":
+      return "refreshed";
+    case "refreshReused":
+      return "error";
+    case "noRefreshToken":
+      return "missing";
+    case "refreshFailed":
+    default:
+      return "warning"
+  }
+}
+
+function On({
+  account: t,
+  masked: s,
+  onConfigureProxy: r
+}) {
+  var f;
+  const {
+    t: a
+  } = W(), c = (f = t.tokenStatus) == null ? void 0 : f.code, i = t.isActive, n = s || (c === "refreshReused" || c === "noRefreshToken" || c === "refreshFailed") || !t.isActive;
+  let d = "valid",
+    h = "",
+    m = "";
+  s ? (d = "api-error", h = a("overview.apiUnreachable"), m = a("overview.apiUnreachableHint")) : c ? (d = _n(c), h = a(`accounts.tokenStatus.${c}`), m = tn(c, {
+    plan: t.plan,
+    hasActiveSubscription: t.hasActiveSubscription,
+    subscriptionExpiresAt: t.subscriptionExpiresAt
+  }, a)) : (d = "valid", h = a("accounts.tokenStatus.fresh"), m = a("accounts.tokenStatus.freshDesc"));
+  const b = Pn(d);
+  return e.jsxs(e.Fragment, {
+    children: [i && e.jsxs("span", {
+      className: "inline-flex h-[18px] items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/15 px-1.5 text-[10px] font-medium leading-none text-emerald-600 dark:text-emerald-400",
+      children: [e.jsx("span", {
+        className: "h-1 w-1 rounded-full bg-emerald-500"
+      }), a("accounts.currentAccount")]
+    }), n && e.jsx(V.Trigger, {
+      content: h,
+      description: m,
+      children: e.jsxs("span", {
+        className: E("inline-flex h-[18px] items-center gap-1 rounded-full border px-1.5 text-[10px] font-medium leading-none", Dn[d], s && "cursor-pointer"),
+        role: s ? "button" : void 0,
+        tabIndex: s ? 0 : void 0,
+        onClick: s ? r : void 0,
+        onKeyDown: s ? y => {
+          (y.key === "Enter" || y.key === " ") && r()
+        } : void 0,
+        children: [e.jsx(b, {
+          className: "h-2.5 w-2.5"
+        }), h]
+      })
+    })]
+  })
+}
+
+function Ae({
+  icon: t,
+  label: s,
+  value: r,
+  compact: a = !1
+}) {
+  return e.jsxs("div", {
+    className: E("flex min-w-0 items-center", a ? "gap-1.5" : "gap-2"),
+    children: [e.jsx(t, {
+      className: E("shrink-0 text-muted-foreground/70", a ? "h-3 w-3" : "h-3.5 w-3.5"),
+      strokeWidth: 1.75
+    }), e.jsxs("div", {
+      className: "min-w-0",
+      children: [e.jsx("div", {
+        className: E("leading-none text-muted-foreground", a ? "text-[8px]" : "text-[9px]"),
+        children: s
+      }), e.jsx("div", {
+        className: E("mt-0.5 truncate font-semibold leading-none", a ? "text-[10px]" : "text-[11px]"),
+        title: r,
+        children: r
+      })]
+    })]
+  })
+}
+
+function Ln(t) {
+  return t == null ? {
+    from: "#cbd5e1",
+    to: "#e2e8f0",
+    text: "text-muted-foreground"
+  } : t > 50 ? {
+    from: "#10b981",
+    to: "#34d399",
+    text: "text-emerald-500"
+  } : t > 20 ? {
+    from: "#f59e0b",
+    to: "#fbbf24",
+    text: "text-amber-500"
+  } : {
+    from: "#ef4444",
+    to: "#f87171",
+    text: "text-destructive"
+  }
+}
+
+function Mn({
+  gradientId: t,
+  label: s,
+  window: r,
+  masked: a,
+  compact: c = !1
+}) {
+  const {
+    t: i
+  } = W(), u = a ? null : (r == null ? void 0 : r.remainingPercent) ?? null, n = a ? i("accounts.quotaUnreachable") : r != null && r.resetsAt ? As(r.resetsAt) : "—", d = 84, h = c ? 51 : 67, m = 6, b = (d - m) / 2, f = b * 2 * Math.PI, y = u == null ? 0 : u >= 100 ? 1 : Math.min(u / 100, .965), k = u == null ? f : f * (1 - y), g = Ln(u);
+  return e.jsxs("div", {
+    className: E("flex flex-col items-center", c ? "gap-1.5" : "gap-2.5"),
+    children: [e.jsx("div", {
+      className: "relative",
+      style: {
+        width: h,
+        height: h
+      },
+      children: e.jsxs("svg", {
+        width: "100%",
+        height: "100%",
+        viewBox: `0 0 ${d} ${d}`,
+        className: "block",
+        children: [e.jsx("defs", {
+          children: e.jsxs("linearGradient", {
+            id: t,
+            x1: "0%",
+            y1: "0%",
+            x2: "100%",
+            y2: "100%",
+            children: [e.jsx("stop", {
+              offset: "0%",
+              stopColor: g.from
+            }), e.jsx("stop", {
+              offset: "100%",
+              stopColor: g.to
+            })]
+          })
+        }), e.jsxs("g", {
+          transform: `rotate(-90 ${d/2} ${d/2})`,
+          children: [e.jsx("circle", {
+            className: "text-zinc-200/60 dark:text-zinc-800/60",
+            cx: d / 2,
+            cy: d / 2,
+            r: b,
+            fill: "none",
+            stroke: "currentColor",
+            strokeWidth: m
+          }), u != null && e.jsx(Ns.circle, {
+            cx: d / 2,
+            cy: d / 2,
+            r: b,
+            fill: "none",
+            stroke: `url(#${t})`,
+            strokeWidth: m,
+            strokeLinecap: "round",
+            strokeDasharray: f,
+            initial: {
+              strokeDashoffset: f
+            },
+            animate: {
+              strokeDashoffset: k
+            },
+            transition: {
+              duration: 1.8,
+              ease: "easeInOut"
+            },
+            style: {
+              filter: "drop-shadow(0 0 4px rgba(0,0,0,0.15))"
+            }
+          })]
+        }), e.jsx("text", {
+          x: d / 2,
+          y: d / 2,
+          textAnchor: "middle",
+          dominantBaseline: "central",
+          fill: "currentColor",
+          fontSize: 16,
+          fontWeight: 700,
+          className: E("tabular-nums", g.text),
+          children: u == null ? "—" : `${Math.round(u)}%`
+        })]
+      })
+    }), e.jsxs("div", {
+      className: E("flex items-center justify-center gap-1 whitespace-nowrap leading-none", c ? "text-[9px]" : "text-[10.5px]"),
+      children: [e.jsx("span", {
+        className: "font-semibold",
+        children: s
+      }), e.jsx("span", {
+        className: E("shrink-0 rounded-full bg-muted-foreground/60", c ? "h-[3px] w-[3px]" : "h-1 w-1"),
+        "aria-hidden": !0
+      }), e.jsx("span", {
+        className: "font-semibold text-muted-foreground",
+        children: n
+      })]
+    })]
+  })
+}
+
+function In({
+  open: t,
+  onOpenChange: s,
+  onImported: r
+}) {
+  const {
+    t: a
+  } = W(), c = Ve(), [i, u] = l.useState(!1), n = l.useRef(!1), d = b => {
+    !b && i || s(b)
+  }, h = async () => {
+    try {
+      n.current = await H.cancelChatgptOauthLogin()
+    } catch {
+      n.current = !1
+    }
+  }, m = async () => {
+    if (i) return;
+    n.current = !1;
+    const b = Date.now();
+    Es.flushSync(() => u(!0)), await new Promise(f => requestAnimationFrame(() => requestAnimationFrame(() => f())));
+    try {
+      ie(), await ce(c);
+      const f = await H.beginChatgptOauthLogin(),
+        {
+          outcome: y,
+          email: k
+        } = f.data,
+        g = f.warnings.map(j => j.message).join(`
+`);
+      y === "alreadyActive" ? T({
+        title: a("accounts.addAccountOauthActiveTitle"),
+        description: g || a("accounts.addAccountOauthActiveDesc", {
+          email: k
+        }),
+        variant: g ? "warning" : "default"
+      }) : y === "updated" ? T({
+        title: a("accounts.addAccountOauthUpdatedTitle"),
+        description: g || a("accounts.addAccountOauthUpdatedDesc", {
+          email: k
+        }),
+        variant: g ? "warning" : "success"
+      }) : T({
+        title: a("accounts.addAccountOauthSuccessTitle"),
+        description: g || a("accounts.addAccountOauthSuccessDesc", {
+          email: k
+        }),
+        variant: g ? "warning" : "success"
+      }), s(!1), r()
+    } catch (f) {
+      const y = typeof f == "string" ? f : f instanceof Error ? f.message : "";
+      n.current || y.startsWith("OAUTH_CANCELLED:") ? (T({
+        title: a("accounts.addAccountOauthCancelledTitle"),
+        variant: "default"
+      }), s(!1)) : T({
+        title: a("accounts.addAccountOauthFailedTitle"),
+        description: y || a("accounts.addAccountOauthFailedDesc"),
+        variant: "destructive"
+      })
+    } finally {
+      const f = Date.now() - b;
+      f < 600 && await new Promise(y => setTimeout(y, 600 - f)), u(!1)
+    }
+  };
+  return e.jsx(G, {
+    open: t,
+    onOpenChange: d,
+    children: e.jsxs(Z, {
+      className: "max-w-md",
+      children: [e.jsxs(J, {
+        children: [e.jsx(ee, {
+          children: a("accounts.addAccountOauthTitle")
+        }), e.jsx(te, {
+          children: a("accounts.addAccountOauthDesc")
+        })]
+      }), e.jsxs("div", {
+        className: "space-y-3 py-1",
+        children: [e.jsx("div", {
+          className: "rounded-[8px] border border-border/70 bg-muted/30 px-4 py-3 text-xs leading-relaxed text-muted-foreground",
+          children: a("accounts.addAccountOauthHint")
+        }), i ? e.jsxs("div", {
+          className: "flex items-center gap-2 rounded-[8px] border border-primary/20 bg-primary/5 px-4 py-3 text-xs text-foreground",
+          children: [e.jsx(Y, {
+            className: "h-4 w-4 shrink-0 animate-spin text-primary"
+          }), a("accounts.addAccountOauthWaiting")]
+        }) : null]
+      }), e.jsxs(oe, {
+        children: [e.jsx(D, {
+          variant: "outline",
+          onClick: () => i ? void h() : d(!1),
+          children: a("common.cancel")
+        }), e.jsx(D, {
+          onClick: m,
+          disabled: i,
+          children: e.jsx(Et, {
+            busy: i,
+            busyLabel: a("accounts.addAccountOauthBusy"),
+            idleLabel: a("accounts.addAccountOauthStart")
+          })
+        })]
+      })]
+    })
+  })
+}
+
+function Fn(t, s) {
+  var a;
+  if (t.isActive) return "animate-pulse bg-emerald-500";
+  if (s) return "bg-amber-500";
+  const r = (a = t.tokenStatus) == null ? void 0 : a.code;
+  return r === "refreshReused" || r === "noRefreshToken" ? "bg-destructive" : r === "refreshFailed" ? "bg-amber-500" : "bg-emerald-500"
+}
+
+function Hn(t, s) {
+  return s(t === "active" ? "accounts.subscriptionActive" : t === "inactive" ? "accounts.subscriptionInactive" : t === "stale" ? "accounts.subscriptionStale" : "accounts.notAvailable")
+}
+
+function Un(t) {
+  switch (t) {
+    case "chatgpt":
+      return "ChatGPT OAuth";
+    case "apikey":
+      return "API Key";
+    default:
+      return t
+  }
+}
+export {
+  Jn as AccountsPage
+};

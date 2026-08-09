@@ -1,0 +1,181 @@
+{
+  "schema": "c5cm.raw.ida-leaf.v1",
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "macos-arm64",
+  "topic": "reasoning-content-cleanup",
+  "scope_note": "AiMaMi 官方 1.2.4→1.2.6 更新说明第2条('修复Claude协议跨原生边界的私有推理内容清理')的用户指定 9 个符号目标深挖任务。承接既有 macos-1.2.6-version-delta 侧 router-reconciler-windows-retry-thread-visibility 叶(2026-08-06)已标注的已知缺口: 'cleanup_private_reasoning_items_in_existing_rollout 等下一层递归函数均未展开'。本轮直接填补该缺口, 并扩展覆盖 translator::set_anthropic_thinking_carrier / anthropic_reasoning::model_profile+model_matches_family / response_item_id_compat::is_unusable_store_false_reasoning_item 4 个额外目标。",
+  "source": {
+    "idb_module": "AiMaMi",
+    "idb_path": "<内部存储>/<内部项目>/raw/binary/AiMaMi 1.2.6.app/Contents/MacOS/AiMaMi.i64",
+    "server_health_verified": "status=ok, uptime_sec=136480.471, <反编译器>_ready=true, module=AiMaMi, imagebase=0x100000000 (<门控> 红线17 已核, 本轮起手确认)"
+  },
+  "requested_targets_9": [
+    "codex_thread_visibility::cleanup_private_reasoning_items_in_existing_rollout",
+    "codex_thread_visibility::cleanup_private_reasoning_items_in_rollout",
+    "codex_thread_visibility::cleanup_private_reasoning_items_parallel",
+    "translator::set_anthropic_thinking_carrier",
+    "anthropic_reasoning::model_profile",
+    "anthropic_reasoning::model_matches_family",
+    "response_item_id_compat::is_unusable_store_false_reasoning_item",
+    "response_item_id_compat::remove_unusable_reasoning_items_from_store_false_request",
+    "dialects::generic::apply_reasoning"
+  ],
+  "resolution_summary": {
+    "found_and_decompiled": 7,
+    "confirmed_absent_under_given_name": 2,
+    "absent_targets": [
+      {
+        "requested_name": "response_item_id_compat::remove_unusable_reasoning_items_from_store_false_request",
+        "verification": "3 次独立 func_query 均空集: (1) name_regex 精确子串 'remove_unusable_reasoning' 无命中; (2) name_regex 'store_false' 无命中; (3) filter glob '*remove_unusable*' 无命中。",
+        "note": "response_item_id_compat 模块内实际存在的清理相关符号是 is_unusable_store_false_reasoning_item (判定函数, 已覆盖, 见 0006), 但未发现任何名为 remove_unusable_reasoning_items_from_store_false_request 的独立函数——该判定的调用/清理执行逻辑内联在 0002 (cleanup_private_reasoning_items_in_rollout::{{closure}}) 内部, 未拆分为独立具名函数。不排除用户提供的函数名来自与 1.2.6 编译产物不完全一致的源码版本(如未来/其他分支)、或该函数在 1.2.6 中被内联消除后无独立符号。"
+      },
+      {
+        "requested_name": "dialects::generic::apply_reasoning",
+        "verification": "3 次独立 func_query 均确认: (1) name_regex 'dialects.*generic' 只命中 1 个符号 dialects::generic::is_openai_o_series (0x100a7d710); (2) name_regex 'apply_reasoning' 全局无命中; (3) dialects 模块下相关函数仅有 apply_chat_reasoning(0x100a7c1f0)/reasoning_requested(0x100a7bf90)/output::extract_chat_reasoning_text/output::extract_reasoning_details_text, 均非 'apply_reasoning' 且均非 generic 子模块下。",
+        "note": "dialects::generic 子模块在本版本二进制中只有 is_openai_o_series 一个函数, 不存在 apply_reasoning。dialects 顶层确有语义相近的 apply_chat_reasoning, 但命名空间(dialects 而非 dialects::generic)和函数名均不匹配, 未按'同名不同版本自动等价'处理, 如实标记为请求目标缺失。"
+      }
+    ]
+  },
+  "functions": [
+    {
+      "role": "per_rollout_atomic_cleanup_entrypoint",
+      "symbol": "codexmate_lib::core::relay::codex_thread_visibility::cleanup_private_reasoning_items_in_existing_rollout::ha9e80209463bf41a",
+      "address": "0x100772d00",
+      "size": "0xd75",
+      "has_type": true,
+      "pseudocode": "pseudocode/0001-cleanup-private-reasoning-items-in-existing-rollout-0x100772d00.c",
+      "bytes_returned": "full body, no truncation marker",
+      "behavior_summary": "单个 rollout 文件的原子清理入口。流程: metadata 校验源文件存在 -> open+读全文件到内存 buffer(粗略扫描, 主要用于早期错误分支) -> 构造临时文件名 '.<原文件名>.<uuid_v4>.tmp' 并 join 到父目录 -> open 临时文件 -> 调用 0002 逐行清理写入临时文件 -> 比对源文件清理前后 mtime 一致性(防并发竞争) -> 若无变化(closure 报告 counter==0)则删除临时文件返回 Ok(未变更) -> 若有变化且 mtime 一致则 rename(temp, original) 原子替换, 成功后 sync_parent_dir + restore_rollout_mtime_best_effort; 若 mtime 不一致(检测到外部并发修改)则删除临时文件, 返回硬编码错误 'rollout changed while private reasoning cleanup was streaming; retry required'; 若 rename 本身失败则删除临时文件并返回格式化 io::Error 文案。",
+      "error_paths": [
+        "源文件 metadata 读取失败 -> 直接透传 io::Error",
+        "父目录路径解析失败(Path::parent 返回 None) -> 固定错误 'rollout path has no parent'",
+        "临时文件 open 失败 -> 透传 io::Error",
+        "closure(0002) 内部解析/写入失败 -> 透传其 tag=2/9 错误 (见0002 error_paths)",
+        "并发竞争检测(rename 前 mtime 二次核对不一致) -> 固定错误 'rollout changed while private reasoning cleanup was streaming; retry required', 删除临时文件回滚",
+        "rename 系统调用失败 -> 删除临时文件, 格式化 io::Error Display 文案返回"
+      ],
+      "persistence_boundary": "对目标 rollout 文件做'临时文件写入 + fsync + rename 原子替换'的破坏性写入(⚠ 会重写原 rollout JSONL 文件, 丢弃被判定为不可用的 reasoning 行)。写入前后各做一次 metadata mtime 比对防止 TOCTOU 竞态；无变化时不产生任何磁盘写入(仅创建又删除临时文件)。",
+      "call_tree": [
+        "cleanup_private_reasoning_items_in_existing_rollout -> cleanup_private_reasoning_items_in_rollout::{{closure}} (0002, 逐行核心) -> response_item_id_compat::is_unusable_store_false_reasoning_item (0006)",
+        "cleanup_private_reasoning_items_in_existing_rollout -> sync_parent_dir (未展开)",
+        "cleanup_private_reasoning_items_in_existing_rollout -> restore_rollout_mtime_best_effort (未展开)"
+      ]
+    },
+    {
+      "role": "per_line_cleanup_core",
+      "symbol": "codexmate_lib::core::relay::codex_thread_visibility::cleanup_private_reasoning_items_in_rollout::_$u7b$$u7b$closure$u7d$$u7d$::h8b568b7bb30200c5",
+      "address": "0x100771aa0",
+      "size": "0x3d9",
+      "has_type": false,
+      "pseudocode": "pseudocode/0002-cleanup-private-reasoning-items-in-rollout-closure-0x100771aa0.c",
+      "bytes_returned": "full body, no truncation marker",
+      "note_on_naming": "IDA 符号命名为 cleanup_private_reasoning_items_in_rollout 的 {{closure}}；未发现独立的非闭包版本符号，推测外层函数在编译期被完全内联进 0001，只留这一个逐行处理闭包保留独立符号。",
+      "behavior_summary": "逐行读取源 rollout 文件(read_until '\\n')。每行先做 SIMD 字节窗口快速预筛(非完整JSON解析)，命中才进入 serde_json 完整解析；解析失败则格式化 'failed to parse rollout line at <path>: <serde error>' 错误(tag=9)终止；解析成功后检查顶层 type=='response_item'(13字符字面量精确比对)，若是则取其嵌套字段(7字符key，字符串内容未提取)交给 is_unusable_store_false_reasoning_item(0006) 判定；判定为不可用则清理计数器+1并丢弃该行(不写出)，否则原样写回临时文件。全部行处理完后复制原文件 unix 权限到临时文件 + fsync(File::sync_data)才返回 Ok。",
+      "error_paths": [
+        "read_until 读取错误 -> tag=2 透传 io::Error",
+        "serde_json::de::from_trait 解析失败(tag==6) -> 格式化 'failed to parse rollout line at <path>: <error>' 返回 tag=9",
+        "write_all 写临时文件失败 -> tag=2 透传 io::Error",
+        "set_permissions 或 sync_data 失败 -> tag=2 透传 io::Error"
+      ],
+      "persistence_boundary": "本函数不直接决定最终落盘路径(那是 0001 的 rename 原子替换)，但直接控制'哪些行被写入临时文件、哪些行被丢弃'——这是实际执行清理判定与内容过滤的位置。",
+      "call_tree": ["-> response_item_id_compat::is_unusable_store_false_reasoning_item (0006)"]
+    },
+    {
+      "role": "parallel_batch_format_helper",
+      "symbol": "codexmate_lib::core::relay::codex_thread_visibility::cleanup_private_reasoning_items_parallel::_$u7b$$u7b$closure$u7d$$u7d$::h710e256b1580dee4",
+      "address": "0x1006a5bf0",
+      "size": "0x3d",
+      "has_type": false,
+      "pseudocode": "pseudocode/0003-cleanup-private-reasoning-items-parallel-closure-0x1006a5bf0.c",
+      "bytes_returned": "full body, no truncation marker",
+      "behavior_summary": "极小的字符串格式化辅助闭包(嵌入一个 usize 值)，是 rayon 并行批处理路径(见既有 router-reconciler-windows-retry-thread-visibility 叶记录的 'reconcile_threads_with_progress: 待清理数>7走并行/<=7走串行' 自适应策略)内部的日志/消息构造件。真正的逐 rollout 清理逻辑仍是 0001，rayon 只负责把多个 rollout 路径分发给线程池并行调用 0001、再收集 Vec<PrivateReasoningCleanupResult>。",
+      "gate_status": "gap_needs_reducer",
+      "limitation": "未 get_string() 提取格式串 unk_10185DDA9 的完整字面量文本；未展开 rayon 并行分发的外层调用者(cleanup_private_reasoning_items_parallel 本体)确认其如何收集多文件清理结果(总清理计数汇总方式)。这两项对本次'清理判定逻辑'本身无实质影响，仅影响日志/汇总统计的完整描述，故未阻塞本轮核心行为结论，标记为待续。"
+    },
+    {
+      "role": "carrier_writer",
+      "symbol": "codexmate_lib::core::relay::translator::set_anthropic_thinking_carrier::h185ab9608cd81a33",
+      "address": "0x100a1cdd0",
+      "size": "0x20f",
+      "has_type": false,
+      "pseudocode": "pseudocode/0004-set-anthropic-thinking-carrier-0x100a1cdd0.c",
+      "bytes_returned": "full body, no truncation marker",
+      "behavior_summary": "把 Anthropic content block(type=='thinking' 用 signature 字段 / type=='redacted_thinking' 用 data 字段)的完整原始 block 序列化为 JSON、base64 编码，格式化为 'aimami-anthropic-thinking-v1:{base64}' 私有前缀字符串，写入(index_or_insert 覆盖)该 block 的 encrypted_content 字段。这是'跨原生边界携带 reasoning 内容'实现的写入侧：因 OpenAI/Codex 侧 rollout JSONL 持久化格式没有天然槽位存放 Anthropic 不透明的 thinking 签名块，应用把整块内容自行序列化+封装塞进一个私有字段随 rollout 落盘，以便日后 100% 还原重放。",
+      "error_paths": [
+        "type 字段不存在/非字符串/非 thinking|redacted_thinking -> 提前返回原始 index_into 结果(即 None/无操作)",
+        "signature/data 字段不存在或非字符串 -> 提前返回(不写入 carrier)",
+        "serde_json::ser::to_vec 序列化失败 -> drop 错误并提前返回(未构造 carrier)"
+      ],
+      "persistence_boundary": "本函数只修改内存中的 Value(content block)，不直接写磁盘；实际落盘由调用它的上层 rollout 写入路径完成(未在本轮范围内展开该调用方)。",
+      "call_tree_and_pairing": "与 response_item_id_compat::is_unusable_store_false_reasoning_item (0006) 构成'写入-识别-清理'闭环：本函数写入的私有前缀正是 0006 用于识别'这是本应用自行封装的携带层内容(而非服务端原生不透明签名)'的判定依据。"
+    },
+    {
+      "role": "family_token_boundary_matcher",
+      "symbol": "codexmate_lib::core::relay::anthropic_reasoning::model_matches_family::hc22dd436dd51bd23",
+      "address": "0x100b3bb10",
+      "size": "0x111",
+      "has_type": false,
+      "pseudocode": "pseudocode/0005-model-matches-family-0x100b3bb10.c",
+      "bytes_returned": "full body, no truncation marker",
+      "behavior_summary": "model_profile(0007) 的子例程。用 core::str::pattern::StrSearcher 查找 family 子串在 haystack(模型名)中的每处出现，对每个匹配位置校验前后字符是否属于'边界字符集合'(bitmask 0x82005 对 (byte-45) 位测试，命中的是 '-' 等分隔符)，只有真正以词边界形式出现的匹配才返回 true——用于避免 'opus-4-5' 误配 'sonnet-4-56' 之类子串误判。",
+      "error_paths": ["StrSearcher next_match 越界访问会触发 core::panicking::panic_bounds_check (业务逻辑不会触达，属防御性 panic)"],
+      "persistence_boundary": "纯计算函数，无副作用。"
+    },
+    {
+      "role": "model_capability_tier_classifier",
+      "symbol": "codexmate_lib::core::relay::anthropic_reasoning::model_profile::hb7fd285ed0e32830",
+      "address": "0x100b3b4c0",
+      "size": "0x641",
+      "has_type": false,
+      "pseudocode": "pseudocode/0007-model-profile-0x100b3b4c0.c",
+      "bytes_returned": "full body, no truncation marker",
+      "behavior_summary": "把模型名归一化(trim -> 全小写 -> '.'/'_'归并为'-') 后，按优先级瀑布依次调用 model_matches_family(0005) 与一组已知 Anthropic 模型家族 token 常量比对(family token 常量含 'fable-5'/'mythos-5'/'mythos-preview'/'opus-5'/'sonnet-5'/'sonnet-4-6'/'opus-4-8'/'opus-4-7'/'opus-4-6'/'opus-4-5' 等，其中 fable/mythos 疑似应用内部品牌代号)，输出模型能力档案(tier 名称指针+能力位标志+兜底标记)；全部不匹配时兜底写入'未知'标记(byte@+20=2)。",
+      "error_paths": ["内部字符串归一化的 raw_vec 分配失败会走 alloc::raw_vec::handle_error(OOM abort 路径，非业务级 Result 错误)"],
+      "persistence_boundary": "纯计算函数，无副作用；输出结构写入调用者传入的 out-param(a1)，未验证该结构确切字段类型(未做 declare_type)。",
+      "unresolved_assumption": "该'能力档案'与 set_anthropic_thinking_carrier(0004)/is_unusable_store_false_reasoning_item(0006) 之间是否存在门控调用关系(例如某些低档模型不应尝试写入/清理 thinking carrier)，本轮反编译证据未直接证明，仅基于模块同属 anthropic_reasoning 及命名语境推断，标记为待续假设，不作为已核实结论。"
+    },
+    {
+      "role": "carrier_reader_and_unusability_predicate",
+      "symbol": "codexmate_lib::core::relay::response_item_id_compat::is_unusable_store_false_reasoning_item::h12f8df7dd15d22c2",
+      "address": "0x10024df90",
+      "size": "0xaf",
+      "has_type": false,
+      "pseudocode": "pseudocode/0006-is-unusable-store-false-reasoning-item-0x10024df90.c",
+      "bytes_returned": "full body, no truncation marker",
+      "behavior_summary": "changelog 描述的'清理'判定核心。payload.type != 'reasoning' -> false(保留)；type=='reasoning' 且缺 encrypted_content -> true(判定不可用，清理)；encrypted_content 存在但非字符串或长度<29 -> false(保留)；encrypted_content 是>=29字节字符串且前29字节等于 'aimami-anthropic-thinking-v1:' 私有前缀(0004 写入的标记) -> true(判定为本应用自封装的携带层内容，在 store:false 请求下不可复用，需清理)；前缀不匹配(真实服务端不透明签名) -> false(保留)。",
+      "error_paths": ["无 panic/Result 错误路径，纯布尔判定函数，所有分支均正常返回。"],
+      "dto": {
+        "input": "serde_json::Value (response_item 的嵌套 payload 字段，7字符key，具体key字符串内容未提取)",
+        "output": "bool (true=不可用需清理, false=保留)"
+      },
+      "persistence_boundary": "纯判定函数，无副作用。"
+    }
+  ],
+  "windows_x64_status": {
+    "state": "string_confirmed_owner_unresolved",
+    "finding": "AiMaMi 1.2.6 win64.exe 为 stripped 构建。func_query 对全部5个具名目标(cleanup_private_reasoning|set_anthropic_thinking_carrier|model_matches_family|is_unusable_store_false|model_profile)精确/子串查询均为空集(符合 stripped 预期)。find_regex('aimami-anthropic-thinking-v1') 命中 1 处字符串常量 @0x141855e45 'aimami-anthropic-thinking-v1:' —— 证实该私有携带前缀标记在 Windows 构建中同样存在(功能跨平台一致存在)，但本轮未执行红线24三层恢复法(panic-Location两跳xref -> 严格调用图传播 -> tauri命令名精确命名)定位对应函数地址与实现细节。",
+    "gate_status": "gap_needs_reducer",
+    "next_steps_for_future_round": "对 0x141855e45 做 data xref 反查(而非直接 code xref，字符串大概率经由多个调用点的立即数/结构体间接引用)，结合 mac 侧已确认的 7 个函数地址与 codex_thread_visibility/translator/anthropic_reasoning/response_item_id_compat 4 个模块路径做调用图传播定位，本轮时间预算内未执行。"
+  },
+  "cross_platform_semantic_comparison": {
+    "verdict": "仅完成 macOS 侧 grounded 基线(7/9 请求目标恢复实现细节，2/9 确认在该版本下不存在)；Windows 侧仅完成字符串层面的功能存在性确认，未做逐函数对照，不做'双端已收口'声明。",
+    "changelog_mapping_confidence": "mac 侧证据(0001-0007)与官方 changelog 第2条'修复Claude协议跨原生边界的私有推理内容清理'描述高度吻合——'跨原生边界'对应 0004 把 Anthropic thinking block 序列化封装进 OpenAI/Codex rollout 持久化格式的私有字段；'私有推理内容清理'对应 0006 判定 + 0002 执行丢弃逻辑。此为基于反编译行为的直接技术证据支撑的结论，非推测。"
+  },
+  "limitations": [
+    "windows-x64 侧 7 个已恢复函数的对应实现均未定位/未反编译，仅确认关键字符串常量跨平台存在。",
+    "2 个请求目标(remove_unusable_reasoning_items_from_store_false_request / dialects::generic::apply_reasoning)在本版本 mac 二进制中未找到同名符号，已按红线29如实标注，未做'猜测等价改名'处理。",
+    "model_profile(0007) 输出的能力档案结构体确切字段类型/命名未做 declare_type 恢复，家族常量列表(fable/mythos等)与官方模型列表的对应关系未逐一核对，仅基于命名规律推断。",
+    "cleanup_private_reasoning_items_parallel 的外层入口本体(非closure部分)、以及并行结果汇总逻辑未展开(0003 仅覆盖其内部一个格式化辅助闭包)。",
+    "response_item_id_compat::is_unusable_store_false_reasoning_item 的输入 payload 字段的具体 key 字符串内容(7字符key)未用 get_string() 提取确认。",
+    "未做 IDA rename/dirtree 归类/<工具调用> 写回 (红线24 IDB_DIRTREE_MODULE_NAMING 命名规则本轮未执行，仅完成反编译+行为文档，未做 IDB 内命名/目录树落盘)。",
+    "未做本地复审+对抗复审(dual review)。",
+    "未追加 root INDEX.jsonl / internal-reverse/INDEX.jsonl (本轮为独立 raw 证据叶产出，尚未归约入账本)。",
+    "未与真实 AiMaMi App 做参照运行对照(红线25：未对照，仅静态反编译分析)。"
+  ],
+  "generated_at": "2026-08-07T00:00:00Z",
+  "generation_method": "mcp__ida-pro-mcp-mac__func_query + decompile via live IDB (mac)；mcp__ida-pro-mcp-win__func_query + find_regex via live IDB (win, 仅字符串层确认)。<门控> 红线17 双端 server_health 已核 (mac: status=ok,<反编译器>_ready=true,module=AiMaMi; win: status=ok,<反编译器>_ready=true,module='AiMaMi 1.2.6 win64.exe')。",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "gate_status_note": "本轮产出为 raw 证据叶(反编译+行为分析), 未执行 claim-first 账本登记、owner-gate 撞车检查、IDB rename/dirtree/<工具调用>、双审、INDEX.jsonl 追加等完整流水线仪式(受限于单轮会话时间预算)。gate_accepted=false, implementation_use=false 如实反映此状态；后续轮次若要把本叶提升为 strictImplementationUse/readyToImplement，需补齐上述缺项。"
+}

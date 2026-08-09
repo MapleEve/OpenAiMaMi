@@ -9,7 +9,7 @@
 - Windows 后端（原有 6 个）：`raw/aimami/1.2.3/windows-x64/skills/ida/pseudocode/*.c`（`backup_skill_directory_0`/`publish_staged_skill`/4 个 `sub_XXXX`）
 - Windows 后端（本轮新增 7 个）：同目录新增 `import_skill_0x140c9a610.c`、`load_installed_skills_0x140c9ec80.c`、`delete_skill_backup_0x140c92a80.c`（**截断**）、`restore_skill_backup_0x140c95480.c`、`remove_skill_0x140c97d50.c`、`load_skill_backups_0x140c9ced0.c`、`backup_skill_directory_0x1409060c0.c`（**截断**）
 - 前端：`raw/aimami/1.2.3/windows-x64/frontend/ipc-contracts.jsonl`（131 条 win 命令，本轮直接 grep 核实 6 条 skill 命令，`.command` 字段）
-- IDB 活体证据：`server_health` 确认 `status=ok, IDA decompiler_ready=true, module=AiMaMi.1.2.3 win64.exe`；dirtree BFS 枚举（`/codexmate_lib/core/skills` 7 个、`/codexmate_lib/commands/skills` 移动前 0 个/移动后 6 个）；`idb_save` 确认落盘
+- IDB 活体证据：`server_health` 确认 `status=ok, IDA decompiler_ready=true, module=AiMaMi.1.2.3 win64.exe`；dirtree BFS 枚举（`/codexmate_lib/core/skills` 7 个、`/codexmate_lib/commands/skills` 移动前 0 个/移动后 6 个）；`<工具调用>` 确认落盘
 - 详见 `pointers/evidence-paths.md`
 
 ## Coverage

@@ -1,0 +1,36 @@
+{
+  "command": "should_use_no_account_mode",
+  "module": "core/relay/router_unlock_auth",
+  "owner_ea": "0x10056cd80",
+  "interface_type": "internal_function",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "RouterContext + force_no_account flag (int)",
+    "output": "bool (should use no-account mode)"
+  },
+  "side_effects": [],
+  "idaSymbols": [
+    "should_use_no_account_mode"
+  ],
+  "pseudocode": [
+    "core/relay/router_unlock_auth/ida/pseudocode/should_use_no_account_mode_0x10056cd80.c"
+  ],
+  "nextCallees": [
+    "load_auth_file",
+    "auth_is_usable_real_oauth",
+    "has_restorable_real_oauth",
+    "drop_in_place<CoreError>",
+    "__rust_dealloc"
+  ],
+  "callTreeRows": 5,
+  "claims": {
+    "client": [],
+    "server": [
+      "should_use_no_account_mode"
+    ]
+  },
+  "serverEvidencePath": "core/relay/router_unlock_auth/ida/pseudocode/should_use_no_account_mode_0x10056cd80.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "Determines if no-account mode should be used: if force flag set, returns true. Otherwise loads auth file: if usable real OAuth exists, returns false (use real OAuth); if restorable real OAuth exists, returns false (can restore); if neither, returns true (use no-account mode)."
+}

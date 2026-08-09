@@ -1,5 +1,5 @@
 // win 1.2.3 delta | router_model_restore_2 @ 0x1404a9020 | changelog ③模型回退
-// [FULL IDA decompiler 43999B]
+// [FULL hexrays 43999B]
 // win 1.2.1 | module src/core/relay/codex_thread_visibility.rs | attributed via panic-Location xref (win-native)
 __m128i *__fastcall sub_1404A9020(__m128i *a1, __int64 a2)
 {

@@ -17,7 +17,7 @@ The 9 macOS accounts raw leaf bundles already existed with the required clean
 - removed non-macOS blocker wording from the macOS raw leaf text files
 - added top-level no-promotion booleans to each raw `manifest.json`
 - added `platformBoundary=macos_only`
-- added current IDB writeback pointer and `idb_saved=true`
+- added current IDB writeback pointer and `<工具调用>d=true`
 - refreshed `validation/result.json` checks
 - refreshed `file-manifest.json`
 - appended exactly one missing canonical `INDEX.jsonl` row for
@@ -63,7 +63,7 @@ Validated:
 - exact index count is nonzero for 9/9 accounts raw leaf keys
 - current raw/internal surface has no non-macOS blocker wording
 - top-level raw manifest gate booleans remain false
-- `idb_saved=true` is present in raw manifest and validation metadata
+- `<工具调用>d=true` is present in raw manifest and validation metadata
 
 ## Gate Effect
 

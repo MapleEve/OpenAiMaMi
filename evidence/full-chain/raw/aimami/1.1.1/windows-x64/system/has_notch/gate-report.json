@@ -17,7 +17,7 @@
     "frontend/frontend-control-flow.jsonl#L189: callsite settings-page-SeKzRc3U.js queryFn -> hasNotch()",
     "system/has_notch/pseudocode.md: owner=has_notch_owner_sys@0x140023000, size=863B, 32BB, CC=9; fixed return v28=1 (bool true constant); full call tree depth=6",
     "system/has_notch/interface.md: argKeys=[], return=bool true (fixed), no IO, no side effects; macOS uses NSScreen hardware check vs Win fixed-true",
-    "system/has_notch/gate-report.json (prev): all dims PASS, call_tree_max_depth=6, idb_save=ok; dim6_acceptance_mapping session=<审计会话>",
+    "system/has_notch/gate-report.json (prev): all dims PASS, call_tree_max_depth=6, <工具调用>=ok; dim6_acceptance_mapping session=<审计会话>",
     "gate-report.json#dim6_acceptance_mapping: happy_path=invoke('has_notch')=>Ok(true); boundary=param_parse_fail; side_effects=none; test_mapping=[unit: Windows always true]"
   ],
   "dim1_detail": {

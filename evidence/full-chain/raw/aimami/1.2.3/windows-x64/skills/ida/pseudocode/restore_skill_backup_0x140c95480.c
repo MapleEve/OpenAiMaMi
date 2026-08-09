@@ -1,5 +1,5 @@
 // module: codexmate_lib (tauri command handler, src/lib.rs command-name xref)
-// win 1.2.3 IDB (AiMaMi.1.2.3 win64.exe) live IDA Python/decompile this session
+// win 1.2.3 IDB (AiMaMi.1.2.3 win64.exe) live py_eval/decompile this session
 // tauri command handler = restore_skill_backup | mapped via command-name string xref (win-native, ground-truth)
 // NOTE: newly captured this session; not previously in raw/; not yet dirtree-moved.
 // addr: 0x140c95480

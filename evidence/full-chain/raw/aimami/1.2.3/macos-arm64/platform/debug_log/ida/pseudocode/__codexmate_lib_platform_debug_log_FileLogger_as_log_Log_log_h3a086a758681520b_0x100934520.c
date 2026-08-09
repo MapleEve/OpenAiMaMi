@@ -1,4 +1,4 @@
-// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::platform::debug_log::FileLogger as log::Log>::log::h3a086a758681520b @ 0x100934520 | full-body via IDA Python(IDA decompiler.decompile direct write)
+// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::platform::debug_log::FileLogger as log::Log>::log::h3a086a758681520b @ 0x100934520 | full-body via py_exec_file(ida_hexrays.decompile direct write)
 double __fastcall _$LT$codexmate_lib..platform..debug_log..FileLogger$u20$as$u20$log..Log$GT$::log::h3a086a758681520b(
         __int64 a1,
         _QWORD *a2)

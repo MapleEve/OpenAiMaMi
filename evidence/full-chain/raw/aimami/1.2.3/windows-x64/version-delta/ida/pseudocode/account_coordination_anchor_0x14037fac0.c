@@ -1,5 +1,5 @@
 // win 1.2.3 delta | account_coordination_anchor @ 0x14037fac0 | changelog ①账号切换协调
-// [FULL IDA decompiler 4329B]
+// [FULL hexrays 4329B]
 // win 1.2.1 | module src/core/account_coordination.rs | attributed via panic-Location xref (win-native)
 int __fastcall sub_14037FAC0(__int64 a1, __int64 a2, __int64 a3, __int64 a4, __int64 a5)
 {

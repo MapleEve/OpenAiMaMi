@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core12debug_bundle13catalog_shape @ 0x1004c5330 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::debug_bundle::catalog_shape::hc93d5544441282d4(__int64 a1, _QWORD *a2)
 {

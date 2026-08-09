@@ -5,7 +5,7 @@ machine: <本地机器> (纯生产者)
 delta_class: integrity_recovered
 baseline: 1.0.9 已逆完
 idb: <本地路径>
-idb_saved: true
+<工具调用>d: true
 gold_leaf: true
 dim1_ccf: PASS — removeMcpServer:t=>ne("remove_mcp_server",{name:t}) @ assets/index-DdcCOEJG.js:86
 dim2_argkeys: ["name"] frontend / ["name","repo"] backend gate

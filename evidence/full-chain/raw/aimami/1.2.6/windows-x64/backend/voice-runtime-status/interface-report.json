@@ -1,0 +1,31 @@
+{
+  "commands": [
+    {
+      "command": "load_voice_runtime_status",
+      "argKeys": [],
+      "idaSymbols": [],
+      "pseudocode": [
+        "0001-owner-load_voice_runtime_status_owner_sys.c",
+        "0002-core-load_voice_runtime_status.c"
+      ],
+      "nextCallees": [
+        {
+          "ea": "0x140c37a50",
+          "name": "load_voice_runtime_status"
+        }
+      ],
+      "callTreeRows": 5,
+      "claims": {
+        "client": [],
+        "server": []
+      },
+      "sideEffects": [],
+      "serverEvidencePath": "<内部存储>/raw/aimami/1.2.6/windows-x64/backend/voice-runtime-status/evidence.md",
+      "needsServerEvidencePath": false,
+      "confidence": "medium",
+      "sourceMarkdown": "load_voice_runtime_status.md"
+    }
+  ],
+  "generated_from": "interface/*.md (converted to machine-readable format)",
+  "leaf": "voice-runtime-status"
+}

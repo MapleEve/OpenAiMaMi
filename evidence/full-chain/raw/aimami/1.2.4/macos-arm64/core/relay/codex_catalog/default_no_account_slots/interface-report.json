@@ -1,0 +1,39 @@
+{
+  "command": "default_no_account_slots",
+  "module": "core/relay/codex_catalog",
+  "owner_ea": "0x1002211e0",
+  "interface_type": "internal_function",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "providers array + slot preference array",
+    "output": "Vec<CodexNoAccountSlot> (default slots, max 5)"
+  },
+  "side_effects": [],
+  "idaSymbols": [
+    "default_no_account_slots"
+  ],
+  "pseudocode": [
+    "core/relay/codex_catalog/ida/pseudocode/default_no_account_slots_0x1002211e0.c"
+  ],
+  "nextCallees": [
+    "RelayProvider::exposed_models",
+    "hashbrown::map::HashMap::insert",
+    "String::clone",
+    "alloc::raw_vec::RawVec::grow_one",
+    "alloc::raw_vec::handle_error",
+    "__rust_alloc",
+    "__rust_dealloc",
+    "core::panicking::panic_bounds_check"
+  ],
+  "callTreeRows": 8,
+  "claims": {
+    "client": [],
+    "server": [
+      "default_no_account_slots"
+    ]
+  },
+  "serverEvidencePath": "core/relay/codex_catalog/ida/pseudocode/default_no_account_slots_0x1002211e0.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "Computes default no-account slots from provider exposed models: iterates providers, collects matching models into HashMap (max 5 entries), returns default slot vector. Used when user has not configured explicit slot preferences."
+}

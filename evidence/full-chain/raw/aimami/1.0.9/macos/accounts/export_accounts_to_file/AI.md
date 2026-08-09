@@ -30,7 +30,7 @@ analysis and Hex-Rays were ready.
   `0x1005dddbc`, `0x1005dde08`, `0x1005de060`, `0x1005de3f0`,
   `0x1005de818`, `0x1005de91c`, `0x1005deaa4`, `0x1005df188`,
   `0x1005df2b0`, `0x1005df3d8`, `0x1005df458`.
-- `idb_save` returned OK for the active IDB.
+- `<工具调用>` returned OK for the active IDB.
 
 ## Frontend / Interface
 

@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay10translator6stream23OpenAiToAnthropicStream12handle_chunk @ 0x100aa7d40 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 double __fastcall codexmate_lib::core::relay::translator::stream::OpenAiToAnthropicStream::handle_chunk::h9110063a00f5b0aa(
         _QWORD *a1,

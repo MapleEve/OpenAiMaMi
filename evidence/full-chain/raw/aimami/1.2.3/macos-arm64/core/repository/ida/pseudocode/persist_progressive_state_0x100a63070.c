@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core10repository10Repository25persist_progressive_state @ 0x100a63070 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 char *__fastcall codexmate_lib::core::repository::Repository::persist_progressive_state::hba8e5e8e2d346f6d(
         char *a1,

@@ -1,0 +1,47 @@
+{
+  "commands": [
+    {
+      "command": "set_codex_no_account_slots",
+      "argKeys": [],
+      "idaSymbols": [
+        {
+          "ea": "0x140d75ea0",
+          "role": "owner"
+        }
+      ],
+      "pseudocode": [
+        "0001-set-codex-no-account-slots-0x140d75ea0.c",
+        "0002-apply-handler-invoke-0x1405052c0.c",
+        "0003-generic-drop-glue-0x140c7fb50.c"
+      ],
+      "nextCallees": [
+        {
+          "ea": "0x14002b2a0",
+          "name": "sub_14002B2A0"
+        },
+        {
+          "ea": "0x14045b370",
+          "name": "sub_14045B370"
+        },
+        {
+          "ea": "0x1409543d0",
+          "name": "sub_1409543D0"
+        }
+      ],
+      "callTreeRows": 7,
+      "claims": {
+        "client": [],
+        "server": []
+      },
+      "sideEffects": [
+        "persistence write"
+      ],
+      "serverEvidencePath": "<内部存储>/raw/aimami/1.2.6/windows-x64/backend/codex-no-account-slots/evidence.md",
+      "needsServerEvidencePath": false,
+      "confidence": "unknown",
+      "sourceMarkdown": "set_codex_no_account_slots.md"
+    }
+  ],
+  "generated_from": "interface/*.md (converted to machine-readable format)",
+  "leaf": "codex-no-account-slots"
+}

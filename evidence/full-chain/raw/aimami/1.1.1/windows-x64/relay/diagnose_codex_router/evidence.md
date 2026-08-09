@@ -187,7 +187,7 @@ ceiling = strictImplementationUse. dim6 (内部构建 test/acceptance mapping) i
 | append_comment | 0x1412f006f | catalog string | ok |
 | append_comment | 0x1406E8480 | relay manager extract | ok |
 | append_comment | 0x14072A3A0 | relay providers enumerate | ok |
-| idb_save | <本地路径>| — | ok |
+| <工具调用> | <本地路径>| — | ok |
 
 ---
 

@@ -110,7 +110,7 @@ IDB saved at: <来源位置>/raw/binary/AiMaMi-1.1.1-idb
 - [x] Delta vs 1.0.9: NET-NEW (not in 1.0.9 module list)
 - [x] String literals extracted (plan/auth keys, guard string)
 - [x] Noise filtered (mutex/panic guards, vtable renames, alloc sizes)
-- [x] IDB comments written + idb_save confirmed
+- [x] IDB comments written + <工具调用> confirmed
 - [x] pseudocode written (3 files)
 - [x] call-tree written
 - [x] dto.md written

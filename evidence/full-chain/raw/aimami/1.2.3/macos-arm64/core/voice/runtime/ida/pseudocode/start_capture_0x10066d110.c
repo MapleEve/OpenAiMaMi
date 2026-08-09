@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5voice7runtime13start_capture @ 0x10066d110 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::voice::runtime::start_capture::hefa5b6a2d79b1300(
         _QWORD *a1,

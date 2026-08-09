@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core12debug_bundle10auth_shape @ 0x1004bf140 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::debug_bundle::auth_shape::h2c97417e240a0b81(__int64 a1, __int64 a2)
 {

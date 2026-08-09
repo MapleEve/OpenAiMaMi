@@ -132,7 +132,7 @@ IPC registration xref: 0x100316160 (single caller)
 | artifact | value |
 |---|---|
 | IDB path | `<来源位置>/raw/binary/AiMaMi-1.1.1-idb` |
-| IDB saved | yes (idb_save confirmed ok) |
+| IDB saved | yes (<工具调用> confirmed ok) |
 | Inline 逆向分析 comments written | 5 functions annotated via append_comments |
 | Pseudocode file | `ida/pseudocode.md` |
 | Call-tree file | `ida/call-trees.md` |

@@ -299,7 +299,7 @@ Tauri IPC closure [0x1003290d4]
         ├── exe_path → walk up until .app extension found → app_path
         ├── is_app_translocation_path(exe_path) [0x100578020]
         │     └── StrSearcher search for "/AppTranslocation/" (18 bytes)
-        ├── is_volumes_read_only = app_path.starts_with("/Volumes/")
+        ├── is_volumes_read_only = app_path.starts_with("<内部存储>/")
         ├── can_install = !(is_translocation || is_volumes_read_only)
         ├── status_tag:
         │     "app_translocation" if is_translocation

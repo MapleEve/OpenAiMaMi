@@ -49,7 +49,7 @@
 - **Error discriminant=2**: CoreError::Io → atomic_write failure (fs_write_leaf at write_atomic)
 - **Error discriminant=8**: JSON serialization error path from serde_json serializer
 - **accountKeys filter logic**: HashMap dedup pass + optional key-filter (confirmed from core decompile: `hashbrown::HashMap::insert` + `IntoIter::fold` for HashMap-based dedup of account keys; optional accountKeys filter via `!*((_QWORD *)&v173 + 1)` = empty filter → include all, else hash-lookup filter)
-- **idb_save**: ok (path=<来源位置>/raw/binary/AiMaMi-1.1.1-idb)
+- **<工具调用>**: ok (path=<来源位置>/raw/binary/AiMaMi-1.1.1-idb)
 - **append_comments**: done (6 annotations: 0x10012a750 owner, 0x10059a820 blocking_task_poll, 0x1004b8b80 core, 0x100550470 serializer, 0x10041e960 terminal_leaf, 0x1010e7311 IPC reg blob)
 
 ## Inferred

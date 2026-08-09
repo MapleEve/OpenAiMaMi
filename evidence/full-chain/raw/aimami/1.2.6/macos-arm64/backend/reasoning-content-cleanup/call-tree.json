@@ -1,0 +1,88 @@
+{
+  "target": "reasoning-content-cleanup",
+  "target_type": "backend_function_cluster",
+  "owner_ea": "0x100772d00",
+  "owner_name": "codexmate_lib::core::relay::codex_thread_visibility::cleanup_private_reasoning_items_in_existing_rollout",
+  "edges": [
+    {
+      "callee": "cleanup_private_reasoning_items_in_existing_rollout",
+      "addr": "0x100772d00",
+      "type": "entry",
+      "size": "0xd75"
+    },
+    {
+      "callee": "cleanup_private_reasoning_items_in_rollout::{{closure}}",
+      "addr": "0x100771aa0",
+      "type": "internal",
+      "size": "0x3d9"
+    },
+    {
+      "callee": "cleanup_private_reasoning_items_parallel::{{closure}}",
+      "addr": "0x1006a5bf0",
+      "type": "internal",
+      "size": "0x3d"
+    },
+    {
+      "callee": "set_anthropic_thinking_carrier",
+      "addr": "0x100a1cdd0",
+      "type": "internal",
+      "size": "0x20f"
+    },
+    {
+      "callee": "model_matches_family",
+      "addr": "0x100b3bb10",
+      "type": "internal",
+      "size": "0x111"
+    },
+    {
+      "callee": "model_profile",
+      "addr": "0x100b3b4c0",
+      "type": "internal"
+    },
+    {
+      "callee": "is_unusable_store_false_reasoning_item",
+      "addr": "0x10024df90",
+      "type": "internal"
+    },
+    {
+      "callee": "sync_parent_dir",
+      "addr": null,
+      "type": "terminal"
+    },
+    {
+      "callee": "restore_rollout_mtime_best_effort",
+      "addr": null,
+      "type": "terminal"
+    },
+    {
+      "callee": "fs::rename (atomic temp→original)",
+      "addr": null,
+      "type": "terminal"
+    }
+  ],
+  "edge_count": 10,
+  "terminated_reason": null,
+  "depth": 3,
+  "leaf_status": "implementation_leaf",
+  "missing_targets": [
+    {
+      "name": "remove_unusable_reasoning_items_from_store_false_request",
+      "status": "confirmed_absent",
+      "note": "logic inlined into closure 0002"
+    },
+    {
+      "name": "dialects::generic::apply_reasoning",
+      "status": "confirmed_absent",
+      "note": "dialects::generic only has is_openai_o_series; apply_chat_reasoning exists at dialects level"
+    }
+  ],
+  "terminals": [
+    "filesystem atomic rename",
+    "filesystem fsync",
+    "filesystem permission restore",
+    "serde_json parse/serialize"
+  ],
+  "notes": "7/9 targets found and full-decompiled. ⚠ destructive: atomic rename overwrites original rollout JSONL file, discarding judged-unusable reasoning lines.",
+  "session": "<审计会话>
+  "binary_sha256": "1.2.6-mac-arm64"
+}

@@ -32,7 +32,7 @@ Current-turn mac IDA MCP tools used:
 - `xrefs_to`
 - `IDA Python`
 - `set_comments`
-- `idb_save`
+- `<工具调用>`
 
 IDB writeback:
 
@@ -40,8 +40,8 @@ IDB writeback:
 {
   "idb_modified": true,
   "set_comments_count": 23,
-  "idb_saved": true,
-  "idb_save_ok": true
+  "<工具调用>d": true,
+  "<工具调用>_ok": true
 }
 ```
 

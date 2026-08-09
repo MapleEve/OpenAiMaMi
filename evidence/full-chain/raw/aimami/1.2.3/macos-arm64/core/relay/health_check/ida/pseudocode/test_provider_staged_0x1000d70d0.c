@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay12health_check20test_provider_staged28_$u7b$$u7b$closure$u7d$$u7d$ @ 0x1000d70d0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 char __fastcall codexmate_lib::core::relay::health_check::test_provider_staged::_$u7b$$u7b$closure$u7d$$u7d$::h0f20dbaa671682eb(
         __int64 *a1,

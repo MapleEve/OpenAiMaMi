@@ -1,0 +1,34 @@
+{
+  "target": "commands::remove_mcp_server",
+  "owner_ea": "0x1007cbfc0",
+  "edges": [
+    {
+      "callee": "core::mcp::remove_mcp_server (0x1009f31d0)",
+      "type": "internal"
+    },
+    {
+      "callee": "CoreEnvelope<T>::ok",
+      "type": "internal"
+    },
+    {
+      "callee": "CoreError::fmt",
+      "type": "internal"
+    },
+    {
+      "callee": "drop_in_place<CoreError>",
+      "type": "internal"
+    },
+    {
+      "callee": "core::result::unwrap_failed",
+      "type": "internal"
+    },
+    {
+      "callee": "std::sys::sync::mutex::Mutex::unlock",
+      "type": "internal"
+    }
+  ],
+  "edge_count": 6,
+  "terminated_reason": "response_serialize",
+  "depth": 2,
+  "leaf_status": "implementation_leaf"
+}

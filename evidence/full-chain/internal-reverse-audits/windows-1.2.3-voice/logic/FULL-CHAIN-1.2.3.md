@@ -4,10 +4,10 @@
 
 ## 0. 方法论与本轮工具使用记录
 
-本轮为 reduce/distillation pass，**未持有 IDA MCP 工具作为常驻装备**（无 `mcp__ida-pro-mcp-*` 前缀工具），改为通过既有脚本 `idacall.py`（JSON-RPC 一次性客户端，位于 `/private/tmp/verify_win_iso/idacall.py` 等多个临时目录，为既有 pass 遗留工具，非本轮新增）对 `<host>:13337/mcp` 发起只读验证调用。红线 17 IDA_LIVE_GATE 已核：
+本轮为 reduce/distillation pass，**未持有 IDA MCP 工具作为常驻装备**（无 `mcp__ida-pro-mcp-*` 前缀工具），改为通过既有脚本 `idacall.py`（JSON-RPC 一次性客户端，位于 `<临时路径> 等多个临时目录，为既有 pass 遗留工具，非本轮新增）对 `<host>:13337/mcp` 发起只读验证调用。红线 17 <门控> 已核：
 
 ```
-server_health → {"status":"ok","uptime_sec":238651.079,"idb_path":"E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+server_health → {"status":"ok","uptime_sec":238651.079,"idb_path":"<二进制路径>\\AiMaMi.1.2.3 win64.exe.i64",
 "module":"AiMaMi.1.2.3 win64.exe","imagebase":"0x140000000",
 "auto_analysis_ready":true,"IDA decompiler_ready":true,"strings_cache_ready":true}
 ```
@@ -19,7 +19,7 @@ server_health → {"status":"ok","uptime_sec":238651.079,"idb_path":"E:\\binary\
 - `find_regex`：对整个二进制字符串缓存精确匹配 `cancel_voice_trigger_capture`，返回 `n:0`（零命中，`strings_cache_ready=true` 排除冷缓存假阴性）。
 - `search_text`：两次尝试（首次 30s、重试 120s）均超时（`exit 124`），未获得结果，如实记录为**本轮未完成的尝试**，不当作"确认无 gap"。
 
-本轮**未**：写任何新 raw `.c` 文件到 SMB（红线 5/11/12 的 claim-first + owner-gate 流程未走，超出本次 reduce 任务授权范围）；未做 rename/set_comments/idb_save 写回；未新增 INDEX.jsonl 条目。以上 4 个地址的完整伪代码目前只存在于本文档的引用摘录和 live IDB 里，**未materialize 成独立 raw leaf 文件**——列入 `next_producer_steps`。
+本轮**未**：写任何新 raw `.c` 文件到 SMB（红线 5/11/12 的 claim-first + owner-gate 流程未走，超出本次 reduce 任务授权范围）；未做 rename/set_comments/<工具调用> 写回；未新增 INDEX.jsonl 条目。以上 4 个地址的完整伪代码目前只存在于本文档的引用摘录和 live IDB 里，**未materialize 成独立 raw leaf 文件**——列入 `next_producer_steps`。
 
 ## 1. 通用命令包装骨架（适用于绝大多数 29 个 `commands/` 目录下的命令）
 
@@ -162,4 +162,4 @@ cross-check 备注："mac commands::voice (fn renamed)"——暗示 mac 侧此�
 - `workspace/serialize_2` 与 `models/serialize_VoiceWorkspacePayload` 疑似重复实现未消歧（REGISTRATION-TABLE §4 观察项 1）。
 - dim4 对全部 37 命令的响应 payload/错误 envelope 完整字段仍未产出（除 §2-3 列出的少数命令外）。
 - dim6（test/acceptance mapping）全模块未产出，未变。
-- 4 个本轮读出的命令（§3）尚未把其伪代码正式落成独立 raw `.c` leaf 文件（目前只存在于 `open_path` 共享文件内部和 live IDB），建议下一位 producer 补做 `define_func`/提取/`idb_save`，形成 `raw/aimami/1.2.3/windows-x64/commands/voice/` 下的独立文件。
+- 4 个本轮读出的命令（§3）尚未把其伪代码正式落成独立 raw `.c` leaf 文件（目前只存在于 `open_path` 共享文件内部和 live IDB），建议下一位 producer 补做 `define_func`/提取/`<工具调用>`，形成 `raw/aimami/1.2.3/windows-x64/commands/voice/` 下的独立文件。

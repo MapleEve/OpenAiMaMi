@@ -74,7 +74,7 @@ The command handler `commands::mcp::load_mcp_servers` now calls `Repository::sto
 - `0x1004d88c0` (bootstrap_cache::load NEW) ✓
 - `0x1005a3aa0` (parse_mcp_section_header) ✓
 
-`idb_save` confirmed: `<来源位置>/raw/binary/AiMaMi-1.1.1-idb` — ok=true (2026-06-17)
+`<工具调用>` confirmed: `<来源位置>/raw/binary/AiMaMi-1.1.1-idb` — ok=true (2026-06-17)
 
 ---
 
@@ -121,7 +121,7 @@ The command handler `commands::mcp::load_mcp_servers` now calls `Repository::sto
   "dto_changes": "McpServerListPayload now persisted into BootstrapStatePayload.mcp_servers slot (offset +792)",
   "error_handling": "store errors fire-and-forget; command always returns ok(payload) on parse success",
   "idb_annotated": true,
-  "idb_saved": true,
+  "<工具调用>d": true,
   "idb_path": "<来源位置>/raw/binary/AiMaMi-1.1.1-idb",
   "gate_status": "pass",
   "completeness_3angle": "pass",

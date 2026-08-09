@@ -1,5 +1,5 @@
 // module: codexmate_lib (tauri command handler, src/lib.rs command-name xref)
-// win 1.2.3 IDB (AiMaMi.1.2.3 win64.exe) live IDA Python/decompile this session
+// win 1.2.3 IDB (AiMaMi.1.2.3 win64.exe) live py_eval/decompile this session
 // tauri command handler = import_skill | mapped via command-name string xref (win-native, ground-truth)
 // NOTE: this function was NOT previously in raw/aimami/1.2.3/windows-x64/skills/ -- discovered live via dirtree+comment scan gap-check during windows-1.2.3-skills distillation pass. Not yet dirtree-moved into a module folder (was floating unfiled in the live IDB at time of read).
 // addr: 0x140c9a610

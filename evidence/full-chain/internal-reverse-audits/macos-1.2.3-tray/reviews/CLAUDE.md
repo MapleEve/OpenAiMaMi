@@ -20,4 +20,4 @@
 
 ## 复核方法
 
-未连接 IDA MCP，未做新反编译（红线17 `IDA_LIVE_GATE` 要求每个用 IDA 的 agent 起手核 `server_health`——本次会话确认不使用 IDA 路线，纯读盘归并，不触发该门）。12 个原始 `.c` 文件全部逐字读完（非抽样/非仅读文件头注释），`backend-baseline/*.md` 两份既有分析作为交叉核对对象而非直接抄录来源。未执行 `reviews/AGENT.md`（Codex 独立复核）——本轮只产出 Claude 侧复核，`reviews/CROSS-REVIEW.md` 因此未创建（`OUTPUT-SPEC.md` 允许"至少一份存在"）。
+未连接 IDA MCP，未做新反编译（红线17 `<门控>` 要求每个用 IDA 的 agent 起手核 `server_health`——本次会话确认不使用 IDA 路线，纯读盘归并，不触发该门）。12 个原始 `.c` 文件全部逐字读完（非抽样/非仅读文件头注释），`backend-baseline/*.md` 两份既有分析作为交叉核对对象而非直接抄录来源。未执行 `reviews/AGENT.md`（Codex 独立复核）——本轮只产出 Claude 侧复核，`reviews/CROSS-REVIEW.md` 因此未创建（`OUTPUT-SPEC.md` 允许"至少一份存在"）。

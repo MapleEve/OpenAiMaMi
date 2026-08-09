@@ -1,4 +1,4 @@
-// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::models::ApiConnectivityPayload as core::cmp::PartialEq>::eq::h44554b7666593278 @ 0x100b1b870 | full-body via IDA Python(IDA decompiler.decompile direct write)
+// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::models::ApiConnectivityPayload as core::cmp::PartialEq>::eq::h44554b7666593278 @ 0x100b1b870 | full-body via py_exec_file(ida_hexrays.decompile direct write)
 bool __fastcall _$LT$codexmate_lib..core..models..ApiConnectivityPayload$u20$as$u20$core..cmp..PartialEq$GT$::eq::h44554b7666593278(
         __int64 a1,
         __int64 a2)

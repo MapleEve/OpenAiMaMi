@@ -1,6 +1,6 @@
 # AiMaMi 1.2.3 windows-x64 commands::relay::* — Command Owner Surface (strip PE, no decompile)
 
-Produced: 2026-07-23 · session `relay123-surface` · machine `<host>` · binary `AiMaMi.1.2.3 win64.exe` (PE) · SHA-256 `aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396`
+Produced: 2026-07-23 · session `relay123-surface` · machine `<本地机器> · binary `AiMaMi.1.2.3 win64.exe` (PE) · SHA-256 `aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396`
 
 Method: frontend `ipc-contracts.jsonl` (macos-arm64 bundle, shared JS asset — command **names only**, not ownership, are cross-platform-derived) relay/proxy command list, plus 2 commands recovered only via deeper frontend page-level extraction (`raw/aimami/1.2.3/macos-arm64/frontend/pages/relay-frontend.md` `relay_command_universe`, not present in the static `ipc-contracts.jsonl` extractor: `diagnose_codex_router`, `test_relay_draft_stream`) → `find_regex('"<command>"')` on windows-x64 IDB → `xrefs_to` (1-hop) → unique enclosing function = handler (skill red line 24 §3, "tauri 命令名串→唯一 xref 函数=handler").
 

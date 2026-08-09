@@ -1,0 +1,31 @@
+{
+  "schema": "c5cm.raw.leaf.gate_report.v1",
+  "commands": ["start_voice_capture"],
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "gates": {
+    "consumerStartReady": true,
+    "strictImplementationUse": false,
+    "readyToImplement": false,
+    "implementation_use": false,
+    "gate_accepted": false,
+    "full_leaf_100_definition_v2": false
+  },
+  "blockers": [
+    "ensure_standby_sidecar / shutdown_standby_sidecar macOS-parity functions not located to independent Windows leaf functions this round (candidate locations: sub_140039F40 standby task submission, or sub_140C43590 legacy fallback -- neither recursed further)",
+    "stop_voice_capture's 2 non-owner shared callers (sub_140C42E40/sub_140C44B20, this bundle's core scheduling cluster) inspected only far enough to confirm cluster membership by the sibling stop-voice-capture bundle, not independently deep-decompiled from this bundle's side"
+  ],
+  "dim_status": {
+    "dim1_owner_located": "PASS (public dispatch 0x14015b7b0, confirmed_parity_with_macos_public_wrapper)",
+    "dim2_call_tree_depth": "PASS (depth3-4: dispatch -> core_capture_start_and_sidecar_scheduler -> {sync_permissions|load_config|try_start_via_standby|start_capture_legacy|emit_status})",
+    "dim3_pseudocode_recovered": "PASS (2 bodies recovered: dispatch + core scheduler, both confirmed non-truncated; sidecar_scheduling_mapping cross-references 5 additional grounded addresses reused/confirmed from sibling bundles)",
+    "dim4_dto_fields": "NOT_DONE (no input-argument DTO extraction performed this round; start_voice_capture appears to take no/minimal explicit args, inferred from dispatch body but not independently re-verified)",
+    "dim5_cross_version_baseline": "PASS (macos_reference: raw/aimami/1.2.6/macos-x64/backend/voice-runtime-start-capture/manifest.json, sidecar_scheduling_mapping cross-referenced role-by-role)",
+    "dim6_live_reference_parity": "NOT_RUN (no live reference App comparison performed, per red line 25 disclosure)"
+  },
+  "scope_note": "This bundle was originally produced under task #152 (2026-08-06T16:35:00Z decompile session) as a c5cm.raw.ida-leaf.v1 manifest+pseudocode-only bundle. This gate-report.json/evidence.md/interface/call-trees were added in a later schema-normalization round (session <审计会话> purely by reorganizing the pre-existing manifest.json content into leaf.v1-parity shape -- no new IDA decompile, rename, dirtree, or <工具调用> call was made during normalization.",
+  "generated_at": "2026-08-06T16:35:00Z",
+  "schema_normalized_at": "2026-08-06T08:31:34Z",
+  "session": "task#152 (original decompile); <审计会话> (schema normalization backfill)"
+}

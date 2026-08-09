@@ -1,0 +1,17 @@
+# delta-commands.txt — AiMaMi 1.2.3 → 1.2.4 (Windows x64)
+# Commands/functions that are new or changed, requiring IDA full-chain verification.
+# Source: backend-function-diff-1.2.3-to-1.2.4.json + commands-platform-coexisting-body-diff + _enum_124_cmd_plat.json
+# Generated: 2026-08-08
+
+# === New commands in 1.2.4 win (mac-confirmed, win handler located) ===
+codexmate_lib::commands::system::get_claude_web_search_compat  # win_ea=0x140156ef0 classification=new_in_1_2_4 (mac confirmed_live, idx44)
+codexmate_lib::commands::relay::set_claude_web_search_compat  # win_ea=0x140e01580 classification=new_in_1_2_4 (mac confirmed_live, 1 hit in added)
+codexmate_lib::commands::relay::set_codex_no_account_slots  # win_ea=0x140e2de30 classification=new_in_1_2_4 (mac confirmed_live, 1 hit in added)
+codexmate_lib::platform::process::codex_bundled_cli_path  # win_ea=0x140a19ac0 classification=new_in_1_2_4 (mac confirmed_live, idx61, 321B on mac)
+
+# === Coexisting functions with body-level diff (need full-chain) ===
+remove_accounts  # module=commands::accounts v123ea=0x140cac5d0 v124ea=0x140E223B0
+quit_keeping_router_0 (variant) vs quit_keeping_router main handler  # module=commands::relay v123ea=0x140485420 v124ea=0x140173F00
+
+# === Module-level delta (commands:: -1.4%, platform:: -1.9% — noise_below_2x, bulk same) ===
+# Most coexisting commands pass noise threshold; only paired body-diff candidates above need full-chain.

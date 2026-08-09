@@ -1,0 +1,70 @@
+{
+  "schema": "c5cm.raw.ida-leaf.v1",
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "topic": "codex-no-account-slots",
+  "scope_note": "严格版本delta范围内的4个目标之一：codex_no_account_slots",
+  "source": {
+    "idb_module": "AiMaMi 1.2.6 win64.exe",
+    "idb_path": "<二进制路径>\\AiMaMi 1.2.6 win64.exe.i64"
+  },
+  "owner_map_source": "intermediate/aimami/1.2.6/windows-x64/version_delta/ipc-command-owner-map.json",
+  "functions": [
+    {
+      "role": "set_command_owner",
+      "command_name": "set_codex_no_account_slots",
+      "address": "0x140d75ea0",
+      "pseudocode": "pseudocode/0001-set-codex-no-account-slots-0x140d75ea0.c",
+      "bytes_returned": "full body, no truncation marker",
+      "is_real_async_poll_body": true,
+      "poll_state_dispatch_field_offset": "a1+1856 (0/1/2/3 resume points)",
+      "verified_callees": [
+        "sub_14002B2A0 / sub_14172C620 (shared generic hashbrown-registry + future-combinator)",
+        "sub_14045B370 (manager.request completion for 'slots' arg)",
+        "sub_1409543D0 (manager.request completion for 'relaunch' arg)",
+        "sub_1405052C0 (apply-handler invoke wrapper -- persistence/business leaf call site, decompiled: pseudocode/0002)",
+        "sub_140C7FB50 (verified GENERIC enum/Option Drop glue, decompiled: pseudocode/0003 -- NOT relaunch-trigger logic)",
+        "sub_140AFFC30 (final CoreEnvelope response emission, shared with other manager-backed commands)"
+      ],
+      "key_behavioral_finding": "命令参数为 {slots, relaunch} 二元组：'slots' 为账号槽位配置负载，'relaunch' 为独立的布尔标志，控制是否在应用配置后立即重启 Codex 进程。这与仅有单参数的 web-search-compat 命令族形成明显对比，是本目标的核心行为特征。",
+      "observed_behavior": [
+        "async 状态机（poll 0/1/2/3）：依次拉取 manager.request 中的 'slots' 与 'relaunch' 两个参数",
+        "通过 sub_1405052C0 调用数据驱动的 vtable apply-handler（真正的持久化/业务逻辑落点，未在本轮进一步递归解析其内部字段级实现，超出4目标范围边界）",
+        "sub_140C7FB50 为独立验证的通用枚举/Option Drop glue，非 relaunch 触发逻辑本身——relaunch 语义完全由参数值经 apply-handler 传递",
+        "成功/失败均经 sub_140AFFC30 走相同 CoreEnvelope 回传路径"
+      ],
+      "recovery_attempts": [
+        "已尝试解析 sub_140C7FB50，确认其为通用 Drop glue 而非 relaunch 触发器（红线13：破假墙已尝试，非天花板伪装）",
+        "sub_1405052C0 内 (*a2+16)+24 处的 vtable 调用为数据驱动分发，本轮未继续解析其具体目标地址（超出4目标范围的字段级持久化实现细节，非 accepted_unknown）"
+      ],
+      "gate_status": "not_gate_accepted"
+    },
+    {
+      "role": "shared_generic_helper",
+      "command_name": null,
+      "address": "0x1405052c0",
+      "pseudocode": "pseudocode/0002-apply-handler-invoke-0x1405052c0.c",
+      "verdict": "generic_runtime_glue",
+      "note": "与 set_claude_web_search_compat 内 sub_140504EE0 结构几乎同构（相同 -1/-2/-3 错误哨兵处理 + task-local push/pop 模式），确认为跨命令共享的通用 apply-handler 调用助手，非某一命令专属实现"
+    },
+    {
+      "role": "shared_generic_helper",
+      "command_name": null,
+      "address": "0x140c7fb50",
+      "pseudocode": "pseudocode/0003-generic-drop-glue-0x140c7fb50.c",
+      "verdict": "generic_runtime_glue",
+      "note": "验证为通用枚举/Option Drop glue（三段判别式分支 + Vec<T> 清理），非 relaunch 触发器"
+    }
+  ],
+  "cross_platform_semantic_comparison": {
+    "macos_baseline": "raw/aimami/1.2.6/macos-x64/backend/ 未见 codex-no-account-slots 专项目录；跨命令族比较基于通用 manager/CoreEnvelope 分层模式",
+    "verdict": "语义对照（非逐字节）：Windows 侧该命令延续与 web-search-compat 相同的分层模式（薄命令层 -> manager.request 委托 -> apply-handler 持久化 -> CoreEnvelope 回传），但携带了 web-search-compat 没有的第二个语义参数 'relaunch'，体现该命令在产品语义上比纯配置读写更进一层——涉及运行时进程生命周期联动（配置变更后是否需要重启 Codex）。"
+  },
+  "limitations": [
+    "sub_1405052C0 内数据驱动 vtable 调用目标未解析到具体持久化字段实现（超出本轮4目标范围）。",
+    "未与真实 AiMaMi Windows App 做参照运行对照（红线25：未对照，仅静态反编译分析）。"
+  ],
+  "generated_at": "2026-08-06T15:35:00Z",
+  "generation_method": "mcp__ida-pro-mcp-win__decompile via live IDB, <门控> verified (server_health status=ok, <反编译器>_ready=true, module=AiMaMi 1.2.6 win64.exe)"
+}

@@ -48,5 +48,5 @@
 
 ## Action / Non-action
 
-- Action：`REVERSE-STATUS.md` `[wf-aimami123-fullapp-20260724]` 的 full-app 缺口清单中 `plugins` 一项，对 windows-x64（及交叉核对的 macos-arm64）可标注为「已核验移除，非待逆缺口」，无需再排 canonical leaf-closure 逆向工作单。
+- Action：`REVERSE-STATUS.md` `[<审计会话> 的 full-app 缺口清单中 `plugins` 一项，对 windows-x64（及交叉核对的 macos-arm64）可标注为「已核验移除，非待逆缺口」，无需再排 canonical leaf-closure 逆向工作单。
 - Non-action：不据此声明 C5 产品侧"plugins 功能"upstream 行为依据（模块已不存在，无 upstream 行为可复刻）；不因本审计推翻或覆盖 `audits/windows-1.0.9-plugins`/`audits/macos-1.0.9-plugins` 既有 1.0.9 结论（两者各自独立、按各自版本 SoT 生效）。

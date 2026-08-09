@@ -5,7 +5,7 @@ Source binary SHA-256 (macOS 1.2.3 arm64): `25d6d04e6d94c3f1e8258d2b348360b228fd
 Scope of this pass: **triage**, not full leaf-100 deep reverse. Input is the 89 unclassified
 generic `run_0x<VA>.c` pseudocode files under
 `raw/aimami/1.2.3/macos-arm64/run/ida/pseudocode/` produced by the
-`wf-aimami123-delta-20260721` full-baseline decompile session (mac 1638-function baseline,
+`<审计会话> full-baseline decompile session (mac 1638-function baseline,
 `run-app-misc` coverage group, see `audits/BASELINE-FINAL-1.2.3.md` line "run-app-misc | 155 |
 run(App 主入口/setup)/toplevel(退出守护)/debug_bundle/analytics/mcp/skills"). Those 89 files were
 never RULE 8 reduced into a canonical module bundle. This document is the grounded triage result.
@@ -78,7 +78,7 @@ opened in this pass — out of scope for this triage).
 Every one of these calls exactly one already-named `commands::<mod>::<fn>` (or
 `core::<mod>::<fn>`) target; ownership is the target's own module, most of which already have (or
 are separately tracked as needing) their own 1.2.3 canonical bundle per
-`wf-aimami123-fullapp-20260724`'s gap list.
+`<审计会话> gap list.
 
 - **relay** (15 — canonical bundle already exists: `audits/macos-1.2.3-relay/`, do not duplicate):
   `compose_proxy_status`, `get_active`, `get_codex_router_auth_readiness`, `load_relay_state`,

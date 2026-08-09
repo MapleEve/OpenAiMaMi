@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay18router_unlock_auth22build_unlock_auth_json @ 0x10051b8e0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::relay::router_unlock_auth::build_unlock_auth_json::h2c2824a99fd1a741(
         __int64 a1,

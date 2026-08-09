@@ -1,0 +1,76 @@
+{
+  "targets": [
+    {
+      "target": "start_voice_capture",
+      "edges": [
+        {
+          "depth": 0,
+          "ea": "0x14015b7b0",
+          "name": "start_voice_capture",
+          "role": "public_command_dispatch",
+          "note": "confirmed_parity_with_macos_public_wrapper"
+        },
+        {
+          "depth": 1,
+          "ea": "0x140c38d20",
+          "name": "sub_140C38D20",
+          "role": "core_capture_start_and_sidecar_scheduler",
+          "note": "confirmed_sidecar_scheduling_logic; grounding strings: codexmate_lib::core::voice::runtime module path, '[TypeMami] failed to capture foreground context: runtime lock poisoned'; runs 3 fast-path short-circuit checks on Repository+867/+858/+864 state bytes before real scheduling"
+        },
+        {
+          "depth": 2,
+          "ea": "0x1401a9010",
+          "name": "sub_1401A9010",
+          "role": "sync_permissions_internal",
+          "note": "confirmed_parity"
+        },
+        {
+          "depth": 2,
+          "ea": "0x1403d84c0",
+          "name": "sub_1403D84C0",
+          "role": "load_saved_config",
+          "note": "confirmed_parity, equiv macOS load_saved_config/load_workspace"
+        },
+        {
+          "depth": 2,
+          "ea": "0x1403d2670",
+          "name": "sub_1403D2670",
+          "role": "standby_availability_check",
+          "note": "confirmed_parity part of try_start_via_standby; Mutex-protected availability check"
+        },
+        {
+          "depth": 3,
+          "ea": "0x140039f40",
+          "name": "sub_140039F40",
+          "role": "standby_job_submission",
+          "note": "confirmed_parity part of try_start_via_standby; submits language/model/binding config to already-running standby ASR sidecar; internal implementation NOT recursed further this round",
+          "terminated_reason": "architecture_only"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140c43590",
+          "name": "sub_140C43590",
+          "role": "start_capture_legacy",
+          "note": "confirmed_parity; keyed by 2 global atomic generation counters qword_141FBA3B8/qword_141FBA3C0; on -1 sentinel failure falls back to load_status; internal implementation NOT recursed further this round",
+          "terminated_reason": "architecture_only"
+        },
+        {
+          "depth": 3,
+          "ea": "0x140c37a50",
+          "name": "load_voice_runtime_status",
+          "role": "load_status_fallback",
+          "note": "confirmed_reused; final-state re-read fallback on start_capture_legacy failure, same function documented in update-voice-runtime-settings bundle"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140c37590",
+          "name": "sub_140C37590",
+          "role": "emit_status",
+          "note": "confirmed_reused_from_target3; same function as update-voice-runtime-settings bundle, 'voice-runtime-updated' event-name anchor",
+          "terminated_reason": "external_call"
+        }
+      ]
+    }
+  ],
+  "edges_count": 9
+}

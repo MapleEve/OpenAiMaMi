@@ -41,7 +41,7 @@ ready.
 | transient clear helper | `0x1005f028c` | `Repository::clear_auto_switch_transient_state` |
 
 IDB comments were written at the wrapper, owner, and field callsites, and
-`idb_save` returned OK.
+`<工具调用>` returned OK.
 
 ## Frontend / IPC Chain
 

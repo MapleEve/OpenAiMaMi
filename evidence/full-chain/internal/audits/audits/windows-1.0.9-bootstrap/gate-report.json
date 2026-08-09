@@ -28,7 +28,7 @@
       "va_cli": "0x1400010D0",
       "is_upstream": true,
       "evidence_path": "logic/WIN-BOOTSTRAP-DEEP-DISTILLED-109.md",
-      "idb_saved": true
+      "<工具调用>d": true
     },
     {
       "leaf": "boot_spawn_threads",
@@ -42,7 +42,7 @@
       "is_upstream": false,
       "platform_divergence": "schtasks CodexMateAutoSwitch (vs macOS LaunchAgent); 1 watcher fn (vs macOS 3 spawners); WakeByAddressSingle condvar (vs macOS OnceLock atomic guard)",
       "evidence_path": "logic/WIN-BOOTSTRAP-DEEP-DISTILLED-109.md",
-      "idb_saved": true
+      "<工具调用>d": true
     },
     {
       "leaf": "bootstrap_cache",
@@ -57,7 +57,7 @@
       "bootstrap_payload_fields": ["writtenAt", "snapshotProgressive", "usageAnalytics", "mcpServers", "installedSkills"],
       "cache_path_confirmed": "bootstrap-cache.json (from CodexPaths string 0x1412804eb)",
       "evidence_path": "logic/WIN-BOOTSTRAP-DEEP-DISTILLED-109.md",
-      "idb_saved": true
+      "<工具调用>d": true
     },
     {
       "leaf": "managed_state_registry",
@@ -75,7 +75,7 @@
         {"type": "PluginRegistry", "guard_va": "0x1400D9820", "guard_string_va": "0x14126ABE0"}
       ],
       "evidence_path": "logic/WIN-BOOTSTRAP-DEEP-DISTILLED-109.md",
-      "idb_saved": true
+      "<工具调用>d": true
     }
   ],
   "system_shell_init_supplement": {
@@ -96,7 +96,7 @@
     "error_strings": ["poisoned webview manager", "a Display implementation returned an error unexpectedly"],
     "session": "<audit-session>", "machine": "<workstation>",
     "produced_at": "2026-06-03",
-    "idb_saved": true,
+    "<工具调用>d": true,
     "evidence_path": "logic/WIN-SYSTEM-SHELL-INIT-DISTILLED-109.md"
   },
   "prior_state": "all 4 leaves consumerStartReady_candidate (session deep-win-bootstrap-20260602; IDA MCP offline)",

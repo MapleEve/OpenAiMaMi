@@ -1,0 +1,38 @@
+{
+  "target": "codex_bundled_cli_path",
+  "ea": "0x140a19ac0",
+  "module": "platform/process",
+  "edges": [
+    {
+      "from": "0x140a19ac0",
+      "to": "0x1416f15c0",
+      "callee": "sub_1416F15C0",
+      "type": "internal"
+    },
+    {
+      "from": "0x140a19ac0",
+      "to": "0x1414e1440",
+      "callee": "sub_1414E1440",
+      "type": "internal"
+    },
+    {
+      "from": "0x140a19ac0",
+      "to": "0x1414e1680",
+      "callee": "sub_1414E1680",
+      "type": "internal"
+    },
+    {
+      "from": "0x140a19ac0",
+      "to": "0x140001660",
+      "callee": "sub_140001660",
+      "type": "internal"
+    }
+  ],
+  "edge_count": 4,
+  "terminated_reason": "external_call_recorded",
+  "depth": 1,
+  "gate_pass": true,
+  "callers": [
+    "sub_140A14F00"
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "targets": [
+    {
+      "target": "update_voice_runtime_settings",
+      "edges": [
+        {
+          "depth": 0,
+          "ea": "0x14015dd80",
+          "name": "tauri_cmd_update_voice_runtime_settings_dispatch",
+          "role": "dispatcher",
+          "note": "confirmed_parity with macOS 0x100623880; resolves 6 fields app/enabled/shortcut/speechModel/processingMode/processingModeId via manager.request"
+        },
+        {
+          "depth": 1,
+          "ea": "0x1403d6b90",
+          "name": "sub_1403D6B90",
+          "role": "handler",
+          "note": "confirmed_parity with macOS 0x1004961d0; thin wrapper delegating to core"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140c45670",
+          "name": "sub_140C45670",
+          "role": "core",
+          "note": "confirmed_parity_different_persistence_mechanism with macOS 0x10048ffb0; persists via std::sync::Mutex<codexmate_lib::core::repository::Repository> string-anchor confirmed (in-memory, not direct JSON write)"
+        },
+        {
+          "depth": 3,
+          "ea": "0x140c4a500",
+          "name": "sub_140C4A500",
+          "role": "restart_trigger_listener_internal",
+          "note": "confirmed_parity; spawns background thread with Arc-cloned keybinding table; 'failed to spawn thread' panic string confirms semantics",
+          "terminated_reason": "external_call"
+        },
+        {
+          "depth": 3,
+          "ea": "0x140c37590",
+          "name": "sub_140C37590",
+          "role": "emit_status",
+          "note": "confirmed_parity_high_confidence; 'voice-runtime-updated' 21-byte event-name string anchor confirms Tauri event-emit call",
+          "terminated_reason": "external_call"
+        },
+        {
+          "depth": 3,
+          "ea": "0x140c37a50",
+          "name": "load_voice_runtime_status",
+          "role": "load_status",
+          "note": "confirmed_parity; reuses same Mutex<Repository> lock, pure read path, delegates to sub_140C48530 for read-out packaging"
+        },
+        {
+          "depth": 4,
+          "ea": "0x140c48530",
+          "name": "sub_140C48530",
+          "role": "load_status_delegate",
+          "note": "read-out packaging target of load_status; not further recursed this round",
+          "terminated_reason": "persistence_read_equivalent"
+        },
+        {
+          "depth": 4,
+          "ea": "0x140bb37b0",
+          "name": "sub_140BB37B0",
+          "role": "emit_status_serialize",
+          "note": "emit_status serialization target; not further recursed this round",
+          "terminated_reason": "response_serialize"
+        }
+      ]
+    }
+  ],
+  "edges_count": 8
+}

@@ -1,0 +1,89 @@
+{
+  "schema": "c5cm.raw.ida-leaf.v1",
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "topic": "voice-runtime-start-capture",
+  "scope_note": "严格版本delta范围内的4个目标之一：sidecar调度（standby sidecar scheduling），对照 macOS voice-runtime-start-capture 中的 try_start_via_standby/start_capture_legacy",
+  "source": {
+    "idb_module": "AiMaMi 1.2.6 win64.exe",
+    "idb_path": "<二进制路径>\\AiMaMi 1.2.6 win64.exe.i64"
+  },
+  "owner_map_source": "intermediate/aimami/1.2.6/windows-x64/version_delta/ipc-command-owner-map.json",
+  "macos_reference": "raw/aimami/1.2.6/macos-x64/backend/voice-runtime-start-capture/manifest.json",
+  "functions": [
+    {
+      "role": "public_command_dispatch",
+      "command_name": "start_voice_capture",
+      "address": "0x14015b7b0",
+      "pseudocode": "pseudocode/0001-start-voice-capture-dispatch-0x14015b7b0.c",
+      "verdict": "confirmed_parity_with_macos_public_wrapper"
+    },
+    {
+      "role": "core_capture_start_and_sidecar_scheduler",
+      "command_name": null,
+      "address": "0x140c38d20",
+      "pseudocode": "pseudocode/0002-start-capture-core-0x140c38d20.c",
+      "verdict": "confirmed_sidecar_scheduling_logic",
+      "key_grounding_strings": [
+        "codexmate_lib::core::voice::runtime (module path)",
+        "[TypeMami] failed to capture foreground context: runtime lock poisoned"
+      ]
+    }
+  ],
+  "sidecar_scheduling_mapping": [
+    {
+      "macos_role": "sync_permissions_internal",
+      "windows_address": "0x1401a9010",
+      "verdict": "confirmed_parity"
+    },
+    {
+      "macos_role": "load_saved_config / load_workspace",
+      "windows_address": "0x1403d84c0",
+      "verdict": "confirmed_parity"
+    },
+    {
+      "macos_role": "try_start_via_standby",
+      "windows_address": "0x1403d2670 (availability check) + 0x140039f40 (job submission)",
+      "verdict": "confirmed_parity",
+      "evidence": "先做 Mutex 保护的 standby sidecar 可用性检测（sub_1403D2670），若锁未被污染则构造语言/模型/绑定配置结构体并调用 sub_140039F40 提交任务到已运行的 standby ASR sidecar 进程；若检测失败则记录 '[TypeMami] failed to capture foreground context: runtime lock poisoned' 并走清理路径回落到 legacy"
+    },
+    {
+      "macos_role": "start_capture_legacy",
+      "windows_address": "0x140c43590",
+      "verdict": "confirmed_parity",
+      "evidence": "以两个刚递增的全局原子生成计数器（qword_141FBA3B8/qword_141FBA3C0）为键，重新（或独立）启动一次非 standby 的采集流程；失败时（返回 -1 哨兵）回落到 load_status(sub_140C37A50) 读取最终状态"
+    },
+    {
+      "macos_role": "emit_status",
+      "windows_address": "0x140c37590",
+      "verdict": "confirmed_reused_from_target3",
+      "evidence": "与目标3（update-voice-runtime-settings）证据包中确认的同一函数，通过 'voice-runtime-updated' 事件名字符串锚定"
+    },
+    {
+      "macos_role": "ensure_standby_sidecar / shutdown_standby_sidecar",
+      "windows_address": null,
+      "verdict": "not_separately_resolved",
+      "evidence": "未在本轮 start_voice_capture 调用链中定位到独立具名的 ensure/shutdown standby sidecar 叶函数。候选位置：可能内联在 sub_140039F40（standby 任务提交）或 sub_140C43590（legacy 回落）内部，本轮受时间预算限制未继续递归拆解这两个函数体。未标记 accepted_unknown（未做假墙判定尝试），如实标注为待续。"
+    }
+  ],
+  "state_machine_fast_paths": {
+    "description": "start_voice_capture 核心函数在真正开始采集前有 3 段快速路径检测（Repository+867/+858/+864 状态字节），均通过静态常量错误消息（30字节/27字节）或直接返回当前序列化状态短路返回，避免重复触发采集流程",
+    "generation_counters": "两个全局原子计数器 qword_141FBA3B8 / qword_141FBA3C0 在每次真正开始采集时递增，用作会话世代 ID，防止并发 start/stop 请求间的过期世代竞态——这是 Windows 侧独有的并发防护机制，在 macOS 证据中未见对应记录（可能是架构差异或本轮未在 macOS 侧深挖到同等细节）"
+  },
+  "cross_platform_semantic_comparison": {
+    "macos_baseline": "raw/aimami/1.2.6/macos-x64/backend/voice-runtime-start-capture/manifest.json",
+    "verdict": "语义对照（非逐字节）：Windows 与 macOS 在 start_voice_capture 的核心调度流程完全对应——权限同步 -> 加载配置 -> 尝试 standby sidecar 提交 -> 发布状态事件 -> 失败则走 legacy 回落 -> 再次读取最终状态。Windows 侧额外发现了三段状态快速路径短路检测与双原子世代计数器机制，这在本轮可获得的 macOS 证据中未见对应描述，可能是 macOS 侧证据颗粒度未深入到此层级，也可能是 Windows 特有的并发防护实现，两种可能性均未排除（未做进一步验证，如实标注）。"
+  },
+  "recovery_attempts": [
+    "已确认健康 <门控> 后从 start_voice_capture 分派层递归到核心调度函数，未发现截断标记",
+    "sub_140039F40 与 sub_140C43590 内部实现未做进一步递归解析（超出本轮4目标的时间预算范围），已在此 manifest 中如实标注为 not_separately_resolved 而非 accepted_unknown"
+  ],
+  "limitations": [
+    "ensure_standby_sidecar / shutdown_standby_sidecar 未定位到独立 Windows 对应体。",
+    "sub_140039F40（standby 任务提交目标）与 sub_140C43590（legacy 回落）未做字段级递归拆解。",
+    "未与真实 AiMaMi Windows App 做参照运行对照（红线25：未对照，仅静态反编译分析）。"
+  ],
+  "generated_at": "2026-08-06T16:35:00Z",
+  "generation_method": "mcp__ida-pro-mcp-win__decompile via live IDB, <门控> verified (server_health status=ok, <反编译器>_ready=true, module=AiMaMi 1.2.6 win64.exe)"
+}

@@ -3,22 +3,22 @@ Server-side (IDA host) batch decompiler for the 36 framework-monomorphized
 relay entry / dispatch / stream-driver functions identified by the
 CENSUS-COMPLETENESS-SWEEP audit for AiMaMi 1.2.3 macos-arm64.
 
-Writes full IDA decompiler pseudocode directly to the SMB share from the IDA
-host's own mount point (/Volumes/Work/internal-history//...),
+Writes full ida_hexrays pseudocode directly to the SMB share from the IDA
+host's own mount point (/Volumes/Work/internal-history/C5CodexManager/...),
 bypassing the ~1024-char MCP response-channel truncation that the plain
 `decompile` tool call is subject to.
 
-Runs via IDA Python on <host>. Writes a JSON manifest of
+Runs via py_exec_file on 192.168.110.95. Writes a JSON manifest of
 per-target results (ok/error, byte count, brace-balance check) to
 _scripts/decompile_batch_20260724.result.json next to this script.
 """
-import IDA decompiler
+import ida_hexrays
 import ida_kernwin
 import idc
 import json
 import os
 
-BASE = "/Volumes/Work/internal-history//raw/aimami/1.2.3/macos-arm64/framework-monomorph"
+BASE = "/Volumes/Work/internal-history/C5CodexManager/raw/aimami/1.2.3/macos-arm64/framework-monomorph"
 
 TARGETS = [
     # group, addr, cleanname
@@ -76,7 +76,7 @@ def brace_balance_ok(text):
 def decompile_one(addr_str):
     ea = int(addr_str, 16)
     try:
-        cf = IDA decompiler.decompile(ea)
+        cf = ida_hexrays.decompile(ea)
     except Exception as e:
         return None, "decompile_exception: %r" % (e,)
     if cf is None:
@@ -110,7 +110,7 @@ def main():
 
         header = (
             "/* addr=%s cleanname=%s group=%s\n"
-            " * decompiled via IDA Python server-side IDA decompiler.decompile\n"
+            " * decompiled via py_exec_file server-side ida_hexrays.decompile\n"
             " * n_lines=%d brace_balanced=%s truncation_markers=%s\n"
             " */\n"
         ) % (addr, cleanname, group, n_lines, balanced, trunc_hit)

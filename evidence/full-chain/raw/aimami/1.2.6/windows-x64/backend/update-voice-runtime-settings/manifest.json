@@ -1,0 +1,101 @@
+{
+  "schema": "c5cm.raw.ida-leaf.v1",
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "topic": "update-voice-runtime-settings",
+  "scope_note": "严格版本delta范围内的4个目标之一：voice runtime（对照macOS已完成的update_voice_runtime_settings三层+emit_status/load_status/shutdown_standby_sidecar/write_runtime_file/start_capture共9个函数对应关系）",
+  "source": {
+    "idb_module": "AiMaMi 1.2.6 win64.exe",
+    "idb_path": "<二进制路径>\\AiMaMi 1.2.6 win64.exe.i64"
+  },
+  "owner_map_source": "intermediate/aimami/1.2.6/windows-x64/version_delta/ipc-command-owner-map.json",
+  "macos_reference": "raw/aimami/1.2.6/macos-x64/backend/update-voice-runtime-settings/manifest.json",
+  "nine_function_parity_mapping": [
+    {
+      "macos_role": "dispatcher (tauri_cmd_update_voice_runtime_settings_dispatch, 0x100623880)",
+      "windows_address": "0x14015dd80",
+      "windows_function": "sub_14015DD80",
+      "verdict": "confirmed_parity",
+      "evidence": "解析相同6字段 app/enabled/shortcut/speechModel/processingMode/processingModeId，逐字段 manager.request 完成后委托 handler",
+      "pseudocode": "pseudocode/0001-tauri-cmd-update-voice-runtime-settings-dispatch-0x14015dd80.c"
+    },
+    {
+      "macos_role": "handler (commands::voice_runtime::update_voice_runtime_settings, 0x1004961d0)",
+      "windows_address": "0x1403d6b90",
+      "windows_function": "sub_1403D6B90",
+      "verdict": "confirmed_parity",
+      "evidence": "薄包装层，直接委托核心函数并做结果后处理",
+      "pseudocode": "pseudocode/0002-handler-and-core-0x1403d6b90-0x140c45670.c"
+    },
+    {
+      "macos_role": "core (core::voice::runtime::update_settings_internal, 0x10048ffb0)",
+      "windows_address": "0x140c45670",
+      "windows_function": "sub_140C45670",
+      "verdict": "confirmed_parity_different_persistence_mechanism",
+      "evidence": "确认通过 std::sync::Mutex<codexmate_lib::core::repository::Repository> 字符串锚点定位；持久化机制为 Repository 内存互斥锁而非 macOS 的直接 JSON 文件写入（架构层面合理差异，非功能缺失）",
+      "pseudocode": "pseudocode/0002-handler-and-core-0x1403d6b90-0x140c45670.c"
+    },
+    {
+      "macos_role": "restart_trigger_listener_internal",
+      "windows_address": "0x140c4a500",
+      "windows_function": "sub_140C4A500",
+      "verdict": "confirmed_parity",
+      "evidence": "spawn 后台线程携带 Arc 克隆的按键绑定表，'failed to spawn thread' panic 字符串确认为线程重启监听器语义",
+      "pseudocode": "pseudocode/0003-restart-trigger-listener-0x140c4a500.c"
+    },
+    {
+      "macos_role": "emit_status",
+      "windows_address": "0x140c37590",
+      "windows_function": "sub_140C37590",
+      "verdict": "confirmed_parity_high_confidence",
+      "evidence": "字符串锚点 'voice-runtime-updated'（事件名，21字节）直接确认为 Tauri event-emit 调用，等价 macOS emit_status",
+      "pseudocode": "pseudocode/0004-emit-status-0x140c37590.c"
+    },
+    {
+      "macos_role": "load_status",
+      "windows_address": "0x140c37a50",
+      "windows_function": "sub_140C37A50",
+      "verdict": "confirmed_parity",
+      "evidence": "复用相同 Mutex<Repository> 锁，纯读路径无持久化写入，委托 sub_140C48530 完成读出封装",
+      "pseudocode": "pseudocode/0005-load-status-0x140c37a50.c"
+    },
+    {
+      "macos_role": "write_runtime_file",
+      "windows_address": null,
+      "windows_function": null,
+      "verdict": "architecture_difference_not_gap",
+      "evidence": "未在本轮调用链中发现独立的磁盘 JSON 写入叶函数；Windows 侧持久化落在 core 函数内联的 Repository 互斥锁字段写入（见 core 条目）。未验证是否存在独立的后台落盘/flush 路径（本轮未追踪到，非 accepted_unknown，留待后续）"
+    },
+    {
+      "macos_role": "ensure_standby_sidecar / shutdown_standby_sidecar",
+      "windows_address": null,
+      "windows_function": null,
+      "verdict": "not_found_in_this_call_chain",
+      "evidence": "本轮在 update_voice_runtime_settings 的完整调用链（dispatcher->handler->core->[restart_trigger_listener|emit_status|load_status]）中未发现 standby sidecar 相关调用；该逻辑更可能出现在 start_voice_capture（0x14015b7b0）调用链中，与 macOS voice-runtime-start-capture 证据一致——见目标4（sidecar调度）证据包"
+    },
+    {
+      "macos_role": "normalize_processing_mode_id",
+      "windows_address": null,
+      "windows_function": null,
+      "verdict": "not_separately_resolved",
+      "evidence": "未在本轮追踪的调用链中单独定位；可能内联在 core 函数（0x140c45670）内部处理 processingModeId 字段的代码路径中，未做进一步字段级拆解（超出本轮范围）"
+    }
+  ],
+  "recovery_attempts": [
+    "已确认健康 <门控> 后逐层递归：dispatcher -> handler -> core -> 三个候选叶函数，均无截断标记",
+    "emit_status 通过事件名字符串锚点做高置信度确认，load_status/restart_trigger_listener_internal 通过共享 Mutex<Repository> 结构模式确认",
+    "write_runtime_file、ensure_standby_sidecar、shutdown_standby_sidecar、normalize_processing_mode_id 四个 macOS 侧函数未能在本轮 update_voice_runtime_settings 调用链中定位到独立对应体；未标记为 accepted_unknown（未做假墙判定，因为本轮范围聚焦于命令层调用链证明，未继续对 core 函数内部做字段级递归拆解）"
+  ],
+  "cross_platform_semantic_comparison": {
+    "macos_baseline": "raw/aimami/1.2.6/macos-x64/backend/update-voice-runtime-settings/manifest.json",
+    "verdict": "语义对照（非逐字节）：Windows 与 macOS 在 update_voice_runtime_settings 的三层调用链（dispatcher/handler/core）与状态发布（emit_status）语义完全对应，参数字段 100% 一致（6 字段）。核心持久化机制存在架构层面差异：macOS 显式写 voice-runtime.json 磁盘文件（write_runtime_file），Windows 侧本轮证据显示持久化落在内存态 Mutex<Repository> 单例中，未发现对应的独立磁盘写入叶——这是合理的架构差异（内存权威态 vs 磁盘往返），不构成功能缺口声明，但也未完全验证 Windows 侧是否存在后台异步 flush-to-disk 路径。"
+  },
+  "limitations": [
+    "sub_140C48530（load_status 委托目标）与 sub_140BB37B0（emit_status 序列化目标）未做进一步递归解析。",
+    "write_runtime_file / ensure_standby_sidecar / shutdown_standby_sidecar / normalize_processing_mode_id 四个 macOS 侧函数未在本轮 update_voice_runtime_settings 调用链中定位到独立 Windows 对应体；ensure/shutdown_standby_sidecar 预期应在 start_voice_capture 调用链中出现，见目标4证据包。",
+    "未与真实 AiMaMi Windows App 做参照运行对照（红线25：未对照，仅静态反编译分析）。"
+  ],
+  "generated_at": "2026-08-06T16:10:00Z",
+  "generation_method": "mcp__ida-pro-mcp-win__decompile via live IDB, <门控> verified (server_health status=ok, <反编译器>_ready=true, module=AiMaMi 1.2.6 win64.exe)"
+}

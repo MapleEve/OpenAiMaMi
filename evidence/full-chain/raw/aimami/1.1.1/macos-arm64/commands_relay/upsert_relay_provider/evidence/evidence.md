@@ -133,7 +133,7 @@ Reconstructed from upsert merge logic field offsets:
 | side_effects_enumerated | PASS (5 side-effects: key file, relay.json, catalog, codex config, tray) |
 | noise_filtered | PASS (panic guards, alloc, vtable hashes excluded) |
 | idb_comments_written | PASS (6 functions annotated) |
-| idb_saved | PASS (<来源位置>/raw/binary/AiMaMi-1.1.1-idb) |
+| <工具调用>d | PASS (<来源位置>/raw/binary/AiMaMi-1.1.1-idb) |
 | baseline_comparison | PASS (1.0.9 has no relay module — confirmed new functionality) |
 
 **Overall gate: PASS — delta_class=integrity_recovered**

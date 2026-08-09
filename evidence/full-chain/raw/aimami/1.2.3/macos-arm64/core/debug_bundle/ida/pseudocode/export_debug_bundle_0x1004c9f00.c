@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core12debug_bundle19export_debug_bundle @ 0x1004c9f00 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::debug_bundle::export_debug_bundle::h7363a9fe3c4bfd14(
         _QWORD *a1,

@@ -12,7 +12,7 @@ differences already visible in existing on-disk artifacts.
 | Package status | `diagnostic-only` coverage audit (`audits/macos-1.2.3-relay-core/`) | No canonical package at all; raw-only (`raw/aimami/1.2.3/windows-x64/relay-core/`) |
 | Submodule/cluster count | 32 `core::relay::*` submodules declared in scope (per `audits/macos-1.2.3-relay/manifest.json`); 15/19 legacy 1.0.9-taxonomy clusters matched | 29 submodules confirmed present via independent Windows string evidence; count not yet 1:1 reconciled against macOS's 32 |
 | Function count | Not enumerated in this pass (name/dir matching only) | 177 unique functions enumerated (owner-map.jsonl) |
-| Decompile status | Existing `audits/macos-1.2.3-relay/` baseline presumably has decompile for its own scope (not verified in this pass — out of scope) | Explicitly zero decompile calls this surface pass; some subset may already be named from the earlier `wf-aimami123-delta-20260721` full-decompile baseline (unverified overlap) |
+| Decompile status | Existing `audits/macos-1.2.3-relay/` baseline presumably has decompile for its own scope (not verified in this pass — out of scope) | Explicitly zero decompile calls this surface pass; some subset may already be named from the earlier `<审计会话> full-decompile baseline (unverified overlap) |
 
 ## relay_web_executor / relay_web_tools (1.0.9 legacy clusters)
 

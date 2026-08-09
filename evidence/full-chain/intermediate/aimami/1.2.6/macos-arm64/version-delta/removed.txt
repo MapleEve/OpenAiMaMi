@@ -1,0 +1,9 @@
+# removed.txt — AiMaMi 1.2.4 → 1.2.6 (macOS, v2-live-verified)
+# Removed functional symbols (renamed/rewritten successors in added list):
+
+codexmate_lib::commands::sessions::delete_sessions  # module=codexmate_lib::commands::sessions
+codexmate_lib::core::relay::codex_thread_visibility::fallback_relay_model_threads  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::codex_thread_visibility::patch_relay_thread_instructions  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::codex_thread_visibility::reconcile_threads  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::router_unlock_auth::cleanup_for_native_off  # module=codexmate_lib::core::relay
+codexmate_lib::core::relay::translator::stream::AnthropicDirectToResponsesStream::flush  # module=codexmate_lib::core::relay

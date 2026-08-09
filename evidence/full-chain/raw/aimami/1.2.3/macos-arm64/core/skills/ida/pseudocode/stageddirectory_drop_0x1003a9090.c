@@ -1,4 +1,4 @@
-// 1.2.3 baseline same-set | __ZN86_$LT$codexmate_lib..core..skills..StagedDirectory$u20$as$u20$core..ops..drop..Drop$GT$4drop17h2f1fafacce2d5901E @ 0x1003a9090 | full-body via IDA Python(IDA decompiler.decompile direct write)
+// 1.2.3 baseline same-set | __ZN86_$LT$codexmate_lib..core..skills..StagedDirectory$u20$as$u20$core..ops..drop..Drop$GT$4drop17h2f1fafacce2d5901E @ 0x1003a9090 | full-body via py_exec_file(ida_hexrays.decompile direct write)
 double __fastcall _$LT$codexmate_lib..core..skills..StagedDirectory$u20$as$u20$core..ops..drop..Drop$GT$::drop::h2f1fafacce2d5901(
         __int64 a1)
 {

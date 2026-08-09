@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay12proxy_server13try_translate28_$u7b$$u7b$closure$u7d$$u7d$ @ 0x1002550c0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 char __fastcall codexmate_lib::core::relay::proxy_server::try_translate::_$u7b$$u7b$closure$u7d$$u7d$::ha7d38d5fd67c8e41(
         __int64 *a1,

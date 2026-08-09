@@ -15,7 +15,7 @@
   },
   "scope": {
     "task_type": "triage_and_reduce",
-    "input": "89 unclassified generic run_0x<VA>.c pseudocode files in raw/aimami/1.2.3/macos-arm64/run/ida/pseudocode/ (produced by wf-aimami123-delta-20260721 baseline decompile, never RULE8-reduced into a canonical module bundle)",
+    "input": "89 unclassified generic run_0x<VA>.c pseudocode files in raw/aimami/1.2.3/macos-arm64/run/ida/pseudocode/ (produced by <审计会话> baseline decompile, never RULE8-reduced into a canonical module bundle)",
     "task_boundary": "read every function body, classify ownership by call-target module; NOT a full leaf-100 deep reverse of the bootstrap sequence (no new callees/xrefs tracing beyond the 89 input files; no new IDA decompile performed this session)",
     "full_app_coverage_status": "not-full-app",
     "backend_owned_target_universe": true

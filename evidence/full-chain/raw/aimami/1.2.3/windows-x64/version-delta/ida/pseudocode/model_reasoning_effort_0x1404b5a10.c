@@ -1,5 +1,5 @@
 // win 1.2.3 delta | model_reasoning_effort @ 0x1404b5a10 | changelog ③推理层级
-// [FULL IDA decompiler 10935B]
+// [FULL hexrays 10935B]
 // win 1.2.1 | module src/core/relay/codex_thread_visibility.rs | attributed via call-graph propagation (>=2 same-module callers) (win-native)
 void *__fastcall sub_1404B5A10(__int64 a1, __int64 a2, __int64 a3, __int64 a4, __int64 a5, __int64 a6, __int64 a7)
 {

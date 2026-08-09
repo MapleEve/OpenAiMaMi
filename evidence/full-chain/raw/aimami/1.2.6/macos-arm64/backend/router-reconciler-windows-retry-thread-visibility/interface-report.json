@@ -1,0 +1,40 @@
+{
+  "target": "router-reconciler-windows-retry-thread-visibility",
+  "target_type": "backend_function_cluster",
+  "confidence": "high",
+  "arg_keys": [
+    "router_state (14 fields)",
+    "progress_callback_vtable",
+    "bool_switch (a9)",
+    "provider_id",
+    "proxy_root_url"
+  ],
+  "return_type": "Result<RouterReconcileSummary, RouterReconcileError>",
+  "error_envelope": {
+    "prepare_router_catalog_failed": "direct error return, no retry",
+    "ensure_proxy_started_failed": "tag!=11, direct return",
+    "proxy_root_url_none": "fixed string 'relay proxy started without an available root URL' (49 bytes)",
+    "external_writers_detected": "assert_no_external_codex_writers failure → early return, skips thread reconcile",
+    "reconcile_threads_cancelled": "tag==2 (Cancelled/Skip) → early return, skips project_state repair",
+    "reconcile_not_effective": "fixed string 'router reconcile did not become effective: missing active provider, proxy, or catalog' (85 bytes)",
+    "auth_commit_failed": "verify_managed_auth_commit_boundary or commit_auth_for_router failure → direct return"
+  },
+  "side_effects": [
+    "⚠ config_takeover::takeover: writes codex config file (destructive config mutation)",
+    "⚠ commit_auth_for_router: writes auth credentials to file (destructive auth write)",
+    "⚠ codex_project_state::repair_if_needed: may modify project state files",
+    "⚠ cleanup_private_reasoning_items_in_existing_rollout (via reconcile_threads_with_progress): atomic rename overwrites rollout JSONL",
+    "process management: collect/reject/assert_no external codex_writers (process inspection, not kill)",
+    "proxy lifecycle: ensure_proxy_started (sidecar process management)"
+  ],
+  "dto_boundary": {
+    "reconcile_router_on": "takes 14-field router state + progress callback vtable; returns Result<RouterReconcileSummary>",
+    "reconcile_native_off_with_progress": "shares constant pool strings with reconcile_router_on; parallel native-off branch",
+    "reconcile_threads_with_progress": "takes rollout paths + provider info; auto-adaptive: rayon parallel (>7 rollouts) or serial (<=7)",
+    "run_config_mutation_with_windows_retry": "parameter repackaging: 5 input fields → 8-word struct + bool=1 flag; NOT a retry loop"
+  },
+  "destructive_side_effects_flagged": true,
+  "persistence_boundary": "reconcile_router_on itself does not write; persistence sinks to config_takeover/commit_auth_for_router/repair_if_needed internals.",
+  "concurrency_note": "reconcile_threads_with_progress: >7 rollouts → rayon thread pool parallel; <=7 → serial do-while. Auto-adaptive, not fixed parallel/serial.",
+  "notes": "Windows-side stripped build: only panic-Location anchor strings located, 3-layer recovery not completed for win. Mac is grounded baseline."
+}

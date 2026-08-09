@@ -15,7 +15,7 @@
     "ipc-contracts.jsonl L102: cmd=upsert_relay_provider argKeys=['input'] callee=vt kind=tauriInvokeWrapper",
     "frontend-control-flow.jsonl L149: terminal_call.command=upsert_relay_provider kind=tauriInvoke argKeys=['input']; trigger=index-DdcCOEJG.js L306; handler_chain=[mutationFn,upsert]",
     "pseudocode.md 23237B ≥600B (real HexRays obtained 2026-06-18)",
-    "call-tree.md: max depth=5 (owner=0, relay_atomic_write_leaf_sys@0x140504310 at depth 5 terminated); all depth-5 leaves have explicit terminated_reason; IDB 1 rename+6 comments+idb_save OK",
+    "call-tree.md: max depth=5 (owner=0, relay_atomic_write_leaf_sys@0x140504310 at depth 5 terminated); all depth-5 leaves have explicit terminated_reason; IDB 1 rename+6 comments+<工具调用> OK",
     "interface.md: RelayUpsertInput 10 fields (baseUrl/apiKey/wireApi/brand/models/extraHeaders/providerId/providerName/schemaVersion/routeExpiresAtMs); output=RelayUpsertResponse {schemaVersion,success,code:10=Ok,message,warnings}; enum VAs: RelayWireApi@0x1412bfe06, RelayBrand@0x1412bfc60; delta: tray rebuild chain NEW in 1.1.1",
     "gate-report.json <审计会话>: gate_tier=full_gold_leaf→readyToImplement; all dim1-5 PASS; dim6_acceptance=acceptance_draft; idb saved",
     "dim5: windows-x64→windows-x64 same platform; no cross-platform DTO delta; CAS spinlock (state+16) + WakeByAddressSingle; relay state lock poison string@0x1412ea5ed",

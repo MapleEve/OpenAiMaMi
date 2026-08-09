@@ -12,7 +12,7 @@ This document records the 5 missed clusters produced in session relay-missed-109
 ## relay_breaker — strictImplementationUse
 
 **Evidence root**: `raw/aimami/1.0.9/windows/relay-core/relay_breaker/`  
-**Leaf count**: 11 (3 .c files produced; 8 manifest-only; idb_save=true)
+**Leaf count**: 11 (3 .c files produced; 8 manifest-only; <工具调用>=true)
 
 ### Struct layout
 
@@ -158,7 +158,7 @@ tool_calls, choices, summary_text, tool_call_id, call_id
 ## relay_web_tools — strictImplementationUse
 
 **Evidence root**: `raw/aimami/1.0.9/windows/relay-core/relay_web_tools/`  
-**Leaf count**: 16 (all decompiled; 16 renames + 16 IDB comments; idb_save=true)
+**Leaf count**: 16 (all decompiled; 16 renames + 16 IDB comments; <工具调用>=true)
 
 ### Architecture: Two mirrored clusters
 

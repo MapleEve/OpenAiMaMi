@@ -18,7 +18,7 @@
 - Migration delta vs 1.0.9: mac-shard-1.json classifies this command as `needs_full` with note "1.0.9 raw absent. 1.1.1 owner-map: no VA. NEEDS_FULL." — 逆向分析 live enumeration in this session confirms no VA exists in 1.1.1 either. Behavior identity confirmed (both 1.0.9 and 1.1.1: backend absent, frontend wrapper exists, argKeys=[] unchanged).
 - IDB comment written at `0x1011514d1` (append_comments, appended=true).
 - IDB saved: ok=true, path=<来源位置>/raw/binary/AiMaMi-1.1.1-idb.
-- 1.0.9 baseline confirmed: source_binary_sha256=1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482, gate=readyToImplement, accepted_substitute=same_platform_ida_backend_absence_for_frontend_orphan_command, idb_saved=true, full_leaf_100=true.
+- 1.0.9 baseline confirmed: source_binary_sha256=1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482, gate=readyToImplement, accepted_substitute=same_platform_ida_backend_absence_for_frontend_orphan_command, <工具调用>d=true, full_leaf_100=true.
 - gate_candidate: `migrated_no_behavior_diff → readyToImplement` (accepted_substitute=same_platform_ida_backend_absence_for_frontend_orphan_command, inherited from 1.0.9 baseline, identity confirmed by 1.1.1 live 逆向分析 enumeration).
 - module namespace confirmed: `codexmate_lib::core::models::CustomInstructionProtectionState` exists at `0x1005615e0` (Deserialize FieldVisitor) — this is a model/type, not a command handler, confirms custom-instructions module exists as data types but no command handlers are registered in backend.
 

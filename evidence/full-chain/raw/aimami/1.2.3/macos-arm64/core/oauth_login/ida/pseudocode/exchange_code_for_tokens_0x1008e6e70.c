@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core11oauth_login24exchange_code_for_tokens @ 0x1008e6e70 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::oauth_login::exchange_code_for_tokens::h1913bb75a3d151a4(
         __int64 a1,

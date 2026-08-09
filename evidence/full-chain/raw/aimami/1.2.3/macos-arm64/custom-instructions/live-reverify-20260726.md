@@ -1,15 +1,15 @@
 # AiMaMi 1.2.3 macOS custom-instructions — live IDA re-verification (2026-07-26)
 
 session: mac123-custominstr-gapclose-20260726142739
-machine: Maple-M3-Max
-ida_host: <host>:13337 (mac IDA MCP)
+machine: <本地机器>
+ida_host: <内网IP>:13337 (mac IDA MCP)
 ida_live_gate:
   status: ok
   uptime_sec: 254017.732 (>30s)
-  IDA decompiler_ready: true
+  <反编译器>_ready: true
   auto_analysis_ready: true
   module: AiMaMi
-  idb_path: /Volumes/Work/internal-history//raw/binary/AiMaMi 1.2.3.app/Contents/MacOS/AiMaMi.i64
+  idb_path: <内部存储>/<内部项目>/raw/binary/AiMaMi 1.2.3.app/Contents/MacOS/AiMaMi.i64
 
 ## Purpose
 

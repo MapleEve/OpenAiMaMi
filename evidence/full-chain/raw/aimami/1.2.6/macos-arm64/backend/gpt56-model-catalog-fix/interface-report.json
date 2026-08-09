@@ -1,0 +1,30 @@
+{
+  "target": "gpt56-model-catalog-fix",
+  "target_type": "backend_function_cluster",
+  "confidence": "high",
+  "arg_keys": [
+    "catalog_models",
+    "reasoning_profile",
+    "reasoning_levels",
+    "bundled_cli_path",
+    "model_name",
+    "provider_tag",
+    "section_path"
+  ],
+  "return_type": "ModelCatalog / Vec<ReasoningLevel> / bool / ()",
+  "error_envelope": "io::Error (config read), serde_json::Error (parse), fixed string errors (model not found, invalid thread models)",
+  "side_effects": [
+    "⚠ fix_native_off_invalid_openai_thread_models: in-place flag writes at offset+88 (per-model) and offset+230 (per-entry) — destructive mutation of config entries",
+    "catalog_models: constructs static model catalog (gpt-5.6-sol/terra/luna variants) — read-only construction",
+    "is_aimami_owned_model_section: predicate only, no mutation",
+    "native_off_openai_model_needs_fallback: predicate only, no mutation"
+  ],
+  "dto_boundary": {
+    "catalog_models": "returns Vec<ModelEntry> with slug/display_name/description/default_reasoning_level/supported_reasoning_levels/shell_type/visibility/supported_in_api/priority",
+    "full_reasoning_levels": "returns Vec<ReasoningLevel> with effort/description — confirmed 4 tiers (low/medium/high/xhigh), NOT 6 tiers",
+    "native_off_openai_model_needs_fallback": "returns bool: true if provider==openai && native_off_count==0 && model is NOT aimami_relay variant",
+    "is_aimami_owned_model_section": "returns bool: true if section name matches 'aimami_relay' or starts with 'aimami_relay_'"
+  },
+  "destructive_side_effects_flagged": true,
+  "notes": "2 targets confirmed absent (quarantined_model_provider_ids, read_top_level_model_line). Windows side has embedded default catalog JSON in sub_1405622D0 with gpt-5.6-sol/terra/luna variants."
+}

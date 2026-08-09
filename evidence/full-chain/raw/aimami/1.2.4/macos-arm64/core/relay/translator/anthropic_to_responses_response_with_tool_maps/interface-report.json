@@ -1,0 +1,47 @@
+{
+  "command": "anthropic_to_responses_response_with_tool_maps",
+  "module": "core/relay/translator",
+  "owner_ea": "0x100829870",
+  "interface_type": "internal_function",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "serde_json::Value (Anthropic response) + tool_maps (Vec<(String,String)>)",
+    "output": "serde_json::Value (OpenAI Responses API format)"
+  },
+  "side_effects": [],
+  "idaSymbols": [
+    "anthropic_to_responses_response_with_tool_maps"
+  ],
+  "pseudocode": [
+    "core/relay/translator/ida/pseudocode/anthropic_to_responses_response_with_too_0x100829870.c"
+  ],
+  "nextCallees": [
+    "serde_json::value::index::Index::index_into",
+    "uuid::new_v4",
+    "String::clone",
+    "format_inner",
+    "serde_json::ser::to_vec",
+    "serde_json::value::to_value",
+    "BTreeMap::insert",
+    "BTreeMap::clone",
+    "drop_in_place<serde_json::Value>",
+    "normalize_anthropic_tool_call_for_responses",
+    "core::hash::BuildHasher::hash_one",
+    "alloc::raw_vec::RawVec::grow_one",
+    "T::to_vec::ConvertVec",
+    "__rust_alloc",
+    "__rust_dealloc",
+    "core::result::unwrap_failed"
+  ],
+  "callTreeRows": 15,
+  "claims": {
+    "client": [],
+    "server": [
+      "anthropic_to_responses_response_with_tool_maps"
+    ]
+  },
+  "serverEvidencePath": "core/relay/translator/ida/pseudocode/anthropic_to_responses_response_with_too_0x100829870.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "Converts Anthropic message response to OpenAI Responses API format with tool maps: extracts id, content blocks (text/thinking/tool_use/tool_result), maps tool names via tool_maps HashMap, builds function_call/custom_tool_call output items with arguments, serializes to JSON. Renamed from _with_tool_map (singular) in 1.2.3."
+}

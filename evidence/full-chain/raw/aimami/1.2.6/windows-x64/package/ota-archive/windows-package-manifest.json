@@ -1,0 +1,79 @@
+{
+  "schema": "rust-reverse-pipeline.windows-package.v1",
+  "generatedAt": "2026-08-05T05:00:33.074199+00:00",
+  "installer": "<内部存储>/raw/binary/AiMaMi_1.2.6_x64-setup.nsis.zip",
+  "installerName": "AiMaMi_1.2.6_x64-setup.nsis.zip",
+  "installerSize": 8822499,
+  "installerSha256": "a877a283492c66c34737fed7cd64290b09686a9f99a7b401dd28b7a5edaaf764",
+  "fileType": "<内部存储>/raw/binary/AiMaMi_1.2.6_x64-setup.nsis.zip: Zip archive data, at least v1.0 to extract, compression method=store",
+  "packageFormat": "nsis-installer",
+  "platform": "windows",
+  "executedInstaller": false,
+  "extractorUsed": "7zz",
+  "extractStatus": "ok",
+  "extractedRoot": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/ota-archive/extracted",
+  "extractedFileCount": 1,
+  "tauriDumpRoot": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/ota-archive/tauri-dumped-assets",
+  "tauriDumpAttempts": [],
+  "attempts": [
+    {
+      "tool": "7zz",
+      "available": true,
+      "list": {
+        "cmd": [
+          "7zz",
+          "l",
+          "-slt",
+          "<内部存储>/raw/binary/AiMaMi_1.2.6_x64-setup.nsis.zip"
+        ],
+        "exit": 0,
+        "log": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/ota-archive/logs/7zz-list.log"
+      },
+      "extract": {
+        "cmd": [
+          "7zz",
+          "x",
+          "-y",
+          "-o<内部存储>/raw/aimami/1.2.6/windows-x64/package/ota-archive/extracted",
+          "<内部存储>/raw/binary/AiMaMi_1.2.6_x64-setup.nsis.zip"
+        ],
+        "exit": 0,
+        "log": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/ota-archive/logs/7zz-extract.log"
+      },
+      "newFileCount": 1
+    }
+  ],
+  "peFiles": [
+    {
+      "path": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/ota-archive/extracted/AiMaMi_1.2.6_x64-setup.exe",
+      "relativePath": "AiMaMi_1.2.6_x64-setup.exe",
+      "role": "candidate-app-binary",
+      "size": 8822349,
+      "sha256": "34553bc0022c38f2666b16349fe7817eb9f2463409acc30e1460fedb1852f37b",
+      "fileType": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/ota-archive/extracted/AiMaMi_1.2.6_x64-setup.exe: PE32 executable (GUI) Intel 80386, for MS Windows, Nullsoft Installer self-extracting archive"
+    },
+    {
+      "path": "<内部存储>/raw/binary/AiMaMi_1.2.6_x64-setup.nsis.zip",
+      "relativePath": "AiMaMi_1.2.6_x64-setup.nsis.zip",
+      "role": "installer",
+      "size": 8822499,
+      "sha256": "a877a283492c66c34737fed7cd64290b09686a9f99a7b401dd28b7a5edaaf764",
+      "fileType": "<内部存储>/raw/binary/AiMaMi_1.2.6_x64-setup.nsis.zip: Zip archive data, at least v1.0 to extract, compression method=store"
+    }
+  ],
+  "candidateAppBinaries": [
+    {
+      "path": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/ota-archive/extracted/AiMaMi_1.2.6_x64-setup.exe",
+      "relativePath": "AiMaMi_1.2.6_x64-setup.exe",
+      "role": "candidate-app-binary",
+      "size": 8822349,
+      "sha256": "34553bc0022c38f2666b16349fe7817eb9f2463409acc30e1460fedb1852f37b",
+      "fileType": "<内部存储>/raw/aimami/1.2.6/windows-x64/package/ota-archive/extracted/AiMaMi_1.2.6_x64-setup.exe: PE32 executable (GUI) Intel 80386, for MS Windows, Nullsoft Installer self-extracting archive"
+    }
+  ],
+  "frontendCandidates": [],
+  "resourceCandidates": [],
+  "gaps": [
+    "no extracted frontend asset directory found"
+  ]
+}

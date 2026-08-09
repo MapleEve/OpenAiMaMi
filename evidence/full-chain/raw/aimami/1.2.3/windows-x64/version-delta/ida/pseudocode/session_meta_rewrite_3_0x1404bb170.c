@@ -1,5 +1,5 @@
 // win 1.2.3 delta | session_meta_rewrite_3 @ 0x1404bb170 | changelog ③模型协议
-// [FULL IDA decompiler 3057B]
+// [FULL hexrays 3057B]
 // win 1.2.1 | module src/core/relay/codex_thread_visibility.rs | attributed via call-graph propagation (>=2 same-module callers) (win-native)
 __int64 __fastcall sub_1404BB170(__int64 a1, __int64 *a2, __int64 a3, __int64 a4, char a5, __int64 a6, __int64 a7)
 {

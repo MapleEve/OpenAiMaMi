@@ -1,0 +1,65 @@
+{
+  "command": "set_codex_no_account_slots",
+  "module": "core/relay/manager",
+  "owner_ea": "0x10079a8a0",
+  "interface_type": "internal_method",
+  "argKeys": [
+    "slots",
+    "relaunch"
+  ],
+  "dto_fields": {
+    "request": "{slots: Vec<String>, relaunch: bool}",
+    "response": "CoreEnvelope<RelayState>"
+  },
+  "side_effects": [
+    "⚠ PERSISTENCE: persist relay state",
+    "⚠ ROUTER TRANSITION: may trigger router_transition::run which relaunches Codex",
+    "⚠ launch_codex_app_warning if relaunch flag set"
+  ],
+  "idaSymbols": [
+    "set_codex_no_account_slots"
+  ],
+  "pseudocode": [
+    "core/relay/manager/ida/pseudocode/set_codex_no_account_slots_0x10079a8a0.c"
+  ],
+  "nextCallees": [
+    "OnceBox::initialize",
+    "Mutex::lock",
+    "Mutex::unlock",
+    "CodexMutationGate::lock",
+    "RelayManager::snapshot",
+    "validate_no_account_slots",
+    "normalize_no_account_slot_preference",
+    "RelayManager::persist",
+    "RelayManager::snapshot_sanitized",
+    "RelayManager::transition_paths",
+    "RouterOnPlan::from_state",
+    "RouterOnPlan::ensure_ready",
+    "no_account_slot_routing_changed",
+    "router_transition::run",
+    "RelayManager::restore_router_enabled_stably",
+    "launch_codex_app_warning",
+    "verify_target_state_at_with_depth",
+    "codex_config_stale_reason",
+    "RelayState::clone",
+    "SlicePartialEq::equal",
+    "format_inner",
+    "drop_in_place",
+    "__rust_alloc",
+    "__rust_dealloc"
+  ],
+  "callTreeRows": 22,
+  "claims": {
+    "client": [
+      "slots",
+      "relaunch"
+    ],
+    "server": [
+      "set_codex_no_account_slots"
+    ]
+  },
+  "serverEvidencePath": "core/relay/manager/ida/pseudocode/set_codex_no_account_slots_0x10079a8a0.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "RelayManager setter: acquires mutation gate + transition lock, validates and normalizes no-account slots, checks if routing changed, if so runs router_transition (may relaunch Codex app with warning), persists state. Returns sanitized relay state. Called by IPC command set_codex_no_account_slots."
+}

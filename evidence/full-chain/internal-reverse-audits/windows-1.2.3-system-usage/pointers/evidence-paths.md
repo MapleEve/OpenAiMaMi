@@ -24,5 +24,5 @@
 
 ## Related backlog / claim record
 
-- `internal-reverse/REVERSE-STATUS.md` line ~4011 (`wf-aimami123-fullapp-20260724`) — lists "windows 专属 system-usage" as a confirmed missing canonical bundle prior to this session.
+- `internal-reverse/REVERSE-STATUS.md` line ~4011 (`<审计会话> — lists "windows 专属 system-usage" as a confirmed missing canonical bundle prior to this session.
 - `internal-reverse/REVERSE-STATUS.md` entry `[windows-1.2.3-system-usage-distill-20260725]` — this session's claim-first + completion record.

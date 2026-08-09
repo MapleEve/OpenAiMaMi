@@ -25,7 +25,7 @@ crosscheck. No raw dump, pseudocode corpus, log, or binary is copied into
   `1db044e8efab3b9eba8668b5a008f4952194ec0dd6a70a10725a5e7ad0350482`
 - IDB writeback: comments were added to `0x10032c93c`, `0x10032cb40`,
   `0x1005dd788`, `0x1005dd7c4`, `0x1005e13fc`, and `0x1005e142c`;
-  `idb_save` returned OK.
+  `<工具调用>` returned OK.
 
 ## Frontend Fixture Shape
 

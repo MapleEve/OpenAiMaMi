@@ -732,18 +732,18 @@ archived to _legacy-archive/20260603T020519
 
 | target / surface | platform | reverse status | consumer tier | gate | source archive | notes |
 |---|---|---|---|---|---|---|
-| relay_breaker | macos | reduce-complete | **readyToImplement** (dim6 closed relay-closeout-109 phase-reduce) | pass | audits/macos-1.0.9-relay-core/ | 5 leaves: select_candidates/is_open/record_success/record_failure/new_store; BreakerStore/BreakerState layout closed; backoff 5s/30s/300s; idb_saved; dim6 closed (RELAY-CORE-ACCEPTANCE-MAPPING-109 §5) |
-| relay_breaker | windows | reduce-complete | strictImplementationUse | pass | audits/windows-1.0.9-relay-core/ | 12 functions; BreakerState stride=208, open_until_ms_offset=144; backoff 5s/30s/300s; idb_saved; new_store CLOSED@0x1403ECFA0 (relay-closeout-109); dim6 missing |
+| relay_breaker | macos | reduce-complete | **readyToImplement** (dim6 closed relay-closeout-109 phase-reduce) | pass | audits/macos-1.0.9-relay-core/ | 5 leaves: select_candidates/is_open/record_success/record_failure/new_store; BreakerStore/BreakerState layout closed; backoff 5s/30s/300s; <工具调用>d; dim6 closed (RELAY-CORE-ACCEPTANCE-MAPPING-109 §5) |
+| relay_breaker | windows | reduce-complete | strictImplementationUse | pass | audits/windows-1.0.9-relay-core/ | 12 functions; BreakerState stride=208, open_until_ms_offset=144; backoff 5s/30s/300s; <工具调用>d; new_store CLOSED@0x1403ECFA0 (relay-closeout-109); dim6 missing |
 | relay_fetch_models | macos | ceiling-cracked (<audit-session> 2026-06-03) | strictImplementationUse (dim6 missing; pending readyToImplement) | pass | audits/macos-1.0.9-relay-core/ + raw/aimami/1.0.9/macos/relay-core/relay_fetch_models/ | 7/7 leaves resolved (relay-closeout-109); CEILING CRACK <audit-session>: true poll body@0x100114ab0 (7036B, 358BB); was_drop_in_place_only=true->genuine_ceiling=false; 5 .await states: get_api_key@0x100115114/reqwest::Pending (Anthropic+OpenAI)@0x100115634/Response::json@0x1001157e0,0x100115f00/parse_model_ids@0x100116184; retry_max=2; is_transient_error@0x10011605c; ASYNC_CLIENT_DIRECT@0x101390318/ASYNC_CLIENT_SYSTEM@0x101390328; HTTP GET /v1/models; Anthropic: x-api-field+anthropic-version:2023-06-01; OpenAI: bearer_auth; all error strings confirmed; 14 new IDA comments; IDB saved; dim6 still missing |
-| relay_fetch_models | windows | reduce-complete | strictImplementationUse | pass | audits/windows-1.0.9-relay-core/ | **12/12 leaves** (ceiling-crack <audit-session> 2026-06-03); async ICF-blocked RESOLVED: fetch_async+fetch_openai_async ICF-inlined into owner@0x1408E0870 (335 BB); 5-level nested state machine; all .await states closed (HTTP dispatch jpt_1408E0E29/1131/11source archive); Anthropic: x-api-field+anthropic-version:2023-06-01 confirmed disasm 0x1408E1AA8/1B01; OpenAI: Bearer auth; retry logic is_transient_request_error@0x1401133E0; output Vec<String> from data[]; 10 new IDA comments; idb_saved; dim6 missing |
-| relay_models | macos | reduce-complete | consumerStartReady | pass | audits/macos-1.0.9-relay-core/ | 3 logic functions + 12 struct/enum shapes; idb_saved; field UPDATED (relay-closeout-109): RelayTestResult UPGRADED D→B (ok:bool,errorMessage:Option<String>,modelsSample:Option<String>,healthScore:i64,latencyMs:i64 confirmed via serde string table 0x100ee000d + drop layout); CodexRouteDiagnostic=level-B-candidate (unchanged) |
-| relay_models | windows | reduce-complete | strictImplementationUse | pass | audits/windows-1.0.9-relay-core/ | 6 leaves; field CORRECTIONS: RelayProxyStatus=struct(5 fields); RelayProvider=15 fields; RelayIde=1 variant:codex; idb_saved |
-| relay_translator_stream | macos | reduce-complete | **readyToImplement** (dim6 closed + Windows gate confirmed relay-closeout-109) | pass | audits/macos-1.0.9-relay-core/ | 4 state machines + 9 support; ToolItemState struct closed; idb_saved; dim6 closed (RELAY-CORE-ACCEPTANCE-MAPPING-109 §1) |
-| relay_translator_stream | windows-x64 | reduce-complete | strictImplementationUse | pass | audits/windows-1.0.9-relay-core/ | 4 state machines + 2 feed_line + 2 flush + 3 helpers; no ICF fold; 11 renames+8 comments; idb_saved; dim6 missing (relay-closeout-109) |
-| relay_web_executor | macos | reduce-complete | **readyToImplement** (dim6 closed relay-closeout-109) | pass | audits/macos-1.0.9-relay-core/ | 7 leaves; call-tree proxy_server→reqwest::Client terminal; DTO closed; idb_saved; dim6 closed (RELAY-CORE-ACCEPTANCE-MAPPING-109 §2) |
-| relay_web_executor | windows | reduce-complete | strictImplementationUse | pass | audits/windows-1.0.9-relay-core/ | 9 leaves; 6 Tier-A + 3 named prior session; send_request ICF-folded accepted_unknown; idb_saved |
-| relay_web_tools | windows | reduce-complete | strictImplementationUse | pass | audits/windows-1.0.9-relay-core/ | 16 leaves; TWO MIRRORED CLUSTERS (cluster1=stream path / cluster2=forward path); fetch UA=MacOS Chrome/125; truncate=8000 bytes; idb_saved |
-| relay_web_tools | macos | reduce-complete | **readyToImplement** (dim6 closed relay-closeout-109) | pass | audits/macos-1.0.9-relay-core/ | 12 leaves; fetch/search/definitions subsystems closed; truncate=8000chars Unicode-safe; idb_saved; dim6 closed (RELAY-CORE-ACCEPTANCE-MAPPING-109 §3) |
+| relay_fetch_models | windows | reduce-complete | strictImplementationUse | pass | audits/windows-1.0.9-relay-core/ | **12/12 leaves** (ceiling-crack <audit-session> 2026-06-03); async ICF-blocked RESOLVED: fetch_async+fetch_openai_async ICF-inlined into owner@0x1408E0870 (335 BB); 5-level nested state machine; all .await states closed (HTTP dispatch jpt_1408E0E29/1131/11source archive); Anthropic: x-api-field+anthropic-version:2023-06-01 confirmed disasm 0x1408E1AA8/1B01; OpenAI: Bearer auth; retry logic is_transient_request_error@0x1401133E0; output Vec<String> from data[]; 10 new IDA comments; <工具调用>d; dim6 missing |
+| relay_models | macos | reduce-complete | consumerStartReady | pass | audits/macos-1.0.9-relay-core/ | 3 logic functions + 12 struct/enum shapes; <工具调用>d; field UPDATED (relay-closeout-109): RelayTestResult UPGRADED D→B (ok:bool,errorMessage:Option<String>,modelsSample:Option<String>,healthScore:i64,latencyMs:i64 confirmed via serde string table 0x100ee000d + drop layout); CodexRouteDiagnostic=level-B-candidate (unchanged) |
+| relay_models | windows | reduce-complete | strictImplementationUse | pass | audits/windows-1.0.9-relay-core/ | 6 leaves; field CORRECTIONS: RelayProxyStatus=struct(5 fields); RelayProvider=15 fields; RelayIde=1 variant:codex; <工具调用>d |
+| relay_translator_stream | macos | reduce-complete | **readyToImplement** (dim6 closed + Windows gate confirmed relay-closeout-109) | pass | audits/macos-1.0.9-relay-core/ | 4 state machines + 9 support; ToolItemState struct closed; <工具调用>d; dim6 closed (RELAY-CORE-ACCEPTANCE-MAPPING-109 §1) |
+| relay_translator_stream | windows-x64 | reduce-complete | strictImplementationUse | pass | audits/windows-1.0.9-relay-core/ | 4 state machines + 2 feed_line + 2 flush + 3 helpers; no ICF fold; 11 renames+8 comments; <工具调用>d; dim6 missing (relay-closeout-109) |
+| relay_web_executor | macos | reduce-complete | **readyToImplement** (dim6 closed relay-closeout-109) | pass | audits/macos-1.0.9-relay-core/ | 7 leaves; call-tree proxy_server→reqwest::Client terminal; DTO closed; <工具调用>d; dim6 closed (RELAY-CORE-ACCEPTANCE-MAPPING-109 §2) |
+| relay_web_executor | windows | reduce-complete | strictImplementationUse | pass | audits/windows-1.0.9-relay-core/ | 9 leaves; 6 Tier-A + 3 named prior session; send_request ICF-folded accepted_unknown; <工具调用>d |
+| relay_web_tools | windows | reduce-complete | strictImplementationUse | pass | audits/windows-1.0.9-relay-core/ | 16 leaves; TWO MIRRORED CLUSTERS (cluster1=stream path / cluster2=forward path); fetch UA=MacOS Chrome/125; truncate=8000 bytes; <工具调用>d |
+| relay_web_tools | macos | reduce-complete | **readyToImplement** (dim6 closed relay-closeout-109) | pass | audits/macos-1.0.9-relay-core/ | 12 leaves; fetch/search/definitions subsystems closed; truncate=8000chars Unicode-safe; <工具调用>d; dim6 closed (RELAY-CORE-ACCEPTANCE-MAPPING-109 §3) |
 
 ### relay-core Existing Sub-Modules (<workstation>) — REDUCE COMPLETE
 
@@ -755,7 +755,7 @@ archived to _legacy-archive/20260603T020519
 | relay_diagnostic | cross | reduce-complete | ~~consumerStartReady (mac)~~ **strictImplementationUse (mac)** [SUPERSEDED by relay-mac-closeout-109] / strictImplementationUse (win) | pass | audits/macos-1.0.9-relay-core/ + audits/windows-1.0.9-relay-core/ | 10 mac + 6 win leaves; all reduced 2026-06-02 |
 | relay_health_audit | cross | reduce-complete | ~~consumerStartReady (mac)~~ **strictImplementationUse (mac)** [SUPERSEDED by relay-mac-closeout-109] / strictImplementationUse (win) | pass (win promoted relay-closeout-109) | audits/macos-1.0.9-relay-core/ + audits/windows-1.0.9-relay-core/ | mac=10 IDA pseudocode decompiled; win=9/11 decompiled (relay-closeout-109); PassthroughAuditEntry 7 fields CONFIRMED; RelayTestResult healthScore+sentinel CONFIRMED; IDB saved; dim6 missing |
 | relay_manager | cross | reduce-complete | ~~consumerStartReady (mac)~~ **strictImplementationUse (mac)** [SUPERSEDED by relay-mac-closeout-109] / strictImplementationUse (win) | pass | audits/macos-1.0.9-relay-core/ + audits/windows-1.0.9-relay-core/ | 17 mac + 13 win leaves; all reduced 2026-06-02 |
-| relay_proxy_server | cross | reduce-complete | ~~consumerStartReady (mac)~~ **strictImplementationUse (mac)** [SUPERSEDED by relay-mac-closeout-109] / strictImplementationUse (win) | pass | audits/macos-1.0.9-relay-core/ + audits/windows-1.0.9-relay-core/ | 9 mac + 9 win leaves; all reduced 2026-06-02; field UPDATED (relay-closeout-109): ProxyContext struct CLOSED — 6 Arc fields: [0]Arc<Runtime>,[8]Arc<Mutex<RelayState>>,[16]Arc<Mutex<RelayManager>>,[24]Arc<reqwest::Client>,[32]Arc<Mutex<PluginRegistry>>,[40]Arc<CodexPaths>; idb_saved 2026-06-03 |
+| relay_proxy_server | cross | reduce-complete | ~~consumerStartReady (mac)~~ **strictImplementationUse (mac)** [SUPERSEDED by relay-mac-closeout-109] / strictImplementationUse (win) | pass | audits/macos-1.0.9-relay-core/ + audits/windows-1.0.9-relay-core/ | 9 mac + 9 win leaves; all reduced 2026-06-02; field UPDATED (relay-closeout-109): ProxyContext struct CLOSED — 6 Arc fields: [0]Arc<Runtime>,[8]Arc<Mutex<RelayState>>,[16]Arc<Mutex<RelayManager>>,[24]Arc<reqwest::Client>,[32]Arc<Mutex<PluginRegistry>>,[40]Arc<CodexPaths>; <工具调用>d 2026-06-03 |
 | relay_thread_migration | cross | reduce-complete | ~~consumerStartReady (mac)~~ **strictImplementationUse (mac)** [SUPERSEDED by relay-mac-closeout-109] / strictImplementationUse (win) | pass | audits/macos-1.0.9-relay-core/ + audits/windows-1.0.9-relay-core/ | 7 mac + 5 win leaves; all reduced 2026-06-02 |
 | relay_translator | cross | reduce-complete | ~~consumerStartReady~~ **strictImplementationUse (mac)** [SUPERSEDED by relay-mac-closeout-109; 14 mac leaves] | pass | audits/macos-1.0.9-relay-core/ | 14 mac leaves; Windows not analyzed (separate scope) |
 
@@ -812,14 +812,14 @@ archived to _legacy-archive/20260603T020519
 | target | platform | current tier | goal | notes |
 |---|---|---|---|---|
 | relay_manager | macos | consumerStartReady | strictImplementationUse or readyToImplement | relay-mac-closeout-109: RelayManager::new@0x1001ccea0 decompiled (6-field struct, tokio runtime, breaker::new_store); drop_in_place<RelayManager>@0x100029d9c confirms 6 Arc fields +0/+8/+16/+24/+32/+40; 17 leaf corpus from relay-missed-109 still needs dim4 per-leaf closure; gate holds at consumerStartReady |
-| relay_proxy_server | macos | **strictImplementationUse** (relay-mac-closeout-109) | readyToImplement (dim6) | dim1-5 ALL CLOSED relay-mac-closeout-109: stream_sse_body_to_ws vtable RESOLVED (dyn Stream poll_next@0x100097d80); handle_codex_by_provider_ws@0x100095390 NEW HANDLER decompiled; pick_codex_by_provider@0x100243e78 named; call-tree depth≥7; ProxyContext 6 Arc fields CLOSED (relay-closeout-109); 13 IDA comments; idb_saved; 3 INDEX entries; dim6 missing |
-| relay_thread_migration | macos | **strictImplementationUse** (relay-mac-closeout-109 PHASE 4) | readyToImplement (dim6) | dim2/dim3/dim4 ALL CLOSED relay-mac-closeout-109: migrate_threads SQLite sub-functions fully decompiled (read_thread_columns/load_thread_snapshots/update_db_for_migration/update_thread_meta/router_thread_migration_target_model); 4-way SQL dispatch; ThreadRouterMigrationEntry stride=240; transaction isolation dispatch table; 6 IDA comments; idb_saved; 2 INDEX entries; dim6 missing |
-| relay_translator | macos | **strictImplementationUse** (<audit-session> 2026-06-04) | readyToImplement (dim6) | dim4 ALL CLOSED relay-mac-closeout-109: 4 new functions discovered (anthropic_to_openai_chat_request@0x1006477e8 A-level, openai_chat_to_anthropic_request@0x100648a78 A-level, translate_anthropic_message_to_openai@0x10064ed14 B, translate_openai_message_to_anthropic@0x100651604 B); tool_choice mapping (any→required, tool→function) CONFIRMED; tool_use→tool_calls + tool_result→tool role mapping CONFIRMED; bge-host routing CONFIRMED; max_tokens fallback from max_completion_tokens CONFIRMED; web_search normalization CONFIRMED; pseudocode-manifest 14→18; 4 INDEX entries; 4 IDA comments; idb_saved; dim6 missing. **<audit-session> 2026-06-04 SUPPLEMENT**: responses_to_chat_request@0x10062e41c (27300B, 1278BB, 53 callees) FULLY DECOMPILED single-pass HexRays (202751 chars); 2 callers confirmed (forward_codex_responses_internal closures); full Responses API→Chat Completions DTO: instructions→system role, output[] items dispatched by type (message/reasoning/function_call/function_call_output), field strip list (stream/parallel_tool_calls/temperature/top_p/max_output_tokens/max_tokens/max_completion_tokens/tools/namespace); strip_billing_header + extract_reasoning_summary_text + flatten_function_call_output + responses_tool_to_chat_tools + clean_tool_schema all sub-decompiled; dim1-5 all closed; dim6 still open; gate_tier=strictImplementationUse; INDEX +1; DISTILLED written intermediate/aimami/1.0.9/macos/relay-core/relay_translator/responses_to_chat_request/ |
+| relay_proxy_server | macos | **strictImplementationUse** (relay-mac-closeout-109) | readyToImplement (dim6) | dim1-5 ALL CLOSED relay-mac-closeout-109: stream_sse_body_to_ws vtable RESOLVED (dyn Stream poll_next@0x100097d80); handle_codex_by_provider_ws@0x100095390 NEW HANDLER decompiled; pick_codex_by_provider@0x100243e78 named; call-tree depth≥7; ProxyContext 6 Arc fields CLOSED (relay-closeout-109); 13 IDA comments; <工具调用>d; 3 INDEX entries; dim6 missing |
+| relay_thread_migration | macos | **strictImplementationUse** (relay-mac-closeout-109 PHASE 4) | readyToImplement (dim6) | dim2/dim3/dim4 ALL CLOSED relay-mac-closeout-109: migrate_threads SQLite sub-functions fully decompiled (read_thread_columns/load_thread_snapshots/update_db_for_migration/update_thread_meta/router_thread_migration_target_model); 4-way SQL dispatch; ThreadRouterMigrationEntry stride=240; transaction isolation dispatch table; 6 IDA comments; <工具调用>d; 2 INDEX entries; dim6 missing |
+| relay_translator | macos | **strictImplementationUse** (<audit-session> 2026-06-04) | readyToImplement (dim6) | dim4 ALL CLOSED relay-mac-closeout-109: 4 new functions discovered (anthropic_to_openai_chat_request@0x1006477e8 A-level, openai_chat_to_anthropic_request@0x100648a78 A-level, translate_anthropic_message_to_openai@0x10064ed14 B, translate_openai_message_to_anthropic@0x100651604 B); tool_choice mapping (any→required, tool→function) CONFIRMED; tool_use→tool_calls + tool_result→tool role mapping CONFIRMED; bge-host routing CONFIRMED; max_tokens fallback from max_completion_tokens CONFIRMED; web_search normalization CONFIRMED; pseudocode-manifest 14→18; 4 INDEX entries; 4 IDA comments; <工具调用>d; dim6 missing. **<audit-session> 2026-06-04 SUPPLEMENT**: responses_to_chat_request@0x10062e41c (27300B, 1278BB, 53 callees) FULLY DECOMPILED single-pass HexRays (202751 chars); 2 callers confirmed (forward_codex_responses_internal closures); full Responses API→Chat Completions DTO: instructions→system role, output[] items dispatched by type (message/reasoning/function_call/function_call_output), field strip list (stream/parallel_tool_calls/temperature/top_p/max_output_tokens/max_tokens/max_completion_tokens/tools/namespace); strip_billing_header + extract_reasoning_summary_text + flatten_function_call_output + responses_tool_to_chat_tools + clean_tool_schema all sub-decompiled; dim1-5 all closed; dim6 still open; gate_tier=strictImplementationUse; INDEX +1; DISTILLED written intermediate/aimami/1.0.9/macos/relay-core/relay_translator/responses_to_chat_request/ |
 | relay_health_audit | macos | **strictImplementationUse** (relay-mac-closeout-109) | readyToImplement (dim6) | dim4 CLOSED relay-mac-closeout-109: RelayTestResult 4-field B-confirmed (serialize@0x1001c7194+drop@0x1000d26fc); PassthroughAuditEntry 7-field confirmed; win=strictImplementationUse |
 | relay_models | macos | **strictImplementationUse** (relay-mac-closeout-109) | readyToImplement (dim6) | dim4 CLOSED relay-mac-closeout-109: RelayProvider 14-field B (drop@0x100029f4c+serialize@0x1001c6edc); RelayTestResult 4-field B; RelayDraftTestInput C+; win=readyToImplement |
-| relay_codex_writer | macos | **strictImplementationUse_candidate** (relay-mac-closeout-109 PHASE 5) | strictImplementationUse / readyToImplement (dim6) | dim4 CodexPaths offsets VERIFIED relay-mac-closeout-109: apply_codex_state@0x1004aef60 re-decompiled; CodexPaths[+56]/[+64]=config_toml dir ptr/len CONFIRMED; CodexPaths[+584]/[+592]=backup dir CONFIRMED; 1 IDA comment; idb_saved; 1 INDEX entry; win=**strictImplementationUse (dim4 CLOSED relay-mac-closeout-109)**; dim6 missing |
-| relay_diagnostic | macos | **strictImplementationUse** (relay-mac-closeout-109 PHASE 4) | readyToImplement (dim6) | dim2/dim3/dim4 ALL CLOSED relay-mac-closeout-109: all 7 engine checks enumerated (auth_integrity/config_toml_syntax/config_third_party/config_profile_conflict/config_stale/auth_token_expiry/codex_home_writable+db_orphan+catalog+process); read_codex_default_model@0x10055a508+fix_auth_token_expiry@0x10055913c+is_plausible_jwt@0x100556c0c newly decompiled; DiagnosticsItem=104B; 3 IDA comments; idb_saved; 2 INDEX entries; dim6 missing; win=**strictImplementationUse (dim4 CLOSED relay-mac-closeout-109)** |
-| relay_translator | windows | **strictImplementationUse (NEW relay-mac-closeout-109)** | readyToImplement (dim6) | 15 leaves (11 prior + 4 new); tool_result/tool_use/tool_choice mapping CLOSED via convert_anthropic_message_to_openai_chat_sys@0x140214FD0; stream_codex_responses_translator_dispatch_sys@0x140134DC0 + anthropic_request_to_openai_chat_request_sys@0x14020A900 named; call-tree depth=5; dim5 closed; dim6 missing; idb_saved; WIN-RELAY-MAC-CLOSEOUT-109.md |
+| relay_codex_writer | macos | **strictImplementationUse_candidate** (relay-mac-closeout-109 PHASE 5) | strictImplementationUse / readyToImplement (dim6) | dim4 CodexPaths offsets VERIFIED relay-mac-closeout-109: apply_codex_state@0x1004aef60 re-decompiled; CodexPaths[+56]/[+64]=config_toml dir ptr/len CONFIRMED; CodexPaths[+584]/[+592]=backup dir CONFIRMED; 1 IDA comment; <工具调用>d; 1 INDEX entry; win=**strictImplementationUse (dim4 CLOSED relay-mac-closeout-109)**; dim6 missing |
+| relay_diagnostic | macos | **strictImplementationUse** (relay-mac-closeout-109 PHASE 4) | readyToImplement (dim6) | dim2/dim3/dim4 ALL CLOSED relay-mac-closeout-109: all 7 engine checks enumerated (auth_integrity/config_toml_syntax/config_third_party/config_profile_conflict/config_stale/auth_token_expiry/codex_home_writable+db_orphan+catalog+process); read_codex_default_model@0x10055a508+fix_auth_token_expiry@0x10055913c+is_plausible_jwt@0x100556c0c newly decompiled; DiagnosticsItem=104B; 3 IDA comments; <工具调用>d; 2 INDEX entries; dim6 missing; win=**strictImplementationUse (dim4 CLOSED relay-mac-closeout-109)** |
+| relay_translator | windows | **strictImplementationUse (NEW relay-mac-closeout-109)** | readyToImplement (dim6) | 15 leaves (11 prior + 4 new); tool_result/tool_use/tool_choice mapping CLOSED via convert_anthropic_message_to_openai_chat_sys@0x140214FD0; stream_codex_responses_translator_dispatch_sys@0x140134DC0 + anthropic_request_to_openai_chat_request_sys@0x14020A900 named; call-tree depth=5; dim5 closed; dim6 missing; <工具调用>d; WIN-RELAY-MAC-CLOSEOUT-109.md |
 
 ---
 
@@ -1681,7 +1681,7 @@ Live IDB re-verify of owner @0x14091bc60 + all load-bearing callees. Gate stays 
 | gate | **strictImplementationUse** (dim1-5 closed; dim6 missing) |
 | genuine_ceiling | false (dim6 = implementation process boundary, not binary cap) |
 | is_upstream | false |
-| idb_saved | true |
+| <工具调用>d | true |
 | INDEX line | 1324 |
 | evidence_sha256 | 0967778e31b78310935faf6c60948cf7a88bc6d1907cc2669716dff09aa2d3f2 |
 | evidence_size | 13256B |
@@ -1719,7 +1719,7 @@ Live IDB re-verify of owner @0x14091bc60 + all load-bearing callees. Gate stays 
 | real_body_found | true |
 | was_false_wall | N/A (direct decompile succeeded all nodes) |
 | is_upstream | true |
-| idb_saved | true |
+| <工具调用>d | true |
 | INDEX line | 1347 |
 | evidence_sha256 | 66source archiveebd6d24601dfc723a56090cc1754e5711793947f7b392a6c6d6fe1c4e6c8 (deep-pass-2) |
 | evidence_size | 13404B (deep-pass-2; parse_all_sessions full decompile + classification tables added) |
@@ -1764,7 +1764,7 @@ Live IDB re-verify of owner @0x14091bc60 + all load-bearing callees. Gate stays 
 | was_false_wall | none |
 | is_async | true (real Future body; async fake-wall broken via tokio poll caller) |
 | is_upstream | true |
-| idb_saved | true |
+| <工具调用>d | true |
 | INDEX line | 1350 |
 | evidence_sha256 | 675c85dac82dec4fb677dbb21b4fcf3a7f7eff33805ea24231fda751e4295231 |
 | evidence_size | 10037B |
@@ -1809,7 +1809,7 @@ Live IDB re-verify of owner @0x14091bc60 + all load-bearing callees. Gate stays 
 | was_false_wall | none |
 | is_async | true (tokio blocking-task closure; async/drop fake-wall broken via tokio Core::poll caller + positive func_query proof) |
 | is_upstream | true |
-| idb_saved | true (3 IDA comments appended [SOURCE_ARCHIVE deep-reverify] on owner 0x10032d77c + core 0x1005dfb6c + serializer 0x1001d45fc) |
+| <工具调用>d | true (3 IDA comments appended [SOURCE_ARCHIVE deep-reverify] on owner 0x10032d77c + core 0x1005dfb6c + serializer 0x1001d45fc) |
 | INDEX line | 1351 (orig) / 1352 (refresh 2026-06-04) |
 | evidence_sha256 | ea37471a821314f82aff905ae6f02b1ae109d7498b8f162444a0848720cc6b4b (refreshed 2026-06-04; prev bf67268b…) |
 | evidence_size | 16150B (refreshed; prev 14638B) |
@@ -1853,7 +1853,7 @@ Live IDB re-verify of owner @0x14091bc60 + all load-bearing callees. Gate stays 
 | is_async | true (tokio blocking-task closure; async/drop fake-wall broken via tokio Core::poll caller + positive func_query proof) |
 | is_upstream | true |
 | corrects_prior | prior Ghidra backend-proof (INDEX#509) mislabeled 0x10032d430 as shared chatgpt locator; 0x10032d430 is commands::accounts::load_snapshot::{{closure}}::{{closure}}. Sole chatgpt command body = 0x10032dbf0 |
-| idb_saved | true (3 IDA comments appended [SOURCE_ARCHIVE deep-reverify] on owner 0x10032dbf0 + core 0x1005e1d6c + dto_parser 0x100625bc4) |
+| <工具调用>d | true (3 IDA comments appended [SOURCE_ARCHIVE deep-reverify] on owner 0x10032dbf0 + core 0x1005e1d6c + dto_parser 0x100625bc4) |
 | INDEX line | 1352 |
 | evidence_sha256 | 70078fe3fdc757b6c02549f676956198009e39d889b7f6a7003f2cd584cbc7c7 |
 | evidence_size | 17968B |
@@ -1903,7 +1903,7 @@ Live IDB re-verify of owner @0x14091bc60 + all load-bearing callees. Gate stays 
 | real_body_found | true |
 | was_false_wall | none |
 | is_upstream | true |
-| idb_saved | true (IDA comment appended @ 0x100332790, idb_save confirmed) |
+| <工具调用>d | true (IDA comment appended @ 0x100332790, <工具调用> confirmed) |
 | INDEX line | 1368 |
 | evidence_sha256 | 6604294ab7a4f4eb6342b9031cdc38d01c1967af791703412270bfb5ac7e90ab |
 | evidence_size | 13252B |
@@ -1938,7 +1938,7 @@ Live IDB re-verify of owner @0x14091bc60 + all load-bearing callees. Gate stays 
 | real_body_found | true |
 | was_false_wall | none |
 | is_upstream | true |
-| idb_saved | true (IDA comment appended @ 0x1003332a4, idb_save confirmed) |
+| <工具调用>d | true (IDA comment appended @ 0x1003332a4, <工具调用> confirmed) |
 | evidence | <source-location>/audits/macos-1.0.9-tray/logic/APPEND-CODEX-ROUTER-SECTION-DISTILLED-109.md |
 
 **Fake-wall exclusion**: all 8 taxonomy items explicitly excluded — drop_in_place/async-bail/wrong-VA/architecture_only/vtable/HTTP-terminal/lib-internals/body-too-large. No recovery_attempts needed: no ceiling encountered. 1364B clean single-pass HexRays decompile; func_query(async_fn_env|poll|generator)=EMPTY; xrefs_to(0x1003332a4)=2 code xrefs (both expected callers), 0 ICF twin; all callees direct demangled BL.
@@ -1967,7 +1967,7 @@ Live IDB re-verify of owner @0x14091bc60 + all load-bearing callees. Gate stays 
 | genuine_ceiling | false |
 | real_body_found | true |
 | was_false_wall | none |
-| idb_saved | no new save needed (accounts bundle idb already saved; no rename/comment added in this pass) |
+| <工具调用>d | no new save needed (accounts bundle idb already saved; no rename/comment added in this pass) |
 | evidence | <source-location>/audits/macos-1.0.9-accounts/logic/ACCOUNTS-LOAD-FULL-RUNTIME-SNAPSHOT-DISTILLED-109.md |
 
 **Fake-wall exclusion**: all 8 taxonomy items explicitly excluded — drop_in_place(real logic)/async-bail(sync body, blocking wrapper at caller)/wrong-VA(func_query exact match)/architecture_only(single-pass 2072B)/vtable(all direct static callees)/HTTP-terminal(wrapper logic fully decompiled)/lib-internals(own codexmate_lib)/body-too-large(2072B no chunk needed). recovery_attempts: not_needed_no_ceiling.
@@ -2423,7 +2423,7 @@ Tasks 1–5 completed by Windows IDA MCP session.
 **Task 1 — mystery_unlock renames**:
 - `sub_1402719B0` → `merge_mystery_unlock_grants` @ 0x1402719b0 (renamed + func comment verified in IDB)
 - `sub_14027E640` → `get_mystery_unlock_grants` @ 0x14027e640 (renamed + func comment verified in IDB)
-- INDEX lines 1425–1426 confirmed; idb_saved=true (<source-location>\raw\binary\AiMaM 1.0.9 win64.exe.i64)
+- INDEX lines 1425–1426 confirmed; <工具调用>d=true (<source-location>\raw\binary\AiMaM 1.0.9 win64.exe.i64)
 
 **Task 2a** — 0x14012c3c0: NOT_A_FUNCTION (mid-func offset at block +0x1390 inside stream_codex_responses_native_sys@0x14012ae30, 416 blocks); IDA comment set; no define_code/define_func applied; INDEX line 1432
 
@@ -2450,7 +2450,7 @@ Tasks 1–5 completed by Windows IDA MCP session.
 - 0x1001e74d0 load_usage_only_runtime_snapshot
 - 0x1001e45dc get_cached_display_snapshot
 
-idb_save confirmed: <source-location>/source-binary/AiMaMi 1.0.9_ida.app/Contents/MacOS/AiMaMi.i64 (Jun 5 03:06)
+<工具调用> confirmed: <source-location>/source-binary/AiMaMi 1.0.9_ida.app/Contents/MacOS/AiMaMi.i64 (Jun 5 03:06)
 INDEX.jsonl: 8 entries patched (func_comment field backfilled for all 7 VAs; some VAs appear under multiple keys).
 No gate-state or owner assignments changed.
 

@@ -4,7 +4,7 @@
 > `BASELINE-FINAL-1.2.3.md §3` (win 115/131). This pass resolves the disambiguable subset, corrects one
 > mis-named function, and precisely re-characterizes the true ceiling. IDB is SOT; no raw dumps here.
 
-- **Binaries**: win `E:\binary\AiMaMi.1.2.3 win64.exe.i64` (module `AiMaMi.1.2.3 win64.exe`, imagebase 0x140000000, strip) ·
+- **Binaries**: win `<二进制路径>\AiMaMi.1.2.3 win64.exe.i64` (module `AiMaMi.1.2.3 win64.exe`, imagebase 0x140000000, strip) ·
   mac `raw/binary/AiMaMi 1.2.3.app/.../AiMaMi.i64` (module `AiMaMi`, symbols). Both IDA live, IDA decompiler_ready at pass time.
 - **Command universe**: mac & win `frontend/ipc-contracts.jsonl` identical = **131** commands.
 - **Method**: win-native only for win naming — each real `#[tauri::command]` handler `lea`'s its own command-name
@@ -16,9 +16,9 @@
 |---|---|
 | target path | `internal-reverse/audits/WIN-1.2.3-COMMAND-CEILING-CLOSEOUT.md` (summary; win IDB is evidence SOT) |
 | canonical scope | win-1.2.3 cross-module tauri command-handler IDB naming ceiling closeout |
-| current producer | none active on 1.2.3 (only in-progress claim = wf-aimami118-delta; 1.2.3 win recovery completed 2026-07-21) |
-| machine / session | Maple-C5Mini (mini, SMB backing host) / wf-aimami123-win-cmd-ceiling-20260726 |
-| INDEX lines | n/a — no new raw/intermediate bundle; mutations are IDB set_name/comment/dirtree, idb_save persisted |
+| current producer | none active on 1.2.3 (only in-progress claim = <审计会话> 1.2.3 win recovery completed 2026-07-21) |
+| machine / session | <本地机器> (mini, SMB backing host) / <审计会话> |
+| INDEX lines | n/a — no new raw/intermediate bundle; mutations are IDB set_name/comment/dirtree, <工具调用> persisted |
 | write mode | new additive summary file, authoritative=true for this refinement scope only |
 | collision status | no collision |
 | takeover token | none required (no canonical bundle overwrite, no owner reassignment) |
@@ -40,7 +40,7 @@ Live win probe (command-name string → dref → enclosing function, two-hop) ov
 
 ## 2. Precisely named this pass (5) — win-native disambig, mac cross-checked
 
-Each handler `lea`'s its own command name (ground truth); the shared dispatcher `0x140194810` is the 2nd xref and is excluded → unique handler. All SN_FORCE renamed, moved into dirtree, cross-platform comment appended, idb_save ok.
+Each handler `lea`'s its own command name (ground truth); the shared dispatcher `0x140194810` is the 2nd xref and is excluded → unique handler. All SN_FORCE renamed, moved into dirtree, cross-platform comment appended, <工具调用> ok.
 
 | win handler VA | command | own-name lea @ | dirtree | mac cross-check |
 |---|---|---|---|---|
@@ -80,11 +80,11 @@ Win `serialize_N` are stripped serde monomorphizations. Field-name pools read fr
 
 serialize_3/4 exact struct not renamed (medium/low confidence on exact struct — honest hold; direction is confirmed, which was the stated ask).
 
-## 6. idb_save + grounded verification
+## 6. <工具调用> + grounded verification
 
-- win `idb_save` → `{"ok":true,"path":"E:\\binary\\AiMaMi.1.2.3 win64.exe.i64"}`.
+- win `<工具调用>` → `{"ok":true,"path":"<二进制路径>\\AiMaMi.1.2.3 win64.exe.i64"}`.
 - Re-read all 9 mutated functions: names match, comments present, dirtree paths correct
   (voice folder now holds the 4 voice-vocab/trigger handlers; accounts holds confirm_...; models holds 3 serialize).
 - Dispatcher case comments (clean / get_codex_router_auth_readiness / open_path) present. 0 stranded.
 
-*Evidence SOT = win IDB (E:\binary) + mac IDB (raw/binary). This file is summary/pointer only.*
+*Evidence SOT = win IDB (<二进制路径>) + mac IDB (raw/binary). This file is summary/pointer only.*

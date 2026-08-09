@@ -1,4 +1,4 @@
-// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::repository::RegistryItem as core::clone::Clone>::clone::h21461c0ea2b82fea @ 0x100b17f00 | full-body via IDA Python(IDA decompiler.decompile direct write)
+// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::repository::RegistryItem as core::clone::Clone>::clone::h21461c0ea2b82fea @ 0x100b17f00 | full-body via py_exec_file(ida_hexrays.decompile direct write)
 __int64 __fastcall _$LT$codexmate_lib..core..repository..RegistryItem$u20$as$u20$core..clone..Clone$GT$::clone::h21461c0ea2b82fea(
         __int64 a1,
         const __m128i *a2,

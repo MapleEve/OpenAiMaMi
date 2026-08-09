@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay12proxy_server36build_codex_openai_responses_headers @ 0x100269d60 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 void *__fastcall codexmate_lib::core::relay::proxy_server::build_codex_openai_responses_headers::h8836eb31488784be(
         void *a1,

@@ -1,5 +1,5 @@
 // win 1.2.3 delta | aimami_relay_cleanup_2 @ 0x1404a7ba0 | changelog ②关闭路由修复
-// [FULL IDA decompiler 14605B]
+// [FULL hexrays 14605B]
 __int64 __fastcall sub_1404A7BA0(__int64 a1)
 {
   unsigned __int128 v2; // kr00_16

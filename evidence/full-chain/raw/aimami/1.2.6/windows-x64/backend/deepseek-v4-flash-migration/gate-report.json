@@ -1,0 +1,31 @@
+{
+  "schema": "c5cm.raw.leaf.gate_report.v1",
+  "commands": ["migrate_legacy_deepseek_v4_flash_official_protocol (windows-x64, inlined predicate)"],
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "gates": {
+    "consumerStartReady": true,
+    "strictImplementationUse": false,
+    "readyToImplement": false,
+    "implementation_use": false,
+    "gate_accepted": false,
+    "full_leaf_100_definition_v2": false
+  },
+  "blockers": [
+    "调用方 sub_140B5D9D0（疑为 storage::load Windows 对应位置）未做完整验证、未重命名",
+    "迁移日志字符串 0x141863ba9 附近未在函数体内直接定位到 xref，语义关联非字节级闭环"
+  ],
+  "dim_status": {
+    "dim1_owner_located": "PASS（0x140b5f590，经 find_regex 字符串定位 -> xrefs_to 反查函数 -> decompile 确认，非 func_query 直接命中，因符号已剥离）",
+    "dim2_call_tree_depth": "PASS（向下终止于共享 SIMD 比较 helper 0x140a839d0 与 url/trim 等价 helper，architecture_only；向上调用方 sub_140B5D9D0 未继续深入验证)",
+    "dim3_pseudocode_recovered": "PASS（2 个函数体：migrate_legacy_deepseek_v4_flash_official_protocol 完整 1169 字节 + 共享比较 helper 完整反编译，均 full body no truncation marker）",
+    "dim4_dto_fields": "PASS（结构体字段偏移与 mac 版本逐字节比对一致：entry stride=232, models stride=96, 各字段偏移相同）",
+    "dim5_cross_version_baseline": "NOT_DONE（未检查更早 Windows 版本是否已存在该迁移函数）",
+    "dim6_live_reference_parity": "NOT_RUN（未与真实 AiMaMi Windows App 运行态做参照对照）"
+  },
+  "cross_platform_dim": "PASS（与 mac 0x100778c20/0x1007750a0 行为逐分支比对确认等价，host 常量字节双端 get_bytes 核实一致）",
+  "scope_note": "本轮 Windows 侧任务范围为「扩大关键词搜索确认对应实现是否存在」，已确认存在且完整反编译；未扩展到调用方 sub_140B5D9D0 的完整验证（超出范围，诚实标注为 blocker）。",
+  "generated_at": "2026-08-06T00:00:00Z",
+  "session": "item3-deepseek-v4-flash-backend-completion"
+}

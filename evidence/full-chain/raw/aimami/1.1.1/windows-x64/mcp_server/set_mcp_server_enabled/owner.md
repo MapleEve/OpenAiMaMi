@@ -55,4 +55,4 @@ Comments written to IDB:
 - `0x14006edc0` — pending_auto_switch lock (gold-leaf session)
 - `0x141214620` — query_installed_skills (gold-leaf session)
 
-idb_save: confirmed (<审计会话> + <审计会话>)
+<工具调用>: confirmed (<审计会话> + <审计会话>)

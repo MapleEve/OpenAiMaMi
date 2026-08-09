@@ -4,7 +4,7 @@
 
 - windows-x64: `raw/aimami/1.2.3/windows-x64/{sessions,analytics,commands/analytics}/` (36 files, re-verified live this pass) + `codexmate_lib/` (3 session-related files, newly pointer-added this pass) + `commands/` root (1 session-related file, newly pointer-added this pass) = 40 total.
 - macOS-arm64 (sibling package `macos-1.2.3-sessions-analytics/`): `{commands/sessions,core/sessions,core/session_analytics,core/analytics}/` (64 files / 56 unique VA after dedup).
-- Binary identity: server_health this pass confirmed `idb_path=E:\binary\AiMaMi.1.2.3 win64.exe.i64`, `input_path=E:\binary\AiMaMi.1.2.3 win64.exe`, `imagebase=0x140000000`. SHA-256 not independently recomputed this pass (see `raw/binary/` SOT).
+- Binary identity: server_health this pass confirmed `idb_path=<二进制路径>\AiMaMi.1.2.3 win64.exe.i64`, `input_path=<二进制路径>\AiMaMi.1.2.3 win64.exe`, `imagebase=0x140000000`. SHA-256 not independently recomputed this pass (see `raw/binary/` SOT).
 
 ## Command-Wrapper Layer: Windows is MORE complete than macOS
 

@@ -1,7 +1,7 @@
 // module: codexmate_lib (tauri command handler)
 // addr: 0x140c92a80
 // name: delete_skill_backup
-// win 1.2.3 | truncation-stub REDUCED to full body (36962 chars) via IDA Python direct IDA decompiler.decompile paged retrieval (red line 13/20) | session win-1.2.3-truncation-reducer-20260726
+// win 1.2.3 | truncation-stub REDUCED to full body (36962 chars) via py_eval direct ida_hexrays.decompile paged retrieval (red line 13/20) | session win-1.2.3-truncation-reducer-20260726
 // win 1.2.3 | = mac codexmate_lib::core::skills::delete_skill_backup | cross-platform string-signature match (name<->func, win-native)
 // win 1.2.1 | module src/lib.rs | attributed via panic-Location xref (win-native)
 // win 1.2.1 | tauri command handler = delete_skill_backup | mapped via command-name string xref (win-native, ground-truth)

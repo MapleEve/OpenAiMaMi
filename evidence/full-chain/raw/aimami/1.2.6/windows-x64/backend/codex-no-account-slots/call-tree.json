@@ -1,0 +1,61 @@
+{
+  "targets": [
+    {
+      "target": "set_codex_no_account_slots",
+      "edges": [
+        {
+          "depth": 0,
+          "ea": "0x140d75ea0",
+          "name": "set_codex_no_account_slots",
+          "role": "owner",
+          "note": "real async poll state machine (poll_state_dispatch_field_offset a1+1856, states 0/1/2/3); parses {slots, relaunch}"
+        },
+        {
+          "depth": 1,
+          "ea": "0x14002b2a0",
+          "name": "sub_14002B2A0",
+          "role": "shared_registry_probe",
+          "note": "shared generic hashbrown-registry + future-combinator (via sub_14172C620)"
+        },
+        {
+          "depth": 1,
+          "ea": "0x14045b370",
+          "name": "sub_14045B370",
+          "role": "manager_request_completion",
+          "note": "manager.request completion for 'slots' arg"
+        },
+        {
+          "depth": 1,
+          "ea": "0x1409543d0",
+          "name": "sub_1409543D0",
+          "role": "manager_request_completion",
+          "note": "manager.request completion for 'relaunch' arg"
+        },
+        {
+          "depth": 2,
+          "ea": "0x1405052c0",
+          "name": "sub_1405052C0",
+          "role": "apply_handler_invoke",
+          "note": "data-driven vtable apply-handler invoke wrapper; real persistence/business call site; vtable target at (*a2+16)+24 NOT resolved this round (open item, not accepted_unknown)",
+          "terminated_reason": "architecture_only"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140c7fb50",
+          "name": "sub_140C7FB50",
+          "role": "generic_drop_glue",
+          "note": "verified GENERIC enum/Option Drop glue (3-arm discriminant + Vec<T> cleanup); confirmed NOT relaunch-trigger logic (fake-wall hypothesis tested and disproved)"
+        },
+        {
+          "depth": 3,
+          "ea": "0x140affc30",
+          "name": "sub_140AFFC30",
+          "role": "shared_response_emitter",
+          "note": "final CoreEnvelope response emission, shared with other manager-backed commands",
+          "terminated_reason": "external_call"
+        }
+      ]
+    }
+  ],
+  "edges_count": 7
+}

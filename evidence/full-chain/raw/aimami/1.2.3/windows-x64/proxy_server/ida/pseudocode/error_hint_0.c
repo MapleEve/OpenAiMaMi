@@ -2,7 +2,7 @@
 // source (embedded panic Location / cross-platform symbol match): src\core\relay\proxy_server.rs
 // binary: AiMaMi.1.2.3 win64.exe (Windows x64, stripped, imagebase 0x140000000)
 // addr: 0x1406372e0  size: 0x45a6  tier: B  evidence: panic-location-2hop
-// decompiled via IDA Hex-Rays (remote IDA MCP, host <host>)
+// decompiled via IDA Hex-Rays (remote IDA MCP, host 192.168.110.94)
 // status: PARTIAL Hex-Rays pseudocode (server-side decompile response cap hit; full text was collapsed to first 1024 chars + '[N chars total]' marker, both with and without include_addresses).
 //         Recovered to FULL completeness via chunked basic_blocks/disasm pagination (page size 350 instructions, below the ~450-instruction / ~50KB server response-size ceiling discovered empirically).
 //         Companion files: error_hint_0_disasm.json (raw paginated instruction JSON), error_hint_0_disasm.txt (linear listing, this file's body below the partial Hex-Rays declarations).

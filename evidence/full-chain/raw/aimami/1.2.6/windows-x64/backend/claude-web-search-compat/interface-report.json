@@ -1,0 +1,106 @@
+{
+  "commands": [
+    {
+      "command": "get_claude_web_search_compat",
+      "argKeys": [],
+      "idaSymbols": [
+        {
+          "ea": "0x14014ade0",
+          "role": "owner"
+        }
+      ],
+      "pseudocode": [
+        "0001-get-claude-web-search-compat-0x14014ade0.c",
+        "0002-set-claude-web-search-compat-0x140d47c70.c"
+      ],
+      "nextCallees": [
+        {
+          "ea": "0x14172c620",
+          "name": "sub_14172C620"
+        },
+        {
+          "ea": "0x14002b2a0",
+          "name": "sub_14002B2A0"
+        },
+        {
+          "ea": "0x14002b2a0",
+          "name": "sub_14002B2A0"
+        },
+        {
+          "ea": "0x14172c620",
+          "name": "sub_14172C620"
+        },
+        {
+          "ea": "0x1409562a0",
+          "name": "sub_1409562A0"
+        }
+      ],
+      "callTreeRows": 13,
+      "claims": {
+        "client": [
+          "tauri-invoke-response"
+        ],
+        "server": []
+      },
+      "sideEffects": [
+        "frontend event emission",
+        "no filesystem/registry persistence"
+      ],
+      "serverEvidencePath": "<内部存储>/raw/aimami/1.2.6/windows-x64/backend/claude-web-search-compat/evidence.md",
+      "needsServerEvidencePath": false,
+      "confidence": "high",
+      "sourceMarkdown": "get_claude_web_search_compat.md"
+    },
+    {
+      "command": "set_claude_web_search_compat",
+      "argKeys": [],
+      "idaSymbols": [
+        {
+          "ea": "0x140d47c70",
+          "role": "owner"
+        }
+      ],
+      "pseudocode": [
+        "0001-get-claude-web-search-compat-0x14014ade0.c",
+        "0002-set-claude-web-search-compat-0x140d47c70.c"
+      ],
+      "nextCallees": [
+        {
+          "ea": "0x14172c620",
+          "name": "sub_14172C620"
+        },
+        {
+          "ea": "0x14002b2a0",
+          "name": "sub_14002B2A0"
+        },
+        {
+          "ea": "0x14002b2a0",
+          "name": "sub_14002B2A0"
+        },
+        {
+          "ea": "0x14172c620",
+          "name": "sub_14172C620"
+        },
+        {
+          "ea": "0x1409562a0",
+          "name": "sub_1409562A0"
+        }
+      ],
+      "callTreeRows": 13,
+      "claims": {
+        "client": [],
+        "server": []
+      },
+      "sideEffects": [
+        "frontend event emission",
+        "persistence write"
+      ],
+      "serverEvidencePath": "<内部存储>/raw/aimami/1.2.6/windows-x64/backend/claude-web-search-compat/evidence.md",
+      "needsServerEvidencePath": false,
+      "confidence": "unknown",
+      "sourceMarkdown": "set_claude_web_search_compat.md"
+    }
+  ],
+  "generated_from": "interface/*.md (converted to machine-readable format)",
+  "leaf": "claude-web-search-compat"
+}

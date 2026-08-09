@@ -1,6 +1,6 @@
 # Frontend Contract Report
 
-Frontend root: `//raw/aimami/1.2.4/macos-arm64/dumped`
+Frontend root: `<内部存储>/raw/aimami/1.2.4/macos-arm64/dumped`
 Text assets: 33
 Source maps: 0
 Source map refs: 0

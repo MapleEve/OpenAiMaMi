@@ -3,7 +3,7 @@
 > 任务编号 1.2.3 后端完整基线模块分析（commands）。
 > 方法：只读已由 IDA 反编译好的 `.c` 伪代码（文件头注释含 mangled 符号名 + 地址 + `基线 same-set` / `NEW-delta` 标记），不连 IDA、不做二次反编译，只做代码阅读与文档整理。
 > 授权范围：本仓/本机所有者对 AiMaMi（自家/已授权产品）下达的重建授权任务，产出仅用于内部架构基线文档。
-> 目标文件全部位于 `raw/aimami/1.2.3/macos-arm64/commands/`，符号前缀均为 `codexmate_lib::commands::*`（Tauri 命令层，即前端 `invoke()` 直达或其内部 async 闭包/辅助函数）。
+> 目标文件全部位于 `<内部存储>/raw/aimami/1.2.3/macos-arm64/commands/`，符号前缀均为 `codexmate_lib::commands::*`（Tauri 命令层，即前端 `invoke()` 直达或其内部 async 闭包/辅助函数）。
 
 ## 0. 目录清单与偏差说明
 

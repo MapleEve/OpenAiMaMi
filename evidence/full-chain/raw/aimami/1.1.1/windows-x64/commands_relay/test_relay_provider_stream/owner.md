@@ -45,4 +45,4 @@ WIN PE stripped binary. No Rust symbol names preserved. Owner function is the Ru
 
 ## IDB Write-back Summary
 
-All A/B renames applied 2026-06-16 via <审计会话>. idb_save confirmed OK at <本地路径>
+All A/B renames applied 2026-06-16 via <审计会话>. <工具调用> confirmed OK at <本地路径>

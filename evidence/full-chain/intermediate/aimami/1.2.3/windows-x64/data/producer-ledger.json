@@ -10,13 +10,13 @@
   "phase_reduce_session": "win-1.2.3-app-function-inventory-gapfill-20260724",
   "round_summary": {
     "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
-    "machine": "<host> (<host> IDA MCP backend)",
+    "machine": "mini-local (<内网IP> IDA MCP backend)",
     "leaves_touched": 59,
     "total_addrs_this_round": 930,
     "census_total_attributed_rows": 1133,
     "total_c_files_on_disk_after_round": 1218,
     "source_census": "intermediate/aimami/1.2.3/windows-x64/WIN-APP-FUNCTION-INVENTORY.jsonl",
-    "reverse_status_claim_line": "wf-aimami123-fullapp-20260724",
+    "reverse_status_claim_line": "<审计会话>
     "closed_by": "win123-closeout-backfill-20260724 (REVERSE-STATUS.md terminal-state backfill + this ledger + dirtree gap fix)"
   },
   "entries": [
@@ -27,8 +27,8 @@
       "addrs": [
         "0x14052d960"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -36,7 +36,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/account_io/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -107,8 +107,8 @@
         "0x141312890",
         "0x141443a30"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -116,7 +116,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/aliyun_asr/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -129,8 +129,8 @@
         "0x140ffc490",
         "0x141683e59"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -138,7 +138,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/analytics/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -150,8 +150,8 @@
         "0x1403cd440",
         "0x14067f250"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -159,7 +159,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/auth/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -174,8 +174,8 @@
         "0x140a52fc0",
         "0x140a534e0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -183,7 +183,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/codex_catalog/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -201,8 +201,8 @@
         "0x14065fad0",
         "0x1409e6c90"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -210,7 +210,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/codex_config/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -256,8 +256,8 @@
         "0x1413470b0",
         "0x1414734e0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -265,7 +265,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/codex_diagnostic/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -289,8 +289,8 @@
         "0x14049a2f0",
         "0x14049b870"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -298,7 +298,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/codex_project_state/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -308,8 +308,8 @@
       "addrs": [
         "0x14048d560"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -317,7 +317,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/codex_runtime/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -383,8 +383,8 @@
         "0x141689c00",
         "0x1416c2fc0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -392,7 +392,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/codex_thread_visibility/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -402,8 +402,8 @@
       "addrs": [
         "0x14040e970"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -411,7 +411,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/codex_writer/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -452,8 +452,8 @@
         "0x140cdff20",
         "0x140ce21d0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -461,7 +461,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/codexmate_lib/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -523,8 +523,8 @@
         "0x140193b70",
         "0x1401940d0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -532,7 +532,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/commands/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -583,8 +583,8 @@
         "0x140ce1e30",
         "0x140cf87b0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -592,7 +592,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/commands/accounts/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -616,8 +616,8 @@
         "0x140cd99b0",
         "0x140cde3c0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -625,7 +625,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/commands/analytics/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -635,8 +635,8 @@
       "addrs": [
         "0x140388d60"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -644,7 +644,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/commands/autostart/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -657,8 +657,8 @@
         "0x140485420",
         "0x140af04d0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -666,7 +666,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/commands/relay/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -681,8 +681,8 @@
         "0x140cf8380",
         "0x141471f80"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -690,7 +690,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/commands/system/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -701,8 +701,8 @@
         "0x140755dc0",
         "0x140acdb60"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -710,7 +710,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/commands/voice/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -728,8 +728,8 @@
         "0x1404101a0",
         "0x1404157b0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -737,7 +737,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/config_takeover/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -773,8 +773,8 @@
         "0x14142d3f0",
         "0x1414917d0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -782,7 +782,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/debug_bundle/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -794,8 +794,8 @@
         "0x140403d70",
         "0x140405a30"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -803,7 +803,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/debug_log/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -816,8 +816,8 @@
         "0x14073a590",
         "0x140cf1d00"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -825,7 +825,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/debug_report_upload/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -837,8 +837,8 @@
         "0x1406b2150",
         "0x140ae7b90"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -846,7 +846,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/dialects/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -859,8 +859,8 @@
         "0x141060e10",
         "0x1412973d0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -868,7 +868,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/fetch_models/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -882,8 +882,8 @@
         "0x140667450",
         "0x140cf8fe0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -891,7 +891,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/health_check/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -901,8 +901,8 @@
       "addrs": [
         "0x14031beb0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -910,7 +910,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/image_compat/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -922,8 +922,8 @@
         "0x140489f60",
         "0x14048cfe0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -931,7 +931,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/invariants/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -941,8 +941,8 @@
       "addrs": [
         "0x140ae2ab0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -950,7 +950,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/io/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -960,8 +960,8 @@
       "addrs": [
         "0x14032b150"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -969,7 +969,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/keychain/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -984,8 +984,8 @@
         "0x140579700",
         "0x140579800"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -993,7 +993,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/legacy_virtual_auth/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1008,8 +1008,8 @@
         "0x140a5bf50",
         "0x140a5c7e0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1017,7 +1017,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/llm/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1038,8 +1038,8 @@
         "0x140763330",
         "0x14077d150"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1047,7 +1047,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/managed_blocks/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1088,8 +1088,8 @@
         "0x140bee1a0",
         "0x140cd00d0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1097,7 +1097,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/manager/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1121,8 +1121,8 @@
         "0x140fc6d90",
         "0x140fc6ea0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1130,7 +1130,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/mcp/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1141,8 +1141,8 @@
         "0x1403240f0",
         "0x140ae5ee0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1150,7 +1150,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/models/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1171,8 +1171,8 @@
         "0x141465010",
         "0x14169c860"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1180,7 +1180,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/oauth_login/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1199,8 +1199,8 @@
         "0x1409dc660",
         "0x1409e1220"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1208,7 +1208,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/oauth_refresh/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1220,8 +1220,8 @@
         "0x140425480",
         "0x140710b70"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1229,7 +1229,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/paths/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1272,8 +1272,8 @@
         "0x1414814b0",
         "0x141696060"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1281,7 +1281,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/process/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1295,8 +1295,8 @@
         "0x14075f5d0",
         "0x1416c2c40"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1304,7 +1304,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/proxy/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1316,8 +1316,8 @@
         "0x140674de0",
         "0x140676350"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1325,7 +1325,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/proxy_passthrough/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1453,8 +1453,8 @@
         "0x141447850",
         "0x14149c460"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1462,7 +1462,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/proxy_server/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1492,8 +1492,8 @@
         "0x1414aa750",
         "0x1414ab4c0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1501,7 +1501,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/quota/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1582,8 +1582,8 @@
         "0x1414908a0",
         "0x141493590"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1591,7 +1591,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/repository/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1607,8 +1607,8 @@
         "0x140578740",
         "0x140578db0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1616,7 +1616,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/router_reconciler/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1630,8 +1630,8 @@
         "0x140850400",
         "0x140851f40"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1639,7 +1639,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/router_transition/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1656,8 +1656,8 @@
         "0x14048fe80",
         "0x1404949c0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1665,7 +1665,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/router_unlock_auth/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1716,8 +1716,8 @@
         "0x1412e7d50",
         "0x1412f1ca0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1725,7 +1725,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/runtime/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1751,8 +1751,8 @@
         "0x141474040",
         "0x1416b3a90"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1760,7 +1760,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/sessions/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1775,8 +1775,8 @@
         "0x140b0fd50",
         "0x1414860d0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1784,7 +1784,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/skills/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1796,8 +1796,8 @@
         "0x14046bbb0",
         "0x1404d6ec0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1805,7 +1805,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/storage/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1817,8 +1817,8 @@
         "0x1401b8c50",
         "0x1401b91a0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1826,7 +1826,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/system_volume_windows/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1836,8 +1836,8 @@
       "addrs": [
         "0x140adb680"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1845,7 +1845,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/text_injection_windows/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1855,8 +1855,8 @@
       "addrs": [
         "0x140adf3e0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1864,7 +1864,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/transition_journal/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1919,8 +1919,8 @@
         "0x140b565b0",
         "0x140b5a340"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1928,7 +1928,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/translator/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1939,8 +1939,8 @@
         "0x14025d570",
         "0x1407190e0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1948,7 +1948,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/tray/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -1961,8 +1961,8 @@
         "0x1401bac80",
         "0x140264240"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -1970,7 +1970,7 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/voice_trigger_windows/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
@@ -2000,8 +2000,8 @@
         "0x1414a4730",
         "0x1414ab9c0"
       ],
-      "producer": "IDA Python+IDA decompiler.decompile direct-write batch driver batch_decompile.py via IDA MCP <host>",
-      "machine": "<host> (<host> IDA MCP backend)",
+      "producer": "py_exec_file+ida_<反编译器>.decompile direct-write batch driver batch_decompile.py via IDA MCP <内网IP>",
+      "machine": "mini-local (<内网IP> IDA MCP backend)",
       "session": "win-1.2.3-app-function-inventory-gapfill-20260724",
       "produced_at": "2026-07-24T13:20:34Z",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
@@ -2009,21 +2009,21 @@
       "gate_tier": "consumerStartReady_dim2_only",
       "status": "produced",
       "evidence_path": "raw/aimami/1.2.3/windows-x64/workspace/ida/pseudocode",
-      "idb_saved": true,
+      "<工具调用>d": true,
       "note": "raw census/gapfill leaf: full Hex-Rays pseudocode on disk, dim2 (backend owner+decompile) only; not yet reduced to canonical audits/ bundle; strictImplementationUse/readyToImplement not claimed."
     },
     {
       "cluster": "_dirtree_verification_and_fix",
       "module": "codexmate_lib (dirtree-wide)",
       "producer": "claude-sonnet-5 (orchestrator-direct, closeout backfill session)",
-      "machine": "<host> (orchestrator) -> <host> IDA MCP <host>",
+      "machine": "<本地机器> (orchestrator) -> mini-local IDA MCP <内网IP>",
       "session": "win123-closeout-backfill-20260724",
       "produced_at": "2026-07-24",
       "sha256_binary": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
       "gate": "dirtree_naming_verification",
       "status": "complete",
-      "action": "grounded re-verify of red-line-24 dirtree naming for gapfill round: found 54 functions with win-1.2.3 attribution comments not yet placed under /codexmate_lib dirtree (stranded); derived module path from mac cross-reference comment, mkdir'd 9 missing module folders, dt.rename moved all 54 into correct module dirs (rc=0 all); fixed 1 mis-derived intermediate folder (/codexmate_lib/core/repository/Repository, PascalCase impl-block name wrongly treated as module segment) by moving its 4 functions up to /codexmate_lib/core/repository and rmdir'ing the empty folder; final grounded check: attributed_not_in_tree=0, 0 stranded; idb_save ok=true.",
-      "idb_saved": true,
+      "action": "grounded re-verify of red-line-24 dirtree naming for gapfill round: found 54 functions with win-1.2.3 attribution comments not yet placed under /codexmate_lib dirtree (stranded); derived module path from mac cross-reference comment, mkdir'd 9 missing module folders, dt.rename moved all 54 into correct module dirs (rc=0 all); fixed 1 mis-derived intermediate folder (/codexmate_lib/core/repository/Repository, PascalCase impl-block name wrongly treated as module segment) by moving its 4 functions up to /codexmate_lib/core/repository and rmdir'ing the empty folder; final grounded check: attributed_not_in_tree=0, 0 stranded; <工具调用> ok=true.",
+      "<工具调用>d": true,
       "note": "This entry documents the closeout/backfill pass (task step 3), not a new IDA production round; no new decompile performed, only dirtree placement of already-decompiled functions."
     }
   ]

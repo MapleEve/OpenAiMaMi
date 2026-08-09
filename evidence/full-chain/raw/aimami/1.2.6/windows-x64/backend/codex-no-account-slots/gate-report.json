@@ -1,0 +1,31 @@
+{
+  "schema": "c5cm.raw.leaf.gate_report.v1",
+  "commands": ["set_codex_no_account_slots"],
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "gates": {
+    "consumerStartReady": true,
+    "strictImplementationUse": false,
+    "readyToImplement": false,
+    "implementation_use": false,
+    "gate_accepted": false,
+    "full_leaf_100_definition_v2": false
+  },
+  "blockers": [
+    "sub_1405052C0's data-driven vtable call target (at (*a2+16)+24) not resolved to a concrete field-level persistence implementation this round",
+    "no independent macOS 1.2.6 codex-no-account-slots-specific bundle exists to cross-reference"
+  ],
+  "dim_status": {
+    "dim1_owner_located": "PASS (0x140d75ea0, via ipc-command-owner-map.json tauri command-name string xref)",
+    "dim2_call_tree_depth": "PASS (depth3, async poll 0/1/2/3 reaching a data-driven vtable-dispatch terminal, terminated_reason=architecture_only per red line 15 fair use, not accepted_unknown)",
+    "dim3_pseudocode_recovered": "PASS (3 bodies recovered: owner + sub_1405052C0 apply-handler + sub_140C7FB50 drop-glue; all headed 'full body, no truncation marker')",
+    "dim4_dto_fields": "PASS ({slots, relaunch} two-argument tuple confirmed from poll-state parameter extraction; 'relaunch' independently distinguishes this command from the single-arg web-search-compat family)",
+    "dim5_cross_version_baseline": "NOT_DONE (no macOS 1.2.6 codex-no-account-slots-specific bundle exists to cross-reference this round)",
+    "dim6_live_reference_parity": "NOT_RUN (no live reference App comparison performed, per red line 25 disclosure)"
+  },
+  "scope_note": "This bundle was originally produced under task #150 (2026-08-06T15:35:00Z decompile session) as a c5cm.raw.ida-leaf.v1 manifest+pseudocode-only bundle. This gate-report.json/evidence.md/interface/call-trees were added in a later schema-normalization round (session <审计会话> purely by reorganizing the pre-existing manifest.json content into leaf.v1-parity shape -- no new IDA decompile, rename, dirtree, or <工具调用> call was made during normalization.",
+  "generated_at": "2026-08-06T15:35:00Z",
+  "schema_normalized_at": "2026-08-06T08:31:34Z",
+  "session": "task#150 (original decompile); <审计会话> (schema normalization backfill)"
+}

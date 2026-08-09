@@ -115,7 +115,7 @@ All functions annotated with `append_comments` (scope=func):
 - 0x1006205f0, 0x100626f60, 0x10061e190, 0x1004cd9b0
 - 0x10055afd0, 0x10055c090
 
-idb_save: see separate confirmation below.
+<工具调用>: see separate confirmation below.
 
 ---
 

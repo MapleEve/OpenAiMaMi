@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay15config_takeover26quarantine_damaged_backups @ 0x1008f9ba0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 double __fastcall codexmate_lib::core::relay::config_takeover::quarantine_damaged_backups::he1fa00f5327fc085(
         __int64 a1,

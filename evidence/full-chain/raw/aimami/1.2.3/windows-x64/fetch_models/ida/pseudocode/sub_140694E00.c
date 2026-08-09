@@ -3,7 +3,7 @@
 // module (owner-map): core::relay::fetch_models
 // evidence: panic-location-2hop
 // win 1.2.1 | module src/core/relay/fetch_models.rs | attributed via panic-Location xref (win-native)
-// source: IDA Pro decompile via idacall.py, target AiMaMi.1.2.3 win64.exe (imagebase 0x140000000), <host>
+// source: IDA Pro decompile via idacall.py, target AiMaMi.1.2.3 win64.exe (imagebase 0x140000000), 192.168.110.94
 // no destructive side effects observed (Drop/timeout-config/error-path helper; no remove/DELETE/truncate/kill)
 
 __int64 __fastcall sub_140694E00(_QWORD **a1)

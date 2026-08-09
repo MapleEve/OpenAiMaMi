@@ -1,0 +1,101 @@
+{
+  "target": "write_client_debug_log",
+  "owner_ea": "0x1401683a0",
+  "owner_name": "write_client_debug_log",
+  "module": "commands/system",
+  "edges": [
+    {
+      "from": "0x1401683a0",
+      "from_name": "write_client_debug_log",
+      "to": "0x14172b820",
+      "to_name": "sub_14172B820",
+      "type": "call"
+    },
+    {
+      "from": "0x1401683a0",
+      "from_name": "write_client_debug_log",
+      "to": "0x140955d20",
+      "to_name": "sub_140955D20",
+      "type": "call"
+    },
+    {
+      "from": "0x1401683a0",
+      "from_name": "write_client_debug_log",
+      "to": "0x14094e5d0",
+      "to_name": "sub_14094E5D0",
+      "type": "call"
+    },
+    {
+      "from": "0x1401683a0",
+      "from_name": "write_client_debug_log",
+      "to": "0x140a9a020",
+      "to_name": "sub_140A9A020",
+      "type": "call"
+    },
+    {
+      "from": "0x1401683a0",
+      "from_name": "write_client_debug_log",
+      "to": "0x140affc30",
+      "to_name": "sub_140AFFC30",
+      "type": "call"
+    },
+    {
+      "from": "0x1401683a0",
+      "from_name": "write_client_debug_log",
+      "to": "0x140401fb0",
+      "to_name": "sub_140401FB0",
+      "type": "call"
+    },
+    {
+      "from": "0x1401683a0",
+      "from_name": "write_client_debug_log",
+      "to": "0x140001660",
+      "to_name": "sub_140001660",
+      "type": "call"
+    },
+    {
+      "from": "0x1401683a0",
+      "from_name": "write_client_debug_log",
+      "to": "0x140043900",
+      "to_name": "sub_140043900",
+      "type": "call"
+    }
+  ],
+  "edge_count": 8,
+  "terminated_reason": "leaf_handler",
+  "callees": [
+    {
+      "addr": "0x14172b820",
+      "name": "sub_14172B820"
+    },
+    {
+      "addr": "0x140955d20",
+      "name": "sub_140955D20"
+    },
+    {
+      "addr": "0x14094e5d0",
+      "name": "sub_14094E5D0"
+    },
+    {
+      "addr": "0x140a9a020",
+      "name": "sub_140A9A020"
+    },
+    {
+      "addr": "0x140affc30",
+      "name": "sub_140AFFC30"
+    },
+    {
+      "addr": "0x140401fb0",
+      "name": "sub_140401FB0"
+    },
+    {
+      "addr": "0x140001660",
+      "name": "sub_140001660"
+    },
+    {
+      "addr": "0x140043900",
+      "name": "sub_140043900"
+    }
+  ],
+  "callee_count": 8
+}

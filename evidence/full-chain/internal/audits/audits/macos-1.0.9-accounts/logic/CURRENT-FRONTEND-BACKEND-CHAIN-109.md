@@ -16,7 +16,7 @@ The macOS accounts chain is closed for the backend/static IDA layer:
 - 9/9 wrapper/xref entrypoints are identified.
 - Threading, mutex/task handoff, restart/process/event handoff, and static
   filesystem/process/event side-effect classes are recorded.
-- IDB comments were written for 38 anchors and `idb_save` succeeded.
+- IDB comments were written for 38 anchors and `<工具调用>` succeeded.
 
 Backend/static reducer:
 `logic/ACCOUNTS-FULL-IDA-CLOSURE-ROLLUP-109.md`

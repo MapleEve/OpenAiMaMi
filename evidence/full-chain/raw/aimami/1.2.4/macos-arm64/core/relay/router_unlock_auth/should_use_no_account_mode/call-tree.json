@@ -1,0 +1,40 @@
+{
+  "target": "should_use_no_account_mode",
+  "owner_ea": "0x10056cd80",
+  "edges": [
+    {
+      "from": "0x10056cd80",
+      "to": "load_auth_file",
+      "edge_type": "call",
+      "order": 0
+    },
+    {
+      "from": "0x10056cd80",
+      "to": "auth_is_usable_real_oauth",
+      "edge_type": "call",
+      "order": 1
+    },
+    {
+      "from": "0x10056cd80",
+      "to": "has_restorable_real_oauth",
+      "edge_type": "call",
+      "order": 2
+    },
+    {
+      "from": "0x10056cd80",
+      "to": "drop_in_place<CoreError>",
+      "edge_type": "call",
+      "order": 3
+    },
+    {
+      "from": "0x10056cd80",
+      "to": "__rust_dealloc",
+      "edge_type": "call",
+      "order": 4
+    }
+  ],
+  "edge_count": 5,
+  "terminated_reason": "response_serialize",
+  "extraction_method": "c_text_analysis",
+  "note": "Callees extracted from 1.2.4 mac SMB .c pseudocode text, not IDA MCP callees call"
+}

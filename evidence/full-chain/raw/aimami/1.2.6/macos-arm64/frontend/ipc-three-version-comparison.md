@@ -1,0 +1,153 @@
+# AiMaMi macOS frontend IPC three-version comparison
+
+- Scope: static frontend IPC contracts only; macOS arm64 artifacts.
+- Boundary: 1.2.2 binary SOT is absent, so this is not an IDA-backed binary delta; Windows 1.2.6 artifact is absent from SMB and is not inferred.
+
+## Counts
+- 1.2.2: 129 commands / 130 wrapper rows
+- 1.2.4: 134 commands / 134 wrapper rows
+- 1.2.6: 134 commands / 134 wrapper rows
+
+## Δ(1.2.6, 1.2.2) command set
+- added: get_autostart_state, get_claude_web_search_compat, set_autostart_enabled, set_claude_web_search_compat, set_codex_no_account_slots
+- removed: (none)
+
+## Δ(1.2.6, 1.2.4) command set
+- added: (none)
+- removed: (none)
+
+## Complete command signatures
+- `activate_relay_provider` — 1.2.2: providerId,ide; 1.2.4: providerId,ide; 1.2.6: providerId,ide; classification: `unchanged_ipc_signature`
+- `apply_custom_instruction` — 1.2.2: content,templateCode,templateTitle,source; 1.2.4: content,templateCode,templateTitle,source; 1.2.6: content,templateCode,templateTitle,source; classification: `unchanged_ipc_signature`
+- `begin_chatgpt_oauth_login` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `cancel_chatgpt_oauth_login` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `cancel_voice_trigger_capture` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `capture_voice_trigger_key` — 1.2.2: style; 1.2.4: style; 1.2.6: style; classification: `unchanged_ipc_signature`
+- `check_update_installability` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `clean` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `clear_custom_instruction_block` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `configure_auto_switch` — 1.2.2: threshold5hPercent,thresholdWeeklyPercent; 1.2.4: threshold5hPercent,thresholdWeeklyPercent,enabled; 1.2.6: threshold5hPercent,thresholdWeeklyPercent,enabled; classification: `1.2.6_remodified_signature`
+- `confirm_pending_auto_switch` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `confirm_pending_auto_switch_and_restart_codex` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `deactivate_relay_provider` — 1.2.2: providerId,ide; 1.2.4: providerId,ide; 1.2.6: providerId,ide; classification: `unchanged_ipc_signature`
+- `default_debug_bundle_file_name` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `delete_relay_provider` — 1.2.2: providerId; 1.2.4: providerId; 1.2.6: providerId; classification: `unchanged_ipc_signature`
+- `delete_sessions` — 1.2.2: ids; 1.2.4: ids; 1.2.6: ids; classification: `unchanged_ipc_signature`
+- `delete_skill_backup` — 1.2.2: id; 1.2.4: id; 1.2.6: id; classification: `unchanged_ipc_signature`
+- `detect_api_proxy_config` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `diagnose` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `dismiss_pending_auto_switch` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `export_accounts_to_file` — 1.2.2: targetPath,accountKeys; 1.2.4: targetPath,accountKeys; 1.2.6: targetPath,accountKeys; classification: `unchanged_ipc_signature`
+- `export_debug_bundle` — 1.2.2: targetPath; 1.2.4: targetPath; 1.2.6: targetPath; classification: `unchanged_ipc_signature`
+- `export_relay_config` — 1.2.2: filePath,includeApiKeys; 1.2.4: filePath,includeApiKeys; 1.2.6: filePath,includeApiKeys; classification: `unchanged_ipc_signature`
+- `export_session_markdown` — 1.2.2: sessionId,targetPath; 1.2.4: sessionId,targetPath; 1.2.6: sessionId,targetPath; classification: `unchanged_ipc_signature`
+- `fetch_relay_models_draft` — 1.2.2: input; 1.2.4: input; 1.2.6: input; classification: `unchanged_ipc_signature`
+- `focus_main_window` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `force_kill_codex` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `generate_voice_prompt` — 1.2.2: templateId,rawText,selectedText,clipboardText,targetBundleId,targetAppName,promptOverride,templateTitle,templateKind,llmProvider,llmApiKey,llmModel,llmBaseUrl,asrProvider,asrModel,asrLanguage,asrEmotion,asrDurationMs,asrErrorCode; 1.2.4: templateId,rawText,selectedText,clipboardText,targetBundleId,targetAppName,promptOverride,templateTitle,templateKind,llmProvider,llmApiKey,llmModel,llmBaseUrl,asrProvider,asrModel,asrLanguage,asrEmotion,asrDurationMs,asrErrorCode; 1.2.6: templateId,rawText,selectedText,clipboardText,targetBundleId,targetAppName,promptOverride,templateTitle,templateKind,llmProvider,llmApiKey,llmModel,llmBaseUrl,asrProvider,asrModel,asrLanguage,asrEmotion,asrDurationMs,asrErrorCode; classification: `unchanged_ipc_signature`
+- `get_autostart_state` — 1.2.2: absent; 1.2.4: (no args); 1.2.6: (no args); classification: `1.2.4_introduced_and_1.2.6_retained`
+- `get_claude_web_search_compat` — 1.2.2: absent; 1.2.4: (no args); 1.2.6: (no args); classification: `1.2.4_introduced_and_1.2.6_retained`
+- `get_codex_router_auth_readiness` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `get_device_id` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `get_hotspot_enabled` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `get_image_compat` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `get_mystery_unlock_grants` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `get_notification_client_state` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `get_relay_active` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `get_relay_provider_quota` — 1.2.2: providerId; 1.2.4: providerId; 1.2.6: providerId; classification: `unchanged_ipc_signature`
+- `get_relay_proxy_status` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `get_system_info` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `get_usage_refresh_interval` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `has_notch` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `hotspot_ready` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `import_accounts_from_file` — 1.2.2: filePath,overwriteExisting,selectedKeys; 1.2.4: filePath,expectedContentSha256,overwriteExisting,selectedKeys; 1.2.6: filePath,expectedContentSha256,overwriteExisting,selectedKeys; classification: `1.2.6_remodified_signature`
+- `import_relay_config` — 1.2.2: filePath; 1.2.4: filePath; 1.2.6: filePath; classification: `unchanged_ipc_signature`
+- `import_skill` — 1.2.2: path; 1.2.4: path; 1.2.6: path; classification: `unchanged_ipc_signature`
+- `inject_voice_text` — 1.2.2: text,expectedBundleId; 1.2.4: text,expectedBundleId; 1.2.6: text,expectedBundleId; classification: `unchanged_ipc_signature`
+- `load_bootstrap_state` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `load_change_analytics` — 1.2.2: range; 1.2.4: range; 1.2.6: range; classification: `unchanged_ipc_signature`
+- `load_custom_instruction_state` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `load_installed_skills` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `load_mcp_servers` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `load_pending_auto_switch` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `load_quota_history` — 1.2.2: accountKey; 1.2.4: accountKey; 1.2.6: accountKey; classification: `unchanged_ipc_signature`
+- `load_relay_state` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `load_session_analytics` — 1.2.2: range; 1.2.4: range; 1.2.6: range; classification: `unchanged_ipc_signature`
+- `load_sessions` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `load_skill_backups` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `load_snapshot` — 1.2.2: localOnly; 1.2.4: localOnly,forceMetadata; 1.2.6: localOnly,forceMetadata; classification: `1.2.6_remodified_signature`
+- `load_token_analytics` — 1.2.2: range; 1.2.4: range; 1.2.6: range; classification: `unchanged_ipc_signature`
+- `load_tool_analytics` — 1.2.2: range; 1.2.4: range; 1.2.6: range; classification: `unchanged_ipc_signature`
+- `load_usage_analytics` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `load_voice_asr_config` — 1.2.2: provider; 1.2.4: provider; 1.2.6: provider; classification: `unchanged_ipc_signature`
+- `load_voice_llm_config` — 1.2.2: provider; 1.2.4: provider; 1.2.6: provider; classification: `unchanged_ipc_signature`
+- `load_voice_processing_modes` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `load_voice_runtime_status` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `load_voice_workspace` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `logout` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `merge_mystery_unlock_grants` — 1.2.2: grants; 1.2.4: grants; 1.2.6: grants; classification: `unchanged_ipc_signature`
+- `migrate_session_worktree` — 1.2.2: sessionId; 1.2.4: sessionId; 1.2.6: sessionId; classification: `unchanged_ipc_signature`
+- `open_path` — 1.2.2: path; 1.2.4: path; 1.2.6: path; classification: `unchanged_ipc_signature`
+- `parse_aimami_deeplink` — 1.2.2: url; 1.2.4: url; 1.2.6: url; classification: `unchanged_ipc_signature`
+- `preview_account_import` — 1.2.2: filePath; 1.2.4: filePath; 1.2.6: filePath; classification: `unchanged_ipc_signature`
+- `preview_custom_instruction_apply` — 1.2.2: content; 1.2.4: content; 1.2.6: content; classification: `unchanged_ipc_signature`
+- `rebuild_registry` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `refresh_single_account_usage` — 1.2.2: accountKey; 1.2.4: accountKey; 1.2.6: accountKey; classification: `unchanged_ipc_signature`
+- `refresh_usage_snapshot` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `remove_accounts` — 1.2.2: accountKeys; 1.2.4: accountKeys; 1.2.6: accountKeys; classification: `unchanged_ipc_signature`
+- `remove_mcp_server` — 1.2.2: name; 1.2.4: name; 1.2.6: name; classification: `unchanged_ipc_signature`
+- `remove_skill` — 1.2.2: id; 1.2.4: id; 1.2.6: id; classification: `unchanged_ipc_signature`
+- `remove_voice_history_entry` — 1.2.2: id; 1.2.4: id; 1.2.6: id; classification: `unchanged_ipc_signature`
+- `remove_voice_mode_shortcut` — 1.2.2: modeId; 1.2.4: modeId; 1.2.6: modeId; classification: `unchanged_ipc_signature`
+- `remove_voice_template` — 1.2.2: id; 1.2.4: id; 1.2.6: id; classification: `unchanged_ipc_signature`
+- `remove_voice_vocabulary` — 1.2.2: id; 1.2.4: id; 1.2.6: id; classification: `unchanged_ipc_signature`
+- `remove_voice_vocabulary_app_scope` — 1.2.2: appBundleId; 1.2.4: appBundleId; 1.2.6: appBundleId; classification: `unchanged_ipc_signature`
+- `reorder_relay_providers` — 1.2.2: orderedIds; 1.2.4: orderedIds; 1.2.6: orderedIds; classification: `unchanged_ipc_signature`
+- `replace_voice_vocabulary_kind` — 1.2.2: kind,appBundleId,appName,entries,source,replacement,notes; 1.2.4: kind,appBundleId,appName,entries,source,replacement,notes; 1.2.6: kind,appBundleId,appName,entries,source,replacement,notes; classification: `unchanged_ipc_signature`
+- `request_accessibility_permission` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `request_voice_permissions` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `resolve_voice_vocabulary_app_info` — 1.2.2: path; 1.2.4: path; 1.2.6: path; classification: `unchanged_ipc_signature`
+- `restart_codex` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `restore_skill_backup` — 1.2.2: id; 1.2.4: id; 1.2.6: id; classification: `unchanged_ipc_signature`
+- `reveal_relay_api_key` — 1.2.2: providerId; 1.2.4: providerId; 1.2.6: providerId; classification: `unchanged_ipc_signature`
+- `rollback_custom_instruction` — 1.2.2: historyId; 1.2.4: historyId; 1.2.6: historyId; classification: `unchanged_ipc_signature`
+- `run_daemon_once` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `save_voice_asr_config` — 1.2.2: asrProvider,asrApiKey,asrModel,asrBaseUrl; 1.2.4: asrProvider,asrApiKey,asrModel,asrBaseUrl; 1.2.6: asrProvider,asrApiKey,asrModel,asrBaseUrl; classification: `unchanged_ipc_signature`
+- `save_voice_llm_config` — 1.2.2: llmProvider,llmApiKey,llmModel,llmBaseUrl; 1.2.4: llmProvider,llmApiKey,llmModel,llmBaseUrl; 1.2.6: llmProvider,llmApiKey,llmModel,llmBaseUrl; classification: `unchanged_ipc_signature`
+- `save_voice_processing_modes` — 1.2.2: modes; 1.2.4: modes; 1.2.6: modes; classification: `unchanged_ipc_signature`
+- `set_api_proxy_config` — 1.2.2: mode,url; 1.2.4: mode,url; 1.2.6: mode,url; classification: `unchanged_ipc_signature`
+- `set_auto_switch` — 1.2.2: enabled; 1.2.4: enabled; 1.2.6: enabled; classification: `unchanged_ipc_signature`
+- `set_autostart_enabled` — 1.2.2: absent; 1.2.4: enabled; 1.2.6: enabled; classification: `1.2.4_introduced_and_1.2.6_retained`
+- `set_claude_web_search_compat` — 1.2.2: absent; 1.2.4: enabled; 1.2.6: enabled; classification: `1.2.4_introduced_and_1.2.6_retained`
+- `set_codex_no_account_slots` — 1.2.2: absent; 1.2.4: slots,relaunch; 1.2.6: slots,relaunch; classification: `1.2.4_introduced_and_1.2.6_retained`
+- `set_codex_router_enabled` — 1.2.2: enabled,relaunch; 1.2.4: enabled,relaunch; 1.2.6: enabled,relaunch; classification: `unchanged_ipc_signature`
+- `set_codex_router_no_account_mode` — 1.2.2: enabled,relaunch; 1.2.4: enabled,relaunch; 1.2.6: enabled,relaunch; classification: `unchanged_ipc_signature`
+- `set_hotspot_enabled` — 1.2.2: enabled; 1.2.4: enabled; 1.2.6: enabled; classification: `unchanged_ipc_signature`
+- `set_image_compat` — 1.2.2: enabled; 1.2.4: enabled; 1.2.6: enabled; classification: `unchanged_ipc_signature`
+- `set_mcp_server_enabled` — 1.2.2: name,enabled; 1.2.4: name,enabled; 1.2.6: name,enabled; classification: `unchanged_ipc_signature`
+- `set_relay_provider_network` — 1.2.2: providerId,network; 1.2.4: providerId,network; 1.2.6: providerId,network; classification: `unchanged_ipc_signature`
+- `set_usage_refresh_interval` — 1.2.2: interval; 1.2.4: interval; 1.2.6: interval; classification: `unchanged_ipc_signature`
+- `set_voice_global_shortcut` — 1.2.2: shortcut; 1.2.4: shortcut; 1.2.6: shortcut; classification: `unchanged_ipc_signature`
+- `set_voice_mode_shortcut` — 1.2.2: modeId,keyCode,keyLabel,keyKind,style,modifierMask; 1.2.4: modeId,keyCode,keyLabel,keyKind,style,modifierMask; 1.2.6: modeId,keyCode,keyLabel,keyKind,style,modifierMask; classification: `unchanged_ipc_signature`
+- `set_voice_overlay_style` — 1.2.2: style; 1.2.4: style; 1.2.6: style; classification: `unchanged_ipc_signature`
+- `set_voice_processing_mode_id` — 1.2.2: modeId,processingMode; 1.2.4: modeId,processingMode; 1.2.6: modeId,processingMode; classification: `unchanged_ipc_signature`
+- `set_voice_trigger_bindings` — 1.2.2: activeStyle,holdKeyCode,holdKeyLabel,holdKeyKind,holdModifierMask,toggleKeyCode,toggleKeyLabel,toggleKeyKind,toggleModifierMask; 1.2.4: activeStyle,holdKeyCode,holdKeyLabel,holdKeyKind,holdModifierMask,toggleKeyCode,toggleKeyLabel,toggleKeyKind,toggleModifierMask; 1.2.6: activeStyle,holdKeyCode,holdKeyLabel,holdKeyKind,holdModifierMask,toggleKeyCode,toggleKeyLabel,toggleKeyKind,toggleModifierMask; classification: `unchanged_ipc_signature`
+- `set_voice_trigger_key` — 1.2.2: keyCode,keyLabel,keyKind,style,modifierMask; 1.2.4: keyCode,keyLabel,keyKind,style,modifierMask; 1.2.6: keyCode,keyLabel,keyKind,style,modifierMask; classification: `unchanged_ipc_signature`
+- `set_voice_trigger_listener_suppressed` — 1.2.2: suppressed; 1.2.4: suppressed; 1.2.6: suppressed; classification: `unchanged_ipc_signature`
+- `show_voice_search_overlay` — 1.2.2: query,output; 1.2.4: query,output; 1.2.6: query,output; classification: `unchanged_ipc_signature`
+- `start_voice_capture` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `stop_voice_capture` — 1.2.2: (no args); 1.2.4: (no args); 1.2.6: (no args); classification: `unchanged_ipc_signature`
+- `switch_account` — 1.2.2: accountKey; 1.2.4: accountKey; 1.2.6: accountKey; classification: `unchanged_ipc_signature`
+- `switch_account_and_restart_codex` — 1.2.2: accountKey; 1.2.4: accountKey; 1.2.6: accountKey; classification: `unchanged_ipc_signature`
+- `test_api_proxy_config` — 1.2.2: mode,url; 1.2.4: mode,url; 1.2.6: mode,url; classification: `unchanged_ipc_signature`
+- `test_voice_asr_config` — 1.2.2: asrProvider,asrApiKey,asrModel,asrBaseUrl; 1.2.4: asrProvider,asrApiKey,asrModel,asrBaseUrl; 1.2.6: asrProvider,asrApiKey,asrModel,asrBaseUrl; classification: `unchanged_ipc_signature`
+- `test_voice_llm_config` — 1.2.2: llmProvider,llmApiKey,llmModel,llmBaseUrl; 1.2.4: llmProvider,llmApiKey,llmModel,llmBaseUrl; 1.2.6: llmProvider,llmApiKey,llmModel,llmBaseUrl; classification: `unchanged_ipc_signature`
+- `update_voice_runtime_settings` — 1.2.2: enabled,shortcut,speechModel,processingMode,processingModeId; 1.2.4: enabled,shortcut,speechModel,processingMode,processingModeId; 1.2.6: enabled,shortcut,speechModel,processingMode,processingModeId; classification: `unchanged_ipc_signature`
+- `upload_debug_report` — 1.2.2: input; 1.2.4: input; 1.2.6: input; classification: `unchanged_ipc_signature`
+- `upsert_mcp_server` — 1.2.2: args,headers,environment; 1.2.4: args,headers,environment; 1.2.6: args,headers,environment; classification: `unchanged_ipc_signature`
+- `upsert_relay_provider` — 1.2.2: input; 1.2.4: input; 1.2.6: input; classification: `unchanged_ipc_signature`
+- `upsert_voice_template` — 1.2.2: id,title,description,content; 1.2.4: id,title,description,content; 1.2.6: id,title,description,content; classification: `unchanged_ipc_signature`
+- `upsert_voice_vocabulary` — 1.2.2: id,source,replacement,kind,appBundleId,appName,notes; 1.2.4: id,source,replacement,kind,appBundleId,appName,notes; 1.2.6: id,source,replacement,kind,appBundleId,appName,notes; classification: `unchanged_ipc_signature`
+- `upsert_voice_vocabulary_app_scope` — 1.2.2: bundleId,name,path; 1.2.4: bundleId,name,path; 1.2.6: bundleId,name,path; classification: `unchanged_ipc_signature`
+- `voice_processing_done` — 1.2.2: sessionGeneration; 1.2.4: sessionGeneration; 1.2.6: sessionGeneration; classification: `unchanged_ipc_signature`
+- `write_client_debug_log` — 1.2.2: event; 1.2.4: event; 1.2.6: event; classification: `unchanged_ipc_signature`

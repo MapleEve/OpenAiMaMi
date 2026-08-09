@@ -2,7 +2,7 @@
 
 ## Platform Artifacts
 - 1.0.9 windows: AiMaMi 1.0.9 win64.exe, sha256=a5822387fa3f56dc03893111f4ffdd074daa882e8887ec4e7c394879c0e9fe0b (baseline)
-- 1.2.3 windows: AiMaMi.1.2.3 win64.exe, sha256=aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396 (this bundle, idb_path=E:\binary\AiMaMi.1.2.3 win64.exe.i64)
+- 1.2.3 windows: AiMaMi.1.2.3 win64.exe, sha256=aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396 (this bundle, idb_path=<二进制路径>\AiMaMi.1.2.3 win64.exe.i64)
 - macOS 1.2.3: Unknown/not covered by this bundle.
 
 ## Frontend IPC / Control-flow

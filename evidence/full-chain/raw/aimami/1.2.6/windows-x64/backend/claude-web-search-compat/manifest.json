@@ -1,0 +1,75 @@
+{
+  "schema": "c5cm.raw.ida-leaf.v1",
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "topic": "claude-web-search-compat",
+  "scope_note": "严格版本delta范围内的4个目标之一：Web Search compatibility (get/set_claude_web_search_compat)",
+  "source": {
+    "idb_module": "AiMaMi 1.2.6 win64.exe",
+    "idb_path": "<二进制路径>\\AiMaMi 1.2.6 win64.exe.i64"
+  },
+  "owner_map_source": "intermediate/aimami/1.2.6/windows-x64/version_delta/ipc-command-owner-map.json",
+  "functions": [
+    {
+      "role": "get_command_owner",
+      "command_name": "get_claude_web_search_compat",
+      "address": "0x14014ade0",
+      "pseudocode": "pseudocode/0001-get-claude-web-search-compat-0x14014ade0.c",
+      "bytes_returned": "full body, no truncation marker",
+      "verified_callees": [
+        "sub_14172B820 (generic memcpy)",
+        "sub_14002B2A0 (generic hashbrown-SIMD registry probe + futex wait)",
+        "sub_140B2A730 (result unwrap/poll continuation)",
+        "sub_140A92CA0 (CoreEnvelope-style response finalize)",
+        "sub_14172C620 (generic future-combinator: manager.request(name,args) constructor)",
+        "sub_140AFFC30 (registry dispatch + WakeByAddressSingle: emits response to Tauri invoke channel)",
+        "sub_140401FB0 (Vec<T> element drop_in_place, generic)",
+        "sub_140043900 (stack-local drop_in_place cleanup, generic)"
+      ],
+      "observed_behavior": [
+        "构造 manager.request(name=\"get_claude_web_search_compat\", target=\"manager\") 并等待响应",
+        "无参数：纯读路径，无持久化写入",
+        "响应通过 sub_140AFFC30 走通用 manager-response finalize 回传前端 invoke 通道"
+      ],
+      "gate_status": "not_gate_accepted"
+    },
+    {
+      "role": "set_command_owner",
+      "command_name": "set_claude_web_search_compat",
+      "address": "0x140d47c70",
+      "pseudocode": "pseudocode/0002-set-claude-web-search-compat-0x140d47c70.c",
+      "bytes_returned": "full body, no truncation marker (large async state-machine, ~300+ lines)",
+      "is_real_async_poll_body": true,
+      "poll_state_dispatch_field_offset": "a1+1712 (0/1/2/3 resume points)",
+      "verified_callees": [
+        "sub_14002B2A0 / sub_14172C620 (shared generic hashbrown-registry + future-combinator, same as getter)",
+        "sub_1409562A0 (second manager.request keyed by 'enabled' arg)",
+        "sub_140504EE0 (config-store apply/persist step -- candidate business-logic leaf; recognizes -1/-2/-3 typed error sentinels; NOT further recursed this pass)",
+        "sub_1412DDF00 / sub_141543AF0 (Rust fmt::Display error-path formatting, generic panic-safety net)",
+        "sub_140AFFC30 (final CoreEnvelope response emission, shared with getter)"
+      ],
+      "observed_behavior": [
+        "async state machine（poll 0/1/2/3）：解析 {target:\"manager\", enabled:<bool>} 参数",
+        "调用 sub_140504EE0 执行配置持久化写入（三种错误哨兵 -1/-2/-3 分支处理，疑似真实业务逻辑落点）",
+        "失败路径走 Display 格式化错误信息（'a Display implementation returned an error unexpectedly'，Rust 标准 panic-safety 措辞，非业务特有）",
+        "成功/失败均经 sub_140AFFC30 走相同 CoreEnvelope 回传路径"
+      ],
+      "recovery_attempts": [
+        "已识别 sub_140504EE0 为疑似真实持久化叶（非 shim/dispatcher），本轮未继续递归该叶的内部实现细节，因其已明确不是 accepted_unknown（不涉及红线13）——只是本轮聚焦于命令层语义闭合，未做超出 owner 函数 + 直接非泛型 callee 一层的更深探测；标注为待续，非天花板"
+      ],
+      "gate_status": "not_gate_accepted"
+    }
+  ],
+  "cross_platform_semantic_comparison": {
+    "macos_baseline": "raw/aimami/1.2.6/macos-x64/backend/ (未见 web-search-compat 专项目录；跨命令族比较基于 update-voice-runtime-settings/voice-runtime-start-capture 的通用 manager/CoreEnvelope 模式)",
+    "verdict": "语义对照（非逐字节）：Windows 与 macOS 两端对 config get/set 类命令均采用相同分层模式——薄命令层通过 generic manager.request(name, args) 委托给内部持久化/状态层，成功与失败均经统一的 CoreEnvelope-style 响应终结助手（Windows: sub_140AFFC30；对照 macOS 侧 update_settings_internal 的最终 emit_status/CoreEnvelope::ok 封装）回传前端。set 命令在两端均以 Rust async 状态机（poll-based）实现，而非同步直调。",
+    "not_byte_identical": "Windows 侧未发现与 macOS emit_status/load_status 完全对应的独立具名函数；Windows 的状态发布内联在 sub_140AFFC30 通用 finalize 路径中，而非像 macOS 那样有专门具名的 emit_status leaf。此为架构层面的合理差异（generic dispatcher vs dedicated named leaf），非行为缺失。"
+  },
+  "limitations": [
+    "sub_140504EE0（持久化叶）未做进一步递归拆解；本轮聚焦命令层-到-manager委托的调用链证明，未深入具体 config-store 字段级布局。",
+    "未与真实 AiMaMi Windows App 做参照运行对照（红线25：未对照，仅静态反编译分析）。"
+  ],
+  "generated_at": "2026-08-06T15:20:00Z",
+  "generation_method": "mcp__ida-pro-mcp-win__decompile via live IDB, <门控> verified (server_health status=ok, <反编译器>_ready=true, module=AiMaMi 1.2.6 win64.exe)"
+}

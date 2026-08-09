@@ -1,0 +1,36 @@
+{
+  "target": "set_voice_overlay_style",
+  "owner_ea": "0x100495610",
+  "owner_name": "codexmate_lib::commands::voice_runtime::set_voice_overlay_style",
+  "edges": [
+    {
+      "callee": "set_overlay_style",
+      "addr": "0x10047e490",
+      "type": "internal"
+    },
+    {
+      "callee": "CoreEnvelope::ok",
+      "addr": "0x1005b0380",
+      "type": "internal"
+    },
+    {
+      "callee": "drop_in_place<AppHandle>",
+      "addr": "0x1004c32b0",
+      "type": "internal"
+    },
+    {
+      "callee": "memcpy",
+      "addr": "0x101527590",
+      "type": "internal"
+    }
+  ],
+  "edge_count": 4,
+  "terminated_reason": "response_serialize",
+  "depth": 4,
+  "leaf_status": "implementation_leaf",
+  "callers_count": 1,
+  "basic_block_count": 4,
+  "notes": "Tauri wrapper: runtime::set_overlay_style -> CoreEnvelope::ok",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64"
+}

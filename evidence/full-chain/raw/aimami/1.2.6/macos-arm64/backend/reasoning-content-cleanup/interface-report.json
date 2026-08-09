@@ -1,0 +1,34 @@
+{
+  "target": "reasoning-content-cleanup",
+  "target_type": "backend_function_cluster",
+  "confidence": "high",
+  "arg_keys": [
+    "rollout_file_path",
+    "reasoning_item_type",
+    "model_family",
+    "thinking_signature",
+    "encrypted_content"
+  ],
+  "return_type": "Result<PrivateReasoningCleanupResult, io::Error / serde_json::Error>",
+  "error_envelope": {
+    "io_error": "tag=2 — file read/write/rename/fsync failures",
+    "serde_parse_error": "tag=9 — 'failed to parse rollout line at <path>: <error>'",
+    "concurrent_modification": "fixed string 'rollout changed while private reasoning cleanup was streaming; retry required'",
+    "no_parent_dir": "fixed string 'rollout path has no parent'"
+  },
+  "side_effects": [
+    "⚠ destructive: atomic rename (temp file → original rollout JSONL) overwrites original file, discarding lines judged as unusable private reasoning",
+    "⚠ fsync on temp file before rename (durability guarantee)",
+    "filesystem permission copy (unix mode from original to temp)",
+    "mtime check before and after to detect concurrent modification (TOCTOU guard)"
+  ],
+  "dto_boundary": {
+    "is_unusable_store_false_reasoning_item": "returns bool: true if response_item has encrypted_content with 'aimami-anthropic-thinking-v1:' prefix (private carrier, not server-native thinking)",
+    "set_anthropic_thinking_carrier": "writes 'aimami-anthropic-thinking-v1:{base64_json}' into encrypted_content field of content block",
+    "model_matches_family": "returns bool: case-insensitive family token match against model name",
+    "model_profile": "returns profile struct with reasoning configuration for given model family"
+  },
+  "destructive_side_effects_flagged": true,
+  "persistence_boundary": "cleanup_private_reasoning_items_in_existing_rollout: temp file write + fsync + atomic rename. set_anthropic_thinking_carrier: in-memory only (no disk).",
+  "notes": "2 targets confirmed absent. The 'write-identify-cleanup' closed loop: set_anthropic_thinking_carrier writes the carrier prefix that is_unusable_store_false_reasoning_item later identifies for cleanup."
+}

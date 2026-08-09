@@ -1,0 +1,122 @@
+{
+  "schema": "c5cm.reverse.raw_leaf_manifest.v1",
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "module": "daemon-once",
+  "partition": "P0-daemon-once-module-resolution",
+  "session": "<审计会话>
+  "machine": "<本地机器>
+  "generated_at": "2026-08-06T05:43:00Z",
+  "status": "gap_needs_reducer",
+  "non_actions": [
+    "no gate promotion in this round",
+    "no implementation_use/gate_accepted/readyToImplement change",
+    "no INDEX.jsonl append in this round (raw evidence only; reduce/ack deferred to a later round per partition-plan.json P4)",
+    "no dirtree mkdir/move performed (reserved for P4 per red line 24, after P0-P3 all close)"
+  ],
+  "live_gate": {
+    "protocol": "<门控> (red line 17)",
+    "server_health": {"status": "ok", "uptime_sec": 98079.102, "module": "AiMaMi 1.2.6 win64.exe", "<反编译器>_ready": true, "auto_analysis_ready": true},
+    "idb_path": "<二进制路径>\\AiMaMi 1.2.6 win64.exe.i64",
+    "input_sha256": "763c9b677d612b18115cb56c03f717b1820deb09ad32f89fd43619a0fdcc60fb",
+    "total_functions": 106272,
+    "<工具调用>d": true
+  },
+  "method": {
+    "declared": "tauri command-name exact-string xref (deep-targets.json required_method), NOT panic-location seeding (yielded 0 candidates for run/daemon in the prior recon round), NOT size/CFG/body-hash heuristics",
+    "actual": [
+      "find_regex('run_daemon_once') -> single string hit @ 0x141887265",
+      "xrefs_to(0x141887265) -> single code xref, owner function sub_140D81EC0",
+      "find_regex('daemon') broad sweep -> 7 hits including CLI subprocess arg literal ' \" daemon-run-once --codex-home \" ' @ 0x141860ccd and daemon_started/succeeded/failed @ 0x14177cf03/1f/41",
+      "xrefs_to on daemon_started/succeeded/failed -> single owner function sub_14018C940 for all three",
+      "xrefs_to(sub_14018C940) -> single caller sub_140001110 (main() CLI argv dispatcher, confirmed via literal byte-compare constants for 'daemon-run-once'/'--codex-home')",
+      "cross-platform validation against macOS 1.2.3 SYMBOL-NAMED raw leaves (run_daemon_once_cli, run_daemon_once_inner, commands/system/run_daemon_once_blocking) already on disk at raw/aimami/1.2.3/macos-arm64/"
+    ]
+  },
+  "call_chain": {
+    "tauri_command_path": {
+      "owner_ea": "0x140d81ec0",
+      "owner_symbol_windows": "sub_140D81EC0 (strip, identified via string xref)",
+      "role": "async state-machine dispatcher (poll()) for #[tauri::command] async fn run_daemon_once",
+      "confirmed_calls": [
+        {"ea": "0x1401a9630", "role": "State/AppHandle extraction (generic Arc refcount glue)"},
+        {"ea": "0x14085a6f0", "role": "tracing::Instrument span wrap (span-id via InterlockedExchangeAdd64 on off_141FB9F90)"},
+        {"ea": "0x140501b40", "role": "tokio coop::budget poll wrapper (TLS @ TEB+432 via sub_141395fd0); NOT single-flight"},
+        {"ea": "0x140affc30", "role": "CoreEnvelope-style response dispatch (success/error)"}
+      ],
+      "unresolved": {
+        "what": "the concrete inner future's poll body",
+        "why": "dispatched indirectly via vtable-shaped call (*(*a2+16)+24)(*a2, v14, *a3) sourced from static data at off_1417EBF48/off_1417EBF30; lookup_funcs confirms these addresses are non-function data blobs, not resolvable to a code EA statically in this pass",
+        "candidates_ruled_out": [
+          {"ea": "0x140adfda0", "reason": "decompiled; implements a DIFFERENT command (confirm/reconcile pending_auto_switch, string 'pending_auto_switch'@0x14185e242), not run_daemon_once's blocking closure"}
+        ]
+      }
+    },
+    "cli_path": {
+      "entry_ea": "0x140001110",
+      "role": "main() argv dispatcher; matches argv[1]=='daemon-run-once' (15 chars, byte-compare against packed constants) + '--codex-home <path>' flag",
+      "calls": [
+        {"ea": "0x14018c940", "role": "run_daemon_once_cli-equivalent core (THE real business logic)"}
+      ]
+    },
+    "core_business_logic": {
+      "ea": "0x14018c940",
+      "size_bytes": 4266,
+      "confirmed_calls": [
+        {"ea": "0x140ad26d0", "role": "core::repository gating check ('should run now'); panic-location 'src\\core\\repository.rs' + tracing target 'codexmate_lib::core::repository' confirmed in-body"},
+        {"ea": "0x140ad49f0", "role": "auto-switch daemon config read + automatic repair on failure; emits 'AUTO_SWITCH_DAEMON_REPAIR_FAILED' event on repair failure, does not panic"},
+        {"ea": "0x140ad9880", "role": "core::repository cluster method (address-clustered with 0x140ad26d0/0x140ad49f0 in 0x140AD2000-0x140AE9000 range)"},
+        {"ea": "0x140ae8f20", "role": "core::repository cluster method"},
+        {"ea": "0x140ad5690", "role": "core::repository cluster method"},
+        {"ea": "0x140ad62b0", "role": "core::repository cluster method (also called directly by sub_140ad49f0 as primary config read)"},
+        {"ea": "0x140ad2f50", "role": "core::repository cluster method"}
+      ],
+      "structured_logging": {
+        "literals": ["auto_switch (11)", "daemon_started (14)", "mode=scheduled (14)", "daemon_succeeded (16)", "result=ok (9)", "daemon_failed (13)"],
+        "cross_platform_match": "byte-identical wording confirmed against macOS 1.2.3 symbol-named codexmate_lib::run_daemon_once_cli (raw/aimami/1.2.3/macos-arm64/run_daemon_once_cli/ida/pseudocode/run_daemon_once_cli_0x1006f3190.c), which itself calls Repository::auto_switch_config / sync_local_runtime_state / sync_auto_switch_request / reconcile_auto_switch_request / build_daemon_payload / persist_progressive_state / enrich_accounts_via_api_with_subscription_policy"
+      }
+    }
+  },
+  "required_backend_questions_status": {
+    "scheduler_owner_in_windows_ib": {
+      "status": "ANSWERED",
+      "answer": "core::repository cluster (NOT run:: or daemon:: top-level module, matching the deep-targets.json hypothesis derived from macOS parity). CLI path confirmed via direct call graph; Tauri/blocking path owner confirmed at the dispatcher level (sub_140D81EC0) but its deeper repository-access closure body is not statically resolved (see call_chain.tauri_command_path.unresolved)."
+    },
+    "single_flight_behavior": {
+      "status": "PARTIALLY_ANSWERED",
+      "answer": "The generic tokio coop::budget wrapper found in the Tauri async chain (sub_140501B40) is NOT single-flight -- it is per-.await scheduling fairness, confirmed via TLS-budget-counter pattern. Cross-platform evidence (macOS 1.2.3 symbol-named commands::system::run_daemon_once_blocking) shows the actual mutual-exclusion mechanism is a std::sync::Mutex<Repository> lock/unlock guard with poisoned-lock recovery ('poisoned lock: another task failed inside'). The exact Windows lock/unlock call site for the run_daemon_once command specifically was NOT pinpointed in this pass (budget did not extend to resolving the indirect vtable dispatch target); recorded as an open item, not accepted_unknown/genuine_ceiling."
+    },
+    "side_effects_error_propagation": {
+      "status": "ANSWERED",
+      "answer": "Structured app-event logging (daemon_started/succeeded/failed with mode=scheduled/result=ok), CoreEnvelope<DaemonRunPayload>/CoreError-shaped Result propagation matching macOS ABI; config repair failure emits AUTO_SWITCH_DAEMON_REPAIR_FAILED event without panicking."
+    },
+    "shutdown_lifecycle": {
+      "status": "NOT_ANSWERED_THIS_PASS",
+      "answer": "Not traced in this pass; would require following the CLI subprocess's exit path (sub_14152C9D0 exit-code calls in main()) and/or the Tauri command's cancellation/drop path. Recorded as open, not fabricated."
+    },
+    "confirm_owner_module_pattern_matches_macos": {
+      "status": "ANSWERED",
+      "answer": "Confirmed: matches the macOS pattern where commands::system::run_daemon_once_blocking + crate-root run_daemon_once_cli both delegate to core::repository::Repository::* methods; this is NOT a genuine Windows platform fork, it is the same architecture, resolving the run=0/daemon=0 windows census finding as a module-naming/attribution artifact rather than a missing module."
+    }
+  },
+  "recovery_attempts": [
+    {"target": "concrete inner future poll body reached from sub_140D81EC0's indirect vtable call", "tried": "lookup_funcs on off_1417EBF48/off_1417EBF30 and neighboring offsets", "result": "confirmed non-function data (Not a function error)", "conclusion": "genuinely requires either live/runtime vtable-pointer trace or a different static entry point; NOT claimed as accepted_unknown/genuine_ceiling -- left open for a future round with runtime tracing or additional static candidates"},
+    {"target": "Windows equivalent of macOS run_daemon_once_blocking's Mutex<Repository> guard", "tried": "decompiled sub_140ADFDA0 (shares sub_140AD26D0 caller with the confirmed CLI path) as a closure candidate", "result": "ruled out -- sub_140ADFDA0 implements a different, sibling command (pending_auto_switch confirm/reconcile), not run_daemon_once", "conclusion": "candidate chain exhausted in this pass without success; left open, not fabricated"}
+  ],
+  "genuine_ceiling_claims": "NONE. No function in this leaf is marked accepted_unknown or genuine_ceiling. Two items (inner future poll body identity; exact Windows mutex/single-flight call site for run_daemon_once specifically) remain openly unresolved pending either live tracing or further static candidate search, per red line 13 (ACCEPTED_UNKNOWN anti-cheat gate) and red line 29 (no ungrounded speculation).",
+  "artifacts": [
+    "ida/pseudocode/run_daemon_once_tauri_dispatcher_0x140d81ec0.c",
+    "ida/pseudocode/coop_budget_poll_wrapper_0x140501b40.c",
+    "ida/pseudocode/main_cli_daemon_run_once_dispatch_0x140001110.c",
+    "ida/pseudocode/auto_switch_daemon_once_core_0x14018c940.c",
+    "ida/pseudocode/repository_auto_switch_gating_0x140ad26d0.c",
+    "ida/pseudocode/repository_config_repair_0x140ad49f0.c"
+  ],
+  "idb_annotations": {
+    "chinese_comments_appended": ["0x140d81ec0", "0x140501b40", "0x140001110", "0x14018c940", "0x140ad26d0", "0x140ad49f0"],
+    "renames": "NONE this round (dirtree/rename reserved for P4 per red line 24 partition ordering)",
+    "<工具调用>d": true
+  },
+  "next_steps": "Per partition-plan.json: this closes the P0 static-analysis scope for daemon-once module resolution (owner confirmed = core::repository, not run/daemon). Two items remain open (see recovery_attempts) for a future round with runtime/dynamic tracing capability, or by locating additional static candidates for the Tauri blocking-closure body. P1 (claude-web-search-compat / codex-no-account-slots / codex-router-auth-readiness / voice-runtime-sidecar) and P2-P4 remain per partition-plan.json, not started this round."
+}

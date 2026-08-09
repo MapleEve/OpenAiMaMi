@@ -59,7 +59,7 @@
     "bundle_path": "current_exe() + parent()×3 → .app root; macOS-specific pattern"
   },
   "dim5_detail": {
-    "mac": "PASS — macOS arm64 IDB; posix_spawnp via _posix_spawnp syscall; 56 basic blocks; IDB annotations written; idb_save confirmed",
+    "mac": "PASS — macOS arm64 IDB; posix_spawnp via _posix_spawnp syscall; 56 basic blocks; IDB annotations written; <工具调用> confirmed",
     "win": "accepted_unknown — net-new command; Windows binary not analyzed; Windows has no 'open' cmd; per mac per-platform rule: non-blocking"
   },
   "dim6_detail": {

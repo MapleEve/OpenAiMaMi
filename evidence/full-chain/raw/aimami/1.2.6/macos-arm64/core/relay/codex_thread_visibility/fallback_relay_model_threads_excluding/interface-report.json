@@ -1,0 +1,56 @@
+{
+  "command": "fallback_relay_model_threads_excluding",
+  "argKeys": [],
+  "idaSymbols": [
+    "str::trim_matches",
+    "all_codex_state_dbs",
+    "load_model_restore_journal",
+    "Vec::retain",
+    "String::clone"
+  ],
+  "pseudocode": [
+    "ida/pseudocode/0001_fallback_relay_model_threads_excluding_owner.c"
+  ],
+  "nextCallees": [
+    "str::trim_matches",
+    "all_codex_state_dbs",
+    "load_model_restore_journal",
+    "Vec::retain",
+    "String::clone"
+  ],
+  "callTreeRows": [
+    {
+      "callee": "str::trim_matches",
+      "addr": "0x100265030"
+    },
+    {
+      "callee": "all_codex_state_dbs",
+      "addr": "0x100b3e380"
+    },
+    {
+      "callee": "load_model_restore_journal",
+      "addr": "0x1007433a0"
+    },
+    {
+      "callee": "Vec::retain",
+      "addr": "0x100907cf0"
+    },
+    {
+      "callee": "String::clone",
+      "addr": "0x1014c4ec0"
+    }
+  ],
+  "claims": {
+    "client": [],
+    "server": []
+  },
+  "serverEvidencePath": null,
+  "needsServerEvidencePath": false,
+  "confidence": "medium",
+  "destructive_side_effects": [],
+  "owner_ea": "0x100760be0",
+  "owner_name": "codexmate_lib::core::relay::codex_thread_visibility::fallback_relay_model_threads_excluding",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64",
+  "notes": "Renamed successor of fallback_relay_model_threads (1.2.4->1.2.6). Load journal, filter providers"
+}

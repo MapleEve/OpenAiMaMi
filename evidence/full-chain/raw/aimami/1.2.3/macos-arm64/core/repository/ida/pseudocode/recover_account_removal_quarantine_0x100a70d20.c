@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core10repository10Repository34recover_account_removal_quarantine @ 0x100a70d20 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 double __fastcall codexmate_lib::core::repository::Repository::recover_account_removal_quarantine::h6d417a44c4777f97(
         __int64 *a1,

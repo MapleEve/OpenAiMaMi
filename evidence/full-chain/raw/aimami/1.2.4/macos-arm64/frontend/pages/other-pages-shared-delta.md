@@ -175,10 +175,10 @@ maintenance 页原有命令 `run_codex_router_diagnostics`、`fix_codex_router_i
 
 ## 7. 信息来源与可复核路径
 
-- 1.2.4 beautified: `//raw/aimami/1.2.4/macos-arm64/frontend/beautified/`
-- 1.2.3 beautified: `//raw/aimami/1.2.3/macos-arm64/frontend/beautified/`
-- 1.2.4 ipc 契约: `//raw/aimami/1.2.4/macos-arm64/frontend/ipc-contracts.jsonl`
-- 1.2.3 ipc 契约: `//raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl`
+- 1.2.4 beautified: `<内部存储>/raw/aimami/1.2.4/macos-arm64/frontend/beautified/`
+- 1.2.3 beautified: `<内部存储>/raw/aimami/1.2.3/macos-arm64/frontend/beautified/`
+- 1.2.4 ipc 契约: `<内部存储>/raw/aimami/1.2.4/macos-arm64/frontend/ipc-contracts.jsonl`
+- 1.2.3 ipc 契约: `<内部存储>/raw/aimami/1.2.3/macos-arm64/frontend/ipc-contracts.jsonl`
 - 关键行号锚点（1.2.4）:
   - maintenance-page-Cfv_qYNg.js: 435-449（query+mutation）、587-589（confirm handler）、649-655（toggle card）
   - index-UqyngLFp.js: 11015-11016（mock switch）、11903-11904（getClaudeWebSearchCompat/setClaudeWebSearchCompat registry）、26156（setCodexNoAccountSlots registry）

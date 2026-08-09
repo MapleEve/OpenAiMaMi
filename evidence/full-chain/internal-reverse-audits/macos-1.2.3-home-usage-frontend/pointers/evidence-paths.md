@@ -19,7 +19,7 @@
 ## 关联历史（consumed，非本包证据来源，仅作对照）
 
 - `audits/cross-1.0.9-home-usage-frontend/DISTILLED-home-usage-load-chains.md` — 1.0.9 同 scope 模板，供结构/措辞参考，未跨版本复用数据字段
-- `REVERSE-STATUS.md:4011`（`wf-aimami123-fullapp-20260724`）— 独立确认 home-usage-frontend 缺 1.2.3 canonical 包
+- `REVERSE-STATUS.md:4011`（`<审计会话> 独立确认 home-usage-frontend 缺 1.2.3 canonical 包
 
 ## Windows（不在本单平台包 scope，归属 windows-1.2.3-home-usage-frontend 未产出）
 

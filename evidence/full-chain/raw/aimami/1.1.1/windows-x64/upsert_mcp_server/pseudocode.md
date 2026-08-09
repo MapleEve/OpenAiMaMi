@@ -2,7 +2,7 @@
 ## session: <审计会话> | machine: <本地机器>
 ## delta_class: integrity_recovered | baseline: 1.0.9-win
 ## gate_tier: full_gold_leaf | sha: d24e429a
-## idb_save: <本地路径>
+## <工具调用>: <本地路径>
 
 ---
 

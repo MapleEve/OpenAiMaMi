@@ -8,7 +8,7 @@
   "pe_machine": "AMD64",
   "binary_sha256": "aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396",
   "imagebase": "0x140000000",
-  "idb_path": "E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+  "idb_path": "<二进制路径>\\AiMaMi.1.2.3 win64.exe.i64",
   "scope": "function-surface-only",
   "scope_note": "This bundle enumerates the owner function surface (addr/size/name/module attribution) for the win64-1.2.3 relay subsystem. No decompile() calls were made; function bodies are NOT reversed in this bundle. Decompile/call-tree/interface/DTO work is a separate follow-up leaf per command.",
   "method": [
@@ -18,7 +18,7 @@
     "layer4 (opportunistic): Rust type-name string (codexmate_lib::core::relay::codex_mutation::CodexMutationGate) -> xrefs_to -> candidate owners"
   ],
   "call_graph_propagation": "not applied in this pass (string-based coverage was sufficient for all 29 confirmed-present relay submodules; strict >=2-caller propagation reserved as follow-up for any remaining truly_undone gaps)",
-  "platform_independence": "All evidence produced live against the windows-x64 1.2.3 IDB via mcp__ida-pro-mcp-win__* equivalent HTTP MCP endpoint (<host>:13337). No macOS evidence was used to infer Windows ownership. macOS module names (from raw/aimami/1.2.3/macos-arm64/core/relay/*) were used only as *search hints* to check for independent Windows string evidence (transition_journal / breaker / native_responses_compat / upstream_url searched, zero windows hits -> left Unknown, NOT claimed absent or present).",
+  "platform_independence": "All evidence produced live against the windows-x64 1.2.3 IDB via mcp__ida-pro-mcp-win__* equivalent HTTP MCP endpoint (<内网IP>:13337). No macOS evidence was used to infer Windows ownership. macOS module names (from raw/aimami/1.2.3/macos-arm64/core/relay/*) were used only as *search hints* to check for independent Windows string evidence (transition_journal / breaker / native_responses_compat / upstream_url searched, zero windows hits -> left Unknown, NOT claimed absent or present).",
   "covered_relay_submodules_confirmed_on_windows": [
     "codex_catalog","codex_config_reconciler","codex_diagnostic","codex_mutation",
     "codex_project_state","codex_runtime","codex_thread_visibility","codex_writer",
@@ -37,7 +37,7 @@
     "C": "panic-Location or type-name two-hop attributed function still named sub_XXXX (candidate helper/internal-impl, not yet decompiled/named)",
     "BLOCKED": "ambiguous single-hit landing inside an oversized function inconsistent with the per-command owner pattern seen elsewhere; suspected shared dispatcher/ICF fold, not a dedicated owner"
   },
-  "produced_by": "<host>",
+  "produced_by": "<本地机器>
   "session": "relay123-surface",
   "produced_at": "2026-07-23T00:00:00Z",
   "tool": "IDA MCP (mcp__ida-pro-mcp-win__* equivalent via idacall.py HTTP)",

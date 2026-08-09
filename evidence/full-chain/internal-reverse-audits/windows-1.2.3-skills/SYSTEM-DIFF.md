@@ -2,7 +2,7 @@
 
 ## Platform Artifacts
 
-- Windows: PE `.exe`, sha256 `aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396` (reused from windows-1.2.3-relay's manifest -- same win 1.2.3 binary/idb, not independently re-hashed this pass), idb `E:\binary\AiMaMi.1.2.3 win64.exe.i64`, strip.
+- Windows: PE `.exe`, sha256 `aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396` (reused from windows-1.2.3-relay's manifest -- same win 1.2.3 binary/idb, not independently re-hashed this pass), idb `<二进制路径>\AiMaMi.1.2.3 win64.exe.i64`, strip.
 
 ## Frontend IPC / Control-flow
 

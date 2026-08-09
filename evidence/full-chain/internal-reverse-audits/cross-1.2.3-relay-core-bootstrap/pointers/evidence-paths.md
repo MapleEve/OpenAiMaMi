@@ -13,7 +13,7 @@ dependency-completeness finding.
 | macos relay-core (diagnostic) | `internal-reverse/audits/macos-1.2.3-relay-core/{README.md,manifest.json}` | relay-core macOS coverage finding, unknown list |
 | windows relay | `internal-reverse/audits/windows-1.2.3-relay/manifest.json` | windows binary SHA cross-check |
 | cross 1.0.9 template | `internal-reverse/audits/cross-1.0.9-relay-core-bootstrap/{README.md,AI.md,SYSTEM-DIFF.md,manifest.json,gate-report.json}` | structural template only, no 1.2.3 content taken from it |
-| status ledger | `internal-reverse/REVERSE-STATUS.md` (section `[wf-aimami123-fullapp-20260724]`, and `[mac-1.2.3-bootstrap-triage-20260725]`) | canonical backlog claim for relay-core/bootstrap/relay-core-bootstrap as open 1.2.3 targets; confirmed no prior claim on `cross-1.2.3-relay-core-bootstrap` before this session |
+| status ledger | `internal-reverse/REVERSE-STATUS.md` (section `[<审计会话> and `[mac-1.2.3-bootstrap-triage-20260725]`) | canonical backlog claim for relay-core/bootstrap/relay-core-bootstrap as open 1.2.3 targets; confirmed no prior claim on `cross-1.2.3-relay-core-bootstrap` before this session |
 
 ## Consumed raw evidence (not canonical, unreduced)
 
@@ -21,7 +21,7 @@ dependency-completeness finding.
 |---|---|---|
 | windows relay-core function surface | `raw/aimami/1.2.3/windows-x64/relay-core/manifest.json` | scope=function-surface-only, no_decompile_performed=true |
 | windows relay-core surface writeup | `raw/aimami/1.2.3/windows-x64/relay-core/SURFACE-MANIFEST.md` | 177 functions / 29 submodules, per-module breakdown table |
-| windows relay-core tool status | `raw/aimami/1.2.3/windows-x64/relay-core/tool-status.txt` | IDA_LIVE_GATE passed confirmation, stage list |
+| windows relay-core tool status | `raw/aimami/1.2.3/windows-x64/relay-core/tool-status.txt` | <门控> passed confirmation, stage list |
 | windows relay-core owner map | `raw/aimami/1.2.3/windows-x64/relay-core/owner-map.jsonl` | 177 lines, per-function tier/evidence detail (not read line-by-line this session, only wc -l) |
 | windows-x64 raw tree top level | `raw/aimami/1.2.3/windows-x64/` (directory listing only) | checked for a bootstrap-equivalent tree; none found under that name; noted `runtime/`, `codex_runtime/`, and `manager/ida/pseudocode/bootstrap_0x14085a330.c` as unexamined leads |
 | windows-x64 transition_journal dir | `raw/aimami/1.2.3/windows-x64/transition_journal/` (existence only, not opened) | flagged discrepancy vs relay-core surface manifest's "zero hits" claim; not resolved |

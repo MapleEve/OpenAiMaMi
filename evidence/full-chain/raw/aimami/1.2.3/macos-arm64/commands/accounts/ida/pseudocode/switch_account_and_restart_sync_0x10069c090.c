@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib8commands8accounts31switch_account_and_restart_sync @ 0x10069c090 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 void *__fastcall codexmate_lib::commands::accounts::switch_account_and_restart_sync::h4c1d2cf916d0074a(
         void *a1,

@@ -50,4 +50,4 @@ IPC 响应通过 `has_notch_invoke_resolver_respond` (`0x14080C3C0`) 派发。
 | rename → `load_relay_state_ipc_handler_111` | 已完成（前序 session） |
 | set_comments @ owner VA | 已完成（前序 session） |
 | rename gold-leaf 追加 | 本 session — 见 gate-report.json idb_annotations |
-| idb_save | 本 session 完成 |
+| <工具调用> | 本 session 完成 |

@@ -11,7 +11,7 @@
 - `audits/macos-1.2.3-relay/logic/REGISTRATION-TABLE-1.2.3.md`（relay_proxy_config 物理迁出证据）
 - `audits/macos-1.2.3-system/`（proxy_config 承接方）
 - `raw/aimami/1.2.3/macos-arm64/core/relay/*/`（32 个 submodule 目录，函数名逐条核对）
-- `REVERSE-STATUS.md` `[wf-aimami123-fullapp-20260724]` 条目（本产品自己的账本对同一问题的独立结论，2026-07-24，与本次判定同日）
+- `REVERSE-STATUS.md` `[<审计会话> 条目（本产品自己的账本对同一问题的独立结论，2026-07-24，与本次判定同日）
 
 ## Coverage
 
@@ -48,7 +48,7 @@
 
 1. **relay_web_executor / relay_web_tools**：1.2.3 macos-arm64 raw 证据树内无任何同名/近似函数命中。`Unknown` — 需要 func_query 符号枚举排除 ICF/单态化漏枚举后才能定论"产品已移除此特性"或"未捕获需补逆"。
 2. **RULE-9 正式迁移矩阵缺失**：`audits/macos-1.2.3-relay/` 从未产出 `logic/NO-BEHAVIOR-DIFF-MIGRATION-1.2.3.md` 或等价文档，专门对照 relay-core-1.0.9 的 19 cluster。当前的"吸收"结论只是本次事后交叉核查所得，未经正式 reduce 流程确认。
-3. **Windows 侧**：`REVERSE-STATUS.md` `[wf-aimami123-fullapp-20260724]` 明确记录 raw 层已有"win 多个 relay-core 子模块深逆"证据，但尚未 reduce 成 canonical `audits/windows-1.2.3-relay-core/` 或确认吸收进 `audits/windows-1.2.3-relay/`。本包未独立核实 Windows 侧，按 `Unknown` 处理（不得用 macOS 证据外推 Windows，AGENTS.md 红线）。
+3. **Windows 侧**：`REVERSE-STATUS.md` `[<审计会话> 明确记录 raw 层已有"win 多个 relay-core 子模块深逆"证据，但尚未 reduce 成 canonical `audits/windows-1.2.3-relay-core/` 或确认吸收进 `audits/windows-1.2.3-relay/`。本包未独立核实 Windows 侧，按 `Unknown` 处理（不得用 macOS 证据外推 Windows，AGENTS.md 红线）。
 4. **relay-core-bootstrap 跨平台模块**：1.0.9 有独立的 `audits/cross-1.0.9-relay-core-bootstrap/`；`REVERSE-STATUS.md` 同一条目将其列为 1.2.3 仍待补的跨平台模块之一。本包未展开核查，按 `Unknown` 处理。
 
 ## Action / Non-action
@@ -60,7 +60,7 @@
   3. 视需要补一份 `audits/macos-1.2.3-relay/logic/NO-BEHAVIOR-DIFF-MIGRATION-1.2.3.md`，正式对照 relay-core-1.0.9 的 19-cluster 目标全集，把本包这次事后核查升级为正式 RULE-9 迁移矩阵。
   4. `relay-core-bootstrap` 跨平台模块补齐核查。
 
-**本判定与 `REVERSE-STATUS.md` `[wf-aimami123-fullapp-20260724]` 条目（同日、独立产生）结论一致**：relay-core 不应视为已随 relay 包一并闭合的目标，仍是 1.2.3 full-app 补逆 backlog 中的一个未 reduce 完成项。
+**本判定与 `REVERSE-STATUS.md` `[<审计会话> 条目（同日、独立产生）结论一致**：relay-core 不应视为已随 relay 包一并闭合的目标，仍是 1.2.3 full-app 补逆 backlog 中的一个未 reduce 完成项。
 
 ---
 

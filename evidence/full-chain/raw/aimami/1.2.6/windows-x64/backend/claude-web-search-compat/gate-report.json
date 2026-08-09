@@ -1,0 +1,32 @@
+{
+  "schema": "c5cm.raw.leaf.gate_report.v1",
+  "commands": ["get_claude_web_search_compat", "set_claude_web_search_compat"],
+  "product": "aimami",
+  "version": "1.2.6",
+  "platform": "windows-x64",
+  "gates": {
+    "consumerStartReady": true,
+    "strictImplementationUse": false,
+    "readyToImplement": false,
+    "implementation_use": false,
+    "gate_accepted": false,
+    "full_leaf_100_definition_v2": false
+  },
+  "blockers": [
+    "sub_140504EE0 (set-path config-store apply/persist candidate leaf) not further recursed to field-level implementation this round",
+    "no leaf-specific error branch distinct from the generic Rust Display-formatting panic-safety path found for the set command",
+    "no independent named emit_status/load_status-style leaf found for this command family (architecture difference vs voice-runtime family, not claimed as a gap)"
+  ],
+  "dim_status": {
+    "dim1_owner_located": "PASS (get: 0x14014ade0 single-caller; set: 0x140d47c70 single-caller, both via ipc-command-owner-map.json tauri_command_name string xref)",
+    "dim2_call_tree_depth": "PASS (get: depth2, response_serialize terminal; set: depth3, async poll 0/1/2/3 state machine reaching persistence_write_candidate terminal)",
+    "dim3_pseudocode_recovered": "PASS (2 owner bodies recovered, both explicitly headed 'No truncation marker observed'; get body full, set body ~300+ lines full async state machine)",
+    "dim4_dto_fields": "PARTIAL (get: no input args; set: {target:\"manager\", enabled:<bool>} confirmed from poll-state parameter extraction; response envelope shape not independently re-derived this round, inherited from manifest.json's original decompile)",
+    "dim5_cross_version_baseline": "NOT_DONE (no macOS 1.2.6 claude-web-search-compat-specific bundle exists to cross-reference this round; manifest.json's cross_platform_semantic_comparison instead cross-references the generic manager/CoreEnvelope pattern shared with update-voice-runtime-settings/voice-runtime-start-capture)",
+    "dim6_live_reference_parity": "NOT_RUN (no live reference App comparison performed, per red line 25 disclosure)"
+  },
+  "scope_note": "This bundle was originally produced under task #149 (2026-08-06T15:20:00Z decompile session) as a c5cm.raw.ida-leaf.v1 manifest+pseudocode-only bundle. This gate-report.json/evidence.md/interface/call-trees were added in a later schema-normalization round (session <审计会话> purely by reorganizing the pre-existing manifest.json content into leaf.v1-parity shape -- no new IDA decompile, rename, dirtree, or <工具调用> call was made during normalization.",
+  "generated_at": "2026-08-06T15:20:00Z",
+  "schema_normalized_at": "2026-08-06T08:31:34Z",
+  "session": "task#149 (original decompile); <审计会话> (schema normalization backfill)"
+}

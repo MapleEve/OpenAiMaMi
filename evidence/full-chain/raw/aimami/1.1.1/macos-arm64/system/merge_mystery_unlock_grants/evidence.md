@@ -26,7 +26,7 @@
 
 9. **Sort algorithm**: insertion_sort_shift_left (<21 elements) OR driftsort_main (>=21 elements). Threshold=21 confirmed from `v67 >= 0x15` branch.
 
-10. **IDB comments written**: `append_comments` ok ×3 at 0x10061be20 (owner), 0x1004ce6a0 (core), 0x1004c7650 (filter). `idb_save` executed.
+10. **IDB comments written**: `append_comments` ok ×3 at 0x10061be20 (owner), 0x1004ce6a0 (core), 0x1004c7650 (filter). `<工具调用>` executed.
 
 11. **Sibling command** `get_mystery_unlock_grants` command fn at `0x10061a140` (0x303B) and core at `0x1004ca780` (0x207B). Same `mystery_route_allowed` filter. Read-only counterpart (no incoming args).
 

@@ -6,7 +6,7 @@
     "session": "sessions-analytics123-win-audit-distill-20260725",
     "backfill_note": "first production of this bundle (no prior windows-1.2.3-sessions-analytics/ existed); RULE8 skeleton and target_universe reused from macos-1.2.3-sessions-analytics per user instruction; Windows raw-evidence counts, gate status, and 4 additional session-related raw files (codexmate_lib/ x3 + commands/ root x1) independently discovered and verified this pass via live IDA MCP (<host>) + filesystem re-verification -- not a pure backfill, real incremental work performed (server_health gate pass, decompile x1, callees x2, xrefs_to x1, func_query x1)."
   },
-  "binary_sha256": "not independently recomputed this pass -- see raw/binary/ SOT; server_health confirmed idb_path=E:\\binary\\AiMaMi.1.2.3 win64.exe.i64",
+  "binary_sha256": "not independently recomputed this pass -- see raw/binary/ SOT; server_health confirmed idb_path=<二进制路径>\\AiMaMi.1.2.3 win64.exe.i64",
   "sha12": "unknown_not_recomputed",
   "platform": "windows-x64",
   "produced_at": "2026-07-25",

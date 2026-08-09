@@ -124,8 +124,8 @@ IDA comments were written on:
 - `0x10029d0d0` `WebviewManager::register_uri_scheme_protocol`
 - `0x1004deff4` app `run::inner` closure
 
-`idb_save` succeeded for the active IDB. This sets
-`idb_modified=true` / `idb_saved=true` for this reducer only.
+`<工具调用>` succeeded for the active IDB. This sets
+`idb_modified=true` / `<工具调用>d=true` for this reducer only.
 
 Gate posture is unchanged. The new evidence narrows the accepted runtime route
 to real WKWebView/Tauri IPC context plus live `__TAURI_INTERNALS__` proof. It

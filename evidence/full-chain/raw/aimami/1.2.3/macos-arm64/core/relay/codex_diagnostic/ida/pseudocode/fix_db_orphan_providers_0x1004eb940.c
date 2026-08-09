@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5relay16codex_diagnostic23fix_db_orphan_providers @ 0x1004eb940 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::relay::codex_diagnostic::fix_db_orphan_providers::h4a50b8ce63a1b452(
         char *a1,

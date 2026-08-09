@@ -1,7 +1,7 @@
 # reviews/CLAUDE.md — independent CC recheck
 
 Package: `internal-reverse/audits/macos-1.2.3-custom-instructions/`
-Reviewer: Claude (CC), reduce pass `reduce-mac123-custominstr-20260726021919`, machine Maple-M3-Max, 2026-07-26.
+Reviewer: Claude (CC), reduce pass `reduce-mac123-custominstr-20260726021919`, machine <本地机器> 2026-07-26.
 Nature: independent re-derivation from on-disk raw evidence (not a summary of the existing README/AI). No live IDA
 re-run this pass; conclusions bounded to what is on disk.
 
@@ -85,7 +85,7 @@ upgraded state.**
 
 ## 2026-07-27 Addendum — independent re-verification of the `gate_accepted=true` upgrade
 
-Reviewer: Claude (CC), new session, machine Maple-M3-Max, 2026-07-27. This addendum is **not** a restatement of
+Reviewer: Claude (CC), new session, machine <本地机器> 2026-07-27. This addendum is **not** a restatement of
 `../DISTILLED.md` (which was authored in the same round as the upgrade, session
 `mac123-custominstr-gapclose-20260726142739`). Every finding below comes from a fresh live IDA MCP session run by
 this reviewer today, independent of that authoring session, specifically to close the gap flagged by the task: the

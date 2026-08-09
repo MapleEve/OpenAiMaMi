@@ -1,0 +1,49 @@
+{
+  "command": "set_claude_web_search_compat",
+  "module": "core/relay/manager",
+  "owner_ea": "0x10079bbc0",
+  "interface_type": "internal_method",
+  "argKeys": [
+    "enabled"
+  ],
+  "dto_fields": {
+    "request": "{enabled: bool}",
+    "response": "CoreEnvelope<RelayState>"
+  },
+  "side_effects": [
+    "⚠ PERSISTENCE: calls RelayManager::persist to write relay state to disk"
+  ],
+  "idaSymbols": [
+    "set_claude_web_search_compat"
+  ],
+  "pseudocode": [
+    "core/relay/manager/ida/pseudocode/set_claude_web_search_compat_0x10079bbc0.c"
+  ],
+  "nextCallees": [
+    "OnceBox::initialize",
+    "Mutex::lock",
+    "Mutex::unlock",
+    "RelayState::clone",
+    "RelayManager::persist",
+    "storage::sanitize_for_export",
+    "drop_in_place<RelayState>",
+    "core::result::unwrap_failed",
+    "panic_count::is_zero_slow_path",
+    "String::clone",
+    "__rust_alloc",
+    "__rust_dealloc"
+  ],
+  "callTreeRows": 12,
+  "claims": {
+    "client": [
+      "enabled"
+    ],
+    "server": [
+      "set_claude_web_search_compat"
+    ]
+  },
+  "serverEvidencePath": "core/relay/manager/ida/pseudocode/set_claude_web_search_compat_0x10079bbc0.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "RelayManager setter: acquires transition lock, clones current RelayState, sets claude_web_search_compat flag, persists state to disk, returns sanitized relay state. Called by IPC command set_claude_web_search_compat."
+}

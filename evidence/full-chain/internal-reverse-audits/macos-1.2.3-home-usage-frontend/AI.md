@@ -24,7 +24,7 @@ gate_leaf_status: consumerStartReady (macOS frontend-reachable surface, startMod
 
 1. `cross-1.2.3-home-usage-frontend/gate-report.json` 的 `cluster_gate_summary.gap_needs_reducer=2` 明指两个缺失单平台包（`macos-1.2.3-home-usage-frontend` + `windows-1.2.3-home-usage-frontend`）。本包补齐 macOS 那一个。
 2. `grep home-usage-frontend INDEX.jsonl` = 0 命中（无 producer 认领，first write，无 collision）。
-3. mac 页面级证据（`shared-index-app-frontend.md` + `analytics-maintenance-autoswitch-frontend.md`）是 `wf-aimami123-delta-20260721` baseline 产出，本轮只读消费，未新产 raw。
+3. mac 页面级证据（`shared-index-app-frontend.md` + `analytics-maintenance-autoswitch-frontend.md`）是 `<审计会话> baseline 产出，本轮只读消费，未新产 raw。
 4. 5 个 analytics 命令的 core 后端体在兄弟包 `macos-1.2.3-sessions-analytics` 已 reduce（该包 covered_commands 含 load_session/token/tool/change/usage_analytics）；本前端-surface 包不重复领取，consumers 需后端时读那个包。
 
 ## Scripts / 复跑入口

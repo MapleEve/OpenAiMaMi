@@ -27,7 +27,7 @@ Terminal leaves: __NSGetExecutablePath (OS API), xattr subprocess, InvokeResolve
 
 ### Windows (Unknown)
 
-No Windows evidence. Do not infer from macOS. Windows path logic (/Volumes/ is macOS-specific; Windows equivalent unknown).
+No Windows evidence. Do not infer from macOS. Windows path logic (<内部存储>/ is macOS-specific; Windows equivalent unknown).
 
 ## Interface / Error / Boundary
 
@@ -59,7 +59,7 @@ Not applicable to this leaf. check_update_installability probes installability p
 
 ## Resource / Binary Surface
 
-- macOS-specific: /AppTranslocation/ path detection, /Volumes/ prefix check, NSGetExecutablePath, xattr command
+- macOS-specific: /AppTranslocation/ path detection, <内部存储>/ prefix check, NSGetExecutablePath, xattr command
 - No Windows-equivalent paths identified
 
 ## Unknown

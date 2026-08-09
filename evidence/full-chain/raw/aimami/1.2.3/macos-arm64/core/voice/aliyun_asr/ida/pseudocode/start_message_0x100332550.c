@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5voice10aliyun_asr13start_message @ 0x100332550 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 _QWORD *__fastcall codexmate_lib::core::voice::aliyun_asr::start_message::ha72d0125791303c6(
         _QWORD *a1,

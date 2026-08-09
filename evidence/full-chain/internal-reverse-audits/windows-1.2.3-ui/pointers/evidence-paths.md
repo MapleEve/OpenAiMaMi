@@ -32,7 +32,7 @@ All paths are `${C5CM_INTERNAL_HISTORY_ROOT:-$C5CM_SHARE_ROOT}`-relative. No raw
 
 ## Full-app baseline context (1.2.3)
 
-- `internal-reverse/REVERSE-STATUS.md` `[wf-aimami123-fullapp-20260724]` (~line 4011-4013) — full-app gap inventory that first listed `ui` among windows-exclusive modules lacking a 1.2.3 canonical bundle; closed (partial/gap-honest, not full closure) by `win-ui-set-app-theme-123gap-20260725` and this reduce backfill.
+- `internal-reverse/REVERSE-STATUS.md` `[<审计会话> (~line 4011-4013) — full-app gap inventory that first listed `ui` among windows-exclusive modules lacking a 1.2.3 canonical bundle; closed (partial/gap-honest, not full closure) by `win-ui-set-app-theme-123gap-20260725` and this reduce backfill.
 - `internal-reverse/audits/COVERAGE-FINAL-1.2.3.md`, `internal-reverse/audits/BASELINE-FINAL-1.2.3.md` — 1.2.3 full-app baseline context; no `ui`/`theme` module entry in either coverage table.
 
 ## Cross-platform note

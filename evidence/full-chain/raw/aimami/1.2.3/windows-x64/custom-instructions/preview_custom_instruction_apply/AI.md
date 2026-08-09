@@ -18,6 +18,6 @@ interface_status: confirmed from frontend contract only; no backend DTO to cross
 error_path_status: n/a (frontend-only stub semantics inherited from 1.0.9 baseline)
 boundary_status: confirmed cross-version (1.0.9/1.1.1/1.1.8 mac+win) and cross-platform pre-existing gap, not a 1.2.3 regression
 gate_leaf_status: accepted (accepted_substitute=same_platform_ida_backend_absence_for_frontend_orphan_command)
-scripts: tools/IDA CLI win func_query '{"queries":[{"name_regex":"preview_custom_instruction_apply"}]}'; tools/IDA CLI win find_regex '{"pattern":"preview_custom_instruction_apply"}'
+scripts: tools/<工具脚本> win func_query '{"queries":[{"name_regex":"preview_custom_instruction_apply"}]}'; tools/<工具脚本> win find_regex '{"pattern":"preview_custom_instruction_apply"}'
 unknowns: none new this round; inherited 1.0.9 Unknown "no dedicated visible error alert on load_custom_instruction_state failure in current C5 page" carried forward unchanged (see pointers/evidence-paths.md)
 do_not_infer: do not use this windows finding to infer macOS 1.2.3 status; macOS 1.2.3 custom-instructions module still lacks its own canonical audits/ bundle as of this round (see REVERSE-STATUS.md)

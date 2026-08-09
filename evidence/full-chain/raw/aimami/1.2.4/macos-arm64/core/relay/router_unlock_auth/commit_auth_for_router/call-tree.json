@@ -1,0 +1,142 @@
+{
+  "target": "commit_auth_for_router",
+  "owner_ea": "0x10056b3f0",
+  "edges": [
+    {
+      "from": "0x10056b3f0",
+      "to": "load_auth_file",
+      "edge_type": "call",
+      "order": 0
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "auth_is_usable_real_oauth",
+      "edge_type": "call",
+      "order": 1
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "drop_in_place<CoreError>",
+      "edge_type": "call",
+      "order": 2
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "CodexPaths::ensure_directories",
+      "edge_type": "call",
+      "order": 3
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "Path::_join",
+      "edge_type": "call",
+      "order": 4
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "live_auth_state",
+      "edge_type": "call",
+      "order": 5
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "managed_api_key",
+      "edge_type": "call",
+      "order": 6
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "managed_api_key_marker_matches",
+      "edge_type": "call",
+      "order": 7
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "current_timestamp",
+      "edge_type": "call",
+      "order": 8
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "std::sys::fs::metadata",
+      "edge_type": "call",
+      "order": 9
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "std::fs::read::inner",
+      "edge_type": "call",
+      "order": 10
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "validate_user_owned_auth_backup",
+      "edge_type": "call",
+      "order": 11
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "install_managed_api_key_auth::{{closure}}",
+      "edge_type": "call",
+      "order": 12
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "atomic_write::copy_atomic_private",
+      "edge_type": "call",
+      "order": 13
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "write_json",
+      "edge_type": "call",
+      "order": 14
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "uuid::new_v4",
+      "edge_type": "call",
+      "order": 15
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "serde_json::value::to_value",
+      "edge_type": "call",
+      "order": 16
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "BTreeMap::insert",
+      "edge_type": "call",
+      "order": 17
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "format_inner",
+      "edge_type": "call",
+      "order": 18
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "drop_in_place<RouterUnlockAuthMarker>",
+      "edge_type": "call",
+      "order": 19
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "__rust_alloc",
+      "edge_type": "call",
+      "order": 20
+    },
+    {
+      "from": "0x10056b3f0",
+      "to": "__rust_dealloc",
+      "edge_type": "call",
+      "order": 21
+    }
+  ],
+  "edge_count": 20,
+  "terminated_reason": "persistence_commit",
+  "extraction_method": "c_text_analysis",
+  "note": "Callees extracted from 1.2.4 mac SMB .c pseudocode text, not IDA MCP callees call"
+}

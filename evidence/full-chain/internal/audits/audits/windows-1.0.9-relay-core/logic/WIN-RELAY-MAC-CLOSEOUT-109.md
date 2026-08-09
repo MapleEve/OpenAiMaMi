@@ -4,7 +4,7 @@ reduce session: relay-mac-closeout-109
 machine: <workstation>
 binary: a5822387fa3f (AiMaM 1.0.9 win64.exe)  
 date: 2026-06-03  
-idb_save: confirmed (relay-mac-closeout-109)
+<工具调用>: confirmed (relay-mac-closeout-109)
 
 This document records the new evidence from relay-mac-closeout-109, covering:
 1. relay_translator Windows — new functions + dim4 tool_result mapping closure

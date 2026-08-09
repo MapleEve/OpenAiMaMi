@@ -1,0 +1,41 @@
+{
+  "commands": [
+    {
+      "command": "stop_voice_capture",
+      "argKeys": [],
+      "idaSymbols": [
+        {
+          "ea": "0x140c37a50",
+          "role": "callee"
+        }
+      ],
+      "pseudocode": [
+        "0001-owner-stop_voice_capture_owner_sys.c",
+        "0002-core-stop_voice_capture_core_sys.c"
+      ],
+      "nextCallees": [
+        {
+          "ea": "0x140c384a0",
+          "name": "stop_voice_capture_core_sys"
+        }
+      ],
+      "callTreeRows": 8,
+      "claims": {
+        "client": [],
+        "server": []
+      },
+      "sideEffects": [
+        "process/thread handle release",
+        "frontend event emission",
+        "persistence write",
+        "no filesystem/registry persistence"
+      ],
+      "serverEvidencePath": "<内部存储>/raw/aimami/1.2.6/windows-x64/backend/stop-voice-capture/evidence.md",
+      "needsServerEvidencePath": false,
+      "confidence": "medium",
+      "sourceMarkdown": "stop_voice_capture.md"
+    }
+  ],
+  "generated_from": "interface/*.md (converted to machine-readable format)",
+  "leaf": "stop-voice-capture"
+}

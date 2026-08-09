@@ -1,4 +1,4 @@
-// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::models::RateLimitWindow as core::cmp::PartialEq>::eq::hb41f789c145e70d9 @ 0x100b18590 | full-body via IDA Python(IDA decompiler.decompile direct write)
+// 1.2.3 census-gap-fill (real_body,on_disk=false) | _<codexmate_lib::core::models::RateLimitWindow as core::cmp::PartialEq>::eq::hb41f789c145e70d9 @ 0x100b18590 | full-body via py_exec_file(ida_hexrays.decompile direct write)
 char __fastcall _$LT$codexmate_lib..core..models..RateLimitWindow$u20$as$u20$core..cmp..PartialEq$GT$::eq::hb41f789c145e70d9(
         __int64 a1,
         double *a2)

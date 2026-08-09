@@ -12,7 +12,7 @@
 changelog 三项全是**行为后端变更**(非新命令)。用 **IDA 自己的函数枚举** diff(名↔地址一致,而非 nm VA——见 §5 教训):
 
 - mac 真 App 函数:1.2.2 **1267** → 1.2.3 **1638**,**216 个真实新 App 函数**。
-- 216 全部按正确 IDA 地址 decompile(216 落盘 / 11 截断已标 / 0 失败)+ inline 注释 `1.2.3 NEW-delta | <module>` + idb_save。
+- 216 全部按正确 IDA 地址 decompile(216 落盘 / 11 截断已标 / 0 失败)+ inline 注释 `1.2.3 NEW-delta | <module>` + <工具调用>。
 
 ### changelog ↔ 模块映射(Workflow sonnet 分析 + 对抗 verify)
 
@@ -35,8 +35,8 @@ changelog 三项全是**行为后端变更**(非新命令)。用 **IDA 自己的
 
 ## 3. IDB 命名(红线24,双平台)
 
-- **mac 1.2.3**:57 规范模块 → **1638 App 函数归入 94 目录**(含新 `commands/autostart`)+ 216 delta inline 注释 + idb_save ok。
-- **win 1.2.3**(strip):panic-Location + 严格传播 **938 函数归属 / 67 模块** + **115/131 命令 handler 精确命名** + idb_save ok。
+- **mac 1.2.3**:57 规范模块 → **1638 App 函数归入 94 目录**(含新 `commands/autostart`)+ 216 delta inline 注释 + <工具调用> ok。
+- **win 1.2.3**(strip):panic-Location + 严格传播 **938 函数归属 / 67 模块** + **115/131 命令 handler 精确命名** + <工具调用> ok。
 
 ## 4. Workflow 对抗 verify
 
@@ -49,6 +49,6 @@ changelog 三项全是**行为后端变更**(非新命令)。用 **IDA 自己的
 ## 6. 残留闭合(「没做完的必须做完」)
 
 - ✅ **11 超大截断函数全逆全**:MCP decompile 有响应上限截成桩;改用 IDA Python 直调 `IDA decompiler.decompile` + 7KB 分页取回完整伪代码(40-92KB 各),覆盖截断桩(红线13 不许以体积 bail)。mac 0 残留 TRUNCATED / 11 标 `[FULL IDA decompiler]`。
-- ✅ **win 符号级 delta 已补**:win strip 无 nm,靠 panic 路径 + 行为锚点串定位并逆全 **15 个 win delta 锚点函数**(2 autostart 命令 owner + 4 新模块 anchor + session_meta 改写 3 + `aimami_relay_` 清理 3〔②关闭路由修复核心〕 + reasoning 1 + router_model_restore 3),证据落 `windows-x64/version-delta/ida/pseudocode/`,win IDB 15 注释 + idb_save。win src 路径 diff 证实 4 个新 .rs(autostart/account_coordination/account_io/relay/invariants)。
+- ✅ **win 符号级 delta 已补**:win strip 无 nm,靠 panic 路径 + 行为锚点串定位并逆全 **15 个 win delta 锚点函数**(2 autostart 命令 owner + 4 新模块 anchor + session_meta 改写 3 + `aimami_relay_` 清理 3〔②关闭路由修复核心〕 + reasoning 1 + router_model_restore 3),证据落 `windows-x64/version-delta/ida/pseudocode/`,win IDB 15 注释 + <工具调用>。win src 路径 diff 证实 4 个新 .rs(autostart/account_coordination/account_io/relay/invariants)。
 - win 命令命名 16 个合池/歧义未精确命名(需 mac 符号)——strip 物理上限,非漏逆。
 - same-set(未变函数)按迁移规约直接沿用 1.2.2,不重逆。

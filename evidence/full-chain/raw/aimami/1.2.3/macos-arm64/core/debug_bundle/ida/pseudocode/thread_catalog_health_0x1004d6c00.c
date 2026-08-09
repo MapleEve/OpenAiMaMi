@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core12debug_bundle21thread_catalog_health @ 0x1004d6c00 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 __fastcall codexmate_lib::core::debug_bundle::thread_catalog_health::ha2cff36600023db8(
         __int64 a1,

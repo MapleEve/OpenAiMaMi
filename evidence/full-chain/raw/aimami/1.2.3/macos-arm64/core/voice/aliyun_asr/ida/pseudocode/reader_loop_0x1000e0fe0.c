@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5voice10aliyun_asr11reader_loop28_$u7b$$u7b$closure$u7d$$u7d$ @ 0x1000e0fe0 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 char __fastcall codexmate_lib::core::voice::aliyun_asr::reader_loop::_$u7b$$u7b$closure$u7d$$u7d$::h3bb28fab0ad2e70b(
         _DWORD *a1,

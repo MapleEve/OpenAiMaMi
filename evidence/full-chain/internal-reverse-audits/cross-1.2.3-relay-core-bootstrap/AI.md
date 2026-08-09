@@ -64,7 +64,7 @@ Binary SHAs: mac=`25d6d04e6d94c3f1e8258d2b348360b228fda4fc1c3d38b6383c84a2a8d53d
   baseline)/C (still `sub_XXXX`, undecompiled). **`no_decompile_performed: true`** for this
   entire pass — dim2 (backend owner + non-failed decompile) is NOT satisfied for any of the 177
   functions by this evidence alone (some may already be decompiled+named from the earlier
-  `wf-aimami123-delta-20260721` baseline — 59/172 panic-Location-attributed functions already had
+  `<审计会话> baseline — 59/172 panic-Location-attributed functions already had
   real names before this surface pass per its own `SURFACE-MANIFEST.md` "IDB baseline note" — but
   that is a different, not-yet-cross-referenced evidence source; not verified in this session).
   Never RULE-8 reduced into `audits/windows-1.2.3-relay-core/`.

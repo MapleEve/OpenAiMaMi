@@ -1,0 +1,41 @@
+{
+  "target": "confirm_pending_auto_switch_and_restart_sync",
+  "owner_ea": "0x10049ce00",
+  "owner_name": "codexmate_lib::commands::system::confirm_pending_auto_switch_and_restart_sync",
+  "edges": [
+    {
+      "callee": "uuid::v4::new_v4",
+      "addr": "0x101371a30",
+      "type": "internal"
+    },
+    {
+      "callee": "Instant::now",
+      "addr": "0x1014938e0",
+      "type": "internal"
+    },
+    {
+      "callee": "AccountSwitchTrace::event",
+      "addr": "0x1004a1860",
+      "type": "internal"
+    },
+    {
+      "callee": "StateManager::try_get",
+      "addr": "0x10090f6d0",
+      "type": "internal"
+    },
+    {
+      "callee": "format_inner",
+      "addr": "0x1014c30c0",
+      "type": "internal"
+    }
+  ],
+  "edge_count": 5,
+  "terminated_reason": null,
+  "depth": 5,
+  "leaf_status": "implementation_leaf",
+  "callers_count": 1,
+  "basic_block_count": 0,
+  "notes": "Confirms pending auto account switch, writes AccountSwitchTrace, triggers restart",
+  "session": "delta-1.2.4-to-1.2.6-mac-fullchain-v2",
+  "binary_sha256": "1.2.6-mac-arm64"
+}

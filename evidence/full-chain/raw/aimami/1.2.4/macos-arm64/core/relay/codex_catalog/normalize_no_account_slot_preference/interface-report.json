@@ -1,0 +1,44 @@
+{
+  "command": "normalize_no_account_slot_preference",
+  "module": "core/relay/codex_catalog",
+  "owner_ea": "0x100226630",
+  "interface_type": "internal_function",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "providers + user slot preferences + canonical slugs",
+    "output": "Vec<CodexNoAccountSlot> (normalized, max 5)"
+  },
+  "side_effects": [],
+  "idaSymbols": [
+    "normalize_no_account_slot_preference"
+  ],
+  "pseudocode": [
+    "core/relay/codex_catalog/ida/pseudocode/normalize_no_account_slot_preference_0x100226630.c"
+  ],
+  "nextCallees": [
+    "RelayProvider::exposed_models",
+    "hashbrown::map::HashMap::insert",
+    "hashbrown::raw::RawTable::reserve_rehash",
+    "hashbrown::map::HashMap::insert",
+    "core::hash::BuildHasher::hash_one",
+    "String::clone",
+    "canonical_no_account_slot_slug",
+    "default_no_account_slots",
+    "alloc::raw_vec::RawVec::grow_one",
+    "alloc::raw_vec::RawVecInner::try_allocate_in",
+    "__rust_alloc",
+    "__rust_dealloc",
+    "alloc::raw_vec::handle_error"
+  ],
+  "callTreeRows": 12,
+  "claims": {
+    "client": [],
+    "server": [
+      "normalize_no_account_slot_preference"
+    ]
+  },
+  "serverEvidencePath": "core/relay/codex_catalog/ida/pseudocode/normalize_no_account_slot_preference_0x100226630.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "Normalizes user no-account slot preferences: resolves canonical slugs, matches against provider exposed models, deduplicates via HashMap, fills defaults if a8 flag set. Returns normalized slot vector (max 5)."
+}

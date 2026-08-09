@@ -24,7 +24,7 @@
 
 9. **No async body / no vtable at command level** — owner is a synchronous `__fastcall` function. No `Future::poll`, no `async_trait`, no separate state machine struct identified. The Tauri command is sync (`#[command]` without `async`). Fake-wall check passed: no ICF collapse, no inlined thunk pattern.
 
-10. **IDB inline evidence committed** — 逆向分析 `set_comments` and `rename` operations applied in prior session `<审计会话>`: owner renamed `has_notch_owner_sys`; comments at `0x140023000`, `0x140023087`, `0x14002314f`, `0x14002317a`. Verified by decompile output showing comment text inline. `idb_save` executed (confirmed in manifest).
+10. **IDB inline evidence committed** — 逆向分析 `set_comments` and `rename` operations applied in prior session `<审计会话>`: owner renamed `has_notch_owner_sys`; comments at `0x140023000`, `0x140023087`, `0x14002314f`, `0x14002317a`. Verified by decompile output showing comment text inline. `<工具调用>` executed (confirmed in manifest).
 
 ---
 

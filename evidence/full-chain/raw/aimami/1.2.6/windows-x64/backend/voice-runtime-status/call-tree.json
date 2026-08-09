@@ -1,0 +1,50 @@
+{
+  "targets": [
+    {
+      "target": "load_voice_runtime_status",
+      "edges": [
+        {
+          "depth": 0,
+          "ea": "0x140162d80",
+          "name": "load_voice_runtime_status_owner_sys",
+          "role": "tracing_wrapper_owner",
+          "callers": 1,
+          "caller_ea": "0x140174120",
+          "note": "renamed this session; tracing::instrument wrapper; 1100B/39 blocks/cc10; analyze_function confirms callers=[sub_140174120] - called from the same shared dispatcher as get_codex_router_auth_readiness, via a dedicated per-command out-call (exclusive, not inlined into the dispatcher body)"
+        },
+        {
+          "depth": 1,
+          "ea": "0x140c37a50",
+          "name": "load_voice_runtime_status",
+          "role": "core_business_logic",
+          "note": "pre-existing rename+comment found at session start (orphaned IDB mutation, no raw bundle existed); confirmed via analyze_function callers=[sub_140162D80] i.e. exclusive to this owner"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140029dd0",
+          "name": "sub_140029DD0",
+          "role": "mutex_ptr_resolve",
+          "terminated_reason": "persistence_read",
+          "note": "resolves poison-checked mutex guard pointer for Repository<voice::runtime>; string anchor std::sync::poison::mutex::Mutex<codexmate_lib::core::repository::Repository>"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140bb37b0",
+          "name": "sub_140BB37B0",
+          "role": "repository_snapshot_copy",
+          "terminated_reason": "persistence_read",
+          "note": "712-byte struct copy from guarded repository state into local buffer"
+        },
+        {
+          "depth": 2,
+          "ea": "0x140c48530",
+          "name": "sub_140C48530",
+          "role": "response_tuple_builder",
+          "terminated_reason": "response_serialize",
+          "note": "terminal; builds final disc/ok/error response tuple written to owner's return slot"
+        }
+      ]
+    }
+  ],
+  "edges_count": 5
+}

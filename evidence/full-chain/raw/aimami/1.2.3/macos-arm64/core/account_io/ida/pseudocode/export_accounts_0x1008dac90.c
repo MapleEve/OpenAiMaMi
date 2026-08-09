@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core10account_io15export_accounts @ 0x1008dac90 | 基线 same-set
-// [FULL IDA decompiler]
+// [FULL hexrays]
 
 __int64 *__fastcall codexmate_lib::core::account_io::export_accounts::h907743e6877b5d6f(
         __int64 *a1,

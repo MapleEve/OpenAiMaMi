@@ -1,0 +1,38 @@
+{
+  "command": "rectify_invalid_thinking_signature",
+  "module": "core/relay/anthropic_history",
+  "owner_ea": "0x1004afd70",
+  "interface_type": "internal_function",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "serde_json::Value (messages array)",
+    "output": "Vec<Value> (filtered messages)"
+  },
+  "side_effects": [
+    "⚠ MUTATES input JSON: removes thinking blocks with invalid signatures from message content arrays"
+  ],
+  "idaSymbols": [
+    "rectify_invalid_thinking_signature"
+  ],
+  "pseudocode": [
+    "core/relay/anthropic_history/ida/pseudocode/rectify_invalid_thinking_signature_0x1004afd70.c"
+  ],
+  "nextCallees": [
+    "serde_json::value::index::Index::index_into_mut",
+    "serde_json::value::index::Index::index_into",
+    "alloc::vec::Vec::retain_mut",
+    "alloc::vec::Vec::retain",
+    "core::ptr::drop_in_place"
+  ],
+  "callTreeRows": 6,
+  "claims": {
+    "client": [],
+    "server": [
+      "rectify_invalid_thinking_signature"
+    ]
+  },
+  "serverEvidencePath": "core/relay/anthropic_history/ida/pseudocode/rectify_invalid_thinking_signature_0x1004afd70.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "Rectifies invalid thinking_signature in Anthropic message history: iterates messages, finds user-role messages with thinking blocks, removes thinking blocks that have invalid signatures via retain_mut. Closure variant (0x1009af720) is the retain_mut predicate that checks type==thinking and removes signature field."
+}

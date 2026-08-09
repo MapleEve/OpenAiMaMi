@@ -119,7 +119,7 @@ Inline IDB comments were written at:
 - `0x1005e2278`: `rebuild_registry` callsite;
 - `0x1005e2974`: rebuild-error mapping closure.
 
-`idb_save` returned OK for the active IDB.
+`<工具调用>` returned OK for the active IDB.
 
 ## Still Missing Before Strict
 

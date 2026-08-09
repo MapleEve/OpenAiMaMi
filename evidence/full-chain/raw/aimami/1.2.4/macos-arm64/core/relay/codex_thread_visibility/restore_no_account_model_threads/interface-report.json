@@ -1,0 +1,56 @@
+{
+  "command": "restore_no_account_model_threads",
+  "module": "core/relay/codex_thread_visibility",
+  "owner_ea": "0x1008e6080",
+  "interface_type": "internal_function",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "CodexPaths context (auth_file path, state_db paths)",
+    "output": "Result<RestoreStats, CoreError>"
+  },
+  "side_effects": [
+    "⚠ PERSISTENCE: opens SQLite DBs, executes UPDATE threads SET model=?2 WHERE id=?1",
+    "⚠ Reads/writes no_account_model_restore_journal",
+    "⚠ checkpoint_after_committed_write on each restored DB"
+  ],
+  "idaSymbols": [
+    "restore_no_account_model_threads"
+  ],
+  "pseudocode": [
+    "core/relay/codex_thread_visibility/ida/pseudocode/restore_no_account_model_threads_0x1008e6080.c"
+  ],
+  "nextCallees": [
+    "load_no_account_model_restore_journal",
+    "CodexPaths::all_codex_state_dbs",
+    "std::sys::fs::metadata",
+    "open_codex_db_for_convergence",
+    "read_thread_columns",
+    "rusqlite::Connection::prepare_with_flags",
+    "rusqlite::statement::Statement::query_row",
+    "rusqlite::Connection::execute",
+    "patch_no_account_model_restore_rollout",
+    "checkpoint_after_committed_write",
+    "remove_no_account_model_restore_journal",
+    "revert_rollout_patch",
+    "app_event",
+    "core::str::trim_matches",
+    "format_inner",
+    "drop_in_place<rusqlite::Connection>",
+    "drop_in_place<StoredLlmConfig>",
+    "restore_no_account_model_threads::{{closure}}",
+    "HashMap::insert",
+    "__rust_alloc",
+    "__rust_dealloc"
+  ],
+  "callTreeRows": 18,
+  "claims": {
+    "client": [],
+    "server": [
+      "restore_no_account_model_threads"
+    ]
+  },
+  "serverEvidencePath": "core/relay/codex_thread_visibility/ida/pseudocode/restore_no_account_model_threads_0x1008e6080.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "Restores no-account model threads: loads restore journal, iterates all Codex state DBs, queries threads for no-account model entries, patches rollout metadata, updates thread model column via SQL UPDATE, checkpoints, removes journal. Closure variant (0x1008e76a0) formats error messages with thread ID and model name."
+}

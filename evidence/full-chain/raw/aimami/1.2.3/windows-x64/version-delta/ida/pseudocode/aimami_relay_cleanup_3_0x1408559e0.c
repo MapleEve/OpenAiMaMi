@@ -1,5 +1,5 @@
 // win 1.2.3 delta | aimami_relay_cleanup_3 @ 0x1408559e0 | changelog ②关闭路由修复
-// [FULL IDA decompiler 28264B]
+// [FULL hexrays 28264B]
 // win 1.2.1 | module src/core/relay/manager.rs | attributed via panic-Location xref (win-native)
 __int64 __fastcall sub_1408559E0(__int64 a1, _QWORD *a2, __int64 *a3)
 {

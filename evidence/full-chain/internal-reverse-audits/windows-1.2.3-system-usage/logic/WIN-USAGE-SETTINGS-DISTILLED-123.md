@@ -24,6 +24,6 @@ Source: `raw/aimami/1.2.3/windows-x64/commands/ida/pseudocode/{get_usage_refresh
 
 ## Honest limitations of this distillation
 
-- No live IDA MCP session was available/run this pass (`idb_saved: false` in manifest.json) — this is a pure read-of-existing-raw-text distillation, not a fresh decompile or callee/xref chase.
+- No live IDA MCP session was available/run this pass (`<工具调用>d: false` in manifest.json) — this is a pure read-of-existing-raw-text distillation, not a fresh decompile or callee/xref chase.
 - Callee function names (`sub_140003640` etc.) are unresolved symbol stubs; red line 24 (IDB dirtree module naming) has NOT been applied to these specific functions in this pass — that is a separate follow-up requiring live IDA access.
 - Neither function's DTO/error envelope shape (dim4) nor deep leaf (dim3, e.g. does the settings write eventually hit a file/registry path or an in-memory cache only) is confirmed.

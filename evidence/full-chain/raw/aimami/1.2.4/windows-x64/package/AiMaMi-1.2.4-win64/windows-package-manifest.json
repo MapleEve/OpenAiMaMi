@@ -1,0 +1,63 @@
+{
+  "schema": "rust-reverse-pipeline.windows-package.v1",
+  "generatedAt": "2026-08-05T07:48:28.776908+00:00",
+  "installer": "<内部存储>/raw/binary/AiMaMi 1.2.4 win64.exe",
+  "installerName": "AiMaMi 1.2.4 win64.exe",
+  "installerSize": 34258432,
+  "installerSha256": "5b6aa827d6bde7c3a045c10d14b395fab87230fea434cb3d8f8631f79c6dc6b7",
+  "fileType": "<内部存储>/raw/binary/AiMaMi 1.2.4 win64.exe: PE32+ executable (GUI) x86-64, for MS Windows",
+  "packageFormat": "pe-executable-or-installer",
+  "platform": "windows",
+  "executedInstaller": false,
+  "extractorUsed": "7zz",
+  "extractStatus": "ok",
+  "extractedRoot": "<内部存储>/raw/aimami/1.2.4/windows-x64/package/AiMaMi-1.2.4-win64/extracted",
+  "extractedFileCount": 14,
+  "tauriDumpRoot": "<内部存储>/raw/aimami/1.2.4/windows-x64/package/AiMaMi-1.2.4-win64/tauri-dumped-assets",
+  "tauriDumpAttempts": [],
+  "attempts": [
+    {
+      "tool": "7zz",
+      "available": true,
+      "list": {
+        "cmd": [
+          "7zz",
+          "l",
+          "-slt",
+          "<内部存储>/raw/binary/AiMaMi 1.2.4 win64.exe"
+        ],
+        "exit": 0,
+        "log": "<内部存储>/raw/aimami/1.2.4/windows-x64/package/AiMaMi-1.2.4-win64/logs/7zz-list.log"
+      },
+      "extract": {
+        "cmd": [
+          "7zz",
+          "x",
+          "-y",
+          "-o<内部存储>/raw/aimami/1.2.4/windows-x64/package/AiMaMi-1.2.4-win64/extracted",
+          "<内部存储>/raw/binary/AiMaMi 1.2.4 win64.exe"
+        ],
+        "exit": 0,
+        "log": "<内部存储>/raw/aimami/1.2.4/windows-x64/package/AiMaMi-1.2.4-win64/logs/7zz-extract.log"
+      },
+      "newFileCount": 14
+    }
+  ],
+  "peFiles": [
+    {
+      "path": "<内部存储>/raw/binary/AiMaMi 1.2.4 win64.exe",
+      "relativePath": "AiMaMi 1.2.4 win64.exe",
+      "role": "installer",
+      "size": 34258432,
+      "sha256": "5b6aa827d6bde7c3a045c10d14b395fab87230fea434cb3d8f8631f79c6dc6b7",
+      "fileType": "<内部存储>/raw/binary/AiMaMi 1.2.4 win64.exe: PE32+ executable (GUI) x86-64, for MS Windows"
+    }
+  ],
+  "candidateAppBinaries": [],
+  "frontendCandidates": [],
+  "resourceCandidates": [],
+  "gaps": [
+    "no extracted candidate app PE binary found",
+    "no extracted frontend asset directory found"
+  ]
+}

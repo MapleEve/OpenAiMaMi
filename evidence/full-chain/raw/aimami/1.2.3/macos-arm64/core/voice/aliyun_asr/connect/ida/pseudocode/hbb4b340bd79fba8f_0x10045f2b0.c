@@ -1,5 +1,5 @@
 // __ZN13codexmate_lib4core5voice10aliyun_asr16AliyunAsrSession7connect28_$u7b$$u7b$closure$u7d$$u7d$17hbb4b340bd79fba8fE_1 @ 0x10045f2b0
-// [FULL — IDA decompiler 全解 92782B, 超大体分页取回]
+// [FULL — hexrays 全解 92782B, 超大体分页取回]
 // 1.2.3 NEW-delta | codexmate_lib::core::voice::aliyun_asr | vs 1.2.2 新增(IDA函数枚举diff, 名↔地址一致)
 char __fastcall codexmate_lib::core::voice::aliyun_asr::AliyunAsrSession::connect::_$u7b$$u7b$closure$u7d$$u7d$::hbb4b340bd79fba8f(
         unsigned __int64 *a1,

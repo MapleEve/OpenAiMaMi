@@ -5,7 +5,7 @@ machine: <本地机器>
 platform: windows-x64
 delta_class: integrity_recovered
 idb: <本地路径>
-idb_saved: true
+<工具调用>d: true
 sha: d24e429a
 
 ---

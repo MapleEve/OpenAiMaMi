@@ -95,7 +95,7 @@ Minimum depth ≥4 on all main paths. Target depth≥5 not reachable on this com
 | 0x1406D4BC0 | `relay_quota_extra_headers_validate_sys` | B | yes |
 | 0x1406D5B10 | `relay_quota_date_header_build_sys` | B | yes (Julian date calc, ms timestamp, discriminant=2) |
 
-8 renames total. All committed to IDB. `idb_save` called: ok=true.
+8 renames total. All committed to IDB. `<工具调用>` called: ok=true.
 
 ## ACCEPTED_UNKNOWN Anti-Cheat Record
 
@@ -179,4 +179,4 @@ Response JSON fields parsed:
 | 0x1408E34D0 | `relay_quota_http_response_state_machine_sys` | B | yes |
 | 0x140921FC0 | `relay_http_request_cleanup_sys` | C | yes |
 
-Total new renames: 4. idb_save: ok (<本地路径>
+Total new renames: 4. <工具调用>: ok (<本地路径>

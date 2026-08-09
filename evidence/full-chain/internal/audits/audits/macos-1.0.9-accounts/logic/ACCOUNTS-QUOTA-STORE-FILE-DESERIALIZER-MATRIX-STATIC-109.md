@@ -28,7 +28,7 @@ promotes no gate.
   `struct QuotaStoreFile with 3 elements`.
 - IDB writeback:
   comments added at `0x10036db58`, `0x1001bc62c`, and `0x1001ec774`;
-  `idb_save` returned OK.
+  `<工具调用>` returned OK.
 
 ## Load Entry
 

@@ -2,7 +2,7 @@
 
 ## Platform Artifacts
 
-- Binary: Windows x64 PE; `AiMaMi.1.2.3 win64.exe`; sha256 `aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396` (same 1.2.3 release binary recorded by the sibling `windows-1.2.3-relay` package, cross-checked via manifest.json field, not independently re-hashed this session). IDB: `E:\binary\AiMaMi.1.2.3 win64.exe.i64` (per live `server_health`, imagebase `0x140000000`).
+- Binary: Windows x64 PE; `AiMaMi.1.2.3 win64.exe`; sha256 `aeccccd78e470ad6cfdb52d72af624b34ce17a4a0b04e7596b32583eaf972396` (same 1.2.3 release binary recorded by the sibling `windows-1.2.3-relay` package, cross-checked via manifest.json field, not independently re-hashed this session). IDB: `<二进制路径>\AiMaMi.1.2.3 win64.exe.i64` (per live `server_health`, imagebase `0x140000000`).
 - macOS sibling: `internal-reverse/audits/macos-1.2.3-mcp/` — independent package, same product version, produced in a prior session with no IDA connection (angle-A accepted_unknown there). Binary sha256 `e3f2fec7d7cd32c8a7a650ec563577b8c74516aed270c1230a5b11296942114d` (different binary, different platform, as expected).
 
 ## Frontend IPC / Control-flow

@@ -22,7 +22,7 @@
 
 8. **Repair and write leaf confirmed** — `diag_config_section_repair_and_write_sys@0x1407668C0` decompiled full body; `relay_atomic_write_leaf_sys@0x140504310` confirmed as callee; rebuild marker string `aRebuiltByAimam@0x1412F13B7` (226 bytes bilingual Chinese+English) confirmed; `sub_140BD33E0` (TOML serializer) confirmed at 0x1407669 73.
 
-9. **IDB saves confirmed** — `idb_save` returned `{"ok":true,"path":"<本地路径>"}`; 10 renames applied with 0 failures.
+9. **IDB saves confirmed** — `<工具调用>` returned `{"ok":true,"path":"<本地路径>"}`; 10 renames applied with 0 failures.
 
 10. **Call tree depth = 5 confirmed** — dispatcher(0) → owner/core(1) → CODEX_HOME/relay_ctx/engine(2) → section_fns/process_check/keychain(3) → SHA256/Process32/TOML_write/json_unescape(4) → external Win32 APIs(5); terminated_reason: all significant internal callees at depth 4-5 are either well-known Win32 APIs (RegOpenKeyExW, GetDiskFreeSpaceExW, CreateToolhelp32Snapshot) or allocator/string utility functions (sub_14001036x series).
 

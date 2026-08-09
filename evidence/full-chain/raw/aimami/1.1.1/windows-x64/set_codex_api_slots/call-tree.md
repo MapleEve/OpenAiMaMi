@@ -72,7 +72,7 @@ set_codex_api_slots_owner_sys @ 0x14001BDE0 (1217B)
 - `0x1406D9FC0` — relay state write-lock+mutation gate evidence
 - `0x1406D7860` — relay slots Vec updater evidence
 
-### idb_save
+### <工具调用>
 ok=true, path=<本地路径>
 
 ## Fake-wall Taxonomy Check

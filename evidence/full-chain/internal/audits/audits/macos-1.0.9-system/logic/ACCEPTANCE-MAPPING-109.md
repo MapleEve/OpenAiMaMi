@@ -253,7 +253,7 @@ std::process::Command::new("sw_vers").arg("-productVersion").output()  → subpr
 - Walks parent 3 levels: `Path::parent()` × 3 at 0x100d39010 to get .app bundle root
 - Checks extension `.app` (3-byte compare: `app` = 0x617070)
 - Checks translocation: calls `is_app_translocation_path` at 0x100578020 (substring search for `/AppTranslocation/` = 18 bytes at 0x100f3d157)
-- `/Volumes/` prefix check: 9-byte compare `0x73656D756C6F562F` + `0x2F` = "/Volumes/"
+- `<内部存储>/` prefix check: 9-byte compare `0x73656D756C6F562F` + `0x2F` = "<内部存储>/"
 - Spawns `xattr -p com.apple.quarantine <app_path>` via Command chain
   - Strings confirmed at 0x100f3d13b: `"xattr-pcom.apple.quarantine"`
 - `quarantine_cleared = (exit_code == 0)` — actually means quarantine attribute IS PRESENT (xattr returns 0 when field exists)
@@ -289,7 +289,7 @@ NO file writes, NO config changes, NO network calls
 **dim6 acceptance assertions**:
 1. `cargo test`: test_check_update_installability_normal_app → non-translocation, non-volumes path, xattr exits 0 → {status:"ok", can_install:true, is_translocation:false, quarantine_cleared:true}
 2. `cargo test`: test_check_update_installability_translocation → path contains /AppTranslocation/ → {status:"app_translocation", can_install:false, is_translocation:true}
-3. `cargo test`: test_check_update_installability_volumes → path starts with /Volumes/ → {status:"read_only_location", can_install:false}
+3. `cargo test`: test_check_update_installability_volumes → path starts with <内部存储>/ → {status:"read_only_location", can_install:false}
 4. `cargo test`: test_check_update_installability_xattr_fail → xattr returns nonzero → {quarantine_cleared:false}
 5. `e2e manual`: run AiMaMi from normal install path → verify can_install=true, status="ok"
 6. `e2e manual`: open AiMaMi from DMG (translocation) → verify status="app_translocation", can_install=false
@@ -324,4 +324,4 @@ Gate note per GATE-SPEC: "acceptance mapping 已执行或被明确接受" — th
 - IDA decompiler_ready: true, auto_analysis_ready: true
 - Calls made: decompile × 7 (6 owners + 1 platform impl), callees × 1 (batch), xrefs_to × 2, find_regex × 3, get_bytes × 1
 - inline IDB comments: to be written below (set_comments step)
-- idb_save: pending (end of session)
+- <工具调用>: pending (end of session)

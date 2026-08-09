@@ -1,0 +1,35 @@
+{
+  "command": "has_usable_real_oauth_login",
+  "module": "core/relay/router_unlock_auth",
+  "owner_ea": "0x10056cf10",
+  "interface_type": "internal_function",
+  "argKeys": [],
+  "dto_fields": {
+    "input": "RouterContext (auth file path)",
+    "output": "bool"
+  },
+  "side_effects": [],
+  "idaSymbols": [
+    "has_usable_real_oauth_login"
+  ],
+  "pseudocode": [
+    "core/relay/router_unlock_auth/ida/pseudocode/has_usable_real_oauth_login_0x10056cf10.c"
+  ],
+  "nextCallees": [
+    "load_auth_file",
+    "auth_is_usable_real_oauth",
+    "drop_in_place<CoreError>",
+    "__rust_dealloc"
+  ],
+  "callTreeRows": 5,
+  "claims": {
+    "client": [],
+    "server": [
+      "has_usable_real_oauth_login"
+    ]
+  },
+  "serverEvidencePath": "core/relay/router_unlock_auth/ida/pseudocode/has_usable_real_oauth_login_0x10056cf10.c",
+  "needsServerEvidencePath": false,
+  "confidence": "high",
+  "summary": "Checks if current auth file has usable real OAuth login: loads auth file, calls auth_is_usable_real_oauth to check OAuth fields. Returns false on load error. Used to determine if real OAuth credentials are active."
+}

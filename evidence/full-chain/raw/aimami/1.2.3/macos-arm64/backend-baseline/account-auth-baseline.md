@@ -2,7 +2,7 @@
 
 来源：`core/{auth,account_io,account_coordination,account_metadata,oauth_refresh,oauth_login,bootstrap_cache,sessions,session_analytics}/ida/pseudocode/`（全部已由 IDA 反编译为 `.c`，本次只读盘归纳，不连 IDA、不逆二进制）。
 
-范围内共 120 个函数文件，全部为 `[FULL IDA decompiler]` 或标准完整反编译，**未发现任何 `[TRUNCATED]` / `[DECOMPILE-FAILED]` 标记**（已用 `grep -rl "TRUNCATED\|DECOMPILE-FAILED\|chars total"` 对全部 9 个目录复核，命中数为 0）。serde `Serialize`/`Deserialize` 自动生成 glue 共 6 个（auth×3、account_io×1、oauth_refresh×1、bootstrap_cache×1），已略读只计数，未逐行分析；其余 114 个函数（含 Rust 闭包）均为业务函数，已读伪代码并在下文归纳。
+范围内共 120 个函数文件，全部为 `[FULL <反编译器>]` 或标准完整反编译，**未发现任何 `[TRUNCATED]` / `[DECOMPILE-FAILED]` 标记**（已用 `grep -rl "TRUNCATED\|DECOMPILE-FAILED\|chars total"` 对全部 9 个目录复核，命中数为 0）。serde `Serialize`/`Deserialize` 自动生成 glue 共 6 个（auth×3、account_io×1、oauth_refresh×1、bootstrap_cache×1），已略读只计数，未逐行分析；其余 114 个函数（含 Rust 闭包）均为业务函数，已读伪代码并在下文归纳。
 
 ---
 
@@ -106,7 +106,7 @@
 ## 3. 反编译完整性标注
 
 - 本批 9 个目录共 120 个 `.c` 文件，逐一 `grep -rl "TRUNCATED\|DECOMPILE-FAILED\|chars total"` 复核，**命中 0 个**——不存在需要标注"内部不臆断"的截断/失败函数。
-- `refresh_token_with_policy`（56KB）文件头注释含 `[FULL — IDA decompiler 全解 56260B, 超大体分页取回]`，属正常大函数分页获取伪代码，非截断；已按调用链结构（锁 → 身份校验 → 让路检测 → HTTP 刷新 → 落盘）读取归纳，未发现桩函数或空函数体。
+- `refresh_token_with_policy`（56KB）文件头注释含 `[FULL — <反编译器> 全解 56260B, 超大体分页取回]`，属正常大函数分页获取伪代码，非截断；已按调用链结构（锁 → 身份校验 → 让路检测 → HTTP 刷新 → 落盘）读取归纳，未发现桩函数或空函数体。
 - `load_sessions`（178KB，本批最大单文件）、`export_accounts`/`import_accounts`（各 ~50KB）、`exchange_code_for_tokens`（58KB）、`parse_all_sessions`（42KB）均为正常展开的大函数（含大量内联 `serde_json`/`hashbrown`/SQLite 绑定代码），已读取声明、关键调用链与字符串常量确认业务语义，未见截断标记。
 
 ---

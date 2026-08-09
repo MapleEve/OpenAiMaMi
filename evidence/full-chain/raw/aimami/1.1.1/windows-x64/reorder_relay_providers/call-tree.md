@@ -72,7 +72,7 @@ tauri_ipc_main_dispatcher_sys @ 0x14000D2A0
 | 0x140730AA0 | TLS id-index rebuild | ✓ |
 | 0x140312480 | SIMD Vec reorder | ✓ |
 
-idb_save: ok=true path=<本地路径>
+<工具调用>: ok=true path=<本地路径>
 
 ## Accepted Unknown
 
