@@ -69,8 +69,8 @@
 
 ## 3. IDB 命名(红线24,双平台)
 
-- **mac 1.2.4**:116 NEW-delta 函数全部 `[FULL decompile]`,inline 注释 `1.2.4 NEW-delta | <module>` + 归 `codexmate_lib/...` 目录树(含新 `core/relay/anthropic_reasoning`、`core/relay/anthropic_history`、`core/relay/router_unlock_auth`、`core/relay/codex_catalog` 等子目录)+ <工具调用>。
-- **win 1.2.4**(strip):20 delta 锚点函数 `[FULL decompile]` + **955 函数 dirtree 补全归入 71 目录**(对齐 mac 模块树命名)+ strip 缺失符号经 dirtree + 命令名串 + 格式化闭包签名三重锚定定位 + <工具调用>。
+- **mac 1.2.4**:116 NEW-delta 函数全部 `[FULL decompile]`,inline 注释 `1.2.4 NEW-delta | <module>` + 归 `codexmate_lib/...` 目录树(含新 `core/relay/anthropic_reasoning`、`core/relay/anthropic_history`、`core/relay/router_unlock_auth`、`core/relay/codex_catalog` 等子目录)+ idb_save。
+- **win 1.2.4**(strip):20 delta 锚点函数 `[FULL decompile]` + **955 函数 dirtree 补全归入 71 目录**(对齐 mac 模块树命名)+ strip 缺失符号经 dirtree + 命令名串 + 格式化闭包签名三重锚定定位 + idb_save。
 - 前端 CCF delta 已做完:beautified JS 的 invoke 命令链/路由/状态机抽齐为 `frontend-control-flow.jsonl`(134 行)+ `ast-facts.json`。
 
 ## 4. opus 复查结论
@@ -83,7 +83,7 @@ opus 对 6 份制品(DELTA-FINAL + 4 × 6dims + CHANGELOG-FRONTEND-ALIGNMENT + F
 - **敏感常量不还原**:managed_api_key 的 14 字符 key 名与 23 字节前缀 XOR 掩码常量未读出明文(AiMaMi managed key 敏感识别位);`anthropic_history::normalize_messages` 的完整 SHA-256 signature 算法未逐 round 还原(仅确认使用了 SHA-256,轮常量 0x6A09E667/0x5BE0CD19/0x9B05688C/0xA54FF53A 已实测)。
 - **mac/win 行为一致性**:除 repository 同步原语(mac Rust Mutex / win `InterlockedCompareExchange8`+`WakeByAddressSingle` + win-only `PROGRESSIVE_STATE_SAVE_FAILED`/`poisoned lock` 错误路径)外,未观测到业务行为分叉。
 - **1 项已知不确定性**:`router_exit_guard_state`(@mac 0x1002cae90)后端有命令注册,但 2 份前端 page 级 delta 未发现直接消费者(疑在 app 根组件/window 关闭钩子,出 page 级 delta 范围),不视为悬空。
-- **mac setter 已覆盖(更正)**:`set_claude_web_search_compat` mac setter 实现体**在本批 NEW-delta 内**——`RelayManager::set_claude_web_search_compat`@0x10079bbc0(core/relay/manager/ida/pseudocode/,157 行完整 body:Mutex lock/unlock + `RelayManager::persist` + `RelayState` Clone + `GLOBAL_PANIC_COUNT` poison 检查);`set_codex_no_account_slots`@0x10079a8a0 同样在 116 delta(724 行完整 body)。@0x1005825c0 是**另一独立函数** `ClaudeWebSearchCompatPayload` serde Serialize(DTO serialize),与 setter 非同一函数;早期版本误将二者合并为"mac 仅含 DTO serialize",现据盘上 .c 核实更正。mac@0x10079bbc0 / win@0x140e01580 双平台对齐,无需补 mac 等价路径。
+- **mac setter 已覆盖(更正)**:`set_claude_web_search_compat` mac setter 实现体**在本批 NEW-delta 内**——`RelayManager::set_claude_web_search_compat`@0x10079bbc0(core/relay/manager/ida/pseudocode/,157 行完整 body:Mutex lock/unlock + `RelayManager::persist` + `RelayState` Clone + `GLOBAL_PANIC_COUNT` poison 检查);`set_codex_no_account_slots`@0x10079a8a0 同样在 116 delta(725 行完整 body)。@0x1005825c0 是**另一独立函数** `ClaudeWebSearchCompatPayload` serde Serialize(DTO serialize),与 setter 非同一函数;早期版本误将二者合并为"mac 仅含 DTO serialize",现据盘上 .c 核实更正。mac@0x10079bbc0 / win@0x140e01580 双平台对齐,无需补 mac 等价路径。
 
 ## 5. 教训与方法论
 
@@ -102,3 +102,15 @@ opus 对 6 份制品(DELTA-FINAL + 4 × 6dims + CHANGELOG-FRONTEND-ALIGNMENT + F
 - ✅ **mac setter 已覆盖(更正)**:`set_claude_web_search_compat` mac setter 实现体**在本批 delta**——@0x10079bbc0 完整 body 已落盘(Mutex lock/unlock + persist + RelayState Clone + poison 检查,157 行)。@0x1005825c0 是独立 `ClaudeWebSearchCompatPayload` serde Serialize 函数(DTO),非 setter 本体;早期误并,现据盘上 .c 更正。mac@0x10079bbc0 / win@0x140e01580 双平台对齐。
 - ⚠ **`router_exit_guard_state` 前端消费者未定位(已知)**:疑在 app 根组件退出钩子,出 page 级 delta 范围,不视为悬空。
 - same-set(未变函数)按迁移规约直接沿用 1.2.3,不重逆。
+
+<!-- CONSUMER_CONTRACT_FULL_DIFF_SOT_20260824 -->
+## Consumer Contract & SoT Full Update (2026-08-24)
+
+> session `cc-aimami-full-diff-consumer-sot-20260824`；消费侧合同 + SoT 全量更新，无 IDA/无 raw 重写，不提升任何实现门。
+
+- **6 CONSUMER-CONTRACT 文件更新**：2 新建 (1.2.4->1.2.6 mac+win) + 4 更新 (1.2.4 mac+win, 1.2.6 composed mac+win)
+- **consumer_gate 状态**：mac `consumerStartReady=true` + `strictImplementationUse=true`（leaf dim1-5 closed）；win `consumerStartReady=true` + `strictImplementationUse=false`（BLOCKED_N0）
+- **实现门全 false**：`readyToImplement=false`、`implementation_use=false`、`gate_accepted=false`（dim6 留白 + LIVE_REFERENCE_NOT_RUN）
+- **voice active=0**（硬门满足）
+- SoT 更新：INDEX.jsonl 2076→2083 (+7 lines) + REVERSE-STATUS.md + task-plan.json + COVERAGE-FINAL + BASELINE-FINAL
+- 非动作：不写产品仓、不公开发布、不做真机对照（红线 25）

@@ -5,8 +5,8 @@
 ## 1. 后端完整基线(mac,1638 全 App 函数)
 
 ### 覆盖(grounded)
-- **1638 全 App 函数 decompile**:1422 baseline same-set + 216 delta(88 超大体用 IDA Python+IDA decompiler 分页全解,红线13;1 IDA 失败)。名↔地址一致(IDA 函数枚举地址,非 nm VA)。
-- **1638 全 IDB 注释**:1422 标 `baseline same-set` + 216 标 `1.2.3 NEW-delta` + 归 `codexmate_lib/...` 目录树(94 目录)+ <工具调用>。复验 216+1422=1638。
+- **1638 全 App 函数 decompile**:1422 baseline same-set + 216 delta(88 超大体用 py_eval+hexrays 分页全解,红线13;1 IDA 失败)。名↔地址一致(IDA 函数枚举地址,非 nm VA)。
+- **1638 全 IDB 注释**:1422 标 `baseline same-set` + 216 标 `1.2.3 NEW-delta` + 归 `codexmate_lib/...` 目录树(94 目录)+ idb_save。复验 216+1422=1638。
 - **9 组模块覆盖分析**(sonnet workflow,读全部 .c 出模块职责+关键函数+破坏副作用),文档在 `backend-baseline/*.md`(17-24KB 各):
 
 | 组 | 文件 | 覆盖模块 |
@@ -47,3 +47,15 @@
 ## 3. 与 delta 的区别
 - delta(`COVERAGE-FINAL-1.2.3.md`)= 只逆相对 1.2.2 新增 216。
 - **本基线** = 1638 全后端 + 6 页全前端独立完整逆向,不依赖 1.2.2 迁移假设,不用命令 diff 代替前端。
+
+
+---
+
+## 4. dim3/dim4 字段级分片收口（2026-08-18 消费侧归约，零 IDA/零 raw 重写）
+
+> 本基线（1638 全后端 + 6 页全前端）之上的字段级补充。dim3/dim4 分片结果归约成消费者自足合同，详见 `audits/macos-1.2.3-version-delta/logic/CONSUMER-CONTRACT-DIM34-97LEAF.md`（mac 97 leaf）+ `audits/windows-1.2.3-version-delta/logic/CONSUMER-CONTRACT-DIM34-68LEAF.md`（win 68 leaf）。本轮为归约重组，不重新逆向。
+
+- **mac**：dim3 结构 PASS（97/97 call-tree；82 leaf semantic_leaves 235 条；26 leaf destructive_functions）。dim4 134 DTO = 107 非 voice 字段数据（20 干净可校验 + 87 长度表不可靠）+ 13 仅类型名 + 14 voice out-of-scope。
+- **win**：dim3 结构 PASS（68/68 call-tree；edges 3-327）。dim4 68 = 53 matched（mac 同源 crossmap）+ 11 unmatched non-voice + 4 voice out-of-scope。
+- **voice active=0**；mac 与 win 互不外推（红线8）。实现门全 false，dim6 留白 + live_reference 未对照（红线25）。
+- 与模块级 `CONSUMER-CONTRACT-NONVOICE-107.md`（mac）/ `CONSUMER-CONTRACT-NONVOICE-54.md`（win）合读即消费者完整合同。

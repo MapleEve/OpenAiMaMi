@@ -1,6 +1,6 @@
 # AiMaMi 1.2.3 版本 delta 逆向终稿(mac 1.2.2→1.2.3 / win 1.2.1→1.2.3)
 
-> 生产者:mini 本机。双 IDA 已加载 1.2.3(mac IDA decompiler✓ / win IDA decompiler✓)。全 sonnet worker + Workflow 并行 + orchestrator 持授权亲逆 IDA。
+> 生产者:mini 本机。双 IDA 已加载 1.2.3(mac hexrays✓ / win hexrays✓)。全 sonnet worker + Workflow 并行 + orchestrator 持授权亲逆 IDA。
 
 ## 1. 前端 delta(前端优先)
 
@@ -12,7 +12,7 @@
 changelog 三项全是**行为后端变更**(非新命令)。用 **IDA 自己的函数枚举** diff(名↔地址一致,而非 nm VA——见 §5 教训):
 
 - mac 真 App 函数:1.2.2 **1267** → 1.2.3 **1638**,**216 个真实新 App 函数**。
-- 216 全部按正确 IDA 地址 decompile(216 落盘 / 11 截断已标 / 0 失败)+ inline 注释 `1.2.3 NEW-delta | <module>` + <工具调用>。
+- 216 全部按正确 IDA 地址 decompile(216 落盘 / 11 截断已标 / 0 失败)+ inline 注释 `1.2.3 NEW-delta | <module>` + idb_save。
 
 ### changelog ↔ 模块映射(Workflow sonnet 分析 + 对抗 verify)
 
@@ -35,8 +35,8 @@ changelog 三项全是**行为后端变更**(非新命令)。用 **IDA 自己的
 
 ## 3. IDB 命名(红线24,双平台)
 
-- **mac 1.2.3**:57 规范模块 → **1638 App 函数归入 94 目录**(含新 `commands/autostart`)+ 216 delta inline 注释 + <工具调用> ok。
-- **win 1.2.3**(strip):panic-Location + 严格传播 **938 函数归属 / 67 模块** + **115/131 命令 handler 精确命名** + <工具调用> ok。
+- **mac 1.2.3**:57 规范模块 → **1638 App 函数归入 94 目录**(含新 `commands/autostart`)+ 216 delta inline 注释 + idb_save ok。
+- **win 1.2.3**(strip):panic-Location + 严格传播 **938 函数归属 / 67 模块** + **115/131 命令 handler 精确命名** + idb_save ok。
 
 ## 4. Workflow 对抗 verify
 
@@ -48,7 +48,28 @@ changelog 三项全是**行为后端变更**(非新命令)。用 **IDA 自己的
 
 ## 6. 残留闭合(「没做完的必须做完」)
 
-- ✅ **11 超大截断函数全逆全**:MCP decompile 有响应上限截成桩;改用 IDA Python 直调 `IDA decompiler.decompile` + 7KB 分页取回完整伪代码(40-92KB 各),覆盖截断桩(红线13 不许以体积 bail)。mac 0 残留 TRUNCATED / 11 标 `[FULL IDA decompiler]`。
-- ✅ **win 符号级 delta 已补**:win strip 无 nm,靠 panic 路径 + 行为锚点串定位并逆全 **15 个 win delta 锚点函数**(2 autostart 命令 owner + 4 新模块 anchor + session_meta 改写 3 + `aimami_relay_` 清理 3〔②关闭路由修复核心〕 + reasoning 1 + router_model_restore 3),证据落 `windows-x64/version-delta/ida/pseudocode/`,win IDB 15 注释 + <工具调用>。win src 路径 diff 证实 4 个新 .rs(autostart/account_coordination/account_io/relay/invariants)。
+- ✅ **11 超大截断函数全逆全**:MCP decompile 有响应上限截成桩;改用 py_eval 直调 `ida_hexrays.decompile` + 7KB 分页取回完整伪代码(40-92KB 各),覆盖截断桩(红线13 不许以体积 bail)。mac 0 残留 TRUNCATED / 11 标 `[FULL hexrays]`。
+- ✅ **win 符号级 delta 已补**:win strip 无 nm,靠 panic 路径 + 行为锚点串定位并逆全 **15 个 win delta 锚点函数**(2 autostart 命令 owner + 4 新模块 anchor + session_meta 改写 3 + `aimami_relay_` 清理 3〔②关闭路由修复核心〕 + reasoning 1 + router_model_restore 3),证据落 `windows-x64/version-delta/ida/pseudocode/`,win IDB 15 注释 + idb_save。win src 路径 diff 证实 4 个新 .rs(autostart/account_coordination/account_io/relay/invariants)。
 - win 命令命名 16 个合池/歧义未精确命名(需 mac 符号)——strip 物理上限,非漏逆。
 - same-set(未变函数)按迁移规约直接沿用 1.2.2,不重逆。
+
+
+---
+
+## 7. dim3/dim4 字段级分片收口（2026-08-18 消费侧归约，零 IDA/零 raw 重写）
+
+> 承接 1.2.3 dim3（`call-tree.json` 追真调用树到 semantic leaf）+ dim4（`interface-report.json` 字段级 DTO）分片结果，归约成消费者自足合同。详见 `audits/macos-1.2.3-version-delta/logic/CONSUMER-CONTRACT-DIM34-97LEAF.md` + `audits/windows-1.2.3-version-delta/logic/CONSUMER-CONTRACT-DIM34-68LEAF.md`。本轮为归约重组，不重新逆向。
+
+### mac（97 raw leaf）
+- **dim3 结构 PASS**：97/97 `call-tree.json`；82 leaf `semantic_leaves`（235 条）；26 leaf `destructive_functions`；`terminated_reason` 全 None（诚实未标注）。
+- **dim4 字段级 PARTIAL**：134 DTO 条目 = 107 非 voice 字段数据（**20 干净可校验** `sum(field_lengths)==len(key_literal)` + 87 长度表不可靠）+ 13 非 voice 仅类型名 + 14 voice out-of-scope。mac 侧为 live IDA `serialize_entry` 键字面量提取（非 crossmap）。
+- 任务前提「16 DTO 字段级」与磁盘实况不符，以 20 干净可校验为准（红线31/红线14 grounded）。
+
+### win（68 raw leaf）
+- **dim3 结构 PASS**：68/68 `call-tree.json`；edges 3-327；`terminated_reason` 全 None。
+- **dim4 字段级 PARTIAL**：68 = 53 matched（mac 同源 crossmap `cross_platform_inferred=true`）+ 11 unmatched non-voice（win 本地 decompile conf=high/medium）+ 4 voice out-of-scope。无任何 leaf 达 win 本地 serde 实测级闭合（红线8，win strip 无符号）。
+
+### 共同结论
+- **voice active=0**（双端硬门）；mac 与 win 互不外推（红线8）。
+- **实现门全 false**（consumerStartReady/strictImplementationUse/readyToImplement/implementation_use/gate_accepted），dim6 留白 + live_reference 未对照（红线25）。
+- 模块级 dim1-5 状态见 `CONSUMER-CONTRACT-NONVOICE-107.md`（mac）/ `CONSUMER-CONTRACT-NONVOICE-54.md`（win），与本字段级合同合读即消费者完整合同。
