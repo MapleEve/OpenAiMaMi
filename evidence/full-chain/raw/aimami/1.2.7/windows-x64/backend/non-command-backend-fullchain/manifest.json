@@ -1,0 +1,191 @@
+{
+ "schema": "c5cm.reverse.raw_leaf.v1",
+ "target_id": "angle_c:win127-truly-undone-non-command-backend-20261001",
+ "command": "non_command_backend_fullchain",
+ "product": "aimami",
+ "version": "1.2.7",
+ "platform": "windows-x64",
+ "module": "src/core/account_coordination.rs+src/core/account_io.rs+src/core/auth.rs+src/core/codex_config.rs+src/core/debug_bundle.rs+src/core/oauth_refresh.rs+src/core/relay/atomic_write.rs+src/core/relay/codex_mutation.rs+src/core/relay/codex_project_state.rs+src/core/relay/codex_writer.rs+src/core/relay/health_check.rs+src/core/relay/io.rs+src/core/relay/managed_blocks.rs+src/core/relay/proxy_server.rs+src/core/relay/storage.rs+src/core/relay/transition_journal.rs+src/core/relay/upstream_url.rs+src/core/repository.rs+src/platform/process.rs+src/platform/system_volume_windows.rs",
+ "session": "<审计会话>",
+ "machine": "win (IDA 9.3, IDB <内部存储>\\AiMaMi.1.2.7 win64.exe.i64)",
+ "cluster": [
+  {
+   "cluster": "core/account_coordination",
+   "win_module": "src/core/account_coordination.rs",
+   "fn_count": 1,
+   "decompiled": 1,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/account_io",
+   "win_module": "src/core/account_io.rs",
+   "fn_count": 1,
+   "decompiled": 1,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/auth",
+   "win_module": "src/core/auth.rs",
+   "fn_count": 1,
+   "decompiled": 1,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/codex_config",
+   "win_module": "src/core/codex_config.rs",
+   "fn_count": 11,
+   "decompiled": 11,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/debug_bundle",
+   "win_module": "src/core/debug_bundle.rs",
+   "fn_count": 26,
+   "decompiled": 26,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/oauth_refresh",
+   "win_module": "src/core/oauth_refresh.rs",
+   "fn_count": 7,
+   "decompiled": 7,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/relay/atomic_write",
+   "win_module": "src/core/relay/atomic_write.rs",
+   "fn_count": 4,
+   "decompiled": 4,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/relay/codex_mutation",
+   "win_module": "src/core/relay/codex_mutation.rs",
+   "fn_count": 7,
+   "decompiled": 7,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/relay/codex_project_state",
+   "win_module": "src/core/relay/codex_project_state.rs",
+   "fn_count": 14,
+   "decompiled": 14,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/relay/codex_writer",
+   "win_module": "src/core/relay/codex_writer.rs",
+   "fn_count": 3,
+   "decompiled": 3,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/relay/health_check",
+   "win_module": "src/core/relay/health_check.rs",
+   "fn_count": 4,
+   "decompiled": 4,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/relay/io",
+   "win_module": "src/core/relay/io.rs",
+   "fn_count": 1,
+   "decompiled": 1,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/relay/managed_blocks",
+   "win_module": "src/core/relay/managed_blocks.rs",
+   "fn_count": 39,
+   "decompiled": 39,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/relay/proxy_server",
+   "win_module": "src/core/relay/proxy_server.rs",
+   "fn_count": 115,
+   "decompiled": 115,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/relay/storage",
+   "win_module": "src/core/relay/storage.rs",
+   "fn_count": 6,
+   "decompiled": 6,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/relay/transition_journal",
+   "win_module": "src/core/relay/transition_journal.rs",
+   "fn_count": 2,
+   "decompiled": 2,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/relay/upstream_url",
+   "win_module": "src/core/relay/upstream_url.rs",
+   "fn_count": 2,
+   "decompiled": 2,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "core/repository",
+   "win_module": "src/core/repository.rs",
+   "fn_count": 66,
+   "decompiled": 66,
+   "destructive_fns": 1
+  },
+  {
+   "cluster": "platform/process",
+   "win_module": "src/platform/process.rs",
+   "fn_count": 34,
+   "decompiled": 34,
+   "destructive_fns": 0
+  },
+  {
+   "cluster": "platform/system_volume",
+   "win_module": "src/platform/system_volume_windows.rs",
+   "fn_count": 3,
+   "decompiled": 3,
+   "destructive_fns": 0
+  }
+ ],
+ "target_fn_total": 347,
+ "target_decompiled": 347,
+ "full_bundle_fn_total": 1070,
+ "full_bundle_modules": 90,
+ "反编译器_null": 1,
+ "truncated_stubs": 0,
+ "voice_out_of_scope": "voice/audio/capture/runtime-settings/trigger-listener 排除（用户既定 scope）；voice 模块函数仅因 panic-Location 归属被归目录，不在 truly_undone 26 内",
+ "notes": "win strip 无符号：模块归属经 panic-Location 两跳 + 严格调用图传播(>=2 同模块调用者、排库函数、lib.rs 不作源) + tauri 命令名串 xref 三层 win-native 恢复；upstream_url/codex_writer/auth 无 panic-Location 串，经内容锚（\"<invalid relay URL>\" literal / router_http_contract / credentialGeneration 重复快照日志串）xref 恢复；load_runtime_display_snapshot 2026-10-01 双平台零命中经 2026-10-06 判定为池化碎片假阴性并改判 already_in_canonical（win handler full-chain 闭合于独立 leaf commands/accounts/load_runtime_display_snapshot/，mac 零符号如实标注）。",
+ "latest_exe_rebaseline": {
+  "session": "<审计会话>",
+  "date": "2026-10-06",
+  "trigger": "Oct 6 rebaseline 轮判定 21 簇 NEEDS_REDO（458 旧伪代码 body-changed/missing 失效）；用户裁决「全都做完」执行重逆",
+  "latest_exe": {
+   "function_count": 112594,
+   "exe_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+   "idb": "<内部存储>\\AiMaMi.1.2.7 win64.exe.i64 (<审计环境>, 用户挂载, 零 open_file/零版本切换)"
+  },
+  "record_disposition": {
+   "relocated_same_body": 610,
+   "body_changed_successor_located": 368,
+   "body_changed_successor_unlocated": 85,
+   "same_ea_same_body": 1,
+   "split_successors_documented": 1,
+   "body_changed_voice_out_of_scope": 5
+  },
+  "cluster_resolution": {
+   "needs_redo_items_before": 21,
+   "fully_closed_items": 18,
+   "partial_items": 3,
+   "partial_detail": {
+    "core/relay/proxy_server": "29 changed 中 26 定位+重逆, 3 unlocated",
+    "core/codex_config": "7 changed 中 4 定位+重逆, 3 unlocated",
+    "core/relay/codex_mutation": "7 changed 中 5 定位+重逆, 2 unlocated"
+   }
+  },
+  "pseudocode_latest_exe_files": 377,
+  "notes": "relocated 610 重锚定引用旧伪代码（体哈希一致）；body-changed 368 定位后 live decompile 重逆（含 22 voice 机械定位语义跳过、5 voice 未定位跳过、1 handle_event 拆分四后继已文档化）；85 非 voice unlocated 如实开放不伪闭合；旧伪代码目录 ida/pseudocode/ 原样保留（历史口径）"
+ }
+}

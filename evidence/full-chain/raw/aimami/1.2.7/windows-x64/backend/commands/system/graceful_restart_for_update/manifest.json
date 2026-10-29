@@ -1,0 +1,46 @@
+{
+  "schema": "c5cm.aimami.raw.backend-command-leaf.v1",
+  "product": "aimami",
+  "version": "1.2.7",
+  "platform": "windows-x64",
+  "module": "commands/system",
+  "command": "graceful_restart_for_update",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "generated_at_utc": "2026-10-07T00:00:00Z",
+  "binary_anchor": {
+    "idb_path": "<内部存储>\\AiMaMi.1.2.7 win64.exe.i64",
+    "module": "AiMaMi.1.2.7 win64.exe",
+    "exe_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+    "function_count": 112594,
+    "imagebase": "0x140000000",
+    "ida_port": <审计环境>,
+    "verification": "server_health live 实测（uptime 353647s, decompiler_ready=true, auto_analysis_ready=true, strings 32702）"
+  },
+  "glue": {
+    "ea": "0x1405F27C0",
+    "size": 586,
+    "idb_name": "graceful_restart_for_update",
+    "dirtree": "/codexmate_lib/commands/system/graceful_restart_for_update"
+  },
+  "scope": "用户「欠账全做完 0 残留」直派单任务：graceful_restart_for_update 禁实现条目更正（win full-chain + 合同补全 + 分类/gate/SoT 回写）。Oct 6 复核已呈报后端在案（池化双窗 0x141A22C00/0x141A22BF0 + 全名串唯一 xref 落 0x1405F27C0 + dispatcher 内 caller），但该呈报仅 session 现场、无任何 SoT/盘上制品登记——本轮按红线 31 全部现场独立重证后落盘",
+  "out_of_scope": ["voice/audio/capture/runtime-settings/trigger-listener 全排除（零触碰）", "dim6 留白（实现侧验收）", "mac 侧 full-chain 逆向（mac 只读核验注册/wrapper/request_restart 语义对照，mac 侧证据供消费侧对照不构成 mac leaf）"],
+  "inputs_cited": [
+    "internal-reverse/REVERSE-STATUS.md L8637 CLAIM（本轮任务登记，写前碰撞检查在案）",
+    "raw/aimami/1.2.7/windows-x64/frontend/frontend-control-flow.jsonl（前端 CCF argKeys=[]）",
+    "intermediate/aimami/1.2.7/windows-x64/version-delta/scripts/win127-pooled-cmd-naming-20261006.json（池化机制背景；其 12 命令清单不含 graceful，本 leaf 为首产，红线 5 非重复生产）",
+    "internal-reverse/audits/windows-1.2.7-version-delta/logic/CONSUMER-CONTRACT-1.2.7.md（§8 禁实现条目更正对象）"
+  ],
+  "files": [
+    "README.md", "manifest.json", "evidence.md", "interface-report.json",
+    "call-tree.json", "gate-report.json", "data/producer-ledger.json",
+    "ida/pseudocode/glue_graceful_restart_for_update.c",
+    "ida/pseudocode/restart_call_thunk_sub_140724350.c",
+    "ida/pseudocode/tauri_app_restart_machinery_sub_1406320F0.c",
+    "ida/pseudocode/tauri_process_restart_sub_141472630.c",
+    "ida/pseudocode/waitonaddress_flag_lock_sub_141969A30.c",
+    "ida/pseudocode/tauri_invoke_responder_sub_140B39980.c",
+    "ida/pseudocode/state_fetch_sub_1406440D0.c",
+    "ida/pseudocode/invoke_env_marshal_sub_1401881D0.c"
+  ]
+}

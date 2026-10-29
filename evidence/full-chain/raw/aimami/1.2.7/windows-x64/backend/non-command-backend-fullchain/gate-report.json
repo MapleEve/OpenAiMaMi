@@ -1,0 +1,123 @@
+{
+ "schema": "c5cm.reverse.gate_report.v1",
+ "target_id": "angle_c:win127-truly-undone-non-command-backend-20261001",
+ "product": "aimami",
+ "version": "1.2.7",
+ "platform": "windows-x64",
+ "gate": "raw_leaf_producer_selfcheck",
+ "status": "PASS",
+ "checks": [
+  {
+   "check": "pseudocode_files_written",
+   "result": "PASS",
+   "value": 1070
+  },
+  {
+   "check": "truncation_stub_scan",
+   "result": "PASS",
+   "value": 0,
+   "method": "[TRUNCAT + \"chars total\" marker scan over all 1070 files"
+  },
+  {
+   "check": "tiny_stub_scan(<80B)",
+   "result": "PASS",
+   "value": 0
+  },
+  {
+   "check": "反编译器_null_bodies",
+   "result": "KNOWN",
+   "value": 1,
+   "detail": "src/core/relay/translator.rs 0x140320910 (7539B) 反编译器 null body; recorded in data/index.json; not a truly_undone-26 member module"
+  },
+  {
+   "check": "target_clusters_25_decompiled",
+   "result": "PASS",
+   "detail": "25/25 truly_undone angle_c clusters have >=1 win fn with pseudocode on disk (upstream_url 2 via content anchor, codex_writer 3+1 shared, auth 1)"
+  },
+  {
+   "check": "angle_b_load_runtime_display_snapshot",
+   "result": "CLOSED_SUPERSEDED",
+   "detail": "2026-10-01 判定的「双平台零符号命中→OPEN_NO_BACKEND_SYMBOL_BOTH_SIDES 终态」于 2026-10-06 被推翻：系全名搜索对池化碎片存储的假阴性（≥16B 命令名拆 first16+last16 窗口常量，全名连续字节不存在）；用户裁决「全都做完」撤销 win 侧禁实现，win handler full-chain 闭合（glue 0x1405EC7D0 三重实证），四角度 D 改判 already_in_canonical，证据移至独立 leaf commands/accounts/load_runtime_display_snapshot/（session <审计会话>）；mac 零符号维持如实标注（win-only 注册）",
+   "superseded_by_session": "<审计会话>"
+  },
+  {
+   "check": "destructive_side_effects_marked",
+   "result": "PASS",
+   "detail": "destructive_markers in data/index.json per fn; 1 fn with RemoveDirectoryW (core/repository 0x141695010)"
+  },
+  {
+   "check": "voice_exclusion",
+   "result": "PASS",
+   "detail": "voice modules out of scope; voice-attributed fns not counted toward truly_undone closure"
+  }
+ ],
+ "latest_exe_rebaseline_checks": {
+  "run_by_session": "<审计会话>",
+  "checks": [
+   {
+    "check": "latest_exe_pseudocode_files_written",
+    "result": "PASS",
+    "value": 377
+   },
+   {
+    "check": "truncation_stub_scan",
+    "result": "PASS",
+    "value": 0,
+    "method": "[TRUNCATED + chars total] marker scan over pseudocode-latest-exe/"
+   },
+   {
+    "check": "empty_file_scan",
+    "result": "PASS",
+    "value": 0
+   },
+   {
+    "check": "non_brace_terminated_scan",
+    "result": "KNOWN",
+    "value": 1,
+    "detail": "Oct5 15 文件为裸 反编译器 输出可能缺尾换行; 内容非截断"
+   },
+   {
+    "check": "relocated_reanchored",
+    "result": "PASS",
+    "value": 610,
+    "detail": "reloc-masked body hash 矩阵重锚定，旧伪代码继续有效"
+   },
+   {
+    "check": "changed_successor_located",
+    "result": "KNOWN",
+    "value": 368,
+    "detail": "全部带内容级证据(body_sim/str_ov/anchor)；含 22 voice 机械定位(语义跳过)与 1 split 文档化"
+   },
+   {
+    "check": "changed_successor_unlocated",
+    "result": "KNOWN",
+    "value": 85,
+    "detail": "非 voice 未定位后继（translator 37/anthropic 家族 22/mcp 5/散点），如实开放不伪闭合；3 NEEDS_REDO 簇部分开放(proxy_server 3/codex_config 3/codex_mutation 2)"
+   },
+   {
+    "check": "voice_exclusion",
+    "result": "PASS",
+    "value": 27,
+    "detail": "voice 模块 27 changed 记录：22 机械定位标注语义跳过 + 5 未定位跳过；语义重逆零执行"
+   },
+   {
+    "check": "cluster_needs_redo_resolution",
+    "result": "PARTIAL",
+    "value": "18/21 items fully closed; 3 partial (proxy_server/codex_config/codex_mutation)"
+   },
+   {
+    "check": "ida_discipline",
+    "result": "PASS",
+    "detail": "零 open_file/零 new_database/零版本切换/零 select_instance；<审计环境> 唯一操作目标；<审计环境> 未触碰；本轮零 IDB 写（纯只读 decompile+xref）"
+   }
+  ]
+ },
+ "amendments": [
+  {
+   "date": "2026-10-07",
+   "session": "<审计会话>",
+   "change": "angle_b_load_runtime_display_snapshot check 由 TERMINAL_OPEN 改判 CLOSED_SUPERSEDED（随 2026-10-06 用户裁决「全都做完」同步：池化碎片假阴性推翻双平台零符号结论，win handler full-chain 闭合于独立 leaf，mac 零符号如实标注 win-only 注册）；本 leaf evidence.md/README.md/manifest.json/interface-report.json 同主题旧条目一并同步",
+   "evidence": "raw/aimami/1.2.7/windows-x64/backend/commands/accounts/load_runtime_display_snapshot/ + intermediate/aimami/1.2.7/windows-x64/version-delta/four-angle-d-classification.json(runtime_display_snapshot_unban_20261006)"
+  }
+ ]
+}

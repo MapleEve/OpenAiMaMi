@@ -1,0 +1,1024 @@
+{
+  "Ae": {
+    "loadRuntimeDisplaySnapshot": {
+      "command": "load_runtime_display_snapshot",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadSnapshot": {
+      "command": "load_snapshot",
+      "argKeys": [
+        "localOnly",
+        "forceMetadata"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "refreshUsageSnapshot": {
+      "command": "refresh_usage_snapshot",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "refreshSingleAccountUsage": {
+      "command": "refresh_single_account_usage",
+      "argKeys": [
+        "accountKey"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "switchAccount": {
+      "command": "switch_account",
+      "argKeys": [
+        "accountKey"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "switchAccountAndRestartCodex": {
+      "command": "switch_account_and_restart_codex",
+      "argKeys": [
+        "accountKey"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "removeAccounts": {
+      "command": "remove_accounts",
+      "argKeys": [
+        "accountKeys"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setAccountAlias": {
+      "command": "set_account_alias",
+      "argKeys": [
+        "accountKey",
+        "alias"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getAccountResetCredits": {
+      "command": "get_account_reset_credits",
+      "argKeys": [
+        "accountKey"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getAccountResetCreditHistory": {
+      "command": "get_account_reset_credit_history",
+      "argKeys": [
+        "accountKey",
+        "cursor"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "rebuildRegistry": {
+      "command": "rebuild_registry",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "forceKillCodex": {
+      "command": "force_kill_codex",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getImageCompat": {
+      "command": "get_image_compat",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setImageCompat": {
+      "command": "set_image_compat",
+      "argKeys": [
+        "enabled"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getClaudeWebSearchCompat": {
+      "command": "get_claude_web_search_compat",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setClaudeWebSearchCompat": {
+      "command": "set_claude_web_search_compat",
+      "argKeys": [
+        "enabled"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "defaultDebugBundleFileName": {
+      "command": "default_debug_bundle_file_name",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "exportDebugBundle": {
+      "command": "export_debug_bundle",
+      "argKeys": [
+        "targetPath"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "uploadDebugReport": {
+      "command": "upload_debug_report",
+      "argKeys": [
+        "input"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "writeClientDebugLog": {
+      "command": "write_client_debug_log",
+      "argKeys": [
+        "event"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "beginChatgptOauthLogin": {
+      "command": "begin_chatgpt_oauth_login",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "cancelChatgptOauthLogin": {
+      "command": "cancel_chatgpt_oauth_login",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "exportAccountsToFile": {
+      "command": "export_accounts_to_file",
+      "argKeys": [
+        "targetPath",
+        "accountKeys"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "previewAccountImport": {
+      "command": "preview_account_import",
+      "argKeys": [
+        "filePath"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "importAccountsFromFile": {
+      "command": "import_accounts_from_file",
+      "argKeys": [
+        "filePath",
+        "expectedContentSha256",
+        "overwriteExisting",
+        "selectedKeys"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setAutoSwitch": {
+      "command": "set_auto_switch",
+      "argKeys": [
+        "enabled"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "configureAutoSwitch": {
+      "command": "configure_auto_switch",
+      "argKeys": [
+        "threshold5hPercent",
+        "thresholdWeeklyPercent",
+        "enabled"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setApiProxyConfig": {
+      "command": "set_api_proxy_config",
+      "argKeys": [
+        "mode",
+        "url"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getUsageRefreshInterval": {
+      "command": "get_usage_refresh_interval",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setUsageRefreshInterval": {
+      "command": "set_usage_refresh_interval",
+      "argKeys": [
+        "interval"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getUsageRefreshAllAccounts": {
+      "command": "get_usage_refresh_all_accounts",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setUsageRefreshAllAccounts": {
+      "command": "set_usage_refresh_all_accounts",
+      "argKeys": [
+        "enabled"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "testApiProxyConfig": {
+      "command": "test_api_proxy_config",
+      "argKeys": [
+        "mode",
+        "url"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "detectApiProxyConfig": {
+      "command": "detect_api_proxy_config",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "checkUpdateInstallability": {
+      "command": "check_update_installability",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "runDaemonOnce": {
+      "command": "run_daemon_once",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadSessions": {
+      "command": "load_sessions",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "deleteSessions": {
+      "command": "delete_sessions",
+      "argKeys": [
+        "ids"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadSessionMessages": {
+      "command": "load_session_messages",
+      "argKeys": [
+        "sessionId"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "exportSessionsBatch": {
+      "command": "export_sessions_batch",
+      "argKeys": [
+        "ids",
+        "targetDir",
+        "format"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "inspectSessionIndexHealth": {
+      "command": "inspect_session_index_health",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "cleanGlobalStateTmpFiles": {
+      "command": "clean_global_state_tmp_files",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "cleanOrphanRollouts": {
+      "command": "clean_orphan_rollouts",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "cleanMissingRolloutRows": {
+      "command": "clean_missing_rollout_rows",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "cleanCatalogGhostThreads": {
+      "command": "clean_catalog_ghost_threads",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "exportSessionMarkdown": {
+      "command": "export_session_markdown",
+      "argKeys": [
+        "sessionId",
+        "targetPath"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "migrateSessionWorktree": {
+      "command": "migrate_session_worktree",
+      "argKeys": [
+        "sessionId"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadCustomInstructionState": {
+      "command": "load_custom_instruction_state",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadVoiceWorkspace": {
+      "command": "load_voice_workspace",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "upsertVoiceTemplate": {
+      "command": "upsert_voice_template",
+      "argKeys": [
+        "id",
+        "title",
+        "description",
+        "content"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "removeVoiceTemplate": {
+      "command": "remove_voice_template",
+      "argKeys": [
+        "id"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "upsertVoiceVocabulary": {
+      "command": "upsert_voice_vocabulary",
+      "argKeys": [
+        "id",
+        "source",
+        "replacement",
+        "kind",
+        "appBundleId",
+        "appName",
+        "notes"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "removeVoiceVocabulary": {
+      "command": "remove_voice_vocabulary",
+      "argKeys": [
+        "id"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "replaceVoiceVocabularyKind": {
+      "command": "replace_voice_vocabulary_kind",
+      "argKeys": [
+        "kind",
+        "appBundleId",
+        "appName",
+        "entries"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "removeVoiceVocabularyAppScope": {
+      "command": "remove_voice_vocabulary_app_scope",
+      "argKeys": [
+        "appBundleId"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "upsertVoiceVocabularyAppScope": {
+      "command": "upsert_voice_vocabulary_app_scope",
+      "argKeys": [
+        "bundleId",
+        "name",
+        "path"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "resolveVoiceVocabularyAppInfo": {
+      "command": "resolve_voice_vocabulary_app_info",
+      "argKeys": [
+        "path"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "generateVoicePrompt": {
+      "command": "generate_voice_prompt",
+      "argKeys": [
+        "templateId",
+        "rawText",
+        "selectedText",
+        "clipboardText",
+        "targetBundleId",
+        "targetAppName",
+        "promptOverride",
+        "templateTitle",
+        "templateKind",
+        "llmProvider",
+        "llmApiKey",
+        "llmModel",
+        "llmBaseUrl",
+        "asrProvider",
+        "asrModel",
+        "asrLanguage",
+        "asrEmotion",
+        "asrDurationMs",
+        "asrErrorCode"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "testVoiceLlmConfig": {
+      "command": "test_voice_llm_config",
+      "argKeys": [
+        "llmProvider",
+        "llmApiKey",
+        "llmModel",
+        "llmBaseUrl"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadVoiceLlmConfig": {
+      "command": "load_voice_llm_config",
+      "argKeys": [
+        "provider"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "saveVoiceLlmConfig": {
+      "command": "save_voice_llm_config",
+      "argKeys": [
+        "llmProvider",
+        "llmApiKey",
+        "llmModel",
+        "llmBaseUrl"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadVoiceAsrConfig": {
+      "command": "load_voice_asr_config",
+      "argKeys": [
+        "provider"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "saveVoiceAsrConfig": {
+      "command": "save_voice_asr_config",
+      "argKeys": [
+        "asrProvider",
+        "asrApiKey",
+        "asrModel",
+        "asrBaseUrl"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "testVoiceAsrConfig": {
+      "command": "test_voice_asr_config",
+      "argKeys": [
+        "asrProvider",
+        "asrApiKey",
+        "asrModel",
+        "asrBaseUrl"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "removeVoiceHistoryEntry": {
+      "command": "remove_voice_history_entry",
+      "argKeys": [
+        "id"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadVoiceProcessingModes": {
+      "command": "load_voice_processing_modes",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "saveVoiceProcessingModes": {
+      "command": "save_voice_processing_modes",
+      "argKeys": [
+        "modes"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadVoiceRuntimeStatus": {
+      "command": "load_voice_runtime_status",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "requestVoicePermissions": {
+      "command": "request_voice_permissions",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setVoiceGlobalShortcut": {
+      "command": "set_voice_global_shortcut",
+      "argKeys": [
+        "shortcut"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "captureVoiceTriggerKey": {
+      "command": "capture_voice_trigger_key",
+      "argKeys": [
+        "style"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "cancelVoiceTriggerCapture": {
+      "command": "cancel_voice_trigger_capture",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setVoiceTriggerListenerSuppressed": {
+      "command": "set_voice_trigger_listener_suppressed",
+      "argKeys": [
+        "suppressed"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setVoiceTriggerKey": {
+      "command": "set_voice_trigger_key",
+      "argKeys": [
+        "keyCode",
+        "keyLabel",
+        "keyKind",
+        "style",
+        "modifierMask"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setVoiceTriggerBindings": {
+      "command": "set_voice_trigger_bindings",
+      "argKeys": [
+        "activeStyle",
+        "holdKeyCode",
+        "holdKeyLabel",
+        "holdKeyKind",
+        "holdModifierMask",
+        "toggleKeyCode",
+        "toggleKeyLabel",
+        "toggleKeyKind",
+        "toggleModifierMask"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "updateVoiceRuntimeSettings": {
+      "command": "update_voice_runtime_settings",
+      "argKeys": [
+        "enabled",
+        "shortcut",
+        "speechModel",
+        "processingMode",
+        "processingModeId"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setVoiceProcessingModeId": {
+      "command": "set_voice_processing_mode_id",
+      "argKeys": [
+        "modeId",
+        "processingMode"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setVoiceOverlayStyle": {
+      "command": "set_voice_overlay_style",
+      "argKeys": [
+        "style"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "startVoiceCapture": {
+      "command": "start_voice_capture",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "stopVoiceCapture": {
+      "command": "stop_voice_capture",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "notifyVoiceProcessingDone": {
+      "command": "voice_processing_done",
+      "argKeys": [
+        "sessionGeneration"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "injectVoiceText": {
+      "command": "inject_voice_text",
+      "argKeys": [
+        "text",
+        "expectedBundleId"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "showVoiceSearchOverlay": {
+      "command": "show_voice_search_overlay",
+      "argKeys": [
+        "query",
+        "output"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setVoiceModeShortcut": {
+      "command": "set_voice_mode_shortcut",
+      "argKeys": [
+        "modeId",
+        "keyCode",
+        "keyLabel",
+        "keyKind",
+        "style",
+        "modifierMask"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "removeVoiceModeShortcut": {
+      "command": "remove_voice_mode_shortcut",
+      "argKeys": [
+        "modeId"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "requestAccessibilityPermission": {
+      "command": "request_accessibility_permission",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "previewCustomInstructionApply": {
+      "command": "preview_custom_instruction_apply",
+      "argKeys": [
+        "content"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "applyCustomInstruction": {
+      "command": "apply_custom_instruction",
+      "argKeys": [
+        "content",
+        "templateCode",
+        "templateTitle",
+        "source"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "clearCustomInstructionBlock": {
+      "command": "clear_custom_instruction_block",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "rollbackCustomInstruction": {
+      "command": "rollback_custom_instruction",
+      "argKeys": [
+        "historyId"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadMcpServers": {
+      "command": "load_mcp_servers",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "upsertMcpServer": {
+      "command": "upsert_mcp_server",
+      "argKeys": [
+        "args",
+        "headers",
+        "environment"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setMcpServerEnabled": {
+      "command": "set_mcp_server_enabled",
+      "argKeys": [
+        "name",
+        "enabled"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "removeMcpServer": {
+      "command": "remove_mcp_server",
+      "argKeys": [
+        "name"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadInstalledSkills": {
+      "command": "load_installed_skills",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadSkillBackups": {
+      "command": "load_skill_backups",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "importSkill": {
+      "command": "import_skill",
+      "argKeys": [
+        "path"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "removeSkill": {
+      "command": "remove_skill",
+      "argKeys": [
+        "id"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "restoreSkillBackup": {
+      "command": "restore_skill_backup",
+      "argKeys": [
+        "id"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "deleteSkillBackup": {
+      "command": "delete_skill_backup",
+      "argKeys": [
+        "id"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "restartCodex": {
+      "command": "restart_codex",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadDashboardAnalytics": {
+      "command": "load_dashboard_analytics",
+      "argKeys": [
+        "range",
+        "force"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadThreadAnalytics": {
+      "command": "load_thread_analytics",
+      "argKeys": [
+        "force"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadThreadAnalyticsDetail": {
+      "command": "load_thread_analytics_detail",
+      "argKeys": [
+        "sessionId"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "exportThreadStatistics": {
+      "command": "export_thread_statistics",
+      "argKeys": [
+        "content",
+        "format"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setDashboardAnalyticsActive": {
+      "command": "set_dashboard_analytics_active",
+      "argKeys": [
+        "active"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadQuotaHistory": {
+      "command": "load_quota_history",
+      "argKeys": [
+        "accountKey",
+        "range"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "hasNotch": {
+      "command": "has_notch",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getHotspotEnabled": {
+      "command": "get_hotspot_enabled",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setHotspotEnabled": {
+      "command": "set_hotspot_enabled",
+      "argKeys": [
+        "enabled"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getAutostartState": {
+      "command": "get_autostart_state",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setAutostartEnabled": {
+      "command": "set_autostart_enabled",
+      "argKeys": [
+        "enabled"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "focusMainWindow": {
+      "command": "focus_main_window",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "hotspotReady": {
+      "command": "hotspot_ready",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "openPath": {
+      "command": "open_path",
+      "argKeys": [
+        "path"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getDeviceId": {
+      "command": "get_device_id",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getMysteryUnlockGrants": {
+      "command": "get_mystery_unlock_grants",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "mergeMysteryUnlockGrants": {
+      "command": "merge_mystery_unlock_grants",
+      "argKeys": [
+        "grants"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getNotificationClientState": {
+      "command": "get_notification_client_state",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getSystemInfo": {
+      "command": "get_system_info",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadBootstrapState": {
+      "command": "load_bootstrap_state",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadPendingAutoSwitch": {
+      "command": "load_pending_auto_switch",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "dismissPendingAutoSwitch": {
+      "command": "dismiss_pending_auto_switch",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "confirmPendingAutoSwitch": {
+      "command": "confirm_pending_auto_switch",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "confirmPendingAutoSwitchAndRestartCodex": {
+      "command": "confirm_pending_auto_switch_and_restart_codex",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    }
+  },
+  "gn": {
+    "runDiagnostics": {
+      "command": "run_codex_router_diagnostics",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "fixDiagnostic": {
+      "command": "fix_codex_router_issue",
+      "argKeys": [
+        "itemId"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "loadState": {
+      "command": "load_relay_state",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "upsert": {
+      "command": "upsert_relay_provider",
+      "argKeys": [
+        "input"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "delete": {
+      "command": "delete_relay_provider",
+      "argKeys": [
+        "providerId"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "activate": {
+      "command": "activate_relay_provider",
+      "argKeys": [
+        "providerId",
+        "ide"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "deactivate": {
+      "command": "deactivate_relay_provider",
+      "argKeys": [
+        "providerId",
+        "ide"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setProviderNetwork": {
+      "command": "set_relay_provider_network",
+      "argKeys": [
+        "providerId",
+        "network"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "reorderProviders": {
+      "command": "reorder_relay_providers",
+      "argKeys": [
+        "orderedIds"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "testStream": {
+      "command": "test_relay_provider_stream",
+      "argKeys": [
+        "providerId",
+        "model",
+        "onEvent"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "testDraftStream": {
+      "command": "test_relay_draft_stream",
+      "argKeys": [
+        "input",
+        "onEvent"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "fetchModelsDraft": {
+      "command": "fetch_relay_models_draft",
+      "argKeys": [
+        "input"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "revealApiKey": {
+      "command": "reveal_relay_api_key",
+      "argKeys": [
+        "providerId"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getQuota": {
+      "command": "get_relay_provider_quota",
+      "argKeys": [
+        "providerId"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getActive": {
+      "command": "get_relay_active",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "getProxyStatus": {
+      "command": "get_relay_proxy_status",
+      "argKeys": [],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setCodexRouterEnabled": {
+      "command": "set_codex_router_enabled",
+      "argKeys": [
+        "enabled",
+        "relaunch"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "setCodexRouterNoAccountMode": {
+      "command": "set_codex_router_no_account_mode",
+      "argKeys": [
+        "enabled",
+        "relaunch"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "exportConfig": {
+      "command": "export_relay_config",
+      "argKeys": [
+        "filePath",
+        "includeApiKeys"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "importConfig": {
+      "command": "import_relay_config",
+      "argKeys": [
+        "filePath"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    },
+    "parseDeeplink": {
+      "command": "parse_aimami_deeplink",
+      "argKeys": [
+        "url"
+      ],
+      "definedIn": "assets/index-CCfI07iB.js"
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "schema": "c5cm.reverse.raw_leaf.v1",
+  "target_id": "angle_c:mac127-truly-undone-non-command-backend-20260930",
+  "command": "non_command_backend_fullchain",
+  "module": "core/relay/{atomic_write,proxy_server,health_check,transition_journal,storage,upstream_url,codex_writer,managed_blocks,codex_project_state,codex_mutation,io} + core/repository + core/{account_coordination,account_io,codex_config,oauth_refresh,debug_bundle,auth} + platform/{process,system_volume}",
+  "canonical_rust_module": "codexmate_lib::core::relay::atomic_write | codexmate_lib::core::relay::proxy_server | codexmate_lib::core::relay::health_check | codexmate_lib::core::relay::transition_journal | codexmate_lib::core::relay::storage | codexmate_lib::core::relay::upstream_url | codexmate_lib::core::relay::codex_writer | codexmate_lib::core::relay::managed_blocks | codexmate_lib::core::relay::codex_project_state | codexmate_lib::core::relay::codex_mutation | codexmate_lib::core::relay::io | codexmate_lib::core::repository | codexmate_lib::core::account_coordination | codexmate_lib::core::account_io | codexmate_lib::core::codex_config | codexmate_lib::core::oauth_refresh | codexmate_lib::core::debug_bundle | codexmate_lib::core::auth | codexmate_lib::platform::process | codexmate_lib::platform::system_volume",
+  "cluster": [
+    { "module": "core::relay::atomic_write", "role": "持久原子写管线: 临时文件写→sync_data→rename→父目录同步; private 变体 0o600; removal/staging 破坏性清理面", "fn_count": 15, "decompiled": 15 },
+    { "module": "core::relay::proxy_server", "role": "Anthropic V1 代理适配侧: responses→anthropic 转译/beta 头拒绝重试/inline-tools 头/effort 拒绝/凭据加载/session_id/上游体读取/store=false 消毒", "fn_count": 8, "decompiled": 8 },
+    { "module": "core::relay::health_check", "role": "ProbeStream 探测流解析: 双协议终态分发(/delta/stop_reason + /choices/0/finish_reason + /response/status)/帧解析/embedding 校验/结果代数应用/体读取", "fn_count": 7, "decompiled": 7 },
+    { "module": "core::relay::transition_journal", "role": "路由切换事务日志(1.2.7 新文件): TransitionJournal/TransitionEvent serde 写/read_checked/begin_commit/commit_pending/clear_inner/warn_after_commit", "fn_count": 7, "decompiled": 7 },
+    { "module": "core::relay::storage", "role": "relay 状态存储(storage.rs→storage/ 重组): preflight_save/save_with_publication/validate_credentials/verify_router_commit/no_account_router_active/cache_loaded_api_key", "fn_count": 7, "decompiled": 7 },
+    { "module": "core::repository", "role": "registry 重建/同步: rebuild_registry_state 11758B/sync_auth_bundle/flush_live_auth/load_registry_for_mutation/build_account_token_status/prefer_duplicate_snapshot_candidate", "fn_count": 8, "decompiled": 8 },
+    { "module": "core::relay::upstream_url", "role": "上游 URL 拼接/校验: parse_base_url/validate_endpoint_path(路径穿越拒绝)/join_with_query(query 冲突)/join_root/redacted", "fn_count": 5, "decompiled": 5 },
+    { "module": "core::relay::codex_writer", "role": "codex config 写入校验面: router_http_contract_issues([model_providers.aimai1] 四键)/read_top_level_model_line/aimami_relay_ 清理判断/clear_managed_block", "fn_count": 4, "decompiled": 4 },
+    { "module": "core::relay::managed_blocks", "role": "TOML 受管块词法: 三引号多行字符串状态机 line_is_structural + lines_with_complete_strings", "fn_count": 2, "decompiled": 2 },
+    { "module": "core::account_coordination", "role": "账号文件锁: fs2 try_lock_exclusive 非阻塞(WouldBlock/EACCES/EAGAIN→fd=-1)", "fn_count": 2, "decompiled": 2 },
+    { "module": "core::relay::codex_project_state", "role": "项目状态完整性(mac 新增 inspect/repair; win 称文件已删=平台分叉): .codex-global-state.json 五键检查/修复决策(本函数只读)", "fn_count": 2, "decompiled": 2 },
+    { "module": "core::account_io", "role": "账号 IO: verify_saved_oauth_credentials/oauth_snapshot_path/read_live_oauth_account_key/account_key_or_registry_fallback", "fn_count": 5, "decompiled": 5 },
+    { "module": "core::relay::codex_mutation", "role": "CodexMutationGate::try_lock 互斥门(poisoned 错误面)", "fn_count": 1, "decompiled": 1 },
+    { "module": "core::relay::io", "role": "PreparedImport::publish→keychain::revisions::publish", "fn_count": 1, "decompiled": 1 },
+    { "module": "platform::system_volume", "role": "voice 排除域: restore→VOLUME_WORKER send; 唯一 caller voice::runtime::start_capture, 如实记录不深入", "fn_count": 1, "decompiled": 1 },
+    { "module": "core::codex_config", "role": "候选 TOML 校验: CODEX_CONFIG_REWRITE_INVALID 错误面", "fn_count": 1, "decompiled": 1 },
+    { "module": "platform::process", "role": "Codex 进程探测: bundle pid + osascript 兜底两段式", "fn_count": 1, "decompiled": 1 },
+    { "module": "core::oauth_refresh", "role": "凭据刷新时间: RFC3339+JWT iat/exp 寿命对齐", "fn_count": 1, "decompiled": 1 },
+    { "module": "core::debug_bundle", "role": "调试包字段级 diff: 双 JSON 快照逐字段比对", "fn_count": 1, "decompiled": 1 },
+    { "module": "core::auth", "role": "凭据代次指纹: 4×Option<String> SHA-256 hex", "fn_count": 1, "decompiled": 1 }
+  ],
+  "decompiled_total": 80,
+  "enumerated_total": 80,
+  "module_attribution_evidence": [
+    "mac 1.2.7 带符号: 80 个目标函数符号名直接是 codexmate_lib::{module}::{fn}（demangle 自 __ZN13codexmate_lib...，无需 panic-location 恢复，红线24 mac 路径）；actual_name 与 angle-C 枚举 expected_name 80/80 逐一相等",
+    "内容级证据（现场反编译，非猜测）: transition_journal 'router-transition-journal.json'/'unsupported transition record version'/'phase record exceeds the size limit'/'phase record is not a regular file'/'committing'/'degraded' + serde 反射 'struct TransitionJournal with 6 elements'/'struct TransitionEvent with 6 elements'(target/phase/occurredAtMs/reason/startedAtMs/updatedAtMs)；proxy_server 'inline-tools-2026-09-15'/'invalid effort level'/'invalid output_config.effort'/'read upstream body timed out'/'Invalid Anthropic search context; history was not modified'；health_check '/choices/0/finish_reason'/'/delta/stop_reason'/'/response/status'+14 条 probe 错误串；storage 'relay state path has no parent directory'/'relay state schema cannot represent this router commit receipt'/'relay credential reference conflicts with state schema or presence flag'；repository 'Active account snapshot identity mismatch: '/'Active account snapshot is not a switchable OAuth credential: '/'Live account changed while synchronizing credentials'/'Live account changed while handing off credentials'；upstream_url 'relay request query conflicts with configured Base URL'/'relay endpoint must be a path without query, fragment or traversal'；codex_writer 'model_providers.aimai1]'/base_url/requires_openai_auth/supports_websockets/'sync Codex relay config'；codex_project_state '.codex-global-state.json'/projectless-thread-ids/electron-saved-workspace-roots/'global-state root is not an object'/'Codex 项目索引正常，无需修复'(39B 常数程序化解码)/'Codex project index cannot be repaired safely: '；validate_candidate 'CODEX_CONFIG_REWRITE_INVALID: '；is_codex_app_running 'application id \"com.openai.codex\" is running'(osascript)；codex_mutation 'Codex mutation gate is poisoned during auth observation'；atomic_write 'atomic replace: missing parent'/'file identity changed or is not a single regular file'+0o600(384) mode；credential_refresh_time JWT 'iat'/'exp'",
+    "本 session py_exec_file 服务端批量 decompile 80 个函数直写盘（提取器内直写无 MCP 截断面，红线20 合规），0 失败 0 截断 0 空体，全部真实 Rust 语义实现（排除假墙 taxonomy: 非 drop_in_place 析构/非 async shim/非 vtable 分发/非 HTTP-terminal）",
+    "枚举来源: intermediate/aimami/1.2.7/macos-arm64/version-delta/four-angle-c-exhaustive-orphans.json（angle-C 穷尽枚举 25 簇 80 函数带 EA）"
+  ],
+  "product": "aimami",
+  "version": "1.2.7-test-package(version-string 1.2.6)",
+  "platform": "macos-arm64",
+  "slice_note": "mac universal binary；枚举/反编译在 arm64 thin slice（AiMaMi.arm64.thin，imagebase 0x100000000）；双 slice 证据等价（用户已拍板，红线36）",
+  "source_binary": "raw/binary/AiMaMi 1.2.7.app/Contents/MacOS/AiMaMi",
+  "source_binary_sha256": "mac 1.2.7 universal fat ac235ae0…/thin 1ac56cdd…（前序 delta-inventory 轮登记）",
+  "producer_session": "<审计会话>",
+  "machine": "<本地机器>",
+  "classification_before": "truly_undone（four-angle-d-classification mac 80 angle-C + win 25 簇）",
+  "status": "implementation_leaf_recovered",
+  "leaf_kind": "non_command_backend_cluster_bundle",
+  "implementation_leaf": true,
+  "is_frontend_facing": false,
+  "owner": {
+    "entry_ea": "0x10024e590",
+    "entry_name": "codexmate_lib::core::repository::Repository::rebuild_registry_state",
+    "cluster_count": 25,
+    "decompiled_functions": 80
+  },
+  "gate": {
+    "consumerStartReady": true,
+    "strictImplementationUse": true,
+    "readyToImplement": false,
+    "implementation_use": false,
+    "gate_accepted": false,
+    "reason": "80 个非命令后端函数全部 live decompile 到 semantic implementation leaf，无截断，排除假墙，字段级 DTO/错误面/副作用现场核实。dim1=N/A（backend-only），dim2-5 PASS，dim6（红线25 真机对照）本轮未跑留白。readyToImplement 不声明。"
+  },
+  "recovery_next": [
+    "如需 readyToImplement 提升: 装真实 AiMaMi 客户端对照（dim6）——路由切换时 router-transition-journal.json 的写入/清除生命周期、registry 重建后账号快照去重表现、test_provider_staged 探测流的 SSE 终态判定",
+    "win 侧 25 簇函数级新旧拆分=红线24 深恢复轮（需 win 侧深恢复：dirtree/rename/db_save），本轮未外推 mac 结论至 win（红线8/28）；win four-angle-d-classification truly_undone 维持 26 不归零，仅补注记指向本 leaf 作语义参照",
+    "codex_project_state 平台分叉（win src-path-diff 称文件已删但模块串仍在 2 owners）归 win 深恢复轮裁决",
+    "angle-B truly_undone load_runtime_display_snapshot（双平台双版本零符号命中，本轮 mac find_regex 复确 0）维持开放，owner 定位属另一工作单；build_account_token_status 的调用方 load_usage_only_runtime_snapshot 仅同属 runtime snapshot 家族，非该命令 owner"
+  ],
+  "red_line_30_rename_check": {
+    "preflight_save": "1.2.6 census 仅含其闭包 + 1.2.6 消费者合同记载 'disk space check before RelayManager state persist'/'atomic write relay state via uuid'；本 leaf live decompile 行为一致（预检+原子写+失败清理）=迁移面非重做",
+    "codex_project_state": "1.2.6 census 已有 stability_issue/merge_unique/active_db_path/ProjectStateInspection 类型；1.2.7 新增 inspect/repair_if_needed 为同模块重组扩展（非改名复用）",
+    "method": "grep mac-1.2.6-func-census.json + consumer-contract-1.2.{3,4}-to-1.2.6.json 全 80 函数名交叉核对，仅 preflight_save 有 1.2.6 行为记载"
+  }
+}

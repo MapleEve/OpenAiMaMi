@@ -1,0 +1,108 @@
+{
+  "schema": "c5cm.aimami.backend.command-interface.v1",
+  "command": "load_runtime_display_snapshot",
+  "product": "aimami", "version": "1.2.7", "platform": "windows-x64",
+  "session": "<审计会话>",
+  "registration": {
+    "win": {
+      "registered": true,
+      "glue_ea": "0x1405EC7D0", "glue_size": 380,
+      "idb_name": "load_runtime_display_snapshot",
+      "dirtree": "/codexmate_lib/commands/accounts/load_runtime_display_snapshot",
+      "module": "src/commands/accounts.rs",
+      "evidence": ["dispatcher 0x1405fbca0 pcmpeqb cs:xmmword_141A23430 @0x1405fc0d9 (last16 display_snapshot) + first16 load_runtime_dis@0x141a23440 window [rcx+0xD]", "jz loc_1405FE736 @0x1405fc0f6", "call @0x1405fe788", "registry stru_141EA6C70 first u32=0x5ec7d0=glue RVA"]
+    },
+    "macos": { "registered": false, "note": "mac 1.2.7 全名/first16/last16 符号搜索零命中（win-only 注册，如实标注不外推）" }
+  },
+  "input": { "user_args": [], "frontend_ccf": { "fn": "loadRuntimeDisplaySnapshot", "argKeys": [], "definedIn": "assets/index-CCfI07iB.js" } },
+  "output_envelope": {
+    "json_shape": "{schemaVersion, success, code, message, warnings, data}",
+    "fields": [
+      {"name": "schemaVersion", "type": "u32", "value": 1},
+      {"name": "success", "type": "bool", "value": true},
+      {"name": "code", "type": "String", "value": "ok"},
+      {"name": "message", "type": "String", "value": "Success"},
+      {"name": "warnings", "type": "Vec", "value": "[]"},
+      {"name": "data", "type": "Option<RuntimeDisplaySnapshot>", "null_when": "全局状态 0x142239468 首 dword == -1"}
+    ],
+    "error_branch": "envelope 类型存在 -2 错误变体（responder 0x140AABEA0 分支），本命令构建器恒写成功变体，永不触发"
+  },
+  "dto_runtime_display_snapshot": {
+    "fields": [
+      {"name": "status", "type": "Status"},
+      {"name": "accounts", "type": "Vec<AccountItem>"},
+      {"name": "refreshReport", "type": "Option<RefreshReport>", "absent_when_none": true}
+    ],
+    "status_fields": [
+      {"name": "activeAccount", "type": "Option<AccountItem>", "offset": 0, "none_tag": "first dword == 2"},
+      {"name": "paths", "type": "Paths", "offset": 384},
+      {"name": "autoSwitch", "type": "AutoSwitch", "offset": 560},
+      {"name": "activeAccountKey", "type": "Option<String>", "offset": 600},
+      {"name": "api", "type": "Option<{proxy:ProxyStruct}>", "offset": 624, "unknown": "proxy 子结构未下钻"},
+      {"name": "apiConnectivity", "type": "Option<{usageLastError:Option<String>, usageStatus:enum{unknown,?,unreachable}}>", "offset": 656},
+      {"name": "authRevision", "type": "Option<{epoch:String, sequence:u64}>", "offset": 688, "absent_when_none": true},
+      {"name": "lastScanAt", "type": "u64", "offset": 720, "note": "FILETIME→Unix 换算（纪元常量 0x019DB1DED53E8000）"},
+      {"name": "accountCount", "type": "u32", "offset": 728},
+      {"name": "usageSource", "type": "enum", "variants": ["local", "api"], "offset": 732}
+    ],
+    "paths_fields": ["codexHome:String", "accountsPath:String", "authPath:String", "registryPath:String", "sessionsPath:String", "launchAgentPath:String", "autoSwitchLogPath:String", "authExists:bool", "registryExists:bool", "sessionsExists:bool"],
+    "autoswitch_fields": ["serviceLabel:String", "threshold5hPercent:u32", "thresholdWeeklyPercent:u32", "enabled:bool", "serviceState:enum(4变体,含unknown;变体0/1/2名未取)"]
+  },
+  "dto_account_item": {
+    "size": 384,
+    "fields": [
+      {"name": "planObservedAt", "offset": 0, "type": "u64"},
+      {"name": "subscriptionExpiresAt", "offset": 16, "type": "Option<u64>"},
+      {"name": "subscriptionObservedAt", "offset": 32, "type": "Option<u64>"},
+      {"name": "lastUsedAt", "offset": 48, "type": "Option<u64>"},
+      {"name": "lastUsageAt", "offset": 64, "type": "Option<u64>"},
+      {"name": "primaryWindow", "offset": 80, "type": "Option<Window>"},
+      {"name": "secondaryWindow", "offset": 120, "type": "Option<Window>"},
+      {"name": "tokenStatus", "offset": 160, "type": "conditional(absent when tag==2)", "sub": "{accessTokenExpiresAt:Option<u64>, credentialGeneration:Option<?>, code:子结构未下钻}"},
+      {"name": "accountKey", "offset": 208, "type": "String"},
+      {"name": "email", "offset": 232, "type": "String"},
+      {"name": "alias", "offset": 256, "type": "String"},
+      {"name": "accountName", "offset": 280, "type": "Option<String>"},
+      {"name": "workspaceName", "offset": 304, "type": "Option<String>"},
+      {"name": "profileName", "offset": 328, "type": "Option<String>"},
+      {"name": "availableResetCredits", "offset": 352, "type": "Option<number>"},
+      {"name": "createdAt", "offset": 360, "type": "u64"},
+      {"name": "authMode", "offset": 368, "type": "enum", "variants": ["chatgpt", "apikey"]},
+      {"name": "isActive", "offset": 369, "type": "bool"},
+      {"name": "usageSource", "offset": 370, "type": "enum", "variants": ["local", "api"]},
+      {"name": "hasActiveSubscription", "offset": 371, "type": "Option<bool>"},
+      {"name": "subscriptionWillRenew", "offset": 372, "type": "Option<bool>"},
+      {"name": "planSource", "offset": 373, "type": "enum", "variants": ["jwt", "remote", "usage"]},
+      {"name": "subscriptionStatus", "offset": 374, "type": "enum", "variants": ["active", "inactive", "stale"]},
+      {"name": "subscriptionSource", "offset": 375, "type": "enum", "variants": ["livePlan", "jwt", "remote"]},
+      {"name": "plan", "offset": 376, "type": "enum", "variants": ["free", "plus", "pro5x", "pro20x", "team", "business", "enterprise", "edu", "unknown"]}
+    ],
+    "window_fields": ["resetsAt:Option<u64>", "windowMinutes:Option<i64>", "usedPercent:Option<f64>", "remainingPercent:u32"]
+  },
+  "dto_refresh_report": ["revision:String", "scope:enum{full,usage,account}", "accountKey:Option<String>", "startedAt:u64", "finishedAt:u64", "token:{attempted:u32,succeeded:u32,failed:u32,status:enum(4变体,名未取)}", "metadata:{同token}", "usage:{同token}"],
+  "semantics": {
+    "data_source": "进程内全局静态 RuntimeDisplaySnapshot @0x142239468（880B，首 dword==-1=未初始化→data:null）；invoke 时不读文件/进程",
+    "state_maintainer": "runtime_display_state_update_and_emit 0x140ED1DD0（kinds: push/account/account-alias/auth/full/usage/progressive + accountKey；更新后 emit tauri 事件 runtime-state-updated，载荷为外层对象 {snapshot, source, accountKey?}；snapshot 字段内才是 RuntimeDisplaySnapshot，外层序列化器 0x140DDA7A0，内层序列化器 0x140CD7E50；accountKey 为 None 时省略整个键而非 null）",
+    "feeders": ["load_snapshot", "refresh_usage_snapshot", "refresh_single_account_usage", "set_account_alias", "logout", "remove_accounts", "import_accounts_from_file", "oauth_login链(sub_140293D70→sub_1403A94E0)", "account_observer(sub_140D43AF0)"],
+    "side_effects": "只读；零写盘/零进程操作/零配置变更；无破坏性操作",
+    "error_surface": "应用层不可失败：envelope 恒成功；不可用以 data:null 带内表达"
+  },
+  "idb_writeback": {
+    "renamed": 12, "commented": 12, "dirtree_moved": 12, "target_dir": "/codexmate_lib/commands/accounts",
+    "db_save": "ok=true", "readback": "12/12 abspath+name+cmt 全对；/vibe/ 零残留",
+    "functions": [
+      {"ea": "0x1405EC7D0", "name": "load_runtime_display_snapshot", "was": "load_runtime_display_snapshot(根)"},
+      {"ea": "0x140AABEA0", "name": "load_runtime_display_snapshot_respond", "was": "sub_140AABEA0"},
+      {"ea": "0x140CF4D10", "name": "load_runtime_display_snapshot_build_envelope", "was": "sub_140CF4D10"},
+      {"ea": "0x140D763A0", "name": "load_runtime_display_snapshot_serialize_envelope", "was": "sub_140D763A0"},
+      {"ea": "0x140CD7E50", "name": "runtime_display_snapshot_serialize_data", "was": "sub_140CD7E50"},
+      {"ea": "0x140CE0910", "name": "runtime_account_display_serialize_item", "was": "sub_140CE0910"},
+      {"ea": "0x140ECA180", "name": "runtime_display_state_get_snapshot", "was": "sub_140ECA180"},
+      {"ea": "0x140ED1DD0", "name": "runtime_display_state_update_and_emit", "was": "sub_140ED1DD0"},
+      {"ea": "0x140ED8380", "name": "runtime_display_state_to_snapshot", "was": "sub_140ED8380"},
+      {"ea": "0x140CE2280", "name": "runtime_display_status_serialize", "was": "sub_140CE2280"},
+      {"ea": "0x140CE19A0", "name": "runtime_paths_serialize", "was": "sub_140CE19A0"},
+      {"ea": "0x140CD80E0", "name": "runtime_refresh_report_serialize", "was": "sub_140CD80E0"}
+    ]
+  }
+}

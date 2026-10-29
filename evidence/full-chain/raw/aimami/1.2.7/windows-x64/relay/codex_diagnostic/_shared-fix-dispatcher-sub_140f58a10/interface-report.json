@@ -1,0 +1,129 @@
+{
+  "schema": "c5cm.raw.interface_report.v1",
+  "session": "<审计会话>",
+  "product": "aimami",
+  "version": "1.2.7 (test build, version-string 1.2.6)",
+  "platform": "windows-x64",
+  "binary": "raw/binary/AiMaMi.1.2.7 win64.exe",
+  "binary_sha256": "06091864a42a1e5505cbc556b971f63c47a89c6e2805507de41bb66d00f1afea",
+  "dispatcher": {
+    "ea": "0x140F58A10",
+    "name": "sub_140F58A10",
+    "size_bytes": 17556,
+    "pseudocode_lines": 2193,
+    "module": "src/core/relay/codex_diagnostic.rs",
+    "module_attribution": "panic-Location xref (win-native), shown in decompile header",
+    "identity_anchors": [
+      "switch(a5=key.len) with 14 buckets {12,14,17,18,19,20,21,22,23,24,26,27,28,32}",
+      "quiet-window guard sub_140F10310(a4=key,a5=len); a8=force bypass; bail message 'diagnostic fix requires a verified ChatGPT quiet window: ' (57 chars @0x141A62641)",
+      "default branch -> 'unknown diagnostic item: <key>' (25 chars @0x141A6267D, length-prefixed 0x19 @0x141A6267C)",
+      "3 code callers: sub_140BC2C60 (fix_all orchestrator, 19150B, loops dispatcher per key), sub_140D36F00 (3833B, single-item fix path), relay_codex_writer__router_http_contract_c 0x140F51460 (17761B, shared registration/report face)"
+    ]
+  },
+  "command_handler": {
+    "ea": "0x140ADD8A0",
+    "name": "fix_codex_router_issue",
+    "size_bytes": 4727,
+    "note": "tauri command handler (async poll state machine, switches on state bytes at +3664/+3680); request arg fields evidenced by string refs: 'fix_codex_router_issue'@0x141A29CFA(len22), 'app'@0x141A290EF(len3), 'manager'@0x141A29378(len7), 'itemId'@0x141A29D10(len6); polls future via sub_140940D10; responds via sub_14092BC70. The per-key dispatch is NOT in this function - it delegates to the async body path that reaches sub_140F58A10."
+  },
+  "dim4_dto_field_level": {
+    "evidence": "win 1.2.7 string pool, adjacency-verified (get_string @0x141A5677E pool head)",
+    "FixResult": {
+      "fields": ["fixedIds", "failedIds", "details"],
+      "field_string_eas": {"fixedIds": "0x141A56786", "failedIds": "0x141A5678E", "details": "0x141A56797"}
+    },
+    "DiagnosticItem": {
+      "fields": ["label", "detail", "fixable"],
+      "field_string_eas": {"fixable": "0x141A5677F (pool-adjacent)"}
+    },
+    "DiagnosticReport": {
+      "fields": ["items", "hasIssues", "transitionInFlight"],
+      "field_string_eas": {"hasIssues": "0x141A567A3", "transitionInFlight": "0x141A567AC"}
+    },
+    "DiagnosticRepairOutcome": {
+      "kind": "enum",
+      "note": "mac 侧字段级（dto-fieldlevel-mac.md §4.1）：判别字 u32，2=无 target 变体，FixResult @+16，判别字≠2 时含 ReconciledRouterTarget；win 侧无独立 Serialize 符号逐字段反编译（与 mac 同样经 command handler 映射返回），字段名串池与 mac 1:1（fixedIds/failedIds/details/items/hasIssues/transitionInFlight 邻接同序）",
+      "parity": "PASS (string-pool level, dto-fieldlevel-win.md 抽查同结论)"
+    },
+    "error_variants": {
+      "unknown_key": "default branch: *a1=10 + format('unknown diagnostic item: <key>') @0x141A6267D",
+      "quiet_window_required": "guard fail (a8=0 && requires_quiet_window): *a1=10 + format('diagnostic fix requires a verified ChatGPT quiet window: ...') @0x141A62641"
+    },
+    "side_effects": {
+      "case19_state_db_relocation": "INLINE ⚠ DESTRUCTIVE: CodexPaths::resolve_codex_state_db (0x1401B79C0) + state_db lazy accessor (0x1401B8C00) + sqlite_home string refs; same destructive relocation pattern as 1.2.6 (backup-dir create + wal/shm sidecar handling)",
+      "case32_thread_model_catalog_consistency": "⚠ MUTATING: SQL owner sub_1402620D0 (13717B) holds 'UPDATE threads SET model = ?2 WHERE id = ?1' (@0x1419DF040, data-xref 0x140263A73); case body helper chain sub_14024C500 -> sub_1403FAE40 -> sub_1402620D0 -> sub_140F41CE0 -> sub_140C23890",
+      "global_guard": "all fix arms gated by requires_quiet_window unless a8=force"
+    }
+  },
+  "case_table": "see data/case_table_win_1.2.7.json (23 rows, byte-level) and manifest.json case_table",
+  "key_set_verdict": {
+    "win_1.2.7_fix_dispatcher_keys": 23,
+    "win_1.2.6_fix_dispatcher_keys": 24,
+    "mac_1.2.7_fix_issue_keys": 23,
+    "removed_in_1.2.7": ["native_off_invalid_openai_thread_models (1.2.6 win case 39, INLINE FIX arm, ~1235 pseudocode lines; absent from both 1.2.7 platforms' fix dispatch)"],
+    "added_in_1.2.7_fix_dispatch": [],
+    "router_recovery_record": "1.2.7 新增诊断键但 CHECK-only（win CHECK 引擎 0x140F10F70 x2 + 0x140F2CFD0 族；mac run_diagnostics_with_mode 键清单同含）；不在任一平台 fix 分派表",
+    "correction": "纠正 baseline-diff-1.2.6-to-1.2.7.json/BASELINE-DIFF-1.2.6-TO-1.2.7.md 的临时结论『24 键全保留 + 新增 router_recovery_record（键集超集增长无删除）』——该结论停在键 owner 映射粒度并自标 PENDING；本轮字节级 case 表实证：fix 键集 24->23（删 case 39），无新增 fix 键"
+  },
+  "rebuild_round_20261005": {
+    "session": "<审计会话>",
+    "task": "win fix 逐 case 字节级表重建（mac 23 键 vs win 24+1 键差集裁决）——双 IDA live 重建（1.2.6 win @<审计环境> + 1.2.7 win @<审计环境>）",
+    "ida_sessions": {
+      "win_1.2.6": "<内部网络>:<审计环境> module='AiMaMi 1.2.6 win64.exe' decompiler_ready=true（preflight server_health 核对）",
+      "win_1.2.7": "<内部网络>:<审计环境> module='AiMaMi.1.2.7 win64.exe' decompiler_ready=true（preflight server_health 核对）",
+      "redline_37": "零 open_file/new_database/版本切换；仅 select_instance 路由用户已挂载的双实例"
+    },
+    "binary_identity_update": {
+      "current_exe_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+      "note": "当前 <审计环境> IDB 基于最新 exe（直读 <内部存储> 文件哈希核实，与 SMB raw/binary SOT 副本逐字节一致，37413376B）。本叶 2026-10-01 轮记录的 06091864… 为更早 1.2.7 测试构建：其 sub_140F58A10(17556B) 单体分派器在当前 exe 不存在（0x140F58A10 现属 331B 小函数 sub_140F588D0）；当前 exe 将分派器拆分为 entry(sub_140E98C20,672B)+单键分派器(sub_140A9CE20,2434B)+fix_all 编排(sub_1409E6E50,18310B)+共享分类器(sub_1409A3960,1152B)，地址整体漂移。本文件上方 dispatcher/command_handler/dim4 字段保留为旧构建历史记录，最新构建以此节为准。"
+    },
+    "live_rebuilt_tables": [
+      "data/case_table_win_1.2.6_live_rebuild_2026-10-05.json（1.2.6 win fix 分派 24 键/15 桶，<审计环境> 独立重算；与 Oct 1 轮 reverify 文件 24/24 行一致）",
+      "data/case_table_win_1.2.7-latest_live_rebuild_2026-10-05.json（当前 exe fix 分派 23 键/14 桶 + 分类器 24 键 + CHECK 引擎键分布 + 跨版本二进制键存在性矩阵）"
+    ],
+    "diff_adjudication_final": {
+      "question": "mac 23 键 vs win 24+1 键差集（哪个键是 1.2.6 没有的/1.2.7 新增的）",
+      "answer": [
+        "1.2.7 新增、1.2.6 完全没有的键 = router_recovery_record（字节级：1.2.6 win exe 全文件 0 次出现 → 1.2.7 win 1 次 @0x141a5f8e3 / mac 2 次）。性质 CHECK-only：仅 CHECK 引擎 sub_1409A45C0(41419B) 引用 ×2（0x1409a4c98/0x1409a4e21），不进任何平台 fix 分派表、不进 requires_quiet_window 分类器。CHECK 语义（live 字节级）：构造 22B 键 + 标签「路由恢复记录」（0x141A5F8F9）+ 正常路径消息「可正常读取路由恢复记录」，读状态标志位 @+0x16C/+0x17E 判定。",
+        "native_off_invalid_openai_thread_models：1.2.6 win fix 分派 case 39（INLINE 1237 行修复臂：guard *(a3+316) → 早退 Ok{Vec[39B key] + String\"\" + Vec[59B 消息「路由启用中，无需修复 NativeOff 官方线程模型」@0x141833FBD]}，guard 通过则 232B/192B stride 目录修复体，失败路径错误变体 10）→ 1.2.7 双平台 fix 分派删除；键保留为 CHECK 诊断键（当前 exe CHECK 引擎 ×4 引用 0x141a604d9）。",
+        "router_postcondition：非 1.2.7 新增（1.2.6 win exe 已有 ×2，1.2.6 CHECK 引擎 sub_140583950 引用；mac 1.2.7 ×5）。两版都进 requires_quiet_window 分类器且返回 1=需窗口（1.2.6 分类器 25 键 / 1.2.7 分类器 24 键均含之），但从不进任何版本 fix 分派表——fix('router_postcondition') 在当前 exe 走 case 20 → 非 router_http_contract → LABEL_41 'unknown diagnostic item'。「win 分类器 24 键 vs mac fix_issue 23 键」的表面差 +1 = router_postcondition（分类器层，非 fix 层）。",
+        "fix 键集平台差集 = 零：mac 1.2.7 fix_issue（0x10077B370，盘证 decomp 14 桶 {12,14,17,18,19,20,21,22,23,24,26,27,28,32}，21 个 fix_* 符号调用 + 2 共享孤儿臂，零 native_off/router_postcondition/router_recovery 引用）= 当前 exe fix 分派 23 键，1:1 完全一致。全部差集在版本轴（-native_off 修复臂）与 CHECK 键轴（+router_recovery_record）。"
+      ],
+      "count_matrix": {
+        "fix_dispatch_keys": {"win_1.2.6_live": 24, "win_1.2.7_latest_live": 23, "mac_1.2.7_disk": 23},
+        "requires_quiet_window_classifier_keys": {"win_1.2.6_live": 25, "win_1.2.7_latest_live": 24},
+        "special_keys": {
+          "native_off_invalid_openai_thread_models": "1.2.6 win CHECK+FIX 双侧（分派器 ×4 + CHECK ×6 引用）→ 1.2.7 双平台 CHECK-only",
+          "router_postcondition": "两版均 CHECK+分类器（需窗口），均无修复臂",
+          "router_recovery_record": "1.2.6 无（二进制零出现）→ 1.2.7 CHECK-only 新增"
+        }
+      }
+    },
+    "dim4_dto_field_level_current_exe": {
+      "command": "fix_codex_router_issue handler 0x140333570（4734B async poll 机）；请求字段 itemId @0x141a0da80、状态 manager @0x141a0d0e8、app @0x141a0ce5f；命令串 0x141a0da6a",
+      "FixResult": {
+        "fields": ["fixedIds", "failedIds", "details"],
+        "field_string_eas": {"fixedIds": "0x141a58362", "failedIds": "0x141a5836a", "details": "0x141a58373"},
+        "serde_impl": "sub_140924980（字段名串邻接同序，与 1.2.6/旧 1.2.7 串池一致）"
+      },
+      "DiagnosticReport": {
+        "fields": ["items", "hasIssues", "transitionInFlight"],
+        "field_string_eas": {"hasIssues": "0x141a57fb6", "transitionInFlight": "0x141a5837f"},
+        "impls": ["sub_140923B60", "sub_140924AA0", "sub_140924C90"]
+      },
+      "error_variants": {
+        "unknown_key": "单键分派 default/LABEL_41 → 错误变体 10 + 'unknown diagnostic item: <key>'（25B，0x19 长度前缀 @0x141A6F514；代码引用打在长度前缀字节而非串首，故 xrefs_to(串首 0x141a6f515) 为空不代表键消失）",
+        "quiet_window_single": "guard 拒绝 → 变体 10 + 'diagnostic fix requires a verified ChatGPT quiet window: '（57B，0x39 前缀 @0x141A6F4D8）",
+        "quiet_window_fix_all": "fix_all guard → 变体 10 + inline 59B 新消息 'diagnostic fix-all requires a verified ChatGPT quiet window'（xmmword_141A64856='diagnostic fix-a' + 43B qmemcpy 'll requires a verified ChatGPT quiet window'，live 字节解码）",
+        "non_fixable_gate": "'(unknown or non-fixable diagnostic item: ' @0x141aa00f8（xref 0x140ea5be6，check+fix 共享面 sub_140EA5A80）",
+        "handler_error": "'(router diagnostic repair worker failed: ' @0x141a0e3be；'blocking command task failed: '"
+      },
+      "side_effects": {
+        "case19_state_db_relocation": "⚠ DESTRUCTIVE：当前 exe outline 为 sub_14099CD20（6282B），同 1.2.6 inline 搬迁模式（备份目录 + wal/shm sidecar 处理）",
+        "case32_thread_model_catalog_consistency": "⚠ MUTATING：sub_1409D6440(3067B) 直接调用 sub_140808CB0(13649B)，后者持有 'UPDATE threads SET model = ?2 WHERE id = ?1' @0x141a4b380（data-xref 0x14080a4e0，本轮 live 复核）",
+        "global_guard": "全部 fix 臂经 requires_quiet_window 分类器前置（返回 0/1/2；force 位旁路）；fix_all 对键列表逐键检查，任一键需窗口且非 force 即整体 bail"
+      }
+    },
+    "idb_writes_this_round": "none（全程只读；已执行的 1.2.7 IDB rename/comment/dirtree/db_save 未使用，本任务无需 IDB 写）"
+  }
+}

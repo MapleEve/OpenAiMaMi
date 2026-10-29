@@ -1,0 +1,18 @@
+{
+  "schema": "c5cm.internal-reverse.producer-ledger.v1",
+  "bundle": "win-1.2.7-commands-system-graceful_restart_for_update",
+  "path": "raw/aimami/1.2.7/windows-x64/backend/commands/system/graceful_restart_for_update/",
+  "rounds": [
+    {
+      "session": "<审计会话>",
+      "date": "2026-10-07",
+      "machine": "<本地机器>",
+      "role": "producer",
+      "scope": "graceful_restart_for_update 禁实现条目更正：win <审计环境> full-chain（glue 0x1405F27C0 → state 提取 sub_1406440D0 → 重启机制 sub_140724350/sub_1406320F0 → tauri::process::restart sub_141472630 → CreateProcessW）+ mac 只读对照（推翻「mac 零符号」：名字表 0x1018c0455 + wrapper 0x100638510 + request_restart 0x1006e9010 + process::restart 0x101408100）+ IDB 归位 + win/mac 合同禁实现条目更正 + 双平台 four-angle 分类改判 + audits gate amendment + COVERAGE/QUEUE/INDEX/SoT 回写",
+      "ida_instance": "<审计环境> (AiMaMi.1.2.7 win64.exe, sha256 51cb41b6...)；mac 实例 (AiMaMi 1.2.7.app) 仅只读",
+      "idb_writes": "按流程完成：注释更新 1（glue，纠正 Oct 6 manager-request 表述）+ callee 定性注释 4 + dirtree move 1（commands/ → commands/system/，rc=0）+ db_save(ok=true)；全部原生 IDAPython API（ida_funcs.set_func_cmt/dirtree rename）",
+      "claim": "REVERSE-STATUS.md CLAIM 2026-10-07 <审计会话> (L8637)",
+      "status": "DONE"
+    }
+  ]
+}

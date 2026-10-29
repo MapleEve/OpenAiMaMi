@@ -1,0 +1,22 @@
+{
+  "schema": "c5cm.internal-reverse.producer-ledger.v1",
+  "target_id": "angle_c:mac127-truly-undone-non-command-backend-20260930",
+  "producer_session": "<审计会话>",
+  "machine": "<本地机器>",
+  "product": "aimami",
+  "version": "1.2.7-test-package(version-string 1.2.6)",
+  "platform": "macos-arm64",
+  "status": "implementation_leaf_recovered",
+  "decompiled_functions": 80,
+  "enumerated_total": 80,
+  "db_saved": false,
+  "dirtree_fixed": false,
+  "idb_write_note": "本轮零 IDB 写（dirtree/rename/db_save 本轮未执行）；mac 1.2.7 IDB dirtree 由前序 backend-delta 轮完成",
+  "gate": {
+    "consumerStartReady": true,
+    "strictImplementationUse": true,
+    "readyToImplement": false,
+    "dim6": "BLANK"
+  },
+  "conclusion": "mac 1.2.7 truly_undone 25 簇/80 函数（四角度 D1 分类 angle-C）全部 live decompile 至 semantic implementation leaf：原子写管线/Anthropic V1 适配/ProbeStream/路由事务日志/relay 状态存储/registry 重建同步/上游 URL/codex_writer/账号 IO+锁/平台进程探测等；0 截断 0 空体 0 accepted_unknown；system_volume::restore 实证属 voice 排除域；preflight_save 与 1.2.6 合同行为一致（红线30 迁移面）；win 25 簇函数级拆分归红线24 深恢复轮不归零"
+}

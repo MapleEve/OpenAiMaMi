@@ -1,0 +1,75 @@
+{
+ "schema": "c5cm.reverse.producer_ledger.v1",
+ "product": "aimami",
+ "version": "1.2.7",
+ "platform": "windows-x64",
+ "bundle": "backend/non-command-backend-fullchain",
+ "rounds": [
+  {
+   "session": "<审计会话>",
+   "date": "2026-10-01",
+   "round": "truly_undone 25 簇 win 侧深逆（旧 pre-update exe 口径）",
+   "outputs": [
+    "manifest.json",
+    "interface-report.json(functions[1070])",
+    "gate-report.json",
+    "call-tree.json",
+    "evidence.md",
+    "README.md",
+    "ida/pseudocode/(1070)",
+    "data/index.json"
+   ],
+   "note": "当时未写 producer-ledger（本轮补建登记）；INDEX.jsonl 亦未追加该 leaf 行"
+  },
+  {
+   "session": "<审计会话>",
+   "date": "2026-10-05",
+   "round": "最新 exe IDB 回写 + handle_event 逐转移枚举写回",
+   "outputs": [
+    "interface-report.json(+handle_event_transitions_latest_exe)",
+    "ida/pseudocode-latest-exe/(12 文件)",
+    "data/producer-ledger.json(本文件)"
+   ],
+   "idb_writes": {
+    "rename": 118,
+    "comments": 1070,
+    "dirtree_moves": 1016,
+    "db_save": "ok",
+    "instance": "<内部存储>\\AiMaMi.1.2.7 win64.exe.i64 (<审计环境>)"
+   },
+   "authorization": "2026-10-05 完成 win 1.2.7 IDB 写（rename/comment/dirtree/db_save）"
+  },
+  {
+   "session": "<审计会话>",
+   "date": "2026-10-06",
+   "round": "NEEDS_REDO 21 簇重逆（最新 exe 口径 leaf 重锚定+重逆+同步）",
+   "outputs": [
+    "data/index.json(+latest_exe 逐记录块+rebaseline 摘要)",
+    "manifest.json(+latest_exe_rebaseline)",
+    "evidence.md(+最新 exe 重逆节)",
+    "interface-report.json(+1070 函数 latest_exe 块+summary)",
+    "gate-report.json(+latest_exe_rebaseline_checks 10 项)",
+    "ida/pseudocode-latest-exe/(+362 文件→377)",
+    "intermediate/.../four-angle-d-classification.json(+redo_20261006)",
+    "intermediate/.../win-latest-exe-rebaseline.json(+needs_redo_execution_20261006)"
+   ],
+   "idb_writes": "无（本轮纯只读：decompile/xref/dirtree 枚举；授权的 rename/comment/dirtree/db_save 未动用）",
+   "authorization": "用户「全都做完」裁决（Oct 6 rebaseline CLOSURE 登记的 NEEDS_REDO 工作单）"
+  },
+  {
+   "session": "<审计会话>",
+   "date": "2026-10-07",
+   "round": "load_runtime_display_snapshot 改判同步（本 leaf 旧 TERMINAL_OPEN/OPEN_NO_BACKEND_SYMBOL_BOTH_SIDES/禁实现条目随 Oct 6 改判更新，零 IDA 操作）",
+   "outputs": [
+    "evidence.md(特殊处置 angle_b 条目改判更新)",
+    "gate-report.json(angle_b check TERMINAL_OPEN→CLOSED_SUPERSEDED + 顶层 amendments 登记)",
+    "README.md(方法链第3条+边界 angle_b 条目)",
+    "manifest.json(notes 尾段)",
+    "interface-report.json(notes 尾段)",
+    "data/producer-ledger.json(本文件追加本轮)"
+   ],
+   "idb_writes": "无（纯 SoT 文档同步，零 IDA 调用，<审计环境>/<审计环境> 均未触碰）",
+   "authorization": "用户 2026-10-07「欠账全做完，0 残留」指令；改判依据=用户 2026-10-06 裁决「全都做完」（four-angle-d-classification.json runtime_display_snapshot_unban_20261006 节 + audits gate-report Oct 6 amendment）"
+  }
+ ]
+}

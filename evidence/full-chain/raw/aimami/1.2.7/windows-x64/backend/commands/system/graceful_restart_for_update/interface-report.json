@@ -1,0 +1,73 @@
+{
+  "schema": "c5cm.aimami.backend.command-interface.v1",
+  "command": "graceful_restart_for_update",
+  "product": "aimami", "version": "1.2.7", "platform": "windows-x64",
+  "session": "<审计会话>",
+  "registration": {
+    "win": {
+      "registered": true,
+      "glue_ea": "0x1405F27C0", "glue_size": 586,
+      "idb_name": "graceful_restart_for_update",
+      "dirtree": "/codexmate_lib/commands/system/graceful_restart_for_update",
+      "module": "src/commands/system (推断级: 注册序邻接 restart_codex/run_daemon_once 均为 mac commands::system 符号; 函数体纯 tauri AppHandle 调用无模块 panic 面)",
+      "evidence": [
+        "dispatcher tauri_invoke_command_dispatcher 0x1405fbca0 双窗比较 first16 graceful_restart@0x141A22C00 + last16 start_for_update@0x141A22BF0 (比较点 0x1405fcd97/0x1405fcd9f, 各唯一 data xref)",
+        "arm call 0x1405F27C0 @0x140600cb6",
+        "registry 0x141ea82e8 含 glue RVA 0x005f27c0 (live 读字节 c0 27 5f 00)",
+        "全名串 graceful_restart_for_update(27B)@0x141a2bba4 唯一 xref 落 glue 0x1405f2839"
+      ]
+    },
+    "macos": {
+      "registered": true,
+      "evidence": [
+        "名字表串 0x1018c0328 串内偏移 301 (0x1018c0455) 含 graceful_restart_for_update (live find_regex)",
+        "dispatcher codexmate_lib::run::{{closure}} 0x1006119c0 比较点 0x100615586",
+        "wrapper codexmate_lib::run::{{closure}}::{{closure}} 0x100638510 (546B)"
+      ],
+      "note": "推翻既往「mac 零符号」判定（该判定系全名搜索假阴性，名字以池化名字表串形式存在）；mac 无独立 codexmate_lib handler 符号（wrapper 为 lib.rs 内联闭包）属正常形态"
+    }
+  },
+  "input": { "user_args": [], "frontend_ccf": { "command": "graceful_restart_for_update", "argKeys": [], "trigger": "g.useCallback (guard if(x))", "definedIn": "assets/index-CCfI07iB.js L225" } },
+  "output": {
+    "win": {
+      "success_response": "NONE — 重启路径发散 (sub_140724350 调用点后 ud2@0x1405f2a08, 编译器证明 -> !)；前端 invoke 挂起至进程退出, 无 IPC 响应",
+      "command_return_type": "unit (无载荷)",
+      "error_response": "仅 fall-through 路径 (AppHandle state 解析失败, out 首 dword == -1): tauri 标准 error envelope 经 sub_140B39980 InvokeResolver::respond (resolver consumed 双重应答 panic 守卫)"
+    },
+    "macos": {
+      "success_response": "unit/Ok (respond tag 6, JSON null) — request_restart 0x1006e9010 非发散 (置 flag@+5192 + tao send_event(31) 成功即返回), wrapper 0x100638510 随后应答",
+      "error_response": "from_command 错误变体 (tag 3) → InvokeResolver::return_result"
+    },
+    "platform_fork": "win 无响应/mac 有响应; win 调发散重启 (request_restart+restart 内联合一) / mac 调非发散 request_restart; spawn 失败 win panic / mac log+exit(0)"
+  },
+  "restart_flow": {
+    "win": [
+      "glue 0x1405F27C0: memcpy 520+400+captures → 请求 {name, key=\"app\", env, captures} → sub_1406440D0 (state 提取原语, StateManager::try_get 等价)",
+      "成功(≠-1): 152B AppHandle → sub_140724350 (thunk) → sub_1406320F0 (tauri-2.10.3 AppHandle 重启机制, 发散)",
+      "restart flag CAS(v4+16, 0→1→2) + sub_141969A30 WaitOnAddress 自旋锁 (重复调用阻塞等待)",
+      "terminating(+17) 已置位 → panic Result::unwrap Err",
+      "主线程: trace log 'restart triggered on the main thread'(tauri::app) + WakeByAddressSingle; 非主线程: expect 'restart triggered from a separate thread'(app.rs:97) + crossbeam/PostMessageW 投递 (sub_140635FB0, tag 29)",
+      "exit-requested *(*(handle+136)+5312)=1",
+      "cleanup_before_exit(sub_140632920) + Manager::env(sub_14064C090)",
+      "tauri::process::restart (sub_141472630, process.rs:101): current_exe + 原 argv → std Command::spawn (CreateProcessW) → CloseHandle → exit(0); spawn 失败 panic 'failed to restart app: '"
+    ],
+    "macos": [
+      "wrapper 0x100638510: AppHandle::from_command(0x100712c60) → 成功: AppHandle::request_restart(0x1006e9010)",
+      "request_restart: *(app+5192)=1 + tao Proxy::send_event(EventLoopMessage(31)); 成功返回; 失败 → cleanup_before_exit + Manager::env + tauri::process::restart(0x101408100)",
+      "process::restart: current_exe → bundle 解析 (Info.plist CFBundleExecutable) → Command::new(exe).args(原 argv).spawn → 失败 log → exit(0)",
+      "wrapper 应答 unit (respond tag 6)"
+    ]
+  },
+  "side_effects": {
+    "destructive": "⚠ 进程管理类: App 进程退出 + 重新拉起 (spawn current_exe + exit(0), 先起子进程再退旧进程)",
+    "persistence": "无 — 全链仅内存状态位/事件投递/进程 spawn, 零文件写",
+    "idempotency": "restart flag CAS 保证重复调用挂起等待而非双重启",
+    "update_staging_boundary": "命令体零更新逻辑; 更新制品就位 (exe 替换) 属上游更新流程 (platform::update check_update_installability 族 + 前端更新 UI), 不在本命令链内"
+  },
+  "error_surface_win": [
+    "app state 缺失 → tauri 标准 error envelope (responder 应答, 可到达前端的唯一错误)",
+    "已在退出中 → panic called Result::unwrap() on an Err value (进程崩溃路径)",
+    "重启请求投递失败 → expect panic 'restart triggered from a separate thread' / while(1) park (线程永眠)",
+    "spawn 失败 → panic 'failed to restart app: ' (tauri process.rs:101, 进程崩溃路径)"
+  ]
+}

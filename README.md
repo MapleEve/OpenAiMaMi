@@ -36,8 +36,10 @@ OpenAiMaMi/
 | 1.2.2 / 1.2.1 | delta | `internal/audits/1.2.2/COVERAGE-FINAL-1.2.2.md` | `raw/aimami/1.2.2/` + `1.2.1/` |
 | **1.2.4** | **delta** | `internal/audits/1.2.4/COVERAGE-FINAL-1.2.4.md` | `raw/aimami/1.2.4/`（双平台 230 文件）|
 | **1.2.3** | **baseline** | `internal/audits/1.2.3/BASELINE-FINAL-1.2.3.md` + `COVERAGE-FINAL-1.2.3.md` | `raw/aimami/1.2.3/`（双平台 3949 文件）+ `intermediate/aimami/1.2.3/` + 55 审计包 |
+| 1.2.6 | delta | `internal/audits/BASELINE-FINAL-1.2.6.md` + `COVERAGE-FINAL-1.2.6.md` + 双平台 version-delta/模块审计包 | `raw/aimami/1.2.6/`（双平台 912 文件）|
+| **1.2.7** | **delta** | `internal/audits/1.2.7/`（双平台 version-delta 审计包）+ `version-diff/CHAIN-DIFF-LADDER/09-target-1.2.7.md` + `binary-manifests/1.2.7/` | `raw/aimami/1.2.7/`（双平台 delta 面，后端伪代码 + 前端 dump + 契约）|
 
-1.2.3 是当前 baseline：1638 个应用函数全反编译 + 注释 + 模块目录树，6 个前端页真逆向，62 处破坏性副作用编目。IDB 见 [OpenAiMami-IDB `1.2.3/`](https://github.com/MapleEve/OpenAiMami-IDB/tree/main/1.2.3)。
+1.2.3 是 1.2.6 之前的全量 baseline：1638 个应用函数全反编译 + 注释 + 模块目录树，6 个前端页真逆向，62 处破坏性副作用编目。1.2.6 收口为当前 delta 基线；1.2.7 delta 覆盖 Anthropic V1 协议适配、线程管理重构（analytics 双维拆分）、智能路由诊断/修复、ChatGPT 引擎目录适配、账号重置卡/别名/用量刷新与切换失败修复，证据含 pre 与 release 双构建对比。IDB 见 [OpenAiMami-IDB `1.2.3/`](https://github.com/MapleEve/OpenAiMami-IDB/tree/main/1.2.3) 与 [OpenAiMami-IDB `1.2.7/`](https://github.com/MapleEve/OpenAiMami-IDB/tree/main/1.2.7)。
 
 ## 为什么公开
 

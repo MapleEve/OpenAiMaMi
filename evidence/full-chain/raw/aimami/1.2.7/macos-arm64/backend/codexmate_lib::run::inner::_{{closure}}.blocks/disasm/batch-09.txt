@@ -1,0 +1,2680 @@
+; ---- block start=0x1002ec1bd end=0x1002ec331 ----
+0x1002ec1bd: mov     rax, [rbp+var_510]
+0x1002ec1c4: mov     [r15+68h], rax
+0x1002ec1c8: mov     rax, [rbp+var_518]
+0x1002ec1cf: mov     [r15+60h], rax
+0x1002ec1d3: mov     rax, [rbp+var_520]
+0x1002ec1da: mov     [r15+58h], rax
+0x1002ec1de: mov     rax, [rbp+var_528]
+0x1002ec1e5: mov     [r15+50h], rax
+0x1002ec1e9: mov     rax, [rbp+var_530]
+0x1002ec1f0: mov     [r15+48h], rax
+0x1002ec1f4: mov     rax, [rbp+var_540]
+0x1002ec1fb: mov     rcx, [rbp+var_538]
+0x1002ec202: mov     [r15+40h], rcx
+0x1002ec206: mov     [r15+38h], rax
+0x1002ec20a: mov     rax, [rbp+var_938]
+0x1002ec211: mov     [r15+30h], rax
+0x1002ec215: mov     rax, [rbp+var_940]
+0x1002ec21c: mov     [r15+28h], rax
+0x1002ec220: mov     rax, [rbp+var_948]
+0x1002ec227: mov     [r15+20h], rax
+0x1002ec22b: mov     rax, [rbp+var_950]
+0x1002ec232: mov     [r15+18h], rax
+0x1002ec236: mov     rax, [rbp+var_958]
+0x1002ec23d: mov     [r15+10h], rax
+0x1002ec241: mov     rax, [rbp+var_968]
+0x1002ec248: mov     rcx, [rbp+var_960]
+0x1002ec24f: mov     [r15+8], rcx
+0x1002ec253: mov     [r15], rax
+0x1002ec256: mov     rax, [rbp+var_680]
+0x1002ec25d: mov     [rbx+0B8h], rax
+0x1002ec264: mov     rax, [rbp+var_688]
+0x1002ec26b: mov     [rbx+0B0h], rax
+0x1002ec272: mov     rax, [rbp+var_698]
+0x1002ec279: mov     rcx, [rbp+var_690]
+0x1002ec280: mov     [rbx+0A8h], rcx
+0x1002ec287: mov     [rbx+0A0h], rax
+0x1002ec28e: lea     rsi, [rbp+__src]
+0x1002ec295: mov     ecx, 0Ch
+0x1002ec29a: mov     rdi, rbx
+0x1002ec29d: rep movsq
+0x1002ec2a0: mov     qword ptr [rbx+60h], 0
+0x1002ec2a8: mov     qword ptr [rbx+70h], 2
+0x1002ec2b0: mov     [rbx+78h], r15
+0x1002ec2b4: mov     qword ptr [rbx+80h], 2
+0x1002ec2bf: mov     qword ptr [rbx+88h], 0
+0x1002ec2ca: mov     qword ptr [rbx+90h], 8
+0x1002ec2d5: mov     qword ptr [rbx+98h], 0
+0x1002ec2e0: mov     [rbp+__src], 2
+0x1002ec2eb: mov     [rbp+var_19B8], rbx
+0x1002ec2f2: mov     [rbp+var_19B0], 2
+0x1002ec2fd: lea     rdi, [rbp+var_540]
+0x1002ec304: lea     rsi, [rbp+var_48]
+0x1002ec308: lea     rdx, [rbp+var_1A00]
+0x1002ec30f: lea     rcx, [rbp+__src]
+0x1002ec316: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ec31b: mov     r15, [rbp+var_540]
+0x1002ec322: mov     rax, 8000000000000000h
+0x1002ec32c: cmp     r15, rax
+0x1002ec32f: jz      short loc_1002EC381
+; ---- block start=0x1002ec331 end=0x1002ec350 ----
+0x1002ec331: mov     rbx, [rbp+var_538]
+0x1002ec338: mov     r13, [rbp+var_530]
+0x1002ec33f: inc     r13
+0x1002ec342: mov     rdi, rbx
+0x1002ec345: nop     word ptr [rax+rax+00000000h]
+0x1002ec34f: nop
+; ---- block start=0x1002ec350 end=0x1002ec356 ----
+0x1002ec350: cmp     r13, 1
+0x1002ec354: jz      short loc_1002EC367
+; ---- block start=0x1002ec356 end=0x1002ec367 ----
+0x1002ec356: lea     r14, [rdi+60h]
+0x1002ec35a: dec     r13
+0x1002ec35d: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ec362: mov     rdi, r14
+0x1002ec365: jmp     short loc_1002EC350
+; ---- block start=0x1002ec367 end=0x1002ec36c ----
+0x1002ec367: test    r15, r15
+0x1002ec36a: jz      short loc_1002EC381
+; ---- block start=0x1002ec36c end=0x1002ec381 ----
+0x1002ec36c: shl     r15, 5
+0x1002ec370: lea     rsi, [r15+r15*2]
+0x1002ec374: mov     edx, 8
+0x1002ec379: mov     rdi, rbx
+0x1002ec37c: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ec381 end=0x1002ec3a3 ----
+0x1002ec381: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ec386: mov     ebx, 12h
+0x1002ec38b: mov     edi, 12h
+0x1002ec390: mov     esi, 1
+0x1002ec395: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ec39a: test    rax, rax
+0x1002ec39d: jz      loc_10030531F
+; ---- block start=0x1002ec3a3 end=0x1002ec3f8 ----
+0x1002ec3a3: mov     r14, rax
+0x1002ec3a6: mov     rax, 61737C676F6C6169h
+0x1002ec3b0: mov     [r14+8], rax
+0x1002ec3b4: mov     [r14], r12
+0x1002ec3b7: mov     word ptr [r14+10h], 6576h
+0x1002ec3be: mov     [rbp+var_1A00], 12h
+0x1002ec3c9: mov     [rbp+var_19F8], r14
+0x1002ec3d0: mov     [rbp+var_19F0], 12h
+0x1002ec3db: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ec3e0: mov     edi, 0C0h
+0x1002ec3e5: mov     esi, 8
+0x1002ec3ea: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ec3ef: test    rax, rax
+0x1002ec3f2: jz      loc_1003007BD
+; ---- block start=0x1002ec3f8 end=0x1002ec429 ----
+0x1002ec3f8: mov     rbx, rax
+0x1002ec3fb: mov     rax, 8000000000000000h
+0x1002ec405: mov     [rbp+var_968], rax
+0x1002ec40c: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ec411: mov     edi, 70h ; 'p'
+0x1002ec416: mov     esi, 8
+0x1002ec41b: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ec420: test    rax, rax
+0x1002ec423: jz      loc_1003007D1
+; ---- block start=0x1002ec429 end=0x1002ec45b ----
+0x1002ec429: mov     r15, rax
+0x1002ec42c: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ec433: lea     rdi, [rbp+__src]
+0x1002ec43a: mov     edx, 7
+0x1002ec43f: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ec444: mov     rax, 8000000000000000h
+0x1002ec44e: cmp     [rbp+__src], rax
+0x1002ec455: jz      loc_1003007E5
+; ---- block start=0x1002ec45b end=0x1002ec4ec ----
+0x1002ec45b: mov     rax, [rbp+var_1990]
+0x1002ec462: mov     [rbp+var_510], rax
+0x1002ec469: mov     rax, [rbp+var_1998]
+0x1002ec470: mov     [rbp+var_518], rax
+0x1002ec477: mov     rax, [rbp+var_19A0]
+0x1002ec47e: mov     [rbp+var_520], rax
+0x1002ec485: mov     rax, [rbp+var_19A8]
+0x1002ec48c: mov     [rbp+var_528], rax
+0x1002ec493: mov     rax, [rbp+var_19B0]
+0x1002ec49a: mov     [rbp+var_530], rax
+0x1002ec4a1: mov     rax, [rbp+__src]
+0x1002ec4a8: mov     rcx, [rbp+var_19B8]
+0x1002ec4af: mov     [rbp+var_538], rcx
+0x1002ec4b6: mov     [rbp+var_540], rax
+0x1002ec4bd: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ec4c4: lea     rdi, [rbp+__src]
+0x1002ec4cb: mov     edx, 4
+0x1002ec4d0: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ec4d5: mov     rdx, 8000000000000000h
+0x1002ec4df: cmp     [rbp+__src], rdx
+0x1002ec4e6: jz      loc_10030083A
+; ---- block start=0x1002ec4ec end=0x1002ec62a ----
+0x1002ec4ec: mov     rax, [rbp+var_1990]
+0x1002ec4f3: mov     [r15+68h], rax
+0x1002ec4f7: mov     rax, [rbp+var_1998]
+0x1002ec4fe: mov     [r15+60h], rax
+0x1002ec502: mov     rax, [rbp+var_19A0]
+0x1002ec509: mov     [r15+58h], rax
+0x1002ec50d: mov     rax, [rbp+var_19A8]
+0x1002ec514: mov     [r15+50h], rax
+0x1002ec518: mov     rax, [rbp+var_19B0]
+0x1002ec51f: mov     [r15+48h], rax
+0x1002ec523: mov     rax, [rbp+__src]
+0x1002ec52a: mov     rcx, [rbp+var_19B8]
+0x1002ec531: mov     [r15+40h], rcx
+0x1002ec535: mov     [r15+38h], rax
+0x1002ec539: mov     rax, [rbp+var_510]
+0x1002ec540: mov     [r15+30h], rax
+0x1002ec544: mov     rax, [rbp+var_518]
+0x1002ec54b: mov     [r15+28h], rax
+0x1002ec54f: mov     rax, [rbp+var_520]
+0x1002ec556: mov     [r15+20h], rax
+0x1002ec55a: mov     rax, [rbp+var_528]
+0x1002ec561: mov     [r15+18h], rax
+0x1002ec565: mov     rax, [rbp+var_530]
+0x1002ec56c: mov     [r15+10h], rax
+0x1002ec570: mov     rax, [rbp+var_540]
+0x1002ec577: mov     rcx, [rbp+var_538]
+0x1002ec57e: mov     [r15+8], rcx
+0x1002ec582: mov     [r15], rax
+0x1002ec585: mov     rax, [rbp+var_968]
+0x1002ec58c: mov     rcx, [rbp+var_960]
+0x1002ec593: mov     [rbp+var_1980], rax
+0x1002ec59a: mov     [rbp+var_1978], rcx
+0x1002ec5a1: mov     rax, [rbp+var_958]
+0x1002ec5a8: mov     [rbp+var_1970], rax
+0x1002ec5af: mov     rax, [rbp+var_950]
+0x1002ec5b6: mov     [rbp+var_1968], rax
+0x1002ec5bd: mov     [rbp+var_19B0], 2
+0x1002ec5c8: mov     [rbp+var_19A8], r15
+0x1002ec5cf: mov     [rbp+var_19A0], 2
+0x1002ec5da: mov     [rbp+var_1998], 0
+0x1002ec5e5: mov     [rbp+var_1990], 8
+0x1002ec5f0: mov     [rbp+var_1988], 0
+0x1002ec5fb: mov     [rbp+__src], 0
+0x1002ec606: mov     [rbp+var_698], rdx
+0x1002ec60d: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ec612: mov     edi, 70h ; 'p'
+0x1002ec617: mov     esi, 8
+0x1002ec61c: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ec621: test    rax, rax
+0x1002ec624: jz      loc_10030088F
+; ---- block start=0x1002ec62a end=0x1002ec65c ----
+0x1002ec62a: mov     r15, rax
+0x1002ec62d: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ec634: lea     rdi, [rbp+var_540]
+0x1002ec63b: mov     edx, 7
+0x1002ec640: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ec645: mov     rax, 8000000000000000h
+0x1002ec64f: cmp     [rbp+var_540], rax
+0x1002ec656: jz      loc_1003008A3
+; ---- block start=0x1002ec65c end=0x1002ec6ed ----
+0x1002ec65c: mov     rax, [rbp+var_510]
+0x1002ec663: mov     [rbp+var_938], rax
+0x1002ec66a: mov     rax, [rbp+var_518]
+0x1002ec671: mov     [rbp+var_940], rax
+0x1002ec678: mov     rax, [rbp+var_520]
+0x1002ec67f: mov     [rbp+var_948], rax
+0x1002ec686: mov     rax, [rbp+var_528]
+0x1002ec68d: mov     [rbp+var_950], rax
+0x1002ec694: mov     rax, [rbp+var_530]
+0x1002ec69b: mov     [rbp+var_958], rax
+0x1002ec6a2: mov     rax, [rbp+var_540]
+0x1002ec6a9: mov     rcx, [rbp+var_538]
+0x1002ec6b0: mov     [rbp+var_960], rcx
+0x1002ec6b7: mov     [rbp+var_968], rax
+0x1002ec6be: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ec6c5: lea     rdi, [rbp+var_540]
+0x1002ec6cc: mov     edx, 4
+0x1002ec6d1: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ec6d6: mov     rax, 8000000000000000h
+0x1002ec6e0: cmp     [rbp+var_540], rax
+0x1002ec6e7: jz      loc_1003008F8
+; ---- block start=0x1002ec6ed end=0x1002ec861 ----
+0x1002ec6ed: mov     rax, [rbp+var_510]
+0x1002ec6f4: mov     [r15+68h], rax
+0x1002ec6f8: mov     rax, [rbp+var_518]
+0x1002ec6ff: mov     [r15+60h], rax
+0x1002ec703: mov     rax, [rbp+var_520]
+0x1002ec70a: mov     [r15+58h], rax
+0x1002ec70e: mov     rax, [rbp+var_528]
+0x1002ec715: mov     [r15+50h], rax
+0x1002ec719: mov     rax, [rbp+var_530]
+0x1002ec720: mov     [r15+48h], rax
+0x1002ec724: mov     rax, [rbp+var_540]
+0x1002ec72b: mov     rcx, [rbp+var_538]
+0x1002ec732: mov     [r15+40h], rcx
+0x1002ec736: mov     [r15+38h], rax
+0x1002ec73a: mov     rax, [rbp+var_938]
+0x1002ec741: mov     [r15+30h], rax
+0x1002ec745: mov     rax, [rbp+var_940]
+0x1002ec74c: mov     [r15+28h], rax
+0x1002ec750: mov     rax, [rbp+var_948]
+0x1002ec757: mov     [r15+20h], rax
+0x1002ec75b: mov     rax, [rbp+var_950]
+0x1002ec762: mov     [r15+18h], rax
+0x1002ec766: mov     rax, [rbp+var_958]
+0x1002ec76d: mov     [r15+10h], rax
+0x1002ec771: mov     rax, [rbp+var_968]
+0x1002ec778: mov     rcx, [rbp+var_960]
+0x1002ec77f: mov     [r15+8], rcx
+0x1002ec783: mov     [r15], rax
+0x1002ec786: mov     rax, [rbp+var_680]
+0x1002ec78d: mov     [rbx+0B8h], rax
+0x1002ec794: mov     rax, [rbp+var_688]
+0x1002ec79b: mov     [rbx+0B0h], rax
+0x1002ec7a2: mov     rax, [rbp+var_698]
+0x1002ec7a9: mov     rcx, [rbp+var_690]
+0x1002ec7b0: mov     [rbx+0A8h], rcx
+0x1002ec7b7: mov     [rbx+0A0h], rax
+0x1002ec7be: lea     rsi, [rbp+__src]
+0x1002ec7c5: mov     ecx, 0Ch
+0x1002ec7ca: mov     rdi, rbx
+0x1002ec7cd: rep movsq
+0x1002ec7d0: mov     qword ptr [rbx+60h], 0
+0x1002ec7d8: mov     qword ptr [rbx+70h], 2
+0x1002ec7e0: mov     [rbx+78h], r15
+0x1002ec7e4: mov     qword ptr [rbx+80h], 2
+0x1002ec7ef: mov     qword ptr [rbx+88h], 0
+0x1002ec7fa: mov     qword ptr [rbx+90h], 8
+0x1002ec805: mov     qword ptr [rbx+98h], 0
+0x1002ec810: mov     [rbp+__src], 2
+0x1002ec81b: mov     [rbp+var_19B8], rbx
+0x1002ec822: mov     [rbp+var_19B0], 2
+0x1002ec82d: lea     rdi, [rbp+var_540]
+0x1002ec834: lea     rsi, [rbp+var_48]
+0x1002ec838: lea     rdx, [rbp+var_1A00]
+0x1002ec83f: lea     rcx, [rbp+__src]
+0x1002ec846: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ec84b: mov     r15, [rbp+var_540]
+0x1002ec852: mov     rax, 8000000000000000h
+0x1002ec85c: cmp     r15, rax
+0x1002ec85f: jz      short loc_1002EC8B1
+; ---- block start=0x1002ec861 end=0x1002ec880 ----
+0x1002ec861: mov     rbx, [rbp+var_538]
+0x1002ec868: mov     r12, [rbp+var_530]
+0x1002ec86f: inc     r12
+0x1002ec872: mov     rdi, rbx
+0x1002ec875: nop     word ptr [rax+rax+00000000h]
+0x1002ec87f: nop
+; ---- block start=0x1002ec880 end=0x1002ec886 ----
+0x1002ec880: cmp     r12, 1
+0x1002ec884: jz      short loc_1002EC897
+; ---- block start=0x1002ec886 end=0x1002ec897 ----
+0x1002ec886: lea     r14, [rdi+60h]
+0x1002ec88a: dec     r12
+0x1002ec88d: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ec892: mov     rdi, r14
+0x1002ec895: jmp     short loc_1002EC880
+; ---- block start=0x1002ec897 end=0x1002ec89c ----
+0x1002ec897: test    r15, r15
+0x1002ec89a: jz      short loc_1002EC8B1
+; ---- block start=0x1002ec89c end=0x1002ec8b1 ----
+0x1002ec89c: shl     r15, 5
+0x1002ec8a0: lea     rsi, [r15+r15*2]
+0x1002ec8a4: mov     edx, 8
+0x1002ec8a9: mov     rdi, rbx
+0x1002ec8ac: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ec8b1 end=0x1002ec8d3 ----
+0x1002ec8b1: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ec8b6: mov     ebx, 11h
+0x1002ec8bb: mov     edi, 11h
+0x1002ec8c0: mov     esi, 1
+0x1002ec8c5: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ec8ca: test    rax, rax
+0x1002ec8cd: jz      loc_10030531F
+; ---- block start=0x1002ec8d3 end=0x1002ec92f ----
+0x1002ec8d3: mov     r14, rax
+0x1002ec8d6: mov     r13, 696D657C746E6576h
+0x1002ec8e0: mov     [rax+8], r13
+0x1002ec8e4: mov     r12, 653A6E6967756C70h
+0x1002ec8ee: mov     [rax], r12
+0x1002ec8f1: mov     byte ptr [rax+10h], 74h ; 't'
+0x1002ec8f5: mov     [rbp+var_E0], 11h
+0x1002ec900: mov     [rbp+var_D8], rax
+0x1002ec907: mov     [rbp+var_D0], 11h
+0x1002ec912: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ec917: mov     edi, 60h ; '`'
+0x1002ec91c: mov     esi, 8
+0x1002ec921: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ec926: test    rax, rax
+0x1002ec929: jz      loc_10030094D
+; ---- block start=0x1002ec92f end=0x1002ec960 ----
+0x1002ec92f: mov     rbx, rax
+0x1002ec932: mov     rax, 8000000000000000h
+0x1002ec93c: mov     [rbp+var_968], rax
+0x1002ec943: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ec948: mov     edi, 70h ; 'p'
+0x1002ec94d: mov     esi, 8
+0x1002ec952: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ec957: test    rax, rax
+0x1002ec95a: jz      loc_100300961
+; ---- block start=0x1002ec960 end=0x1002ec992 ----
+0x1002ec960: mov     r15, rax
+0x1002ec963: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ec96a: lea     rdi, [rbp+__src]
+0x1002ec971: mov     edx, 7
+0x1002ec976: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ec97b: mov     rax, 8000000000000000h
+0x1002ec985: cmp     [rbp+__src], rax
+0x1002ec98c: jz      loc_100300975
+; ---- block start=0x1002ec992 end=0x1002eca23 ----
+0x1002ec992: mov     rax, [rbp+var_1990]
+0x1002ec999: mov     [rbp+var_510], rax
+0x1002ec9a0: mov     rax, [rbp+var_1998]
+0x1002ec9a7: mov     [rbp+var_518], rax
+0x1002ec9ae: mov     rax, [rbp+var_19A0]
+0x1002ec9b5: mov     [rbp+var_520], rax
+0x1002ec9bc: mov     rax, [rbp+var_19A8]
+0x1002ec9c3: mov     [rbp+var_528], rax
+0x1002ec9ca: mov     rax, [rbp+var_19B0]
+0x1002ec9d1: mov     [rbp+var_530], rax
+0x1002ec9d8: mov     rax, [rbp+__src]
+0x1002ec9df: mov     rcx, [rbp+var_19B8]
+0x1002ec9e6: mov     [rbp+var_538], rcx
+0x1002ec9ed: mov     [rbp+var_540], rax
+0x1002ec9f4: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ec9fb: lea     rdi, [rbp+__src]
+0x1002eca02: mov     edx, 4
+0x1002eca07: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002eca0c: mov     rax, 8000000000000000h
+0x1002eca16: cmp     [rbp+__src], rax
+0x1002eca1d: jz      loc_1003009CA
+; ---- block start=0x1002eca23 end=0x1002ecb6c ----
+0x1002eca23: mov     rax, [rbp+var_1990]
+0x1002eca2a: mov     [r15+68h], rax
+0x1002eca2e: mov     rax, [rbp+var_1998]
+0x1002eca35: mov     [r15+60h], rax
+0x1002eca39: mov     rax, [rbp+var_19A0]
+0x1002eca40: mov     [r15+58h], rax
+0x1002eca44: mov     rax, [rbp+var_19A8]
+0x1002eca4b: mov     [r15+50h], rax
+0x1002eca4f: mov     rax, [rbp+var_19B0]
+0x1002eca56: mov     [r15+48h], rax
+0x1002eca5a: mov     rax, [rbp+__src]
+0x1002eca61: mov     rcx, [rbp+var_19B8]
+0x1002eca68: mov     [r15+40h], rcx
+0x1002eca6c: mov     [r15+38h], rax
+0x1002eca70: mov     rax, [rbp+var_510]
+0x1002eca77: mov     [r15+30h], rax
+0x1002eca7b: mov     rax, [rbp+var_518]
+0x1002eca82: mov     [r15+28h], rax
+0x1002eca86: mov     rax, [rbp+var_520]
+0x1002eca8d: mov     [r15+20h], rax
+0x1002eca91: mov     rax, [rbp+var_528]
+0x1002eca98: mov     [r15+18h], rax
+0x1002eca9c: mov     rax, [rbp+var_530]
+0x1002ecaa3: mov     [r15+10h], rax
+0x1002ecaa7: mov     rax, [rbp+var_540]
+0x1002ecaae: mov     rcx, [rbp+var_538]
+0x1002ecab5: mov     [r15+8], rcx
+0x1002ecab9: mov     [r15], rax
+0x1002ecabc: mov     rax, [rbp+var_950]
+0x1002ecac3: mov     [rbx+58h], rax
+0x1002ecac7: mov     rax, [rbp+var_958]
+0x1002ecace: mov     [rbx+50h], rax
+0x1002ecad2: mov     rax, [rbp+var_968]
+0x1002ecad9: mov     rcx, [rbp+var_960]
+0x1002ecae0: mov     [rbx+48h], rcx
+0x1002ecae4: mov     [rbx+40h], rax
+0x1002ecae8: mov     qword ptr [rbx], 0
+0x1002ecaef: mov     qword ptr [rbx+10h], 2
+0x1002ecaf7: mov     [rbx+18h], r15
+0x1002ecafb: mov     qword ptr [rbx+20h], 2
+0x1002ecb03: mov     qword ptr [rbx+28h], 0
+0x1002ecb0b: mov     qword ptr [rbx+30h], 8
+0x1002ecb13: mov     qword ptr [rbx+38h], 0
+0x1002ecb1b: mov     [rbp+__src], 1
+0x1002ecb26: mov     [rbp+var_19B8], rbx
+0x1002ecb2d: mov     [rbp+var_19B0], 1
+0x1002ecb38: lea     rdi, [rbp+var_540]
+0x1002ecb3f: lea     rsi, [rbp+var_48]
+0x1002ecb43: lea     rdx, [rbp+var_E0]
+0x1002ecb4a: lea     rcx, [rbp+__src]
+0x1002ecb51: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ecb56: mov     r15, [rbp+var_540]
+0x1002ecb5d: mov     rax, 8000000000000000h
+0x1002ecb67: cmp     r15, rax
+0x1002ecb6a: jz      short loc_1002ECBCE
+; ---- block start=0x1002ecb6c end=0x1002ecb90 ----
+0x1002ecb6c: mov     r13, r12
+0x1002ecb6f: mov     rbx, [rbp+var_538]
+0x1002ecb76: mov     r12, [rbp+var_530]
+0x1002ecb7d: inc     r12
+0x1002ecb80: mov     rdi, rbx
+0x1002ecb83: nop     word ptr [rax+rax+00000000h]
+0x1002ecb8d: nop     dword ptr [rax]
+; ---- block start=0x1002ecb90 end=0x1002ecb96 ----
+0x1002ecb90: cmp     r12, 1
+0x1002ecb94: jz      short loc_1002ECBA7
+; ---- block start=0x1002ecb96 end=0x1002ecba7 ----
+0x1002ecb96: lea     r14, [rdi+60h]
+0x1002ecb9a: dec     r12
+0x1002ecb9d: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ecba2: mov     rdi, r14
+0x1002ecba5: jmp     short loc_1002ECB90
+; ---- block start=0x1002ecba7 end=0x1002ecbb9 ----
+0x1002ecba7: test    r15, r15
+0x1002ecbaa: mov     r12, r13
+0x1002ecbad: mov     r13, 696D657C746E6576h
+0x1002ecbb7: jz      short loc_1002ECBCE
+; ---- block start=0x1002ecbb9 end=0x1002ecbce ----
+0x1002ecbb9: shl     r15, 5
+0x1002ecbbd: lea     rsi, [r15+r15*2]
+0x1002ecbc1: mov     edx, 8
+0x1002ecbc6: mov     rdi, rbx
+0x1002ecbc9: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ecbce end=0x1002ecbf0 ----
+0x1002ecbce: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ecbd3: mov     ebx, 14h
+0x1002ecbd8: mov     edi, 14h
+0x1002ecbdd: mov     esi, 1
+0x1002ecbe2: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ecbe7: test    rax, rax
+0x1002ecbea: jz      loc_10030531F
+; ---- block start=0x1002ecbf0 end=0x1002ecc3b ----
+0x1002ecbf0: mov     r14, rax
+0x1002ecbf3: mov     [rax+8], r13
+0x1002ecbf7: mov     [rax], r12
+0x1002ecbfa: mov     dword ptr [rax+10h], 6F745F74h
+0x1002ecc01: mov     [rbp+var_E0], 14h
+0x1002ecc0c: mov     [rbp+var_D8], rax
+0x1002ecc13: mov     [rbp+var_D0], 14h
+0x1002ecc1e: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ecc23: mov     edi, 60h ; '`'
+0x1002ecc28: mov     esi, 8
+0x1002ecc2d: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ecc32: test    rax, rax
+0x1002ecc35: jz      loc_100300A1F
+; ---- block start=0x1002ecc3b end=0x1002ecc6c ----
+0x1002ecc3b: mov     rbx, rax
+0x1002ecc3e: mov     rax, 8000000000000000h
+0x1002ecc48: mov     [rbp+var_968], rax
+0x1002ecc4f: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ecc54: mov     edi, 70h ; 'p'
+0x1002ecc59: mov     esi, 8
+0x1002ecc5e: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ecc63: test    rax, rax
+0x1002ecc66: jz      loc_100300A33
+; ---- block start=0x1002ecc6c end=0x1002ecc9e ----
+0x1002ecc6c: mov     r15, rax
+0x1002ecc6f: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ecc76: lea     rdi, [rbp+__src]
+0x1002ecc7d: mov     edx, 7
+0x1002ecc82: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ecc87: mov     rax, 8000000000000000h
+0x1002ecc91: cmp     [rbp+__src], rax
+0x1002ecc98: jz      loc_100300A47
+; ---- block start=0x1002ecc9e end=0x1002ecd2f ----
+0x1002ecc9e: mov     rax, [rbp+var_1990]
+0x1002ecca5: mov     [rbp+var_510], rax
+0x1002eccac: mov     rax, [rbp+var_1998]
+0x1002eccb3: mov     [rbp+var_518], rax
+0x1002eccba: mov     rax, [rbp+var_19A0]
+0x1002eccc1: mov     [rbp+var_520], rax
+0x1002eccc8: mov     rax, [rbp+var_19A8]
+0x1002ecccf: mov     [rbp+var_528], rax
+0x1002eccd6: mov     rax, [rbp+var_19B0]
+0x1002eccdd: mov     [rbp+var_530], rax
+0x1002ecce4: mov     rax, [rbp+__src]
+0x1002ecceb: mov     rcx, [rbp+var_19B8]
+0x1002eccf2: mov     [rbp+var_538], rcx
+0x1002eccf9: mov     [rbp+var_540], rax
+0x1002ecd00: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ecd07: lea     rdi, [rbp+__src]
+0x1002ecd0e: mov     edx, 4
+0x1002ecd13: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ecd18: mov     rax, 8000000000000000h
+0x1002ecd22: cmp     [rbp+__src], rax
+0x1002ecd29: jz      loc_100300A9C
+; ---- block start=0x1002ecd2f end=0x1002ece78 ----
+0x1002ecd2f: mov     rax, [rbp+var_1990]
+0x1002ecd36: mov     [r15+68h], rax
+0x1002ecd3a: mov     rax, [rbp+var_1998]
+0x1002ecd41: mov     [r15+60h], rax
+0x1002ecd45: mov     rax, [rbp+var_19A0]
+0x1002ecd4c: mov     [r15+58h], rax
+0x1002ecd50: mov     rax, [rbp+var_19A8]
+0x1002ecd57: mov     [r15+50h], rax
+0x1002ecd5b: mov     rax, [rbp+var_19B0]
+0x1002ecd62: mov     [r15+48h], rax
+0x1002ecd66: mov     rax, [rbp+__src]
+0x1002ecd6d: mov     rcx, [rbp+var_19B8]
+0x1002ecd74: mov     [r15+40h], rcx
+0x1002ecd78: mov     [r15+38h], rax
+0x1002ecd7c: mov     rax, [rbp+var_510]
+0x1002ecd83: mov     [r15+30h], rax
+0x1002ecd87: mov     rax, [rbp+var_518]
+0x1002ecd8e: mov     [r15+28h], rax
+0x1002ecd92: mov     rax, [rbp+var_520]
+0x1002ecd99: mov     [r15+20h], rax
+0x1002ecd9d: mov     rax, [rbp+var_528]
+0x1002ecda4: mov     [r15+18h], rax
+0x1002ecda8: mov     rax, [rbp+var_530]
+0x1002ecdaf: mov     [r15+10h], rax
+0x1002ecdb3: mov     rax, [rbp+var_540]
+0x1002ecdba: mov     rcx, [rbp+var_538]
+0x1002ecdc1: mov     [r15+8], rcx
+0x1002ecdc5: mov     [r15], rax
+0x1002ecdc8: mov     rax, [rbp+var_950]
+0x1002ecdcf: mov     [rbx+58h], rax
+0x1002ecdd3: mov     rax, [rbp+var_958]
+0x1002ecdda: mov     [rbx+50h], rax
+0x1002ecdde: mov     rax, [rbp+var_968]
+0x1002ecde5: mov     rcx, [rbp+var_960]
+0x1002ecdec: mov     [rbx+48h], rcx
+0x1002ecdf0: mov     [rbx+40h], rax
+0x1002ecdf4: mov     qword ptr [rbx], 0
+0x1002ecdfb: mov     qword ptr [rbx+10h], 2
+0x1002ece03: mov     [rbx+18h], r15
+0x1002ece07: mov     qword ptr [rbx+20h], 2
+0x1002ece0f: mov     qword ptr [rbx+28h], 0
+0x1002ece17: mov     qword ptr [rbx+30h], 8
+0x1002ece1f: mov     qword ptr [rbx+38h], 0
+0x1002ece27: mov     [rbp+__src], 1
+0x1002ece32: mov     [rbp+var_19B8], rbx
+0x1002ece39: mov     [rbp+var_19B0], 1
+0x1002ece44: lea     rdi, [rbp+var_540]
+0x1002ece4b: lea     rsi, [rbp+var_48]
+0x1002ece4f: lea     rdx, [rbp+var_E0]
+0x1002ece56: lea     rcx, [rbp+__src]
+0x1002ece5d: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ece62: mov     r15, [rbp+var_540]
+0x1002ece69: mov     rax, 8000000000000000h
+0x1002ece73: cmp     r15, rax
+0x1002ece76: jz      short loc_1002ECEC4
+; ---- block start=0x1002ece78 end=0x1002ece90 ----
+0x1002ece78: mov     r13, r12
+0x1002ece7b: mov     rbx, [rbp+var_538]
+0x1002ece82: mov     r12, [rbp+var_530]
+0x1002ece89: inc     r12
+0x1002ece8c: mov     rdi, rbx
+0x1002ece8f: nop
+; ---- block start=0x1002ece90 end=0x1002ece96 ----
+0x1002ece90: cmp     r12, 1
+0x1002ece94: jz      short loc_1002ECEA7
+; ---- block start=0x1002ece96 end=0x1002ecea7 ----
+0x1002ece96: lea     r14, [rdi+60h]
+0x1002ece9a: dec     r12
+0x1002ece9d: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ecea2: mov     rdi, r14
+0x1002ecea5: jmp     short loc_1002ECE90
+; ---- block start=0x1002ecea7 end=0x1002eceaf ----
+0x1002ecea7: test    r15, r15
+0x1002eceaa: mov     r12, r13
+0x1002ecead: jz      short loc_1002ECEC4
+; ---- block start=0x1002eceaf end=0x1002ecec4 ----
+0x1002eceaf: shl     r15, 5
+0x1002eceb3: lea     rsi, [r15+r15*2]
+0x1002eceb7: mov     edx, 8
+0x1002ecebc: mov     rdi, rbx
+0x1002ecebf: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ecec4 end=0x1002ecee6 ----
+0x1002ecec4: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ecec9: mov     ebx, 13h
+0x1002ecece: mov     edi, 13h
+0x1002eced3: mov     esi, 1
+0x1002eced8: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ecedd: test    rax, rax
+0x1002ecee0: jz      loc_10030531F
+; ---- block start=0x1002ecee6 end=0x1002ecf3c ----
+0x1002ecee6: mov     r14, rax
+0x1002ecee9: mov     rax, 73696C7C746E6576h
+0x1002ecef3: mov     [r14+8], rax
+0x1002ecef7: mov     [r14], r12
+0x1002ecefa: mov     dword ptr [r14+0Fh], 6E657473h
+0x1002ecf02: mov     [rbp+var_E0], 13h
+0x1002ecf0d: mov     [rbp+var_D8], r14
+0x1002ecf14: mov     [rbp+var_D0], 13h
+0x1002ecf1f: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ecf24: mov     edi, 60h ; '`'
+0x1002ecf29: mov     esi, 8
+0x1002ecf2e: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ecf33: test    rax, rax
+0x1002ecf36: jz      loc_100300AF1
+; ---- block start=0x1002ecf3c end=0x1002ecf6d ----
+0x1002ecf3c: mov     rbx, rax
+0x1002ecf3f: mov     rax, 8000000000000000h
+0x1002ecf49: mov     [rbp+var_968], rax
+0x1002ecf50: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ecf55: mov     edi, 70h ; 'p'
+0x1002ecf5a: mov     esi, 8
+0x1002ecf5f: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ecf64: test    rax, rax
+0x1002ecf67: jz      loc_100300B05
+; ---- block start=0x1002ecf6d end=0x1002ecf9f ----
+0x1002ecf6d: mov     r15, rax
+0x1002ecf70: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ecf77: lea     rdi, [rbp+__src]
+0x1002ecf7e: mov     edx, 7
+0x1002ecf83: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ecf88: mov     rax, 8000000000000000h
+0x1002ecf92: cmp     [rbp+__src], rax
+0x1002ecf99: jz      loc_100300B19
+; ---- block start=0x1002ecf9f end=0x1002ed030 ----
+0x1002ecf9f: mov     rax, [rbp+var_1990]
+0x1002ecfa6: mov     [rbp+var_510], rax
+0x1002ecfad: mov     rax, [rbp+var_1998]
+0x1002ecfb4: mov     [rbp+var_518], rax
+0x1002ecfbb: mov     rax, [rbp+var_19A0]
+0x1002ecfc2: mov     [rbp+var_520], rax
+0x1002ecfc9: mov     rax, [rbp+var_19A8]
+0x1002ecfd0: mov     [rbp+var_528], rax
+0x1002ecfd7: mov     rax, [rbp+var_19B0]
+0x1002ecfde: mov     [rbp+var_530], rax
+0x1002ecfe5: mov     rax, [rbp+__src]
+0x1002ecfec: mov     rcx, [rbp+var_19B8]
+0x1002ecff3: mov     [rbp+var_538], rcx
+0x1002ecffa: mov     [rbp+var_540], rax
+0x1002ed001: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ed008: lea     rdi, [rbp+__src]
+0x1002ed00f: mov     edx, 4
+0x1002ed014: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ed019: mov     rax, 8000000000000000h
+0x1002ed023: cmp     [rbp+__src], rax
+0x1002ed02a: jz      loc_100300B6E
+; ---- block start=0x1002ed030 end=0x1002ed179 ----
+0x1002ed030: mov     rax, [rbp+var_1990]
+0x1002ed037: mov     [r15+68h], rax
+0x1002ed03b: mov     rax, [rbp+var_1998]
+0x1002ed042: mov     [r15+60h], rax
+0x1002ed046: mov     rax, [rbp+var_19A0]
+0x1002ed04d: mov     [r15+58h], rax
+0x1002ed051: mov     rax, [rbp+var_19A8]
+0x1002ed058: mov     [r15+50h], rax
+0x1002ed05c: mov     rax, [rbp+var_19B0]
+0x1002ed063: mov     [r15+48h], rax
+0x1002ed067: mov     rax, [rbp+__src]
+0x1002ed06e: mov     rcx, [rbp+var_19B8]
+0x1002ed075: mov     [r15+40h], rcx
+0x1002ed079: mov     [r15+38h], rax
+0x1002ed07d: mov     rax, [rbp+var_510]
+0x1002ed084: mov     [r15+30h], rax
+0x1002ed088: mov     rax, [rbp+var_518]
+0x1002ed08f: mov     [r15+28h], rax
+0x1002ed093: mov     rax, [rbp+var_520]
+0x1002ed09a: mov     [r15+20h], rax
+0x1002ed09e: mov     rax, [rbp+var_528]
+0x1002ed0a5: mov     [r15+18h], rax
+0x1002ed0a9: mov     rax, [rbp+var_530]
+0x1002ed0b0: mov     [r15+10h], rax
+0x1002ed0b4: mov     rax, [rbp+var_540]
+0x1002ed0bb: mov     rcx, [rbp+var_538]
+0x1002ed0c2: mov     [r15+8], rcx
+0x1002ed0c6: mov     [r15], rax
+0x1002ed0c9: mov     rax, [rbp+var_950]
+0x1002ed0d0: mov     [rbx+58h], rax
+0x1002ed0d4: mov     rax, [rbp+var_958]
+0x1002ed0db: mov     [rbx+50h], rax
+0x1002ed0df: mov     rax, [rbp+var_968]
+0x1002ed0e6: mov     rcx, [rbp+var_960]
+0x1002ed0ed: mov     [rbx+48h], rcx
+0x1002ed0f1: mov     [rbx+40h], rax
+0x1002ed0f5: mov     qword ptr [rbx], 0
+0x1002ed0fc: mov     qword ptr [rbx+10h], 2
+0x1002ed104: mov     [rbx+18h], r15
+0x1002ed108: mov     qword ptr [rbx+20h], 2
+0x1002ed110: mov     qword ptr [rbx+28h], 0
+0x1002ed118: mov     qword ptr [rbx+30h], 8
+0x1002ed120: mov     qword ptr [rbx+38h], 0
+0x1002ed128: mov     [rbp+__src], 1
+0x1002ed133: mov     [rbp+var_19B8], rbx
+0x1002ed13a: mov     [rbp+var_19B0], 1
+0x1002ed145: lea     rdi, [rbp+var_540]
+0x1002ed14c: lea     rsi, [rbp+var_48]
+0x1002ed150: lea     rdx, [rbp+var_E0]
+0x1002ed157: lea     rcx, [rbp+__src]
+0x1002ed15e: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ed163: mov     r15, [rbp+var_540]
+0x1002ed16a: mov     rax, 8000000000000000h
+0x1002ed174: cmp     r15, rax
+0x1002ed177: jz      short loc_1002ED1C4
+; ---- block start=0x1002ed179 end=0x1002ed190 ----
+0x1002ed179: mov     r13, r12
+0x1002ed17c: mov     rbx, [rbp+var_538]
+0x1002ed183: mov     r12, [rbp+var_530]
+0x1002ed18a: inc     r12
+0x1002ed18d: mov     rdi, rbx
+; ---- block start=0x1002ed190 end=0x1002ed196 ----
+0x1002ed190: cmp     r12, 1
+0x1002ed194: jz      short loc_1002ED1A7
+; ---- block start=0x1002ed196 end=0x1002ed1a7 ----
+0x1002ed196: lea     r14, [rdi+60h]
+0x1002ed19a: dec     r12
+0x1002ed19d: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ed1a2: mov     rdi, r14
+0x1002ed1a5: jmp     short loc_1002ED190
+; ---- block start=0x1002ed1a7 end=0x1002ed1af ----
+0x1002ed1a7: test    r15, r15
+0x1002ed1aa: mov     r12, r13
+0x1002ed1ad: jz      short loc_1002ED1C4
+; ---- block start=0x1002ed1af end=0x1002ed1c4 ----
+0x1002ed1af: shl     r15, 5
+0x1002ed1b3: lea     rsi, [r15+r15*2]
+0x1002ed1b7: mov     edx, 8
+0x1002ed1bc: mov     rdi, rbx
+0x1002ed1bf: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ed1c4 end=0x1002ed1e6 ----
+0x1002ed1c4: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ed1c9: mov     ebx, 15h
+0x1002ed1ce: mov     edi, 15h
+0x1002ed1d3: mov     esi, 1
+0x1002ed1d8: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ed1dd: test    rax, rax
+0x1002ed1e0: jz      loc_10030531F
+; ---- block start=0x1002ed1e6 end=0x1002ed242 ----
+0x1002ed1e6: mov     r14, rax
+0x1002ed1e9: mov     rax, 6E657473696C6E75h
+0x1002ed1f3: mov     [r14+0Dh], rax
+0x1002ed1f7: mov     rax, 6C6E757C746E6576h
+0x1002ed201: mov     [r14+8], rax
+0x1002ed205: mov     [r14], r12
+0x1002ed208: mov     [rbp+var_E0], 15h
+0x1002ed213: mov     [rbp+var_D8], r14
+0x1002ed21a: mov     [rbp+var_D0], 15h
+0x1002ed225: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ed22a: mov     edi, 60h ; '`'
+0x1002ed22f: mov     esi, 8
+0x1002ed234: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ed239: test    rax, rax
+0x1002ed23c: jz      loc_100300BC3
+; ---- block start=0x1002ed242 end=0x1002ed273 ----
+0x1002ed242: mov     rbx, rax
+0x1002ed245: mov     rax, 8000000000000000h
+0x1002ed24f: mov     [rbp+var_968], rax
+0x1002ed256: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ed25b: mov     edi, 70h ; 'p'
+0x1002ed260: mov     esi, 8
+0x1002ed265: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ed26a: test    rax, rax
+0x1002ed26d: jz      loc_100300BD7
+; ---- block start=0x1002ed273 end=0x1002ed2a5 ----
+0x1002ed273: mov     r15, rax
+0x1002ed276: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ed27d: lea     rdi, [rbp+__src]
+0x1002ed284: mov     edx, 7
+0x1002ed289: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ed28e: mov     rax, 8000000000000000h
+0x1002ed298: cmp     [rbp+__src], rax
+0x1002ed29f: jz      loc_100300BEB
+; ---- block start=0x1002ed2a5 end=0x1002ed336 ----
+0x1002ed2a5: mov     rax, [rbp+var_1990]
+0x1002ed2ac: mov     [rbp+var_510], rax
+0x1002ed2b3: mov     rax, [rbp+var_1998]
+0x1002ed2ba: mov     [rbp+var_518], rax
+0x1002ed2c1: mov     rax, [rbp+var_19A0]
+0x1002ed2c8: mov     [rbp+var_520], rax
+0x1002ed2cf: mov     rax, [rbp+var_19A8]
+0x1002ed2d6: mov     [rbp+var_528], rax
+0x1002ed2dd: mov     rax, [rbp+var_19B0]
+0x1002ed2e4: mov     [rbp+var_530], rax
+0x1002ed2eb: mov     rax, [rbp+__src]
+0x1002ed2f2: mov     rcx, [rbp+var_19B8]
+0x1002ed2f9: mov     [rbp+var_538], rcx
+0x1002ed300: mov     [rbp+var_540], rax
+0x1002ed307: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ed30e: lea     rdi, [rbp+__src]
+0x1002ed315: mov     edx, 4
+0x1002ed31a: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ed31f: mov     rax, 8000000000000000h
+0x1002ed329: cmp     [rbp+__src], rax
+0x1002ed330: jz      loc_100300C40
+; ---- block start=0x1002ed336 end=0x1002ed47f ----
+0x1002ed336: mov     rax, [rbp+var_1990]
+0x1002ed33d: mov     [r15+68h], rax
+0x1002ed341: mov     rax, [rbp+var_1998]
+0x1002ed348: mov     [r15+60h], rax
+0x1002ed34c: mov     rax, [rbp+var_19A0]
+0x1002ed353: mov     [r15+58h], rax
+0x1002ed357: mov     rax, [rbp+var_19A8]
+0x1002ed35e: mov     [r15+50h], rax
+0x1002ed362: mov     rax, [rbp+var_19B0]
+0x1002ed369: mov     [r15+48h], rax
+0x1002ed36d: mov     rax, [rbp+__src]
+0x1002ed374: mov     rcx, [rbp+var_19B8]
+0x1002ed37b: mov     [r15+40h], rcx
+0x1002ed37f: mov     [r15+38h], rax
+0x1002ed383: mov     rax, [rbp+var_510]
+0x1002ed38a: mov     [r15+30h], rax
+0x1002ed38e: mov     rax, [rbp+var_518]
+0x1002ed395: mov     [r15+28h], rax
+0x1002ed399: mov     rax, [rbp+var_520]
+0x1002ed3a0: mov     [r15+20h], rax
+0x1002ed3a4: mov     rax, [rbp+var_528]
+0x1002ed3ab: mov     [r15+18h], rax
+0x1002ed3af: mov     rax, [rbp+var_530]
+0x1002ed3b6: mov     [r15+10h], rax
+0x1002ed3ba: mov     rax, [rbp+var_540]
+0x1002ed3c1: mov     rcx, [rbp+var_538]
+0x1002ed3c8: mov     [r15+8], rcx
+0x1002ed3cc: mov     [r15], rax
+0x1002ed3cf: mov     rax, [rbp+var_950]
+0x1002ed3d6: mov     [rbx+58h], rax
+0x1002ed3da: mov     rax, [rbp+var_958]
+0x1002ed3e1: mov     [rbx+50h], rax
+0x1002ed3e5: mov     rax, [rbp+var_968]
+0x1002ed3ec: mov     rcx, [rbp+var_960]
+0x1002ed3f3: mov     [rbx+48h], rcx
+0x1002ed3f7: mov     [rbx+40h], rax
+0x1002ed3fb: mov     qword ptr [rbx], 0
+0x1002ed402: mov     qword ptr [rbx+10h], 2
+0x1002ed40a: mov     [rbx+18h], r15
+0x1002ed40e: mov     qword ptr [rbx+20h], 2
+0x1002ed416: mov     qword ptr [rbx+28h], 0
+0x1002ed41e: mov     qword ptr [rbx+30h], 8
+0x1002ed426: mov     qword ptr [rbx+38h], 0
+0x1002ed42e: mov     [rbp+__src], 1
+0x1002ed439: mov     [rbp+var_19B8], rbx
+0x1002ed440: mov     [rbp+var_19B0], 1
+0x1002ed44b: lea     rdi, [rbp+var_540]
+0x1002ed452: lea     rsi, [rbp+var_48]
+0x1002ed456: lea     rdx, [rbp+var_E0]
+0x1002ed45d: lea     rcx, [rbp+__src]
+0x1002ed464: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ed469: mov     r15, [rbp+var_540]
+0x1002ed470: mov     rax, 8000000000000000h
+0x1002ed47a: cmp     r15, rax
+0x1002ed47d: jz      short loc_1002ED4D1
+; ---- block start=0x1002ed47f end=0x1002ed4a0 ----
+0x1002ed47f: mov     rbx, [rbp+var_538]
+0x1002ed486: mov     r12, [rbp+var_530]
+0x1002ed48d: inc     r12
+0x1002ed490: mov     rdi, rbx
+0x1002ed493: nop     word ptr [rax+rax+00000000h]
+0x1002ed49d: nop     dword ptr [rax]
+; ---- block start=0x1002ed4a0 end=0x1002ed4a6 ----
+0x1002ed4a0: cmp     r12, 1
+0x1002ed4a4: jz      short loc_1002ED4B7
+; ---- block start=0x1002ed4a6 end=0x1002ed4b7 ----
+0x1002ed4a6: lea     r14, [rdi+60h]
+0x1002ed4aa: dec     r12
+0x1002ed4ad: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ed4b2: mov     rdi, r14
+0x1002ed4b5: jmp     short loc_1002ED4A0
+; ---- block start=0x1002ed4b7 end=0x1002ed4bc ----
+0x1002ed4b7: test    r15, r15
+0x1002ed4ba: jz      short loc_1002ED4D1
+; ---- block start=0x1002ed4bc end=0x1002ed4d1 ----
+0x1002ed4bc: shl     r15, 5
+0x1002ed4c0: lea     rsi, [r15+r15*2]
+0x1002ed4c4: mov     edx, 8
+0x1002ed4c9: mov     rdi, rbx
+0x1002ed4cc: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ed4d1 end=0x1002ed4f3 ----
+0x1002ed4d1: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ed4d6: mov     ebx, 17h
+0x1002ed4db: mov     edi, 17h
+0x1002ed4e0: mov     esi, 1
+0x1002ed4e5: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ed4ea: test    rax, rax
+0x1002ed4ed: jz      loc_10030531F
+; ---- block start=0x1002ed4f3 end=0x1002ed559 ----
+0x1002ed4f3: mov     r14, rax
+0x1002ed4f6: mov     rax, 73657479625F6D6Fh
+0x1002ed500: mov     [r14+0Fh], rax
+0x1002ed504: mov     r13, 6F72667C6567616Dh
+0x1002ed50e: mov     [r14+8], r13
+0x1002ed512: mov     r12, 693A6E6967756C70h
+0x1002ed51c: mov     [r14], r12
+0x1002ed51f: mov     [rbp+var_E0], 17h
+0x1002ed52a: mov     [rbp+var_D8], r14
+0x1002ed531: mov     [rbp+var_D0], 17h
+0x1002ed53c: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ed541: mov     edi, 60h ; '`'
+0x1002ed546: mov     esi, 8
+0x1002ed54b: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ed550: test    rax, rax
+0x1002ed553: jz      loc_100300C95
+; ---- block start=0x1002ed559 end=0x1002ed58a ----
+0x1002ed559: mov     rbx, rax
+0x1002ed55c: mov     rax, 8000000000000000h
+0x1002ed566: mov     [rbp+var_968], rax
+0x1002ed56d: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ed572: mov     edi, 70h ; 'p'
+0x1002ed577: mov     esi, 8
+0x1002ed57c: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ed581: test    rax, rax
+0x1002ed584: jz      loc_100300CA9
+; ---- block start=0x1002ed58a end=0x1002ed5bc ----
+0x1002ed58a: mov     r15, rax
+0x1002ed58d: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ed594: lea     rdi, [rbp+__src]
+0x1002ed59b: mov     edx, 7
+0x1002ed5a0: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ed5a5: mov     rax, 8000000000000000h
+0x1002ed5af: cmp     [rbp+__src], rax
+0x1002ed5b6: jz      loc_100300CBD
+; ---- block start=0x1002ed5bc end=0x1002ed64d ----
+0x1002ed5bc: mov     rax, [rbp+var_1990]
+0x1002ed5c3: mov     [rbp+var_510], rax
+0x1002ed5ca: mov     rax, [rbp+var_1998]
+0x1002ed5d1: mov     [rbp+var_518], rax
+0x1002ed5d8: mov     rax, [rbp+var_19A0]
+0x1002ed5df: mov     [rbp+var_520], rax
+0x1002ed5e6: mov     rax, [rbp+var_19A8]
+0x1002ed5ed: mov     [rbp+var_528], rax
+0x1002ed5f4: mov     rax, [rbp+var_19B0]
+0x1002ed5fb: mov     [rbp+var_530], rax
+0x1002ed602: mov     rax, [rbp+__src]
+0x1002ed609: mov     rcx, [rbp+var_19B8]
+0x1002ed610: mov     [rbp+var_538], rcx
+0x1002ed617: mov     [rbp+var_540], rax
+0x1002ed61e: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ed625: lea     rdi, [rbp+__src]
+0x1002ed62c: mov     edx, 4
+0x1002ed631: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ed636: mov     rax, 8000000000000000h
+0x1002ed640: cmp     [rbp+__src], rax
+0x1002ed647: jz      loc_100300D12
+; ---- block start=0x1002ed64d end=0x1002ed796 ----
+0x1002ed64d: mov     rax, [rbp+var_1990]
+0x1002ed654: mov     [r15+68h], rax
+0x1002ed658: mov     rax, [rbp+var_1998]
+0x1002ed65f: mov     [r15+60h], rax
+0x1002ed663: mov     rax, [rbp+var_19A0]
+0x1002ed66a: mov     [r15+58h], rax
+0x1002ed66e: mov     rax, [rbp+var_19A8]
+0x1002ed675: mov     [r15+50h], rax
+0x1002ed679: mov     rax, [rbp+var_19B0]
+0x1002ed680: mov     [r15+48h], rax
+0x1002ed684: mov     rax, [rbp+__src]
+0x1002ed68b: mov     rcx, [rbp+var_19B8]
+0x1002ed692: mov     [r15+40h], rcx
+0x1002ed696: mov     [r15+38h], rax
+0x1002ed69a: mov     rax, [rbp+var_510]
+0x1002ed6a1: mov     [r15+30h], rax
+0x1002ed6a5: mov     rax, [rbp+var_518]
+0x1002ed6ac: mov     [r15+28h], rax
+0x1002ed6b0: mov     rax, [rbp+var_520]
+0x1002ed6b7: mov     [r15+20h], rax
+0x1002ed6bb: mov     rax, [rbp+var_528]
+0x1002ed6c2: mov     [r15+18h], rax
+0x1002ed6c6: mov     rax, [rbp+var_530]
+0x1002ed6cd: mov     [r15+10h], rax
+0x1002ed6d1: mov     rax, [rbp+var_540]
+0x1002ed6d8: mov     rcx, [rbp+var_538]
+0x1002ed6df: mov     [r15+8], rcx
+0x1002ed6e3: mov     [r15], rax
+0x1002ed6e6: mov     rax, [rbp+var_950]
+0x1002ed6ed: mov     [rbx+58h], rax
+0x1002ed6f1: mov     rax, [rbp+var_958]
+0x1002ed6f8: mov     [rbx+50h], rax
+0x1002ed6fc: mov     rax, [rbp+var_968]
+0x1002ed703: mov     rcx, [rbp+var_960]
+0x1002ed70a: mov     [rbx+48h], rcx
+0x1002ed70e: mov     [rbx+40h], rax
+0x1002ed712: mov     qword ptr [rbx], 0
+0x1002ed719: mov     qword ptr [rbx+10h], 2
+0x1002ed721: mov     [rbx+18h], r15
+0x1002ed725: mov     qword ptr [rbx+20h], 2
+0x1002ed72d: mov     qword ptr [rbx+28h], 0
+0x1002ed735: mov     qword ptr [rbx+30h], 8
+0x1002ed73d: mov     qword ptr [rbx+38h], 0
+0x1002ed745: mov     [rbp+__src], 1
+0x1002ed750: mov     [rbp+var_19B8], rbx
+0x1002ed757: mov     [rbp+var_19B0], 1
+0x1002ed762: lea     rdi, [rbp+var_540]
+0x1002ed769: lea     rsi, [rbp+var_48]
+0x1002ed76d: lea     rdx, [rbp+var_E0]
+0x1002ed774: lea     rcx, [rbp+__src]
+0x1002ed77b: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ed780: mov     r15, [rbp+var_540]
+0x1002ed787: mov     rax, 8000000000000000h
+0x1002ed791: cmp     r15, rax
+0x1002ed794: jz      short loc_1002ED7EB
+; ---- block start=0x1002ed796 end=0x1002ed7b0 ----
+0x1002ed796: mov     rbx, [rbp+var_538]
+0x1002ed79d: mov     r12, [rbp+var_530]
+0x1002ed7a4: inc     r12
+0x1002ed7a7: mov     rdi, rbx
+0x1002ed7aa: nop     word ptr [rax+rax+00h]
+; ---- block start=0x1002ed7b0 end=0x1002ed7b6 ----
+0x1002ed7b0: cmp     r12, 1
+0x1002ed7b4: jz      short loc_1002ED7C7
+; ---- block start=0x1002ed7b6 end=0x1002ed7c7 ----
+0x1002ed7b6: lea     r14, [rdi+60h]
+0x1002ed7ba: dec     r12
+0x1002ed7bd: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ed7c2: mov     rdi, r14
+0x1002ed7c5: jmp     short loc_1002ED7B0
+; ---- block start=0x1002ed7c7 end=0x1002ed7d6 ----
+0x1002ed7c7: test    r15, r15
+0x1002ed7ca: mov     r12, 693A6E6967756C70h
+0x1002ed7d4: jz      short loc_1002ED7EB
+; ---- block start=0x1002ed7d6 end=0x1002ed7eb ----
+0x1002ed7d6: shl     r15, 5
+0x1002ed7da: lea     rsi, [r15+r15*2]
+0x1002ed7de: mov     edx, 8
+0x1002ed7e3: mov     rdi, rbx
+0x1002ed7e6: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ed7eb end=0x1002ed80d ----
+0x1002ed7eb: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ed7f0: mov     ebx, 16h
+0x1002ed7f5: mov     edi, 16h
+0x1002ed7fa: mov     esi, 1
+0x1002ed7ff: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ed804: test    rax, rax
+0x1002ed807: jz      loc_10030531F
+; ---- block start=0x1002ed80d end=0x1002ed85f ----
+0x1002ed80d: mov     r14, rax
+0x1002ed810: mov     rax, 687461705F6D6F72h
+0x1002ed81a: mov     [r14+0Eh], rax
+0x1002ed81e: mov     [r14+8], r13
+0x1002ed822: mov     [r14], r12
+0x1002ed825: mov     [rbp+var_E0], 16h
+0x1002ed830: mov     [rbp+var_D8], r14
+0x1002ed837: mov     [rbp+var_D0], 16h
+0x1002ed842: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ed847: mov     edi, 60h ; '`'
+0x1002ed84c: mov     esi, 8
+0x1002ed851: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ed856: test    rax, rax
+0x1002ed859: jz      loc_100300D67
+; ---- block start=0x1002ed85f end=0x1002ed890 ----
+0x1002ed85f: mov     rbx, rax
+0x1002ed862: mov     rax, 8000000000000000h
+0x1002ed86c: mov     [rbp+var_968], rax
+0x1002ed873: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ed878: mov     edi, 70h ; 'p'
+0x1002ed87d: mov     esi, 8
+0x1002ed882: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ed887: test    rax, rax
+0x1002ed88a: jz      loc_100300D7B
+; ---- block start=0x1002ed890 end=0x1002ed8c2 ----
+0x1002ed890: mov     r15, rax
+0x1002ed893: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ed89a: lea     rdi, [rbp+__src]
+0x1002ed8a1: mov     edx, 7
+0x1002ed8a6: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ed8ab: mov     rax, 8000000000000000h
+0x1002ed8b5: cmp     [rbp+__src], rax
+0x1002ed8bc: jz      loc_100300D8F
+; ---- block start=0x1002ed8c2 end=0x1002ed953 ----
+0x1002ed8c2: mov     rax, [rbp+var_1990]
+0x1002ed8c9: mov     [rbp+var_510], rax
+0x1002ed8d0: mov     rax, [rbp+var_1998]
+0x1002ed8d7: mov     [rbp+var_518], rax
+0x1002ed8de: mov     rax, [rbp+var_19A0]
+0x1002ed8e5: mov     [rbp+var_520], rax
+0x1002ed8ec: mov     rax, [rbp+var_19A8]
+0x1002ed8f3: mov     [rbp+var_528], rax
+0x1002ed8fa: mov     rax, [rbp+var_19B0]
+0x1002ed901: mov     [rbp+var_530], rax
+0x1002ed908: mov     rax, [rbp+__src]
+0x1002ed90f: mov     rcx, [rbp+var_19B8]
+0x1002ed916: mov     [rbp+var_538], rcx
+0x1002ed91d: mov     [rbp+var_540], rax
+0x1002ed924: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ed92b: lea     rdi, [rbp+__src]
+0x1002ed932: mov     edx, 4
+0x1002ed937: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ed93c: mov     rax, 8000000000000000h
+0x1002ed946: cmp     [rbp+__src], rax
+0x1002ed94d: jz      loc_100300DE4
+; ---- block start=0x1002ed953 end=0x1002eda9c ----
+0x1002ed953: mov     rax, [rbp+var_1990]
+0x1002ed95a: mov     [r15+68h], rax
+0x1002ed95e: mov     rax, [rbp+var_1998]
+0x1002ed965: mov     [r15+60h], rax
+0x1002ed969: mov     rax, [rbp+var_19A0]
+0x1002ed970: mov     [r15+58h], rax
+0x1002ed974: mov     rax, [rbp+var_19A8]
+0x1002ed97b: mov     [r15+50h], rax
+0x1002ed97f: mov     rax, [rbp+var_19B0]
+0x1002ed986: mov     [r15+48h], rax
+0x1002ed98a: mov     rax, [rbp+__src]
+0x1002ed991: mov     rcx, [rbp+var_19B8]
+0x1002ed998: mov     [r15+40h], rcx
+0x1002ed99c: mov     [r15+38h], rax
+0x1002ed9a0: mov     rax, [rbp+var_510]
+0x1002ed9a7: mov     [r15+30h], rax
+0x1002ed9ab: mov     rax, [rbp+var_518]
+0x1002ed9b2: mov     [r15+28h], rax
+0x1002ed9b6: mov     rax, [rbp+var_520]
+0x1002ed9bd: mov     [r15+20h], rax
+0x1002ed9c1: mov     rax, [rbp+var_528]
+0x1002ed9c8: mov     [r15+18h], rax
+0x1002ed9cc: mov     rax, [rbp+var_530]
+0x1002ed9d3: mov     [r15+10h], rax
+0x1002ed9d7: mov     rax, [rbp+var_540]
+0x1002ed9de: mov     rcx, [rbp+var_538]
+0x1002ed9e5: mov     [r15+8], rcx
+0x1002ed9e9: mov     [r15], rax
+0x1002ed9ec: mov     rax, [rbp+var_950]
+0x1002ed9f3: mov     [rbx+58h], rax
+0x1002ed9f7: mov     rax, [rbp+var_958]
+0x1002ed9fe: mov     [rbx+50h], rax
+0x1002eda02: mov     rax, [rbp+var_968]
+0x1002eda09: mov     rcx, [rbp+var_960]
+0x1002eda10: mov     [rbx+48h], rcx
+0x1002eda14: mov     [rbx+40h], rax
+0x1002eda18: mov     qword ptr [rbx], 0
+0x1002eda1f: mov     qword ptr [rbx+10h], 2
+0x1002eda27: mov     [rbx+18h], r15
+0x1002eda2b: mov     qword ptr [rbx+20h], 2
+0x1002eda33: mov     qword ptr [rbx+28h], 0
+0x1002eda3b: mov     qword ptr [rbx+30h], 8
+0x1002eda43: mov     qword ptr [rbx+38h], 0
+0x1002eda4b: mov     [rbp+__src], 1
+0x1002eda56: mov     [rbp+var_19B8], rbx
+0x1002eda5d: mov     [rbp+var_19B0], 1
+0x1002eda68: lea     rdi, [rbp+var_540]
+0x1002eda6f: lea     rsi, [rbp+var_48]
+0x1002eda73: lea     rdx, [rbp+var_E0]
+0x1002eda7a: lea     rcx, [rbp+__src]
+0x1002eda81: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002eda86: mov     r15, [rbp+var_540]
+0x1002eda8d: mov     rax, 8000000000000000h
+0x1002eda97: cmp     r15, rax
+0x1002eda9a: jz      short loc_1002EDAEB
+; ---- block start=0x1002eda9c end=0x1002edab0 ----
+0x1002eda9c: mov     rbx, [rbp+var_538]
+0x1002edaa3: mov     r12, [rbp+var_530]
+0x1002edaaa: inc     r12
+0x1002edaad: mov     rdi, rbx
+; ---- block start=0x1002edab0 end=0x1002edab6 ----
+0x1002edab0: cmp     r12, 1
+0x1002edab4: jz      short loc_1002EDAC7
+; ---- block start=0x1002edab6 end=0x1002edac7 ----
+0x1002edab6: lea     r14, [rdi+60h]
+0x1002edaba: dec     r12
+0x1002edabd: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002edac2: mov     rdi, r14
+0x1002edac5: jmp     short loc_1002EDAB0
+; ---- block start=0x1002edac7 end=0x1002edad6 ----
+0x1002edac7: test    r15, r15
+0x1002edaca: mov     r12, 693A6E6967756C70h
+0x1002edad4: jz      short loc_1002EDAEB
+; ---- block start=0x1002edad6 end=0x1002edaeb ----
+0x1002edad6: shl     r15, 5
+0x1002edada: lea     rsi, [r15+r15*2]
+0x1002edade: mov     edx, 8
+0x1002edae3: mov     rdi, rbx
+0x1002edae6: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002edaeb end=0x1002edb0d ----
+0x1002edaeb: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002edaf0: mov     ebx, 10h
+0x1002edaf5: mov     edi, 10h
+0x1002edafa: mov     esi, 1
+0x1002edaff: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002edb04: test    rax, rax
+0x1002edb07: jz      loc_10030531F
+; ---- block start=0x1002edb0d end=0x1002edb5b ----
+0x1002edb0d: mov     r14, rax
+0x1002edb10: mov     rax, 77656E7C6567616Dh
+0x1002edb1a: mov     [r14+8], rax
+0x1002edb1e: mov     [r14], r12
+0x1002edb21: mov     [rbp+var_E0], 10h
+0x1002edb2c: mov     [rbp+var_D8], r14
+0x1002edb33: mov     [rbp+var_D0], 10h
+0x1002edb3e: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002edb43: mov     edi, 60h ; '`'
+0x1002edb48: mov     esi, 8
+0x1002edb4d: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002edb52: test    rax, rax
+0x1002edb55: jz      loc_100300E39
+; ---- block start=0x1002edb5b end=0x1002edb8c ----
+0x1002edb5b: mov     rbx, rax
+0x1002edb5e: mov     rax, 8000000000000000h
+0x1002edb68: mov     [rbp+var_968], rax
+0x1002edb6f: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002edb74: mov     edi, 70h ; 'p'
+0x1002edb79: mov     esi, 8
+0x1002edb7e: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002edb83: test    rax, rax
+0x1002edb86: jz      loc_100300E4D
+; ---- block start=0x1002edb8c end=0x1002edbbe ----
+0x1002edb8c: mov     r15, rax
+0x1002edb8f: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002edb96: lea     rdi, [rbp+__src]
+0x1002edb9d: mov     edx, 7
+0x1002edba2: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002edba7: mov     rax, 8000000000000000h
+0x1002edbb1: cmp     [rbp+__src], rax
+0x1002edbb8: jz      loc_100300E61
+; ---- block start=0x1002edbbe end=0x1002edc4f ----
+0x1002edbbe: mov     rax, [rbp+var_1990]
+0x1002edbc5: mov     [rbp+var_510], rax
+0x1002edbcc: mov     rax, [rbp+var_1998]
+0x1002edbd3: mov     [rbp+var_518], rax
+0x1002edbda: mov     rax, [rbp+var_19A0]
+0x1002edbe1: mov     [rbp+var_520], rax
+0x1002edbe8: mov     rax, [rbp+var_19A8]
+0x1002edbef: mov     [rbp+var_528], rax
+0x1002edbf6: mov     rax, [rbp+var_19B0]
+0x1002edbfd: mov     [rbp+var_530], rax
+0x1002edc04: mov     rax, [rbp+__src]
+0x1002edc0b: mov     rcx, [rbp+var_19B8]
+0x1002edc12: mov     [rbp+var_538], rcx
+0x1002edc19: mov     [rbp+var_540], rax
+0x1002edc20: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002edc27: lea     rdi, [rbp+__src]
+0x1002edc2e: mov     edx, 4
+0x1002edc33: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002edc38: mov     rax, 8000000000000000h
+0x1002edc42: cmp     [rbp+__src], rax
+0x1002edc49: jz      loc_100300EB6
+; ---- block start=0x1002edc4f end=0x1002edd98 ----
+0x1002edc4f: mov     rax, [rbp+var_1990]
+0x1002edc56: mov     [r15+68h], rax
+0x1002edc5a: mov     rax, [rbp+var_1998]
+0x1002edc61: mov     [r15+60h], rax
+0x1002edc65: mov     rax, [rbp+var_19A0]
+0x1002edc6c: mov     [r15+58h], rax
+0x1002edc70: mov     rax, [rbp+var_19A8]
+0x1002edc77: mov     [r15+50h], rax
+0x1002edc7b: mov     rax, [rbp+var_19B0]
+0x1002edc82: mov     [r15+48h], rax
+0x1002edc86: mov     rax, [rbp+__src]
+0x1002edc8d: mov     rcx, [rbp+var_19B8]
+0x1002edc94: mov     [r15+40h], rcx
+0x1002edc98: mov     [r15+38h], rax
+0x1002edc9c: mov     rax, [rbp+var_510]
+0x1002edca3: mov     [r15+30h], rax
+0x1002edca7: mov     rax, [rbp+var_518]
+0x1002edcae: mov     [r15+28h], rax
+0x1002edcb2: mov     rax, [rbp+var_520]
+0x1002edcb9: mov     [r15+20h], rax
+0x1002edcbd: mov     rax, [rbp+var_528]
+0x1002edcc4: mov     [r15+18h], rax
+0x1002edcc8: mov     rax, [rbp+var_530]
+0x1002edccf: mov     [r15+10h], rax
+0x1002edcd3: mov     rax, [rbp+var_540]
+0x1002edcda: mov     rcx, [rbp+var_538]
+0x1002edce1: mov     [r15+8], rcx
+0x1002edce5: mov     [r15], rax
+0x1002edce8: mov     rax, [rbp+var_950]
+0x1002edcef: mov     [rbx+58h], rax
+0x1002edcf3: mov     rax, [rbp+var_958]
+0x1002edcfa: mov     [rbx+50h], rax
+0x1002edcfe: mov     rax, [rbp+var_968]
+0x1002edd05: mov     rcx, [rbp+var_960]
+0x1002edd0c: mov     [rbx+48h], rcx
+0x1002edd10: mov     [rbx+40h], rax
+0x1002edd14: mov     qword ptr [rbx], 0
+0x1002edd1b: mov     qword ptr [rbx+10h], 2
+0x1002edd23: mov     [rbx+18h], r15
+0x1002edd27: mov     qword ptr [rbx+20h], 2
+0x1002edd2f: mov     qword ptr [rbx+28h], 0
+0x1002edd37: mov     qword ptr [rbx+30h], 8
+0x1002edd3f: mov     qword ptr [rbx+38h], 0
+0x1002edd47: mov     [rbp+__src], 1
+0x1002edd52: mov     [rbp+var_19B8], rbx
+0x1002edd59: mov     [rbp+var_19B0], 1
+0x1002edd64: lea     rdi, [rbp+var_540]
+0x1002edd6b: lea     rsi, [rbp+var_48]
+0x1002edd6f: lea     rdx, [rbp+var_E0]
+0x1002edd76: lea     rcx, [rbp+__src]
+0x1002edd7d: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002edd82: mov     r15, [rbp+var_540]
+0x1002edd89: mov     rax, 8000000000000000h
+0x1002edd93: cmp     r15, rax
+0x1002edd96: jz      short loc_1002EDDEB
+; ---- block start=0x1002edd98 end=0x1002eddb0 ----
+0x1002edd98: mov     rbx, [rbp+var_538]
+0x1002edd9f: mov     r12, [rbp+var_530]
+0x1002edda6: inc     r12
+0x1002edda9: mov     rdi, rbx
+0x1002eddac: nop     dword ptr [rax+00h]
+; ---- block start=0x1002eddb0 end=0x1002eddb6 ----
+0x1002eddb0: cmp     r12, 1
+0x1002eddb4: jz      short loc_1002EDDC7
+; ---- block start=0x1002eddb6 end=0x1002eddc7 ----
+0x1002eddb6: lea     r14, [rdi+60h]
+0x1002eddba: dec     r12
+0x1002eddbd: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002eddc2: mov     rdi, r14
+0x1002eddc5: jmp     short loc_1002EDDB0
+; ---- block start=0x1002eddc7 end=0x1002eddd6 ----
+0x1002eddc7: test    r15, r15
+0x1002eddca: mov     r12, 693A6E6967756C70h
+0x1002eddd4: jz      short loc_1002EDDEB
+; ---- block start=0x1002eddd6 end=0x1002eddeb ----
+0x1002eddd6: shl     r15, 5
+0x1002eddda: lea     rsi, [r15+r15*2]
+0x1002eddde: mov     edx, 8
+0x1002edde3: mov     rdi, rbx
+0x1002edde6: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002eddeb end=0x1002ede0d ----
+0x1002eddeb: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002eddf0: mov     ebx, 11h
+0x1002eddf5: mov     edi, 11h
+0x1002eddfa: mov     esi, 1
+0x1002eddff: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ede04: test    rax, rax
+0x1002ede07: jz      loc_10030531F
+; ---- block start=0x1002ede0d end=0x1002ede60 ----
+0x1002ede0d: mov     r14, rax
+0x1002ede10: mov     rax, 6267727C6567616Dh
+0x1002ede1a: mov     [r14+8], rax
+0x1002ede1e: mov     [r14], r12
+0x1002ede21: mov     byte ptr [r14+10h], 61h ; 'a'
+0x1002ede26: mov     [rbp+var_E0], 11h
+0x1002ede31: mov     [rbp+var_D8], r14
+0x1002ede38: mov     [rbp+var_D0], 11h
+0x1002ede43: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ede48: mov     edi, 60h ; '`'
+0x1002ede4d: mov     esi, 8
+0x1002ede52: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ede57: test    rax, rax
+0x1002ede5a: jz      loc_100300F0B
+; ---- block start=0x1002ede60 end=0x1002ede91 ----
+0x1002ede60: mov     rbx, rax
+0x1002ede63: mov     rax, 8000000000000000h
+0x1002ede6d: mov     [rbp+var_968], rax
+0x1002ede74: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ede79: mov     edi, 70h ; 'p'
+0x1002ede7e: mov     esi, 8
+0x1002ede83: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ede88: test    rax, rax
+0x1002ede8b: jz      loc_100300F1F
+; ---- block start=0x1002ede91 end=0x1002edec3 ----
+0x1002ede91: mov     r15, rax
+0x1002ede94: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ede9b: lea     rdi, [rbp+__src]
+0x1002edea2: mov     edx, 7
+0x1002edea7: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002edeac: mov     rax, 8000000000000000h
+0x1002edeb6: cmp     [rbp+__src], rax
+0x1002edebd: jz      loc_100300F33
+; ---- block start=0x1002edec3 end=0x1002edf54 ----
+0x1002edec3: mov     rax, [rbp+var_1990]
+0x1002edeca: mov     [rbp+var_510], rax
+0x1002eded1: mov     rax, [rbp+var_1998]
+0x1002eded8: mov     [rbp+var_518], rax
+0x1002ededf: mov     rax, [rbp+var_19A0]
+0x1002edee6: mov     [rbp+var_520], rax
+0x1002edeed: mov     rax, [rbp+var_19A8]
+0x1002edef4: mov     [rbp+var_528], rax
+0x1002edefb: mov     rax, [rbp+var_19B0]
+0x1002edf02: mov     [rbp+var_530], rax
+0x1002edf09: mov     rax, [rbp+__src]
+0x1002edf10: mov     rcx, [rbp+var_19B8]
+0x1002edf17: mov     [rbp+var_538], rcx
+0x1002edf1e: mov     [rbp+var_540], rax
+0x1002edf25: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002edf2c: lea     rdi, [rbp+__src]
+0x1002edf33: mov     edx, 4
+0x1002edf38: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002edf3d: mov     rax, 8000000000000000h
+0x1002edf47: cmp     [rbp+__src], rax
+0x1002edf4e: jz      loc_100300F88
+; ---- block start=0x1002edf54 end=0x1002ee09d ----
+0x1002edf54: mov     rax, [rbp+var_1990]
+0x1002edf5b: mov     [r15+68h], rax
+0x1002edf5f: mov     rax, [rbp+var_1998]
+0x1002edf66: mov     [r15+60h], rax
+0x1002edf6a: mov     rax, [rbp+var_19A0]
+0x1002edf71: mov     [r15+58h], rax
+0x1002edf75: mov     rax, [rbp+var_19A8]
+0x1002edf7c: mov     [r15+50h], rax
+0x1002edf80: mov     rax, [rbp+var_19B0]
+0x1002edf87: mov     [r15+48h], rax
+0x1002edf8b: mov     rax, [rbp+__src]
+0x1002edf92: mov     rcx, [rbp+var_19B8]
+0x1002edf99: mov     [r15+40h], rcx
+0x1002edf9d: mov     [r15+38h], rax
+0x1002edfa1: mov     rax, [rbp+var_510]
+0x1002edfa8: mov     [r15+30h], rax
+0x1002edfac: mov     rax, [rbp+var_518]
+0x1002edfb3: mov     [r15+28h], rax
+0x1002edfb7: mov     rax, [rbp+var_520]
+0x1002edfbe: mov     [r15+20h], rax
+0x1002edfc2: mov     rax, [rbp+var_528]
+0x1002edfc9: mov     [r15+18h], rax
+0x1002edfcd: mov     rax, [rbp+var_530]
+0x1002edfd4: mov     [r15+10h], rax
+0x1002edfd8: mov     rax, [rbp+var_540]
+0x1002edfdf: mov     rcx, [rbp+var_538]
+0x1002edfe6: mov     [r15+8], rcx
+0x1002edfea: mov     [r15], rax
+0x1002edfed: mov     rax, [rbp+var_950]
+0x1002edff4: mov     [rbx+58h], rax
+0x1002edff8: mov     rax, [rbp+var_958]
+0x1002edfff: mov     [rbx+50h], rax
+0x1002ee003: mov     rax, [rbp+var_968]
+0x1002ee00a: mov     rcx, [rbp+var_960]
+0x1002ee011: mov     [rbx+48h], rcx
+0x1002ee015: mov     [rbx+40h], rax
+0x1002ee019: mov     qword ptr [rbx], 0
+0x1002ee020: mov     qword ptr [rbx+10h], 2
+0x1002ee028: mov     [rbx+18h], r15
+0x1002ee02c: mov     qword ptr [rbx+20h], 2
+0x1002ee034: mov     qword ptr [rbx+28h], 0
+0x1002ee03c: mov     qword ptr [rbx+30h], 8
+0x1002ee044: mov     qword ptr [rbx+38h], 0
+0x1002ee04c: mov     [rbp+__src], 1
+0x1002ee057: mov     [rbp+var_19B8], rbx
+0x1002ee05e: mov     [rbp+var_19B0], 1
+0x1002ee069: lea     rdi, [rbp+var_540]
+0x1002ee070: lea     rsi, [rbp+var_48]
+0x1002ee074: lea     rdx, [rbp+var_E0]
+0x1002ee07b: lea     rcx, [rbp+__src]
+0x1002ee082: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ee087: mov     r15, [rbp+var_540]
+0x1002ee08e: mov     rax, 8000000000000000h
+0x1002ee098: cmp     r15, rax
+0x1002ee09b: jz      short loc_1002EE0FB
+; ---- block start=0x1002ee09d end=0x1002ee0c0 ----
+0x1002ee09d: mov     rbx, [rbp+var_538]
+0x1002ee0a4: mov     r12, [rbp+var_530]
+0x1002ee0ab: inc     r12
+0x1002ee0ae: mov     rdi, rbx
+0x1002ee0b1: nop     word ptr [rax+rax+00000000h]
+0x1002ee0bb: nop     dword ptr [rax+rax+00h]
+; ---- block start=0x1002ee0c0 end=0x1002ee0c6 ----
+0x1002ee0c0: cmp     r12, 1
+0x1002ee0c4: jz      short loc_1002EE0D7
+; ---- block start=0x1002ee0c6 end=0x1002ee0d7 ----
+0x1002ee0c6: lea     r14, [rdi+60h]
+0x1002ee0ca: dec     r12
+0x1002ee0cd: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ee0d2: mov     rdi, r14
+0x1002ee0d5: jmp     short loc_1002EE0C0
+; ---- block start=0x1002ee0d7 end=0x1002ee0e6 ----
+0x1002ee0d7: test    r15, r15
+0x1002ee0da: mov     r12, 693A6E6967756C70h
+0x1002ee0e4: jz      short loc_1002EE0FB
+; ---- block start=0x1002ee0e6 end=0x1002ee0fb ----
+0x1002ee0e6: shl     r15, 5
+0x1002ee0ea: lea     rsi, [r15+r15*2]
+0x1002ee0ee: mov     edx, 8
+0x1002ee0f3: mov     rdi, rbx
+0x1002ee0f6: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ee0fb end=0x1002ee11d ----
+0x1002ee0fb: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ee100: mov     ebx, 11h
+0x1002ee105: mov     edi, 11h
+0x1002ee10a: mov     esi, 1
+0x1002ee10f: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ee114: test    rax, rax
+0x1002ee117: jz      loc_10030531F
+; ---- block start=0x1002ee11d end=0x1002ee170 ----
+0x1002ee11d: mov     r14, rax
+0x1002ee120: mov     rax, 7A69737C6567616Dh
+0x1002ee12a: mov     [r14+8], rax
+0x1002ee12e: mov     [r14], r12
+0x1002ee131: mov     byte ptr [r14+10h], 65h ; 'e'
+0x1002ee136: mov     [rbp+var_E0], 11h
+0x1002ee141: mov     [rbp+var_D8], r14
+0x1002ee148: mov     [rbp+var_D0], 11h
+0x1002ee153: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ee158: mov     edi, 60h ; '`'
+0x1002ee15d: mov     esi, 8
+0x1002ee162: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ee167: test    rax, rax
+0x1002ee16a: jz      loc_100300FDD
+; ---- block start=0x1002ee170 end=0x1002ee1a1 ----
+0x1002ee170: mov     rbx, rax
+0x1002ee173: mov     rax, 8000000000000000h
+0x1002ee17d: mov     [rbp+var_968], rax
+0x1002ee184: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ee189: mov     edi, 70h ; 'p'
+0x1002ee18e: mov     esi, 8
+0x1002ee193: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ee198: test    rax, rax
+0x1002ee19b: jz      loc_100300FF1
+; ---- block start=0x1002ee1a1 end=0x1002ee1d3 ----
+0x1002ee1a1: mov     r15, rax
+0x1002ee1a4: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ee1ab: lea     rdi, [rbp+__src]
+0x1002ee1b2: mov     edx, 7
+0x1002ee1b7: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ee1bc: mov     rax, 8000000000000000h
+0x1002ee1c6: cmp     [rbp+__src], rax
+0x1002ee1cd: jz      loc_100301005
+; ---- block start=0x1002ee1d3 end=0x1002ee264 ----
+0x1002ee1d3: mov     rax, [rbp+var_1990]
+0x1002ee1da: mov     [rbp+var_510], rax
+0x1002ee1e1: mov     rax, [rbp+var_1998]
+0x1002ee1e8: mov     [rbp+var_518], rax
+0x1002ee1ef: mov     rax, [rbp+var_19A0]
+0x1002ee1f6: mov     [rbp+var_520], rax
+0x1002ee1fd: mov     rax, [rbp+var_19A8]
+0x1002ee204: mov     [rbp+var_528], rax
+0x1002ee20b: mov     rax, [rbp+var_19B0]
+0x1002ee212: mov     [rbp+var_530], rax
+0x1002ee219: mov     rax, [rbp+__src]
+0x1002ee220: mov     rcx, [rbp+var_19B8]
+0x1002ee227: mov     [rbp+var_538], rcx
+0x1002ee22e: mov     [rbp+var_540], rax
+0x1002ee235: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ee23c: lea     rdi, [rbp+__src]
+0x1002ee243: mov     edx, 4
+0x1002ee248: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ee24d: mov     rax, 8000000000000000h
+0x1002ee257: cmp     [rbp+__src], rax
+0x1002ee25e: jz      loc_10030105A
+; ---- block start=0x1002ee264 end=0x1002ee3ad ----
+0x1002ee264: mov     rax, [rbp+var_1990]
+0x1002ee26b: mov     [r15+68h], rax
+0x1002ee26f: mov     rax, [rbp+var_1998]
+0x1002ee276: mov     [r15+60h], rax
+0x1002ee27a: mov     rax, [rbp+var_19A0]
+0x1002ee281: mov     [r15+58h], rax
+0x1002ee285: mov     rax, [rbp+var_19A8]
+0x1002ee28c: mov     [r15+50h], rax
+0x1002ee290: mov     rax, [rbp+var_19B0]
+0x1002ee297: mov     [r15+48h], rax
+0x1002ee29b: mov     rax, [rbp+__src]
+0x1002ee2a2: mov     rcx, [rbp+var_19B8]
+0x1002ee2a9: mov     [r15+40h], rcx
+0x1002ee2ad: mov     [r15+38h], rax
+0x1002ee2b1: mov     rax, [rbp+var_510]
+0x1002ee2b8: mov     [r15+30h], rax
+0x1002ee2bc: mov     rax, [rbp+var_518]
+0x1002ee2c3: mov     [r15+28h], rax
+0x1002ee2c7: mov     rax, [rbp+var_520]
+0x1002ee2ce: mov     [r15+20h], rax
+0x1002ee2d2: mov     rax, [rbp+var_528]
+0x1002ee2d9: mov     [r15+18h], rax
+0x1002ee2dd: mov     rax, [rbp+var_530]
+0x1002ee2e4: mov     [r15+10h], rax
+0x1002ee2e8: mov     rax, [rbp+var_540]
+0x1002ee2ef: mov     rcx, [rbp+var_538]
+0x1002ee2f6: mov     [r15+8], rcx
+0x1002ee2fa: mov     [r15], rax
+0x1002ee2fd: mov     rax, [rbp+var_950]
+0x1002ee304: mov     [rbx+58h], rax
+0x1002ee308: mov     rax, [rbp+var_958]
+0x1002ee30f: mov     [rbx+50h], rax
+0x1002ee313: mov     rax, [rbp+var_968]
+0x1002ee31a: mov     rcx, [rbp+var_960]
+0x1002ee321: mov     [rbx+48h], rcx
+0x1002ee325: mov     [rbx+40h], rax
+0x1002ee329: mov     qword ptr [rbx], 0
+0x1002ee330: mov     qword ptr [rbx+10h], 2
+0x1002ee338: mov     [rbx+18h], r15
+0x1002ee33c: mov     qword ptr [rbx+20h], 2
+0x1002ee344: mov     qword ptr [rbx+28h], 0
+0x1002ee34c: mov     qword ptr [rbx+30h], 8
+0x1002ee354: mov     qword ptr [rbx+38h], 0
+0x1002ee35c: mov     [rbp+__src], 1
+0x1002ee367: mov     [rbp+var_19B8], rbx
+0x1002ee36e: mov     [rbp+var_19B0], 1
+0x1002ee379: lea     rdi, [rbp+var_540]
+0x1002ee380: lea     rsi, [rbp+var_48]
+0x1002ee384: lea     rdx, [rbp+var_E0]
+0x1002ee38b: lea     rcx, [rbp+__src]
+0x1002ee392: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ee397: mov     r15, [rbp+var_540]
+0x1002ee39e: mov     rax, 8000000000000000h
+0x1002ee3a8: cmp     r15, rax
+0x1002ee3ab: jz      short loc_1002EE401
+; ---- block start=0x1002ee3ad end=0x1002ee3d0 ----
+0x1002ee3ad: mov     rbx, [rbp+var_538]
+0x1002ee3b4: mov     r12, [rbp+var_530]
+0x1002ee3bb: inc     r12
+0x1002ee3be: mov     rdi, rbx
+0x1002ee3c1: nop     word ptr [rax+rax+00000000h]
+0x1002ee3cb: nop     dword ptr [rax+rax+00h]
+; ---- block start=0x1002ee3d0 end=0x1002ee3d6 ----
+0x1002ee3d0: cmp     r12, 1
+0x1002ee3d4: jz      short loc_1002EE3E7
+; ---- block start=0x1002ee3d6 end=0x1002ee3e7 ----
+0x1002ee3d6: lea     r14, [rdi+60h]
+0x1002ee3da: dec     r12
+0x1002ee3dd: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ee3e2: mov     rdi, r14
+0x1002ee3e5: jmp     short loc_1002EE3D0
+; ---- block start=0x1002ee3e7 end=0x1002ee3ec ----
+0x1002ee3e7: test    r15, r15
+0x1002ee3ea: jz      short loc_1002EE401
+; ---- block start=0x1002ee3ec end=0x1002ee401 ----
+0x1002ee3ec: shl     r15, 5
+0x1002ee3f0: lea     rsi, [r15+r15*2]
+0x1002ee3f4: mov     edx, 8
+0x1002ee3f9: mov     rdi, rbx
+0x1002ee3fc: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ee401 end=0x1002ee423 ----
+0x1002ee401: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ee406: mov     ebx, 12h
+0x1002ee40b: mov     edi, 12h
+0x1002ee410: mov     esi, 1
+0x1002ee415: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ee41a: test    rax, rax
+0x1002ee41d: jz      loc_10030531F
+; ---- block start=0x1002ee423 end=0x1002ee482 ----
+0x1002ee423: mov     r14, rax
+0x1002ee426: mov     rax, 657070617C756E65h
+0x1002ee430: mov     [r14+8], rax
+0x1002ee434: mov     r13, 6D3A6E6967756C70h
+0x1002ee43e: mov     [r14], r13
+0x1002ee441: mov     word ptr [r14+10h], 646Eh
+0x1002ee448: mov     [rbp+var_E0], 12h
+0x1002ee453: mov     [rbp+var_D8], r14
+0x1002ee45a: mov     [rbp+var_D0], 12h
+0x1002ee465: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ee46a: mov     edi, 60h ; '`'
+0x1002ee46f: mov     esi, 8
+0x1002ee474: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ee479: test    rax, rax
+0x1002ee47c: jz      loc_1003010AF
+; ---- block start=0x1002ee482 end=0x1002ee4b3 ----
+0x1002ee482: mov     rbx, rax
+0x1002ee485: mov     rax, 8000000000000000h
+0x1002ee48f: mov     [rbp+var_968], rax
+0x1002ee496: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ee49b: mov     edi, 70h ; 'p'
+0x1002ee4a0: mov     esi, 8
+0x1002ee4a5: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ee4aa: test    rax, rax
+0x1002ee4ad: jz      loc_1003010C3
+; ---- block start=0x1002ee4b3 end=0x1002ee4e5 ----
+0x1002ee4b3: mov     r15, rax
+0x1002ee4b6: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ee4bd: lea     rdi, [rbp+__src]
+0x1002ee4c4: mov     edx, 7
+0x1002ee4c9: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ee4ce: mov     rax, 8000000000000000h
+0x1002ee4d8: cmp     [rbp+__src], rax
+0x1002ee4df: jz      loc_1003010D7
+; ---- block start=0x1002ee4e5 end=0x1002ee576 ----
+0x1002ee4e5: mov     rax, [rbp+var_1990]
+0x1002ee4ec: mov     [rbp+var_510], rax
+0x1002ee4f3: mov     rax, [rbp+var_1998]
+0x1002ee4fa: mov     [rbp+var_518], rax
+0x1002ee501: mov     rax, [rbp+var_19A0]
+0x1002ee508: mov     [rbp+var_520], rax
+0x1002ee50f: mov     rax, [rbp+var_19A8]
+0x1002ee516: mov     [rbp+var_528], rax
+0x1002ee51d: mov     rax, [rbp+var_19B0]
+0x1002ee524: mov     [rbp+var_530], rax
+0x1002ee52b: mov     rax, [rbp+__src]
+0x1002ee532: mov     rcx, [rbp+var_19B8]
+0x1002ee539: mov     [rbp+var_538], rcx
+0x1002ee540: mov     [rbp+var_540], rax
+0x1002ee547: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ee54e: lea     rdi, [rbp+__src]
+0x1002ee555: mov     edx, 4
+0x1002ee55a: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ee55f: mov     rax, 8000000000000000h
+0x1002ee569: cmp     [rbp+__src], rax
+0x1002ee570: jz      loc_10030112C
+; ---- block start=0x1002ee576 end=0x1002ee6bf ----
+0x1002ee576: mov     rax, [rbp+var_1990]
+0x1002ee57d: mov     [r15+68h], rax
+0x1002ee581: mov     rax, [rbp+var_1998]
+0x1002ee588: mov     [r15+60h], rax
+0x1002ee58c: mov     rax, [rbp+var_19A0]
+0x1002ee593: mov     [r15+58h], rax
+0x1002ee597: mov     rax, [rbp+var_19A8]
+0x1002ee59e: mov     [r15+50h], rax
+0x1002ee5a2: mov     rax, [rbp+var_19B0]
+0x1002ee5a9: mov     [r15+48h], rax
+0x1002ee5ad: mov     rax, [rbp+__src]
+0x1002ee5b4: mov     rcx, [rbp+var_19B8]
+0x1002ee5bb: mov     [r15+40h], rcx
+0x1002ee5bf: mov     [r15+38h], rax
+0x1002ee5c3: mov     rax, [rbp+var_510]
+0x1002ee5ca: mov     [r15+30h], rax
+0x1002ee5ce: mov     rax, [rbp+var_518]
+0x1002ee5d5: mov     [r15+28h], rax
+0x1002ee5d9: mov     rax, [rbp+var_520]
+0x1002ee5e0: mov     [r15+20h], rax
+0x1002ee5e4: mov     rax, [rbp+var_528]
+0x1002ee5eb: mov     [r15+18h], rax
+0x1002ee5ef: mov     rax, [rbp+var_530]
+0x1002ee5f6: mov     [r15+10h], rax
+0x1002ee5fa: mov     rax, [rbp+var_540]
+0x1002ee601: mov     rcx, [rbp+var_538]
+0x1002ee608: mov     [r15+8], rcx
+0x1002ee60c: mov     [r15], rax
+0x1002ee60f: mov     rax, [rbp+var_950]
+0x1002ee616: mov     [rbx+58h], rax
+0x1002ee61a: mov     rax, [rbp+var_958]
+0x1002ee621: mov     [rbx+50h], rax
+0x1002ee625: mov     rax, [rbp+var_968]
+0x1002ee62c: mov     rcx, [rbp+var_960]
+0x1002ee633: mov     [rbx+48h], rcx
+0x1002ee637: mov     [rbx+40h], rax
+0x1002ee63b: mov     qword ptr [rbx], 0
+0x1002ee642: mov     qword ptr [rbx+10h], 2
+0x1002ee64a: mov     [rbx+18h], r15
+0x1002ee64e: mov     qword ptr [rbx+20h], 2
+0x1002ee656: mov     qword ptr [rbx+28h], 0
+0x1002ee65e: mov     qword ptr [rbx+30h], 8
+0x1002ee666: mov     qword ptr [rbx+38h], 0
+0x1002ee66e: mov     [rbp+__src], 1
+0x1002ee679: mov     [rbp+var_19B8], rbx
+0x1002ee680: mov     [rbp+var_19B0], 1
+0x1002ee68b: lea     rdi, [rbp+var_540]
+0x1002ee692: lea     rsi, [rbp+var_48]
+0x1002ee696: lea     rdx, [rbp+var_E0]
+0x1002ee69d: lea     rcx, [rbp+__src]
+0x1002ee6a4: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ee6a9: mov     r15, [rbp+var_540]
+0x1002ee6b0: mov     rax, 8000000000000000h
+0x1002ee6ba: cmp     r15, rax
+0x1002ee6bd: jz      short loc_1002EE711
+; ---- block start=0x1002ee6bf end=0x1002ee6e0 ----
+0x1002ee6bf: mov     rbx, [rbp+var_538]
+0x1002ee6c6: mov     r12, [rbp+var_530]
+0x1002ee6cd: inc     r12
+0x1002ee6d0: mov     rdi, rbx
+0x1002ee6d3: nop     word ptr [rax+rax+00000000h]
+0x1002ee6dd: nop     dword ptr [rax]
+; ---- block start=0x1002ee6e0 end=0x1002ee6e6 ----
+0x1002ee6e0: cmp     r12, 1
+0x1002ee6e4: jz      short loc_1002EE6F7
+; ---- block start=0x1002ee6e6 end=0x1002ee6f7 ----
+0x1002ee6e6: lea     r14, [rdi+60h]
+0x1002ee6ea: dec     r12
+0x1002ee6ed: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ee6f2: mov     rdi, r14
+0x1002ee6f5: jmp     short loc_1002EE6E0
+; ---- block start=0x1002ee6f7 end=0x1002ee6fc ----
+0x1002ee6f7: test    r15, r15
+0x1002ee6fa: jz      short loc_1002EE711
+; ---- block start=0x1002ee6fc end=0x1002ee711 ----
+0x1002ee6fc: shl     r15, 5
+0x1002ee700: lea     rsi, [r15+r15*2]
+0x1002ee704: mov     edx, 8
+0x1002ee709: mov     rdi, rbx
+0x1002ee70c: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ee711 end=0x1002ee733 ----
+0x1002ee711: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ee716: mov     ebx, 1Ah
+0x1002ee71b: mov     edi, 1Ah
+0x1002ee720: mov     esi, 1
+0x1002ee725: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ee72a: test    rax, rax
+0x1002ee72d: jz      loc_10030531F
+; ---- block start=0x1002ee733 end=0x1002ee796 ----
+0x1002ee733: mov     r14, rax
+0x1002ee736: mov     rax, 75616665645F6574h
+0x1002ee740: mov     [r14+10h], rax
+0x1002ee744: mov     rax, 616572637C756E65h
+0x1002ee74e: mov     [r14+8], rax
+0x1002ee752: mov     [r14], r13
+0x1002ee755: mov     word ptr [r14+18h], 746Ch
+0x1002ee75c: mov     [rbp+var_E0], 1Ah
+0x1002ee767: mov     [rbp+var_D8], r14
+0x1002ee76e: mov     [rbp+var_D0], 1Ah
+0x1002ee779: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ee77e: mov     edi, 60h ; '`'
+0x1002ee783: mov     esi, 8
+0x1002ee788: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ee78d: test    rax, rax
+0x1002ee790: jz      loc_100301181
+; ---- block start=0x1002ee796 end=0x1002ee7c7 ----
+0x1002ee796: mov     rbx, rax
+0x1002ee799: mov     rax, 8000000000000000h
+0x1002ee7a3: mov     [rbp+var_968], rax
+0x1002ee7aa: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ee7af: mov     edi, 70h ; 'p'
+0x1002ee7b4: mov     esi, 8
+0x1002ee7b9: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ee7be: test    rax, rax
+0x1002ee7c1: jz      loc_100301195
+; ---- block start=0x1002ee7c7 end=0x1002ee7f9 ----
+0x1002ee7c7: mov     r15, rax
+0x1002ee7ca: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ee7d1: lea     rdi, [rbp+__src]
+0x1002ee7d8: mov     edx, 7
+0x1002ee7dd: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ee7e2: mov     rax, 8000000000000000h
+0x1002ee7ec: cmp     [rbp+__src], rax
+0x1002ee7f3: jz      loc_1003011A9
+; ---- block start=0x1002ee7f9 end=0x1002ee88a ----
+0x1002ee7f9: mov     rax, [rbp+var_1990]
+0x1002ee800: mov     [rbp+var_510], rax
+0x1002ee807: mov     rax, [rbp+var_1998]
+0x1002ee80e: mov     [rbp+var_518], rax
+0x1002ee815: mov     rax, [rbp+var_19A0]
+0x1002ee81c: mov     [rbp+var_520], rax
+0x1002ee823: mov     rax, [rbp+var_19A8]
+0x1002ee82a: mov     [rbp+var_528], rax
+0x1002ee831: mov     rax, [rbp+var_19B0]
+0x1002ee838: mov     [rbp+var_530], rax
+0x1002ee83f: mov     rax, [rbp+__src]
+0x1002ee846: mov     rcx, [rbp+var_19B8]
+0x1002ee84d: mov     [rbp+var_538], rcx
+0x1002ee854: mov     [rbp+var_540], rax
+0x1002ee85b: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ee862: lea     rdi, [rbp+__src]
+0x1002ee869: mov     edx, 4
+0x1002ee86e: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ee873: mov     rax, 8000000000000000h
+0x1002ee87d: cmp     [rbp+__src], rax
+0x1002ee884: jz      loc_1003011FE
+; ---- block start=0x1002ee88a end=0x1002ee9d3 ----
+0x1002ee88a: mov     rax, [rbp+var_1990]
+0x1002ee891: mov     [r15+68h], rax
+0x1002ee895: mov     rax, [rbp+var_1998]
+0x1002ee89c: mov     [r15+60h], rax
+0x1002ee8a0: mov     rax, [rbp+var_19A0]
+0x1002ee8a7: mov     [r15+58h], rax
+0x1002ee8ab: mov     rax, [rbp+var_19A8]
+0x1002ee8b2: mov     [r15+50h], rax
+0x1002ee8b6: mov     rax, [rbp+var_19B0]
+0x1002ee8bd: mov     [r15+48h], rax
+0x1002ee8c1: mov     rax, [rbp+__src]
+0x1002ee8c8: mov     rcx, [rbp+var_19B8]
+0x1002ee8cf: mov     [r15+40h], rcx
+0x1002ee8d3: mov     [r15+38h], rax
+0x1002ee8d7: mov     rax, [rbp+var_510]
+0x1002ee8de: mov     [r15+30h], rax
+0x1002ee8e2: mov     rax, [rbp+var_518]
+0x1002ee8e9: mov     [r15+28h], rax
+0x1002ee8ed: mov     rax, [rbp+var_520]
+0x1002ee8f4: mov     [r15+20h], rax
+0x1002ee8f8: mov     rax, [rbp+var_528]
+0x1002ee8ff: mov     [r15+18h], rax
+0x1002ee903: mov     rax, [rbp+var_530]
+0x1002ee90a: mov     [r15+10h], rax
+0x1002ee90e: mov     rax, [rbp+var_540]
+0x1002ee915: mov     rcx, [rbp+var_538]
+0x1002ee91c: mov     [r15+8], rcx
+0x1002ee920: mov     [r15], rax
+0x1002ee923: mov     rax, [rbp+var_950]
+0x1002ee92a: mov     [rbx+58h], rax
+0x1002ee92e: mov     rax, [rbp+var_958]
+0x1002ee935: mov     [rbx+50h], rax
+0x1002ee939: mov     rax, [rbp+var_968]
+0x1002ee940: mov     rcx, [rbp+var_960]
+0x1002ee947: mov     [rbx+48h], rcx
+0x1002ee94b: mov     [rbx+40h], rax
+0x1002ee94f: mov     qword ptr [rbx], 0
+0x1002ee956: mov     qword ptr [rbx+10h], 2
+0x1002ee95e: mov     [rbx+18h], r15
+0x1002ee962: mov     qword ptr [rbx+20h], 2
+0x1002ee96a: mov     qword ptr [rbx+28h], 0
+0x1002ee972: mov     qword ptr [rbx+30h], 8
+0x1002ee97a: mov     qword ptr [rbx+38h], 0
+0x1002ee982: mov     [rbp+__src], 1
+0x1002ee98d: mov     [rbp+var_19B8], rbx
+0x1002ee994: mov     [rbp+var_19B0], 1
+0x1002ee99f: lea     rdi, [rbp+var_540]
+0x1002ee9a6: lea     rsi, [rbp+var_48]
+0x1002ee9aa: lea     rdx, [rbp+var_E0]
+0x1002ee9b1: lea     rcx, [rbp+__src]
+0x1002ee9b8: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ee9bd: mov     r15, [rbp+var_540]
+0x1002ee9c4: mov     rax, 8000000000000000h
+0x1002ee9ce: cmp     r15, rax
+0x1002ee9d1: jz      short loc_1002EEA21
+; ---- block start=0x1002ee9d3 end=0x1002ee9f0 ----
+0x1002ee9d3: mov     rbx, [rbp+var_538]
+0x1002ee9da: mov     r12, [rbp+var_530]
+0x1002ee9e1: inc     r12
+0x1002ee9e4: mov     rdi, rbx
+0x1002ee9e7: nop     word ptr [rax+rax+00000000h]
+; ---- block start=0x1002ee9f0 end=0x1002ee9f6 ----
+0x1002ee9f0: cmp     r12, 1
+0x1002ee9f4: jz      short loc_1002EEA07
+; ---- block start=0x1002ee9f6 end=0x1002eea07 ----
+0x1002ee9f6: lea     r14, [rdi+60h]
+0x1002ee9fa: dec     r12
+0x1002ee9fd: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002eea02: mov     rdi, r14
+0x1002eea05: jmp     short loc_1002EE9F0
+; ---- block start=0x1002eea07 end=0x1002eea0c ----
+0x1002eea07: test    r15, r15
+0x1002eea0a: jz      short loc_1002EEA21
+; ---- block start=0x1002eea0c end=0x1002eea21 ----
+0x1002eea0c: shl     r15, 5
+0x1002eea10: lea     rsi, [r15+r15*2]
+0x1002eea14: mov     edx, 8
+0x1002eea19: mov     rdi, rbx
+0x1002eea1c: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002eea21 end=0x1002eea43 ----
+0x1002eea21: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002eea26: mov     ebx, 0Fh
+0x1002eea2b: mov     edi, 0Fh
+0x1002eea30: mov     esi, 1
+0x1002eea35: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002eea3a: test    rax, rax
+0x1002eea3d: jz      loc_10030531F
+; ---- block start=0x1002eea43 end=0x1002eea91 ----
+0x1002eea43: mov     r14, rax
+0x1002eea46: mov     rax, 7465677C756E656Dh
+0x1002eea50: mov     [r14+7], rax
+0x1002eea54: mov     [r14], r13
+0x1002eea57: mov     [rbp+var_E0], 0Fh
+0x1002eea62: mov     [rbp+var_D8], r14
+0x1002eea69: mov     [rbp+var_D0], 0Fh
+0x1002eea74: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002eea79: mov     edi, 60h ; '`'
+0x1002eea7e: mov     esi, 8
+0x1002eea83: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002eea88: test    rax, rax
+0x1002eea8b: jz      loc_100301253
+; ---- block start=0x1002eea91 end=0x1002eeac2 ----
+0x1002eea91: mov     rbx, rax
+0x1002eea94: mov     rax, 8000000000000000h
+0x1002eea9e: mov     [rbp+var_968], rax
+0x1002eeaa5: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002eeaaa: mov     edi, 70h ; 'p'
+0x1002eeaaf: mov     esi, 8
+0x1002eeab4: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002eeab9: test    rax, rax
+0x1002eeabc: jz      loc_100301267
+; ---- block start=0x1002eeac2 end=0x1002eeaf4 ----
+0x1002eeac2: mov     r15, rax
+0x1002eeac5: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002eeacc: lea     rdi, [rbp+__src]
+0x1002eead3: mov     edx, 7
+0x1002eead8: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002eeadd: mov     rax, 8000000000000000h
+0x1002eeae7: cmp     [rbp+__src], rax
+0x1002eeaee: jz      loc_10030127B
+; ---- block start=0x1002eeaf4 end=0x1002eeb85 ----
+0x1002eeaf4: mov     rax, [rbp+var_1990]
+0x1002eeafb: mov     [rbp+var_510], rax
+0x1002eeb02: mov     rax, [rbp+var_1998]
+0x1002eeb09: mov     [rbp+var_518], rax
+0x1002eeb10: mov     rax, [rbp+var_19A0]
+0x1002eeb17: mov     [rbp+var_520], rax
+0x1002eeb1e: mov     rax, [rbp+var_19A8]
+0x1002eeb25: mov     [rbp+var_528], rax
+0x1002eeb2c: mov     rax, [rbp+var_19B0]
+0x1002eeb33: mov     [rbp+var_530], rax
+0x1002eeb3a: mov     rax, [rbp+__src]
+0x1002eeb41: mov     rcx, [rbp+var_19B8]
+0x1002eeb48: mov     [rbp+var_538], rcx
+0x1002eeb4f: mov     [rbp+var_540], rax
+0x1002eeb56: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002eeb5d: lea     rdi, [rbp+__src]
+0x1002eeb64: mov     edx, 4
+0x1002eeb69: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002eeb6e: mov     rax, 8000000000000000h
+0x1002eeb78: cmp     [rbp+__src], rax
+0x1002eeb7f: jz      loc_1003012D0
+; ---- block start=0x1002eeb85 end=0x1002eecce ----
+0x1002eeb85: mov     rax, [rbp+var_1990]
+0x1002eeb8c: mov     [r15+68h], rax
+0x1002eeb90: mov     rax, [rbp+var_1998]
+0x1002eeb97: mov     [r15+60h], rax
+0x1002eeb9b: mov     rax, [rbp+var_19A0]
+0x1002eeba2: mov     [r15+58h], rax
+0x1002eeba6: mov     rax, [rbp+var_19A8]
+0x1002eebad: mov     [r15+50h], rax
+0x1002eebb1: mov     rax, [rbp+var_19B0]
+0x1002eebb8: mov     [r15+48h], rax
+0x1002eebbc: mov     rax, [rbp+__src]
+0x1002eebc3: mov     rcx, [rbp+var_19B8]
+0x1002eebca: mov     [r15+40h], rcx
+0x1002eebce: mov     [r15+38h], rax
+0x1002eebd2: mov     rax, [rbp+var_510]
+0x1002eebd9: mov     [r15+30h], rax
+0x1002eebdd: mov     rax, [rbp+var_518]
+0x1002eebe4: mov     [r15+28h], rax
+0x1002eebe8: mov     rax, [rbp+var_520]
+0x1002eebef: mov     [r15+20h], rax
+0x1002eebf3: mov     rax, [rbp+var_528]
+0x1002eebfa: mov     [r15+18h], rax
+0x1002eebfe: mov     rax, [rbp+var_530]
+0x1002eec05: mov     [r15+10h], rax
+0x1002eec09: mov     rax, [rbp+var_540]
+0x1002eec10: mov     rcx, [rbp+var_538]
+0x1002eec17: mov     [r15+8], rcx
+0x1002eec1b: mov     [r15], rax
+0x1002eec1e: mov     rax, [rbp+var_950]
+0x1002eec25: mov     [rbx+58h], rax
+0x1002eec29: mov     rax, [rbp+var_958]
+0x1002eec30: mov     [rbx+50h], rax
+0x1002eec34: mov     rax, [rbp+var_968]
+0x1002eec3b: mov     rcx, [rbp+var_960]
+0x1002eec42: mov     [rbx+48h], rcx
+0x1002eec46: mov     [rbx+40h], rax
+0x1002eec4a: mov     qword ptr [rbx], 0
+0x1002eec51: mov     qword ptr [rbx+10h], 2
+0x1002eec59: mov     [rbx+18h], r15
+0x1002eec5d: mov     qword ptr [rbx+20h], 2
+0x1002eec65: mov     qword ptr [rbx+28h], 0
+0x1002eec6d: mov     qword ptr [rbx+30h], 8
+0x1002eec75: mov     qword ptr [rbx+38h], 0
+0x1002eec7d: mov     [rbp+__src], 1
+0x1002eec88: mov     [rbp+var_19B8], rbx
+0x1002eec8f: mov     [rbp+var_19B0], 1
+0x1002eec9a: lea     rdi, [rbp+var_540]
+0x1002eeca1: lea     rsi, [rbp+var_48]
+0x1002eeca5: lea     rdx, [rbp+var_E0]
+0x1002eecac: lea     rcx, [rbp+__src]
+0x1002eecb3: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002eecb8: mov     r15, [rbp+var_540]
+0x1002eecbf: mov     rax, 8000000000000000h
+0x1002eecc9: cmp     r15, rax
+0x1002eeccc: jz      short loc_1002EED21
+; ---- block start=0x1002eecce end=0x1002eecf0 ----
+0x1002eecce: mov     rbx, [rbp+var_538]
+0x1002eecd5: mov     r12, [rbp+var_530]
+0x1002eecdc: inc     r12
+0x1002eecdf: mov     rdi, rbx
+0x1002eece2: nop     word ptr [rax+rax+00000000h]
+0x1002eecec: nop     dword ptr [rax+00h]
+; ---- block start=0x1002eecf0 end=0x1002eecf6 ----
+0x1002eecf0: cmp     r12, 1
+0x1002eecf4: jz      short loc_1002EED07
+; ---- block start=0x1002eecf6 end=0x1002eed07 ----
+0x1002eecf6: lea     r14, [rdi+60h]
+0x1002eecfa: dec     r12
+0x1002eecfd: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002eed02: mov     rdi, r14
+0x1002eed05: jmp     short loc_1002EECF0
+; ---- block start=0x1002eed07 end=0x1002eed0c ----
+0x1002eed07: test    r15, r15
+0x1002eed0a: jz      short loc_1002EED21
+; ---- block start=0x1002eed0c end=0x1002eed21 ----
+0x1002eed0c: shl     r15, 5
+0x1002eed10: lea     rsi, [r15+r15*2]
+0x1002eed14: mov     edx, 8
+0x1002eed19: mov     rdi, rbx
+0x1002eed1c: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002eed21 end=0x1002eed43 ----
+0x1002eed21: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002eed26: mov     ebx, 12h
+0x1002eed2b: mov     edi, 12h
+0x1002eed30: mov     esi, 1
+0x1002eed35: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002eed3a: test    rax, rax
+0x1002eed3d: jz      loc_10030531F
+; ---- block start=0x1002eed43 end=0x1002eed98 ----
+0x1002eed43: mov     r14, rax
+0x1002eed46: mov     rax, 65736E697C756E65h
+0x1002eed50: mov     [r14+8], rax
+0x1002eed54: mov     [r14], r13
+0x1002eed57: mov     word ptr [r14+10h], 7472h
+0x1002eed5e: mov     [rbp+var_E0], 12h
+0x1002eed69: mov     [rbp+var_D8], r14
+0x1002eed70: mov     [rbp+var_D0], 12h
+0x1002eed7b: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002eed80: mov     edi, 60h ; '`'
+0x1002eed85: mov     esi, 8
+0x1002eed8a: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002eed8f: test    rax, rax
+0x1002eed92: jz      loc_100301325
+; ---- block start=0x1002eed98 end=0x1002eedc9 ----
+0x1002eed98: mov     rbx, rax
+0x1002eed9b: mov     rax, 8000000000000000h
+0x1002eeda5: mov     [rbp+var_968], rax
+0x1002eedac: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002eedb1: mov     edi, 70h ; 'p'
+0x1002eedb6: mov     esi, 8
+0x1002eedbb: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002eedc0: test    rax, rax
+0x1002eedc3: jz      loc_100301339
+; ---- block start=0x1002eedc9 end=0x1002eedfb ----
+0x1002eedc9: mov     r15, rax
+0x1002eedcc: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002eedd3: lea     rdi, [rbp+__src]
+0x1002eedda: mov     edx, 7
+0x1002eeddf: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002eede4: mov     rax, 8000000000000000h
+0x1002eedee: cmp     [rbp+__src], rax
+0x1002eedf5: jz      loc_10030134D
+; ---- block start=0x1002eedfb end=0x1002eee8c ----
+0x1002eedfb: mov     rax, [rbp+var_1990]
+0x1002eee02: mov     [rbp+var_510], rax
+0x1002eee09: mov     rax, [rbp+var_1998]
+0x1002eee10: mov     [rbp+var_518], rax
+0x1002eee17: mov     rax, [rbp+var_19A0]
+0x1002eee1e: mov     [rbp+var_520], rax
+0x1002eee25: mov     rax, [rbp+var_19A8]
+0x1002eee2c: mov     [rbp+var_528], rax
+0x1002eee33: mov     rax, [rbp+var_19B0]
+0x1002eee3a: mov     [rbp+var_530], rax
+0x1002eee41: mov     rax, [rbp+__src]
+0x1002eee48: mov     rcx, [rbp+var_19B8]
+0x1002eee4f: mov     [rbp+var_538], rcx
+0x1002eee56: mov     [rbp+var_540], rax
+0x1002eee5d: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002eee64: lea     rdi, [rbp+__src]
+0x1002eee6b: mov     edx, 4
+0x1002eee70: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002eee75: mov     rax, 8000000000000000h
+0x1002eee7f: cmp     [rbp+__src], rax
+0x1002eee86: jz      loc_1003013A2
+; ---- block start=0x1002eee8c end=0x1002eefd5 ----
+0x1002eee8c: mov     rax, [rbp+var_1990]
+0x1002eee93: mov     [r15+68h], rax
+0x1002eee97: mov     rax, [rbp+var_1998]
+0x1002eee9e: mov     [r15+60h], rax
+0x1002eeea2: mov     rax, [rbp+var_19A0]
+0x1002eeea9: mov     [r15+58h], rax
+0x1002eeead: mov     rax, [rbp+var_19A8]
+0x1002eeeb4: mov     [r15+50h], rax
+0x1002eeeb8: mov     rax, [rbp+var_19B0]
+0x1002eeebf: mov     [r15+48h], rax
+0x1002eeec3: mov     rax, [rbp+__src]
+0x1002eeeca: mov     rcx, [rbp+var_19B8]
+0x1002eeed1: mov     [r15+40h], rcx
+0x1002eeed5: mov     [r15+38h], rax
+0x1002eeed9: mov     rax, [rbp+var_510]
+0x1002eeee0: mov     [r15+30h], rax
+0x1002eeee4: mov     rax, [rbp+var_518]
+0x1002eeeeb: mov     [r15+28h], rax
+0x1002eeeef: mov     rax, [rbp+var_520]
+0x1002eeef6: mov     [r15+20h], rax
+0x1002eeefa: mov     rax, [rbp+var_528]
+0x1002eef01: mov     [r15+18h], rax
+0x1002eef05: mov     rax, [rbp+var_530]
+0x1002eef0c: mov     [r15+10h], rax
+0x1002eef10: mov     rax, [rbp+var_540]
+0x1002eef17: mov     rcx, [rbp+var_538]
+0x1002eef1e: mov     [r15+8], rcx
+0x1002eef22: mov     [r15], rax
+0x1002eef25: mov     rax, [rbp+var_950]
+0x1002eef2c: mov     [rbx+58h], rax
+0x1002eef30: mov     rax, [rbp+var_958]
+0x1002eef37: mov     [rbx+50h], rax
+0x1002eef3b: mov     rax, [rbp+var_968]
+0x1002eef42: mov     rcx, [rbp+var_960]
+0x1002eef49: mov     [rbx+48h], rcx
+0x1002eef4d: mov     [rbx+40h], rax
+0x1002eef51: mov     qword ptr [rbx], 0
+0x1002eef58: mov     qword ptr [rbx+10h], 2
+0x1002eef60: mov     [rbx+18h], r15
+0x1002eef64: mov     qword ptr [rbx+20h], 2
+0x1002eef6c: mov     qword ptr [rbx+28h], 0
+0x1002eef74: mov     qword ptr [rbx+30h], 8
+0x1002eef7c: mov     qword ptr [rbx+38h], 0
+0x1002eef84: mov     [rbp+__src], 1
+0x1002eef8f: mov     [rbp+var_19B8], rbx
+0x1002eef96: mov     [rbp+var_19B0], 1
+0x1002eefa1: lea     rdi, [rbp+var_540]
+0x1002eefa8: lea     rsi, [rbp+var_48]
+0x1002eefac: lea     rdx, [rbp+var_E0]
+0x1002eefb3: lea     rcx, [rbp+__src]
+0x1002eefba: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002eefbf: mov     r15, [rbp+var_540]
+0x1002eefc6: mov     rax, 8000000000000000h
+0x1002eefd0: cmp     r15, rax
+0x1002eefd3: jz      short loc_1002EF021
+; ---- block start=0x1002eefd5 end=0x1002eeff0 ----
+0x1002eefd5: mov     rbx, [rbp+var_538]
+0x1002eefdc: mov     r12, [rbp+var_530]
+0x1002eefe3: inc     r12
+0x1002eefe6: mov     rdi, rbx
+0x1002eefe9: nop     dword ptr [rax+00000000h]
+; ---- block start=0x1002eeff0 end=0x1002eeff6 ----
+0x1002eeff0: cmp     r12, 1
+0x1002eeff4: jz      short loc_1002EF007
+; ---- block start=0x1002eeff6 end=0x1002ef007 ----
+0x1002eeff6: lea     r14, [rdi+60h]
+0x1002eeffa: dec     r12
+0x1002eeffd: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ef002: mov     rdi, r14
+0x1002ef005: jmp     short loc_1002EEFF0
+; ---- block start=0x1002ef007 end=0x1002ef00c ----
+0x1002ef007: test    r15, r15
+0x1002ef00a: jz      short loc_1002EF021
+; ---- block start=0x1002ef00c end=0x1002ef021 ----
+0x1002ef00c: shl     r15, 5
+0x1002ef010: lea     rsi, [r15+r15*2]
+0x1002ef014: mov     edx, 8
+0x1002ef019: mov     rdi, rbx
+0x1002ef01c: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ef021 end=0x1002ef043 ----
+0x1002ef021: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ef026: mov     ebx, 16h
+0x1002ef02b: mov     edi, 16h
+0x1002ef030: mov     esi, 1
+0x1002ef035: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ef03a: test    rax, rax
+0x1002ef03d: jz      loc_10030531F
+; ---- block start=0x1002ef043 end=0x1002ef09f ----
+0x1002ef043: mov     r14, rax
+0x1002ef046: mov     rax, 64656B636568635Fh
+0x1002ef050: mov     [r14+0Eh], rax
+0x1002ef054: mov     rax, 635F73697C756E65h
+0x1002ef05e: mov     [r14+8], rax
+0x1002ef062: mov     [r14], r13
+0x1002ef065: mov     [rbp+var_E0], 16h
+0x1002ef070: mov     [rbp+var_D8], r14
+0x1002ef077: mov     [rbp+var_D0], 16h
+0x1002ef082: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ef087: mov     edi, 60h ; '`'
+0x1002ef08c: mov     esi, 8
+0x1002ef091: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ef096: test    rax, rax
+0x1002ef099: jz      loc_1003013F7
+; ---- block start=0x1002ef09f end=0x1002ef0d0 ----
+0x1002ef09f: mov     rbx, rax
+0x1002ef0a2: mov     rax, 8000000000000000h
+0x1002ef0ac: mov     [rbp+var_968], rax
+0x1002ef0b3: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ef0b8: mov     edi, 70h ; 'p'
+0x1002ef0bd: mov     esi, 8
+0x1002ef0c2: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ef0c7: test    rax, rax
+0x1002ef0ca: jz      loc_10030140B
+; ---- block start=0x1002ef0d0 end=0x1002ef102 ----
+0x1002ef0d0: mov     r15, rax
+0x1002ef0d3: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ef0da: lea     rdi, [rbp+__src]
+0x1002ef0e1: mov     edx, 7
+0x1002ef0e6: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ef0eb: mov     rax, 8000000000000000h
+0x1002ef0f5: cmp     [rbp+__src], rax
+0x1002ef0fc: jz      loc_10030141F
+; ---- block start=0x1002ef102 end=0x1002ef193 ----
+0x1002ef102: mov     rax, [rbp+var_1990]
+0x1002ef109: mov     [rbp+var_510], rax
+0x1002ef110: mov     rax, [rbp+var_1998]
+0x1002ef117: mov     [rbp+var_518], rax
+0x1002ef11e: mov     rax, [rbp+var_19A0]
+0x1002ef125: mov     [rbp+var_520], rax
+0x1002ef12c: mov     rax, [rbp+var_19A8]
+0x1002ef133: mov     [rbp+var_528], rax
+0x1002ef13a: mov     rax, [rbp+var_19B0]
+0x1002ef141: mov     [rbp+var_530], rax
+0x1002ef148: mov     rax, [rbp+__src]
+0x1002ef14f: mov     rcx, [rbp+var_19B8]
+0x1002ef156: mov     [rbp+var_538], rcx
+0x1002ef15d: mov     [rbp+var_540], rax
+0x1002ef164: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ef16b: lea     rdi, [rbp+__src]
+0x1002ef172: mov     edx, 4
+0x1002ef177: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ef17c: mov     rax, 8000000000000000h
+0x1002ef186: cmp     [rbp+__src], rax
+0x1002ef18d: jz      loc_100301474
+; ---- block start=0x1002ef193 end=0x1002ef2dc ----
+0x1002ef193: mov     rax, [rbp+var_1990]
+0x1002ef19a: mov     [r15+68h], rax
+0x1002ef19e: mov     rax, [rbp+var_1998]
+0x1002ef1a5: mov     [r15+60h], rax
+0x1002ef1a9: mov     rax, [rbp+var_19A0]
+0x1002ef1b0: mov     [r15+58h], rax
+0x1002ef1b4: mov     rax, [rbp+var_19A8]
+0x1002ef1bb: mov     [r15+50h], rax
+0x1002ef1bf: mov     rax, [rbp+var_19B0]
+0x1002ef1c6: mov     [r15+48h], rax
+0x1002ef1ca: mov     rax, [rbp+__src]
+0x1002ef1d1: mov     rcx, [rbp+var_19B8]
+0x1002ef1d8: mov     [r15+40h], rcx
+0x1002ef1dc: mov     [r15+38h], rax
+0x1002ef1e0: mov     rax, [rbp+var_510]
+0x1002ef1e7: mov     [r15+30h], rax
+0x1002ef1eb: mov     rax, [rbp+var_518]
+0x1002ef1f2: mov     [r15+28h], rax
+0x1002ef1f6: mov     rax, [rbp+var_520]
+0x1002ef1fd: mov     [r15+20h], rax
+0x1002ef201: mov     rax, [rbp+var_528]
+0x1002ef208: mov     [r15+18h], rax
+0x1002ef20c: mov     rax, [rbp+var_530]
+0x1002ef213: mov     [r15+10h], rax
+0x1002ef217: mov     rax, [rbp+var_540]
+0x1002ef21e: mov     rcx, [rbp+var_538]
+0x1002ef225: mov     [r15+8], rcx
+0x1002ef229: mov     [r15], rax
+0x1002ef22c: mov     rax, [rbp+var_950]
+0x1002ef233: mov     [rbx+58h], rax
+0x1002ef237: mov     rax, [rbp+var_958]
+0x1002ef23e: mov     [rbx+50h], rax
+0x1002ef242: mov     rax, [rbp+var_968]
+0x1002ef249: mov     rcx, [rbp+var_960]
+0x1002ef250: mov     [rbx+48h], rcx
+0x1002ef254: mov     [rbx+40h], rax
+0x1002ef258: mov     qword ptr [rbx], 0
+0x1002ef25f: mov     qword ptr [rbx+10h], 2
+0x1002ef267: mov     [rbx+18h], r15
+0x1002ef26b: mov     qword ptr [rbx+20h], 2
+0x1002ef273: mov     qword ptr [rbx+28h], 0
+0x1002ef27b: mov     qword ptr [rbx+30h], 8
+0x1002ef283: mov     qword ptr [rbx+38h], 0
+0x1002ef28b: mov     [rbp+__src], 1
+0x1002ef296: mov     [rbp+var_19B8], rbx
+0x1002ef29d: mov     [rbp+var_19B0], 1
+0x1002ef2a8: lea     rdi, [rbp+var_540]
+0x1002ef2af: lea     rsi, [rbp+var_48]
+0x1002ef2b3: lea     rdx, [rbp+var_E0]
+0x1002ef2ba: lea     rcx, [rbp+__src]
+0x1002ef2c1: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ef2c6: mov     r15, [rbp+var_540]
+0x1002ef2cd: mov     rax, 8000000000000000h
+0x1002ef2d7: cmp     r15, rax
+0x1002ef2da: jz      short loc_1002EF321
+; ---- block start=0x1002ef2dc end=0x1002ef2f0 ----
+0x1002ef2dc: mov     rbx, [rbp+var_538]
+0x1002ef2e3: mov     r12, [rbp+var_530]
+0x1002ef2ea: inc     r12
+0x1002ef2ed: mov     rdi, rbx
+; ---- block start=0x1002ef2f0 end=0x1002ef2f6 ----
+0x1002ef2f0: cmp     r12, 1
+0x1002ef2f4: jz      short loc_1002EF307
+; ---- block start=0x1002ef2f6 end=0x1002ef307 ----
+0x1002ef2f6: lea     r14, [rdi+60h]
+0x1002ef2fa: dec     r12
+0x1002ef2fd: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ef302: mov     rdi, r14
+0x1002ef305: jmp     short loc_1002EF2F0
+; ---- block start=0x1002ef307 end=0x1002ef30c ----
+0x1002ef307: test    r15, r15
+0x1002ef30a: jz      short loc_1002EF321
+; ---- block start=0x1002ef30c end=0x1002ef321 ----
+0x1002ef30c: shl     r15, 5
+0x1002ef310: lea     rsi, [r15+r15*2]
+0x1002ef314: mov     edx, 8
+0x1002ef319: mov     rdi, rbx
+0x1002ef31c: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ef321 end=0x1002ef343 ----
+0x1002ef321: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ef326: mov     ebx, 16h
+0x1002ef32b: mov     edi, 16h
+0x1002ef330: mov     esi, 1
+0x1002ef335: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ef33a: test    rax, rax
+0x1002ef33d: jz      loc_10030531F
+; ---- block start=0x1002ef343 end=0x1002ef39f ----
+0x1002ef343: mov     r14, rax
+0x1002ef346: mov     rax, 64656C62616E655Fh
+0x1002ef350: mov     [r14+0Eh], rax
+0x1002ef354: mov     rax, 655F73697C756E65h
+0x1002ef35e: mov     [r14+8], rax
+0x1002ef362: mov     [r14], r13
+0x1002ef365: mov     [rbp+var_E0], 16h
+0x1002ef370: mov     [rbp+var_D8], r14
+0x1002ef377: mov     [rbp+var_D0], 16h
+0x1002ef382: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ef387: mov     edi, 60h ; '`'
+0x1002ef38c: mov     esi, 8
+0x1002ef391: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ef396: test    rax, rax
+0x1002ef399: jz      loc_1003014C9
+; ---- block start=0x1002ef39f end=0x1002ef3d0 ----
+0x1002ef39f: mov     rbx, rax
+0x1002ef3a2: mov     rax, 8000000000000000h
+0x1002ef3ac: mov     [rbp+var_968], rax
+0x1002ef3b3: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ef3b8: mov     edi, 70h ; 'p'
+0x1002ef3bd: mov     esi, 8
+0x1002ef3c2: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ef3c7: test    rax, rax
+0x1002ef3ca: jz      loc_1003014DD
+; ---- block start=0x1002ef3d0 end=0x1002ef402 ----
+0x1002ef3d0: mov     r15, rax
+0x1002ef3d3: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ef3da: lea     rdi, [rbp+__src]
+0x1002ef3e1: mov     edx, 7
+0x1002ef3e6: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ef3eb: mov     rax, 8000000000000000h
+0x1002ef3f5: cmp     [rbp+__src], rax
+0x1002ef3fc: jz      loc_1003014F1
+; ---- block start=0x1002ef402 end=0x1002ef493 ----
+0x1002ef402: mov     rax, [rbp+var_1990]
+0x1002ef409: mov     [rbp+var_510], rax
+0x1002ef410: mov     rax, [rbp+var_1998]
+0x1002ef417: mov     [rbp+var_518], rax
+0x1002ef41e: mov     rax, [rbp+var_19A0]
+0x1002ef425: mov     [rbp+var_520], rax
+0x1002ef42c: mov     rax, [rbp+var_19A8]
+0x1002ef433: mov     [rbp+var_528], rax
+0x1002ef43a: mov     rax, [rbp+var_19B0]
+0x1002ef441: mov     [rbp+var_530], rax
+0x1002ef448: mov     rax, [rbp+__src]
+0x1002ef44f: mov     rcx, [rbp+var_19B8]
+0x1002ef456: mov     [rbp+var_538], rcx
+0x1002ef45d: mov     [rbp+var_540], rax
+0x1002ef464: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ef46b: lea     rdi, [rbp+__src]
+0x1002ef472: mov     edx, 4
+0x1002ef477: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ef47c: mov     rax, 8000000000000000h
+0x1002ef486: cmp     [rbp+__src], rax
+0x1002ef48d: jz      loc_100301546
+; ---- block start=0x1002ef493 end=0x1002ef5dc ----
+0x1002ef493: mov     rax, [rbp+var_1990]
+0x1002ef49a: mov     [r15+68h], rax
+0x1002ef49e: mov     rax, [rbp+var_1998]
+0x1002ef4a5: mov     [r15+60h], rax
+0x1002ef4a9: mov     rax, [rbp+var_19A0]
+0x1002ef4b0: mov     [r15+58h], rax
+0x1002ef4b4: mov     rax, [rbp+var_19A8]
+0x1002ef4bb: mov     [r15+50h], rax
+0x1002ef4bf: mov     rax, [rbp+var_19B0]
+0x1002ef4c6: mov     [r15+48h], rax
+0x1002ef4ca: mov     rax, [rbp+__src]
+0x1002ef4d1: mov     rcx, [rbp+var_19B8]
+0x1002ef4d8: mov     [r15+40h], rcx
+0x1002ef4dc: mov     [r15+38h], rax
+0x1002ef4e0: mov     rax, [rbp+var_510]
+0x1002ef4e7: mov     [r15+30h], rax
+0x1002ef4eb: mov     rax, [rbp+var_518]
+0x1002ef4f2: mov     [r15+28h], rax
+0x1002ef4f6: mov     rax, [rbp+var_520]
+0x1002ef4fd: mov     [r15+20h], rax
+0x1002ef501: mov     rax, [rbp+var_528]
+0x1002ef508: mov     [r15+18h], rax
+0x1002ef50c: mov     rax, [rbp+var_530]
+0x1002ef513: mov     [r15+10h], rax
+0x1002ef517: mov     rax, [rbp+var_540]
+0x1002ef51e: mov     rcx, [rbp+var_538]
+0x1002ef525: mov     [r15+8], rcx
+0x1002ef529: mov     [r15], rax
+0x1002ef52c: mov     rax, [rbp+var_950]
+0x1002ef533: mov     [rbx+58h], rax
+0x1002ef537: mov     rax, [rbp+var_958]
+0x1002ef53e: mov     [rbx+50h], rax
+0x1002ef542: mov     rax, [rbp+var_968]
+0x1002ef549: mov     rcx, [rbp+var_960]
+0x1002ef550: mov     [rbx+48h], rcx
+0x1002ef554: mov     [rbx+40h], rax
+0x1002ef558: mov     qword ptr [rbx], 0
+0x1002ef55f: mov     qword ptr [rbx+10h], 2
+0x1002ef567: mov     [rbx+18h], r15
+0x1002ef56b: mov     qword ptr [rbx+20h], 2
+0x1002ef573: mov     qword ptr [rbx+28h], 0
+0x1002ef57b: mov     qword ptr [rbx+30h], 8
+0x1002ef583: mov     qword ptr [rbx+38h], 0
+0x1002ef58b: mov     [rbp+__src], 1
+0x1002ef596: mov     [rbp+var_19B8], rbx
+0x1002ef59d: mov     [rbp+var_19B0], 1
+0x1002ef5a8: lea     rdi, [rbp+var_540]
+0x1002ef5af: lea     rsi, [rbp+var_48]
+0x1002ef5b3: lea     rdx, [rbp+var_E0]
+0x1002ef5ba: lea     rcx, [rbp+__src]
+0x1002ef5c1: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ef5c6: mov     r15, [rbp+var_540]
+0x1002ef5cd: mov     rax, 8000000000000000h
+0x1002ef5d7: cmp     r15, rax
+0x1002ef5da: jz      short loc_1002EF621
+; ---- block start=0x1002ef5dc end=0x1002ef5f0 ----
+0x1002ef5dc: mov     rbx, [rbp+var_538]
+0x1002ef5e3: mov     r12, [rbp+var_530]
+0x1002ef5ea: inc     r12
+0x1002ef5ed: mov     rdi, rbx
+; ---- block start=0x1002ef5f0 end=0x1002ef5f6 ----
+0x1002ef5f0: cmp     r12, 1
+0x1002ef5f4: jz      short loc_1002EF607
+; ---- block start=0x1002ef5f6 end=0x1002ef607 ----
+0x1002ef5f6: lea     r14, [rdi+60h]
+0x1002ef5fa: dec     r12
+0x1002ef5fd: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ef602: mov     rdi, r14
+0x1002ef605: jmp     short loc_1002EF5F0
+; ---- block start=0x1002ef607 end=0x1002ef60c ----
+0x1002ef607: test    r15, r15
+0x1002ef60a: jz      short loc_1002EF621
+; ---- block start=0x1002ef60c end=0x1002ef621 ----
+0x1002ef60c: shl     r15, 5
+0x1002ef610: lea     rsi, [r15+r15*2]
+0x1002ef614: mov     edx, 8
+0x1002ef619: mov     rdi, rbx
+0x1002ef61c: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ef621 end=0x1002ef643 ----
+0x1002ef621: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ef626: mov     ebx, 11h
+0x1002ef62b: mov     edi, 11h
+0x1002ef630: mov     esi, 1
+0x1002ef635: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ef63a: test    rax, rax
+0x1002ef63d: jz      loc_10030531F
+; ---- block start=0x1002ef643 end=0x1002ef696 ----
+0x1002ef643: mov     r14, rax
+0x1002ef646: mov     rax, 6D6574697C756E65h
+0x1002ef650: mov     [r14+8], rax
+0x1002ef654: mov     [r14], r13
+0x1002ef657: mov     byte ptr [r14+10h], 73h ; 's'
+0x1002ef65c: mov     [rbp+var_E0], 11h
+0x1002ef667: mov     [rbp+var_D8], r14
+0x1002ef66e: mov     [rbp+var_D0], 11h
+0x1002ef679: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ef67e: mov     edi, 60h ; '`'
+0x1002ef683: mov     esi, 8
+0x1002ef688: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ef68d: test    rax, rax
+0x1002ef690: jz      loc_10030159B
+; ---- block start=0x1002ef696 end=0x1002ef6c7 ----
+0x1002ef696: mov     rbx, rax
+0x1002ef699: mov     rax, 8000000000000000h
+0x1002ef6a3: mov     [rbp+var_968], rax
+0x1002ef6aa: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ef6af: mov     edi, 70h ; 'p'
+0x1002ef6b4: mov     esi, 8
+0x1002ef6b9: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ef6be: test    rax, rax
+0x1002ef6c1: jz      loc_1003015AF
+; ---- block start=0x1002ef6c7 end=0x1002ef6f9 ----
+0x1002ef6c7: mov     r15, rax
+0x1002ef6ca: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ef6d1: lea     rdi, [rbp+__src]
+0x1002ef6d8: mov     edx, 7
+0x1002ef6dd: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ef6e2: mov     rax, 8000000000000000h
+0x1002ef6ec: cmp     [rbp+__src], rax
+0x1002ef6f3: jz      loc_1003015C3
+; ---- block start=0x1002ef6f9 end=0x1002ef78a ----
+0x1002ef6f9: mov     rax, [rbp+var_1990]
+0x1002ef700: mov     [rbp+var_510], rax
+0x1002ef707: mov     rax, [rbp+var_1998]
+0x1002ef70e: mov     [rbp+var_518], rax
+0x1002ef715: mov     rax, [rbp+var_19A0]
+0x1002ef71c: mov     [rbp+var_520], rax
+0x1002ef723: mov     rax, [rbp+var_19A8]
+0x1002ef72a: mov     [rbp+var_528], rax
+0x1002ef731: mov     rax, [rbp+var_19B0]
+0x1002ef738: mov     [rbp+var_530], rax
+0x1002ef73f: mov     rax, [rbp+__src]
+0x1002ef746: mov     rcx, [rbp+var_19B8]
+0x1002ef74d: mov     [rbp+var_538], rcx
+0x1002ef754: mov     [rbp+var_540], rax
+0x1002ef75b: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_33; "main"
+0x1002ef762: lea     rdi, [rbp+__src]
+0x1002ef769: mov     edx, 4
+0x1002ef76e: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ef773: mov     rax, 8000000000000000h
+0x1002ef77d: cmp     [rbp+__src], rax
+0x1002ef784: jz      loc_100301618
+; ---- block start=0x1002ef78a end=0x1002ef8d3 ----
+0x1002ef78a: mov     rax, [rbp+var_1990]
+0x1002ef791: mov     [r15+68h], rax
+0x1002ef795: mov     rax, [rbp+var_1998]
+0x1002ef79c: mov     [r15+60h], rax
+0x1002ef7a0: mov     rax, [rbp+var_19A0]
+0x1002ef7a7: mov     [r15+58h], rax
+0x1002ef7ab: mov     rax, [rbp+var_19A8]
+0x1002ef7b2: mov     [r15+50h], rax
+0x1002ef7b6: mov     rax, [rbp+var_19B0]
+0x1002ef7bd: mov     [r15+48h], rax
+0x1002ef7c1: mov     rax, [rbp+__src]
+0x1002ef7c8: mov     rcx, [rbp+var_19B8]
+0x1002ef7cf: mov     [r15+40h], rcx
+0x1002ef7d3: mov     [r15+38h], rax
+0x1002ef7d7: mov     rax, [rbp+var_510]
+0x1002ef7de: mov     [r15+30h], rax
+0x1002ef7e2: mov     rax, [rbp+var_518]
+0x1002ef7e9: mov     [r15+28h], rax
+0x1002ef7ed: mov     rax, [rbp+var_520]
+0x1002ef7f4: mov     [r15+20h], rax
+0x1002ef7f8: mov     rax, [rbp+var_528]
+0x1002ef7ff: mov     [r15+18h], rax
+0x1002ef803: mov     rax, [rbp+var_530]
+0x1002ef80a: mov     [r15+10h], rax
+0x1002ef80e: mov     rax, [rbp+var_540]
+0x1002ef815: mov     rcx, [rbp+var_538]
+0x1002ef81c: mov     [r15+8], rcx
+0x1002ef820: mov     [r15], rax
+0x1002ef823: mov     rax, [rbp+var_950]
+0x1002ef82a: mov     [rbx+58h], rax
+0x1002ef82e: mov     rax, [rbp+var_958]
+0x1002ef835: mov     [rbx+50h], rax
+0x1002ef839: mov     rax, [rbp+var_968]
+0x1002ef840: mov     rcx, [rbp+var_960]
+0x1002ef847: mov     [rbx+48h], rcx
+0x1002ef84b: mov     [rbx+40h], rax
+0x1002ef84f: mov     qword ptr [rbx], 0
+0x1002ef856: mov     qword ptr [rbx+10h], 2
+0x1002ef85e: mov     [rbx+18h], r15
+0x1002ef862: mov     qword ptr [rbx+20h], 2
+0x1002ef86a: mov     qword ptr [rbx+28h], 0
+0x1002ef872: mov     qword ptr [rbx+30h], 8
+0x1002ef87a: mov     qword ptr [rbx+38h], 0
+0x1002ef882: mov     [rbp+__src], 1
+0x1002ef88d: mov     [rbp+var_19B8], rbx
+0x1002ef894: mov     [rbp+var_19B0], 1
+0x1002ef89f: lea     rdi, [rbp+var_540]
+0x1002ef8a6: lea     rsi, [rbp+var_48]
+0x1002ef8aa: lea     rdx, [rbp+var_E0]
+0x1002ef8b1: lea     rcx, [rbp+__src]
+0x1002ef8b8: call    __ZN5alloc11collections5btree3map25BTreeMap$LT$K$C$V$C$A$GT$6insert17h80e690fdc65ddd1fE; alloc::collections::btree::map::BTreeMap$LT$K$C$V$C$A$GT$::insert::h80e690fdc65ddd1f
+0x1002ef8bd: mov     r15, [rbp+var_540]
+0x1002ef8c4: mov     rax, 8000000000000000h
+0x1002ef8ce: cmp     r15, rax
+0x1002ef8d1: jz      short loc_1002EF921
+; ---- block start=0x1002ef8d3 end=0x1002ef8f0 ----
+0x1002ef8d3: mov     rbx, [rbp+var_538]
+0x1002ef8da: mov     r12, [rbp+var_530]
+0x1002ef8e1: inc     r12
+0x1002ef8e4: mov     rdi, rbx
+0x1002ef8e7: nop     word ptr [rax+rax+00000000h]
+; ---- block start=0x1002ef8f0 end=0x1002ef8f6 ----
+0x1002ef8f0: cmp     r12, 1
+0x1002ef8f4: jz      short loc_1002EF907
+; ---- block start=0x1002ef8f6 end=0x1002ef907 ----
+0x1002ef8f6: lea     r14, [rdi+60h]
+0x1002ef8fa: dec     r12
+0x1002ef8fd: call    __ZN4core3ptr64drop_in_place$LT$tauri_utils__acl__resolved__ResolvedCommand$GT$17h007a91f8090dd28aE_0; core::ptr::drop_in_place$LT$tauri_utils..acl..resolved..ResolvedCommand$GT$::h007a91f8090dd28a
+0x1002ef902: mov     rdi, r14
+0x1002ef905: jmp     short loc_1002EF8F0
+; ---- block start=0x1002ef907 end=0x1002ef90c ----
+0x1002ef907: test    r15, r15
+0x1002ef90a: jz      short loc_1002EF921
+; ---- block start=0x1002ef90c end=0x1002ef921 ----
+0x1002ef90c: shl     r15, 5
+0x1002ef910: lea     rsi, [r15+r15*2]
+0x1002ef914: mov     edx, 8
+0x1002ef919: mov     rdi, rbx
+0x1002ef91c: call    __RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc
+; ---- block start=0x1002ef921 end=0x1002ef943 ----
+0x1002ef921: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ef926: mov     ebx, 0Fh
+0x1002ef92b: mov     edi, 0Fh
+0x1002ef930: mov     esi, 1
+0x1002ef935: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ef93a: test    rax, rax
+0x1002ef93d: jz      loc_10030531F
+; ---- block start=0x1002ef943 end=0x1002ef991 ----
+0x1002ef943: mov     r14, rax
+0x1002ef946: mov     rax, 77656E7C756E656Dh
+0x1002ef950: mov     [r14+7], rax
+0x1002ef954: mov     [r14], r13
+0x1002ef957: mov     [rbp+var_E0], 0Fh
+0x1002ef962: mov     [rbp+var_D8], r14
+0x1002ef969: mov     [rbp+var_D0], 0Fh
+0x1002ef974: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ef979: mov     edi, 60h ; '`'
+0x1002ef97e: mov     esi, 8
+0x1002ef983: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ef988: test    rax, rax
+0x1002ef98b: jz      loc_10030166D
+; ---- block start=0x1002ef991 end=0x1002ef9c2 ----
+0x1002ef991: mov     rbx, rax
+0x1002ef994: mov     rax, 8000000000000000h
+0x1002ef99e: mov     [rbp+var_968], rax
+0x1002ef9a5: call    __RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2
+0x1002ef9aa: mov     edi, 70h ; 'p'
+0x1002ef9af: mov     esi, 8
+0x1002ef9b4: call    __RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc
+0x1002ef9b9: test    rax, rax
+0x1002ef9bc: jz      loc_100301681
+; ---- block start=0x1002ef9c2 end=0x1002ef9f4 ----
+0x1002ef9c2: mov     r15, rax
+0x1002ef9c5: lea     rsi, _anon_d9d2f5b2094eba1d5a276dc1a2756762_569; "hotspot"
+0x1002ef9cc: lea     rdi, [rbp+__src]
+0x1002ef9d3: mov     edx, 7
+0x1002ef9d8: call    __ZN60_$LT$glob__Pattern$u20$as$u20$core__str__traits__FromStr$GT$8from_str17h363a1fcfe3a03335E; _$LT$glob..Pattern$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h363a1fcfe3a03335
+0x1002ef9dd: mov     rax, 8000000000000000h
+0x1002ef9e7: cmp     [rbp+__src], rax
+0x1002ef9ee: jz      loc_100301695

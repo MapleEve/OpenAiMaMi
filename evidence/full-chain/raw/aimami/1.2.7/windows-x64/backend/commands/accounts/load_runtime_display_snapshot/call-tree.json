@@ -1,0 +1,36 @@
+{
+  "schema": "c5cm.aimami.backend.call-tree.v1",
+  "command": "load_runtime_display_snapshot",
+  "session": "<审计会话>",
+  "invoke_path": [
+    {"ea": "0x1405fbca0", "name": "tauri invoke_handler (dispatcher, 28374B)", "note": "池化碎片比较 first16 load_runtime_dis@0x141a23440 + last16 display_snapshot@0x141a23430, window [rcx+0xD]"},
+    {"ea": "0x1405fc0f6", "name": "jz loc_1405FE736", "note": "命中跳转"},
+    {"ea": "0x1405FE736", "name": "arm", "note": "参数结构 memcpy 520+400+24"},
+    {"ea": "0x1405fe788", "name": "call load_runtime_display_snapshot", "note": "glue 调用点"},
+    {"ea": "0x1405EC7D0", "name": "load_runtime_display_snapshot", "role": "glue 380B 零用户参数", "module": "commands/accounts", "callees": ["0x1419234B0 memcpy", "0x140ECA180", "0x140CF4D10", "0x140AABEA0", "0x1401AFF50 drop", "0x140001660 dealloc", "0x1405251E0 glue尾"]},
+    {"ea": "0x140ECA180", "name": "runtime_display_state_get_snapshot", "role": "getter 共享×5（glue/account_alias sub_14014EFF0/sub_140B41EC0/account_observer sub_140D43AF0/usage刷新 sub_140ED2A40）", "callees": ["0x14194106E park", "0x141969A30", "0x14196A710", "0x141969AF0 WakeByAddressSingle", "0x140ED8380"]},
+    {"ea": "0x140ED8380", "name": "runtime_display_state_to_snapshot", "role": "state→snapshot DTO 880B", "callees": ["0x1416DB410 String clone", "0x140D74C80 activeAccount builder(core/repository)", "0x14022D0E0 Vec clone"]},
+    {"ea": "0x140CF4D10", "name": "load_runtime_display_snapshot_build_envelope", "role": "880B payload + {schemaVersion:1,success:true,code:ok,message:Success,warnings:[]}", "callees": ["0x140001650 alloc", "0x14196B2DB alloc fail", "0x1419234B0"]},
+    {"ea": "0x140AABEA0", "name": "load_runtime_display_snapshot_respond", "role": "错误分支(-2)+序列化+respond", "callees": ["0x140D763A0", "0x140D763A0→0x141473A60 Display/format", "0x140AF1FC0", "0x140B39980 tauri respond"]},
+    {"ea": "0x140D763A0", "name": "load_runtime_display_snapshot_serialize_envelope", "role": "serde_json envelope 序列化", "callees": ["0x1407B3340 schemaVersion", "0x1407B2B50 success", "0x1407A9D90 code/message", "0x140CEAC10 warnings", "0x1407A7230 data"]},
+    {"ea": "0x140CD7E50", "name": "runtime_display_snapshot_serialize_data", "role": "{status,accounts,refreshReport}", "callees": ["0x1407ABAE0 status", "0x1407A29A0 accounts", "0x1407A7390 refreshReport"]},
+    {"ea": "0x140CE2280", "name": "runtime_display_status_serialize", "callees": ["0x1407AB080 paths", "0x1407B3340 accountCount", "0x1407A6570 activeAccountKey", "0x1407B3930 lastScanAt", "0x140CEACF0 activeAccount", "0x140CEAF30 usageSource", "0x140CEB3F0 autoSwitch", "0x140CEB010 api", "0x140CEB330 apiConnectivity", "0x140CEAD50 authRevision"]},
+    {"ea": "0x140CE19A0", "name": "runtime_paths_serialize"},
+    {"ea": "0x140CD80E0", "name": "runtime_refresh_report_serialize"},
+    {"ea": "0x140CE0910", "name": "runtime_account_display_serialize_item", "role": "384B×N 账户项(25 字段), activeAccount 与 accounts 数组共用"}
+  ],
+  "state_maintenance_path": {
+    "writer": {"ea": "0x140ED1DD0", "name": "runtime_display_state_update_and_emit", "note": "kinds push/account/account-alias/auth/full/usage/progressive + accountKey; lastScanAt FILETIME→Unix; emit runtime-state-updated"},
+    "feeders": [
+      {"ea": "0x14036BF70", "name": "load_snapshot", "module": "commands/accounts"},
+      {"ea": "0x14036A5B0", "name": "refresh_usage_snapshot", "module": "commands/accounts"},
+      {"ea": "0x140368B00", "name": "refresh_single_account_usage", "module": "commands/accounts"},
+      {"ea": "0x140362320", "name": "set_account_alias", "module": "commands/accounts"},
+      {"ea": "0x1403A94E0", "name": "sub_1403A94E0", "module": "commands/accounts(panic-Location真值)", "feeders_of": "logout/remove_accounts/import_accounts_from_file/sub_140293D70(oauth_login, core/oauth_login)"},
+      {"ea": "0x140D43AF0", "name": "sub_140D43AF0", "module": "commands/account_observer"},
+      {"ea": "0x140ED0000", "name": "sub_140ED0000"},
+      {"ea": "0x140ED2FD0", "name": "sub_140ED2FD0", "module": "commands/accounts(panic-Location真值)"}
+    ],
+    "global_state": {"ea": "0x142239468", "size": 880, "uninitialized_tag": "first dword == -1", "lock": "byte_142239460 park + off_142240260"}
+  }
+}

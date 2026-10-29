@@ -1,0 +1,647 @@
+{
+ "schema": "c5cm.reverse.interface_report.v1",
+ "target_id": "angle_c:mac127-truly-undone-non-command-backend-20260930",
+ "functions": [
+  {
+   "ea": "0x100724760",
+   "name": "core::relay::atomic_write::write_atomic_stream::he893f81f88ddc9a3",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 3546,
+   "pseudo_lines": 630,
+   "role": "原子写流式落盘（导出批量）：DirBuilder 建父→临时文件 BufWriter 写→sync_data→rename 原子替换→父目录同步"
+  },
+  {
+   "ea": "0x100723ce0",
+   "name": "core::relay::atomic_write::write_atomic_stream::hb022b0ac9fef4914",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 2404,
+   "pseudo_lines": 363,
+   "role": "原子写流式落盘（markdown 导出流）：同管线第二单态化"
+  },
+  {
+   "ea": "0x100723360",
+   "name": "core::relay::atomic_write::write_atomic_report::hf58adb6e14d92ad5",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 2219,
+   "pseudo_lines": 318,
+   "role": "原子写报告落盘：临时文件 write_all→sync_data→rename→父目录同步（catalog/journal/diagnostic/storage/voice-workspace 共用）"
+  },
+  {
+   "ea": "0x1007259c0",
+   "name": "core::relay::atomic_write::write_atomic_private_report::hcd723884b82d3047",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 2200,
+   "pseudo_lines": 309,
+   "role": "原子写私有报告落盘（0o600）：同管线 + OpenOptions mode=384 私有权限（registry/auth 快照/journal 专用）"
+  },
+  {
+   "ea": "0x100725690",
+   "name": "core::relay::atomic_write::confirm_existing_sync::h1a5d96fb8a7894a3",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 552,
+   "pseudo_lines": 114,
+   "role": "已有文件耐久确认：symlink_metadata→open→metadata→sync_data→sync_parent_dir（config_takeover restore/takeover 用）"
+  },
+  {
+   "ea": "0x100b6c130",
+   "name": "core::relay::atomic_write::removal::remove_file_report::he4acf789bf0d185c",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 346,
+   "pseudo_lines": 76,
+   "role": "【破坏性】删文件+父目录同步：remove_file→父目录 open/sync_data（journal 清理用）"
+  },
+  {
+   "ea": "0x100722ea0",
+   "name": "core::relay::atomic_write::Publication::acknowledge::hb1198e95828e3009",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 312,
+   "pseudo_lines": 46,
+   "role": "Publication 结果确认：io 失败 warn-log（atomic_write.rs 位置）非致命"
+  },
+  {
+   "ea": "0x100b6c410",
+   "name": "core::relay::atomic_write::staging::remove_owned::h0544457268e8d2ae",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 278,
+   "pseudo_lines": 52,
+   "role": "【破坏性】staging 自有临时文件清理：symlink_metadata→remove_file（keychain revisions/TempFileCleanup 用）"
+  },
+  {
+   "ea": "0x100723120",
+   "name": "core::relay::atomic_write::temp_file_stem::h548fc217101373fb",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 250,
+   "pseudo_lines": 62,
+   "role": "临时文件茎名生成（temp_file_stem）"
+  },
+  {
+   "ea": "0x1007258d0",
+   "name": "core::relay::atomic_write::replace_staged_file_report::hc386c7f34da234f0",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 218,
+   "pseudo_lines": 49,
+   "role": "暂存文件原子替换：rename→父目录同步；错误 'atomic replace: missing parent'"
+  },
+  {
+   "ea": "0x100b6c360",
+   "name": "core::relay::atomic_write::staging::FileIdentity::read::h54a8da684da3cbdd",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 163,
+   "pseudo_lines": 40,
+   "role": "暂存文件身份读取 FileIdentity::read（防替换竞争）"
+  },
+  {
+   "ea": "0x100b6c560",
+   "name": "core::relay::atomic_write::staging::verify_owned::hdfab3393db9bec64",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 159,
+   "pseudo_lines": 38,
+   "role": "暂存文件归属校验：'file identity changed or is not a single regular file'"
+  },
+  {
+   "ea": "0x100723030",
+   "name": "core::relay::atomic_write::Publication::require_sync::hb09f8d8c93f5e10a",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 150,
+   "pseudo_lines": 27,
+   "role": "Publication::require_sync 强制同步标记（journal/takeover/router_transition 用）"
+  },
+  {
+   "ea": "0x100b6c2d0",
+   "name": "core::relay::atomic_write::staging::FileIdentity::read_directory::h2e40971802767f80",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 141,
+   "pseudo_lines": 38,
+   "role": "目录身份读取 FileIdentity::read_directory（keychain revisions cleanup 用）"
+  },
+  {
+   "ea": "0x100723240",
+   "name": "core::relay::atomic_write::sync_parent_dir::h2c0464b5b468f30a",
+   "module": "codexmate_lib::core::relay::atomic_write",
+   "size_bytes": 109,
+   "pseudo_lines": 25,
+   "role": "父目录 fsync（sync_parent_dir）"
+  },
+  {
+   "ea": "0x1008506e0",
+   "name": "core::relay::proxy_server::translate_responses_to_anthropic_body::h02e1627ea588417a",
+   "module": "codexmate_lib::core::relay::proxy_server",
+   "size_bytes": 2140,
+   "pseudo_lines": 406,
+   "role": "responses→Anthropic 请求体转译：validate_tool_choice/responses_to_anthropic_request_with_context/strip_web_search/thinking_carrier；错误 'Invalid Anthropic search context; history was not modified'/'Claude search availability changed...'"
+  },
+  {
+   "ea": "0x100853110",
+   "name": "core::relay::proxy_server::remove_rejected_optional_anthropic_beta::h172f9dfd26d90fab",
+   "module": "codexmate_lib::core::relay::proxy_server",
+   "size_bytes": 1942,
+   "pseudo_lines": 345,
+   "role": "被拒可选 anthropic-beta 头移除重试：/error/message 匹配 'beta header/unsupported/not supported/not recognized/unrecognized/invalid beta/invalid anthropic-beta'→HeaderMap::remove('anthropic-beta')"
+  },
+  {
+   "ea": "0x100850290",
+   "name": "core::relay::proxy_server::require_anthropic_inline_tools_header::hc2e9e174e43cfe9d",
+   "module": "codexmate_lib::core::relay::proxy_server",
+   "size_bytes": 1092,
+   "pseudo_lines": 214,
+   "role": "强制 anthropic-beta: inline-tools-2026-09-15 头（HdrName::from_static + 23B 值）"
+  },
+  {
+   "ea": "0x100843a20",
+   "name": "core::relay::proxy_server::is_anthropic_effort_rejection::h1ec9f3a3bf4eb467",
+   "module": "codexmate_lib::core::relay::proxy_server",
+   "size_bytes": 752,
+   "pseudo_lines": 141,
+   "role": "effort 拒绝识别：'invalid effort level'/'invalid output_config.effort'/'unsupported effort level'/'effort level is not supported'"
+  },
+  {
+   "ea": "0x1008422b0",
+   "name": "core::relay::proxy_server::load_attempt_credentials::hdb1fb412500d04f8",
+   "module": "codexmate_lib::core::relay::proxy_server",
+   "size_bytes": 664,
+   "pseudo_lines": 107,
+   "role": "尝试凭据加载：storage::lazy_load_api_key→cache_loaded_api_key；错误 'relay.key_unavailable'"
+  },
+  {
+   "ea": "0x100841ec0",
+   "name": "core::relay::proxy_server::codex_client_session_id::hb1c1cabe5e1ef43a",
+   "module": "codexmate_lib::core::relay::proxy_server",
+   "size_bytes": 506,
+   "pseudo_lines": 105,
+   "role": "Codex 客户端会话 ID：解析 x-codex-turn-metadata 头 JSON 的 session_id"
+  },
+  {
+   "ea": "0x10083bf80",
+   "name": "core::relay::proxy_server::read_upstream_body::_$u7b$$u7b$closure$u7d$$u7d$::hd589fc02dae242e4",
+   "module": "codexmate_lib::core::relay::proxy_server",
+   "size_bytes": 472,
+   "pseudo_lines": 388,
+   "role": "上游响应体读取闭包：超时 'read upstream body timed out'，错误域 'proxy.upstream_body'"
+  },
+  {
+   "ea": "0x100853f40",
+   "name": "core::relay::proxy_server::sanitize_body_for_native_responses_upstream::hd82e975e405848f8",
+   "module": "codexmate_lib::core::relay::proxy_server",
+   "size_bytes": 326,
+   "pseudo_lines": 47,
+   "role": "原生上游请求体消毒：store=false 时 remove_unusable_reasoning_items_from_store_false_request"
+  },
+  {
+   "ea": "0x1003a0a50",
+   "name": "core::relay::health_check::probe::ProbeStream::dispatch::h0d5196506e18cdd5",
+   "module": "codexmate_lib::core::relay::health_check",
+   "size_bytes": 2898,
+   "pseudo_lines": 487,
+   "role": "ProbeStream 终态分发：/response/status 冲突/'/delta/stop_reason' refused/'/choices/0/finish_reason' filtered；错误面 7 条（conflicting terminal/refused/filtered/unexpected terminal marker/error event/invalid JSON/invalid UTF-8）"
+  },
+  {
+   "ea": "0x1003a0030",
+   "name": "core::relay::health_check::probe::ProbeStream::line::h6ac0346e19aa23d4",
+   "module": "codexmate_lib::core::relay::health_check",
+   "size_bytes": 1098,
+   "pseudo_lines": 229,
+   "role": "ProbeStream SSE 行解析：'probe SSE frame exceeds size limit'"
+  },
+  {
+   "ea": "0x100acabf0",
+   "name": "core::relay::health_check::result::apply_if_current::h0656de25a866e7fa",
+   "module": "codexmate_lib::core::relay::health_check",
+   "size_bytes": 997,
+   "pseudo_lines": 181,
+   "role": "探测结果代数检查应用（apply_if_current）：tauri InvokeResolver 异步完成路径"
+  },
+  {
+   "ea": "0x1003a04a0",
+   "name": "core::relay::health_check::probe::ProbeStream::push::h69373f4dac382db3",
+   "module": "codexmate_lib::core::relay::health_check",
+   "size_bytes": 729,
+   "pseudo_lines": 142,
+   "role": "ProbeStream 字节推送（push）"
+  },
+  {
+   "ea": "0x1003a16c0",
+   "name": "core::relay::health_check::probe::validate_embedding::hf67a625817f1ebd2",
+   "module": "codexmate_lib::core::relay::health_check",
+   "size_bytes": 701,
+   "pseudo_lines": 137,
+   "role": "embedding 响应校验：'error' 键+data 数组；'upstream returned invalid embedding JSON'/'upstream returned no valid embedding for this probe'"
+  },
+  {
+   "ea": "0x1003a0790",
+   "name": "core::relay::health_check::probe::ProbeStream::finish::ha6b031cb78ad6c16",
+   "module": "codexmate_lib::core::relay::health_check",
+   "size_bytes": 669,
+   "pseudo_lines": 103,
+   "role": "ProbeStream 收尾：'upstream stream ended without a successful terminal event'/'upstream returned no model output for this probe'/'upstream probe failed or was incomplete'"
+  },
+  {
+   "ea": "0x1000ec780",
+   "name": "core::relay::health_check::read_probe_body::_$u7b$$u7b$closure$u7d$$u7d$::ha3a853baf91f4c01",
+   "module": "codexmate_lib::core::relay::health_check",
+   "size_bytes": 181,
+   "pseudo_lines": 196,
+   "role": "探测体读取闭包：reqwest 流读；'read probe body failed: '/'stream read failed: '/'request failed: '/'probe response exceeds size limit'"
+  },
+  {
+   "ea": "0x1003a21c0",
+   "name": "core::relay::transition_journal::write_inner::h17805da6329a9a7b",
+   "module": "codexmate_lib::core::relay::transition_journal",
+   "size_bytes": 2618,
+   "pseudo_lines": 471,
+   "role": "事务日志写入：serde 序列化 TransitionJournal{6字段含 startedAtMs/updatedAtMs}+TransitionEvent{6字段含 target/phase/occurredAtMs/reason}→write_atomic_private_report 到 router-transition-journal.json"
+  },
+  {
+   "ea": "0x1003a4840",
+   "name": "core::relay::transition_journal::read_checked::h9f4f05221fc4bd00",
+   "module": "codexmate_lib::core::relay::transition_journal",
+   "size_bytes": 1658,
+   "pseudo_lines": 252,
+   "role": "事务日志校验读取：'phase record is not a regular file'/'phase record exceeds the size limit'/'unsupported transition record version'"
+  },
+  {
+   "ea": "0x1003a1b20",
+   "name": "core::relay::transition_journal::clear_inner::h52d45262dfbf85a9",
+   "module": "codexmate_lib::core::relay::transition_journal",
+   "size_bytes": 1446,
+   "pseudo_lines": 227,
+   "role": "【破坏性=日志清理】事务日志清除：remove_file_report"
+  },
+  {
+   "ea": "0x1003a5b50",
+   "name": "core::relay::transition_journal::warn_after_commit::h87e5d3a870ecc5d5",
+   "module": "codexmate_lib::core::relay::transition_journal",
+   "size_bytes": 555,
+   "pseudo_lines": 125,
+   "role": "提交后警告记录：'degraded' 状态写入；'[AiMaMi][router-transition] committed warning record retained'"
+  },
+  {
+   "ea": "0x1003a4620",
+   "name": "core::relay::transition_journal::begin_commit::headaca16d3f09d62",
+   "module": "codexmate_lib::core::relay::transition_journal",
+   "size_bytes": 438,
+   "pseudo_lines": 89,
+   "role": "开始提交：phase='committing' 写入日志"
+  },
+  {
+   "ea": "0x1003a4fe0",
+   "name": "core::relay::transition_journal::commit_pending::h39978c21c21d17ea",
+   "module": "codexmate_lib::core::relay::transition_journal",
+   "size_bytes": 317,
+   "pseudo_lines": 85,
+   "role": "待提交核对：read_checked 比对当前状态（manager persist/set_enabled/no_account/bootstrap/rollback 用）"
+  },
+  {
+   "ea": "0x1003a6520",
+   "name": "core::relay::transition_journal::commit_pending_error::hd405c7fb2cb153d3",
+   "module": "codexmate_lib::core::relay::transition_journal",
+   "size_bytes": 108,
+   "pseudo_lines": 17,
+   "role": "待提交错误构造小 helper（17 行）"
+  },
+  {
+   "ea": "0x10087b3f0",
+   "name": "core::relay::storage::preflight_save::hbc9e84ee879b9b57",
+   "module": "codexmate_lib::core::relay::storage",
+   "size_bytes": 1270,
+   "pseudo_lines": 231,
+   "role": "relay 状态预检落盘：'relay state path has no parent directory'；metadata→open→write_atomic_private_report→acknowledge→失败 remove_file（1.2.6 合同'磁盘空间检查+uuid 原子写'行为一致=迁移面）"
+  },
+  {
+   "ea": "0x10087c600",
+   "name": "core::relay::storage::verify_router_commit::hd5492fcc8b34678e",
+   "module": "codexmate_lib::core::relay::storage",
+   "size_bytes": 922,
+   "pseudo_lines": 152,
+   "role": "路由提交核验：serde from_reader 读状态→比对 commit receipt enabled/no_account 位"
+  },
+  {
+   "ea": "0x10087ccf0",
+   "name": "core::relay::storage::no_account_router_active::hf62a5809d871f80a",
+   "module": "codexmate_lib::core::relay::storage",
+   "size_bytes": 645,
+   "pseudo_lines": 127,
+   "role": "no-account 路由激活判断：fs::read 状态文件（Repository load_account_switch_target/logout 用）"
+  },
+  {
+   "ea": "0x10087c1c0",
+   "name": "core::relay::storage::cache_loaded_api_key::he067dd4765fea3c3",
+   "module": "codexmate_lib::core::relay::storage",
+   "size_bytes": 603,
+   "pseudo_lines": 83,
+   "role": "已加载 API key 缓存到 provider 状态（ensure_provider_loaded/proxy load_attempt_credentials 用）"
+  },
+  {
+   "ea": "0x10087c9e0",
+   "name": "core::relay::storage::save_with_publication::h39ec4a80d39f6cb3",
+   "module": "codexmate_lib::core::relay::storage",
+   "size_bytes": 497,
+   "pseudo_lines": 78,
+   "role": "状态校验+原子写发布：validate_credentials→'relay state schema cannot represent this router commit receipt'"
+  },
+  {
+   "ea": "0x10087c420",
+   "name": "core::relay::storage::validate_credentials::h5612ddb7aa9c9284",
+   "module": "codexmate_lib::core::relay::storage",
+   "size_bytes": 473,
+   "pseudo_lines": 107,
+   "role": "凭据引用校验：'relay credential reference conflicts with state schema or presence flag'"
+  },
+  {
+   "ea": "0x10087cbe0",
+   "name": "core::relay::storage::save_with_publication::_$u7b$$u7b$closure$u7d$$u7d$::h685c374fb9ce9dac",
+   "module": "codexmate_lib::core::relay::storage",
+   "size_bytes": 186,
+   "pseudo_lines": 38,
+   "role": "save_with_publication 错误格式闭包（io error→CoreError）"
+  },
+  {
+   "ea": "0x10024e590",
+   "name": "core::repository::Repository::rebuild_registry_state::hefa9a5a8b2d5a759",
+   "module": "codexmate_lib::core::repository::Repository",
+   "size_bytes": 11758,
+   "pseudo_lines": 1353,
+   "role": "registry 重建（11758B）：ensure_directories→load_registry→快照位置确保→遍历 auth 文件→is_switchable_oauth_auth→make_auth_snapshot→prefer_duplicate 去重→credential_generation 指纹→carry_over/apply_imported_alias→persist_registry；错误 'Active account snapshot identity mismatch: '/'Active account snapshot is not a switchable OAuth credential: '；严格 flag 错误即返/宽松 log 继续"
+  },
+  {
+   "ea": "0x100260530",
+   "name": "core::repository::Repository::sync_auth_bundle_into_registry::hbe997555e9d9b5e0",
+   "module": "codexmate_lib::core::repository::Repository",
+   "size_bytes": 5229,
+   "pseudo_lines": 744,
+   "role": "auth 包同步入 registry：'Live account changed while synchronizing credentials'；make_auth_snapshot→auth_is_newer→write_atomic_private_report→persist_registry"
+  },
+  {
+   "ea": "0x100265000",
+   "name": "core::repository::Repository::flush_live_auth_into_matching_snapshot::h37d4725d8e303fc2",
+   "module": "codexmate_lib::core::repository::Repository",
+   "size_bytes": 1690,
+   "pseudo_lines": 234,
+   "role": "活体 auth 刷入匹配快照：'Live account changed while handing off credentials'（switch_account 交接）"
+  },
+  {
+   "ea": "0x10025b520",
+   "name": "core::repository::Repository::load_registry_for_mutation::h0b26d83573b0ca0a",
+   "module": "codexmate_lib::core::repository::Repository",
+   "size_bytes": 318,
+   "pseudo_lines": 58,
+   "role": "mutation 用 registry 加载：缺文件合成空 RegistryFile 内存默认（schema v15+当前时间戳），只读"
+  },
+  {
+   "ea": "0x100248a90",
+   "name": "core::repository::Repository::switch_account::_$u7b$$u7b$closure$u7d$$u7d$::h6bcddc9e999a201e",
+   "module": "codexmate_lib::core::repository::Repository",
+   "size_bytes": 233,
+   "pseudo_lines": 68,
+   "role": "switch_account 闭包：424B RegistryItem key memcmp→快照路径 clone"
+  },
+  {
+   "ea": "0x100261cd0",
+   "name": "core::repository::Repository::sync_auth_bundle_into_registry::_$u7b$$u7b$closure$u7d$$u7d$::h634552c278762f8c",
+   "module": "codexmate_lib::core::repository::Repository",
+   "size_bytes": 107,
+   "pseudo_lines": 14,
+   "role": "sync_auth_bundle 闭包：make_auth_snapshot 包装"
+  },
+  {
+   "ea": "0x100855470",
+   "name": "core::relay::upstream_url::join_upstream_url_with_query::h17a62e856f591cee",
+   "module": "codexmate_lib::core::relay::upstream_url",
+   "size_bytes": 3488,
+   "pseudo_lines": 723,
+   "role": "上游 URL 拼接（带 query）：parse_base_url→validate_endpoint_path→路径 join→query 冲突 'relay request query conflicts with configured Base URL'（health/quota/proxy 共用）"
+  },
+  {
+   "ea": "0x1008546b0",
+   "name": "core::relay::upstream_url::parse_base_url::h4b10b32762ec3164",
+   "module": "codexmate_lib::core::relay::upstream_url",
+   "size_bytes": 1325,
+   "pseudo_lines": 206,
+   "role": "base URL 解析：http/https scheme 校验"
+  },
+  {
+   "ea": "0x100854d40",
+   "name": "core::relay::upstream_url::join_upstream_root_url::h2a217e7fbfa9aef4",
+   "module": "codexmate_lib::core::relay::upstream_url",
+   "size_bytes": 877,
+   "pseudo_lines": 216,
+   "role": "上游根 URL 拼接（quota fetch 用）"
+  },
+  {
+   "ea": "0x100855110",
+   "name": "core::relay::upstream_url::validate_endpoint_path::h4a409d3bd5ba44cf",
+   "module": "codexmate_lib::core::relay::upstream_url",
+   "size_bytes": 597,
+   "pseudo_lines": 136,
+   "role": "端点路径校验：'relay endpoint must be a path without query, fragment or traversal'（路径穿越拒绝）"
+  },
+  {
+   "ea": "0x100854c00",
+   "name": "core::relay::upstream_url::redacted_upstream_url::h6b76d49e2cf783d2",
+   "module": "codexmate_lib::core::relay::upstream_url",
+   "size_bytes": 311,
+   "pseudo_lines": 43,
+   "role": "上游 URL 脱敏显示（redacted）"
+  },
+  {
+   "ea": "0x10039eb20",
+   "name": "core::relay::codex_writer::router_http_contract_issues::h0c94077b7a80b922",
+   "module": "codexmate_lib::core::relay::codex_writer",
+   "size_bytes": 3634,
+   "pseudo_lines": 605,
+   "role": "路由 HTTP 合同问题清单：解析 TOML [model_providers.aimai1] 的 base_url/wire_api/requires_openai_auth/supports_websockets（check_router_http_contract/verify_no_account_commit_boundary/verify_router_on_http_contract 用）"
+  },
+  {
+   "ea": "0x10039d4a0",
+   "name": "core::relay::codex_writer::read_top_level_model_line::h8c74f9c16848132b",
+   "module": "codexmate_lib::core::relay::codex_writer",
+   "size_bytes": 1294,
+   "pseudo_lines": 265,
+   "role": "顶层 model 行读取：TomlLexicalState::line_is_structural 逐行扫（RouterConfigSurface::parse 用）"
+  },
+  {
+   "ea": "0x10039feb0",
+   "name": "core::relay::codex_writer::top_level_relay_model_requires_cleanup::h01af854673912bae",
+   "module": "codexmate_lib::core::relay::codex_writer",
+   "size_bytes": 374,
+   "pseudo_lines": 98,
+   "role": "顶层 relay 模型清理需求判断：'aimami_relay_' 前缀检测+hashbrown 集查找（stale 检查/invariants 用）"
+  },
+  {
+   "ea": "0x100397250",
+   "name": "core::relay::codex_writer::clear_managed_block::h0350a49fa2ad9f69",
+   "module": "codexmate_lib::core::relay::codex_writer",
+   "size_bytes": 158,
+   "pseudo_lines": 35,
+   "role": "受管块清除：ensure_directories→codex_config::update_text('sync Codex relay config')（reconcile_native_off 用）"
+  },
+  {
+   "ea": "0x100303890",
+   "name": "core::relay::managed_blocks::TomlLexicalState::line_is_structural::hdb0ae72dca934a7a",
+   "module": "codexmate_lib::core::relay::managed_blocks",
+   "size_bytes": 469,
+   "pseudo_lines": 120,
+   "role": "TOML 词法状态机：三引号多行字符串跟踪，判行是否结构性"
+  },
+  {
+   "ea": "0x1003a19d0",
+   "name": "core::relay::managed_blocks::lines_with_complete_strings::_$u7b$$u7b$closure$u7d$$u7d$::h4a9067f914f19f0f",
+   "module": "codexmate_lib::core::relay::managed_blocks",
+   "size_bytes": 325,
+   "pseudo_lines": 92,
+   "role": "完整字符串行过滤闭包（codex_writer compose/assignment 用）"
+  },
+  {
+   "ea": "0x100966720",
+   "name": "core::account_coordination::FileLock::try_acquire::had7ea33505ba5b35",
+   "module": "codexmate_lib::core::account_coordination::FileLock",
+   "size_bytes": 467,
+   "pseudo_lines": 96,
+   "role": "文件锁非阻塞获取：fs2::FileExt::try_lock_exclusive；WouldBlock/EACCES(13)/EAGAIN(35)→fd=-1 未获锁非错误；close_NOCANCEL"
+  },
+  {
+   "ea": "0x100966960",
+   "name": "core::account_coordination::FileLock::open::hd742f256b11ef8a0",
+   "module": "codexmate_lib::core::account_coordination::FileLock",
+   "size_bytes": 412,
+   "pseudo_lines": 103,
+   "role": "锁文件打开：DirBuilder 0o777 建父→OpenOptions rw-create→fd"
+  },
+  {
+   "ea": "0x100ad2d60",
+   "name": "core::relay::codex_project_state::inspect::hefe15e461739813d",
+   "module": "codexmate_lib::core::relay::codex_project_state",
+   "size_bytes": 3872,
+   "pseudo_lines": 637,
+   "role": "项目状态检查：读 .codex-global-state.json→'global-state root is not an object'→检查 projectless-thread-ids/electron-saved-workspace-roots/project-order/active-workspace-roots/thread-workspace-root-hints 五键"
+  },
+  {
+   "ea": "0x100acb850",
+   "name": "core::relay::codex_project_state::repair_if_needed::h631e20668f558f04",
+   "module": "codexmate_lib::core::relay::codex_project_state",
+   "size_bytes": 1331,
+   "pseudo_lines": 219,
+   "role": "按需修复决策：inspect→stability_issue；无问题→'Codex 项目索引正常，无需修复'；不可安全修复→'Codex project index cannot be repaired safely: '；本函数只读不落盘"
+  },
+  {
+   "ea": "0x100c3ad70",
+   "name": "core::account_io::verify_saved_oauth_credentials::hf73e83f68d4bbe60",
+   "module": "codexmate_lib::core::account_io::verify_saved_oauth_credentials",
+   "size_bytes": 1784,
+   "pseudo_lines": 286,
+   "role": "已存 oauth 凭据校验：make_auth_snapshot→read_registry_for_mutation→oauth_snapshot_path→ensure_existing_snapshot_owned_by→双 load_auth_file 比对（OauthTransitionAction 用）"
+  },
+  {
+   "ea": "0x100c3b4f0",
+   "name": "core::account_io::verify_saved_oauth_credentials::_$u7b$$u7b$closure$u7d$$u7d$::hc7b89f13f3347265",
+   "module": "codexmate_lib::core::account_io::verify_saved_oauth_credentials",
+   "size_bytes": 361,
+   "pseudo_lines": 77,
+   "role": "verify_saved_oauth_credentials 闭包"
+  },
+  {
+   "ea": "0x100270790",
+   "name": "core::repository::build_account_token_status::h5275456e85dd9a7a",
+   "module": "codexmate_lib::core::repository::build_account_token_status",
+   "size_bytes": 176,
+   "pseudo_lines": 47,
+   "role": "账号 token 状态装配：SystemTime::now+token_remaining_seconds+credential_generation→{remaining,generated_at,plan,generation}（load_usage_only_runtime_snapshot 用）"
+  },
+  {
+   "ea": "0x1002758b0",
+   "name": "core::repository::prefer_duplicate_snapshot_candidate::ha9b3e84268285871",
+   "module": "codexmate_lib::core::repository::prefer_duplicate_snapshot_candidate",
+   "size_bytes": 2244,
+   "pseudo_lines": 308,
+   "role": "重复快照去重优选：auth_is_newer 双向→路径 components 等值链→compare_components 字典序兜底；纯比较无副作用"
+  },
+  {
+   "ea": "0x1002bf380",
+   "name": "core::relay::codex_mutation::CodexMutationGate::try_lock::hc52e8ec53328372c",
+   "module": "codexmate_lib::core::relay::codex_mutation",
+   "size_bytes": 413,
+   "pseudo_lines": 55,
+   "role": "Codex 变更门互斥锁：OnceBox<Mutex> try_lock；poisoned→'Codex mutation gate is poisoned during auth observation'（account_observer::run 用）"
+  },
+  {
+   "ea": "0x1003a72d0",
+   "name": "core::relay::io::PreparedImport::publish::h3d698b6cc7cbc080",
+   "module": "codexmate_lib::core::relay::io",
+   "size_bytes": 255,
+   "pseudo_lines": 50,
+   "role": "导入发布：keychain::revisions::publish（RelayManager::import_config 用）"
+  },
+  {
+   "ea": "0x1003dd130",
+   "name": "platform::system_volume::restore::hd2003b12d6919d53",
+   "module": "codexmate_lib::platform::system_volume::restore",
+   "size_bytes": 63,
+   "pseudo_lines": 8,
+   "role": "【voice 排除域】系统音量恢复：VOLUME_WORKER OnceLock<Sender> send(1)；唯一 caller=voice::runtime::start_capture，如实记录不深入"
+  },
+  {
+   "ea": "0x10071cd30",
+   "name": "core::codex_config::validate_candidate::h125db2f7999de900",
+   "module": "codexmate_lib::core::codex_config::validate_candidate",
+   "size_bytes": 1377,
+   "pseudo_lines": 217,
+   "role": "候选 TOML 校验：双重解析（toml_edit FromStr+deserialize_any）；失败→'CODEX_CONFIG_REWRITE_INVALID: '(104B)（update_text/takeover/restore 用）"
+  },
+  {
+   "ea": "0x1007b5fa0",
+   "name": "platform::process::is_codex_app_running::hd8ada9a15c14db87",
+   "module": "codexmate_lib::platform::process::is_codex_app_running",
+   "size_bytes": 878,
+   "pseudo_lines": 169,
+   "role": "Codex 进程探测：bundle 主可执行→主进程 pid；兜底 osascript -e 'application id \"com.openai.codex\" is running'→stdout trim 大小写不敏感 true；副作用=子进程"
+  },
+  {
+   "ea": "0x1007f0040",
+   "name": "core::oauth_refresh::credential_refresh_time::hb61850e25205e518",
+   "module": "codexmate_lib::core::oauth_refresh::credential_refresh_time",
+   "size_bytes": 703,
+   "pseudo_lines": 148,
+   "role": "凭据刷新时间：RFC3339 解析+decode_jwt_payload 读 iat/exp；寿命>3600s 且 exp-3600 对齐→iat，否则解析时间戳（auth_is_newer 用）"
+  },
+  {
+   "ea": "0x100aa1ea0",
+   "name": "core::debug_bundle::field_diff::h1fa8b0ab6fd3d301",
+   "module": "codexmate_lib::core::debug_bundle::field_diff",
+   "size_bytes": 2456,
+   "pseudo_lines": 587,
+   "role": "调试包字段级 diff：两 JSON 快照 hashbrown 表迭代+逐字段比对（catalog_shape 用）"
+  },
+  {
+   "ea": "0x100ac3680",
+   "name": "core::auth::credential_generation::h62ee2c51d26382c6",
+   "module": "codexmate_lib::core::auth::credential_generation",
+   "size_bytes": 1165,
+   "pseudo_lines": 167,
+   "role": "凭据代次指纹：auth 4 个 Option<String> 字段(+48/+72/+96/+120)逐一 SHA-256(presence tag+LE 长度+内容)→hex（重复快照检测+token status 用）"
+  },
+  {
+   "ea": "0x100c35a70",
+   "name": "core::account_io::oauth_snapshot_path::h351a3f5876b75d69",
+   "module": "codexmate_lib::core::account_io::oauth_snapshot_path",
+   "size_bytes": 430,
+   "pseudo_lines": 111,
+   "role": "oauth 快照路径：registry 424B 项 key memcmp 命中复用路径，否则 account_snapshot_path 推导→ensure_managed_account_snapshot_location"
+  },
+  {
+   "ea": "0x100c385d0",
+   "name": "core::account_io::read_live_oauth_account_key::h39cb2ce707c20c1c",
+   "module": "codexmate_lib::core::account_io::read_live_oauth_account_key",
+   "size_bytes": 867,
+   "pseudo_lines": 134,
+   "role": "活体 oauth 账号 key 读取：load_auth_file；NotFound/非 switchable→None；switchable→make_auth_snapshot→Some(key)（persist_account_auth 用）"
+  },
+  {
+   "ea": "0x100c3b660",
+   "name": "core::account_io::account_key_or_registry_fallback::h841167ad4146a48e",
+   "module": "codexmate_lib::core::account_io::account_key_or_registry_fallback",
+   "size_bytes": 1300,
+   "pseudo_lines": 159,
+   "role": "账号 key registry 回退：auth 错误→fallback；is_aimami_managed_virtual_auth→None；switchable→snapshot key 否则 fallback"
+  }
+ ],
+ "notes": "80/80 全部 live decompile 至 semantic implementation leaf（0 失败/0 截断/0 空体/0 accepted_unknown）。system_volume::restore 唯一 caller=voice::runtime::start_capture 属 voice 排除域，如实记录不深入；atomic_write 为含 voice::workspace 在内的多域共用基础设施，本身非 voice 面。"
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "c5cm.aimami.raw.leaf-gate-report.v1",
+  "bundle": "win-1.2.7-commands-system-graceful_restart_for_update",
+  "product": "aimami", "version": "1.2.7", "platform": "windows-x64",
+  "session": "<审计会话>",
+  "evaluated": "2026-10-07",
+  "scope": "单命令面（graceful_restart_for_update win 侧全链 + mac 只读对照）",
+  "consumerStartReady": true,
+  "strictImplementationUse": true,
+  "strictImplementationUse_scope": "graceful_restart_for_update win 命令面（注册/DTO/错误面/副作用/重启全流程全实证；mac 侧注册+request_restart 语义已只读核验但 mac 侧 leaf 非本轮范围）",
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100_definition_v2": false,
+  "dimensions": {
+    "dim1": {"status": "PASS", "evidence": "注册链三重 live 复验（双窗比较点 0x1405fcd97/9f + arm call 0x140600cb6 + 注册表项 0x141ea82e8=glue RVA）+ 全名串唯一 xref；前端 CCF argKeys=[] 在案"},
+    "dim2": {"status": "PASS", "evidence": "glue+全链 8 函数 live decompile 0 截断 0 空桩（ida/pseudocode/ 8 份，全 '}' 收尾）"},
+    "dim3": {"status": "PASS", "evidence": "dispatcher→glue→state 提取→重启机制(flag CAS/WaitOnAddress/事件投递/cleanup/env)→tauri::process::restart→CreateProcessW 全链闭合；mac 对照链（dispatcher/wrapper/from_command/request_restart/process::restart）只读闭合"},
+    "dim4": {"status": "PASS", "evidence": "DTO 字段级：零参输入（CCF+glue 双证）；输出 unit 无载荷；win 无成功响应（ud2 发散）/mac respond unit 平台分叉；错误面 4 类；幂等性（flag CAS）"},
+    "dim5": {"status": "PASS", "evidence": "win/mac 平台分叉逐项记录（IPC 响应有无/触发 API 发散性/spawn 失败处理/flag 偏移+事件 tag），互不外推；mac「零符号」既往判定经只读核验推翻并如实改判"},
+    "dim6": {"status": "BLANK", "note": "实现侧验收，任务规定留白"}
+  },
+  "blockers": [
+    "dim6_acceptance_pending_implementation_side",
+    "live_reference_parity_false (declared 未对照，红线25)"
+  ],
+  "accepted_unknown": [],
+  "genuine_ceiling": [],
+  "open_items": [
+    "mac 侧完整 leaf 未产（本轮 mac 只读核验注册/wrapper/request_restart/process::restart 语义；mac 消费侧如需逐字段实现按 evidence.md §8 地址补证）",
+    "更新制品就位（exe 替换）策略不在本命令链内未逆（属 platform::update 流程证据）"
+  ],
+  "amendments": [],
+  "note": "本 leaf gate 为单命令面 gate；windows-1.2.7-version-delta bundle 级 gate-report 另行 amendment（见 audits）。禁实现撤销依据：用户「欠账全做完 0 残留」直派（对齐 Oct 6 unban 先例 user_ruling 口径）。"
+}

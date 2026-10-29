@@ -1,0 +1,1 @@
+import{br as a}from"./index-BfxRLS9t.js";async function t(e={}){return typeof e=="object"&&Object.freeze(e),await a("plugin:dialog|open",{options:e})}async function f(e={}){return typeof e=="object"&&Object.freeze(e),await a("plugin:dialog|save",{options:e})}export{t as open,f as save};

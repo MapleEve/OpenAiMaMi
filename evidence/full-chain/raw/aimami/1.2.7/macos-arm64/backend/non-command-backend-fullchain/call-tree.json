@@ -1,0 +1,1682 @@
+{
+ "schema": "c5cm.reverse.call_tree.v1",
+ "target_id": "angle_c:mac127-truly-undone-non-command-backend-20260930",
+ "clusters": {
+  "codexmate_lib::core::relay::atomic_write": {
+   "core::relay::atomic_write::write_atomic_stream::he893f81f88ddc9a3@0x100724760": {
+    "callers": [
+     "core::sessions::export::export_sessions_batch::h6b0fd45fa3057452"
+    ],
+    "callees": [
+     "std::path::Path::parent::h4c3ac26770731fbb",
+     "std::fs::DirBuilder::_create::h099c6e2853c95452",
+     "core::relay::atomic_write::temp_file_stem::h548fc217101373fb",
+     "std::process::id::ha72f58ec62264e78",
+     "uuid::v4::_$LT$impl$u20$uuid..Uuid$GT$::new_v4::h0d422edb31edb566",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "std::path::Path::_join::hb1a495d4f06b13b8",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "std::path::Path::components::he8b0f71a48373be5",
+     "_memcmp",
+     "core::iter::traits::iterator::Iterator::eq_by::h2bf41b2071abf6d2",
+     "std::io::error::Error::new::h2838dbd593bc6ec9",
+     "core::relay::atomic_write::Publication::acknowledge::hb1198e95828e3009",
+     "std::path::Path::to_path_buf::h73855ce4b54f7174",
+     "std::sys::fs::metadata::h32fa16d3052ea535",
+     "std::fs::OpenOptions::_open::h1dad73452047b8aa",
+     "core::relay::atomic_write::staging::FileIdentity::read::h54a8da684da3cbdd",
+     "std::io::buffered::bufwriter::BufWriter$LT$W$GT$::with_capacity::h4713940a170e673d",
+     "core::sessions::history::HistoryPlan::export_header::h70eeaf2ab8ea0487",
+     "serde_core::ser::Serializer::collect_seq::haf2341e3e76b7bcd",
+     "_$LT$serde_json..number..Number$u20$as$u20$serde_core..ser..Serialize$GT$::serialize::h7f3f40656e57e40f",
+     "serde_json::ser::format_escaped_str::h08ddebe5857b824d",
+     "serde_json::error::Error::io::h4df820d482c0c826",
+     "serde_core::ser::SerializeMap::serialize_entry::hab6d5083a48f0a48",
+     "serde_json::error::_$LT$impl$u20$core..convert..From$LT$serde_json..error..Error$GT$$u20$for$u20$std..io..error..Error$GT$::from::ha95300ca2ad45b96",
+     "__ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb993af2e833a05caE_7",
+     "std::io::Write::write_fmt::h2b360ed38373f680",
+     "core::sessions::history::HistoryPlan::visit::hf314bb9a13408ec4",
+     "_$LT$std..io..buffered..bufwriter..BufWriter$LT$W$GT$$u20$as$u20$core..ops..drop..Drop$GT$::drop::h9909fc504166f8f9",
+     "std::fs::File::sync_data::hd1ab389c8b7cfd2f",
+     "_close$NOCANCEL",
+     "_$LT$codexmate_lib..core..relay..atomic_write..TempFileCleanup$u20$as$u20$core..ops..drop..Drop$GT$::drop::h132b19376813665f",
+     "core::relay::atomic_write::staging::verify_owned::hdfab3393db9bec64",
+     "core::relay::atomic_write::replace_staged_file_report::hc386c7f34da234f0",
+     "core::ptr::drop_in_place$LT$codexmate_lib..core..relay..atomic_write..TempFileCleanup$GT$::hbf0780ad94c5f5f0",
+     "std::io::buffered::bufwriter::BufWriter$LT$W$GT$::flush_buf::he79988fa54f0ea88",
+     "std::io::buffered::bufwriter::BufWriter$LT$W$GT$::write_all_cold::h7bb1e9e9c69d9c09",
+     "core::panicking::panic::h286e2dd5eab048be",
+     "core::option::unwrap_failed::h44626cade04bbf1e"
+    ]
+   },
+   "core::relay::atomic_write::write_atomic_stream::hb022b0ac9fef4914@0x100723ce0": {
+    "callers": [
+     "core::sessions::export::write_export_markdown_stream::hb4bc49cd32cf9ef4"
+    ],
+    "callees": [
+     "std::path::Path::parent::h4c3ac26770731fbb",
+     "std::fs::DirBuilder::_create::h099c6e2853c95452",
+     "core::relay::atomic_write::temp_file_stem::h548fc217101373fb",
+     "std::process::id::ha72f58ec62264e78",
+     "uuid::v4::_$LT$impl$u20$uuid..Uuid$GT$::new_v4::h0d422edb31edb566",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "std::path::Path::_join::hb1a495d4f06b13b8",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "std::path::Path::components::he8b0f71a48373be5",
+     "_memcmp",
+     "core::iter::traits::iterator::Iterator::eq_by::h2bf41b2071abf6d2",
+     "std::io::error::Error::new::h2838dbd593bc6ec9",
+     "core::relay::atomic_write::Publication::acknowledge::hb1198e95828e3009",
+     "std::path::Path::to_path_buf::h73855ce4b54f7174",
+     "std::sys::fs::metadata::h32fa16d3052ea535",
+     "std::fs::OpenOptions::_open::h1dad73452047b8aa",
+     "core::relay::atomic_write::staging::FileIdentity::read::h54a8da684da3cbdd",
+     "std::io::buffered::bufwriter::BufWriter$LT$W$GT$::with_capacity::h4713940a170e673d",
+     "std::io::default_write_fmt::h90528101cc2b8ee4",
+     "core::sessions::history::HistoryPlan::visit::h62f7c18baf8de588",
+     "_$LT$std..io..buffered..bufwriter..BufWriter$LT$W$GT$$u20$as$u20$core..ops..drop..Drop$GT$::drop::h9909fc504166f8f9",
+     "std::fs::File::sync_data::hd1ab389c8b7cfd2f",
+     "_close$NOCANCEL",
+     "_$LT$codexmate_lib..core..relay..atomic_write..TempFileCleanup$u20$as$u20$core..ops..drop..Drop$GT$::drop::h132b19376813665f",
+     "std::io::buffered::bufwriter::BufWriter$LT$W$GT$::flush_buf::he79988fa54f0ea88",
+     "core::relay::atomic_write::staging::verify_owned::hdfab3393db9bec64",
+     "core::relay::atomic_write::replace_staged_file_report::hc386c7f34da234f0",
+     "core::ptr::drop_in_place$LT$codexmate_lib..core..relay..atomic_write..TempFileCleanup$GT$::hbf0780ad94c5f5f0"
+    ]
+   },
+   "core::relay::atomic_write::write_atomic_report::hf58adb6e14d92ad5@0x100723360": {
+    "callers": [
+     "core::relay::codex_catalog::write_prepared_catalog::he7d13a220cdf801f",
+     "core::relay::transition_journal::append_event::h4991c0e9e7a66037",
+     "core::relay::io::export_to_file::h7b0037f9e10a4988",
+     "core::relay::codex_diagnostic::fix_thread_poisoned_instructions::h0b947664c262bce9",
+     "core::voice::workspace::write_workspace_file::hccc52a0a3dbe3698",
+     "core::relay::storage::save_with_publication::h39ec4a80d39f6cb3",
+     "core::debug_bundle::publish_debug_bundle::h494db809433bd293",
+     "core::relay::codex_project_state::repair::h4636eadd3928e8ee",
+     "core::voice::runtime::write_runtime_file::h60f78b6297bb9be7"
+    ],
+    "callees": [
+     "std::path::Path::parent::h4c3ac26770731fbb",
+     "std::fs::DirBuilder::_create::h099c6e2853c95452",
+     "core::relay::atomic_write::temp_file_stem::h548fc217101373fb",
+     "std::process::id::ha72f58ec62264e78",
+     "uuid::v4::_$LT$impl$u20$uuid..Uuid$GT$::new_v4::h0d422edb31edb566",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "std::path::Path::_join::hb1a495d4f06b13b8",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "std::path::Path::components::he8b0f71a48373be5",
+     "_memcmp",
+     "core::iter::traits::iterator::Iterator::eq_by::h2bf41b2071abf6d2",
+     "std::io::error::Error::new::h2838dbd593bc6ec9",
+     "std::path::Path::to_path_buf::h73855ce4b54f7174",
+     "std::sys::fs::metadata::h32fa16d3052ea535",
+     "std::fs::OpenOptions::_open::h1dad73452047b8aa",
+     "core::relay::atomic_write::staging::FileIdentity::read::h54a8da684da3cbdd",
+     "std::io::Write::write_all::hd103f1d0f39942d7",
+     "std::fs::File::sync_data::hd1ab389c8b7cfd2f",
+     "_close$NOCANCEL",
+     "_$LT$codexmate_lib..core..relay..atomic_write..TempFileCleanup$u20$as$u20$core..ops..drop..Drop$GT$::drop::h132b19376813665f",
+     "core::relay::atomic_write::staging::verify_owned::hdfab3393db9bec64",
+     "core::relay::atomic_write::replace_staged_file_report::hc386c7f34da234f0",
+     "core::ptr::drop_in_place$LT$codexmate_lib..core..relay..atomic_write..TempFileCleanup$GT$::hbf0780ad94c5f5f0"
+    ]
+   },
+   "core::relay::atomic_write::write_atomic_private_report::hcd723884b82d3047@0x1007259c0": {
+    "callers": [
+     "core::repository::Repository::persist_registry::he3845a2433b36ff3",
+     "core::repository::Repository::sync_auto_switch_request::hb1f08b2f9785a703",
+     "core::repository::Repository::dismiss_pending_auto_switch::hd135209bfdf23c41",
+     "core::repository::Repository::sync_auth_bundle_into_registry::hbe997555e9d9b5e0",
+     "core::repository::Repository::flush_live_auth_into_matching_snapshot::h37d4725d8e303fc2",
+     "core::repository::ExactFileState::restore::h2a1ac3c09b7a8899",
+     "core::quota_store::save::hf8b951ae0b9299db",
+     "core::relay::transition_journal::write_inner::h17805da6329a9a7b",
+     "core::relay::io::export_to_file::h7b0037f9e10a4988",
+     "commands::accounts::FileRestoreState::restore_if_not_replaced::h20fa8bcb186f37c2",
+     "commands::accounts::FileRestoreState::restore::h27ab20c6cd5a411b",
+     "commands::accounts::finish_switch_failure_with_client::h06687c50881d5227",
+     "core::codex_config::update_text::h4f95c7c8fa9551b9",
+     "core::codex_config::update_text::h865a4b2ee6401e1e",
+     "core::codex_config::update_text::h91d6eb1cf1e5846e",
+     "core::codex_config::update_text::hc5e5cd4e15c565de",
+     "core::codex_config::update_text::hec535d7a9dbd61e7",
+     "core::relay::atomic_write::copy_atomic_private::h48233e88b566607e",
+     "core::relay::codex_runtime::maybe_persist_cache::he211c21e3f40768e",
+     "core::relay::config_takeover::quarantine_damaged_backups::hc314e580f9e4787a",
+     "core::relay::config_takeover::restore::h7ae047e0ec69bc9f",
+     "core::relay::config_takeover::takeover::ha9fefe9414e32031",
+     "core::relay::codex_diagnostic::fix_config_stale_text::h4ca340ab212d48b9",
+     "core::relay::codex_diagnostic::backup_config_before_fix::h141e3bd1b6cd07ad",
+     "core::relay::codex_diagnostic::fix_config_global_validity::he26c58744ab65a00",
+     "core::relay::codex_diagnostic::fix_config_third_party_text::hb3965a930e7943ba",
+     "core::relay::codex_diagnostic::fix_config_toml_syntax_text::h1a80018c2489f023",
+     "core::relay::codex_diagnostic::fix_config_profile_conflict_text::h8f81ee69d6ed2e64",
+     "core::relay::codex_diagnostic::write_orphan_thread_adoption_recovery_file::hb0ca5b725c04ad7a",
+     "core::relay::legacy_virtual_auth::cleanup::h4c13929f6bebdf70",
+     "core::relay::codex_thread_visibility::model_fallback::restore_relay_model_threads::h1fe8ce39e9092967",
+     "platform::daemon::install_daemon::h88f2a160d3cda8c4",
+     "core::oauth_refresh::write_auth_if_changed::h4862a809764e2785",
+     "core::oauth_refresh::refresh_token_with_policy::h1478f2f9064ddde5",
+     "core::relay::storage::preflight_save::hbc9e84ee879b9b57",
+     "core::relay::storage::preserve_state_before_provider_id_migration::heafa1b6885014ea8",
+     "core::relay::router_unlock_auth::cleanup_unlocked::h13f029b9090464ae",
+     "core::relay::codex_thread_visibility::write_no_account_model_restore_journal::h1b8dd8e9c7d5475f",
+     "core::relay::response_item_id_compat::repair_compressed_rollout_ids::_$u7b$$u7b$closure$u7d$$u7d$::h9108ac2464eb9a44",
+     "core::relay::response_item_id_compat::repair_invalid_ids_in_rollout::h5b52d49b3e3ce6d5",
+     "core::relay::keychain::write_key_file::h9f316441e9f4185a",
+     "core::relay::keychain::cleanup_legacy_stores::h43484dc5c78da476",
+     "core::analytics::threads::write_export::h1585f83fb0a61c81",
+     "core::account_io::export_accounts::hfa12016a406d472b",
+     "core::account_io::import_accounts::hb33114d017718019",
+     "core::account_io::persist_account_auth::hf923f85c0da49e36",
+     "core::account_io::failure_after_snapshot_writes::h39375ddafad3cfd6"
+    ],
+    "callees": [
+     "std::path::Path::parent::h4c3ac26770731fbb",
+     "std::fs::DirBuilder::_create::h099c6e2853c95452",
+     "core::relay::atomic_write::temp_file_stem::h548fc217101373fb",
+     "std::process::id::ha72f58ec62264e78",
+     "uuid::v4::_$LT$impl$u20$uuid..Uuid$GT$::new_v4::h0d422edb31edb566",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "std::path::Path::_join::hb1a495d4f06b13b8",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "std::path::Path::components::he8b0f71a48373be5",
+     "_memcmp",
+     "core::iter::traits::iterator::Iterator::eq_by::h2bf41b2071abf6d2",
+     "std::io::error::Error::new::h2838dbd593bc6ec9",
+     "std::path::Path::to_path_buf::h73855ce4b54f7174",
+     "std::sys::fs::metadata::h32fa16d3052ea535",
+     "std::fs::OpenOptions::_open::h1dad73452047b8aa",
+     "core::relay::atomic_write::staging::FileIdentity::read::h54a8da684da3cbdd",
+     "std::io::Write::write_all::hd103f1d0f39942d7",
+     "std::fs::File::sync_data::hd1ab389c8b7cfd2f",
+     "_close$NOCANCEL",
+     "_$LT$codexmate_lib..core..relay..atomic_write..TempFileCleanup$u20$as$u20$core..ops..drop..Drop$GT$::drop::h132b19376813665f",
+     "core::relay::atomic_write::staging::verify_owned::hdfab3393db9bec64",
+     "core::relay::atomic_write::replace_staged_file_report::hc386c7f34da234f0",
+     "core::ptr::drop_in_place$LT$codexmate_lib..core..relay..atomic_write..TempFileCleanup$GT$::hbf0780ad94c5f5f0"
+    ]
+   },
+   "core::relay::atomic_write::confirm_existing_sync::h1a5d96fb8a7894a3@0x100725690": {
+    "callers": [
+     "core::relay::config_takeover::restore::h7ae047e0ec69bc9f",
+     "core::relay::config_takeover::takeover::ha9fefe9414e32031"
+    ],
+    "callees": [
+     "std::sys::fs::symlink_metadata::hd69903fe66faddbd",
+     "std::fs::OpenOptions::_open::h1dad73452047b8aa",
+     "std::io::error::Error::new::h2838dbd593bc6ec9",
+     "std::fs::File::metadata::h408606eff73040af",
+     "std::fs::File::sync_data::hd1ab389c8b7cfd2f",
+     "core::relay::atomic_write::staging::verify_owned::hdfab3393db9bec64",
+     "std::path::Path::parent::h4c3ac26770731fbb",
+     "core::relay::atomic_write::sync_parent_dir::h2c0464b5b468f30a",
+     "_close$NOCANCEL"
+    ]
+   },
+   "core::relay::atomic_write::removal::remove_file_report::he4acf789bf0d185c@0x100b6c130": {
+    "callers": [
+     "core::relay::transition_journal::clear_inner::h52d45262dfbf85a9"
+    ],
+    "callees": [
+     "std::path::Path::parent::h4c3ac26770731fbb",
+     "std::sys::fs::remove_file::hd3c2fb9b7e0710ac",
+     "__ZN3std2io5error5Error4kind17hbe3dd139aa56fd1bE_7",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "std::io::error::Error::new::h2838dbd593bc6ec9",
+     "std::fs::OpenOptions::_open::h1dad73452047b8aa",
+     "std::fs::File::sync_data::hd1ab389c8b7cfd2f",
+     "_close$NOCANCEL"
+    ]
+   },
+   "core::relay::atomic_write::Publication::acknowledge::hb1198e95828e3009@0x100722ea0": {
+    "callers": [
+     "core::repository::Repository::persist_registry::he3845a2433b36ff3",
+     "core::repository::Repository::sync_auto_switch_request::hb1f08b2f9785a703",
+     "core::repository::Repository::dismiss_pending_auto_switch::hd135209bfdf23c41",
+     "core::repository::Repository::sync_auth_bundle_into_registry::hbe997555e9d9b5e0",
+     "core::repository::Repository::flush_live_auth_into_matching_snapshot::h37d4725d8e303fc2",
+     "core::repository::ExactFileState::restore::h2a1ac3c09b7a8899",
+     "core::relay::codex_catalog::write_prepared_catalog::he7d13a220cdf801f",
+     "core::quota_store::save::hf8b951ae0b9299db",
+     "core::relay::transition_journal::append_event::h4991c0e9e7a66037",
+     "core::relay::transition_journal::warn_after_commit::h87e5d3a870ecc5d5",
+     "core::relay::transition_journal::write::hc8770bf64e6870ff",
+     "core::relay::io::export_to_file::h7b0037f9e10a4988",
+     "commands::accounts::FileRestoreState::restore_if_not_replaced::h20fa8bcb186f37c2",
+     "commands::accounts::FileRestoreState::restore::h27ab20c6cd5a411b",
+     "commands::accounts::finish_switch_failure_with_client::h06687c50881d5227",
+     "core::relay::manager::RelayManager::deactivate::hbd86bf8fa0b2dff1",
+     "core::relay::manager::RelayManager::ensure_proxy_started::h361b96186deddcbc",
+     "core::relay::manager::RelayManager::set_provider_network::had49f5492ee522b8",
+     "core::relay::manager::RelayManager::stop_proxy_if_running::h7680ed147f718dd3",
+     "core::relay::manager::RelayManager::set_claude_web_search_compat::h29d0436b9a33e1d3",
+     "core::relay::manager::RelayManager::new::h8be7e59ac527fd4e",
+     "core::relay::manager::RelayManager::delete::hcbe87c45d9c19eda",
+     "core::relay::manager::RelayManager::persist::h9e713824e813ee68",
+     "core::relay::manager::RelayManager::reorder::h3a320dd62126e3ad",
+     "core::codex_config::update_text::h4f95c7c8fa9551b9",
+     "core::codex_config::update_text::h865a4b2ee6401e1e",
+     "core::codex_config::update_text::h91d6eb1cf1e5846e",
+     "core::codex_config::update_text::hc5e5cd4e15c565de",
+     "core::codex_config::update_text::hec535d7a9dbd61e7",
+     "core::relay::atomic_write::copy_atomic_private::h48233e88b566607e",
+     "core::relay::atomic_write::write_atomic_stream::hb022b0ac9fef4914",
+     "core::relay::atomic_write::write_atomic_stream::he893f81f88ddc9a3",
+     "core::relay::codex_runtime::maybe_persist_cache::he211c21e3f40768e",
+     "core::relay::codex_diagnostic::fix_config_stale_text::h4ca340ab212d48b9",
+     "core::relay::codex_diagnostic::backup_config_before_fix::h141e3bd1b6cd07ad",
+     "core::relay::codex_diagnostic::fix_config_global_validity::he26c58744ab65a00",
+     "core::relay::codex_diagnostic::fix_config_third_party_text::hb3965a930e7943ba",
+     "core::relay::codex_diagnostic::fix_config_toml_syntax_text::h1a80018c2489f023",
+     "core::relay::codex_diagnostic::fix_config_profile_conflict_text::h8f81ee69d6ed2e64",
+     "core::relay::codex_diagnostic::fix_thread_poisoned_instructions::h0b947664c262bce9",
+     "core::relay::codex_diagnostic::write_orphan_thread_adoption_recovery_file::hb0ca5b725c04ad7a",
+     "core::relay::legacy_virtual_auth::cleanup::h4c13929f6bebdf70",
+     "core::relay::keychain::revisions::publish::h3b09d52860cdb7e8",
+     "core::relay::keychain::revisions::publish::h4bfff1c269dd80f2",
+     "core::voice::workspace::write_workspace_file::hccc52a0a3dbe3698",
+     "platform::daemon::install_daemon::h88f2a160d3cda8c4",
+     "core::oauth_refresh::write_auth_if_changed::h4862a809764e2785",
+     "core::oauth_refresh::refresh_token_with_policy::h1478f2f9064ddde5",
+     "core::relay::router_transition::write_journal::h4085596e5e0c0512",
+     "core::relay::storage::preflight_save::hbc9e84ee879b9b57",
+     "core::relay::storage::preserve_state_before_provider_id_migration::heafa1b6885014ea8",
+     "core::relay::storage::save::hf6754a96d2358bec",
+     "core::relay::router_unlock_auth::cleanup_unlocked::h13f029b9090464ae",
+     "core::debug_bundle::publish_debug_bundle::h494db809433bd293",
+     "core::relay::codex_project_state::repair::h4636eadd3928e8ee",
+     "core::relay::response_item_id_compat::repair_compressed_rollout_ids::_$u7b$$u7b$closure$u7d$$u7d$::h9108ac2464eb9a44",
+     "core::relay::response_item_id_compat::repair_invalid_ids_in_rollout::h5b52d49b3e3ce6d5",
+     "core::relay::keychain::write_key_file::h9f316441e9f4185a",
+     "core::relay::keychain::cleanup_legacy_stores::h43484dc5c78da476",
+     "core::analytics::threads::write_export::h1585f83fb0a61c81",
+     "core::account_io::export_accounts::hfa12016a406d472b",
+     "core::account_io::import_accounts::hb33114d017718019",
+     "core::account_io::persist_account_auth::hf923f85c0da49e36",
+     "core::account_io::failure_after_snapshot_writes::h39375ddafad3cfd6",
+     "core::voice::runtime::write_runtime_file::h60f78b6297bb9be7"
+    ],
+    "callees": [
+     "__ZN3std2io5error5Error4kind17hbe3dd139aa56fd1bE_3",
+     "_$LT$log..__private_api..GlobalLogger$u20$as$u20$log..Log$GT$::log::h3cdc1ad4dece8a2d",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc"
+    ]
+   },
+   "core::relay::atomic_write::staging::remove_owned::h0544457268e8d2ae@0x100b6c410": {
+    "callers": [
+     "_$LT$codexmate_lib..core..relay..keychain..revisions..PreparedKey$u20$as$u20$core..ops..drop..Drop$GT$::drop::h04059db625ecdfce",
+     "core::relay::keychain::revisions::cleanup_unreferenced::h8c85e16e00c3b86b",
+     "_$LT$codexmate_lib..core..relay..atomic_write..TempFileCleanup$u20$as$u20$core..ops..drop..Drop$GT$::drop::h132b19376813665f"
+    ],
+    "callees": [
+     "std::sys::fs::symlink_metadata::hd69903fe66faddbd",
+     "__ZN3std2io5error5Error4kind17hbe3dd139aa56fd1bE_7",
+     "std::sys::fs::remove_file::hd3c2fb9b7e0710ac",
+     "std::io::error::Error::new::h2838dbd593bc6ec9",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc"
+    ]
+   },
+   "core::relay::atomic_write::temp_file_stem::h548fc217101373fb@0x100723120": {
+    "callers": [
+     "core::relay::atomic_write::write_atomic_report::hf58adb6e14d92ad5",
+     "core::relay::atomic_write::write_atomic_stream::hb022b0ac9fef4914",
+     "core::relay::atomic_write::write_atomic_stream::he893f81f88ddc9a3",
+     "core::relay::atomic_write::write_atomic_private_report::hcd723884b82d3047"
+    ],
+    "callees": [
+     "std::path::Path::file_name::hf6c2daad91e50ebf",
+     "core::str::converts::from_utf8::hb32deb9559450f6e",
+     "_$LT$alloc..string..String$u20$as$u20$core..iter..traits..collect..FromIterator$LT$char$GT$$GT$::from_iter::hc0af177ec59ff14e",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::relay::atomic_write::replace_staged_file_report::hc386c7f34da234f0@0x1007258d0": {
+    "callers": [
+     "core::relay::atomic_write::write_atomic_report::hf58adb6e14d92ad5",
+     "core::relay::atomic_write::write_atomic_stream::hb022b0ac9fef4914",
+     "core::relay::atomic_write::write_atomic_stream::he893f81f88ddc9a3",
+     "core::relay::atomic_write::write_atomic_private_report::hcd723884b82d3047",
+     "core::relay::response_item_id_compat::repair_invalid_ids_in_rollout::h5b52d49b3e3ce6d5"
+    ],
+    "callees": [
+     "std::path::Path::parent::h4c3ac26770731fbb",
+     "std::sys::fs::rename::h7934e6142c921014",
+     "std::fs::OpenOptions::_open::h1dad73452047b8aa",
+     "std::io::error::Error::new::h2838dbd593bc6ec9",
+     "std::fs::File::sync_data::hd1ab389c8b7cfd2f",
+     "_close$NOCANCEL"
+    ]
+   },
+   "core::relay::atomic_write::staging::FileIdentity::read::h54a8da684da3cbdd@0x100b6c360": {
+    "callers": [
+     "core::relay::atomic_write::write_atomic_report::hf58adb6e14d92ad5",
+     "core::relay::atomic_write::write_atomic_stream::hb022b0ac9fef4914",
+     "core::relay::atomic_write::write_atomic_stream::he893f81f88ddc9a3",
+     "core::relay::atomic_write::write_atomic_private_report::hcd723884b82d3047",
+     "core::relay::keychain::revisions::prepare::hc7dd9813b9f3b63f"
+    ],
+    "callees": [
+     "std::fs::File::metadata::h408606eff73040af",
+     "std::io::error::Error::new::h2838dbd593bc6ec9"
+    ]
+   },
+   "core::relay::atomic_write::staging::verify_owned::hdfab3393db9bec64@0x100b6c560": {
+    "callers": [
+     "core::relay::atomic_write::write_atomic_report::hf58adb6e14d92ad5",
+     "core::relay::atomic_write::write_atomic_stream::hb022b0ac9fef4914",
+     "core::relay::atomic_write::write_atomic_stream::he893f81f88ddc9a3",
+     "core::relay::atomic_write::confirm_existing_sync::h1a5d96fb8a7894a3",
+     "core::relay::atomic_write::write_atomic_private_report::hcd723884b82d3047"
+    ],
+    "callees": [
+     "std::sys::fs::symlink_metadata::hd69903fe66faddbd",
+     "std::io::error::Error::new::h2838dbd593bc6ec9"
+    ]
+   },
+   "core::relay::atomic_write::Publication::require_sync::hb09f8d8c93f5e10a@0x100723030": {
+    "callers": [
+     "core::relay::transition_journal::begin_commit::headaca16d3f09d62",
+     "core::relay::config_takeover::quarantine_damaged_backups::hc314e580f9e4787a",
+     "core::relay::config_takeover::restore::h7ae047e0ec69bc9f",
+     "core::relay::config_takeover::takeover::ha9fefe9414e32031",
+     "core::relay::codex_thread_visibility::model_fallback::restore_relay_model_threads::h1fe8ce39e9092967",
+     "core::relay::router_transition::commit_verified::h04f08066e3cc31e4",
+     "core::relay::router_transition::run_with_environment::h4bf0603b128575c9",
+     "core::relay::router_transition::run_with_environment::h7686b0a41e87896f",
+     "core::relay::router_transition::run_with_environment::hd0e109fdac6e0f14",
+     "core::relay::router_transition::run_with_writer_policy::h45ca0ea41fa22c9d",
+     "core::relay::router_transition::run_with_writer_policy::h92005e51e275cab5",
+     "core::relay::router_transition::run_with_writer_policy::hb5d7aec8d8734c87",
+     "core::relay::codex_thread_visibility::write_no_account_model_restore_journal::h1b8dd8e9c7d5475f"
+    ],
+    "callees": [
+     "__ZN3std2io5error5Error4kind17hbe3dd139aa56fd1bE_3",
+     "std::io::error::Error::new::h2838dbd593bc6ec9",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc"
+    ]
+   },
+   "core::relay::atomic_write::staging::FileIdentity::read_directory::h2e40971802767f80@0x100b6c2d0": {
+    "callers": [
+     "core::relay::keychain::revisions::cleanup_unreferenced::h8c85e16e00c3b86b"
+    ],
+    "callees": [
+     "std::sys::fs::symlink_metadata::hd69903fe66faddbd",
+     "std::io::error::Error::new::h2838dbd593bc6ec9"
+    ]
+   },
+   "core::relay::atomic_write::sync_parent_dir::h2c0464b5b468f30a@0x100723240": {
+    "callers": [
+     "core::relay::atomic_write::confirm_existing_sync::h1a5d96fb8a7894a3"
+    ],
+    "callees": [
+     "std::fs::OpenOptions::_open::h1dad73452047b8aa",
+     "std::fs::File::sync_data::hd1ab389c8b7cfd2f",
+     "_close$NOCANCEL"
+    ]
+   }
+  },
+  "codexmate_lib::core::relay::proxy_server": {
+   "core::relay::proxy_server::translate_responses_to_anthropic_body::h02e1627ea588417a@0x1008506e0": {
+    "callers": [
+     "core::relay::proxy_server::forward_codex_responses_internal::_$u7b$$u7b$closure$u7d$$u7d$::hd50fd55521a7cd21"
+    ],
+    "callees": [
+     "_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$::index_into::h51f9dd05d381230f",
+     "core::relay::translator::anthropic_tools::validate_tool_choice::h71dd73ca4602f618",
+     "__ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb993af2e833a05caE_8",
+     "core::relay::native_responses_compat::strip_hosted_web_search_tools::he8c81f3bbf9dfdf6",
+     "core::relay::translator::responses_to_anthropic_request_with_context::he602122c7b3043ed",
+     "core::relay::translator::strip_anthropic_web_search_tools::h6c21214d739934ed",
+     "core::relay::anthropic_reasoning::requires_append_only_tool_loading::hf224b60584ee2c06",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "serde_json::value::partial_eq::_$LT$impl$u20$core..cmp..PartialEq$LT$$RF$str$GT$$u20$for$u20$serde_json..value..Value$GT$::eq::h2d984bbc88f4cc13",
+     "core::relay::translator::anthropic_thinking_carrier::hca081ecbe5cf702d",
+     "_$LT$T$u20$as$u20$alloc..slice..$LT$impl$u20$$u5b$T$u5d$$GT$..to_vec_in..ConvertVec$GT$::to_vec::h7792aaf1fd665bd1",
+     "_$LT$alloc..string..String$u20$as$u20$core..clone..Clone$GT$::clone::h1ed93fb7d98ec2c1",
+     "_$LT$alloc..collections..btree..map..BTreeMap$LT$K$C$V$C$A$GT$$u20$as$u20$core..clone..Clone$GT$::clone::h597e84f914b16b07",
+     "serde_json::value::de::_$LT$impl$u20$serde_core..de..Deserializer$u20$for$u20$serde_json..value..Value$GT$::deserialize_struct::h3141622f1070c5b8",
+     "_memcmp",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "__ZN4core3ptr49drop_in_place$LT$serde_json..error..ErrorCode$GT$17hcd642d706d35d819E_0",
+     "_$LT$alloc..collections..btree..map..IntoIter$LT$K$C$V$C$A$GT$$u20$as$u20$core..ops..drop..Drop$GT$::drop::hdf8beb86d98b7008"
+    ]
+   },
+   "core::relay::proxy_server::remove_rejected_optional_anthropic_beta::h172f9dfd26d90fab@0x100853110": {
+    "callers": [
+     "core::relay::proxy_server::try_codex_responses_via_translation::_$u7b$$u7b$closure$u7d$$u7d$::h4ded7dc5fb27348c"
+    ],
+    "callees": [
+     "serde_json::de::from_trait::he213214ce1dd6727",
+     "__ZN4core3ptr49drop_in_place$LT$serde_json..error..ErrorCode$GT$17hcd642d706d35d819E_0",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "serde_json::value::Value::pointer::hda2ad138ba9a0c27",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "__Unwind_Resume",
+     "__ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb993af2e833a05caE_8",
+     "core::panicking::panic_in_cleanup::ha62f70bf11d85882",
+     "__ZN55_$LT$$RF$str$u20$as$u20$core..str..pattern..Pattern$GT$15is_contained_in17h62e4a94c27d2c698E_3",
+     "http::header::name::HdrName::from_bytes::ha3c925ff81c76b25",
+     "_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter_nested..SpecFromIterNested$LT$T$C$I$GT$$GT$::from_iter::haf046c39d2d66c85",
+     "core::iter::traits::iterator::Iterator::try_fold::h9a706cfc5406c455",
+     "alloc::vec::in_place_collect::from_iter_in_place::hba1f658505eb997a",
+     "alloc::str::join_generic_copy::h5c603fa350d56d5f",
+     "http::header::value::HeaderValue::try_from_generic::h5a1e2030080fa430",
+     "http::header::map::HeaderMap$LT$T$GT$::remove::h8858e5c20c00e704",
+     "http::header::name::HdrName::from_static::h5e41443daf2556e5",
+     "core::result::unwrap_failed::h855bccc0ecc45c4f",
+     "core::panicking::panic_bounds_check::h56740b1198b22635"
+    ]
+   },
+   "core::relay::proxy_server::require_anthropic_inline_tools_header::hc2e9e174e43cfe9d@0x100850290": {
+    "callers": [
+     "core::relay::proxy_server::try_codex_responses_via_translation::_$u7b$$u7b$closure$u7d$$u7d$::h4ded7dc5fb27348c"
+    ],
+    "callees": [
+     "http::header::name::HdrName::from_bytes::ha3c925ff81c76b25",
+     "__ZN81_$LT$core..str..pattern..CharSearcher$u20$as$u20$core..str..pattern..Searcher$GT$10next_match17hb964a2350606f792E_3",
+     "core::str::_$LT$impl$u20$str$GT$::trim_matches::h867b24570208f58e",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "bytes::bytes::Bytes::copy_from_slice::h6785181ff68f826e",
+     "http::header::name::HdrName::from_static::h5e41443daf2556e5",
+     "core::result::unwrap_failed::h855bccc0ecc45c4f",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "core::panicking::panic_bounds_check::h56740b1198b22635",
+     "__Unwind_Resume"
+    ]
+   },
+   "core::relay::proxy_server::is_anthropic_effort_rejection::h1ec9f3a3bf4eb467@0x100843a20": {
+    "callers": [
+     "core::relay::proxy_server::try_codex_responses_via_translation::_$u7b$$u7b$closure$u7d$$u7d$::h4ded7dc5fb27348c"
+    ],
+    "callees": [
+     "alloc::string::String::from_utf8_lossy::he2f4710de0078f8b",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "__Unwind_Resume",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "__ZN55_$LT$$RF$str$u20$as$u20$core..str..pattern..Pattern$GT$15is_contained_in17h62e4a94c27d2c698E_3"
+    ]
+   },
+   "core::relay::proxy_server::load_attempt_credentials::hdb1fb412500d04f8@0x1008422b0": {
+    "callers": [
+     "core::relay::proxy_server::forward_with_failover::_$u7b$$u7b$closure$u7d$$u7d$::hc283b3f4538bfaf9",
+     "core::relay::proxy_server::forward_codex_responses_internal::_$u7b$$u7b$closure$u7d$$u7d$::hd50fd55521a7cd21"
+    ],
+    "callees": [
+     "__ZN88_$LT$codexmate_lib..core..relay..models..RelayProvider$u20$as$u20$core..clone..Clone$GT$5clone17h1ad41f79e4b3c020E_0",
+     "core::relay::storage::lazy_load_api_key::h05e25860d688fee0",
+     "std::sys::pal::unix::sync::mutex::Mutex::lock::h6b8bb4259dcc18d0",
+     "std::sys::pal::unix::sync::mutex::Mutex::unlock::hb9acd26a137dd78d",
+     "_$LT$codexmate_lib..core..models..CoreError$u20$as$u20$core..fmt..Display$GT$::fmt::h3df4a8fbdd73e5e8",
+     "core::relay::proxy_server::upstream_error_with_reason::ha3e3e5cf32d4c0f7",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "__ZN4core3ptr59drop_in_place$LT$codexmate_lib..core..models..CoreError$GT$17h2b3888839031de9dE_8",
+     "__ZN4core3ptr70drop_in_place$LT$codexmate_lib..core..relay..models..RelayProvider$GT$17h05f205f314f789e4E_6",
+     "core::result::unwrap_failed::h855bccc0ecc45c4f",
+     "std::sys::sync::once_box::OnceBox$LT$T$GT$::initialize::h8dd8979d8d8a8a3a",
+     "std::panicking::panic_count::is_zero_slow_path::h509d4bac4686b0cd",
+     "core::relay::storage::cache_loaded_api_key::he067dd4765fea3c3",
+     "_memcpy"
+    ]
+   },
+   "core::relay::proxy_server::codex_client_session_id::hb1c1cabe5e1ef43a@0x100841ec0": {
+    "callers": [
+     "core::relay::proxy_server::forward_codex_responses_internal::_$u7b$$u7b$closure$u7d$$u7d$::hd50fd55521a7cd21",
+     "core::relay::proxy_server::apply_kimi_coding_prompt_cache_key::h97ebd4b52923e159"
+    ],
+    "callees": [
+     "http::header::name::HdrName::from_bytes::ha3c925ff81c76b25",
+     "serde_json::de::from_trait::h99bf8e350a0ab991",
+     "__ZN4core3ptr49drop_in_place$LT$serde_json..error..ErrorCode$GT$17hcd642d706d35d819E_0",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$::index_into::h51f9dd05d381230f",
+     "core::str::_$LT$impl$u20$str$GT$::trim_matches::h867b24570208f58e",
+     "__ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb993af2e833a05caE_8",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "core::panicking::panic_bounds_check::h56740b1198b22635",
+     "__Unwind_Resume"
+    ]
+   },
+   "core::relay::proxy_server::read_upstream_body::_$u7b$$u7b$closure$u7d$$u7d$::hd589fc02dae242e4@0x10083bf80": {
+    "callers": [
+     "core::relay::proxy_server::try_translate::_$u7b$$u7b$closure$u7d$$u7d$::h48dbfb670dd07a94",
+     "core::relay::proxy_server::forward_codex_responses_internal::_$u7b$$u7b$closure$u7d$$u7d$::hd50fd55521a7cd21",
+     "core::relay::proxy_server::try_codex_responses_via_translation::_$u7b$$u7b$closure$u7d$$u7d$::h4ded7dc5fb27348c"
+    ],
+    "callees": [
+     "_memcpy",
+     "reqwest::async_impl::response::Response::content_length::he880cc08c091acdb",
+     "reqwest::async_impl::response::Response::bytes_stream::h4afb02b64d51c5f9",
+     "core::panicking::panic_const::panic_const_async_fn_resumed_panic::h51796ee0ce4d776a",
+     "core::panicking::panic_const::panic_const_async_fn_resumed::h8f02a5f78cdcc4bb",
+     "_$LT$http_body_util..combinators..map_err..MapErr$LT$B$C$F$GT$$u20$as$u20$http_body..Body$GT$::poll_frame::hffa08be62d845855",
+     "__ZN4core3ptr49drop_in_place$LT$http..header..map..HeaderMap$GT$17hbc21c0b42cf04151E_6",
+     "bytes::bytes_mut::BytesMut::reserve_inner::h34e3332560d59430",
+     "_$LT$bytes..bytes..Bytes$u20$as$u20$core..convert..From$LT$alloc..vec..Vec$LT$u8$GT$$GT$$GT$::from::hb3f89e5123ac12e3",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "reqwest::error::Error::is_timeout::hc378dcce9ef81bc8",
+     "core::ptr::drop_in_place$LT$reqwest..error..Inner$GT$::h7d3b717d92101315",
+     "_$LT$bytes..bytes_mut..BytesMut$u20$as$u20$core..ops..drop..Drop$GT$::drop::h5c29f993bb64e47e",
+     "__ZN4core3ptr60drop_in_place$LT$reqwest..async_impl..response..Response$GT$17h0240dfd7ed22fc0eE_1",
+     "core::ptr::drop_in_place$LT$codexmate_lib..core..relay..http_client..read_body..$u7b$$u7b$closure$u7d$$u7d$$GT$::h9b1dfd8e660b3c15",
+     "_$LT$core..fmt..Formatter$u20$as$u20$core..fmt..Write$GT$::write_str::h432a61b2c1499beb",
+     "core::relay::proxy_server::upstream_error_with_reason::ha3e3e5cf32d4c0f7",
+     "core::result::unwrap_failed::h855bccc0ecc45c4f",
+     "bytes::panic_advance::hdc6adbdb59af55b1",
+     "core::panicking::panic_fmt::h3a793735daf6e4ec"
+    ]
+   },
+   "core::relay::proxy_server::sanitize_body_for_native_responses_upstream::hd82e975e405848f8@0x100853f40": {
+    "callers": [
+     "core::relay::proxy_server::forward_codex_responses_internal::_$u7b$$u7b$closure$u7d$$u7d$::hd50fd55521a7cd21"
+    ],
+    "callees": [
+     "_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$::index_into::h51f9dd05d381230f",
+     "core::relay::response_item_id_compat::normalize_legacy_call_item_ids_in_request::hd956480848e077c1",
+     "_$LT$log..__private_api..GlobalLogger$u20$as$u20$log..Log$GT$::log::h3cdc1ad4dece8a2d",
+     "core::relay::native_responses_compat::rejects_hosted_web_search::hf1da2177e25802f2",
+     "core::relay::native_responses_compat::strip_hosted_web_search_tools::he8c81f3bbf9dfdf6",
+     "core::relay::response_item_id_compat::remove_unusable_reasoning_items_from_store_false_request::h72d67b411ce5be04"
+    ]
+   }
+  },
+  "codexmate_lib::core::relay::health_check": {
+   "core::relay::health_check::probe::ProbeStream::dispatch::h0d5196506e18cdd5@0x1003a0a50": {
+    "callers": [
+     "core::relay::health_check::probe::ProbeStream::line::h6ac0346e19aa23d4",
+     "core::relay::health_check::probe::ProbeStream::finish::ha6b031cb78ad6c16"
+    ],
+    "callees": [
+     "serde_json::de::from_trait::h99bf8e350a0ab991",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "core::relay::health_check::error_message_from_json::h4ddaed0de1518ddf",
+     "_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$::index_into::h51f9dd05d381230f",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "__ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17hc0f9d15e22e253cdE_2",
+     "serde_json::value::Value::pointer::hda2ad138ba9a0c27",
+     "core::relay::health_check::extract_stream_text_delta::h8501250060950359",
+     "_$LT$alloc..string..String$u20$as$u20$core..iter..traits..collect..FromIterator$LT$char$GT$$GT$::from_iter::hc0af177ec59ff14e",
+     "core::str::count::char_count_general_case::h35f326d7c82e4f55",
+     "__ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb993af2e833a05caE_3",
+     "core::str::count::do_count_chars::h4875767a8f682eeb",
+     "alloc::raw_vec::RawVec$LT$T$C$A$GT$::grow_one::hbfe65ab6de98a449",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::relay::health_check::probe::ProbeStream::line::h6ac0346e19aa23d4@0x1003a0030": {
+    "callers": [
+     "core::relay::health_check::probe::ProbeStream::push::h69373f4dac382db3",
+     "core::relay::health_check::probe::ProbeStream::finish::ha6b031cb78ad6c16"
+    ],
+    "callees": [
+     "core::str::converts::from_utf8::hb32deb9559450f6e",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "__ZN81_$LT$core..str..pattern..CharSearcher$u20$as$u20$core..str..pattern..Searcher$GT$10next_match17hb964a2350606f792E_0",
+     "core::relay::health_check::probe::ProbeStream::dispatch::h0d5196506e18cdd5",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "_memcpy",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "alloc::raw_vec::RawVecInner$LT$A$GT$::reserve::do_reserve_and_handle::h651fd2e8859c1d59"
+    ]
+   },
+   "core::relay::health_check::result::apply_if_current::h0656de25a866e7fa@0x100acabf0": {
+    "callers": [
+     "tauri::ipc::InvokeResolver$LT$R$GT$::respond_async_serialized_inner::_$u7b$$u7b$closure$u7d$$u7d$::h65d92f661f07f77f"
+    ],
+    "callees": [
+     "_memcmp",
+     "_$LT$$u5b$A$u5d$$u20$as$u20$core..slice..cmp..SlicePartialEq$LT$B$GT$$GT$::equal::h06ae7c3c18cc3d26",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "core::relay::models::sanitize_error_for_display::ha859789d0aadfabc"
+    ]
+   },
+   "core::relay::health_check::probe::ProbeStream::push::h69373f4dac382db3@0x1003a04a0": {
+    "callers": [
+     "core::relay::health_check::test_provider_staged::_$u7b$$u7b$closure$u7d$$u7d$::h5d6e41312982cc51"
+    ],
+    "callees": [
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "core::relay::health_check::probe::ProbeStream::line::h6ac0346e19aa23d4",
+     "alloc::raw_vec::RawVec$LT$T$C$A$GT$::grow_one::hf88ff27bc28ad464",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::relay::health_check::probe::validate_embedding::hf67a625817f1ebd2@0x1003a16c0": {
+    "callers": [
+     "core::relay::health_check::test_provider_staged::_$u7b$$u7b$closure$u7d$$u7d$::h5d6e41312982cc51"
+    ],
+    "callees": [
+     "serde_json::de::from_trait::he213214ce1dd6727",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$::index_into::h51f9dd05d381230f",
+     "__ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb993af2e833a05caE_3",
+     "__ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17hc0f9d15e22e253cdE_2",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::relay::health_check::probe::ProbeStream::finish::ha6b031cb78ad6c16@0x1003a0790": {
+    "callers": [
+     "core::relay::health_check::test_provider_staged::_$u7b$$u7b$closure$u7d$$u7d$::h5d6e41312982cc51"
+    ],
+    "callees": [
+     "core::relay::health_check::probe::ProbeStream::line::h6ac0346e19aa23d4",
+     "core::relay::health_check::probe::ProbeStream::dispatch::h0d5196506e18cdd5",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::relay::health_check::read_probe_body::_$u7b$$u7b$closure$u7d$$u7d$::ha3a853baf91f4c01@0x1000ec780": {
+    "callers": [
+     "core::relay::health_check::test_provider_staged::_$u7b$$u7b$closure$u7d$$u7d$::h5d6e41312982cc51"
+    ],
+    "callees": [
+     "core::panicking::panic_const::panic_const_async_fn_resumed_panic::h51796ee0ce4d776a",
+     "core::panicking::panic_const::panic_const_async_fn_resumed::h8f02a5f78cdcc4bb",
+     "_memcpy",
+     "__ZN4core3ptr49drop_in_place$LT$http..header..map..HeaderMap$GT$17hbc21c0b42cf04151E_0",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "reqwest::error::Error::without_url::hd3bcffd7643367fc",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "__ZN4core3ptr42drop_in_place$LT$reqwest..error..Error$GT$17h9df2bb7224e1eb93E_0",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "alloc::raw_vec::RawVecInner$LT$A$GT$::reserve::do_reserve_and_handle::h651fd2e8859c1d59",
+     "alloc::alloc::handle_alloc_error::h450e44845847d219",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   }
+  },
+  "codexmate_lib::core::relay::transition_journal": {
+   "core::relay::transition_journal::write_inner::h17805da6329a9a7b@0x1003a21c0": {
+    "callers": [
+     "core::relay::transition_journal::begin_commit::headaca16d3f09d62",
+     "core::relay::transition_journal::warn_after_commit::h87e5d3a870ecc5d5",
+     "core::relay::transition_journal::write::hc8770bf64e6870ff",
+     "core::relay::router_transition::write_journal::h4085596e5e0c0512"
+    ],
+    "callees": [
+     "chrono::offset::utc::Utc::now::h937b24ab9cbcadf3",
+     "core::relay::transition_journal::read_checked::h9f4f05221fc4bd00",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "core::relay::transition_journal::append_event::h4991c0e9e7a66037",
+     "serde_core::ser::SerializeMap::serialize_entry::h360c4ae654df8c42",
+     "serde_json::ser::invalid_raw_value::hd0c8797395d11416",
+     "serde_core::ser::SerializeMap::serialize_entry::hb0151d155570a03c",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "__ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17hc0f9d15e22e253cdE_2",
+     "serde_core::ser::SerializeMap::serialize_entry::hb60c123568700c16",
+     "serde_core::ser::SerializeMap::serialize_entry::h1484048318609308",
+     "serde_core::ser::SerializeMap::serialize_entry::h0078c3a0ff9ac838",
+     "__ZN91_$LT$serde_json..ser..Compound$LT$W$C$F$GT$$u20$as$u20$serde_core..ser..SerializeStruct$GT$3end17h729701607b9a516aE_0",
+     "std::path::Path::_join::hb1a495d4f06b13b8",
+     "core::relay::atomic_write::write_atomic_private_report::hcd723884b82d3047",
+     "__ZN4core3ptr86drop_in_place$LT$codexmate_lib..core..relay..transition_journal..TransitionJournal$GT$17h71c27bf29f6a7e06E_0"
+    ]
+   },
+   "core::relay::transition_journal::read_checked::h9f4f05221fc4bd00@0x1003a4840": {
+    "callers": [
+     "core::relay::transition_journal::clear_inner::h52d45262dfbf85a9",
+     "core::relay::transition_journal::write_inner::h17805da6329a9a7b",
+     "core::relay::transition_journal::commit_pending::h39978c21c21d17ea",
+     "core::relay::transition_journal::warn_after_commit::h87e5d3a870ecc5d5",
+     "core::relay::transition_journal::read::h3a344a55a1203308",
+     "core::relay::manager::RelayManager::ensure_pending_commit_matches::h5c8b8f8d3ed57bf4",
+     "core::relay::router_transition::ensure_recovery_records_allowed::hbf7242cd3bcca315"
+    ],
+    "callees": [
+     "std::path::Path::_join::hb1a495d4f06b13b8",
+     "std::sys::fs::symlink_metadata::hd69903fe66faddbd",
+     "__ZN3std2io5error5Error4kind17hbe3dd139aa56fd1bE_1",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "std::fs::OpenOptions::_open::h1dad73452047b8aa",
+     "std::io::default_read_to_end::h6d43a6b9a5691c1a",
+     "_close$NOCANCEL",
+     "serde_json::de::from_trait::h20830d73f0f672c0",
+     "core::ops::function::FnOnce::call_once::h7861de0bf343872e",
+     "_memcpy",
+     "serde_json::de::from_trait::h9e850046607eb59d"
+    ]
+   },
+   "core::relay::transition_journal::clear_inner::h52d45262dfbf85a9@0x1003a1b20": {
+    "callers": [
+     "core::relay::manager::RelayManager::bootstrap::h66d6f11d016c5514",
+     "core::relay::router_transition::commit_verified::h04f08066e3cc31e4",
+     "core::relay::router_transition::run_with_environment::h4bf0603b128575c9",
+     "core::relay::router_transition::run_with_environment::h7686b0a41e87896f",
+     "core::relay::router_transition::run_with_environment::hd0e109fdac6e0f14",
+     "core::relay::router_transition::run_with_writer_policy::h45ca0ea41fa22c9d",
+     "core::relay::router_transition::run_with_writer_policy::h92005e51e275cab5",
+     "core::relay::router_transition::run_with_writer_policy::hb5d7aec8d8734c87"
+    ],
+    "callees": [
+     "core::relay::transition_journal::read_checked::h9f4f05221fc4bd00",
+     "std::path::Path::_join::hb1a495d4f06b13b8",
+     "core::relay::atomic_write::removal::remove_file_report::he4acf789bf0d185c",
+     "__ZN3std2io5error5Error4kind17hbe3dd139aa56fd1bE_1",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "core::relay::transition_journal::append_event::h4991c0e9e7a66037",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::relay::transition_journal::warn_after_commit::h87e5d3a870ecc5d5@0x1003a5b50": {
+    "callers": [
+     "core::relay::router_transition::commit_verified::h04f08066e3cc31e4",
+     "core::relay::router_transition::run_with_environment::h4bf0603b128575c9",
+     "core::relay::router_transition::run_with_environment::h7686b0a41e87896f",
+     "core::relay::router_transition::run_with_environment::hd0e109fdac6e0f14",
+     "core::relay::router_transition::run_with_writer_policy::h45ca0ea41fa22c9d",
+     "core::relay::router_transition::run_with_writer_policy::h92005e51e275cab5",
+     "core::relay::router_transition::run_with_writer_policy::hb5d7aec8d8734c87"
+    ],
+    "callees": [
+     "core::relay::transition_journal::read_checked::h9f4f05221fc4bd00",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "core::relay::transition_journal::write_inner::h17805da6329a9a7b",
+     "core::relay::atomic_write::Publication::acknowledge::hb1198e95828e3009",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::relay::transition_journal::begin_commit::headaca16d3f09d62@0x1003a4620": {
+    "callers": [
+     "core::relay::router_transition::commit_verified::h04f08066e3cc31e4",
+     "core::relay::router_transition::run_with_environment::h4bf0603b128575c9",
+     "core::relay::router_transition::run_with_environment::h7686b0a41e87896f",
+     "core::relay::router_transition::run_with_environment::hd0e109fdac6e0f14",
+     "core::relay::router_transition::run_with_writer_policy::h45ca0ea41fa22c9d",
+     "core::relay::router_transition::run_with_writer_policy::h92005e51e275cab5",
+     "core::relay::router_transition::run_with_writer_policy::hb5d7aec8d8734c87"
+    ],
+    "callees": [
+     "core::relay::transition_journal::write_inner::h17805da6329a9a7b",
+     "core::relay::atomic_write::Publication::require_sync::hb09f8d8c93f5e10a",
+     "__ZN3std2io5error5Error4kind17hbe3dd139aa56fd1bE_1",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc"
+    ]
+   },
+   "core::relay::transition_journal::commit_pending::h39978c21c21d17ea@0x1003a4fe0": {
+    "callers": [
+     "core::relay::manager::RelayManager::persist_router_mode::h75c4e55c4ab03b2d",
+     "core::relay::manager::RelayManager::set_codex_router_enabled::h32e960e907708193",
+     "core::relay::manager::RelayManager::has_confirmed_target_state::h002ba7ccc80243d8",
+     "core::relay::manager::RelayManager::rollback_router_enabled_stably::hbeb40a573d7e0607",
+     "core::relay::manager::RelayManager::set_codex_router_no_account_mode::he0fee341767610d3",
+     "core::relay::manager::RelayManager::bootstrap::h66d6f11d016c5514",
+     "core::relay::codex_diagnostic::run_diagnostics_with_mode::h04543950230a18b8"
+    ],
+    "callees": [
+     "core::relay::transition_journal::read_checked::h9f4f05221fc4bd00",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc"
+    ]
+   },
+   "core::relay::transition_journal::commit_pending_error::hd405c7fb2cb153d3@0x1003a6520": {
+    "callers": [
+     "core::relay::manager::RelayManager::set_codex_router_no_account_mode::he0fee341767610d3",
+     "core::relay::router_transition::run_with_environment::h4bf0603b128575c9",
+     "core::relay::router_transition::run_with_environment::h7686b0a41e87896f",
+     "core::relay::router_transition::run_with_environment::hd0e109fdac6e0f14",
+     "core::relay::router_transition::run_with_writer_policy::h45ca0ea41fa22c9d",
+     "core::relay::router_transition::run_with_writer_policy::h92005e51e275cab5",
+     "core::relay::router_transition::run_with_writer_policy::hb5d7aec8d8734c87"
+    ],
+    "callees": [
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   }
+  },
+  "codexmate_lib::core::relay::storage": {
+   "core::relay::storage::preflight_save::hbc9e84ee879b9b57@0x10087b3f0": {
+    "callers": [
+     "core::relay::manager::RelayManager::preflight_repair_state_write::hc9cf0f0b177adb96",
+     "core::relay::manager::RelayManager::reconcile_current_mode_locked_from_with_writer_policy::h6bc3a278107f953c"
+    ],
+    "callees": [
+     "platform::paths::CodexPaths::ensure_directories::h388e0ba1cfe56cce",
+     "std::path::Path::is_dir::h7ca012509d3e379e",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "std::sys::fs::metadata::h32fa16d3052ea535",
+     "__ZN4core3ptr90drop_in_place$LT$core..result..Result$LT$std..fs..Metadata$C$std..io..error..Error$GT$$GT$17hdef24fa1b6e82a06E_1",
+     "std::fs::OpenOptions::_open::h1dad73452047b8aa",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "_close$NOCANCEL",
+     "serde_json::ser::to_vec_pretty::h867d44453d07fc16",
+     "std::path::Path::parent::h4c3ac26770731fbb",
+     "std::process::id::ha72f58ec62264e78",
+     "uuid::v4::_$LT$impl$u20$uuid..Uuid$GT$::new_v4::h0d422edb31edb566",
+     "std::path::Path::_join::hb1a495d4f06b13b8",
+     "core::relay::atomic_write::write_atomic_private_report::hcd723884b82d3047",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "core::relay::atomic_write::Publication::acknowledge::hb1198e95828e3009",
+     "std::sys::fs::remove_file::hd3c2fb9b7e0710ac",
+     "core::relay::storage::preflight_save::_$u7b$$u7b$closure$u7d$$u7d$::hc40f4b629fe1b67a",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::relay::storage::verify_router_commit::hd5492fcc8b34678e@0x10087c600": {
+    "callers": [
+     "core::relay::manager::RelayManager::persist_with_commit::h96da117dabac1ca2",
+     "core::relay::manager::RelayManager::ensure_pending_commit_matches::h5c8b8f8d3ed57bf4"
+    ],
+    "callees": [
+     "std::fs::OpenOptions::_open::h1dad73452047b8aa",
+     "__ZN3std2io5error5Error4kind17hbe3dd139aa56fd1bE_4",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "serde_json::de::from_reader::h2297b33eebc02e68",
+     "__ZN4core3ptr49drop_in_place$LT$serde_json..error..ErrorCode$GT$17hcd642d706d35d819E_0",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "__Unwind_Resume"
+    ]
+   },
+   "core::relay::storage::no_account_router_active::hf62a5809d871f80a@0x10087ccf0": {
+    "callers": [
+     "core::repository::Repository::load_account_switch_target::h0933d2b47c4c447e",
+     "core::repository::Repository::logout::h3ba905f78e0f0fc0"
+    ],
+    "callees": [
+     "std::fs::read::inner::h6a30c15c40add28b",
+     "__ZN3std2io5error5Error4kind17hbe3dd139aa56fd1bE_4",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "serde_json::de::from_trait::h10bc31cb50c6cc49",
+     "__ZN4core3ptr49drop_in_place$LT$serde_json..error..ErrorCode$GT$17hcd642d706d35d819E_0",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "_memcpy"
+    ]
+   },
+   "core::relay::storage::cache_loaded_api_key::he067dd4765fea3c3@0x10087c1c0": {
+    "callers": [
+     "core::relay::manager::RelayManager::ensure_provider_loaded::hf0d12dc9cfc5988c",
+     "core::relay::proxy_server::load_attempt_credentials::hdb1fb412500d04f8"
+    ],
+    "callees": [
+     "_memcmp",
+     "_$LT$alloc..string..String$u20$as$u20$core..clone..Clone$GT$::clone_from::h2e3c7b2510630605"
+    ]
+   },
+   "core::relay::storage::save_with_publication::h39ec4a80d39f6cb3@0x10087c9e0": {
+    "callers": [
+     "core::relay::manager::RelayManager::persist_with_commit::h96da117dabac1ca2",
+     "core::relay::manager::RelayManager::ensure_proxy_started::h361b96186deddcbc",
+     "core::relay::manager::RelayManager::new::h8be7e59ac527fd4e",
+     "core::relay::storage::save::hf6754a96d2358bec"
+    ],
+    "callees": [
+     "core::relay::storage::validate_credentials::h5612ddb7aa9c9284",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "platform::paths::CodexPaths::ensure_directories::h388e0ba1cfe56cce",
+     "serde_json::ser::to_vec_pretty::h867d44453d07fc16",
+     "core::relay::atomic_write::write_atomic_report::hf58adb6e14d92ad5",
+     "core::relay::storage::save_with_publication::_$u7b$$u7b$closure$u7d$$u7d$::h685c374fb9ce9dac",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "__Unwind_Resume"
+    ]
+   },
+   "core::relay::storage::validate_credentials::h5612ddb7aa9c9284@0x10087c420": {
+    "callers": [
+     "core::relay::storage::save_with_publication::h39ec4a80d39f6cb3",
+     "core::relay::storage::load::hcd611a851216ae3c"
+    ],
+    "callees": [
+     "core::relay::models::validate_relay_provider_id::h454a96d8efa4a017",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::relay::storage::save_with_publication::_$u7b$$u7b$closure$u7d$$u7d$::h685c374fb9ce9dac@0x10087cbe0": {
+    "callers": [
+     "core::relay::storage::save_with_publication::h39ec4a80d39f6cb3"
+    ],
+    "callees": [
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc"
+    ]
+   }
+  },
+  "codexmate_lib::core::repository::Repository": {
+   "core::repository::Repository::rebuild_registry_state::hefa9a5a8b2d5a759@0x10024e590": {
+    "callers": [
+     "core::repository::Repository::rebuild_registry_with_policy::h6c3f9864c86ac14d"
+    ],
+    "callees": [
+     "platform::paths::CodexPaths::ensure_directories::h388e0ba1cfe56cce",
+     "core::repository::Repository::load_registry::hc51b7fe546571e2c",
+     "core::auth::ensure_managed_account_snapshot_location::h5e97988fa1010acc",
+     "std::sys::fs::symlink_metadata::hd69903fe66faddbd",
+     "__ZN4core3ptr59drop_in_place$LT$codexmate_lib..core..models..CoreError$GT$17h2b3888839031de9dE_1",
+     "core::repository::load_switchable_account_snapshot::h0ee7ebb3fd4ae365",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "std::time::SystemTime::now::h1fe79e41f9d5677f",
+     "std::time::SystemTime::duration_since::had059553cab94f96",
+     "core::auth::load_auth_file::h3f192b6820e78b1d",
+     "std::sys::fs::metadata::h32fa16d3052ea535",
+     "core::auth::is_switchable_oauth_auth::he859c38ef587beb8",
+     "_memcpy",
+     "core::auth::make_auth_snapshot::hd5fe074b9b8a26b8",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "log::__private_api::log::hbec82629837037f7",
+     "_$LT$log..__private_api..GlobalLogger$u20$as$u20$log..Log$GT$::log::h3cdc1ad4dece8a2d",
+     "_$LT$alloc..string..String$u20$as$u20$core..clone..Clone$GT$::clone::h1ed93fb7d98ec2c1",
+     "_memcmp",
+     "alloc::raw_vec::RawVecInner$LT$A$GT$::try_allocate_in::hd1744e5f3df8d4ac",
+     "_$LT$std..path..PathBuf$u20$as$u20$core..cmp..PartialEq$GT$::eq::h90626381551b81ff",
+     "std::path::Path::components::he8b0f71a48373be5",
+     "core::iter::traits::iterator::Iterator::eq_by::h2bf41b2071abf6d2",
+     "_$LT$std..path..Components$u20$as$u20$core..cmp..PartialEq$GT$::eq::h5193f8baacc9df8f",
+     "_$LT$std..path..Display$u20$as$u20$core..fmt..Display$GT$::fmt::h93090e66e872583f",
+     "alloc::str::_$LT$impl$u20$str$GT$::to_lowercase::h21da2998c4baf545",
+     "chrono::offset::utc::Utc::now::h937b24ab9cbcadf3",
+     "core::repository::carry_over_registry_state::h141fb920c22aa824",
+     "core::repository::apply_imported_alias::hbfba257593ac5a7a",
+     "core::ptr::drop_in_place$LT$codexmate_lib..core..repository..RegistryItem$GT$::h4f91d57551ad7252",
+     "_memmove",
+     "alloc::raw_vec::RawVec$LT$T$C$A$GT$::grow_one::hdd6b1b2d9aa01c90",
+     "core::repository::prev_item::hc990ab025e867694",
+     "core::auth::account_snapshot_path::h321912d5c2a039db",
+     "core::repository::prefer_duplicate_snapshot_candidate::ha9b3e84268285871",
+     "__ZN4core3ptr56drop_in_place$LT$codexmate_lib..core..auth..AuthFile$GT$17h02c32842b896f398E_1",
+     "core::ptr::drop_in_place$LT$codexmate_lib..core..auth..AuthSnapshot$GT$::h4f2fd2f0b6ae5f0b",
+     "core::repository::Repository::persist_registry::he3845a2433b36ff3",
+     "_$LT$codexmate_lib..core..auth..AuthFile$u20$as$u20$core..clone..Clone$GT$::clone::h260344d34f7e03a6",
+     "__ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17hc0f9d15e22e253cdE_0"
+    ]
+   },
+   "core::repository::Repository::sync_auth_bundle_into_registry::hbe997555e9d9b5e0@0x100260530": {
+    "callers": [
+     "core::repository::Repository::sync_local_runtime_state::hc6ce5a604a09377b",
+     "core::repository::account_observation::_$LT$impl$u20$codexmate_lib..core..repository..Repository$GT$::try_sync_auth_observation::h601b9af1d37e43a2"
+    ],
+    "callees": [
+     "platform::paths::CodexPaths::ensure_directories::h388e0ba1cfe56cce",
+     "_$LT$std..path..Display$u20$as$u20$core..fmt..Display$GT$::fmt::h93090e66e872583f",
+     "std::time::SystemTime::now::h1fe79e41f9d5677f",
+     "std::time::SystemTime::duration_since::had059553cab94f96",
+     "_$LT$alloc..string..String$u20$as$u20$core..clone..Clone$GT$::clone::h1ed93fb7d98ec2c1",
+     "serde_json::de::from_trait::h8ec55585dc871976",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "alloc::str::_$LT$impl$u20$str$GT$::to_lowercase::h21da2998c4baf545",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "chrono::offset::utc::Utc::now::h937b24ab9cbcadf3",
+     "_memcmp",
+     "_memcpy",
+     "core::auth::make_auth_snapshot::hd5fe074b9b8a26b8",
+     "core::auth::is_switchable_oauth_auth::he859c38ef587beb8",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "core::ptr::drop_in_place$LT$codexmate_lib..core..auth..AuthSnapshot$GT$::h4f2fd2f0b6ae5f0b",
+     "alloc::raw_vec::RawVec$LT$T$C$A$GT$::grow_one::hdd6b1b2d9aa01c90",
+     "core::repository::Repository::persist_registry::he3845a2433b36ff3",
+     "core::repository::apply_plan_state::h9716ca492c71eb31",
+     "core::auth::load_auth_file::h3f192b6820e78b1d",
+     "core::ptr::drop_in_place$LT$core..result..Result$LT$codexmate_lib..core..auth..AuthFile$C$codexmate_lib..core..models..CoreError$GT$$GT$::h764c4e7398d6ef4a",
+     "core::oauth_refresh::auth_is_newer::h24f28c8ae0f93a3b",
+     "core::repository::Repository::sync_auth_bundle_into_registry::_$u7b$$u7b$closure$u7d$$u7d$::h634552c278762f8c",
+     "core::option::Option$LT$T$GT$::filter::h49afb5173a354ff6",
+     "std::fs::read::inner::h6a30c15c40add28b",
+     "core::ptr::drop_in_place$LT$core..result..Result$LT$alloc..vec..Vec$LT$u8$GT$$C$std..io..error..Error$GT$$GT$::h31ec7842e054a86a",
+     "core::relay::atomic_write::write_atomic_private_report::hcd723884b82d3047",
+     "__ZN4core3ptr56drop_in_place$LT$codexmate_lib..core..auth..AuthFile$GT$17h02c32842b896f398E_1",
+     "core::relay::atomic_write::Publication::acknowledge::hb1198e95828e3009",
+     "core::result::unwrap_failed::h855bccc0ecc45c4f",
+     "core::slice::sort::shared::smallsort::insertion_sort_shift_left::hf6ce98a818bf376d",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "core::slice::sort::stable::driftsort_main::hc8078c05894e6e57"
+    ]
+   },
+   "core::repository::Repository::flush_live_auth_into_matching_snapshot::h37d4725d8e303fc2@0x100265000": {
+    "callers": [
+     "core::repository::Repository::switch_account::h431bdac4b8382019"
+    ],
+    "callees": [
+     "std::sys::fs::metadata::h32fa16d3052ea535",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "std::fs::read::inner::h6a30c15c40add28b",
+     "serde_json::de::from_trait::h8ec55585dc871976",
+     "_memcpy",
+     "core::auth::is_aimami_managed_virtual_auth::h348e0c90ba3c9249",
+     "core::auth::is_api_key_auth::hfe24d937ecd3b80c",
+     "core::auth::is_switchable_oauth_auth::he859c38ef587beb8",
+     "core::auth::make_auth_snapshot::hd5fe074b9b8a26b8",
+     "_memcmp",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "core::ptr::drop_in_place$LT$codexmate_lib..core..auth..AuthSnapshot$GT$::h4f2fd2f0b6ae5f0b",
+     "core::auth::ensure_managed_account_snapshot_location::h5e97988fa1010acc",
+     "core::auth::load_auth_file::h3f192b6820e78b1d",
+     "core::ptr::drop_in_place$LT$core..result..Result$LT$codexmate_lib..core..auth..AuthFile$C$codexmate_lib..core..models..CoreError$GT$$GT$::h764c4e7398d6ef4a",
+     "core::oauth_refresh::auth_is_newer::h24f28c8ae0f93a3b",
+     "__ZN4core3ptr56drop_in_place$LT$codexmate_lib..core..auth..AuthFile$GT$17h02c32842b896f398E_1",
+     "core::ptr::drop_in_place$LT$core..result..Result$LT$alloc..vec..Vec$LT$u8$GT$$C$std..io..error..Error$GT$$GT$::h31ec7842e054a86a",
+     "core::relay::atomic_write::write_atomic_private_report::hcd723884b82d3047",
+     "core::relay::atomic_write::Publication::acknowledge::hb1198e95828e3009",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::repository::Repository::load_registry_for_mutation::h0b26d83573b0ca0a@0x10025b520": {
+    "callers": [
+     "core::repository::Repository::load_local_state::ha32946207e9731e4",
+     "core::repository::Repository::sync_local_runtime_state::hc6ce5a604a09377b",
+     "core::repository::Repository::persist_progressive_state::h4a52988b9a65f5d5",
+     "core::repository::Repository::update_auto_switch_config::h255c0816c293c90d",
+     "core::repository::Repository::clean::hf6040551bde106c6",
+     "core::repository::Repository::logout::h3ba905f78e0f0fc0",
+     "core::repository::account_observation::_$LT$impl$u20$codexmate_lib..core..repository..Repository$GT$::try_sync_auth_observation::h601b9af1d37e43a2"
+    ],
+    "callees": [
+     "std::sys::fs::metadata::h32fa16d3052ea535",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "std::time::SystemTime::now::h1fe79e41f9d5677f",
+     "std::time::SystemTime::duration_since::had059553cab94f96",
+     "core::repository::Repository::load_registry::hc51b7fe546571e2c"
+    ]
+   },
+   "core::repository::Repository::switch_account::_$u7b$$u7b$closure$u7d$$u7d$::h6bcddc9e999a201e@0x100248a90": {
+    "callers": [
+     "core::repository::Repository::switch_account::h431bdac4b8382019"
+    ],
+    "callees": [
+     "_memcmp",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy"
+    ]
+   },
+   "core::repository::Repository::sync_auth_bundle_into_registry::_$u7b$$u7b$closure$u7d$$u7d$::h634552c278762f8c@0x100261cd0": {
+    "callers": [
+     "core::repository::Repository::sync_auth_bundle_into_registry::hbe997555e9d9b5e0"
+    ],
+    "callees": [
+     "core::auth::make_auth_snapshot::hd5fe074b9b8a26b8",
+     "__ZN4core3ptr59drop_in_place$LT$codexmate_lib..core..models..CoreError$GT$17h2b3888839031de9dE_1",
+     "_memcpy"
+    ]
+   }
+  },
+  "codexmate_lib::core::relay::upstream_url": {
+   "core::relay::upstream_url::join_upstream_url_with_query::h17a62e856f591cee@0x100855470": {
+    "callers": [
+     "core::relay::health_check::test_provider_staged::_$u7b$$u7b$closure$u7d$$u7d$::h5d6e41312982cc51",
+     "core::relay::quota::fetch_async::_$u7b$$u7b$closure$u7d$$u7d$::h5a738f61c8d4cec3",
+     "tauri::ipc::InvokeResolver$LT$R$GT$::respond_async_serialized_inner::_$u7b$$u7b$closure$u7d$$u7d$::hf155d5b799d72376",
+     "core::relay::proxy_server::forward_with_failover::_$u7b$$u7b$closure$u7d$$u7d$::hc283b3f4538bfaf9",
+     "core::relay::proxy_server::forward_codex_responses_internal::_$u7b$$u7b$closure$u7d$$u7d$::hd50fd55521a7cd21"
+    ],
+    "callees": [
+     "core::relay::upstream_url::parse_base_url::h4b10b32762ec3164",
+     "core::relay::upstream_url::validate_endpoint_path::h4a409d3bd5ba44cf",
+     "url::Url::path::hdacd300d547f5011",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "__ZN4core3str4iter22SplitInternal$LT$P$GT$9next_back17h73b1c1df7bbe07e8E_2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "url::Url::set_path::h1ec779af55e04b0d",
+     "url::Url::query::h1af7b45471000a3f",
+     "url::Url::set_query::h59fc2cc84050b0ef",
+     "_$LT$form_urlencoded..Parse$u20$as$u20$core..iter..traits..iterator..Iterator$GT$::next::h5f4a03a90f1739ce",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "hashbrown::map::HashMap$LT$K$C$V$C$S$C$A$GT$::insert::h02d0da3861980a5e",
+     "core::hash::BuildHasher::hash_one::hfbce03ead8a292b6",
+     "_memcmp",
+     "std::sys::random::hashmap_random_keys::h0ea0c5485cd34a45"
+    ]
+   },
+   "core::relay::upstream_url::parse_base_url::h4b10b32762ec3164@0x1008546b0": {
+    "callers": [
+     "core::relay::quota::fetch_async::_$u7b$$u7b$closure$u7d$$u7d$::h5a738f61c8d4cec3",
+     "core::relay::upstream_url::join_upstream_root_url::h2a217e7fbfa9aef4",
+     "core::relay::upstream_url::normalize_upstream_base_url::h6c830e1277bdc657",
+     "core::relay::upstream_url::join_upstream_url_with_query::h17a62e856f591cee"
+    ],
+    "callees": [
+     "core::str::_$LT$impl$u20$str$GT$::trim_matches::h867b24570208f58e",
+     "url::ParseOptions::parse::h7da66aa6bebaf5b6",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "core::str::slice_error_fail::h480e51fbd8b15eba",
+     "_memcmp",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "url::Url::host_str::h951633b861c322f2",
+     "url::Url::username::hd711546128392e77",
+     "url::Url::password::hd737168add2f42dd",
+     "url::Url::fragment::h2d6f863d83ace37d",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::relay::upstream_url::join_upstream_root_url::h2a217e7fbfa9aef4@0x100854d40": {
+    "callers": [
+     "core::relay::quota::fetch_async::_$u7b$$u7b$closure$u7d$$u7d$::h5a738f61c8d4cec3"
+    ],
+    "callees": [
+     "core::relay::upstream_url::parse_base_url::h4b10b32762ec3164",
+     "core::relay::upstream_url::validate_endpoint_path::h4a409d3bd5ba44cf",
+     "url::Url::path::hdacd300d547f5011",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "url::Url::set_path::h1ec779af55e04b0d",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc"
+    ]
+   },
+   "core::relay::upstream_url::validate_endpoint_path::h4a409d3bd5ba44cf@0x100855110": {
+    "callers": [
+     "core::relay::upstream_url::join_upstream_root_url::h2a217e7fbfa9aef4",
+     "core::relay::upstream_url::join_upstream_url_with_query::h17a62e856f591cee"
+    ],
+    "callees": [
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "__ZN81_$LT$core..str..pattern..CharSearcher$u20$as$u20$core..str..pattern..Searcher$GT$10next_match17hb964a2350606f792E_3",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::relay::upstream_url::redacted_upstream_url::h6b76d49e2cf783d2@0x100854c00": {
+    "callers": [
+     "core::relay::health_check::test_provider_staged::_$u7b$$u7b$closure$u7d$$u7d$::h5d6e41312982cc51",
+     "core::relay::proxy_server::record_codex_route::h01d381e420a06467",
+     "_$LT$tokio..time..timeout..Timeout$LT$T$GT$$u20$as$u20$core..future..future..Future$GT$::poll::h513faa519508d45a"
+    ],
+    "callees": [
+     "url::ParseOptions::parse::h7da66aa6bebaf5b6",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "url::Url::set_username::hb39b281f9b5e5855",
+     "url::Url::set_password::h8a6cb8cb68dd4be1",
+     "url::Url::set_query::h59fc2cc84050b0ef",
+     "url::Url::set_fragment::h806b79ae59de4c5f",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "__Unwind_Resume"
+    ]
+   }
+  },
+  "codexmate_lib::core::relay::codex_writer": {
+   "core::relay::codex_writer::router_http_contract_issues::h0c94077b7a80b922@0x10039eb20": {
+    "callers": [
+     "core::relay::codex_diagnostic::check_router_http_contract::hd2f3e9ce9eb5d374",
+     "core::relay::router_reconciler::verify_no_account_commit_boundary::ha96d1eee06e11e5a",
+     "core::relay::invariants::verify_router_on_http_contract::h0fa31b2940c52c67"
+    ],
+    "callees": [
+     "_$LT$toml_edit..de..Deserializer$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h3e4345bc85cb5622",
+     "_memcpy",
+     "_$LT$toml_edit..de..Deserializer$u20$as$u20$serde_core..de..Deserializer$GT$::deserialize_any::h61a728ca5560f63d",
+     "_$LT$str$u20$as$u20$toml..value..Index$GT$::index::hb2a1aa13d098ca3e",
+     "_$LT$toml..de..Error$u20$as$u20$core..fmt..Display$GT$::fmt::hb4e2762bdfecb2bd",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "alloc::raw_vec::RawVec$LT$T$C$A$GT$::grow_one::hbfe65ab6de98a449",
+     "core::ptr::drop_in_place$LT$toml..value..Value$GT$::hc29b4f2f800c5bf1",
+     "_memcmp",
+     "core::result::unwrap_failed::h855bccc0ecc45c4f",
+     "alloc::alloc::handle_alloc_error::h450e44845847d219",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::relay::codex_writer::read_top_level_model_line::h8c74f9c16848132b@0x10039d4a0": {
+    "callers": [
+     "core::relay::invariants::RouterConfigSurface::parse::hbf09e7a859d6f311"
+    ],
+    "callees": [
+     "__ZN81_$LT$core..str..pattern..CharSearcher$u20$as$u20$core..str..pattern..Searcher$GT$10next_match17hb964a2350606f792E_0",
+     "core::str::_$LT$impl$u20$str$GT$::trim_matches::h867b24570208f58e",
+     "core::relay::managed_blocks::TomlLexicalState::line_is_structural::hdb0ae72dca934a7a",
+     "core::slice::memchr::memchr_aligned::hda948616f04379f9",
+     "core::str::_$LT$impl$u20$str$GT$::trim_matches::hb94468af23922a2c",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy"
+    ]
+   },
+   "core::relay::codex_writer::top_level_relay_model_requires_cleanup::h01af854673912bae@0x10039feb0": {
+    "callers": [
+     "core::relay::manager::RelayManager::codex_config_stale_reason_for_snapshot::hd73125ccb9f43465",
+     "core::relay::codex_diagnostic::check_config_stale::h243901a29bc1a471",
+     "core::relay::invariants::verify_invariants_with_depth::hf2627cfafcad2c75"
+    ],
+    "callees": [
+     "core::hash::BuildHasher::hash_one::h5aee3a6b10476d54",
+     "_memcmp"
+    ]
+   },
+   "core::relay::codex_writer::clear_managed_block::h0350a49fa2ad9f69@0x100397250": {
+    "callers": [
+     "core::relay::router_reconciler::reconcile_native_off_with_progress::h36fa7d3656dad9d3"
+    ],
+    "callees": [
+     "platform::paths::CodexPaths::ensure_directories::h388e0ba1cfe56cce",
+     "core::codex_config::update_text::h865a4b2ee6401e1e"
+    ]
+   }
+  },
+  "codexmate_lib::core::relay::managed_blocks": {
+   "core::relay::managed_blocks::TomlLexicalState::line_is_structural::hdb0ae72dca934a7a@0x100303890": {
+    "callers": [
+     "core::relay::codex_writer::compose_from_original::h8643cad6526d623f",
+     "core::relay::codex_writer::router_entry_presence::h61f48146c39c8011",
+     "core::relay::codex_writer::strip_all_managed_blocks::hb5d6fccc09feee5f",
+     "core::relay::codex_writer::read_top_level_model_line::h8c74f9c16848132b",
+     "core::relay::codex_writer::top_level_assignment_lines::h2c42ceafd19dcf89",
+     "core::relay::managed_blocks::lines_with_complete_strings::_$u7b$$u7b$closure$u7d$$u7d$::h4a9067f914f19f0f",
+     "core::relay::config_takeover::split_foreign_surface::hc34c653a15104802",
+     "core::relay::config_takeover::restore::h7ae047e0ec69bc9f",
+     "core::relay::codex_diagnostic::find_foreign_providers::h7c732cfd11a22317",
+     "core::relay::codex_diagnostic::is_cc_switch_fingerprint::h4e4fdcbdddd9eee5",
+     "core::relay::codex_diagnostic::find_third_party_base_url::habefc68a5f8a6c8e",
+     "core::relay::codex_diagnostic::fix_config_global_validity::he26c58744ab65a00",
+     "core::relay::codex_diagnostic::fix_config_third_party_text::hb3965a930e7943ba",
+     "core::relay::codex_diagnostic::fix_config_toml_syntax_text::h1a80018c2489f023",
+     "core::relay::codex_diagnostic::check_config_global_validity::h8df0276027cf58ff",
+     "core::relay::codex_diagnostic::check_config_profile_conflict::h4068565e343a7e0e",
+     "core::relay::codex_diagnostic::diagnostic_valid_provider_ids::h710851ef7671d630",
+     "core::relay::codex_diagnostic::fix_config_profile_conflict_text::h8f81ee69d6ed2e64",
+     "core::relay::invariants::RouterConfigSurface::parse::hbf09e7a859d6f311"
+    ],
+    "callees": []
+   },
+   "core::relay::managed_blocks::lines_with_complete_strings::_$u7b$$u7b$closure$u7d$$u7d$::h4a9067f914f19f0f@0x1003a19d0": {
+    "callers": [
+     "core::relay::codex_writer::compose_from_original::h8643cad6526d623f",
+     "core::relay::codex_writer::top_level_assignment_lines::h2c42ceafd19dcf89"
+    ],
+    "callees": [
+     "__ZN81_$LT$core..str..pattern..CharSearcher$u20$as$u20$core..str..pattern..Searcher$GT$10next_match17hb964a2350606f792E_0",
+     "core::relay::managed_blocks::TomlLexicalState::line_is_structural::hdb0ae72dca934a7a",
+     "core::str::slice_error_fail::h480e51fbd8b15eba"
+    ]
+   }
+  },
+  "codexmate_lib::core::account_coordination::FileLock": {
+   "core::account_coordination::FileLock::try_acquire::had7ea33505ba5b35@0x100966720": {
+    "callers": [
+     "core::repository::account_observation::_$LT$impl$u20$codexmate_lib..core..repository..Repository$GT$::try_sync_auth_observation::h601b9af1d37e43a2"
+    ],
+    "callees": [
+     "core::account_coordination::FileLock::open::hd742f256b11ef8a0",
+     "_$LT$std..fs..File$u20$as$u20$fs2..FileExt$GT$::try_lock_exclusive::h469647fbb3298b85",
+     "__ZN3std2io5error5Error4kind17hbe3dd139aa56fd1bE_5",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "_close$NOCANCEL"
+    ]
+   },
+   "core::account_coordination::FileLock::open::hd742f256b11ef8a0@0x100966960": {
+    "callers": [
+     "core::account_coordination::FileLock::try_acquire::had7ea33505ba5b35",
+     "core::account_coordination::FileLock::acquire::h346fb2f49ff2cc9b"
+    ],
+    "callees": [
+     "std::path::Path::parent::h4c3ac26770731fbb",
+     "std::fs::DirBuilder::_create::h099c6e2853c95452",
+     "std::fs::OpenOptions::_open::h1dad73452047b8aa",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc"
+    ]
+   }
+  },
+  "codexmate_lib::core::relay::codex_project_state": {
+   "core::relay::codex_project_state::inspect::hefe15e461739813d@0x100ad2d60": {
+    "callers": [
+     "core::relay::codex_diagnostic::fix_project_state_integrity::hf4fef8cb8e0388c5",
+     "core::relay::codex_diagnostic::check_project_state_integrity::h0d06f1bef049759c",
+     "core::debug_bundle::global_state_shape::h2d14ab5171dbf7de",
+     "core::relay::codex_project_state::repair_if_needed::h631e20668f558f04"
+    ],
+    "callees": [
+     "std::path::Path::_join::hb1a495d4f06b13b8",
+     "std::sys::fs::metadata::h32fa16d3052ea535",
+     "std::fs::read_to_string::inner::hcce2334f4117b5b3",
+     "_$LT$std..io..error..Error$u20$as$u20$core..fmt..Display$GT$::fmt::h602465de5bc79da0",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "serde_json::de::from_trait::h99bf8e350a0ab991",
+     "_$LT$serde_json..error..Error$u20$as$u20$core..fmt..Display$GT$::fmt::hc7b53c91fb83d10d",
+     "core::relay::codex_project_state::collect_project_state_from_active_db::h242554a58bf45ba3",
+     "_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$::index_into::h51f9dd05d381230f",
+     "_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter_nested..SpecFromIterNested$LT$T$C$I$GT$$GT$::from_iter::h55cf7a836e1c706c",
+     "core::relay::codex_project_state::active_db_path::hc8d3deae3506a663",
+     "_$LT$alloc..collections..btree..map..BTreeMap$LT$K$C$V$C$A$GT$$u20$as$u20$core..ops..drop..Drop$GT$::drop::h56f8dd89fedb6e90",
+     "alloc::collections::btree::map::IntoIter$LT$K$C$V$C$A$GT$::dying_next::h6b2286ad0da7cdd4",
+     "__ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb993af2e833a05caE_12",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "_$LT$alloc..collections..btree..set..BTreeSet$LT$T$GT$$u20$as$u20$core..iter..traits..collect..FromIterator$LT$T$GT$$GT$::from_iter::h9af5a640ddc73d31",
+     "__ZN4core3ptr42drop_in_place$LT$std..io..error..Error$GT$17hc0f9d15e22e253cdE_9",
+     "core::result::unwrap_failed::h855bccc0ecc45c4f",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::relay::codex_project_state::repair_if_needed::h631e20668f558f04@0x100acb850": {
+    "callers": [
+     "core::relay::codex_diagnostic::fix_project_state_integrity::hf4fef8cb8e0388c5"
+    ],
+    "callees": [
+     "core::relay::codex_project_state::inspect::hefe15e461739813d",
+     "core::relay::codex_project_state::stability_issue::hb16ab2f7d040b62e",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "core::relay::codex_project_state::repair::h4636eadd3928e8ee",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "__ZN4core3ptr92drop_in_place$LT$codexmate_lib..core..relay..codex_project_state..ProjectStateInspection$GT$17hd3734991d97024a4E_1",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   }
+  },
+  "codexmate_lib::core::account_io::verify_saved_oauth_credentials": {
+   "core::account_io::verify_saved_oauth_credentials::hf73e83f68d4bbe60@0x100c3ad70": {
+    "callers": [
+     "_$LT$codexmate_lib..commands..account_oauth..OauthTransitionAction$u20$as$u20$codexmate_lib..commands..account_transition..AccountTransitionAction$GT$::verify::hb4754507054d89f3"
+    ],
+    "callees": [
+     "core::auth::make_auth_snapshot::hd5fe074b9b8a26b8",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "core::account_io::read_registry_for_mutation::h5d56a5bbce183a6e",
+     "core::account_io::oauth_snapshot_path::h351a3f5876b75d69",
+     "__ZN4core3ptr66drop_in_place$LT$codexmate_lib..core..repository..RegistryFile$GT$17hcf896bc2be1b9a01E_4",
+     "core::account_io::ensure_existing_snapshot_owned_by::h3b3526a46f07e5d2",
+     "core::auth::load_auth_file::h3f192b6820e78b1d",
+     "core::account_io::verify_saved_oauth_credentials::_$u7b$$u7b$closure$u7d$$u7d$::hc7b89f13f3347265",
+     "__ZN4core3ptr56drop_in_place$LT$codexmate_lib..core..auth..AuthFile$GT$17h02c32842b896f398E_11",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   },
+   "core::account_io::verify_saved_oauth_credentials::_$u7b$$u7b$closure$u7d$$u7d$::hc7b89f13f3347265@0x100c3b4f0": {
+    "callers": [
+     "core::account_io::verify_saved_oauth_credentials::hf73e83f68d4bbe60"
+    ],
+    "callees": [
+     "core::auth::same_real_account_identity::ha93420aaed3a27c7",
+     "_memcmp",
+     "core::oauth_refresh::auth_is_newer::h24f28c8ae0f93a3b"
+    ]
+   }
+  },
+  "codexmate_lib::core::repository::build_account_token_status": {
+   "core::repository::build_account_token_status::h5275456e85dd9a7a@0x100270790": {
+    "callers": [
+     "commands::accounts::load_usage_only_runtime_snapshot::h73e92d11cc40fb22",
+     "std::sys::backtrace::__rust_begin_short_backtrace::h7b21a15bbac847b1",
+     "std::sys::backtrace::__rust_begin_short_backtrace::hdb2f6e8425a535a1"
+    ],
+    "callees": [
+     "std::time::SystemTime::now::h1fe79e41f9d5677f",
+     "std::time::SystemTime::duration_since::had059553cab94f96",
+     "core::oauth_refresh::token_remaining_seconds::h44a131ba6534d5b8",
+     "core::auth::credential_generation::h62ee2c51d26382c6"
+    ]
+   }
+  },
+  "codexmate_lib::core::repository::prefer_duplicate_snapshot_candidate": {
+   "core::repository::prefer_duplicate_snapshot_candidate::ha9b3e84268285871@0x1002758b0": {
+    "callers": [
+     "core::repository::Repository::rebuild_registry_state::hefa9a5a8b2d5a759"
+    ],
+    "callees": [
+     "core::oauth_refresh::auth_is_newer::h24f28c8ae0f93a3b",
+     "std::path::Path::components::he8b0f71a48373be5",
+     "_memcmp",
+     "core::iter::traits::iterator::Iterator::eq_by::h2bf41b2071abf6d2",
+     "std::path::compare_components::h4f2e3264bd4b5f16"
+    ]
+   }
+  },
+  "codexmate_lib::core::relay::codex_mutation": {
+   "core::relay::codex_mutation::CodexMutationGate::try_lock::hc52e8ec53328372c@0x1002bf380": {
+    "callers": [
+     "commands::account_observer::run::h7fc75b4e1e04260f"
+    ],
+    "callees": [
+     "std::sys::pal::unix::sync::mutex::Mutex::try_lock::ha481f93e51a9f965",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "std::sys::pal::unix::sync::mutex::Mutex::unlock::hb9acd26a137dd78d",
+     "std::sys::sync::once_box::OnceBox$LT$T$GT$::initialize::h8dd8979d8d8a8a3a",
+     "std::panicking::panic_count::is_zero_slow_path::h509d4bac4686b0cd",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   }
+  },
+  "codexmate_lib::core::relay::io": {
+   "core::relay::io::PreparedImport::publish::h3d698b6cc7cbc080@0x1003a72d0": {
+    "callers": [
+     "core::relay::manager::RelayManager::import_config::h12b5aa70ccc5542b"
+    ],
+    "callees": [
+     "core::relay::keychain::revisions::publish::h4bfff1c269dd80f2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc"
+    ]
+   }
+  },
+  "codexmate_lib::platform::system_volume::restore": {
+   "platform::system_volume::restore::hd2003b12d6919d53@0x1003dd130": {
+    "callers": [
+     "core::voice::runtime::start_capture::ha6477e7e2b92526b"
+    ],
+    "callees": [
+     "std::sync::mpmc::Sender$LT$T$GT$::send::h723bc9a79f0c3323",
+     "std::sync::once_lock::OnceLock$LT$T$GT$::initialize::h91e5bc10aef5fab4"
+    ]
+   }
+  },
+  "codexmate_lib::core::codex_config::validate_candidate": {
+   "core::codex_config::validate_candidate::h125db2f7999de900@0x10071cd30": {
+    "callers": [
+     "core::codex_config::update_text::h865a4b2ee6401e1e",
+     "core::relay::config_takeover::restore::h7ae047e0ec69bc9f",
+     "core::relay::config_takeover::takeover::ha9fefe9414e32031"
+    ],
+    "callees": [
+     "_$LT$toml_edit..de..Deserializer$u20$as$u20$core..str..traits..FromStr$GT$::from_str::h3e4345bc85cb5622",
+     "_memcpy",
+     "_$LT$toml_edit..de..Deserializer$u20$as$u20$serde_core..de..Deserializer$GT$::deserialize_any::h61a728ca5560f63d",
+     "__ZN4core3ptr39drop_in_place$LT$toml..value..Value$GT$17hc29b4f2f800c5bf1E_1",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f"
+    ]
+   }
+  },
+  "codexmate_lib::platform::process::is_codex_app_running": {
+   "platform::process::is_codex_app_running::hd8ada9a15c14db87@0x1007b5fa0": {
+    "callers": [
+     "core::sessions::delete_sessions::h9bb5e3d5693806a5",
+     "core::relay::manager::RelayManager::fix_diagnostic_issue::ha6eae02338c5b9f3",
+     "core::relay::manager::RelayManager::set_codex_router_enabled::h32e960e907708193",
+     "core::relay::manager::RelayManager::set_codex_router_no_account_mode::he0fee341767610d3",
+     "core::relay::manager::RelayManager::bootstrap::h66d6f11d016c5514",
+     "core::relay::manager::CodexRelaunchPolicy::relaunch_after_verified_state::h45bad87888257cf7",
+     "core::relay::codex_diagnostic::run_diagnostics_with_mode::h04543950230a18b8",
+     "platform::process::CodexProcessLifecycle::prepare_transition::h36d2d0f9674bfb71",
+     "platform::process::codex_transition_quiet_timeout::h1ea5f393df1ceeb1",
+     "core::oauth_refresh::refresh_token_with_policy::h1478f2f9064ddde5",
+     "core::oauth_refresh::external_codex_writer_is_present::h523b1f8afa557a76",
+     "_$LT$tokio..runtime..blocking..task..BlockingTask$LT$T$GT$$u20$as$u20$core..future..future..Future$GT$::poll::h3264e7ed5644a18e",
+     "_$LT$tokio..runtime..blocking..task..BlockingTask$LT$T$GT$$u20$as$u20$core..future..future..Future$GT$::poll::ha23c85c5ef97aecb",
+     "_$LT$tokio..runtime..blocking..task..BlockingTask$LT$T$GT$$u20$as$u20$core..future..future..Future$GT$::poll::hb66e8aeb6ea5870b",
+     "_$LT$tokio..runtime..blocking..task..BlockingTask$LT$T$GT$$u20$as$u20$core..future..future..Future$GT$::poll::hec81a6eb820f07ff",
+     "_$LT$tokio..runtime..blocking..task..BlockingTask$LT$T$GT$$u20$as$u20$core..future..future..Future$GT$::poll::hf16eab518a559e09",
+     "_$LT$tokio..runtime..blocking..task..BlockingTask$LT$T$GT$$u20$as$u20$core..future..future..Future$GT$::poll::hfb87089a978a1a4a",
+     "core::debug_bundle::process_shape::h2a0ca144efb0d92c"
+    ],
+    "callees": [
+     "platform::process::codex_app_bundle_path::h9bd7e427f8091333",
+     "platform::process::codex_macos_bundle_main_executable::hd9103030b06cb65a",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "platform::process::codex_macos_main_process_pid::h74d930ee73166f10",
+     "std::sys::process::unix::common::Command::new::h3bc62b213fd56379",
+     "std::sys::process::unix::common::Command::arg::he7ec6c16a2dd7ab0",
+     "std::process::Command::output::h737eedd4de2ee22e",
+     "__ZN4core3ptr42drop_in_place$LT$std..process..Command$GT$17h216cc1a7e63385bbE_3",
+     "alloc::string::String::from_utf8_lossy::he2f4710de0078f8b",
+     "core::str::_$LT$impl$u20$str$GT$::trim_matches::h867b24570208f58e",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy"
+    ]
+   }
+  },
+  "codexmate_lib::core::oauth_refresh::credential_refresh_time": {
+   "core::oauth_refresh::credential_refresh_time::hb61850e25205e518@0x1007f0040": {
+    "callers": [
+     "core::oauth_refresh::auth_is_newer::h24f28c8ae0f93a3b"
+    ],
+    "callees": [
+     "chrono::datetime::DateTime$LT$chrono..offset..fixed..FixedOffset$GT$::parse_from_rfc3339::hc448c6d5f9569cb5",
+     "core::oauth_refresh::decode_jwt_payload::hb265b49a8e090b45",
+     "_$LT$str$u20$as$u20$serde_json..value..index..Index$GT$::index_into::h51f9dd05d381230f",
+     "core::auth::parse_iso_timestamp::h3ad70238e40015bf",
+     "chrono::naive::date::NaiveDate::from_num_days_from_ce_opt::he35209b570b1cf86",
+     "__ZN6chrono5naive4date9NaiveDate16num_days_from_ce17h4ac4bdebbf1792eeE_0",
+     "chrono::datetime::DateTime$LT$chrono..offset..utc..Utc$GT$::from_timestamp::he58df7911c7a9a58",
+     "__ZN4core3ptr45drop_in_place$LT$serde_json..value..Value$GT$17hb993af2e833a05caE_8"
+    ]
+   }
+  },
+  "codexmate_lib::core::debug_bundle::field_diff": {
+   "core::debug_bundle::field_diff::h1fa8b0ab6fd3d301@0x100aa1ea0": {
+    "callers": [
+     "core::debug_bundle::catalog_shape::h931e58446156f8aa"
+    ],
+    "callees": [
+     "_memcmp",
+     "_$LT$alloc..vec..Vec$LT$T$GT$$u20$as$u20$alloc..vec..spec_from_iter_nested..SpecFromIterNested$LT$T$C$I$GT$$GT$::from_iter::h78e03a0a4b60034f",
+     "_$LT$alloc..collections..btree..map..Iter$LT$K$C$V$GT$$u20$as$u20$core..iter..traits..double_ended..DoubleEndedIterator$GT$::next_back::h2038333ffe22a209",
+     "core::option::unwrap_failed::h44626cade04bbf1e"
+    ]
+   }
+  },
+  "codexmate_lib::core::auth::credential_generation": {
+   "core::auth::credential_generation::h62ee2c51d26382c6@0x100ac3680": {
+    "callers": [
+     "core::repository::build_account_token_status::h5275456e85dd9a7a",
+     "core::repository::enrich_single_account_usage::h7b8e21f6d1780d30",
+     "_$LT$hashbrown..map..HashMap$LT$K$C$V$C$S$C$A$GT$$u20$as$u20$core..iter..traits..collect..Extend$LT$$LP$K$C$V$RP$$GT$$GT$::extend::h21b3ac397b93d935",
+     "core::auth::make_auth_snapshot::hd5fe074b9b8a26b8"
+    ],
+    "callees": [
+     "_memcpy",
+     "sha2::sha256::compress256::hc74ebc2fd6208bb9",
+     "___bzero",
+     "alloc::fmt::format::format_inner::h3c16c74008a310d4"
+    ]
+   }
+  },
+  "codexmate_lib::core::account_io::oauth_snapshot_path": {
+   "core::account_io::oauth_snapshot_path::h351a3f5876b75d69@0x100c35a70": {
+    "callers": [
+     "core::repository::Repository::sync_local_runtime_state::hc6ce5a604a09377b",
+     "core::repository::account_observation::_$LT$impl$u20$codexmate_lib..core..repository..Repository$GT$::try_sync_auth_observation::h601b9af1d37e43a2",
+     "core::account_io::import_accounts::hb33114d017718019",
+     "core::account_io::persist_account_auth::hf923f85c0da49e36",
+     "core::account_io::verify_saved_oauth_credentials::hf73e83f68d4bbe60"
+    ],
+    "callees": [
+     "_memcmp",
+     "alloc::raw_vec::handle_error::h81a7e8c5d8a11b4f",
+     "core::auth::account_snapshot_path::h321912d5c2a039db",
+     "core::auth::ensure_managed_account_snapshot_location::h5e97988fa1010acc",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "__RNvCs1Y7DaGC1cwg_7___rustc35___rust_no_alloc_shim_is_unstable_v2",
+     "__RNvCs1Y7DaGC1cwg_7___rustc12___rust_alloc",
+     "_memcpy"
+    ]
+   }
+  },
+  "codexmate_lib::core::account_io::read_live_oauth_account_key": {
+   "core::account_io::read_live_oauth_account_key::h39cb2ce707c20c1c@0x100c385d0": {
+    "callers": [
+     "core::account_io::persist_account_auth::hf923f85c0da49e36"
+    ],
+    "callees": [
+     "core::auth::load_auth_file::h3f192b6820e78b1d",
+     "__ZN3std2io5error5Error4kind17hbe3dd139aa56fd1bE_8",
+     "_memcpy",
+     "core::auth::is_switchable_oauth_auth::he859c38ef587beb8",
+     "core::auth::make_auth_snapshot::hd5fe074b9b8a26b8",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc"
+    ]
+   }
+  },
+  "codexmate_lib::core::account_io::account_key_or_registry_fallback": {
+   "core::account_io::account_key_or_registry_fallback::h841167ad4146a48e@0x100c3b660": {
+    "callers": [
+     "core::account_io::failure_after_snapshot_writes::h39375ddafad3cfd6",
+     "core::account_io::read_effective_active_account_key::h24e03f8a5f15d62c"
+    ],
+    "callees": [
+     "__ZN4core3ptr59drop_in_place$LT$codexmate_lib..core..models..CoreError$GT$17h2b3888839031de9dE_12",
+     "_memcpy",
+     "core::auth::is_aimami_managed_virtual_auth::h348e0c90ba3c9249",
+     "__RNvCs1Y7DaGC1cwg_7___rustc14___rust_dealloc",
+     "core::auth::is_switchable_oauth_auth::he859c38ef587beb8",
+     "core::auth::make_auth_snapshot::hd5fe074b9b8a26b8"
+    ]
+   }
+  }
+ },
+ "callees_referenced_not_decompiled_this_round": [
+  "簇内函数互调已含（atomic_write 内部/transition_journal 内部/Repository 内部/storage 内部/codex_writer→managed_blocks/verify_saved→oauth_snapshot_path/build_account_token_status→credential_generation/prefer_duplicate→auth_is_newer/repair_if_needed→inspect+stability_issue）",
+  "业务 callee 未逐个 deep：translator::anthropic_tools/responses_to_anthropic_request_with_context/strip_anthropic_web_search_tools/anthropic_thinking_carrier、auth::{load_auth_file,make_auth_snapshot,is_switchable_oauth_auth,ensure_managed_account_snapshot*,account_snapshot_path,parse_iso_timestamp,current_timestamp,is_aimami_managed_virtual_auth}、oauth_refresh::{auth_is_newer,decode_jwt_payload,token_remaining_seconds}、repository::{load_registry,persist_registry,prev_item,carry_over_registry_state,apply_imported_alias,load_switchable_account_snapshot,subscription_clock_millis}、account_io::{read_registry_for_mutation,ensure_existing_snapshot_owned_by}、storage::lazy_load_api_key、keychain::revisions::publish、response_item_id_compat::remove_unusable_reasoning_items_from_store_false_request、platform::paths::CodexPaths::ensure_directories、platform::process::{codex_app_bundle_path,codex_macos_bundle_main_executable,codex_macos_main_process_pid}、codex_config::update_text、breaker/invariants 等——均为既有模块已逆面或前序轮覆盖，红线30 不扩成全量重做",
+  "reqwest/tokio/serde_json/toml_edit/fs2/sha2/chrono/url/http/std 运行时为共享库函数，非 AiMaMi 业务"
+ ]
+}

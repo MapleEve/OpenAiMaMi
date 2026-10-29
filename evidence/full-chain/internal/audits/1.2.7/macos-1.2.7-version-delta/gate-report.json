@@ -1,0 +1,1223 @@
+{
+  "bundle": "macos-1.2.7-version-delta",
+  "product": "aimami",
+  "version": "1.2.7 (test build, version-string 1.2.6)",
+  "platform": "macos-arm64",
+  "evaluated": "2026-09-30",
+  "session": "<审计会话>",
+  "consumerStartReady": true,
+  "strictImplementationUse": true,
+  "strictImplementationUse_scope": "five delta target command/DTO surfaces (accounts switch+add+reset-card+expiry / sessions-threads-analytics / router diagnostics+fix / codex-catalog engine / anthropic V1 translator)",
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100_definition_v2": false,
+  "dimensions": {
+    "dim1": {
+      "status": "PASS",
+      "evidence": "raw/aimami/1.2.7/macos-arm64/frontend/ + intermediate frontend-{command,ccf}-diff.json (402 CCF rows, unresolved=0)"
+    },
+    "dim2": {
+      "status": "PASS",
+      "evidence": "decomp-1.2.7/ 263 fn live decompile, 0 truncation 0 failure (red line 20 compliant extractor)"
+    },
+    "dim3": {
+      "status": "PASS",
+      "evidence": "five backend-fullchain-*.md + fix_issue 23-branch dispatch decode (dto-fieldlevel-mac.md §4.2)"
+    },
+    "dim4": {
+      "status": "PASS",
+      "evidence": "dto-fieldlevel-mac.md: serde Serialize impl field-level decode (ResetCredits x4 / CodexSession 26-field / FixResult / DiagnosticItem / DiagnosticReport) + DiagnosticRepairOutcome enum via drop_in_place + CodexPaths 31-field + anthropic-version 2023-06-01 + model family table + SSE event enum"
+    },
+    "dim5": {
+      "status": "PASS",
+      "evidence": "dto-fieldlevel-win.md 10-item parity all PASS + documented OS-native divergences (process scan / LaunchAgents / system_volume naming)"
+    },
+    "dim6": {
+      "status": "BLANK",
+      "note": "Implementation-side acceptance; blocks readyToImplement, not strictImplementationUse"
+    }
+  },
+  "blockers": [
+    "dim6_acceptance_pending_implementation_side (blocks readyToImplement, NOT strictImplementationUse)",
+    "live_reference_parity_false (red line 25: live app comparison not run; declared 未对照; blocks readyToImplement, NOT strictImplementationUse)",
+    "load_runtime_display_snapshot mac zero-symbol (win-only registration, win side unbanned 2026-10-06; mac implementation requires mac-side evidence first)",
+    "custom_instructions_entry_enabled / recharge_entry_enabled (frontend-side names, no backend symbol)",
+    "handle_event transition-table enumeration mac side (win latest-exe four-successor enumeration closed 2026-10-05; mac 269K state machine remains behavior-contract level)"
+  ],
+  "accepted_unknown": [],
+  "genuine_ceiling": [],
+  "open_items": [
+    "load_runtime_display_snapshot (mac zero-symbol honest, win-only registration; 2026-10-06 user ruling unbanned win side — sync of prior stale forbidden entry)",
+    "custom_instructions_entry_enabled / recharge_entry_enabled (frontend-side names, no backend symbol)",
+    "handle_event transition table enumeration (behavior-contract-level closure declared sufficient; enumerate only if consumer requires)"
+  ],
+  "amendments": [
+    {
+      "date": "2026-09-30",
+      "session": "<审计会话>",
+      "change": "load_quota_history / reveal_relay_api_key 从 local_outtake 提到 PASS：现有 1.2.7 IDB live decompile 恢复完整函数体（load_history_range 0x100abde30 2676B / reveal wrapper 0x100b38240 447B + 核 0x100582380 870B + ensure/lazy/cache 链），dim4 字段级 DTO（QuotaHistoryPoint 4 字段 / QuotaHistoryPayload.points / CoreEnvelope<String>）+ 错误面全部落盘",
+      "evidence": "audits/macos-1.2.7-version-delta/interface-report.json"
+    },
+    {
+      "date": "2026-10-07",
+      "session": "<审计会话>",
+      "change": "graceful_restart_for_update 禁实现撤销（用户「欠账全做完 0 残留」直派）：mac 侧同轮只读核验推翻「无后端符号」——tauri 名字表 0x1018c0455 含该命令 + dispatcher 比较点 0x100615586 + 真 wrapper 0x100638510（from_command 0x100712c60 → AppHandle::request_restart 0x1006e9010【flag@+5192 + tao send_event(31)，非发散】→ respond unit；失败路径 cleanup+env+tauri::process::restart 0x101408100【current_exe→Info.plist CFBundleExecutable→spawn+原 argv→log→exit(0)】）。零参数；⚠进程退出+重启；mac 有 IPC 响应而 win 无（平台分叉，完整合同见 win 合同 §8.2 与 mac 合同 §9.1）。open_items 移除该 forbidden 条目；同步顺带清理 2026-10-06 load_runtime 裁决后未同步的 stale 条目（blockers owner_not_located 移除 + open_items forbidden→win-only 注册如实标注，均为随既定裁决同步非重新裁决）",
+      "evidence": "raw/aimami/1.2.7/windows-x64/backend/commands/system/graceful_restart_for_update/（win leaf 七件套；mac 侧证据为其 evidence.md §8 mac 只读对照段）"
+    },
+    {
+      "date": "2026-10-08",
+      "session": "<审计会话>",
+      "change": "blockers 精修同步（fable 双路审查 FAIL 修复）：移除已解决项 truly_undone_25_cluster_80fn（2026-09-30 80/80 深逆至 semantic implementation leaf）与 1.2.6_idb_callee_line_pending（2026-10-01 callee 线终局，均见 manifest resolved_blockers），替换为 manifest 现行 blockers 对齐开放面（load_runtime mac 零符号 / custom_instructions+recharge 无后端符号 / handle_event mac 行为合同级）；gate 五旗与 dimensions 不动",
+      "evidence": "audits/macos-1.2.7-version-delta/manifest.json (blockers + resolved_blockers)"
+    }
+  ],
+  "closeout_complete": true,
+  "consumer_action": "implement five delta target surfaces per logic/CONSUMER-CONTRACT-1.2.7.md; do NOT implement items in contract §9; unchanged surface migrates from 1.2.6 baseline bundles with their existing gate states",
+  "release_comparison": {
+    "schema": "c5cm.reverse.release_comparison_closure.v1",
+    "session": "<审计会话>",
+    "evaluated_at": "2026-10-20T06:06:42.170397+00:00",
+    "platform": "macos-arm64",
+    "pre_sha256": "ac235ae0171a41d0a641431bb71e60a26093470eab78f2b8d6f91632f93916b9",
+    "release_sha256": "f019dbc8e267891d05d35030c38aafe750b846b872a39940c16b67bc203874d0",
+    "pre_bytes": 71204992,
+    "release_bytes": 68357552,
+    "pre_mtime_ns": 1790690198000000000,
+    "release_mtime_ns": 1791388983000000000,
+    "module_content_reduced": true,
+    "necessary_pre_content_gaps": 0,
+    "selected_module_semantic_candidates_unresolved": 0,
+    "content_closed": true,
+    "readiness": true,
+    "mac_ready": true,
+    "overall_dual_platform_ready": true,
+    "status": "DONE_STATIC_COMPARISON",
+    "source_manifests": [
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-skills-content-manifest.json",
+        "sha256": "3b4c40df1bef5a86a0d63414acc09ccbe7f000a3d43f17386884d6717e60be8e",
+        "bytes": 30147
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-accounts-content-manifest.json",
+        "sha256": "bf6e88fcd7d9da940d99b5d255154da01d2027da04f50992747f6100d0a2d06b",
+        "bytes": 99977
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-threads-analytics-manifest.json",
+        "sha256": "5c80e6dcb951945eca7926027d9277e946036b65a9c58183ca9426087871faa6",
+        "bytes": 44121
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-protocol-manifest.json",
+        "sha256": "a747f47d6b692050e1e9c715a632608f0ec558cec5911497f925f2c6c3c43226",
+        "bytes": 98224
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-router-engine-platform-manifest.json",
+        "sha256": "8502629d1eb64d2586f449070c214f4cde4648ba6e7eb2073f17521715ea3fff",
+        "bytes": 48669
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-router-engine-platform-baseline-content-reduction-manifest.json",
+        "sha256": "48fed6393f1d38a4b114853d0d31f753604caeec3caef58b5469d6d353ea75a8",
+        "bytes": 13227
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-current-command-registration-manifest.json",
+        "sha256": "1b2e96aa6ce4acf1263d14881744758efb08ea8365ceaf19f02e1f3b8883671d",
+        "bytes": 35598
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-complete-name-scan-manifest.json",
+        "sha256": "a8fe8759440e9d79cf9d22d136f6d6e94e1ae541e91a8a4b489afff18c9ceb9a",
+        "bytes": 12961
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-non-command-candidate-adjudication-manifest.json",
+        "sha256": "5e1c013cffd3d5d56d8e31dd100ddf51f445c201c4a785c23af662f5d20a111c",
+        "bytes": 6804
+      }
+    ],
+    "source_analyses": [
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-skills-content.json",
+        "sha256": "c6c64e19eb2586a5528e92c5d920ff2147f1ef5c5b8f6c72ecafe785bb72208e",
+        "bytes": 232331
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-accounts-content-analysis.json",
+        "sha256": "539356fc451925545e6219da3ab90fc5855cff22d7484e404957e76fd0ec6432",
+        "bytes": 856850
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-threads-analytics-analysis.json",
+        "sha256": "730977ab2e22044ca98fd61625c4a6fe8398c85c0b5b04e0da99aa66f0c47a1f",
+        "bytes": 1132502
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-protocol-content.json",
+        "sha256": "23ad81a33117f1eb852901ab39cc2ec78db400b10fc4550885aa9570abe3397e",
+        "bytes": 397061
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-router-engine-platform-module-content-results-final.json",
+        "sha256": "94f85d55143d99cf5bcee9303d8bdae80100326ad3f5de3384bfbbe2d06e20d4",
+        "bytes": 22860
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-router-engine-platform-baseline-content-reduction.json",
+        "sha256": "f70c9e345f11636b73756976e2b6d15e371b72ff3837dbd947ade39b94f8710b",
+        "bytes": 223560
+      }
+    ],
+    "additional_inputs": [
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/pre-ac235ae0171a-baseline-content-supplement-manifest.json",
+        "sha256": "6a0e8b9ec982c0ccea76b219caacb4b48ce0e1696e087978ec8f353e45130a34",
+        "bytes": 69332
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-release-census.json",
+        "sha256": "d6be4f87318c5595acb52dfde74614a3c89af96888eb98d4763407ba4e7fbea1",
+        "bytes": 3464254
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-matching.json",
+        "sha256": "4824cbc0e75aba6642da751c5dade8f8945c283aa9d90c4d48d9a6ede76fb8ae",
+        "bytes": 9643662
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-protocol-library-census.json",
+        "sha256": "9fa3615047d095e8a6c9518cd8189f5e733e1d8938f436e009a55ddc5c611b60",
+        "bytes": 27640
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-frontend-mac-release-ipc.jsonl",
+        "sha256": "6f50e8047442c58a9caae57ea2c58a0032599c78f36c398a6ce1f0a71a77e2e4",
+        "bytes": 77403
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-frontend-mac-release-ccf.jsonl",
+        "sha256": "235d73eea418bf47adb13746d7e6272d9f957cc4e267cf0f14599f08a9fcfb38",
+        "bytes": 52396
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-current-command-registration.json",
+        "sha256": "8aba128c129cfd5c960c50ae7d730a09fc22c62ab527591e2a6cd022f7eb3ab6",
+        "bytes": 4812613
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-complete-function-name-universe.json",
+        "sha256": "c3206c706f2b6a3f19b17edc5faf262f22965c429306621e09c7632f70e09fdf",
+        "bytes": 20906536
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-complete-exports-entrypoints.json",
+        "sha256": "3c62d8823a53420fd061b4dd712d407eea0e7e11baa04079a59fb6761b48fc84",
+        "bytes": 2798055
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-non-command-orphan-scan.json",
+        "sha256": "9e861b148e2ba8bd4b0d96b9d8237d8aaebb2ee463493b9d53af2aa910efc35e",
+        "bytes": 11221506
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-non-command-orphan-native-evidence.json",
+        "sha256": "b0b095c192956fe5ed0d6b835b404c4782d317db0b19cdeaff14f458ba9e47ae",
+        "bytes": 199026
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-non-command-candidate-adjudication.json",
+        "sha256": "1fbf3c715124df0f660276c0a8b855452c7fa1ce091efb18a709154a9e7e099a",
+        "bytes": 7844608
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-oauth-bounded-verification-7e541e04.json",
+        "sha256": "55707786310bef14b2af9369c2377f2b23548e3ec00586ac028e1c42a6f33983",
+        "bytes": 1741415
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-oauth-bounded-verification-7e541e04-save-chain.json",
+        "sha256": "24cf25fe7203889736592299eb22200061981466dd3be47a9e211b3e11776564",
+        "bytes": 54751
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-oauth-bounded-verification-7e541e04-content.json",
+        "sha256": "eda51d7a3d257e3b29a3facf60b1461eb13e76f994ac1c229470626c50634cdc",
+        "bytes": 69915
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-final-fact-writeback-manifest.json",
+        "sha256": "43f82606e5d17850047469d261ac1dad45b90d2de33396894185f9c4dd4af27b",
+        "bytes": 1173412
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-final-fact-writeback-session.json",
+        "sha256": "2b67237339b15f25e44cd331ec427182a90d5d2cf539ecff3d1af2c831bd64b7",
+        "bytes": 372134
+      }
+    ],
+    "four_angle": {
+      "A": {
+        "status": "PASS for saved application-symbol universe and responsibility accounting",
+        "all_ida_functions": 40277,
+        "saved_mention_rows": 4760,
+        "true_app": 1870,
+        "generic_glue": 2890,
+        "module_counts": {
+          "skills": 32,
+          "accounts": 257,
+          "threads-analytics": 335,
+          "protocol": 119,
+          "router-engine-platform": 1127
+        },
+        "owned_unique": 1870,
+        "duplicate": 0,
+        "missing": 0,
+        "exact_ea_name_mismatches": 0,
+        "evidence_level": "shallow-screen migration + content on selected changed surfaces; not 1870 full-body certificates",
+        "complete_names_saved": 40277,
+        "complete_names_missing": 0,
+        "complete_name_source": {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-complete-function-name-universe.json",
+          "sha256": "c3206c706f2b6a3f19b17edc5faf262f22965c429306621e09c7632f70e09fdf",
+          "bytes": 20906536
+        }
+      },
+      "B": {
+        "status": "PASS current release registration reconciliation for this delta",
+        "wrapper_commands": 109,
+        "callsite_rows": 125,
+        "raw_callsite_commands": 103,
+        "raw_intersection": 94,
+        "raw_union": 118,
+        "raw_wrapper_only": [
+          "apply_custom_instruction",
+          "clean",
+          "clear_custom_instruction_block",
+          "diagnose",
+          "export_thread_statistics",
+          "get_claude_web_search_compat",
+          "get_relay_active",
+          "get_relay_proxy_status",
+          "load_custom_instruction_state",
+          "logout",
+          "preview_custom_instruction_apply",
+          "rebuild_registry",
+          "rollback_custom_instruction",
+          "run_daemon_once",
+          "set_claude_web_search_compat"
+        ],
+        "raw_direct_only": [
+          "custom_instructions_entry_enabled",
+          "get_or_create_remote_device_secret",
+          "graceful_restart_for_update",
+          "import_remote_device_secret_if_empty",
+          "quit_after_closing_router",
+          "quit_keeping_router",
+          "recharge_entry_enabled",
+          "test_relay_draft_stream",
+          "test_relay_provider_stream"
+        ],
+        "registered_commands": 112,
+        "separate_handlers": 105,
+        "inlined_handlers": 7,
+        "observed_actual_app_commands": 102,
+        "true_gaps": 0,
+        "unresolved_names": 0,
+        "registration_records_fully_reconciled": true,
+        "local_storage_false_positive": [
+          "custom_instructions_entry_enabled",
+          "recharge_entry_enabled"
+        ],
+        "unused_wrapper_unregistered": [
+          "apply_custom_instruction",
+          "clear_custom_instruction_block",
+          "load_custom_instruction_state",
+          "preview_custom_instruction_apply",
+          "rollback_custom_instruction"
+        ],
+        "clean_source_supplemented": true,
+        "native_only_outside_wrapper_ccf": [
+          "diagnose_codex_router"
+        ],
+        "registered_not_observed_page_call": [
+          "diagnose",
+          "diagnose_codex_router",
+          "export_thread_statistics",
+          "get_claude_web_search_compat",
+          "get_relay_active",
+          "get_relay_proxy_status",
+          "logout",
+          "rebuild_registry",
+          "run_daemon_once",
+          "set_claude_web_search_compat"
+        ],
+        "source": {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-current-command-registration.json",
+          "sha256": "8aba128c129cfd5c960c50ae7d730a09fc22c62ab527591e2a6cd022f7eb3ab6",
+          "bytes": 4812613
+        },
+        "evidence_level": "current SHA native comparison/dispatch/handler map; not whole-command full_leaf certification"
+      },
+      "C": {
+        "status": "COMPLETE delta-scope full-name/entry scan and candidate adjudication",
+        "C_diff_scan_complete": true,
+        "C_semantic_unqualified_pass": false,
+        "complete_functions": 40277,
+        "names_saved_unique": 40277,
+        "remaining_names_not_saved": 0,
+        "entry_table_unique_eas": 5406,
+        "entry_function_rows": 4984,
+        "entry_nonfunction_rows": 422,
+        "keyword_patterns": {
+          "relay": "relay",
+          "proxy": "proxy",
+          "codex_router": "codex_router",
+          "passthrough": "passthrough",
+          "sse": "(?<![A-Za-z])sse(?![A-Za-z])",
+          "forward": "forward",
+          "upstream": "upstream",
+          "watcher": "watcher",
+          "emitter": "emitter",
+          "dispatch": "dispatch",
+          "monitor": "monitor",
+          "heartbeat": "heartbeat",
+          "sync": "sync",
+          "daemon": "daemon",
+          "oauth": "oauth",
+          "account": "account",
+          "usage": "usage",
+          "quota": "quota",
+          "session": "session",
+          "thread": "thread",
+          "skill": "skill",
+          "catalog": "catalog",
+          "search": "search",
+          "request": "request",
+          "response": "response",
+          "http": "http",
+          "bootstrap": "bootstrap",
+          "launch": "launch",
+          "shutdown": "shutdown",
+          "migration": "migrat",
+          "persist": "persist",
+          "single_instance": "single_instance",
+          "quit": "quit",
+          "app_server": "app_server",
+          "repair": "repair",
+          "diagnostic": "diagnos",
+          "translator": "translat",
+          "anthropic": "anthropic"
+        },
+        "keyword_scope": "expanded patterns over native and demangled names, commands-related names excluded; old smaller keyword subset not mixed into these counts",
+        "noncommand_keyword_hits": 10544,
+        "keyword_group_counts": {
+          "dependency_keyword_hit": 7303,
+          "application_type_generic_glue": 1808,
+          "application_primary": 1252,
+          "externalized_application_backend_library": 148,
+          "externalized_library_type_glue": 33
+        },
+        "true_app_responsibility_functions": 1870,
+        "noncommands_app": 1728,
+        "generic_glue": 2890,
+        "cc_switch_anthropic_functions": 148,
+        "library_individual_body_refs": 38,
+        "anonymous_native_candidates": 86,
+        "runtime_error_tails": 31,
+        "noops": 1,
+        "candidate_adjudicated": 54,
+        "candidate_classification_counts": {
+          "dependency_tokio_internal_fragment": 1,
+          "ida_misaligned_dependency_fragment": 1,
+          "already_covered_app_misaligned_fragment": 1,
+          "embedded_jump_table_data": 2,
+          "dependency_crypto_internal_fragment": 47,
+          "dependency_chrono_internal_fragment": 1,
+          "embedded_source_text_data": 1
+        },
+        "candidate_unresolved_for_this_scope": 0,
+        "main_cli_changed": false,
+        "source_manifest": {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-complete-name-scan-manifest.json",
+          "sha256": "a8fe8759440e9d79cf9d22d136f6d6e94e1ae541e91a8a4b489afff18c9ceb9a",
+          "bytes": 12961
+        },
+        "adjudication_manifest": {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-non-command-candidate-adjudication-manifest.json",
+          "sha256": "5e1c013cffd3d5d56d8e31dd100ddf51f445c201c4a785c23af662f5d20a111c",
+          "bytes": 6804
+        },
+        "accepted_unknown_created": false,
+        "limits": "Shallow all-name/entry enumeration plus content on selected changed/candidate surfaces. Not all-library bodies, not zero business changes."
+      },
+      "D": {
+        "status": "PASS delta-scope function and command evidence classification",
+        "covered_functions_count": 1870,
+        "covered_functions_sources": [
+          {
+            "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-skills-content-manifest.json",
+            "sha256": "3b4c40df1bef5a86a0d63414acc09ccbe7f000a3d43f17386884d6717e60be8e",
+            "bytes": 30147
+          },
+          {
+            "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-accounts-content-manifest.json",
+            "sha256": "bf6e88fcd7d9da940d99b5d255154da01d2027da04f50992747f6100d0a2d06b",
+            "bytes": 99977
+          },
+          {
+            "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-threads-analytics-manifest.json",
+            "sha256": "5c80e6dcb951945eca7926027d9277e946036b65a9c58183ca9426087871faa6",
+            "bytes": 44121
+          },
+          {
+            "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-protocol-manifest.json",
+            "sha256": "a747f47d6b692050e1e9c715a632608f0ec558cec5911497f925f2c6c3c43226",
+            "bytes": 98224
+          },
+          {
+            "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-router-engine-platform-manifest.json",
+            "sha256": "8502629d1eb64d2586f449070c214f4cde4648ba6e7eb2073f17521715ea3fff",
+            "bytes": 48669
+          },
+          {
+            "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-router-engine-platform-baseline-content-reduction-manifest.json",
+            "sha256": "48fed6393f1d38a4b114853d0d31f753604caeec3caef58b5469d6d353ea75a8",
+            "bytes": 13227
+          }
+        ],
+        "covered_commands": [
+          "activate_relay_provider",
+          "begin_chatgpt_oauth_login",
+          "cancel_chatgpt_oauth_login",
+          "check_update_installability",
+          "clean",
+          "clean_catalog_ghost_threads",
+          "clean_global_state_tmp_files",
+          "clean_missing_rollout_rows",
+          "clean_orphan_rollouts",
+          "configure_auto_switch",
+          "confirm_pending_auto_switch",
+          "confirm_pending_auto_switch_and_restart_codex",
+          "deactivate_relay_provider",
+          "default_debug_bundle_file_name",
+          "delete_relay_provider",
+          "delete_sessions",
+          "delete_skill_backup",
+          "detect_api_proxy_config",
+          "diagnose",
+          "diagnose_codex_router",
+          "dismiss_pending_auto_switch",
+          "export_accounts_to_file",
+          "export_debug_bundle",
+          "export_relay_config",
+          "export_session_markdown",
+          "export_sessions_batch",
+          "export_thread_statistics",
+          "fetch_relay_models_draft",
+          "fix_codex_router_issue",
+          "focus_main_window",
+          "force_kill_codex",
+          "get_account_reset_credit_history",
+          "get_account_reset_credits",
+          "get_autostart_state",
+          "get_claude_web_search_compat",
+          "get_device_id",
+          "get_hotspot_enabled",
+          "get_image_compat",
+          "get_mystery_unlock_grants",
+          "get_notification_client_state",
+          "get_or_create_remote_device_secret",
+          "get_relay_active",
+          "get_relay_provider_quota",
+          "get_relay_proxy_status",
+          "get_system_info",
+          "get_usage_refresh_all_accounts",
+          "get_usage_refresh_interval",
+          "graceful_restart_for_update",
+          "has_notch",
+          "hotspot_ready",
+          "import_accounts_from_file",
+          "import_relay_config",
+          "import_remote_device_secret_if_empty",
+          "import_skill",
+          "inspect_session_index_health",
+          "load_bootstrap_state",
+          "load_dashboard_analytics",
+          "load_installed_skills",
+          "load_mcp_servers",
+          "load_pending_auto_switch",
+          "load_quota_history",
+          "load_relay_state",
+          "load_runtime_display_snapshot",
+          "load_session_messages",
+          "load_sessions",
+          "load_skill_backups",
+          "load_snapshot",
+          "load_thread_analytics",
+          "load_thread_analytics_detail",
+          "logout",
+          "merge_mystery_unlock_grants",
+          "migrate_session_worktree",
+          "open_path",
+          "parse_aimami_deeplink",
+          "preview_account_import",
+          "quit_after_closing_router",
+          "quit_keeping_router",
+          "rebuild_registry",
+          "refresh_single_account_usage",
+          "refresh_usage_snapshot",
+          "remove_accounts",
+          "remove_mcp_server",
+          "remove_skill",
+          "reorder_relay_providers",
+          "restart_codex",
+          "restore_skill_backup",
+          "reveal_relay_api_key",
+          "run_codex_router_diagnostics",
+          "run_daemon_once",
+          "set_account_alias",
+          "set_api_proxy_config",
+          "set_auto_switch",
+          "set_autostart_enabled",
+          "set_claude_web_search_compat",
+          "set_codex_router_enabled",
+          "set_codex_router_no_account_mode",
+          "set_dashboard_analytics_active",
+          "set_hotspot_enabled",
+          "set_image_compat",
+          "set_mcp_server_enabled",
+          "set_relay_provider_network",
+          "set_usage_refresh_all_accounts",
+          "set_usage_refresh_interval",
+          "switch_account",
+          "switch_account_and_restart_codex",
+          "test_api_proxy_config",
+          "test_relay_draft_stream",
+          "test_relay_provider_stream",
+          "upload_debug_report",
+          "upsert_mcp_server",
+          "upsert_relay_provider",
+          "write_client_debug_log"
+        ],
+        "covered_commands_note": "112 native registrations mapped; 102 actual observed App calls; not whole-command behavior certificates",
+        "function_orphan_classes": {
+          "already_in_canonical": 1870,
+          "local_outtake": 0,
+          "different_machine_owner": 0,
+          "truly_undone": 0
+        },
+        "classification_level": "canonical-consumed delta evidence, preserving each source depth; not full_leaf semantic equality or implementation gate",
+        "command_orphan_classes": {
+          "already_in_canonical": 102,
+          "local_outtake": 0,
+          "different_machine_owner": 0,
+          "truly_undone": 0
+        },
+        "command_orphan_status": "actual observed App call set reconciled; 5 unused unregistered wrappers and 2 non-IPC CCF false positives are not truly_undone",
+        "native_registration_orphan_classes": {
+          "already_in_canonical": 112,
+          "local_outtake": 0,
+          "different_machine_owner": 0,
+          "truly_undone": 0
+        },
+        "adopted_additional_scopes": {
+          "cc_switch_anthropic_library": 148,
+          "main_entry": 1,
+          "anonymous_candidates": 54
+        }
+      }
+    },
+    "covered_functions_count": 1870,
+    "covered_functions_inventory_refs": [
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-skills-content-manifest.json",
+        "sha256": "3b4c40df1bef5a86a0d63414acc09ccbe7f000a3d43f17386884d6717e60be8e",
+        "bytes": 30147
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-accounts-content-manifest.json",
+        "sha256": "bf6e88fcd7d9da940d99b5d255154da01d2027da04f50992747f6100d0a2d06b",
+        "bytes": 99977
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-threads-analytics-manifest.json",
+        "sha256": "5c80e6dcb951945eca7926027d9277e946036b65a9c58183ca9426087871faa6",
+        "bytes": 44121
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-protocol-manifest.json",
+        "sha256": "a747f47d6b692050e1e9c715a632608f0ec558cec5911497f925f2c6c3c43226",
+        "bytes": 98224
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-router-engine-platform-manifest.json",
+        "sha256": "8502629d1eb64d2586f449070c214f4cde4648ba6e7eb2073f17521715ea3fff",
+        "bytes": 48669
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-router-engine-platform-baseline-content-reduction-manifest.json",
+        "sha256": "48fed6393f1d38a4b114853d0d31f753604caeec3caef58b5469d6d353ea75a8",
+        "bytes": 13227
+      }
+    ],
+    "covered_commands": [
+      "activate_relay_provider",
+      "begin_chatgpt_oauth_login",
+      "cancel_chatgpt_oauth_login",
+      "check_update_installability",
+      "clean",
+      "clean_catalog_ghost_threads",
+      "clean_global_state_tmp_files",
+      "clean_missing_rollout_rows",
+      "clean_orphan_rollouts",
+      "configure_auto_switch",
+      "confirm_pending_auto_switch",
+      "confirm_pending_auto_switch_and_restart_codex",
+      "deactivate_relay_provider",
+      "default_debug_bundle_file_name",
+      "delete_relay_provider",
+      "delete_sessions",
+      "delete_skill_backup",
+      "detect_api_proxy_config",
+      "diagnose",
+      "diagnose_codex_router",
+      "dismiss_pending_auto_switch",
+      "export_accounts_to_file",
+      "export_debug_bundle",
+      "export_relay_config",
+      "export_session_markdown",
+      "export_sessions_batch",
+      "export_thread_statistics",
+      "fetch_relay_models_draft",
+      "fix_codex_router_issue",
+      "focus_main_window",
+      "force_kill_codex",
+      "get_account_reset_credit_history",
+      "get_account_reset_credits",
+      "get_autostart_state",
+      "get_claude_web_search_compat",
+      "get_device_id",
+      "get_hotspot_enabled",
+      "get_image_compat",
+      "get_mystery_unlock_grants",
+      "get_notification_client_state",
+      "get_or_create_remote_device_secret",
+      "get_relay_active",
+      "get_relay_provider_quota",
+      "get_relay_proxy_status",
+      "get_system_info",
+      "get_usage_refresh_all_accounts",
+      "get_usage_refresh_interval",
+      "graceful_restart_for_update",
+      "has_notch",
+      "hotspot_ready",
+      "import_accounts_from_file",
+      "import_relay_config",
+      "import_remote_device_secret_if_empty",
+      "import_skill",
+      "inspect_session_index_health",
+      "load_bootstrap_state",
+      "load_dashboard_analytics",
+      "load_installed_skills",
+      "load_mcp_servers",
+      "load_pending_auto_switch",
+      "load_quota_history",
+      "load_relay_state",
+      "load_runtime_display_snapshot",
+      "load_session_messages",
+      "load_sessions",
+      "load_skill_backups",
+      "load_snapshot",
+      "load_thread_analytics",
+      "load_thread_analytics_detail",
+      "logout",
+      "merge_mystery_unlock_grants",
+      "migrate_session_worktree",
+      "open_path",
+      "parse_aimami_deeplink",
+      "preview_account_import",
+      "quit_after_closing_router",
+      "quit_keeping_router",
+      "rebuild_registry",
+      "refresh_single_account_usage",
+      "refresh_usage_snapshot",
+      "remove_accounts",
+      "remove_mcp_server",
+      "remove_skill",
+      "reorder_relay_providers",
+      "restart_codex",
+      "restore_skill_backup",
+      "reveal_relay_api_key",
+      "run_codex_router_diagnostics",
+      "run_daemon_once",
+      "set_account_alias",
+      "set_api_proxy_config",
+      "set_auto_switch",
+      "set_autostart_enabled",
+      "set_claude_web_search_compat",
+      "set_codex_router_enabled",
+      "set_codex_router_no_account_mode",
+      "set_dashboard_analytics_active",
+      "set_hotspot_enabled",
+      "set_image_compat",
+      "set_mcp_server_enabled",
+      "set_relay_provider_network",
+      "set_usage_refresh_all_accounts",
+      "set_usage_refresh_interval",
+      "switch_account",
+      "switch_account_and_restart_codex",
+      "test_api_proxy_config",
+      "test_relay_draft_stream",
+      "test_relay_provider_stream",
+      "upload_debug_report",
+      "upsert_mcp_server",
+      "upsert_relay_provider",
+      "write_client_debug_log"
+    ],
+    "consumer_gate": {
+      "consumerStartReady": false,
+      "strictImplementationUse": false,
+      "readyToImplement": false,
+      "implementation_use": false,
+      "gate_accepted": false,
+      "full_leaf_100": false,
+      "full_leaf_100_definition_v2": false
+    },
+    "dim6": false,
+    "live_reference": false,
+    "live_reference_note": "未对照",
+    "windows_inferred": false,
+    "pendingPersistence": {
+      "status": "complete",
+      "persistence_complete": true,
+      "final_fact_manifest": {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-final-fact-writeback-manifest.json",
+        "sha256": "43f82606e5d17850047469d261ac1dad45b90d2de33396894185f9c4dd4af27b",
+        "bytes": 1173412
+      },
+      "final_fact_session": {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-final-fact-writeback-session.json",
+        "sha256": "2b67237339b15f25e44cd331ec427182a90d5d2cf539ecff3d1af2c831bd64b7",
+        "bytes": 372134
+      },
+      "source_snapshot_count": 20,
+      "source_snapshot_bytes": 6987933340,
+      "save_calls": 20,
+      "changed_eas": 53,
+      "responsibility_modules": 19,
+      "writer_per_ea_readback": 64,
+      "consumer_independent_fresh_ea_readback": 53,
+      "consumer_independent_raw_save_receipts": 20,
+      "consumer_independent_snapshots_rehashed": 20,
+      "mismatches": 0,
+      "current_i64": {
+        "path": "<内部存储>/raw/binary/AiMaMi 1.2.7-release.app/Contents/MacOS/AiMaMi.i64",
+        "sha256": "68fedeab38e84f2fdf6303392bef386c2910431dcd8c76ae41968de27f57d62c",
+        "bytes": 349775547,
+        "mtime_ns": 1792146473688721000,
+        "fstat_before_after_stable": true
+      },
+      "current_host_i64": {
+        "input_sha256": "f019dbc8e267891d05d35030c38aafe750b846b872a39940c16b67bc203874d0",
+        "input_bytes": 68357552,
+        "idb_path": "<内部存储>/raw/binary/AiMaMi 1.2.7-release.app/Contents/MacOS/AiMaMi.i64",
+        "segments": 21,
+        "functions": 40277,
+        "idb_sha256": "68fedeab38e84f2fdf6303392bef386c2910431dcd8c76ae41968de27f57d62c",
+        "idb_bytes": 349775547,
+        "idb_mtime_ns": 1792146473688721008
+      },
+      "latest_hash_independently_matches_final_log": true,
+      "oauth_wrong_assertions": 0,
+      "oauth_duplicate_markers": 0,
+      "final_full_slot_scan_wrong_assertions": 0,
+      "vibe_residue": 0,
+      "oauth_bounded_verification_complete": true,
+      "historical_old_e685_and_25f722_are_not_current": true,
+      "idb_mutations_by_consumer": 0,
+      "db_saves_by_consumer": 0
+    },
+    "blockers": [],
+    "source_hash_history_policy": "Old supplement source manifests and router protocol60b6 reference are frozen historical revisions; current references are the new manifests here. Do not treat old expected hashes as current-file matches.",
+    "old_pre_decisions_unchanged": true,
+    "owner_matrix": {
+      "canonical_scope": "macOS release f019dbc8e267 increment only; pre historical contract and flags unchanged",
+      "producer": "Claude",
+      "machine": "<本地机器>",
+      "session": "<审计会话>",
+      "claim": "internal-reverse/REVERSE-STATUS.md L8898; internal-reverse/task-plan.json#<审计会话>",
+      "source_index": "root INDEX latest same-session lines through current write preflight; internal INDEX current release record retained",
+      "write_mode": "same original release canonical producer consumes B/C and current verification sources; pre object/§1–9 unchanged",
+      "collision": "NONE for original release claim",
+      "takeover_token": "none; not takeover",
+      "idb_writer": "wf_a49b0ff8-87c unique fact writer; this consumer node IDB writes/save 0"
+    },
+    "persistence_complete": true,
+    "mac_closed": true,
+    "final_review_complete": true,
+    "covered_commands_level": "current native registration/handler mapping only; not all full-body contracts",
+    "observed_app_commands": [
+      "activate_relay_provider",
+      "begin_chatgpt_oauth_login",
+      "cancel_chatgpt_oauth_login",
+      "check_update_installability",
+      "clean",
+      "clean_catalog_ghost_threads",
+      "clean_global_state_tmp_files",
+      "clean_missing_rollout_rows",
+      "clean_orphan_rollouts",
+      "configure_auto_switch",
+      "confirm_pending_auto_switch",
+      "confirm_pending_auto_switch_and_restart_codex",
+      "deactivate_relay_provider",
+      "default_debug_bundle_file_name",
+      "delete_relay_provider",
+      "delete_sessions",
+      "delete_skill_backup",
+      "detect_api_proxy_config",
+      "dismiss_pending_auto_switch",
+      "export_accounts_to_file",
+      "export_debug_bundle",
+      "export_relay_config",
+      "export_session_markdown",
+      "export_sessions_batch",
+      "fetch_relay_models_draft",
+      "fix_codex_router_issue",
+      "focus_main_window",
+      "force_kill_codex",
+      "get_account_reset_credit_history",
+      "get_account_reset_credits",
+      "get_autostart_state",
+      "get_device_id",
+      "get_hotspot_enabled",
+      "get_image_compat",
+      "get_mystery_unlock_grants",
+      "get_notification_client_state",
+      "get_or_create_remote_device_secret",
+      "get_relay_provider_quota",
+      "get_system_info",
+      "get_usage_refresh_all_accounts",
+      "get_usage_refresh_interval",
+      "graceful_restart_for_update",
+      "has_notch",
+      "hotspot_ready",
+      "import_accounts_from_file",
+      "import_relay_config",
+      "import_remote_device_secret_if_empty",
+      "import_skill",
+      "inspect_session_index_health",
+      "load_bootstrap_state",
+      "load_dashboard_analytics",
+      "load_installed_skills",
+      "load_mcp_servers",
+      "load_pending_auto_switch",
+      "load_quota_history",
+      "load_relay_state",
+      "load_runtime_display_snapshot",
+      "load_session_messages",
+      "load_sessions",
+      "load_skill_backups",
+      "load_snapshot",
+      "load_thread_analytics",
+      "load_thread_analytics_detail",
+      "merge_mystery_unlock_grants",
+      "migrate_session_worktree",
+      "open_path",
+      "parse_aimami_deeplink",
+      "preview_account_import",
+      "quit_after_closing_router",
+      "quit_keeping_router",
+      "refresh_single_account_usage",
+      "refresh_usage_snapshot",
+      "remove_accounts",
+      "remove_mcp_server",
+      "remove_skill",
+      "reorder_relay_providers",
+      "restart_codex",
+      "restore_skill_backup",
+      "reveal_relay_api_key",
+      "run_codex_router_diagnostics",
+      "set_account_alias",
+      "set_api_proxy_config",
+      "set_auto_switch",
+      "set_autostart_enabled",
+      "set_codex_router_enabled",
+      "set_codex_router_no_account_mode",
+      "set_dashboard_analytics_active",
+      "set_hotspot_enabled",
+      "set_image_compat",
+      "set_mcp_server_enabled",
+      "set_relay_provider_network",
+      "set_usage_refresh_all_accounts",
+      "set_usage_refresh_interval",
+      "switch_account",
+      "switch_account_and_restart_codex",
+      "test_api_proxy_config",
+      "test_relay_draft_stream",
+      "test_relay_provider_stream",
+      "upload_debug_report",
+      "upsert_mcp_server",
+      "upsert_relay_provider",
+      "write_client_debug_log"
+    ],
+    "consumed_evidence_policy": {
+      "source_authoritative_false": "Intermediate producer facts were not consumer-gate authorities; this original canonical producer now explicitly adopts hash-verified content and per-scope classifications. No source flag is silently rewritten.",
+      "adopted_sources": [
+        {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-current-command-registration-manifest.json",
+          "sha256": "1b2e96aa6ce4acf1263d14881744758efb08ea8365ceaf19f02e1f3b8883671d",
+          "bytes": 35598
+        },
+        {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-current-command-registration.json",
+          "sha256": "8aba128c129cfd5c960c50ae7d730a09fc22c62ab527591e2a6cd022f7eb3ab6",
+          "bytes": 4812613
+        },
+        {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-complete-name-scan-manifest.json",
+          "sha256": "a8fe8759440e9d79cf9d22d136f6d6e94e1ae541e91a8a4b489afff18c9ceb9a",
+          "bytes": 12961
+        },
+        {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-complete-function-name-universe.json",
+          "sha256": "c3206c706f2b6a3f19b17edc5faf262f22965c429306621e09c7632f70e09fdf",
+          "bytes": 20906536
+        },
+        {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-complete-exports-entrypoints.json",
+          "sha256": "3c62d8823a53420fd061b4dd712d407eea0e7e11baa04079a59fb6761b48fc84",
+          "bytes": 2798055
+        },
+        {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-non-command-orphan-scan.json",
+          "sha256": "9e861b148e2ba8bd4b0d96b9d8237d8aaebb2ee463493b9d53af2aa910efc35e",
+          "bytes": 11221506
+        },
+        {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-non-command-orphan-native-evidence.json",
+          "sha256": "b0b095c192956fe5ed0d6b835b404c4782d317db0b19cdeaff14f458ba9e47ae",
+          "bytes": 199026
+        },
+        {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-non-command-candidate-adjudication-manifest.json",
+          "sha256": "5e1c013cffd3d5d56d8e31dd100ddf51f445c201c4a785c23af662f5d20a111c",
+          "bytes": 6804
+        },
+        {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-non-command-candidate-adjudication.json",
+          "sha256": "1fbf3c715124df0f660276c0a8b855452c7fa1ce091efb18a709154a9e7e099a",
+          "bytes": 7844608
+        },
+        {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-oauth-bounded-verification-7e541e04.json",
+          "sha256": "55707786310bef14b2af9369c2377f2b23548e3ec00586ac028e1c42a6f33983",
+          "bytes": 1741415
+        },
+        {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-oauth-bounded-verification-7e541e04-save-chain.json",
+          "sha256": "24cf25fe7203889736592299eb22200061981466dd3be47a9e211b3e11776564",
+          "bytes": 54751
+        },
+        {
+          "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-oauth-bounded-verification-7e541e04-content.json",
+          "sha256": "eda51d7a3d257e3b29a3facf60b1461eb13e76f994ac1c229470626c50634cdc",
+          "bytes": 69915
+        }
+      ],
+      "adopted_comparison_function_count": 1870,
+      "remaining_content_gaps": 0,
+      "do_not_infer_full_leaf_or_library_all_body": true
+    },
+    "execution_ready_for_final_review": true,
+    "consumer_gate_note": "Static comparison content/persistence completion is separate from implementation readiness. All release implementation flags remain false; no dim6/live_reference performed.",
+    "process_log": {
+      "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-consumer-reconciliation.json",
+      "sha256": "b8b91e3ecb45ebb099cc70c31869925c2103c662268a7f76eb90b6a88e058fd0",
+      "bytes": 1244811
+    },
+    "grounded_complete": true,
+    "readiness_scope": "same-version pre/release scoped static consumer delivery; not implementation, full_app/full_leaf, live-reference or implementation-side acceptance",
+    "final_review": {
+      "scope": "current complete scoped consumer package; two real independent lanes",
+      "structured": 0,
+      "adversarial": 0,
+      "blocking_count": 0,
+      "source": {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-consumer-content-reconciliation.json",
+        "sha256": "f0336771bb5ea0b50cc9530ed362e60fb7a3c0a8808d924c9611b68d970e104a",
+        "bytes": 42494
+      }
+    },
+    "grounded_scope_note": "Seven checks apply to this macOS release comparison only. Original joint CLAIM remains running because Windows is active. Historical in-progress checkpoint text is preserved as history.",
+    "grounded_seven_checks": {
+      "1_index": {
+        "status": "PASS",
+        "root_session_in_tail": true,
+        "final_consumer_manifest_bindings": "actual final SHA/size verified in the latest INDEX rows after append; hashes are not recursively embedded in their own manifests",
+        "root_index_lines": 2174,
+        "consumer_index_lines": 537,
+        "session_in_root_tail": true,
+        "final_current_state_records": 8,
+        "recorded_at": "2026-10-20T06:11:01.756915+00:00"
+      },
+      "2_ledger": {
+        "status": "PASS",
+        "rounds": 14,
+        "root_rollup_sources": 112,
+        "root_rollup_source_objects_equal": true,
+        "original_format_recovered": false
+      },
+      "3_current_targets": {
+        "status": "PASS",
+        "root_status": "done",
+        "target_count": 2,
+        "active_targets": 0,
+        "empty_current_work_and_action": true,
+        "history_excluded_from_current_count": true
+      },
+      "4_consumer_content": {
+        "status": "PASS",
+        "markdown_documents": 10,
+        "missing_required": 0,
+        "catalog_original_ids": null,
+        "catalog_semantic_sections": null,
+        "review_scope": "complete scoped consumer content, not full_app/full_leaf"
+      },
+      "5_gate": {
+        "status": "PASS",
+        "valid_release_specific_state": true,
+        "implementation_gate_true_count": 0
+      },
+      "6_readiness": {
+        "status": "PASS",
+        "field": "release_comparison.readiness",
+        "value": true,
+        "scope": "final static consumer delivery only"
+      },
+      "7_known_defects": {
+        "status": "PASS",
+        "closed": [
+          "incomplete catalog consumer reduction",
+          "provider192 cleanup direction with actual PM ruling",
+          "three missing exact literals",
+          "engine input/path active contradiction",
+          "target-level coordination residue",
+          "INDEX schema and pointer/hash binding",
+          "missing root ledger rollup with PM-approved format"
+        ],
+        "previous_OAuth_event_platform_facts_preserved": true,
+        "dim6": false,
+        "live_reference": false
+      }
+    },
+    "direct_delivery_authorization": {
+      "quote": "那你直接执行完",
+      "scope": "main conversation writes existing consumer deliverables; no rule change, no implementation gate promotion",
+      "recorded_at": "2026-10-19T02:57:27.287309+00:00"
+    },
+    "final_delivery_documents": [
+      {
+        "path": "internal-reverse/audits/macos-1.2.7-version-delta/AI.md",
+        "sha256": "e9b7f590a2673237157766a18337fb6a1166b8389fdbb006bd699e97b153fa1c",
+        "bytes": 6097
+      },
+      {
+        "path": "internal-reverse/audits/macos-1.2.7-version-delta/README.md",
+        "sha256": "5d2cd77ea2ee38412cbbe356e28e6eb11688e71c2857f8d330f14bab22c123c9",
+        "bytes": 4459
+      },
+      {
+        "path": "internal-reverse/audits/macos-1.2.7-version-delta/SYSTEM-DIFF.md",
+        "sha256": "55667c6f825e16eb58c5d65021918bd73d96b5c42820bb81fdc1d33d10e58f27",
+        "bytes": 20866
+      },
+      {
+        "path": "internal-reverse/audits/macos-1.2.7-version-delta/logic/CONSUMER-CONTRACT-1.2.7.md",
+        "sha256": "ca4ac331365d8f75dd3d9b6678e31f45eb6ebaad331d561e89921a1b478fe630",
+        "bytes": 43314
+      },
+      {
+        "path": "internal-reverse/audits/macos-1.2.7-version-delta/logic/DELTA-LOGIC-1.2.7.md",
+        "sha256": "7fd7c05fd55db66a8a403b2312ef44fbce7fbff267fc17b83378d5b89243a237",
+        "bytes": 1428
+      },
+      {
+        "path": "internal-reverse/audits/macos-1.2.7-version-delta/logic/FULL-CHAIN-1.2.7.md",
+        "sha256": "0bfd5864c4a55e2896054761839778d93a11e75c755e0181ee118eebf3fb0824",
+        "bytes": 7101
+      },
+      {
+        "path": "internal-reverse/audits/macos-1.2.7-version-delta/pointers/evidence-paths.md",
+        "sha256": "b2683100b5d8a1af90dd71b559a9291635aa5fd4cad05d783dcf9cd329610d7f",
+        "bytes": 12019
+      },
+      {
+        "path": "internal-reverse/audits/macos-1.2.7-version-delta/reviews/AGENT.md",
+        "sha256": "13e43a26da9f1c7cfc65aca65decbfdef4ef03b4bfb9d8fa90f0eb1956cf3a87",
+        "bytes": 14300
+      },
+      {
+        "path": "internal-reverse/audits/macos-1.2.7-version-delta/reviews/CLAUDE.md",
+        "sha256": "d5f01bc5312d8aaf5a407bee141e65c3296eb37c9f544ee7bfe3394b91fad301",
+        "bytes": 14139
+      },
+      {
+        "path": "internal-reverse/audits/macos-1.2.7-version-delta/reviews/CROSS-REVIEW.md",
+        "sha256": "61b072bd8e5f479991cdbc95b3d575ffd5f782e264e3a62267e251facd9d448d",
+        "bytes": 2772
+      }
+    ],
+    "delivery_scope_note": "Current static pre/release comparison only; original pre top-level decisions preserved; no full-app/full-leaf/implementation/live promotion.",
+    "final_completed_at": "2026-10-20T06:06:42.170397+00:00",
+    "consumer_refinement_pending": false,
+    "consumer_refinement_recorded_at": "2026-10-20T03:28:11.491448+00:00",
+    "consumer_refinement_scope": "仅同一1.2.7本平台pre→release已分配变化/歧义面的消费者精修；非full-App/full-leaf、全依赖逐体认证、真实App对照或实现放行。",
+    "consumer_refinement_history": [
+      {
+        "recorded_at": "2026-10-20T03:28:11.491448+00:00",
+        "session": "<审计会话>",
+        "scope": "仅同一1.2.7本平台pre→release已分配变化/歧义面的消费者精修；非full-App/full-leaf、全依赖逐体认证、真实App对照或实现放行。",
+        "reason": "mac局部内容/closed/readiness等既定值保留，仅联合就绪置false并记录待精修。",
+        "previous_current_fields": {
+          "overall_dual_platform_ready": true
+        }
+      },
+      {
+        "at": "2026-10-20T06:06:42.170397+00:00",
+        "previous_current_fields": {
+          "status": "DONE_STATIC_COMPARISON",
+          "phase": null,
+          "consumer_refinement_pending": true,
+          "consumer_refinement_remaining": null,
+          "blockers": []
+        },
+        "resolution": "third-round two-lane PASS; actual current content and coordinator closeout, not a retrospective rewrite of old audits"
+      }
+    ],
+    "phase": "static-consumer-comparison-delivered",
+    "consumer_refinement_remaining": [],
+    "final_consumer_recheck": {
+      "at": "2026-10-20T06:06:42.170397+00:00",
+      "current_blocking": 0,
+      "source": {
+        "path": "intermediate/aimami/1.2.7/macos-arm64/version-delta/release-f019dbc8e267-consumer-content-reconciliation.json",
+        "sha256": "f0336771bb5ea0b50cc9530ed362e60fb7a3c0a8808d924c9611b68d970e104a",
+        "bytes": 42494
+      },
+      "review_history_runs": [
+        "wf_e99ccf00-b0b",
+        "wf_f9f2fee3-345"
+      ],
+      "root_rollup": {
+        "path": "internal-reverse/data/producer-ledger-rollup.regenerated.json",
+        "sha256": "9deff4576ce442be1cd3fe1509b2d6776b0720b243084bb44253c1d8013b00aa",
+        "bytes": 528036
+      },
+      "original_format_recovered": false
+    }
+  }
+}
