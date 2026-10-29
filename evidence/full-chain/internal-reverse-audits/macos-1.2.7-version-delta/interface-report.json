@@ -1,0 +1,245 @@
+{
+  "schema": "c5cm.aimami.interface-report.v1",
+  "bundle": "macos-1.2.7-version-delta",
+  "product": "aimami",
+  "version": "1.2.7 (test build, version-string 1.2.6)",
+  "platform": "macos-arm64",
+  "amended": "2026-09-30",
+  "session": "<审计会话>",
+  "recovered_from": "intermediate/aimami/1.2.7/macos-arm64/version-delta/four-angle-d-classification.json 两条 local_outtake（angle_b）",
+  "recovery_method": "现有 1.2.7 IDB live decompile（只读，本轮无 IDB 写入、无版本切换）；全部函数体完整无截断（红线 20 核查通过）",
+  "commands": {
+    "load_quota_history": {
+      "status": "PASS",
+      "ipc": {
+        "name": "load_quota_history",
+        "args": {
+          "accountKey": "string（配额账号键，精确匹配过滤）",
+          "range": "string，枚举域 \"today\" | \"week\" | \"month\""
+        },
+        "argkey_drift_vs_1.2.6": "old [accountKey] -> new [accountKey, range]（intermediate/aimami/1.2.7/version-delta/ipc-command-diff.json argkey_drift 唯一条目）",
+        "returns": "Result<CoreEnvelope<QuotaHistoryPayload>, String>",
+        "command_shape_evidence": "drop_in_place<Result<Result<CoreEnvelope<QuotaHistoryPayload>, String>, JoinError>> 符号链证实：tauri async command + spawn_blocking 包裹同步核，JoinError 路径存在于类型链"
+      },
+      "backend": {
+        "command_fn": "commands::analytics::load_quota_history（tauri 包装，独立符号未枚举到，仅 closure/drop_in_place 链；行为核见 core_fn）",
+        "core_fn": {
+          "symbol": "codexmate_lib::core::quota_history::load_history_range::hfa0acd1e40559712",
+          "addr": "0x100abde30",
+          "size_bytes": 2676,
+          "census_match": "mac-1.2.7-func-census sz2676 精确命中",
+          "signature": "fn load_history_range(path: &str, range: &str, account_key: Option<&str>) -> Result<Vec<QuotaHistoryPoint>, CoreError>",
+          "ok_tag": 11,
+          "err_tags": {
+            "InvalidData": 9,
+            "Io": 2
+          }
+        }
+      },
+      "dto": {
+        "QuotaHistoryPayload": {
+          "fields": {
+            "points": "Vec<QuotaHistoryPoint>"
+          },
+          "evidence": "Serialize impl 0x100abeaa0，字段名串 \"points\"（len 6）@ 0x1018d5f50"
+        },
+        "QuotaHistoryPoint": {
+          "size_bytes": 64,
+          "fields": {
+            "timestamp": "i64 unix 秒（结构偏移 +56）",
+            "accountKey": "String（偏移 +32..+56）",
+            "primaryUsedPercent": "number 8B（偏移 +0；f64/u64 在 serde 泛型调用点不可区分，保守记 number）",
+            "secondaryUsedPercent": "number 8B（偏移 +16）"
+          },
+          "evidence": "Serialize impl 0x100abe970：serialize_entry 字段名串 timestamp(9)/accountKey(10)/primaryUsedPercent(18)/secondaryUsedPercent(20) @ 0x1018d5f17 串池；64B stride 由结果 Vec v28<<6 写入证实"
+        }
+      },
+      "behavior": {
+        "range_semantics": {
+          "today": "本地当前日（chrono Local::now）",
+          "week": "本周起始日：当前日减去 (ordinal+weekday)%7 天（chrono 内部 weekday 编码回推，周一为 0，即本周一）",
+          "month": "本月 1 日（月历表查表回推）",
+          "invalid": "Err(InvalidData(\"Quota history range must be today, week, or month\"))",
+          "date_overflow": "Err(InvalidData(\"Quota history date is out of range\"))",
+          "now_failure": "expect panic \"Local time out of range for `NaiveDateTime`\"（非 CoreError）"
+        },
+        "file_handling": "path 只读打开（OpenOptions read）；NotFound → Ok(空 points vec)（不是错误）；其他打开/metadata/读取 io 错误 → Err(Io)",
+        "line_parsing": "read_until(b'\\n') 逐行（8KB 缓冲）；跳过前导空白（\\t\\n\\f\\r 空格）后为空则续读；每行 serde_json 解析 QuotaHistoryPoint；解析失败行计数跳过，EOF 时 count>0 则 log::warn!（target \"codexmate_lib::core::quota_history\"）\"[quota-history] skipped malformed complete lines: count={N}\"",
+        "filtering": "account_key 为 Some 时要求记录 accountKey 精确相等（len + memcmp）；记录 timestamp > now 的未来日期记录剔除；timestamp 转本地日期 ordinal < range 起点 ordinal 剔除",
+        "sorting": "返回前排序（>=21 元素 driftsort，否则 insertion sort）；比较器为内联闭包未独立恢复比较键（源文件按 append_snapshot_at 追加时序写入，语义为时间序）"
+      },
+      "error_surface": [
+        "Err(String) = \"Invalid data: Quota history range must be today, week, or month\"",
+        "Err(String) = \"Invalid data: Quota history date is out of range\"",
+        "Err(String) = \"IO error: <std::io::Error Display>\"（打开/metadata/读取失败；NotFound 除外）",
+        "panic 面：\"Local time out of range for `NaiveDateTime`\"（chrono expect）；spawn_blocking JoinError 路径在类型链"
+      ],
+      "side_effects": "只读文件访问，无写/删/外部副作用",
+      "evidence": [
+        "live decompile 0x100abde30（2676B 完整无截断）",
+        "Serialize impl decompile 0x100abe970 / 0x100abeaa0",
+        "CoreError Display 变体表 0x100414ae0 + 格式串池 0x101a303c6..0x101a30451",
+        "intermediate/aimami/1.2.7/version-delta/ipc-command-diff.json"
+      ]
+    },
+    "reveal_relay_api_key": {
+      "status": "PASS",
+      "ipc": {
+        "name": "reveal_relay_api_key",
+        "args": {
+          "providerId": "string（relay provider id，精确匹配）"
+        },
+        "state_args": {
+          "manager": "State<RelayManager>"
+        },
+        "returns": "Result<CoreEnvelope<String>, String>（Ok payload = api key 明文字符串）",
+        "version_note": "1.2.7 新增后端命令符号（前端 invoke 面在 1.2.6 已存在，ipc-command-diff added 列表不含本命令；mac census 447B/bb9 wrapper 为新增）"
+      },
+      "backend": {
+        "wrapper_fn": {
+          "symbol": "codexmate_lib::commands::relay::reveal_relay_api_key::h1487e6b55e107161",
+          "addr": "0x100b38240",
+          "size_bytes": 447,
+          "behavior": "解包 State<RelayManager> + providerId String；调核函数；Ok -> CoreEnvelope::ok(payload)；Err -> CoreError Display 格式化为 String 返回"
+        },
+        "core_fn": {
+          "symbol": "codexmate_lib::core::relay::manager::RelayManager::reveal_api_key::h2d68f8a1db6b4c99",
+          "addr": "0x100582380",
+          "size_bytes": 870,
+          "signature": "fn reveal_api_key(&self, provider_id: &str) -> Result<String, CoreError>",
+          "ok_tag": 11
+        },
+        "chain": [
+          "RelayManager::ensure_provider_loaded 0x1005880d0（1135B）：锁状态 mutex -> 按 id 精确匹配（256B stride providers vec，memcmp id）-> clone provider -> lazy_load -> cache 回写",
+          "core::relay::storage::lazy_load_api_key 0x10087bd60：按 provider secret 引用类别（+192 niche enum）分派 0=keychain::get_api_key / 1=无 key / 2=keychain::revisions::read",
+          "core::relay::keychain::get_api_key 0x100b15b90 ｜ core::relay::keychain::revisions::read 0x10078d580（macOS Keychain 只读）",
+          "core::relay::storage::cache_loaded_api_key 0x10087c1c0：回写共享 providers vec 条目 api_key 字段（+72）与 loaded 标志（+252）"
+        ]
+      },
+      "behavior": {
+        "blocked_gate": "快速路径：manager 密钥状态块（self+16 指向，+16 处 Option<String>，None niche=0x8000000000000000）持有缓存错误消息时，立即 Err(CoreError::InvalidData(克隆的消息))，不触 keychain；与 RelayManager::activate 0x100595c40 入口完全同模式（同字段、同 tag 9 InvalidData、同克隆语义）",
+        "provider_lookup": "ensure_provider_loaded：mutex poison -> panic \"relay state poisoned\"（非 CoreError）；id 未命中 -> Err(NotFound(format!(\"relay provider {} not found\", id)))，Display 呈 \"Not found: relay provider <id> not found\"",
+        "key_load": "lazy_load_api_key：keychain 读取失败 -> Err(OperationFailed(format!(\"{}\", err)))（tag 10）；成功则写回 provider.api_key（+72）并置 loaded 标志（+252），重新加锁后 cache_loaded_api_key 同步进共享 providers vec",
+        "ok_payload": "Ok(provider.api_key 移出为 String)；加载后仍为空则为空串"
+      },
+      "error_surface": [
+        "Err(String) = \"Invalid data: <manager 缓存阻断消息>\"",
+        "Err(String) = \"Not found: relay provider <providerId> not found\"",
+        "Err(String) = \"Operation failed: <keychain 错误消息>\"",
+        "panic 面：\"relay state poisoned\"（状态 mutex 中毒 unwrap_failed）"
+      ],
+      "side_effects": "macOS Keychain 只读读取；内存态回写（provider api_key 缓存 + loaded 标志）；无文件/钥匙串删除或覆写",
+      "evidence": [
+        "live decompile 0x100b38240（447B 完整）/ 0x100582380（870B 完整）/ 0x1005880d0（1135B 完整）/ 0x10087bd60 / 0x10087c1c0",
+        "RelayManager::activate 0x100595c40 入口分支交叉证实 blocked-gate 语义",
+        "NotFound 格式串 \"relay provider {} not found\" @ 0x101a31bc8",
+        "CoreError Display 变体表 0x100414ae0（2=Io/3=Json/4=TomlParse/5=TomlSerialize/6=Http/7=HttpStatus/8=NotFound/9=InvalidData/10=OperationFailed）"
+      ]
+    },
+    "clean_orphan_rollouts": {
+      "status": "PASS",
+      "ipc": {
+        "name": "clean_orphan_rollouts",
+        "args": "无业务参数（tauri command 经 commands::sessions::run_session_clean_command 泛型包装，tokio spawn_blocking 执行同步核）",
+        "returns": "Result<CoreEnvelope<SessionCleanResultPayload>, String>",
+        "command_shape_evidence": "drop_in_place<ResultFutureTag::future<CoreEnvelope<SessionCleanResultPayload>, String, commands::sessions::clean_orphan_rollouts::{{closure}}::{{closure}}>> 符号链（0x10012c8d0）+ run_session_clean_command<clean_orphan_rollouts> BlockingTask drop 符号（0x100026ea0）证实 tauri async command + spawn_blocking 包裹"
+      },
+      "backend": {
+        "command_fn": "commands::sessions::clean_orphan_rollouts（closure 符号 0x1001065c0；本体经 run_session_clean_command 泛型实例化）",
+        "core_fn": {
+          "symbol": "codexmate_lib::core::sessions::health::clean_orphan_rollouts::h1424d70dc2f71d2d",
+          "addr": "0x1002d2710",
+          "size_bytes": 3590,
+          "ok_tag": 11
+        },
+        "whitelist_fn": {
+          "symbol": "codexmate_lib::core::sessions::health::cleanable_orphan_rollout_ids::h7126eeef974a8e5d",
+          "addr": "0x1002d86a0",
+          "size_bytes": 1015
+        },
+        "chain": [
+          "core::sessions::reconcile_official_thread_rows（先对齐官方线程行）",
+          "core::sessions::health::load_complete_health_thread_rows（加载完整健康线程行 map）",
+          "core::sessions::history::HistoryInventory::load + HistoryInventory::health（产出 rollout id → 健康信息 map）",
+          "cleanable_orphan_rollout_ids（白名单过滤，见 behavior.whitelist_match_conditions）",
+          "core::sessions::delete_sessions（⚠ 物理删除白名单外 orphan rollout）",
+          "core::sessions::health::deletion_cleanup_result（汇总 SessionCleanResultPayload）"
+        ]
+      },
+      "dto": {
+        "SessionCleanResultPayload": {
+          "fields": {
+            "failed": "Vec<String>（删除失败的 id 列表，结构偏移 +0）",
+            "removedCount": "usize（偏移 +24）",
+            "removedBytes": "usize（偏移 +32）"
+          },
+          "evidence": "Serialize impl 0x1003bd130：serialize_entry 字段名串 removedCount(12)/removedBytes(12)/failed(6) @ 0x101829973 串池"
+        }
+      },
+      "behavior": {
+        "whitelist_match_conditions": {
+          "白名单构建": "以 load_complete_health_thread_rows 产出的完整健康线程行 map 为源：遍历每个条目，其关联 Option 字段为 Some（qword niche 检查 ≠ 0x8000000000000000）时把该 id 字符串克隆进白名单 HashSet（HashMap::insert，随机态 RandomState）",
+          "清理条件": "HistoryInventory::health 结果中的 orphan rollout id 经 filter 闭包判定【不在白名单集合中】（不被任何完整健康线程行引用）→ 判定 cleanable → 收集进删除 Vec → delete_sessions 物理删除",
+          "保留条件": "orphan 候选 id 出现在白名单集合中（仍被完整健康线程行引用）→ filter 丢弃，不进入删除列表，数据保留",
+          "空列表短路": "cleanable id 列表为空时跳过 delete_sessions，直接返回 removedCount=0 的空结果（orchestrator v87[2]==0 分支）",
+          "结果统计": "删除成功后逐个已删 id 回查 health map（hashbrown 精确匹配 id），条目 kind 字段 ==1 时累加其字节量进 removedBytes；removedCount 取删除列表长度"
+        },
+        "sorting": "cleanable id 列表返回前排序（≥21 元素 driftsort_main，否则 insertion_sort_shift_left）",
+        "error_surface": "任一上游步骤（reconcile/load/health/load_complete）失败即整链短路返回 Err(String)（orchestrator 逐层 ok_tag 11 检查）；删除失败的 id 归入 payload.failed 而非整体失败"
+      },
+      "side_effects": "⚠ 破坏性副作用：delete_sessions 物理删除白名单外 orphan rollout 会话数据（sessions 目录文件）；白名单内 id 不受影响；无可清理项时零写",
+      "evidence": [
+        "live decompile 0x1002d2710（3590B 完整无截断，core orchestrator）",
+        "live decompile 0x1002d86a0（1015B 完整无截断，cleanable_orphan_rollout_ids 白名单过滤）",
+        "live decompile 0x1003bd130（SessionCleanResultPayload Serialize impl）",
+        "intermediate/aimami/1.2.7/macos-arm64/version-delta/decomp-1.2.7/0057__B_threads__clean_orphan_rollouts.c（盘上前置伪代码，与 live 一致）"
+      ]
+    },
+    "native_catalog::revision": {
+      "status": "PASS",
+      "internal_only": true,
+      "note": "非 IPC 命令：core::relay::native_catalog::revision 为后端内部函数，无 tauri command 面；本条目记录其算法与失效策略（消费者实现依据）",
+      "backend": {
+        "revision_fn": {
+          "symbol": "codexmate_lib::core::relay::native_catalog::revision::h5083af1d8a5b6e4c",
+          "addr": "0x100857f30",
+          "size_bytes": 345,
+          "signature": "fn revision(models/official/active ids 等 snapshot 模型状态) -> String",
+          "algorithm": "lowercase hex( SHA-256( serde_json 序列化的 relay models 数组字符串 ) )：codex_catalog::build_relay_models(kind=8) 构建模型列表 → serde Serializer::collect_seq 序列化为 JSON 数组字符串 → sha2::sha256（compress256，标准 IV 0x6A09E667…）→ generic_array LowerHex format!；纯函数、无缓存，每次调用按传入模型状态实时重算"
+        },
+        "stored_revision_location": "codex 配置 TOML `model_providers.aimai1.http_headers[\"x-aimami-catalog-revision\"]`（toml_edit 解析取值；该 header 同时作为发往中转代理的 HTTP 头，兼作已写入配置的目录版本标记）",
+        "staleness_fn": {
+          "symbol": "codexmate_lib::core::relay::manager::RelayManager::codex_config_stale_reason_for_snapshot::hd73125ccb9f43465",
+          "addr": "0x10058f580",
+          "size_bytes": 3627,
+          "returns": "Option<String>（None=配置新鲜；Some(原因)=stale 需重写/重载）"
+        }
+      },
+      "behavior": {
+        "revision_invalidation_strategy": {
+          "判定时机": "每次 codex_config_stale_reason_for_snapshot 调用时按序检查，任一条件命中即返回对应 stale 原因（不重算缓存，全部实时判定）",
+          "前置失效条件（先于 revision 比对）": [
+            "配置 TOML read_to_string 读取失败 → 返回 None（视为无法判定，不报 stale）",
+            "RouterConfigSurface::parse + config_surface_violations_for_surface 任一违规 → stale（返回首条违规描述）",
+            "top_level_relay_model_requires_cleanup 命中 → stale",
+            "router_provider_requires_openai_auth 与期望认证形态不符（含返回值 2=「缺失」情形）→ stale",
+            "proxy_root_url 缺失 → stale「智能路由状态为开启，但本地代理未运行」",
+            "配置中 router provider base_url（trim_end_matches '/'）与本地代理根 URL 不一致 → stale",
+            "router_unlock_auth::has_residue 或 legacy_virtual_auth::marker_exists → stale「智能路由仍包含旧版受管认证残留」"
+          ],
+          "revision 失效条件": "从 TOML 取存储 revision（model_providers.aimai1.http_headers.x-aimami-catalog-revision；闭包 0x100590510 提取），与按当前 snapshot 模型状态实时重算的 revision 做 len + memcmp 精确比较：存储值缺失（None）或字符串不一致 → stale「原生目录的卡片版本与当前配置不一致」；完全一致 → 非 stale（None）",
+          "失效后重载/重写": "stale 判定后由调用方触发配置重写；RelayManager::persist_with_commit（0x100583310，1923B）提交时两次调用 revision 重算并把新值写入配置；其余引用方：codex_writer::compose_from_original（0x1003972f0）、native_repair_catalog::PreparedRepairCatalog::prepare（0x100970d90）、proxy_server::forward_codex_router_responses_internal（0x100851b30，转发 codex router 响应时校验/使用 revision）"
+        }
+      },
+      "side_effects": "revision() 本身纯计算无副作用；stale 判定只读配置文件；失效后的配置重写由 persist_with_commit / compose_from_original 等调用方执行",
+      "evidence": [
+        "live decompile 0x100857f30（345B 完整无截断，revision SHA-256 hex 算法）",
+        "live decompile 0x10088ad30（Digest::digest 单态化：sha2::sha256::compress256 + 标准 IV 常量证实 SHA-256）",
+        "live decompile 0x10058f580（3627B 完整无截断，codex_config_stale_reason_for_snapshot 全部失效分支 + 三条中文字面量字节级解码核对）",
+        "live decompile 0x100590510（存储 revision TOML 路径提取闭包；字段名串池 0x101832480..0x1018324a1 = model_providers/aimai1/http_headers/x-aimami-catalog-revision）",
+        "xrefs_to 0x100857f30：7 处调用点（compose_from_original / persist_with_commit ×2 / codex_config_stale_reason_for_snapshot / forward_codex_router_responses_internal / axum handler / PreparedRepairCatalog::prepare）",
+        "intermediate/aimami/1.2.7/macos-arm64/version-delta/decomp-1.2.7/0091__D_catalog__native_catalog.c（盘上前置伪代码，与 live 一致）"
+      ]
+    }
+  }
+}

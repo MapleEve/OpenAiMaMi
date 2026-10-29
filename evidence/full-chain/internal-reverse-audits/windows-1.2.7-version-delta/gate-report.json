@@ -1,0 +1,840 @@
+{
+  "bundle": "windows-1.2.7-version-delta",
+  "product": "aimami",
+  "version": "1.2.7 (test build, version-string 1.2.6)",
+  "platform": "windows-x64",
+  "evaluated": "2026-09-30",
+  "session": "<审计会话>",
+  "consumerStartReady": true,
+  "strictImplementationUse": true,
+  "strictImplementationUse_scope": "five delta target command/DTO surfaces (accounts / sessions-threads-analytics / router diagnostics+fix / codex-catalog engine / anthropic V1 translator)",
+  "readyToImplement": false,
+  "implementation_use": false,
+  "gate_accepted": false,
+  "full_leaf_100_definition_v2": false,
+  "dimensions": {
+    "dim1": {
+      "status": "PASS",
+      "evidence": "raw/aimami/1.2.7/windows-x64/frontend/ byte-identical with mac build"
+    },
+    "dim2": {
+      "status": "PASS",
+      "evidence": "decomp-win-1.2.7/ 176 live decompile 0 truncation; 558 census; 2 反编译器 null bodies recorded honestly"
+    },
+    "dim3": {
+      "status": "PASS",
+      "evidence": "four backend-fullchain-win-*.md + Toolhelp32 leaves + win-diagnostic-key-owners.json"
+    },
+    "dim4": {
+      "status": "PASS",
+      "evidence": "dto-fieldlevel-win.md: 10-item string-pool parity all PASS (ResetCredits DTO / CodexSession fields / FixResult / DiagnosticReport / anthropic-version 2023-06-01 / model families / engine endpoints / SSE events / CodexPaths layout / OTA endpoints)"
+    },
+    "dim5": {
+      "status": "PASS",
+      "evidence": "documented divergences with owners: Toolhelp32 vs ps, LaunchAgents mac-only, system_volume_windows naming, useStateDbOnly/authinfo literal 0-hit, deep-check pending within 1.2.7 current build (not blocking dim5; DTO/error/endpoint zero-divergence verified; red line 38: no 1.2.6 baseline IDB reopen)"
+    },
+    "dim6": {
+      "status": "BLANK",
+      "note": "Implementation-side acceptance"
+    }
+  },
+  "blockers": [
+    "dim6_acceptance_pending_implementation_side",
+    "live_reference_parity_false (declared 未对照)",
+    "win latest-exe open surface per SoT 2026-10-07 (REVERSE-STATUS L8712): 3 partial NEEDS_REDO clusters (proxy_server 26/29, codex_config 4/7, codex_mutation 5/7) + 85 unlocated; 60-family downstream two layers + idx40/51/52; 2 inline-arm commands; skills 2-command deep chain; 2 local_outtake classifications (load_quota_history/reveal_relay_api_key: evidence recovered 2026-09-30, interface-report status=PASS, registration-only per contract §8⑤); glue-suffix naming pending PM ratification",
+    "CodexPaths function-level owner not decompiled (string-pool level closed)",
+    "HTTP client stack deep TLS/proxy divergence (Unknown)"
+  ],
+  "accepted_unknown": [],
+  "genuine_ceiling": [],
+  "open_items": [
+    "custom_instructions_entry_enabled / recharge_entry_enabled (no backend symbol)",
+    "CodexPaths function-level owner decompile (string-pool level closed)",
+    "HTTP client stack deep TLS/proxy divergence (Unknown)"
+  ],
+  "amendments": [
+    {
+      "date": "2026-09-30",
+      "session": "<审计会话>",
+      "change": "load_quota_history / reveal_relay_api_key 从 local_outtake 提到 PASS：现有 1.2.7 win IDB live decompile 恢复完整函数体（load_history_range owner 0x140ec7a00 2573B / reveal 注册 helper sub_1405A23C0 + wrapper 0x14072eee0 + 核 0x140d81600 + ensure sub_140D87CF0），dim4 字段级 DTO 与错误面全部落盘，与 mac 行级/分支级语义一致（仅 ABI niche 编码平台差）",
+      "evidence": "audits/windows-1.2.7-version-delta/interface-report.json"
+    },
+    {
+      "date": "2026-10-06",
+      "session": "<审计会话>",
+      "change": "load_runtime_display_snapshot 禁实现撤销（用户裁决「全都做完」）：既往「双平台零符号」系全名搜索对池化碎片存储的假阴性；win 1.2.7 最新 exe 存在真 handler（glue 0x1405EC7D0，三重实证 live 复验）。full-chain 完成：零参数只读命令，数据源=进程内全局 runtime display state(0x142239468, 880B)，DTO 字段级全表（envelope 6+snapshot 3+status 10+paths 10+autoSwitch 5+refreshReport 8+AccountItem 25），应用层不可失败（data:null 带内表达不可用），事件 runtime-state-updated 配套。IDB 归位 12 函数至 /codexmate_lib/commands/accounts/。blockers 移除 load_runtime_display_snapshot_owner_not_located、open_items 移除 forbidden 条目；mac 侧零符号维持如实标注（win-only 注册）",
+      "evidence": "raw/aimami/1.2.7/windows-x64/backend/commands/accounts/load_runtime_display_snapshot/（七件套+12 伪代码，dim1-5 PASS/dim6 BLANK，strictImplementationUse=true）"
+    },
+    {
+      "date": "2026-10-07",
+      "session": "<审计会话>",
+      "change": "graceful_restart_for_update 禁实现撤销（用户「欠账全做完 0 残留」直派）：既往「无后端符号」系全名搜索对池化碎片存储的假阴性；win 1.2.7 最新 exe 存在真 handler（glue 0x1405F27C0，dispatcher 双窗 0x141A22C00/0x141A22BF0 + arm call 0x140600cb6 + 注册表项 0x141ea82e8 + 全名串唯一 xref 四重实证 live 复验）。full-chain 完成：零参数命令，state 提取（sub_1406440D0, key \"app\"）→ tauri-2.10.3 AppHandle 重启机制（sub_140724350/sub_1406320F0，发散 ud2 证实——win 无 IPC 响应）→ tauri::process::restart（sub_141472630: current_exe+原 argv spawn/CreateProcessW → exit(0)，先起子进程再退旧进程）；⚠进程退出+重启（破坏性，无数据落盘）；错误面 4 类。IDB 归位 /codexmate_lib/commands/system/。open_items 移除该 forbidden 条目；mac 侧同轮只读核验推翻「零符号」（名字表 0x1018c0455 + wrapper 0x100638510 + request_restart 0x1006e9010，mac 有响应 unit——平台分叉，mac 合同 §9.1 已同步）",
+      "evidence": "raw/aimami/1.2.7/windows-x64/backend/commands/system/graceful_restart_for_update/（七件套+8 伪代码，dim1-5 PASS/dim6 BLANK，strictImplementationUse=true）"
+    },
+    {
+      "date": "2026-10-08",
+      "session": "<审计会话>",
+      "change": "blockers 精修同步（fable 双路审查 FAIL 修复）：移除已解决项 win_dirtree_naming_work_order（2026-10-05 dirtree 全量命名完成）/ win_fix_case_table_byte_rebuild_pending（2026-10-01+05 case 表字节级重建完成）/ 1.2.6_idb_callee_line_pending（2026-10-01 callee 线终局，均见 manifest resolved_blockers），替换为 manifest 现行 blockers 对齐开放面（latest-exe NEEDS_REDO / CodexPaths owner 未反编译 / HTTP stack Unknown）；gate 五旗与 dimensions 不动",
+      "evidence": "audits/windows-1.2.7-version-delta/manifest.json (blockers + resolved_blockers)"
+    },
+    {
+      "date": "2026-10-08",
+      "session": "<审计会话>",
+      "change": "dim5 evidence 措辞修正（fable 终验 FAIL 修复）：useStateDbOnly/authinfo literal 的 deep-check 落点由「pending 1.2.6 win IDB」改为「1.2.7 当前 build 内待深核，不阻塞 dim5（DTO/错误/端点已实证零分叉；红线38 不重开 1.2.6 baseline IDB）」——纯措辞对齐红线38（baseline 已收口是 delta 输入非待办），判定与 gate 五旗零改动（literal 0 命中事实不变）",
+      "evidence": "logic/CONSUMER-CONTRACT-1.2.7.md §7 + README.md dim5 行 + manifest.json dim5_platform_gate（同轮同步）"
+    },
+    {
+      "date": "2026-10-08",
+      "session": "<审计会话>",
+      "change": "blockers[2] local_outtake 措辞消歧（fable 第 1 轮终验 N2）：「2 local_outtake classifications」补限定语「load_quota_history/reveal_relay_api_key 证据已恢复（2026-09-30 recovery 轮，interface-report status=PASS 两命令）、仅分类登记维持（angle_b 未改判，合同 §8⑤）」——消除与同文件 2026-09-30 amendment（两命令提到 PASS）单读时的表面冲突；blockers 开放面语义与 gate 五旗零改动（纯消歧）",
+      "evidence": "logic/CONSUMER-CONTRACT-1.2.7.md §8⑤ + interface-report.json（session=<审计会话>，status=PASS）+ manifest.json blockers（同轮同步）"
+    }
+  ],
+  "closeout_complete": true,
+  "consumer_action": "implement five delta target surfaces per logic/CONSUMER-CONTRACT-1.2.7.md with win owner EAs; load_runtime_display_snapshot per §8.1 now implementable (strictImplementationUse, 2026-10-06 amendment); graceful_restart_for_update per §8.2 now implementable (strictImplementationUse, 2026-10-07 amendment; ⚠ win 无 IPC 响应/进程退出重启——消费侧须按 §8.2 平台分叉实现); do NOT implement the remaining §8 forbidden items (custom_instructions_entry_enabled / recharge_entry_enabled)",
+  "event_contract_correction": {
+    "session": "<审计会话>",
+    "applied_at": "2026-10-16T18:08:00.976115+00:00",
+    "status": "decision-resolved/content-still-running",
+    "token": "EXPLICIT_OVERWRITE_CANONICAL",
+    "pm_ruling": {
+      "at": "2026-10-16T17:50:58.749Z",
+      "question": "定点更正确认已接受 pre 合同中的 runtime-state-updated 事件载荷陈述为 {snapshot, source, accountKey?}，accountKey 为 None 时省略，并同步其直接关联证据与元数据？",
+      "answer": "定点更正确认",
+      "selected_option_description": "授予 EXPLICIT_OVERWRITE_CANONICAL，仅限这条事件载荷陈述及直接关联证据、指针和错误注释；保留原文历史，不撤销 getter 的 RuntimeDisplaySnapshot|null、只读或成功信封合同。随后自动继续最终 diff。",
+      "token": "EXPLICIT_OVERWRITE_CANONICAL",
+      "verified_source": "<本地路径>/.claude/projects/<本地归档><内部项目>-Code-<内部项目>/<审计会话>.jsonl L20827 AskUserQuestion / L20833 actual user tool_result; tool_use_id call_jZwZPdWtlqNLe5AUfCgNwDEu",
+      "question_line": 20827,
+      "answer_line": 20833,
+      "question_at": "2026-10-16T17:18:59.539Z",
+      "tool_use_id": "call_jZwZPdWtlqNLe5AUfCgNwDEu",
+      "raw_tool_result": "Your questions have been answered: \"定点更正确认已接受 pre 合同中的 runtime-state-updated 事件载荷陈述为 {snapshot, source, accountKey?}，accountKey 为 None 时省略，并同步其直接关联证据与元数据？\"=\"定点更正确认\". You can now continue with these answers in mind.",
+      "question_record_sha256": "bae4f45afd440fe8f3dc7e3bfb8477369fffc36d111942308ee3509870600223",
+      "answer_record_sha256": "ded9548fb61f4cec98ba18894d9750a4189713d1f151791d63fa9e38361ea304",
+      "scope": "仅 Windows 1.2.7 pre SHA51cb41b6 的 runtime-state-updated 事件外层陈述及直接关联证据、指针、错误注释；保留原文历史和 getter 的 RuntimeDisplaySnapshot|null、零参数、只读及成功信封合同。不重开其他旧 pre 合同重判、owner 接管/重分配、最高门提升。后续按同一任务继续最终 diff。"
+    },
+    "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+    "scope": "仅 runtime-state-updated 事件外层陈述及直接证据指纹；不重判 getter gate，不更改其他 pre 合同，不表示 release 完成",
+    "proof": {
+      "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-event-correction-proof.json",
+      "sha256": "5ca8847ac0d53817082bbd09ee2869045628efdcdb550d37609c8d87dc75158d",
+      "bytes": 57456
+    },
+    "correction_manifest": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-event-correction-manifest.json",
+    "corrected_sources": [
+      {
+        "path": "raw/aimami/1.2.7/windows-x64/backend/commands/accounts/load_runtime_display_snapshot/evidence.md",
+        "sha256": "e3a0b052b9a8cb09c426e09e622d278514d0182dcbfd2456c10db9c892d191da",
+        "bytes": 15380
+      },
+      {
+        "path": "raw/aimami/1.2.7/windows-x64/backend/commands/accounts/load_runtime_display_snapshot/interface-report.json",
+        "sha256": "1455bdbecb5ccc86276b47ba91f6a202d2fe6ce91f29d7eead88ccecbf87a9dc",
+        "bytes": 8627
+      },
+      {
+        "path": "internal-reverse/audits/windows-1.2.7-version-delta/logic/CONSUMER-CONTRACT-1.2.7.md",
+        "sha256": "e913e77a0f9257577f3f4f89d201264e31025984cf9a0761c8b9355123e17dbb",
+        "bytes": 26510
+      }
+    ],
+    "native_evidence": [
+      {
+        "path": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-runtime-pre-boundaries.json",
+        "sha256": "83baa015b437968ca16608cc9e458651f797a752544330e3b18438285bb935b1",
+        "bytes": 39529,
+        "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf"
+      },
+      {
+        "path": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-runtime-pre-event-emission-chain.json",
+        "sha256": "4b85686f35f726ed96a7251375512ba08ddb179342d3c169bac18c79b866e1df",
+        "bytes": 5095,
+        "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf"
+      },
+      {
+        "path": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-runtime-pre-event-dispatcher.json",
+        "sha256": "ae08bf56503a56ba1cc34e552b3f11dd73034ac22a2ccf2f267bcba034528670",
+        "bytes": 6321,
+        "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf"
+      },
+      {
+        "path": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-runtime-pre-event-dto-candidates.json",
+        "sha256": "8da0dbc39e372fbd7f0507574c61ea680190e5c19210d352d53f6dec16f6f4a5",
+        "bytes": 5766,
+        "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf"
+      },
+      {
+        "path": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-pre-contract-conflict-native-identity.json",
+        "sha256": "24545f4262200ce4e70b6e97369b2f582a9af74f737df74e12e0100b7d71fef5",
+        "bytes": 2404
+      }
+    ],
+    "history": "原全文字节可由 proof.original_byte_backups 精确还原；旧陈述已明确留在原文件历史区",
+    "getter_contract": "零参数；只读；data=RuntimeDisplaySnapshot|null；恒成功信封及既有错误面不变；dim1-5 PASS/dim6 BLANK，原 getter 门值不变",
+    "release_status": "该 PM 停点已解除；Windows 内容与最终 diff 仍在进行，release 实现门全 false；不整体 DONE/ACK",
+    "idb_comment_handoff": [
+      {
+        "ea": "0x140ed1dd0",
+        "marker": "(载荷=snapshot)",
+        "comment_slot": 0,
+        "old_full_comment": "win 1.2.7最新exe | 模块: src/commands/accounts.rs | 归属: runtime-state 字符串簇邻接 codexmate_lib::commands::accounts 模块路径串(0x141aa18aa↔runtime-state-updated@0x141aa18d7)+全部 writer feeder 在 commands/accounts(panic-Location 两跳真值, Oct5)\n角色: 状态合并更新+广播(writer×9 feeder: load_snapshot/refresh_usage_snapshot/refresh_single_account_usage/set_account_alias/logout/remove_accounts/import_accounts_from_file/oauth_login/account_observer): kind∈{push,account,account-alias,auth,full,usage,progressive}+key; FILETIME→Unix(0x019DB1DED53E8000); 更新全局后 emit \"runtime-state-updated\"(载荷=snapshot); 无破坏性副作用",
+        "proposed_full_comment": "win 1.2.7最新exe | 模块: src/commands/accounts.rs | 归属: runtime-state 字符串簇邻接 codexmate_lib::commands::accounts 模块路径串(0x141aa18aa↔runtime-state-updated@0x141aa18d7)+全部 writer feeder 在 commands/accounts(panic-Location 两跳真值, Oct5)\n角色: 状态合并更新+广播(writer×9 feeder: load_snapshot/refresh_usage_snapshot/refresh_single_account_usage/set_account_alias/logout/remove_accounts/import_accounts_from_file/oauth_login/account_observer): kind∈{push,account,account-alias,auth,full,usage,progressive}+key; FILETIME→Unix(0x019DB1DED53E8000); 更新全局后 emit \"runtime-state-updated\"(载荷为外层 {snapshot, source, accountKey?}；accountKey 为 None 时省略，snapshot 字段内为 RuntimeDisplaySnapshot); 无破坏性副作用",
+        "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+        "source_role": "pre",
+        "source_native_evidence": {
+          "file": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-runtime-pre-boundaries.json",
+          "pointer": "/rows/2",
+          "file_sha256": "83baa015b437968ca16608cc9e458651f797a752544330e3b18438285bb935b1",
+          "role": "pre",
+          "ea": "0x140ed1dd0",
+          "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+          "code_sha256": "fe8e2a17fec76246de5c60da7ca8f8f1bedfa15fb5c5fddecbaba21761e5cd1c",
+          "matched_pseudocode_lines": [
+            {
+              "line": 410,
+              "text": "  result = sub_140594C70((unsigned int)v40, v31, (unsigned int)aRuntimeStateUp, 21, (__int64)&v41);"
+            }
+          ]
+        },
+        "status": "authorized-but-not-executed; later unique IDB writer requires fresh exact-comment readback before replacement; never apply to release EAs"
+      },
+      {
+        "ea": "0x140cd7e50",
+        "marker": "事件 runtime-state-updated 载荷共用",
+        "comment_slot": 0,
+        "old_full_comment": "win 1.2.7最新exe | 模块: src/commands/accounts.rs | 归属: runtime-state 字符串簇邻接 codexmate_lib::commands::accounts 模块路径串(0x141aa18aa↔runtime-state-updated@0x141aa18d7)+全部 writer feeder 在 commands/accounts(panic-Location 两跳真值, Oct5)\n角色: RuntimeDisplaySnapshot 序列化: {status:{...}, accounts:[384B 项], refreshReport:{...}|缺省(skip_serializing_if)}; 事件 runtime-state-updated 载荷共用",
+        "proposed_full_comment": "win 1.2.7最新exe | 模块: src/commands/accounts.rs | 归属: runtime-state 字符串簇邻接 codexmate_lib::commands::accounts 模块路径串(0x141aa18aa↔runtime-state-updated@0x141aa18d7)+全部 writer feeder 在 commands/accounts(panic-Location 两跳真值, Oct5)\n角色: RuntimeDisplaySnapshot 序列化: {status:{...}, accounts:[384B 项], refreshReport:{...}|缺省(skip_serializing_if)}; 事件 runtime-state-updated 外层的 snapshot 字段共用本内层序列化器；外层由 0x140DDA7A0 序列化为 {snapshot, source, accountKey?}，accountKey None 时省略",
+        "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+        "source_role": "pre",
+        "source_native_evidence": {
+          "file": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-runtime-pre-event-dto-candidates.json",
+          "pointer": "/rows/0",
+          "file_sha256": "8da0dbc39e372fbd7f0507574c61ea680190e5c19210d352d53f6dec16f6f4a5",
+          "role": "pre",
+          "ea": "0x140cd7e50",
+          "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+          "code_sha256": "695f1a450337353e3a79ffa4bcd55e7eed03005360435f82a980dcabc6904cf1"
+        },
+        "status": "authorized-but-not-executed; later unique IDB writer requires fresh exact-comment readback before replacement; never apply to release EAs"
+      }
+    ],
+    "ida_calls": 0,
+    "idb_writes": 0,
+    "db_saves": 0
+  },
+  "release_comparison": {
+    "schema": "c5cm.reverse.release_comparison_closure.v1",
+    "session": "<审计会话>",
+    "evaluated_at": "2026-10-20T06:06:42.170397+00:00",
+    "platform": "windows-x64",
+    "pre_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+    "release_sha256": "fd5f0c5aa7d500fe7fcef21359028fa614ede9965fc48888601883832ee7d8df",
+    "pre_bytes": 37413376,
+    "release_bytes": 34981888,
+    "pre_mtime_ns": 1790744322000000000,
+    "release_mtime_ns": 1791391220000000000,
+    "module_content_reduced": true,
+    "content_closed": true,
+    "readiness": true,
+    "overall_dual_platform_ready": true,
+    "status": "DONE_STATIC_COMPARISON",
+    "source_manifests": [
+      {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-final-idb-persistence-manifest.json",
+        "sha256": "3debfd513d3fbc531a115d4f0ab0ea4682d845601906a54a78f9853e7669ea70",
+        "bytes": 415955,
+        "scope": "closed-static-fact-annotation-module-save-readback-only",
+        "status": "persistence-complete; not-final-consumer-review"
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-final-idb-module-persistence-manifest.json",
+        "sha256": "960f2b5e210c380abe4a417765302218710010a33c0c2d5786e0c2fc8ddab9a3",
+        "bytes": 20075
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-oauth-post-launch-raw-manifest.json",
+        "sha256": "48a68f5600b35d4005353b7fb95ae2d32b8b62f2fecded9f8cf61e26660ee21c",
+        "bytes": 2130,
+        "scope": "windows-oauth-post-launch-historical-static-only",
+        "status": "specialty-evidence-reviewed-no-blocking; not-package-review",
+        "source": {
+          "workflow": "wf_83a253ac-9b8",
+          "journal_lines": [
+            8,
+            9
+          ],
+          "journal_sha256": "9346d7a3452f108a263700ac3ce57cc8b6f633b6d07e746aeee7be6878ceb37c",
+          "scope": "windows-oauth-post-launch-historical-static-only",
+          "status": "dual-review-no-blocking; not-final-consumer-package-review",
+          "source_records": [
+            {
+              "line": 8,
+              "agent_id": "a8c5e76356f967f9d",
+              "sha256": "34329dd6efb265f1ca253e295d424bb0aa6c42f1fdc277e98c0dba872b2911af"
+            },
+            {
+              "line": 9,
+              "agent_id": "acc27ae57ae78bf90",
+              "sha256": "b29d23701688b3bba6bcc29686263c0e30550fa89d42d8249dcabc2d89251d97"
+            }
+          ]
+        }
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-oauth-post-launch-helper-complete-raw-manifest.json",
+        "sha256": "fdf322efd829cf77050c8ad97c687a39799925a544e37cba51bf3f8a3c06eca3",
+        "bytes": 29020,
+        "scope": "windows-oauth-post-launch-historical-static-only",
+        "status": "specialty-evidence-reviewed-no-blocking; not-package-review",
+        "source": {
+          "workflow": "wf_83a253ac-9b8",
+          "journal_lines": [
+            8,
+            9
+          ],
+          "journal_sha256": "9346d7a3452f108a263700ac3ce57cc8b6f633b6d07e746aeee7be6878ceb37c",
+          "scope": "windows-oauth-post-launch-historical-static-only",
+          "status": "dual-review-no-blocking; not-final-consumer-package-review",
+          "source_records": [
+            {
+              "line": 8,
+              "agent_id": "a8c5e76356f967f9d",
+              "sha256": "34329dd6efb265f1ca253e295d424bb0aa6c42f1fdc277e98c0dba872b2911af"
+            },
+            {
+              "line": 9,
+              "agent_id": "acc27ae57ae78bf90",
+              "sha256": "b29d23701688b3bba6bcc29686263c0e30550fa89d42d8249dcabc2d89251d97"
+            }
+          ]
+        }
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-oauth-post-launch-helper-140a4dbb0-error-header-constants-raw-manifest.json",
+        "sha256": "7c743ab39cddc295a44361f549376b7dede8538f55b08bdbf4f1c92cbc8b353a",
+        "bytes": 10124,
+        "scope": "windows-oauth-post-launch-historical-static-only",
+        "status": "specialty-evidence-reviewed-no-blocking; not-package-review",
+        "source": {
+          "workflow": "wf_83a253ac-9b8",
+          "journal_lines": [
+            8,
+            9
+          ],
+          "journal_sha256": "9346d7a3452f108a263700ac3ce57cc8b6f633b6d07e746aeee7be6878ceb37c",
+          "scope": "windows-oauth-post-launch-historical-static-only",
+          "status": "dual-review-no-blocking; not-final-consumer-package-review",
+          "source_records": [
+            {
+              "line": 8,
+              "agent_id": "a8c5e76356f967f9d",
+              "sha256": "34329dd6efb265f1ca253e295d424bb0aa6c42f1fdc277e98c0dba872b2911af"
+            },
+            {
+              "line": 9,
+              "agent_id": "acc27ae57ae78bf90",
+              "sha256": "b29d23701688b3bba6bcc29686263c0e30550fa89d42d8249dcabc2d89251d97"
+            }
+          ]
+        }
+      }
+    ],
+    "source_analyses": [
+      {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/catalog-content-closure-proof.json",
+        "sha256": "bce646383cd8dbec16ee22c500c74950d00e78c299639e6622710c078425137d",
+        "bytes": 3034734,
+        "scope": "original-catalog210-and-six-closed-static-content-scopes",
+        "status": "210-of-210-content-evidence-closed; not-consumer-delivery",
+        "specific_correction_overlay": {
+          "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-provider-import-correction.json",
+          "sha256": "b5c9c7dfe648d7f136504bc8ca71990b719e3e6d0012249d53d1cea52418d164",
+          "bytes": 7590
+        },
+        "scope_note": "All original responsibility records retain frozen identity; original_id192 copied cleanup sentence is superseded by explicit PM-authorized overlay."
+      }
+    ],
+    "additional_inputs": [
+      {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-final-idb-root-unattributed-support-receipt.json",
+        "sha256": "6b3fa11338a0dbab9e3785052e76321bed61588044116f01cfcf160650941e86",
+        "bytes": 474446
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-final-idb-root-unattributed-support-disk-verification.json",
+        "sha256": "b076feb906793b1a53528f99f2938c3de85a8081bf4335d36d7fb1c3f7f90f51",
+        "bytes": 8432
+      },
+      {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/trials/release-fd5f0c5aa7d5-final-root-unattributed-support-saved.i64",
+        "sha256": "0ff4fc87d1308471f1a803d80f23c9d792c5325812a54265d8dacbf77b21dec5",
+        "bytes": 738972383,
+        "mtime_ns": 1792199146375824200,
+        "status": "stat-unchanged; prior-host-and-SMB-hash-proof-reused"
+      }
+    ],
+    "consumer_gate": {
+      "consumerStartReady": false,
+      "strictImplementationUse": false,
+      "readyToImplement": false,
+      "implementation_use": false,
+      "gate_accepted": false,
+      "full_leaf_100": false,
+      "full_leaf_100_definition_v2": false
+    },
+    "dim6": false,
+    "live_reference": false,
+    "live_reference_note": "未对照",
+    "windows_inferred": false,
+    "blockers": [],
+    "old_pre_decisions_unchanged": true,
+    "owner_matrix": {
+      "canonical_scope": "Windows release fd5f0c5aa7d5 own-session metadata increment only; historical pre fields unchanged",
+      "producer": "Claude",
+      "machine": "<本地机器>",
+      "session": "<审计会话>",
+      "claim": "internal-reverse/REVERSE-STATUS.md L8898; internal-reverse/task-plan.json#<审计会话>",
+      "source_index": "root INDEX L2158-2161; consumer INDEX L475",
+      "write_mode": "append own release_comparison subsection; no previous keys overwritten",
+      "collision": "NONE for original release claim",
+      "takeover_token": "none; not takeover; event-only token not expanded",
+      "idb_writer": "this metadata node IDB writes/save 0"
+    },
+    "persistence_complete": true,
+    "final_review_complete": true,
+    "grounded_complete": true,
+    "execution_ready_for_final_review": true,
+    "readiness_scope": "same-version pre/release scoped static consumer delivery; not implementation, full_app/full_leaf, live-reference or implementation-side acceptance",
+    "consumer_gate_note": "All release implementation gates remain false. Consumer content mapping is a static delivery requirement, not acceptance/live/full-leaf promotion.",
+    "direct_delivery_authorization": {
+      "quote": "那你直接执行完",
+      "scope": "main conversation writes existing consumer deliverables; no rule change, no implementation gate promotion",
+      "recorded_at": "2026-10-19T02:57:27.287309+00:00"
+    },
+    "final_delivery_documents": [
+      {
+        "path": "internal-reverse/audits/windows-1.2.7-version-delta/AI.md",
+        "sha256": "72fe78716d63a31eee51220d9c2f497191687992ec90a4b8519c903ffc73c885",
+        "bytes": 4461
+      },
+      {
+        "path": "internal-reverse/audits/windows-1.2.7-version-delta/README.md",
+        "sha256": "7200a75aad2576736400182057ff4e705d67a05b724fe194c8a0616ac6942c52",
+        "bytes": 3351
+      },
+      {
+        "path": "internal-reverse/audits/windows-1.2.7-version-delta/SYSTEM-DIFF.md",
+        "sha256": "c40dfe89e66ffe4b66ff17ae2c5a1d34d13693e87da366cbc7733ed388231551",
+        "bytes": 19419
+      },
+      {
+        "path": "internal-reverse/audits/windows-1.2.7-version-delta/logic/CONSUMER-CONTRACT-1.2.7.md",
+        "sha256": "85bf965fa2287c19569df763328323cf686c1cbf4e90b54783e6c63e2a1adfc5",
+        "bytes": 27169
+      },
+      {
+        "path": "internal-reverse/audits/windows-1.2.7-version-delta/logic/DELTA-LOGIC-1.2.7.md",
+        "sha256": "26af5560f68f3ab720a1611a8dfbb8a7e9b6d8d9cb461889db1cad1f8a3b3bcc",
+        "bytes": 293235
+      },
+      {
+        "path": "internal-reverse/audits/windows-1.2.7-version-delta/logic/FULL-CHAIN-1.2.7.md",
+        "sha256": "82474df33a676759eb51abd59a1c615c219607a995330544fbe8ed40d1463edc",
+        "bytes": 12940
+      },
+      {
+        "path": "internal-reverse/audits/windows-1.2.7-version-delta/pointers/evidence-paths.md",
+        "sha256": "f7a9733fe3debc274a774729d5a418ba1a018312d924ca664505e61d1c9c1e66",
+        "bytes": 12398
+      },
+      {
+        "path": "internal-reverse/audits/windows-1.2.7-version-delta/reviews/AGENT.md",
+        "sha256": "13e43a26da9f1c7cfc65aca65decbfdef4ef03b4bfb9d8fa90f0eb1956cf3a87",
+        "bytes": 14300
+      },
+      {
+        "path": "internal-reverse/audits/windows-1.2.7-version-delta/reviews/CLAUDE.md",
+        "sha256": "d5f01bc5312d8aaf5a407bee141e65c3296eb37c9f544ee7bfe3394b91fad301",
+        "bytes": 14139
+      },
+      {
+        "path": "internal-reverse/audits/windows-1.2.7-version-delta/reviews/CROSS-REVIEW.md",
+        "sha256": "61b072bd8e5f479991cdbc95b3d575ffd5f782e264e3a62267e251facd9d448d",
+        "bytes": 2772
+      }
+    ],
+    "delivery_scope_note": "Current static pre/release comparison only; original pre top-level decisions preserved; no full-app/full-leaf/implementation/live promotion.",
+    "oauth_supplement_persistence": {
+      "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-oauth-supplement-persistence-receipt.json",
+      "sha256": "9334eddd5b8539a7f46773594147cad62da184d359a685a38e989cd88bb1169e",
+      "bytes": 14815,
+      "comments_readback": 5,
+      "renames": 0,
+      "dirtree_moves": 0,
+      "latest_saved_artifact": {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/trials/release-fd5f0c5aa7d5-oauth-supplement-saved.i64",
+        "sha256": "e412394647af56e739937e89eb9b3687c9792195d9bbfc19f32bf6f92c92b432",
+        "bytes": 739128031,
+        "mtime_ns": 1792379087686517300,
+        "host_smb_hash_equal": true
+      },
+      "preserved_prior_full_chain": true
+    },
+    "final_review": {
+      "scope": "current complete scoped consumer package; two real independent lanes",
+      "structured": 0,
+      "adversarial": 0,
+      "blocking_count": 0,
+      "source": {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-consumer-content-reconciliation.json",
+        "sha256": "478b1b8271e3fa109fcf5698b7b8f445524f479144d5f25ca65e61aa108d8c5f",
+        "bytes": 42517
+      }
+    },
+    "grounded_seven_checks": {
+      "1_index": {
+        "status": "PASS",
+        "root_session_in_tail": true,
+        "final_consumer_manifest_bindings": "actual final SHA/size verified in the latest INDEX rows after append; hashes are not recursively embedded in their own manifests",
+        "root_index_lines": 2174,
+        "consumer_index_lines": 537,
+        "session_in_root_tail": true,
+        "final_current_state_records": 8,
+        "recorded_at": "2026-10-20T06:11:01.756915+00:00"
+      },
+      "2_ledger": {
+        "status": "PASS",
+        "rounds": 11,
+        "root_rollup_sources": 112,
+        "root_rollup_source_objects_equal": true,
+        "original_format_recovered": false
+      },
+      "3_current_targets": {
+        "status": "PASS",
+        "root_status": "done",
+        "target_count": 2,
+        "active_targets": 0,
+        "empty_current_work_and_action": true,
+        "history_excluded_from_current_count": true
+      },
+      "4_consumer_content": {
+        "status": "PASS",
+        "markdown_documents": 10,
+        "missing_required": 0,
+        "catalog_original_ids": 210,
+        "catalog_semantic_sections": 72,
+        "review_scope": "complete scoped consumer content, not full_app/full_leaf"
+      },
+      "5_gate": {
+        "status": "PASS",
+        "valid_release_specific_state": true,
+        "implementation_gate_true_count": 0
+      },
+      "6_readiness": {
+        "status": "PASS",
+        "field": "release_comparison.readiness",
+        "value": true,
+        "scope": "final static consumer delivery only"
+      },
+      "7_known_defects": {
+        "status": "PASS",
+        "closed": [
+          "incomplete catalog consumer reduction",
+          "provider192 cleanup direction with actual PM ruling",
+          "three missing exact literals",
+          "engine input/path active contradiction",
+          "target-level coordination residue",
+          "INDEX schema and pointer/hash binding",
+          "missing root ledger rollup with PM-approved format"
+        ],
+        "previous_OAuth_event_platform_facts_preserved": true,
+        "dim6": false,
+        "live_reference": false
+      }
+    },
+    "final_completed_at": "2026-10-20T06:06:42.170397+00:00",
+    "windows_closed": true,
+    "consumer_refinement_pending": false,
+    "consumer_refinement_recorded_at": "2026-10-20T03:28:11.491448+00:00",
+    "consumer_refinement_scope": "仅同一1.2.7本平台pre→release已分配变化/歧义面的消费者精修；非full-App/full-leaf、全依赖逐体认证、真实App对照或实现放行。",
+    "phase": "static-consumer-comparison-delivered",
+    "content_closed_scope": "仅已决原始assigned静态内容；不是尚待完成的catalog消费者归约。",
+    "persistence_complete_scope": "既有原始IDB保存/readback；不等于本次消费者交付终验。",
+    "consumer_refinement_remaining": [],
+    "consumer_refinement_history": [
+      {
+        "recorded_at": "2026-10-20T03:28:11.491448+00:00",
+        "session": "<审计会话>",
+        "scope": "仅同一1.2.7本平台pre→release已分配变化/歧义面的消费者精修；非full-App/full-leaf、全依赖逐体认证、真实App对照或实现放行。",
+        "reason": "Windows DELTA-LOGIC-1.2.7.md §11 L547–612 只列30分片/210责任closed计数，未自足归约至少12业务族；原始已决内容和持久化不翻案，当前正式消费者归约及其复审/grounded未完成。",
+        "previous_current_fields": {
+          "evaluated_at": "2026-10-19T03:14:03.463252+00:00",
+          "module_content_reduced": true,
+          "readiness": true,
+          "overall_dual_platform_ready": true,
+          "status": "DONE_STATIC_COMPARISON",
+          "blockers": [],
+          "final_review_complete": true,
+          "grounded_complete": true,
+          "execution_ready_for_final_review": true,
+          "readiness_scope": "same-version pre/release static comparison and finalized consumer package; NOT implementation readiness",
+          "consumer_gate_note": "旧顶层字段仅对应pre五目标；release实现门全false。OAuth双审仅覆盖历史静态专项，不是整包终审；正式消费者正文义务仍未完成。",
+          "final_review": {
+            "scope": "formal dual-platform consumer documents plus final freeze increment",
+            "blocking_count": 0,
+            "source": {
+              "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-final-consumer-review-proof.json",
+              "sha256": "0a6620dee87cc67495a4c7d52c6bba1fa6efe97413ef724ed7dd7f0e4f93047a",
+              "bytes": 17840
+            },
+            "structured": 0,
+            "adversarial": 0
+          },
+          "grounded_seven_checks": {
+            "1_index": {
+              "status": "PASS",
+              "root_index_lines": 2164,
+              "session_in_root_tail": true,
+              "consumer_final_rows": "two final rows appended after final manifest serialization and verified below"
+            },
+            "2_producer_ledger": {
+              "status": "PASS",
+              "rounds": 10,
+              "final_session": "<审计会话>",
+              "final_status": "DONE_STATIC_COMPARISON"
+            },
+            "3_active_claim": {
+              "status": "PASS",
+              "current_in_progress": 0,
+              "task_status": "done",
+              "historical_checkpoints_preserved": true
+            },
+            "4_leaf_and_documents": {
+              "status": "PASS",
+              "missing_documents": 0,
+              "markdown_documents": 10,
+              "content_scope": "mac1870 scoped responsibility / win210 catalog plus six scopes; not full_leaf"
+            },
+            "5_gate_report": {
+              "status": "PASS",
+              "path": "internal-reverse/audits/windows-1.2.7-version-delta/gate-report.json",
+              "nonempty": true,
+              "scope": "release static comparison; all implementation gates remain false"
+            },
+            "6_readiness": {
+              "status": "PASS",
+              "field": "release_comparison.readiness",
+              "value": true,
+              "scope": "static comparison delivery only"
+            },
+            "7_historical_defects": {
+              "status": "PASS",
+              "covered": [
+                "OAuth retry-deletion/new-protection false claims corrected with same-platform sources",
+                "event envelope distinct from getter; authorized correction retained",
+                "actual IDB snapshots/saves/readback and latest artifact fingerprint",
+                "platform Skills and pause_turn divergence preserved",
+                "former missing Windows final documents now present"
+              ],
+              "windows_oauth_comments_readback": 5,
+              "mac_prior_bad_assertions": 0,
+              "live_reference": false
+            }
+          },
+          "final_completed_at": "2026-10-19T03:14:03.463252+00:00",
+          "windows_closed": true
+        }
+      },
+      {
+        "at": "2026-10-20T04:30:04.252260+00:00",
+        "previous_status": "running",
+        "previous_readiness": false,
+        "reason": "consumer catalog responsibility was previously represented as closed counts rather than complete business contract; source conflicts are not silently adjudicated"
+      },
+      {
+        "at": "2026-10-20T06:06:42.170397+00:00",
+        "previous_current_fields": {
+          "status": "LITERAL_CONTRACTS_COMPLETED_PENDING_FINAL_REVIEW",
+          "phase": "consumer-refinement",
+          "consumer_refinement_pending": true,
+          "consumer_refinement_remaining": [
+            "Windows catalog责任的消费者自足归约；六路只读归约 wf_cdeb9e03-478 尚未落盘复验",
+            "original_id192来源文字与原body commit cleanup方向由另一只读核验处理；本节点不改判",
+            "原包精修落盘后的独立双路复审与grounded七项；本节点不签PASS、不写ACK或DONE"
+          ],
+          "blockers": [
+            "final_independent_review_and_grounded_pending"
+          ]
+        },
+        "resolution": "third-round two-lane PASS; actual current content and coordinator closeout, not a retrospective rewrite of old audits"
+      }
+    ],
+    "catalog_consumer_mapping": {
+      "original_count": 210,
+      "mapped_ids": 210,
+      "missing_ids": [],
+      "sections": 72,
+      "path": "logic/DELTA-LOGIC-1.2.7.md#11-catalog全部责任的消费者行为合同",
+      "source": {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-consumer-catalog-reduction.json",
+        "sha256": "359396c8da9f92974a699a5acb13580bf907950e566ee2821756690dd811f0ea",
+        "bytes": 419458
+      },
+      "pending_source_conflicts": [],
+      "source_conflict_history": [
+        {
+          "agent_id": "ad69e0b0dac1e546d",
+          "issue": "旧消费者正文存在一处必须在同包合并时消除的解释冲突：<内部存储>/internal-reverse/audits/windows-1.2.7-version-delta/logic/DELTA-LOGIC-1.2.7.md 第7节 engine-selection-path-and-ambiguity-native 条目（当前L476）写“从4份安装相关文本计算摘要”，而已闭合slice06#/records/0/branch_ledger的61-b14至61-b18及support明确为四个配套可执行文件的稳定内容摘要，再按文件名/NUL/摘要hex/NUL组合。须用本批original_id61正文替换该错误解释，并区分App候选数与accepted缓存数/ambiguity标志；无需新采证据或翻案raw裁定。五条分配记录本身未发现缺源或已决结果相互冲突。"
+        },
+        {
+          "agent_id": "a8217c25318fd0b55",
+          "issue": "ID192精确解释冲突，已通知父节点；不是缺文件或待最终存盘。<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-catalog-slice-17-result.json#/records/11/adjudication/resolved_details/2 明写“最终commit成功后置committed=0，drop副本时按identity删除；commit失败保留revision”。然而其直接来源 <内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-catalog-slice-17-directed-support.json#/rows/44（文件SHA055c65699345b77d5bb6e6e9a3d24972b4f3083c12f1f04bc511a8394c1391ed，code SHA d8a17a36e22e837c76fc77038d6a471b8b66fb8b80f9bf805040f787b499eee5）L87–91在commit tag==-1时保持此前committed=1，L92–136的错误分支才将guard+80置0。<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-router-catalog-mcp-lifecycle-manager-native-00.json#/rows/4 L430–435证实最终commit在持久化后替换内存state并返回-1成功；<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-protocol-platform-credential-system-00.json#/rows/1 L16–18证实仅committed=false才尝试identity清理。上述来源文件及code哈希均匹配已记录值。pre directed-support#/rows/41同样是成功-1不清标志、错误才置0，并非只有release的差异。按决策终局协议不能静默翻案或盲抄相反的破坏性顺序；保留原closed与所有门不变，暂停这一成功/失败→删除映射的无冲突采纳，交父节点按具体冲突上报裁决。其余59条归约不依赖该相反映射。"
+        },
+        {
+          "agent_id": "adf4ed75a4bdaaa09",
+          "issue": "ID107的消费者字段精度缺项，不重判其closed：<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-catalog-slice-24-result.json#/records/3及/direct​ed_auxiliary/0、/directed_auxiliary/12仅以17字节查询项或IDA符号aReasoningEffor_0/aReasoningEffor_3描述输入effort key。已核对主source rows/2、直接辅助体、paired_constant_snapshots及既存live_captures，未读到该key确切17字节字面量；不能擅写为16字节reasoning_effort或发明新schema。父节点需从同任务已有明确字段/常量证据补入；本路未重新采集。"
+        },
+        {
+          "agent_id": "adf4ed75a4bdaaa09",
+          "issue": "ID12的收尾phase字面量未在已读直接来源展开，不重判分支closed：<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-catalog-slice-25-result.json#/records/1只写固定8字节phase；pre直接source commit-catalog-directed-pre.json#/rows/2使用unk_141A4A05E，release直接source commit-quiet-window.json#/rows/5使用unk_1418AF10A，长度均8、force均1。不能按完成器名称猜done/degraded/finished。父节点如已有此固定值的明确既存证据，应补到同一journal正文；未补前不能宣称该条已完全自足。覆盖集合核验为60/60、缺失0、重复0；此处两项是正文精度阻塞，不是存盘/最终复审待办。"
+        },
+        {
+          "agent_id": "aa1e9b0b8e0a18790",
+          "issue": "original_id80的默认展示标签存在一个精确缺源：<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-deep-responsibility-content-024.json#/rows/3 的code第225—262行证明两项label trim后均空时复制unk_141870A10的16字节，但该直接来源未保存该常量字节；<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-catalog-slice-26-static-evidence.json#/captures只展开三条fallback错误，不含此默认标签。已消费该record的全部已决caller分支，未推翻same裁定；不能无证据猜默认文案或宣称其字面合同已完整交付。本路遵守只读限制，不补采集。"
+        }
+      ],
+      "resolved_source_corrections": [
+        {
+          "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-provider-import-correction.json",
+          "sha256": "b5c9c7dfe648d7f136504bc8ca71990b719e3e6d0012249d53d1cea52418d164",
+          "bytes": 7590
+        },
+        {
+          "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-consumer-literal-contract-supplement.json",
+          "sha256": "51ad1d8c67127a50c1e44d0058ea48113e61e905ca0edd25eb12493b675560b2",
+          "bytes": 16911
+        }
+      ],
+      "literal_contracts": {
+        "12": {
+          "phase": "degraded",
+          "bytes": 8
+        },
+        "107": {
+          "input": "/reasoning/effort",
+          "bytes": 17,
+          "output": "reasoning_effort",
+          "output_bytes": 16
+        },
+        "80": {
+          "default_label": "Untitled Session",
+          "bytes": 16
+        }
+      }
+    },
+    "provider_import_correction": {
+      "token": "EXPLICIT_OVERWRITE_CANONICAL",
+      "pm_ruling": {
+        "source_transcript": "<本地路径>/.claude/projects/<本地归档><内部项目>-Code-<内部项目>/<审计会话>.jsonl",
+        "tool_use_id": "call_7tgFNYZ3FgrOHCA1BiAZCK43",
+        "question": {
+          "line": 23308,
+          "timestamp": "2026-10-20T03:27:15.199Z",
+          "raw": {
+            "type": "tool_use",
+            "id": "call_7tgFNYZ3FgrOHCA1BiAZCK43",
+            "name": "AskUserQuestion",
+            "input": {
+              "questions": [
+                {
+                  "question": "申请定点更正 provider 导入中已被采纳、但与原始函数体相反的凭据清理结论，并继续完成交付？",
+                  "header": "定点纠错",
+                  "options": [
+                    {
+                      "label": "直接执行定点更正（推荐）",
+                      "description": "授予 EXPLICIT_OVERWRITE_CANONICAL，仅限 original_id=192：commit 成功保留新 revision；commit 失败允许按身份校验尝试清理，清理失败仅告警。保留原文历史，同步直接证据、正文、指针与复核，不改原始函数或其他合同。"
+                    },
+                    {
+                      "label": "保留冲突，不改旧结论",
+                      "description": "隔离这一条为未决；其他内容继续完成，但不能宣称全部消费者内容达标。"
+                    }
+                  ],
+                  "multiSelect": false
+                },
+                {
+                  "question": "规范要求的根 producer-ledger 汇总文件已缺失，原件、旧生成代码和可验证 schema 均未找到，是否按现存各包 ledger 重建该规范入口？",
+                  "header": "根汇总",
+                  "options": [
+                    {
+                      "label": "按现存 ledger 重建（推荐）",
+                      "description": "在既定无日期路径重建，保留现存 ledger 原字段及来源哈希，纳入各包历史记录和本任务；明确注明旧格式不可恢复，不伪称恢复了原 schema，不修改规则或提高任何实现门。"
+                    },
+                    {
+                      "label": "保留缺口，暂不重建",
+                      "description": "不自造格式，明确记录根协调交付尚不完整；已存在的双平台内容继续补齐。"
+                    },
+                    {
+                      "label": "等待原件后恢复",
+                      "description": "保留现有文件，待提供原 rollup 或原生成代码后按旧格式恢复；该项暂不计完成。"
+                    }
+                  ],
+                  "multiSelect": false
+                }
+              ]
+            }
+          },
+          "record_sha256": "0f456ebbc97f9c0e361164bbb04455bc474e339f6cfd34d06debef299fd11eb4"
+        },
+        "answer": {
+          "line": 23317,
+          "timestamp": "2026-10-20T04:25:49.599Z",
+          "raw": {
+            "type": "tool_result",
+            "content": "Your questions have been answered: \"申请定点更正 provider 导入中已被采纳、但与原始函数体相反的凭据清理结论，并继续完成交付？\"=\"直接执行定点更正（推荐）\", \"规范要求的根 producer-ledger 汇总文件已缺失，原件、旧生成代码和可验证 schema 均未找到，是否按现存各包 ledger 重建该规范入口？\"=\"按现存 ledger 重建（推荐）\". You can now continue with these answers in mind.",
+            "tool_use_id": "call_7tgFNYZ3FgrOHCA1BiAZCK43"
+          },
+          "record_sha256": "4e3aaded322d7bab49370bd8ba1d79eac3c39130d3ad5e68003b429836e08714"
+        },
+        "token": "EXPLICIT_OVERWRITE_CANONICAL",
+        "scope": "original_id192 import revision cleanup narrative and direct consumer evidence only; root rollup separately authorized reconstruction, original schema not recovered"
+      },
+      "proof": {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-provider-import-correction.json",
+        "sha256": "b5c9c7dfe648d7f136504bc8ca71990b719e3e6d0012249d53d1cea52418d164",
+        "bytes": 7590
+      },
+      "original_id": 192,
+      "old_source_sentence_deprecated": true,
+      "current_contract": "最终commit前，包装器把本次导入产生的88B revision guard条目byte+80置1，表示抑制条件删除。最终state commit的out tag=-1为成功，成功支保持1；非成功支才置0，随后销毁接出的guard buffer。只有byte+80=false才按保存的路径和文件identity尝试删除新revision；identity不等拒删，删除失败只日志，不能保证所有失败revision均已删除。不能把另一层revision写入核的-1失败编码混用于state commit；亦不能把内存drop当成磁盘回滚。pre/release这段清理方向同形，caller前检时机变化仍保留。异常展开、OOM及未完整展开的collector内部不被扩成全局补偿证明。"
+    },
+    "consumer_literal_contract_supplement": {
+      "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-consumer-literal-contract-supplement.json",
+      "sha256": "51ad1d8c67127a50c1e44d0058ea48113e61e905ca0edd25eb12493b675560b2",
+      "bytes": 16911
+    },
+    "consumer_text_precision_corrections": [
+      "Engine input is four specified executable files; parent is App root or App root/app, not arbitrary bin chain.",
+      "Background fence failure counter does not terminate at third failure; frontend synchronous quiet has its separate deadline/error boundary.",
+      "Previously pending exact literals for original_ids12/107/80 are filled by the same-platform literal supplement, not inferred from byte count."
+    ],
+    "final_consumer_recheck": {
+      "at": "2026-10-20T06:06:42.170397+00:00",
+      "current_blocking": 0,
+      "source": {
+        "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-consumer-content-reconciliation.json",
+        "sha256": "478b1b8271e3fa109fcf5698b7b8f445524f479144d5f25ca65e61aa108d8c5f",
+        "bytes": 42517
+      },
+      "review_history_runs": [
+        "wf_e99ccf00-b0b",
+        "wf_f9f2fee3-345"
+      ],
+      "root_rollup": {
+        "path": "internal-reverse/data/producer-ledger-rollup.regenerated.json",
+        "sha256": "9deff4576ce442be1cd3fe1509b2d6776b0720b243084bb44253c1d8013b00aa",
+        "bytes": 528036
+      },
+      "original_format_recovered": false
+    }
+  }
+}
