@@ -1,0 +1,118 @@
+{
+  "schema": "c5cm.aimami.interface-report.v1",
+  "bundle": "windows-1.2.7-version-delta",
+  "product": "aimami",
+  "version": "1.2.7 (test build, version-string 1.2.6)",
+  "platform": "windows-x64",
+  "amended": "2026-09-30",
+  "session": "<审计会话>",
+  "recovered_from": "intermediate/aimami/1.2.7/windows-x64/version-delta/four-angle-d-classification.json 两条 local_outtake（angle_b）",
+  "recovery_method": "现有 1.2.7 win IDB live decompile（只读，本轮无 IDB 写入、无版本切换）；全部函数体完整无截断（红线 20 核查通过）",
+  "commands": {
+    "load_quota_history": {
+      "status": "PASS",
+      "ipc": {
+        "name": "load_quota_history",
+        "args": {
+          "accountKey": "string（配额账号键，精确匹配过滤）",
+          "range": "string，枚举域 \"today\" | \"week\" | \"month\""
+        },
+        "argkey_drift_vs_1.2.6": "old [accountKey] -> new [accountKey, range]（intermediate/aimami/1.2.7/version-delta/ipc-command-diff.json；win 前端与 mac 构建字节一致，合同相同）",
+        "returns": "Result<CoreEnvelope<QuotaHistoryPayload>, String>"
+      },
+      "backend": {
+        "core_fn": {
+          "owner": "0x140ec7a00",
+          "size_bytes": 2573,
+          "basic_blocks": 104,
+          "calls": 23,
+          "identity_evidence": "内容级（红线 13）：字面量 \"Quota history range must be today, week, or month\"/\"Quota history date is out of range\"/\"Local time out of range for `NaiveDateTime`\"、log target \"codexmate_lib::core::quota_history\" @ 0x141a55b80、常量 1801807223(\"week\")/0x61646F74(\"tod\")/0x746E6F6D(\"mont\")/0x2000/0x100003600/719163/86400 与 mac load_history_range 逐一相同",
+          "signature": "fn load_history_range(path: &str, range: &str, account_key: Option<&str>) -> Result<Vec<QuotaHistoryPoint>, CoreError>（win 等价物）",
+          "ok_tag": "0xFFFFFFFFFFFFFFFF（win ABI niche，区别于 mac 的 11）",
+          "err_tags": {"InvalidData": 9, "Io": 2}
+        }
+      },
+      "dto": {
+        "QuotaHistoryPayload": {
+          "fields": {
+            "points": "Vec<QuotaHistoryPoint>"
+          }
+        },
+        "QuotaHistoryPoint": {
+          "size_bytes": 64,
+          "fields": {
+            "timestamp": "i64 unix 秒（结构偏移 +56）",
+            "accountKey": "String（偏移 +32..+56）",
+            "primaryUsedPercent": "number 8B（偏移 +0）",
+            "secondaryUsedPercent": "number 8B（偏移 +16）"
+          },
+          "evidence": "win serde 字段名串池：\"accountKey\" @ 0x141a189a8、\"primaryUsedPercent\" @ 0x141a189b2、\"secondaryUsedPercent\" @ 0x141a189c4（与 mac 同名）；64B stride 由结果 Vec v45<<6 写入证实；记录布局与 mac 逐字段一致"
+        }
+      },
+      "behavior": {
+        "parity": "与 mac load_history_range 行级等价：同一 range 字符串判分（today/week/month）、同一周起点回推公式（(ordinal+weekday)%7）、同一 8KB read_until(b'\\n') 逐行解析、同一前导空白跳过位图 0x100003600、同一 accountKey 精确过滤 + 未来时间戳剔除 + 本地日期 ordinal 下界、同一 driftsort/insertion 阈值 21、同一 warn 日志（count>0 时 EOF 记录跳过数）",
+        "platform_abi_diff": "文件打开失败分发按 win io::Error 表示（Os/Simple/Custom 四路 switch）判定 NotFound -> Ok(空 vec)，其余 -> Err(Io)；句柄经 CloseHandle 关闭（mac 为 close_NOCANCEL）；win 二进制带 MSVC SEH 作用域守护（行为无差）",
+        "error_messages": "错误消息字面量与 mac 完全相同"
+      },
+      "error_surface": [
+        "Err(String) = \"Invalid data: Quota history range must be today, week, or month\"",
+        "Err(String) = \"Invalid data: Quota history date is out of range\"",
+        "Err(String) = \"IO error: <std::io::Error Display>\"（NotFound 除外，NotFound 返回空 points）",
+        "panic 面：\"Local time out of range for `NaiveDateTime`\""
+      ],
+      "side_effects": "只读文件访问，无写/删/外部副作用",
+      "evidence": [
+        "live decompile 0x140ec7a00（2573B 完整无截断）",
+        "win serde 字段名串 0x141a189a8/0x141a189b2/0x141a189c4",
+        "log target 串 \"codexmate_lib::core::quota_history\" @ 0x141a55b80"
+      ]
+    },
+    "reveal_relay_api_key": {
+      "status": "PASS",
+      "ipc": {
+        "name": "reveal_relay_api_key",
+        "args": {
+          "providerId": "string（relay provider id，精确匹配；参串 @ 0x141a10adb）"
+        },
+        "state_args": {
+          "manager": "State<RelayManager>（参串 @ 0x141a10286）"
+        },
+        "returns": "Result<CoreEnvelope<String>, String>（Ok payload = api key 明文字符串）",
+        "registration": "命令串 \"reveal_relay_api_key\" @ 0x141a10ac7，注册/参数解析 helper sub_1405A23C0（tauri 生成：解析 manager State + providerId，响应序列化）"
+      },
+      "backend": {
+        "wrapper_fn": {
+          "addr": "0x14072eee0",
+          "behavior": "win commands::relay::reveal_relay_api_key 等价物：调核函数；Ok -> CoreEnvelope::ok（104B envelope）；Err -> CoreError Display（0x14104a7d0）格式化为 String；Err 编码 tag 0xFFFFFFFFFFFFFFFF + String"
+        },
+        "core_fn": {
+          "addr": "0x140d81600",
+          "role": "win RelayManager::reveal_api_key 等价物",
+          "structure_parity": "与 mac 0x100582380 逐分支同构：*(self+16)+16 处 Option<String> niche 检查（win None=0xFFFFFFFFFFFFFFFF）；Some -> String::clone + tag 9 InvalidData 立即返回；None -> ensure_provider_loaded（sub_140D87CF0），Ok 移出 api key String（tag -1），Err 原样拷贝 96B CoreError 传播；dealloc 阶梯与 mac 完全一致（含 96B stride 条目内 3-String 清理与 -1 niche 判断）"
+        },
+        "chain": [
+          "sub_140D87CF0 = win ensure_provider_loaded 等价物",
+          "win 注册侧：sub_1405A23C0 引用 \"reveal_relay_api_key\"/\"providerId\"/\"manager\" 三串"
+        ]
+      },
+      "behavior": {
+        "blocked_gate": "与 mac 同一语义：manager 密钥状态块缓存错误消息存在时立即 Err(InvalidData(消息))，不触凭据存储",
+        "provider_lookup": "id 精确匹配；未找到 -> NotFound(\"relay provider <id> not found\")（mac 侧已证实格式串，win 同构）",
+        "key_load": "凭据读取失败 -> OperationFailed(format!(\"{}\", err))；成功回写 provider api_key 缓存 + loaded 标志",
+        "ok_payload": "Ok(api key String)（win tag 0xFFFFFFFFFFFFFFFF niche）"
+      },
+      "error_surface": [
+        "Err(String) = \"Invalid data: <manager 缓存阻断消息>\"",
+        "Err(String) = \"Not found: relay provider <providerId> not found\"",
+        "Err(String) = \"Operation failed: <凭据读取错误消息>\"",
+        "panic 面：\"relay state poisoned\"（状态 mutex 中毒）"
+      ],
+      "side_effects": "凭据存储只读读取；内存态回写（provider api_key 缓存 + loaded 标志）；无文件/凭据删除或覆写",
+      "evidence": [
+        "live decompile sub_1405A23C0 / 0x14072eee0 / 0x140d81600（全部完整无截断）",
+        "命令串 0x141a10ac7、参串 0x141a10adb(\"providerId\")/0x141a10286(\"manager\")",
+        "与 mac 0x100582380 结构逐分支对照（含 niche 编码平台差：mac INT64_MIN vs win -1）"
+      ]
+    }
+  }
+}

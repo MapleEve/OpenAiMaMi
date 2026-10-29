@@ -1,0 +1,53 @@
+{
+  "schema": "c5cm.internal-reverse.producer-ledger.v1",
+  "bundle": "win-1.2.7-commands-accounts-load_runtime_display_snapshot",
+  "path": "raw/aimami/1.2.7/windows-x64/backend/commands/accounts/load_runtime_display_snapshot/",
+  "rounds": [
+    {
+      "session": "<审计会话>",
+      "date": "2026-10-06",
+      "machine": "<本地机器>",
+      "role": "producer",
+      "scope": "load_runtime_display_snapshot 禁实现裁决执行：win <审计环境> full-chain（glue 0x1405ec7d0 → getter/writer/converter/envelope/responder/serializers）+ dim1-5 补全 + IDB 归位(rename/comment/dirtree/db_save 12/12) + CONSUMER-CONTRACT 禁实现条目替换 + four-angle 双平台更新 + audits gate amendment",
+      "ida_instance": "<审计环境> (AiMaMi.1.2.7 win64.exe, sha256 51cb41b6...)",
+      "idb_writes": "按流程完成：rename 12 + 中文注释 12 + dirtree move 12 + db_save(ok=true)",
+      "claim": "REVERSE-STATUS.md CLAIM 2026-10-06 <审计会话>",
+      "status": "DONE",
+      "infrastructure_note": "SMB(.95) hang 期间经 mini 本机 backing 路径 <内部存储>/ 读写（Oct 1/5/6 先例，同一物理存储零 split-brain）"
+    },
+{
+  "session": "<审计会话>",
+  "date": "2026-10-16",
+  "produced_at": "2026-10-16T18:08:00.976115+00:00",
+  "machine": "<本地机器>",
+  "type": "authorized-event-contract-correction",
+  "status": "decision-resolved/content-still-running",
+  "scope": "仅 runtime-state-updated 事件外层陈述及直接证据指纹；不重判 getter gate，不更改其他 pre 合同，不表示 release 完成",
+  "token": "EXPLICIT_OVERWRITE_CANONICAL",
+  "proof": {
+    "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-event-correction-proof.json",
+    "sha256": "5ca8847ac0d53817082bbd09ee2869045628efdcdb550d37609c8d87dc75158d",
+    "bytes": 57456
+  },
+  "correction_manifest": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-event-correction-manifest.json",
+  "corrected_sources": [
+    {
+      "path": "raw/aimami/1.2.7/windows-x64/backend/commands/accounts/load_runtime_display_snapshot/evidence.md",
+      "sha256": "e3a0b052b9a8cb09c426e09e622d278514d0182dcbfd2456c10db9c892d191da",
+      "bytes": 15380
+    },
+    {
+      "path": "raw/aimami/1.2.7/windows-x64/backend/commands/accounts/load_runtime_display_snapshot/interface-report.json",
+      "sha256": "1455bdbecb5ccc86276b47ba91f6a202d2fe6ce91f29d7eead88ccecbf87a9dc",
+      "bytes": 8627
+    },
+    {
+      "path": "internal-reverse/audits/windows-1.2.7-version-delta/logic/CONSUMER-CONTRACT-1.2.7.md",
+      "sha256": "e913e77a0f9257577f3f4f89d201264e31025984cf9a0761c8b9355123e17dbb",
+      "bytes": 26510
+    }
+  ],
+  "gate_change": "none; all pre-existing decisions preserved; overall final diff still running"
+}
+]
+}

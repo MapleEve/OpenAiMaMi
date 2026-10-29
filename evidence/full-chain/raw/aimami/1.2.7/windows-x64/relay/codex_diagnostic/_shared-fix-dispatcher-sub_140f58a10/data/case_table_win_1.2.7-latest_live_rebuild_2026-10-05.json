@@ -1,0 +1,96 @@
+{
+  "schema": "c5cm.raw.case_table.v1",
+  "session": "<审计会话>",
+  "purpose": "任务步骤2：1.2.7 win IDB（<内部网络>:<审计环境>，用户已挂载，module='AiMaMi.1.2.7 win64.exe'）fix 分派逐 case 表 live 重建，作为与 1.2.6 表差集裁决的输入。红线31/20/37 合规（零注释采信、服务端计算小载荷、零版本切换）。",
+  "binary": "raw/binary/AiMaMi.1.2.7 win64.exe",
+  "binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+  "binary_identity_note": "当前 <审计环境> IDB 输入 exe 的 sha256=51cb41b6…（本圆 直接读 <内部存储> 文件哈希核实），与 SMB raw/binary SOT 副本『AiMaMi.1.2.7 win64.exe』逐字节一致（37413376B）。2026-10-01 轮记录的 06091864… 为更早的 1.2.7 测试构建：其单体分派器 sub_140F58A10(17556B) 在当前 exe 不存在（0x140F58A10 现为 331B 小函数 sub_140F588D0 所属），fix 分派已拆分为 entry+单键分派器+fix_all 编排+共享分类器，地址整体漂移。data/case_table_win_1.2.7.json（Oct 1 轮）仅适用于该已废弃构建。",
+  "architecture_current_exe": {
+    "command_handler": {
+      "ea": "0x140333570",
+      "name": "fix_codex_router_issue",
+      "size_bytes": 4734,
+      "command_string": "0x141a0da6a",
+      "request_fields": {"itemId": "0x141a0da80", "manager": "0x141a0d0e8", "app": "0x141a0ce5f"},
+      "error_surface": ["'(router diagnostic repair worker failed: ' @0x141a0e3be", "'blocking command task failed: '（0x1e 前缀）"],
+      "note": "async poll 状态机（同 1.2.6/旧 1.2.7 架构），逐键分派不在 handler 内"
+    },
+    "verified_call_chain": "sub_140A9EEA0(461B) -> sub_140EA5A80(5321B, check+fix 共享面，'(unknown or non-fixable diagnostic item: ' @0x141aa00f8 xref 0x140ea5be6，调 CHECK 引擎 sub_1409A45C0 与分类器 ×2) -> sub_140E995C0(3856B, 单键修复管理方法) -> sub_140DB56E0(20158B, 修复编排) -> sub_140E98C20(672B, entry) -> key=='all'（0x6C61+0x6C）? sub_1409E6E50(18310B, fix_all) : sub_140A9CE20(2434B, 单键分派器)",
+    "single_key_dispatcher": {
+      "ea": "0x140A9CE20",
+      "size_bytes": 2434,
+      "pseudocode_lines_nonblank": 415,
+      "case_labels_live": [12, 14, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 32],
+      "buckets": 14,
+      "keys": 23,
+      "guard": "pre-step sub_140B38B90(&v71,a2,aItem_3)；if ((sub_1409A3960(key) & 1) != 0 && force != 1) → bail 错误变体 10 + 池串 'diagnostic fix requires a verified ChatGPT quiet window: '（57B，0x39 长度前缀 @0x141A6F4D8）",
+      "default_branch": "LABEL_41 → sub_1416DAFA0(v82+8, &unk_141A6F514, &v76) = 'unknown diagnostic item: <key>'（25B，0x19 长度前缀 @0x141A6F514；此前 0 xref 之谜 = 代码引用打在长度前缀字节 0x141A6F514 而非串首 0x141A6F515）",
+      "post_arm_common": "LABEL_57 → sub_140B67320(&v80, v82+8)（结果映射公共尾）"
+    },
+    "fix_all_orchestrator": {
+      "ea": "0x1409E6E50",
+      "size_bytes": 18310,
+      "pseudocode_lines": 2829,
+      "note": "逐键臂与单键分派器同键集（键串常量 aAuthIntegrity/aTakeoverBackup/aConfigThirdPar/aConfigStale/aRouterHttpCont/aCatalogIntegri/aCatalogPathVal/aConfigTomlSynt/aDbOrphanProvid/aRolloutOrphanP + owner 族 sub_140A9C3A0/C640/C8E0/CB80/DB60/DE20/E0E0/E3A0/EBD0）；'postcond' 全文零命中；guard 遍历键列表逐键调分类器，任一键需窗口且非 force → bail 变体 10 + inline 59B 新消息 'diagnostic fix-all requires a verified ChatGPT quiet window'（xmmword_141A64856='diagnostic fix-a' 16B + 43B qmemcpy 'll requires a verified ChatGPT quiet window'，live 字节解码）"
+    },
+    "classifier": {
+      "ea": "0x1409A3960",
+      "size_bytes": 1152,
+      "signature": "char requires_quiet_window(key_ptr a1, key_len a2)",
+      "returns": "0=不需窗口 / 1=需窗口 / 2=未知键",
+      "keys": 24,
+      "note": "24 键 = 23 可修复键 + router_postcondition（返回 1）；无 native_off（case 39 已随修复臂一并从分类器删除）；无 router_recovery_record"
+    }
+  },
+  "fix_dispatch_table_rows": [
+    {"case": 12, "key": "config_stale", "key_bytes_live": "scalar 0x735F6769666E6F63='config_s' + 0x656C6174='tale'", "target": "0x140993DA0", "target_size": 464, "handling": "call"},
+    {"case": 14, "key": "auth_integrity", "key_bytes_live": "scalar 0x746E695F68747561='auth_int' + 0x797469726765746E='ntegrity'", "target": "0x140996B50", "target_size": 721, "handling": "call"},
+    {"case": 14, "key": "residual_cache", "key_bytes_live": "scalar 0x6C61756469736572='residual' + 0x65686361635F6C61='al_cache'", "target": "0x140995710", "target_size": 3487, "handling": "call（当前 exe 将 1.2.6 的 inline report-build outline 为独立 owner）"},
+    {"case": 17, "key": "residual_manifest", "key_bytes_live": "xmm 0x141A57280='residual_manifes' + 第17字节 xmm 0x141A231D0", "target": "0x140999630", "target_size": 1686, "handling": "call"},
+    {"case": 17, "key": "catalog_integrity", "key_bytes_live": "xmm 0x141A57290='catalog_integrit' + 第17字节 xmm 0x141A22670", "target": "0x140999300", "target_size": 200, "handling": "call"},
+    {"case": 18, "key": "config_toml_syntax", "key_bytes_live": "xmm 0x141A57210='config_toml_synt' + 0x141A57220='ax'(word@+16)", "target": "0x14099AE50", "target_size": 514, "handling": "call（fix_*_text+check+checked_fix_result 三段式，mac 同构）"},
+    {"case": 18, "key": "config_third_party", "key_bytes_live": "xmm 0x141A57230='config_third_par' + 0x141A57240='ty'(word@+16)", "target": "0x14099A9D0", "target_size": 918, "handling": "call"},
+    {"case": 19, "key": "db_orphan_providers", "key_bytes_live": "xmm 0x141A570E0='db_orphan_provid' + 0x141A570D0='orphan_providers'(off3)", "target": "0x1409BF380", "target_size": 1093, "handling": "goto LABEL_36 共享孤儿修复器（与 rollout_orphan_providers 同 target）"},
+    {"case": 19, "key": "state_db_relocation", "key_bytes_live": "xmm 0x141A57100='state_db_relocat' + 0x141A570F0='te_db_relocation'(off3)", "target": "0x14099CD20", "target_size": 6282, "handling": "⚠ DESTRUCTIVE call（当前 exe 将 1.2.6 的 inline 搬迁体 outline 为独立 owner；键串 xref ×5）"},
+    {"case": 20, "key": "router_http_contract", "key_bytes_live": "xmm 0x141A57270='router_http_cont' + 0x141A57260='ract'(dword@+16)", "target": "0x1409A1890", "target_size": 1414, "handling": "call；case 20 桶唯一修复键——router_postcondition 等 20 字符键全部落入 LABEL_41 unknown"},
+    {"case": 21, "key": "catalog_path_validity", "key_bytes_live": "xmm 0x141A57140='catalog_path_val' + 0x141A57130='og_path_validity'(off5)", "target": "0x1409A3790", "target_size": 390, "handling": "call"},
+    {"case": 22, "key": "takeover_backup_orphan", "key_bytes_live": "xmm 0x141A57160='takeover_backup_' + 0x141A57150='er_backup_orphan'(off6)", "target": "0x1409B6820", "target_size": 2117, "handling": "call"},
+    {"case": 22, "key": "config_global_validity", "key_bytes_live": "xmm 0x141A57180='config_global_va' + 0x141A57170='_global_validity'(off6)", "target": "0x1409B5A50", "target_size": 2751, "handling": "call"},
+    {"case": 23, "key": "config_profile_conflict", "key_bytes_live": "xmm 0x141A571A0='config_profile_c' + 0x141A57190='profile_conflict'(off7)", "target": "0x1409B9210", "target_size": 915, "handling": "call"},
+    {"case": 23, "key": "thread_missing_rollouts", "key_bytes_live": "xmm 0x141A571C0='thread_missing_r' + 0x141A571B0='missing_rollouts'(off7)", "target": "0x1409C0630", "target_size": 2490, "handling": "call"},
+    {"case": 23, "key": "legacy_migrated_threads", "key_bytes_live": "xmm 0x141A571E0='legacy_migrated_' + 0x141A571D0='migrated_threads'(off7)", "target": "0x1409BE3D0", "target_size": 2742, "handling": "call"},
+    {"case": 23, "key": "project_state_integrity", "key_bytes_live": "xmm 0x141A57200='project_state_in' + 0x141A571F0='_state_integrity'(off7)", "target": "0x1409BF9A0", "target_size": 2209, "handling": "call"},
+    {"case": 24, "key": "thread_response_item_ids", "key_bytes_live": "xmm 0x141A57040='thread_response_' + 0x141A57030='item_ids'(off16, loadl_epi64)", "target": "0x1409C1EF0", "target_size": 5114, "handling": "call"},
+    {"case": 24, "key": "rollout_orphan_providers", "key_bytes_live": "xmm 0x141A57060='rollout_orphan_p' + 0x141A57050='roviders'(off16, loadl_epi64)", "target": "0x1409BF380", "target_size": 1093, "handling": "goto LABEL_36 共享孤儿修复器（与 db_orphan_providers 同 target）"},
+    {"case": 26, "key": "router_unlock_auth_residue", "key_bytes_live": "xmm 0x141A57120='router_unlock_au' + 0x141A57110='ock_auth_residue'(off10)", "target": "0x1409C73C0", "target_size": 1690, "handling": "call"},
+    {"case": 27, "key": "thread_provider_consistency", "key_bytes_live": "xmm 0x141A570C0='thread_provider_' + 0x141A570B0='ider_consistency'(off11)", "target": "0x1409CAB80", "target_size": 2496, "handling": "call"},
+    {"case": 28, "key": "thread_poisoned_instructions", "key_bytes_live": "xmm 0x141A57080='thread_poisoned_' + 0x141A57070='ned_instructions'(off12)", "target": "0x1409CE980", "target_size": 10678, "handling": "call"},
+    {"case": 32, "key": "thread_model_catalog_consistency", "key_bytes_live": "xmm 0x141A570A0='thread_model_cat' + 0x141A57090='alog_consistency'(off16)", "target": "0x1409D6440", "target_size": 3067, "handling": "⚠ MUTATING call：sub_1409D6440 直接调用 sub_140808CB0(13649B)，后者持有 'UPDATE threads SET model = ?2 WHERE id = ?1' @0x141a4b380（data-xref 0x14080a4e0，本圆 live 复核）"}
+  ],
+  "classifier_table_24_keys": {
+    "returns_0_not_require_quiet_window": ["residual_cache", "residual_manifest"],
+    "returns_1_require_quiet_window": ["config_stale", "auth_integrity", "catalog_integrity", "config_toml_syntax", "config_third_party", "db_orphan_providers", "state_db_relocation", "router_http_contract", "router_postcondition", "catalog_path_validity", "takeover_backup_orphan", "config_global_validity", "config_profile_conflict", "thread_missing_rollouts", "legacy_migrated_threads", "project_state_integrity", "thread_response_item_ids", "rollout_orphan_providers", "router_unlock_auth_residue", "thread_provider_consistency", "thread_poisoned_instructions", "thread_model_catalog_consistency"],
+    "returns_2_unknown": "default（含 native_off_invalid_openai_thread_models 与 router_recovery_record——二者均不在分类器键集）",
+    "router_postcondition_evidence": "case 20 桶第二键：xmm 0x141A57250='router_postcondi' + xmm 0x141A224D0='tion'(dword@+16)，返回 1；串池完整串 0x141a603a8 另被 CHECK 引擎引用 ×3"
+  },
+  "check_engine_current_exe": {
+    "ea": "0x1409A45C0",
+    "size_bytes": 41419,
+    "router_recovery_record": "×2 引用（0x1409a4c98：堆构造 22B 键 'router_recovery_record'（movdqu 16B + 0x64726F6365725F79='y_record'@+0xE）+ 5B 尾串；0x1409a4e21：sub_1409EE200(337B) 以 22 长度键 + 邻接标签构造 check 项——标签/消息字节级解码 @0x141A5F8F9='路由恢复记录'+'可正常读取路由恢复记录'，读状态标志位 @+0x16C/@+0x17E 判定）",
+    "native_off_key_blob": "0x141a604d9 ×4 引用（0x1409a6cf4/0x1409a6dbd/0x1409a877f/0x1409adab2）——键保留为 CHECK 诊断",
+    "router_postcondition": "0x141a603a8 ×3 引用（0x1409a5bda/0x1409a5eaf/0x1409a616b）",
+    "note_1.2.6_compare": "1.2.6 CHECK 引擎 sub_140583950（33771B）已含 router_postcondition（串 0x141830354 ×2）与 native_off；router_recovery_record 在 1.2.6 win exe 字节级 0 次出现（python3 全文件字节搜索，BSD grep 二进制长行假阴性已排除）"
+  },
+  "binary_level_key_presence": {
+    "method": "python3 全文件字节搜索（跨版本，SMB raw/binary SOT）",
+    "router_postcondition": {"1.2.6_win_sha_763c9b67": 2, "1.2.7_win_sha_51cb41b6": 2, "mac_1.2.7_sha_ac235ae0": 5},
+    "router_recovery_record": {"1.2.6_win_sha_763c9b67": 0, "1.2.7_win_sha_51cb41b6": 1, "mac_1.2.7_sha_ac235ae0": 2},
+    "native_off_invalid_openai_thread_models": {"1.2.6_win_sha_763c9b67": 1, "1.2.7_win_sha_51cb41b6": 1, "mac_1.2.7_sha_ac235ae0": 2}
+  },
+  "diff_vs_1.2.6_table": {
+    "fix_keys": "24 -> 23（删 case 39 native_off_invalid_openai_thread_models 修复臂；其余 23 键 1:1 保留，inline/outline 实现层差异不影响键集）",
+    "classifier_keys": "25 -> 24（删 native_off；router_postcondition 两版均在且均无修复臂）",
+    "new_key_in_1.2.7": "router_recovery_record（CHECK-only，1.2.6 二进制零出现）",
+    "fix_key_set_vs_mac": "mac 1.2.7 fix_issue（0x10077B370，盘证 decomp-1.2.7/0066）= 23 键，与当前 exe fix 分派 23 键 1:1 完全一致（mac 21 个 fix_* 符号调用 + 2 共享孤儿臂；mac fix_issue 内零 native_off/router_postcondition/router_recovery 引用）——平台差集为零"
+  }
+}

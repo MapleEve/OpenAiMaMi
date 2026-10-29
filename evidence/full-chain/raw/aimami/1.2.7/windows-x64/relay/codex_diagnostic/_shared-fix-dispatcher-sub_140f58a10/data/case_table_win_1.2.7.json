@@ -1,0 +1,32 @@
+{
+  "session": "<审计会话>",
+  "dispatcher": "sub_140F58A10",
+  "binary_sha256": "06091864a42a1e5505cbc556b971f63c47a89c6e2805507de41bb66d00f1afea",
+  "method": "live IDA 1.2.7 win IDB (<内部网络>:<审计环境>) : ida_反编译器.decompile(0x140F58A10) -> tag_remove -> per-case regex extraction of scalar XOR constants + xmmword rodata operands -> ida_bytes.get_bytes(16) decode; len(key)==case verified for all 23 rows; zero IDB writes",
+  "count_check": "23 keys across 14 buckets (1+2+2+2+2+1+1+2+4+2+1+1+1+1); no case 39; no router_recovery_record in any bucket",
+  "rows": [
+    {"case": 12, "key": "config_stale", "key_bytes": "scalar 0x735F6769666E6F63='config_s' + 0x656C6174='tale'", "target": "0x140F03750", "target_size": 481, "handling": "call"},
+    {"case": 14, "key": "auth_integrity", "key_bytes": "scalar 0x746E695F68747561='auth_int' + 0x797469726765746E='ntegrity'", "target": "0x140F04FE0", "target_size": 3513, "handling": "call"},
+    {"case": 14, "key": "residual_cache", "key_bytes": "scalar 0x6C61756469736572='residual' + 0x65686361635F6C61='al_cache'", "target": "INLINE", "target_size": null, "handling": "inline report-build (qmemcpy 'residual_cache' 14B), same pattern as 1.2.6"},
+    {"case": 17, "key": "residual_manifest", "key_bytes": "xmm 0x141A557D0='residual_manifes' + byte17 't' @0x141A091E0", "target": "INLINE", "target_size": null, "handling": "inline (~198-line body), helper calls sub_14168*/sub_14140*, same pattern as 1.2.6"},
+    {"case": 17, "key": "catalog_integrity", "key_bytes": "xmm 0x141A557E0='catalog_integrit' + byte17 'y' @0x141A086F0", "target": "0x140F08830", "target_size": 201, "handling": "call"},
+    {"case": 18, "key": "config_toml_syntax", "key_bytes": "xmm 0x141A55770='config_toml_synt' + 0x141A55780='ax'", "target": "0x140F09A40", "target_size": 511, "handling": "call (fix_*_text + check + checked_fix_result pattern, mac-analogous)"},
+    {"case": 18, "key": "config_third_party", "key_bytes": "xmm 0x141A55790='config_third_par' + 0x141A557A0='ty'", "target": "0x140F095C0", "target_size": 916, "handling": "call"},
+    {"case": 19, "key": "db_orphan_providers", "key_bytes": "xmm 0x141A41F50='db_orphan_provid' + 0x141A41F40='orphan_providers'(off3)", "target": "0x140F2BD30", "target_size": 1090, "handling": "goto LABEL_74 -> sub_140F2BD30 (shared orphan fixer, = fix_orphan_thread_providers analog)"},
+    {"case": 19, "key": "state_db_relocation", "key_bytes": "xmm 0x141A55680='state_db_relocat' + 0x141A55670='te_db_relocation'(off3)", "target": "INLINE", "target_size": null, "handling": "inline ⚠ DESTRUCTIVE (613-line case bucket shared with db_orphan arm head; CodexPaths resolve_codex_state_db 0x1401B79C0 + state_db accessor 0x1401B8C00)"},
+    {"case": 20, "key": "router_http_contract", "key_bytes": "xmm 0x141A557C0='router_http_cont' + 0x141A557B0='ract'(off16)", "target": "0x140F0E1B0", "target_name": "relay_codex_writer__router_http_contract_a", "target_size": 1421, "handling": "call"},
+    {"case": 21, "key": "catalog_path_validity", "key_bytes": "xmm 0x141A556C0='catalog_path_val' + 0x141A556B0='og_path_validity'(off5)", "target": "0x140F10150", "target_size": 373, "handling": "call"},
+    {"case": 22, "key": "takeover_backup_orphan", "key_bytes": "xmm 0x141A556E0='takeover_backup_' + 0x141A556D0='er_backup_orphan'(off6)", "target": "0x140F23360", "target_size": 2111, "handling": "call"},
+    {"case": 22, "key": "config_global_validity", "key_bytes": "xmm 0x141A55700='config_global_va' + 0x141A556F0='_global_validity'(off6)", "target": "0x140F22610", "target_size": 2616, "handling": "call"},
+    {"case": 23, "key": "config_profile_conflict", "key_bytes": "xmm 0x141A55720='config_profile_c' + 0x141A55710='profile_conflict'(off7)", "target": "0x140F25A20", "target_size": 913, "handling": "call"},
+    {"case": 23, "key": "thread_missing_rollouts", "key_bytes": "xmm 0x141A41E20='thread_missing_r' + 0x141A41E10='missing_rollouts'(off7)", "target": "0x140F2CFD0", "target_size": 2488, "handling": "call"},
+    {"case": 23, "key": "legacy_migrated_threads", "key_bytes": "xmm 0x141A55740='legacy_migrated_' + 0x141A55730='migrated_threads'(off7)", "target": "0x140F2AD80", "target_size": 2746, "handling": "call"},
+    {"case": 23, "key": "project_state_integrity", "key_bytes": "xmm 0x141A55760='project_state_in' + 0x141A55750='_state_integrity'(off7)", "target": "0x140F2C350", "target_size": 2207, "handling": "call"},
+    {"case": 24, "key": "thread_response_item_ids", "key_bytes": "xmm 0x141A55600='thread_response_' + 0x141A555F0='item_ids'(off16, loadl_epi64)", "target": "0x140F3DA20", "target_size": 4918, "handling": "case body (503-line bucket) -> sub_140F3DA20 fix worker"},
+    {"case": 24, "key": "rollout_orphan_providers", "key_bytes": "xmm 0x141A41F30='rollout_orphan_p' + 0x141A41F20='roviders'(off16, loadl_epi64)", "target": "0x140F2BD30", "target_size": 1090, "handling": "fall-through LABEL_74 -> sub_140F2BD30 (shared with db_orphan_providers; mac LABEL_42 / 1.2.6 LABEL_57 analog)"},
+    {"case": 26, "key": "router_unlock_auth_residue", "key_bytes": "xmm 0x141A556A0='router_unlock_au' + 0x141A55690='ock_auth_residue'(off10)", "target": "0x140F32530", "target_size": 1682, "handling": "call"},
+    {"case": 27, "key": "thread_provider_consistency", "key_bytes": "xmm 0x141A55660='thread_provider_' + 0x141A55650='ider_consistency'(off11)", "target": "0x140F35E20", "target_size": 2489, "handling": "call"},
+    {"case": 28, "key": "thread_poisoned_instructions", "key_bytes": "xmm 0x141A55620='thread_poisoned_' + 0x141A55610='ned_instructions'(off12)", "target": "0x140F39BB0", "target_size": 10264, "handling": "call"},
+    {"case": 32, "key": "thread_model_catalog_consistency", "key_bytes": "xmm 0x141A55640='thread_model_cat' + 0x141A55630='alog_consistency'(off16); report qmemcpy 0x141A5DFBC/0x141A5DFCC", "target": "case-body", "target_size": null, "handling": "330-line body; helper chain sub_14024C500/sub_1403FAE40/sub_1402620D0/sub_140F41CE0/sub_140C23890; ⚠ MUTATING SQL owner sub_1402620D0 (13717B): 'UPDATE threads SET model = ?2 WHERE id = ?1' @0x1419DF040 (data-xref 0x140263A73)"}
+  ]
+}

@@ -1,0 +1,179 @@
+{
+  "schema": "c5cm.aimami.raw.backend-command-leaf.v1",
+  "product": "aimami",
+  "version": "1.2.7",
+  "platform": "windows-x64",
+  "module": "commands/accounts",
+  "command": "load_runtime_display_snapshot",
+  "session": "<审计会话>",
+  "machine": "<本地机器>",
+  "generated_at_utc": "2026-10-06T12:00:00Z",
+  "binary_anchor": {
+    "idb_path": "<内部存储>\\AiMaMi.1.2.7 win64.exe.i64",
+    "module": "AiMaMi.1.2.7 win64.exe",
+    "exe_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+    "function_count": 112594,
+    "imagebase": "0x140000000",
+    "ida_port": <审计环境>,
+    "verification": "server_health live 实测（uptime>30s, decompiler_ready=true, auto_analysis_ready=true）"
+  },
+  "glue": {
+    "ea": "0x1405EC7D0",
+    "size": 380,
+    "idb_name": "load_runtime_display_snapshot",
+    "dirtree": "/codexmate_lib/commands/accounts/load_runtime_display_snapshot"
+  },
+  "scope": "用户裁决撤销 win 侧禁实现并补全证据链（Oct 6 pooled-cmd-naming 轮三重实证 + 本轮 full-chain + dim1-5 + IDB 归位）",
+  "out_of_scope": ["voice/audio/capture/runtime-settings/trigger-listener 全排除", "dim6 留白（实现侧验收）", "mac 侧补逆（mac 零符号如实标注，不外推）"],
+  "inputs_cited": [
+    "intermediate/aimami/1.2.7/windows-x64/version-delta/scripts/win127-pooled-cmd-naming-20261006.json（命名轮证据件，本 leaf 独立复验后引用）",
+    "raw/aimami/1.2.7/windows-x64/frontend/api-map.json（前端 CCF argKeys=[]）",
+    "internal-reverse/audits/windows-1.2.7-version-delta/logic/CONSUMER-CONTRACT-1.2.7.md（§8 禁实现条目替换）"
+  ],
+  "files": [
+    "README.md", "manifest.json", "evidence.md", "interface-report.json",
+    "call-tree.json", "gate-report.json", "data/producer-ledger.json",
+    "ida/pseudocode/glue_load_runtime_display_snapshot.c",
+    "ida/pseudocode/runtime_display_state_get_snapshot.c",
+    "ida/pseudocode/runtime_display_state_update_and_emit.c",
+    "ida/pseudocode/runtime_display_state_to_snapshot.c",
+    "ida/pseudocode/load_runtime_display_snapshot_build_envelope.c",
+    "ida/pseudocode/load_runtime_display_snapshot_respond.c",
+    "ida/pseudocode/load_runtime_display_snapshot_serialize_envelope.c",
+    "ida/pseudocode/runtime_display_snapshot_serialize_data.c",
+    "ida/pseudocode/runtime_display_status_serialize.c",
+    "ida/pseudocode/runtime_paths_serialize.c",
+    "ida/pseudocode/runtime_refresh_report_serialize.c",
+    "ida/pseudocode/runtime_account_display_serialize_item.c"
+  ],
+  "event_contract_correction": {
+  "session": "<审计会话>",
+  "applied_at": "2026-10-16T18:08:00.976115+00:00",
+  "status": "decision-resolved/content-still-running",
+  "token": "EXPLICIT_OVERWRITE_CANONICAL",
+  "pm_ruling": {
+    "at": "2026-10-16T17:50:58.749Z",
+    "question": "定点更正确认已接受 pre 合同中的 runtime-state-updated 事件载荷陈述为 {snapshot, source, accountKey?}，accountKey 为 None 时省略，并同步其直接关联证据与元数据？",
+    "answer": "定点更正确认",
+    "selected_option_description": "授予 EXPLICIT_OVERWRITE_CANONICAL，仅限这条事件载荷陈述及直接关联证据、指针和错误注释；保留原文历史，不撤销 getter 的 RuntimeDisplaySnapshot|null、只读或成功信封合同。随后自动继续最终 diff。",
+    "token": "EXPLICIT_OVERWRITE_CANONICAL",
+    "verified_source": "<本地路径>/.claude/projects/<本地归档><内部项目>-Code-<内部项目>/<审计会话>.jsonl L20827 AskUserQuestion / L20833 actual user tool_result; tool_use_id call_jZwZPdWtlqNLe5AUfCgNwDEu",
+    "question_line": 20827,
+    "answer_line": 20833,
+    "question_at": "2026-10-16T17:18:59.539Z",
+    "tool_use_id": "call_jZwZPdWtlqNLe5AUfCgNwDEu",
+    "raw_tool_result": "Your questions have been answered: \"定点更正确认已接受 pre 合同中的 runtime-state-updated 事件载荷陈述为 {snapshot, source, accountKey?}，accountKey 为 None 时省略，并同步其直接关联证据与元数据？\"=\"定点更正确认\". You can now continue with these answers in mind.",
+    "question_record_sha256": "bae4f45afd440fe8f3dc7e3bfb8477369fffc36d111942308ee3509870600223",
+    "answer_record_sha256": "ded9548fb61f4cec98ba18894d9750a4189713d1f151791d63fa9e38361ea304",
+    "scope": "仅 Windows 1.2.7 pre SHA51cb41b6 的 runtime-state-updated 事件外层陈述及直接关联证据、指针、错误注释；保留原文历史和 getter 的 RuntimeDisplaySnapshot|null、零参数、只读及成功信封合同。不重开其他旧 pre 合同重判、owner 接管/重分配、最高门提升。后续按同一任务继续最终 diff。"
+  },
+  "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+  "scope": "仅 runtime-state-updated 事件外层陈述及直接证据指纹；不重判 getter gate，不更改其他 pre 合同，不表示 release 完成",
+  "proof": {
+    "path": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-event-correction-proof.json",
+    "sha256": "5ca8847ac0d53817082bbd09ee2869045628efdcdb550d37609c8d87dc75158d",
+    "bytes": 57456
+  },
+  "correction_manifest": "intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-event-correction-manifest.json",
+  "corrected_sources": [
+    {
+      "path": "raw/aimami/1.2.7/windows-x64/backend/commands/accounts/load_runtime_display_snapshot/evidence.md",
+      "sha256": "e3a0b052b9a8cb09c426e09e622d278514d0182dcbfd2456c10db9c892d191da",
+      "bytes": 15380
+    },
+    {
+      "path": "raw/aimami/1.2.7/windows-x64/backend/commands/accounts/load_runtime_display_snapshot/interface-report.json",
+      "sha256": "1455bdbecb5ccc86276b47ba91f6a202d2fe6ce91f29d7eead88ccecbf87a9dc",
+      "bytes": 8627
+    },
+    {
+      "path": "internal-reverse/audits/windows-1.2.7-version-delta/logic/CONSUMER-CONTRACT-1.2.7.md",
+      "sha256": "e913e77a0f9257577f3f4f89d201264e31025984cf9a0761c8b9355123e17dbb",
+      "bytes": 26510
+    }
+  ],
+  "native_evidence": [
+    {
+      "path": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-runtime-pre-boundaries.json",
+      "sha256": "83baa015b437968ca16608cc9e458651f797a752544330e3b18438285bb935b1",
+      "bytes": 39529,
+      "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf"
+    },
+    {
+      "path": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-runtime-pre-event-emission-chain.json",
+      "sha256": "4b85686f35f726ed96a7251375512ba08ddb179342d3c169bac18c79b866e1df",
+      "bytes": 5095,
+      "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf"
+    },
+    {
+      "path": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-runtime-pre-event-dispatcher.json",
+      "sha256": "ae08bf56503a56ba1cc34e552b3f11dd73034ac22a2ccf2f267bcba034528670",
+      "bytes": 6321,
+      "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf"
+    },
+    {
+      "path": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-runtime-pre-event-dto-candidates.json",
+      "sha256": "8da0dbc39e372fbd7f0507574c61ea680190e5c19210d352d53f6dec16f6f4a5",
+      "bytes": 5766,
+      "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf"
+    },
+    {
+      "path": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-pre-contract-conflict-native-identity.json",
+      "sha256": "24545f4262200ce4e70b6e97369b2f582a9af74f737df74e12e0100b7d71fef5",
+      "bytes": 2404
+    }
+  ],
+  "history": "原全文字节可由 proof.original_byte_backups 精确还原；旧陈述已明确留在原文件历史区",
+  "getter_contract": "零参数；只读；data=RuntimeDisplaySnapshot|null；恒成功信封及既有错误面不变；dim1-5 PASS/dim6 BLANK，原 getter 门值不变",
+  "release_status": "该 PM 停点已解除；Windows 内容与最终 diff 仍在进行，release 实现门全 false；不整体 DONE/ACK",
+  "idb_comment_handoff": [
+    {
+      "ea": "0x140ed1dd0",
+      "marker": "(载荷=snapshot)",
+      "comment_slot": 0,
+      "old_full_comment": "win 1.2.7最新exe | 模块: src/commands/accounts.rs | 归属: runtime-state 字符串簇邻接 codexmate_lib::commands::accounts 模块路径串(0x141aa18aa↔runtime-state-updated@0x141aa18d7)+全部 writer feeder 在 commands/accounts(panic-Location 两跳真值, Oct5)\n角色: 状态合并更新+广播(writer×9 feeder: load_snapshot/refresh_usage_snapshot/refresh_single_account_usage/set_account_alias/logout/remove_accounts/import_accounts_from_file/oauth_login/account_observer): kind∈{push,account,account-alias,auth,full,usage,progressive}+key; FILETIME→Unix(0x019DB1DED53E8000); 更新全局后 emit \"runtime-state-updated\"(载荷=snapshot); 无破坏性副作用",
+      "proposed_full_comment": "win 1.2.7最新exe | 模块: src/commands/accounts.rs | 归属: runtime-state 字符串簇邻接 codexmate_lib::commands::accounts 模块路径串(0x141aa18aa↔runtime-state-updated@0x141aa18d7)+全部 writer feeder 在 commands/accounts(panic-Location 两跳真值, Oct5)\n角色: 状态合并更新+广播(writer×9 feeder: load_snapshot/refresh_usage_snapshot/refresh_single_account_usage/set_account_alias/logout/remove_accounts/import_accounts_from_file/oauth_login/account_observer): kind∈{push,account,account-alias,auth,full,usage,progressive}+key; FILETIME→Unix(0x019DB1DED53E8000); 更新全局后 emit \"runtime-state-updated\"(载荷为外层 {snapshot, source, accountKey?}；accountKey 为 None 时省略，snapshot 字段内为 RuntimeDisplaySnapshot); 无破坏性副作用",
+      "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+      "source_role": "pre",
+      "source_native_evidence": {
+        "file": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-runtime-pre-boundaries.json",
+        "pointer": "/rows/2",
+        "file_sha256": "83baa015b437968ca16608cc9e458651f797a752544330e3b18438285bb935b1",
+        "role": "pre",
+        "ea": "0x140ed1dd0",
+        "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+        "code_sha256": "fe8e2a17fec76246de5c60da7ca8f8f1bedfa15fb5c5fddecbaba21761e5cd1c",
+        "matched_pseudocode_lines": [
+          {
+            "line": 410,
+            "text": "  result = sub_140594C70((unsigned int)v40, v31, (unsigned int)aRuntimeStateUp, 21, (__int64)&v41);"
+          }
+        ]
+      },
+      "status": "authorized-but-not-executed; later unique IDB writer requires fresh exact-comment readback before replacement; never apply to release EAs"
+    },
+    {
+      "ea": "0x140cd7e50",
+      "marker": "事件 runtime-state-updated 载荷共用",
+      "comment_slot": 0,
+      "old_full_comment": "win 1.2.7最新exe | 模块: src/commands/accounts.rs | 归属: runtime-state 字符串簇邻接 codexmate_lib::commands::accounts 模块路径串(0x141aa18aa↔runtime-state-updated@0x141aa18d7)+全部 writer feeder 在 commands/accounts(panic-Location 两跳真值, Oct5)\n角色: RuntimeDisplaySnapshot 序列化: {status:{...}, accounts:[384B 项], refreshReport:{...}|缺省(skip_serializing_if)}; 事件 runtime-state-updated 载荷共用",
+      "proposed_full_comment": "win 1.2.7最新exe | 模块: src/commands/accounts.rs | 归属: runtime-state 字符串簇邻接 codexmate_lib::commands::accounts 模块路径串(0x141aa18aa↔runtime-state-updated@0x141aa18d7)+全部 writer feeder 在 commands/accounts(panic-Location 两跳真值, Oct5)\n角色: RuntimeDisplaySnapshot 序列化: {status:{...}, accounts:[384B 项], refreshReport:{...}|缺省(skip_serializing_if)}; 事件 runtime-state-updated 外层的 snapshot 字段共用本内层序列化器；外层由 0x140DDA7A0 序列化为 {snapshot, source, accountKey?}，accountKey None 时省略",
+      "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+      "source_role": "pre",
+      "source_native_evidence": {
+        "file": "<内部存储>/intermediate/aimami/1.2.7/windows-x64/version-delta/release-fd5f0c5aa7d5-content-closure-aggregate-runtime-pre-event-dto-candidates.json",
+        "pointer": "/rows/0",
+        "file_sha256": "8da0dbc39e372fbd7f0507574c61ea680190e5c19210d352d53f6dec16f6f4a5",
+        "role": "pre",
+        "ea": "0x140cd7e50",
+        "source_binary_sha256": "51cb41b613aaa50f410d606e1c4271b1de34576b497a1cba0f734eba46279faf",
+        "code_sha256": "695f1a450337353e3a79ffa4bcd55e7eed03005360435f82a980dcabc6904cf1"
+      },
+      "status": "authorized-but-not-executed; later unique IDB writer requires fresh exact-comment readback before replacement; never apply to release EAs"
+    }
+  ],
+  "ida_calls": 0,
+  "idb_writes": 0,
+  "db_saves": 0
+}
+}

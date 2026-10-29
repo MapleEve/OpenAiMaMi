@@ -1,0 +1,28 @@
+{
+  "schema": "c5cm.aimami.backend.call-tree.v1",
+  "command": "graceful_restart_for_update",
+  "session": "<审计会话>",
+  "invoke_path": [
+    {"ea": "0x1405fbca0", "name": "tauri_invoke_command_dispatcher", "note": "28374B; 池化双窗比较 first16 graceful_restart@0x141A22C00 + last16 start_for_update@0x141A22BF0 (比较点 0x1405fcd97/0x1405fcd9f, 各唯一 data xref)"},
+    {"ea": "0x140600cb6", "name": "call graceful_restart_for_update", "note": "arm 调用点"},
+    {"ea": "0x1405F27C0", "name": "graceful_restart_for_update", "role": "glue 586B 零用户参数", "module": "commands/system (推断级)", "callees": ["0x1419234B0 memcpy×4", "0x1406440D0", "0x140724350", "0x140B39980", "0x1401AFF50 drop", "0x140001660 dealloc", "0x1405251E0 env drop"], "ud2": "0x1405f2a08 (sub_140724350 后, 发散编译器证实)"},
+    {"ea": "0x1406440D0", "name": "state_fetch_sub_1406440D0", "role": "tauri state 提取原语 (StateManager::try_get 等价); 请求 {命令名, state key \"app\", env, captures}; ~100 命令 glue 共用; 返回 152B AppHandle 或 首 dword==-1", "callees": ["0x1401881D0 env 克隆", "0x140513A80", "0x141468FB0/0x140CA3110/0x141469660/0x141469260 Arc drop"]},
+    {"ea": "0x1401881D0", "name": "invoke_env_marshal_sub_1401881D0", "role": "invoke env 克隆 (Arc 字段 +136/+152/+176/+312..+352)", "callees": ["0x1416DB410", "0x1404D0500", "0x1406458C0 (env+176→152B state 句柄)"]},
+    {"ea": "0x140724350", "name": "restart_call_thunk_sub_140724350", "role": "33B thunk, 全二进制唯一 caller=本 glue; data ref 0x141ef0d0c/0x1422aabb8 vtable 槽", "callees": ["0x1406320F0"]},
+    {"ea": "0x1406320F0", "name": "tauri_app_restart_machinery_sub_1406320F0", "role": "tauri-2.10.3 app.rs 重启机制 (win 侧 request_restart+restart 内联合一, 发散 -> !); 922B", "callees": ["0x141969A30 WaitOnAddress flag 锁", "0x14196A710 运行态判定", "0x1416C5530", "0x14002B980/0x141969AF0 WakeByAddressSingle", "0x140AF72B0 trace log", "0x140635FB0 事件投递 tag 29", "0x1416C57D0 park", "0x140632920 cleanup_before_exit", "0x14064C090 Manager::env", "0x141472630 tauri::process::restart", "0x14196B5F0 panic"]},
+    {"ea": "0x141969A30", "name": "waitonaddress_flag_lock_sub_141969A30", "role": "restart flag 三态锁 (0 free/1 in-progress/2 acquired): _mm_pause 自旋 + CAS + WaitOnAddress(&2, INFINITE)"},
+    {"ea": "0x140635FB0", "name": "event_send_sub_140635FB0", "role": "tao 事件投递 (742B): PostMessageW + crossbeam-channel-0.5.15 队列 (自旋/CAS/双级退避); 失败返回 0xFF", "note": "库内部, 定性到投递层级未逐行展开 (evidence.md §9)"},
+    {"ea": "0x141472630", "name": "tauri_process_restart_sub_141472630", "role": "tauri::process::restart (win, tauri-2.10.3 src\\process.rs:101): current_exe + 原 argv → Command::spawn → CloseHandle → exit(0); spawn 失败 panic 'failed to restart app: '", "callees": ["0x1415713E0 current_exe 相关", "0x1416B94E0 Command 构建", "0x1416B93C0 args 追加", "0x1416BCAE0 spawn", "0x1416C30D0 std::process::exit", "0x1416EBAD0 panic", "__imp_CloseHandle ×4"]},
+    {"ea": "0x1416B4650", "name": "std_process_spawn_sub_1416B4650", "role": "std 库 spawn (16012B) → CreateProcessW@0x14196d1b8 (relaunch 系统调用终点)"},
+    {"ea": "0x140B39980", "name": "tauri_invoke_responder_sub_140B39980", "role": "InvokeResolver::respond (fall-through 错误路径): 'resolver consumed' 双重应答 panic 守卫 + vtable responder + WakeByAddressSingle"}
+  ],
+  "macos_reference_path": [
+    {"ea": "0x1006119c0", "name": "codexmate_lib::run::{{closure}}", "note": "mac dispatcher 38460B, 名字表比较点 0x100615586"},
+    {"ea": "0x100638510", "name": "codexmate_lib::run::{{closure}}::{{closure}}", "note": "mac wrapper 546B"},
+    {"ea": "0x100712c60", "name": "<AppHandle as CommandArg>::from_command", "note": "state key \"app\" 提取; 错误变体 tag 3"},
+    {"ea": "0x1006e9010", "name": "tauri::app::AppHandle::request_restart", "note": "非发散: *(app+5192)=1 + tao Proxy::send_event(EventLoopMessage(31)); 失败 → cleanup+env+process::restart"},
+    {"ea": "0x101408100", "name": "tauri::process::restart", "note": "mac relaunch: current_exe → bundle 解析(Info.plist CFBundleExecutable) → Command::spawn → 失败 log → exit(0)"},
+    {"ea": "0x100333ae0", "name": "InvokeResolver::return_result", "note": "mac 错误应答; 成功应答 respond tag 6=unit"}
+  ],
+  "comparison_sibling": {"ea": "0x1405f9600", "name": "focus_main_window", "note": "同骨架对照 (name+key \"app\"+sub_1406440D0+sub_140B39980): 实现段为窗口聚焦 sub_1404BA0C0 且正常返回——证实 sub_1406440D0 为共享 state 提取原语、本命令实现段即重启机制"}
+}

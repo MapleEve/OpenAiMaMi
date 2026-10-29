@@ -1,0 +1,1 @@
+function f(t,e="请稍后重试。"){const i=n=>n.replace(/^[A-Z][A-Z0-9_]{3,}:\s*/,"").trim();if(t==null)return e;if(typeof t=="string")return i(t)||e;if(t instanceof Error)return i(t.message)||e;if(typeof t=="object"){const n=t.message;if(typeof n=="string"&&n.trim())return i(n.trim())||e;try{const s=String(t);if(s&&s!=="[object Object]")return i(s)||e}catch{}}return e}export{f};

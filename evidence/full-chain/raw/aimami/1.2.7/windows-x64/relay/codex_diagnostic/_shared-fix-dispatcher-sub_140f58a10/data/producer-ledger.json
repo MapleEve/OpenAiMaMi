@@ -1,0 +1,57 @@
+{
+  "schema": "c5cm.internal-reverse.producer-ledger.v1",
+  "bundle": "win-1.2.7-relay-codex_diagnostic-shared-fix-dispatcher-sub_140f58a10",
+  "path": "raw/aimami/1.2.7/windows-x64/relay/codex_diagnostic/_shared-fix-dispatcher-sub_140f58a10/",
+  "note": "本 ledger 为 2026-10-07 追溯补建（此前两轮均漏写 leaf 级 producer-ledger，Oct 5 轮 SoT 回填缺口经 5 轮沿用登记，用户「欠账全做完 0 残留」直派闭合）。round 1/2 内容按 leaf 既有制品 manifest.json/interface-report.json/data 双 case 表实测 readback 补记，非重跑逆向（红线5/31）。",
+  "rounds": [
+    {
+      "session": "<审计会话>",
+      "date": "2026-10-01",
+      "machine": "win <内部网络> (IDA 双实例) / <本地机器> (SMB 落盘)",
+      "role": "producer",
+      "scope": "leaf 创建：1.2.7 win（旧测试构建 06091864）共享 FIX 分派器 sub_140F58A10（17556B/2193 行伪码，string-length switch）全量 case 表枚举——14 桶/23 键字节级解码（标量 XOR + xmmword get_bytes），len(key)==case 23/23 自校验；1.2.6 win sub_1405CBF60 live 复核 24 键；mac 1.2.7 fix_issue 23 键对照；版本轴差集裁决（1.2.6 case 39 native_off_invalid_openai_thread_models INLINE 修复臂 1.2.7 双平台删除、键保留为 CHECK 诊断键；router_recovery_record 为 1.2.7 新增 CHECK-only 键）；BASELINE-DIFF「24 全保留+新增1」临时结论字节级证伪更正（该结论自标 PENDING，本叶为其指定闭合）",
+      "artifacts": [
+        "manifest.json",
+        "evidence.md",
+        "gate-report.json",
+        "interface-report.json",
+        "data/case_table_win_1.2.7.json",
+        "data/case_table_win_1.2.6_live_reverify.json"
+      ],
+      "ida_instance": "<审计环境> (AiMaMi.1.2.7 win64.exe 旧构建 sha256 06091864...) + <审计环境> (AiMaMi 1.2.6 win64.exe)，均 decompiler_ready",
+      "idb_writes": "none（双 IDB 全程只读；红线37 零 open_file/零版本切换）",
+      "gate": "no_gate_promotion（case 表证据叶，五门不动）",
+      "status": "DONE（2026-10-07 追溯收编登记）"
+    },
+    {
+      "session": "<审计会话>",
+      "date": "2026-10-05",
+      "machine": "win <内部网络> (IDA 双实例) / <本地机器> (SMB 落盘)",
+      "role": "producer",
+      "scope": "最新 exe 口径 live 重建（双 IDA）：1.2.6 win fix 分派 24 键/15 桶独立重算（与 Oct 1 reverify 文件 24/24 行一致）+ 当前 exe（51cb41b6）fix 分派 23 键/14 桶（entry sub_140E98C20 672B + 单键分派器 sub_140A9CE20 2434B + fix_all 编排 sub_1409E6E50 + 分类器 sub_1409A3960；旧单体 sub_140F58A10 在当前 exe 不存在）+ requires_quiet_window 分类器 24 键 + CHECK 引擎键分布 + 跨版本二进制键存在性矩阵；差集终局：fix 键集平台差集=零（mac 23 == win 23 逐键 1:1），真实差集在版本轴（24→23 收缩 + router_recovery_record CHECK-only）；dim4 字段级 FixResult/DiagnosticItem/DiagnosticReport serde 键 + 错误面 5 类 + ⚠破坏性 case 19 state_db_relocation/case 32 UPDATE threads 标注；命令 handler fix_codex_router_issue@0x140333570（与 Oct 5 writeback 轮独立发现交叉一致）",
+      "artifacts": [
+        "data/case_table_win_1.2.6_live_rebuild_2026-10-05.json",
+        "data/case_table_win_1.2.7-latest_live_rebuild_2026-10-05.json",
+        "interface-report.json#rebuild_round_20261005"
+      ],
+      "ida_instance": "<审计环境> (AiMaMi.1.2.7 win64.exe 最新 exe sha256 51cb41b6...) + <审计环境> (AiMaMi 1.2.6 win64.exe)",
+      "idb_writes": "none（全程只读，manifest ida_session 与 interface-report rebuild_round 双处记录）",
+      "gate": "no_gate_promotion（重建证据补线，五门不动）",
+      "status": "DONE（2026-10-07 追溯收编登记）"
+    },
+    {
+      "session": "<审计会话>",
+      "date": "2026-10-07",
+      "machine": "<本地机器>",
+      "role": "producer（登记轮）",
+      "scope": "追溯 SoT 补登记：上述两轮（Oct 1 创建 + Oct 5 重建）在 REVERSE-STATUS/根 INDEX/leaf producer-ledger 三处零登记（Oct 5 轮现场呈报为遗留待办、经 Oct 5/6/7 多轮沿用登记，属用户「欠账全做完 0 残留」欠账清单同类项）。本轮磁盘级独立核验（leaf 七文件在场、双重建表 23/24 行 parse、len(key)==case 23/23 自校验 TRUE、interface-report rebuild_round 键与 manifest 双向一致、key_set_verdict 与 Oct 6 dispatcher 机制独立解码交叉印证）后补齐三处登记；零新逆向、零 IDB 操作（红线5/31/35/36）",
+      "artifacts": [
+        "data/producer-ledger.json（本件，新建）"
+      ],
+      "ida_instance": "N/A（纯磁盘/SoT 登记轮，无 IDA 调用）",
+      "idb_writes": "none",
+      "gate": "no_gate_claimed（登记轮不声明 gate，循 icf-twin/binary-sot/ebinary 登记-不声明-gate 前例）",
+      "status": "DONE / LEAF_WRITTEN"
+    }
+  ]
+}

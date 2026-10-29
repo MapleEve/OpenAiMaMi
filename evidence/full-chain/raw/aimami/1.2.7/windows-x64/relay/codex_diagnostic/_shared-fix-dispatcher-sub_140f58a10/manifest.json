@@ -1,0 +1,38 @@
+{
+  "schema": "c5cm.raw.manifest.v1",
+  "product": "aimami",
+  "version": "1.2.7 (test build, version-string 1.2.6)",
+  "platform": "windows-x64",
+  "module": "codexmate_lib::core::relay::codex_diagnostic",
+  "target": "sub_140F58A10_shared_fix_dispatcher_full_case_table_1.2.7_win",
+  "binary": "raw/binary/AiMaMi.1.2.7 win64.exe",
+  "binary_format": "pe",
+  "pe_machine": "x86_64",
+  "binary_sha256": "06091864a42a1e5505cbc556b971f63c47a89c6e2805507de41bb66d00f1afea",
+  "scope": "Full enumeration of the 1.2.7 win shared codex_diagnostic FIX dispatcher sub_140F58A10 (17556B, 2193 pseudocode lines, string-length switch(a5)). All 14 case buckets / 23 diagnostic keys byte-level decoded via live (scalar XOR + xmmword get_bytes), len(key)==case verified for all 23. Cross-version adjudication vs 1.2.6 win sub_1405CBF60 (live re-verified 24/24 rows on the <审计环境> IDB) and mac 1.2.7 fix_issue (existing on-disk decomp, 23 keys). VERDICT: 1.2.7 fix key set = 23 on BOTH platforms; 1.2.6's 24th key (case 39 native_off_invalid_openai_thread_models INLINE FIX arm) REMOVED in 1.2.7; router_recovery_record is a new CHECK-only key, absent from every platform's fix dispatch. Corrects the provisional owner-mapping-granularity claim of '24 preserved + 1 added' in baseline-diff-1.2.6-to-1.2.7.json (that claim was self-marked PENDING for case-level rebuild; this leaf is its designated closure).",
+  "implementation_targets_file": "evidence.md",
+  "session": "<审计会话>",
+  "parent_claim": "backend-fullchain-win-router-catalog.md §5 PENDING (fix 分派 case 表 1.2.7 win 全量重建)",
+  "sha12": "06091864a42a",
+  "ida_session": {
+    "win_1.2.7": "<内部网络>:<审计环境> module='AiMaMi.1.2.7 win64.exe' decompiler_ready=true",
+    "win_1.2.6": "<内部网络>:<审计环境> module='AiMaMi 1.2.6 win64.exe' decompiler_ready=true",
+    "idb_writes": "none (read-only both IDBs; 红线37: no open_file/select to non-mounted version)"
+  },
+  "case_table_file": "data/case_table_win_1.2.7.json",
+  "case_table_reverify_file": "data/case_table_win_1.2.6_live_reverify.json",
+  "count_check": {"win_1.2.7_keys": 23, "win_1.2.7_buckets": 14, "win_1.2.6_keys_live_reverified": 24, "mac_1.2.7_keys": 23, "removed_in_1.2.7": ["native_off_invalid_openai_thread_models"], "added_to_fix_dispatch_in_1.2.7": []},
+  "diff_adjudication": {
+    "question": "mac 23 键 vs win 24+1 键差集",
+    "answer": "无 mac/win 1.2.7 平台差集（双平台 fix 键集同为 23）。真实差集在版本轴：1.2.6 win 24 键 -> 1.2.7 23 键（删 case 39 native_off_invalid_openai_thread_models 修复臂，该键保留为 CHECK 诊断键）；router_recovery_record 为 1.2.7 新增 CHECK-only 键，不进 fix 分派。前序『24 全保留 + 新增 1（超集增长）』为 owner 映射粒度临时结论，本轮字节级证伪并更正。"
+  },
+  "known_open_gap_not_addressed_by_this_leaf": "17 个 call target 与 inline 臂的内部实现未逐函数反编译（同 1.2.6 叶口径）；native_off_invalid_openai_thread_models 修复臂删除后是否经 fix_orphan_thread_providers_with_catalog 收养面间接覆盖未闭合（见 evidence.md Unknown §4）；sub_140F51460 共享注册/报告面内部 CHECK/FIX 细分未逐臂反编译。",
+  "functions_decompiled_this_session": ["sub_140F58A10 (1.2.7 win dispatcher, full-text)", "fix_codex_router_issue 0x140ADD8A0 (1.2.7 win command handler)", "sub_140BC2C60 (1.2.7 win fix_all orchestrator, structural scan)", "sub_1405CBF60 (1.2.6 win dispatcher, live re-verify)"],
+  "idb_writes": {"renames": 0, "comments": 0, "note": "read-only pass; win dirtree naming remains on the registered work-order needing IDB write authorization"},
+  "gate": "no_gate_promotion",
+  "implementation_use": false,
+  "gate_accepted": false,
+  "consumerStartReady": false,
+  "strictImplementationUse": false,
+  "readyToImplement": false
+}

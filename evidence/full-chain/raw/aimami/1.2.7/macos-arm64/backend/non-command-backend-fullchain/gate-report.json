@@ -1,0 +1,40 @@
+{
+  "schema": "c5cm.reverse.gate_report.v1",
+  "target_id": "angle_c:mac127-truly-undone-non-command-backend-20260930",
+  "product": "aimami",
+  "version": "1.2.7-test-package(version-string 1.2.6)",
+  "platform": "macos-arm64",
+  "gate": {
+    "consumerStartReady": true,
+    "strictImplementationUse": true,
+    "readyToImplement": false,
+    "implementation_use": false,
+    "gate_accepted": false
+  },
+  "dimensions": {
+    "dim1": { "label": "IPC/命令协约", "status": "N/A", "reason": "backend-only: 25 簇 80 函数全部为非命令后端（commands:: 已排除），无前端 invoke 协约面；调用方为 manager/router_transition/repository/account_observation/codex_diagnostic/sessions export/quota/proxy 运行时" },
+    "dim2": { "label": "请求/响应字段", "status": "PASS", "reason": "Anthropic V1 适配字段面：anthropic-beta: inline-tools-2026-09-15 头、effort 拒绝四串、search context 两错误串、x-codex-turn-metadata.session_id、store=false reasoning 剔除；ProbeStream 双协议终态标记（/choices/0/finish_reason、/delta/stop_reason、/response/status）+ embedding error/data 校验；TransitionJournal{6 字段含 startedAtMs/updatedAtMs}+TransitionEvent{6 字段含 target/phase/occurredAtMs/reason}（serde 反射串实证）；RegistryItem 424B 布局（key@+200/+208，path@+224/+232）；AccountTokenStatus 装配（remaining/generated_at/plan/generation）；codex config [model_providers.aimai1] base_url/wire_api/requires_openai_auth/supports_websockets；.codex-global-state.json 五键（projectless-thread-ids/electron-saved-workspace-roots/project-order/active-workspace-roots/thread-workspace-root-hints）" },
+    "dim3": { "label": "持久化", "status": "PASS", "reason": "atomic_write 全管线（临时文件→sync_data→rename→父目录同步；private 变体 OpenOptions mode=384=0o600）；transition_journal 写 router-transition-journal.json（begin_commit 'committing'/commit_pending/clear_inner 清除）；storage relay 状态 preflight_save/save_with_publication/verify_router_commit（commit receipt enabled/no_account 位比对）；registry persist_registry + 快照 write_atomic_private_report；FileLock 账号锁文件（DirBuilder 0o777+rw-create）；codex_project_state 读 .codex-global-state.json；load_registry_for_mutation 缺文件合成内存默认（schema v15）不落盘" },
+    "dim4": { "label": "副作用/OS 原语", "status": "PASS", "reason": "DirBuilder::_create/OpenOptions::_open/File::sync_data/std::sys::fs::rename/remove_file/symlink_metadata/metadata/read_to_string/fs::read（全部现场反编译核实）；osascript 子进程（is_codex_app_running 兜底 'application id \"com.openai.codex\" is running'）；fs2::FileExt::try_lock_exclusive + close_NOCANCEL（FileLock）；OnceLock<Sender> send（system_volume，voice 域）；OnceBox<Mutex> try_lock（CodexMutationGate）；SHA-256 compress256（credential_generation）；JWT decode_jwt_payload（credential_refresh_time）；reqwest 流读（read_probe_body/read_upstream_body）；tauri InvokeResolver 异步完成（apply_if_current）" },
+    "dim5": { "label": "错误路径", "status": "PASS", "reason": "全部错误字符串现场提取：atomic_write 'atomic replace: missing parent'/'file identity changed or is not a single regular file'；transition_journal 三串（version/size/regular file）；probe 14 串（conflicting terminal/refused/filtered/unexpected terminal marker/error event/invalid JSON/invalid UTF-8/frame size/response size/invalid embedding/no valid embedding/no terminal event/no model output/failed or incomplete）；proxy 'read upstream body timed out'/'relay.key_unavailable'/search context 两串/effort 四串/beta 拒绝七串；storage 三串（no parent/schema receipt/credential conflict）；repository 四串（identity mismatch/not switchable/live changed×2）；upstream_url 两串（query conflict/endpoint traversal）；validate_candidate 'CODEX_CONFIG_REWRITE_INVALID: '；codex_project_state 'global-state root is not an object'/'Codex 项目索引正常，无需修复'/'Codex project index cannot be repaired safely: '；codex_mutation poisoned 串" },
+    "dim6": { "label": "真机对照 live_reference_parity", "status": "BLANK", "reason": "本轮未装真实 AiMaMi 客户端做截图/交互对照，按红线25 显式声明未对照" }
+  },
+  "accepted_unknown_count": 0,
+  "genuine_ceiling_count": 0,
+  "truncated_count": 0,
+  "decompiled_total": 80,
+  "destructive_side_effects_marked": [
+    "atomic_write::removal::remove_file_report（remove_file+父目录同步，journal 清理的正常功能行为）",
+    "atomic_write::staging::remove_owned（暂存文件清理，keychain revisions/TempFileCleanup 的正常功能行为）",
+    "transition_journal::clear_inner（remove_file_report 删 router-transition-journal.json，提交确认后日志清理的正常功能行为）",
+    "storage::preflight_save 失败路径 remove_file（临时文件清理的正常功能行为）"
+  ],
+  "voice_exclusion": "platform::system_volume::restore 唯一 caller=core::voice::runtime::start_capture，属 voice/audio/capture 排除域，如实记录不深入；atomic_write::write_atomic_report 被 voice::workspace::write_workspace_file 调用但为通用基础设施非 voice 面",
+  "idb_write": "零 IDB 写（本轮未执行 dirtree/rename/db_save）；mac 1.2.7 IDB dirtree 已由前序 backend-delta 轮 dirtree_mac_canonical 完成并 save",
+  "prewrite_producer_collision_gate_v1": {
+    "target_path": "<内部存储>/raw/aimami/1.2.7/macos-arm64/backend/non-command-backend-fullchain",
+    "collision_status": "ALLOW",
+    "takeover_token_status": "not_required",
+    "owner_matrix": "INDEX.jsonl grep non-command-backend 仅 1.2.6 mac leaf（基线非撞车）；REVERSE-STATUS 无 1.2.7 in-progress 残留；前序五 session 均本机 CLOSURE"
+  }
+}

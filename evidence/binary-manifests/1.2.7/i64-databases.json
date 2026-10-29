@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "project": "OpenAiMami",
+  "release": "1.2.7",
+  "license": "Apache-2.0",
+  "stack": "Tauri 2 + React + Rust",
+  "policy": {
+    "content_imported": true,
+    "publication_shape": "Only the standalone Git LFS archive in OpenAiMami IDB contains the .i64 reference databases.",
+    "notes": "Sanitized metadata only. 1.2.7 delta over 1.2.6 baseline; pre (test build, version string 1.2.6) and release variants per platform. No private evidence, binaries, machine-local paths."
+  },
+  "binaries": [
+    {
+      "platform": "macos-arm64",
+      "variant": "release",
+      "source_file": "AiMaMi 1.2.7-release.app/Contents/MacOS/AiMaMi.i64",
+      "size": 70876991,
+      "sha256": "61cd97b5e34f73028b13e3ab7fd3cb651f3cf9b4121735d39d4bd4150e43fff3"
+    },
+    {
+      "platform": "macos-arm64",
+      "variant": "pre",
+      "source_file": "AiMaMi 1.2.7-pre.app/Contents/MacOS/AiMaMi.i64",
+      "size": 57978587,
+      "sha256": "c969c94402d1a32790660f95d70a52d9b9556414244ee72ea86c37c0f6e3a49a"
+    },
+    {
+      "platform": "windows-x64",
+      "variant": "release",
+      "source_file": "AiMaMi 1.2.7 win64-release.exe.i64",
+      "size": 95184111,
+      "sha256": "497ec0340e584c3036995ef15fbf9d98570e9f17f4ec0f2c2bbce7fcf06af358"
+    },
+    {
+      "platform": "windows-x64",
+      "variant": "pre",
+      "source_file": "AiMaMi.1.2.7 win64-pre.exe.i64",
+      "size": 96153747,
+      "sha256": "3ed5cebadff6e17d54b764263e0b0c828936edfdd49a2aacc4c7ee38c4e4556c"
+    }
+  ],
+  "delta_summary": {
+    "baseline": "1.2.6",
+    "target": "1.2.7 (pre + release builds per platform)",
+    "ipc_commands": {
+      "before": 134,
+      "after": 147,
+      "added": 20,
+      "removed": 7,
+      "arg_drift": 1
+    },
+    "frontend": {
+      "dumped_assets": "same build on both platforms (identical JS asset hashes)"
+    },
+    "backend_scope": "delta + backend-only + behavioral leaves; unchanged (same) set and core-exhaustive tail chains kept internal",
+    "highlights": [
+      "Anthropic V1 protocol adaptation (translator/anthropic_trace/anthropic_reasoning/history + AnthropicDirectToResponsesStream)",
+      "Thread management refactor (codex_thread_visibility, analytics dashboard/threads split, session index health + batch export)",
+      "Codex router diagnostics/repair (run_codex_router_diagnostics + fix_codex_router_issue replacing auth_readiness)",
+      "ChatGPT engine catalog adaptation (codex_catalog + legacy no-account alias validation)",
+      "Account reset credits display/reminder + account alias + usage refresh watcher",
+      "Account switch failure repair (capture_switch_rollback_state, perform_switch_payload_with_restart)"
+    ],
+    "idb_archive": {
+      "file": "AiMaMi-1.2.7-i64-databases.zip",
+      "size": 316152087,
+      "sha256": "2b2953757463a666897d63c00b660a2cc2f54791da919030a3af77254284c006",
+      "repo": "https://github.com/MapleEve/OpenAiMami-IDB/tree/main/1.2.7"
+    }
+  },
+  "published_scope": "1.2.7 delta evidence (mac backend pseudocode 447 .c incl. non-command fullchain + closure blockwise reconstruction, win backend 1467 .c across command/non-command bundles, dual-platform frontend dumps + contracts, version-delta audit bundles, unified diff ladder entry, changelog-aligned); same-set and core-exhaustive tail chains kept internal"
+}
